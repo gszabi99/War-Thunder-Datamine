@@ -25,7 +25,8 @@ elemModelType.addTypes({
 
       if (curStat?.filesInFlight == 0)
       {
-        local displayStatTimeSec = ((curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0) > 0)
+        local delayed = curStat?.filesDelayed ?? 0
+        local displayStatTimeSec = ((curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0) > 0) && delayed > 0
           ? HIDE_STAT_WITH_FAILED_TIME_SEC
           : HIDE_STAT_TIME_SEC
         refreshDisplayStat(displayStatTimeSec)
@@ -43,6 +44,15 @@ elemModelType.addTypes({
         { filesInFlight = curStat?.filesInFlight ?? 0
           filesInFlightSizeKB = curStat?.filesInFlightSizeKB ?? 0 })
 
+      local delayedText = ""
+      local filesDelayed = curStat?.filesDelayed ?? 0
+      if (filesDelayed > 0)
+        delayedText = ::loc("ui/comma") +
+          ::colorize("newTextBrightColor", ::loc("loadDlDataStat/delayed",
+          { filesDelayed = filesDelayed
+            filesDelayedSizeKB = curStat?.filesDelayedSizeKB ?? 0 }))
+
+
       local failedText = ""
       local filesFailed = (curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0)
       local filesFailedSizeKB = (curStat?.filesFailedSizeKB ?? 0) - (prevStat?.filesFailedSizeKB ?? 0)
@@ -52,7 +62,7 @@ elemModelType.addTypes({
           { filesFailed = filesFailed
             filesFailedSizeKB = filesFailedSizeKB }))
 
-      statText = inFlightText + failedText
+      statText = inFlightText + delayedText + failedText
       return statText
     }
 
