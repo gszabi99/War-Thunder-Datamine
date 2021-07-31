@@ -130,18 +130,6 @@
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
       "hp": 10000.0,
-      "hull_composite_armor": {
-        "superstructure_front_dm": {
-          "armorThickness": 20.0,
-          "createSecondaryShatters": false
-        },
-        "turret_01_bottom_dm": {
-          "armorThickness": 50.0,
-          "cumulativeArmorQuality": 0.1,
-          "armorEffectiveThicknessMax": 255.0,
-          "genericArmorQuality": 1.73
-        }
-      },
       "hull": {
         "body_front_dm": {
           "armorThickness": 60.0
@@ -187,9 +175,6 @@
         "ex_armor_body_01_dm": {
           "armorThickness": 8.0
         },
-        "turret_01_top_dm": {
-          "armorThickness": 20.0
-        },
         "turret_08_side_dm": {
           "armorThickness": 35.0
         },
@@ -199,24 +184,17 @@
         "ex_armor_12_dm": {
           "armorThickness": 5.0
         },
-        "turret_01_front_dm": {
-          "armorThickness": 20.0
+        "turret_01_bottom_dm": {
+          "armorThickness": 50.0
         },
         "turret_back_dm": {
           "armorThickness": 20.0
-        },
-        "turret_02_back_dm": {
-          "armorThickness": 100.0,
-          "variableThickness": true
         },
         "turret_02_side_dm": {
           "armorThickness": 30.0
         },
         "turret_02_bottom_dm": {
           "armorThickness": 30.0
-        },
-        "turret_06_front_dm": {
-          "armorThickness": 95.0
         },
         "ex_armor_turret_08_dm": {
           "armorThickness": 50.0,
@@ -257,30 +235,15 @@
           "secondaryShatterArmorQuality": 0.8
         }
       },
-      "turret_composite_armor": {
-        "armorClass": "leopard_2a5_turret_nera",
-        "hidableInXrayViewer": true,
-        "composite_armor_turret_01_dm": {
-          "hidableInXrayViewer": true,
-          "armorThickness": 0.1,
-          "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 0.0,
-          "createSecondaryShatters": false
-        },
-        "composite_armor_turret_02_dm": {
-          "armorClass": "CHA_tank"
-        },
+      "hull_composite_armor": {
         "composite_armor_hull_01_dm": {
           "hidableInXrayViewer": true,
-          "armorThickness": 0.1,
-          "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 2.0,
-          "armorEffectiveThicknessMax": 400.0
+          "armorThickness": 0.0,
+          "createSecondaryShatters": false,
+          "armorClass": "leopard_2a5_turret_nera"
         },
-        "turret_04_front_dm": {
-          "armorThickness": 530.0,
-          "genericArmorQuality": 0.45,
-          "cumulativeArmorQuality": 0.67,
+        "superstructure_front_dm": {
+          "armorThickness": 20.0,
           "createSecondaryShatters": false
         },
         "turret_02_front_dm": {
@@ -288,6 +251,43 @@
           "genericArmorQuality": 0.85,
           "cumulativeArmorQuality": 1.0,
           "createSecondaryShatters": false
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 100.0,
+          "variableThickness": true
+        }
+      },
+      "turret_composite_armor": {
+        "armorClass": "RHA_tank_modern",
+        "composite_armor_turret_01_dm": {
+          "hidableInXrayViewer": true,
+          "armorThickness": 0.0,
+          "createSecondaryShatters": false,
+          "armorClass": "leopard_2a5_turret_nera"
+        },
+        "composite_armor_turret_02_dm": {
+          "hidableInXrayViewer": true,
+          "armorThickness": 0.0,
+          "createSecondaryShatters": false,
+          "armorClass": "CHA_tank"
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 30.0,
+          "createSecondaryShatters": false
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 530.0,
+          "genericArmorQuality": 0.45,
+          "cumulativeArmorQuality": 0.8,
+          "createSecondaryShatters": false,
+          "armorClass": "leopard_2a5_turret_nera"
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 95.0,
+          "createSecondaryShatters": false
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 20.0
         }
       },
       "turret": {
