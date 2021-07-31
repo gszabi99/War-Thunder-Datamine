@@ -96,7 +96,7 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         ::loc("crew/totalCrew") + ::loc("ui/colon")
           + ::colorize("activeTextColor", curUnit.getCrewTotalCount())
       ], ::loc("ui/comma"))
-      if (curUnit.unitType.hasAiGunners)
+      if (curUnit.unitType.hasAiGunners && (curUnit?.gunnersCount ?? 0) > 0)
         text += "\n" + ::loc("crew/numDefensiveArmamentTurrets") + ::loc("ui/colon")
           + ::colorize("activeTextColor", curUnit.gunnersCount)
     }

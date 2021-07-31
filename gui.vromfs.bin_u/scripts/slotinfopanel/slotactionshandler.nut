@@ -38,7 +38,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit)
       return
 
-    ::queues.checkAndStart(@() ::gui_start_testflight(unit), null, "isCanNewflight")
+    ::queues.checkAndStart(@() ::gui_start_testflight({ unit }), null, "isCanNewflight")
   }
 
   function onAirInfoWeapons()

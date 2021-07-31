@@ -51,7 +51,7 @@ local actionByLogType = {
       return ::g_popups.add(null, ::colorize("warningTextColor", ::loc("xbox/crossPlayRequired")))
 
     ::dagor.debug($"join to tournament battle with id {battleId}")
-    ::SessionLobby.joinBattle(log.battleId)
+    ::get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(log.battleId))
   }
 }
 

@@ -97,7 +97,9 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 
   local needMarkDirectAsPersonal = ::get_gui_option_in_mode(::USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
     ::OPTIONS_MODE_GAMEPLAY)
-  if (needMarkDirectAsPersonal && from != ::my_user_name && msg.indexof(::my_user_name) != null)
+  if (needMarkDirectAsPersonal && ::my_user_name != "" && from != ::my_user_name
+    && msg.indexof(::my_user_name) != null
+  )
     important = true
 
   if (myPrivate)

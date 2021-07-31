@@ -87,10 +87,13 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
 
   function onActivate()
   {
-    ::scene_msg_box("activate_wager_message_box", null,
-      ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) }), [
-      [ "yes", (@() curItem.activateOnUnit(unit, curAmount, ::Callback(goBack, this))).bindenv(this) ],
-      [ "no" ] ], "yes")
+    local text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
+    local goBackSaved = ::Callback(goBack, this)
+    local aUnit= unit
+    local item = curItem
+    local amount = curAmount
+    local onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
+    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
   }
 
   function onButtonMax()

@@ -255,7 +255,6 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   SCOUT = {
     code = ::EII_SCOUT
-    isForWheelMenu = @() true
     _name = "scout_active"
     _icon = "#ui/gameuiskin#scouting"
     _title = ::loc("hotkeys/ID_SCOUT")

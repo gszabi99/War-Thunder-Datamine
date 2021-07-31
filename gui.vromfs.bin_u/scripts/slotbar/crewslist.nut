@@ -17,6 +17,8 @@ local { getSlotbarOverrideData, isSlotbarOverrided } = require("scripts/slotbar/
   ]
   isSlotbarUpdateSuspended = false
   isSlotbarUpdateRequired = false
+
+  onEventPlayerQuitMission = @(p) invalidate()
 }
 
 g_crews_list.get <- function get()

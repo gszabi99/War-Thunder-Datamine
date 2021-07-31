@@ -1,6 +1,7 @@
 local fontsState = require("reactiveGui/style/fontsState.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local JB = require("reactiveGui/control/gui_buttons.nut")
+local {toIntegerSafe} = require("std/string.nut")
 
 local blockInterval = ::fpx(6)
 local headerMargin = 2*blockInterval
@@ -14,10 +15,12 @@ local defStyle = {
   ulNoBullet= { rendObj = ROBJ_DTEXT, font = fontsState.get("normal"), text="   " }
   h1Font = fontsState.get("bigBold")
   h2Font = fontsState.get("medium")
+  h3Font = fontsState.get("normal")
   textFont = fontsState.get("normal")
   noteFont = fontsState.get("small")
   h1Color = Color(220,220,250)
   h2Color = Color(200,250,200)
+  h3Color = Color(200,250,250)
   urlColor = colors.menu.linkTextColor
   emphasisColor = colors.menu.activeTextColor
   urlHoverColor = colors.menu.linkTextHoverColorLight
@@ -93,6 +96,16 @@ local function horizontal(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   })
 }
 
+local function accent(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+  return obj.__merge({
+    flow = FLOW_HORIZONTAL
+    size = [flex(), SIZE_TO_CONTENT]
+    rendObj = ROBJ_SOLID
+    color = Color(0,30,50,30)
+    children = obj.v.map(@(elem) formatTextFunc(elem))
+  })
+}
+
 local function vertical(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_VERTICAL
@@ -113,26 +126,113 @@ local function textParsed(params, formatTextFunc=noTextFormatFunc, style=defStyl
   return textArea(params, formatTextFunc, style)
 }
 
+local function column(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+  return {
+    flow = FLOW_VERTICAL
+    size = [flex(), SIZE_TO_CONTENT]
+    children = obj.v.map(@(elem) formatTextFunc(elem))
+  }
+}
+
+local getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx+1], 100, false)
+
+local function columns(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+  local preset = obj?.preset ?? "single"
+  preset = preset.split("_")
+  local cols = obj.v.filter(@(v) v?.t=="column")
+  cols = cols.slice(0, preset.len())
+  return {
+    flow = FLOW_HORIZONTAL
+    size = [flex(), SIZE_TO_CONTENT]
+    children = cols.map(function(col, idx) {
+      return {
+        flow = FLOW_VERTICAL
+        size = [flex(getColWeightByPresetAndIdx(idx, preset)), SIZE_TO_CONTENT]
+        children = formatTextFunc(col.v)
+        clipChildren = true
+      }
+    })
+  }
+}
+
+local function video(obj, formatTextFunc, style=defStyle) {
+  local stateFlags = Watched(0)
+  local width = ::fpx(obj?.imageWidth ?? 300)
+  local height = ::fpx(obj?.imageHeight ?? 80)
+  return @() {
+    borderColor = stateFlags.value & S_HOVER ? style.urlHoverColor : Color(25,25,25)
+    borderWidth = ::fpx(1)
+    watch = stateFlags
+    onElemState = @(sf) stateFlags(sf)
+    behavior = Behaviors.Button
+    fillColor = Color(12,12,12,255)
+    rendObj = ROBJ_BOX
+    size = [width, height]
+    padding= ::fpx(1)
+    margin = ::fpx(5)
+    valign = ALIGN_BOTTOM
+    hplace = ALIGN_CENTER
+    keepAspect = true image = obj?.image
+    children = freeze({
+      rendObj = ROBJ_SOLID
+      color = Color(0,0,0,150)
+      halign = ALIGN_CENTER
+      size = [flex(), SIZE_TO_CONTENT]
+      children = {rendObj = ROBJ_DTEXT text = obj?.caption
+        ?? ::loc("Watch video") padding = ::fpx(5)}
+    })
+    onClick = function() {
+      if (obj?.v)
+        ::cross_call.openUrl(obj.v)
+    }
+  }.__update(obj)
+}
+
+local function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
+  return {
+    rendObj = ROBJ_IMAGE
+    image=::Picture(obj.v)
+    size = [obj?.width!=null
+      ? ::fpx(obj.width) : flex(), obj?.height != null
+        ? ::fpx(obj.height) : ::fpx(200)]
+    keepAspect=true padding=style.padding
+    children = {
+      rendObj = ROBJ_DTEXT text = obj?.caption vplace = ALIGN_BOTTOM
+      fontFxColor = Color(0,0,0,150)
+      fontFxFactor = min(64, ::fpx(64))
+      fontFx = FFT_GLOW
+    }
+    hplace = ALIGN_CENTER
+  }.__update(obj)
+}
+
 local formatters = {
-  defStyle = defStyle//for modification, fixme, make instances
-  def=textArea,
+  defStyle//for modification, fixme, make instances
+  def=textArea
   string=@(string, formatTextFunc, style=defStyle) textParsed({v=string}, style),
-  textParsed = textParsed,
-  textArea = textArea,
-  text=textArea,
+  textParsed
+  textArea
+  text=textArea
+  paragraph=textArea
   hangingText=@(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({ hangingIndent = hangingIndent }), style)
-  h1 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [headerMargin, 0]}), style)
-  h2 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [headerMargin, 0]}), style)
+  h1 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [headerMargin,0]}), style)
+  h2 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [headerMargin,0]}), style)
+  h3 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({fontStyle=style.h3Font, color=style.h3Color, margin = [headerMargin,0]}), style)
   emphasis = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({color=style.emphasisColor, margin = [headerMargin,0]}), style)
-  image = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {rendObj = ROBJ_IMAGE image=::Picture(obj.v) size = [flex(), ::fpx(200)], keepAspect=true padding=style.padding, hplace = ALIGN_CENTER}.__update(obj)
-  url = url
+  columns
+  column
+  image
+  url
   note = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({font=style.noteFont, color=style.noteColor}), style)
   preformat = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({preformatted=FMT_KEEP_SPACES | FMT_NO_WRAP}), style)
-  bullets = bullets
-  indent = indent
+  bullets
+  list = bullets
+  indent
   sep = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) separatorCmp.__merge(obj)
-  horizontal = horizontal
-  vertical = vertical
+  horizontal
+  vertical
+  accent
+  video
 }
 
 return formatters

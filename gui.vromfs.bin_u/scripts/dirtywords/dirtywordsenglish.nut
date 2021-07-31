@@ -24,7 +24,7 @@ excludesdata =
     key = "h",
     arr =
     [
-      "hor[admnrs]",
+      "hor[adimnorstu]",
     ]
   },
   {

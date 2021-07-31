@@ -36,9 +36,13 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     {
       if(!(block.uid in ::contacts_players))
         ::getContact(block.uid, block.nick)
-      ::contacts_players[block.uid].presence = ::getMyClanMemberPresence(block.nick)
+
+      local contact = ::contacts_players[block.uid]
+      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+        contact.presence = ::getMyClanMemberPresence(block.nick)
+
       if(::my_user_id_str != block.uid)
-        ::contacts[::EPLX_CLAN].append(::contacts_players[block.uid])
+        ::contacts[::EPLX_CLAN].append(contact)
     }
   }
 }
@@ -805,9 +809,14 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
     {
       if(!(block.uid in ::contacts_players))
         ::getContact(block.uid, block.nick)
-      ::contacts_players[block.uid].presence = ::getMyClanMemberPresence(block.nick)
+
+      local contact = ::contacts_players[block.uid]
+      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+        contact.presence = ::getMyClanMemberPresence(block.nick)
+
       if(::my_user_id_str != block.uid)
-        ::contacts[::EPLX_CLAN].append(::contacts_players[block.uid])
+        ::contacts[::EPLX_CLAN].append(contact)
+
       ::clanUserTable[block.nick] <- ::my_clan_info.tag
     }
   }

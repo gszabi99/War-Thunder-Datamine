@@ -248,6 +248,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
         {
           res = { caliber = 1000.0 * paramsBlk.caliber,
                   bullets = [],
+                  bulletDataByType = {}
                   isBulletBelt = isBulletBelt
                   catridge = wBlk?.bulletsCartridge ?? 0
                   weaponType = weaponType
@@ -261,9 +262,11 @@ local function getBulletsSetData(air, modifName, noModList = null)
           continue
 
       local bulletType = b?.bulletType ?? b.getBlockName()
+      local _bulletType = bulletType
       if (paramsBlk?.selfDestructionInAir)
         bulletType += "@s_d"
       res.bullets.append(bulletType)
+      res.bulletDataByType[_bulletType] <- {}
 
       if (paramsBlk?.guiCustomIcon != null)
       {
@@ -281,7 +284,10 @@ local function getBulletsSetData(air, modifName, noModList = null)
 
       foreach(param in ["explosiveType", "explosiveMass"])
         if (param in paramsBlk)
+        {
           res[param] <- paramsBlk[param]
+          res.bulletDataByType[_bulletType][param] <- paramsBlk[param]
+        }
 
       foreach(param in ["smokeShellRad", "smokeActivateTime", "smokeTime"])
         if (param in paramsBlk)
@@ -1043,6 +1049,17 @@ local function getUnitLastBullets(unit)
   return bulletsItemsList
 }
 
+local function getModifIconItem(unit, item)
+{
+  if (item.type == weaponsItem.modification)
+  {
+    updateRelationModificationList(unit, item.name)
+    if ("relationModification" in item && item.relationModification.len() == 1)
+      return getModificationByName(unit, item.relationModification[0])
+  }
+  return null
+}
+
 return {
   BULLET_TYPE
   isFakeBullet
@@ -1068,4 +1085,5 @@ return {
   getModificationName
   getBulletAnnotation
   getBulletSetNameByBulletName
+  getModifIconItem
 }

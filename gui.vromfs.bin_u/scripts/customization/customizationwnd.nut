@@ -2144,7 +2144,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     saveDecorators(false)
     checkedNewFlight(function() {
-      ::gui_start_testflight(unit, afterCloseFunc)
+      ::gui_start_testflight({ unit = unit, afterCloseFunc })
     })
   }
 

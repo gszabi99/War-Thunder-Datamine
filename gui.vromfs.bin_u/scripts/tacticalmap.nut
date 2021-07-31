@@ -95,7 +95,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     updateTitle()
 
     showSceneBtn("btn_select", isActiveTactical)
-    showSceneBtn("btn_back", ::use_touchscreen)
+    showSceneBtn("btn_back", true)
     showSceneBtn("screen_button_back", ::use_touchscreen)
   }
 
@@ -385,10 +385,15 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function doClose()
   {
+    local closeFn = base.goBack
     guiScene.performDelayed(this, function()
     {
       if (::is_in_flight())
+      {
         ::close_ingame_gui()
+        if (isSceneActive())
+          closeFn()
+      }
     })
   }
 

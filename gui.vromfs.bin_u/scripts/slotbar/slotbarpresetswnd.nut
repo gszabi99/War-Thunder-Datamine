@@ -60,7 +60,7 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     for (local i = 0; i < objPresets.childrenCount(); i++)
       objPresets.getChild(i).setIntProp(listIdxPID, i)
     onItemSelect(objPresets)
-    guiScene.performDelayed(this, restoreFocus)
+    restoreFocusDelayed()
   }
 
   function updateDescription()
@@ -151,10 +151,10 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     return slotbar ? slotbar.getCurrentEdiff() : ::get_current_ediff()
   }
 
-  function restoreFocus()
-  {
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
-  }
+  restoreFocusDelayed = @() guiScene.performDelayed(this, function() {
+    if (isValid())
+      ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+  })
 
   function updateButtons()
   {
@@ -304,6 +304,6 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
   function onEventModalWndDestroy(params)
   {
     if (isSceneActiveNoModals())
-      guiScene.performDelayed(this, restoreFocus)
+      restoreFocusDelayed()
   }
 }

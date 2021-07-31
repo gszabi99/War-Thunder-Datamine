@@ -75,6 +75,9 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
     updateAnnouncement()
     updateReqs()
     updateSubmitButtonText()
+
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child_by_value(scene.findObject("newclan_type"))
   }
 
   // Override.

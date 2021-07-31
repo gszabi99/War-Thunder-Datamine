@@ -11,7 +11,7 @@ local workshop = require("scripts/items/workshop/workshop.nut")
 local { isPlatformSony,
         isPlatformPC } = require("scripts/clientState/platform.nut")
 local encyclopedia = require("scripts/encyclopedia.nut")
-local { openChangelog } = require("scripts/changelog/openChangelog.nut")
+local { openChangelog } = require("scripts/changelog/changeLogState.nut")
 local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
 local { openUrlByObj } = require("scripts/onlineShop/url.nut")
 local openQrWindow = require("scripts/wndLib/qrWindow.nut")

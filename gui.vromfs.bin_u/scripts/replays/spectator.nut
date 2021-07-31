@@ -1315,7 +1315,8 @@ enum SPECTATOR_CHAT_TAB {
       // All players messages
       case ::HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
         local text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
-        return timestamp + ::colorize("userlogColoredText", text)
+        local icon = ::HudBattleLog.getActionTextIconic(msg)
+        return timestamp + ::colorize("userlogColoredText", $"{icon} {text}")
         break
 
       case ::HUD_MSG_STREAK_EX: // Any player got streak

@@ -1,3 +1,5 @@
+local { isInBattleState } = require("scripts/clientState/clientStates.nut")
+
 ::g_user_presence <- {
   inited = false
   currentPresence = {}
@@ -16,12 +18,16 @@ g_user_presence.init <- function init()
   {
     inited = true
     ::subscribe_handler(this, ::g_listener_priority.USER_PRESENCE_UPDATE)
+
+    isInBattleState.subscribe(function(isInBattle) {
+      updateBattlePresence()
+    }.bindenv(this))
   }
 }
 
 g_user_presence.updateBattlePresence <- function updateBattlePresence()
 {
-  if (::is_in_flight() || ::SessionLobby.isInRoom())
+  if (isInBattleState.value || ::SessionLobby.isInRoom())
     setBattlePresence("in_game", ::SessionLobby.getRoomEvent())
   else if (::queues.isAnyQueuesActive())
   {

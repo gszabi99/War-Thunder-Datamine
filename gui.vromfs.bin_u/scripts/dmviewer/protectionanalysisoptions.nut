@@ -285,25 +285,30 @@ options.addTypes({
 
           local bulletNames = isBulletBelt ? [] : (bulletsSet?.bulletNames ?? [])
           if (isBulletBelt)
-            foreach (params in bulletParameters)
-              bulletNames.append(params?.bulletType ?? "")
+            foreach(t, data in bulletsSet.bulletDataByType)
+              bulletNames.append(t)
 
           foreach (idx, bulletName in bulletNames)
           {
             local locName = isBulletBelt
-              ? " ".join([::format(::loc("caliber/mm"), bulletsSet.caliber),
-                ::loc($"{bulletName}/name/short")])
+              ? " ".concat(::format(::loc("caliber/mm"), bulletsSet.caliber),
+                bulletsList.items[i].text, ::loc($"{bulletName}/name/short"))
               : bulletsList.items[i].text
 
             if(::isInArray(locName, bulletNamesSet))
               continue
 
-            local bulletParams = bulletParameters[idx]
+            local bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletName)
             local addDiv = isBulletBelt
               ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 locName,
-                bSet = (clone bulletsSet).map(//Get rid of all bullets in set excluding current one
-                  @(val, p) p == "bullets" ? [val[idx]] : p != "bulletNames" ? val : null),
+                bSet = (clone bulletsSet).map(//Generate set of identical bullets by getting rid of all bullets excluding current.
+                  @(val, p) p == "bullets"
+                    ? [val[idx]]
+                    : (p != "bulletNames" && p != "bulletDataByType"
+                      && p != "explosiveType" && p != "explosiveMass")
+                        ? val
+                        : bulletsSet.bulletDataByType[bulletName]?[p]).filter(@(p) p != null),
                 bulletParams })
               : MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
 

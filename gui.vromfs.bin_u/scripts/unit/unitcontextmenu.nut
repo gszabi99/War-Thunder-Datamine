@@ -1,7 +1,7 @@
 local { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
-
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
@@ -264,7 +264,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = unit.unitType.testFlightIcon
       showAction = inMenu && ::isTestFlightAvailable(unit, shouldSkipUnitCheck)
       actionFunc = function () {
-        ::queues.checkAndStart(@() ::gui_start_testflight(unit, null, shouldSkipUnitCheck),
+        ::queues.checkAndStart(@() ::gui_start_testflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
     }
@@ -346,6 +346,10 @@ local showMenu = function showMenu(params) {
 
 unitContextMenuState.subscribe(function (v) {
     showMenu(v)
+})
+
+addListenersWithoutEnv({
+  ClosedUnitItemMenu = @(p) unitContextMenuState(null)
 })
 
 return showMenu

@@ -10,7 +10,6 @@ local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { needShowChangelog, openChangelog } = require("scripts/changelog/openChangelog.nut")
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning,
@@ -18,6 +17,8 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { getToBattleLocIdShort } = require("scripts/viewUtils/interfaceCustomization.nut")
+local { needShowChangelog,
+  openChangelog, requestAllPatchnotes } = require("scripts/changelog/changeLogState.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -97,6 +98,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     inited = true
     ::dmViewer.update()
+    requestAllPatchnotes()
   }
 
   function reinitScreen(params)

@@ -6,14 +6,9 @@ local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
 
-::gui_start_testflight <- function gui_start_testflight(unit = null, afterCloseFunc = null, shouldSkipUnitCheck = false)
+::gui_start_testflight <- function gui_start_testflight(params = {})
 {
-  ::gui_start_modal_wnd(::gui_handlers.TestFlight,
-  {
-    afterCloseFunc = afterCloseFunc
-    unit =  unit || ::show_aircraft
-    shouldSkipUnitCheck = shouldSkipUnitCheck
-  })
+  ::gui_start_modal_wnd(::gui_handlers.TestFlight, params)
   ::last_called_gui_testflight = ::handlersManager.getLastBaseHandlerStartFunc()
 }
 
@@ -45,6 +40,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function initScreen()
   {
+    unit = unit ?? ::show_aircraft
     if (!unit)
       return goBack()
 

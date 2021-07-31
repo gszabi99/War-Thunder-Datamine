@@ -1,7 +1,8 @@
 local scrollbar = require("reactiveGui/components/scrollbar.nut")
 local {formatText} = require("reactiveGui/components/formatText.nut")
-local {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote, prevPatchNote,
-  versions, curVersionInfo } = require("changeLogState.nut")
+local {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
+  prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
+  chosenPatchnoteLoaded} = require("changeLogState.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local { commonTextButton } = require("reactiveGui/components/textButton.nut")
 local modalWindow = require("reactiveGui/components/modalWindow.nut")
@@ -11,6 +12,7 @@ local { mkImageCompByDargKey } = require("reactiveGui/components/gamepadImgByKey
 local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
 local focusBorder = require("reactiveGui/components/focusBorder.nut")
 local blurPanel = require("reactiveGui/components/blurPanel.nut")
+local spinner = require("reactiveGui/components/spinner.nut")
 
 local tabStyle = {
   fillColor = {
@@ -92,12 +94,13 @@ local patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   skipDirPadNav = true
 })
 
+local isVersionsExists = ::Computed(@() (versions.value?.len() ?? 0) > 0)
 local function getPatchoteSelectorChildren() {
-  local tabCount = versions.value.len()
-  if (tabCount == 0)
+  if (!isVersionsExists.value)
     return null
 
-  local children = versions.value.map(patchnote)
+  local children = patchnotesReceived.value && isVersionsExists.value
+    ? versions.value.map(patchnote) : []
   if (!showConsoleButtons.value)
     return children
 
@@ -107,12 +110,12 @@ local function getPatchoteSelectorChildren() {
 }
 
 local patchnoteSelector = @() {
-  watch = versions
   size = [flex(), ::ph(100)]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]
   children = getPatchoteSelectorChildren()
+  watch = [versions, curPatchnote, patchnotesReceived, isVersionsExists]
 }
 
 local missedPatchnoteText = formatText([::loc("NoUpdateInfo", "Oops... No information yet :(")])
@@ -148,10 +151,20 @@ local scrollPatchnoteBtn = @(hotkey, watchValue) {
   onDetach = @() scrollPatchnoteWatch(0)
 }
 
-curVersionInfo.subscribe(@(value) scrollHandler.scrollToY(0))
+chosenPatchnoteContent.subscribe(@(value) scrollHandler.scrollToY(0))
 
-local function selPatchnote(){
-  local text = curVersionInfo.value ?? missedPatchnoteText
+local patchnoteLoading = freeze({
+  children = [formatText([{v = ::loc("Loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
+  flow  = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  gap = ::hdpx(20)
+  valign = ALIGN_CENTER size = [flex(), sh(20)]
+  padding = sh(2)
+})
+
+local function selPatchnote() {
+  local text = (chosenPatchnoteContent.value.text ?? "") != ""
+    ? chosenPatchnoteContent.value.text : missedPatchnoteText
   if (::cross_call.hasFeature("AllowExternalLink")) {
     if (::type(text)!="array")
       text = [text, seeMoreUrl]
@@ -159,13 +172,13 @@ local function selPatchnote(){
       text = (clone text).append(seeMoreUrl)
   }
   return {
-    watch = [curVersionInfo]
+    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent]
     size = flex()
     children = [
       scrollbar.makeSideScroll({
         size = [flex(), SIZE_TO_CONTENT]
         margin = [0 ,blockInterval]
-        children = formatText(text)
+        children = chosenPatchnoteLoaded.value ? formatText(text) : patchnoteLoading
       }, {
         scrollHandler = scrollHandler
         joystickScroll = false
@@ -177,7 +190,6 @@ local function selPatchnote(){
 }
 
 local function onCloseAction() {
-  choosePatchnote(null)
   ::cross_call.startMainmenu()
 }
 
@@ -238,11 +250,11 @@ local changelogRoot = {
       headerParams = {
         closeBtn = { onClick = onCloseAction }
         content = @() {
-          watch = curPatchnote
+          watch = chosenPatchnoteContent
           rendObj = ROBJ_DTEXT
           font = fontsState.get("medium")
           color = colors.menu.activeTextColor
-          text = curPatchnote.value?.headerTitle ?? ""
+          text = chosenPatchnoteContent.value.title
           margin = [0, 0, 0, ::fpx(15)]
         }
       }

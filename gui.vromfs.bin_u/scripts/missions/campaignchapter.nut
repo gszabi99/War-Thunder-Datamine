@@ -911,12 +911,12 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       view.tabs.append({
         id = mlType.id
         tabName = mlType.getTabName()
+        selected = idx == selIdx
         navImagesText = ::get_navigation_images_text(idx, typesList.len())
       })
 
     local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
-    tabsObj.setValue(selIdx)
   }
 
   function onChapterSelect(obj)

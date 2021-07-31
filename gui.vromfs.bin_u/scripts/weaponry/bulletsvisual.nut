@@ -450,6 +450,9 @@ local function addBulletsParamToDesc(descTbl, unit, item, bulletsSet, searchName
 local function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
 {
   local descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
+  if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
+    && ::dd_file_exist(bulletsSet.bulletAnimation))
+      descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
   local part = bulletName.indexof("@")
     descTbl.desc = part == null ? getBulletAnnotation(bulletName)
       : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part+1))

@@ -39,7 +39,7 @@ updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.value)
 local function updateSceneKBCursorControl(value) {
   ::gui_scene.config.kbCursorControl = value
 }
-updateSceneKBCursorControl(enabledKBCursorControlInScene.value)
+updateSceneKBCursorControl(true)
 
 enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
 enabledKBCursorControlInScene.subscribe(updateSceneKBCursorControl)

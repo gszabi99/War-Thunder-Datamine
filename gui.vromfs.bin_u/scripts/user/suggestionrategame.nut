@@ -22,6 +22,8 @@ local cfg = { // Overridden by gui.blk values
   minPlaceOnWin = 3
   totalWinsInARow = 3
   minKillsNum = 1
+  hideSteamRateLanguages = ""
+  hideSteamRateLanguagesArray = []
 }
 
 local function initConfig() {
@@ -33,6 +35,7 @@ local function initConfig() {
   local cfgBlk = guiBlk?.suggestion_rate_game
   foreach (k, v in cfg)
     cfg[k] = cfgBlk?[k] ?? cfg[k]
+  cfg.hideSteamRateLanguagesArray = cfg.hideSteamRateLanguages.split(";")
 }
 
 local function setNeedShowRate(debriefingResult, myPlace) {
@@ -85,14 +88,21 @@ local function setNeedShowRate(debriefingResult, myPlace) {
 
 local function tryOpenXboxRateReviewWnd() {
   if (isPlatformXboxOne && ::xbox_show_rate_and_review())
+  {
     ::save_local_account_settings(RATE_WND_SAVE_ID, true)
+    ::add_big_query_record("rate", "xbox")
+  }
 }
 
 local function tryOpenSteamRateReview(forceShow = false) {
   if (!forceShow && (!::steam_is_running() || !::has_feature("SteamRateGame")))
     return
 
+  if (!forceShow && cfg.hideSteamRateLanguagesArray.contains(::g_language.getLanguageName()))
+    return
+
   ::save_local_account_settings(RATE_WND_SAVE_ID, true)
+  ::add_big_query_record("rate", "steam")
   steamRateGameWnd.open()
 }
 
