@@ -23,6 +23,19 @@
     "mass": 305.0,
     "explosiveType": "rdx",
     "explosiveMass": 48.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "massEnd": 180.0,
     "maxDeltaAngle": 2.55,
     "dragCx": 0.02,
@@ -75,6 +88,14 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "collisions": {
       "steel": {
         "fx": "explosion_midair_small"

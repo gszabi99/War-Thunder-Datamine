@@ -14,6 +14,19 @@
     "mass": 43.0,
     "explosiveType": "tnt",
     "explosiveMass": 4.9,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "massEnd": 35.9,
     "maxDeltaAngle": 3.5,
     "dragCx": 0.018,
@@ -67,6 +80,14 @@
     "aiAirOnly": false,
     "amountPerTier": 1.0,
     "iconType": "rockets_he_large",
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "collisions": {
       "steel": {
         "fx": "explosion_midair_small"

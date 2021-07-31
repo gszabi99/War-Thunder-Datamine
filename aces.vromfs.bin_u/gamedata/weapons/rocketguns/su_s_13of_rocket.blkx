@@ -1,0 +1,168 @@
+{
+  "rocketGun": true,
+  "preset_cost": 25,
+  "mesh": "su_s_13of_rocket",
+  "mesh_deployed": "su_s_13of_rocket_deployed",
+  "helicopterGroup": 2,
+  "shotFreq": 20.0,
+  "sound": "weapon.rocketgun_132",
+  "rocket": {
+    "caliber": 0.122,
+    "length": 2.826,
+    "explosiveType": "a_ix_2",
+    "explosiveMass": 6.9,
+    "mass": 66.6,
+    "massEnd": 50.0,
+    "statType": "hydra",
+    "explodeTreshold": 0.0,
+    "rendinstDamageRadius": 15.0,
+    "force": 58800.0,
+    "timeFire": 2.0,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "maxDistance": 3000.0,
+    "minDistance": 30.0,
+    "distFromCmToStab": 0.01,
+    "distanceFuse": false,
+    "dragCx": 0.11,
+    "CxK": 0.18,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 590.0,
+    "amountPerTier": 5.0,
+    "iconType": "nar_he_special",
+    "advancedMissiles": false,
+    "autoaimEnabled": false,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "explosionEffect": "hit_106_132mm_metal_he",
+    "groundCollisionEffect": "hit_106_132mm_dirt_he",
+    "ricochetEffect": "hit_106_132mm_metal_ap",
+    "waterCollisionEffect": "hit_106_132mm_water",
+    "explosionPatchRadius": 3.5,
+    "fireEffect": "rocket_fire_light",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "maxDeltaAngle": 2.5,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_frag_fs_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [0.23,0.1,2.0],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he.ivf",
+    "collisions": {
+      "default": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "horLandMesh": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "soil": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "dirt": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "road": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "roadSoil": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "bricks_red": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "sand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "duneSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "roadSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "quickSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "snow": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "ice": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "roadSnow": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "snowLower": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "glass": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "wood": {
+        "fx": "hit_106_132mm_wood_he"
+      },
+      "steel": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "metal": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "buildings": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "verLandMesh": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "concrete": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "rocks": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "rocksSlippery": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "fabric": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "stone_snow": {
+        "fx": "hit_106_132mm_snow_he"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    }
+  }
+}
