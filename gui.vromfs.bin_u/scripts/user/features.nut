@@ -31,7 +31,6 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   EmbeddedBrowserOnlineShop = false
 
   Chat = true
-  ChatThreadsView = false
   ChatThreadLang = false
   ChatThreadCategories = false
   ChatThreadCreate = true
