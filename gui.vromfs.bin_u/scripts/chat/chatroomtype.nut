@@ -181,6 +181,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
   GLOBAL = {
     checkOrder = chatRoomCheckOrder.GLOBAL
     havePlayersList = false
+    needSave = function() { return !::g_chat.isThreadsView }
+    isVisibleInSearch = function() { return !::g_chat.isThreadsView }
     checkRoomId = function(roomId) {
       if (!::g_string.startsWith(roomId, "#"))
         return false
@@ -243,7 +245,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       return threadInfo ? threadInfo.getRoomTooltipText() : ""
     }
 
-    canCreateRoom = function() { return ::g_chat.canCreateThreads() }
+    canCreateRoom = function() { return ::g_chat.isThreadsView && ::g_chat.canCreateThreads() }
 
     hasChatHeader = true
     fillChatHeader = function(obj, roomData)

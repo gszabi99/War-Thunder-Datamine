@@ -368,7 +368,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     curRoom = roomData
     showSceneBtn("btn_showPlayersList", !alwaysShowPlayersList() && roomData.havePlayersList)
-    showSceneBtn("btn_showSearchList", true)
+    showSceneBtn("btn_showSearchList", ::g_chat.isThreadsView)
     showSceneBtn("chat_input_place", !roomData.hasCustomViewHandler)
     showSceneBtn("menu_chat_text_block", !roomData.hasCustomViewHandler)
 
@@ -378,6 +378,9 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     checkNewMessages()
     updateRoomsIcons()
     updateSquadInfo()
+
+    if (!::g_chat.isThreadsView)
+      showSearch(::g_chat.isSystemChatRoom(curRoom.id))
 
     checkSwitchRoomHandler(roomData)
     updateHeaderBlock(roomData)
@@ -869,6 +872,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           ::gchat_raw_command(::format("join %s%s",  it.roomName,  (it.joinParams==""?"":" "+it.joinParams) ))
           addChatJoinParams(it.roomName, it.joinParams)
         }
+      }
+
+      if (roomIdx==0 && !roomsInited && !::g_chat.isThreadsView)
+      {
+        local roomsList = ::getGlobalRoomsListByLang(::cur_chat_lang, ::default_chat_rooms)
+        foreach(room in roomsList)
+          joinRoom("#" + room)
       }
     }
     roomsInited = true
@@ -2491,7 +2501,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function resetSearchList()
   {
-    searchRoomList = []
+    if (::g_chat_room_type.GLOBAL.isVisibleInSearch())
+      searchRoomList = ::getGlobalRoomsList()
+    else
+      searchRoomList = []
     searchShowNotFound = false
     defaultRoomsInSearch = true
   }

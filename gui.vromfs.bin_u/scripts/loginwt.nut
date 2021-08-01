@@ -149,6 +149,7 @@ g_login.initConfigs <- function initConfigs(cb)
     }
     function() {
      ::slotbarPresets.init()
+     ::g_chat.onCharConfigsLoaded()
     }
     function() {
       if (::steam_is_running())

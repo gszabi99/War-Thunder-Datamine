@@ -1386,6 +1386,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shouldBlink = true
   }
 
+  COMMANDER_VIEW_WITH_NV_ON = {
+    hintType = ::g_hud_hint_types.ACTIONBAR
+    locId     = "hints/commander_view_with_nv_on"
+    showEvent = "hint:commander_view_with_nv_on:show"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
   VERY_FEW_CREW = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/is_very_few_crew"

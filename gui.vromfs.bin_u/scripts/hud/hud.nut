@@ -5,7 +5,6 @@ local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
 local { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
-local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -358,7 +357,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     local objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
-      tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
+      tank_background = ::is_dmg_indicator_visible() && isDmgPanelVisible
       hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
       hud_kill_log              = visMode.isPartVisible(HUD_VIS_PART.KILLLOG)
       chatPlace                 = visMode.isPartVisible(HUD_VIS_PART.CHAT)
@@ -581,15 +580,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateMissionProgressPlace()
   {
-    if (getHudType() == HUD_TYPE.SHIP) {
-      local missionProgressHeight = isProgressVisible() ? ::to_pixels("@missionProgressHeight") : 0;
-      ::call_darg("hudDmgIndicatorStatesUpdate", {
-        size = [0, 0], pos = [0, 0],
-        padding = [0, 0, missionProgressHeight, 0]
-      })
-      return
-    }
-
     local obj = scene.findObject("mission_progress_place")
     if (!obj?.isValid())
       return
@@ -600,14 +590,9 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
     obj.show(isVisible)
     guiScene.applyPendingChanges(false)
-    currentHud?.updateChatOffset()
-
     obj = scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
-      ::call_darg("hudDmgIndicatorStatesUpdate", {
-        size = obj.getSize(), pos = obj.getPos(),
-        padding = [0, 0, 0, 0]
-      })
+      ::call_darg("hudDmgIndicatorStatesUpdate", { size = obj.getSize(), pos = obj.getPos()})
   }
 }
 
@@ -672,22 +657,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("actionbar_hints_nest", false)
   }
 
-  function getChatOffset()
-  {
-    if (isDmgIndicatorVisible())
-    {
-      local dmgIndObj = scene.findObject("xray_render_dmg_indicator")
-      if (::check_obj(dmgIndObj))
-        return guiScene.calcString("sh - 1@bhHud", null) - dmgIndObj.getPosRC()[1]
-    }
-
-    local obj = scene.findObject("mission_progress_place")
-    if (obj?.isValid() && obj.isVisible())
-      return guiScene.calcString("sh - 1@bhHud - @hudPadding", null) - obj.getPosRC()[1]
-
-    return 0
-  }
-
   _chatOffset = -1
   function updateChatOffset()
   {
@@ -695,7 +664,14 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(chatObj))
       return
 
-    local offset = getChatOffset()
+    local offset = 0
+    if (::is_dmg_indicator_visible())
+    {
+      local dmgIndObj = scene.findObject("xray_render_dmg_indicator")
+      if (::check_obj(dmgIndObj))
+        offset = guiScene.calcString("sh - 1@bhHud - 1@hudMisObjIconsSize", null) - dmgIndObj.getPosRC()[1]
+    }
+
     if (_chatOffset == offset)
       return
 
@@ -789,7 +765,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   function updateDamageIndicatorBackground()
   {
     local visMode = ::g_hud_vis_mode.getCurMode()
-    local isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
+    local isDmgPanelVisible = ::is_dmg_indicator_visible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
     ::showBtn("tank_background", isDmgPanelVisible, scene)
   }
 
@@ -801,10 +777,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   function updateDmgIndicatorSize() {
     local obj = scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
-      ::call_darg("hudDmgIndicatorStatesUpdate", {
-        size = obj.getSize(), pos = obj.getPos(),
-        padding = [0, 0, 0, 0]
-      })
+      ::call_darg("hudDmgIndicatorStatesUpdate", { size = obj.getSize(), pos = obj.getPos()})
   }
 }
 
