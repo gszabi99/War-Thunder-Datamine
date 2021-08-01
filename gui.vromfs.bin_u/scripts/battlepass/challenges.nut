@@ -54,11 +54,13 @@ local function updateChallenges(value = null) {
       .filter(@(unlock) ::is_unlock_visible(unlock) && unlock?.battlePassSeason != null))
 }
 
-local function getChallengeStatus(userstatUnlock) {
+local function getChallengeStatus(userstatUnlock, unlockConfig) {
   if (userstatUnlock?.hasReward ?? false)
     return "complete"
   if (userstatUnlock?.isCompleted ?? false)
     return "done"
+  if (unlockConfig.isExpired)
+    return "expired"
   return null
 }
 
@@ -113,7 +115,7 @@ local function getChallengeView(config, paramsCfg = {}) {
   local progressBarValue = unlockConfig?.curVal != null && unlockConfig.curVal >= 0
     ? (unlockConfig.curVal.tofloat() / (unlockConfig?.maxVal ?? 1) * 1000)
     : 0
-  local challengeStatus = getChallengeStatus(userstatUnlock)
+  local challengeStatus = getChallengeStatus(userstatUnlock, unlockConfig)
 
   return {
     id = id

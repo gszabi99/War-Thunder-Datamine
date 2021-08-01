@@ -294,7 +294,7 @@ local isWaitMeasureEvent = false
     id = id,
     text = ::locOrStrip(value.tostring()),
     len = maxlength,
-    type = password ? "type:t='password'; password-smb:t='{0}';".subst(::loc("password_mask_char")) : "",
+    type = password ? "type:t='password'; password-smb:t='{0}';".subst(::loc("password_mask_char", "*")) : "",
     charMask = charMask? $"char-mask:t='{charMask}';" : ""
   })
 })

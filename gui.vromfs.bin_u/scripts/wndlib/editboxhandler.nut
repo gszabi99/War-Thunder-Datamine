@@ -55,7 +55,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
       editBoxObj.setValue(true) //opens IME, not change text.
     if (isPassword) {
       editBoxObj["type"] = "password"
-      editBoxObj["password-smb"] = ::loc("password_mask_char")
+      editBoxObj["password-smb"] = ::loc("password_mask_char", "*")
     }
 
     updateBtnByValue(value || "")

@@ -617,7 +617,11 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
       local unlockTime = blk?[key] ?
         (time.getTimestampFromStringUtc(blk[key])) : -1
       if (unlockTime >= 0)
+      {
         res[key] <- time.buildDateTimeStr(unlockTime)
+        if (key == "endDate")
+          res.endTime <- unlockTime
+      }
     }
   }
   else if (t == "missionPostfix")
@@ -768,7 +772,7 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
       if (data == null || data.len() == 0)
         continue
 
-      addTextToCondTextList(condTextsList, group, data)
+      addTextToCondTextList(condTextsList, group, data, params)
     }
     else
     {
@@ -778,7 +782,7 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
 
       foreach (condCustomData in customData)
         foreach (descText in condCustomData.descText)
-          addTextToCondTextList(condTextsList, group, descText, condCustomData.groupText)
+          addTextToCondTextList(condTextsList, group, descText, { customLocGroupText = condCustomData.groupText })
     }
   }
 
@@ -794,16 +798,20 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
   return ::g_string.implode(pieces, separator)
 }
 
-UnlockConditions.addTextToCondTextList <- function addTextToCondTextList(condTextsList, group, valuesData, customLocGroupText = "")
+UnlockConditions.addTextToCondTextList <- function addTextToCondTextList(condTextsList, group, valuesData, params = null)
 {
   local valuesText = ""
   local text = ""
+  local isExpired = group == "endDate" && params?.isExpired
 
   valuesText = ::g_string.implode(valuesData, ::loc("ui/comma"))
   if (valuesText != "")
-    valuesText = ::colorize("unlockActiveColor", valuesText)
+    valuesText = ::colorize(isExpired ? "red" : "unlockActiveColor", valuesText)
 
-  text = !::isInArray(group, customLocTypes) ? ::loc("conditions/" + group, { value = valuesText }) : customLocGroupText
+  text = !::isInArray(group, customLocTypes)
+    ? ::loc("conditions/" + group, { value = valuesText })
+    : params?.customLocGroupText ?? ""
+
   if (!::isInArray(group, condWithValuesInside))
     if (valuesText != "")
       text += (text.len() ? ::loc("ui/colon") : "") + valuesText

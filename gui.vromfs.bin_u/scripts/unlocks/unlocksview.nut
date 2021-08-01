@@ -34,8 +34,11 @@ local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
     unlockObj.tooltip = "\n".join([::colorize("unlockHeaderColor", title),
       chapterAndGroupText.len() > 0 ? $"({", ".join(chapterAndGroupText, true)})" : "",
       unlockConfig?.stagesText ?? "",
-      ::UnlockConditions.getConditionsText(unlockConfig.conditions,
-        unlockConfig.showProgress ? unlockConfig.curVal : null, unlockConfig.maxVal)
+      ::UnlockConditions.getConditionsText(
+        unlockConfig.conditions,
+        unlockConfig.showProgress ? unlockConfig.curVal : null,
+        unlockConfig.maxVal,
+        { isExpired = unlockConfig.isExpired })
     ], true)
   }
 

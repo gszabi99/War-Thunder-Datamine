@@ -150,6 +150,7 @@ local unlockConditionUnitclasses = {
   if (maxVal == null)
     maxVal = data.maxVal
 
+  params.isExpired <- data.isExpired
   descData.append(::UnlockConditions.getConditionsText(data.conditions, curVal, maxVal, params))
 
   if (::getTblValue("showCost", params, false))
@@ -256,6 +257,7 @@ local unlockConditionUnitclasses = {
     type = ""
     conditions = []
     hasCustomUnlockableList = false
+    isExpired = false
     names = [] //bit progress names. better to rename it.
 
     showProgress = true
@@ -367,6 +369,13 @@ local unlockConditionUnitclasses = {
       config.curVal = ((1 << mainCond.values.len()) - 1) & config.curVal
     else if (config.curVal > config.maxVal)
       config.curVal = config.maxVal
+  }
+
+  if (!unlocked)
+  {
+    local cond = config.conditions.findvalue(@(c) ::unlock_time_range_conditions.contains(c.type))
+    if (cond)
+      config.isExpired = ::get_charserver_time_sec() >= cond.endTime
   }
 
   local haveBasicRewards = !blk?.aircraftPresentExtMoneyback

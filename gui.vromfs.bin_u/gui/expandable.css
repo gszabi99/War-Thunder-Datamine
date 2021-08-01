@@ -149,6 +149,7 @@ expandable[haveHeader=yes] {
   margin-top:8*@scrn_tgt/100.0;
 }
 
+expandable[battleTaskStatus=expired],
 expandable[battleTaskStatus=done] {
   background-image:"";
   background-color:@frameDarkBackgroundColor;
@@ -160,6 +161,7 @@ promoButton > expandable {
   border: no;
 }
 
+expandable[battleTaskStatus=expired] textareaNoTab,
 expandable[battleTaskStatus=done] textareaNoTab {
   color-factor:128;
 }
@@ -230,6 +232,7 @@ expandable[battleTaskStatus=done] statusImg {
 }
 
 promoButton[type=battleTask] [battleTaskStatus=failed] statusImg,
+expandable[battleTaskStatus=expired] statusImg,
 expandable[battleTaskStatus=failed] statusImg {
   background-image:#ui/gameuiskin#icon_primary_fail.svg;
   background-color:@white;
