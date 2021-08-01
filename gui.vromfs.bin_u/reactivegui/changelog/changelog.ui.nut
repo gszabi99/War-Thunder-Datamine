@@ -154,7 +154,7 @@ local scrollPatchnoteBtn = @(hotkey, watchValue) {
 chosenPatchnoteContent.subscribe(@(value) scrollHandler.scrollToY(0))
 
 local patchnoteLoading = freeze({
-  children = [formatText([{v = ::loc("Loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
+  children = [formatText([{v = ::loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = ::hdpx(20)

@@ -879,6 +879,26 @@
           },
           {
             "comment": {
+              "value": "acars name for t1"
+            }
+          },
+          {
+            "comment": {
+              "value": "acars name for t2"
+            }
+          },
+          {
+            "comment": {
+              "value": "aaa name for t1"
+            }
+          },
+          {
+            "comment": {
+              "value": "aaa name for t2"
+            }
+          },
+          {
+            "comment": {
               "value": ""
             }
           },
@@ -931,6 +951,30 @@
             }
           },
           {
+            "varSetString": {
+              "value": "lbt_battle_t1_acar_",
+              "var": "lbt_battle_t1_acar_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t2_acar_",
+              "var": "lbt_battle_t2_acar_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t1_aaa_",
+              "var": "lbt_battle_t1_aaa_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t2_aaa_",
+              "var": "lbt_battle_t2_aaa_name"
+            }
+          },
+          {
             "varAddString": {
               "value": "@lbt_battle_start_idx",
               "digits": 2,
@@ -984,6 +1028,34 @@
               "value": "@lbt_battle_start_idx",
               "digits": 2,
               "var": "lbt_battle_t2_bunker_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t1_acar_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_acar_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t1_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_aaa_name"
             }
           },
           {
@@ -1226,6 +1298,9 @@
                   "object": "@lbt_battle_t2_army_squad_name"
                 },
                 {
+                  "object_type": "any"
+                },
+                {
                   "attack_type": "hold_fire"
                 }
               ]
@@ -1386,6 +1461,168 @@
               "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@lbt_battle_t1_tank_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battle_t1_spawn_name",
+              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
+              "isStealth": true,
+              "randomSpawn": true,
+              "resetFormation": true
+            },
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_battle_t1_num_spawnded_units",
+              "use_variable": true,
+              "var_value": "lbt_battle_t1_reference_units_ratio"
+            },
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_spawn_t1_rotator"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_t1_acar_spawn"
+            }
+          }
+        },
+        "lbt_battle_t1_acar_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t1_spawn_name",
+                "type": "area"
+              }
+            },
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t1_acar_name",
+                "type": "unit"
+              }
+            },
+            {
+              "unitWhenCountMatches": {
+                "object_type": "isDelayed",
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "func": "notLess",
+                "value": 1,
+                "object": "@lbt_battle_t1_acar_name",
+                "var": "lbt_battle_t1_reference_units_ratio"
+              }
+            },
+            {
+              "varCompareBool": {
+                "var_value": "lbt_battle_t2_spawn_in_progress",
+                "value": true,
+                "comparasion_func": "equal"
+              }
+            }
+          ],
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battle_t1_acar_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battle_t1_spawn_name",
+              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
+              "isStealth": true,
+              "randomSpawn": true,
+              "resetFormation": true
+            },
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_battle_t1_num_spawnded_units",
+              "use_variable": true,
+              "var_value": "lbt_battle_t1_reference_units_ratio"
+            },
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_spawn_t1_rotator"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_t1_aaa_spawn"
+            }
+          }
+        },
+        "lbt_battle_t1_aaa_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t1_spawn_name",
+                "type": "area"
+              }
+            },
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t1_aaa_name",
+                "type": "unit"
+              }
+            },
+            {
+              "unitWhenCountMatches": {
+                "object_type": "isDelayed",
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "func": "notLess",
+                "value": 1,
+                "object": "@lbt_battle_t1_aaa_name",
+                "var": "lbt_battle_t1_reference_units_ratio"
+              }
+            },
+            {
+              "varCompareBool": {
+                "var_value": "lbt_battle_t2_spawn_in_progress",
+                "value": true,
+                "comparasion_func": "equal"
+              }
+            }
+          ],
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battle_t1_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
               "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
@@ -1662,6 +1899,168 @@
               "delay": 1.0,
               "offset": [0.0,0.0,0.0],
               "object": "@lbt_battle_t2_tank_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battle_t2_spawn_name",
+              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
+              "isStealth": true,
+              "randomSpawn": true,
+              "resetFormation": true
+            },
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_battle_t2_num_spawnded_units",
+              "use_variable": true,
+              "var_value": "lbt_battle_t2_reference_units_ratio"
+            },
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_spawn_t2_rotator"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_t2_acar_spawn"
+            }
+          }
+        },
+        "lbt_battle_t2_acar_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t2_spawn_name",
+                "type": "area"
+              }
+            },
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t2_acar_name",
+                "type": "unit"
+              }
+            },
+            {
+              "unitWhenCountMatches": {
+                "object_type": "isDelayed",
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "func": "notLess",
+                "value": 1,
+                "object": "@lbt_battle_t2_acar_name",
+                "var": "lbt_battle_t1_reference_units_ratio"
+              }
+            },
+            {
+              "varCompareBool": {
+                "var_value": "lbt_battle_t1_spawn_in_progress",
+                "value": true,
+                "comparasion_func": "equal"
+              }
+            }
+          ],
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battle_t2_acar_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battle_t2_spawn_name",
+              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
+              "isStealth": true,
+              "randomSpawn": true,
+              "resetFormation": true
+            },
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_battle_t2_num_spawnded_units",
+              "use_variable": true,
+              "var_value": "lbt_battle_t2_reference_units_ratio"
+            },
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_spawn_t2_rotator"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": ""
+            },
+            "triggerEnable": {
+              "target": "lbt_battle_t2_aaa_spawn"
+            }
+          }
+        },
+        "lbt_battle_t2_aaa_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t2_spawn_name",
+                "type": "area"
+              }
+            },
+            {
+              "objectExists": {
+                "target": "@lbt_battle_t2_aaa_name",
+                "type": "unit"
+              }
+            },
+            {
+              "unitWhenCountMatches": {
+                "object_type": "isDelayed",
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "func": "notLess",
+                "value": 1,
+                "object": "@lbt_battle_t2_aaa_name",
+                "var": "lbt_battle_t1_reference_units_ratio"
+              }
+            },
+            {
+              "varCompareBool": {
+                "var_value": "lbt_battle_t1_spawn_in_progress",
+                "value": true,
+                "comparasion_func": "equal"
+              }
+            }
+          ],
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battle_t2_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
               "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
@@ -2282,13 +2681,34 @@
                   "attack_type": "fire_at_will"
                 },
                 {
+                  "targetAir": true
+                },
+                {
+                  "targetGnd": true
+                },
+                {
                   "accuracy": 0.1
+                },
+                {
+                  "airAccuracy": 0.1
                 },
                 {
                   "checkVisibilityTarget": false
                 },
                 {
                   "effShootingRate": 0.1
+                },
+                {
+                  "useSearchRadar": true
+                },
+                {
+                  "fireRandom": true
+                },
+                {
+                  "targetChangeInterval": 5.0
+                },
+                {
+                  "targetChangeProb": 0.25
                 }
               ]
             },
@@ -2312,20 +2732,48 @@
               ]
             },
             {
-              "unitAttackTarget": {
-                "playerAttracted": false,
-                "object": "@lbt_battle_t1_army_squad_name",
-                "target": "@lbt_battle_t2_army_squad_name",
-                "fireRandom": true
-              }
+              "unitAttackTarget": [
+                {
+                  "playerAttracted": false
+                },
+                {
+                  "object": "@lbt_battle_t1_tank_name"
+                },
+                {
+                  "object": "@lbt_battle_t1_art_name"
+                },
+                {
+                  "object": "@lbt_battle_t1_bunker_name"
+                },
+                {
+                  "target": "@lbt_battle_t2_army_squad_name"
+                },
+                {
+                  "fireRandom": true
+                }
+              ]
             },
             {
-              "unitAttackTarget": {
-                "playerAttracted": false,
-                "object": "@lbt_battle_t2_army_squad_name",
-                "target": "@lbt_battle_t1_army_squad_name",
-                "fireRandom": true
-              }
+              "unitAttackTarget": [
+                {
+                  "playerAttracted": false
+                },
+                {
+                  "object": "@lbt_battle_t2_tank_name"
+                },
+                {
+                  "object": "@lbt_battle_t2_art_name"
+                },
+                {
+                  "object": "@lbt_battle_t2_bunker_name"
+                },
+                {
+                  "target": "@lbt_battle_t1_army_squad_name"
+                },
+                {
+                  "fireRandom": true
+                }
+              ]
             },
             {
               "unitMoveTo": {
@@ -7306,7 +7754,11 @@
     "lbt_heat_battle_check_from_var_name": "",
     "lbt_heat_battle_check_to_var_name": "",
     "lbt_end_t1_active_units_count": 0,
-    "lbt_end_t2_active_units_count": 0
+    "lbt_end_t2_active_units_count": 0,
+    "lbt_battle_t1_acar_name": "",
+    "lbt_battle_t2_acar_name": "",
+    "lbt_battle_t1_aaa_name": "",
+    "lbt_battle_t2_aaa_name": ""
   },
   "dialogs": [],
   "airfields": [],

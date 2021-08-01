@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 761.0,
-      "temperature": 18.0
-    },
     "player": {
       "army": 1,
       "wing": "at_armada"
@@ -16,15 +12,20 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
     },
     "spectator_points": []
   },
@@ -133,7 +134,24 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/enduring_confrontation/assaults_planesets/at_t1_uk_rank_06.blk",
-        "rankRange": [21,50],
+        "rankRange": [21,25],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/assaults_planesets/at_t1_uk_rank_07.blk",
+        "rankRange": [26,50],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -235,7 +253,24 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/enduring_confrontation/assaults_planesets/at_t2_it_rank_06.blk",
-        "rankRange": [21,50],
+        "rankRange": [21,25],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/assaults_planesets/at_t2_it_rank_07.blk",
+        "rankRange": [26,50],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -258,10 +293,7 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "zones_captured_by_t2": 0,
-    "mp_change": 0
-  },
+  "variables": [],
   "dialogs": [],
   "airfields": [],
   "effects": [],
@@ -288,6 +320,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -315,10 +349,10 @@
     "at_assaults_t2_spawn_01": {
       "type": "Point",
       "tm": [
-        [0.94719,0.0,0.320672],
-        [0.0,1.0,0.0],
         [-0.320672,0.0,0.94719],
-        [-26000.0,1500.0,-20000.0]
+        [0.0,1.0,0.0],
+        [-0.94719,0.0,-0.320672],
+        [20000.0,1500.0,-26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -326,10 +360,10 @@
     "at_assaults_t2_spawn_02": {
       "type": "Point",
       "tm": [
-        [0.945215,0.0,-0.326448],
-        [0.0,1.0,0.0],
         [0.326448,0.0,0.945215],
-        [-26000.0,1500.0,-5000.0]
+        [0.0,1.0,0.0],
+        [-0.945215,0.0,0.326448],
+        [5000.0,1500.0,-26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -337,10 +371,10 @@
     "at_assaults_t2_spawn_03": {
       "type": "Point",
       "tm": [
-        [0.918931,0.0,-0.394418],
-        [0.0,1.0,0.0],
         [0.394418,0.0,0.918931],
-        [-26000.0,1500.0,20000.0]
+        [0.0,1.0,0.0],
+        [-0.918931,0.0,0.394418],
+        [-20000.0,1500.0,-26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -348,10 +382,10 @@
     "at_assaults_t1_spawn_01": {
       "type": "Point",
       "tm": [
-        [-0.970636,0.0,-0.240551],
-        [0.0,1.0,0.0],
         [0.240551,0.0,-0.970636],
-        [26000.0,1500.0,-20000.0]
+        [0.0,1.0,0.0],
+        [0.970636,0.0,0.240551],
+        [20000.0,1500.0,26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -359,10 +393,10 @@
     "at_assaults_t1_spawn_02": {
       "type": "Point",
       "tm": [
-        [-0.999414,0.0,0.034216],
+        [-0.0342159,0.0,-0.999414],
         [0.0,1.0,0.0],
-        [-0.034216,0.0,-0.999414],
-        [26000.0,1500.0,-5000.0]
+        [0.999414,0.0,-0.0342159],
+        [5000.0,1500.0,26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -370,10 +404,10 @@
     "at_assaults_t1_spawn_03": {
       "type": "Point",
       "tm": [
-        [-0.985473,0.0,-0.16983],
-        [0.0,1.0,0.0],
         [0.16983,0.0,-0.985473],
-        [26000.0,1500.0,20000.0]
+        [0.0,1.0,0.0],
+        [0.985473,0.0,0.16983],
+        [-20000.0,1500.0,26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -381,10 +415,10 @@
     "at_assaults_t1_spawn_04": {
       "type": "Point",
       "tm": [
-        [-0.985473,0.0,-0.16983],
-        [0.0,1.0,0.0],
         [0.16983,0.0,-0.985473],
-        [26000.0,1500.0,5000.0]
+        [0.0,1.0,0.0],
+        [0.985473,0.0,0.16983],
+        [-5000.0,1500.0,26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -392,10 +426,10 @@
     "at_assaults_t2_spawn_04": {
       "type": "Point",
       "tm": [
-        [0.918931,0.0,-0.394418],
-        [0.0,1.0,0.0],
         [0.394418,0.0,0.918931],
-        [-26000.0,1500.0,5000.0]
+        [0.0,1.0,0.0],
+        [-0.918931,0.0,0.394418],
+        [-5000.0,1500.0,-26000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -403,10 +437,10 @@
     "at_assaults_t1_retreat_point": {
       "type": "Point",
       "tm": [
-        [-0.999414,0.0,0.034216],
+        [-0.0342159,0.0,-0.999414],
         [0.0,1.0,0.0],
-        [-0.034216,0.0,-0.999414],
-        [30000.0,1500.0,0.0]
+        [0.999414,0.0,-0.0342159],
+        [-0.00390625,1500.0,30000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -414,10 +448,10 @@
     "at_assaults_t2_retreat_point": {
       "type": "Point",
       "tm": [
-        [-0.999414,0.0,0.034216],
+        [-0.0342159,0.0,-0.999414],
         [0.0,1.0,0.0],
-        [-0.034216,0.0,-0.999414],
-        [-30000.0,1500.01,0.0]
+        [0.999414,0.0,-0.0342159],
+        [0.00390625,1500.01,-30000.0]
       ],
       "objLayer": 0,
       "props": []

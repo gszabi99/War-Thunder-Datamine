@@ -100,13 +100,16 @@
               "targetGnd": false
             },
             {
-              "accuracy": 0.6
+              "accuracy": 0.9
             },
             {
-              "effShootingRate": 0.6
+              "checkVisibilityTarget": true
             },
             {
-              "airEffShootingRate": 0.6
+              "effShootingRate": 1.0
+            },
+            {
+              "airEffShootingRate": 1.0
             },
             {
               "useSearchRadar": true
@@ -156,6 +159,9 @@
             },
             {
               "accuracy": 0.3
+            },
+            {
+              "checkVisibilityTarget": true
             },
             {
               "effShootingRate": 0.3
@@ -1164,13 +1170,12 @@
                 "object_var_comp_op": "equal",
                 "object": "flt_t1_big_aaa_squad",
                 "target": "@flt_t1_big_aaa_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             },
             {
               "unitDistanceBetween": {
-                "value": 2500.0,
+                "value": 4500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -1182,7 +1187,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t1_big_aaa_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -1388,12 +1392,12 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 30.0
+              "time": 60.0
             }
           },
           "conditions": {
             "unitDistanceBetween": {
-              "value": 10500.0,
+              "value": 12000.0,
               "math": "notNear2D",
               "object_type": "isActive",
               "object_marking": 0,
@@ -1406,7 +1410,6 @@
               "object": "flt_t1_big_aaa_squad",
               "target": "all_players_squad",
               "var": "flt_big_aaa_activity_distance",
-              "object_var_value": 0,
               "compareCenters": false,
               "check_all_units": true
             }
@@ -1568,7 +1571,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 2500.0,
+                "value": 4500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -1580,7 +1583,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t2_big_aaa_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -1791,7 +1793,7 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 30.0
+              "time": 60.0
             }
           },
           "conditions": {
@@ -1809,7 +1811,6 @@
               "object": "flt_t2_big_aaa_squad",
               "target": "all_players_squad",
               "var": "flt_big_aaa_activity_distance",
-              "object_var_value": 0,
               "compareCenters": false,
               "check_all_units": true
             }
@@ -2010,7 +2011,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 2500.0,
+                "value": 3500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -2022,7 +2023,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t1_small_aaa_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -2228,12 +2228,12 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 30.0
+              "time": 60.0
             }
           },
           "conditions": {
             "unitDistanceBetween": {
-              "value": 7500.0,
+              "value": 8000.0,
               "math": "notNear2D",
               "object_type": "isActive",
               "object_marking": 0,
@@ -2246,7 +2246,6 @@
               "object": "flt_t1_small_aaa_squad",
               "target": "all_players_squad",
               "var": "flt_small_aaa_activity_distance",
-              "object_var_value": 0,
               "compareCenters": false,
               "check_all_units": true
             }
@@ -2408,7 +2407,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 2500.0,
+                "value": 3500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -2420,7 +2419,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t2_small_aaa_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -2631,12 +2629,12 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 30.0
+              "time": 60.0
             }
           },
           "conditions": {
             "unitDistanceBetween": {
-              "value": 7500.0,
+              "value": 8000.0,
               "math": "notNear2D",
               "object_type": "isActive",
               "object_marking": 0,
@@ -2649,7 +2647,6 @@
               "object": "flt_t2_small_aaa_squad",
               "target": "all_players_squad",
               "var": "flt_small_aaa_activity_distance",
-              "object_var_value": 0,
               "compareCenters": false,
               "check_all_units": true
             }
@@ -2954,7 +2951,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 1500.0,
+                "value": 2500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -2966,7 +2963,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t1_art_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -3462,7 +3458,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 1500.0,
+                "value": 2500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -3474,7 +3470,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t2_art_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -3935,7 +3930,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 1500.0,
+                "value": 2500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -3947,7 +3942,6 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t1_tank_spot_name",
-                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -4493,7 +4487,7 @@
             },
             {
               "unitDistanceBetween": {
-                "value": 1500.0,
+                "value": 2500.0,
                 "math": "2D",
                 "object_type": "isActive",
                 "object_marking": 0,
@@ -8923,7 +8917,7 @@
     "flt_t2_tank_frontline_idx_name": "",
     "flt_t2_tank_road_name": "",
     "flt_big_aaa_activity_distance": 15000.0,
-    "flt_small_aaa_activity_distance": 7500.0,
+    "flt_small_aaa_activity_distance": 8000.0,
     "flt_art_activity_distance": 12000.0,
     "flt_tank_activity_distance": 15000.0,
     "flt_draw_point_01": "",
