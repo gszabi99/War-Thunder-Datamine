@@ -6,6 +6,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { hasBattlePass } = require("scripts/battlePass/seasonState.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/items/boosterEffect.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -404,3 +405,9 @@ local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/it
     newCountChatObj.setValue(newMessagesText)
   })
 }
+
+globalCallbacks.addTypes({
+  onOpenGameModeSelect = {
+    onCb = @(obj, params) ::broadcastEvent("OpenGameModeSelect")
+  }
+})

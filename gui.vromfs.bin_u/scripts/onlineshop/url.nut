@@ -68,6 +68,13 @@ local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false
   if (!::has_feature("AllowExternalLink"))
     return
 
+  local guiScene = ::get_cur_gui_scene()
+  if (guiScene.isInAct()) {
+    local openImpl = callee()
+    guiScene.performDelayed({}, @() openImpl(baseUrl, forceExternal, isAlreadyAuthenticated))
+    return
+  }
+
   local urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
   if (urlConfig == null)
     return

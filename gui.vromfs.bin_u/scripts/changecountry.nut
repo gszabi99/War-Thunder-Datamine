@@ -15,6 +15,7 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
   buttonObject = null
   availableCountries = null
   pendingAction = ChangeCountryAction.NONE
+  onCountryChooseCb = null
 
   function initScreen()
   {
@@ -52,13 +53,11 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
 
   function afterModalDestroy()
   {
-    if (!::handlersManager.isHandlerValid(::instant_domination_handler))
-      return
     switch (pendingAction)
     {
       case ChangeCountryAction.APPLY_COUNTRY:
         if (chosenCountry != null)
-          ::instant_domination_handler.onCountryChoose(chosenCountry)
+          onCountryChooseCb?(chosenCountry)
         break
       case ChangeCountryAction.CHANGE_GAME_MODE:
           ::gui_handlers.GameModeSelect.open()

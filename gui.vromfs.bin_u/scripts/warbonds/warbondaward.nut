@@ -81,9 +81,9 @@ class ::WarbondAward
 
   function isAvailableForCurrentWarbondShop()
   {
-    if (!warbondWeak)
+    if (!warbondWeak || !(blk?.forCurrentShopOnly ?? false))
       return true
-    return awardType.isAvailableForCurrentShop(warbondWeak)
+    return warbondWeak.isCurrent()
   }
 
   function getWarbondShopLevelImage()

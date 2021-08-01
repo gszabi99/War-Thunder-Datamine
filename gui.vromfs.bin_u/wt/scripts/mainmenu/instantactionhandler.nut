@@ -81,8 +81,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     ::enableHangarControls(true)
-    ::instant_domination_handler = this
-
     // Causes drawer to initialize once.
     getGamercardDrawerHandler()
 
@@ -543,6 +541,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       else
         ::gui_start_modal_wnd(::gui_handlers.ChangeCountry, {
           currentCountry = getCurCountry()
+          onCountryChooseCb = ::Callback(onCountryChoose, this)
         })
     }
   }
@@ -556,24 +555,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     ::EventJoinProcess(event)
-  }
-
-  function getTypeLocTexts()
-  {
-    local battleTypeLoc = ""
-    local unitTypeLoc = ""
-    if (::mission_settings.battleMode == BATTLE_TYPES.AIR)
-    {
-      battleTypeLoc = ::loc("mainmenu/airBattles")
-      unitTypeLoc = ::loc("unit_type/air")
-    }
-    else if (::mission_settings.battleMode == BATTLE_TYPES.TANK)
-    {
-      battleTypeLoc = ::loc("mainmenu/tankBattles")
-      unitTypeLoc = ::loc("unit_type/tank")
-    }
-
-    return [battleTypeLoc, unitTypeLoc]
   }
 
   function showNoSuitableVehiclesMsgBox()
@@ -1271,4 +1252,16 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   onEventToBattleLocShortChanged = @(params) doWhenActiveOnce("updateStartButton")
+
+  onEventOpenGameModeSelect = @(p) openGameModeSelect()
+
+  function openGameModeSelect()
+  {
+    if (!isValid())
+      return
+
+    checkQueue(
+      @() ::g_squad_utils.checkSquadUnreadyAndDo(
+        @() ::gui_handlers.GameModeSelect.open(), null))
+  }
 }

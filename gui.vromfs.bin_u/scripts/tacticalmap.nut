@@ -238,17 +238,13 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
       local isActive = ::is_aircraft_active(units[i])
 
       objTr.mainPlayer = (wasPlayer == i)? "yes" : "no"
-
-      if (restoreType == ::ERT_TACTICAL_CONTROL)
-      {
-        objTr.enable = isActive ? "yes" : "no"
-        objTr.inactive = isActive ? null : "yes"
-        objTr.selected = (focus == i)? "yes" : "no"
-      }
+      objTr.enable = isActive ? "yes" : "no"
+      objTr.inactive = isActive ? null : "yes"
+      objTr.selected = (focus == i)? "yes" : "no"
     }
 
-    if (numUnits)
-      scene.findObject("pilot_name" + wasPlayer).mainPlayer = "yes"
+    if (numUnits > 0)
+      setMousePointerInitialPos(scene.findObject("pilots_list").getChild(wasPlayer))
   }
 
   function fillPilotsTable()
@@ -261,8 +257,6 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     local pilotsObj = scene.findObject("pilots_list")
     guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
     pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
-    if (numUnits > 0)
-      setMousePointerInitialPos(pilotsObj.getChild(0))
   }
 
   function updatePlayer()
@@ -374,9 +368,11 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onPilotsSelect(obj)
   {
-    if (restoreType != ::ERT_TACTICAL_CONTROL)
+    if (restoreType != ::ERT_TACTICAL_CONTROL || !isActiveTactical)
       return
-    if (!isActiveTactical)
+
+    local newFocus = scene.findObject("pilots_list").getValue()
+    if (focus == newFocus)
       return
 
     focus = scene.findObject("pilots_list").getValue()
@@ -397,28 +393,12 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     })
   }
 
-  function onClose(obj)
-  {
-    doClose()
-  }
-
-  function onCancel(obj)
-  {
-    if ((restoreType != ::ERT_TACTICAL_CONTROL) || !isActiveTactical)
-      return doClose()
-
-    local playerUnit = ::getTblValue(wasPlayer, units)
-    if (playerUnit && ::is_aircraft_active(playerUnit))
-      ::set_tactical_screen_player(playerUnit, false)
-    doClose()
-  }
-
-  function goBack (obj) { onCancel(obj) }
+  goBack  = @() doClose()
 
   function onStart(obj)
   {
     if ((restoreType != ::ERT_TACTICAL_CONTROL) || !isActiveTactical)
-      return onCancel(obj)
+      return doClose()
 
     updateTacticalControl(obj, 0.0)
     if (focus in units)
@@ -426,7 +406,12 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     doClose()
   }
 
-  function onSelect (obj) { onStart(obj) }
+  function onPilotsDblClick(obj) {
+    if (::show_console_buttons)
+      return
+
+    onStart(obj)
+  }
 }
 
 ::addHideToObjStringById <- function addHideToObjStringById(data, objId)

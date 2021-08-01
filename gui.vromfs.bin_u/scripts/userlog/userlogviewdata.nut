@@ -633,15 +633,18 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       foreach(page in ::crew_skills)
         if ((page.id in log) && log[page.id].len()>0)
         {
-          desc+=((desc!="")? "\n":"") + ::loc("crew/"+page.id) + ::loc("ui/colon")
+          local groupName = ::loc($"crew/{page.id}")
+          desc = $"{desc}{desc != "" ? "\n" : ""}{groupName}{::loc("ui/colon")}"
           foreach(item in page.items)
             if (item.name in log[page.id])
             {
-              desc+=((desc!="")? "\n":"") + ::nbsp + ::nbsp + "+" + log[page.id][item.name] +" "+ ::loc("crew/"+item.name)
-              total += log[page.id][item.name]
+              local numPoints = ::g_crew.getSkillCrewLevel(item, log[page.id][item.name])
+              local skillName = ::loc($"crew/{item.name}")
+              desc = $"{desc}{desc != "" ? "\n" : ""}{::nbsp}{::nbsp}+{numPoints} {skillName}"
+              total += numPoints
             }
         }
-      res.name += format(" (+%d %s)", total, ::loc("userlog/crewLevel"))
+      res.name = $"{res.name} (+{total} {::loc("userlog/crewLevel")})"
       if (desc!="")
       {
         res.description <- desc

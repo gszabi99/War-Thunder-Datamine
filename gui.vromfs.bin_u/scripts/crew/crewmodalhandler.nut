@@ -554,7 +554,10 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       ["no", action]
     ]
 
-    msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", { cancel_fn = cancelAction })
+    msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", {
+      cancel_fn = cancelAction
+      checkDuplicateId = true
+    })
   }
 
   function baseGoForward(startFunc, needFade)
@@ -759,6 +762,9 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventCrewTakeUnit(p)
   {
+    if (!p?.unit)
+      return
+
     if (!p?.prevUnit)
       openSelectedCrew()
     else

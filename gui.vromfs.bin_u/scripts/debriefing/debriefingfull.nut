@@ -1,6 +1,8 @@
 //::g_script_reloader.loadOnce("!temp/a_test.nut") //!!debug only!!
 local mpChatModel = require("scripts/chat/mpChatModel.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("scripts/debriefing/rewardSources.nut")
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
 ::debriefing_skip_all_at_once <- true
 ::min_values_to_show_reward_premium <- { wp = 0, exp = 0 }
@@ -309,8 +311,10 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
         { unitName = ::colorize("userlogColoredText", ::getUnitName(investUnit)) }))
 
       return {
-        noBonus = ::Cost().setRp(noBonus).tostring()
-        prevUnitEfficiency = ::Cost().setRp(bonus).tostring() + comment
+        sources = [
+          NO_BONUS.__merge({ text = ::Cost().setRp(noBonus).tostring() }),
+          PREV_UNIT_EFFICIENCY.__merge({ text = $"{::Cost().setRp(bonus).tostring()}{comment}" })
+        ]
       }
     }
   }

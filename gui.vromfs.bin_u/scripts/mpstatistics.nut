@@ -7,6 +7,7 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
 local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 

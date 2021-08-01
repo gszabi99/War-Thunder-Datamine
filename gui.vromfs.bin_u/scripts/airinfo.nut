@@ -21,6 +21,8 @@ local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
 local { boosterEffectType, getActiveBoostersArray,
   getBoostersEffects } = require("scripts/items/boosterEffect.nut")
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
+local { loadModel } = require("scripts/hangarModelLoadManager.nut")
+local { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("scripts/debriefing/rewardSources.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -1029,7 +1031,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (!unit)
     return
   ::show_aircraft = unit
-  ::hangar_model_load_manager.loadModel(unit.name)
+  loadModel(unit.name)
 }
 
 ::showAirInfo <- function showAirInfo(air, show, holderObj = null, handler = null, params = null)
@@ -1617,12 +1619,17 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       local resultText = f.isTimedAward ? result : ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(result)
       resultText = "".concat(::colorize("activeTextColor", resultText), ::loc(f.currency), f.isTimedAward ? ::loc("measureUnits/perMinute") : "")
 
+      local sources = [NO_BONUS.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.noBonus) })]
+      if (f.premAccBonus  > 0)
+        sources.append(PREM_ACC.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.premAccBonus) }))
+      if (f.premModBonus  > 0)
+        sources.append(PREM_MOD.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.premModBonus) }))
+      if (f.boosterBonus  > 0)
+        sources.append(BOOSTER.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.boosterBonus) }))
+      sources[sources.len()-1].isLastBlock <- true
       local formula = ::handyman.renderCached("gui/debriefing/rewardSources", {
         multiplier = f.multText
-        noBonus    = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.noBonus)
-        premAcc    = f.premAccBonus  > 0 ? ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.premAccBonus)  : null
-        premMod    = f.premModBonus  > 0 ? ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.premModBonus)  : null
-        booster    = f.boosterBonus  > 0 ? ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.boosterBonus)  : null
+        sources
       })
 
       holderObj.getScene().replaceContentFromText(f.obj.findObject($"aircraft-reward_{id}"), formula, formula.len(), handler)

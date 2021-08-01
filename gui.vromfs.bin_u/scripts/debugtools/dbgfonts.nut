@@ -6,7 +6,8 @@ local { reloadDargUiScript } = require("reactiveGuiCommand")
 ::debug_change_font_size <- function debug_change_font_size(shouldIncrease = true)
 {
   local availableFonts = ::g_font.getAvailableFonts()
-  local idx = ::find_in_array(availableFonts, ::g_font.getCurrent(), 0)
+  local curFont = ::g_font.getCurrent()
+  local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = ::clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
   if (::g_font.setCurrent(availableFonts[idx])) {
     ::handlersManager.getActiveBaseHandler().fullReloadScene()

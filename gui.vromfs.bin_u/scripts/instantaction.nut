@@ -6,8 +6,6 @@ local { AMMO,
         getUnitNotReadyAmmoList } = require("scripts/weaponry/ammoInfo.nut")
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 
-::instant_domination_handler <- null
-
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null)
 {
   local res = {

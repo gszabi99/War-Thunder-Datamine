@@ -1141,6 +1141,21 @@ local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
     isCompleteEasyTask(isCompleteEasy)
     hasInCompleteHardTask(hasInCompleteHard)
   }
+
+  function checkCurSpecialTask()
+  {
+    if (!hasInCompleteHardTask.value)
+      return
+
+    local tasksDataBlock = ::get_proposed_personal_unlocks_blk()
+    local genId = tasksDataBlock?[$"{specialTasksId}_lastGenerationId"] ?? 0
+    if (genId == 0 || specTasksLastGenerationId == genId)
+      return
+
+    updateTasksData()
+  }
+
+  onEventProfileUpdated = @(p) checkCurSpecialTask()
 }
 
 

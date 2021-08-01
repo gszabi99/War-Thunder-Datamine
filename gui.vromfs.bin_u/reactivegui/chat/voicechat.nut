@@ -6,18 +6,6 @@ local voiceChatElements = function() {
   local children = []
   foreach(idx, member in voiceChatState.voiceChatMembers.value) {
     local voiceChatMember = member
-
-    voiceChatMember.needShow.subscribe(function(newVal) {
-      local animKey = $"voiceChatShow{voiceChatMember.id}"
-      ::gui_scene.clearTimer(callee())
-      if (newVal) {
-        anim_start(animKey)
-        return
-      }
-
-      anim_start(animKey)
-    })
-
     local prevVisIdx = voiceChatMember.visibleIdx
     local curVisIdx = idx
     voiceChatMember.visibleIdx = curVisIdx
@@ -26,7 +14,8 @@ local voiceChatElements = function() {
       anim_start($"{prefix}{voiceChatMember.id}")
     }
 
-    children.insert(0, {
+    children.insert(0, @() {
+      watch = voiceChatMember.needShow
       size = [::fpx(400), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       gap = ::fpx(6)
@@ -48,12 +37,10 @@ local voiceChatElements = function() {
         }
       ]
       key = $"voice_chat_{voiceChatMember.id}"
+      opacity = voiceChatMember.needShow.value ? 1.0 : 0.0
       transform = {}
+      transitions = [{ prop = AnimProp.opacity, duration = voiceChatMember.animTime, easing = OutCubic }]
       animations = [
-        { prop=AnimProp.opacity, from=0.0, to=1.0, duration=voiceChatMember.animTime,
-          easing=OutCubic, trigger = $"voiceChatShow{voiceChatMember.id}" }
-        { prop=AnimProp.opacity, from=1.0, to=0.0, duration=voiceChatMember.animTime,
-          easing=OutCubic, trigger = $"voiceChatHide{voiceChatMember.id}" }
         { prop=AnimProp.translate, from=[0, 28], to=[0, 0], duration=0.2,
           trigger = $"voiceChatMoveTop{voiceChatMember.id}" }
         { prop=AnimProp.translate, from=[0, -28], to=[0, 0], duration=0.2,

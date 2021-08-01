@@ -954,12 +954,12 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     curPlayer = contact
 
     local idx = ::contacts[curGroup].indexof(contact)
-    if (idx != null)
-    {
-      local groupObject = scene.findObject("contacts_groups")
-      local listObject = groupObject.findObject("group_" + curGroup)
-      listObject.setValue(idx)
-    }
+    if (!checkScene() || idx == null)
+      return
+
+    local groupObject = scene.findObject("contacts_groups")
+    local listObject = groupObject.findObject("group_" + curGroup)
+    listObject.setValue(idx)
   }
 
   function onFriendAdd(obj)

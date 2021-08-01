@@ -423,7 +423,6 @@ foreach (fn in [
   "scripts/options/countryFlagsPreset.nut"
 
   "scripts/hangarLights.nut"
-  "scripts/hangarModelLoadManager.nut"
 
   "scripts/webRPC.nut"
   "scripts/matching/api.nut"

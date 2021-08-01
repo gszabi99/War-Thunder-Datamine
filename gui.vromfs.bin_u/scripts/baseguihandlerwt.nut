@@ -936,16 +936,6 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     ::broadcastEvent("FacebookFeedPostValueChange", {value = obj.getValue()})
   }
 
-  function onOpenGameModeSelect(obj)
-  {
-    if (!::handlersManager.isHandlerValid(::instant_domination_handler))
-      return
-
-    ::instant_domination_handler.checkQueue(
-      @() ::g_squad_utils.checkSquadUnreadyAndDo(
-        @() ::gui_handlers.GameModeSelect.open(), null))
-  }
-
   function onModalWndDestroy()
   {
     if (!::handlersManager.isAnyModalHandlerActive())

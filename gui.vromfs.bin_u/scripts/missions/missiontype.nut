@@ -1,31 +1,7 @@
 local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local enums = require("sqStdLibs/helpers/enums.nut")
 local { MISSION_GROUP } = require("scripts/missions/missionsFilterData.nut")
-
-global enum MISSION_OBJECTIVE
-{
-  KILLS_AIR           = 0x0001
-  KILLS_GROUND        = 0x0002
-  KILLS_NAVAL         = 0x0004
-
-  KILLS_AIR_AI        = 0x0010
-  KILLS_GROUND_AI     = 0x0020
-  KILLS_NAVAL_AI      = 0x0040
-
-  KILLS_TOTAL_AI      = 0x0100
-
-  ZONE_CAPTURE        = 0x0200
-  ZONE_BOMBING        = 0x0400
-  ALIVE_TIME          = 0x0800
-
-  //masks
-  NONE                = 0x0000
-  ANY                 = 0xFFFF
-
-  KILLS_ANY           = 0x0077
-  KILLS_AIR_OR_TANK   = 0x0033
-  KILLS_ANY_AI        = 0x0070
-}
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
 ::g_mission_type <- {
   types = []

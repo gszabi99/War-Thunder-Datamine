@@ -16,6 +16,7 @@ local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/enti
 local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { isCollectionPrize, isCollectionItem } = require("scripts/collections/collections.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
+local { loadModel } = require("scripts/hangarModelLoadManager.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -179,7 +180,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     updateDecalActionsTexts()
 
-    ::hangar_model_load_manager.loadModel(unit.name)
+    loadModel(unit.name)
 
     if (!isUnitOwn && !previewMode)
     {

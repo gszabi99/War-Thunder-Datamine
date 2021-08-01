@@ -10,6 +10,7 @@ local { KGF_TO_NEWTON,
         getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local { doesLocTextExist = @(k) true } = require("dagor.localize")
+local { hasLoadedModel } = require("scripts/hangarModelLoadManager.nut")
 
 
 /*
@@ -174,8 +175,8 @@ const AFTERBURNER_CHAMBER = 3
 
   function updateNoPartsNotification()
   {
-    local isShow = ::hangar_model_load_manager.getLoadState() == HangarModelLoadState.LOADED &&
-      getCurrentViewMode() == ::DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
+    local isShow = hasLoadedModel()
+      && getCurrentViewMode() == ::DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
     local handler = ::handlersManager.getActiveBaseHandler()
     if (!handler || !::check_obj(handler.scene))
       return

@@ -21,6 +21,7 @@ local { fillItemDescr, getActiveBoostersDescription } = require("scripts/items/i
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { setNeedShowRate } = require("scripts/user/suggestionRateGame.nut")
+local { sourcesConfig } = require("scripts/debriefing/rewardSources.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1738,10 +1739,10 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       {
         if (cfg.row.type != currency && cfg.row.rewardType != currency)
           continue
-        local currencySourcesView = {}
+        local currencySourcesView = []
         foreach (source in [ "noBonus", "premAcc", "premMod", "booster" ])
         {
-          local val = ::getTblValue(source + ::g_string.toUpper(currency, 1), rowTbl, 0)
+          local val = rowTbl?[$"{source}{::g_string.toUpper(currency, 1)}"] ?? 0
           if (val <= 0)
             continue
           local extra = ""
@@ -1751,13 +1752,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
             if (effect)
               extra = ::colorize("fadedTextColor", ::loc("ui/parentheses", { text = effect.tointeger().tostring() + "%" }))
           }
-          currencySourcesView[source] <- getTextByType(val, currency) + extra
+          currencySourcesView.append((sourcesConfig?[source] ?? {}).__merge({ text = $"{getTextByType(val, currency)}{extra}" }))
         }
         if (currencySourcesView.len() > 1)
         {
           if (!("bonuses" in rowView))
             rowView.bonuses <- []
-          rowView.bonuses.append(currencySourcesView)
+          rowView.bonuses.append({sources = currencySourcesView})
         }
       }
 

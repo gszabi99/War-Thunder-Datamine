@@ -1,6 +1,7 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
 
 ::g_mplayer_param_type <- {

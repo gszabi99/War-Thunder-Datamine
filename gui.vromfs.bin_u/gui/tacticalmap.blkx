@@ -142,8 +142,9 @@
             "total-input-transparent": "yes",
             "navigatorShortcuts": "yes",
             "css-hier-invalidate": "all",
-            "on_dbl_click": "onStart",
-            "on_click": "onPilotsSelect"
+            "on_dbl_click": "onPilotsDblClick",
+            "on_click": "onPilotsSelect",
+            "on_activate": "onPilotsSelect"
           }
         }
       }
@@ -174,7 +175,8 @@
           "id": "btn_select",
           "text": "#mainmenu/btnSelect",
           "btnName": "A",
-          "_on_click": "onSelect",
+          "on_click": "onStart",
+          "skip-navigation": "yes",
           "ButtonImg": []
         }
       },
@@ -185,6 +187,7 @@
           "btnName": "B",
           "_on_click": "goBack",
           "display": "hide",
+          "skip-navigation": "yes",
           "ButtonImg": []
         }
       }
@@ -197,11 +200,6 @@
     "size": "sw,sh",
     "behavior": "button",
     "_on_click": "goBack"
-  },
-  "dummy": {
-    "_on_click": "onSelect",
-    "behaviour": "accesskey",
-    "btnName": "B"
   },
   "tdiv": {
     "id": "update_timer",

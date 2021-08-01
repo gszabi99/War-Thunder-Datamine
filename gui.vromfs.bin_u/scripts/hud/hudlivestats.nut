@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
 enum LIVE_STATS_MODE {
   WATCH

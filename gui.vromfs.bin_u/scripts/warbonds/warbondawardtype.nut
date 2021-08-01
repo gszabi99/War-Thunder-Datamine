@@ -53,7 +53,6 @@ local getBoughtCountByAmount = @(warbond, blk)
   canBuy = @(warbond, blk) true
   getMaxBoughtCount = @(warbond, blk) blk?.maxBoughtCount ?? 0
   showAvailableAmount = true
-  isAvailableForCurrentShop = @(warbond) true
 
   isReqSpecialTasks = false
   hasIncreasingLimit = @() false
@@ -301,7 +300,6 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       && (!hasIncreasingLimit() || getPurchaseLimitWb(warbond) > getBoughtCount(warbond, blk))
     getMaxBoughtCount = @(warbond, blk) hasIncreasingLimit() ? getPurchaseLimitWb(warbond) : blk?.maxBoughtCount ?? 0
     isReqSpecialTasks = true
-    isAvailableForCurrentShop = @(warbond) warbond.isCurrent()
     canBuyReasonLocId = @(warbond, blk)
       ::g_battle_tasks.hasInCompleteHardTask.value
         ? "item/specialTasksPersonalUnlocks/purchaseRestriction"

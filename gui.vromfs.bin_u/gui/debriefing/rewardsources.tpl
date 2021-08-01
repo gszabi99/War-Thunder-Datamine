@@ -16,102 +16,40 @@ activeText {
   text:t='('
 }
 <</multiplier>>
-<<#noBonus>>
-activeText {
-  style:t='color:@commonTextColor'
-  smallFont:t='yes'
-  parseTags:t='yes'
-  text:t='<<noBonus>>'
-}
-<</noBonus>>
-<<#premAcc>>
+<<#sources>>
 tdiv {
+  <<#hasPlus>>
   activeText {
     style:t='color:@minorTextColor'
     smallFont:t='yes'
     text:t='+'
   }
+  <</hasPlus>>
+  <<#icon>>
   tdiv {
-    size:t='0.75@sIco, @sIco'
-    pos:t='0, -2@sf/@pf_outdated'; position:t='relative'
+    size:t='<<#iconWidth>><<iconWidth>><</iconWidth>><<^iconWidth>>0.75@sIco<</iconWidth>>, @sIco'
+    pos:t='0, -2@sf/@pf'
+    position:t='relative'
     img {
       size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'
-      background-image:t='#ui/gameuiskin#item_type_premium'
+      background-image:t='<<icon>>'
     }
   }
+  <</icon>>
   activeText {
-    style:t='color:@chapterUnlockedColor'
+    style:t='color:<<#textColor>><<textColor>><</textColor>><<^textColor>>@commonTextColor<</textColor>>'
     smallFont:t='yes'
     parseTags:t='yes'
-    text:t='<<premAcc>>'
+    text:t='<<text>>'
   }
+  <<#multiplier>>
+  <<#isLastBlock>>
+  activeText {
+    style:t='color:@commonTextColor'
+    smallFont:t='yes'
+    text:t=')'
+  }
+  <</isLastBlock>>
+  <</multiplier>>
 }
-<</premAcc>>
-<<#premMod>>
-tdiv {
-  activeText {
-    style:t='color:@minorTextColor'
-    smallFont:t='yes'
-    text:t='+'
-  }
-  tdiv {
-    size:t='0.95@sIco, @sIco'
-    pos:t='0, -2@sf/@pf_outdated'; position:t='relative'
-    img {
-      size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'
-      background-image:t='#ui/gameuiskin#item_type_talisman'
-    }
-  }
-  activeText {
-    style:t='color:@chapterUnlockedColor'
-    smallFont:t='yes'
-    parseTags:t='yes'
-    text:t='<<premMod>>'
-  }
-}
-<</premMod>>
-<<#booster>>
-tdiv {
-  activeText {
-    style:t='color:@minorTextColor'
-    smallFont:t='yes'
-    text:t='+'
-  }
-  tdiv {
-    size:t='0.75@sIco, @sIco'
-    pos:t='0, -2@sf/@pf_outdated'; position:t='relative'
-    img {
-      size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'
-      background-image:t='#ui/gameuiskin#item_type_boosters'
-    }
-  }
-  activeText {
-    style:t='color:@linkTextColor'
-    smallFont:t='yes'
-    parseTags:t='yes'
-    text:t='<<booster>>'
-  }
-}
-<</booster>>
-<<#prevUnitEfficiency>>
-tdiv {
-  activeText {
-    style:t='color:@minorTextColor'
-    smallFont:t='yes'
-    text:t='+'
-  }
-  activeText {
-    style:t='color:@userlogColoredText'
-    smallFont:t='yes'
-    parseTags:t='yes'
-    text:t='<<prevUnitEfficiency>>'
-  }
-}
-<</prevUnitEfficiency>>
-<<#multiplier>>
-activeText {
-  style:t='color:@commonTextColor'
-  smallFont:t='yes'
-  text:t=')'
-}
-<</multiplier>>
+<</sources>>

@@ -186,7 +186,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   {
     if (checkCurrentTutorialCanceled())
       return
-    ::instant_domination_handler.onStart()
+    currentHandler.onStart()
     currentStepsName = "tutorialEnd"
     sendLastStepsNameToBigQuery()
     if (onComplete != null)
@@ -246,7 +246,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
       keepEnv = true
     }]
     currentStepsName = "selectUnit"
-    currentTutorial = ::gui_modal_tutor(steps, ::instant_domination_handler, true)
+    currentTutorial = ::gui_modal_tutor(steps, currentHandler, true)
     return true
   }
 
@@ -293,7 +293,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
       cb = ::Callback(onStartPress, this)
     }]
     currentStepsName = "pressToBattleButton"
-    currentTutorial = ::gui_modal_tutor(steps, ::instant_domination_handler, true)
+    currentTutorial = ::gui_modal_tutor(steps, currentHandler, true)
   }
 
   function startOpenGameModeSelectStep()
@@ -327,7 +327,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     if (!::check_obj(gameModeChangeButtonObj))
       return
     ::add_event_listener("GamercardDrawerOpened", onEventGamercardDrawerOpened, this)
-    currentHandler.onOpenGameModeSelect(gameModeChangeButtonObj)
+    currentHandler.openGameModeSelect()
   }
 
   function onEventGamercardDrawerOpened(params)

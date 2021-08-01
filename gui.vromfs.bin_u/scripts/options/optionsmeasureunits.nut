@@ -14,6 +14,11 @@ local optionsByIndex = [
   { useroptId = ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, optId = "power_to_weight_ratio" },
 ]
 
+local function isInitialized()
+{
+  return (persistent.unitsCfg?.len() ?? 0) != 0
+}
+
 local function init()
 {
   persistent.unitsCfg = []
@@ -38,11 +43,7 @@ local function init()
     }
     persistent.unitsCfg.append(units)
   }
-}
-
-local function isInitialized()
-{
-  return (persistent.unitsCfg?.len() ?? 0) != 0
+  ::call_darg("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
 }
 
 local function getOption(useroptId)
@@ -97,6 +98,10 @@ local function isMetricSystem(unitNo)
 {
   local unitName = ::get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
+}
+
+::cross_call_api.measureUnits <- {
+  isInitialized = @() isInitialized()
 }
 
 return {
