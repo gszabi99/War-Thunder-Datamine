@@ -897,13 +897,7 @@
         "gun5_dm": {
           "hp": 15.0
         },
-        "mgun1_dm": {
-          "hp": 15.0
-        },
-        "mgun2_dm": {
-          "hp": 15.0
-        },
-        "mgun3_dm": {
+        "mgun10_dm": {
           "hp": 15.0
         },
         "mgun4_dm": {
@@ -911,26 +905,16 @@
         },
         "mgun5_dm": {
           "hp": 15.0
-        }
-      },
-      "armor6_35": {
-        "armor4_dm": {
-          "hp": 35.0
+        },
+        "mgun8_dm": {
+          "hp": 15.0
+        },
+        "mgun9_dm": {
+          "hp": 15.0
         }
       },
       "armor8": {
         "armor1_dm": {
-          "hp": 40.0
-        }
-      },
-      "armor9_5": {
-        "armor2_dm": {
-          "hp": 40.0
-        },
-        "armor3_dm": {
-          "hp": 40.0
-        },
-        "armor5_dm": {
           "hp": 40.0
         }
       },
@@ -1026,14 +1010,11 @@
           "genericDamageMult": 0.3,
           "hp": 39.5
         },
-        "stab_dm": {
-          "hp": 30.0
+        "stab1_dm": {
+          "hp": 39.5
         },
         "stab2_dm": {
-          "hp": 30.0
-        },
-        "stab1_dm": {
-          "hp": 53.9
+          "hp": 39.5
         }
       },
       "dural": {
@@ -1065,6 +1046,11 @@
           "hp": 19.5
         }
       },
+      "dural6_35": {
+        "armor4_dm": {
+          "hp": 35.0
+        }
+      },
       "dural90": {
         "spar1_l_dm": {
           "hp": 110.5
@@ -1085,14 +1071,15 @@
           "hp": 110.5
         }
       },
-      "glass12": {
-        "armor6_dm": {
-          "hp": 100.0
-        }
-      },
-      "glass38": {
-        "armor7_dm": {
-          "hp": 100.0
+      "dural9_5": {
+        "armor2_dm": {
+          "hp": 35.0
+        },
+        "armor3_dm": {
+          "hp": 35.0
+        },
+        "armor5_dm": {
+          "hp": 35.0
         }
       },
       "protected_controls": {
@@ -1132,6 +1119,12 @@
         },
         "oil4_dm": {
           "hp": 17.9
+        },
+        "water1_dm": {
+          "hp": 17.5
+        },
+        "water2_dm": {
+          "hp": 17.5
         }
       },
       "steel_pilot": {
@@ -1161,13 +1154,13 @@
       },
       "steel_tank_m": {
         "tank1_dm": {
-          "hp": 54.5
+          "hp": 95.0
         },
         "tank2_dm": {
           "hp": 54.5
         },
         "tank3_dm": {
-          "hp": 95.0
+          "hp": 54.5
         },
         "tank4_dm": {
           "hp": 95.0
@@ -1320,16 +1313,6 @@
       {
         "part": {
           "name": "armor5_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "armor6_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "armor7_dm"
         }
       },
       {
@@ -2256,17 +2239,7 @@
       },
       {
         "part": {
-          "name": "mgun1_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "mgun2_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "mgun3_dm"
+          "name": "mgun10_dm"
         }
       },
       {
@@ -2277,6 +2250,16 @@
       {
         "part": {
           "name": "mgun5_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "mgun8_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "mgun9_dm"
         }
       },
       {
@@ -2496,46 +2479,6 @@
       {
         "part": [
           {
-            "name": "stab_dm"
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
             "name": "stab1_dm"
           },
           {
@@ -2546,7 +2489,7 @@
           },
           {
             "onHit": {
-              "damage": 60.0,
+              "damage": 70.0,
               "cut": 1.0
             }
           },
@@ -2554,21 +2497,21 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 10.0
+              "nothing": 14.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
+              "cut": 1.0,
+              "nothing": 4.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 0.0
+              "nothing": 1.0
             }
           }
         ]
@@ -3012,6 +2955,28 @@
             }
           }
         ]
+      },
+      {
+        "part": {
+          "name": "water1_dm",
+          "onHit": {
+            "leak_water": 0.5
+          },
+          "onKill": {
+            "leak_water": 1.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "water2_dm",
+          "onHit": {
+            "leak_water": 0.5
+          },
+          "onKill": {
+            "leak_water": 1.0
+          }
+        }
       },
       {
         "part": [
