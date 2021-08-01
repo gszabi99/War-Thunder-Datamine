@@ -351,6 +351,11 @@
           }
         },
         {
+          "comment": {
+            "value": "starting checkin does aaa was killed by teammate"
+          }
+        },
+        {
           "varSetInt": {
             "value": 0,
             "var": "ft_t1_num_airfields_detected"
@@ -449,6 +454,11 @@
               "target": "ft_capture_t2_start"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "ft_aaa_teamate_destroy_check_start"
+          }
         },
         {
           "wait": {
@@ -1836,6 +1846,21 @@
           },
           {
             "comment": {
+              "value": "set index for far airfields"
+            }
+          },
+          {
+            "comment": {
+              "value": "set index for mid airfields"
+            }
+          },
+          {
+            "comment": {
+              "value": "set index for near airfields"
+            }
+          },
+          {
+            "comment": {
               "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432"
             }
           },
@@ -1849,6 +1874,57 @@
             "varSetInt": {
               "value": 0,
               "var": "ft_generate_t1_aaa_field_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t1_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t1_aaa_far_idx",
+              "input_var": "ft_t1_max_far_airfields_count"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t1_aaa_mid_idx",
+              "input_var": "ft_generate_t1_aaa_far_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t1_aaa_near_idx",
+              "input_var": "ft_generate_t1_aaa_mid_idx"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "ft_generate_t1_aaa_check_field_pos_far",
+              "var": "ft_generate_t1_aaa_next_trigger_name"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_aaa_mid_idx",
+              "use_variable": true,
+              "var_value": "ft_t1_max_mid_airfields_count"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_aaa_near_idx",
+              "use_variable": true,
+              "var_value": "ft_t1_max_near_airfields_count"
             }
           },
           {
@@ -1869,14 +1945,14 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
           "varCompareInt": {
             "var_value": "ft_generate_t1_aaa_field_idx",
             "value": 3,
-            "comparasion_func": "less",
+            "comparasion_func": "notMore",
             "var_value_other": "ft_t1_max_airfields_count"
           }
         },
@@ -1893,7 +1969,7 @@
           },
           {
             "comment": {
-              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0441\u043d\u043e\u0432\u043d\u0443\u044e \u0440\u043e\u0442\u0430\u0446\u0438\u044e"
+              "value": "checking field pos"
             }
           },
           {
@@ -1911,11 +1987,207 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t1_aaa_rotator"
+              "target": "@ft_generate_t1_aaa_next_trigger_name"
             }
           }
         ],
         "else_actions": []
+      },
+      "ft_generate_t1_aaa_check_field_pos_far": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t1_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t1_aaa_far_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's far airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "ft_generate_t1_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t1_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not far airfield need to check mid"
+          },
+          "varSetString": {
+            "value": "ft_generate_t1_aaa_check_field_pos_mid",
+            "var": "ft_generate_t1_aaa_next_trigger_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_generate_t1_aaa_cur_sub_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t1_aaa_check_field_pos_mid"
+          }
+        }
+      },
+      "ft_generate_t1_aaa_check_field_pos_mid": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t1_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t1_aaa_mid_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's mid airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "ft_generate_t1_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t1_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not mid airfield need to check near"
+          },
+          "varSetString": {
+            "value": "ft_generate_t1_aaa_check_field_pos_near",
+            "var": "ft_generate_t1_aaa_next_trigger_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_generate_t1_aaa_cur_sub_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t1_aaa_check_field_pos_near"
+          }
+        }
+      },
+      "ft_generate_t1_aaa_check_field_pos_near": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t1_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t1_aaa_near_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's near airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 3,
+              "var": "ft_generate_t1_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t1_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not near airfield"
+          },
+          "triggerDisable": {
+            "target": "ft_generate_t1_aaa_check_field_pos_near"
+          }
+        }
       },
       "ft_generate_t1_aaa_rotator": {
         "is_enabled": false,
@@ -1927,7 +2199,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -2065,7 +2337,21 @@
           },
           {
             "varAddString": {
-              "value": "@ft_generate_t1_aaa_field_idx",
+              "value": "@ft_generate_t1_aaa_cur_field_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_aaa_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t1_aaa_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@ft_generate_t1_aaa_cur_sub_idx",
               "digits": 2,
               "var": "ft_generate_t1_aaa_squad_name"
             }
@@ -2134,6 +2420,7 @@
               "delay": 1.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ft_generate_t1_aaa_squad_name",
+              "object_type": "isInactive",
               "target": "@ft_generate_t1_aaa_name",
               "randomObjectsCount": 1,
               "isStealth": true
@@ -3475,6 +3762,21 @@
           },
           {
             "comment": {
+              "value": "set index for far airfields"
+            }
+          },
+          {
+            "comment": {
+              "value": "set index for mid airfields"
+            }
+          },
+          {
+            "comment": {
+              "value": "set index for near airfields"
+            }
+          },
+          {
+            "comment": {
               "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432"
             }
           },
@@ -3488,6 +3790,57 @@
             "varSetInt": {
               "value": 0,
               "var": "ft_generate_t2_aaa_field_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t2_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t2_aaa_far_idx",
+              "input_var": "ft_t2_max_far_airfields_count"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t2_aaa_mid_idx",
+              "input_var": "ft_generate_t2_aaa_far_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_generate_t2_aaa_near_idx",
+              "input_var": "ft_generate_t2_aaa_mid_idx"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "ft_generate_t2_aaa_check_field_pos_far",
+              "var": "ft_generate_t2_aaa_next_trigger_name"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_aaa_mid_idx",
+              "use_variable": true,
+              "var_value": "ft_t2_max_mid_airfields_count"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_aaa_near_idx",
+              "use_variable": true,
+              "var_value": "ft_t2_max_near_airfields_count"
             }
           },
           {
@@ -3508,7 +3861,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3532,7 +3885,7 @@
           },
           {
             "comment": {
-              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0441\u043d\u043e\u0432\u043d\u0443\u044e \u0440\u043e\u0442\u0430\u0446\u0438\u044e"
+              "value": "checking field pos"
             }
           },
           {
@@ -3550,11 +3903,207 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t2_aaa_rotator"
+              "target": "@ft_generate_t2_aaa_next_trigger_name"
             }
           }
         ],
         "else_actions": []
+      },
+      "ft_generate_t2_aaa_check_field_pos_far": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t2_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t2_aaa_far_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's far airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "ft_generate_t2_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t2_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not far airfield need to check mid"
+          },
+          "varSetString": {
+            "value": "ft_generate_t2_aaa_check_field_pos_mid",
+            "var": "ft_generate_t2_aaa_next_trigger_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_generate_t2_aaa_cur_sub_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t2_aaa_check_field_pos_mid"
+          }
+        }
+      },
+      "ft_generate_t2_aaa_check_field_pos_mid": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t2_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t2_aaa_mid_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's mid airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "ft_generate_t2_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t2_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not mid airfield need to check near"
+          },
+          "varSetString": {
+            "value": "ft_generate_t2_aaa_check_field_pos_near",
+            "var": "ft_generate_t2_aaa_next_trigger_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_generate_t2_aaa_cur_sub_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t2_aaa_check_field_pos_near"
+          }
+        }
+      },
+      "ft_generate_t2_aaa_check_field_pos_near": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_generate_t2_aaa_field_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "ft_generate_t2_aaa_near_idx"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "it's near airfield"
+            }
+          },
+          {
+            "comment": {
+              "value": "starting spawn rotation"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_aaa_cur_sub_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 3,
+              "var": "ft_generate_t2_aaa_cur_field_idx"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "ft_generate_t2_aaa_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "it's not near airfield"
+          },
+          "triggerDisable": {
+            "target": "ft_generate_t2_aaa_check_field_pos_near"
+          }
+        }
       },
       "ft_generate_t2_aaa_rotator": {
         "is_enabled": false,
@@ -3566,7 +4115,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3584,7 +4133,7 @@
           },
           {
             "comment": {
-              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044e \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
+              "value": "spawning aaa"
             }
           },
           {
@@ -3704,7 +4253,21 @@
           },
           {
             "varAddString": {
-              "value": "@ft_generate_t2_aaa_field_idx",
+              "value": "@ft_generate_t2_aaa_cur_field_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_aaa_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t2_aaa_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@ft_generate_t2_aaa_cur_sub_idx",
               "digits": 2,
               "var": "ft_generate_t2_aaa_squad_name"
             }
@@ -3773,6 +4336,7 @@
               "delay": 1.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ft_generate_t2_aaa_squad_name",
+              "object_type": "isInactive",
               "target": "@ft_generate_t2_aaa_name",
               "randomObjectsCount": 1,
               "isStealth": true
@@ -13858,6 +14422,108 @@
           }
         ]
       }
+    },
+    "ft_aaa_teamate_destroy_routine": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ft_aaa_teamate_destroy_check_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerEnable": [
+            {
+              "target": "ft_aaa_t1_by_t1_destroy_check"
+            },
+            {
+              "target": "ft_aaa_t2_by_t2_destroy_check"
+            }
+          ]
+        },
+        "else_actions": []
+      },
+      "ft_aaa_t1_by_t1_destroy_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "killedBy",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 0,
+            "object": "ft_t1_aaa_squad",
+            "killedByObject": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target": "ft_t1_aaa_squad",
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": []
+      },
+      "ft_aaa_t2_by_t2_destroy_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "killedBy",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 0,
+            "object": "ft_t2_aaa_squad",
+            "killedByObject": "t2_players_squad"
+          }
+        },
+        "actions": {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target": "ft_t2_aaa_squad",
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": []
+      }
     }
   },
   "mission_objectives": {
@@ -14315,7 +14981,19 @@
     "ft_generate_distance_between": 10000.0,
     "ft_balance_level_forced": 0,
     "ft_damage_t1_airfield_cur_hp": 0.0,
-    "ft_damage_t2_airfield_cur_hp": 0.0
+    "ft_damage_t2_airfield_cur_hp": 0.0,
+    "ft_generate_t1_aaa_far_idx": 0,
+    "ft_generate_t1_aaa_mid_idx": 0,
+    "ft_generate_t1_aaa_near_idx": 0,
+    "ft_generate_t2_aaa_far_idx": 0,
+    "ft_generate_t2_aaa_mid_idx": 0,
+    "ft_generate_t2_aaa_near_idx": 0,
+    "ft_generate_t1_aaa_cur_sub_idx": 0,
+    "ft_generate_t2_aaa_cur_sub_idx": 0,
+    "ft_generate_t1_aaa_cur_field_idx": 0,
+    "ft_generate_t2_aaa_cur_field_idx": 0,
+    "ft_generate_t1_aaa_next_trigger_name": "",
+    "ft_generate_t2_aaa_next_trigger_name": ""
   },
   "dialogs": [],
   "airfields": [],
