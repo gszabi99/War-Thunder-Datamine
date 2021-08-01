@@ -5,12 +5,13 @@ local voiceChat = require("chat/voiceChat.nut")
 local { safeAreaSizeHud } = require("style/screenState.nut")
 local radarComponent = require("radarComponent.nut")
 local fireControl = require("shipFireControl.nut")
+local { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
 
 
 local shipHud = @(){
-  watch = safeAreaSizeHud
+  watch = [safeAreaSizeHud, dmgIndicatorStates]
   size = [SIZE_TO_CONTENT, flex()]
-  padding = [0, 0, hdpx(32) + ::fpx(6), 0]
+  padding = dmgIndicatorStates.value.padding
   margin = safeAreaSizeHud.value.borders
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM

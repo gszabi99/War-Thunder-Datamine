@@ -9,15 +9,16 @@
   },
   {
     "tdiv": {
-      "pos": "10/720@scrn_tgt, ph - h - 10/720@scrn_tgt",
+      "pos": "@hudPadding, ph - h - @hudPadding",
       "position": "absolute",
+      "flow": "vertical",
       "dmgIndicator": {
         "id": "xray_render_dmg_indicator",
         "size": "@sizeDamageIndicator, @sizeDamageIndicator"
       },
       "tdiv": {
         "id": "mission_progress_place",
-        "height": "@missionProgressHeight",
+        "height": "@missionProgressHeight - @hudPadding",
         "display": "hide"
       }
     }
@@ -45,7 +46,7 @@
         "position": "absolute"
       },
       {
-        "pos": "0, ph - h -1@hudMisObjIconsSize -1@blockInterval"
+        "pos": "0, ph - h - @hudPadding"
       },
       {
         "flow": "vertical"

@@ -1,12 +1,13 @@
 local interopGet = require("interopGen.nut")
+local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
 
 local hudState = persist("hudState", @(){
   unitType = Watched("")
   cursorVisible = Watched(false)
   playerArmyForHud = Watched(-1)
   isPlayingReplay = Watched(false)
-  isVisibleDmgIndicator = Watched(false)
-  dmgIndicatorStates = Watched({ size = [0, 0], pos = [0, 0]})
+  isVisibleDmgIndicator = Watched(isDmgIndicatorVisible())
+  dmgIndicatorStates = Watched({ size = [0, 0], pos = [0, 0], padding = [0, 0, 0, 0]})
 })
 
 

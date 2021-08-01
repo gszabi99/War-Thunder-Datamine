@@ -19,7 +19,7 @@ global enum chatErrorName {
 }
 
 ::g_chat <- {
-  [PERSISTENT_DATA_PARAMS] = ["isThreadsView", "rooms", "threadsInfo", "userCaps", "userCapsGen",
+  [PERSISTENT_DATA_PARAMS] = ["rooms", "threadsInfo", "userCaps", "userCapsGen",
                               "threadTitleLenMin", "threadTitleLenMax"]
 
   MAX_ROOM_MSGS = 50
@@ -48,8 +48,6 @@ global enum chatErrorName {
 
   threadTitleLenMin = 8
   threadTitleLenMax = 160
-
-  isThreadsView = false
 
   rooms = [] //for full room params list check addRoom( function in menuchat.nut //!!FIX ME must be here, or separate class
   threadsInfo = {}
@@ -135,12 +133,6 @@ g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
   local msg = convertLinkToBlockedMsg(link)
   text = text.slice(0, start) + msg + text.slice(end)
   return text
-}
-
-
-g_chat.onCharConfigsLoaded <- function onCharConfigsLoaded()
-{
-  isThreadsView = ::has_feature("ChatThreadsView")
 }
 
 g_chat.checkChatConnected <- function checkChatConnected()
@@ -280,12 +272,7 @@ g_chat.getMyClanRoomId <- function getMyClanRoomId()
 
 g_chat.getBaseRoomsList <- function getBaseRoomsList() //base rooms list opened on chat load for all players
 {
-  local res = []
-  if (isThreadsView)
-    res.append(::g_chat_room_type.THREADS_LIST.getRoomId(""))
-  else
-    res.append(getSystemRoomId())
-  return res
+  return [::g_chat_room_type.THREADS_LIST.getRoomId("")]
 }
 
 g_chat._lastCleanTime <- -1
