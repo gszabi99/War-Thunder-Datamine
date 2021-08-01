@@ -1723,7 +1723,7 @@
             "target": "bombing_done"
           },
           {
-            "target": "yorktown_die"
+            "target": "yorktown_hit"
           },
           {
             "target": "torpedo_miss_hint"
@@ -2093,6 +2093,45 @@
       },
       "else_actions": []
     },
+    "yorktown_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isDamagedByPlayerBombOrTorp",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "tf17_cv5"
+        }
+      },
+      "actions": {
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "tf17_cv5"
+        },
+        "triggerEnable": {
+          "target": "yorktown_die"
+        }
+      },
+      "else_actions": []
+    },
     "yorktown_die": {
       "is_enabled": false,
       "comments": "",
@@ -2107,54 +2146,15 @@
         }
       },
       "conditions": {
-        "unitWhenPartHp": [
-          {
-            "func": "less"
-          },
-          {
-            "check_objects": "any"
-          },
-          {
-            "check_parts": "any"
-          },
-          {
-            "value": 0.9
-          },
-          {
-            "object": "tf17_cv5"
-          },
-          {
-            "partNo": 0
-          },
-          {
-            "partNo": 1
-          },
-          {
-            "partNo": 2
-          },
-          {
-            "partNo": 3
-          },
-          {
-            "partNo": 4
-          },
-          {
-            "partNo": 5
-          },
-          {
-            "partNo": 6
-          }
-        ],
-        "unitWhenStatus": {
-          "object_type": "isDamagedByPlayerBombOrTorp",
-          "object_marking": 0,
+        "unitWhenPartHp": {
+          "func": "less",
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object": "tf17_cv5"
+          "check_parts": "any",
+          "value": 0.99,
+          "object": "tf17_cv5",
+          "partNo": 1,
+          "planePart": "",
+          "tankPart": ""
         }
       },
       "actions": [
@@ -2228,7 +2228,8 @@
             "delay": [1.0,1.0],
             "offset": [0.0,0.0,0.0],
             "radiusOffset": [10.0,15.0],
-            "target": "tf17_cv5"
+            "target": "tf17_cv5",
+            "doExplosion": true
           }
         },
         {
