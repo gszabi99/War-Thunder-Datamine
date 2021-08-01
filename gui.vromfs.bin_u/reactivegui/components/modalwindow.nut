@@ -7,11 +7,8 @@ local frameHeaderHeight = ::scrn_tgt(0.045)
 local borderWidth = ::dp(1)
 
 local srw = ::Computed(@() ::min(::scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
-local maxWindowHeight = ::Computed(function() {
-  local srh = ::min(::scrn_tgt(1), safeAreaSizeMenu.value.size[1])
-  local maxWindowHeightNoSrh = safeAreaSizeMenu.value.size[1] - ::scrn_tgt(0.045) - ::fpx(59) - ::scrn_tgt(0.01)
-  return ::min(maxWindowHeightNoSrh, srh)
-})
+local maxWindowHeight = ::Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
+  - ::scrn_tgt(0.01) - ::fpx(59))
 
 local frameHeader = @(headerParams) {
   size = [flex(), frameHeaderHeight]
