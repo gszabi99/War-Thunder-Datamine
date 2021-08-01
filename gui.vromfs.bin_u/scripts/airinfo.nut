@@ -1537,7 +1537,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local showRewardsInfo = !(params?.showRewardsInfoOnlyForPremium ?? false) || special
   local rpRewardObj = ::showBtn("aircraft-reward_rp-tr", showRewardsInfo, holderObj)
   local wpRewardObj = ::showBtn("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
-  if (showRewardsInfo && (rpRewardObj != null || wpRewardObj!=null))
+  local wpTimedRewardObj = ::showBtn("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
+  if (showRewardsInfo && (rpRewardObj != null || wpRewardObj != null || wpTimedRewardObj != null))
   {
     local hasPremium  = ::havePremium()
     local hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
@@ -1549,44 +1550,72 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       wpMuls.premMul = 1.0
 
     local wpMultText = [ wpMuls.wpMul.tostring() ]
-    if (wpMuls.premMul != 1.0)
+    local wpTimedText = [ wpMuls.wpTimed.tostring() ]
+    if (wpMuls.premMul != 1.0) {
       wpMultText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
         ::colorize("yellow", ::format("%.1f", wpMuls.premMul)))
+      wpTimedText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
+        ::colorize("yellow", ::format("%.1f", wpMuls.premMul)))
+    }
     wpMultText = "".join(wpMultText)
+    wpTimedText = "".join(wpTimedText)
 
     local rewardFormula = {
       rp = {
         obj           = rpRewardObj
+        locId         = "reward"
         currency      = "currency/researchPoints/sign/colored"
+        isTimedAward  = false
         multText      = air.expMul.tostring()
         multiplier    = air.expMul
         premUnitMul   = 1.0
         noBonus       = 1.0
         premAccBonus  = hasPremium  ? ((rBlk?.xpMultiplier ?? 1.0) - 1.0)    : 0.0
         premModBonus  = hasTalisman ? ((rBlk?.goldPlaneExpMul ?? 1.0) - 1.0) : 0.0
-        boosterBonus  = ::getTblValue(boosterEffectType.RP.name, boosterEffects, 0) / 100.0
+        boosterBonus  = (boosterEffects?[boosterEffectType.RP.name] ?? 0) / 100.0
       }
       wp = {
         obj           = wpRewardObj
+        locId         = "reward"
         currency      = "warpoints/short/colored"
+        isTimedAward  = false
         multText      = wpMultText
         multiplier    = wpMuls.wpMul
         premUnitMul   = wpMuls.premMul
         noBonus       = 1.0
         premAccBonus  = hasPremium ? ((wBlk?.wpMultiplier ?? 1.0) - 1.0) : 0.0
         premModBonus  = 0.0
-        boosterBonus  = ::getTblValue(boosterEffectType.WP.name, boosterEffects, 0) / 100.0
+        boosterBonus  = (boosterEffects?[boosterEffectType.WP.name] ?? 0) / 100.0
+      }
+      wp_timed = {
+        obj           = wpTimedRewardObj
+        locId         = "max_timed_reward"
+        currency      = "warpoints/short/colored"
+        isTimedAward  = true
+        multText      = wpTimedText
+        multiplier    = wpMuls.wpTimed
+        premUnitMul   = wpMuls.premMul
+        noBonus       = 1.0
+        premAccBonus  = hasPremium ? ((wBlk?.wpMultiplier ?? 1.0) - 1.0) : 0.0
+        premModBonus  = 0.0
+        boosterBonus  = (boosterEffects?[boosterEffectType.WP.name] ?? 0) / 100.0
       }
     }
 
+    local hasTimedAward = false
     foreach (id, f in rewardFormula)
     {
       if (f.obj == null)
         continue
 
+      if (f.multiplier == 0)
+        continue
+
+      if (!hasTimedAward && f.isTimedAward)
+        hasTimedAward = true
       local result = f.multiplier * f.premUnitMul * ( f.noBonus + f.premAccBonus + f.premModBonus + f.boosterBonus )
-      local resultText = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(result)
-      resultText = ::colorize("activeTextColor", resultText) + ::loc(f.currency)
+      local resultText = f.isTimedAward ? result : ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(result)
+      resultText = "".concat(::colorize("activeTextColor", resultText), ::loc(f.currency), f.isTimedAward ? ::loc("measureUnits/perMinute") : "")
 
       local formula = ::handyman.renderCached("gui/debriefing/rewardSources", {
         multiplier = f.multText
@@ -1597,7 +1626,17 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       })
 
       holderObj.getScene().replaceContentFromText(f.obj.findObject($"aircraft-reward_{id}"), formula, formula.len(), handler)
-      f.obj.findObject($"aircraft-reward_{id}-label").setValue($"{::loc("reward")} {resultText}{::loc("ui/colon")}")
+      local rewardText = ::loc(f.locId)
+      if (f.isTimedAward)
+        rewardText = "".concat(rewardText, showReferenceText ? "**" : "*")
+      f.obj.findObject($"aircraft-reward_{id}-label").setValue($"{rewardText} {resultText}{::loc("ui/colon")}")
+    }
+
+    local timedAwardHintTextObj = holderObj.findObject("timed_award_hint_text")
+    if (timedAwardHintTextObj?.isValid() && hasTimedAward) {
+      local hintText = ::colorize("fadedTextColor", ::loc("shop/timed_award_hint", {note_symbol = showReferenceText ? "**" : "*"}))
+      timedAwardHintTextObj.setValue(hintText)
+      timedAwardHintTextObj.show(true)
     }
   }
 

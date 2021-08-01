@@ -174,32 +174,6 @@ global const EDIFF_SHIFT = 3
   return unitBlk?["economicRank" + mode_name] ?? 0
 }
 
-::player_activity_coef <- function player_activity_coef(score, time)
-{
-  local mis = ::get_current_mission_info_cached()
-  local ws = ::get_warpoints_blk()
-  local mScoreBase = ws?.mScoreBase ?? 1.0
-  local mScorePow = ws?.mScorePow ?? 0.0
-  local standartMissionTime = ws?.standartMissionTime ?? 600.0
-  local standartMissionTimePow = ws?.standartMissionTimePow ?? 1.0
-
-  local customScoreMul = mis?.customScoreMul ?? 1.0
-  local customScore = score * customScoreMul
-
-  local scoreToTime = 0.0
-  if (time > standartMissionTime)
-    time = standartMissionTime + ::pow(time-standartMissionTime, standartMissionTimePow)
-
-  if (time > 0.01)
-    scoreToTime = ::pow(customScore.tofloat(), mScorePow)/time
-
-  local activity_coef = (1.0 - ::pow(mScoreBase, scoreToTime))
-
-  dagor.debug("player_activity_coef: "+activity_coef+" score "+score+" time "+time+" customScore "+customScore+" mScoreBase "+mScoreBase+ " scoreToTime "+scoreToTime+" mScorePow "+mScorePow+" customScoreMul "+customScoreMul)
-
-  return ::round(activity_coef, 2);
-}
-
 ::isUnitSpecial <- function isUnitSpecial(unit)
 {
   return ("costGold" in unit && unit.costGold.tointeger() > 0) ||

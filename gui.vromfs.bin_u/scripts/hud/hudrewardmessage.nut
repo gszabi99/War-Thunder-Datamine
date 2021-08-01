@@ -41,7 +41,8 @@ global enum REWARD_PRIORITY {
   hit,
   critical,
   assist,
-  kill
+  kill,
+  timed_award
 }
 
 ::g_hud_reward_message.template <- {
@@ -221,6 +222,13 @@ enums.addTypesByGlobalName("g_hud_reward_message", {
     locId  = "exp_reasons/scout_kill_unknown"
     viewClass = "scout"
     priority = REWARD_PRIORITY.scout_kill_unknown
+  }
+
+  TIMED_AWARD = {
+    code = ::EXP_EVENT_TIMED_AWARD
+    locId  = "exp_reasons/timed_award"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.timed_award
   }
 
 })

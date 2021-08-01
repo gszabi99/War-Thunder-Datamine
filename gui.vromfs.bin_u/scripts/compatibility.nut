@@ -62,3 +62,8 @@
   set_commander_camera_in_views = @(value) null
 })
 
+//----------------------------wop_2_7_0_X---------------------------------//
+::apply_compatibilities({
+  EXP_EVENT_TIMED_AWARD = 29
+})
+

@@ -159,6 +159,10 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     type = "ptm"
     icon = "icon/mpstats/raceBestLapTime"
   }
+  { id = "TimedAward"
+    type = ""
+    text = "exp_reasons/timed_award"
+  }
   { id = "BattleTime"
     text = "debriefing/activityTime"
     type = "tim"
@@ -166,6 +170,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     hideUnitSessionTimeInTooltip = true
   }
   { id = "Activity"
+    customValueName = "activity"
     type = "pct"
     showByModes = function(gm) { return gm == ::GM_DOMINATION }
     showOnlyWhenFullResult = true
@@ -543,8 +548,7 @@ global enum debrState {
     airData.pctActivity <- 0
   }
   ::debriefing_result.exp.timePlayed <- timePlayed
-  local sessionActivity = ::player_activity_coef(score, ((sessionTime+0.5).tointeger()).tofloat())
-  ::debriefing_result.exp.pctActivity <- sessionActivity
+  local sessionActivity = ::debriefing_result.exp?.activity ?? 0
 
   local pveRewardInfo = ::get_pve_reward_trophy_info(sessionTime, sessionActivity, ::debriefing_result.isSucceed)
   if (pveRewardInfo)

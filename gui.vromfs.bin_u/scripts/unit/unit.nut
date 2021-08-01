@@ -361,9 +361,11 @@ local Unit = class
     local premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
     local mul = (uWpCost?["rewardMul" + mode] ?? 1.0) *
       (warpoints?.rewardMulVisual?["rewardMulVisual" + mode] ?? 1.0)
+    local timedAward = uWpCost?[$"timedAward{mode}"] ?? 0
 
     return {
       wpMul   = stdMath.round_by_value(mul * (1.0 - premPart), isSpecial ? 0.05 : 0.1)
+      wpTimed = timedAward * (1.0 - premPart)
       premMul = stdMath.round_by_value(1.0 / (1.0 - premPart), 0.1)
     }
   }

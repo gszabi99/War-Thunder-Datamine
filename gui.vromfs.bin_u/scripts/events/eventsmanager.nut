@@ -2616,6 +2616,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     textsList.append(descFormat(::loc("reward"), getEventRewardText(event)))
     textsList.append(descFormat(::loc("events/specialRequirements"), getSpecialRequirementsText(event, ", ")))
     textsList.append(getUnlockProgress(event))
+    textsList.append(getTimeAwardingEconomicsDesc(event))
 
     if (mroom)
       textsList.append(descFormat(::loc("options/cluster"),
@@ -2695,6 +2696,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (::getTblValue("gt_use_unlocks", event.mission_decl, true))
       return ""
     return ::loc("events/no_unlock_progress")
+  }
+
+  function getTimeAwardingEconomicsDesc(event)
+  {
+    return event.mission_decl?.useTimeAwardingEconomics ? ::loc("events/has_time_awarding_economics") : ""
   }
 
   function isEventForClanGlobalLb(event)
