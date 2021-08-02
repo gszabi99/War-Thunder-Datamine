@@ -2358,7 +2358,8 @@
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "maxAdditionalPitch": 0.0,
-          "recoilMultiplier": 0.6,
+          "recoilOffset": 0.3,
+          "recoilMultiplier": 0.5,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
@@ -2389,12 +2390,18 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-6.0,13.0]
+            "pitch": [-8.0,15.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-95.0,-6.0,8.0],
-            "lim2": [-95.0,95.0,-6.0,13.0],
-            "lim3": [95.0,180.0,-6.0,8.0]
+            "lim1": [-180.0,-170.0,-8.0,15.0],
+            "lim2": [-170.0,-145.0,-5.0,15.0],
+            "lim3": [-145.0,-35.0,-8.0,15.0],
+            "lim4": [-35.0,-10.0,-5.0,15.0],
+            "lim5": [-10.0,10.0,-8.0,15.0],
+            "lim6": [10.0,35.0,-5.0,15.0],
+            "lim7": [35.0,145.0,-8.0,15.0],
+            "lim8": [145.0,170.0,-5.0,15.0],
+            "lim9": [170.0,180.0,-8.0,15.0]
           }
         }
       },
@@ -2497,7 +2504,7 @@
           "useEmitter": true,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_02_dm",
+          "barrelDP": "gun_barrel_04_dm",
           "parkInDeadzone": false,
           "speedYaw": 30.0,
           "speedPitch": 20.0,
@@ -3309,7 +3316,7 @@
       "sightFov": 5.0,
       "sightName": "l_862",
       "headPos": [0.0,3.4,-7.0],
-      "headPosOnShooting": [-1.0,3.1,-0.43],
+      "headPosOnShooting": [0.0,3.1,-0.43],
       "detectionHeight": 2.58
     }
   },
@@ -3333,9 +3340,9 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
+      "90mm_CN90_HEAT": [],
       "90mm_CN90_HE": [],
       "90mm_CN90_Smoke": [],
-      "90mm_CN90_HEAT": [],
       "90mm_CN90_Smoke_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
         "tier": 3,
@@ -3348,7 +3355,8 @@
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
                 "maxAdditionalPitch": 0.0,
-                "recoilMultiplier": 0.6,
+                "recoilOffset": 0.3,
+                "recoilMultiplier": 0.5,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
@@ -3379,12 +3387,18 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-6.0,13.0]
+                  "pitch": [-8.0,15.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-95.0,-6.0,8.0],
-                  "lim2": [-95.0,95.0,-6.0,13.0],
-                  "lim3": [95.0,180.0,-6.0,8.0]
+                  "lim1": [-180.0,-170.0,-8.0,15.0],
+                  "lim2": [-170.0,-145.0,-5.0,15.0],
+                  "lim3": [-145.0,-35.0,-8.0,15.0],
+                  "lim4": [-35.0,-10.0,-5.0,15.0],
+                  "lim5": [-10.0,10.0,-8.0,15.0],
+                  "lim6": [10.0,35.0,-5.0,15.0],
+                  "lim7": [35.0,145.0,-8.0,15.0],
+                  "lim8": [145.0,170.0,-5.0,15.0],
+                  "lim9": [170.0,180.0,-8.0,15.0]
                 }
               }
             },
@@ -3487,7 +3501,7 @@
                 "useEmitter": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_02_dm",
+                "barrelDP": "gun_barrel_04_dm",
                 "parkInDeadzone": false,
                 "speedYaw": 30.0,
                 "speedPitch": 20.0,
