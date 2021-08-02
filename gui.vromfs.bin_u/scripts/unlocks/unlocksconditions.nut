@@ -136,6 +136,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     crewsUnitMRank         = "crewsUnit"
     crewsTag               = "crewsUnit"
     offenderIsSupportGun   = "weaponType"
+    bulletModName          = "weaponType"
     targetUnitClass        = "targetExpClass"
   }
 
@@ -689,6 +690,8 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     res.values = format("%d %s", (blk?.caliber ?? 1) * 1000, ::loc("measureUnits/mm"))
     res.gt <- blk?.notLess ?? true
   }
+  else if (t == "bulletModName")
+    res.values = (blk % "name")
 
   local overrideCondType = getOverrideCondType(blk, unlockMode)
   if (overrideCondType)

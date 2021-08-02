@@ -182145,14 +182145,14 @@
         {
           "condition": {
             "type": "battlepassSeason",
-            "season": 2
+            "season": 3
           }
         },
         {
           "condition": {
             "type": "char_time_range",
-            "beginDate": "2021-05-12 12:00:00",
-            "endDate": "2021-07-28 11:59:00"
+            "beginDate": "2021-07-28 12:00:00",
+            "endDate": "2021-10-27 11:59:00"
           }
         }
       ]
@@ -182493,6 +182493,81 @@
             "type": "char_time_range",
             "beginDate": "2021-06-09 12:00:00",
             "endDate": "2021-07-28 12:00:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season4_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season4_purchased_entitlement",
+      "userLogId": "battlepass_season4_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season4_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season4_purchased_item",
+      "type": "inventory",
+      "userLogId": "730002",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season4_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season4_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season4_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_always_progress"
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season4_allow_skip_all_stages",
+            "invertResult": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason4Purchased"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_time_range",
+            "beginDate": "2021-08-25 12:00:00",
+            "endDate": "2021-10-27 12:00:00"
           }
         }
       ]

@@ -28,8 +28,13 @@ local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
     local chapterAndGroupText = []
     if ("chapter" in unlockBlk)
       chapterAndGroupText.append(::loc($"unlocks/chapter/{unlockBlk.chapter}"))
-    if ((unlockBlk?.group ?? "") != "")
-      chapterAndGroupText.append(::loc($"unlocks/group/{unlockBlk.group}"))
+    if ((unlockBlk?.group ?? "") != "") {
+      local locId = $"unlocks/group/{unlockBlk.group}"
+      local parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
+      if (parentUnlock?.chapter == unlockBlk?.chapter)
+        locId = $"{parentUnlock.id}/name"
+      chapterAndGroupText.append(::loc(locId))
+    }
 
     unlockObj.tooltip = "\n".join([::colorize("unlockHeaderColor", title),
       chapterAndGroupText.len() > 0 ? $"({", ".join(chapterAndGroupText, true)})" : "",

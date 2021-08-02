@@ -131,16 +131,11 @@ local unlockConditionUnitclasses = {
 {
   local descData = [::getTblValue("stagesText", data, "")]
 
-  if (::getTblValue("locDescId", data, "") != "")
-    descData.append(::loc(data.locDescId))
-
-  if ("desc" in data)
-    descData.append(data.desc)
-
+  local isBitMode = ::UnlockConditions.isBitModeType(data.type)
   local curVal = params?.curVal
   if (curVal == null)
   {
-    local isComplete = ::UnlockConditions.isBitModeType(data.type)
+    local isComplete = isBitMode
       ? stdMath.number_of_set_bits(data.curVal) >= stdMath.number_of_set_bits(data.maxVal)
       : data.curVal >= data.maxVal
     curVal = isComplete ? null : data.curVal
@@ -149,6 +144,13 @@ local unlockConditionUnitclasses = {
   local maxVal = params?.maxVal
   if (maxVal == null)
     maxVal = data.maxVal
+
+  if ((data?.locDescId ?? "") != "") {
+    local descValue = isBitMode ? stdMath.number_of_set_bits(maxVal) : maxVal
+    descData.append(::loc(data.locDescId, { num = descValue }))
+  }
+  else if ((data?.desc ?? "") != "")
+    descData.append(data.desc)
 
   params.isExpired <- data.isExpired
   descData.append(::UnlockConditions.getConditionsText(data.conditions, curVal, maxVal, params))
@@ -998,9 +1000,7 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       return ::loc("title/"+id)
 
     case ::UNLOCKABLE_PILOT:
-      return ""
-             //(::loc("pilots/"+id+"/firstName"))
-             // + " " + (::loc("pilots/"+id+"/lastName"))
+      return ::loc($"{id}/name", "")
 
     case ::UNLOCKABLE_STREAK:
       local unlockBlk = ::g_unlocks.getUnlockById(id)

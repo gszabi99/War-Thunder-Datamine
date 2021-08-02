@@ -666,7 +666,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
           view.items.append({
             id = id
-            itemText = "#unlocks/group/" + groupName
+            itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
           })
         }
     }
