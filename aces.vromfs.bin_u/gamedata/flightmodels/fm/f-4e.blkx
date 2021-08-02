@@ -39,7 +39,7 @@
   "RudderAngles": [30.0,30.0],
   "Elevon": false,
   "VSlats": [150.0,200.0],
-  "FlapsToSlats": [0.0,0.0,0.2,1.0],
+  "FlapsToSlats": [0.0,0.0,0.0,0.0],
   "Vne": 1458.0,
   "VneMach": 2.45,
   "MaxSpeedNearGround": 932.997,
@@ -75,8 +75,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": false,
     "hasAirbrake": true,
     "hasGearControl": true,
     "hasArrestorControl": true,
@@ -170,7 +168,7 @@
     "SpinClLoss": 0.1,
     "SpinCdLoss": 0.1,
     "OswaldsEfficiencyNumber": 0.65,
-    "lineClCoeff": 0.047,
+    "lineClCoeff": 0.046,
     "AfterCritParabAngle": 2.0,
     "AfterCritDeclineCoeff": 0.002,
     "AfterCritMaxDistanceAngle": 39.0,
@@ -216,17 +214,63 @@
     "DownwashCoeff": 1.0,
     "StabFlowInertia": 0.08,
     "VertStabFlowInertia": 0.06,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 0.2,
+      "FlapsPolarBlending": 0.2,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 1.0
+    },
+    "Flaps2": {
+      "Flaps": 0.33,
+      "FlapsPolarBlending": 0.33,
+      "FlapsAnimation": 0.33,
+      "Stab": 0.0,
+      "Slats": 1.0
+    },
+    "Flaps3": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": 0.0,
+      "Slats": 1.0
+    },
     "NoFlaps": {
       "Cl0": 0.03,
-      "alphaCritHigh": 29.0,
-      "alphaCritLow": -22.0,
+      "alphaCritHigh": 32.0,
+      "alphaCritLow": -24.0,
       "ClCritHigh": 1.15,
       "ClCritLow": -0.7,
       "CdMin": 0.0083
     },
     "FullFlaps": {
       "Cl0": 0.4,
-      "alphaCritHigh": 30.0,
+      "alphaCritHigh": 33.0,
       "alphaCritLow": -25.0,
       "ClCritHigh": 1.33,
       "ClCritLow": -0.35,
