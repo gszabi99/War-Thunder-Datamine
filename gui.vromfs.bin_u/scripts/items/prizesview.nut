@@ -1236,7 +1236,7 @@ PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize
     local gcb = globalCallbacks.DECORATOR_PREVIEW
     local decType = ::g_decorator_type.getTypeByResourceType(resourceType)
     local decorator = ::g_decorator.getDecorator(resource, decType)
-    if (decorator.canPreview())
+    if (decorator?.canPreview())
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"
         tooltip = "#mainmenu/btnPreview"
