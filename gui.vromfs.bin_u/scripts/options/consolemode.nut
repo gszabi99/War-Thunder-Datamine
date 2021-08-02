@@ -6,7 +6,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
          || isPlatformXboxOne
          || ::is_platform_android
          || ::is_platform_shield_tv()
-         || ::is_steam_big_picture()
+         || (::is_steam_big_picture() && ::have_xinput_device())
 }
 
 ::get_is_console_mode_enabled <- function get_is_console_mode_enabled()

@@ -1,5 +1,6 @@
 local stdMath = require("std/math.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { get_default_lang } = require("platform")
 
 ::g_language <- {
   currentLanguage = null
@@ -164,7 +165,8 @@ g_language.saveLanguage <- function saveLanguage(langName)
   shortLangName = ::loc("current_lang")
   ::g_language.onChangeLanguage()
 }
-::g_language.saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? "English")
+
+::g_language.saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
 
 g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false)
 {
