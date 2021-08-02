@@ -8,6 +8,7 @@ local seenBattlePassShop = require("scripts/seen/seenList.nut").get(SEEN.BATTLE_
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local { itemsShopListVersion, inventoryListVersion } = require("scripts/items/itemsManager.nut")
 local { isInBattleState } = require("scripts/clientState/clientStates.nut")
+local { isProfileReceived } = require("scripts/login/loginStates.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -18,11 +19,13 @@ local getSortedAdditionalTrophyItems = @(additionalTrophy) additionalTrophy
 local getAdditionalTrophyItemForBuy = @(additionalTrophyItems) (additionalTrophyItems
   .filter(@(item) item?.isCanBuy() && item?.canBuyTrophyByLimit()))?[0]
 
+//do not update anything in battle or profile not recived, as it can be time consuming and not needed in battle anyway
+local canUpdateConfig = ::Computed(@() isProfileReceived.value && !isInBattleState.value)
+
 local seasonShopConfig = ::Computed(function(prev) {
-  //do not update anything in battle, as it can be time consuming and not needed in battle anyway
-  if (prev != frpINITIAL && isInBattleState.value)
+  if (prev != frpINITIAL && !canUpdateConfig.value)
     return prev
-  else if (prev == frpINITIAL && isInBattleState.value)
+  else if (prev == frpINITIAL && !canUpdateConfig.value)
     return {}
 
   local checkItemsShopListVersion = itemsShopListVersion.value // -declared-never-used
