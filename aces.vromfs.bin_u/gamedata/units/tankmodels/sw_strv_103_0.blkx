@@ -369,8 +369,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
-        "armorThickness": 25.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -2388,7 +2388,7 @@
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "autoLoader": true,
-          "speedYaw": 60.0,
+          "speedYaw": 30.0,
           "speedPitch": 5.0,
           "fireConeAngle": 1.0,
           "bullets": 50,
@@ -2424,12 +2424,8 @@
             "horizontal": true,
             "vertical": true,
             "defaultEnabled": true,
-            "accumulatedControlAngle": 0.45,
-            "horizontalDk": 3.3,
-            "horizontalPkPrecise": 25.0,
-            "horizontalPkRough": 6.7,
-            "horizontalIk": 5000.0,
-            "powerMult": 0.4
+            "maxAllowedRoll": 45.0,
+            "canAimingWithOneTrack": true
           }
         }
       },
@@ -2663,7 +2659,8 @@
       "engine": {
         "horsePowers": 540.0,
         "maxRPM": 3600.0,
-        "minRPM": 600.0
+        "minRPM": 600.0,
+        "electricDriveMoment": 700.0
       },
       "mechanics": {
         "maxBrakeForce": 200000.0,
@@ -2727,6 +2724,7 @@
       },
       "movableSuspension": {
         "speed": 1.0,
+        "electricalDriveSpeed": 0.5,
         "maxSpeedForMove": 70.0,
         "pitch": {
           "wheel_l_01": [],
