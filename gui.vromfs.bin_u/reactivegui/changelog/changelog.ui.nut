@@ -193,8 +193,10 @@ local function onCloseAction() {
   ::cross_call.startMainmenu()
 }
 
-local btnNext  = commonTextButton(::loc("mainmenu/btnNextItem"), nextPatchNote, {hotkeys=[["{0} | Esc".subst(JB.B)]], margin=0})
-local btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction, {hotkeys=[["{0} | Esc".subst(JB.B)]], margin=0})
+local btnNext  = commonTextButton(::loc("mainmenu/btnNextItem"), nextPatchNote,
+  {hotkeys=[["{0} | Tab".subst(JB.B)]], margin=0})
+local btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction,
+  {hotkeys=[["{0}".subst(JB.B)]], margin=0})
 
 local nextButton = @() {
   watch = [curPatchnoteIdx]

@@ -47,4 +47,4 @@ local dbgStartCheck = 0
   ::gui_start_mainmenu()
 }
 
-::cross_call_api.startMainmenu <- @() ::switch_gui_scene(::gui_start_mainmenu)
+::cross_call_api.startMainmenu <- @() ::switch_gui_scene(::gui_start_mainmenu_reload)

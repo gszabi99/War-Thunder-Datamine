@@ -839,6 +839,7 @@
         "ammo_body_53_dm": [],
         "ammo_body_54_dm": [],
         "ammo_body_55_dm": [],
+        "ammo_body_56_dm": [],
         "ammo_body_l_01_dm": [],
         "ammo_body_l_02_dm": [],
         "ammo_body_l_03_dm": [],
@@ -1225,6 +1226,21 @@
           },
           {
             "name": "ammo_body_55_dm"
+          },
+          {
+            "name": "ammo_body_56_dm"
+          },
+          {
+            "name": "ammo_body_57_dm"
+          },
+          {
+            "name": "ammo_body_58_dm"
+          },
+          {
+            "name": "ammo_body_59_dm"
+          },
+          {
+            "name": "ammo_body_60_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2046,10 +2062,17 @@
         "role": "driver",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2647,6 +2670,9 @@
               "gunnerDm": "gunner_dm"
             },
             {
+              "secondGunnerDm": "commander_dm"
+            },
+            {
               "linkedAnimPart": {
                 "verNode": "bone_gun_roller_02",
                 "verLimits": [-6.0,17.0],
@@ -2771,7 +2797,8 @@
             "turret": {
               "head": "bone_mg_twin",
               "gun": "bone_mg_twin",
-              "gunnerDm": "gunner_dm"
+              "gunnerDm": "gunner_dm",
+              "secondGunnerDm": "commander_dm"
             }
           },
           {
@@ -3555,6 +3582,9 @@
                     "gunnerDm": "gunner_dm"
                   },
                   {
+                    "secondGunnerDm": "commander_dm"
+                  },
+                  {
                     "linkedAnimPart": {
                       "verNode": "bone_gun_roller_02",
                       "verLimits": [-6.0,17.0],
@@ -3679,7 +3709,8 @@
                   "turret": {
                     "head": "bone_mg_twin",
                     "gun": "bone_mg_twin",
-                    "gunnerDm": "gunner_dm"
+                    "gunnerDm": "gunner_dm",
+                    "secondGunnerDm": "commander_dm"
                   }
                 },
                 {

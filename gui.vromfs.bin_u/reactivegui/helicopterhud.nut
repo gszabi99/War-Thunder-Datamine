@@ -1,5 +1,5 @@
 local {round} = require("std/math.nut")
-local {safeAreaSizeHud} = require("style/screenState.nut")
+local {safeAreaSizeHud, bw, bh, rw, rh} = require("style/screenState.nut")
 local tws = require("tws.nut")
 local {IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon} = require("twsState.nut")
 local radarComponent = require("radarComponent.nut")
@@ -255,7 +255,7 @@ local paramsSightTableWidth = hdpx(270)
 
 local helicopterParamsTable = hudElems.paramsTable(MainMask,
   paramsTableWidth,
-  [max(safeAreaSizeHud.value.borders[1], sw(50) - hdpx(660)), sh(50) - hdpx(100)],
+  [max(bw(), sw(50) - hdpx(660)), sh(50) - hdpx(100)],
   hdpx(5))
 
 local helicopterSightParamsTable = hudElems.paramsTable(SightMask,
@@ -399,7 +399,7 @@ local function helicopterMainHud(elemStyle, isBackground) {
       helicopterGunDirection(elemStyle, isBackground, false)
       helicopterFixedGunsDirection(elemStyle, isBackground)
       helicopterCCRP(elemStyle, isBackground)
-      hudElems.vertSpeed(elemStyle, sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), isBackground)
+      hudElems.vertSpeed(elemStyle, sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), isBackground)
       hudElems.horSpeed(elemStyle, isBackground)
       helicopterParamsTable(elemStyle, isBackground)
       azimuth
@@ -486,9 +486,10 @@ local function weaponHud(elemStyle, isBackground) {
 
 local rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 local function mkTws(colorStyle){
-  local twsPosY = IsTwsActivated.value ? sh(50) : safeAreaSizeHud.value.size[1] * 0.05
   local twsSize = IsTwsActivated.value ? sh(20) : sh(5)
-  local twsPosX = IsTwsActivated.value ? safeAreaSizeHud.value.size[0] - twsSize - sw(1.5) : safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.40
+  local twsPosX = IsTwsActivated.value ? bw() + rw(96.5) - twsSize : bw() + rw(74)
+  local twsPosY = IsTwsActivated.value ? bh() + rh(50) : bh() + rh(3)
+
   if (IsTwsActivated.value || !CollapsedIcon.value){
     return @(){
     children = (!IsMlwsLwsHudVisible.value && !IsRwrHudVisible.value) ? null :
@@ -502,8 +503,8 @@ local function mkTws(colorStyle){
   }
   else if (IsMlwsLwsHudVisible.value || IsRwrHudVisible.value){
     return @() colorStyle.__merge({
-      pos = [safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.35, safeAreaSizeHud.value.size[1] * 0.05]
-      size = [sh(5), sh(5)]
+      pos = [twsPosX, twsPosY]
+      size = [twsSize, twsSize]
       rendObj = ROBJ_IMAGE
       image = rwrPic
       color = colorStyle.color
@@ -515,9 +516,9 @@ local function mkTws(colorStyle){
 local radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 local function mkRadar(colorStyle) {
   local radarVisible = radarComponent.state.IsRadarVisible.value || radarComponent.state.IsRadar2Visible.value
-  local radarPosY = radarVisible ? sh(6) : safeAreaSizeHud.value.size[1] * 0.25
-  local radarPosX = radarVisible ? sw(6) : safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.40
-  local radarSize = radarVisible ? sh(28) : sh(8)
+  local radarPosX = radarVisible ? bw() + rw(5) : bw() + rw(74)
+  local radarPosY = radarVisible ? bh() + rh(5) : bh() + rh(30)
+  local radarSize = radarVisible ? sh(28) : sh(5)
   if (radarVisible || !CollapsedIcon.value){
     return {
       children = radarComponent.mkRadar(radarPosX, radarPosY, radarSize, true, colorStyle.color)
@@ -525,8 +526,8 @@ local function mkRadar(colorStyle) {
   }
   else if (radarComponent.state.IsRadarHudVisible.value){
     return colorStyle.__merge({
-      pos = [safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.35, safeAreaSizeHud.value.size[1] * 0.25]
-      size = [sh(5), sh(5)]
+      pos = [radarPosX, radarPosY]
+      size = [radarSize, radarSize]
       rendObj = ROBJ_IMAGE
       image = radarPic
       color = colorStyle.color
@@ -572,6 +573,7 @@ local function Root() {
       radarComponent.state.IsRadarVisible
       radarComponent.state.IsRadar2Visible
       radarComponent.state.IsRadarHudVisible
+      safeAreaSizeHud
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP

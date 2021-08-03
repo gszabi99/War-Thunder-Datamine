@@ -5,7 +5,12 @@ class ::items_classes.Unlock extends ItemCouponBase {
   static typeIcon = "#ui/gameuiskin#item_type_unlock"
 
   getUnlockId          = @() metaBlk?.unlock ?? metaBlk?.unlockAddProgress
-  canConsume           = @() isInventoryItem && getUnlockId() != null
+  canConsume           = @() isInventoryItem && canReceivePrize()
+
+  function canReceivePrize() {
+    local unlockId = getUnlockId()
+    return unlockId != null && !::is_unlocked_scripted(-1, unlockId)
+  }
 
   function getSmallIconName() {
     local unlock = getUnlock()

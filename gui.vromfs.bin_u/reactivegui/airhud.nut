@@ -4,7 +4,7 @@ local opticAtgmSight = require("opticAtgmSight.nut")
 local {OpticAtgmSightVisible, AtgmTrackerVisible, IsLaserDesignatorEnabled, LaserPoint, IsWeaponHudVisible} = require("planeState.nut")
 local {IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon} = require("twsState.nut")
 local {hudFontHgt, greenColor, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
-local {safeAreaSizeHud} = require("style/screenState.nut")
+local {safeAreaSizeHud, bw, bh, rw, rh} = require("style/screenState.nut")
 local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
 
@@ -25,8 +25,8 @@ local style = {
 
 local rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 local function mkTws (colorStyle) {
-  local twsPosX = IsTwsActivated.value ? sw(2) : safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.40
-  local twsPosY = IsTwsActivated.value ? sh(37) : safeAreaSizeHud.value.size[1] * 0.05
+  local twsPosX = IsTwsActivated.value ? bw() + rw(1) : bw() + rw(74)
+  local twsPosY = IsTwsActivated.value ? bh() + rh(37) : bh() + rh(3)
   local twsSize = IsTwsActivated.value ? sh(20) : sh(5)
   if (IsTwsActivated.value || !CollapsedIcon.value){
     return @() {
@@ -41,8 +41,8 @@ local function mkTws (colorStyle) {
   }
   else if (IsMlwsLwsHudVisible.value || IsRwrHudVisible.value){
     return @() style.__merge({
-      pos = [safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.35, safeAreaSizeHud.value.size[1] * 0.05]
-      size = [sh(5), sh(5)]
+      pos = [twsPosX, twsPosY]
+      size = [twsSize, twsSize]
       rendObj = ROBJ_IMAGE
       image = rwrPic
       color = style.color
@@ -55,9 +55,9 @@ local function mkTws (colorStyle) {
 local radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 local function mkRadar() {
   local radarVisible = radarComponent.state.IsRadarVisible.value || radarComponent.state.IsRadar2Visible.value
-  local radarPosY = radarVisible ? sh(44) : safeAreaSizeHud.value.size[1] * 0.25
-  local radarSize = radarVisible ? sh(28) : sh(8)
-  local radarPosX = radarVisible ? safeAreaSizeHud.value.size[0] - radarSize - sw(1.5) : safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.40
+  local radarSize = radarVisible ? sh(28) : sh(5)
+  local radarPosX = radarVisible ? bw() + rw(99) - radarSize: bw() + rw(74)
+  local radarPosY = radarVisible ? bh() + rh(43) : bh() + rh(30)
   if (radarVisible || !CollapsedIcon.value){
     return {
       children = radarComponent.mkRadar(radarPosX, radarPosY, radarSize, true)
@@ -65,8 +65,8 @@ local function mkRadar() {
   }
   else if (radarComponent.state.IsRadarHudVisible.value){
     return style.__merge({
-      pos = [safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.35, safeAreaSizeHud.value.size[1] * 0.25]
-      size = [sh(5), sh(5)]
+      pos = [radarPosX, radarPosY]
+      size = [radarSize, radarSize]
       rendObj = ROBJ_IMAGE
       image = radarPic
       color = style.color
@@ -123,7 +123,7 @@ local function Root() {
     size = [sw(100), sh(100)]
     watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated,
       radarComponent.state.IsRadarVisible, radarComponent.state.IsRadar2Visible,
-      radarComponent.state.IsRadarHudVisible, OpticAtgmSightVisible]
+      radarComponent.state.IsRadarHudVisible, OpticAtgmSightVisible, safeAreaSizeHud]
     children = [
       mkRadar()
       mkTws(style)

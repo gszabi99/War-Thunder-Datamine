@@ -8,6 +8,7 @@ local activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.n
 local { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
 local { CurrentTime, IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
 local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
+local { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
 
 local greenColor = Color(10, 202, 10, 250)
 local redColor = Color(255, 35, 30, 255)
@@ -29,10 +30,10 @@ local function Root() {
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    watch = [IndicatorsVisible]
+    watch = [IndicatorsVisible, safeAreaSizeHud]
     size = [sw(100), sh(100)]
     children = [
-      radarComponent.mkRadar()
+      radarComponent.mkRadar(bw() + rw(6), bh() + rh(3))
       aamAim(styleAamAim, getColor)
       agmAim(styleAamAim, getColor)
       IndicatorsVisible.value

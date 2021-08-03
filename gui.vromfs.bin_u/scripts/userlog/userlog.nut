@@ -167,7 +167,6 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateTabNewIconWidgets()
 
     tabsObj.setValue(curIdx)
-    onChangePage(tabsObj)
   }
 
   function getNewMessagesByPages()

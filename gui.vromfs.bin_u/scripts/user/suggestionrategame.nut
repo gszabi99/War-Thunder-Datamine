@@ -53,7 +53,7 @@ local function setNeedShowRate(debriefingResult, myPlace) {
 
   if (::my_stats.getPvpPlayed() < cfg.totalPvpBattlesMin) // Newbies
     return
-  if (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS > cfg.totalPlayedHoursMax) // Old players
+  if (!::my_stats.isStatsLoaded() || (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) // Old players
     return
 
   local isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == ::GM_DOMINATION)
@@ -107,7 +107,7 @@ local function tryOpenSteamRateReview(forceShow = false) {
 }
 
 local function checkShowRateWnd() {
-  if (!needShowRateWnd.value)
+  if (!needShowRateWnd.value || ::load_local_account_settings(RATE_WND_SAVE_ID, false))
     return
 
   tryOpenXboxRateReviewWnd()

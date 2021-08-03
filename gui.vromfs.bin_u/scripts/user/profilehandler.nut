@@ -1624,4 +1624,3 @@ local function openProfileFromPromo(params, sheet = null) {
 }
 
 addPromoAction("profile", @(handler, params, obj) openProfileFromPromo(params))
-addPromoAction("achievements", @(handler, params, obj) openProfileFromPromo(params, "UnlockAchievement"))

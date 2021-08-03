@@ -237,7 +237,8 @@
       "hull_inner_armor": {
         "armorClass": "RHA_tank",
         "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
         }
       },
       "structural_steel_parts": {
@@ -626,6 +627,8 @@
         "ammo_body_53_dm": [],
         "ammo_body_54_dm": [],
         "ammo_body_55_dm": [],
+        "ammo_body_56_dm": [],
+        "ammo_body_57_dm": [],
         "ammo_body_l_01_dm": [],
         "ammo_body_l_02_dm": [],
         "ammo_body_l_03_dm": [],
@@ -903,6 +906,21 @@
           },
           {
             "name": "ammo_body_55_dm"
+          },
+          {
+            "name": "ammo_body_56_dm"
+          },
+          {
+            "name": "ammo_body_57_dm"
+          },
+          {
+            "name": "ammo_body_58_dm"
+          },
+          {
+            "name": "ammo_body_59_dm"
+          },
+          {
+            "name": "ammo_body_60_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1713,29 +1731,27 @@
   {
     "tank_crew": {
       "changeTimeMult": 1.0,
-      "gunner": [
-        {
-          "dmPart": "gunner_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "loader"
-        },
-        {
-          "substitute": "commander"
-        }
-      ],
+      "gunner": {
+        "dmPart": "gunner_dm",
+        "role": "tank_gunner",
+        "substitute": "commander"
+      },
       "driver": {
         "dmPart": "driver_dm",
         "role": "driver",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2297,11 +2313,17 @@
           "flash": "emtr_gun_flame_01",
           "useEmitter": true,
           "aimingFromBoneGun": true,
+          "sleeveEmitter": "emtr_shell_01",
+          "sleeveMesh": "auto_cannon_cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 3.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "sleevesImpulseOffset": 0.05,
           "recoilMultiplier": 0.2,
           "recoilOffset": 0.045,
           "jammedReloadTime": 15.0,
           "barrelDP": "gun_barrel_01_dm",
-          "breechDP": "cannon_breech_dm",
+          "breechDP": "cannon_breech_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "speedYaw": 85.0,
@@ -2324,6 +2346,7 @@
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel_01",
             "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "loaderDm": "loader_01_dm",
             "verDriveDm": "drive_turret_v_dm",
             "horDriveDm": "drive_turret_h_dm",
@@ -2374,11 +2397,17 @@
           "flash": "emtr_gun_flame_02",
           "useEmitter": true,
           "aimingFromBoneGun": true,
+          "sleeveEmitter": "emtr_shell_02",
+          "sleeveMesh": "auto_cannon_cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 3.0,
+          "sleeveImpulse": [4.0,0.0,-1.0],
+          "sleevesImpulseOffset": 0.05,
           "recoilMultiplier": 0.2,
           "recoilOffset": 0.045,
           "jammedReloadTime": 15.0,
           "barrelDP": "gun_barrel_02_dm",
-          "breechDP": "cannon_breech_dm",
+          "breechDP": "cannon_breech_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "speedYaw": 85.0,
@@ -2403,6 +2432,7 @@
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel_02",
             "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "loaderDm": "loader_02_dm",
             "verDriveDm": "drive_turret_v_dm",
             "horDriveDm": "drive_turret_h_dm",

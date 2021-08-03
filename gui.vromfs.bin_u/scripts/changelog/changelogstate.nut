@@ -11,12 +11,12 @@ local { get_time_msec } = require("dagor.time")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
-const SAVE_ID = "changelog/lastSeenVersionInfoNum"
+const SAVE_SEEN_ID = "changelog/lastSeenVersionInfoNum"
+const SAVE_LOADED_ID = "changelog/lastLoadedVersionInfoNum"
 const BASE_URL = "https://warthunder.com/"
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 
-local isShowedUnseenPatchnoteOnce = false
 local chosenPatchnote = ::Watched(null)
 local chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()::Watched(false))
 local chosenPatchnoteContent = persist("chosenPatchnoteContent",
@@ -25,11 +25,15 @@ local patchnotesReceived = persist("patchnotesReceived", @()::Watched(false))
 local patchnotesCache = persist("patchnotesCache", @() ::Watched({}))
 local versions = persist("versions", @() ::Watched([]))
 local requestMadeTime = persist("requestMadeTime", @() {value = null})
-local lastSeenVersionInfoNumState = ::Watched(-1)
+local lastSeenVersionInfoNum = ::Watched(-1)
+local lastLoadedVersionInfoNum = ::Watched(-1)
 
-local function updateLastSeenVersionInfoNumState() {
-  if (::g_login.isProfileReceived())
-    lastSeenVersionInfoNumState(::load_local_account_settings(SAVE_ID, 0))
+local function loadSavedVersionInfoNum() {
+  if (!::g_login.isProfileReceived())
+    return
+
+  lastSeenVersionInfoNum(::load_local_account_settings(SAVE_SEEN_ID, 0))
+  lastLoadedVersionInfoNum(::load_local_account_settings(SAVE_LOADED_ID, 0))
 }
 
 local platformMap = {
@@ -96,7 +100,7 @@ local function filterVersions(vers){
 }
 
 local function processPatchnotesList(response){
-  local status = response?.status
+  local status = response?.status ?? -1
   local http_code = response?.http_code ?? -1
   if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_versions_receive_errors", {
@@ -108,7 +112,7 @@ local function processPatchnotesList(response){
   }
   local result = []
   try {
-    result = json.parse(response?.body?.tostring?())?.result ?? []
+    result = json.parse((response?.body ?? "").tostring())?.result ?? []
   }
   catch(e) {
   }
@@ -124,24 +128,29 @@ local function processPatchnotesList(response){
   patchnotesReceived(true)
 }
 
-local maxVersionT = ::Computed(@() versions.value?[0].tVersion ?? "")
-local function requestAllPatchnotes(){
+local function requestAllPatchnotes() {
   local currTimeMsec = get_time_msec()
-  if((versions.value.len() && ::is_version_equals_or_older(maxVersionT.value))
-    || (requestMadeTime.value && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS)))
-      return
+  if(requestMadeTime.value
+    && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
+    return
 
   local request = {
     method = "GET"
     url = getUrl("?page=1&")
   }
+
   request.respEventId <- PatchnoteIds
   patchnotesReceived(false)
   http.request(request)
   requestMadeTime.value = currTimeMsec
 }
 
-local function findBestVersionToshow(versionsList = versions, lastSeenVersionNum=0) {
+local function clearCache() {
+  requestMadeTime.value = null
+  patchnotesCache({})
+}
+
+local function findBestVersionToshow(versionsList, lastSeenVersionNum) {
   //here we want to find first unseen Major version or last unseed hotfix version.
   lastSeenVersionNum = lastSeenVersionNum ?? 0
   versionsList = versionsList ?? []
@@ -158,38 +167,36 @@ local function findBestVersionToshow(versionsList = versions, lastSeenVersionNum
       break
   return res
 }
-
+local haveNewVersions = ::Computed(@() versions.value?[0].tVersion
+  ? lastLoadedVersionInfoNum.value < versionToInt(versions.value[0].tVersion) : false)
 local unseenPatchnote = ::Computed(function() {
-  if (lastSeenVersionInfoNumState.value == -1)
+  if (lastSeenVersionInfoNum.value == -1)
     return null
-  return findBestVersionToshow(versions.value, lastSeenVersionInfoNumState.value)
+  return findBestVersionToshow(versions.value, lastSeenVersionInfoNum.value)
 })
 
-local function markSeenVersion(v) {
-  if (v == null || v.iVersion <= lastSeenVersionInfoNumState.value)
-    return
-
-  ::save_local_account_settings(SAVE_ID, v.iVersion)
-  lastSeenVersionInfoNumState(v.iVersion)
-}
-
-local curPatchnote = ::Computed(@() chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])
+local curPatchnote = ::Computed(@()
+  chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])
 local curPatchnoteIdx = ::Computed(
   @() versions.value.findindex(@(inst) inst.iVersion == curPatchnote.value.iVersion) ?? 0)
 local haveUnseenVersions = ::Computed(@() unseenPatchnote.value != null)
 local needShowChangelog = @() !isInBattleState.value && ::has_feature("Changelog")
-  && !isShowedUnseenPatchnoteOnce && unseenPatchnote.value != null && !::my_stats.isMeNewbie()
+  && haveNewVersions.value && !::my_stats.isMeNewbie()
 
-local updateVersion = @() markSeenVersion(curPatchnote.value)
-
-local function setPatchnoteResult(result){
+local function afterGetRequestedPatchnote(result){
   chosenPatchnoteContent({title = result?.title ?? "", text = result?.content ?? []})
   chosenPatchnoteLoaded(true)
-  updateVersion()
+
+  local v = curPatchnote.value
+  if (v == null || v.iVersion <= lastSeenVersionInfoNum.value)
+    return
+
+  ::save_local_account_settings(SAVE_SEEN_ID, v.iVersion)
+  lastSeenVersionInfoNum(v.iVersion)
 }
 
 local function cachePatchnote(response){
-  local status = response?.status
+  local status = response?.status ?? -1
   local http_code = response?.http_code ?? -1
   if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_receive_errors", {
@@ -200,13 +207,13 @@ local function cachePatchnote(response){
     })
     return
   }
-  local result = json.parse(response?.body?.tostring?())?.result
+  local result = json.parse((response?.body ?? "").tostring())?.result
   if (result==null) {
     logError("changelog_parse_errors",
       { reason = "Incorrect json in patchnotes response", stage = "get_patchnote" })
     return
   }
-  setPatchnoteResult(result)
+  afterGetRequestedPatchnote(result)
   logError("changelog_success_patchnote", { reason = "Patchnotes received successfully" })
   if (result?.id)
     patchnotesCache.value[result.id] <- result
@@ -217,7 +224,7 @@ local function requestPatchnote(v = curPatchnote.value) {
     return
 
   if (v.id in patchnotesCache.value) {
-    return setPatchnoteResult(patchnotesCache.value[v.id])
+    return afterGetRequestedPatchnote(patchnotesCache.value[v.id])
   }
   local request = {
     method = "GET"
@@ -243,36 +250,42 @@ local function changePatchNote(delta=1) {
   choosePatchnote(patchnote)
 }
 
+local function openChangelog() {
+  local curr = curPatchnote.value
+  if(haveNewVersions.value)
+  {
+    curr = versions.value[0]
+    local loadedVersionInfoNum = versionToInt(curr.tVersion)
+    ::save_local_account_settings(SAVE_LOADED_ID, loadedVersionInfoNum)
+    lastLoadedVersionInfoNum(loadedVersionInfoNum)
+  }
+  choosePatchnote(curr)
+  emptySceneWithDarg({ widgetsList = [{ widgetId = DargWidgets.CHANGE_LOG }] })
+}
+
 chosenPatchnoteContent.subscribe(@(value)
   ::call_darg("updateExtWatched", { chosenPatchnoteContent = value }))
 versions.subscribe(@(value) ::call_darg("updateExtWatched", { changelogsVersions = value }))
 curPatchnote.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnote = value }))
 curPatchnoteIdx.subscribe(@(value) ::call_darg("updateExtWatched", { curPatchnoteIdx = value }))
-chosenPatchnoteLoaded.subscribe(@(value)
-  ::call_darg("updateExtWatched", { chosenPatchnoteLoaded = value }))
-patchnotesReceived.subscribe(@(value)
-  ::call_darg("updateExtWatched", { patchnotesReceived = value }))
-
-patchnotesReceived.subscribe(function(v){
-  if (!v || !haveUnseenVersions.value)
-    return
-  requestPatchnote()
-})
+chosenPatchnoteLoaded.subscribe(function (value) {
+    ::call_darg("updateExtWatched", { chosenPatchnoteLoaded = value })
+    if (needShowChangelog())
+      openChangelog()
+  })
+patchnotesReceived.subscribe(function(value){
+    ::call_darg("updateExtWatched", { patchnotesReceived = value })
+    if (!value || !haveUnseenVersions.value)
+      return
+    requestPatchnote()
+  })
 
 addListenersWithoutEnv({
-  ProfileReceived = @(p) updateLastSeenVersionInfoNumState()
-  GameLocalizationChanged = @(p) requestAllPatchnotes()
-})
-
-local function openChangelog() {
-  isShowedUnseenPatchnoteOnce = true
-  choosePatchnote(curPatchnote.value)
-  emptySceneWithDarg({ widgetsList = [{ widgetId = DargWidgets.CHANGE_LOG }] })
-}
-
-chosenPatchnoteLoaded.subscribe(function(_) {
-  if (needShowChangelog())
-    openChangelog()
+  ProfileReceived = @(p) loadSavedVersionInfoNum()
+  GameLocalizationChanged = function (p) {
+    clearCache()
+    requestAllPatchnotes()
+  }
 })
 
 ::cross_call_api.changelog <- {
@@ -286,7 +299,7 @@ chosenPatchnoteLoaded.subscribe(function(_) {
   changePatchNote = changePatchNote
 }
 
-updateLastSeenVersionInfoNumState()
+loadSavedVersionInfoNum()
 eventbus.subscribe(PatchnoteIds, processPatchnotesList)
 eventbus.subscribe(PatchnoteReceived, cachePatchnote)
 

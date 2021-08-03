@@ -192,6 +192,7 @@ local function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
   return {
     rendObj = ROBJ_IMAGE
     image=::Picture(obj.v)
+    maxWidth = pw(100)
     size = [obj?.width!=null
       ? ::fpx(obj.width) : flex(), obj?.height != null
         ? ::fpx(obj.height) : ::fpx(200)]

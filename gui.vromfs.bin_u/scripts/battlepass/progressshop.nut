@@ -19,6 +19,12 @@ local getSortedAdditionalTrophyItems = @(additionalTrophy) additionalTrophy
 local getAdditionalTrophyItemForBuy = @(additionalTrophyItems) (additionalTrophyItems
   .filter(@(item) item?.isCanBuy() && item?.canBuyTrophyByLimit()))?[0]
 
+local canExchangeItem = @(passExchangeItem) (passExchangeItem?.canReceivePrize() ?? false)
+  && (passExchangeItem?.hasUsableRecipeOrNotRecipes() ?? false)
+
+local findExchangeItem = @(battlePassUnlockExchangeId) ::ItemsManager.findItemById(
+  ::to_integer_safe(battlePassUnlockExchangeId ?? -1, battlePassUnlockExchangeId ?? -1, false))
+
 //do not update anything in battle or profile not recived, as it can be time consuming and not needed in battle anyway
 local canUpdateConfig = ::Computed(@() isProfileReceived.value && !isInBattleState.value)
 
@@ -39,9 +45,7 @@ local seasonShopConfig = ::Computed(function(prev) {
 local seenBattlePassShopRows = ::Computed(@() (seasonShopConfig.value?.purchaseWndItems ?? [])
   .map(function(config) {
     local { battlePassUnlock = "", additionalTrophy = [], battlePassUnlockExchangeId = null } = config
-    if (battlePassUnlockExchangeId != null
-      && !::ItemsManager.findItemById(
-        ::to_integer_safe(battlePassUnlockExchangeId, battlePassUnlockExchangeId, false))?.hasUsableRecipeOrNotRecipes())
+    if (battlePassUnlockExchangeId != null && (hasBattlePass.value || !canExchangeItem(findExchangeItem(battlePassUnlockExchangeId))))
       return ""
 
     local additionalTrophyItems = getSortedAdditionalTrophyItems(additionalTrophy)
@@ -103,10 +107,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     goods = []
     foreach (idx, config in shopConfig.purchaseWndItems) {
       local { battlePassUnlock = "", additionalTrophy = [], battlePassUnlockExchangeId = null } = config
-      local passExchangeItem = ::ItemsManager.findItemById(
-        ::to_integer_safe(battlePassUnlockExchangeId ?? -1, battlePassUnlockExchangeId ?? -1, false))
-      if (battlePassUnlockExchangeId != null
-        && (!passExchangeItem?.hasUsableRecipeOrNotRecipes() || hasBattlePass.value))
+      local passExchangeItem = findExchangeItem(battlePassUnlockExchangeId)
+      if (battlePassUnlockExchangeId != null && (hasBattlePass.value || !canExchangeItem(passExchangeItem)))
         continue
 
       local passUnlock = ::g_unlocks.getUnlockById(battlePassUnlock)
@@ -168,8 +170,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, valueToSelect))
   }
 
-  hasOpenedPassUnlock = @(goodsConfig) goodsConfig.battlePassUnlock?.id != null
-    && ::is_unlocked_scripted(-1, goodsConfig.battlePassUnlock.id)
+  hasOpenedPassUnlock = @(goodsConfig) (goodsConfig.passExchangeItem != null && !canExchangeItem(goodsConfig.passExchangeItem))
+    || (goodsConfig.battlePassUnlock?.id != null && ::is_unlocked_scripted(-1, goodsConfig.battlePassUnlock.id))
 
   isGoodsBought = @(goodsConfig) goodsConfig.hasBattlePassUnlock
     && (hasBattlePass.value || hasOpenedPassUnlock(goodsConfig))
@@ -259,7 +261,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (hasAdditionalTrophyItem) {
       local topPrize = additionalTrophyItem.getTopPrize()
       name = ::PrizesView.getPrizeTypeName(topPrize, false)
-      valueText = ::PrizesView.getPrizeText(topPrize, false)
+      valueText = ::loc("ui/parentheses", { text = ::PrizesView.getPrizeText(topPrize, false) })
       cost = cost + additionalTrophyItem.getCost()
     }
     local isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem
@@ -268,10 +270,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       name = ::loc(prizeLocId, { name = ::loc($"battlePass/seasonName/{seasonId}") })
       isBought = isGoodsBought(goodsConfig)
       isDisabled = isBought
-      if (hasAdditionalTrophyItem) {
+      if (hasAdditionalTrophyItem)
         isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
-        valueText = ::loc("ui/parentheses", { text = valueText })
-      }
       if (battlePassUnlock != null)
         cost = cost + ::get_unlock_cost(battlePassUnlock.id)
       seenRowName = $"{passExchangeItem?.id ?? battlePassUnlock.id}_{additionalTrophyItems?[0].id ?? ""}"
