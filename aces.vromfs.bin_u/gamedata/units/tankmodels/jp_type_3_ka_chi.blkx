@@ -111,30 +111,33 @@
       "hp": 10000.0,
       "hull": {
         "superstructure_front_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 50.0
         },
         "superstructure_side_dm": {
           "armorThickness": 10.0
         },
         "superstructure_bottom_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 10.0
         },
         "superstructure_back_dm": {
           "armorThickness": 10.0
         },
         "superstructure_top_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 10.0
         },
         "body_top_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 10.0
         },
         "body_front_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 50.0
         },
         "body_bottom_dm": {
           "armorThickness": 6.0
         },
         "body_back_dm": {
+          "armorThickness": 20.0
+        },
+        "body_side_dm": {
           "armorThickness": 10.0
         },
         "ex_decor_01_dm": {
@@ -144,7 +147,7 @@
           "armorThickness": 8.0
         },
         "ex_decor_03_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 6.0
         },
         "ex_decor_04_dm": {
           "armorThickness": 4.0
@@ -155,19 +158,22 @@
       },
       "turret": {
         "turret_top_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 12.0
         },
         "turret_front_dm": {
           "armorThickness": 50.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 10.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 25.0
         },
         "turret_side_dm": {
           "armorThickness": 25.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 25.0
         },
         "turret_back_dm": {
           "armorThickness": 25.0
@@ -176,7 +182,7 @@
           "armorThickness": 25.0
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 12.0
         },
         "turret_02_bottom_dm": {
           "armorThickness": 6.0
@@ -185,7 +191,7 @@
           "armorThickness": 12.0
         },
         "turret_01_back_dm": {
-          "armorThickness": 4.0
+          "armorThickness": 10.0
         }
       },
       "mask": {
@@ -205,10 +211,10 @@
           "armorThickness": 12.0
         },
         "gun_mask_04_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 50.0
         },
         "gun_mask_05_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 25.0
         }
       },
       "optics": {
@@ -2305,7 +2311,7 @@
           "speedYaw": 15.0,
           "speedPitch": 10.0,
           "fireConeAngle": 1.0,
-          "bullets": 121,
+          "bullets": 120,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2467,9 +2473,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 25000.0,
-        "Fuel": 700.0,
-        "TakeOff": 25700.0,
+        "Empty": 26000.0,
+        "Fuel": 450.0,
+        "TakeOff": 26450.0,
         "momentOfInertia": [0.87,0.87,1.4],
         "CenterOfGravity": [-0.4,-0.1,0.0],
         "AdvancedMass": false,
@@ -2493,49 +2499,40 @@
       "mechanics": {
         "maxBrakeForce": 100000.0,
         "driveGearRadius": 0.27,
-        "mainGearRatio": 1.0,
-        "sideGearRatio": 4.5805,
+        "mainGearRatio": 0.87,
+        "sideGearRatio": 1.0,
         "gearRatios": [
           {
-            "ratio": -4.0
+            "ratio": -23.7
           },
           {
-            "ratio": -9.25
+            "ratio": -47.41
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 15.95
+            "ratio": 65.76
           },
           {
-            "ratio": 13.95
+            "ratio": 32.66
           },
           {
-            "ratio": 11.95
+            "ratio": 19.23
           },
           {
-            "ratio": 8.95
+            "ratio": 10.92
           },
           {
-            "ratio": 6.5
-          },
-          {
-            "ratio": 3.3
-          },
-          {
-            "ratio": 1.8
-          },
-          {
-            "ratio": 1.31
+            "ratio": 6.77
           }
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.1,-0.08,0.06],
-        "defaultGearRadius": 0.285,
-        "topGearRadius": 0.145,
-        "frontBackGearRadius": 0.32,
+        "suspensionOffsets": [-0.2,-0.1,0.06],
+        "defaultGearRadius": 0.28,
+        "topGearRadius": 0.13,
+        "frontBackGearRadius": 0.27,
         "defaultDampeningForce": [80000.0,80000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15,
@@ -2576,13 +2573,13 @@
           "volume": [-1.5,2.0,-1.3,0.8]
         },
         {
-          "volume": [-2.3,2.0,0.0,0.9]
+          "volume": [-2.3,2.0,0.0,1.0]
         },
         {
-          "volume": [-3.0,2.0,1.3,0.8]
+          "volume": [-3.0,2.0,1.3,1.0]
         },
         {
-          "volume": [-3.0,2.0,-1.3,0.8]
+          "volume": [-3.0,2.0,-1.3,1.0]
         },
         {
           "waterJet": {
@@ -3257,9 +3254,6 @@
           "ammo_turret_06_dm": {
             "count": 1
           },
-          "ammo_turret_07_dm": {
-            "count": 1
-          },
           "ammo_body_01_dm": {
             "count": 2
           },
@@ -3460,7 +3454,7 @@
         "turn_it_off": false,
         "effects": {
           "rcostAddParam": 0.9611,
-          "changeMass": 1100.0,
+          "changeMass": 2300.0,
           "hideNodes": [],
           "collisionProps": {
             "cls_body": "convex_hull",
@@ -3481,7 +3475,7 @@
               "speedYaw": 15.0,
               "speedPitch": 10.0,
               "fireConeAngle": 1.0,
-              "bullets": 121,
+              "bullets": 120,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
