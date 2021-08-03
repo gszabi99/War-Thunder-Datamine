@@ -148,7 +148,7 @@
       "main_hull_turret_armor": {
         "armorClass": "abt_102",
         "body_front_dm": {
-          "armorThickness": 32.0
+          "armorThickness": 23.0
         },
         "body_top_dm": {
           "armorThickness": 12.0
@@ -163,22 +163,22 @@
           "armorThickness": 15.0
         },
         "gun_mask_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 40.0
         },
         "gun_mask_02_dm": {
           "armorThickness": 5.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 20.0
         },
         "superstructure_bottom_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 10.0
         },
         "superstructure_side_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 20.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 10.0
         },
         "superstructure_top_dm": {
           "armorThickness": 12.0
@@ -190,10 +190,10 @@
           "armorThickness": 10.0
         },
         "turret_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 40.0
         },
         "turret_back_dm": {
-          "armorThickness": 12.0
+          "armorThickness": 20.0
         },
         "turret_top_dm": {
           "armorThickness": 12.0
@@ -202,7 +202,7 @@
           "armorThickness": 10.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 40.0
         },
         "turret_01_back_dm": {
           "armorThickness": 12.0
@@ -214,7 +214,7 @@
           "armorThickness": 18.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 32.0
+          "armorThickness": 40.0
         },
         "turret_02_back_dm": {
           "armorThickness": 10.0
@@ -232,10 +232,10 @@
           "armorThickness": 10.0
         },
         "turret_03_back_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 40.0
         },
         "turret_03_front_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 10.0
         },
         "turret_03_bottom_dm": {
           "armorThickness": 10.0
@@ -344,7 +344,9 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "ex_decor_l_04_dm": [],
-        "ex_decor_r_04_dm": []
+        "ex_decor_l_05_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_r_05_dm": []
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -2308,7 +2310,7 @@
           "speedYaw": 35.0,
           "speedPitch": 35.0,
           "fireConeAngle": 1.0,
-          "bullets": 464,
+          "bullets": 500,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -3535,6 +3537,152 @@
     }
   },
   {
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_39_dm": {
+            "count": 500
+          }
+        }
+      },
+      "ammo2": {
+        "weaponTrigger": "gunner1",
+        "removeLoadedAmmo": true,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "replenishmentDelay": 8.0,
+        "replenishmentTime": 20.0,
+        "shells": {
+          "autoLoad": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          },
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 1
+          },
+          "ammo_turret_12_dm": {
+            "count": 1
+          },
+          "ammo_turret_13_dm": {
+            "count": 1
+          },
+          "ammo_turret_14_dm": {
+            "count": 1
+          },
+          "ammo_turret_15_dm": {
+            "count": 1
+          },
+          "ammo_turret_16_dm": {
+            "count": 1
+          },
+          "ammo_turret_17_dm": {
+            "count": 1
+          },
+          "ammo_turret_18_dm": {
+            "count": 1
+          },
+          "ammo_turret_19_dm": {
+            "count": 1
+          },
+          "ammo_turret_20_dm": {
+            "count": 1
+          },
+          "ammo_turret_21_dm": {
+            "count": 1
+          },
+          "ammo_turret_22_dm": {
+            "count": 1
+          },
+          "ammo_turret_23_dm": {
+            "count": 1
+          },
+          "ammo_turret_24_dm": {
+            "count": 1
+          },
+          "ammo_turret_25_dm": {
+            "count": 1
+          },
+          "ammo_turret_26_dm": {
+            "count": 1
+          },
+          "ammo_turret_27_dm": {
+            "count": 1
+          },
+          "ammo_turret_28_dm": {
+            "count": 1
+          },
+          "ammo_turret_29_dm": {
+            "count": 1
+          },
+          "ammo_turret_30_dm": {
+            "count": 1
+          },
+          "ammo_turret_31_dm": {
+            "count": 1
+          },
+          "ammo_turret_32_dm": {
+            "count": 1
+          },
+          "ammo_turret_33_dm": {
+            "count": 1
+          },
+          "ammo_turret_34_dm": {
+            "count": 1
+          },
+          "ammo_turret_35_dm": {
+            "count": 1
+          },
+          "ammo_turret_36_dm": {
+            "count": 1
+          },
+          "ammo_turret_37_dm": {
+            "count": 1
+          },
+          "ammo_turret_38_dm": {
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -3604,7 +3752,7 @@
                 "speedYaw": 35.0,
                 "speedPitch": 35.0,
                 "fireConeAngle": 1.0,
-                "bullets": 464,
+                "bullets": 500,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,
