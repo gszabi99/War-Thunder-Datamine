@@ -111,9 +111,12 @@ local function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   return ::handyman.renderCached("gui/missions/missionReward", { rewards = rewards })
 }
 
+local getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config, key)
+  .map(@(locId) locId.len() == 1 ? locId : ::loc(locId)))
 
 return {
   getMissionLocIdsArray
   getMissionRewardsMarkup
+  getMissionLocName
   MISSION_OBJECTIVE
 }

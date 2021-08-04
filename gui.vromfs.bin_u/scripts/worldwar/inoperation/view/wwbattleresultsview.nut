@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -63,7 +64,7 @@ class ::WwBattleResultsView
 
   function getLocName()
   {
-    return ::get_locId_name({ locId = battleRes.locName })
+    return getMissionLocName({ locId = battleRes.locName })
   }
 
   function getBattleTitle()

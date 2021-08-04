@@ -12,6 +12,7 @@ local stdMath = require("std/math.nut")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local { getBgFullPath, loadBgData } = require("scripts/worldWar/wwAnimBg.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -286,7 +287,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
         ? stdMath.number_of_set_bits(unlConf.curVal) >= stdMath.number_of_set_bits(unlConf.maxVal)
         : unlConf.curVal >= unlConf.maxVal
       res.append({
-        descTooltipText = unlConf.locId != "" ? ::get_locId_name(unlConf)
+        descTooltipText = unlConf.locId != "" ? getUnlockLocName(unlConf)
           : ::get_unlock_name_text(unlConf.unlockType, unlConf.id)
         progressTxt = progressTxt
         rewardImage = ::LayersIcon.getIconData(

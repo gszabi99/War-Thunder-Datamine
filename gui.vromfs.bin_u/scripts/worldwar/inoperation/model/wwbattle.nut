@@ -6,6 +6,7 @@ local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperation
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -188,7 +189,7 @@ class ::WwBattle
     local locId = ((localizeConfig?[$"locNameTeam{teamName}"].len() ?? 0) > 0)
       ? $"locNameTeam{teamName}"
       : "locName"
-    return ::get_locId_name(localizeConfig, locId)
+    return getMissionLocName(localizeConfig, locId)
   }
 
   function getOrdinalNumber()
@@ -198,7 +199,7 @@ class ::WwBattle
 
   function getLocDesc()
   {
-    return localizeConfig ? ::get_locId_name(localizeConfig, "locDesc") : id
+    return localizeConfig ? getMissionLocName(localizeConfig, "locDesc") : id
   }
 
   function getMissionName()

@@ -7,6 +7,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
 local { getChallengeView } = require("scripts/battlePass/challenges.nut")
 local { fillItemDescr, fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
+local { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
 
 local tooltipTypes = {
   types = []
@@ -93,7 +94,7 @@ local exportTypes = addTooltipTypes({
       local header = ::loc(unlockId + "/name")
       local locId = config?.locId??""
       if (locId != "")
-        header = ::get_locId_name(config)
+        header = getUnlockLocName(config)
       if (stage >= 0)
         header += " " + ::roman_numerals[stage + 1]
 

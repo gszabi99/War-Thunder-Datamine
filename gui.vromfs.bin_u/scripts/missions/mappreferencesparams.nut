@@ -1,6 +1,7 @@
 local mapPreferences = require("mapPreferences")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 local mapsListByEvent = {}
 
@@ -70,7 +71,7 @@ local function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "lo
   local locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
     missionLocName = isLevelBanMode ? ::loc(::split(locNameValue, "; ")?[1] ?? "") :
-                                    ::get_locId_name(config, locNameKey)
+      getMissionLocName(config, locNameKey)
 
   return isLevelBanMode
     ? ::g_string.implode([missionLocName,

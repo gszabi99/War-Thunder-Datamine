@@ -114,7 +114,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "atLeastOneUnitsRankOnStartMission", "eliteUnitsOnly"
   ]
 
-  additionalTypes = ["critical", "lesserTeam", "teamLeader", "inTurret", "isBurning"]
+  additionalTypes = ["critical", "lesserTeam", "teamLeader", "inTurret", "isBurning", "targetInCaptureZone"]
 
   locGroupByType = {
     playerType             = "playerUnit"
@@ -692,6 +692,11 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   }
   else if (t == "bulletModName")
     res.values = (blk % "name")
+  else if (t == "inCapturedZone") {
+    res.type = "additional"
+    local zoneType = (blk?.enemy ?? false) ? "enemy" : "allied"
+    res.values = $"{t}/{zoneType}Zone"
+  }
 
   local overrideCondType = getOverrideCondType(blk, unlockMode)
   if (overrideCondType)

@@ -7,6 +7,7 @@ local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
 local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -226,7 +227,7 @@ local logNameByType = {
       {
         local mission = ""
         if ((blk?.body.locName.len() ?? 0) > 0)
-          mission = ::get_locId_name(blk?.body, "locName")
+          mission = getMissionLocName(blk?.body, "locName")
         else
           mission = ::loc("missions/" + (blk?.body.mission ?? ""))
         local nameLoc = "userlog/"+logName + (blk?.body.win? "/win":"/lose")

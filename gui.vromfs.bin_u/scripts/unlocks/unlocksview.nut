@@ -4,6 +4,7 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
 local { is_bit_set } = require("std/math.nut")
 local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("scripts/utils/genericTooltipTypes.nut")
+local { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
 
 ::g_unlock_view <- {
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
@@ -353,7 +354,10 @@ g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockOb
 {
   local name = ""
   local isUnlocked = ::is_unlocked_scripted(-1, unlockConfig.id)
-  name = unlockConfig.locId != "" ? ::get_locId_name(unlockConfig) : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
+  if (!unlockConfig.useSubUnlockName)
+    name = unlockConfig.locId != "" ? getUnlockLocName(unlockConfig) : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
+  else
+    name = getSubUnlockLocName(unlockConfig)
   local title = name + " " + ::roman_numerals[(unlockConfig.curStage >= 0 ? unlockConfig.curStage + (isUnlocked ? 0 : 1) : 0)]
   unlockObj.findObject("achivment_title").setValue(title)
   return title

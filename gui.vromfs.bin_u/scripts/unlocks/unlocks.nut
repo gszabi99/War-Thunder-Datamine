@@ -10,6 +10,7 @@ local { isLoadingBgUnlock,
         getLoadingBgName,
         getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
 local { statsTanks } = require("scripts/user/userInfoStats.nut")
+local { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -245,6 +246,7 @@ local unlockConditionUnitclasses = {
     text = ""
     locId = ""
     locDescId = ""
+    useSubUnlockName = false
     curVal = 0
     maxVal = 0
     stages = []
@@ -282,6 +284,7 @@ local unlockConditionUnitclasses = {
   config.unlockType = ::get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")
+  config.useSubUnlockName = blk?.useSubUnlockName ?? false
   config.link = ::g_language.getLocTextFromConfig(blk, "link", "")
   config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   config.playback = blk?.playback
@@ -976,9 +979,12 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
     case ::UNLOCKABLE_ACHIEVEMENT:
     case ::UNLOCKABLE_CHALLENGE:
+    case ::UNLOCKABLE_INVENTORY:
       local unlockBlk = ::g_unlocks.getUnlockById(id)
+      if (unlockBlk?.useSubUnlockName)
+        return getSubUnlockLocName(unlockBlk)
       if (unlockBlk?.locId)
-        return get_locId_name(unlockBlk)
+        return getUnlockLocName(unlockBlk)
       return ::loc(id + "/name")
 
     case ::UNLOCKABLE_DIFFICULTY:
@@ -1004,8 +1010,10 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
     case ::UNLOCKABLE_STREAK:
       local unlockBlk = ::g_unlocks.getUnlockById(id)
+      if (unlockBlk?.useSubUnlockName)
+        return getSubUnlockLocName(unlockBlk)
       if (unlockBlk?.locId)
-        return get_locId_name(unlockBlk)
+        return getUnlockLocName(unlockBlk)
       local res = ::loc("streaks/" + id)
       if (res.indexof("%d") != null)
           res = ::loc("streaks/" + id + "/multiple")
@@ -1337,8 +1345,10 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       break
   }
 
-  if (unlockBlk?.locId)
-    res.name = ::get_locId_name(unlockBlk)
+  if (unlockBlk?.useSubUnlockName)
+    res.name = getSubUnlockLocName(unlockBlk)
+  else if (unlockBlk?.locId)
+    res.name = getUnlockLocName(unlockBlk)
   if ((unlockBlk?.customDescription ?? "") != "")
     res.desc = ::loc(unlockBlk.customDescription, "")
 
@@ -1455,11 +1465,6 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   if ("miscMsg" in config) //for misc params from userlog
     res.miscParam <- config.miscMsg
   return res
-}
-
-::get_locId_name <- function get_locId_name(config, key = "locId")
-{
-  return "".join(::g_localization.getLocIdsArray(config, key).map(@(locId) locId.len() == 1? locId : ::loc(locId)))
 }
 
 ::get_next_award_text <- function get_next_award_text(unlockId)

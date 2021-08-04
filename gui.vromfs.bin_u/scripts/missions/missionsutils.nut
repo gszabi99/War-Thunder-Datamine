@@ -1,6 +1,7 @@
 local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -358,7 +359,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 {
   local locNameValue = getTblValue(locNameKey, config, null)
   if (locNameValue && locNameValue.len())
-    return ::get_locId_name(config, locNameKey)
+    return getMissionLocName(config, locNameKey)
 
   return ::loc("missions/" + missionId)
 }
@@ -379,9 +380,9 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   local ret = ""
 
   if ((misBlk?[locNameByTeamParamName].len() ?? 0) > 0)
-    ret = ::get_locId_name(misBlk, locNameByTeamParamName)
+    ret = getMissionLocName(misBlk, locNameByTeamParamName)
   else if ((misBlk?.locName.len() ?? 0) > 0)
-    ret = ::get_locId_name(misBlk, "locName")
+    ret = getMissionLocName(misBlk, "locName")
   else if ((misBlk?.loc_name ?? "") != "")
     ret = ::loc("missions/" + misBlk.loc_name, "")
   if (ret == "")
@@ -402,9 +403,9 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   local misInfoName = missionInfo?.name ?? ""
   local locName = ""
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    locName = ::get_locId_name(missionInfo, "locNameTeamA")
+    locName = getMissionLocName(missionInfo, "locNameTeamA")
   else if ((missionInfo?.locName.len() ?? 0) > 0)
-    locName = ::get_locId_name(missionInfo, "locName")
+    locName = getMissionLocName(missionInfo, "locName")
   else
     locName = ::loc("missions/" + misInfoName, "")
 
@@ -433,9 +434,9 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 
   local locDesc = ""
   if ((misBlk?[locDecsByTeamParamName].len() ?? 0) > 0)
-    locDesc = ::get_locId_name(misBlk, locDecsByTeamParamName)
+    locDesc = getMissionLocName(misBlk, locDecsByTeamParamName)
   else if ((misBlk?.locDesc.len() ?? 0) > 0)
-    locDesc = ::get_locId_name(misBlk, "locDesc")
+    locDesc = getMissionLocName(misBlk, "locDesc")
   else
   {
     local missionLocName = misBlk.name

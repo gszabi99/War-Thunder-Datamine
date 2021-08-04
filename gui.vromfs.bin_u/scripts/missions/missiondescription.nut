@@ -13,7 +13,7 @@
 
 local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
+local { getMissionRewardsMarkup, getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 local { getTutorialFirstCompletRewardData } = require("scripts/tutorials/tutorialsData.nut")
 
 class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
@@ -255,9 +255,9 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     if ((blk?["locDescTeamA"].len() ?? 0) > 0)
-      config.objective <- ::get_locId_name(blk, "locDescTeamA")
+      config.objective <- getMissionLocName(blk, "locDescTeamA")
     else if ((blk?.locDesc.len() ?? 0) > 0)
-      config.objective <- ::get_locId_name(blk, "locDesc")
+      config.objective <- getMissionLocName(blk, "locDesc")
     if (blk.getStr("recommendedPlayers","") != "")
       config.maintext += ::format(::loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"
 
