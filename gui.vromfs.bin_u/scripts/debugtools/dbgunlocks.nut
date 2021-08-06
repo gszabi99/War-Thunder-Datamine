@@ -113,8 +113,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
   local res = ::DataBlock()
   local params = {
                    showCost = showCost,
-                   curVal = showValue ? null : "{value}", // warning disable: -forgot-subst
-                   maxVal = showValue ? null : "{maxValue}" // warning disable: -forgot-subst
+                   curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
                  }
 
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
