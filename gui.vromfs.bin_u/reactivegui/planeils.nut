@@ -1496,7 +1496,7 @@ local ASPRadarMode = @() {
   watch = [state.RadarModeNameId, state.IsRadarVisible, state.Irst]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_DTEXT
-  pos = [state.Irst.value ? pw(-2) : pw(-7) , state.Irst.value ? ph(50) : ph(15)]
+  pos = [pw(-7) , state.Irst.value ? ph(50) : ph(15)]
   color = IlsColor.value
   fontSize = 35
   font = Fonts.hud
@@ -1739,9 +1739,9 @@ local function createTargetDistJ7E(index) {
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleLeft - 2, 100 * (1 - distanceRel) - 2, 100 * angleLeft - 2, 100 * (1 - distanceRel) + 7] : []),
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRight + 2, 100 * (1 - distanceRel) - 2, 100 * angleRight + 2, 100 * (1 - distanceRel) + 7] : [])
     ] : [
-      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 5 + angularWidthRel * 50, 100 * (1 - distanceRel)],
-      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 5 + angularWidthRel * 25, 100 * (1 - distanceRel) + 5],
-      [VECTOR_LINE, 5 + angularWidthRel * 50, 100 * (1 - distanceRel), 5 + angularWidthRel * 25, 100 * (1 - distanceRel) + 5]
+      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 8, 100 * (1 - distanceRel) + 3],
+      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 8, 100 * (1 - distanceRel) - 3],
+      [VECTOR_LINE, 8, 100 * (1 - distanceRel) + 3, 8, 100 * (1 - distanceRel) - 3]
     ]
   }
 }

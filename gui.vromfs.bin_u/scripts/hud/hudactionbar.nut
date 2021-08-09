@@ -1,12 +1,8 @@
-local { getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
-local {
-  isFakeBullet,
-  getBulletsSetData,
-  getBulletSetNameByBulletName } = require("scripts/weaponry/bulletsInfo.nut")
+local { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
 local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
-
-const LONG_ACTIONBAR_TEXT_LEN = 6;
+local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName,
+getAdditionalActionItemAmountText } = require("scripts/hud/hudActionBarInfo.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -115,8 +111,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   {
     local unit = getActionBarUnit()
     local actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
-    local viewItem = {}
-
     local isReady = isActionReady(item)
 
     local shortcutText = ""
@@ -139,19 +133,24 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       showShortcut = isXinput || shortcutText !=""
     }
 
-    viewItem.id                 <- __action_id_prefix + item.id
-    viewItem.selected           <- item.selected ? "yes" : "no"
-    viewItem.active             <- item.active ? "yes" : "no"
-    viewItem.enable             <- isReady ? "yes" : "no"
-    viewItem.wheelmenuEnabled   <- isReady || actionBarType.canSwitchAutomaticMode()
-    viewItem.shortcutText       <- shortcutText
-    viewItem.isLongScText       <- ::utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
-    viewItem.mainShortcutId     <- shortcutId
-    viewItem.cancelShortcutId   <- shortcutId
-    viewItem.isXinput           <- showShortcut && isXinput
-    viewItem.showShortcut       <- showShortcut
+    local viewItem = {
+      id               = __action_id_prefix + item.id
+      selected         = item.selected ? "yes" : "no"
+      active           = item.active ? "yes" : "no"
+      enable           = isReady ? "yes" : "no"
+      wheelmenuEnabled = isReady || actionBarType.canSwitchAutomaticMode()
+      shortcutText     = shortcutText
+      isLongScText     = ::utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
+      mainShortcutId   = shortcutId
+      cancelShortcutId = shortcutId
+      isXinput         = showShortcut && isXinput
+      showShortcut     = showShortcut
+      amount           = getActionItemAmountText(item)
+      cooldown         = getWaitGaugeDegree(item.cooldown)
+      additionalAmount = getAdditionalActionItemAmountText(item, unit)
+    }
 
-    local modifName = getModificationName(item, unit)
+    local modifName = getActionItemModificationName(item, unit)
     if (modifName)
     {
       viewItem.bullets <- ::handyman.renderNested(::load_template_text("gui/weaponry/bullets"),
@@ -180,31 +179,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
 
-    if (item.count >= 0)
-      if (item.type == ::EII_SMOKE_GRENADE && "salvo" in item)
-        viewItem.amount <- $"{item.salvo}/{item.count}"
-      else
-        viewItem.amount <- item.count.tostring() + (item.countEx >= 0 ? "/" + item.countEx : "")
-
-    viewItem.cooldown <- getWaitGaugeDegree(item.cooldown)
     return viewItem
-  }
-
-  function getModificationName(item, unit)
-  {
-    if (!unit)
-      return null
-
-    switch (item.type)
-    {
-      case ::EII_ROCKET:
-        return getBulletSetNameByBulletName(unit, item?.bulletName)
-      case ::EII_BULLET:
-      case ::EII_FORCED_GUN:
-        return item?.modificationName ?? getDefaultBulletName(unit)
-    }
-
-    return null
   }
 
   function isActionReady(action)
@@ -259,7 +234,8 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return
     }
 
-    local ship = getActionBarUnit()?.isShipOrBoat()
+    local unit = getActionBarUnit()
+    local isShip = unit?.isShipOrBoat()
     foreach(item in actionItems)
     {
       local itemObj = scene.findObject(__action_id_prefix + item.id)
@@ -268,11 +244,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
       local amountObj = itemObj.findObject("amount_text")
       if (::check_obj(amountObj))
-        amountObj.setValue(getModAmountText(item))
+        amountObj.setValue(getActionItemAmountText(item))
+
+      amountObj = itemObj.findObject("additional_amount_text")
+      if (amountObj?.isValid())
+        amountObj.setValue(getAdditionalActionItemAmountText(item, unit))
 
       local automaticObj = itemObj.findObject("automatic_text")
       if (::check_obj(automaticObj))
-        automaticObj.show(ship && item?.automatic)
+        automaticObj.show(isShip && item?.automatic)
 
       if (item.type != ::EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
         blink(itemObj)
@@ -314,27 +294,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       updateWaitGaugeDegree(itemObj.findObject("cooldown"), item.cooldown)
       updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"), item?.blockedCooldown ?? 0.0)
     }
-  }
-
-  function getModAmountText(modData, isFull = false)
-  {
-    local count = modData?.count ?? 0
-    if (count < 0)
-      return ""
-
-    local text = ""
-    if (modData.type == ::EII_SMOKE_GRENADE && "salvo" in modData)
-      text = $"{modData.salvo}/{modData.count}"
-    else
-    {
-      local countEx = modData?.countEx ?? 0
-      local countExText = modData?.isStreakEx ? ::loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
-      text = count.tostring() + (countExText.len() ? "/" + countExText : "")
-      if (text.len() > LONG_ACTIONBAR_TEXT_LEN && !isFull)
-        text = count.tostring() + (countExText.len() ? "/" + ::loc("weapon/bigAmountNumberIcon") : "")
-    }
-
-    return isFull ? ::loc("options/count") + ::loc("ui/colon") + text : text
   }
 
   /**
