@@ -62,24 +62,10 @@ local function getActionItemModificationName(item, unit) {
   return null
 }
 
-local function getAdditionalActionItemAmountText(item, unit) {
-  if (item.type == ::EII_BULLET && (unit?.isTank() ?? false))
-    return (item?.firstStageAmmo ?? -1) >= 0 ? item.firstStageAmmo.tostring() : ""
-
-  return ""
-}
-
-local function getFirstStageAmmoText(item, unit) {
-  local text = getAdditionalActionItemAmountText(item, unit)
-  return text == "" ? text : $"{::loc("first_stage_ammo")}{::loc("ui/colon")}{text}"
-}
-
 return {
   cacheActionDescs
   getActionDesc
   LONG_ACTIONBAR_TEXT_LEN
   getActionItemAmountText
   getActionItemModificationName
-  getAdditionalActionItemAmountText
-  getFirstStageAmmoText
 }

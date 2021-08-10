@@ -1,8 +1,8 @@
 local { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
 local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
-local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName,
-getAdditionalActionItemAmountText } = require("scripts/hud/hudActionBarInfo.nut")
+local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName
+} = require("scripts/hud/hudActionBarInfo.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -147,7 +147,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       showShortcut     = showShortcut
       amount           = getActionItemAmountText(item)
       cooldown         = getWaitGaugeDegree(item.cooldown)
-      additionalAmount = getAdditionalActionItemAmountText(item, unit)
     }
 
     local modifName = getActionItemModificationName(item, unit)
@@ -234,8 +233,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return
     }
 
-    local unit = getActionBarUnit()
-    local isShip = unit?.isShipOrBoat()
+    local ship = getActionBarUnit()?.isShipOrBoat()
     foreach(item in actionItems)
     {
       local itemObj = scene.findObject(__action_id_prefix + item.id)
@@ -246,13 +244,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       if (::check_obj(amountObj))
         amountObj.setValue(getActionItemAmountText(item))
 
-      amountObj = itemObj.findObject("additional_amount_text")
-      if (amountObj?.isValid())
-        amountObj.setValue(getAdditionalActionItemAmountText(item, unit))
-
       local automaticObj = itemObj.findObject("automatic_text")
       if (::check_obj(automaticObj))
-        automaticObj.show(isShip && item?.automatic)
+        automaticObj.show(ship && item?.automatic)
 
       if (item.type != ::EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
         blink(itemObj)

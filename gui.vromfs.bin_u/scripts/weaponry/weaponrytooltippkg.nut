@@ -10,7 +10,7 @@ local { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsLis
 } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
-local { getActionItemAmountText, getActionItemModificationName, getFirstStageAmmoText } = require("scripts/hud/hudActionBarInfo.nut")
+local { getActionItemAmountText, getActionItemModificationName } = require("scripts/hud/hudActionBarInfo.nut")
 
 
 local function updateModType(unit, mod)
@@ -220,9 +220,8 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
   {
     local modData = ::u.search(::get_action_bar_items(),
       @(itemData) getActionItemModificationName(itemData, unit) == item.name)
-    if (modData) {
-      res.amountText <- "\n".join([getActionItemAmountText(modData, true), getFirstStageAmmoText(modData, unit)], true)
-    }
+    if (modData)
+      res.amountText <- getActionItemAmountText(modData, true)
   }
 
   local isScoreCost = ::is_in_flight()

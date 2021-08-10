@@ -65,13 +65,6 @@ tdiv {
         _blink:t='no';
         blend-time:t='0';
       }
-      textareaNoTab {
-        id:t='additional_amount_text'
-        position:t='absolute'
-        hudFont:t='small'
-        shadeStyle:t='outline33pct'
-        text:t='<<additionalAmount>>'
-      }
       textarea {
         id:t='amount_text';
         pos:t='pw - w, ph - h + 0.004@shHud';

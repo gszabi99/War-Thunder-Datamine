@@ -116,7 +116,6 @@ tdiv {
     pos:t='pw-w, @blockInterval'
     position:t='relative'
     smallFont:t='yes'
-    text-align:t='right'
     text:t='<<amountText>>'
   }
   <</amountText>>
