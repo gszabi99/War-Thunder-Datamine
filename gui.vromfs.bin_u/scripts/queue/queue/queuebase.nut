@@ -47,7 +47,7 @@ class ::queue_classes.Base
 
   function addQueueByUid(queueUid, queueParms)
   {
-    if (queueUid)
+    if (queueUid != null)
       queueUidsList[queueUid] <- queueParms
   }
 
