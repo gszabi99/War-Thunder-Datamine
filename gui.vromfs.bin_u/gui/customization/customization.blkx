@@ -154,7 +154,14 @@
                           },
                           "td": {
                             "id": "skins_list",
-                            "cellType": "bottom"
+                            "cellType": "bottom",
+                            "title": "$tooltipObj",
+                            "tooltipObj": {
+                              "id": "skinTooltip",
+                              "on_tooltip_open": "onGenericTooltipOpen",
+                              "on_tooltip_close": "onTooltipObjClose",
+                              "display": "hide"
+                            }
                           }
                         }
                       },

@@ -472,6 +472,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     renewDropright("skins_list", "skins_dropright", skinItems, curSkinIndex, "onSkinChange")
+    updateSkinTooltip(curSkinId)
+  }
+
+  function updateSkinTooltip(skinId)
+  {
+    local tooltipObj = scene.findObject("skinTooltip")
+    tooltipObj.tooltipId = DECORATION.getTooltipId($"{unit.name}/{skinId}", ::UNLOCKABLE_SKIN)
   }
 
   function renewDropright(nestObjId, listObjId, items, index, cb)

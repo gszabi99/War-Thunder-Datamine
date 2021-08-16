@@ -387,7 +387,9 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
 
     local cost = decorator.getCost()
     local hasPrice = !cost.isZero()
-    local isVisible = isDefault || isOwn || hasPrice || ::is_unlock_visible(decorator.unlockBlk)|| forceVisible
+    local isVisible = isDefault || isOwn || hasPrice || forceVisible
+      || decorator.canBuyCouponOnMarketplace(unit)
+      || ::is_unlock_visible(decorator.unlockBlk)
     if (!isVisible && !::is_dev_version)
       continue
 
