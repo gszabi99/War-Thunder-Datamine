@@ -16,6 +16,7 @@ debuffs > icon {
 
 icon[hudTankDebuff=yes],
 icon[hudCrewStatus=yes] {
+  background-color:@white;
   css-hier-invalidate: yes;
 }
 
@@ -88,6 +89,10 @@ icon[hudCrewStatus=yes][state=transfere] {
 
 icon[hudCrewStatus=yes][state=dead] {
   background-color:#586269;
+}
+
+icon[hudCrewStatus=yes][state=dead] > text {
+  color:#586269;
 }
 
 icon[hudCrewStatus=yes][state=none] {

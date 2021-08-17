@@ -88,6 +88,28 @@ debuffsTextNest {
 }
 
 icon {
+  id:t='first_stage_ammo'
+  behaviour:t='bhvUpdateByWatched'
+  hudCrewStatus:t='yes'
+  tooltip:t='#first_stage_ammo'
+  pos:t='pw - w, 0.5ph - h'
+  background-image:t='#ui/gameuiskin#icon_weapons_relocation_in_progress.svg'
+  value:t='<<firstStageAmmoValue>>'
+  state:t=''
+  display:t='hide'
+
+  text {
+    id:t='state_value'
+    width:t='0.45pw'
+    position:t='absolute'
+    pos:t='0, ph - h'
+    text-align:t='right'
+    tooltip:t='#first_stage_ammo'
+    text:t=''
+  }
+}
+
+icon {
   id:t='fire_status';
   display:t='hide';
   pos:t='ph/7 * 2.5, ph - h';

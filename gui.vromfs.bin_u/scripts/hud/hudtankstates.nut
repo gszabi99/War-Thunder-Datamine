@@ -87,6 +87,18 @@ local tankStatesByObjId = {
       updateObj = @(obj, value) obj.findObject("state_value").setValue(value)
     }]
   }
+
+  first_stage_ammo = {
+    objName = "first_stage_ammo"
+    updateConfigs = [{
+      watch = hudTankStates?.getFirstStageAmmo()
+      isVisible = @(value) value >= 0
+      updateObj = function(obj, value) {
+        obj.state = value > 0 ? "" : "dead"
+        obj.findObject("state_value").setValue(value.tostring())
+      }
+    }]
+  }
 }
 
 local function updateState(obj, watchConfig, value) {

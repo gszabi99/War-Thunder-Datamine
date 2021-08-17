@@ -34,6 +34,7 @@ local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
           stabilizerValue = getConfigValueById("stabilizer"),
           lwsValue = getConfigValueById("lws"),
           ircmValue = getConfigValueById("ircm")
+          firstStageAmmoValue = getConfigValueById("first_stage_ammo")
         }
       )
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
