@@ -17,10 +17,10 @@
     This need for optimize comparison.
 */
 
-global enum money_type {
-  none,
-  cost,
-  balance
+local money_type = {
+  none = 0
+  cost = 1
+  balance = 2
 }
 
 enum money_color {
@@ -301,3 +301,7 @@ Money.__impl_get_text <- function __impl_get_text(params = null)
 ::zero_money = ::Money(money_type.none)
 
 ::u.registerClass("Money", ::Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
+
+return {
+  money_type
+}

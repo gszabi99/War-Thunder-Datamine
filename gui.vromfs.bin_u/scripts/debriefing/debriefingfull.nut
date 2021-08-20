@@ -3,6 +3,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("scripts/debriefing/rewardSources.nut")
 local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { money_type } = require("scripts/money.nut")
 
 global enum debrState {
   init

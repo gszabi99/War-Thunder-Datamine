@@ -7,6 +7,7 @@ local { hasBattlePass } = require("scripts/battlePass/seasonState.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/items/boosterEffect.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local { money_type } = require("scripts/money.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {

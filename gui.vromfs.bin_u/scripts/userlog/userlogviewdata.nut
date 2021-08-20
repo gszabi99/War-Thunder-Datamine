@@ -9,6 +9,7 @@ local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPo
 local { boosterEffectType } = require("scripts/items/boosterEffect.nut")
 local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
+local { money_type } = require("scripts/money.nut")
 
 local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
