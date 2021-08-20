@@ -7,6 +7,8 @@ local DataBlock = require("DataBlock")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
   updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
+local joiningGameWaitBox = require("scripts/matchingRooms/joiningGameWaitBox.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 /*
 SessionLobby API
@@ -352,6 +354,14 @@ SessionLobby.isInRoom <- function isInRoom()
     && status != lobbyStates.JOINING_ROOM
 }
 
+SessionLobby.isInJoiningGame <- function isInJoiningGame()
+{
+  return status != lobbyStates.NOT_IN_ROOM
+    && status != lobbyStates.IN_LOBBY
+    && status != lobbyStates.IN_SESSION
+    && status != lobbyStates.IN_DEBRIEFING
+}
+
 SessionLobby.isWaitForQueueRoom <- function isWaitForQueueRoom()
 {
   return status == lobbyStates.WAIT_FOR_QUEUE_ROOM
@@ -435,7 +445,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   if (!("_gameType" in _settings.mission))
     _settings.mission._gameType <- ::get_game_type()
   if (::getTblValue("coop", _settings) == null)
-    _settings.coop <- ::is_gamemode_coop(_settings.mission._gameMode)
+    _settings.coop <- isGameModeCoop(_settings.mission._gameMode)
   if (("difficulty" in _settings.mission) && _settings.mission.difficulty == "custom")
     _settings.mission.custDifficulty <- ::get_cd_preset(::DIFFICULTY_CUSTOM)
 
@@ -733,15 +743,6 @@ SessionLobby.haveLobby <- function haveLobby()
   return false
 }
 
-SessionLobby.needJoiningWnd <- function needJoiningWnd()
-{
-  return ::isInArray(status,
-    [lobbyStates.WAIT_FOR_QUEUE_ROOM, lobbyStates.CREATING_ROOM, lobbyStates.JOINING_ROOM,
-     lobbyStates.IN_ROOM, lobbyStates.IN_LOBBY_HIDDEN,
-     lobbyStates.UPLOAD_CONTENT, lobbyStates.START_SESSION, lobbyStates.JOINING_SESSION
-    ])
-}
-
 SessionLobby.getSessionInfo <- function getSessionInfo()
 {
   return settings
@@ -959,8 +960,8 @@ SessionLobby.switchStatus <- function switchStatus(_status)
   local wasSessionInLobby = isEventRoom
   status = _status  //for easy notify other handlers about change status
   //dlog("GP: status changed to " + ::getEnumValName("lobbyStates", status))
-  if (needJoiningWnd())
-    ::gui_modal_joiningGame()
+  if (isInJoiningGame())
+    joiningGameWaitBox.open()
   if (status == lobbyStates.IN_LOBBY)
   {
     //delay to allow current view handlers to catch room state change event before destroy

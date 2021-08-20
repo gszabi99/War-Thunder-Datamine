@@ -55,8 +55,33 @@ local actionByLogType = {
   }
 }
 
+local function getTournamentRewardData(log) {
+  local res = []
+
+  if (!log?.rewardTS)
+    return []
+
+  foreach(idx, block in log.rewardTS)
+  {
+    local result = clone block
+
+    result.type <- "TournamentReward"
+    result.eventId <- log.name
+    result.reason <- block?.awardType ?? ""
+    local reasonNum = block?.fieldValue ?? 0
+    result.reasonNum <- reasonNum
+    result.value <- reasonNum
+    result[block?.fieldName ?? result.reason] <- reasonNum
+
+    res.append(::DataBlockAdapter(result))
+  }
+
+  return res
+}
+
 return {
   disableSeenUserlogs
   actionByLogType
   saveOnlineJob
+  getTournamentRewardData
 }

@@ -6,6 +6,7 @@ local { setColoredDoubleTextToButton, placePriceTextToButton } = require("script
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
 local { openLinkWithSource } = require("scripts/web/webActionsForPromo.nut")
+local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -24,7 +25,7 @@ local { openLinkWithSource } = require("scripts/web/webActionsForPromo.nut")
   if (unlockType == ::UNLOCKABLE_COUNTRY)
   {
     if (::isInArray(config.id, ::shopCountriesList))
-      return ::checkRankUpWindow(config.id, -1, 1, config)
+      return checkRankUpWindow(config.id, -1, 1, config)
     return false
   }
   else if (unlockType == "TournamentReward")

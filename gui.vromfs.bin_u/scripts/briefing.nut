@@ -1,5 +1,6 @@
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
@@ -279,7 +280,7 @@ local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut"
 
   }
 
-  if (gm == ::GM_SKIRMISH || (::g_squad_manager.isInSquad() && ::is_gamemode_coop(gm)))
+  if (gm == ::GM_SKIRMISH || (::g_squad_manager.isInSquad() && isGameModeCoop(gm)))
     optionItems.append([::USEROPT_CLUSTER, "spinner"])
 
   if ((gt & ::GT_SP_USE_SKIN) && !(gt & ::GT_VERSUS))

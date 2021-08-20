@@ -193,10 +193,11 @@ local handlerClass = class extends vehiclesModal.handlerClass
   function onEventFlushSquadronExp(params)
   {
     local unit = params?.unit
-    if (::clan_get_researching_unit() != "" && ::isUnitResearched(unit) && ::clan_get_exp() > 0)
+    local isAllResearched = squadronUnitAction.isAllVehiclesResearched()
+    if (!isAllResearched && ::clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
 
-    if (squadronUnitAction.isAllVehiclesResearched())
+    if (isAllResearched)
       squadronUnitAction.saveResearchChosen(false)
 
     if (unit && ::canBuyUnit(unit))

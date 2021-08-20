@@ -511,7 +511,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 
     local idFromAccount = null
     local unitType = ::ES_UNIT_TYPE_INVALID
-    if (!ignoreLocalProfile)
+    if (!ignoreLocalProfile && ::g_login.isProfileReceived())
     {
       // Step 1. Attempting to retrieve current game mode id from account.
       idFromAccount = ::loadLocalByAccount("selected_random_battle", null)

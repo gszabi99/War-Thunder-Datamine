@@ -15,13 +15,6 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   mGameMode = null
   onUnitAvailabilityChanged = null
 
-  static options = [
-    [::USEROPT_CLUSTER],
-    [::USEROPT_RANK],
-    [::USEROPT_BIT_COUNTRIES_TEAM_A],
-    [::USEROPT_BIT_COUNTRIES_TEAM_B]
-  ]
-
   misListType = ::g_mislist_type.BASE
   fullMissionsList = null
   chosenMissionsList = null
@@ -29,9 +22,12 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   curBrRange = null
   curCountries = null
 
+  isAllowCountriesSetsOnly = false
+
   constructor(sourceMGameMode, onUnitAvailabilityChangedCb = null)
   {
     mGameMode = sourceMGameMode
+    isAllowCountriesSetsOnly = mGameMode?.allowCountriesSetsOnly ?? false
     onUnitAvailabilityChanged = onUnitAvailabilityChangedCb
     curCountries = {}
     initMissionsOnce()
@@ -43,6 +39,17 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getOptionsList()
   {
+    local options = [
+      [::USEROPT_CLUSTER],
+      [::USEROPT_RANK],
+    ]
+
+    if (isAllowCountriesSetsOnly)
+      options.append([::USEROPT_COUNTRIES_SET])
+    else
+      options.append([::USEROPT_BIT_COUNTRIES_TEAM_A],
+        [::USEROPT_BIT_COUNTRIES_TEAM_B])
+
     return options
   }
 
@@ -56,10 +63,14 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       isEventRoom = true
       brRanges = mGameMode?.matchmaking.mmRanges
       countries = {}
+      countriesSetList = []
       onChangeCb = ::Callback(onOptionChange, this)
     }
-    foreach(team in ::g_team.getTeams())
-      _optionsConfig.countries[team.name] <- mGameMode?[team.name].countries
+    if (isAllowCountriesSetsOnly)
+      _optionsConfig.countriesSetList = ::events.getAllCountriesSets(mGameMode)
+    else
+      foreach(team in ::g_team.getTeams())
+        _optionsConfig.countries[team.name] <- mGameMode?[team.name].countries
 
     return _optionsConfig
   }
@@ -240,20 +251,30 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getCurCountries(team)
   {
-    if (team in curCountries)
-      return curCountries[team]
+    if (team.id in curCountries)
+      return curCountries[team.id]
     if (team.teamCountriesOption < 0)
       return []
-    local curMask = ::get_gui_option(team.teamCountriesOption)
-    if (curMask == null)
-      curMask = -1
-    setCurCountries(team,  curMask)
-    return curCountries[team]
+    if (isAllowCountriesSetsOnly)
+      setCurCountriesArray(team, ::get_gui_option(::USEROPT_COUNTRIES_SET))
+    else {
+      local curMask = ::get_gui_option(team.teamCountriesOption)
+      if (curMask == null)
+        curMask = -1
+      setCurCountries(team,  curMask)
+    }
+    return curCountries[team.id]
   }
 
   function setCurCountries(team, countriesMask)
   {
-    curCountries[team] <- ::get_array_by_bit_value(countriesMask, ::shopCountriesList)
+    curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, ::shopCountriesList)
+  }
+
+  function setCurCountriesArray(team, countriesSetIdx)
+  {
+    local countriesSet = getOptionsConfig().countriesSetList?[countriesSetIdx].countries
+    curCountries[team.id] <- countriesSet?[team.code-1] ?? (clone shopCountriesList)
   }
 
   function onOptionChange(optionId, optionValue, controlValue)
@@ -262,6 +283,9 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       setCurBrRange(controlValue)
     else if (optionId == ::USEROPT_BIT_COUNTRIES_TEAM_A || optionId == ::USEROPT_BIT_COUNTRIES_TEAM_B)
       setCurCountries(::g_team.getTeamByCountriesOption(optionId), optionValue)
+    else if (optionId == ::USEROPT_COUNTRIES_SET)
+      foreach(team in [::g_team.A, ::g_team.B])
+        setCurCountriesArray(team, optionValue)
     else
       return
 

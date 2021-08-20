@@ -8,6 +8,7 @@ local { isCrossPlayEnabled,
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
 local { boosterEffectType } = require("scripts/items/boosterEffect.nut")
 local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
 
 local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -977,7 +978,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     }
     else if (rewardType == "TournamentReward")
     {
-      local result = ::getTournamentRewardData(log)
+      local result = getTournamentRewardData(log)
       local desc = []
       foreach(rewardBlk in result)
         desc.append(::EventRewards.getConditionText(rewardBlk))

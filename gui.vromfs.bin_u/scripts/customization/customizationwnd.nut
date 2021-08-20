@@ -451,7 +451,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       local priceText = canBuy ? decorator.getCost().getTextAccordingToBalance() : ""
       local isUnlocked = decorator.isUnlocked()
       local text = skinList.items[i].text
-      local image = skinList.items[i].image
+      local image = skinList.items[i].image ?? ""
+      local images = []
+      if (image != "")
+        images.append({ image, imageNoMargin = !isUnlocked })
+      if (!isUnlocked)
+        images.append({ image = "#ui/gameuiskin#locked", imageNoMargin = true })
+
       if (canBuy)
         text = ::loc("ui/parentheses", {text = priceText}) + " " + text
       else if (canFindOnMarketplace)
@@ -464,10 +470,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         text = text
         textStyle = skinList.items[i].textStyle
         addDiv = DECORATION.getMarkup(decorator.id, ::UNLOCKABLE_SKIN, tooltipParams)
-        image  = image == "" ? null : image
-        image2 = isUnlocked ? null : "#ui/gameuiskin#locked"
-        imageNoMargin = !isUnlocked
-        image2NoMargin = true
+        images
       })
     }
 

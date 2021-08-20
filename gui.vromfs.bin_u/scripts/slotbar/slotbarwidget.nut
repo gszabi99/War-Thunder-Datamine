@@ -261,7 +261,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
         local unitName = unit?.name || ""
         local isUnitEnabledByRandomGroups = !missionRules || missionRules.isUnitEnabledByRandomGroups(unitName)
-        local isUnlocked = (!needCheckUnitUnlock || !isRequireUnlockForUnit(unit)) && ::isUnitUnlocked(this, unit, c, crewIdInCountry, country, true)
+        local isUnlocked = (!needCheckUnitUnlock || !isRequireUnlockForUnit(unit))
+          && ::isUnitUnlocked(unit, c, crewIdInCountry, country, missionRules, true)
         local status = bit_unit_status.empty
         local isUnitForcedVisible = missionRules && missionRules.isUnitForcedVisible(unitName)
         local isUnitForcedHiden = missionRules && missionRules.isUnitForcedHiden(unitName)

@@ -255,6 +255,8 @@ if (!("EUCT_TOTAL" in ::getroottable()))
   }
 }
 
+local minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() ::Watched({ wp = 0, exp = 0 }))
+
 //!!FIX ME: should to remove from this function all what not about unit.
 ::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0)
 {
@@ -287,8 +289,10 @@ if (!("EUCT_TOTAL" in ::getroottable()))
     if (ws?[name] != null)
       ::event_muls[name] = ws[name]
 
-  ::min_values_to_show_reward_premium.wp = ws?.wp_to_show_premium_reward ?? 0
-  ::min_values_to_show_reward_premium.exp = ws?.exp_to_show_premium_reward ?? 0
+  minValuesToShowRewardPremium({
+    wp  = ws?.wp_to_show_premium_reward ?? 0
+    exp = ws?.exp_to_show_premium_reward ?? 0
+  })
 
   ::dagor.assertf(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
   return PT_STEP_STATUS.NEXT_STEP
@@ -401,4 +405,21 @@ if (!("EUCT_TOTAL" in ::getroottable()))
 {
   local blk = ::get_ranks_blk()
   return blk.getReal("expMulWithDiff"+diff.tostring(), 1.0)
+}
+
+local playerRankByCountries = {}
+local function updatePlayerRankByCountries() {
+  foreach(c in ::shopCountriesList)
+    playerRankByCountries[c] <- ::get_player_rank_by_country(c)
+}
+
+local function updatePlayerRankByCountry(country, rank) {
+  playerRankByCountries[country] <- rank
+}
+
+return {
+  minValuesToShowRewardPremium
+  updatePlayerRankByCountries
+  updatePlayerRankByCountry
+  playerRankByCountries
 }

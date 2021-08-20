@@ -5,6 +5,7 @@ local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local g_path = require("std/path.nut")
 local dagor_fs = require("dagor.fs")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -13,29 +14,30 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::debug_dump_debriefing_save <- function debug_dump_debriefing_save(filename = "debug_dump_debriefing.blk")
 {
-  if (!::debriefing_result || dbg_dump.isLoaded())
-    return "IGNORED: No debriefing_result, or dump is loaded."
+  local debriefingResult = getDebriefingResult()
+  if (!debriefingResult || dbg_dump.isLoaded())
+    return "IGNORED: No debriefingResult, or dump is loaded."
 
   local list = [
-    { id = "stat_get_exp", value = ::getTblValue("expDump", ::debriefing_result, {}) }
+    { id = "stat_get_exp", value = ::getTblValue("expDump", debriefingResult, {}) }
     "get_game_type"
     "get_game_mode"
     "get_current_mission_info_cached"
     { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
-    { id = "_fake_mplayers_list", value = ::getTblValue("mplayers_list", ::debriefing_result, []) }
-    { id = "dynamic_apply_status", value = ::dynamic_result }
-    { id = "get_mission_status", value = ::getTblValue("isSucceed", ::debriefing_result) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
-    { id = "get_mission_restore_type", value = ::getTblValue("restoreType", ::debriefing_result, 0) }
-    { id = "get_local_player_country", value = ::getTblValue("country", ::debriefing_result, "") }
-    { id = "get_mp_session_id", value = ::getTblValue("sessionId", ::debriefing_result, ::get_mp_session_id()) }
-    { id = "get_mp_tbl_teams", value = ::getTblValue("mpTblTeams", ::debriefing_result, ::get_mp_tbl_teams()) }
-    { id = "_fake_sessionlobby_unit_type_mask", value = ::debriefing_result?.unitTypesMask }
-    { id = "stat_get_benchmark", value = ::getTblValue("benchmark", ::debriefing_result, ::stat_get_benchmark()) }
-    { id = "get_race_winners_count", value = ::getTblValue("numberOfWinningPlaces", ::debriefing_result, 0) }
-    { id = "get_race_best_lap_time", value = ::debriefing_result?.exp.ptmBestLap ?? -1 }
-    { id = "get_race_lap_times", value = ::debriefing_result?.exp.ptmLapTimesArray ?? [] }
-    { id = "get_mp_local_team", value = ::debriefing_result?.localTeam ?? ::get_mp_local_team() }
-    { id = "get_player_army_for_hud", value = ::debriefing_result?.friendlyTeam ?? ::get_player_army_for_hud() }
+    { id = "_fake_mplayers_list", value = ::getTblValue("mplayers_list", debriefingResult, []) }
+    { id = "dynamic_apply_status", value = getDynamicResult() }
+    { id = "get_mission_status", value = ::getTblValue("isSucceed", debriefingResult) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
+    { id = "get_mission_restore_type", value = ::getTblValue("restoreType", debriefingResult, 0) }
+    { id = "get_local_player_country", value = ::getTblValue("country", debriefingResult, "") }
+    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, ::get_mp_session_id()) }
+    { id = "get_mp_tbl_teams", value = ::getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
+    { id = "_fake_sessionlobby_unit_type_mask", value = debriefingResult?.unitTypesMask }
+    { id = "stat_get_benchmark", value = ::getTblValue("benchmark", debriefingResult, ::stat_get_benchmark()) }
+    { id = "get_race_winners_count", value = ::getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
+    { id = "get_race_best_lap_time", value = debriefingResult?.exp.ptmBestLap ?? -1 }
+    { id = "get_race_lap_times", value = debriefingResult?.exp.ptmLapTimesArray ?? [] }
+    { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? ::get_mp_local_team() }
+    { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? ::get_player_army_for_hud() }
     { id = "_fake_sessionlobby_settings", value = ::SessionLobby.settings }
     { id = "_fake_sessionlobby_last_event_name", value = ::SessionLobby.lastEventName }
     "LAST_SESSION_DEBUG_INFO"
@@ -55,18 +57,18 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     "shop_get_countries_list_with_autoset_units"
     "shop_get_units_list_with_autoset_modules"
     { id = "abandoned_researched_items_for_session", value = [] }
-    { id = "get_gamechat_log_text", value = ::getTblValue("chatLog", ::debriefing_result, "") }
-    { id = "getLogForBanhammer", value = ::debriefing_result?.logForBanhammer ??  "" }
-    { id = "is_multiplayer", value = ::getTblValue("isMp", ::debriefing_result, false) }
+    { id = "get_gamechat_log_text", value = ::getTblValue("chatLog", debriefingResult, "") }
+    { id = "getLogForBanhammer", value = debriefingResult?.logForBanhammer ??  "" }
+    { id = "is_multiplayer", value = ::getTblValue("isMp", debriefingResult, false) }
     { id = "_fake_battlelog", value = ::HudBattleLog.battleLog }
-    { id = "_fake_userlogs", value = ::getTblValue("roomUserlogs", ::debriefing_result, []) }
-    { id = "get_user_logs_count", value = ::getTblValue("roomUserlogs", ::debriefing_result, []).len() }
+    { id = "_fake_userlogs", value = ::getTblValue("roomUserlogs", debriefingResult, []) }
+    { id = "get_user_logs_count", value = ::getTblValue("roomUserlogs", debriefingResult, []).len() }
     { id = "_fake_playersInfo", value = ::SquadIcon.playersInfo }
   ]
 
   local units = []
   local mods  = []
-  local exp = ::getTblValue("expDump", ::debriefing_result, {})
+  local exp = ::getTblValue("expDump", debriefingResult, {})
   foreach (ut in unitTypes.types)
   {
     local unitId = ::getTblValue("investUnitName" + ut.name, exp, "")

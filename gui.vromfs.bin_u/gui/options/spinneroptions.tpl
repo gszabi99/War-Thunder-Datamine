@@ -28,13 +28,9 @@
       selected:t = 'yes'
     <</selected>>
 
-    <<#image>>
+    <<#images>>
       optionImg { background-image:t='<<image>>' <<#imageNoMargin>>noMargin:t='yes'<</imageNoMargin>> }
-    <</image>>
-
-    <<#image2>>
-      optionImg { background-image:t='<<image2>>' <<#image2NoMargin>>noMargin:t='yes'<</image2NoMargin>> }
-    <</image2>>
+    <</images>>
 
     <<@addDiv>>
 
@@ -53,8 +49,13 @@
         <<#fontOverride>>
         style:t='font:<<fontOverride>>;'
         <</fontOverride>>
+        <<@textStyle>>
       }
     <</text>>
+
+    <<#imagesAfterText>>
+    optionImg { background-image:t='<<image>>' }
+    <</imagesAfterText>>
 
     <<#tooltip>>
       tooltip:t = '<<tooltip>>'

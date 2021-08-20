@@ -1,14 +1,15 @@
 local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
 local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
 local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
+local { isAllVehiclesResearched } = require("scripts/unit/squadronUnitAction.nut")
 
 
 elemModelType.addTypes({
   SQUADRON_EXP_ICON = {
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
-    isVisible = @() ::has_feature("ClanVehicles")
-      && ::clan_get_exp() > 0 && ::clan_get_researching_unit() != ""
+    isVisible = @() ::has_feature("ClanVehicles") && ::clan_get_exp() > 0
+     && ::clan_get_researching_unit() != "" && !isAllVehiclesResearched()
 
     getTooltip = @() ::format(::loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())

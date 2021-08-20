@@ -10,6 +10,7 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
 local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
 } = require("scripts/userstat/userstat.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { getDebriefingResult, setDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
 
 require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -83,23 +84,14 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_reload_and_restart_debriefing <- function debug_reload_and_restart_debriefing()
 {
-  local rows = ::debriefing_rows
-  local result = ::debriefing_result
+  local result = getDebriefingResult()
   ::reload()
 
-  local recountFunc = ::gather_debriefing_result
   local canRecount = "_stat_get_exp" in ::getroottable()
   if (!canRecount)
-  {
-    ::gather_debriefing_result = function() {}
-    ::debriefing_rows = rows
-    ::debriefing_result = result
-  }
+    setDebriefingResult(result)
 
   gui_start_debriefingFull()
-
-  if (!canRecount)
-    ::gather_debriefing_result = recountFunc
 }
 
 ::debug_debriefing_unlocks <- function debug_debriefing_unlocks(unlocksAmount = 5)

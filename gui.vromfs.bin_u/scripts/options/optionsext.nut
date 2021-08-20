@@ -244,23 +244,22 @@ local isWaitMeasureEvent = false
 
   foreach (idx, item in items)
   {
-    local opt = item
-    if (typeof(item) == "string")
-      opt = { text = item }
-
+    local opt = typeof(item) == "string" ? { text = item } : clone item
     opt.selected <- idx == value
     if ("hue" in item)
-      item.hueColor <- ::get_block_hsv_color(item.hue,
+      opt.hueColor <- ::get_block_hsv_color(item.hue,
                                              "sat" in item ? item.sat : 0.7,
                                              "val" in item ? item.val : 0.7)
     if ("rgb" in item)
-    {
-      item.hueColor <- item.rgb
+      opt.hueColor <- item.rgb
+
+    if (typeof(item?.image) == "string") {
+      opt.images <- [{ image = item.image }]
+      opt.rawdelete("image")
     }
 
-    local enabled = getTblValue("enabled", opt, true)
-    opt.enabled <- enabled
-    if (!enabled)
+    opt.enabled <- opt?.enabled ?? true
+    if (!opt.enabled)
       spinnerType = "ComboBox" //disabled options can be only in dropright or combobox
 
     view.options.append(opt)
@@ -2603,6 +2602,29 @@ local isWaitMeasureEvent = false
 
       break
 
+    case ::USEROPT_COUNTRIES_SET:
+      descr.id = "countries_set"
+      descr.items = []
+      descr.values = []
+      descr.cb = "onInstantOptionApply"
+      descr.trParams <- "iconType:t='small'; optionWidthInc:t='double';"
+
+      foreach (idx, countriesSet in (context?.countriesSetList ?? [])) {
+        descr.items.append({
+          text = ::loc("country/VS")
+          images = countriesSet.countries[0].map(@(c) { image = ::get_country_icon(c) })
+          imagesAfterText = countriesSet.countries[1].map(@(c) { image = ::get_country_icon(c) })
+          textStyle = "margin:t='3@blockInterval, 0';"
+        })
+        descr.values.append(idx)
+      }
+
+      prevValue = ::get_gui_option(optionId)
+      defaultValue = 0
+      descr.value = (prevValue in descr.values) ? prevValue : defaultValue
+
+      break
+
     case ::USEROPT_USE_KILLSTREAKS:
       descr.id = "use_killstreaks"
       descr.controlType = optionControlType.CHECKBOX
@@ -4790,6 +4812,13 @@ local isWaitMeasureEvent = false
       ::mission_settings[descr.sideTag + "_bitmask"] <- value
       if (descr.onChangeCb)
         descr.onChangeCb(optionId, value, value)
+      break
+
+    case ::USEROPT_COUNTRIES_SET:
+      if (value not in descr.values)
+        break
+      ::set_gui_option(optionId, value)
+      descr?.onChangeCb(optionId, value, value)
       break
 
     case ::USEROPT_BIT_UNIT_TYPES:

@@ -3,6 +3,8 @@
   ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
 }
 
+local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+
 class ::gui_handlers.CampaignResults extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/debriefingCamp.blk"
@@ -12,10 +14,10 @@ class ::gui_handlers.CampaignResults extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     guiScene["campaign-status"].setValue(
-        (::dynamic_result == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
+        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
       )
     guiScene["campaign-result"].setValue(
-        (::dynamic_result == ::MISSION_STATUS_SUCCESS) ? ::loc("missions/dynamic_success") : ::loc("missions/dynamic_fail")
+        (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("missions/dynamic_success") : ::loc("missions/dynamic_fail")
       );
 
     local wpdata = ::get_session_warpoints()

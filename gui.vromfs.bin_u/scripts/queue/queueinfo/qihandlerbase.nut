@@ -1,4 +1,3 @@
-local time = require("scripts/time.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
 
@@ -87,22 +86,11 @@ class ::gui_handlers.QiHandlerBase extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTimer()
   {
-    if (!hasTimerText || !timerTextObjId)
-      return
     local textObj = scene.findObject(timerTextObjId)
-    if(!::check_obj(textObj))
-      return
-
-    local msg = ::loc("yn1/waiting_for_game_query")
-    local waitTime = queue.getActiveTime()
-    if (waitTime > 0)
-    {
-      local minutes = time.secondsToMinutes(waitTime).tointeger()
-      local seconds = waitTime - time.minutesToSeconds(minutes)
-      local timetext = ::format(::loc("yn1/wait_time"), minutes, seconds)
-      msg = msg + "\n" + timetext
-    }
-    textObj.setValue(msg)
+    local timerObj = scene.findObject("wait_time_block")
+    local iconObj = scene.findObject("queue_wait_icon")
+    ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
+      iconObj, ::loc("yn1/waiting_for_game_query"))
   }
 
   function leaveQueue(obj) { if (leaveQueueCb) leaveQueueCb() }

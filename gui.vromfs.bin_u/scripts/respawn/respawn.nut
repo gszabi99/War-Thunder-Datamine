@@ -785,6 +785,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     local unit = ::getSlotAircraft(selSlot.countryId, selSlot.crewIdInCountry)
     local crew = ::getSlotItem(selSlot.countryId, selSlot.crewIdInCountry)
     local isAvailable = ::is_crew_available_in_session(selSlot.crewIdInCountry, false)
+      && missionRules.isUnitEnabledBySessionRank(unit)
     if (crew == null) {
       onCancel()
       return
@@ -1593,6 +1594,13 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!::u.isEmpty(ruleMsg))
       return { text = ruleMsg, id = "cant_spawn_by_mission_rules" }
 
+    if (isRespawn && !missionRules.isUnitEnabledBySessionRank(unit))
+      return {
+        text = ::loc("multiplayer/lowVehicleRank",
+          { minSessionRank = ::calc_battle_rating_from_rank(missionRules.getMinSessionRank()) })
+        id = "low_vehicle_rank"
+      }
+
     if (! haveRespawnBases)
       return { text = ::loc("multiplayer/noRespawnBasesLeft"), id = "no_respawn_bases" }
 
@@ -2094,7 +2102,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     local params = getSlotbarParams()
     params.curSlotIdInCountry <- idInCountry
     params.curSlotCountryId <- countryId
-    params.unlocked <- ::isUnitUnlocked(this, unit, countryId, idInCountry, ::get_local_player_country())
+    params.unlocked <- ::isUnitUnlocked(unit, countryId, idInCountry, ::get_local_player_country(), missionRules)
     params.weaponPrice <- getWeaponPrice(unit.name, getLastWeapon(unit.name))
     if (idInCountry in slotDelayDataByCrewIdx)
       params.slotDelayData <- slotDelayDataByCrewIdx[idInCountry]
@@ -2703,6 +2711,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         || !::is_crew_slot_was_ready_at_host(c.idInCountry, air.name, false)
         || !::get_available_respawn_bases(air.tags).len()
         || !missionRules.getUnitLeftRespawns(air)
+        || !missionRules.isUnitEnabledBySessionRank(air)
         || air.disableFlyout)
       continue
 

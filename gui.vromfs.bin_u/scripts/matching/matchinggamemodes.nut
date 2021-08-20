@@ -178,7 +178,7 @@ local requestedGameModes = []
     ::fetch_game_modes_info({byId = gm_list, timeout = 60},
       function (result)
       {
-        if (!::checkMatchingError(result))
+        if (!::checkMatchingError(result) || ("modes" not in result))
           return
         ::g_matching_game_modes.__onGameModesUpdated(result.modes)
       })

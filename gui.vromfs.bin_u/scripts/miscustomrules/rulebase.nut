@@ -1,5 +1,6 @@
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
+local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 class ::mission_rules.Base
 {
@@ -30,7 +31,7 @@ class ::mission_rules.Base
     missionParams = ::DataBlock()
     ::get_current_mission_desc(missionParams)
 
-    local isVersus = ::is_gamemode_versus(::get_game_mode())
+    local isVersus = isGameModeVersus(::get_game_mode())
     isSpawnDelayEnabled = isVersus && ::getTblValue("useSpawnDelay", missionParams, false)
     isTeamScoreRespawnEnabled = isVersus && ::getTblValue("useTeamSpawnScore", missionParams, false)
     isScoreRespawnEnabled = isTeamScoreRespawnEnabled || (isVersus && ::getTblValue("useSpawnScore", missionParams, false))
@@ -174,11 +175,11 @@ class ::mission_rules.Base
         {
           local airName = ("aircraft" in slot) ? slot.aircraft : ""
           local air = ::getAircraftByName(airName)
-          if (air &&
-              ::is_crew_available_in_session(slot.idInCountry, false) &&
-              ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
-             )
-          {
+          if (air
+            && ::is_crew_available_in_session(slot.idInCountry, false)
+            && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
+            && isUnitEnabledBySessionRank(air)
+          ) {
             local respBases = ::get_available_respawn_bases(air.tags)
             if (respBases.len() != 0)
               return true
@@ -214,7 +215,8 @@ class ::mission_rules.Base
       local unit = ::g_crew.getCrewUnit(crew)
       if (!unit
         || !::is_crew_available_in_session(crew.idInCountry, false)
-        || !::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
+        || !::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
+        || !isUnitEnabledBySessionRank(unit))
         continue
 
       local minScore = unit.getMinimumSpawnScore()
@@ -261,6 +263,7 @@ class ::mission_rules.Base
           || !::is_crew_slot_was_ready_at_host(c.idInCountry, unit.name, false)
           || !::get_available_respawn_bases(unit.tags).len()
           || !getUnitLeftRespawns(unit)
+          || !isUnitEnabledBySessionRank(unit)
           || unit.disableFlyout)
         continue
 
@@ -559,6 +562,13 @@ class ::mission_rules.Base
   function getOverrideCountryIconByTeam(team) {
     local icon = missionParams?[$"countryFlagTeam{team != Team.B ? "A" : "B"}"]
     return icon == "" ? null : icon
+  }
+
+  getMinSessionRank = @() missionParams?.ranks.min ?? 0
+  function isUnitEnabledBySessionRank(unit) {
+    if (!(missionParams?.disableUnitsOutOfSessionRank ?? false) || (unit == null))
+      return true
+    return unit.getEconomicRank(::get_mission_difficulty_int()) >= getMinSessionRank()
   }
 }
 

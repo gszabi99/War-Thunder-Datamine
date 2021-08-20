@@ -9,7 +9,7 @@ local cbTbl = {}
 callbacks.template <- {
   id = "" //filled automatically by typeName
   cbName = "" // filled automatically
-  onCb = @(params) null
+  onCb = @(obj, params) null
   paramsKey = "actionData"
   getParamsMarkup = @(params) ::format("%s:t='%s';", paramsKey, ::save_to_json(params))
   cbFromObj = @(obj) onCb(obj, ::check_obj(obj) ? ::parse_json(obj?[paramsKey] ?? "") : {})

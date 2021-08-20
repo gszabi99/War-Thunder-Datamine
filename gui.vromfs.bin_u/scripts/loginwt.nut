@@ -9,6 +9,7 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 local { checkBadWeapons } = require("scripts/weaponry/weaponryInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { updatePlayerRankByCountries } = require("scripts/ranks.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -157,8 +158,7 @@ g_login.initConfigs <- function initConfigs(cb)
       if (::is_dev_version)
         ::checkShopBlk()
 
-      foreach(c in ::shopCountriesList)
-        ::debriefing_countries[c] <- ::get_player_rank_by_country(c)
+      updatePlayerRankByCountries()
     }
     function()
     {

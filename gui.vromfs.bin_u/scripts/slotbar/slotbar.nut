@@ -849,7 +849,7 @@ if need - put commented in array above
   return ::isInMenu() && ::getTblValue("lockedTillSec", crew, 0) > 0
 }
 
-::isUnitUnlocked <- function isUnitUnlocked(handler, unit, curSlotCountryId, curSlotIdInCountry, country = null, needDbg = false)
+::isUnitUnlocked <- function isUnitUnlocked(unit, curSlotCountryId, curSlotIdInCountry, country, missionRules, needDbg = false)
 {
   local crew = ::g_crews_list.get()[curSlotCountryId].crews[curSlotIdInCountry]
   local unlocked = !::is_crew_locked_by_prev_battle(crew)
@@ -858,6 +858,7 @@ if need - put commented in array above
     unlocked = unlocked && (!country || ::is_crew_available_in_session(curSlotIdInCountry, needDbg))
     unlocked = unlocked && (::isUnitAvailableForGM(unit, ::get_game_mode()) || ::is_in_flight())
       && (!unit.disableFlyout || !::is_in_flight())
+      && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
     if (unlocked && !::SessionLobby.canChangeCrewUnits() && !::is_in_flight()
         && ::SessionLobby.getMaxRespawns() == 1)
       unlocked = ::SessionLobby.getMyCurUnit() == unit

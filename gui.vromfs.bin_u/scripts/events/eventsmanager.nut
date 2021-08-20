@@ -1747,7 +1747,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     if (langCompatibility)
     {
-      local locId = getNameLocOldStyle(economicName)
+      local locId = getNameLocOldStyle(event, economicName)
       res = ::loc(locId + "/short", "")
       return (res != "") ? res : ::loc(locId, ::loc("events/" + economicName + "/short"))
     }

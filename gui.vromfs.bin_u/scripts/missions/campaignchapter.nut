@@ -6,6 +6,7 @@ local { missionsListCampaignId } = require("scripts/missions/getMissionsListCamp
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -634,7 +635,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     local isShowSquadBtn = isCurItemInFocus && isMission &&
-      ::is_gamemode_coop(gm) && ::can_play_gamemode_by_squad(gm) && ::g_squad_manager.canInviteMember()
+      isGameModeCoop(gm) && ::can_play_gamemode_by_squad(gm) && ::g_squad_manager.canInviteMember()
     if (gm == ::GM_SINGLE_MISSION)
       isShowSquadBtn = isShowSquadBtn
                        && (!("blk" in curMission)
@@ -771,12 +772,12 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     if (isUrlMission)
       missionBlk.url = mission.urlMission.url
 
-    local coopAvailable = ::is_gamemode_coop(gm) && ::can_play_gamemode_by_squad(gm) && !::is_user_mission(missionBlk)
+    local coopAvailable = isGameModeCoop(gm) && ::can_play_gamemode_by_squad(gm) && !::is_user_mission(missionBlk)
     ::mission_settings.coop = missionBlk.getBool("gt_cooperative", false) && coopAvailable
 
     missionBlk.setInt("_gameMode", gm)
 
-    if ((::SessionLobby.isCoop() && ::SessionLobby.isInRoom()) || ::is_gamemode_coop(gm))
+    if ((::SessionLobby.isCoop() && ::SessionLobby.isInRoom()) || isGameModeCoop(gm))
     {
       ::mission_settings.players = 4;
       missionBlk.setInt("_players", 4)

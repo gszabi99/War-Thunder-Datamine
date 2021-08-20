@@ -1,3 +1,5 @@
+local { isGameModeCoop, isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+
 class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
@@ -156,7 +158,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
 ::get_custom_difficulty_options <- function get_custom_difficulty_options()
 {
   local gm = ::get_game_mode()
-  local canChangeTpsViews = ::is_gamemode_coop(gm) || ::is_gamemode_versus(gm) || gm == ::GM_TEST_FLIGHT
+  local canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == ::GM_TEST_FLIGHT
 
   return [
       [::USEROPT_CD_ENGINE],

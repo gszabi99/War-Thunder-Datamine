@@ -500,12 +500,12 @@ g_squad_manager.getPlayerStatusInMySquad <- function getPlayerStatusInMySquad(ui
   if (!isInSquad())
     return squadMemberState.NOT_IN_SQUAD
 
-  if (getLeaderUid() == uid)
-    return squadMemberState.SQUAD_LEADER
-
   local memberData = getMemberData(uid)
   if (memberData == null)
     return squadMemberState.NOT_IN_SQUAD
+
+  if (getLeaderUid() == uid)
+    return squadMemberState.SQUAD_LEADER
 
   if (!memberData.online)
     return squadMemberState.SQUAD_MEMBER_OFFLINE

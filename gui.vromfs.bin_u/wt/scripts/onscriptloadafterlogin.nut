@@ -253,9 +253,7 @@ foreach (fn in [
   "misObjectives/misObjectivesView.nut"
   "tacticalMap.nut"
 
-  "debriefing/debriefingFull.nut"
   "debriefing/debriefingModal.nut"
-  "debriefing/rankUpModal.nut"
   "debriefing/tournamentRewardReceivedModal.nut"
   "mainmenu/benchmarkResultModal.nut"
 

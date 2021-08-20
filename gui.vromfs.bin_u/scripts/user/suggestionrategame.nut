@@ -3,6 +3,7 @@ local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut"
 local { TIME_HOUR_IN_SECONDS } = require("std/time.nut")
 local { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
 local steamRateGameWnd = require("steamRateGameWnd.nut")
+local { debriefingRows } = require("scripts/debriefing/debriefingFull.nut")
 
 local log = require("std/log.nut")().with_prefix("[UserUtils] ")
 
@@ -67,7 +68,7 @@ local function setNeedShowRate(debriefingResult, myPlace) {
     winsInARow(winsInARow.value+1)
 
     local totalKills = 0
-    ::debriefing_rows.each(function(b) {
+    debriefingRows.each(function(b) {
       if (b.id.contains("Kills"))
         totalKills += debriefingResult.exp?[$"num{b.id}"] ?? 0
     })

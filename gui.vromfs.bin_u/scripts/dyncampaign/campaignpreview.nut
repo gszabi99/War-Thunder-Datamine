@@ -1,5 +1,6 @@
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {
@@ -60,7 +61,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
           guiScene["scene-title"].text = ::loc("dynamic/" + layout)
       }
     if (isFinal)
-      guiScene["scene-title"].text = (::dynamic_result == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
+      guiScene["scene-title"].text = (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("DYNAMIC_CAMPAIGN_SUCCESS") : ::loc("DYNAMIC_CAMPAIGN_FAIL")
 
     guiScene["info-date"].text = ::loc("date_format",
     {

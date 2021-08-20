@@ -2,6 +2,7 @@ local { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBl
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 
 ::match_search_gm <- -1
@@ -69,15 +70,6 @@ local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFe
   return ret
 }
 
-::is_gamemode_coop <- function is_gamemode_coop(gm)
-{
-  return gm == -1 || gm == ::GM_SINGLE_MISSION || gm == ::GM_DYNAMIC || gm == ::GM_BUILDER
-}
-::is_gamemode_versus <- function is_gamemode_versus(gm)
-{
-  return gm == -1 || gm == ::GM_SKIRMISH || gm == ::GM_DOMINATION
-}
-
 class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 {
   sceneBlkName = sessionsListBlkPath.value
@@ -104,7 +96,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     curPageRoomsList = []
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
-    isCoop = is_gamemode_coop(::match_search_gm)
+    isCoop = isGameModeCoop(::match_search_gm)
     scene.findObject("sessions_update").setUserData(this)
 
     local head = scene.findObject("sessions_diff_header")

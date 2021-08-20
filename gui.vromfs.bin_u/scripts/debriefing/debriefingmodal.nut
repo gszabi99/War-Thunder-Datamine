@@ -22,6 +22,13 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { setNeedShowRate } = require("scripts/user/suggestionRateGame.nut")
 local { sourcesConfig } = require("scripts/debriefing/rewardSources.nut")
+local { minValuesToShowRewardPremium, playerRankByCountries } = require("scripts/ranks.nut")
+local { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
+gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
+} = require("scripts/debriefing/debriefingFull.nut")
+local { needCheckForVictory } = require("scripts/missions/missionsUtils.nut")
+local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
+local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -34,6 +41,8 @@ enum DEBR_THEME {
   LOSE      = "lose"
   PROGRESS  = "progress"
 }
+
+local debriefingSkipAllAtOnce = true
 
 local statTooltipColumnParamByType = {
   time = @(rowConfig) {
@@ -207,21 +216,24 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   isForceShowMyStatsRightBlock = false
 
   debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
+  debriefingResult = null
 
   function initScreen()
   {
-    if (::debriefing_result == null) {
+    debriefingResult = getDebriefingResult()
+    if (debriefingResult == null) {
       ::script_net_assert_once("not inited debriefing result", "try to get debriefing data")
-      ::gather_debriefing_result()
+      gatherDebriefingResult()
+      debriefingResult = getDebriefingResult()
     }
-    gm = ::debriefing_result.gm
-    mGameMode = ::debriefing_result.mGameMode
-    gameType = ::debriefing_result.gameType
-    isTeamplay = ::debriefing_result.isTeamplay
-    isSpectator = ::debriefing_result.isSpectator
-    playersInfo = ::debriefing_result.playersInfo
-    isMp = ::debriefing_result.isMp
-    isReplay = ::debriefing_result.isReplay
+    gm = debriefingResult.gm
+    mGameMode = debriefingResult.mGameMode
+    gameType = debriefingResult.gameType
+    isTeamplay = debriefingResult.isTeamplay
+    isSpectator = debriefingResult.isSpectator
+    playersInfo = debriefingResult.playersInfo
+    isMp = debriefingResult.isMp
+    isReplay = debriefingResult.isReplay
     isForceShowMyStatsRightBlock = ::has_feature("Profile")
 
     if (::disable_network()) //for correct work in disable_menu mode
@@ -246,10 +258,10 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       scene.findObject("debriefing_timer").setUserData(this)
 
     playerStatsObj = scene.findObject("stat_table")
-    numberOfWinningPlaces = ::getTblValue("numberOfWinningPlaces", ::debriefing_result, -1)
-    pveRewardInfo = ::getTblValue("pveRewardInfo", ::debriefing_result)
-    giftItems = groupGiftsById(::debriefing_result?.giftItemsInfo)
-    foreach(idx, row in ::debriefing_rows)
+    numberOfWinningPlaces = ::getTblValue("numberOfWinningPlaces", debriefingResult, -1)
+    pveRewardInfo = ::getTblValue("pveRewardInfo", debriefingResult)
+    giftItems = groupGiftsById(debriefingResult?.giftItemsInfo)
+    foreach(idx, row in debriefingRows)
       if (row.show)
       {
         curStatsIdx = idx
@@ -266,7 +278,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     if (isMp)
     {
-      local mpResult = ::debriefing_result.exp.result
+      local mpResult = debriefingResult.exp.result
       resTitle = ::loc("MISSION_IN_PROGRESS")
 
       if (isSpectator
@@ -277,13 +289,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         if (isTeamplay)
         {
           local myTeam = Team.A
-          foreach(player in ::debriefing_result.mplayers_list)
+          foreach(player in debriefingResult.mplayers_list)
             if (::getTblValue("isLocal", player, false))
             {
               myTeam = player.team
               break
             }
-          local winner = ((myTeam == Team.A) == ::debriefing_result.isSucceed) ? "A" : "B"
+          local winner = ((myTeam == Team.A) == debriefingResult.isSucceed) ? "A" : "B"
           resTitle = ::loc("multiplayer/team_won") + ::loc("ui/colon") + ::loc("multiplayer/team" + winner)
           resTheme = DEBR_THEME.WIN
         }
@@ -298,7 +310,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         resTitle = ::loc("MISSION_SUCCESS")
         resTheme = DEBR_THEME.WIN
 
-        local victoryBonus = (isMp && ::isDebriefingResultFull()) ? getMissionVictoryBonusText() : ""
+        local victoryBonus = (isMp && isDebriefingResultFull()) ? getMissionVictoryBonusText() : ""
         if (victoryBonus != "")
           resReward = ::loc("debriefing/MissionWinReward") + ::loc("ui/colon") + victoryBonus
 
@@ -320,8 +332,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     }
     else
     {
-      resTitle = ::loc(::debriefing_result.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
-      resTheme = ::debriefing_result.isSucceed ? DEBR_THEME.WIN : DEBR_THEME.LOSE
+      resTitle = ::loc(debriefingResult.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
+      resTheme = debriefingResult.isSucceed ? DEBR_THEME.WIN : DEBR_THEME.LOSE
     }
 
     scene.findObject("result_title").setValue(resTitle)
@@ -349,7 +361,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (gm == ::GM_DYNAMIC)
       {
         ::save_profile(true)
-        if (::dynamic_result > ::MISSION_STATUS_RUNNING)
+        if (getDynamicResult() > ::MISSION_STATUS_RUNNING)
           ::destroy_session_scripted()
         else
           ::g_squad_manager.setReadyFlag(true)
@@ -369,15 +381,15 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
           gm = gm
           economicName = ::events.getEventEconomicName(mGameMode)
           difficulty = mGameMode?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
-          sessionId = ::debriefing_result?.sessionId ?? ""
-          sessionTime = ::debriefing_result?.exp?.sessionTime ?? 0
+          sessionId = debriefingResult?.sessionId ?? ""
+          sessionTime = debriefingResult?.exp?.sessionTime ?? 0
           originalMissionName = ::SessionLobby.getMissionName(true)
           missionsComplete = ::my_stats.getMissionsComplete()
           result = resTheme
         }))
     local sessionIdObj = scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
-      sessionIdObj.setValue(::debriefing_result?.sessionId ?? "")
+      sessionIdObj.setValue(debriefingResult?.sessionId ?? "")
   }
 
   function gatherAwardsLists()
@@ -386,7 +398,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     streakAwardsList = getAwardsList(awardsListsConfig.streaks.filter)
 
-    local wpBattleTrophy = ::getTblValue("wpBattleTrophy", ::debriefing_result.exp, 0)
+    local wpBattleTrophy = ::getTblValue("wpBattleTrophy", debriefingResult.exp, 0)
     if (wpBattleTrophy > 0)
       streakAwardsList.append(getFakeUnlockDataByWpBattleTrophy(wpBattleTrophy))
 
@@ -455,16 +467,16 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local text = ""
     local color = ""
 
-    if(::getTblValue("haveTeamkills", ::debriefing_result, false))
+    if(::getTblValue("haveTeamkills", debriefingResult, false))
     {
       text = ::loc("debriefing/noAwardsCaption")
       color = "bad"
     }
-    else if (::debriefing_result?.exp.eacKickMessage != null)
+    else if (debriefingResult?.exp.eacKickMessage != null)
     {
       text = "".concat(getKickReasonLocText(), "\n",
         ::loc("multiplayer/reason"), ::loc("ui/colon"),
-        ::colorize("activeTextColor", ::debriefing_result.exp.eacKickMessage))
+        ::colorize("activeTextColor", debriefingResult.exp.eacKickMessage))
 
       if (::has_feature("AllowExternalLink") && !::is_vendor_tencent())
         ::showBtn("btn_no_awards_info", true, scene)
@@ -493,14 +505,14 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getKickReasonLocText()
   {
-    if (::debriefing_result?.exp.eacKickMessage != null)
+    if (debriefingResult?.exp.eacKickMessage != null)
       return ::loc("MISSION_ABORTED_BY_KICK/EAC")
     return ::loc("MISSION_ABORTED_BY_KICK")
   }
 
   function onNoAwardsInfoBtn()
   {
-    if (::debriefing_result?.exp.eacKickMessage != null)
+    if (debriefingResult?.exp.eacKickMessage != null)
       openUrl(::loc("url/support/easyanticheat/kick_reasons"), false, false, "support_eac")
   }
 
@@ -528,9 +540,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         if (!(currency + suffix in totalCurValues))
           totalCurValues[currency + suffix] <- 0
 
-      local totalKey = ::get_counted_result_id(totalRow, state, currency)
+      local totalKey = getCountedResultId(totalRow, state, currency)
       totalCurValues[currency] <- ::getTblValue(currency, totalCurValues, 0)
-      totalTarValues[currency] <- ::getTblValue(totalKey, ::debriefing_result.counted_result_by_debrState, 0)
+      totalTarValues[currency] <- ::getTblValue(totalKey, debriefingResult.counted_result_by_debrState, 0)
       totalCurValues[currency + "Teaser"] <- ::getTblValue(currency + "Teaser", totalCurValues, 0)
       totalTarValues[currency + "Teaser"] <- premTeaser[currency]
     }
@@ -564,7 +576,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function handleActiveWager()
   {
-    local activeWagerData = ::getTblValue("activeWager", ::debriefing_result, null)
+    local activeWagerData = ::getTblValue("activeWager", debriefingResult, null)
     if (!activeWagerData)
       return
 
@@ -912,7 +924,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function onUpdate(obj, dt)
   {
     needPlayCount = false
-    if (isSceneActiveNoModals() && ::debriefing_result)
+    if (isSceneActiveNoModals() && debriefingResult)
     {
       if (state != debrState.done && !updateState(dt))
         switchState()
@@ -974,7 +986,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         return switchState()
 
       showTab("players_stats")
-      skipAnim = skipAnim && ::debriefing_skip_all_at_once
+      skipAnim = skipAnim && debriefingSkipAllAtOnce
       if (!skipAnim)
         guiScene.playSound("deb_players_on")
       initPlayersTable()
@@ -987,7 +999,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (!is_show_my_stats() || !is_show_awards_list())
         return switchState()
 
-      skipAnim = skipAnim && ::debriefing_skip_all_at_once
+      skipAnim = skipAnim && debriefingSkipAllAtOnce
       if (awardDelay * awardsList.len() > awardsAppearTime)
         awardDelay = awardsAppearTime / awardsList.len()
     }
@@ -997,7 +1009,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         return switchState()
 
       showTab("my_stats")
-      skipAnim = skipAnim && ::debriefing_skip_all_at_once
+      skipAnim = skipAnim && debriefingSkipAllAtOnce
       ::showBtnTable(scene, {
         left_block              = is_show_left_block()
         inventory_gift_block    = is_show_inventory_gift()
@@ -1026,7 +1038,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       //Gather rewards info:
       local textArray = []
 
-      if (::debriefing_result.mulsList.len())
+      if (debriefingResult.mulsList.len())
         textArray.append(::loc("bonus/xpFirstWinInDayMul/tooltip"))
 
       local bonusNames = {
@@ -1034,7 +1046,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         premMod = "modification/premExpMul"
         booster = "itemTypes/booster"
       }
-      local tblTotal = ::getTblValue("tblTotal", ::debriefing_result.exp, {})
+      local tblTotal = ::getTblValue("tblTotal", debriefingResult.exp, {})
       local bonusesTotal = []
       foreach (bonusType in [ "premAcc", "premMod", "booster" ])
       {
@@ -1057,7 +1069,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       if (!isDebriefingResultFull() &&
           !((gameType & ::GT_RACE) &&
-            ::debriefing_result.exp.result == ::STATS_RESULT_IN_PROGRESS))
+            debriefingResult.exp.result == ::STATS_RESULT_IN_PROGRESS))
         textArray.append(::loc("debriefing/most_award_after_battle"))
 
       textArray.insert(0, ::loc("charServer/chapter/bonuses"))
@@ -1106,15 +1118,15 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       ::move_mouse_on_child(tabsObj, tabsObj.getValue())
     }
     else
-      skipAnim = skipAnim && ::debriefing_skip_all_at_once
+      skipAnim = skipAnim && debriefingSkipAllAtOnce
   }
 
   function ps4SendActivityFeed()
   {
     if (!isPlatformSony
       || !isMp
-      || !::debriefing_result
-      || ::debriefing_result.exp.result != ::STATS_RESULT_SUCCESS)
+      || !debriefingResult
+      || debriefingResult.exp.result != ::STATS_RESULT_SUCCESS)
       return
 
     local config = {
@@ -1149,18 +1161,18 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     updatePvEReward(dt)
 
     local haveChanges = false
-    local upTo = min(curStatsIdx, ::debriefing_rows.len()-1)
+    local upTo = min(curStatsIdx, debriefingRows.len()-1)
     for (local i = 0; i <= upTo; i++)
-      if (::debriefing_rows[i].show)
-        haveChanges = !updateStat(::debriefing_rows[i], playerStatsObj, skipAnim? 10*dt : dt, i==upTo) || haveChanges
+      if (debriefingRows[i].show)
+        haveChanges = !updateStat(debriefingRows[i], playerStatsObj, skipAnim? 10*dt : dt, i==upTo) || haveChanges
 
-    if (haveChanges || curStatsIdx < ::debriefing_rows.len())
+    if (haveChanges || curStatsIdx < debriefingRows.len())
     {
-      if ((statsTimer < 0 || skipAnim) && curStatsIdx < ::debriefing_rows.len())
+      if ((statsTimer < 0 || skipAnim) && curStatsIdx < debriefingRows.len())
       {
         do
           curStatsIdx++
-        while (curStatsIdx < ::debriefing_rows.len() && !::debriefing_rows[curStatsIdx].show)
+        while (curStatsIdx < debriefingRows.len() && !debriefingRows[curStatsIdx].show)
         statsTimer += statsNextTime
       }
       return true
@@ -1174,7 +1186,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (statsTimer < 0 || skipAnim)
     {
       local haveChanges = false
-      foreach(row in ::debriefing_rows)
+      foreach(row in debriefingRows)
         if (row.show)
           haveChanges = !updateStat(row, playerStatsObj, skipAnim? 10*dt : dt, false) || haveChanges
       return haveChanges
@@ -1199,7 +1211,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       rowObj.findObject("tooltip_").id = "tooltip_" + row.id
       rowObj.findObject("name").setValue(row.getName())
 
-      if (!::debriefing_result.needRewardColumn)
+      if (!debriefingResult.needRewardColumn)
         guiScene.destroyElement(rowObj.findObject(row.canShowRewardAsValue? "td_value" : "td_reward"))
       justCreated = true
 
@@ -1227,8 +1239,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       local targetValue = 0
       if (p != "value" || ::isInArray(row.type, ["wp", "exp", "gold"]))
       {
-        local tblKey = ::get_counted_result_id(row, state, p == "value"? row.type : row.rewardType)
-        targetValue = ::getTblValue(tblKey, ::debriefing_result.counted_result_by_debrState, 0)
+        local tblKey = getCountedResultId(row, state, p == "value"? row.type : row.rewardType)
+        targetValue = ::getTblValue(tblKey, debriefingResult.counted_result_by_debrState, 0)
       }
 
       if (targetValue == 0)
@@ -1299,7 +1311,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (isInited)
     {
       local country = getDebriefingCountry()
-      if (country in ::debriefing_countries && ::debriefing_countries[country] >= ::max_country_rank)
+      if (country in playerRankByCountries && playerRankByCountries[country] >= ::max_country_rank)
       {
         totalTarValues.exp = getStatValue(totalRow, "exp", "prem")
         dt = 1000 //force fast blend
@@ -1337,7 +1349,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       return
 
     local usedUnitsList = []
-    foreach(unitId, unitData in ::debriefing_result.exp.aircrafts)
+    foreach(unitId, unitData in debriefingResult.exp.aircrafts)
     {
       local unit = ::getAircraftByName(unitId)
       if (unit && isShowUnitInModsResearch(unitId))
@@ -1411,7 +1423,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function isShowUnitInModsResearch(unitId)
   {
-    local unitData = ::debriefing_result.exp.aircrafts?[unitId]
+    local unitData = debriefingResult.exp.aircrafts?[unitId]
     return unitData?.expTotal && unitData?.sessionTime &&
       ((unitData?.investModuleName ?? "") != "" ||
       ::SessionLobby.isUsedPlayersOwnUnit(playersInfo?[::my_user_id_int64], unitId))
@@ -1419,7 +1431,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function hasAnyFinishedResearch()
   {
-    if (!::debriefing_result)
+    if (!debriefingResult)
       return false
     foreach (ut in unitTypes.types)
     {
@@ -1427,7 +1439,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (unit && !::isUnitInResearch(unit))
         return true
     }
-    foreach (unitId, unitData in ::debriefing_result.exp.aircrafts)
+    foreach (unitId, unitData in debriefingResult.exp.aircrafts)
     {
       local modName = ::getTblValue("investModuleName", unitData, "")
       if (modName == "")
@@ -1443,18 +1455,18 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function getExpInvestUnitTotal()
   {
     local res = 0
-    foreach (unitId, unitData in ::debriefing_result.exp.aircrafts)
+    foreach (unitId, unitData in debriefingResult.exp.aircrafts)
       res += unitData?.expInvestUnitTotal ?? 0
     return res
   }
 
   function getResearchUnitInfo(unitTypeName)
   {
-    local unitId = ::debriefing_result?.exp["investUnitName" + unitTypeName] ?? ""
+    local unitId = debriefingResult?.exp["investUnitName" + unitTypeName] ?? ""
     local unit = ::getAircraftByName(unitId)
     if (!unit)
       return null
-    local expInvest = ::debriefing_result?.exp["expInvestUnit" + unitTypeName] ?? 0
+    local expInvest = debriefingResult?.exp["expInvestUnit" + unitTypeName] ?? 0
     expInvest = applyItemExpMultiplicator(expInvest)
     if (expInvest <= 0)
       return null
@@ -1483,8 +1495,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function applyItemExpMultiplicator(itemExp)
   {
     local multBonus = 0
-    if(::debriefing_result.mulsList.len() > 0)
-      foreach(idx, table in ::debriefing_result.mulsList)
+    if(debriefingResult.mulsList.len() > 0)
+      foreach(idx, table in debriefingResult.mulsList)
         multBonus += ::getTblValue("exp", table, 0)
 
     itemExp = multBonus == 0? itemExp : itemExp * multBonus
@@ -1555,7 +1567,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function updateResearchMod(unitId, modId)
   {
-    local airData = ::debriefing_result?.exp.aircrafts[unitId]
+    local airData = debriefingResult?.exp.aircrafts[unitId]
     if (!airData)
       return
     local unit = ::getAircraftByName(unitId)
@@ -1645,12 +1657,12 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function onTrTooltipOpen(obj)
   {
-    if (!checkShowTooltip(obj) || !::debriefing_result)
+    if (!checkShowTooltip(obj) || !debriefingResult)
       return
 
     local id = getTooltipObjId(obj)
     if (!id) return
-    if (!("exp" in ::debriefing_result) || !("aircrafts" in ::debriefing_result.exp))
+    if (!("exp" in debriefingResult) || !("aircrafts" in debriefingResult.exp))
     {
       obj["class"] = "empty"
       return
@@ -1668,7 +1680,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     {
       if (tRow.isCountedInUnits)
       {
-        foreach (unitId, unitData in ::debriefing_result.exp.aircrafts)
+        foreach (unitId, unitData in debriefingResult.exp.aircrafts)
           rowsCfg.append({
             row     = tRow
             name    = ::getUnitName(unitId)
@@ -1681,7 +1693,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         rowsCfg.append({
           row     = tRow
           name    = tRow.getName()
-          expData = ::debriefing_result.exp
+          expData = debriefingResult.exp
         })
       }
     }
@@ -1701,7 +1713,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
           rowsCfg.append({
             row     = extraRow
             name    = extraRow.getName()
-            expData = ::debriefing_result.exp
+            expData = debriefingResult.exp
           })
       }
     }
@@ -1733,7 +1745,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         name = cfg.name
       }
 
-      local rowTbl = ::getTblValue(::get_table_name_by_id(cfg.row), cfg.expData)
+      local rowTbl = cfg.expData?[getTableNameById(cfg.row)]
 
       foreach(currency in [ "exp", "wp" ])
       {
@@ -1806,15 +1818,15 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getDebriefingRowById(id)
   {
-    return ::u.search(::debriefing_rows, @(row) row.id == id)
+    return ::u.search(debriefingRows, @(row) row.id == id)
   }
 
   function getPremTeaserInfo()
   {
-    local totalWp = ::debriefing_result.exp?.wpTotal  ?? 0
-    local totalRp = ::debriefing_result.exp?.expTotal ?? 0
-    local virtPremAccWp = ::debriefing_result.exp?.tblTotal.virtPremAccWp  ?? 0
-    local virtPremAccRp = ::debriefing_result.exp?.tblTotal.virtPremAccExp ?? 0
+    local totalWp = debriefingResult.exp?.wpTotal  ?? 0
+    local totalRp = debriefingResult.exp?.expTotal ?? 0
+    local virtPremAccWp = debriefingResult.exp?.tblTotal.virtPremAccWp  ?? 0
+    local virtPremAccRp = debriefingResult.exp?.tblTotal.virtPremAccExp ?? 0
 
     local totalWithPremWp = (totalWp <= 0 || virtPremAccWp <= 0) ? 0 : (totalWp + virtPremAccWp)
     local totalWithPremRp = (totalRp <= 0 || virtPremAccRp <= 0) ? 0 : (totalRp + virtPremAccRp)
@@ -1866,10 +1878,10 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     if (!getEntitlementWithAward())
       return false
-    if (::get_premium_reward_wp() >= ::min_values_to_show_reward_premium.wp)
+    if (::get_premium_reward_wp() >= minValuesToShowRewardPremium.value.wp)
       return true
     local exp = ::get_premium_reward_xp()
-    return exp >= ::min_values_to_show_reward_premium.exp
+    return exp >= minValuesToShowRewardPremium.value.exp
   }
 
   function onBuyPremiumAward()
@@ -1912,9 +1924,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (!::havePremium())
       return
 
-    ::debriefing_add_virtual_prem_acc()
+    debriefingAddVirtualPremAcc()
 
-    foreach(row in ::debriefing_rows)
+    foreach(row in debriefingRows)
       if (!row.show)
         showSceneBtn("row_" + row.id, row.show)
 
@@ -2058,10 +2070,10 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     }
     else
     {
-      sortTable(::debriefing_result.mplayers_list)
+      sortTable(debriefingResult.mplayers_list)
       playersTbl.append([])
       playersTbl.append([])
-      foreach(i, player in ::debriefing_result.mplayers_list)
+      foreach(i, player in debriefingResult.mplayers_list)
       {
         local tblIdx = i >= numMaxPlayers ? 1 : 0
         playersTbl[tblIdx].append(player)
@@ -2094,12 +2106,12 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getMplayersListByTeam(teamNum)
   {
-    return (::debriefing_result?.mplayers_list ?? []).filter(@(player) player.team == teamNum)
+    return (debriefingResult?.mplayers_list ?? []).filter(@(player) player.team == teamNum)
   }
 
   function updatePlayersTable(dt)
   {
-    if (!playersTbl || !::debriefing_result)
+    if (!playersTbl || !debriefingResult)
       return false
 
     statsTimer -= dt
@@ -2121,8 +2133,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         }
         playersTblDone = playersTblDone && curPlayersTbl[t].len() == playersTbl[t].len()
       }
-      updateStats({ playersTbl = curPlayersTbl, playersInfo = playersInfo }, ::debriefing_result.mpTblTeams,
-        ::debriefing_result.friendlyTeam)
+      updateStats({ playersTbl = curPlayersTbl, playersInfo = playersInfo }, debriefingResult.mpTblTeams,
+        debriefingResult.friendlyTeam)
       statsTimer += playersRowTime
     }
     return true
@@ -2155,7 +2167,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local label = hasPlace && isTeamplay ? ::loc("debriefing/placeInMyTeam")
       : hasPlace && !isTeamplay ? (::loc("mainmenu/btnMyPlace") + ::loc("ui/colon"))
       : !isDebriefingResultFull() ? ::loc("debriefing/preliminaryResults")
-      : ::loc(::debriefing_result.isSucceed ? "debriefing/victory" : "debriefing/defeat")
+      : ::loc(debriefingResult.isSucceed ? "debriefing/victory" : "debriefing/defeat")
 
     local objTarget = scene.findObject("my_place_move_box")
     objTarget.show(true)
@@ -2255,7 +2267,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     if (!needPlayersTbl)
       return
-    local logText = ::getTblValue("chatLog", ::debriefing_result, "")
+    local logText = ::getTblValue("chatLog", debriefingResult, "")
     if (logText == "")
       return
     local obj = scene.findObject("chat_history_div")
@@ -2563,7 +2575,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   }
   function is_show_chat_history()
   {
-    return needPlayersTbl && ::getTblValue("chatLog", ::debriefing_result, "") != ""
+    return needPlayersTbl && ::getTblValue("chatLog", debriefingResult, "") != ""
   }
   function is_show_left_block()
   {
@@ -2583,7 +2595,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   }
   function is_show_research_list()
   {
-    foreach (unitId, unitData in ::debriefing_result.exp.aircrafts)
+    foreach (unitId, unitData in debriefingResult.exp.aircrafts)
       if (isShowUnitInModsResearch(unitId))
         return true
     foreach (ut in unitTypes.types)
@@ -2748,12 +2760,12 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     if (gm == ::GM_CAMPAIGN)
     {
-      if (::debriefing_result.isSucceed)
+      if (debriefingResult.isSucceed)
       {
         dagor.debug("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
         if ((::current_campaign_mission == "jpn_guadalcanal_m4")
             || (::current_campaign_mission == "us_guadalcanal_m4"))
-          ::check_for_victory <- true;
+          needCheckForVictory(true)
         ::select_next_avail_campaign_mission(::current_campaign_id, ::current_campaign_mission)
       }
       ::go_debriefing_next_func = ::gui_start_menuCampaign
@@ -2765,7 +2777,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     {
       if (isMpMode)
       {
-        if (::SessionLobby.isInRoom() && ::dynamic_result == ::MISSION_STATUS_RUNNING)
+        if (::SessionLobby.isInRoom() && getDynamicResult() == ::MISSION_STATUS_RUNNING)
         {
           ::go_debriefing_next_func = ::gui_start_dynamic_summary
           if (::is_mplayer_host())
@@ -2776,7 +2788,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         return
       }
 
-      if (::dynamic_result == ::MISSION_STATUS_RUNNING)
+      if (getDynamicResult() == ::MISSION_STATUS_RUNNING)
       {
         local settings = DataBlock();
         ::mission_settings.dynlist <- ::dynamic_get_list(settings, false)
@@ -2857,9 +2869,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       ::destroy_session_scripted()
 
     if (is_show_my_stats())
-      setNeedShowRate(::debriefing_result, getMyPlace())
+      setNeedShowRate(debriefingResult, getMyPlace())
 
-    ::debriefing_result = null
+    debriefingResult = null
     playCountSound(false)
     isInProgress = false
 
@@ -3051,7 +3063,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function throwBattleEndEvent()
   {
-    local eventId = ::getTblValue("eventId", ::debriefing_result)
+    local eventId = ::getTblValue("eventId", debriefingResult)
     if (eventId)
       ::broadcastEvent("EventBattleEnded", {eventId = eventId})
     ::broadcastEvent("BattleEnded")
@@ -3074,7 +3086,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     //check new rank and unlock country by exp gained
     local new_rank = ::get_player_rank_by_country(country)
-    local old_rank = (country in ::debriefing_countries)? ::debriefing_countries[country] : new_rank
+    local old_rank = playerRankByCountries?[country] ?? new_rank
 
     if (country!="" && country!="country_0" &&
         !::isCountryAvailable(country) && ::get_player_exp_by_country(country)>0)
@@ -3089,7 +3101,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       for (local i = old_rank+1; i<=new_rank; i++)
         gained_ranks.append(i);
-      ::checkRankUpWindow(country, old_rank, new_rank);
+      checkRankUpWindow(country, old_rank, new_rank);
     }
 
     //check country unlocks by N battle
@@ -3116,7 +3128,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     local rewardsArray = []
     foreach(log in tornament_special_rewards)
-      rewardsArray.extend(::getTournamentRewardData(log))
+      rewardsArray.extend(getTournamentRewardData(log))
 
     foreach(rewardConfig in rewardsArray)
       ::showUnlockWnd(rewardConfig)
@@ -3126,14 +3138,14 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function updateInfoText()
   {
-    if (::debriefing_result == null)
+    if (debriefingResult == null)
       return
     local infoText = ""
     local infoColor = "active"
 
     local wpdata = ::get_session_warpoints()
 
-    if (::debriefing_result.exp.result == ::STATS_RESULT_ABORTED_BY_KICK)
+    if (debriefingResult.exp.result == ::STATS_RESULT_ABORTED_BY_KICK)
     {
       infoText = getKickReasonLocText()
       infoColor = "bad"
@@ -3145,14 +3157,14 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       local hasAnyReward = false
       foreach (source in [ "Total", "Mission" ])
         foreach (currency in [ "exp", "wp", "gold" ])
-          if (::getTblValue(currency + source, ::debriefing_result.exp, 0) > 0)
+          if (::getTblValue(currency + source, debriefingResult.exp, 0) > 0)
             hasAnyReward = true
 
       if (!hasAnyReward)
       {
         if (gm == ::GM_SINGLE_MISSION || gm == ::GM_CAMPAIGN || gm == ::GM_TRAINING)
         {
-          if (::debriefing_result.isSucceed)
+          if (debriefingResult.isSucceed)
             infoText = ::loc("debriefing/award_already_received")
         }
         else if (isMp && !isDebriefingResultFull() && gm == ::GM_DOMINATION)
@@ -3160,7 +3172,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
           infoText = ::loc("debriefing/most_award_after_battle")
           infoColor = "userlog"
         }
-        else if (isMp && ::debriefing_result.exp.result == ::STATS_RESULT_IN_PROGRESS && !(gameType & ::GT_RACE))
+        else if (isMp && debriefingResult.exp.result == ::STATS_RESULT_IN_PROGRESS && !(gameType & ::GT_RACE))
           infoText = ::loc("debriefing/exp_and_reward_will_be_later")
       }
     }
@@ -3180,7 +3192,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function getBoostersText()
   {
     local textsList = []
-    local activeBoosters = ::getTblValue("activeBoosters", ::debriefing_result, [])
+    local activeBoosters = ::getTblValue("activeBoosters", debriefingResult, [])
     if (activeBoosters.len() > 0)
       foreach(effectType in boosterEffectType)
       {
@@ -3200,7 +3212,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getBoostersTotalEffects()
   {
-    local activeBoosters = ::getTblValue("activeBoosters", ::debriefing_result, [])
+    local activeBoosters = ::getTblValue("activeBoosters", debriefingResult, [])
     local boostersArray = []
     foreach(block in activeBoosters)
     {
@@ -3259,13 +3271,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getChatLog()
   {
-    return ::debriefing_result?.logForBanhammer
+    return debriefingResult?.logForBanhammer
   }
 
   function getDebriefingCountry()
   {
-    if (::debriefing_result)
-      return ::debriefing_result.country
+    if (debriefingResult)
+      return debriefingResult.country
     return ""
   }
 
@@ -3293,22 +3305,22 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     return ::Cost(::get_premium_reward_wp(), 0, ::get_premium_reward_xp()).tostring()
   }
 
-  getLocalTeam = @() ::get_local_team_for_mpstats(::debriefing_result.localTeam)
+  getLocalTeam = @() ::get_local_team_for_mpstats(debriefingResult.localTeam)
   getMplayersList = @(team) team == ::GET_MPLAYERS_LIST
-    ? ::debriefing_result.mplayers_list
-    : ::debriefing_result.mplayers_list.filter(@(player) player.team == team)
-  getOverrideCountryIconByTeam = @(team) ::debriefing_result.overrideCountryIconByTeam[team]
+    ? debriefingResult.mplayers_list
+    : debriefingResult.mplayers_list.filter(@(player) player.team == team)
+  getOverrideCountryIconByTeam = @(team) debriefingResult.overrideCountryIconByTeam[team]
 
   function initStatsMissionParams() {
-    gameMode = ::debriefing_result.gm
+    gameMode = debriefingResult.gm
     isOnline = ::g_login.isLoggedIn()
 
     isTeamsRandom = !isTeamplay || gameMode == ::GM_DOMINATION
-    if (::debriefing_result.isInRoom || isReplay)
+    if (debriefingResult.isInRoom || isReplay)
       isTeamsWithCountryFlags = isTeamplay &&
-        (::debriefing_result.missionDifficultyInt > 0 || !::debriefing_result.isSymmetric)
+        (debriefingResult.missionDifficultyInt > 0 || !debriefingResult.isSymmetric)
 
-    missionObjectives = ::debriefing_result.missionObjectives
+    missionObjectives = debriefingResult.missionObjectives
   }
 
   isInited = true

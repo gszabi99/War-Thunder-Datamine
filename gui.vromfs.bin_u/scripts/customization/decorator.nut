@@ -139,7 +139,8 @@ local { copyParamsToTable, eachParam } = require("std/datablock.nut")
 
   function isSuitableForUnit(unit)
   {
-    return unit == null || (!isLockedByCountry(unit) && !isLockedByUnit(unit))
+    return unit == null
+      || (!isLockedByCountry(unit) && !isLockedByUnit(unit) && isAllowedByUnitTypes(unit.unitType.tag))
   }
 
   function isLockedByCountry(unit)

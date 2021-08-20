@@ -190,29 +190,15 @@ local function getTypesByEsUnitType(esUnitType = null) { //null if all unit type
     || t.unitTypeCode == esUnitType)
 }
 
+local remapShipTypes = {
+  ship = "ship_only"
+  boat = "boat_only"
+}
 local function processUnitTypeArray(unitTypeArray) {
-  local processedArray = clone unitTypeArray
-  local boatIdx = processedArray.indexof("boat")
-  local shipIdx = processedArray.indexof("ship")
-
-  if (boatIdx == null && shipIdx == null)
-    return processedArray
-
-  if (boatIdx != null && shipIdx != null) {
-    processedArray.remove(boatIdx)
-    processedArray.remove(shipIdx)
-    processedArray.append("ship_and_boat")
-  }
-  else if (boatIdx == null && shipIdx != null) {
-    processedArray.remove(shipIdx)
-    processedArray.append("ship_only")
-  }
-  else if (boatIdx != null && shipIdx == null) {
-    processedArray.remove(boatIdx)
-    processedArray.append("boat_only")
-  }
-
-  return processedArray
+  local res = unitTypeArray.filter(@(v) v not in remapShipTypes)
+  if (unitTypeArray.len() >= res.len() + remapShipTypes.len())
+    return res.append("ship_and_boat")
+  return unitTypeArray.map(@(v) remapShipTypes?[v] ?? v)
 }
 
 return {

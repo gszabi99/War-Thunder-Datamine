@@ -19,6 +19,8 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   LOCKED              = 4
 }
 
+local needCheckForVictory = ::Watched(false)
+
 ::g_script_reloader.registerPersistentData("MissionsUtilsGlobals", ::getroottable(),
   [
     "enable_coop_in_QMB", "enable_coop_in_DynCampaign", "enable_coop_in_SingleMissions", "enable_custom_battles"
@@ -220,9 +222,9 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 
   ::gui_start_mislist(true, ::GM_CAMPAIGN)
 
-  if (::check_for_victory && ! ::is_system_ui_active())
+  if (needCheckForVictory.value && ! ::is_system_ui_active())
   {
-    ::check_for_victory = false
+    needCheckForVictory(false)
     ::play_movie("video/victory", false, true, true)
   }
 }
@@ -454,4 +456,8 @@ global enum MIS_PROGRESS //value received from get_mission_progress
       locDesc = locDesc + "\n\n" + ::loc("template/limitedRespawns/desc")
   }
   return locDesc
+}
+
+return {
+  needCheckForVictory
 }

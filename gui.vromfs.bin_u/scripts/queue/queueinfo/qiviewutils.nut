@@ -104,7 +104,7 @@ g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj,
 }
 
 //update text and icon of queue each second until all queues finish.
-g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj)
+g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt=null)
 {
   if (!::check_obj(timerObj))
     return
@@ -115,10 +115,12 @@ g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, 
       local msg = ""
       if (queue)
       {
-        msg = ::loc("yn1/wait_for_session")
+        // Add new line of extended text about wait time if it is not default message text.
+        local addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
+        msg = txt ? txt : ::loc("yn1/wait_for_session")
         local waitTime = queue ? queue.getActiveTime().tointeger() : 0
         if (waitTime > 0)
-          msg += ::loc("ui/colon") + time.secondsToString(waitTime, false)
+          msg = "".concat(msg, addLine, ::loc("ui/colon"), time.secondsToString(waitTime, false))
       }
       textObj.setValue(msg)
     }

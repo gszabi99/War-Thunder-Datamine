@@ -870,6 +870,8 @@
               {
                 "infoBlock": {
                   "css-hier-invalidate": "yes",
+                  "total-input-transparent": "yes",
+                  "title": "$tooltipObj",
                   "activeText": {
                     "id": "gc_queue_wait_text",
                     "pos": "0, 50%ph-50%h",
@@ -882,14 +884,13 @@
                     "pos": "0,50%ph-50%h",
                     "position": "relaive",
                     "background-rotation": "0",
-                    "display": "show",
-                    "title": "$tooltipObj",
-                    "tooltipObj": {
-                      "id": "queues_info_tooltip",
-                      "on_tooltip_open": "onQueuesTooltipOpen",
-                      "on_tooltip_close": "onTooltipObjClose",
-                      "display": "hide"
-                    }
+                    "display": "show"
+                  },
+                  "tooltipObj": {
+                    "id": "queues_info_tooltip",
+                    "on_tooltip_open": "onQueuesTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
                   }
                 }
               }

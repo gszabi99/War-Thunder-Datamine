@@ -54,7 +54,7 @@ local SquadApplicationsList = class
     {
       if (!(squadId in applicationsList))
       {
-        leadersArr.append(sid)
+        leadersArr.append(squadId)
         addApplication(squadId, squadId, false)
         isEventNeed = true
       }

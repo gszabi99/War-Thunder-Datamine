@@ -1,3 +1,7 @@
+local { updatePlayerRankByCountry } = require("scripts/ranks.nut")
+
+local delayedRankUpWnd = []
+
 class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -126,11 +130,33 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function afterModalDestroy()
   {
-    if (::delayed_rankUp_wnd.len() > 0)
+    if (delayedRankUpWnd.len() > 0)
     {
-      ::gui_start_modal_wnd(::gui_handlers.RankUpModal, ::delayed_rankUp_wnd[0])
-      ::delayed_rankUp_wnd.remove(0)
+      ::gui_start_modal_wnd(::gui_handlers.RankUpModal, delayedRankUpWnd[0])
+      delayedRankUpWnd.remove(0)
     } else
       ::check_delayed_unlock_wnd(unlockData)
   }
+}
+
+local function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
+  if (country == "country_0" || country == "")
+    return false
+  if (new_rank <= old_rank)
+    return false
+
+  local gained_ranks = [];
+  for (local i = old_rank+1; i<=new_rank; i++)
+    gained_ranks.append(i);
+  local config = { country = country, ranks = gained_ranks, unlockData = unlockData }
+  if (::isHandlerInScene(::gui_handlers.RankUpModal))
+    delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
+  else
+    ::gui_start_modal_wnd(::gui_handlers.RankUpModal, config)
+  updatePlayerRankByCountry(country, new_rank)
+  return true
+}
+
+return {
+  checkRankUpWindow
 }

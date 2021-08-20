@@ -2,6 +2,8 @@ local { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialReward
 } = require("scripts/tutorials/tutorialsData.nut")
 local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
 local { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
+local { getMoneyFromDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
+local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
 
 local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -90,18 +92,6 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
 
-local function getMoneyFromDebriefingResult(paramName) {
-  local res = ::Cost()
-  if (::debriefing_result == null)
-    return res
-
-  local exp = ::debriefing_result.exp
-  res.wp = exp?[$"wp{paramName}"] ?? 0
-  res.gold = exp?[$"gold{paramName}"] ?? 0
-  res.frp = exp?[$"exp{paramName}"] ?? 0
-  return res
-}
-
 local function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value == null)
     return false
@@ -137,8 +127,7 @@ local function tryOpenTutorialRewardHandler() {
         ::reinitAllSlotbars()
       }
 
-      ::gather_debriefing_result()
-      local reward = getMoneyFromDebriefingResult("Mission")
+      local reward = getMoneyFromDebriefingResult()
       local rewardsConfig = [{
         rewardMoney = reward
         hasRewardImage = false
@@ -162,7 +151,7 @@ local function tryOpenTutorialRewardHandler() {
     {
       newCountries = checkUnlockedCountries()
       foreach(c in newCountries)
-        ::checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
+        checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
     }
   }
 

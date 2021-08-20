@@ -290,8 +290,8 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
 
     local maxSpeed = (param?.maxSpeed ?? 0) || (param?.endSpeed ?? 0)
     if (param?.machMax)
-      addProp(p, "".concat(::loc("rocket/maxSpeed"),
-        ::format("%.1f %s", param.machMax, ::loc("measureUnits/machNumber"))))
+      addProp(p, ::loc("rocket/maxSpeed"),
+        ::format("%.1f %s", param.machMax, ::loc("measureUnits/machNumber")))
     else if (maxSpeed)
       addProp(p, ::loc("rocket/maxSpeed"),
         ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))

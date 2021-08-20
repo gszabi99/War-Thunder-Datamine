@@ -81,24 +81,8 @@ class ::queue_classes.Base
     return ""
   }
 
-  function getDescription()
-  {
-    return "<color=@activeTextColor>" + getBattleName() + "</color>\n" +
-           ::loc("options/country") + ::loc("ui/colon") + ::loc(params?.country ?? "") + "\n" +
-           getQueueActiveTimeText()
-  }
-
-  function getQueueActiveTimeText()
-  {
-    local waitTime = getActiveTime()
-    if (waitTime > 0)
-    {
-      local minutes = time.secondsToMinutes(waitTime).tointeger()
-      local seconds = waitTime - time.minutesToSeconds(minutes)
-      return ::format(::loc("yn1/wait_time"), minutes, seconds)
-    }
-    return ""
-  }
+  getDescription = @() "".concat( ::colorize("activeTextColor", getBattleName()), "\n",
+    ::loc("options/country"), ::loc("ui/colon"), ::loc(params?.country ?? ""))
 
   function getActiveTime()
   {

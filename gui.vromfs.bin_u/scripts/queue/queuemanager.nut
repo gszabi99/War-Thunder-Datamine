@@ -315,6 +315,7 @@ foreach (fn in [
         ::queues.showProgressBox(false)
         if (response.error == SERVER_ERROR_REQUEST_REJECTED)
         {
+          // Error means that user is joining battle and can't leave the queue
           if (postCancelAction)
             postCancelAction()
           ::SessionLobby.setWaitForQueueRoom(true)
@@ -378,6 +379,7 @@ foreach (fn in [
         ::queues.showProgressBox(false)
         if (response.error == SERVER_ERROR_REQUEST_REJECTED)
         {
+          // Error means that user is joining battle and can't leave the queue
           ::SessionLobby.setWaitForQueueRoom(true)
           return
         }

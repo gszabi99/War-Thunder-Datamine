@@ -41,9 +41,9 @@ local function textArea(params, formatTextFunc=noTextFormatFunc, style=defStyle)
   }.__update(params)
 }
 
-local function url(data, formatTextFunc=noTextFormatFunc, style=defStyle){
+local function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
   if (data?.url==null)
-    return textArea(data, style)
+    return textArea(data, fmtFunc, style)
   local stateFlags = Watched(0)
   local onClick = @() ::cross_call.openUrl(data.url)
   return function() {
@@ -210,22 +210,26 @@ local function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
 local formatters = {
   defStyle//for modification, fixme, make instances
   def=textArea
-  string=@(string, formatTextFunc, style=defStyle) textParsed({v=string}, style),
+  string=@(string, fmtFunc, style=defStyle) textParsed({v=string}, fmtFunc, style),
   textParsed
   textArea
   text=textArea
   paragraph=textArea
-  hangingText=@(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({ hangingIndent = hangingIndent }), style)
-  h1 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [headerMargin,0]}), style)
-  h2 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [headerMargin,0]}), style)
-  h3 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({fontStyle=style.h3Font, color=style.h3Color, margin = [headerMargin,0]}), style)
-  emphasis = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({color=style.emphasisColor, margin = [headerMargin,0]}), style)
+  hangingText=@(obj, fmtFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({ hangingIndent = hangingIndent }), fmtFunc, style)
+  h1 = @(text, fmtFunc=noTextFormatFunc, style=defStyle)
+    textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [headerMargin,0]}), fmtFunc, style)
+  h2 = @(text, fmtFunc=noTextFormatFunc, style=defStyle)
+    textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [headerMargin,0]}), fmtFunc, style)
+  h3 = @(text, fmtFunc=noTextFormatFunc, style=defStyle)
+    textArea(text.__merge({fontStyle=style.h3Font, color=style.h3Color, margin = [headerMargin,0]}), fmtFunc, style)
+  emphasis = @(text, fmtFunc=noTextFormatFunc, style=defStyle)
+    textArea(text.__merge({color=style.emphasisColor, margin = [headerMargin,0]}), fmtFunc, style)
   columns
   column
   image
   url
-  note = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({font=style.noteFont, color=style.noteColor}), style)
-  preformat = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({preformatted=FMT_KEEP_SPACES | FMT_NO_WRAP}), style)
+  note = @(obj, fmtFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({font=style.noteFont, color=style.noteColor}), fmtFunc, style)
+  preformat = @(obj, fmtFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({preformatted=FMT_KEEP_SPACES | FMT_NO_WRAP}), fmtFunc, style)
   bullets
   list = bullets
   indent
