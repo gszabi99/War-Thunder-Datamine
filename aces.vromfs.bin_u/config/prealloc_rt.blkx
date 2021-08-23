@@ -22,7 +22,7 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [2,2],
+      "szDiv": [2.0,2.0],
       "fmt": "R32F",
       "tile": true,
       "name": "targetLowZTex"
@@ -30,7 +30,7 @@
   },
   {
     "rt": {
-      "size": [32,64],
+      "size": [32.0,64.0],
       "count": 1,
       "fmt": "G16R16F",
       "tile": false,
@@ -39,7 +39,7 @@
   },
   {
     "rt": {
-      "size": [32,64],
+      "size": [32.0,64.0],
       "count": 1,
       "fmt": "G16R16F",
       "tile": false,
@@ -48,7 +48,7 @@
   },
   {
     "rt": {
-      "size": [16,64],
+      "size": [16.0,64.0],
       "count": 1,
       "fmt": "A16B16G16R16F",
       "tile": false,
@@ -58,7 +58,7 @@
   },
   {
     "rt": {
-      "size": [16,64],
+      "size": [16.0,64.0],
       "count": 1,
       "fmt": "A16B16G16R16F",
       "tile": false,
@@ -68,7 +68,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "fmt": "R32F",
       "tile": true,
       "name": "dest_vsm_tex"
@@ -76,7 +76,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "fmt": "G16R16F",
       "tile": true,
       "name": "temp_vsm_tex"
@@ -84,7 +84,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "fmt": "G16R16F",
       "levels": 1,
       "tile": true,
@@ -93,7 +93,7 @@
   },
   {
     "rt": {
-      "size": [512,1024],
+      "size": [512.0,1024.0],
       "fmt": "A16B16G16R16F",
       "tile": true,
       "alias": "temp_vsm_tex",
@@ -102,7 +102,7 @@
   },
   {
     "rt": {
-      "size": [512,1024],
+      "size": [512.0,1024.0],
       "fmt": "A16B16G16R16F",
       "levels": 1,
       "tile": true,
@@ -112,7 +112,7 @@
   },
   {
     "rt": {
-      "size": [1280,1024],
+      "size": [1280.0,1024.0],
       "count": 1,
       "tile": true,
       "name": "localmem_area"
@@ -129,7 +129,7 @@
   },
   {
     "rt": {
-      "size": [1280,1024],
+      "size": [1280.0,1024.0],
       "count": 1,
       "tile": false,
       "cpuread": true,
@@ -148,14 +148,14 @@
   },
   {
     "rt": {
-      "size": [256,256],
+      "size": [256.0,256.0],
       "count": 2,
       "tile": true
     }
   },
   {
     "rt": {
-      "size": [256,256],
+      "size": [256.0,256.0],
       "count": 1,
       "fmt": "R8",
       "tile": true
@@ -172,7 +172,7 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 2,
       "fmt": "R8",
       "tile": false,
@@ -183,51 +183,51 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [0,0],
+      "offset": [0.0,0.0],
       "name": "DemonPostFx lowresA RT"
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [512,0],
+      "offset": [512.0,0.0],
       "name": "DemonPostFx lowResTexB RT"
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [0,256],
+      "offset": [0.0,256.0],
       "name": "DemonPostFx glowTex RT"
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [512,256],
+      "offset": [512.0,256.0],
       "name": "DemonPostFx low-res previous frame RT"
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "tile": true,
       "cpuread": true,
@@ -237,7 +237,7 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "fmt": "R8",
       "tile": false,
@@ -247,7 +247,7 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [4,4],
+      "szDiv": [4.0,4.0],
       "count": 1,
       "fmt": "R8",
       "tile": false,
@@ -256,7 +256,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "tile": false,
       "levels": 4,
       "fmt": "A8R8G8B8",
@@ -265,7 +265,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "tile": false,
       "levels": 4,
       "fmt": "A8R8G8B8",
@@ -274,7 +274,7 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "swizzle": true,
       "levels": 6,
       "fmt": "A8R8G8B8",
@@ -283,7 +283,7 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "swizzle": true,
       "levels": 8,
       "fmt": "A8R8G8B8",
@@ -292,7 +292,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "levels": 1,
       "fmt": "A8R8G8B8",
       "name": "clipmapLocal",
@@ -301,7 +301,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "cpuread": true,
       "levels": 1,
       "fmt": "A8R8G8B8",
@@ -311,7 +311,7 @@
   },
   {
     "rt": {
-      "size": [3072,2048],
+      "size": [3072.0,2048.0],
       "cpuread": false,
       "levels": 1,
       "fmt": "DXT5",
@@ -320,7 +320,7 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "fmt": "R5G6B5",
       "swizzle": true
@@ -328,7 +328,7 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "fmt": "D16",
       "swizzle": true
@@ -336,7 +336,7 @@
   },
   {
     "rt": {
-      "size": [1024,1024],
+      "size": [1024.0,1024.0],
       "count": 1,
       "fmt": "NVD16",
       "swizzle": false,
@@ -346,7 +346,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "count": 1,
       "fmt": "D16",
       "swizzle": true,
@@ -355,7 +355,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "count": 1,
       "fmt": "D16",
       "swizzle": true,
@@ -364,7 +364,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "count": 3,
       "fmt": "R5G6B5",
       "cube": true,
@@ -373,7 +373,7 @@
   },
   {
     "rt": {
-      "size": [128,128],
+      "size": [128.0,128.0],
       "count": 1,
       "fmt": "R5G6B5",
       "cube": true,
@@ -383,17 +383,17 @@
   },
   {
     "rt": {
-      "size": [320,180],
+      "size": [320.0,180.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [0,512],
+      "offset": [0.0,512.0],
       "name": "waterReflectionTex"
     }
   },
   {
     "rt": {
-      "size": [320,180],
+      "size": [320.0,180.0],
       "count": 1,
       "tile": true,
       "name": "waterReflectionBlurredTex"
@@ -411,7 +411,7 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [2,2],
+      "szDiv": [2.0,2.0],
       "count": 1,
       "fmt": "R32F",
       "cpuread": true,
@@ -419,26 +419,26 @@
       "pitch_align": 256,
       "name": "blurDepthTex",
       "alias": "mainmem_area",
-      "offset": [0,0]
+      "offset": [0.0,0.0]
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [2,2],
+      "szDiv": [2.0,2.0],
       "count": 1,
       "cpuread": true,
       "tile": false,
       "pitch_align": 256,
       "name": "mblurVectors",
       "alias": "mainmem_area",
-      "offset": [0,0]
+      "offset": [0.0,0.0]
     }
   },
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [2,2],
+      "szDiv": [2.0,2.0],
       "count": 1,
       "cpuread": false,
       "tile": true,
@@ -449,19 +449,19 @@
   {
     "rt": {
       "backBufSz": true,
-      "szDiv": [2,2],
+      "szDiv": [2.0,2.0],
       "count": 1,
       "cpuread": false,
       "tile": true,
       "pitch_align": 256,
       "name": "mblurOutputColorTex",
       "alias": "localmem_area",
-      "offset": [640,360]
+      "offset": [640.0,360.0]
     }
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "tile": true,
       "name": "hazeOffsetTex"
@@ -469,17 +469,17 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "tile": true,
       "alias": "localmem_area",
-      "offset": [0,0],
+      "offset": [0.0,0.0],
       "name": "landColorTex"
     }
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "tile": false,
       "cpuread": true,
@@ -488,7 +488,7 @@
   },
   {
     "rt": {
-      "size": [512,512],
+      "size": [512.0,512.0],
       "count": 1,
       "fmt": "R32F",
       "tile": false,
@@ -498,7 +498,7 @@
   },
   {
     "rt": {
-      "size": [32,256],
+      "size": [32.0,256.0],
       "fmt": "A8R8G8B8",
       "name": "cloudVolume2DTex"
     }
@@ -507,14 +507,14 @@
     "rt": {
       "volume": true,
       "alias": "cloudVolume2DTex",
-      "size": [32,16,16],
+      "size": [32.0,16.0,16.0],
       "fmt": "A8R8G8B8",
       "name": "cloudVolume3DTex"
     }
   },
   {
     "rt": {
-      "size": [1024,512],
+      "size": [1024.0,512.0],
       "fmt": "A8R8G8B8",
       "tile": true,
       "name": "waterFoamTexTex"
@@ -522,7 +522,7 @@
   },
   {
     "rt": {
-      "size": [1024,512],
+      "size": [1024.0,512.0],
       "fmt": "NVD24",
       "tile": true,
       "name": "Global shadow depth"
@@ -530,7 +530,7 @@
   },
   {
     "rt": {
-      "size": [1024,512],
+      "size": [1024.0,512.0],
       "fmt": "R8",
       "tile": true,
       "name": "Land shadow"
