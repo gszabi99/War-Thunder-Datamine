@@ -24,8 +24,7 @@
       {
         "frame_header": {
           "Button_close": {
-            "id": "btn_back",
-            "style": "_on_click:onBack"
+            "id": "btn_back"
           }
         }
       },
@@ -132,15 +131,25 @@
       },
       {
         "navBar": {
-          "navRight": {
-            "Button_text": {
-              "text": "#mainmenu/btnApply",
-              "position": "absolute",
-              "btnName": "A",
-              "on_click": "onControlTypeApply",
-              "ButtonImg": []
+          "navRight": [
+            {
+              "Button_text": {
+                "text": "#mainmenu/btnApply",
+                "btnName": "A",
+                "on_click": "onControlTypeApply",
+                "ButtonImg": []
+              }
+            },
+            {
+              "Button_text": {
+                "id": "btn_cancel",
+                "text": "#msgbox/btn_cancel",
+                "_on_click": "goBack",
+                "btnName": "B",
+                "ButtonImg": []
+              }
             }
-          }
+          ]
         }
       }
     ]

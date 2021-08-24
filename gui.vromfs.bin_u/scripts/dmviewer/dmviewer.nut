@@ -1378,7 +1378,7 @@ const AFTERBURNER_CHAMBER = 3
       desc.append(::loc(g.label) + " " + anglesText)
     }
 
-    if (needSingleAxis || status.isPrimary || (unit?.isShipOrBoat() && status.isSecondary))
+    if (needSingleAxis || status.isPrimary || unit?.isShipOrBoat())
     {
       local unitModificators = unit?.modificators?[difficulty.crewSkillName]
       foreach (a in [
@@ -1442,6 +1442,20 @@ const AFTERBURNER_CHAMBER = 3
     return desc
   }
 
+  function getGunReloadTimeMax(weaponInfoBlk)
+  {
+    local weaponInfo = blkOptFromPath(weaponInfoBlk?.blk)
+    local reloadTime = weaponInfoBlk?.reloadTime ?? weaponInfo?.reloadTime
+    if (reloadTime)
+      return reloadTime
+
+    local shotFreq = weaponInfoBlk?.shotFreq ?? weaponInfo?.shotFreq
+    if (shotFreq)
+      return 1 / shotFreq
+
+    return null
+  }
+
   function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status)
   {
     local shotFreqRPM = 0.0 // rounds/min
@@ -1463,21 +1477,39 @@ const AFTERBURNER_CHAMBER = 3
         if (!status.isPrimary)
           break
 
-        local mainGunReloadTime = 0.0
-        if (crew)
+        local mainWeaponInfoBlk = getUnitWeaponList()?[0]
+        if (!mainWeaponInfoBlk)
+          break
+
+        local mainGunReloadTime = unit?.modificators?[difficulty.crewSkillName]?.reloadTime ?? 0.0
+        if (!mainGunReloadTime && crew)
         {
           local crewSkillParams = getParametersByCrewId(crew.id, unit.name)
           local crewSkill = crewSkillParams?[difficulty.crewSkillName]?.loader
-          mainGunReloadTime = crewSkill?.loading_time_mult?.tankLoderReloadingTime ?? 0
+          mainGunReloadTime = crewSkill?.loading_time_mult?.tankLoderReloadingTime ?? 0.0
         }
-        else
-          mainGunReloadTime = unit?.modificators?[difficulty.crewSkillName]?.reloadTime ?? 0.0
 
-        local mainGunShotFreq = blkOptFromPath(getUnitWeaponList()?[0]?.blk)?.shotFreq ?? 0.0
-        local mainGunReloadCfgVal = mainGunShotFreq ? (1.0 / mainGunShotFreq) : 0.0
-        local thisGunReloadCfgVal = cyclicShotFreqS ? (1.0 / cyclicShotFreqS) : 0.0
-        local valueMult = mainGunReloadCfgVal ? (mainGunReloadTime / mainGunReloadCfgVal) : 1.0
-        reloadTimeS = cyclicShotFreqS ? (thisGunReloadCfgVal * valueMult) : 0.0
+        if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk)
+        {
+          reloadTimeS = mainGunReloadTime
+          break
+        }
+
+        local thisGunReloadTimeMax = getGunReloadTimeMax(weaponInfoBlk)
+        if (!thisGunReloadTimeMax)
+          break
+
+        if (weaponInfoBlk?.autoLoader)
+        {
+          reloadTimeS = thisGunReloadTimeMax
+          break
+        }
+
+        local mainGunReloadTimeMax = getGunReloadTimeMax(mainWeaponInfoBlk)
+        if (!mainGunReloadTimeMax)
+          break
+
+        reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
         break
 
       case ::ES_UNIT_TYPE_BOAT:

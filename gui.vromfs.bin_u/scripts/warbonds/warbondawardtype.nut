@@ -47,9 +47,11 @@ local getBoughtCountByAmount = @(warbond, blk)
   getDescriptionImage = function(blk, warbond) { return getLayeredImage(blk, warbond) }
   getDescItem = function(blk) { return null } //show description as item description
 
+  canPreview = @(blk) false
+  doPreview = @(blk) null
+
   requestBuy = requestBuyByName //warbond, blk
   getBoughtCount = getBoughtCountByName //warbond, blk
-
   canBuy = @(warbond, blk) true
   getMaxBoughtCount = @(warbond, blk) blk?.maxBoughtCount ?? 0
   showAvailableAmount = true
@@ -154,6 +156,9 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       }))
     }
 
+    canPreview = @(blk) ::getAircraftByName(blk.name)?.canPreview() ?? false
+    doPreview  = @(blk) ::getAircraftByName(blk.name)?.doPreview()
+
     getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {
       local unit = ::getAircraftByName(blk.name)
@@ -194,6 +199,9 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::get_unlock_description(blk?.name ?? "")
     }
 
+    canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.SKINS)?.canPreview() ?? false
+    doPreview  = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.SKINS)?.doPreview()
+
     getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = @(warbond, blk) ::g_decorator_type.SKINS.isPlayerHaveDecorator(blk?.name ?? "") ? 1 : 0
     showAvailableAmount = false
@@ -223,6 +231,9 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     {
       return ::get_unlock_description(blk?.name ?? "")
     }
+
+    canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.DECALS)?.canPreview() ?? false
+    doPreview  = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.DECALS)?.doPreview()
 
     getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {
@@ -255,6 +266,9 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     {
       return ::get_unlock_description(blk?.name ?? "")
     }
+
+    canPreview = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.ATTACHABLES)?.canPreview() ?? false
+    doPreview  = @(blk) ::g_decorator.getDecorator(blk.name, ::g_decorator_type.ATTACHABLES)?.doPreview()
 
     getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {

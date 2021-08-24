@@ -5,6 +5,7 @@ local skinLocations = require("scripts/customization/skinLocations.nut")
 local stdMath = require("std/math.nut")
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 local { copyParamsToTable, eachParam } = require("std/datablock.nut")
+local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 ::Decorator <- class
 {
@@ -403,5 +404,19 @@ local { copyParamsToTable, eachParam } = require("std/datablock.nut")
   function isAllowedByUnitTypes(unitType)
   {
     return (allowedUnitTypes.len() == 0 || allowedUnitTypes.indexof(unitType) != null)
+  }
+
+  function getVehicleDesc()
+  {
+    if (blk == null)
+      return ""
+
+    local processedUnitTypes = processUnitTypeArray(blk % "unitType")
+    if (processedUnitTypes.len() == 0)
+      return ""
+    local locUnitTypes = ::colorize("activeTextColor",
+      ::loc("ui/comma").join(
+        processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
+    return $"{::loc("mainmenu/btnUnits")}{::loc("ui/colon")}{locUnitTypes}"
   }
 }

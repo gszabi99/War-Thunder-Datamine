@@ -137,8 +137,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function afterModalDestroy() {
-    if (unitToShowOnClose != null)
-      cbOwnerShowUnit(unitToShowOnClose)
+    cbOwnerShowUnit(unitToShowOnClose)
   }
 
   function getIsUseUnitPlates(unitsData)

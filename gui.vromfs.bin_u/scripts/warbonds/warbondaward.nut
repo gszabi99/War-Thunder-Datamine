@@ -30,6 +30,9 @@ class ::WarbondAward
     imgNestDoubleSize = awardType?.imgNestDoubleSize ?? "no"
   }
 
+  canPreview = @() awardType.canPreview(blk)
+  doPreview = @() awardType.doPreview(blk)
+
   function isValid()
   {
     return warbondWeak != null

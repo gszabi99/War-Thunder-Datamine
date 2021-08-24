@@ -4,6 +4,7 @@ local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 
 class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -257,6 +258,8 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       && award.isRequiredSpecialTasksComplete()
       && !::isHandlerInScene(::gui_handlers.BattleTasksWnd)
     )
+
+    showSceneBtn("btn_preview", (award?.canPreview() ?? false) && ::isInMenu())
 
     local mainActionBtn = showSceneBtn("btn_main_action", award != null)
     if (!award)
@@ -514,10 +517,18 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     }.bindenv(this))
   }
 
+  function onItemPreview(obj) {
+    if (!isValid())
+      return
+
+    local award = getCurAward()
+    if (award && canStartPreviewScene(true, true))
+      award.doPreview()
+  }
+
   //dependence by blk
   function onToShopButton(obj) {}
   function onToMarketplaceButton(obj) {}
-  function onItemPreview(obj) {}
   function onOpenCraftTree(obj) {}
   function onLinkAction(obj) {}
   function onAltAction(obj) {}

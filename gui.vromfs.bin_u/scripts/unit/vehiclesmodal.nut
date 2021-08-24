@@ -1,4 +1,5 @@
 local popupFilter = require("scripts/popups/popupFilter.nut")
+local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 
 local MAX_SLOT_COUNT_X = 4
 local MAX_SLOT_COUNT_Y = 6
@@ -170,6 +171,19 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     restoreLastUnitSelection(listObj)
   }
 
+  function selectCell()
+  {
+    local listObj = scene.findObject("units_list")
+    if (!listObj?.isValid())
+      return
+
+    local idx = findChildIndex(listObj, @(c) c.isHovered())
+    if (idx == -1 || idx == listObj.getValue())
+      return
+
+    listObj.setValue(idx)
+  }
+
   function restoreLastUnitSelection(listObj)
   {
     local newIdx = -1
@@ -256,6 +270,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onUnitAction(obj) {
+    selectCell()
     openUnitActionsList(getCurSlotObj())
   }
 

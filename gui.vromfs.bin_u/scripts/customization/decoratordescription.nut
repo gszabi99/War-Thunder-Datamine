@@ -27,45 +27,43 @@ local function updateDecoratorDescription(obj, handler, decoratorType, decorator
   local header = decorator.getName()
   obj.findObject("header").setValue(header)
 
-  local desc = decorator.getDesc()
-  if (::getTblValue("isRevenueShare", config))
-    desc += (desc.len() ? "\n" : "") + ::colorize("advertTextColor", ::loc("content/revenue_share"))
+  local desc = [decorator.getDesc()]
+  if (config?.isRevenueShare ?? false)
+    desc.append(::colorize("advertTextColor", ::loc("content/revenue_share")))
 
-  desc += (desc.len() ? "\n\n" : "") + decorator.getTypeDesc()
-  local paramsDesc = decorator.getLocParamsDesc()
-  if (paramsDesc != "")
-    desc += (desc.len() ? "\n" : "") + paramsDesc
+  local typeDesc = decorator.getTypeDesc()
+  typeDesc = (desc.len() > 1 || desc[0].len() > 0) ? $"\n{typeDesc}" : typeDesc
+  desc.append(typeDesc, decorator.getVehicleDesc(),
+    decorator.getLocParamsDesc(), decorator.getRestrictionsDesc())
 
-  local restricionsDesc = decorator.getRestrictionsDesc()
-  if (restricionsDesc.len())
-    desc += (desc.len() ? "\n" : "") + restricionsDesc
-
+  local commaLoc = ::loc("ui/comma")
+  local colonLoc = ::loc("ui/colon")
   local searchId = decorator.id
   if (decoratorType == ::g_decorator_type.SKINS && ::getAircraftByName(::g_unlocks.getPlaneBySkinId(searchId))?.isTank())
   {
     local mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
     local locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (locations.len())
-      desc += (desc.len() ? "\n" : "") + ::loc("camouflage/for_environment_conditions") +
-        ::loc("ui/colon") + ::g_string.implode(locations, ", ")
+      desc.append($"{::loc("camouflage/for_environment_conditions")}{colonLoc}{commaLoc.join(locations, true)}")
   }
 
   local tags = decorator.getTagsLoc()
   if (tags.len())
   {
     tags = ::u.map(tags, @(txt) ::colorize("activeTextColor", txt))
-    desc += (desc.len() ? "\n\n" : "") + ::loc("ugm/tags") + ::loc("ui/colon") + ::g_string.implode(tags, ::loc("ui/comma"))
+    desc.append($"\n{::loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
 
+  local descText = "\n".join(desc, true)
   local warbondId = ::getTblValue("wbId", params)
   if (warbondId)
   {
     local warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
     local award = warbond? warbond.getAwardById(searchId) : null
     if (award)
-      desc = award.addAmountTextToDesc(desc)
+      descText = award.addAmountTextToDesc(descText)
   }
-  obj.findObject("description").setValue(desc)
+  obj.findObject("description").setValue(descText)
 
   local isDefaultSkin = ::g_unlocks.isDefaultSkin(searchId)
   local isTrophyContent  = params?.showAsTrophyContent ?? false

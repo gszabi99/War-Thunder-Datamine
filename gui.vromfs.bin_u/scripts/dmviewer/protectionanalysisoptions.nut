@@ -249,6 +249,7 @@ options.addTypes({
       local unit = options.UNIT.value
       values = []
       items = []
+      local bulletSetData = []
       local bulletNamesSet = []
 
       local curGunIdx = -1
@@ -290,19 +291,35 @@ options.addTypes({
 
           foreach (idx, bulletName in bulletNames)
           {
-            local locName = isBulletBelt
-              ? " ".concat(::format(::loc("caliber/mm"), bulletsSet.caliber),
-                bulletsList.items[i].text, ::loc($"{bulletName}/name/short"))
-              : bulletsList.items[i].text
+            local locName = bulletsList.items[i].text
+            local bulletParams = bulletParameters[idx]
+            local isDub = false
+            if (isBulletBelt)
+            {
+              locName = " ".concat(::format(::loc("caliber/mm"), bulletsSet.caliber),
+                ::loc($"{bulletName}/name/short"))
+              local bulletType = bulletName
+              bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
+              // Find bullet dub by params
+              isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType && p.mass == bulletParams.mass
+                && p.speed == bulletParams.speed)
+              if(!isDub)
+                bulletSetData.append(bulletParams)
+              // Need change name for the same bullet type but different params
+              if(::isInArray(locName, bulletNamesSet))
+                locName = $"{locName}{bulletsList.items[i].text}"
+            }
+            else
+              isDub = ::isInArray(locName, bulletNamesSet)
 
-            if(::isInArray(locName, bulletNamesSet))
+            if (isDub)
               continue
 
-            local bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletName)
             local addDiv = isBulletBelt
               ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 modName = value,
-                bSet = (clone bulletsSet).map(//Generate set of identical bullets by getting rid of all bullets excluding current.
+                //Generate set of identical bullets by getting rid of all bullets excluding current.
+                bSet = (clone bulletsSet).map(
                   @(val, p) p == "bullets"
                     ? [val[idx]]
                     : (p != "bulletNames" && p != "bulletDataByType"
@@ -348,9 +365,13 @@ options.addTypes({
             local bulletBlk = null
             foreach (t in specialBulletTypes)
               bulletBlk = bulletBlk ?? weaponBlk?[t]
-            if (!bulletBlk)
+
+            local locName = ::g_string.utf8ToUpper(
+              ::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
+            if (!bulletBlk || ::isInArray(locName, bulletNamesSet))
               continue
 
+            bulletNamesSet.append(locName)
             values.append({
               bulletName = ""
               weaponBlkName = weaponBlkPath
@@ -359,7 +380,7 @@ options.addTypes({
             })
 
             items.append({
-              text = ::g_string.utf8ToUpper(::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
+              text = locName
               addDiv = WEAPON.getMarkup(unit.name, presetName, {
                 hasPlayerInfo = false,
                 weaponBlkPath = weaponBlkPath,

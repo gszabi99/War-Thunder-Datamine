@@ -3,6 +3,7 @@ td {
   id:t='<<id>>';
   width:t='<<width>>';
   text-halign:t='center'
+  total-input-transparent:t='yes'
   tooltip:t='<<tooltip>>';
   <<@customParams>>
 

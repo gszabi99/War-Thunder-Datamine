@@ -9,6 +9,7 @@ local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus
 } = require("shopUnitCellFill.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
+local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 
 local lastUnitType = null
 
@@ -1089,7 +1090,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   getUnitByIdx = @(curIdx) findUnitInTree(@(unit, idx) idx == curIdx)
-  getUnitById  = @(id)     findUnitInTree(@(unit, idx) unit.name == id)
 
   function getCurAircraft(checkGroups = true, returnDefaultUnitForGroups = false)
   {
@@ -1413,20 +1413,30 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function selectCell(obj) {
     local holderId = obj?.holderId
-    if (holderId == null)
+    local listObj = getCurListObj()
+    local idx = findChildIndex(listObj, holderId == null
+      ? @(c) c.isHovered()
+      : @(c) c?.holderId == holderId)
+
+    if (idx < 0 || idx == listObj.getValue())
       return
 
-    local { idx } = getUnitById(holderId)
-    if (idx < 0)
-      return
+    listObj.setValue(idx)
+  }
+
+  function getCurListObj()
+  {
     if (groupChooseObj?.isValid())
-      groupChooseObj.findObject("airs_table").setValue(idx)
+      return groupChooseObj.findObject("airs_table")
     else
-      scene.findObject("shop_items_list").setValue(idx)
+      return scene.findObject("shop_items_list")
   }
 
   function onUnitActivate(obj)
   {
+    if (findChildIndex(obj, @(c) c.isHovered()) == -1)
+      return
+
     hideWaitIcon()
     onAircraftClick(obj)
   }
@@ -1569,7 +1579,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(gTblObj))
       return
 
-    if (selectUnitName == "" && ::show_console_buttons) //no need to select when not gamepad control to avoid open hover menu early
+    if (selectUnitName == "")
     {
       local groupUnit = getDefaultUnitInGroup(item)
       if (groupUnit)
@@ -1620,6 +1630,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     groupChooseObj=null
     updateButtons()
     ::broadcastEvent("ModalWndDestroy")
+    ::move_mouse_on_child_by_value(scene.findObject("shop_items_list"))
   }
 
   function destroyGroupChooseDelayed()
@@ -1800,6 +1811,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (!isSceneActive() || ::checkIsInQueue() || shopResearchMode)
       return
+
+    highlightUnitsClear()
+    if (unitId == null)
+      return
+
     local unit = ::getAircraftByName(unitId)
     if (!unit || !unit.isVisibleInShop() || unitId == curAirName)
       return
@@ -1818,11 +1834,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(scene))
       return false
 
-    local tree = getCurTreeData().tree
     local tableObj = scene.findObject("shop_items_list")
     if (!::checkObj(tableObj))
       return false
 
+    local tree = getCurTreeData().tree
     local idx = -1
     foreach(rowIdx, row in tree)
       foreach(colIdx, item in row) {

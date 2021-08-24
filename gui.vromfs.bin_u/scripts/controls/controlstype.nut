@@ -28,6 +28,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     txt.show(!onlyDevicesChoice)
     showBtn("btn_pref_img", !onlyDevicesChoice)
     showBtn("btn_back", onlyDevicesChoice)
+    showBtn("btn_cancel", onlyDevicesChoice)
 
     if (!onlyDevicesChoice)
       updateProfileIcon(true)
@@ -61,11 +62,6 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function onBack()
-  {
-    goBack()
-  }
-
   function afterModalDestroy()
   {
     restoreMainOptions()
@@ -86,7 +82,20 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
         ct_id = obj.getChild(value).id
     }
 
-    setControlTypeByID(ct_id)
+    if (ct_id == "ct_own" || !onlyDevicesChoice)
+    {
+      doControlTypeApply(ct_id)
+      return
+    }
+
+    local text = ::loc("msgbox/controlPresetApply")
+    local onOk = ::Callback(@() doControlTypeApply(ct_id), this)
+    msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
+  }
+
+  function doControlTypeApply(ctId)
+  {
+    setControlTypeByID(ctId)
     goBack()
   }
 }

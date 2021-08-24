@@ -483,15 +483,21 @@ const OVERRIDE_COUNTRY_ID = "override_country"
         local tooltip = nameText
         if (!isEmpty)
         {
-          objTr.mainPlayer = table[i].isLocal ? "yes" : "no"
-          objTr.inMySquad  = table[i]?.isInHeroSquad ? "yes" : "no"
+          local isLocal = table[i].isLocal
+          local isInHeroSquad = table[i]?.isInHeroSquad ?? false
+          objTr.mainPlayer = isLocal ? "yes" : "no"
+          objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
           objTr.spectator = (("spectator" in table[i]) && table[i].spectator) ? "yes" : "no"
+
+          local playerInfo = playersInfo?[(table[i].userId).tointeger()]
+          if (!isLocal && isInHeroSquad && playerInfo?.auto_squad)
+            tooltip = $"{tooltip}\n\n{::loc("squad/auto")}\n"
 
           if (!table[i].isBot
             && ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
             && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
           {
-            local data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playersInfo?[(table[i].userId).tointeger()])
+            local data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
             if (data)
             {
               local squadInfo = ::SquadIcon.getSquadInfo(data.squad)

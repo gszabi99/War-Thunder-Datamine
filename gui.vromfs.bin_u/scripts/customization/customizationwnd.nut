@@ -2382,16 +2382,18 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function goBack()
   {
-    ::g_decorator.clearLivePreviewParams()  // clear only when closed by player
-    if (isValid())
-      setDmgSkinMode(false)
-    ::hangar_show_model_damaged(MDS_ORIGINAL)
-    ::hangar_prem_vehicle_view_close()
+    // clear only when closed by player to can go through test fly with previewed skin
+    ::g_decorator.clearLivePreviewParams()
     guiScene.performDelayed(this, base.goBack)
   }
 
   function onDestroy()
   {
+    if (isValid())
+      setDmgSkinMode(false)
+    ::hangar_show_model_damaged(MDS_ORIGINAL)
+    ::hangar_prem_vehicle_view_close()
+
     if (unit)
     {
       if (currentState & decoratorEditState.EDITING)

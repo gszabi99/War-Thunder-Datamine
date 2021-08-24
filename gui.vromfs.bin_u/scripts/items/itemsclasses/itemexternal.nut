@@ -366,10 +366,11 @@ local ItemExternal = class extends ::BaseItem
     local decorator = ::g_decorator.getDecorator(metaBlk.resource, decoratorType)
     if (!decorator)
       return ""
-    return ::g_string.implode([
+    return "\n".join([
       decorator.getTypeDesc()
+      decorator.getVehicleDesc()
       decorator.getRestrictionsDesc()
-    ], "\n")
+    ], true)
   }
 
   function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "")

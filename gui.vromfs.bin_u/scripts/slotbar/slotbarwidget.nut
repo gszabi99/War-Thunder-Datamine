@@ -524,6 +524,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     {
       curSlotCountryId   = selectedCrewData?.idCountry ?? -1
       curSlotIdInCountry = selectedCrewData?.idInCountry ?? -1
+      ::select_crew(curSlotCountryId, curSlotIdInCountry)
     }
   }
 
@@ -1063,6 +1064,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     loadedCountries.clear()
     if (beforeFullUpdate)
       beforeFullUpdate()
+
+    curSlotCountryId = -1
+    curSlotIdInCountry = -1
 
     refreshAll()
     if (afterFullUpdate)
