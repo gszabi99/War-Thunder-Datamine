@@ -119,12 +119,12 @@ local { AMMO,
     {
       local boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
       maxBulletsCount = isForcedAvailable? gunInfo.total : ::min(boughtCount, gunInfo.total)
-
-      local bulletsSet = getBulletsSetData(unit, selectedName)
-      local maxToRespawn = ::getTblValue("maxToRespawn", bulletsSet, 0)
-      if (maxToRespawn > 0)
-        maxBulletsCount = ::min(maxBulletsCount, maxToRespawn)
     }
+
+    local bulletsSet = getBulletsSetData(unit, selectedName)
+    local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+    if (maxToRespawn > 0)
+      maxBulletsCount = ::min(maxBulletsCount, maxToRespawn)
 
     if (bulletsCount < 0 || bulletsCount <= maxBulletsCount)
       return false
