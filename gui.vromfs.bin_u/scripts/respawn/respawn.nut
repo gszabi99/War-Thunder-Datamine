@@ -1589,6 +1589,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function getCantSpawnReason(crew, silent = true)
   {
     local unit = ::g_crew.getCrewUnit(crew)
+    if (unit == null)
+      return null
 
     local ruleMsg = missionRules.getSpecialCantRespawnMessage(unit)
     if (!::u.isEmpty(ruleMsg))

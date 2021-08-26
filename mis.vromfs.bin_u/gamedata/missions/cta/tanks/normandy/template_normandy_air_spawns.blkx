@@ -1172,9 +1172,16 @@
         "gameWhenDifficulty": {
           "difficulty": "arcade",
           "is": "notEqual"
+        },
+        "objectExists": {
+          "target": "t1_carrier_squad",
+          "type": "squad"
         }
       },
       "actions": {
+        "wait": {
+          "time": 10.0
+        },
         "unitWakeUp": {
           "target": "t1_carrier_squad"
         },
@@ -1245,19 +1252,7 @@
             "ignoreTeamsOnReuse": false
           },
           {
-            "target": "t1_carrier01"
-          },
-          {
-            "target": "t1_carrier02"
-          },
-          {
-            "target": "t1_carrier03"
-          },
-          {
-            "target": "t1_carrier04"
-          },
-          {
-            "target": "t1_carrier05"
+            "target": "t1_carrier_squad"
           },
           {
             "team": "A"
@@ -1282,234 +1277,7 @@
   "dialogs": [],
   "airfields": [],
   "effects": [],
-  "units": [
-    {
-      "ships": {
-        "name": "t1_carrier01",
-        "tm": [
-          [0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,0.173648],
-          [3468.85,2.38419e-07,11607.0]
-        ],
-        "unit_class": "uss_cv_lexington",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "t1_carrier02",
-        "tm": [
-          [0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,0.173648],
-          [2910.95,1.49012e-08,11727.2]
-        ],
-        "unit_class": "uss_cv_lexington",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "t1_carrier03",
-        "tm": [
-          [0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,0.173648],
-          [2261.75,1.49012e-08,11668.4]
-        ],
-        "unit_class": "uss_cv_lexington",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "t1_carrier04",
-        "tm": [
-          [0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,0.173648],
-          [1784.5,1.49012e-08,11610.7]
-        ],
-        "unit_class": "uss_cv_lexington",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "t1_carrier05",
-        "tm": [
-          [0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,0.173648],
-          [1130.45,1.49012e-08,11591.4]
-        ],
-        "unit_class": "uss_cv_lexington",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_carrier_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2091.85,1.49012e-08,12075.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_carrier01"
-          },
-          {
-            "squad_members": "t1_carrier02"
-          },
-          {
-            "squad_members": "t1_carrier03"
-          },
-          {
-            "squad_members": "t1_carrier04"
-          },
-          {
-            "squad_members": "t1_carrier05"
-          }
-        ]
-      }
-    }
-  ],
+  "units": [],
   "areas": {
     "fighters_arcade_area": {
       "type": "Sphere",
