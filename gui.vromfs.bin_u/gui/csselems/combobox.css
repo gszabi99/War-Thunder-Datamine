@@ -287,12 +287,14 @@ ComboBox > listBox > option > optiontext {
   height:ph;
   min-width:fw;
   input-transparent:yes;
+  auto-scroll:slow;
+  move-start:no;
 }
 
 ComboBox:hover > option > optiontext,
 ComboBox > listBox > option:hover > optiontext,
 ComboBox > listBox > option:current > optiontext {
-  auto-scroll:slow;
+  move-start:yes;
 }
 
 ComboBox:hover > option,

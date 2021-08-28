@@ -188,7 +188,8 @@
           "armorThickness": 100.0
         },
         "gun_mask_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "variableThickness": true
         },
         "gun_mask_01_dm": {
           "armorThickness": 200.0
@@ -3250,10 +3251,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 9.2,
-      "zoomInFov": 4.63,
-      "sightFov": 4.5,
-      "sightName": "tzf_1a",
+      "zoomOutFov": 10.0,
+      "zoomInFov": 9.21,
+      "sightFov": 5.0,
+      "sightName": "telescope_m105c",
       "headPos": [0.0,4.2,-8.5],
       "headPosOnShooting": [-0.1,3.3,0.37],
       "detectionHeight": 2.63
@@ -3281,12 +3282,11 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
       },
-      "105mm_usa_HESH": [],
-      "105mm_usa_HESH_ammo_pack": [],
-      "105mm_usa_HEAT_FS": [],
-      "105mm_usa_HEAT_FS_ammo_pack": [],
+      "105mm_britain_HESH": [],
       "105mm_us_M416_Smoke": [],
-      "105mm_us_M416_Smoke_ammo_pack": [],
+      "105mm_us_M416_Smoke_ammo_pack": {
+        "tier": 1
+      },
       "modern_tank_laser_rangefinder": {
         "tier": 4
       },
@@ -3840,15 +3840,6 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_prototype_green*"
-      }
-    }
-  },
-  {
     "user_skin": {
       "name": "st_b1",
       "replace_tex": {
@@ -3920,6 +3911,15 @@
       "replace_tex": {
         "from": "jp_camo_sdf_green*",
         "to": "jp_camo_winter_late*"
+      }
+    }
+  },
+  {
+    "default_skin": {
+      "name": "default",
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_prototype_green*"
       }
     }
   }

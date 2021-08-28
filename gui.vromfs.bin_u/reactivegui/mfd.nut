@@ -1,73 +1,52 @@
-local {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize} = require("helicopterState.nut")
-local hudElems = require("helicopterHudElems.nut")
+local {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
+  IsMfdEnabled, RwrPosSize, SecondaryMask} = require("airState.nut")
+local {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize} = require("airHudElems.nut")
 local tws = require("tws.nut")
-local radarComponent = require("radarComponent.nut")
-local {hudFontHgt, fontOutlineColor, backgroundColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+local {mkRadarForMfd} = require("radarComponent.nut")
+
+local {ceil} = require("std/math.nut")
 
 const mfdFontScale = 1.5
 
-local getColor = @(isBackground) isBackground ? backgroundColor : MfdColor.value
+local sightSh = @(h) ceil(h * MfdSightPosSize[3] / 100)
+local sightSw = @(w) ceil(w * MfdSightPosSize[2] / 100)
+local sightHdpx = @(px) ceil(px * MfdSightPosSize[3] / 1024)
 
-local sightSh = @(h) h * MfdSightPosSize[3] / 100
-local sightSw = @(w) w * MfdSightPosSize[2] / 100
-local sightHdpx = @(px) px * MfdSightPosSize[3] / 1024
-local getMfdFontSize = @() hudFontHgt*mfdFontScale * min(MfdSightPosSize[2], MfdSightPosSize[3]) / 512
+local twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
+  RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
+local twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
 
-local styleLineBackground = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = hdpx(1) * (LINE_WIDTH + 1.5)
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt*1.5
-}
-
-
-local styleLineForeground = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt*1.5
-}
-
-local mkTws = @(colorStyle) @() {
+local mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
-  children = (!MlwsLwsForMfd.value && !RwrForMfd) ? null
+  children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
     : tws({
-      colorStyle = colorStyle,
-      pos = [RwrPosSize[0] + RwrPosSize[2] * 0.17,
-        RwrPosSize[1] + RwrPosSize[3] * 0.17],
-      size = [RwrPosSize[2] * 0.66, RwrPosSize[3] * 0.66],
+      colorWatched = MfdColor
+      posWatched = twsPosComputed,
+      sizeWatched = twsSizeComputed,
       relativCircleSize = 36
     })
 }
 
-local mfdSightParamsTable = hudElems.paramsTable(MfdSightMask,
-  250,
-  [30, 175],
+local mfdSightParamTablePos = Watched([hdpx(30), hdpx(175)])
+
+local mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask,
+  hdpx(250), hdpx(28),
+  mfdSightParamTablePos,
   hdpx(3))
 
-local function mfdSightHud(elemStyle, isBackground) {
-  local mfdStyle = elemStyle.__merge({
-        fontSize = getMfdFontSize()
-        color = MfdColor.value
-      })
+local function mfdSightHud(isBackground) {
   return @(){
     watch = IsMfdSightHudVisible
     pos = [MfdSightPosSize[0], MfdSightPosSize[1]]
     children = IsMfdSightHudVisible.value ?
     [
-      hudElems.turretAngles(mfdStyle, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
-      hudElems.launchDistanceMax(mfdStyle, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
-      hudElems.sight(mfdStyle, sightSw(50), sightSh(50), sightHdpx(500), isBackground)
-      hudElems.rangeFinder(mfdStyle, sightSw(50), sightSh(58), isBackground)
-      hudElems.lockSight(mfdStyle, sightHdpx(150), sightHdpx(100), sightSw(50), sightSh(50), isBackground)
-      hudElems.targetSize(mfdStyle, sightSw(100), sightSh(100))
-      mfdSightParamsTable(mfdStyle, isBackground)
+      turretAngles(MfdColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
+      launchDistanceMax(MfdColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
+      sight(MfdColor, sightSw(50), sightSh(50), sightHdpx(500), isBackground)
+      rangeFinder(MfdColor, sightSw(50), sightSh(58), isBackground)
+      lockSight(MfdColor, sightHdpx(150), sightHdpx(100), sightSw(50), sightSh(50), isBackground)
+      targetSize(MfdColor, sightSw(100), sightSh(100))
+      mfdSightParamsTable(isBackground)
     ]
     : null
   }
@@ -75,26 +54,22 @@ local function mfdSightHud(elemStyle, isBackground) {
 
 
 
-local function mfdHUD(colorStyle, isBackground) {
-  local rwrStyle = colorStyle.__merge({
-    color = getColor(isBackground)
-  })
+local function mfdHUD(isBackground) {
 
   return [
-    mfdSightHud(colorStyle, isBackground)
-    mkTws(rwrStyle)
-    radarComponent.mkRadarForMfd(getColor(isBackground))
+    mfdSightHud(isBackground)
+    mkTws
+    mkRadarForMfd(MfdColor)
   ]
 }
 
 local Root = function() {
-  local children = mfdHUD(styleLineBackground, true)
-  children.extend(mfdHUD(styleLineForeground, false))
+  local children = mfdHUD(true)
+  children.extend(mfdHUD(false))
 
   return {
     watch = [
       IndicatorsVisible
-      MfdColor
       IsMfdEnabled
     ]
     halign = ALIGN_LEFT

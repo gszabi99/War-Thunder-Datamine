@@ -131,7 +131,7 @@ local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNa
 local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor = null, addTypeNameKey = null,
                                     shouldPersistTypes = true) {
 
-  local enumTable = ::getroottable()?[enumTableName]
+  local enumTable = getroottable()?[enumTableName]
   if (!isTable(enumTable)) {
     assertOnce("not found enum table", $"enums: not found enum table '{enumTableName}'")
     return
@@ -142,9 +142,9 @@ local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor =
 }
 
 return {
-  getCachedType = getCachedType
-  addTypes = addTypes
-  addTypesByGlobalName = addTypesByGlobalName
+  getCachedType
+  addTypes
+  addTypesByGlobalName
 
   setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText)
 }

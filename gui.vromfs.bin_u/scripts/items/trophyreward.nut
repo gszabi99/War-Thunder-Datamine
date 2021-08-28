@@ -302,9 +302,9 @@ trophyReward.getDecription <- function getDecription(config, isFull = false)
   return ""
 }
 
-trophyReward.getRewardText <- function getRewardText(config, isFull = false)
+trophyReward.getRewardText <- function getRewardText(config, isFull = false, color = "")
 {
-  return ::PrizesView.getPrizeText(::DataBlockAdapter(config), true, false, true, isFull)
+  return ::PrizesView.getPrizeText(::DataBlockAdapter(config), true, false, true, isFull, color)
 }
 
 trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray)

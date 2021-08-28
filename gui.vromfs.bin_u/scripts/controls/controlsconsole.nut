@@ -88,7 +88,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
   function updateButtons()
   {
     showSceneBtn("btn_switchMode", true)
-    showSceneBtn("btn_controlsWizard", ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
+    showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
     showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
     local btnObj = scene.findObject("btn_calibrate")
     if (::checkObj(btnObj))

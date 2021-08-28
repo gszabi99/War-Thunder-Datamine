@@ -1,6 +1,7 @@
 local stdMath = require("std/math.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { doesLocTextExist = @(k) true } = require("dagor.localize")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -173,8 +174,8 @@ g_tips.getDefaultUnitTypeMask <- function getDefaultUnitTypeMask()
     res = ::SessionLobby.getRequiredUnitTypesMask() || ::SessionLobby.getUnitTypesMask()
   else if (gm == ::GM_TEST_FLIGHT)
   {
-    if (::show_aircraft)
-      res = ::show_aircraft.unitType.bit
+    if (showedUnit.value)
+      res = showedUnit.value.unitType.bit
   }
   else if (::isInArray(gm, [::GM_SINGLE_MISSION, ::GM_CAMPAIGN, ::GM_DYNAMIC, ::GM_BUILDER, ::GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit

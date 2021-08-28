@@ -2409,9 +2409,16 @@
     "commonWeapons": {
       "Weapon": {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_M2_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/40mm_Bofors_L60_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "sleeveEmitter": "emtr_shell",
+        "sleeveMesh": "cartridge_case",
+        "hatchAnimVar": "gun_shutter_move",
+        "openHatchTime": 0.3,
+        "sleevesLifeTime": 10.0,
+        "sleeveImpulse": [4.0,0.0,0.0],
+        "sleeveExtractSound": "shell_eject",
         "recoilOffset": 0.9,
         "recoilTimes": [0.1,0.35],
         "jammedReloadTime": 10.0,
@@ -2504,7 +2511,9 @@
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
-        "cls_body": "convex_hull"
+        "cls_body": "convex_hull",
+        "cls_body_01": "convex_hull",
+        "cls_body_02": "convex_hull"
       },
       "engine": {
         "horsePowers": 94.0,

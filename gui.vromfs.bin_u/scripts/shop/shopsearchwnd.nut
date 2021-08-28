@@ -1,6 +1,7 @@
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -23,7 +24,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
     return {
       windowTitle = ::loc("shop/search/results") + ::loc("ui/colon") + searchString
       countriesCount = countriesView.len()
-      countriesTotal = ::shopCountriesList.len()
+      countriesTotal = shopCountriesList.len()
       countries = countriesView
     }
   }
@@ -42,7 +43,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     local data = {}
     local ediff = getEdiffFunc()
-    foreach (countryId in ::shopCountriesList)
+    foreach (countryId in shopCountriesList)
     {
       local countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
@@ -68,7 +69,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
     local ediff = getEdiffFunc()
     isUseUnitPlates = getIsUseUnitPlates(unitsData)
 
-    foreach (countryId in ::shopCountriesList)
+    foreach (countryId in shopCountriesList)
     {
       if (!unitsData?[countryId])
         continue

@@ -6,7 +6,7 @@
         ActionList will be aligned on border of parent in specified side
 
       params = {
-        orientation = AL_ORIENT.TOP
+        orientation = ALIGN.TOP
 
         handler = null - handler, which implemets functions, specified in func
           field of actions.
@@ -27,16 +27,6 @@
 
 */
 local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-
-global enum AL_ORIENT
-{
-  VERTICAL   = "vertical",
-  HORIZONTAL = "horizontal",
-  TOP        = "top",
-  BOTTOM     = "bottom",
-  LEFT       = "left",
-  RIGHT      = "right"
-}
 
 class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 {
@@ -77,7 +67,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
     closeOnUnhover = params?.closeOnUnhover ?? closeOnUnhover
     scene.closeOnUnhover = closeOnUnhover ? "yes" : "no"
     fillList()
-    setOrientation()
+    updatePosition()
   }
 
   function fillList()
@@ -120,27 +110,11 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
       })
   }
 
-  function setOrientation()
+  function updatePosition()
   {
     guiScene.applyPendingChanges(false)
-
-    local selfSize = scene.getSize()
-    local prntSize = parentObj.getSize()
-    local prntPos  = parentObj.getPosRC()
-    local rootSize = guiScene.getRoot().getSize()
-
-    if (!("orientation" in params))
-      params.orientation <- AL_ORIENT.TOP
-
-    if (params.orientation == AL_ORIENT.TOP
-        && prntPos[1] - selfSize[1] < 0)
-      params.orientation = AL_ORIENT.BOTTOM
-
-    if (params.orientation == AL_ORIENT.BOTTOM
-        && prntPos[1] + prntSize[1] + selfSize[1] > rootSize[1])
-      params.orientation = AL_ORIENT.TOP
-
-    scene.al_align = params.orientation
+    local defaultAlign = params?.orientation ?? ALIGN.TOP
+    ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, defaultAlign, scene)
   }
 
   function goBack()

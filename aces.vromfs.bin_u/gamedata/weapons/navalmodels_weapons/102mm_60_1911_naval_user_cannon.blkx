@@ -16,7 +16,7 @@
   "fxSandDust": "dust_ground_wave_sand_big",
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
-  "fxWaterShockWave": "water_shock_wave_big",
+  "fxWaterShockWave": "dust_waterwave_big",
   "sound_path": "ships/weapon_ships/cannons",
   "sound_pathStudio": "naval/weapon/cannons",
   "sound": "114mm_8cwt_qf",
@@ -63,7 +63,7 @@
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
     "ricochetEffect": "hit_81_105mm_metal_ap",
-    "waterCollisionEffect": "hit_81_105mm_water",
+    "waterCollisionEffect": "hit_81_105mm_water_he",
     "explosionPatchRadius": 3.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
@@ -86,13 +86,13 @@
           "useRealShatters": true
         },
         {
-          "countPortion": 0.03
+          "countPortion": 0.1
         },
         {
           "segment": {
-            "radiusScale": 0.6,
-            "penetrationScale": 1.6,
-            "damageScale": 3.0,
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
             "angles": [0.0,180.0],
             "countPortion": 0.5,
             "onHitChanceMultFire": 50.0
@@ -100,9 +100,9 @@
         },
         {
           "segment": {
-            "radiusScale": 0.6,
-            "penetrationScale": 1.6,
-            "damageScale": 3.0,
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
             "angles": [181.0,359.0],
             "countPortion": 0.5,
             "onHitChanceMultFire": 50.0
@@ -235,7 +235,7 @@
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
       "ricochetEffect": "hit_81_105mm_metal_ap",
-      "waterCollisionEffect": "hit_81_105mm_water",
+      "waterCollisionEffect": "hit_81_105mm_water_he",
       "explosionPatchRadius": 3.0,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
@@ -258,13 +258,13 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.03
+            "countPortion": 0.1
           },
           {
             "segment": {
-              "radiusScale": 0.6,
-              "penetrationScale": 1.6,
-              "damageScale": 3.0,
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
               "angles": [0.0,180.0],
               "countPortion": 0.5,
               "onHitChanceMultFire": 50.0
@@ -272,9 +272,9 @@
           },
           {
             "segment": {
-              "radiusScale": 0.6,
-              "penetrationScale": 1.6,
-              "damageScale": 3.0,
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
               "angles": [181.0,359.0],
               "countPortion": 0.5,
               "onHitChanceMultFire": 50.0
@@ -411,7 +411,7 @@
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
       "ricochetEffect": "hit_81_105mm_metal_ap",
-      "waterCollisionEffect": "hit_81_105mm_water",
+      "waterCollisionEffect": "hit_81_105mm_water_he",
       "explosionPatchRadius": 3.0,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
@@ -427,7 +427,7 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.4
+            "countPortion": 0.25
           },
           {
             "segment": {
@@ -435,7 +435,8 @@
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,30.0],
-              "countPortion": 0.5
+              "countPortion": 0.5,
+              "onHitChanceMultFire": 10.0
             }
           },
           {
@@ -444,7 +445,8 @@
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [330.0,359.0],
-              "countPortion": 0.5
+              "countPortion": 0.5,
+              "onHitChanceMultFire": 10.0
             }
           }
         ]

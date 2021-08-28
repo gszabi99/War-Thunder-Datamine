@@ -167,6 +167,7 @@ g_language.saveLanguage <- function saveLanguage(langName)
 }
 
 ::g_language.saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
+local currentLanguageW = Watched(::g_language.currentLanguage)
 
 g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false)
 {
@@ -188,6 +189,7 @@ g_language.setGameLocalization <- function setGameLocalization(langId, reloadSce
     ::handlersManager.markfullReloadOnSwitchScene()
 
   ::broadcastEvent("GameLocalizationChanged")
+  currentLanguageW(currentLanguage)
 }
 
 g_language.reload <- function reload()
@@ -406,3 +408,7 @@ g_language.getCurrentSteamLanguage <- function getCurrentSteamLanguage()
 ::cross_call_api.language <- ::g_language
 
 ::subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)
+
+return {
+  currentLanguageW
+}

@@ -1,4 +1,4 @@
-local split = require("string").split
+local {split, regexp} = require("string")
 
 /**
  * Normalize file path slashes to be unix-like forward slashes.
@@ -27,7 +27,7 @@ local function normalize(path) {
     pathSegments.insert(0, "/")
   }
   else if (pathSegments.len() > 0 &&
-    ::regexp("^[a-zA-Z]:.*$").match(pathSegments[0])) {
+    regexp("^[a-zA-Z]:.*$").match(pathSegments[0])) {
     isAbsolutePath = true
     if (pathSegments[0].len() > 2) {
       pathSegments.insert(0, pathSegments[0].slice(0, 2))
@@ -134,8 +134,8 @@ local function fileName(path) {
  *   join("/", "/")              > "/"
  */
 local function _join(basePath, other) {
-  ::assert(::type(basePath) == "string")
-  ::assert(::type(other) == "string")
+  assert(type(basePath) == "string")
+  assert(type(other) == "string")
   if (basePath == "")
     return other
   else if (other == "" || other == "/")
@@ -165,7 +165,7 @@ local function joinArray(pathArray) {
 local function join(...) {
   local path = ""
   foreach (pathSegment in vargv) {
-    if (::type(pathSegment) == "array") {
+    if (type(pathSegment) == "array") {
       path = _join(path,joinArray(pathSegment))
     }
     else {
@@ -188,7 +188,7 @@ local function join(...) {
 local function splitToArray(path) {
   if (path == "")
     return []
-  ::assert(::type(path)=="string", @() $"path type is not string ({::type(path)})")
+  assert(type(path)=="string", @() $"path type is not string ({type(path)})")
   local segments = split(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")

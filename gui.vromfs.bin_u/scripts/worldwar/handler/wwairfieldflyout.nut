@@ -703,6 +703,7 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
       canShowPrice = false
       isForceHidePlayerInfo = true
       hasMenu = hasPresetToChoose(unit)
+      curEdiff = ::g_world_war.defaultDiffCode
     }
     if (!::check_obj(modItemObj))
       modItemObj = createModItem(
@@ -763,6 +764,7 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
         canShowResearch = false
         canShowPrice = false
         isForceHidePlayerInfo = true
+        curEdiff = ::g_world_war.defaultDiffCode
       }
     })
   }

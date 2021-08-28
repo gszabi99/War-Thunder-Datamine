@@ -1,44 +1,48 @@
 {
   "rocketGun": true,
   "preset_cost": 25,
-  "sound": "weapon.rocketgun_132",
-  "helicopterGroup": 2,
   "mesh": "de_r4m_orkan_rocket",
+  "helicopterGroup": 2,
+  "sound": "weapon.rocketgun_132",
   "rocket": {
-    "dragCx": 0.0012,
     "caliber": 0.055,
-    "length": 0.815,
+    "length": 0.812,
     "explosiveType": "hta",
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "aam",
     "explosiveMass": 0.52,
-    "distFromCmToStab": 0.01,
-    "CxK": 0.01,
-    "WdK": [0.1,0.1,0.1],
+    "mass": 3.85,
+    "massEnd": 3.035,
+    "statType": "hydra",
+    "explodeTreshold": 0.0,
+    "explodeHitPower": 70.0,
+    "explodeArmorPower": 12.0,
+    "explodeRadius": [0.3,1.0],
+    "rendinstDamageRadius": 10.0,
+    "maxDistance": 6200.0,
+    "minDistance": 30.0,
+    "force": 2250.0,
+    "timeFire": 0.8,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
+    "distFromCmToStab": 0.01,
+    "WdK": [0.1,0.1,0.1],
+    "dragCx": 0.0012,
+    "CxK": 1.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 525.0,
+    "amountPerTier": 12.0,
+    "iconType": "rockets_he_small_group",
     "explosionEffect": "explosion_midair_tiny",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "cannon_ricochet",
-    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
     "fireEffect": "rocket_fire_light_multiple",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 2.5,
-    "maxDistance": 6200.0,
-    "minDistance": 30.0,
-    "mass": 3.85,
-    "massEnd": 3.035,
-    "force": 2401.0,
-    "timeFire": 1.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -49,44 +53,18 @@
     "midArmorPower": [7.0,400.0],
     "farArmorPower": [0.2,700.0],
     "relativeVelArmorShift": [200.0,1000.0],
-    "explodeTreshold": 0.0,
-    "explodeHitPower": 70.0,
-    "explodeArmorPower": 12.0,
-    "explodeRadius": [0.3,1.0],
-    "rendinstDamageRadius": 10.0,
-    "statType": "hydra",
-    "shutterDamage": true,
-    "shutterDamageRadius": 25.0,
-    "shutterAmount": 1000,
-    "shutterArmorPower": 8.0,
-    "shutterHit": 10.0,
-    "useStartSpeed": true,
-    "startSpeed": 50.0,
-    "endSpeed": 900.0,
-    "maxSpeed": 550.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "amountPerTier": 12.0,
-    "iconType": "rockets_he_small_group",
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "aam",
     "collisions": {
       "steel": {
         "fx": "explosion_midair_tiny"
@@ -107,6 +85,23 @@
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
+    },
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
+    "pressureDamage": {
+      "damageType": "pressure"
     }
   }
 }

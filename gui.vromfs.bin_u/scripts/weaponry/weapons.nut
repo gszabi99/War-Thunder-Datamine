@@ -74,8 +74,8 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
 }
 
-local getCustomTooltipId = @(unitName, mod) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
-  ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name)
+local getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
+  ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name, params)
   : null
 
 class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
@@ -483,8 +483,13 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
+    local currentEdiff = getCurrentEdiff()
     return createModItem(id, air, item, iType, holderObj, this,
-      { posX = posX, posY = posY, tooltipId = getCustomTooltipId(air.name, item) })
+      { posX = posX, posY = posY, curEdiff = currentEdiff,
+        tooltipId = getCustomTooltipId(air.name, item, {
+          curEdiff = currentEdiff
+        })
+      })
   }
 
   function wrapUnitToItem(unit)
@@ -523,6 +528,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = createItemForBundle
         cellSizeObj = scene.findObject("cell_size")
+        curEdiff = getCurrentEdiff()
       })
   }
 
@@ -549,6 +555,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       isVisualDisabled = !isBulletsGroupActiveByMod(air, visualItem)
 
     local hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
+    local currentEdiff = getCurrentEdiff()
     updateModItem(air, item, itemObj, true, this, {
       canShowResearch = availableFlushExp == 0 && setResearchManually
       flushExp = availableFlushExp
@@ -557,7 +564,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       hideStatus = hasMenu
       hasMenu
       actionBtnText = hasMenu ? ::loc("mainmenu/btnAirGroupOpen") : null
-      tooltipId = getCustomTooltipId(air.name, item)
+      curEdiff = currentEdiff
+      tooltipId = getCustomTooltipId(air.name, item, {
+        curEdiff = currentEdiff
+      })
     })
   }
 
@@ -1178,7 +1188,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (checkResearchOperation(item))
       return
     if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air)) {
-      weaponryPresetsModal.open({ unit = air }) //open modal menu for air and helicopter only
+      weaponryPresetsModal.open({ unit = air, curEdiff = getCurrentEdiff() }) //open modal menu for air and helicopter only
       return
     }
     if(!canPerformAction(item, amount))

@@ -253,7 +253,9 @@
         "turret_02_side_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_l_03_dm": [],
-        "gun_mask_07_dm": []
+        "gun_mask_07_dm": [],
+        "ex_decor_01_dm": [],
+        "ex_decor_02_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -316,8 +318,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -1814,7 +1816,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2548,7 +2551,16 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.66,
-        "height": 0.04
+        "height": 0.1,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_kgs64_660_150_phys_track_line",
+        "trackLen": 0.15,
+        "trackCount": 87,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.35,
+        "trackStartOffset": 0.02
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2601,7 +2613,11 @@
         "frontBackGearRadius": 0.32,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.31,
+        "wheel_l_drive": 0.31,
+        "wheel_r_front": 0.405,
+        "wheel_l_front": 0.405
       }
     }
   },

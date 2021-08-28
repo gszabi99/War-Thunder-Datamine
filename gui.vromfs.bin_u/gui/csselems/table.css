@@ -323,7 +323,11 @@ tr[iconType=pilot] {
 }
 
 tr[iconType=aircraft] {
-  size:pw,@shopAirHeight + 6*@sf/@pf_outdated;
+  size:pw, @shopAirHeight + 6@dp;
+}
+
+tr[iconType=aircraft] > td {
+  height:ph;
 }
 
 tr[iconType=country] {
@@ -528,16 +532,17 @@ tr[hiddenTr=yes] {
 }
 
 tr > td > optiontext {
-  auto-scroll:no;
+  auto-scroll:fast;
+  move-start:no;
 }
 tr:hover > td > optiontext {
   color:@hoverTextColor;
-  auto-scroll:yes;
+  move-start:yes;
 }
 tr[selected=yes] > td > optiontext {
   color:@activeTextColor;
   font:@option_selected_font;
-  auto-scroll:yes;
+  move-start:yes;
 }
 td[cellType=top] > optiontext {
   color:@grayOptionColor;
@@ -642,12 +647,18 @@ tr[inactive=yes] {
   input-transparent:yes;
 }
 
-tr[selected=yes] > td[autoScrollText="hoverOrSelect"] > activeText,
-tr::hover > td[autoScrollText="hoverOrSelect"] > activeText {
+tr > td[autoScrollText="hoverOrSelect"] > activeText,
+tr > td[autoScrollText="hoverOrSelect"] > activeText {
   behaviour:OverflowScroller;
   move-pixel-per-sec:15*@scrn_tgt/100.0;
   move-sleep-time:8000;
   move-delay-time:2000;
+  move-start:no;
+}
+
+tr[selected=yes] > td[autoScrollText="hoverOrSelect"] > activeText,
+tr::hover > td[autoScrollText="hoverOrSelect"] > activeText {
+  move-start:yes;
 }
 
 activeText[caption=yes], textarea[caption=yes], textAreaCentered[caption=yes] {

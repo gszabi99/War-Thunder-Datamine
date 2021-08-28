@@ -13,13 +13,13 @@ local clanInfoView = require("scripts/clans/clanInfoView.nut")
 local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 local clan_member_list = [
-  {id = "onlineStatus", type = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
-  {id = "nick", type = ::g_lb_data_type.NICK, align = "left"}
-  {id = ::ranked_column_prefix, type = ::g_lb_data_type.NUM, loc = "rating", byDifficulty = true
+  {id = "onlineStatus", lbDataType = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
+  {id = "nick", lbDataType = ::g_lb_data_type.NICK, align = "left"}
+  {id = ::ranked_column_prefix, lbDataType = ::g_lb_data_type.NUM, loc = "rating", byDifficulty = true
     tooltip = "#clan/personal/dr_era/desc"}
   {
     id = "activity"
-    type = ::g_lb_data_type.NUM
+    lbDataType = ::g_lb_data_type.NUM
     field = @() ::has_feature("ClanVehicles") ? "totalPeriodActivity" : "totalActivity"
     showByFeature = "ClanActivity"
     getCellTooltipText = function(data) { return loc("clan/personal/" + id + "/cell/desc") }
@@ -28,19 +28,19 @@ local clan_member_list = [
   }
   {
     id = "role",
-    type = ::g_lb_data_type.ROLE,
+    lbDataType = ::g_lb_data_type.ROLE,
     sortId = "roleRank"
     sortPrepare = function(member) { member[sortId] <- ::clan_get_role_rank(member.role) }
-    getCellTooltipText = function(data) { return type.getPrimaryTooltipText(::getTblValue(id, data)) }
+    getCellTooltipText = function(data) { return lbDataType.getPrimaryTooltipText(::getTblValue(id, data)) }
   }
-  {id = "date",         type = ::g_lb_data_type.DATE }
+  {id = "date", lbDataType = ::g_lb_data_type.DATE }
 ]
 
 local clan_data_list = [
-  {id = "air_kills", type = ::g_lb_data_type.NUM, field = "akills"}
-  {id = "ground_kills", type = ::g_lb_data_type.NUM, field = "gkills"}
-  {id = "deaths", type = ::g_lb_data_type.NUM, field = "deaths"}
-  {id = "time_pvp_played", type = ::g_lb_data_type.TIME_MIN, field = "ftime"}
+  {id = "air_kills", lbDataType = ::g_lb_data_type.NUM, field = "akills"}
+  {id = "ground_kills", lbDataType = ::g_lb_data_type.NUM, field = "gkills"}
+  {id = "deaths", lbDataType = ::g_lb_data_type.NUM, field = "deaths"}
+  {id = "time_pvp_played", lbDataType = ::g_lb_data_type.TIME_MIN, field = "ftime"}
 ]
 
 local default_clan_member_list = {
@@ -247,13 +247,13 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     local clanTitleObj = scene.findObject("clan-title")
     if (::checkObj(headerTextObj))
     {
-      local locId = "clan/clanInfo/" + clanData.type.getTypeName()
-      local text = ::colorize(clanData.type.color, ::loc(locId, { clanName = clanName }))
+      local locId = "clan/clanInfo/" + clanData.clanType.getTypeName()
+      local text = ::colorize(clanData.clanType.color, ::loc(locId, { clanName = clanName }))
       headerTextObj.setValue(text)
       clanTitleObj.setValue("")
     }
     else
-      clanTitleObj.setValue(::colorize(clanData.type.color, clanName))
+      clanTitleObj.setValue(::colorize(clanData.clanType.color, clanName))
 
     local clanDate = clanData.getCreationDateText()
     local dateText = ::loc("clan/creationDate") + " " + ::colorize("activeTextColor", clanDate)
@@ -346,7 +346,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       btn_showRequests = ((isMyClan && (isInArray("MEMBER_ADDING", myRights) || isInArray("MEMBER_REJECT", myRights))) || adminMode) && clanData.candidates.len() > 0
       btn_leaveClan = isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(clanData) > 1)
       btn_edit_clan_info = ::ps4_is_ugc_enabled() && ((isMyClan && isInArray("CHANGE_INFO", myRights)) || adminMode)
-      btn_upgrade_clan = clanData.type.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (isMyClan && hasLeaderRight))
+      btn_upgrade_clan = clanData.clanType.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (isMyClan && hasLeaderRight))
       btn_showBlacklist = ((isMyClan && isInArray("MEMBER_BLACKLIST", myRights)) || adminMode) && clanData.blacklist.len()
       btn_lock_clan_req = showBtnLock
       img_lock_clan_req = !showBtnLock && !clanMembershipAcceptance.getValue(clanData)
@@ -643,7 +643,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       {
         local dataId = item.field + diff.clanDataEnding
         local value = dataId in data? data[dataId] : "0"
-        local textCell = item.type.getShortTextByValue(value)
+        local textCell = item.lbDataType.getShortTextByValue(value)
 
         rowParams.append({
                           text = textCell,
@@ -795,7 +795,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
   {
     local id = getFieldId(column)
     local res = {
-      text = column.type.getShortTextByValue(member[id])
+      text = column.lbDataType.getShortTextByValue(member[id])
       tdalign = ::getTblValue("align", column, "center")
     }
 

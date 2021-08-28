@@ -39,6 +39,8 @@ foreach (fn in [
   lastId             = -1
 
   delayedInfoUpdateEventtTime = -1
+  leaveQueueDelaySec = 3
+  leaveQueueRndDelayMsec = 2000
 
   queue_diff_params = ["mode", "team"]
 
@@ -227,7 +229,7 @@ foreach (fn in [
     ::showInfoMsgBox(msg, "cant_join_queue")
   }
 
-  function showProgressBox(show, text = "charServer/purchase0")
+  function showProgressBox(show, countdown = -1, text = "charServer/purchase0")
   {
     if (::checkObj(progressBox))
     {
@@ -240,6 +242,7 @@ foreach (fn in [
         [["cancel", function(){}]], "cancel",
         { waitAnim = true,
           delayedButtons = 30
+          countdown = countdown
         })
   }
 
@@ -262,18 +265,18 @@ foreach (fn in [
     if (findQueue(params))
       return dagor.debug("Error: cancel join queue becoase already exist.")
 
-    ::queues.showProgressBox(true)
+    showProgressBox(true)
     local queue = createQueue(params, true)
 
     queue.join(
-      function(response) {
-        ::queues.showProgressBox(false)
-        ::queues.afterJoinQueue(queue)
-      },
-      function(response) {
-        ::queues.showProgressBox(false)
-        ::queues.removeQueue(queue)
-      }
+      ::Callback(function(response) {
+        showProgressBox(false)
+        afterJoinQueue(queue)
+      }, this),
+      ::Callback(function(response) {
+        showProgressBox(false)
+        removeQueue(queue)
+      }, this)
     )
 
     changeState(queue, queueStates.JOINING_QUEUE)
@@ -298,7 +301,7 @@ foreach (fn in [
     if (!isAnyQueuesActive())
       return postAction && postAction()
 
-    showProgressBox(true)
+    showProgressBox(true, leaveQueueDelaySec, "wait/queueLeave")
 
     local callback = _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
     foreach(queueType in getActiveQueueTypes())
@@ -311,36 +314,44 @@ foreach (fn in [
 
   function _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
   {
-    return function(response) {
-        ::queues.showProgressBox(false)
-        if (response.error == SERVER_ERROR_REQUEST_REJECTED)
-        {
-          // Error means that user is joining battle and can't leave the queue
-          if (postCancelAction)
-            postCancelAction()
-          ::SessionLobby.setWaitForQueueRoom(true)
-        }
-        else
-        {
-          ::checkMatchingError(response, !silent)
-          ::queues.afterLeaveQueues({})
+    return ::Callback(function(response) {
+        //!!!FIX it! Need remove delayed action
+        // after server will able to force game leaving by user request.
+        // Waiting box fades out with delay to visually "randomize" result
+        // because of user still might be joined to battle after cancel.
+        local isAlreadyJoined = response.error == SERVER_ERROR_REQUEST_REJECTED
+        ::g_delayed_actions.add(::Callback(function() {
+            showProgressBox(false)
+            if (isAlreadyJoined)
+            {
+              // Error means that user is joining battle and can't leave the queue
+              if (postCancelAction)
+                postCancelAction()
+              ::SessionLobby.setWaitForQueueRoom(true)
+            }
+            else
+            {
+              ::checkMatchingError(response, !silent)
+              afterLeaveQueues({})
 
-          // This check is a workaround that fixes
-          // player being able to perform some action
-          // split second before battle begins.
-          if (!::SessionLobby.isWaitForQueueRoom()
-            && !::SessionLobby.isInRoom())
-          {
-            if (postAction)
-              postAction()
-          }
-          else
-          {
-            if (postCancelAction)
-              postCancelAction()
-          }
-        }
-      }
+              // This check is a workaround that fixes
+              // player being able to perform some action
+              // split second before battle begins.
+              if (!::SessionLobby.isWaitForQueueRoom()
+                && !::SessionLobby.isInRoom())
+              {
+                if (postAction)
+                  postAction()
+              }
+              else
+              {
+                if (postCancelAction)
+                  postCancelAction()
+              }
+            }
+          }, this),
+            isAlreadyJoined ? ::math.rnd() % leaveQueueRndDelayMsec : leaveQueueDelaySec * 1000)
+      }, this)
   }
 
   function leaveAllQueuesSilent()
@@ -355,7 +366,7 @@ foreach (fn in [
     if (queue.state == queueStates.NOT_IN_QUEUE)
       return removeQueue(queue)
 
-    ::queues.showProgressBox(true)
+    showProgressBox(true, leaveQueueDelaySec, "wait/queueLeave")
 
     ::add_big_query_record("exit_waiting_for_battle_screen",
       ::save_to_json({ waitingTime = queue.getActiveTime()
@@ -375,26 +386,39 @@ foreach (fn in [
 
   function getOnLeaveQueueErrorCallback(queue)
   {
-    return function(response) {
-        ::queues.showProgressBox(false)
-        if (response.error == SERVER_ERROR_REQUEST_REJECTED)
-        {
-          // Error means that user is joining battle and can't leave the queue
-          ::SessionLobby.setWaitForQueueRoom(true)
-          return
-        }
+    return ::Callback(function(response) {
+        //!!!FIX it! Need remove delayed action
+        // after server will able to force game leaving by user request.
+        // Waiting box fades out with delay to visually "randomize" result
+        // because of user still might be joined to battle after cancel.
+        local isAlreadyJoined = response.error == SERVER_ERROR_REQUEST_REJECTED
+        ::g_delayed_actions.add(::Callback(function() {
+            showProgressBox(false)
+            if (isAlreadyJoined)
+            {
+              // Error means that user is joining battle and can't leave the queue
+              ::SessionLobby.setWaitForQueueRoom(true)
+              return
+            }
 
-        ::checkMatchingError(response)
-        ::queues.removeQueue(queue)
-      }
+            ::checkMatchingError(response)
+            removeQueue(queue)
+          }, this),
+            isAlreadyJoined ? ::math.rnd() % leaveQueueRndDelayMsec : leaveQueueDelaySec * 1000)
+      }, this)
   }
 
   function getOnLeaveQueueSuccessCallback(queue)
   {
-    return function(response) {
-        ::queues.showProgressBox(false)
-        ::queues.afterLeaveQueue(queue)
-      }
+    return ::Callback(function(response) {
+        //!!!FIX it! Need set showProgressBox(false) and remove delayed action
+        // after server will able to force game leaving by user request.
+        // Waiting box fades out with delay to visually "randomize" result
+        // because of user still might be joined to battle after cancel.
+        ::g_delayed_actions.add(::Callback(function() {
+            afterLeaveQueue(queue)
+          }, this), leaveQueueDelaySec * 1000)
+      }, this)
   }
 
   function afterLeaveQueue(queue, msg = null)
@@ -657,20 +681,16 @@ foreach (fn in [
        )
       return
 
-    local leaveQueueAndConinue = function () {
-      ::queues.leaveAllQueuesAndDo(onSuccess, onCancel)
-    }
-
-    if (::getTblValue("isSilentLeaveQueue", checkParams))
+    if (checkParams?.isSilentLeaveQueue)
     {
-      leaveQueueAndConinue()
+      leaveAllQueuesAndDo(onSuccess, onCancel)
       return
     }
 
     ::scene_msg_box("requeue_question", null, ::loc("msg/cancel_queue_question"),
-      [["ok", leaveQueueAndConinue], ["no", onCancel]],
+      [["ok", ::Callback(@() leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
       "ok",
-      { cancel_fn = onCancel || @()null, checkDuplicateId = true })
+      { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
   }
 }
 

@@ -138,6 +138,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -1882,7 +1885,7 @@
           },
           "limits": {
             "yaw": [-90.0,90.0],
-            "pitch": [0.0,0.0]
+            "pitch": [-10.0,20.0]
           }
         }
       }
@@ -2772,8 +2775,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

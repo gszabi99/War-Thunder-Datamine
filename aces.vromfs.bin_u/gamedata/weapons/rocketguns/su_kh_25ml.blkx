@@ -7,296 +7,150 @@
   "helicopterGroup": 2,
   "mesh": "su_kh_25ml_missile",
   "tags": [],
-  "rocket": [
-    {
-      "normalizationPreset": "heat"
-    },
-    {
-      "ricochetPreset": "heat_fs"
-    },
-    {
-      "secondaryShattersPreset": "ap"
-    },
-    {
-      "stabilityThreshold": 0.5
-    },
-    {
-      "stabilityCaliberToArmorThreshold": 5.0
-    },
-    {
-      "stabilityReductionAfterRicochet": 0.3
-    },
-    {
-      "stabilityReductionAfterPenetration": 0.15
-    },
-    {
-      "bulletType": "heat_fs_tank"
-    },
-    {
-      "cumulativeSecondaryShattersPreset": "heat_fs"
-    },
-    {
-      "explodeOnRendinst": true
-    },
-    {
-      "fresnel": [0.23,0.1,2.0]
-    },
-    {
-      "shellAnimation": "video/shells_animations/heat_fs.ivf"
-    },
-    {
-      "bulletName": "su_kh_23m_missile"
-    },
-    {
-      "caliber": 0.275
-    },
-    {
-      "mass": 295.0
-    },
-    {
-      "explosiveType": "tg_40"
-    },
-    {
-      "explosiveMass": 93.0
-    },
-    {
-      "massEnd": 256.5
-    },
-    {
-      "massEnd": 270.0
-    },
-    {
-      "maxDeltaAngle": 0.02
-    },
-    {
-      "dragCx": 0.025
-    },
-    {
-      "length": 3.75
-    },
-    {
-      "distFromCmToStab": 0.1
-    },
-    {
-      "wingAreaMult": 1.15
-    },
-    {
-      "CxK": 1.74
-    },
-    {
-      "WdK": [0.1,0.1,0.1]
-    },
-    {
-      "finsAoaHor": 0.15
-    },
-    {
-      "finsAoaVer": 0.15
-    },
-    {
-      "force": 20000.0
-    },
-    {
-      "timeFire": 2.0
-    },
-    {
-      "force1": 16500.0
-    },
-    {
-      "timeFire1": 8.0
-    },
-    {
-      "massEnd1": 210.0
-    },
-    {
-      "fireDelay": 0.0
-    },
-    {
-      "spawnExplosionFx": false
-    },
-    {
-      "spawnExplosionWreckage": false
-    },
-    {
-      "explosionEffect": "explosion_midair_big"
-    },
-    {
-      "groundCollisionEffect": "bomb_expl_100kg"
-    },
-    {
-      "ricochetEffect": "cannon_ricochet"
-    },
-    {
-      "waterCollisionEffect": "120-203_he_water_splash"
-    },
-    {
-      "explosionPatchRadius": 5.0
-    },
-    {
-      "maxDistance": 10000.0
-    },
-    {
-      "minDistance": 500.0
-    },
-    {
-      "distanceFuse": false
-    },
-    {
-      "guidanceType": "laser"
-    },
-    {
-      "hitPowerMult": 400.0
-    },
-    {
-      "fuseDelayDist": 0.1
-    },
-    {
-      "explodeTreshold": 0.1
-    },
-    {
-      "rendinstDamageRadius": 15.0
-    },
-    {
-      "statType": "hydra"
-    },
-    {
-      "fireEffect": "fires_rocket_tail_short_doubleside_smoked"
-    },
-    {
-      "smokeEffect": "rocket_fire_short_nofire"
-    },
-    {
-      "hazeEffect": "haze_missile"
-    },
-    {
-      "endSmokeViscosity": 0.05
-    },
-    {
-      "advancedMissiles": false
-    },
-    {
-      "useStartSpeed": false
-    },
-    {
-      "startSpeed": 0.0
-    },
-    {
-      "endSpeed": 850.0
-    },
-    {
-      "timeLife": 40.0
-    },
-    {
-      "machMax": 2.0
-    },
-    {
-      "loadFactorMax": 2.0
-    },
-    {
-      "rangeMax": 7000.0
-    },
-    {
-      "price": 3000.0
-    },
-    {
-      "amountPerTier": 1.0
-    },
-    {
-      "iconType": "missile_air_to_uni"
-    },
-    {
-      "hasTracerTrail": true
-    },
-    {
-      "tracerTrailEmitter": [0.3,-0.15,0.0]
-    },
-    {
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+  "rocket": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat_fs",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "heat_fs_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "fresnel": [0.23,0.1,2.0],
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "bulletName": "su_kh_23m_missile",
+    "caliber": 0.275,
+    "mass": 297.0,
+    "explosiveType": "tg_40",
+    "explosiveMass": 93.0,
+    "maxDeltaAngle": 0.02,
+    "dragCx": 0.025,
+    "length": 3.75,
+    "distFromCmToStab": 0.1,
+    "wingAreaMult": 1.15,
+    "CxK": 1.8,
+    "WdK": [0.1,0.1,0.1],
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "force": 20000.0,
+    "timeFire": 2.0,
+    "massEnd": 277.0,
+    "force1": 16500.0,
+    "timeFire1": 8.0,
+    "massEnd1": 214.5,
+    "fireDelay": 0.0,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "explosionEffect": "explosion_midair_big",
+    "groundCollisionEffect": "bomb_expl_100kg",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "hit_59_80mm_water",
+    "explosionPatchRadius": 5.0,
+    "maxDistance": 10000.0,
+    "minDistance": 500.0,
+    "distanceFuse": false,
+    "guidanceType": "laser",
+    "isHasLaserChannel": true,
+    "hitPowerMult": 400.0,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "rendinstDamageRadius": 15.0,
+    "statType": "hydra",
+    "fireEffect": "fires_rocket_tail_short_doubleside_smoked",
+    "smokeEffect": "rocket_fire_short_nofire",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "advancedMissiles": false,
+    "useStartSpeed": false,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 530.0,
+    "timeLife": 45.0,
+    "machMax": 2.0,
+    "loadFactorMax": 2.0,
+    "rangeMax": 10000.0,
+    "price": 3000.0,
+    "amountPerTier": 1.0,
+    "iconType": "missile_air_to_uni",
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
       }
     },
-    {
-      "pressureDamage": {
-        "damageType": "pressure"
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_small"
+      },
+      "armor": {
+        "fx": "explosion_midair_small"
+      },
+      "buildings": {
+        "fx": "explosion_midair_small"
+      },
+      "wood": {
+        "fx": "explosion_midair_small"
       }
     },
-    {
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
+    "guidance": {
+      "warmUpTime": 1.0,
+      "workTime": 3600.0,
+      "uncageBeforeLaunch": true,
+      "breakLockMaxTime": 2.0,
+      "laserSeeker": {
+        "range": 10000.0,
+        "rangeMax": 12000.0,
+        "fov": 2.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.8,
+        "loftEnabled": true,
+        "loftElevation": 15.0,
+        "loftTargetElevation": -10.0,
+        "loftAngleToAccelMult": 5.0,
+        "loftTargetOmegaMax": 1.5,
+        "baseIndSpeed": 1800.0,
+        "angleToAccelMult": 0.0,
+        "omegaToAccelMult": 8.0,
+        "elevationAdd": 1.0,
+        "reqAccelMax": 6.0,
+        "accelControlProp": 5.0,
+        "accelControlIntg": 0.7,
+        "accelControlIntgLim": 0.5,
+        "accelControlDiff": 0.5
       }
     },
-    {
-      "collisions": {
-        "steel": {
-          "fx": "explosion_midair_small"
-        },
-        "armor": {
-          "fx": "explosion_midair_small"
-        },
-        "buildings": {
-          "fx": "explosion_midair_small"
-        },
-        "wood": {
-          "fx": "explosion_midair_small"
-        }
-      }
+    "arcadeProp": {
+      "finsAoaHor": 0.18,
+      "finsAoaVer": 0.18,
+      "timeFire": 1.0
     },
-    {
-      "guidance": {
-        "warmUpTime": 1.0,
-        "workTime": 3600.0,
-        "uncageBeforeLaunch": true,
-        "breakLockMaxTime": 2.0,
-        "laserSeeker": {
-          "range": 10000.0,
-          "rangeMax": 12000.0,
-          "fov": 2.0,
-          "lockAngleMax": 30.0,
-          "angleMax": 30.0,
-          "rateMax": 8.0,
-          "prolongationTimeMax": 1.0,
-          "filterAlpha": 0.85,
-          "filterBetta": 0.2
-        },
-        "guidanceAutopilot": {
-          "timeOut": 0.5,
-          "loftEnabled": true,
-          "loftElevation": 10.0,
-          "loftTargetElevation": -10.0,
-          "loftAngleToAccelMult": 10.0,
-          "loftTargetOmegaMax": 2.0,
-          "baseIndSpeed": 1800.0,
-          "angleToAccelMult": 0.0,
-          "omegaToAccelMult": 8.0,
-          "elevationAdd": 1.0,
-          "reqAccelMax": 6.0,
-          "accelControlProp": 5.0,
-          "accelControlIntg": 0.7,
-          "accelControlIntgLim": 0.5,
-          "accelControlDiff": 0.5
-        }
-      }
-    },
-    {
-      "arcadeProp": {
-        "finsAoaHor": 0.18,
-        "finsAoaVer": 0.18,
-        "timeFire": 1.0
-      }
-    },
-    {
-      "tracerTrail": {
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "100mmRed",
-          "trail": "noTrail"
-        }
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
       }
     }
-  ]
+  }
 }

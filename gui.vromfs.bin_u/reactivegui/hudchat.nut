@@ -1,6 +1,5 @@
 local colors = require("style/colors.nut")
 local teamColors = require("style/teamColors.nut")
-local chatBase = require("daRg/components/chat.nut")
 local textInput =  require("components/textInput.nut")
 local penalty = require("penitentiary/penalty.nut")
 local {secondsToTimeSimpleString} = require("std/time.nut")
@@ -10,6 +9,34 @@ local hudLog = require("components/hudLog.nut")
 local fontsState = require("style/fontsState.nut")
 local hints = require("hints/hints.nut")
 local JB = require("reactiveGui/control/gui_buttons.nut")
+
+local scrollableData = require("daRg/components/scrollableData.nut")
+
+
+local function makeInputField(form_state, send_function) {
+  local function send () {
+    send_function(form_state.value)
+    form_state.update("")
+  }
+  return function (text_input_ctor) {
+    return text_input_ctor(form_state, send)
+  }
+}
+
+
+local function chatBase(log_state, send_message_fn) {
+  local chatMessageState = Watched("")
+  local logInstance = scrollableData.make(log_state)
+
+  return {
+    form = chatMessageState
+    state = log_state
+    inputField = makeInputField(chatMessageState, send_message_fn)
+    data = logInstance.data
+    scrollHandler = logInstance.scrollHandler
+  }
+}
+
 
 local chatLog = state.log
 
@@ -49,17 +76,6 @@ local function chatInputCtor(field, send) {
     restoreControle()
   }
 
-  local handlers = {
-    onReturn = onReturn
-    onEscape = onEscape
-    onChange = function (new_val) {
-      ::chat_on_text_update(new_val)
-    }
-    onImeFinish = function onImeFinish(applied) {
-      if (applied)
-        onReturn()
-    }
-  }
   local options = {
     key = "chatInput"
     font = fontsState.get("small")
@@ -78,8 +94,16 @@ local function chatInputCtor(field, send) {
       backGroundColor = colors.hud.hudLogBgColor
       textColor = modeColor(state.modeId.value)
     }
+
+    onReturn
+    onEscape
+    onChange = @(new_val) ::chat_on_text_update(new_val)
+    function onImeFinish(applied) {
+      if (applied)
+        onReturn()
+    }
   }
-  return textInput.hud(field, options, handlers)
+  return textInput.hud(field, options)
 }
 
 

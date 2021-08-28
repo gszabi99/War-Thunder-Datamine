@@ -100,19 +100,17 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getCompoundedText <- function getCompoundedText(firstPart, secondPart, color)
 {
-  return firstPart + colorize(color, secondPart)
+  return "".concat(firstPart, ::colorize(color, secondPart))
 }
 
 ::colorize <- function colorize(color, text)
 {
-  text = text.tostring()
-  if (!color.len() || !text.len())
+  if (!color.len() || text == "")
     return text
 
   local firstSymbol = color.slice(0, 1)
-  if (firstSymbol != "@" && firstSymbol != "#")
-    color = "@" + color
-  return ::format("<color=%s>%s</color>", color, text)
+  local prefix = (firstSymbol == "@" || firstSymbol == "#") ? "" : "@"
+  return "".concat("<color=", prefix, color, ">", text, "</color>")
 }
 
 ::getAircraftByName <- function getAircraftByName(name)
@@ -1306,13 +1304,6 @@ foreach (i, v in ::cssColorsMapDark)
   return ::has_feature("WorldWar")
     && ("g_world_war" in ::getroottable())
     && (!isPlatformSony || isCrossPlayEnabled())
-}
-
-::init_use_touchscreen <- function init_use_touchscreen()
-{
-  if (::is_platform_shield_tv())
-    return false
-  return "is_thouchscreen_enabled" in getroottable() ? ::is_thouchscreen_enabled() : false
 }
 
 ::check_tanks_available <- function check_tanks_available(silent = false)

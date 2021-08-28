@@ -1,4 +1,5 @@
 local { getSlotbarOverrideData, isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::g_crews_list <- {
   crewsList = !::g_login.isLoggedIn() ? [] : ::get_crew_info()
@@ -93,7 +94,7 @@ g_crews_list.flushSlotbarUpdate <- function flushSlotbarUpdate()
 g_crews_list.onEventProfileUpdated <- function onEventProfileUpdated(p)
 {
   if (p.transactionType == ::EATT_UPDATE_ENTITLEMENTS)
-    ::update_shop_countries_list()
+    updateShopCountriesList()
 
   if (::g_login.isProfileReceived() && !::isInArray(p.transactionType, ignoreTransactions)
       && invalidate() && !::disable_network())
@@ -102,7 +103,7 @@ g_crews_list.onEventProfileUpdated <- function onEventProfileUpdated(p)
 
 g_crews_list.onEventUnlockedCountriesUpdate <- function onEventUnlockedCountriesUpdate(p)
 {
-  ::update_shop_countries_list()
+  updateShopCountriesList()
   if (::g_login.isProfileReceived() && invalidate())
     reinitSlotbars()
 }

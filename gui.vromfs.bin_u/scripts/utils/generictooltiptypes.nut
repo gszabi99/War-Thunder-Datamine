@@ -8,6 +8,7 @@ local { updateDecoratorDescription } = require("scripts/customization/decoratorD
 local { getChallengeView } = require("scripts/battlePass/challenges.nut")
 local { fillItemDescr, fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
 local { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local tooltipTypes = {
   types = []
@@ -370,7 +371,7 @@ local exportTypes = addTooltipTypes({
       local unit = ::getAircraftByName(params?.unitName ?? "")
       local crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
       local skillCategory = getSkillCategoryByName(categoryName)
-      local crewCountryId = ::find_in_array(::shopCountriesList, ::get_profile_country_sq(), -1)
+      local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
       local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
       local crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
       if (skillCategory != null && crewUnitType != ::CUT_INVALID && crewData != null)

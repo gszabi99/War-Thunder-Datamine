@@ -63,7 +63,7 @@ local debriefingRowDefault = {
 
   //auto refill params by debriefing
   value = 0
-  type = "num"  //"num", "sec", "mul", "pct", "tim", "ptm", ""
+  rowType = "num"  //"num", "sec", "mul", "pct", "tim", "ptm", ""
   wp = 0
   gold = 0
   exp = 0
@@ -146,7 +146,7 @@ debriefingRows = [
     showByModes = isGameModeVersus
   }
   { id = "Captures"
-    type = "num"
+    rowType = "num"
     showByModes = isGameModeVersus
     text = "multiplayer/zone_captures"
     icon = "icon/mpstats/captureZone"
@@ -158,36 +158,36 @@ debriefingRows = [
     showByTypes = function(gt) {return (!(gt & ::GT_RACE) && !(gt & ::GT_FOOTBALL))}
   }
   { id = "Damage",
-    type = "tnt"
+    rowType = "tnt"
     showByModes = isGameModeVersus
     icon = "icon/mpstats/damageZone"
   }
   { id = "Destruction"
-    type = ""
+    rowType = ""
     showByModes = isGameModeVersus
     icon = "icon/mpstats/damageZone"
   }
   { id = "MissionObjective"
-    type = ""
+    rowType = ""
     icon = "icon/star"
   }
   { id = "BestLap"
-    type = "ptm"
+    rowType = "ptm"
     icon = "icon/mpstats/raceBestLapTime"
   }
   { id = "TimedAward"
-    type = ""
+    rowType = ""
     text = "exp_reasons/timed_award"
   }
   { id = "BattleTime"
     text = "debriefing/activityTime"
-    type = "tim"
+    rowType = "tim"
     icon = "icon/hourglass"
     hideUnitSessionTimeInTooltip = true
   }
   { id = "Activity"
     customValueName = "activity"
-    type = "pct"
+    rowType = "pct"
     showByModes = function(gm) { return gm == ::GM_DOMINATION }
     showOnlyWhenFullResult = true
     showEvenEmpty = true
@@ -195,14 +195,14 @@ debriefingRows = [
     infoType = ""
   }
   { id = "Mission"
-    type = "exp"
+    rowType = "exp"
     showByModes = function(gm) { return gm == ::GM_DOMINATION }
     getName = function() {
       if (!debriefingResult || !("exp" in debriefingResult))
         return ::loc("debriefing/Mission")
 
       local checkVal = countWholeRewardInTable(debriefingResult.exp?[getTableNameById(this)],
-        type, ["premMod", "premAcc"])
+        rowType, ["premMod", "premAcc"])
       if (checkVal < 0)
         return ::loc("debriefing/MissionNegative")
 
@@ -223,14 +223,14 @@ debriefingRows = [
   { id = "MissionCoop"
     rewardId = "Mission"
     isUsedInRecount = false //duplicate mission row
-    type = "exp"
+    rowType = "exp"
     showByModes = function(gm) { return gm != ::GM_DOMINATION }
     text = "debriefing/Mission"
     icon = ""
     canShowRewardAsValue = true
   }
   { id = "Unlocks"
-    type = "exp"
+    rowType = "exp"
     icon = ""
     isCountedInUnits = false
   }
@@ -238,13 +238,13 @@ debriefingRows = [
     showByModes = isGameModeVersus
   }
   { id = "TournamentBaseReward"
-    type = "exp"
+    rowType = "exp"
     text = "debriefing/tournamentBaseReward"
     icon = ""
     canShowRewardAsValue = true
   }
   { id = "FirstWinInDay"
-    type = "exp"
+    rowType = "exp"
     text = "debriefing/firstWinInDay"
     icon = ""
     tooltipComment = function() {
@@ -261,7 +261,7 @@ debriefingRows = [
   { id = "Total"
     text = "debriefing/total"
     icon = ""
-    type = "exp"
+    rowType = "exp"
     showEvenEmpty = true
     rowProps =  { totalColor="yes", totalRowStyle="first" }
     canShowRewardAsValue = true
@@ -386,13 +386,13 @@ debriefingRows = [
   }
   { id = "timePlayed"
     customValueName = "timePlayed"
-    type = "tim"
+    rowType = "tim"
     icon = ""
   }
   { id = "sessionTime"
     customValueName = "sessionTime"
     text = "debriefing/missionDuration"
-    type = "tim"
+    rowType = "tim"
     icon = ""
     hideTooltip = true
     hideUnitSessionTimeInTooltip = true
@@ -527,7 +527,7 @@ local function recountDebriefingResult() {
     else if (row.customValueName)
       row.value = ::getTblValue(row.customValueName, debriefingResult.exp, 0)
     else
-      row.value = ::getTblValue(row.type + row.getRewardId(), debriefingResult.exp, 0)
+      row.value = ::getTblValue(row.rowType + row.getRewardId(), debriefingResult.exp, 0)
     isRowEmpty = isRowEmpty && !row.value
 
     local isHide = (row.showByValue && !row.showByValue(row.value))

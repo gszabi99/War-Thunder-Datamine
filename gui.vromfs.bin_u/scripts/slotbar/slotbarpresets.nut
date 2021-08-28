@@ -2,6 +2,7 @@ local { clearBorderSymbols } = require("std/string.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 local { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 // Independed Modules
 require("scripts/slotbar/hangarVehiclesPreset.nut")
@@ -33,7 +34,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   function init()
   {
     presetsVersion = ::loadLocalByAccount($"slotbar_presets/{PRESETS_VERSION_SAVE_ID}", 0)
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
       if (::isCountryAvailable(country))
         initCountry(country)
 
@@ -77,7 +78,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
     selected = {}
     // Attempting to select preset with selected unit type for each country.
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       if (!::isCountryAvailable(country))
         continue
@@ -352,7 +353,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   function saveAllCountries()
   {
     local hasChanges = false
-    foreach(countryId in ::shopCountriesList)
+    foreach(countryId in shopCountriesList)
       if (::isCountryAvailable(countryId))
         hasChanges = save(countryId, false) || hasChanges
 

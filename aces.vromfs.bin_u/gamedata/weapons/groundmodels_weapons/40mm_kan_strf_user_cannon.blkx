@@ -28,7 +28,7 @@
   "sound_pathStudio": "ground/weapon/cannons",
   "sound": "40mm_kan",
   "sound_inside": "40mm_kan_interior",
-  "soundLoop": false,
+  "soundLoop": true,
   "sfxReloadBullet": "grd_begleitpanzer_reload",
   "isBulletBelt": false,
   "overheat": [
@@ -44,7 +44,7 @@
   ],
   "bullet": {
     "bulletCount": 25,
-    "mass": 0.25,
+    "mass": 0.5,
     "caliber": 0.04,
     "damageCaliber": 0.016,
     "ballisticCaliber": 0.016,
@@ -237,24 +237,42 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.25
+            "countPortion": 0.125
           },
           {
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 0.35,
               "penetrationScale": 1.0,
-              "damageScale": 1.7,
-              "angles": [0.0,179.0],
-              "countPortion": 0.5
+              "damageScale": 1.0,
+              "angles": [0.0,90.0],
+              "countPortion": 0.4
             }
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.7,
-              "angles": [180.0,359.0],
-              "countPortion": 0.5
+              "damageScale": 1.0,
+              "angles": [91.0,180.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,269.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.35,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [270.0,359.0],
+              "countPortion": 0.4
             }
           }
         ]
@@ -551,7 +569,7 @@
   "40mm_sw_kan_APDSFS": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 0.25,
+      "mass": 0.53,
       "caliber": 0.04,
       "damageCaliber": 0.016,
       "ballisticCaliber": 0.016,

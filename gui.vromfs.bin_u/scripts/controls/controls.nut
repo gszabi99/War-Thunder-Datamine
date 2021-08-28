@@ -18,6 +18,8 @@ local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtil
 local vehicleModel = require("vehicleModel")
 local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 local PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -437,7 +439,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     showSceneBtn("btn_importFromFile", isImportExportAllowed)
     showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv())
     showSceneBtn("btn_backupManager", ::gui_handlers.ControlsBackupManager.isAvailable())
-    showSceneBtn("btn_controlsWizard", true)
+    showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets"))
     showSceneBtn("btn_clearAll", !isTutorial)
     showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
   }
@@ -450,7 +452,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
     local curValue = 0
     controlsGroupsIdList = []
-    local currentUnit = ::get_player_cur_unit()
+    local currentUnit = getPlayerCurUnit()
     local unitType = unitTypes.INVALID
     local classType = unitClassType.UNKNOWN
     local unitTags = []
@@ -1762,7 +1764,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
           if (isOpened)
             ::broadcastEvent("ControlsPresetChanged")
           else
-            ::showInfoMsgBox(::loc("msgbox/errorLoadingPreset"))
+            ::showInfoMsgBox($"{::loc("msgbox/errorLoadingPreset")}: {path}")
           return isOpened && ::is_last_load_controls_succeeded
         }
         extension = "blk"
@@ -2154,7 +2156,7 @@ local mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   if (gm == ::GM_BENCHMARK)
     return []
 
-  local unit = ::get_player_cur_unit()
+  local unit = getPlayerCurUnit()
   local helpersMode = ::getCurrentHelpersMode()
   local required = ::getRequiredControlsForUnit(unit, helpersMode)
 
@@ -2319,6 +2321,7 @@ local function getWeaponFeatures(weaponsBlkList)
     gotRockets = false
     gotAGM = false // air-to-ground missiles, anti-tank guided missiles
     gotAAM = false // air-to-air missiles
+    gotGuidedBombs = false
     gotGunnerTurrets = false
     gotSchraegeMusik = false
   }
@@ -2351,6 +2354,8 @@ local function getWeaponFeatures(weaponsBlkList)
         res.gotAGM = true
       if (w?.trigger == TRIGGER_TYPE.AAM)
         res.gotAAM = true
+      if (w?.trigger == TRIGGER_TYPE.GUIDED_BOMBS)
+        res.gotGuidedBombs = true
       if (::g_string.startsWith(w?.trigger ?? "", "gunner"))
         res.gotGunnerTurrets = true
       if (::is_platform_pc && w?.schraegeMusikAngle != null)
@@ -2364,7 +2369,7 @@ local function getWeaponFeatures(weaponsBlkList)
 ::getRequiredControlsForUnit <- function getRequiredControlsForUnit(unit, helpersMode)
 {
   local controls = []
-  if (!unit || ::use_touchscreen)
+  if (!unit || useTouchscreen)
     return controls
 
   local unitId = unit.name
@@ -2464,6 +2469,8 @@ local function getWeaponFeatures(weaponsBlkList)
       controls.append("ID_AGM")
     if (w.gotAAM)
       controls.append("ID_AAM")
+    if (w.gotGuidedBombs)
+      controls.append("ID_GUIDED_BOMBS")
     if (w.gotSchraegeMusik)
       controls.append("ID_SCHRAEGE_MUSIK")
 
@@ -2500,6 +2507,8 @@ local function getWeaponFeatures(weaponsBlkList)
       controls.append("ID_ATGM_HELICOPTER")
     if (w.gotAAM)
       controls.append("ID_AAM_HELICOPTER")
+    if (w.gotGuidedBombs)
+      controls.append("ID_GUIDED_BOMBS_HELICOPTER")
   }
   //
 

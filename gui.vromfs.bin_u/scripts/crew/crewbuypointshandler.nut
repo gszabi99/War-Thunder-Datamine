@@ -73,7 +73,7 @@ class ::gui_handlers.CrewBuyPointsHandler extends ::gui_handlers.BaseGuiHandlerW
       if (!tblObj?.isValid())
         return
       local idx = tblObj.getValue()
-      if (idx < 0 || idx > tblObj.childrenCount())
+      if (idx < 0 || idx >= tblObj.childrenCount())
         return
       local rowObj = tblObj.getChild(idx)
       if (rowObj?.isValid())

@@ -1,5 +1,8 @@
+from "daRg" import *
+
 local {get_arg_value_by_name} = require("dagor.system") //for game_name stub below below
 local {chunk} = require("std/underscore.nut")
+
 const MOVE_ABS = "MOVE_ABS"
 const MOVE_REL = "MOVE_REL"
 const DRAWLINE_REL = "DRAWLINE_REL"
@@ -174,6 +177,8 @@ local function pathToCanvas(path, viewBox=null, fill=false){
   }
   return res
 }
+
+local log = @(...) " ".join(vargv)
 
 if (this?.__name__=="__main__") {
   local viewBox = get_arg_value_by_name("viewBox")

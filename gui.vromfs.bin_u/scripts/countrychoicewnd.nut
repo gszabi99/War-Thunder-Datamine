@@ -1,5 +1,6 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { createBatchTrainCrewRequestBlk } = require("scripts/crew/crewActions.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -66,7 +67,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
     countriesUnits = ::get_unit_types_in_countries()
     countries = []
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
       if (country in visibleCountries)
         countries.append(country)
 
@@ -151,7 +152,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
               ", ".join(countriesList)
             )
             text = ::loc($"mainmenu/{armyName}")
-            videoPreview = ::has_feature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ogv" : null
+            videoPreview = ::has_feature("VideoPreview") ? $"video/unitTypePreview/{armyName}.ivf" : null
             desription = ::loc("{armyName}/choiseDescription", "")
           })
         }
@@ -431,7 +432,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     blk.setStr("country", presetsData.selectedCountry)
     blk.setInt("unitType", presetsData.selectedUnitType)
 
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       ::unlockCountry(country, true, false) //now unlock all countries
       blk.unlock <- country

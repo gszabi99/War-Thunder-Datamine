@@ -37,4 +37,6 @@ local RespawnBase = class
   }
 }
 
+::u.registerClass("RespawnBase", RespawnBase, @(b1, b2) b1.isEqual(b2))
+
 return RespawnBase

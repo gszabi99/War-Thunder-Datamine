@@ -128,8 +128,8 @@ local function make(func, context = null) {
 u.registerClass("Callback", Callback)
 
 return {
-  Callback = Callback
+  Callback
   setAssertFunction = @(func) assertFunc = func  //void func(callback, assertText)
   setContextDbgNameFunction = @(func) getDbgName = func  //string func(context)
-  make = make
+  make
 }

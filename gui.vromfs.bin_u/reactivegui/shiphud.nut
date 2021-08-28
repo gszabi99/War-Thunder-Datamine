@@ -3,7 +3,7 @@ local shipStateModule = require("shipStateModule.nut")
 local hudLogs = require("hudLogs.nut")
 local voiceChat = require("chat/voiceChat.nut")
 local { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
-local radarComponent = require("radarComponent.nut")
+local { mkRadar} = require("radarComponent.nut")
 local fireControl = require("shipFireControl.nut")
 local { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
 
@@ -25,12 +25,13 @@ local shipHud = @(){
   ]
 }
 
+local radarPosComputed = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.25 * rh.value])
 
 return {
   size = flex()
   children = [
     shipHud
     fireControl
-    radarComponent.mkRadar(bw() + rw(5.5), bh() + rh(17))
+    mkRadar(radarPosComputed)
   ]
 }

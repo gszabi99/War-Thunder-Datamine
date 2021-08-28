@@ -1,5 +1,6 @@
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
+local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local handlerClass = class extends ::gui_handlers.SlotbarWidget
 {
@@ -30,8 +31,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
         continue
 
       local listCountry = coutryCrews.country
-      if ((singleCountry != null && singleCountry != listCountry)
-          || !::is_country_visible(listCountry))
+      if (singleCountry != null && singleCountry != listCountry)
         continue
 
       local countryData = {
@@ -129,7 +129,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
     if (newCrew != null && newUnit != null)
     {
       ::select_crew(newCrew.idCountry, newCrew.idInCountry)
-      ::set_show_aircraft(newUnit)
+      setShowUnit(newUnit)
     }
     validatePresetsParams()
     fullUpdate()

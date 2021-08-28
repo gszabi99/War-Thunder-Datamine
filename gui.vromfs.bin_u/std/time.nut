@@ -1,4 +1,5 @@
 local stdStr = require("string")
+local {isStringInteger} = require("string.nut")
 
 const TIME_SECOND_IN_MSEC = 1000
 const TIME_SECOND_IN_MSEC_F = 1000.0
@@ -24,7 +25,7 @@ local hoursToSeconds = @(seconds) seconds * TIME_HOUR_IN_SECONDS
 local daysToSeconds = @(days) days * TIME_DAY_IN_SECONDS
 
 local function secondsToTime(time){
-  if(::type(time)=="table" && "seconds" in time)
+  if(type(time)=="table" && "seconds" in time)
     return time
   local s = time.tointeger()
   local milliseconds = ((time-s)*1000).tointeger()
@@ -32,10 +33,6 @@ local function secondsToTime(time){
   local minutesNum = (s % TIME_HOUR_IN_SECONDS) / TIME_MINUTE_IN_SECONDS
   local secondsNum = s % TIME_MINUTE_IN_SECONDS
   local days = (s / TIME_DAY_IN_SECONDS)
-  if (days<2){
-    hoursNum = hoursNum + days*24
-    days = 0
-  }
   return {days=days, hours = hoursNum, minutes = minutesNum, seconds = secondsNum, milliseconds=milliseconds}
 }
 
@@ -49,8 +46,10 @@ local function secondsToTimeSimpleString(time) {
 }
 
 local function roundTime(time){
-  local t = (::type(time)=="table" && "seconds" in time) ? clone time : secondsToTime(time)
-  if (t.days > 0 || t.hours > 48)
+  local t = (type(time)=="table" && "seconds" in time) ? clone time : secondsToTime(time)
+  if (t.days > 2)
+    t.hours = 0
+  if (t.days > 0)
     t.minutes = 0
   if (t.minutes > 10 || t.hours > 1 || t.days > 0) {
     t.seconds = 0
@@ -72,13 +71,13 @@ local function getSecondsFromTemplate(str, errorValue = null) {
     return errorValue
 
   local seconds = 0
-  foreach (val in ::split(str, " ")) {
+  foreach (val in stdStr.split(str, " ")) {
     local key = val.slice(val.len() - 1)
     if (!(key in timeTbl))
       return errorValue
 
     local timeVal = val.slice(0, val.len() - 1)
-    if (!::g_string.isStringInteger(timeVal))
+    if (!isStringInteger(timeVal))
       return errorValue
 
     seconds += timeVal.tointeger() * timeTbl[key]
@@ -91,14 +90,14 @@ local function secondsToTimeFormatString(time) {
   local {days=0, hours=0, minutes=0, seconds=0} = secondsToTime(time)
   local res = []
   if (days>0)
-    res.append(days, "{days}", " ")//warning disable: -forgot-subst
+    res.append("{0}{days}".subst(days))
   if (hours>0)
-    res.append(hours, "{hours}", " ")//warning disable: -forgot-subst
+    res.append("{0}{hours}".subst(hours))
   if (minutes>0)
-    res.append(minutes,"{minutes}" ," ")//warning disable: -forgot-subst
+    res.append("{0}{minutes}".subst(minutes))
   if (seconds>0)
-    res.append(minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring(),"{seconds}")//warning disable: -forgot-subst
-  return "".join(res)
+    res.append("{0}{seconds}".subst(minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring()))
+  return " ".join(res)
 }
 
 return {

@@ -1,10 +1,10 @@
 ::g_script_reloader.loadOnce("sqDagui/daguiUtil.nut")
 ::g_script_reloader.loadOnce("std/math.nut")
 
-if (!("gui_bhv" in ::getroottable()))
+if (!("gui_bhv" in getroottable()))
   ::gui_bhv <- {}
 
-if (!("gui_bhv_deprecated" in ::getroottable()))
+if (!("gui_bhv_deprecated" in getroottable()))
   ::gui_bhv_deprecated <- {}
 
 

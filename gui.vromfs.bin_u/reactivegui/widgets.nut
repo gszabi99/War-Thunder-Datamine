@@ -2,15 +2,14 @@ local globalState = require("globalState.nut")
 local widgetsState = require("widgetsState.nut")
 local hudState = require("hudState.nut")
 local hudUnitType = require("hudUnitType.nut")
-local helicopterHud = require("helicopterHud.nut")
 local shipHud = require("shipHud.nut")
 local shipExHud = require("shipExHud.nut")
 local tankExHud = require("tankExHud.nut")
 local shipObstacleRf = require("shipObstacleRangefinder.nut")
 local shipDeathTimer = require("shipDeathTimer.nut")
 local scoreboard = require("hud/scoreboard/scoreboard.nut")
-local screenState = require("style/screenState.nut")
-local airHud = require("airHud.nut")
+local aircraftHud = require("aircraftHud.nut")
+local helicopterHud = require("helicopterHud.nut")
 local tankHud = require("tankHud.nut")
 local mfdHud = require("mfd.nut")
 local planeMfd = require("planeMfd.nut")
@@ -33,7 +32,7 @@ local widgetsMap = {
     else if (hudUnitType.isAir()) {
       ::gui_scene.addPanel(0, planeMfd)
       ::gui_scene.addPanel(1, planeIls)
-      return airHud
+      return aircraftHud
     }
     else if (hudUnitType.isTank())
       return tankHud.Root
@@ -78,7 +77,6 @@ local widgets = @() {
     hudState.unitType
     hudState.isPlayingReplay
     widgetsState.widgets
-    screenState.safeAreaSizeHud
   ]
   children = widgetsState.widgets.value.map(@(widget) {
     size = widget?.transform?.size ?? [sw(100), sh(100)]

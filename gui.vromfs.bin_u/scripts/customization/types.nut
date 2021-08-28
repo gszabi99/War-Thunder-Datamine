@@ -47,6 +47,7 @@ local function memoizeByProfile(func, hashFunc = null) {
 
     getLocName = function(decoratorName, addUnitName = false) { return ::loc(decoratorName) }
     getLocDesc = function(decoratorName) { return ::loc(decoratorName + "/desc", "") }
+    hasLocations = @(decoratorName) false
     getLocParamsDesc = @(decorator) ""
 
     function getTypeDesc(decorator)
@@ -414,6 +415,13 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
       local defaultLocId = guidParser.isGuid(decoratorName) ? "default_live_skin_loc/desc" : "default_skin_loc/desc"
       return ::loc(decoratorName + "/desc", ::loc(defaultLocId))
+    }
+
+    hasLocations = function(decoratorName)
+    {
+      local unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
+      local unit = ::getAircraftByName(unitName)
+      return unit?.isTank() ?? false
     }
 
     function getTypeDesc(decorator)

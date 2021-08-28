@@ -3,6 +3,7 @@ local unitActions = require("scripts/unit/unitActions.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 {
@@ -26,7 +27,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
   shopResearchMode = true
   slotbarActions = [ "research", "buy", "take", "sec_weapons", "weapons", "info", "repair" ]
 
-  function getSceneTplView() { return {hasMaxWindowSize = ::is_small_screen} }
+  function getSceneTplView() { return {hasMaxWindowSize = isSmallScreen} }
 
   function initScreen()
   {
@@ -42,7 +43,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
     showSceneBtn("modesRadiobuttons", false)
 
-    if(!::is_small_screen)
+    if(!isSmallScreen)
       createSlotbar(
         {
           showNewSlot = true,

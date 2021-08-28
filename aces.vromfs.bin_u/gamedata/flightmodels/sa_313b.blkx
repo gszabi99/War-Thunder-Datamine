@@ -908,7 +908,6 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [1.65,0.65,-0.363],
     "headPosOnShooting": [1.65,0.65,-0.363],
     "lightPos": [2.170039,0.168589,0.012922],
@@ -917,22 +916,42 @@
     "sightInFov": 7.37,
     "sightOutFov": -1.0,
     "sightFov": 5.5,
+    "mirror": true,
+    "mirrorPos": [2.07,0.678,0.0],
+    "mirrorNorm": [0.685,0.45,0.0],
     "devices": {
-      "speed": [0.0,55.555],
-      "bank": [-8.0,8.0],
-      "turn": [-0.23562,0.23562],
-      "vario": [-40.0,40.0],
-      "altitude_10k": [0.0,100000.0],
-      "altitude_min": [0.0,1000.0],
-      "altitude_hour": [0.0,10000.0],
-      "aviahorizon_pitch": [-60.0,60.0],
-      "aviahorizon_roll": [-180.0,180.0],
+      "stick_ailerons": [-1.0,1.0],
+      "stick_ailerons1": [-1.0,1.0],
+      "stick_elevator": [-1.0,1.0],
+      "pedals": [-1.0,1.0],
+      "pedals1": [-1.0,1.0],
+      "pedals2": [-1.0,1.0],
+      "pedals3": [-1.0,1.0],
+      "pedals4": [-1.0,1.0],
+      "pedals5": [-1.0,1.0],
+      "throttle": [-1.0,1.0],
+      "clock_hour": [0.0,12.0],
+      "clock_min": [0.0,60.0],
+      "clock_sec": [0.0,60.0],
       "compass": [0.0,360.0],
-      "rpm_hour": [2000.0,20000.0],
-      "rpm_min": [0.0,1000.0],
-      "oil_temperature": [25.0,140.0],
-      "water_temperature": [250.0,1100.0],
-      "fuel_pressure": [0.0,15.0]
+      "compass1": [0.0,360.0],
+      "compass2": [0.0,360.0],
+      "aviahorizon_pitch": [-90.0,90.0],
+      "aviahorizon_roll": [-90.0,90.0],
+      "bank": [-8.0,8.0],
+      "altitude_hour": [0.0,10000.0],
+      "altitude_min": [0.0,1000.0],
+      "altitude_koef": 1.0,
+      "speed": [0.0,69.44],
+      "vario": [-13.333,13.333],
+      "g_meter": [-2.0,3.0],
+      "rpm": [0.0,40000.0],
+      "prop_pitch_hour": [0.0,75.0],
+      "prop_pitch_min": [0.0,0.45],
+      "water_temperature": [0.0,800.0],
+      "oil_temperature": [0.0,120.0],
+      "oil_pressure": [0.0,60.0],
+      "fuel": [0.0,550.0]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -1049,20 +1068,12 @@
     "angularLimits": [-60.0,60.0,-40.0,25.0],
     "crosshairPreset": "test_crosshair"
   },
-  "weapon_presets": [
-    {
-      "preset": {
-        "name": "sa_313b_default",
-        "blk": "gameData/flightModels/weaponPresets/sa_313b_rocket.blk"
-      }
-    },
-    {
-      "preset": {
-        "name": "sa_313b_rocket_ss11",
-        "blk": "gameData/flightModels/weaponPresets/sa_313b_rocket_ss11.blk"
-      }
+  "weapon_presets": {
+    "preset": {
+      "name": "sa_313b_default",
+      "blk": "gameData/flightModels/weaponPresets/sa_313b_rocket_ss11.blk"
     }
-  ],
+  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,

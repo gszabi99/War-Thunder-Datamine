@@ -1,5 +1,6 @@
 local { getBestUnitForPreview } = require("scripts/customization/contentPreview.nut")
 local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 class ::items_classes.Smoke extends ::BaseItem
 {
@@ -79,7 +80,7 @@ class ::items_classes.Smoke extends ::BaseItem
     if (!unit)
       return
 
-    local currUnit = ::get_player_cur_unit()
+    local currUnit = getPlayerCurUnit()
     if (unit.name == currUnit?.name)
     {
       openTestFlight(unit)

@@ -13,7 +13,7 @@ local styleLine = {
   color = Color(255, 255, 255, 255)
   fillColor = Color(0, 0, 0, 0)
   opacity = 0.5
-  lineWidth = LINE_WIDTH + 1
+  lineWidth = hdpx(LINE_WIDTH)
 }
 local styleShipHudText = {
   rendObj = ROBJ_DTEXT

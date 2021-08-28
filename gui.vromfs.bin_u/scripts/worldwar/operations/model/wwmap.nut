@@ -5,6 +5,7 @@ local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpe
 local { getQueueByMapName, getOperationGroupByMapId
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::WwMap <- class
 {
@@ -243,7 +244,7 @@ local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/w
 
     _cachedCountriesByTeams = {}
     local countries = getCountryToSideTbl()
-    foreach(c in ::shopCountriesList)
+    foreach(c in shopCountriesList)
     {
       local side = ::getTblValue(c, countries, ::SIDE_NONE)
       if (side == ::SIDE_NONE)

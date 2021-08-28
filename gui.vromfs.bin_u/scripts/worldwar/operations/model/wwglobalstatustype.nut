@@ -19,7 +19,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
 }
 
 ::g_ww_global_status_type.template <- {
-  type = 0 //WW_GLOBAL_STATUS_TYPE
+  typeMask = 0 //WW_GLOBAL_STATUS_TYPE
   charDataId = null //data id on request "cln_ww_global_stats"
   invalidateByOtherStatusType = 0 //mask of WW_GLOBAL_STATUS_TYPE
   emptyCharData = []
@@ -31,10 +31,10 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   {
     refreshGlobalStatusData()
     local validListsMask = getValidGlobalStatusListMask()
-    if (!cachedList || !(validListsMask & type))
+    if (!cachedList || !(validListsMask & typeMask))
     {
       loadList()
-      setValidGlobalStatusListMask(validListsMask | type)
+      setValidGlobalStatusListMask(validListsMask | typeMask)
     }
     if (filterFunc)
       return ::u.filter(cachedList, filterFunc)
@@ -54,10 +54,10 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   {
     refreshShortGlobalStatusData()
     local validListsMask = getValidShortGlobalStatusListMask()
-    if (!cachedShortStatusList || !(validListsMask & type))
+    if (!cachedShortStatusList || !(validListsMask & typeMask))
     {
       loadShortList()
-      setValidShortGlobalStatusListMask(validListsMask | type)
+      setValidShortGlobalStatusListMask(validListsMask | typeMask)
     }
     if (filterFunc)
       return ::u.filter(cachedShortStatusList, filterFunc)
@@ -75,7 +75,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
 
 enums.addTypesByGlobalName("g_ww_global_status_type", {
   QUEUE = {
-    type = WW_GLOBAL_STATUS_TYPE.QUEUE
+    typeMask = WW_GLOBAL_STATUS_TYPE.QUEUE
     charDataId = "queue"
     invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.MAPS
 
@@ -94,7 +94,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
   }
 
   ACTIVE_OPERATIONS = {
-    type = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
+    typeMask = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
     charDataId = "activeOperations"
     isAvailableInShortStatus = true
 
@@ -126,7 +126,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
   }
 
   MAPS = {
-    type = WW_GLOBAL_STATUS_TYPE.MAPS
+    typeMask = WW_GLOBAL_STATUS_TYPE.MAPS
     charDataId = "maps"
     emptyCharData = {}
     isAvailableInShortStatus = true
@@ -161,7 +161,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
   }
 
   OPERATIONS_GROUPS ={
-    type = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
+    typeMask = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
     invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
 
     loadList = function() {

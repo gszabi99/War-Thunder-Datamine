@@ -48,11 +48,11 @@
       }
     },
     "c_dural3": {
-      "elevon_l_dm": {
+      "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "elevon_r_dm": {
+      "elevator1_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -262,7 +262,7 @@
     {
       "part": [
         {
-          "name": "elevon_l_dm"
+          "name": "elevator0_dm"
         },
         {
           "onHit": {
@@ -319,7 +319,7 @@
     {
       "part": [
         {
-          "name": "elevon_r_dm"
+          "name": "elevator1_dm"
         },
         {
           "onHit": {
@@ -2010,9 +2010,10 @@
           "textureArea": [0.0,0.0,1.0,1.0],
           "page": {
             "type": "plane_ils",
-            "ilsSize": [0.28,0.28],
+            "ilsSize": [0.24,0.24],
             "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5
+            "brightnessMult": 3.5,
+            "ilsColor": "#0aff0a78"
           }
         }
       }
@@ -2240,7 +2241,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-              "iconType": "missile_type_b_air_to_air"
+              "iconType": "missile_type_c_air_to_air"
             }
           }
         }
@@ -2264,7 +2265,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-              "iconType": "missile_type_c_air_to_air"
+              "iconType": "missile_type_b_air_to_air"
             }
           }
         }
@@ -2343,7 +2344,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-              "iconType": "missile_type_b_air_to_air"
+              "iconType": "missile_type_c_air_to_air"
             }
           }
         }
@@ -2367,7 +2368,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-              "iconType": "missile_type_c_air_to_air"
+              "iconType": "missile_type_b_air_to_air"
             }
           }
         }
@@ -2468,18 +2469,26 @@
           "blk": "gameData/FlightModels/weaponPresets/mig_23m_rocket_r60_r13m.blk"
         },
         {
-          "reqModification": "mig_19_r3s"
+          "reqModification": "mig_19_r13m"
         },
         {
           "reqModification": "mi_24_r_60"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-              "iconType": "missile_type_c_air_to_air"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
+                "iconType": "missile_type_b_air_to_air"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
+                "iconType": "missile_type_c_air_to_air"
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -2501,7 +2510,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-              "iconType": "missile_type_c_air_to_air"
+              "iconType": "missile_type_b_air_to_air"
             }
           }
         }
@@ -2525,7 +2534,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-              "iconType": "missile_type_c_air_to_air"
+              "iconType": "missile_type_b_air_to_air"
             }
           }
         }
@@ -2539,7 +2548,7 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-            "iconType": "missile_type_b_air_to_air"
+            "iconType": "missile_type_c_air_to_air"
           }
         }
       }
@@ -2562,7 +2571,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-              "iconType": "missile_type_b_air_to_air"
+              "iconType": "missile_type_c_air_to_air"
             }
           }
         }
@@ -2586,7 +2595,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-              "iconType": "missile_type_b_air_to_air"
+              "iconType": "missile_type_c_air_to_air"
             }
           }
         }
@@ -2600,7 +2609,7 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
-            "iconType": "missile_type_c_air_to_air"
+            "iconType": "missile_type_b_air_to_air"
           }
         }
       }

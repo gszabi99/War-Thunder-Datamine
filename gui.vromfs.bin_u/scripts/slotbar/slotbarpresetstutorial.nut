@@ -2,6 +2,7 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::SlotbarPresetsTutorial <- class
 {
@@ -222,7 +223,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     local slotbarHandler = currentHandler.getSlotbar()
     if (!slotbarHandler)
       return false
-    if (::game_mode_manager.isUnitAllowedForGameMode(::show_aircraft))
+    if (::game_mode_manager.isUnitAllowedForGameMode(showedUnit.value))
       return false
     local currentPreset = ::slotbarPresets.getCurrentPreset(currentCountry)
     if (currentPreset == null)

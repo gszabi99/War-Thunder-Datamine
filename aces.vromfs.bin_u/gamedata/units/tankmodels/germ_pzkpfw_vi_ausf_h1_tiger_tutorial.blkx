@@ -124,7 +124,7 @@
           "armorThickness": 100.0
         },
         "turret_back_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 5.0
         },
         "ex_decor_06_dm": {
           "armorThickness": 5.0,
@@ -164,7 +164,7 @@
           "armorThickness": 135.0
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 10.0,
+          "armorThickness": 5.0,
           "armorClass": "RHA_tank"
         },
         "ex_armor_body_01_dm": {
@@ -173,7 +173,7 @@
         },
         "ex_armor_body_03_dm": {
           "armorThickness": 103.0,
-          "armorEffectiveThicknessMax": 105.0
+          "variableThickness": true
         },
         "ex_armor_body_02_dm": {
           "armorThickness": 100.0,
@@ -202,10 +202,6 @@
         "ex_armor_body_r_06_dm": [],
         "ex_armor_body_r_07_dm": [],
         "ex_decor_body_r_09_dm": [],
-        "ex_decor_r_04_dm": [],
-        "ex_decor_r_06_dm": [],
-        "ex_decor_l_05_dm": [],
-        "ex_decor_l_06_dm": [],
         "ex_decor_l_07_dm": []
       },
       "optics": {
@@ -1366,7 +1362,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",

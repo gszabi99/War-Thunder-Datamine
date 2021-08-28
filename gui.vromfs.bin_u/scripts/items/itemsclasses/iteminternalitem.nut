@@ -41,7 +41,7 @@ class ::items_classes.InternalItem extends ItemCouponBase
   getContentIconData   = function()
   {
     local contentItem = getContentItem()
-    return contentItem && { contentIcon = contentItem.typeIcon }
+    return contentItem ? { contentIcon = contentItem.typeIcon } : null
   }
 
   getIcon = @(addItemName = true) showAsContentItem()

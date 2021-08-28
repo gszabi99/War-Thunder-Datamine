@@ -96,7 +96,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
     if(!objTbl)
       return null
     local rowNum = objTbl.getValue()
-    if (rowNum < 0 || rowNum > objTbl.childrenCount())
+    if (rowNum < 0 || rowNum >= objTbl.childrenCount())
       return null
     local rowObj = objTbl.getChild(rowNum)
     local topLeftCorner = rowObj.getPosRC()

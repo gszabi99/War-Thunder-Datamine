@@ -1,5 +1,6 @@
 local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryDescription.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
 {
@@ -16,6 +17,8 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/tacticalMap.blk"
   shouldBlurSceneBg = true
+  shouldFadeSceneInVr = true
+  shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP |
                          CtrlsInGui.CTRL_ALLOW_MP_STATISTICS |
@@ -96,7 +99,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_select", isActiveTactical)
     showSceneBtn("btn_back", true)
-    showSceneBtn("screen_button_back", ::use_touchscreen)
+    showSceneBtn("screen_button_back", useTouchscreen)
   }
 
   function reinitScreen(params = {})

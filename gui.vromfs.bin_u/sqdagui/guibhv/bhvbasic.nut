@@ -458,7 +458,7 @@ class gui_bhv_deprecated.massTransparency extends gui_bhv_deprecated.basicTransp
     local wayIdx = (p.totalTime >= 0)? 0 : 1
 
     local transpNew = countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
-    transpNew = ::clamp(transpNew, 0, 255)
+    transpNew = clamp(transpNew, 0, 255)
     local lastTransp = obj.getIntProp(last_transp_PID, -1)
     if (lastTransp >= 0) //do not blend on first update
       transpNew = ::blendProp(p.trCur, transpNew, p.blendTime, dt).tointeger()

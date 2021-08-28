@@ -11,7 +11,7 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "haveCCIPForRocket": true,
-  "haveCCIPForBombs": true,
+  "haveCCIPForBombs": false,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2203,9 +2203,17 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": "flare2"
-    },
+    "hideNodes": [
+      {
+        "node": "flare2"
+      },
+      {
+        "node": "sps_141m_pylon"
+      },
+      {
+        "node": "aso_sps_141m"
+      }
+    ],
     "Weapon": {
       "trigger": "cannon",
       "blk": "gameData/Weapons/cannonGSh_23L.blk",

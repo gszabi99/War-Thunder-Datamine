@@ -11,6 +11,8 @@ local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, 
 } = require("scripts/userstat/userstat.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { getDebriefingResult, setDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
+local applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -210,7 +212,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
         if (info.desc != "")
           blk[partName] <- ::g_string.stripTags(info.title + "\n" + info.desc)
       }
-      return { key = unit.name, value = blk }
+      return blk.paramCount() != 0 ? { key = unit.name, value = blk } : null
     }
     onFinish = @() ::dmViewer.toggle(::DM_VIEWER_NONE)
   })
@@ -355,7 +357,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
   local unit = ::getAircraftByName(unitId)
   if (!unit)
     return "Not found"
-  ::show_aircraft = unit
+  showedUnit(unit)
   ::gui_start_decals()
   return "Done"
 }
@@ -410,9 +412,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
   if (newResolution == curResolution)
     return done()
   ::setSystemConfigOption("video/resolution", newResolution)
-  ::on_renderer_settings_change()
-  ::perform_delayed(function() {
-    ::handlersManager.getActiveBaseHandler().fullReloadScene()
+  applyRendererSettingsChange(true, false, function() {
     ::call_darg("updateExtWatched", { resolution = newResolution })
     done()
   })

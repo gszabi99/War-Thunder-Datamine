@@ -213,8 +213,6 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ItemConvertToWarbond = false
   ItemConvertToWarbondMultiple = false
 
-  CountryChina = false
-
   DisableSwitchPresetOnTutorialForHotas4 = false
 
   MissionsChapterHidden = ::disable_network()
@@ -233,6 +231,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   ControlsDeviceChoice = true
   ControlsAdvancedSettings = true
+  ControlsPresets = true
   ControlsHelp = true
 
   SeparateTopMenuButtons = false

@@ -20,7 +20,7 @@
   "fxSandDust": "dust_ground_wave_sand_small",
   "fxSnowDust": "dust_ground_wave_snow_small",
   "fxConcreteDust": "dust_ground_wave_asphalt_small",
-  "fxWaterShockWave": "water_shock_wave_little",
+  "fxWaterShockWave": "",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -242,24 +242,42 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.25
+            "countPortion": 0.125
           },
           {
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 0.35,
               "penetrationScale": 1.0,
-              "damageScale": 1.7,
-              "angles": [0.0,179.0],
-              "countPortion": 0.5
+              "damageScale": 1.0,
+              "angles": [0.0,90.0],
+              "countPortion": 0.4
             }
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.7,
-              "angles": [180.0,359.0],
-              "countPortion": 0.5
+              "damageScale": 1.0,
+              "angles": [91.0,180.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,269.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.35,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [270.0,359.0],
+              "countPortion": 0.4
             }
           }
         ]

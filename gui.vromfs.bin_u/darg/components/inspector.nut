@@ -1,17 +1,23 @@
-local string = require("string")
+from "%darg/ui_imports.nut" import *
+
+//local {locate_element_source, sh, ph} = require("daRg")
+local {format} = require("string")
 local utf8 = require_optional("utf8")
 local clipboard = require("daRg.clipboard")
-local {DONT_CHECK_NESTED} = require("frp")
+local fieldsMap = require("inspectorViews.nut")
 
-local shown          = persist("shown", @() ::Watched(false))
-local wndHalign      = persist("wndHalign", @() ::Watched(ALIGN_RIGHT))
-local pickerActive   = persist("pickerActive", @() ::Watched(false))
-local highlight      = persist("highlight", @() ::Watched(null))
-local pickedList     = persist("pickedList", @() ::Watched([], DONT_CHECK_NESTED))
-local viewIdx        = persist("viewIdx", @() ::Watched(0))
+local shown          = persist("shown", @() Watched(false))
+local wndHalign      = persist("wndHalign", @() Watched(ALIGN_RIGHT))
+local pickerActive   = persist("pickerActive", @() Watched(false))
+local highlight      = persist("highlight", @() Watched(null))
+local animHighlight  = Watched(null)
+local pickedList     = persist("pickedList", @() Watched([], FRP_DONT_CHECK_NESTED))
+local viewIdx        = persist("viewIdx", @() Watched(0))
 
-local curData        = ::Computed(@() pickedList.value?[viewIdx.value])
+local curData        = Computed(@() pickedList.value?[viewIdx.value])
 
+local fontSize = sh(1.5)
+local valColor = Color(155,255,50)
 
 local cursors = {
   normal = null
@@ -19,7 +25,7 @@ local cursors = {
 }
 
 local function textButton(text, action, isEnabled = true) {
-  local stateFlags = ::Watched(0)
+  local stateFlags = Watched(0)
 
   local override = isEnabled
     ? {
@@ -53,8 +59,8 @@ local function textButton(text, action, isEnabled = true) {
 }
 
 local function mkDirBtn(text, dir) {
-  local isVisible = ::Computed(@() pickedList.value.len() > 1)
-  local isEnabled = ::Computed(@() (viewIdx.value + dir) in pickedList.value)
+  local isVisible = Computed(@() pickedList.value.len() > 1)
+  local isEnabled = Computed(@() (viewIdx.value + dir) in pickedList.value)
   return @() {
     watch = [isVisible, isEnabled]
     children = !isVisible.value ? null
@@ -84,19 +90,50 @@ local function panelToolbar() {
 local cutText = utf8 ? @(text, num) utf8(text).slice(0, num)
   : @(text, num) text.slice(0, num)
 
+local mkColorCtor = @(color) @(content) {
+  flow = FLOW_HORIZONTAL
+  gap = sh(0.5)
+  children = [
+    content.__merge({ size = SIZE_TO_CONTENT })
+    { rendObj = ROBJ_SOLID, size = [ph(100), ph(100)], color }
+  ]
+}
+
+local mkImageCtor = @(image) @(content) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  children = [
+    content
+    {
+      rendObj = ROBJ_IMAGE
+      maxHeight = sh(30)
+      keepAspect = true
+      imageValign = ALIGN_TOP
+      imageHalign = ALIGN_LEFT
+      image
+    }
+  ]
+}
+
+local IMAGE_KEYS = ["image", "fallbackImage"]
+
 local function getPropValueTexts(desc, key, textLimit = 0) {
   local val = desc[key]
-  local tp = ::type(val)
+  local tp = type(val)
 
   local text = null
-  local addText = ""
+  local valCtor = fieldsMap?[key][val]
 
   if (val == null) {
     text = "<null>"
   } else if (tp == "array") {
     text = ", ".join(val)
-  } else if (tp == "integer" && key.tolower().indexof("color")!=null) {
-    text = "".concat("#", string.format("%16X", val).slice(8))
+  } else if (IMAGE_KEYS.contains(key)) {
+    text = val.tostring()
+    valCtor = mkImageCtor(val)
+  } else if (tp == "integer" && key.tolower().indexof("color") != null) {
+    text = "".concat("0x", format("%16X", val).slice(8))
+    valCtor = mkColorCtor(val)
   } else if (tp == "userdata" || tp == "userpointer") {
     text = "<userdata/userpointer>"
   } else {
@@ -106,22 +143,36 @@ local function getPropValueTexts(desc, key, textLimit = 0) {
     else {
       text = cutText(s, textLimit)
       if (text.len() + 10 < s.len())
-        addText = $"...({utf8?(s).charCount() ?? s.len()})"
+        valCtor = $"...({utf8?(s).charCount() ?? s.len()})"
       else
         text = s
     }
   }
-  return { text, addText }
-}
-
-local function propValueColoredText(desc, key) {
-  local { text, addText } = getPropValueTexts(desc, key, 200)
-  return $"<color={Color(155,255,50)}>{text}</color>{addText}"
+  return { text, valCtor }
 }
 
 local textColor = @(sf) sf & S_ACTIVE ? 0xFFFFFF00
   : sf & S_HOVER ? 0xFF80A0FF
   : 0xFFFFFFFF
+
+local function mkPropContent(desc, key, sf) {
+  local { text, valCtor } = getPropValueTexts(desc, key, 200)
+  local keyValue = $"{key.tostring()} = <color={valColor}>{text}</color>"
+  if (typeof valCtor == "string")
+    keyValue = $"{keyValue} {valCtor}"
+  local content = {
+    rendObj = ROBJ_TEXTAREA
+    size = [flex(), SIZE_TO_CONTENT]
+    behavior = Behaviors.TextArea
+    color = textColor(sf)
+    fontSize
+    hangingIndent = sh(3)
+    text = keyValue
+  }
+  if (typeof valCtor == "function")
+    content = valCtor?(content)
+  return content
+}
 
 local function propPanel(desc) {
   local pKeys = []
@@ -137,13 +188,10 @@ local function propPanel(desc) {
     return @() {
       watch = stateFlags
       size = [flex(), SIZE_TO_CONTENT]
-      rendObj = ROBJ_TEXTAREA
-      behavior = [Behaviors.TextArea, Behaviors.Button]
+      behavior = Behaviors.Button
       onElemState = @(sf) stateFlags(sf)
       onClick = @() clipboard.set_text(getPropValueTexts(desc, k).text)
-      text = $"{k.tostring()} = {propValueColoredText(desc, k)}"
-      color = textColor(stateFlags.value)
-      hangingIndent = sh(3)
+      children = mkPropContent(desc, k, stateFlags.value)
     }
   })
 }
@@ -152,36 +200,68 @@ local prepareCallstackText = @(text) //add /t for line wraps
   text.replace("/", "/\t")
 
 local function details() {
-  local res = { watch = curData }
+  local res = {
+    watch = curData
+    size = flex()
+  }
   local sel = curData.value
   if (sel == null)
     return res
 
-  local stateFlags = Watched(0)
+  local summarySF = Watched(0)
   local summaryText = @() {
-    watch = stateFlags
+    watch = summarySF
     size = flex()
-    margin = [sh(3), 0, 0, 0]
     rendObj = ROBJ_TEXTAREA
     behavior = [Behaviors.TextArea, Behaviors.WheelScroll, Behaviors.Button]
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = @(sf) summarySF(sf)
     onClick = @() clipboard.set_text(sel.locationText)
     text = prepareCallstackText(sel.locationText)
-    color = textColor(stateFlags.value)
+    fontSize
+    color = textColor(summarySF.value)
     hangingIndent = sh(3)
   }
 
+  local bb = sel.boundingBox
+  local bbText = $"\{ pos = [{bb.x}, {bb.y}], size = [{bb.width}, {bb.height}] \}"
+  local bboxSF = Watched(0)
+  local bbox = @() {
+    watch = bboxSF
+    rendObj = ROBJ_TEXTAREA
+    behavior = [Behaviors.TextArea, Behaviors.Button]
+    function onElemState(sf) {
+      bboxSF(sf)
+      animHighlight(sf & S_HOVER ? bb : null)
+    }
+    onDetach = @() animHighlight(null)
+    onClick = @() clipboard.set_text(bbText)
+    fontSize
+    color = textColor(bboxSF.value)
+    text = $"bbox = <color={valColor}>{bbText}</color>"
+  }
+
   return res.__update({
-    size = [flex(), flex(1)]
-    rendObj = ROBJ_SOLID
-    color = Color(0,0,50,200)
     flow = FLOW_VERTICAL
     padding = [hdpx(5), hdpx(10)]
-    children = propPanel(sel.componentDesc)
-      .append(summaryText)
+    children = [ bbox ].extend(propPanel(sel.componentDesc)).append(summaryText)
   })
 }
 
+local help = {
+  rendObj = ROBJ_TEXTAREA
+  size = [flex(), SIZE_TO_CONTENT]
+  behavior = Behaviors.TextArea
+  vplace = ALIGN_BOTTOM
+  margin = [hdpx(5), hdpx(10)]
+  fontSize
+  text = @"L.Ctrl + L.Shift + I - switch inspector off\nL.Ctrl + L.Shift + P - switch picker on/off"
+}
+
+local hr = {
+  rendObj = ROBJ_SOLID
+  color = 0x333333
+  size = [flex(), hdpx(1)]
+}
 
 local inspectorPanel = @() {
   watch = wndHalign
@@ -193,9 +273,11 @@ local inspectorPanel = @() {
   clipChildren = true
 
   flow = FLOW_VERTICAL
+  gap = hr
   children = [
-    panelToolbar,
+    panelToolbar
     details
+    help
   ]
 }
 
@@ -219,10 +301,29 @@ local function highlightRect() {
   })
 }
 
+local function animHighlightRect() {
+  local res = {
+    watch = animHighlight
+    animations = [{
+      prop = AnimProp.opacity, from = 0.5, to = 1.0, duration = 0.5, easing = CosineFull, play = true, loop = true
+    }]
+  }
+  local ah = animHighlight.value
+  if (ah == null)
+    return res
+  return res.__update({
+    size = [ah.width, ah.height]
+    pos = [ah.x, ah.y]
+    rendObj = ROBJ_FRAME
+    color = 0xFFFFFFFF
+    fillColor = 0x40404040
+  })
+}
+
 local function elemLocationText(elem, builder) {
   local text = "Source: unknown"
 
-  local location = ::locate_element_source(elem)
+  local location = locate_element_source(elem)
   if (location)
     text = $"{location.stack}\n-------\n"
   return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
@@ -238,7 +339,8 @@ local elementPicker = @() {
   onClick = function(data) {
     pickedList((data ?? [])
       .map(@(d) {
-        componentDesc  = d.componentDesc
+        boundingBox = d.boundingBox
+        componentDesc = d.componentDesc
         locationText = elemLocationText(d.elem, d.builder)
       }))
     viewIdx(0)
@@ -253,7 +355,7 @@ local function inspectorRoot() {
   local res = {
     watch = [pickerActive, shown]
     size = [sw(100), sh(100)]
-    zOrder = Layers.Inspector
+    zOrder = getroottable()?.Layers.Inspector ?? 10
     skipInspection = true
   }
 
@@ -262,7 +364,11 @@ local function inspectorRoot() {
       cursor = cursors.normal
       children = [
         (pickerActive.value ? elementPicker : inspectorPanel),
-        { hotkeys = [["L.Ctrl L.Shift I", @() shown(false)]] }
+        animHighlightRect,
+        { hotkeys = [
+          ["L.Ctrl L.Shift I", @() shown(false)],
+          ["L.Ctrl L.Shift P", @() pickerActive(!pickerActive.value)]
+        ] }
       ]
     })
 

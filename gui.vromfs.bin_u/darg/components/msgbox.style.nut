@@ -1,8 +1,9 @@
-local Color = ::Color
+from "%darg/ui_imports.nut" import *
+
 local cursorC = Color(180,180,180,180)
 
 local styling = {
-  cursor = ::Cursor({
+  cursor = Cursor({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(2), sh(2)]
     commands = [
@@ -43,8 +44,8 @@ local styling = {
   }
 
   button = function(desc, on_click) {
-    local buttonGrp = ::ElemGroup()
-    local stateFlags = ::Watched(0)
+    local buttonGrp = ElemGroup()
+    local stateFlags = Watched(0)
     return function(){
       local sf = stateFlags.value
       return {
@@ -62,7 +63,7 @@ local styling = {
                     : Color(30, 30, 30, 200)
 
         borderWidth = (sf & S_KB_FOCUS) ? hdpx(2) : hdpx(1)
-        onHover = function(on) { if(on) ::set_kb_focus(desc)}
+        onHover = function(on) { if(on) set_kb_focus(desc)}
         borderRadius = hdpx(4)
         borderColor = (sf & S_KB_FOCUS)
                         ? Color(255,255,200,120)

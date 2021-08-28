@@ -50,7 +50,7 @@
   "effectsZNearOffsetInCockpit": 2.0,
   "invisibleSupportUnits": true,
   "unitDefaultVisibilityDistance": 2000.0,
-  "sleeveFallFx": "water_splash",
+  "sleeveFallFx": "hit_12_18mm_water",
   "minMassMultApexObjectsCollidedWithHero": 0.002,
   "maxMassMultApexObjectsCollidedWithHero": 0.04,
   "minViscosityApexObjectsCollidedWithHero": 0.95,
@@ -101,6 +101,7 @@
   "tankGunLightSourceRadius": 2.0,
   "tankGunLightColor": [1.5,1.0,0.2],
   "impostorSizeScaleCoefficient": 4.0,
+  "rendinstMinCullDistMul": 2.2,
   "rendInstMaxLifeTime": 15.0,
   "rendinstPreloadDistance": 7000.0,
   "rendinstMaxLod0Dist": 1200.0,
@@ -224,16 +225,18 @@
   "jetLightBrightness": 5.0,
   "jetLightAngle": 0.8,
   "reactivGuiForAircraft": true,
+  "reactivGuiForArbiter": true,
   "collapsedIconForRadarTws": true,
   "indicationForCollapsedRadar": false,
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
   "allowSalvoForSecondaryWeaponSeries": true,
+  "deadTankTemperatureMul": 0.1,
   "guiBlurFallbackColor": "#171e26cc",
   "writePressureDamageEventToVisualization": true,
   "climbAngleDegreesCriteria": 8.0,
   "maxDelayedDownloadTogether": 5,
   "maxDelayedDownloads": 100,
-  "downloadLimitationInSingle": true,
+  "downloadLimitationInSingle": false,
   "loadNetEffectiveness": 100,
   "tracers": {
     "headFadeTime": 4.0,
@@ -2262,7 +2265,8 @@
       "keepDeadTankOnMap": true,
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
-      "hudShowAttentionMarkForAircraft": false
+      "hudShowAttentionMarkForAircraft": false,
+      "shipSupportPlanes": true
     },
     "realistic": {
       "baseDifficulty": 1,
@@ -2325,7 +2329,8 @@
       "keepDeadTankOnMap": true,
       "keepDeadShipOnMap": true,
       "hudSendSquare": true,
-      "hudShowAttentionMarkForAircraft": false
+      "hudShowAttentionMarkForAircraft": false,
+      "shipSupportPlanes": false
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -2388,7 +2393,8 @@
       "keepDeadTankOnMap": true,
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
-      "hudShowAttentionMarkForAircraft": false
+      "hudShowAttentionMarkForAircraft": false,
+      "shipSupportPlanes": false
     }
   },
   "custom_difficulty": {
@@ -2454,6 +2460,7 @@
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": true,
+      "shipSupportPlanes": false,
       "setDifficulty": 1
     },
     "tank_hardcore": {
@@ -2518,6 +2525,7 @@
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": false,
+      "shipSupportPlanes": false,
       "setDifficulty": 2
     },
     "ship_arcade": {
@@ -2582,6 +2590,7 @@
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": false,
+      "shipSupportPlanes": true,
       "setDifficulty": 0
     },
     "ship_realistic": {
@@ -2646,6 +2655,7 @@
       "keepDeadShipOnMap": true,
       "hudSendSquare": false,
       "hudShowAttentionMarkForAircraft": true,
+      "shipSupportPlanes": false,
       "setDifficulty": 1
     }
   },
@@ -2740,7 +2750,10 @@
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": false,
         "autoSightDistanceCorrection": false,
-        "shipTorpedoAutoUpdateDepth": true
+        "shipTorpedoAutoUpdateDepth": true,
+        "hudShipsFireCtrlShowVerticalAxis": false,
+        "hudShipsFireCtrlShowHorizontalAxis": false,
+        "hudShipsFireCtrlShowMarker": true
       },
       "medium": {
         "scoutPreset": "realistic",
@@ -2808,7 +2821,10 @@
         "autoSightDistanceCorrection": true,
         "shipTorpedoAutoUpdateDepth": false,
         "shipTorpedoDepthMin": 1.0,
-        "shipTorpedoDepthMax": 4.0
+        "shipTorpedoDepthMax": 4.0,
+        "hudShipsFireCtrlShowVerticalAxis": true,
+        "hudShipsFireCtrlShowHorizontalAxis": false,
+        "hudShipsFireCtrlShowMarker": false
       },
       "hard": {
         "scoutPreset": "hard",
@@ -2874,7 +2890,10 @@
         "autoSightDistanceCorrection": true,
         "shipTorpedoAutoUpdateDepth": false,
         "shipTorpedoDepthMin": 1.0,
-        "shipTorpedoDepthMax": 4.0
+        "shipTorpedoDepthMax": 4.0,
+        "hudShipsFireCtrlShowVerticalAxis": true,
+        "hudShipsFireCtrlShowHorizontalAxis": false,
+        "hudShipsFireCtrlShowMarker": false
       }
     },
     "engineControl": {
@@ -3342,7 +3361,8 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": false
+        "allowTargetingWOMarkersTanksCons": false,
+        "allowAutoTargetingFmOnTanksCons": false
       },
       "team": {
         "hudMarkers": 1,
@@ -3357,7 +3377,8 @@
         "hitSpawnTime": 5.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": false
+        "allowTargetingWOMarkersTanksCons": true,
+        "allowAutoTargetingFmOnTanksCons": false
       },
       "all": {
         "hudMarkers": 2,
@@ -3373,7 +3394,8 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true
+        "allowTargetingWOMarkersTanksCons": true,
+        "allowAutoTargetingFmOnTanksCons": false
       },
       "team_air_sb": {
         "hudMarkers": 3,
@@ -3388,7 +3410,8 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": false
+        "allowTargetingWOMarkersTanksCons": true,
+        "allowAutoTargetingFmOnTanksCons": false
       },
       "team_worldwar": {
         "hudMarkers": 4,
@@ -3405,7 +3428,8 @@
         "showNotTraceableDetectIndicators": false,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": false
+        "allowTargetingWOMarkersTanksCons": false,
+        "allowAutoTargetingFmOnTanksCons": false
       }
     },
     "hudAircraftMarkersMaxDist": {
@@ -3954,6 +3978,20 @@
       "on": {
         "showAttentionMarkForAircraft": true
       }
+    },
+    "shipSupportPlanes": {
+      "off": {
+        "endlessSupportPlane": false,
+        "supportSpawnCooldownTime": 40.0,
+        "planeRearmTime": 90.0,
+        "rearmSupportPlaneOnField": false
+      },
+      "on": {
+        "endlessSupportPlane": false,
+        "supportSpawnCooldownTime": 40.0,
+        "planeRearmTime": 180.0,
+        "rearmSupportPlaneOnField": true
+      }
     }
   },
   "shipBigCaliberPenetrationDistances": [
@@ -4156,13 +4194,29 @@
     "staticSmallCascadeRiDepthBias": 0.0005,
     "staticLargeCascadeRiDepthBias": 0.015,
     "ultralow": {
+      "cascadeWidth": 600,
+      "splitsW": 2,
+      "splitsH": 1,
+      "cascadeDepth24bit": false,
+      "tpsShadowDist": 70.0,
+      "tpsPowWeight": 0.9991,
+      "cockpitShadowDist": 65.0,
+      "cockpitPowWeight": 0.95,
+      "tanksShadowDist": 20.0,
+      "tanksPowWeight": 0.4,
+      "shipsShadowDist": 80.0,
+      "shipsPowWeight": 0.3,
+      "bigShipsShadowDist": 120.0,
+      "bigShipsPowWeight": 0.4,
+      "fadeOut": 10.0,
+      "rotationMargin": 0.1,
       "staticCascadeCount": 1,
       "staticCascadeRegMul": 1.0,
       "staticCascadeTexWidth": 512,
-      "staticCascadeSlices": 10,
       "staticCascadeRegWidth": 500.0,
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 1.0,
+      "staticCascadeUseRiSecLayer": true,
       "staticCascadeDualPass": false,
       "useOcclusion": true,
       "hangarPowWeight": 0.7
@@ -4182,7 +4236,7 @@
       "shipsPowWeight": 0.3,
       "bigShipsShadowDist": 120.0,
       "bigShipsPowWeight": 0.4,
-      "fadeOut": 30.0,
+      "fadeOut": 10.0,
       "rotationMargin": 0.1,
       "staticCascadeCount": 1,
       "staticCascadeRegMul": 1.0,
@@ -4210,7 +4264,7 @@
       "shipsPowWeight": 0.78,
       "bigShipsShadowDist": 120.0,
       "bigShipsPowWeight": 0.66,
-      "fadeOut": 80.0,
+      "fadeOut": 30.0,
       "rotationMargin": 0.1,
       "staticCascadeCount": 2,
       "staticCascadeRegMul": 5.0,
@@ -4237,7 +4291,7 @@
       "shipsPowWeight": 0.78,
       "bigShipsShadowDist": 125.0,
       "bigShipsPowWeight": 0.68,
-      "fadeOut": 80.0,
+      "fadeOut": 30.0,
       "rotationMargin": 0.1,
       "staticCascadeCount": 2,
       "staticCascadeRegMul": 5.0,
@@ -4267,7 +4321,7 @@
       "shipsPowWeight": 0.94,
       "bigShipsShadowDist": 250.0,
       "bigShipsPowWeight": 0.92,
-      "fadeOut": 100.0,
+      "fadeOut": 30.0,
       "rotationMargin": 0.1,
       "staticCascadeCount": 2,
       "staticCascadeRegMul": 6.0,
@@ -4295,16 +4349,17 @@
       "shipsPowWeight": 0.94,
       "bigShipsShadowDist": 400.0,
       "bigShipsPowWeight": 0.92,
-      "fadeOut": 250.0,
+      "fadeOut": 30.0,
       "rotationMargin": 0.1,
       "vsmSize": 2048,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
+      "staticCascadeCount": 2,
+      "staticCascadeRegMul": 7.0,
       "staticCascadeTexWidth": 4096,
-      "staticCascadeRegWidth": 1000.0,
-      "staticCascadeStarting": 4,
-      "staticCascadeUseRiSecLayer": true,
+      "staticCascadeRegWidth": 150.0,
+      "staticCascadeStarting": 2,
+      "staticCascadeUseRiSecLayer": false,
       "staticCascadeDualPass": true,
+      "staticCascadeForceLod0": true,
       "renderHeightmap": true,
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 1.0,
@@ -6177,6 +6232,18 @@
     },
     {
       "bridge": {
+        "my": "ship_bridge",
+        "enemy": "ship_bridge"
+      }
+    },
+    {
+      "bridge_01": {
+        "my": "ship_bridge",
+        "enemy": "ship_bridge"
+      }
+    },
+    {
+      "bridge_02": {
         "my": "ship_bridge",
         "enemy": "ship_bridge"
       }
@@ -9458,6 +9525,60 @@
       }
     },
     {
+      "fire_director_07": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_08": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_09": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_10": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_11": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_12": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_13": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_14": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_15": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
       "fire_director_mount_01": {
         "my": "fire_director",
         "enemy": "fire_director"
@@ -9489,6 +9610,60 @@
     },
     {
       "fire_director_mount_06": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_07": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_08": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_09": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_10": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_11": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_12": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_13": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_14": {
+        "my": "fire_director",
+        "enemy": "fire_director"
+      }
+    },
+    {
+      "fire_director_mount_15": {
         "my": "fire_director",
         "enemy": "fire_director"
       }
@@ -9530,15 +9705,159 @@
       }
     },
     {
-      "plotting_room_01": {
-        "my": "plotting_room",
-        "enemy": "plotting_room"
+      "rangefinder_07": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
       }
     },
     {
-      "plotting_room_02": {
-        "my": "plotting_room",
-        "enemy": "plotting_room"
+      "rangefinder_08": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_09": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_10": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_11": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_12": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_13": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_14": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_15": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_01": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_02": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_03": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_04": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_05": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_06": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_07": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_08": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_09": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_10": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_11": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_12": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_13": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_14": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "rangefinder_mount_15": {
+        "my": "rangefinder",
+        "enemy": "rangefinder"
+      }
+    },
+    {
+      "fire_control_room_01": {
+        "my": "fire_control_room",
+        "enemy": "fire_control_room"
+      }
+    },
+    {
+      "fire_control_room_02": {
+        "my": "fire_control_room",
+        "enemy": "fire_control_room"
       }
     },
     {
@@ -10135,6 +10454,9 @@
         "p": "torpedo_2"
       },
       {
+        "p": "torpedo_3"
+      },
+      {
         "p": "mg_"
       },
       {
@@ -10180,10 +10502,13 @@
         "p": "coal_bunker_"
       },
       {
-        "p": "plotting_room_"
+        "p": "fire_control_room_"
       },
       {
         "p": "rangefinder_"
+      },
+      {
+        "p": "rangefinder_mount_"
       },
       {
         "p": "handling_room_"
@@ -11978,6 +12303,42 @@
       {
         "p": {
           "name": "wheel_r_01_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "type_87_rcv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
           "modelNames": "flarakrad"
         }
       },
@@ -12865,10 +13226,13 @@
         "p": "aircraft_"
       },
       {
-        "p": "plotting_room_"
+        "p": "fire_control_room_"
       },
       {
         "p": "rangefinder_"
+      },
+      {
+        "p": "rangefinder_mount_"
       },
       {
         "p": "handling_room_"
@@ -13143,6 +13507,11 @@
       {
         "p": {
           "name": "torpedo_2"
+        }
+      },
+      {
+        "p": {
+          "name": "torpedo_3"
         }
       },
       {
@@ -15094,69 +15463,6 @@
     ],
     "hideForMode1": [
       {
-        "ri": "european_flower_urn_a"
-      },
-      {
-        "ri": "european_flower_urn_b"
-      },
-      {
-        "ri": "european_flower_urn_c"
-      },
-      {
-        "ri": "european_flower_urn_d"
-      },
-      {
-        "ri": "european_hydrant_a"
-      },
-      {
-        "ri": "european_hydrant_b"
-      },
-      {
-        "ri": "european_mailbox_a"
-      },
-      {
-        "ri": "european_mailbox_b"
-      },
-      {
-        "ri": "european_road_column_a"
-      },
-      {
-        "ri": "european_road_column_b"
-      },
-      {
-        "ri": "european_road_column_c"
-      },
-      {
-        "ri": "european_road_column_d"
-      },
-      {
-        "ri": "european_trash_can_a"
-      },
-      {
-        "ri": "european_trash_can_b"
-      },
-      {
-        "ri": "european_market_box_a"
-      },
-      {
-        "ri": "european_market_box_b"
-      },
-      {
-        "ri": "european_market_box_c"
-      },
-      {
-        "ri": "european_market_box_d"
-      },
-      {
-        "ri": "european_market_box_e"
-      },
-      {
-        "ri": "european_market_box_small_e"
-      },
-      {
-        "ri": "european_market_box_small_f"
-      },
-      {
         "ri": "hatch_a"
       },
       {
@@ -15194,85 +15500,10 @@
       },
       {
         "ri": "egypt_arcade_stone2_03"
-      },
-      {
-        "ri": "african_jug_a"
-      },
-      {
-        "ri": "african_jug_b"
-      },
-      {
-        "ri": "african_jug_c"
-      },
-      {
-        "ri": "sandbag_a"
       }
     ],
     "hideForMode0": [
       {
-        "ri": "european_flower_urn_a"
-      },
-      {
-        "ri": "european_flower_urn_b"
-      },
-      {
-        "ri": "european_flower_urn_c"
-      },
-      {
-        "ri": "european_flower_urn_d"
-      },
-      {
-        "ri": "european_hydrant_a"
-      },
-      {
-        "ri": "european_hydrant_b"
-      },
-      {
-        "ri": "european_mailbox_a"
-      },
-      {
-        "ri": "european_mailbox_b"
-      },
-      {
-        "ri": "european_road_column_a"
-      },
-      {
-        "ri": "european_road_column_b"
-      },
-      {
-        "ri": "european_road_column_c"
-      },
-      {
-        "ri": "european_road_column_d"
-      },
-      {
-        "ri": "european_trash_can_a"
-      },
-      {
-        "ri": "european_trash_can_b"
-      },
-      {
-        "ri": "european_market_box_a"
-      },
-      {
-        "ri": "european_market_box_b"
-      },
-      {
-        "ri": "european_market_box_c"
-      },
-      {
-        "ri": "european_market_box_d"
-      },
-      {
-        "ri": "european_market_box_e"
-      },
-      {
-        "ri": "european_market_box_small_e"
-      },
-      {
-        "ri": "european_market_box_small_f"
-      },
-      {
         "ri": "hatch_a"
       },
       {
@@ -15310,18 +15541,6 @@
       },
       {
         "ri": "egypt_arcade_stone2_03"
-      },
-      {
-        "ri": "african_jug_a"
-      },
-      {
-        "ri": "african_jug_b"
-      },
-      {
-        "ri": "african_jug_c"
-      },
-      {
-        "ri": "sandbag_a"
       },
       {
         "ri": "american_conditioner_a"
@@ -16899,12 +17118,21 @@
   ],
   "holeRenderingRadiusConstants": {
     "maxRadius": 0.3,
-    "minRadius": 0.025,
+    "minRadius": 0.03,
     "radiusReplacementTreshold": 0.2,
     "radiusMultiplierForCheck": 0.5,
     "sideMultiplierForCheck": 2.0,
     "additionalLength": 0.2,
-    "doNotMakeHoleInWreckedPart": false
+    "doNotMakeHoleInWreckedPart": false,
+    "checkSurroundingNodes": false,
+    "useCaliberOnRadius": true,
+    "holeOneEntryPointForHe": true,
+    "diffMarksTextureForAtlasSize": [0.25,0.25],
+    "diffMarksRadiusMultiplier": 2.0
+  },
+  "cutting": {
+    "diffMarksTex": "dyn_decals_atlas_a",
+    "diffMarksTexBump": "dyn_decals_atlas_n"
   },
   "tpsNightVision": {
     "resolution": [1920.0,1080.0],
@@ -16928,5 +17156,11 @@
   ],
   "trackSparksMaterials": {
     "mat": "concrete"
+  },
+  "shipFireDirecting": {
+    "calcTime": 7.0,
+    "targetLockTime": 10.0,
+    "rotationSpeed": 12.0,
+    "waitForDirection": false
   }
 }

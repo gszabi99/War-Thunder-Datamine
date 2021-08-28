@@ -1,3 +1,5 @@
+from "%darg/ui_imports.nut" import *
+
 local calcColor = @(sf) (sf & S_HOVER) ? 0xFFFFFFFF : 0xA0A0A0A0
 
 local lineWidth = hdpx(2)
@@ -30,7 +32,7 @@ local label = @(text, sf) {
 }
 
 local function optionCtor(option, isSelected, onClick) {
-  local stateFlags = ::Watched(0)
+  local stateFlags = Watched(0)
   return function() {
     local sf = stateFlags.value
 

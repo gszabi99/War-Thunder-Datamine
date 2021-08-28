@@ -1,13 +1,23 @@
 //https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Gradients
 //see example at https://briangrinstead.com/gradient/
+from "%darg/ui_imports.nut" import *
+from "base64" import encodeString
 
-local {encodeString} = require("base64")
+const BLEND_MODE_PREMULTIPLIED = "PREMULTIPLIED"
+const BLEND_MODE_NONPREMULTIPLIED = "NONPREMULTIPLIED"
+const BLEND_MODE_ADDITIVE = "ADDITIVE"
+
+local blendModesPrefix = {
+  [BLEND_MODE_PREMULTIPLIED] = "",
+  [BLEND_MODE_NONPREMULTIPLIED] = "!",
+  [BLEND_MODE_ADDITIVE] = "+"
+}
 
 local function mkGradPointStyle(point, idx, points){
   local offset = point?.offset ?? (100 * idx/(points.len()-1))
-  assert(offset<=100 && offset >=0 && (["integer", "float"].contains(::type(offset))))
+  assert(offset<=100 && offset >=0 && (["integer", "float"].contains(type(offset))))
   local color = point?.color
-  if (color==null && ::type(point)=="array")
+  if (color==null && type(point)=="array")
     color = point
   local opacity = color?.len()==4
     ? color[3]/255.0
@@ -30,7 +40,7 @@ enum GRADSPREAD {
 
 local function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null){
   x2 = x2 ?? width
-  assert(::type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
+  assert(type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
   assert(width>1 && height>1 && width+height > 15, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)
@@ -43,14 +53,15 @@ local function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null
   return $"{header}\n    {body}\n{footer}"
 }
 
-local mkLinearGradientImg = ::kwarg(function(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null, premultiplied=false) {
+local mkLinearGradientImg = kwarg(function(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_NONPREMULTIPLIED) {
   local svg = mkLinearGradSvgTxtImpl(points, width, height, x1,y1,x2,y2, spreadMethod, transform)
   local text = encodeString(svg)
-  return ::Picture($"{premultiplied ? "" : "!"}b64://{text}.svg:{width}:{height}?Ac")
+  local prefix = blendModesPrefix?[blendMode] ?? ""
+  return Picture($"{prefix}b64://{text}.svg:{width}:{height}?Ac")
 })
 
 local function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null){
-  assert(::type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
+  assert(type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
   assert(width>1 && height>1 && width+height > 15, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)
@@ -82,16 +93,22 @@ local blue = [0, 0, 255]
   size = flex()
 }
 */
-local mkRadialGradientImg = ::kwarg(function(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null, premultiplied=false){
+
+local mkRadialGradientImg = kwarg(function(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_PREMULTIPLIED){
   local svg = mkRadialGradSvgTxtImpl(points, width, height, cx,cy,r,fx,fy, spreadMethod, transform)
   local text = encodeString(svg)
-  return ::Picture($"{premultiplied ? "" : "!"}b64://{text}.svg:{width}:{height}?Ac")
+  local prefix = blendModesPrefix?[blendMode] ?? ""
+  return Picture($"{prefix}b64://{text}.svg:{width}:{height}?Ac")
 })
 
 return {
   GRADSPREAD
+  BLEND_MODE_PREMULTIPLIED
+  BLEND_MODE_NONPREMULTIPLIED
+  BLEND_MODE_ADDITIVE
+  blendModesPrefix
   mkLinearGradientImg
-  mkLinearGradSvgTxt = ::kwarg(mkLinearGradSvgTxtImpl)
+  mkLinearGradSvgTxt = kwarg(mkLinearGradSvgTxtImpl)
   mkRadialGradientImg
-  mkRadialGradSvgTxt = ::kwarg(mkRadialGradSvgTxtImpl)
+  mkRadialGradSvgTxt = kwarg(mkRadialGradSvgTxtImpl)
 }

@@ -113,8 +113,8 @@ class gui_bhv.posNavigator
   {
     local pos = obj.getPos()
     local size = obj.getSize()
-    return [::clamp(point[0], pos[0], pos[0] + (size[0] < 0 ? 0 : size[0]))
-            ::clamp(point[1], pos[1], pos[1] + (size[1] < 0 ? 0 : size[1]))
+    return [clamp(point[0], pos[0], pos[0] + (size[0] < 0 ? 0 : size[0]))
+            clamp(point[1], pos[1], pos[1] + (size[1] < 0 ? 0 : size[1]))
            ]
   }
 
@@ -491,10 +491,10 @@ class gui_bhv.posNavigator
   function getClosestCoordsByAxis(obj, point, axis)
   {
     local pos = obj.getPos()
-    local size = obj.getSize().map(@(v) ::max(0, v))
+    local size = obj.getSize().map(@(v) max(0, v))
     return getObjCentering(obj)
       .map(@(pointerMul, a) a == axis
-        ? ::clamp(point[a], pos[a], pos[a] + ::min(1.0, 0.5 + pointerMul) * size[a])
+        ? clamp(point[a], pos[a], pos[a] + min(1.0, 0.5 + pointerMul) * size[a])
         : pos[a] + pointerMul*size[a])
   }
 

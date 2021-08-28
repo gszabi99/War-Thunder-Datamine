@@ -3,7 +3,7 @@
 
 popup_actions_list {
   re-type:rotation;
-  position: absolute;
+  position: root;
   css-hier-invalidate:yes;
   input-transparent: no;
   order-popup:yes;
@@ -14,11 +14,15 @@ popup_actions_list {
   background-repeat:expand-svg;
   background-rotation:0;
   padding:1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding;
-  
   behaviour:massTransparency;
   transp-base:0;
   transp-end:255;
   transp-time:300;
+}
+
+popup_actions_list[menu_align=bottom] {
+  background-rotation:180;
+  padding:1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding;
 }
 
 popup_actions_list {
@@ -43,44 +47,6 @@ popup_actions_list[close=yes] {
 popup_actions_list[move_out=yes] {
   transp-time:-300;
   selfRemoveOnFinish:-1;
-}
-
-popup_actions_list[al_align=top] {
-  menu_align:top;
-  left:0.5pw - 0.5w;
-  top: -h;
-  top-base: -99;
-  top-end: -100;
-}
-
-
-
-popup_actions_list[al_align=bottom] {
-  menu_align:bottom;
-  left:0.5pw - 0.5w;
-  top: ph;
-  bottom-base: -90;
-  bottom-end: -100;
-  background-rotation:180;
-  padding:1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding;
-}
-
-
-
-popup_actions_list[al_align=left] {
-  menu_align:left;
-}
-
-
-
-popup_actions_list[al_align=right] {
-  menu_align:right;
-}
-
-
-popup_actions_list[menu_align=bottom] {
-  background-rotation:180;
-  padding:1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding;
 }
 
 popup_actions_list > itemsList {

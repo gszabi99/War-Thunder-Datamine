@@ -7,7 +7,7 @@ const CASE_PAIR_LOWER = "abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìí�
 const CASE_PAIR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮIĲĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŹŻŽƂƄƇƋƑƘƠƢƤƧƬƯƳƵƸƼǄǇǊǍǏǑǓǕǗǙǛǞǠǢǤǦǨǪǬǮǱǴǺǼǾȀȂȄȆȈȊȌȎȐȒȔȖƁƆƊƎƏƐƓƔƗƖƜƝƟƩƮƱƲƷΆΈΉΊΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΪΫΌΎΏϢϤϦϨϪϬϮАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁЂЃЄЅІЇЈЉЊЋЌЎЏѠѢѤѦѨѪѬѮѰѲѴѶѸѺѼѾҀҐҒҔҖҘҚҜҞҠҢҤҦҨҪҬҮҰҲҴҶҸҺҼҾӁӃӇӋӐӒӔӖӘӚӜӞӠӢӤӦӨӪӮӰӲӴӸԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖႠႡႢႣႤႥႦႧႨႩႪႫႬႭႮႯႰႱႲႳႴႵႶႷႸႹႺႻႼႽႾႿჀჁჂჃჄჅḀḂḄḆḈḊḌḎḐḒḔḖḘḚḜḞḠḢḤḦḨḪḬḮḰḲḴḶḸḺḼḾṀṂṄṆṈṊṌṎṐṒṔṖṘṚṜṞṠṢṤṦṨṪṬṮṰṲṴṶṸṺṼṾẀẂẄẆẈẊẌẎẐẒẔẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸἈἉἊἋἌἍἎἏἘἙἚἛἜἝἨἩἪἫἬἭἮἯἸἹἺἻἼἽἾἿὈὉὊὋὌὍὙὛὝὟὨὩὪὫὬὭὮὯᾈᾉᾊᾋᾌᾍᾎᾏᾘᾙᾚᾛᾜᾝᾞᾟᾨᾩᾪᾫᾬᾭᾮᾯᾸᾹῘῙῨῩⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
 local INVALID_INDEX = -1
 
-local rootTable = ::getroottable()
+local rootTable = getroottable()
 local intRegExp = null
 local floatRegExp = null
 local trimRegExp = null
@@ -57,77 +57,80 @@ local function split(joined, glue, isIgnoreEmpty = false) {
 }
 
 if ("regexp2" in rootTable) {
-  intRegExp = ::regexp2(@"^-?\d+$")
-  floatRegExp  = ::regexp2(@"^-?\d+\.?\d*$")
-  trimRegExp = ::regexp2(@"^\s+|\s+$")
+  local regexp2 = rootTable.regexp2
+  intRegExp = regexp2(@"^-?\d+$")
+  floatRegExp  = regexp2(@"^-?\d+\.?\d*$")
+  trimRegExp = regexp2(@"^\s+|\s+$")
   stripTagsConfig = [
     {
-      re2 = ::regexp2("~")
+      re2 = regexp2("~")
       repl = "~~"
     }
     {
-      re2 = ::regexp2("\"")
+      re2 = regexp2("\"")
       repl = "~\""
     }
     {
-      re2 = ::regexp2("\r")
+      re2 = regexp2("\r")
       repl = "~r"
     }
     {
-      re2 = ::regexp2("\n")
+      re2 = regexp2("\n")
       repl = "~n"
     }
     {
-      re2 = ::regexp2("\'")
+      re2 = regexp2("\'")
       repl = "~\'"
     }
   ]
   escapeConfig = [
-    { re2 = ::regexp2(@"\\"), repl = @"\\\\" }
-    { re2 = ::regexp2(@""""), repl = @"\\""" }
-    { re2 = ::regexp2(@"\n"), repl = @"\\n"  }
-    { re2 = ::regexp2(@"\r"), repl = @"\\r"  }
+    { re2 = regexp2(@"\\"), repl = @"\\\\" }
+    { re2 = regexp2(@""""), repl = @"\\""" }
+    { re2 = regexp2(@"\n"), repl = @"\\n"  }
+    { re2 = regexp2(@"\r"), repl = @"\\r"  }
   ]
   for (local ch = 0; ch < 32; ch++)
     escapeConfig.append({
-      re2 = ::regexp2(string.format(@"\x%02X", ch))
+      re2 = regexp2(string.format(@"\x%02X", ch))
       repl = string.format(@"\\u%04X", ch)
     })
-} else  if ("regexp" in rootTable) {
-  intRegExp = ::regexp(@"^-?(\d+)$")
-  floatRegExp  = ::regexp(@"^-?(\d+)(\.?)(\d*)$")
-  trimRegExp = ::regexp(@"^(\s+)|(\s+)$")
+}
+else if ("regexp" in rootTable) {
+  local regexp = rootTable.regexp
+  intRegExp = regexp(@"^-?(\d+)$")
+  floatRegExp  = regexp(@"^-?(\d+)(\.?)(\d*)$")
+  trimRegExp = regexp(@"^(\s+)|(\s+)$")
   stripTagsConfig = [
     {
-      re2 = ::regexp(@"~")
+      re2 = regexp(@"~")
       repl = "~~"
     }
     {
-      re2 = ::regexp("\"")
+      re2 = regexp("\"")
       repl = "~\""
     }
     {
-      re2 = ::regexp(@"\r")
+      re2 = regexp(@"\r")
       repl = "~r"
     }
     {
-      re2 = ::regexp(@"\n")
+      re2 = regexp(@"\n")
       repl = "~n"
     }
     {
-      re2 = ::regexp(@"\'")
+      re2 = regexp(@"\'")
       repl = "~\'"
     }
   ]
   escapeConfig = [
-    { re2 = ::regexp(@"\\"), repl = @"\\\\" }
-    { re2 = ::regexp(@""""), repl = @"\\""" }
-    { re2 = ::regexp(@"\n"), repl = @"\\n"  }
-    { re2 = ::regexp(@"\r"), repl = @"\\r"  }
+    { re2 = regexp(@"\\"), repl = @"\\\\" }
+    { re2 = regexp(@""""), repl = @"\\""" }
+    { re2 = regexp(@"\n"), repl = @"\\n"  }
+    { re2 = regexp(@"\r"), repl = @"\\r"  }
   ]
   for (local ch = 0; ch < 32; ch++)
     escapeConfig.append({
-      re2 = ::regexp(string.format(@"\x%02X", ch))
+      re2 = regexp(string.format(@"\x%02X", ch))
       repl = string.format(@"\\u%04X", ch)
     })
 }
@@ -152,7 +155,7 @@ local function func2str(func, p={}){
   local showdefparams = p?.showdefparams ?? compact
   local tostr_func = p?.tostr_func ?? @(v) $"{v}"
 
-  if (::type(func)=="thread") {
+  if (type(func)=="thread") {
     return $"thread: {func.getstatus()}"
   }
 
@@ -200,11 +203,11 @@ local simple_types = ["string", "float", "bool", "integer","null"]
 local function_types = ["function", "generator", "thread"]
 
 local function tostring_any(input, tostringfunc=null, compact=true) {
-  local typ = ::type(input)
+  local typ = type(input)
   if (tostringfunc!=null) {
-    if (::type(tostringfunc) == "table")
+    if (type(tostringfunc) == "table")
       tostringfunc = [tostringfunc]
-    else if (::type(tostringfunc) == "array") {
+    else if (type(tostringfunc) == "array") {
       foreach (tf in tostringfunc){
         if (tf?.compare != null && tf.compare(input)){
           return tf.tostring(input)
@@ -273,9 +276,9 @@ local function tostring_r(input, params=defTostringParams) {
     }
   ]
   local function tostringLeaf(val) {
-    local typ =::type(val)
+    local typ =type(val)
     if (tostringfunc!=null) {
-      if (::type(tostringfunc) == "table")
+      if (type(tostringfunc) == "table")
         tostringfunc = [tostringfunc]
       foreach (tf in tostringfunc)
         if (tf.compare(val))
@@ -288,7 +291,7 @@ local function tostring_r(input, params=defTostringParams) {
   }
 
   local function openSym(value) {
-    local typ = ::type(value)
+    local typ = type(value)
     if (typ=="array")
       return "["
     if (typ=="class")
@@ -299,7 +302,7 @@ local function tostring_r(input, params=defTostringParams) {
       return "{"
   }
   local function closeSym(value) {
-    local typ = ::type(value)
+    local typ = type(value)
     if (typ=="array")
       return "]"
     else
@@ -315,7 +318,7 @@ local function tostring_r(input, params=defTostringParams) {
       arrInd=indent
     local out = []
     foreach (key, value in input) {
-      local typ = ::type(value)
+      local typ = type(value)
       local isArray = typ=="array"
       local tostringLeafv=tostringLeaf(value)
       if (tostringLeafv[0]) {
@@ -340,7 +343,7 @@ local function tostring_r(input, params=defTostringParams) {
       else if (isArray && !showArrIdx) {
         if (!arrayElem)
           out.append(newline, indent, tostring_any(key, null, compact), " = ")
-        out.append("[", sub_tostring_r(value, $"{indent}{indentOnNewline}", curdeeplevel+1, true, arrSep, indent), "]")
+        out.append("[", sub_tostring_r(value, $"{indent}{indentOnNewline}", curdeeplevel+1, true, arrSep, indent), "]") //warning disable: -param-pos
         if (arrayElem && key!=input.len()-1)
           out.append(sep)
       }
@@ -355,7 +358,7 @@ local function tostring_r(input, params=defTostringParams) {
         if (arrayElem && key==input.len()-1 ){
           out.append(newline,arrInd)
         }
-        else if (arrayElem && key<input.len()-1 && table_types.indexof(::type(input[key+1]))!=0){
+        else if (arrayElem && key<input.len()-1 && table_types.indexof(type(input[key+1]))!=0){
           out.append(newline, indent)
         }
       }
@@ -399,7 +402,7 @@ local function substring(str, start = 0, length = null) {
     local total = str.len()
     if (start < 0)
       start += total
-    start = ::clamp(start, 0, total)
+    start = clamp(start, 0, total)
     end = start + length
   }
   return slice(str, start, end)
@@ -580,9 +583,9 @@ local function floatToStringRounded(value, presize) {
 }
 
 local function isStringInteger(str) {
-  if (::type(str) == "integer")
+  if (type(str) == "integer")
     return true
-  if (::type(str) != "string")
+  if (type(str) != "string")
     return false
   if (intRegExp != null)
     return intRegExp.match(str)
@@ -600,34 +603,36 @@ local function isStringInteger(str) {
 }
 
 local function isStringFloat(str, separator=".") {
-  if (::type(str) == "integer" || ::type(str) == "float")
+  if (type(str) == "integer" || type(str) == "float")
     return true
-  if (::type(str) != "string")
+  if (type(str) != "string")
     return false
   if (floatRegExp != null)
     return floatRegExp.match(str)
   if (startsWith(str,"-"))
     str=str.slice(1)
   local s_list = split(str,separator)
-  if (s_list.len() > 3)
+  if (s_list.len() > 2)
     return false
   local ok = true
   foreach (s in s_list) {
     if (startsWith(s,"-"))
       ok = false
-    try { ok = ok && str.tointeger().tostring() == str }
+    try {
+      ok = ok && s.tointeger().tostring() == s
+    }
     catch(e) { ok = false }
   }
   return ok
 }
 
 local function toIntegerSafe(str, defValue = 0, needAssert = true) {
-  if (::type(str) == "string")
+  if (type(str) == "string")
     str = string.strip(str)
   if (isStringInteger(str))
     return str.tointeger()
   if (needAssert)
-    ::assert(false, @() $"can't convert '{str}' to integer")
+    assert(false, @() $"can't convert '{str}' to integer")
   return defValue
 }
 
@@ -653,7 +658,7 @@ if (utf8 != null) {
       return str
     local utf8Str = utf8(str)
     local strLength = utf8Str.charCount()
-    if (symbolsNum <= 0 || symbolsNum >= strLength)
+    if (symbolsNum <= 0 || symbolsNum >= strLength) // warning disable: -range-check
       return utf8Str.strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER)
     return "".concat(utf8(utf8Str.slice(0, symbolsNum)).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER),
       utf8Str.slice(symbolsNum, strLength))
@@ -664,7 +669,7 @@ if (utf8 != null) {
   }
 }
 else {
-  local function noUtf8Module(...) { ::assert("No 'utf8' module") }
+  local function noUtf8Module(...) { assert("No 'utf8' module") }
 
   intToUtf8Char = noUtf8Module
   utf8ToUpper = noUtf8Module
@@ -727,15 +732,15 @@ local function stripTags(str) {
   if (!str || !str.len())
     return ""
   if (stripTagsConfig == null)
-    ::assert(stripTagsConfig != null, "stripTags is not working without regexp")
+    assert(stripTagsConfig != null, "stripTags is not working without regexp")
   foreach(test in stripTagsConfig)
     str = test.re2.replace(test.repl, str)
   return str
 }
 
 local function escape(str) {
-  if (::type(str) != "string") {
-    ::assert(false, @() $"wrong escape param type: {::type(str)}")
+  if (type(str) != "string") {
+    assert(false, @() $"wrong escape param type: {type(str)}")
     return ""
   }
   foreach(test in escapeConfig)
@@ -759,7 +764,7 @@ local function pprint(...){
     return ret
   }
   if (vargv.len()<=1)
-    ::print("".concat(tostring_r(vargv[0]),"\n"))
+    print("".concat(tostring_r(vargv[0]),"\n"))
   else {
     local a = vargv.map(@(i) tostring_r(i))
     local res = ""
@@ -785,13 +790,13 @@ local function pprint(...){
 
       prev_val_newline = i.slice(-1) == "\n" && len < maxlen
     }
-    ::print(res)
-    ::print("\n")
+    print(res)
+    print("\n")
   }
 }
 
 local function validateEmail(no_dump_email) {
-  if (::type(no_dump_email) != "string")
+  if (type(no_dump_email) != "string")
     return false
 
   local str = split(no_dump_email,"@")
@@ -834,41 +839,43 @@ local function clearBorderSymbolsMultiline(str) {
 }
 
 return {
-  INVALID_INDEX = INVALID_INDEX
-  slice = slice
-  substring = substring
-  startsWith = startsWith
-  endsWith = endsWith
-  indexOf = indexOf
-  lastIndexOf = lastIndexOf
-  indexOfAny = indexOfAny
-  lastIndexOfAny = lastIndexOfAny
-  countSubstrings = countSubstrings
-  implode = implode
-  join = join
-  split = split
-  replace = replace
-  trim = trim
-  floatToStringRounded = floatToStringRounded
-  isStringInteger = isStringInteger
-  isStringFloat = isStringFloat
-  intToUtf8Char = intToUtf8Char
-  toUpper = toUpper
-  toLower = toLower
-  utf8ToUpper = utf8ToUpper
-  utf8ToLower = utf8ToLower
-  hexStringToInt = hexStringToInt
-  cutPrefix = cutPrefix
-  cutPostfix = cutPostfix
-  intToStrWithDelimiter = intToStrWithDelimiter
-  stripTags = stripTags
-  escape = escape
-  tostring_any  = tostring_any
-  tostring_r = tostring_r
-  pprint = pprint
-  validateEmail = validateEmail
-  clearBorderSymbols = clearBorderSymbols
-  clearBorderSymbolsMultiline = clearBorderSymbolsMultiline
+  INVALID_INDEX
+  CASE_PAIR_LOWER
+  CASE_PAIR_UPPER
+  slice
+  substring
+  startsWith
+  endsWith
+  indexOf
+  lastIndexOf
+  indexOfAny
+  lastIndexOfAny
+  countSubstrings
+  implode
+  join
+  split
+  replace
+  trim
+  floatToStringRounded
+  isStringInteger
+  isStringFloat
+  intToUtf8Char
+  toUpper
+  toLower
+  utf8ToUpper
+  utf8ToLower
+  hexStringToInt
+  cutPrefix
+  cutPostfix
+  intToStrWithDelimiter
+  stripTags
+  escape
+  tostring_any
+  tostring_r
+  pprint
+  validateEmail
+  clearBorderSymbols
+  clearBorderSymbolsMultiline
 
-  toIntegerSafe = toIntegerSafe
+  toIntegerSafe
 }

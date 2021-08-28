@@ -147,10 +147,6 @@
         "gun_mask_06_dm": {
           "armorThickness": 250.0,
           "armorEffectiveThicknessMax": 300.0
-        },
-        "gun_mask_07_dm": {
-          "armorThickness": 50.0,
-          "armorEffectiveThicknessMax": 300.0
         }
       },
       "hull_turret_spaced_armor": {
@@ -388,6 +384,13 @@
         },
         "turret_04_back_dm": {
           "armorThickness": 20.0
+        },
+        "composite_armor_turret_03_dm": {
+          "armorThickness": 20.0,
+          "hidableInXrayViewer": true
+        },
+        "turret_09_top_dm": {
+          "armorThickness": 12.7
         }
       },
       "optics": {
@@ -445,7 +448,7 @@
         "armorClass": "tank_barrel",
         "hp": 250.0,
         "gun_barrel_dm": {
-          "armorThickness": 25.0
+          "armorThickness": 40.0
         },
         "gun_barrel_01_dm": {
           "armorThickness": 10.0,
@@ -1953,6 +1956,16 @@
             }
           }
         ]
+      },
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_turret_03_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_03_dm",
+            "xrayTextThickness": 20.0
+          }
+        }
       }
     }
   },
@@ -2558,7 +2571,6 @@
             "verticalOmegaMult": 1.0,
             "verticalSpeedLimitKPH": 75.0,
             "speedFromVehicleVerticalMult": -1.0,
-            "speedPitch": 8.0,
             "errorKPHToDegrees": [
               {
                 "row": [5.0,0.0]
@@ -3536,7 +3548,6 @@
                   "verticalOmegaMult": 1.0,
                   "verticalSpeedLimitKPH": 75.0,
                   "speedFromVehicleVerticalMult": -1.0,
-                  "speedPitch": 8.0,
                   "errorKPHToDegrees": [
                     {
                       "row": [5.0,0.0]

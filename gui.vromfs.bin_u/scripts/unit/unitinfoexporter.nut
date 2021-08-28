@@ -1,4 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {
@@ -167,7 +168,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   {
     fBlk[COUNTRY_GROUP] = ::DataBlock()
 
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
       fBlk[COUNTRY_GROUP][country] = ::loc(country)
   }
 

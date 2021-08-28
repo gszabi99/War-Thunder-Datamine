@@ -54,11 +54,11 @@
       }
     },
     "c_dural3": {
-      "elevon_l_dm": {
+      "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "elevon_r_dm": {
+      "elevator1_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -227,7 +227,7 @@
     {
       "part": [
         {
-          "name": "elevon_l_dm"
+          "name": "elevator0_dm"
         },
         {
           "onHit": {
@@ -284,7 +284,7 @@
     {
       "part": [
         {
-          "name": "elevon_r_dm"
+          "name": "elevator1_dm"
         },
         {
           "onHit": {
@@ -2126,12 +2126,26 @@
         {
           "display": {
             "textureArea": [0.0,0.0,1.0,1.0],
-            "page": {
-              "type": "plane_ils",
-              "ilsSize": [0.24,0.28],
-              "ilsOffsetForce": 0.0,
-              "brightnessMult": 3.5
-            }
+            "page": [
+              {
+                "type": "plane_ils"
+              },
+              {
+                "ilsSize": [0.2,0.2]
+              },
+              {
+                "ilsSize": [0.2,0.2]
+              },
+              {
+                "ilsOffsetForce": 0.0
+              },
+              {
+                "brightnessMult": 3.5
+              },
+              {
+                "ilsColor": "#0aff0a64"
+              }
+            ]
           }
         }
       ]
@@ -2415,11 +2429,11 @@
   },
   "cutting": {
     "emtr_break_wing1_l_from": [-0.0928195,0.743883,1.9198],
-    "emtr_break_wing1_l_to": [-0.0938195,0.743883,2.38459],
+    "emtr_break_wing1_l_to": [-0.0938195,0.743883,3.08178],
     "emtr_break_wing2_l_from": [-0.0938195,0.743883,3.08178],
     "emtr_break_wing2_l_to": [-0.0938195,0.743883,3.57296],
     "emtr_break_wing1_r_from": [-0.0928195,0.743883,-1.9198],
-    "emtr_break_wing1_r_to": [-0.0938195,0.743883,-2.38459],
+    "emtr_break_wing1_r_to": [-0.0938195,0.743883,-3.08178],
     "emtr_break_wing2_r_from": [-0.0938195,0.743883,-3.08178],
     "emtr_break_wing2_r_to": [-0.0938195,0.743883,-3.57296],
     "emtr_break_wing_tail": [-3.2,0.0,0.0],

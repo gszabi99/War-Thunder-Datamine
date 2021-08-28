@@ -1826,7 +1826,7 @@
         },
         {
           "triggerEnable": {
-            "target": "hiryu_die"
+            "target": "hiryu_hit_once"
           }
         }
       ],
@@ -1986,6 +1986,263 @@
       ],
       "else_actions": []
     },
+    "hiryu_hit_once": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isDamagedByPlayerBombOrTorp",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "ijn_hiryu"
+        }
+      },
+      "actions": [
+        {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": false,
+            "fullRestore": true,
+            "target": "ijn_hiryu"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "body_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "engine_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart1_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart2_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart3_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.3,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart4_dm"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "hiryu_hit_twice"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "hiryu_hit_twice": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": [
+          {
+            "func": "less"
+          },
+          {
+            "check_objects": "any"
+          },
+          {
+            "check_parts": "any"
+          },
+          {
+            "value": 0.69
+          },
+          {
+            "object": "ijn_hiryu"
+          },
+          {
+            "planePart": "body_dm"
+          },
+          {
+            "planePart": "engine_dm"
+          },
+          {
+            "planePart": "bodypart1_dm"
+          },
+          {
+            "planePart": "bodypart2_dm"
+          },
+          {
+            "planePart": "bodypart3_dm"
+          },
+          {
+            "planePart": "bodypart4_dm"
+          },
+          {
+            "tankPart": ""
+          }
+        ]
+      },
+      "actions": [
+        {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": false,
+            "fullRestore": true,
+            "target": "ijn_hiryu"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "body_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "engine_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart1_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart2_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart3_dm"
+          }
+        },
+        {
+          "unitDamage": {
+            "power": 0.6,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "ijn_hiryu",
+            "partName": "bodypart4_dm"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "hiryu_die"
+          }
+        }
+      ],
+      "else_actions": []
+    },
     "hiryu_die": {
       "is_enabled": false,
       "comments": "",
@@ -2000,17 +2257,6 @@
         }
       },
       "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isDamagedByPlayerBombOrTorp",
-          "object_marking": 0,
-          "check_objects": "any",
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ijn_hiryu"
-        },
         "unitWhenPartHp": [
           {
             "func": "less"
@@ -2022,10 +2268,16 @@
             "check_parts": "any"
           },
           {
-            "value": 0.5
+            "value": 0.39
           },
           {
             "object": "ijn_hiryu"
+          },
+          {
+            "planePart": "body_dm"
+          },
+          {
+            "planePart": "engine_dm"
           },
           {
             "planePart": "bodypart1_dm"

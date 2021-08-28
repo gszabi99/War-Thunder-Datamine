@@ -73,7 +73,7 @@
       "mass": 10.9,
       "explosiveType": "comp_b",
       "explosiveMass": 2.08,
-      "massEnd": 10.9,
+      "massEnd": 9.8,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
@@ -91,12 +91,14 @@
       "dragCx": 0.027,
       "length": 1.15,
       "distFromCmToStab": 0.005,
-      "CxK": 1.5,
+      "CxK": 1.145,
       "WdK": [0.1,0.1,0.1],
+      "irBeaconBand": 5,
       "hasProximityFuse": true,
-      "force": 1240.0,
+      "force": 945.0,
       "timeFire": 2.2,
       "thrustDeviation": 0.01,
+      "timeLife": 15.0,
       "operated": true,
       "operatedDist": 2200.0,
       "autoLeveling": true,
@@ -104,13 +106,13 @@
       "explosionEffect": "hit_133_160mm_metal_he",
       "groundCollisionEffect": "hit_133_160mm_dirt_he",
       "ricochetEffect": "hit_133_160mm_metal_ap",
-      "waterCollisionEffect": "hit_133_160mm_water",
+      "waterCollisionEffect": "hit_133_160mm_water_he",
       "explosionPatchRadius": 4.0,
       "fireEffect": "rocket_fire_short",
       "smokeEffect": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
-      "maxDistance": 3000.0,
+      "maxDistance": 2200.0,
       "minDistance": 30.0,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
@@ -343,7 +345,7 @@
         "visual": {
           "traceFreq": 1,
           "tracer": "152mmRed",
-          "trail": "black"
+          "trail": "noTrail"
         }
       }
     }
@@ -383,7 +385,7 @@
         "mass": 10.9,
         "explosiveType": "comp_b",
         "explosiveMass": 2.08,
-        "massEnd": 10.9,
+        "massEnd": 9.8,
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
@@ -401,12 +403,14 @@
         "dragCx": 0.027,
         "length": 1.15,
         "distFromCmToStab": 0.005,
-        "CxK": 1.5,
+        "CxK": 1.145,
         "WdK": [0.1,0.1,0.1],
+        "irBeaconBand": 5,
         "hasProximityFuse": true,
-        "force": 1240.0,
+        "force": 945.0,
         "timeFire": 2.2,
         "thrustDeviation": 0.01,
+        "timeLife": 15.0,
         "operated": true,
         "operatedDist": 2200.0,
         "autoLeveling": true,
@@ -414,13 +418,13 @@
         "explosionEffect": "hit_133_160mm_metal_he",
         "groundCollisionEffect": "hit_133_160mm_dirt_he",
         "ricochetEffect": "hit_133_160mm_metal_ap",
-        "waterCollisionEffect": "hit_133_160mm_water",
+        "waterCollisionEffect": "hit_133_160mm_water_he",
         "explosionPatchRadius": 4.0,
         "fireEffect": "rocket_fire_short",
         "smokeEffect": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
-        "maxDistance": 3000.0,
+        "maxDistance": 2200.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,
         "spawnExplosionFx": false,
@@ -653,7 +657,7 @@
           "visual": {
             "traceFreq": 1,
             "tracer": "152mmRed",
-            "trail": "black"
+            "trail": "noTrail"
           }
         }
       }

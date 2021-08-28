@@ -392,8 +392,14 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFilterEditBoxCancel()
   {
-    scene.findObject("filter_edit_box")?.setValue("")
-    selectMapById(currentMapId)
+    local editBoxObj = scene.findObject("filter_edit_box")
+    if (editBoxObj.getValue() != "")
+    {
+      editBoxObj.setValue("")
+      selectMapById(currentMapId)
+    }
+    else
+      goBack()
   }
 
   function onFilterEditBoxChangeValue(obj)

@@ -1,4 +1,5 @@
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)
@@ -97,6 +98,67 @@ local fillHSVOption_ThermovisionColor = function(descr)
   descr.value = ::get_thermovision_index()
 }
 
+//Allow White and Black color
+local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = null, defBri = null,
+  curHue = null, customItems = null)
+{
+  local hueStep = 22.5
+  if (curHue==null)
+    curHue = ::get_gui_option(descr.type)
+  if (!::is_numeric(curHue))
+    curHue = -1
+
+  descr.id = id
+  descr.items = []
+  descr.values = []
+  if (defHue != null)
+  {
+    descr.items.append({ hue = defHue, sat = defSat, val = defBri, text = ::loc("options/hudDefault")})
+    descr.values.append(defHue)
+  }
+
+  if (customItems == null)
+  {
+    //default palette
+    local even = false
+    for(local hue = 0.0001; hue < 360.0 - 0.5*hueStep; hue += hueStep)
+    {
+      local h = hue + (even ? 360.0 : 0)
+      descr.items.append({ hue = h })
+      descr.values.append(h)
+      h = hue + (even ? 0 : 360.0)
+      descr.items.append({ hue = h })
+      descr.values.append(h)
+      even = !even
+    }
+  }
+  else
+  {
+    //custom items in option list
+    foreach(item in customItems)
+    {
+      descr.items.append({ hue = item })
+      descr.values.append(item)
+    }
+  }
+
+  if (defSat >= 0.000001) //create white (in case it's not default)
+  {
+    descr.items.append({ hue = 0.0, sat = 0.0, val = 0.9})
+    descr.values.append(0.0)
+  }
+
+  //now black
+  descr.items.append({ hue = 0.0, sat = 0.0, val = 0.0})
+  descr.values.append(1.0)
+
+  local valueIdx = ::find_nearest(curHue, descr.values)
+  if (curHue == -1)
+    valueIdx = 0 // defValue
+  if (valueIdx >= 0)
+    descr.value = valueIdx
+}
+
 local fillHueOption = function(descr, id, defHue = null, curHue = null, customItems = null)
 {
   local hueStep = 22.5
@@ -146,6 +208,31 @@ local fillHueOption = function(descr, id, defHue = null, curHue = null, customIt
     descr.value = valueIdx
 }
 
+local function fillMultipleHueOption(descr, id, currentHueIndex)
+{
+  descr.id = id
+  descr.items = []
+  descr.values = []
+  local alertHueBlock = ::configs.GUI.get()?.alertHue
+  if (!::u.isDataBlock(alertHueBlock))
+    return
+  for (local i = 0; i < alertHueBlock.blockCount(); ++i)
+  {
+    local hueValues = []
+    local hueBlock = alertHueBlock.getBlock(i)
+    for (local j = 0; j < hueBlock.paramCount(); ++j)
+    {
+      hueValues.append(hueBlock.getParamValue(j))
+    }
+    if (i == 0)
+      descr.items.append({ hues = hueValues, text = ::loc("options/hudDefault")})
+    else
+      descr.items.append({ hues = hueValues })
+    descr.values.append(hueValues)
+  }
+  descr.value = currentHueIndex
+}
+
 local fillDynMapOption = function(descr)
 {
   local curMap = getTblValue("layout", ::mission_settings)
@@ -156,7 +243,7 @@ local fillDynMapOption = function(descr)
     {
       local db = blkFromPath(layout.mis_file)
       local tags = db.mission_settings.mission.tags % "tag"
-      local airTags = ::show_aircraft.tags
+      local airTags = showedUnit.value.tags
       local skip = false
       foreach (tag in tags)
       {
@@ -196,12 +283,13 @@ local fillDynMapOption = function(descr)
 }
 
 return {
-  checkArgument = checkArgument
-
-  createDefaultOption = createDefaultOption
-  fillBoolOption = fillBoolOption
+  checkArgument
+  createDefaultOption
+  fillBoolOption
+  fillHueSaturationBrightnessOption
   fillHueOption = fillHueOption
-  fillDynMapOption = fillDynMapOption
-  setHSVOption_ThermovisionColor = setHSVOption_ThermovisionColor
-  fillHSVOption_ThermovisionColor = fillHSVOption_ThermovisionColor
+  fillMultipleHueOption
+  fillDynMapOption
+  setHSVOption_ThermovisionColor
+  fillHSVOption_ThermovisionColor
 }

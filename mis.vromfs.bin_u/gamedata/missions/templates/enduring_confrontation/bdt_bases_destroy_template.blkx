@@ -195,6 +195,11 @@
           },
           {
             "comment": {
+              "value": "getting target name"
+            }
+          },
+          {
+            "comment": {
               "value": "выполняем проверку доступно ли имя"
             }
           },
@@ -234,6 +239,12 @@
             "varSetString": {
               "value": "bdt_t1_bomb_zone_",
               "var": "bdt_t1_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_bomb_zone_",
+              "var": "bdt_spawn_t1_bombing_zone_target_name"
             }
           },
           {
@@ -290,6 +301,20 @@
               "digits": 0,
               "value": "_aaa_point_",
               "var": "bdt_t1_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t1_cur_spawn_random_idx",
+              "var": "bdt_spawn_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 0,
+              "value": "_bomb_target",
+              "var": "bdt_spawn_t1_bombing_zone_target_name"
             }
           },
           {
@@ -690,7 +715,7 @@
           },
           {
             "comment": {
-              "value": "спавним зону"
+              "value": "need to check distance"
             }
           },
           {
@@ -708,7 +733,7 @@
           },
           {
             "triggerEnable": {
-              "target": "bdt_t1_spawn_zone_show"
+              "target": "bdt_t1_spawn_distance_check"
             }
           }
         ],
@@ -720,6 +745,55 @@
             "operator": "add",
             "value": -1.0,
             "var": "bdt_t1_cur_base_spawn_idx"
+          },
+          "triggerEnable": {
+            "target": "bdt_t1_spawn_rotator"
+          }
+        }
+      },
+      "bdt_t1_spawn_distance_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 15000.0,
+            "math": "notNear2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object": "@bdt_t1_cur_spawn_zone_name",
+            "target": "bdt_t1_targets_squad",
+            "var": "bdt_t1_min_zone_distance",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "distance is ok. no active bases near"
+          },
+          "triggerEnable": {
+            "target": "bdt_t1_spawn_zone_show"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "active base near. need to find another zone"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_rotator"
@@ -787,9 +861,14 @@
             }
           },
           {
-            "unitWakeUp": {
-              "target": "@bdt_spawn_t1_bombing_zone_object_name"
-            }
+            "unitWakeUp": [
+              {
+                "target": "@bdt_spawn_t1_bombing_zone_object_name"
+              },
+              {
+                "target": "@bdt_spawn_t1_bombing_zone_target_name"
+              }
+            ]
           },
           {
             "missionSetBombingArea": {
@@ -1043,6 +1122,11 @@
           },
           {
             "comment": {
+              "value": "getting target name"
+            }
+          },
+          {
+            "comment": {
               "value": "выполняем проверку доступно ли имя"
             }
           },
@@ -1082,6 +1166,12 @@
             "varSetString": {
               "value": "bdt_t2_bomb_zone_",
               "var": "bdt_t2_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_bomb_zone_",
+              "var": "bdt_spawn_t2_bombing_zone_target_name"
             }
           },
           {
@@ -1138,6 +1228,20 @@
               "digits": 0,
               "value": "_aaa_point_",
               "var": "bdt_t2_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t2_cur_spawn_random_idx",
+              "var": "bdt_spawn_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 0,
+              "value": "_bomb_target",
+              "var": "bdt_spawn_t2_bombing_zone_target_name"
             }
           },
           {
@@ -1549,7 +1653,7 @@
           },
           {
             "triggerEnable": {
-              "target": "bdt_t2_spawn_zone_show"
+              "target": "bdt_t2_spawn_distance_check"
             }
           }
         ],
@@ -1561,6 +1665,55 @@
             "operator": "add",
             "value": -1.0,
             "var": "bdt_t2_cur_base_spawn_idx"
+          },
+          "triggerEnable": {
+            "target": "bdt_t2_spawn_rotator"
+          }
+        }
+      },
+      "bdt_t2_spawn_distance_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 15000.0,
+            "math": "notNear2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object": "@bdt_t2_cur_spawn_zone_name",
+            "target": "bdt_t2_targets_squad",
+            "var": "bdt_t2_min_zone_distance",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "distance is ok. no active bases near"
+          },
+          "triggerEnable": {
+            "target": "bdt_t2_spawn_zone_show"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "active base near. need to find another zone"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_rotator"
@@ -1641,9 +1794,14 @@
             }
           },
           {
-            "unitWakeUp": {
-              "target": "@bdt_spawn_t2_bombing_zone_object_name"
-            }
+            "unitWakeUp": [
+              {
+                "target": "@bdt_spawn_t2_bombing_zone_object_name"
+              },
+              {
+                "target": "@bdt_spawn_t2_bombing_zone_target_name"
+              }
+            ]
           },
           {
             "missionSetBombingArea": {
@@ -2052,11 +2210,6 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше трех проверяем"
-            }
-          },
-          {
-            "comment": {
               "value": "увеличиваем индекс на 1"
             }
           },
@@ -2068,21 +2221,6 @@
           {
             "comment": {
               "value": "получаем имя бомбовой зоны"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя таргета бомбовой зоны"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зенитки"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя зоны в которой находится аэродром"
             }
           },
           {
@@ -2104,12 +2242,6 @@
             }
           },
           {
-            "varSetString": {
-              "value": "bdt_t1_bomb_target_",
-              "var": "bdt_capture_t1_aaa_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_capture_t1_bombing_zone_idx",
               "digits": 2,
@@ -2124,43 +2256,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "bdt_capture_t1_bombing_zone_target_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@bdt_capture_t1_bombing_zone_idx",
-              "digits": 2,
-              "var": "bdt_capture_t1_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_aaa",
-              "digits": 0,
-              "var": "bdt_capture_t1_aaa_name"
-            }
-          },
-          {
             "varGetStringValue": {
               "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
               "var": "bdt_capture_t1_bombing_zone_name"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
-              "var": "bdt_capture_t1_bombing_zone_target_name"
-            }
-          },
-          {
-            "__getOwnArea": {
-              "name": "@bdt_capture_t1_bombing_zone_name",
-              "template": "flt_area_",
-              "out_var": "bdt_capture_t1_own_area_name"
             }
           },
           {
@@ -2217,6 +2315,26 @@
           },
           {
             "comment": {
+              "value": "getting target name"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting aaa name"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting real index"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting object name"
+            }
+          },
+          {
+            "comment": {
               "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
@@ -2228,6 +2346,18 @@
             }
           },
           {
+            "varSetString": {
+              "value": "bdt_t1_bomb_target_",
+              "var": "bdt_capture_t1_aaa_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_bomb_object_",
+              "var": "bdt_capture_t1_object_name"
+            }
+          },
+          {
             "varAddString": {
               "value": "_state",
               "digits": 0,
@@ -2235,10 +2365,50 @@
             }
           },
           {
+            "varAddString": {
+              "value": "_bomb_target",
+              "digits": 0,
+              "var": "bdt_capture_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@bdt_capture_t1_bombing_zone_idx",
+              "digits": 2,
+              "var": "bdt_capture_t1_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_aaa",
+              "digits": 0,
+              "var": "bdt_capture_t1_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@bdt_capture_t1_bombing_zone_real_idx",
+              "digits": 2,
+              "var": "@bdt_capture_t1_object_name"
+            }
+          },
+          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_capture_t1_own_state_idx",
               "input_var": "@bdt_capture_t1_own_state_name"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
+              "var": "bdt_capture_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varGetIntFromString": {
+              "value": "@bdt_capture_t1_bombing_zone_name",
+              "var": "bdt_capture_t1_bombing_zone_real_idx"
             }
           },
           {
@@ -2320,6 +2490,16 @@
               "target": "@bdt_capture_t1_bomb_zone_name",
               "damageHP": 900000.0
             }
+          },
+          {
+            "unitPutToSleep": [
+              {
+                "target": "@bdt_capture_t1_object_name"
+              },
+              {
+                "target": "@bdt_spawn_t1_bombing_zone_object_name"
+              }
+            ]
           },
           {
             "__unitDamage": {
@@ -2425,15 +2605,10 @@
             "var_value": "bdt_capture_t2_bombing_zone_idx",
             "value": 3,
             "comparasion_func": "less",
-            "var_value_other": "bdt_t2_active_bases_max_count"
+            "var_value_other": "bdt_t1_active_bases_max_count"
           }
         },
         "actions": [
-          {
-            "comment": {
-              "value": "индекс меньше трех проверяем"
-            }
-          },
           {
             "comment": {
               "value": "увеличиваем индекс на 1"
@@ -2446,22 +2621,7 @@
           },
           {
             "comment": {
-              "value": "получаем имя аирфилда"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя таргета филда"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зенитки"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя зоны в которой находится аэродром"
+              "value": "получаем имя бомбовой зоны"
             }
           },
           {
@@ -2483,12 +2643,6 @@
             }
           },
           {
-            "varSetString": {
-              "value": "bdt_t2_bomb_target_",
-              "var": "bdt_capture_t2_aaa_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_capture_t2_bombing_zone_idx",
               "digits": 2,
@@ -2503,43 +2657,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "_bomb_target",
-              "digits": 0,
-              "var": "bdt_capture_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@bdt_capture_t2_bombing_zone_idx",
-              "digits": 2,
-              "var": "bdt_capture_t2_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_aaa",
-              "digits": 0,
-              "var": "bdt_capture_t2_aaa_name"
-            }
-          },
-          {
             "varGetStringValue": {
               "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
               "var": "bdt_capture_t2_bombing_zone_name"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
-              "var": "bdt_capture_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "__getOwnArea": {
-              "name": "@bdt_capture_t2_bombing_zone_name",
-              "template": "flt_area_",
-              "out_var": "bdt_capture_t2_own_area_name"
             }
           },
           {
@@ -2596,6 +2716,26 @@
           },
           {
             "comment": {
+              "value": "getting target name"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting aaa name"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting real index"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting object name"
+            }
+          },
+          {
+            "comment": {
               "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
@@ -2607,10 +2747,50 @@
             }
           },
           {
+            "varSetString": {
+              "value": "bdt_t2_bomb_target_",
+              "var": "bdt_capture_t2_aaa_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_bomb_object_",
+              "var": "bdt_capture_t2_object_name"
+            }
+          },
+          {
             "varAddString": {
               "value": "_state",
               "digits": 0,
-              "var": "bdt_capture_t2_own_state_name"
+              "var": "bdt_capture_t1_own_state_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_bomb_target",
+              "digits": 0,
+              "var": "bdt_capture_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@bdt_capture_t2_bombing_zone_idx",
+              "digits": 2,
+              "var": "bdt_capture_t2_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_aaa",
+              "digits": 0,
+              "var": "bdt_capture_t2_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@bdt_capture_t2_bombing_zone_real_idx",
+              "digits": 2,
+              "var": "@bdt_capture_t2_object_name"
             }
           },
           {
@@ -2618,6 +2798,18 @@
               "value": 0,
               "var": "bdt_capture_t2_own_state_idx",
               "input_var": "@bdt_capture_t2_own_state_name"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
+              "var": "bdt_capture_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varGetIntFromString": {
+              "value": "@bdt_capture_t2_bombing_zone_name",
+              "var": "bdt_capture_t2_bombing_zone_real_idx"
             }
           },
           {
@@ -2699,6 +2891,16 @@
               "target": "@bdt_capture_t2_bomb_zone_name",
               "damageHP": 900000.0
             }
+          },
+          {
+            "unitPutToSleep": [
+              {
+                "target": "@bdt_capture_t2_object_name"
+              },
+              {
+                "target": "@bdt_spawn_t2_bombing_zone_object_name"
+              }
+            ]
           },
           {
             "__unitDamage": {
@@ -2788,6 +2990,11 @@
         },
         {
           "comment": {
+            "value": "putting targets to sleep"
+          }
+        },
+        {
+          "comment": {
             "value": "запускаем  шаблон"
           }
         },
@@ -2812,6 +3019,9 @@
             },
             {
               "target": "bomb_areas_17_20_check"
+            },
+            {
+              "target": "bomb_areas_21_50_check"
             }
           ]
         },
@@ -2888,6 +3098,16 @@
             },
             {
               "targetChangeProb": 0.25
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "bdt_t1_targets_squad"
+            },
+            {
+              "target": "bdt_t2_targets_squad"
             }
           ]
         }
@@ -3015,12 +3235,15 @@
               },
               {
                 "target": "bomb_areas_17_20_check"
+              },
+              {
+                "target": "bomb_areas_21_50_check"
               }
             ]
           },
           {
             "comment": {
-              "value": "6100 для истории"
+              "value": "4000 для истории"
             }
           },
           {
@@ -3030,7 +3253,7 @@
           },
           {
             "varSetReal": {
-              "value": 6100.0,
+              "value": 4000.0,
               "var": "bdt_base_hp"
             }
           },
@@ -3085,12 +3308,15 @@
               },
               {
                 "target": "bomb_areas_17_20_check"
+              },
+              {
+                "target": "bomb_areas_21_50_check"
               }
             ]
           },
           {
             "comment": {
-              "value": "10500 для истории"
+              "value": "6000 для истории"
             }
           },
           {
@@ -3100,7 +3326,7 @@
           },
           {
             "varSetReal": {
-              "value": 10500.0,
+              "value": 6000.0,
               "var": "bdt_base_hp"
             }
           },
@@ -3155,12 +3381,15 @@
               },
               {
                 "target": "bomb_areas_17_20_check"
+              },
+              {
+                "target": "bomb_areas_21_50_check"
               }
             ]
           },
           {
             "comment": {
-              "value": "16000 для истории"
+              "value": "10000 для истории"
             }
           },
           {
@@ -3170,7 +3399,7 @@
           },
           {
             "varSetReal": {
-              "value": 16000.0,
+              "value": 10000.0,
               "var": "bdt_base_hp"
             }
           },
@@ -3225,12 +3454,15 @@
               },
               {
                 "target": "bomb_areas_17_20_check"
+              },
+              {
+                "target": "bomb_areas_21_50_check"
               }
             ]
           },
           {
             "comment": {
-              "value": "25900 для истории"
+              "value": "16000 для истории"
             }
           },
           {
@@ -3240,7 +3472,7 @@
           },
           {
             "varSetReal": {
-              "value": 25900.0,
+              "value": 16000.0,
               "var": "bdt_base_hp"
             }
           },
@@ -3265,10 +3497,83 @@
             "time": 1.0
           }
         },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "bdt_balance_level",
+              "value": 16,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "bdt_balance_level",
+              "value": 21,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "triggerDisable": [
+              {
+                "target": "bomb_areas_0_3_check"
+              },
+              {
+                "target": "bomb_areas_4_7_check"
+              },
+              {
+                "target": "bomb_areas_8_11_check"
+              },
+              {
+                "target": "bomb_areas_12_16_check"
+              },
+              {
+                "target": "bomb_areas_21_50_check"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "22000 для истории"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetReal": {
+              "value": 22000.0,
+              "var": "bdt_base_hp"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "bomb_areas_helicpoters_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "bomb_areas_21_50_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
         "conditions": {
           "varCompareInt": {
             "var_value": "bdt_balance_level",
-            "value": 16,
+            "value": 20,
             "comparasion_func": "more"
           }
         },
@@ -3286,12 +3591,15 @@
               },
               {
                 "target": "bomb_areas_12_16_check"
+              },
+              {
+                "target": "bomb_areas_17_20_check"
               }
             ]
           },
           {
             "comment": {
-              "value": "25900 для истории"
+              "value": "28000 для истории"
             }
           },
           {
@@ -3301,7 +3609,7 @@
           },
           {
             "varSetReal": {
-              "value": 25900.0,
+              "value": 28000.0,
               "var": "bdt_base_hp"
             }
           },
@@ -3567,7 +3875,12 @@
           },
           {
             "comment": {
-              "value": "прячем объект"
+              "value": "getting object name"
+            }
+          },
+          {
+            "comment": {
+              "value": "getting target name"
             }
           },
           {
@@ -3588,6 +3901,11 @@
           {
             "comment": {
               "value": "назначаем таймер"
+            }
+          },
+          {
+            "comment": {
+              "value": "set object and target to sleep"
             }
           },
           {
@@ -3624,6 +3942,12 @@
           },
           {
             "varSetString": {
+              "value": "bdt_t1_bomb_object_",
+              "var": "bdt_destroy_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varSetString": {
               "value": "bdt_t2_destroy_zone_",
               "var": "bdt_t2_destroy_objective_name"
             }
@@ -3649,6 +3973,20 @@
           },
           {
             "varAddString": {
+              "value": "@bdt_destroy_t1_real_idx",
+              "digits": 2,
+              "var": "bdt_destroy_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_bomb_target",
+              "digits": 0,
+              "var": "bdt_destroy_t1_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
               "value": "@bdt_destroy_t1_bombing_zone_idx",
               "digits": 2,
               "var": "bdt_t2_destroy_objective_name"
@@ -3669,11 +4007,6 @@
             }
           },
           {
-            "unitPutToSleep": {
-              "target": "@bdt_destroy_t1_bombing_zone_object_name"
-            }
-          },
-          {
             "__triggerEnable": {
               "target": "bdt_t1_set_objectvie"
             }
@@ -3684,6 +4017,16 @@
               "var": "@bdt_destroy_t1_timer_var_name",
               "input_var": "bdt_respawn_time"
             }
+          },
+          {
+            "unitPutToSleep": [
+              {
+                "target": "@bdt_destroy_t1_bombing_zone_object_name"
+              },
+              {
+                "target": "@bdt_destroy_t1_bombing_zone_target_name"
+              }
+            ]
           },
           {
             "varModify": {
@@ -3912,6 +4255,11 @@
           },
           {
             "comment": {
+              "value": "getting target name"
+            }
+          },
+          {
+            "comment": {
               "value": "собираем имя обжектива"
             }
           },
@@ -3928,6 +4276,11 @@
           {
             "comment": {
               "value": "назначаем таймер"
+            }
+          },
+          {
+            "comment": {
+              "value": "set object and target to sleep"
             }
           },
           {
@@ -3964,6 +4317,12 @@
           },
           {
             "varSetString": {
+              "value": "bdt_t2_bomb_object_",
+              "var": "bdt_destroy_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varSetString": {
               "value": "bdt_t1_destroy_zone_",
               "var": "bdt_t1_destroy_objective_name"
             }
@@ -3989,6 +4348,20 @@
           },
           {
             "varAddString": {
+              "value": "@bdt_destroy_t2_real_idx",
+              "digits": 2,
+              "var": "bdt_destroy_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_bomb_target",
+              "digits": 0,
+              "var": "bdt_destroy_t2_bombing_zone_target_name"
+            }
+          },
+          {
+            "varAddString": {
               "value": "@bdt_destroy_t2_bombing_zone_idx",
               "digits": 2,
               "var": "bdt_t1_destroy_objective_name"
@@ -4009,11 +4382,6 @@
             }
           },
           {
-            "unitPutToSleep": {
-              "target": "@bdt_destroy_t2_bombing_zone_object_name"
-            }
-          },
-          {
             "__triggerEnable": {
               "target": "bdt_t2_set_objectvie"
             }
@@ -4024,6 +4392,16 @@
               "var": "@bdt_destroy_t2_timer_var_name",
               "input_var": "bdt_respawn_time"
             }
+          },
+          {
+            "unitPutToSleep": [
+              {
+                "target": "@bdt_destroy_t2_bombing_zone_object_name"
+              },
+              {
+                "target": "@bdt_destroy_t2_bombing_zone_target_name"
+              }
+            ]
           },
           {
             "varModify": {
@@ -5272,7 +5650,15 @@
     "bdt_capture_t1_bombing_zone_var_name": "",
     "bdt_capture_t2_bombing_zone_var_name": "",
     "bdt_mission_mode": "planes",
-    "bdt_game_mode": "jip"
+    "bdt_game_mode": "jip",
+    "bdt_spawn_t1_bombing_zone_target_name": "",
+    "bdt_spawn_t2_bombing_zone_target_name": "",
+    "bdt_capture_t1_bombing_zone_real_idx": 0,
+    "bdt_capture_t2_bombing_zone_real_idx": 0,
+    "bdt_capture_t1_object_name": "",
+    "bdt_capture_t2_object_name": "",
+    "bdt_t1_min_zone_distance": 10000.0,
+    "bdt_t2_min_zone_distance": 10000.0
   },
   "dialogs": [],
   "airfields": [],

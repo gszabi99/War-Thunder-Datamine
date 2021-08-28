@@ -1,4 +1,5 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local curPreset = {
   groupsList = {} //groups config by country
@@ -64,7 +65,7 @@ local function validatePresets(presetId, groupsList, countryPresets) {
   if ((countryPresets?.len() ?? 0) == 0)
     return generateDefaultPresets(groupsList)
 
-  foreach (countryId in ::shopCountriesList)
+  foreach (countryId in shopCountriesList)
   {
     local countryGroupsList = groupsList?[countryId]
     local countryPreset = countryPresets?[countryId]
@@ -257,7 +258,7 @@ local function getCurCraftsInfo() {
 
 local function getSlotItem(idCountry, idInCountry) {
   return ::getSlotItem(idCountry, idInCountry) ?? {
-    country = ::shopCountriesList[idCountry]
+    country = shopCountriesList[idCountry]
     idCountry = idCountry
     idInCountry = idInCountry
     id = -1
@@ -266,7 +267,7 @@ local function getSlotItem(idCountry, idInCountry) {
 
 local function getCrewByUnit(unit) {
   local country = unit.shopCountry
-  local idCountry = ::shopCountriesList.findindex(@(cName) cName == country)
+  local idCountry = shopCountriesList.findindex(@(cName) cName == country)
   local units = curPreset.countryPresets?[country].units ?? []
   local idInCountry = units.findindex(@(u) u == unit)
   if (idInCountry == null)

@@ -96,7 +96,7 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "bexplosionFx": "ship_explosion"
+    "bexplosionFx": "explosion_ship_small"
   },
   {
     "canReloadNonGuns": true
@@ -202,6 +202,12 @@
         "replace_tex": {
           "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ireland_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
         }
       },
       {
@@ -1418,22 +1424,19 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01",
-              "scale": 2.0
+              "emitter": "emtr_fire_engine_01"
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02",
-              "scale": 2.0
+              "emitter": "emtr_fire_engine_02"
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03",
-              "scale": 2.0
+              "emitter": "emtr_fire_engine_03"
             }
           }
         ]
@@ -1481,54 +1484,50 @@
           },
           {
             "fx": {
-              "name": "ship_ammo_fire",
+              "name": "explosion_ship_ammo_small",
               "emitter": "emtr_fire_ammo_01"
             }
           },
           {
             "fx": {
-              "name": "ship_ammo_fire",
+              "name": "explosion_ship_ammo_small",
               "emitter": "emtr_fire_ammo_02"
             }
           },
           {
             "fx": {
-              "name": "ship_ammo_fire",
+              "name": "explosion_ship_ammo_small",
               "emitter": "emtr_fire_ammo_03"
             }
           },
           {
             "fx": {
-              "name": "ship_ammo_fire",
+              "name": "explosion_ship_ammo_small",
               "emitter": "emtr_fire_ammo_04"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_fire_ammo_01",
-              "scale": 0.6
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_01"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_fire_ammo_02",
-              "scale": 0.6
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_02"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_fire_ammo_03",
-              "scale": 0.6
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_03"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_fire_ammo_04",
-              "scale": 0.6
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_04"
             }
           }
         ]
@@ -1541,29 +1540,25 @@
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_fire_ammo_01",
-              "scale": 2.0
+              "emitter": "emtr_fire_ammo_01"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_fire_ammo_02",
-              "scale": 2.0
+              "emitter": "emtr_fire_ammo_02"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_fire_ammo_03",
-              "scale": 2.0
+              "emitter": "emtr_fire_ammo_03"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_fire_ammo_04",
-              "scale": 2.0
+              "emitter": "emtr_fire_ammo_04"
             }
           }
         ]
@@ -1588,113 +1583,97 @@
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_01",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_01"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_02",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_02"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_03",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_03"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_04",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_04"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_05",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_05"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_06",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_06"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_07",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_07"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_08",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_08"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_09",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_09"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_10",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_10"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_11",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_11"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_12",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_12"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_13",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_13"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_14",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_14"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_15",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_15"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_16",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_16"
             }
           }
         ]
@@ -1719,113 +1698,97 @@
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_01",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_01"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_02",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_02"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_03",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_03"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_04",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_04"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_05",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_05"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_06",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_06"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_07",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_07"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_08",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_08"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_09",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_09"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_10",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_10"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_11",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_11"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_12",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_12"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_13",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_13"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_14",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_14"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_15",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_15"
             }
           },
           {
             "fx": {
               "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_16",
-              "scale": 2.0
+              "emitter": "emtr_smoke_small_dmg_16"
             }
           },
           {
@@ -1843,113 +1806,97 @@
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_01",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_01"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_02",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_02"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_03",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_03"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_04",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_04"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_05",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_05"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_06",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_06"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_07",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_07"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_08",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_08"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_09",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_09"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_10",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_10"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_11",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_11"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_12",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_12"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_13",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_13"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_14",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_14"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_15",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_15"
             }
           },
           {
             "fx": {
               "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_16",
-              "scale": 3.0
+              "emitter": "emtr_fire_small_dmg_16"
             }
           }
         ]
@@ -1961,116 +1908,221 @@
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_explosion_center_01",
-              "scale": 0.9
+              "name": "explosion_ship_small",
+              "emitter": "emtr_explosion_center_01"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_explosion_center_02",
-              "scale": 0.7
+              "name": "explosion_ship_small",
+              "emitter": "emtr_explosion_center_02"
             }
           },
           {
             "fx": {
-              "name": "ship_explosion",
-              "emitter": "emtr_explosion_center_03",
-              "scale": 0.6
+              "name": "explosion_ship_small",
+              "emitter": "emtr_explosion_center_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_explosion_center_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_explosion_center_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_explosion_center_03"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_fire_1"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_01"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_fire_2"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_02"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_fire_3"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_03"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_fire_4"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_04"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_explosion_1"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_01"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_explosion_2"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_02"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_explosion_3"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_03"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_explosion_4"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "emitter": "emtr_fire_ammo_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_small",
+              "emitter": "emtr_fire_ammo_04"
             }
           }
         ]
       },
       {
         "event": {
-          "name": "ammo_fire_1",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_01"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_fire_2",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_02"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_fire_3",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_03"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_fire_4",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_04"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_explosion_1",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_01"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_explosion_2",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_02"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_explosion_3",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_03"
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "ammo_explosion_4",
-          "fx": {
-            "name": "ship_ammo_fire",
-            "emitter": "emtr_fire_ammo_04"
-          }
-        }
-      },
-      {
-        "event": {
           "name": "torpedo_fire",
           "fx": {
-            "name": "ship_ammo_fire_large",
+            "name": "explosion_ship_ammo_small",
             "centerDmgPart": true
           }
         }
       },
       {
-        "event": {
-          "name": "torpedo_explosion",
-          "fx": {
-            "name": "ship_explosion_large_second",
-            "centerDmgPart": false
+        "event": [
+          {
+            "name": "torpedo_explosion"
+          },
+          {
+            "fx": {
+              "name": "explosion_ship_ammo_small",
+              "centerDmgPart": false
+            }
+          },
+          {
+            "fx": {
+              "name": "water_explosion_medium",
+              "centerDmgPart": false
+            }
           }
-        }
+        ]
       },
       {
         "procedural": {
@@ -2081,6 +2133,21 @@
         }
       }
     ]
+  },
+  {
+    "Effects": {
+      "waterSplashFx": "water_splash_small",
+      "sideSplashSpeedMult": 0.5,
+      "sideSplashUpDirMult": 0.4,
+      "sideSplashSpawnRate": 2.0,
+      "sideSplashNormalMult": 0.8,
+      "sideSplashemissionCurve": [1.0,0.0,0.0],
+      "waterSplashFxBow": "water_splash_small_bow_cmps_fx",
+      "bowSplashSpeedMult": 0.8,
+      "bowSplashUpDirMult": 0.5,
+      "bowSplashSpawnRate": 1.0,
+      "bowSplashNormalMult": 4.0
+    }
   },
   {
     "winch": {

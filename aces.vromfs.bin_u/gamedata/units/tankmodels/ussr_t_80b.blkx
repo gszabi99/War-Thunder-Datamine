@@ -117,6 +117,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -229,6 +232,12 @@
         },
         "turret_08_bottom_dm": {
           "armorThickness": 5.0
+        },
+        "turret_09_side_dm": {
+          "armorThickness": 50.0
+        },
+        "turret_09_front_dm": {
+          "armorThickness": 50.0
         }
       },
       "turret_composite_armor": {
@@ -388,9 +397,6 @@
         "turret_08_side_dm": {
           "armorThickness": 5.0
         },
-        "turret_09_side_dm": {
-          "armorThickness": 80.0
-        },
         "turret_05_front_dm": {
           "armorThickness": 30.0,
           "armorClass": "RHA_tank_modern"
@@ -400,11 +406,13 @@
         "armorClass": "ERA_K_I",
         "kineticProtectionEquivalent": 5.0,
         "cumulativeProtectionEquivalent": 400.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
+        "genericEffectiveThicknessMax": 15.0,
+        "cumulativeEffectiveThicknessMax": 475.0,
         "hp": 250.0,
         "armorThickness": 70.0,
-        "genericArmorQuality": 0.08,
         "genericDamageMult": 3.0,
+        "genericArmorQuality": 0.08,
+        "cumulativeArmorQuality": 2.86,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -5075,8 +5083,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

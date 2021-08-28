@@ -1,13 +1,13 @@
 ::g_script_reloader.loadOnce("scripts/ranks_common_shared.nut")
 
 local avatars = require("scripts/user/avatars.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 if (!("EUCT_TOTAL" in ::getroottable()))
   ::EUCT_TOTAL <- 7 //temporary to work without new exe
 
 ::max_player_rank <- 100
 ::max_country_rank <- 7
-::MAX_ECONOMIC_RANK <- ::get_ranks_blk()?.maxEconomicRank ?? 29
 
 ::discounts <- { //count from const in warpointsBlk by (name + "Mul")
 }
@@ -409,7 +409,7 @@ local minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @()
 
 local playerRankByCountries = {}
 local function updatePlayerRankByCountries() {
-  foreach(c in ::shopCountriesList)
+  foreach(c in shopCountriesList)
     playerRankByCountries[c] <- ::get_player_rank_by_country(c)
 }
 

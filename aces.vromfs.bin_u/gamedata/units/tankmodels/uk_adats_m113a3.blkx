@@ -135,6 +135,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -232,6 +235,10 @@
         },
         "turret_07_bottom_dm": {
           "armorThickness": 19.0
+        },
+        "composite_armor_hull_02_dm": {
+          "armorThickness": 6.0,
+          "hidableInXrayViewer": true
         }
       },
       "armor_al_5083": {
@@ -750,6 +757,20 @@
           "armorThrough": 20.0,
           "armorThickness": 10.0,
           "hp": 100.0
+        }
+      }
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm",
+            "xrayTextThickness": 6.0
+          }
         }
       }
     }
@@ -2353,7 +2374,12 @@
           "head": "bone_turret",
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "linkedAnimPart": {
+            "verNode": "bone_gun_02",
+            "verLimits": [0.0,70.0],
+            "verOriginLimits": [0.0,87.0]
+          }
         },
         "limits": {
           "yaw": [-180.0,180.0],
@@ -3129,7 +3155,12 @@
                   "head": "bone_turret",
                   "gun": "bone_gun_01",
                   "gunnerDm": "gunner_dm",
-                  "rotatedTurret": "bone_turret"
+                  "rotatedTurret": "bone_turret",
+                  "linkedAnimPart": {
+                    "verNode": "bone_gun_02",
+                    "verLimits": [0.0,70.0],
+                    "verOriginLimits": [0.0,87.0]
+                  }
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3321,8 +3352,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

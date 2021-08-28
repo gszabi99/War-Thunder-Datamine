@@ -138,6 +138,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -4213,18 +4216,17 @@
       "100mm_3of70": [],
       "100mm_9m117": {
         "maxToRespawn": 4
-      },
-      "100mm_9m117m1": {
-        "maxToRespawn": 4
-      },
-      "100mm_9m117m1_ammo_pack": {
-        "tier": 3
       }
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

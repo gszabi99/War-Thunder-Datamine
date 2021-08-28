@@ -1,5 +1,3 @@
-local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
-
 class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
 {
   wndType = handlerType.MODAL
@@ -34,30 +32,7 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
       || unlockType == ::UNLOCKABLE_SKIN
       || unlockType == ::UNLOCKABLE_ATTACHABLE)
       {
-        local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-        decorator = ::g_decorator.getDecorator(unlockData.id, decoratorType)
-
-        if (!decorator)
-          return
-
-        local decorUnit = decoratorType == ::g_decorator_type.SKINS ?
-          ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id)) :
-          ::get_player_cur_unit()
-
-        if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit)
-          && canStartPreviewScene(false))
-        {
-          local freeSlotIdx = decoratorType.getFreeSlotIdx(decorUnit)
-          local slotIdx = freeSlotIdx != -1 ? freeSlotIdx
-            : (decoratorType.getAvailableSlots(decorUnit) - 1)
-
-          decoratorUnit = decorUnit
-          decoratorSlot = slotIdx
-
-          local obj = scene.findObject("btn_use_decorator")
-          if (::check_obj(obj))
-            obj.setValue(::loc("decorator/use/" + decoratorType.resourceType))
-        }
+        updateResourceData(unlockData.id, unlockType)
       }
   }
 

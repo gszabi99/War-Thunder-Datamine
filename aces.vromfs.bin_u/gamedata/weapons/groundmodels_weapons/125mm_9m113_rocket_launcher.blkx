@@ -5,8 +5,8 @@
   "shotFreq": 0.15,
   "sound_path": "tanks/weapon_tanks/atgm",
   "sound_pathStudio": "ground/weapon/atgm",
-  "sound": "atgm",
-  "sound_inside": "atgm_interior",
+  "sound": "atgm_TOW",
+  "sound_inside": "atgm_TOW_interior",
   "reload_sound_path": "tanks/effects_tanks",
   "reload_sound_pathStudio": "ground/effects",
   "reload_sound": "reload_rocket",
@@ -33,7 +33,7 @@
     "explosionEffect": "hit_106_132mm_metal_he",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
     "ricochetEffect": "hit_106_132mm_metal_ap",
-    "waterCollisionEffect": "hit_106_132mm_water",
+    "waterCollisionEffect": "hit_106_132mm_water_he",
     "explosionPatchRadius": 3.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
@@ -52,17 +52,21 @@
     "explosiveType": "a_ix_1",
     "explosiveMass": 2.75,
     "mass": 14.5,
-    "massEnd": 10.0,
+    "massEnd": 12.8,
+    "massEnd1": 11.7,
     "maxDeltaAngle": 0.03,
     "dragCx": 0.01,
-    "length": 0.86,
+    "length": 1.165,
     "distFromCmToStab": 0.01,
-    "CxK": 0.1,
+    "CxK": 2.2,
     "WdK": [0.1,0.1,0.1],
-    "force": 3500.0,
-    "timeFire": 15.0,
+    "force": 1395.0,
+    "force1": 223.0,
+    "timeFire": 2.0,
+    "timeFire1": 13.0,
     "thrustDeviation": 0.0,
     "rotationRocket": 8.5,
+    "timeLife": 16.0,
     "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
@@ -81,9 +85,11 @@
     "statType": "hydra",
     "advancedMissiles": false,
     "useStartSpeed": true,
-    "startSpeed": 100.0,
-    "endSpeed": 205.0,
+    "startSpeed": 64.0,
+    "endSpeed": 248.0,
     "price": 3000.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
     "collisions": {
       "default": {
         "fx": "hit_106_132mm_dirt_he"
@@ -288,6 +294,14 @@
       "distance": 5.5,
       "damage": 600.0,
       "onHitChanceMultFire": 25.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
+      }
     }
   }
 }

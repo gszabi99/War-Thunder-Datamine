@@ -8,10 +8,10 @@ local isTMatrix = @(v) v instanceof TMatrix
 local function blkParamToString(name, val){
   local vType = " "
   if (val == null) { val = "null" }
-  else if (::type(val)=="integer") vType = ":i"
-  else if (::type(val)=="float") { vType = ":r"; val = (val % 1) ? $"{val}" : $"{val}.0" }
-  else if (::type(val)=="bool") vType = ":b"
-  else if (::type(val)=="string") { vType = ":t"; val = $"'{val}'"}
+  else if (type(val)=="integer") vType = ":i"
+  else if (type(val)=="float") { vType = ":r"; val = (val % 1) ? $"{val}" : $"{val}.0" }
+  else if (type(val)=="bool") vType = ":b"
+  else if (type(val)=="string") { vType = ":t"; val = $"'{val}'"}
   else if (isPoint2(val)) { vType = ":p2"; val = $"{val.x}, {val.y}"}
   else if (isPoint3(val)) { vType = ":p3"; val = $"{val.x}, {val.y}, {val.z}"}
   else if (isColor4(val)) { vType = ":c";  val = $"{255*val.r}, {255*val.g}, {255*val.b}, {255*val.a}"}
@@ -34,7 +34,7 @@ local function blkParamsToString(info, indent=0){
 local function datablockToAst(info, params = {}, result = null){
   result = result!=null ? [].extend(result) : []
   local recursionLevel = params?.recursionLevel ?? 6
-  local printFn = @(v, indent) ::type(v)=="array" ? result.extend(v) : result.append([v, indent]) // warning disable: -unwanted-modification
+  local printFn = @(v, indent) type(v)=="array" ? result.extend(v) : result.append([v, indent]) // warning disable: -unwanted-modification
   local blockName = (info.getBlockName()!="") ? $"{info.getBlockName()} " : ""
   local indent = params?.indent ?? 0
   if (blockName!="null ") {

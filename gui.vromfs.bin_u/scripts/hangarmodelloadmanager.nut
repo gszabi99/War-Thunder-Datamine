@@ -6,6 +6,8 @@ enum HangarModelLoadState
 
 local isLoading = persist("isLoading", @() ::Watched(false))
 
+local hangarUnitName = ::Watched(::hangar_get_current_unit_name())
+
 local function getLoadState() {
   // First check covers case when model was loaded from within C++.
   // Flag "isLoading" covers model loading from Squirrel.
@@ -25,6 +27,7 @@ local function loadModel(modelName) {
 local function onHangarModelLoaded() {
   if (::hangar_get_loaded_unit_name() == ::hangar_get_current_unit_name()) {
     isLoading(false)
+    hangarUnitName(::hangar_get_current_unit_name())
     ::broadcastEvent("HangarModelLoaded")
   }
 }
@@ -35,4 +38,5 @@ local function onHangarModelLoaded() {
 return {
   loadModel
   hasLoadedModel = @() getLoadState() == HangarModelLoadState.LOADED
+  hangarUnitName
 }

@@ -1,3 +1,5 @@
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+
 ::SlotbarPresetsList <- class
 {
   scene = null
@@ -63,7 +65,7 @@
 
   function update()
   {
-    if(::is_small_screen)
+    if(isSmallScreen)
       return
 
     local listObj = getListObj()

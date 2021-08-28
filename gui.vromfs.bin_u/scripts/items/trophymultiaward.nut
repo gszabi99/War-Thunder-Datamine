@@ -1,4 +1,5 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::TrophyMultiAward <- class
 {
@@ -375,7 +376,7 @@ local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
       })
     }
 
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       if (!(country in list))
         continue

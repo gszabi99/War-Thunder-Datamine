@@ -126,6 +126,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -3178,9 +3181,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 47000.0,
-        "Fuel": 600.0,
-        "TakeOff": 47600.0,
+        "Empty": 52000.0,
+        "Fuel": 617.0,
+        "TakeOff": 52617.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.3,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -3543,9 +3546,9 @@
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-125.0,0.0,19.0],
-            "lim2": [-125.0,125.0,-10.0,19.0],
-            "lim3": [125.0,180.0,0.0,19.0]
+            "lim1": [-180.0,-125.0,0.0,20.0],
+            "lim2": [-125.0,125.0,-10.0,20.0],
+            "lim3": [125.0,180.0,0.0,20.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -3888,9 +3891,9 @@
                   "pitch": [-10.0,20.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-125.0,0.0,19.0],
-                  "lim2": [-125.0,125.0,-10.0,19.0],
-                  "lim3": [125.0,180.0,0.0,19.0]
+                  "lim1": [-180.0,-125.0,0.0,20.0],
+                  "lim2": [-125.0,125.0,-10.0,20.0],
+                  "lim3": [125.0,180.0,0.0,20.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -4325,8 +4328,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

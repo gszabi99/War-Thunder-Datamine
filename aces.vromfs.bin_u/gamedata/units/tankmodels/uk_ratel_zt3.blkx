@@ -2335,13 +2335,12 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_gun_01",
+            "head": "bone_turret",
             "gun": "bone_gun_01",
-            "gunnerDm": "gunner_dm",
-            "rotatedTurret": "bone_turret"
+            "gunnerDm": "gunner_dm"
           },
           "limits": {
-            "yaw": [-0.0,0.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-5.0,15.0]
           },
           "gunStabilizer": {
@@ -2414,7 +2413,7 @@
             "horDriveDm": "drive_turret_h_dm"
           },
           "limits": {
-            "yaw": [-180.0,180.0],
+            "yaw": [-0.0,0.0],
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
@@ -2437,9 +2436,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 18800.0,
+        "Empty": 18100.0,
         "Fuel": 400.0,
-        "TakeOff": 19200.0,
+        "TakeOff": 18500.0,
         "momentOfInertia": [2.0,2.0,4.0],
         "CenterOfGravity": [0.12,0.4,0.0],
         "CenterOfGravityClampY": [0.0,0.5],
@@ -3114,7 +3113,7 @@
     "ammoStowages": {
       "ammo1": {
         "weaponTrigger": "gunner0",
-        "removeLoadedAmmo": true,
+        "removeLoadedAmmo": false,
         "fatalFire": true,
         "fatalExplosion": true,
         "shells": {
@@ -3230,13 +3229,12 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_gun_01",
+                  "head": "bone_turret",
                   "gun": "bone_gun_01",
-                  "gunnerDm": "gunner_dm",
-                  "rotatedTurret": "bone_turret"
+                  "gunnerDm": "gunner_dm"
                 },
                 "limits": {
-                  "yaw": [-0.0,0.0],
+                  "yaw": [-180.0,180.0],
                   "pitch": [-5.0,15.0]
                 },
                 "gunStabilizer": {
@@ -3309,7 +3307,7 @@
                   "horDriveDm": "drive_turret_h_dm"
                 },
                 "limits": {
-                  "yaw": [-180.0,180.0],
+                  "yaw": [-0.0,0.0],
                   "pitch": [-10.0,20.0]
                 },
                 "limitsTable": {

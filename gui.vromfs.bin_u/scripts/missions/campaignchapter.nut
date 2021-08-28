@@ -352,7 +352,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(obj))
     {
       local value = obj.getValue()
-      if (value > 0 && value < obj.childrenCount())
+      if (value >= 0 && value < obj.childrenCount())
         obj.getChild(value).scrollToView()
     }
   }

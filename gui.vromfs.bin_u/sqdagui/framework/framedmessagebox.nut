@@ -77,7 +77,7 @@ class ::gui_handlers.FramedMessageBox extends ::BaseGuiHandler
   {
     local buttonsObj = scene.findObject("framed_message_box_buttons_place")
     if (!::check_obj(buttonsObj))
-      return ::array(2, 0)
+      return array(2, 0)
 
     return ::get_dagui_mouse_cursor_pos_RC()
   }

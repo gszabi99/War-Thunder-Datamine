@@ -555,7 +555,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onWeaponryActivate(obj)
   {
     local value = obj.getValue()
-    if (0 <= value && value <= obj.childrenCount())
+    if (0 <= value && value < obj.childrenCount())
       openChangeWeaponryMenu(obj.getChild(value).findObject("centralBlock"))
   }
 

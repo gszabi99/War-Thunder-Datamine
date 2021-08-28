@@ -20,7 +20,7 @@ local Point2_manual = class {
   y = 0
   static __name__ = "Point2"
   constructor(x=0,y=0){
-    if (::type(x)=="table"){
+    if (type(x)=="table"){
       this.x = x?.x ?? 0
       this.y = x?.y ?? 0
       return this
@@ -30,8 +30,8 @@ local Point2_manual = class {
     return this
   }
   function __update(vargv){
-    ::assert(vargv.len()>0 && vargv.len()<2)
-    if (vargv.len() == 1 && ::type(vargv[0]) == "table") {
+    assert(vargv.len()>0 && vargv.len()<2)
+    if (vargv.len() == 1 && type(vargv[0]) == "table") {
       local table = vargv[0]
       if ("x" in table)
         this.x = table.x
@@ -51,7 +51,7 @@ local pp = @(...) print(" ".join(vargv.append("\n")))
 
 local function unpackfield(field){
   local def = null
-  if (::type(field) == "array") {
+  if (type(field) == "array") {
     def = field[1]
     field = field[0]
   }
@@ -72,8 +72,8 @@ local addNewline1 = mkAddNewline("  ")
 local addNewline3 = mkAddNewline("      ")
 
 local function valToStr(val){
-  ::assert(["string","null","float","integer", "bool"].indexof(::type(val))!=null, "only simple immutable types currently supported")
-  if (::type(val)=="string")
+  assert(["string","null","float","integer", "bool"].indexof(type(val))!=null, "only simple immutable types currently supported")
+  if (type(val)=="string")
     val = $"\"{val}\""
   return val
 }
@@ -106,7 +106,7 @@ local function mkCtor(fields, args){
 
   local ret = @"
   constructor({0}){
-    if (::type({1}) == {4}table{4}){
+    if (type({1}) == {4}table{4}){
       {2}
     }
     else {
@@ -120,7 +120,7 @@ local function mkCtor(fields, args){
 local defParams = {name=null, verbose=false}
 local function Dataclass(fields, params = defParams){
   local name = defParams?.name
-  name = (::type(name)=="string")
+  name = (type(name)=="string")
     ? $"static __name__ = \"{name}\"\n"
     : ""
 

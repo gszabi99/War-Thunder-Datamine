@@ -19,6 +19,9 @@ local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundM
 local { getToBattleLocIdShort } = require("scripts/viewUtils/interfaceCustomization.nut")
 local { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("scripts/changelog/changeLogState.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
+} = require("scripts/hangar/backgroundModelHint.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -96,6 +99,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     inited = true
     ::dmViewer.update()
+    initBackgroundModelHint(this)
     requestAllPatchnotes()
   }
 
@@ -934,7 +938,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     local isGold = false
     if (obj?.id == "btn_unlock_crew_gold")
       isGold = true
-    local unit = ::get_player_cur_unit()
+    local unit = getPlayerCurUnit()
     if (!unit)
       return
 
@@ -1264,4 +1268,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       @() ::g_squad_utils.checkSquadUnreadyAndDo(
         @() ::gui_handlers.GameModeSelect.open(), null))
   }
+
+  onEventBackgroundHangarVehicleHoverChanged = @(params) showBackgroundModelHint(params)
+  onBackgroundModelHintTimer = @(obj, dt) placeBackgroundModelHint(obj)
 }
