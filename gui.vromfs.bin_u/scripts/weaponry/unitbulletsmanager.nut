@@ -21,11 +21,13 @@ global enum bulletsAmountState {
   groupsActiveMask = 0
 
   checkPurchased = true
+  isForcedAvailable = false
 
-  constructor(_unit)
+  constructor(_unit, params = {})
   {
     gunsInfo = []
     checkPurchased = ::get_gui_options_mode() != ::OPTIONS_MODE_TRAINING
+    isForcedAvailable = params?.isForcedAvailable ?? false
 
     setUnit(_unit)
     ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
@@ -47,9 +49,9 @@ global enum bulletsAmountState {
     bulGroups = null
   }
 
-  function getBulletsGroups(isForcedAvailable = false)
+  function getBulletsGroups()
   {
-    checkInitBullets(isForcedAvailable)
+    checkInitBullets()
     return bulGroups
   }
 
@@ -274,21 +276,21 @@ global enum bulletsAmountState {
 //******************************* PRIVATE ***********************************************
 //**************************************************************************************
 
-  function checkInitBullets(isForcedAvailable = false)
+  function checkInitBullets()
   {
     if (bulGroups)
       return
 
-    loadBulletsData(isForcedAvailable)
+    loadBulletsData()
     forcedBulletsCount()
     validateBullets()
     validateBulletsCount()
   }
 
-  function loadBulletsData(isForcedAvailable = false)
+  function loadBulletsData()
   {
     loadGunInfo()
-    loadBulGroups(isForcedAvailable)
+    loadBulGroups()
   }
 
   function loadGunInfo()
@@ -304,7 +306,7 @@ global enum bulletsAmountState {
     }))
   }
 
-  function loadBulGroups(isForcedAvailable = false)
+  function loadBulGroups()
   {
     bulGroups = []
     groupsActiveMask = unit ? getActiveBulletsGroupInt(unit, checkPurchased) : 0//!!FIX ME: better to detect actives in manager too.

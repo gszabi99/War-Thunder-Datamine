@@ -37,8 +37,9 @@ local { AMMO,
 
     bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
     selectedName = ::getTblValue(bullets.value, bullets.values, "")
+    local saveValue = getModificationByName(unit, selectedName) ? selectedName : "" //'' = default modification
 
-    if (::get_last_bullets(unit.name, groupIndex) != selectedName)
+    if (::get_last_bullets(unit.name, groupIndex) != saveValue)
       setUnitLastBullets(unit, groupIndex, selectedName)
 
     local count = ::get_unit_option(unit.name, ::USEROPT_BULLET_COUNT0 + groupIndex)
