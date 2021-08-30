@@ -34,11 +34,6 @@ local function canResearchItem(unit, item, checkCurrent = true)
          canBeResearched(unit, item, checkCurrent)
 }
 
-local function getItemCost(unit, item)
-{
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
-}
-
 local function getItemStatusTbl(unit, item)
 {
   local isOwn = ::isUnitUsable(unit)
@@ -52,7 +47,6 @@ local function getItemStatusTbl(unit, item)
     equipped = false
     goldUnlockable = false
     unlocked = false
-    canBuyForWP = false
     showPrice = true
     discountType = ""
     canShowDiscount = true
@@ -104,10 +98,6 @@ local function getItemStatusTbl(unit, item)
       res.discountType = "mods"
       if (!isBullets(item))
       {
-        res.canBuyForWP = res.unlocked
-          && res.maxAmount == 1
-          && res.canBuyMore
-          && getItemCost(unit, item).wp > 0
         res.equipped = res.amount && ::shop_is_modification_enabled(unit.name, item.name)
         res.goldUnlockable = !res.unlocked && ::has_feature("SpendGold")
           && isReqModificationsUnlocked(unit, item) && canBeResearched(unit, item, false)
@@ -190,6 +180,11 @@ local function getByCurBundle(unit, bundle, func, defValue = "")
 {
   local cur = getBundleCurItem(unit, bundle)
   return cur? func(unit, cur) : defValue
+}
+
+local function getItemCost(unit, item)
+{
+  return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
 }
 
 local function getItemUnlockCost(unit, item)

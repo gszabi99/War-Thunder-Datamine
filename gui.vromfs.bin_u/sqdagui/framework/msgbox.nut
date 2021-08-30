@@ -45,7 +45,6 @@ local g_string =  require("std/string.nut")
   local delayedButtons = options?.delayedButtons ?? 0
   local baseHandler = options?.baseHandler
   local needAnim = ::need_new_msg_box_anim()
-  local countdown = options?.countdown ?? -1
 
   local cancel_fn = options?.cancel_fn
   local needCancelFn = options?.need_cancel_fn
@@ -86,7 +85,7 @@ local g_string =  require("std/string.nut")
   textObj.setValue(text)
 
   local handlerObj = null
-  if (buttons || countdown > 0)
+  if (buttons)
   {
     local handlerClass = class {
       function onButtonId(id)
@@ -163,7 +162,6 @@ local g_string =  require("std/string.nut")
       function onUpdate(obj, dt)
       {
         ::reset_msg_box_check_anim_time()
-        // If buttons need
         if (showButtonsTimer>0)
         {
           showButtonsTimer -= dt
@@ -187,19 +185,6 @@ local g_string =  require("std/string.nut")
           need_cancel_fn = null;
           onButtonId("");
         }
-        // If countdown need
-        if (countdown > 0)
-          if (countdownTimer > 0)
-          {
-            textObj.setValue("".concat(text, "\n", ::loc("multiplayer/timeLeft"),
-              " ", ::ceil(countdownTimer).tostring()))
-            countdownTimer -= dt
-          }
-          else
-          {
-            guiScene.destroyElement(msgbox)
-            ::broadcastEvent("ModalWndDestroy")
-          }
       }
 
       sourceHandlerObj = null
@@ -209,95 +194,87 @@ local g_string =  require("std/string.nut")
       showButtonsTimer = -1
       startingDialogNow = false
       need_cancel_fn = null
-      countdownTimer = -1
     }
+
+    local blkText = ""
+    local navText = @"Button_text
+          {
+            id:t = 'ak_select_btn';
+            btnName:t='A';
+            on_click:t = 'onAcceptSelectionAccessKey'
+            text:t = '#mainmenu/btnSelect';
+            display:t='none'
+            ButtonImg {}
+          }"
+
+    if (cancel_fn)
+    {
+      local alreadyHave = false
+      foreach(b in buttons)
+        if (b[0]=="")
+          alreadyHave =true
+      if (!alreadyHave)
+        buttons.append(["", cancel_fn])
+    }
+
+    local defBtnIdx = 0
+    local idx = -1
+    local animParams = needAnim ? "color-factor:t='0';" : ""
+    foreach(btn in buttons)
+    {
+      if (btn[0]!="")
+      {
+        local locTxtId = (btn[0].slice(0,1) == "#") ? btn[0] : "#msgbox/btn_" + btn[0]
+        local btnText = "text:t='" + locTxtId + "'; id:t='" + btn[0] + "'; on_click:t='onButton';"
+        if (buttons.len() == 1)
+          btnText += "btnName:t='AB'; " //Enter and Esc for the single button
+        blkText += "Button_text { " + animParams + btnText + "}"
+        idx++
+        if (btn[0] == def_btn)
+          defBtnIdx = idx
+      }
+      if (btn[0] == "cancel" || btn[0] == "")
+      {
+        navText += @"Button_text
+          {
+            id:t = 'ak_cancel';
+            text:t = '#msgbox/btn_cancel';
+            btnName:t='B';
+            on_click:t = 'onAccessKey'
+            display:t='none'
+            ButtonImg {}
+          }"
+      }
+    }
+
+    if (navText.len() > 0)
+      navText = "navRight { " + navText + " }"
 
     handlerObj = handlerClass()
+    handlerObj.sourceHandlerObj = baseHandler
     handlerObj.guiScene = gui_scene
-    handlerObj.countdownTimer = countdown
+    handlerObj.boxId = msgbox.id
+    handlerObj.boxObj = msgbox
+    handlerObj.need_cancel_fn = needCancelFn
 
-    if (buttons)
-    {
-      local blkText = ""
-      local navText = @"Button_text
-            {
-              id:t = 'ak_select_btn';
-              btnName:t='A';
-              on_click:t = 'onAcceptSelectionAccessKey'
-              text:t = '#mainmenu/btnSelect';
-              display:t='none'
-              ButtonImg {}
-            }"
+    local holderObj = msgbox.findObject("buttons_holder")
+    if (holderObj != null) {
+      gui_scene.appendWithBlk(holderObj, blkText, handlerObj)
 
-      if (cancel_fn)
-      {
-        local alreadyHave = false
-        foreach(b in buttons)
-          if (b[0]=="")
-            alreadyHave =true
-        if (!alreadyHave)
-          buttons.append(["", cancel_fn])
+      if (delayedButtons>0) {
+        msgbox.findObject("msg_box_timer").setUserData(handlerObj)
+        holderObj.show(false)
+        holderObj.enable(false)
+        handlerObj.showButtonsTimer = delayedButtons
       }
-
-      local defBtnIdx = 0
-      local idx = -1
-      local animParams = needAnim ? "color-factor:t='0';" : ""
-      foreach(btn in buttons)
-      {
-        if (btn[0]!="")
-        {
-          local locTxtId = (btn[0].slice(0,1) == "#") ? btn[0] : "#msgbox/btn_" + btn[0]
-          local btnText = "text:t='" + locTxtId + "'; id:t='" + btn[0] + "'; on_click:t='onButton';"
-          if (buttons.len() == 1)
-            btnText += "btnName:t='AB'; " //Enter and Esc for the single button
-          blkText += "Button_text { " + animParams + btnText + "}"
-          idx++
-          if (btn[0] == def_btn)
-            defBtnIdx = idx
-        }
-        if (btn[0] == "cancel" || btn[0] == "")
-        {
-          navText += @"Button_text
-            {
-              id:t = 'ak_cancel';
-              text:t = '#msgbox/btn_cancel';
-              btnName:t='B';
-              on_click:t = 'onAccessKey'
-              display:t='none'
-              ButtonImg {}
-            }"
-        }
-      }
-
-      if (navText.len() > 0)
-        navText = "navRight { " + navText + " }"
-
-      handlerObj.sourceHandlerObj = baseHandler
-      handlerObj.boxId = msgbox.id
-      handlerObj.boxObj = msgbox
-      handlerObj.need_cancel_fn = needCancelFn
-
-      local holderObj = msgbox.findObject("buttons_holder")
-      if (holderObj != null) {
-        gui_scene.appendWithBlk(holderObj, blkText, handlerObj)
-
-        if (delayedButtons > 0) {
-          holderObj.show(false)
-          holderObj.enable(false)
-          handlerObj.showButtonsTimer = delayedButtons
-        }
-        else
-          holderObj.setValue(defBtnIdx)
-      }
-
-      local navObj = msgbox.findObject("msg-nav-bar")
-      if (navObj != null)
-        gui_scene.appendWithBlk(navObj, navText, handlerObj)
+      else
+        holderObj.setValue(defBtnIdx)
     }
-    if (countdown > 0 || delayedButtons > 0)
-      msgbox.findObject("msg_box_timer").setUserData(handlerObj)
-  }
-  if (!buttons)
+
+    local navObj = msgbox.findObject("msg-nav-bar")
+    if (navObj != null)
+      gui_scene.appendWithBlk(navObj, navText, handlerObj)
+  } else
     needWaitAnim = true  //if no buttons, than wait anim always need
 
   if (needWaitAnim)

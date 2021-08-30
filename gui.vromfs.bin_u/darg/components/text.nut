@@ -1,18 +1,15 @@
-from "frp" import *
-from "daRg" import *
-
 local function dtext(val, params={}, addchildren = null) {
   if (val == null)
     return null
-  if (type(val)=="table") {
+  if (::type(val)=="table") {
     params = val.__merge(params)
     val = params?.text
   }
   local children = params?.children
-  if (children && type(children) !="array")
+  if (children && ::type(children) !="array")
     children = [children]
   if (addchildren && children) {
-    if (type(addchildren) == "array")
+    if (::type(addchildren) == "array")
       children.extend(addchildren)
     else
       children.append(addchildren)
@@ -21,10 +18,10 @@ local function dtext(val, params={}, addchildren = null) {
   local watch = params?.watch
   local watchedtext = false
   local txt = ""
-  if (type(val) == "string")  {
+  if (::type(val) == "string")  {
     txt = val
   }
-  if (type(val) == "instance" && val instanceof Watched) {
+  if (::type(val) == "instance" && val instanceof ::Watched) {
     txt = val.value
     watchedtext = true
   }

@@ -1,7 +1,5 @@
-from "daRg" import *
-
 local function textarea(txt, params={}) {
-  if (type(txt)=="table")
+  if (::type(txt)=="table")
     txt = params?.text ?? ""
   return {
     size = [flex(), SIZE_TO_CONTENT]

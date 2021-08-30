@@ -1,47 +1,19 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
-  "mesh": "145mm_psrak_m49a",
-  "helicopterGroup": 2,
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "145mm_psrak_m49a",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
   },
   "rocket": {
     "caliber": 0.145,
-    "length": 1.86,
-    "explosiveType": "rdx_tnt",
-    "explosiveMass": 2.7,
     "mass": 42.0,
-    "massEnd": 33.1,
-    "statType": "hydra",
-    "explodeTreshold": 0.01,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [1.0,3.5],
-    "rendinstDamageRadius": 15.0,
-    "maxDistance": 7000.0,
-    "minDistance": 30.0,
-    "force": 10600.0,
-    "timeFire": 1.5,
-    "spawnExplosionFx": false,
-    "spawnExplosionWreckage": false,
-    "distFromCmToStab": 0.01,
-    "WdK": [0.1,0.1,0.1],
-    "dragCx": 0.01,
-    "CxK": 1.1,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 0.0,
-    "maxSpeed": 410.0,
-    "price": 3000.0,
-    "amountPerTier": 2.0,
-    "iconType": "rockets_ap_middle_group",
-    "distanceFuse": false,
-    "advancedMissiles": false,
+    "explosiveType": "rdx",
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
@@ -54,6 +26,29 @@
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "explosiveMass": 2.7,
+    "massEnd": 23.0,
+    "maxDeltaAngle": 2.5,
+    "dragCx": 0.01,
+    "length": 1.9,
+    "distFromCmToStab": 0.01,
+    "CxK": 0.01,
+    "WdK": [0.1,0.1,0.1],
+    "force": 10780.0,
+    "timeFire": 1.5,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "explosionEffect": "explosion_midair_medium",
+    "groundCollisionEffect": "explosion_midair_small",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "explosionPatchRadius": 3.4,
+    "fireEffect": "rocket_fire_light",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "maxDistance": 7000.0,
+    "minDistance": 30.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -64,22 +59,21 @@
     "midArmorPower": [7.0,400.0],
     "farArmorPower": [0.2,700.0],
     "relativeVelArmorShift": [200.0,1000.0],
-    "explosionEffect": "explosion_midair_medium",
-    "groundCollisionEffect": "explosion_midair_small",
-    "ricochetEffect": "cannon_ricochet",
-    "waterCollisionEffect": "hit_59_80mm_water",
-    "explosionPatchRadius": 3.4,
-    "fireEffect": "rocket_fire_light",
-    "smokeEffect": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
-    "maxDeltaAngle": 1.3,
-    "cumulativeDamage": {
-      "armorPower": 500.0,
-      "distance": 4.0,
-      "damage": 300.0,
-      "onHitChanceMultFire": 15.0
-    },
+    "distanceFuse": false,
+    "explodeTreshold": 0.01,
+    "explodeHitPower": 550.0,
+    "explodeArmorPower": 75.0,
+    "explodeRadius": [1.0,3.5],
+    "rendinstDamageRadius": 15.0,
+    "statType": "hydra",
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 30.0,
+    "endSpeed": 800.0,
+    "maxSpeed": 410.0,
+    "price": 3000.0,
+    "amountPerTier": 2.0,
+    "iconType": "rockets_ap_middle_group",
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
       "mod2": [15.0,0.7],
@@ -87,13 +81,6 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
     },
     "collisions": {
       "steel": {
@@ -108,6 +95,19 @@
       "wood": {
         "fx": "explosion_midair_small"
       }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "cumulativeDamage": {
+      "armorPower": 500.0,
+      "distance": 4.0,
+      "damage": 300.0,
+      "onHitChanceMultFire": 15.0
     }
   }
 }

@@ -62,13 +62,13 @@ local function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
   return math.ceil(total.tofloat() / rows).tointeger()
 }
 local function color2uint(r,g=0,b=0,a=255){
-  if (type(r)=="table") {
+  if (::type(r)=="table") {
     r = r?.r ?? r
     g = r?.g ?? g
     b = r?.b ?? b
     a = r?.a ?? a
   }
-  return clamp(r+g*256+b*65536+a*16777216, 0, 4294967295)
+  return ::clamp(r+g*256+b*65536+a*16777216, 0, 4294967295)
 }
 
 local romanNumeralLookup = [

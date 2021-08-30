@@ -1293,8 +1293,9 @@
   },
   {
     "cockpit": {
-      "headPos": [1.5,0.35,0.0],
-      "headPosOnShooting": [1.5,0.35,0.0],
+      "textToShowInCockpit": "msg/textToShowInCockpit",
+      "headPos": [1.68,0.3,0.0],
+      "headPosOnShooting": [1.68,0.3,0.0],
       "lightPos": [1.979847,-0.213676,-0.012096],
       "lightColor": [0.01,1.5,0.1],
       "lightRadius": 0.5,
@@ -1303,59 +1304,49 @@
       "lightRadius1": 0.35,
       "zoomOutFov": 22.46,
       "zoomInFov": 22.46,
-      "sightInFov": 2.96,
+      "sightInFov": 3.68,
       "sightOutFov": -1.0,
       "sightFov": 5.5,
       "devices": {
-        "stick_ailerons": [-3.0,3.0],
-        "stick_elevator": [-1.0,1.0],
-        "weapon1": [0.0,1.0],
-        "weapon2": [0.0,1.0],
-        "pedals": [-1.0,1.0],
-        "pedals1": [-1.0,1.0],
-        "pedals2": [-1.0,1.0],
-        "pedals3": [-1.0,1.0],
-        "pedals4": [-1.0,1.0],
-        "pedals5": [-1.0,1.0],
-        "pedals6": [-1.0,1.0],
-        "throttle": [-1.0,1.0],
-        "prop_pitch": [-1.0,1.0],
-        "clock_hour": [0.0,12.0],
-        "clock_min": [0.0,60.0],
-        "clock_sec": [0.0,60.0],
-        "compass": [0.0,360.0],
-        "compass1": [0.0,360.0],
+        "speed": [0.0,257.222],
         "bank": [-8.0,8.0],
-        "aviahorizon_pitch": [-90.0,90.0],
-        "aviahorizon_roll": [-180.0,180.0],
+        "turn": [-0.23562,0.23562],
+        "vario": [-30.0,30.0],
         "altitude_10k": [0.0,100000.0],
         "altitude_hour": [0.0,10000.0],
         "altitude_min": [0.0,1000.0],
-        "altitude_min1": [0.0,1000.0],
-        "radio_altitude": [0.0,1500.0],
         "altitude_koef": 3.28,
-        "speed": [0.0,102.889],
-        "vario": [-15.24,15.24],
-        "rpm": [0.0,10000.0],
-        "fuel": [0.0,907.0],
-        "water_temperature": [0.0,900.0],
-        "oil_pressure": [25.0,150.0],
+        "aviahorizon_pitch": [-60.0,60.0],
+        "aviahorizon_roll": [-180.0,180.0],
+        "compass": [0.0,360.0],
+        "fuel": [0.0,1277.625],
+        "rpm": [0.0,4500.0],
+        "rpm1": [0.0,4500.0],
+        "rpm2": [0.0,4500.0],
+        "rpm3": [0.0,4500.0],
+        "rpm_hour": [0.0,10000.0],
+        "rpm_min": [0.0,1000.0],
+        "water_temperature": [0.0,1000.0],
+        "manifold_pressure": [0.334,2.507],
+        "manifold_pressure1": [0.334,2.507],
+        "manifold_pressure2": [0.334,2.507],
+        "manifold_pressure3": [0.334,2.507],
+        "head_temperature": [0.0,300.0],
+        "head_temperature1": [0.0,300.0],
+        "head_temperature2": [0.0,300.0],
+        "head_temperature3": [0.0,300.0],
         "oil_temperature": [-50.0,150.0],
-        "prop_pitch_hour": [0.0,12.0],
-        "prop_pitch_min": [0.0,2.5],
-        "multifunctionDisplays": {
-          "display": {
-            "textureArea": [0.0,0.0,1.0,1.0],
-            "page": {
-              "type": "pilot_hud",
-              "ilsNode": "ils",
-              "ilsSize": [0.13,0.13],
-              "ilsOffsetForce": 0.0,
-              "brightnessMult": 3.5,
-              "ilsColor": "#ca1e0a78"
-            }
-          }
-        }
+        "oil_temperature1": [-50.0,150.0],
+        "oil_temperature2": [-50.0,150.0],
+        "oil_temperature3": [-50.0,150.0],
+        "fuel_pressure": [0.0,15.0],
+        "fuel_pressure1": [0.0,15.0],
+        "fuel_pressure2": [0.0,15.0],
+        "fuel_pressure3": [0.0,15.0],
+        "oil_pressure": [0.0,150.0],
+        "oil_pressure1": [0.0,150.0],
+        "oil_pressure2": [0.0,150.0],
+        "oil_pressure3": [0.0,150.0]
       },
       "parts_holes_dmg": {
         "part": "fuse"
@@ -4037,7 +4028,7 @@
       {
         "dp": [
           {
-            "dm": "fin_dm"
+            "dm": "tail_dm"
           },
           {
             "dp": "prop01_2"

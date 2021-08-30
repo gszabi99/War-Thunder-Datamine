@@ -38,13 +38,12 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       })
 
     view.items.sort(@(a, b) a.itemText <=> b.itemText)
-    local selectedIdx = view.items.findindex((@(a) a.id == selectedId).bindenv(this)) ?? 0
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     local itemsListObj = scene.findObject("items_list")
     guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
-    itemsListObj.setValue(selectedIdx)
+    itemsListObj.setValue(0)
 
-    ::move_mouse_on_child_by_value(itemsListObj)
+    ::move_mouse_on_child(itemsListObj)
   }
 
   function updateListItems()
@@ -178,4 +177,4 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
 ::gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
 
-return @(selectedId = null) ::handlersManager.loadHandler(PreloaderOptionsModal, {selectedId})
+return @() ::handlersManager.loadHandler(PreloaderOptionsModal)

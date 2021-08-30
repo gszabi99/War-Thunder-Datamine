@@ -138,9 +138,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -214,10 +211,6 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 6.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -797,20 +790,6 @@
       "ex_armor_turret_r_05_dm": true,
       "ex_armor_turret_r_02_dm": true,
       "ex_armor_turret_l_02_dm": true
-    }
-  },
-  {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
-          }
-        }
-      }
     }
   },
   {
@@ -1550,8 +1529,7 @@
           "sleeveMesh": "auto_cannon_cartridge_case",
           "openHatchTime": 0.0,
           "sleevesLifeTime": 5.0,
-          "sleeveImpulse": [6.0,0.0,0.5],
-          "sleevesImpulseOffset": 0.04,
+          "sleeveImpulse": [3.5,0.0,0.0],
           "linkSleeveToGun": true,
           "maxAdditionalPitch": 0.0,
           "recoilOffset": 0.045,
@@ -2089,9 +2067,6 @@
         },
         {
           "volume": [2.7,1.0,-1.0,0.86]
-        },
-        {
-          "volume": [2.0,1.0,0.0,0.86]
         },
         {
           "volume": [1.3,1.0,1.0,0.63]
@@ -2893,8 +2868,7 @@
                 "sleeveMesh": "auto_cannon_cartridge_case",
                 "openHatchTime": 0.0,
                 "sleevesLifeTime": 5.0,
-                "sleeveImpulse": [6.0,0.0,0.5],
-                "sleevesImpulseOffset": 0.04,
+                "sleeveImpulse": [3.5,0.0,0.0],
                 "linkSleeveToGun": true,
                 "maxAdditionalPitch": 0.0,
                 "recoilOffset": 0.045,
@@ -3490,13 +3464,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

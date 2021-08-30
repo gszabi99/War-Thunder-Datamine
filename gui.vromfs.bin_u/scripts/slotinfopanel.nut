@@ -5,7 +5,6 @@ local { getSkillCategoryName } = require("scripts/crew/crewSkillsView.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 local { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -355,7 +354,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     if ( !::checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
       return
 
-    local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
+    local crewCountryId = ::find_in_array(::shopCountriesList, ::get_profile_country_sq(), -1)
     local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
     local crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
     if (crewData == null)
@@ -491,7 +490,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCrewButtonClicked(obj)
   {
-    local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
+    local crewCountryId = ::find_in_array(::shopCountriesList, ::get_profile_country_sq(), -1)
     local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
     if (crewCountryId != -1 && crewIdInCountry != -1)
       ::gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })

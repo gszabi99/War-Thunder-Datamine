@@ -22,7 +22,7 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
     {
       changeRolePlayer = changeRolePlayer,
       owner = this,
-      clanType = clanData.clanType
+      clanType = clanData.type
     })
 }
 

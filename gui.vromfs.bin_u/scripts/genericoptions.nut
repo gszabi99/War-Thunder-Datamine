@@ -1,7 +1,6 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -339,7 +338,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     local option = get_option_by_id(obj?.id)
     if (option && option.values[obj.getValue()] == TANK_ALT_CROSSHAIR_ADD_NEW)
     {
-      local unit = getPlayerCurUnit()
+      local unit = ::get_player_cur_unit()
       local success = ::add_tank_alt_crosshair_template()
       local message = success && unit ? ::format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
 

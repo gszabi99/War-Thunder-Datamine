@@ -17,7 +17,6 @@ local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { isCollectionPrize, isCollectionItem } = require("scripts/collections/collections.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 local { loadModel } = require("scripts/hangarModelLoadManager.nut")
-local { showedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -53,13 +52,13 @@ enum decalTwoSidedMode
 ::gui_start_decals <- function gui_start_decals(params = null)
 {
   if (params?.unit)
-    showedUnit(params.unit)
+    ::show_aircraft = params.unit
   else if (params?.unitId)
-    showedUnit(::getAircraftByName(params?.unitId))
+    ::show_aircraft = ::getAircraftByName(params?.unitId)
 
-  if (!showedUnit.value
+  if (!::show_aircraft
       ||
-        ( ::hangar_get_loaded_unit_name() == showedUnit.value.name
+        ( ::hangar_get_loaded_unit_name() == (::show_aircraft && ::show_aircraft.name)
         && !::is_loaded_model_high_quality()
         && !::check_package_and_ask_download("pkg_main"))
     )
@@ -153,7 +152,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     owner = this
-    unit = showedUnit.value
+    unit = ::show_aircraft
     ::cur_aircraft_name = unit.name
 
     access_WikiOnline = ::has_feature("WikiUnitInfo")
@@ -2144,7 +2143,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     // TestFlight wnd can have a Slotbar, where unit can be changed.
     local afterCloseFunc = (@(owner, unit) function() {
-      local newUnitName = getShowedUnitName()
+      local newUnitName = ::get_show_aircraft_name()
       if (unit.name != newUnitName)
       {
         owner.unit = ::getAircraftByName(newUnitName)
@@ -2490,7 +2489,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (initialUserSkinId != "")
           ::get_user_skins_profile_blk()[unit.name] = ""
         local isForApprove = previewParams?.isForApprove ?? false
-        ::g_decorator.approversUnitToPreviewLiveResource = isForApprove ? showedUnit.value : null
+        ::g_decorator.approversUnitToPreviewLiveResource = isForApprove ? ::show_aircraft : null
         ::g_delayed_actions.add(::Callback(function() {
           applySkin(previewParams.skinName, true)
         }, this), 100)

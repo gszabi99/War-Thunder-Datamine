@@ -126,9 +126,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -197,9 +194,6 @@
           "armorThickness": 17.25,
           "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
-        },
-        "turret_04_side_dm": {
-          "armorThickness": 30.0
         }
       },
       "turret": {
@@ -285,8 +279,7 @@
           "armorThickness": 200.0
         },
         "gun_mask_dm": {
-          "armorThickness": 120.0,
-          "variableThickness": true
+          "armorThickness": 120.0
         },
         "gun_mask_01_dm": {
           "armorThickness": 100.0
@@ -2781,17 +2774,7 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.68,
-        "height": 0.08,
-        "tracksTensionK": [6.5,8.0,3.0],
-        "trackMesh": "uk_centurion_24_phys_track_line",
-        "trackLen": 0.1397,
-        "trackCount": 108,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.17,
-        "trackMaxHeight": 1.4,
-        "trackEmitSparks": true,
-        "trackStartOffset": 0.18
+        "height": 0.04
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2801,38 +2784,39 @@
       "engine": {
         "horsePowers": 750.0,
         "maxRPM": 2400.0,
-        "minRPM": 700.0
+        "minRPM": 600.0
       },
       "mechanics": {
         "maxBrakeForce": 250120.0,
-        "driveGearRadius": 0.33,
-        "mainGearRatio": 6.04,
-        "sideGearRatio": 4.25,
-        "neutralGearRatio": 3.5,
+        "driveGearRadius": 0.42,
+        "mainGearRatio": 1.0,
+        "sideGearRatio": 1.16,
+        "neutralGearRatio": 90.0,
+        "gearType": "differential",
         "gearRatios": [
           {
-            "ratio": -1.45
+            "ratio": -28.84
           },
           {
-            "ratio": -2.0
+            "ratio": -86.99
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 2.0
+            "ratio": 86.99
           },
           {
-            "ratio": 1.5
+            "ratio": 34.32
           },
           {
-            "ratio": 1.0
+            "ratio": 21.33
           },
           {
-            "ratio": 0.428
+            "ratio": 13.51
           },
           {
-            "ratio": 0.244
+            "ratio": 6.8
           }
         ]
       },
@@ -2843,23 +2827,7 @@
         "topGearRadius": 0.1,
         "defaultDampeningForce": [173840.0,173840.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.36,
-        "wheel_l_drive": 0.36,
-        "wheel_r_front": 0.36,
-        "wheel_l_front": 0.36,
-        "wheel_r_01": 0.4,
-        "wheel_r_02": 0.4,
-        "wheel_r_03": 0.4,
-        "wheel_r_04": 0.4,
-        "wheel_r_05": 0.4,
-        "wheel_r_06": 0.4,
-        "wheel_l_01": 0.4,
-        "wheel_l_02": 0.4,
-        "wheel_l_03": 0.4,
-        "wheel_l_04": 0.4,
-        "wheel_l_05": 0.4,
-        "wheel_l_06": 0.4
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -4091,13 +4059,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

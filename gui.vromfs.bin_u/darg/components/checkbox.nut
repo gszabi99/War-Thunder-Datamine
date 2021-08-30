@@ -1,5 +1,3 @@
-from "%darg/ui_imports.nut" import *
-
 local defStyle = {}
 local defTextStyle = {}
 local defBoxStyle = {
@@ -45,7 +43,7 @@ local function defMkBox(size, state=null, stateFlags=null, boxStyle=null){
 
 local function checkboxCtor(state, text = null, style = defStyle, textCtor = defMkText, textStyle = defTextStyle, boxCtor = defMkBox, boxStyle = defBoxStyle){
   local stateFlags = Watched(0)
-  local h =calc_comp_size(textCtor("h"))
+  local h =::calc_comp_size(textCtor("h"))
   local hWidth = h[0]
   local hHeight = h[1]
   local box = boxCtor([hHeight, hHeight], state, stateFlags, boxStyle)
@@ -63,7 +61,7 @@ local function checkboxCtor(state, text = null, style = defStyle, textCtor = def
 }
 
 return {
-  checkbox = kwarg(checkboxCtor)
+  checkbox = ::kwarg(checkboxCtor)
   defStyle
   defTextStyle
   defBoxStyle

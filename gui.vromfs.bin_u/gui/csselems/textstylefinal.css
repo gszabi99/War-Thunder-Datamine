@@ -155,6 +155,13 @@ mapNest[selected=yes] textareaNoTab{
   color:@hoverMenuButtonColor;
 }
 
+optiontext[auto-scroll=yes] {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:50*@scrn_tgt/100.0;
+  move-sleep-time:1000;
+  move-delay-time:2000;
+}
+
 moveObjSizeDiv activeText[animateFontSize=yes] {
   font-ht:ph;
 }

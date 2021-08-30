@@ -1,6 +1,4 @@
-from "daRg" import *
-from "frp" import *
-
+local Color = ::Color
 local defStyling = {
   Bar = function(has_scroll) {
     if (has_scroll) {
@@ -37,18 +35,18 @@ local function resolveBarClass(bar, has_scroll) {
 }
 
 local function calcBarSize(bar_class, axis) {
-  return axis == 0 ? [flex(), bar_class._height] : [bar_class._width, flex()]
+  return (axis==0) ? [flex(), bar_class._height] : [bar_class._width, flex()]
 }
 
 
 local function scrollbar(scroll_handler, options={}) {
-  local stateFlags = Watched(0)
+  local stateFlags = ::Watched(0)
   local styling   = options?.styling ?? defStyling
   local barClass  = options?.barStyle ?? styling.Bar
   local knobClass = options?.knobStyle ?? styling.Knob
 
   local orientation = options?.orientation ?? O_VERTICAL
-  local axis        = orientation == O_VERTICAL ? 1 : 0
+  local axis        = (orientation==O_VERTICAL) ? 1 : 0
 
   return function() {
     local elem = scroll_handler.elem
@@ -89,16 +87,16 @@ local function scrollbar(scroll_handler, options={}) {
     local maxV = contentSize - elemSize
     local fValue = scrollPos
 
-    local color = "colorCalc" in knobClass
-      ? knobClass.colorCalc(stateFlags.value)
-      : knobClass?.color
+    local color = ("colorCalc" in knobClass) ? knobClass.colorCalc(stateFlags.value)
+                  : ("color" in knobClass) ? knobClass.color
+                  : null
 
     local knob = class extends knobClass {
       size = [flex(elemSize), flex(elemSize)]
       color = color
       key = "knob"
 
-      children = "hoverChild" in knobClass ? knobClass.hoverChild(stateFlags.value) : null
+      children = ("hoverChild" in knobClass) ? knobClass.hoverChild(stateFlags.value) : null
     }
 
     local cls = resolveBarClass(barClass, true)
@@ -114,11 +112,9 @@ local function scrollbar(scroll_handler, options={}) {
       max = maxV //warning disable : -ident-hides-std-function
       unit = 1
 
-      flow = axis == 0 ? FLOW_HORIZONTAL : FLOW_VERTICAL
+      flow = axis==0 ? FLOW_HORIZONTAL : FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-
-      pageScroll = (axis == 0 ? -1 : 1) * (maxV - minV) / 100.0 // TODO probably needed sync with container wheelStep option
 
       orientation = orientation
       size = calcBarSize(cls, axis)
@@ -129,9 +125,13 @@ local function scrollbar(scroll_handler, options={}) {
         {size=[flex(maxV-fValue), flex(maxV-fValue)]}
       ]
 
-      onChange = @(val) axis == 0
-        ? scroll_handler.scrollToX(val)
-        : scroll_handler.scrollToY(val)
+      onChange = function(val) {
+        if (axis == 0) {
+          scroll_handler.scrollToX(val)
+        } else {
+          scroll_handler.scrollToY(val)
+        }
+      }
 
       onElemState = @(sf) stateFlags.update(sf)
     }
@@ -155,12 +155,12 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
   options = DEF_SIDE_SCROLL_OPTIONS.__merge(options)
 
   local styling = options.styling
-  local scrollHandler = options?.scrollHandler ?? ScrollHandler()
+  local scrollHandler = options?.scrollHandler ?? ::ScrollHandler()
   local rootBase = options.rootBase ?? styling.ContentRoot
   local scrollAlign = options.scrollAlign
 
   local function contentRoot() {
-    local bhv = rootBase?.behavior ?? []
+    local bhv = ("behavior" in rootBase) ? rootBase.behavior : []
     if (typeof(bhv)!="array")
       bhv = [bhv]
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
@@ -179,9 +179,17 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
     }
   }
 
-  local childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
-    ? [scrollbar(scrollHandler, options), contentRoot]
-    : [contentRoot, scrollbar(scrollHandler, options)]
+  local childrenContent = []
+  if (scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP)
+    childrenContent = [
+      scrollbar(scrollHandler, options)
+      contentRoot
+    ]
+  else
+    childrenContent = [
+      contentRoot
+      scrollbar(scrollHandler, options)
+    ]
 
   return {
     size = options.size
@@ -197,11 +205,11 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
 local function makeHVScrolls(content, options={}) {
   local styling = options?.styling ?? defStyling
-  local scrollHandler = options?.scrollHandler ?? ScrollHandler()
+  local scrollHandler = options?.scrollHandler ?? ::ScrollHandler()
   local rootBase = options?.rootBase ?? styling.ContentRoot
 
   local function contentRoot() {
-    local bhv = rootBase?.behavior ?? []
+    local bhv = ("behavior" in rootBase) ? rootBase.behavior : []
     if (typeof(bhv)!="array")
       bhv = [bhv]
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)

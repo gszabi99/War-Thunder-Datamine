@@ -5,7 +5,6 @@ local skinLocations = require("scripts/customization/skinLocations.nut")
 local stdMath = require("std/math.nut")
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 local { copyParamsToTable, eachParam } = require("std/datablock.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 ::Decorator <- class
@@ -194,7 +193,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
     if (countries)
     {
-      local visCountries = ::u.filter(countries, @(c) ::isInArray(c, shopCountriesList))
+      local visCountries = ::u.filter(countries, @(c) ::isInArray(c, ::shopCountriesList))
       important.append(::loc("events/countres") + " " +
         ::g_string.implode(::u.map(visCountries, @(c) ::loc(c)), ::loc("ui/comma")))
     }
@@ -208,7 +207,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getLocationDesc()
   {
-    if (!decoratorType.hasLocations(id))
+    if (decoratorType != ::g_decorator_type.SKINS)
       return ""
 
     local mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)

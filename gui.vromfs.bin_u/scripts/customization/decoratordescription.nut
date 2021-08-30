@@ -39,7 +39,7 @@ local function updateDecoratorDescription(obj, handler, decoratorType, decorator
   local commaLoc = ::loc("ui/comma")
   local colonLoc = ::loc("ui/colon")
   local searchId = decorator.id
-  if (decoratorType.hasLocations(searchId))
+  if (decoratorType == ::g_decorator_type.SKINS && ::getAircraftByName(::g_unlocks.getPlaneBySkinId(searchId))?.isTank())
   {
     local mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
     local locations = mask ? skinLocations.getLocationsLoc(mask) : []

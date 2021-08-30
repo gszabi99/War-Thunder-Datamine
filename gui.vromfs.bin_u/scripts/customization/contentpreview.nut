@@ -2,7 +2,6 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local guidParser = require("scripts/guidParser.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { showedUnit, getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -57,7 +56,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   local isUnitPreview = skinId == unitPreviewSkin
 
   ::broadcastEvent("BeforeStartShowroom")
-  showedUnit(unit)
+  ::show_aircraft = unit
   local startFunc = function() {
     ::gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
@@ -83,7 +82,7 @@ local function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forc
     return isAvailableFn(unit, false) ? unit : null
   }
 
-  unit = getPlayerCurUnit()
+  unit = ::get_player_cur_unit()
   if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
     return unit
 
@@ -157,9 +156,9 @@ local function showUnitDecorator(unitId, resource, resourceType)
   if (!unit)
     return false
 
-  local hangarUnit = getPlayerCurUnit()
+  local hangarUnit = ::get_player_cur_unit()
   ::broadcastEvent("BeforeStartShowroom")
-  showedUnit(unit)
+  ::show_aircraft = unit
   local startFunc = function() {
     ::gui_start_decals({
       previewMode = PREVIEW_MODE.DECORATOR
@@ -304,7 +303,7 @@ local function getDecoratorDataToUse(resource, resourceType) {
   local decoratorType = decorator.decoratorType
   local decoratorUnit = decoratorType == ::g_decorator_type.SKINS
     ? ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
-    : getPlayerCurUnit()
+    : ::get_player_cur_unit()
 
   if (decoratorUnit == null || !decoratorType.isAvailable(decoratorUnit) || !decorator.canUse(decoratorUnit))
     return res

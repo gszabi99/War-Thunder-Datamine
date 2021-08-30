@@ -6,14 +6,13 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local twoStepModal = require("scripts/login/twoStepModal.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
-local loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
 
 class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 {
-  sceneBlkName = loginWndBlkPath.value
+  sceneBlkName = "gui/loginBox.blk"
 
   check2StepAuthCode = false
   availableCircuitsBlockName = "multipleAvailableCircuits"

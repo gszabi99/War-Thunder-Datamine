@@ -1,6 +1,3 @@
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
 local curPresetId = -1
@@ -10,7 +7,7 @@ local function updateHangarPreset(forceUpdate = false) {
     return
 
   local country = ::get_profile_country_sq()
-  local newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
+  local newSlotCountryId = ::shopCountriesList.findindex(@(cName) cName == country) ?? -1
   local newSlotIdInCountry = ::selected_crews?[newSlotCountryId] ?? -1
   local newPresetId = ::slotbarPresets.getCurrent()
   if (!forceUpdate && newPresetId == curPresetId

@@ -6,9 +6,6 @@ local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
 local { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
 local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { initIconedHints } = require("scripts/hud/iconedHints.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -260,11 +257,11 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     else if (newHudType == HUD_TYPE.SPECTATOR)
       currentHud = ::handlersManager.loadHandler(::Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
-      currentHud = ::handlersManager.loadHandler(useTouchscreen && !isXinput ? ::HudTouchAir : ::HudAir, { scene = hudObj })
+      currentHud = ::handlersManager.loadHandler(::use_touchscreen && !isXinput ? ::HudTouchAir : ::HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
-      currentHud = ::handlersManager.loadHandler(useTouchscreen && !isXinput ? ::HudTouchTank : ::HudTank, { scene = hudObj })
+      currentHud = ::handlersManager.loadHandler(::use_touchscreen && !isXinput ? ::HudTouchTank : ::HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
-      currentHud = ::handlersManager.loadHandler(useTouchscreen && !isXinput ? ::HudTouchShip : ::HudShip, { scene = hudObj })
+      currentHud = ::handlersManager.loadHandler(::HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       currentHud = ::handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
     else //newHudType == HUD_TYPE.NONE
@@ -333,7 +330,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       return HUD_TYPE.BENCHMARK
     else
     {
-      local unit = getPlayerCurUnit()
+      local unit = ::get_player_cur_unit()
       if (unit?.isHelicopter?())
         return HUD_TYPE.HELICOPTER
 
@@ -763,7 +760,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   {
     base.initScreen()
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_TANK)
-    initIconedHints(scene, ::ES_UNIT_TYPE_TANK)
     ::g_hud_tank_debuffs.init(scene)
     ::g_hud_crew_state.init(scene)
     showHudTankMovementStates(scene)
@@ -922,24 +918,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     ::hud_request_hud_ship_debuffs_state()
   }
 }
-
-::HudTouchShip <- class extends ::HudShip
-{
-  scene        = null
-  sceneBlkName = "gui/hud/hudTouchShip.blk"
-  wndType      = handlerType.CUSTOM
-
-  function initScreen()
-  {
-    base.initScreen()
-  }
-
-  function reinitScreen(params = {})
-  {
-    base.reinitScreen()
-  }
-}
-
 
 ::gui_start_hud <- function gui_start_hud()
 {

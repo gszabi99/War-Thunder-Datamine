@@ -76,11 +76,14 @@
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "stab1_dm": {
-        "hp": 29.0
+      "stab_dm": {
+        "hp": 30.0
       },
       "stab2_dm": {
-        "hp": 29.0
+        "hp": 30.0
+      },
+      "stab1_dm": {
+        "hp": 30.5
       }
     },
     "c_dural7": {
@@ -1259,6 +1262,46 @@
       "part": {
         "name": "spar_r_dm"
       }
+    },
+    {
+      "part": [
+        {
+          "name": "stab_dm"
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        }
+      ]
     },
     {
       "part": [

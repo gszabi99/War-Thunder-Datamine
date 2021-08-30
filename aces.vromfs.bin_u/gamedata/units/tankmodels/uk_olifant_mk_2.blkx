@@ -114,24 +114,6 @@
     "canReloadNonGuns": true
   },
   {
-    "smokeScreenActivateTime": 5.0
-  },
-  {
-    "smokeScreenEffectTime": 7.0
-  },
-  {
-    "smokeScreenRad": 12.0
-  },
-  {
-    "smokeScreenOffset": [-3.0,0.0,2.0]
-  },
-  {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
-    "smokeScreenFxType": "tank_smokescreen"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -1985,17 +1967,10 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "commander"
-        }
-      ]
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander"
+      }
     }
   },
   {
@@ -2589,9 +2564,7 @@
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm",
-            "secondGunnerDm": "commander_dm"
+            "barrel": "bone_gun_barrel"
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -2712,7 +2685,6 @@
               "head": "bone_mg_gun_twin_01",
               "gun": "bone_mg_gun_twin_01",
               "gunnerDm": "gunner_dm",
-              "secondGunnerDm": "commander_dm",
               "verDriveDm": "drive_turret_v_dm",
               "horDriveDm": "drive_turret_h_dm"
             }
@@ -3681,9 +3653,6 @@
       "new_tank_horizontal_aiming": [],
       "new_tank_vertical_aiming": [],
       "art_support": [],
-      "tank_engine_smoke_screen_system": {
-        "tier": 3
-      },
       "tank_new_gun": [],
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
@@ -3691,9 +3660,7 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
       },
-      "modern_tank_laser_rangefinder": {
-        "tier": 3
-      },
+      "modern_tank_laser_rangefinder": [],
       "105mm_NATO_APDS_FS": [],
       "105mm_NATO_APDS_FS_ammo_pack": [],
       "105mm_DM33_APDS_FS": [],
@@ -3738,9 +3705,7 @@
                 "turret": {
                   "head": "bone_turret",
                   "gun": "bone_gun",
-                  "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm",
-                  "secondGunnerDm": "commander_dm"
+                  "barrel": "bone_gun_barrel"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3861,7 +3826,6 @@
                     "head": "bone_mg_gun_twin_01",
                     "gun": "bone_mg_gun_twin_01",
                     "gunnerDm": "gunner_dm",
-                    "secondGunnerDm": "commander_dm",
                     "verDriveDm": "drive_turret_v_dm",
                     "horDriveDm": "drive_turret_h_dm"
                   }
@@ -4101,15 +4065,5 @@
     "dmgAngles": {
       "hatch_10": [45.0,90.0]
     }
-  },
-  {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
   }
 ]

@@ -1,3 +1,4 @@
+local { round } = require("std/math.nut")
 local {
   HasTargetTracker,
   IsSightLocked,
@@ -12,20 +13,12 @@ local {
 local hl = 20
 local vl = 20
 
-local styleLineForeground = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = hdpx(LINE_WIDTH)
-}
-
-
-local function lockSight(colorWatched, width, height, posX, posY) {
-  return @() styleLineForeground.__merge({
+local lockSight = function(line_style, color, width, height) {
+  return @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [width, height]
-    hplace = ALIGN_CENTER
-    vplace = ALIGN_CENTER
-    color = colorWatched.value
-    watch = [IsSightLocked, IsTargetTracked, colorWatched]
+    watch = [IsSightLocked, IsTargetTracked]
+    color = color
     commands = IsSightLocked.value && !IsTargetTracked.value
       ? [
           [VECTOR_LINE, 0, 0, hl, vl],
@@ -33,19 +26,27 @@ local function lockSight(colorWatched, width, height, posX, posY) {
           [VECTOR_LINE, 100, 100, 100 - hl, 100 - vl],
           [VECTOR_LINE, 100, 0, 100 - hl, vl]
         ]
-      : null
+      : []
   })
 }
 
-local targetSize = @(colorWatched, width, height, is_static_pos) function() {
+local lockSightComponent = function(line_style, color, width, height, posX, posY) {
+  return @() {
+    pos = [posX - width * 0.5, posY - height * 0.5]
+    size = SIZE_TO_CONTENT
+    children = lockSight(line_style, color, width, height)
+  }
+}
+
+
+local targetSize = function(line_style, width, height, is_static_pos) {
   local hd = 5
   local vd = 5
   local posX = is_static_pos ? 50 : (TargetX.value / sw(100) * 100)
   local posY = is_static_pos ? 50 : (TargetY.value / sh(100) * 100)
 
-  local target_radius = TargetRadius.value
-
-  local getAimCorrectionCommands = [
+  local getAimCorrectionCommands = function(target_radius) {
+    return [
       [
         VECTOR_RECTANGLE,
         posX - target_radius / width * 100,
@@ -61,8 +62,10 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
         target_radius / height * 100
       ]
     ]
+  }
 
-  local getTargetTrackedCommands = [
+  local getTargetTrackedCommands = function(target_radius) {
+    return [
       [
         VECTOR_RECTANGLE,
         posX - target_radius / width * 100,
@@ -71,8 +74,10 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
         2.0 * target_radius / height * 100
       ]
     ]
+  }
 
-  local getTargetUntrackedCommands = [
+  local getTargetUntrackedCommands = function(target_radius) {
+    return [
       [
         VECTOR_LINE,
         posX - target_radius / width * 100,
@@ -130,39 +135,46 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
         posY + (target_radius - vd) / height * 100
       ]
     ]
+  }
 
-  return styleLineForeground.__merge({
+  return @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = colorWatched.value
     size = [width, height]
     fillColor = Color(0, 0, 0, 0)
-    watch = [ IsTargetTracked, AimCorrectionEnabled, HasTargetTracker, TargetRadius, TargetX, TargetY, colorWatched ]
-    commands = !HasTargetTracker.value || TargetRadius.value <= 0.0 ? null
-      : !IsTargetTracked.value ? getTargetUntrackedCommands
-      : AimCorrectionEnabled.value ? getAimCorrectionCommands
-      : getTargetTrackedCommands
+    watch = [ IsTargetTracked, AimCorrectionEnabled, HasTargetTracker, TargetRadius ]
+    commands = HasTargetTracker.value && TargetRadius.value > 0.0
+      ? (IsTargetTracked.value
+        ? (AimCorrectionEnabled.value
+          ? getAimCorrectionCommands(TargetRadius.value)
+          : getTargetTrackedCommands(TargetRadius.value))
+        : getTargetUntrackedCommands(TargetRadius.value))
+      : []
   })
 }
 
-local targetSizeTrigger = {}
-TargetAge.subscribe(@(v) v >= 0.2 ? ::anim_start(targetSizeTrigger) : ::anim_request_stop(targetSizeTrigger))
-
-local function targetSizeComponent(
-  colorWatched,
+local targetSizeComponent = function(
+  line_style,
   width,
   height,
-  is_static_pos) {
+  is_static_pos,
+  current_time) {
 
   return @() {
     pos = [0, 0]
     size = SIZE_TO_CONTENT
-    watch = [TargetX, TargetY]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger}]
-    children = targetSize(colorWatched, width, height, is_static_pos)
+    watch = [TargetX, TargetY, current_time]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      return {
+        opacity = TargetAge.value < 0.2
+          || round(current_time.value * 4) % 2 == 0 ? 100 : 0
+      }
+    }
+    children = targetSize(line_style, width, height, is_static_pos)
   }
 }
 
 return {
-  lockSight
+  lockSight = lockSightComponent
   targetSize = targetSizeComponent
 }

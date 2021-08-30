@@ -7,7 +7,6 @@ local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { get_time_msec } = require("dagor.time")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
@@ -112,7 +111,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function initGcBackButton()
   {
-    showSceneBtn("gc_nav_back", canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
+    showSceneBtn("gc_nav_back", canQuitByGoBack && ::use_touchscreen && !::is_in_loading_screen())
   }
 
   function initSquadWidget()

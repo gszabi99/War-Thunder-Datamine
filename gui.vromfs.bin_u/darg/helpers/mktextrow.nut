@@ -25,7 +25,7 @@ local function mkTextRow(fullText, mkText, replaceTable) {
     local curList = res
     res = []
     foreach(text in curList) {
-      if (type(text) != "string") {
+      if (::type(text) != "string") {
         res.append(text)
         continue
       }
@@ -34,7 +34,7 @@ local function mkTextRow(fullText, mkText, replaceTable) {
       while (idx != null) {
         if (idx > nextIdx)
           res.append(text.slice(nextIdx, idx))
-        if (type(comp) == "array")
+        if (::type(comp) == "array")
           res.extend(comp)
         else
           res.append(comp)
@@ -45,7 +45,7 @@ local function mkTextRow(fullText, mkText, replaceTable) {
         res.append(text.slice(nextIdx))
     }
   }
-  return res.map(@(t) type(t) == "string" ? mkText(t) : t)
+  return res.map(@(t) ::type(t) == "string" ? mkText(t) : t)
 }
 
 return mkTextRow

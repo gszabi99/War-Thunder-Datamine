@@ -13,8 +13,8 @@
   }
   else
   {
-    ::dagor.debug($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
-    ::showInfoMsgBox($"{::loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
+    ::dagor.debug("ControlsGlobals: Prevent setting uncorrect preset")
+    ::showInfoMsgBox(::loc("msgbox/errorLoadingPreset"))
     ::is_last_load_controls_succeeded = false
   }
 }

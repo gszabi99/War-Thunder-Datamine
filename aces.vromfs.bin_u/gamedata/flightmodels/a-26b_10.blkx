@@ -2927,37 +2927,11 @@
           "name": "a_26b_10_100lbs",
           "blk": "gameData/FlightModels/weaponPresets/a_26b_10_100lbs.blk",
           "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk"
-              },
-              {
-                "iconType": "bombs_small_group_x4"
-              },
-              {
-                "amountPerTier": 4.0
-              },
-              {
-                "tier": {
-                  "idx": 4
-                }
-              },
-              {
-                "tier": {
-                  "idx": 5
-                }
-              },
-              {
-                "tier": {
-                  "idx": 7
-                }
-              },
-              {
-                "tier": {
-                  "idx": 8
-                }
-              }
-            ]
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "amountPerTier": 4.0,
+              "iconType": "bombs_small_group"
+            }
           }
         }
       },
@@ -3107,16 +3081,15 @@
       },
       "50cal_turret_ap": [],
       "50cal_turret_api": [],
-      "m9_universal": [],
-      "m9_ground_targets": [],
-      "m9_air_targets": [],
-      "m9_belt_pack": {
+      "m4_universal": [],
+      "m4_ground_targets": [],
+      "m4_belt_pack": {
         "tier": 3,
         "prevModification": "a_26b_10_1x37_4_50_mod"
       },
-      "m9_new_gun": {
+      "m4_new_gun": {
         "tier": 4,
-        "reqModification": "m9_belt_pack"
+        "reqModification": "m4_belt_pack"
       },
       "a_26b_10_1x37_4_50_mod": {
         "tier": 1,
@@ -3176,13 +3149,13 @@
             {
               "Weapon": {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM9.blk",
+                "blk": "gameData/Weapons/cannonM4.blk",
                 "emitter": "flare10",
                 "flash": "flare10",
                 "shell": "emtr_shellrejection1",
                 "dm": "cannon2_dm",
                 "spread": 1.0,
-                "bullets": 75
+                "bullets": 30
               }
             },
             {
@@ -3427,25 +3400,25 @@
             {
               "Weapon": {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM9.blk",
+                "blk": "gameData/Weapons/cannonM4.blk",
                 "emitter": "flare7",
                 "flash": "flare7",
                 "shell": "emtr_shellrejection3",
                 "dm": "cannon1_dm",
                 "spread": 1.0,
-                "bullets": 75
+                "bullets": 30
               }
             },
             {
               "Weapon": {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM9.blk",
+                "blk": "gameData/Weapons/cannonM4.blk",
                 "emitter": "flare10",
                 "flash": "flare10",
                 "shell": "emtr_shellrejection1",
                 "dm": "cannon2_dm",
                 "spread": 1.0,
-                "bullets": 75
+                "bullets": 30
               }
             },
             {

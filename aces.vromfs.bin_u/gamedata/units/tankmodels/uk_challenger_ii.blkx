@@ -126,9 +126,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -139,8 +136,7 @@
       "hull_front_composite_armor": {
         "turret_07_front_dm": {
           "armorThickness": 50.0,
-          "shatterArmorQuality": 5.0,
-          "createSecondaryShatters": false
+          "shatterArmorQuality": 5.0
         },
         "superstructure_front_dm": {
           "armorThickness": 50.0,
@@ -149,14 +145,13 @@
         "turret_06_bottom_dm": {
           "armorThickness": 400.0,
           "armorClass": "leopard_2a5_turret_nera",
-          "cumulativeArmorQuality": 1.99,
-          "genericArmorQuality": 0.985,
+          "cumulativeArmorQuality": 1.65,
+          "genericArmorQuality": 0.7,
           "hidableInXrayViewer": true,
           "createSecondaryShatters": false
         },
         "superstructure_side_dm": {
-          "armorThickness": 20.0,
-          "createSecondaryShatters": false
+          "armorThickness": 20.0
         },
         "superstructure_bottom_dm": {
           "armorThickness": 80.0
@@ -240,7 +235,7 @@
           "armorThickness": 20.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 50.0
+          "armorThickness": 25.0
         },
         "turret_top_dm": {
           "armorThickness": 25.0
@@ -316,8 +311,9 @@
           "armorThickness": 60.0
         },
         "turret_04_back_dm": {
-          "armorThickness": 25.0,
-          "createSecondaryShatters": false
+          "armorThickness": 10.0,
+          "createSecondaryShatters": false,
+          "armorClass": "aluminium"
         },
         "turret_01_back_dm": {
           "armorThickness": 10.0
@@ -373,7 +369,7 @@
         "turret_05_top_dm": {
           "armorThickness": 25.0
         },
-        "turret_09_top_dm": {
+        "turret_05_bottom_dm": {
           "armorThickness": 25.0
         },
         "turret_04_bottom_dm": {
@@ -388,16 +384,19 @@
         "turret_03_front_dm": {
           "armorThickness": 38.0
         },
+        "turret_03_top_dm": {
+          "armorThickness": 38.0
+        },
         "turret_02_top_dm": {
           "armorThickness": 60.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 20.0,
+          "armorThickness": 10.0,
+          "armorClass": "aluminium",
           "createSecondaryShatters": false
         },
         "turret_02_side_dm": {
-          "armorThickness": 45.0,
-          "createSecondaryShatters": false
+          "armorThickness": 45.0
         },
         "turret_07_side_dm": {
           "armorThickness": 50.0
@@ -419,8 +418,7 @@
           "armorThickness": 60.0
         },
         "turret_bottom_dm": {
-          "armorThickness": 200.0,
-          "armorEffectiveThicknessMax": 230.0
+          "armorThickness": 200.0
         },
         "ex_armor_body_04_dm": {
           "armorThickness": 20.0
@@ -430,14 +428,6 @@
         },
         "ex_armor_r_04_dm": {
           "armorThickness": 8.0
-        },
-        "composite_armor_hull_08_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_11_dm": {
-          "armorThickness": 38.0,
-          "hidableInXrayViewer": true
         }
       },
       "composite_side_shields": {
@@ -509,10 +499,6 @@
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
         },
-        "turret_03_top_dm": {
-          "armorThickness": 4.0,
-          "armorClass": "tank_structural_steel"
-        },
         "ex_decor_03_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
@@ -529,10 +515,6 @@
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
         },
-        "ex_decor_r_17_dm": {
-          "armorThickness": 4.0,
-          "armorClass": "tank_structural_steel"
-        },
         "ex_decor_r_20_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
@@ -542,10 +524,6 @@
           "armorClass": "tank_structural_steel"
         },
         "ex_decor_l_01_dm": {
-          "armorThickness": 4.0,
-          "armorClass": "tank_structural_steel"
-        },
-        "ex_decor_l_17_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
         },
@@ -584,11 +562,7 @@
         "ex_decor_r_13_dm": [],
         "ex_decor_l_13_dm": [],
         "ex_decor_r_14_dm": [],
-        "ex_decor_l_14_dm": [],
-        "ex_decor_r_21_dm": [],
-        "ex_decor_l_21_dm": [],
-        "ex_decor_r_22_dm": [],
-        "ex_decor_l_22_dm": []
+        "ex_decor_l_14_dm": []
       },
       "nera_shields": {
         "armorClass": "leopard_2a5_turret_nera",
@@ -654,11 +628,7 @@
         "optic_turret_03_dm": [],
         "optic_turret_04_dm": [],
         "optic_turret_05_dm": [],
-        "optic_turret_06_dm": {
-          "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 0.0,
-          "embedded": true
-        },
+        "optic_turret_06_dm": [],
         "optic_turret_07_dm": [],
         "optic_turret_08_dm": [],
         "optic_turret_09_dm": [],
@@ -704,8 +674,7 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 200.0,
-          "ex_armor_body_01_dm": [],
-          "ex_armor_01_dm": []
+          "ex_armor_body_01_dm": []
         }
       },
       "gun": {
@@ -2822,28 +2791,6 @@
         }
       },
       {
-        "armorArrayHullSideIn": {
-          "xrayDmPart": "composite_armor_hull_08_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_08_dm"
-            }
-          }
-        }
-      },
-      {
-        "armorArrayHullSideIn": {
-          "xrayDmPart": "composite_armor_hull_11_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_11_dm"
-            }
-          }
-        }
-      },
-      {
         "armorArrayTurretFrontR": {
           "xrayDmPart": "composite_armor_turret_03_dm",
           "titleLoc": "RHA_tank_modern",
@@ -2862,7 +2809,7 @@
             {
               "layer": {
                 "dmPart": "turret_03_bottom_dm",
-                "xrayTextThickness": 10.0
+                "xrayTextThickness": 20.0
               }
             },
             {
@@ -2882,28 +2829,364 @@
       },
       {
         "armorArrayERA": {
-          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
-          "xrayDmPartRange": [1.0,14.0],
+          "xrayDmPart": "ex_era_hull_31_dm",
           "titleLoc": "leopard_2a5_turret_nera",
           "kineticProtectionEquivalent": 30.0,
           "cumulativeProtectionEquivalent": 400.0,
           "armorArrayText": {
             "layer": {
-              "dmPart": "ex_era_hull_01_dm"
+              "dmPart": "ex_era_hull_31_dm"
             }
           }
         }
       },
       {
         "armorArrayERA": {
-          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
-          "xrayDmPartRange": [15.0,31.0],
+          "xrayDmPart": "ex_era_hull_28_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_28_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_26_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_26_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_25_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_25_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_24_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_24_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_23_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_23_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_22_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_22_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_21_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_21_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_20_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_20_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_19_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_19_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_18_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_18_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_17_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_17_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_16_dm",
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_16_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_15_dm",
           "titleLoc": "uk_era_romor_a",
           "kineticProtectionEquivalent": 30.0,
           "cumulativeProtectionEquivalent": 300.0,
           "armorArrayText": {
             "layer": {
               "dmPart": "ex_era_hull_15_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_14_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_14_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_13_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_13_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_12_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_12_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_11_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_11_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_10_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_10_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_09_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_09_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_08_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_08_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_07_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_07_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_06_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_06_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_05_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_05_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_04_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_04_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_03_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_03_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_02_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_02_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_01_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_01_dm"
             }
           }
         }
@@ -3278,7 +3561,7 @@
       "suspension": {
         "maxDisplacementOffsets": [0.0,0.05],
         "suspensionOffsets": [-0.17,-0.14,0.13],
-        "defaultGearRadius": 0.4,
+        "defaultGearRadius": 0.44,
         "topGearRadius": 0.12,
         "frontBackGearRadius": 0.3,
         "defaultDampeningForce": [170000.0,170000.0],
@@ -3904,12 +4187,6 @@
             },
             {
               "node": "ex_decor_r_21"
-            },
-            {
-              "node": "ex_decor_l_22"
-            },
-            {
-              "node": "ex_decor_r_22"
             },
             {
               "node": "ex_armor_r_06"
@@ -4944,13 +5221,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

@@ -5,7 +5,6 @@ local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { is_keyboard_connected, is_mouse_connected } = require("controllerState")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -570,7 +569,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
-    specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(getPlayerCurUnit())
+    specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(::get_player_cur_unit())
     checkFeature = @() unitTypes.AIRCRAFT.isAvailable && ::has_feature("Sensors")
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
@@ -617,7 +616,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
-    specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(getPlayerCurUnit())
+    specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(::get_player_cur_unit())
     checkFeature = @() unitTypes.TANK.isAvailable && ::has_feature("Sensors")
     pageUnitTypeBit = unitTypes.TANK.bit
 

@@ -1,19 +1,18 @@
 local Unit = require("scripts/unit/unit.nut")
 local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 local { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::all_units <- {}
+::show_aircraft <- null
 
 ::g_script_reloader.registerPersistentData("initOptionsGlobals", ::getroottable(),
-  [ "all_units"])
+  [ "all_units", "show_aircraft"])
 
 //remap all units to new class on scripts reload
 foreach(name, unit in ::all_units)
   ::all_units[name] = Unit({}).setFromUnit(unit)
-if (showedUnit.value != null)
-  showedUnit(::all_units?[showedUnit.value.name])
+if (::show_aircraft)
+  ::show_aircraft = ::all_units?[::show_aircraft.name]
 
 ::init_options <- function init_options()
 {
@@ -40,11 +39,26 @@ if (showedUnit.value != null)
 
 ::update_all_units <- function update_all_units()
 {
-  updateShopCountriesList()
+  ::update_shop_countries_list()
   ::countUsageAmountOnce()
   ::generateUnitShopInfo()
 
   dagor.debug("update_all_units called, got "+::all_units.len()+" items");
+}
+
+::update_shop_countries_list <- function update_shop_countries_list()
+{
+  local shopBlk = ::get_shop_blk()
+  ::shopCountriesList = []
+  for (local tree = 0; tree < shopBlk.blockCount(); tree++)
+  {
+    local tblk = shopBlk.getBlock(tree)
+    local country = tblk.getBlockName()
+    if (!::is_country_visible(country))
+      continue
+
+    ::shopCountriesList.append(country)
+  }
 }
 
 ::usageAmountCounted <- false

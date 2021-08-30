@@ -36,7 +36,6 @@ local TRIGGER_TYPE = {
   AAM             = "aam"
   AGM             = "agm"
   ATGM            = "atgm"
-  GUIDED_BOMBS    = "guided bombs"
 }
 
 local WEAPON_TYPE = {
@@ -53,12 +52,11 @@ local WEAPON_TYPE = {
   ROCKETS         = "rockets"   // Rockets
   AAM             = "aam"       // Air-to-Air Missiles
   AGM             = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
-  GUIDED_BOMBS    = "guided bombs"
 }
 
-local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.GUIDED_BOMBS,
-  WEAPON_TYPE.ROCKETS, WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES,
-  WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES]
+local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
+  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE,
+  WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES]
 
 local WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -195,7 +193,6 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
   if (block == null)
     return weapons
 
-  local weaponBlkCache = {}
   local unitType = ::get_es_unit_type(unit)
   foreach (weapon in (block % "Weapon"))
   {
@@ -206,8 +203,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     if (!weapon?.blk)
       continue
 
-    local weaponBlk = weaponBlkCache?[weapon.blk] ?? blkOptFromPath(weapon.blk)
-    weaponBlkCache[weapon.blk] <- weaponBlk
+    local weaponBlk = blkOptFromPath( weapon.blk )
 
     if (weaponsFilterFunc?(weapon.blk, weaponBlk) == false)
       continue
@@ -240,8 +236,6 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     {
       if (weapon?.trigger == TRIGGER_TYPE.MINES)
         currentTypeName = WEAPON_TYPE.MINES
-      else if (weapon?.trigger == TRIGGER_TYPE.GUIDED_BOMBS)
-        currentTypeName = WEAPON_TYPE.GUIDED_BOMBS
       else
         currentTypeName = WEAPON_TYPE.BOMBS
       weaponTag = WEAPON_TAG.BOMB
@@ -254,7 +248,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     else if (unitType == ::ES_UNIT_TYPE_TANK ||
       ::isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
-        TRIGGER_TYPE.GUIDED_BOMBS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
+        TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
         TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
     { //not a turret
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
@@ -321,14 +315,12 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       item.bulletType = itemBlk?.bulletType
       item.blk = weapon.blk
 
-      if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ]))
+      if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM ]))
       {
         item.machMax  <- itemBlk?.machMax ?? 0
         item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
 
-        if (currentTypeName == WEAPON_TYPE.AAM ||
-            currentTypeName == WEAPON_TYPE.AGM ||
-            currentTypeName == WEAPON_TYPE.GUIDED_BOMBS)
+        if (currentTypeName == WEAPON_TYPE.AAM || currentTypeName == WEAPON_TYPE.AGM)
         {
           if (itemBlk?.operated == true)
           {
@@ -342,13 +334,10 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
             item.launchRange <- itemBlk.rangeMax
 
           if (itemBlk?.guidance != null)
-          {
             if (itemBlk.guidance?.irSeeker != null)
             {
               if (itemBlk.guidance.irSeeker?.visibilityType == "optic")
                 item.guidanceType = "tv"
-              else
-                item.guidanceType = "ir"
               local rangeRearAspect = itemBlk.guidance.irSeeker?.rangeBand0 ?? 0
               local rangeAllAspect  = itemBlk.guidance.irSeeker?.rangeBand1 ?? 0
               if (currentTypeName == WEAPON_TYPE.AAM)
@@ -366,14 +355,6 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
               if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerECCM <- true
             }
-            else if (itemBlk.guidance?.opticalFlowSeeker != null)
-            {
-              if (itemBlk.guidance.opticalFlowSeeker?.visibilityType == "optic")
-                item.guidanceType = "tv"
-              else
-                item.guidanceType = "ir"
-            }
-          }
         }
         if (currentTypeName == WEAPON_TYPE.AAM)
         {
@@ -468,7 +449,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
   if (massText)
     res.append("".concat(::loc("shop/tank_mass"), " ", massText))
 
-  if (::isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ]))
+  if (::isInArray(weaponType, [ "rockets", "agm", "aam" ]))
   {
     if (weapon?.guidanceType != null || weapon?.autoAiming != null)
     {

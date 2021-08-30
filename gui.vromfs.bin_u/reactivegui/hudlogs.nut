@@ -2,7 +2,7 @@ local chat = require("hudChat.nut")
 local battleLog = require("hudBattleLog.nut")
 local tabs = require("components/tabs.nut")
 local frp = require("frp")
-local { cursorVisible } = require("reactiveGui/ctrlsState.nut")
+local { cursorVisible } = require("hudState.nut")
 local { inputEnabled, log, lastInputTime } = require("hudChatState.nut")
 local { isMultiplayer } = require("networkState.nut")
 local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
@@ -22,7 +22,7 @@ local isVisible = ::Computed(@() isEnabled.value && isInited.value
 
 local currentTab = ::Watched(tabsList[0])
 local currentLog = ::Computed(function(prev) {
-  if (cursorVisible.value || prev == frp.FRP_INITIAL)
+  if (cursorVisible.value || prev == frp.INITIAL)
     return currentTab.value
 
   if (inputEnabled.value || isNewMessage.value)

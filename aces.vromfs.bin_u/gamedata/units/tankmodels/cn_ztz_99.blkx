@@ -123,9 +123,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -3015,19 +3012,9 @@
       },
       "tracks": {
         "animationMultiplier": 0.72,
-        "height": 0.09,
+        "height": 0.045,
         "width": 0.65,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
-        "tracksTensionK": [5.0,10.0,6.0],
-        "trackMesh": "cn_ztz_99_phys_track_line",
-        "trackLen": 0.18,
-        "trackCount": 84,
-        "trackFadeTime": 1.1,
-        "trackConnector": true,
-        "trackMaxSinking": 0.05,
-        "trackStartOffset": 0.18,
-        "trackEmitSparks": false,
-        "trackMaxHeight": 1.17
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3080,11 +3067,7 @@
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.3,
-        "wheel_l_drive": 0.3,
-        "wheel_r_front": 0.27,
-        "wheel_l_front": 0.27
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -3762,15 +3745,6 @@
             "ammo_turret_47_dm": {
               "count": 1
             },
-            "ammo_body_30_dm": {
-              "count": 1
-            },
-            "ammo_body_29_dm": {
-              "count": 1
-            },
-            "ammo_body_14_dm": {
-              "count": 1
-            },
             "ammo_body_01_dm": {
               "count": 1
             },
@@ -3787,6 +3761,12 @@
               "count": 1
             },
             "ammo_body_06_dm": {
+              "count": 1
+            },
+            "ammo_body_07_dm": {
+              "count": 1
+            },
+            "ammo_body_08_dm": {
               "count": 1
             },
             "ammo_body_09_dm": {
@@ -3902,6 +3882,9 @@
               "count": 1
             },
             "ammo_body_22_dm": {
+              "count": 1
+            },
+            "ammo_body_19_dm": {
               "count": 1
             },
             "ammo_body_23_dm": {
@@ -4394,13 +4377,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

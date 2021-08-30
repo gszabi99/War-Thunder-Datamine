@@ -23,12 +23,12 @@ local function versionToInt(version){
 local class Version {
   version = null
   constructor(v){
-    local t = type(v)
+    local t = ::type(v)
 
     if (t == "string")
       version = mkVersionFromString(v)
     else if (t == "array") {
-      assert(v.len()==4)
+      ::assert(v.len()==4)
       version = clone v
     }
     else if (t =="integer") {
@@ -40,7 +40,7 @@ local class Version {
       version = [0,0,0,0]
     else {
       version = [0,0,0,0]
-      assert(false, "type is not supported")
+      ::assert(false, "type is not supported")
     }
   }
   function toint(){

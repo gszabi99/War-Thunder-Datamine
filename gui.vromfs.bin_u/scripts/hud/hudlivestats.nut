@@ -295,7 +295,7 @@ enum LIVE_STATS_MODE {
       local doShow = text != ""
 
       local plateObj = scene.findObject("plate_" + id)
-      if (::checkObj(plateObj) && plateObj.isVisible() != doShow)
+      if (::checkObj(plateObj) && plateObj.isVisible() != show)
         plateObj.show(doShow)
 
       local txtObj = scene.findObject("txt_" + id)

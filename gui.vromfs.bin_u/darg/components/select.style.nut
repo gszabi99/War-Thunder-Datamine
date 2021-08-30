@@ -1,5 +1,3 @@
-from "%darg/ui_imports.nut" import *
-
 return {
   elemStyle = {
     textCommonColor = Color(200,200,200),

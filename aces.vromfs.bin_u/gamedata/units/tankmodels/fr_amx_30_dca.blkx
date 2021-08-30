@@ -132,9 +132,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -461,9 +458,6 @@
           "armorThickness": 30.0
         },
         "superstructure_top_dm": {
-          "armorThickness": 15.0
-        },
-        "turret_04_front_dm": {
           "armorThickness": 15.0
         },
         "body_side_dm": {
@@ -2695,46 +2689,21 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "bone_turret"
-            },
-            {
-              "gun": "bone_gun"
-            },
-            {
-              "barrel": "bone_gun_barrel_01"
-            },
-            {
-              "gunnerDm": "gunner_dm"
-            },
-            {
-              "secondGunnerDm": "commander_dm"
-            },
-            {
-              "verDriveDm": "drive_turret_v_dm"
-            },
-            {
-              "horDriveDm": "drive_turret_h_dm"
-            },
-            {
-              "rotatedTurret": "bone_turret"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_roll_01",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "barrel": "bone_gun_barrel_01",
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
+            "verDriveDm": "drive_turret_v_dm",
+            "horDriveDm": "drive_turret_h_dm",
+            "rotatedTurret": "bone_turret",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
             }
-          ],
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,85.0]
@@ -3603,46 +3572,21 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": [
-                  {
-                    "head": "bone_turret"
-                  },
-                  {
-                    "gun": "bone_gun"
-                  },
-                  {
-                    "barrel": "bone_gun_barrel_01"
-                  },
-                  {
-                    "gunnerDm": "gunner_dm"
-                  },
-                  {
-                    "secondGunnerDm": "commander_dm"
-                  },
-                  {
-                    "verDriveDm": "drive_turret_v_dm"
-                  },
-                  {
-                    "horDriveDm": "drive_turret_h_dm"
-                  },
-                  {
-                    "rotatedTurret": "bone_turret"
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_camera_gunner",
-                      "verLimits": [-180.0,180.0],
-                      "verOriginLimits": [-180.0,180.0]
-                    }
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_roll_01",
-                      "verLimits": [-180.0,180.0],
-                      "verOriginLimits": [-180.0,180.0]
-                    }
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun",
+                  "barrel": "bone_gun_barrel_01",
+                  "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm",
+                  "verDriveDm": "drive_turret_v_dm",
+                  "horDriveDm": "drive_turret_h_dm",
+                  "rotatedTurret": "bone_turret",
+                  "linkedAnimPart": {
+                    "verNode": "bone_camera_gunner",
+                    "verLimits": [-180.0,180.0],
+                    "verOriginLimits": [-180.0,180.0]
                   }
-                ],
+                },
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-5.0,85.0]
@@ -3861,13 +3805,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

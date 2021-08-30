@@ -120,9 +120,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -2745,18 +2742,7 @@
       "tracks": {
         "animationMultiplier": -0.68,
         "height": 0.062,
-        "width": 0.54,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
-        "tracksTensionK": [3.5,10.0,2.0],
-        "trackMesh": "ussr_434_55sb_6_phys_track_line",
-        "trackLen": 0.164,
-        "trackCount": 79,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.17,
-        "trackMaxHeight": 1.16,
-        "trackStartOffset": 0.01,
-        "trackConnector": true
+        "width": 0.54
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3839,13 +3825,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

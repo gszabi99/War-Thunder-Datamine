@@ -126,7 +126,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
     if (!additionalCategory.isVisibleByFeature())
       continue
 
-    local value = additionalCategory.lbDataType.getAdditionalTooltipPartValueText(
+    local value = additionalCategory.type.getAdditionalTooltipPartValueText(
                     row[additionalCategory.field],
                     additionalCategory.hideInAdditionalTooltipIfZero)
 
@@ -148,7 +148,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 ::g_lb_category.template <- {
   id = ""//filled automatically by typeName [DEPRECATED]
   field = "" //field name from server response
-  lbDataType = ::g_lb_data_type.NUM
+  type = ::g_lb_data_type.NUM
   sort_default = false
   inverse = false
   visualKey = ""
@@ -168,7 +168,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 
   getItemCell = function(value, row = null, allowNegative = false, forceDataType = null)
   {
-    local res = ::getLbItemCell(id, value, (forceDataType ? forceDataType : lbDataType), allowNegative)
+    local res = ::getLbItemCell(id, value, (forceDataType ? forceDataType : type), allowNegative)
     local additionalTooltipPart = getAdditionalTooltipPart(row)
     if (additionalTooltipPart != "")
       res.tooltip <- (("tooltip" in res) ? res.tooltip + "\n" : "") + additionalTooltipPart
@@ -252,7 +252,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     VICTORIES_BATTLES = {
       field = "victories_battles"
       visualKey = "victories_battles"
-      lbDataType = ::g_lb_data_type.PERCENT
+      type = ::g_lb_data_type.PERCENT
       additionalTooltipCategoryes = ["EACH_PLAYER_VICTORIES", "EACH_PLAYER_SESSION"]
     }
 
@@ -260,7 +260,7 @@ enums.addTypesByGlobalName("g_lb_category", {
       field = "averageRelativePosition"
       visualKey = "average_relative_position"
       headerTooltip = "averageRelativePosition"
-      lbDataType = ::g_lb_data_type.PERCENT
+      type = ::g_lb_data_type.PERCENT
       additionalTooltipCategoryes = ["AVERAGE_POSITION"]
       modesMask = ~(LB_MODE.AIR_SIMULATION | LB_MODE.HELICOPTER_ARCADE)
     }
@@ -396,7 +396,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     }
 
     AVERAGE_ACTIVE_KILLS_BY_SPAWN = {
-      lbDataType = ::g_lb_data_type.FLOAT
+      type = ::g_lb_data_type.FLOAT
       field = "average_active_kills_by_spawn"
       headerImage = "average_active_kills_by_spawn"
       headerTooltip = "average_active_kills_by_spawn"
@@ -418,7 +418,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     }
 
     AVERAGE_SCRIPT_KILLS_BY_SPAWN = {
-      lbDataType = ::g_lb_data_type.FLOAT
+      type = ::g_lb_data_type.FLOAT
       field = "average_script_kills_by_spawn"
       headerImage = "average_script_kills_by_spawn"
       headerTooltip = "average_script_kills_by_spawn"
@@ -439,7 +439,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     /*CLAN DUELS*/
     CLANDUELS_CLAN_ELO = {
       field = "clanRating"
-      lbDataType = ::g_lb_data_type.NUM,
+      type = ::g_lb_data_type.NUM,
       headerImage = "elo_rating"
       headerTooltip = "clan_elo"
 
@@ -449,7 +449,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     /*EVENTS*/
     EVENTS_PERSONAL_ELO = {
       field = "rating"
-      lbDataType = ::g_lb_data_type.NUM,
+      type = ::g_lb_data_type.NUM,
       headerImage = "elo_rating"
       headerTooltip = "personal_elo"
 
@@ -465,7 +465,7 @@ enums.addTypesByGlobalName("g_lb_category", {
 
     WW_EVENTS_PERSONAL_ELO = {
       field = "rating"
-      lbDataType = ::g_lb_data_type.NUM,
+      type = ::g_lb_data_type.NUM,
       headerImage = "elo_rating_worldwar"
       headerTooltip = "personal_elo"
       wwModesMask = ~WW_LB_MODE.WW_COUNTRIES
@@ -483,7 +483,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     EVENTS_EACH_PLAYER_FASTLAP = {
       field = "fastlap"
       visualKey = "each_player_fastlap"
-      lbDataType = ::g_lb_data_type.TIME_MSEC
+      type = ::g_lb_data_type.TIME_MSEC
       inverse = true
       showFieldFilter = [GAME_EVENT_TYPE.TM_NONE_RACE]
     }
@@ -533,7 +533,7 @@ enums.addTypesByGlobalName("g_lb_category", {
       field = "superiority"
       visualKey = "average_relative_position"
       headerTooltip = "averageRelativePosition"
-      lbDataType = ::g_lb_data_type.PERCENT
+      type = ::g_lb_data_type.PERCENT
       additionalTooltipCategoryes = ["EVENTS_SUPERIORITY_BATTLES_THRESHOLD"]
       isSortDefaultFilter = true
       showFieldFilter = [GAME_EVENT_TYPE.TM_NONE]
@@ -574,7 +574,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     }
 
     OPERATION_WINRATE = {
-      lbDataType = ::g_lb_data_type.PERCENT
+      type = ::g_lb_data_type.PERCENT
       field = "operation_winrate"
       visualKey = "operation_winrate"
       headerImage = "victories_battles"
@@ -588,7 +588,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     }
 
     BATTLE_WINRATE = {
-      lbDataType = ::g_lb_data_type.PERCENT
+      type = ::g_lb_data_type.PERCENT
       field = "battle_winrate"
       visualKey = "victories_battles"
       headerImage = "victories_battles"
@@ -615,7 +615,7 @@ enums.addTypesByGlobalName("g_lb_category", {
       visualKey = "averagePosition"
       headerImage = "average_position"
       wwModesMask = (WW_LB_MODE.WW_USERS | WW_LB_MODE.WW_USERS_CLAN) & ~WW_LB_MODE.WW_CLANS_MANAGER
-      lbDataType = ::g_lb_data_type.FLOAT
+      type = ::g_lb_data_type.FLOAT
     }
 
     AVG_SCORE = {

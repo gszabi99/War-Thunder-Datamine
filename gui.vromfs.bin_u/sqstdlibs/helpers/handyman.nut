@@ -30,7 +30,7 @@
 #no-plus-concat
 
 local g_string =  require("std/string.nut")
-local regexp = getroottable()?.regexp ?? require("string").regexp
+local regexp = ::getroottable()?.regexp ?? require("string").regexp
 /**
  * A simple string scanner that is used by the template parser to find
  * tokens in template strings.

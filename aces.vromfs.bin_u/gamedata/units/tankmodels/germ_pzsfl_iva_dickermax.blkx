@@ -2180,8 +2180,7 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander",
-        "substitute": "machine_gunner"
+        "role": "commander"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2845,14 +2844,6 @@
         "blk": "gameData/Weapons/groundModels_weapons/105mm_K18_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "cartridge_case",
-        "hatchAnimVar": "gun_shutter_move",
-        "openHatchTime": 0.3,
-        "sleevesLifeTime": 10.0,
-        "sleeveImpulse": [5.0,0.0,0.0],
-        "linkSleeveToGun": true,
-        "sleeveExtractSound": "shell_eject",
         "recoilOffset": 0.92,
         "allowableDelta": 20.0,
         "maxAdditionalPitch": 0.0,
@@ -2926,10 +2917,7 @@
         "trackStartOffset": 0.15
       },
       "collisionProps": {
-        "cls_body": "convex_hull",
-        "cls_body_01": "convex_hull",
-        "cls_body_02": "convex_hull",
-        "cls_body_03": "convex_hull"
+        "cls_body": "convex_hull"
       },
       "engine": {
         "horsePowers": 180.0,

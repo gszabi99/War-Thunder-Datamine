@@ -203,11 +203,14 @@
           "genericDamageMult": 0.3,
           "hp": 59.5
         },
-        "stab1_dm": {
-          "hp": 59.5
+        "stab_dm": {
+          "hp": 30.0
         },
         "stab2_dm": {
-          "hp": 59.5
+          "hp": 30.0
+        },
+        "stab1_dm": {
+          "hp": 60.7
         }
       },
       "c_dural30": {
@@ -1667,6 +1670,46 @@
       {
         "part": [
           {
+            "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "stab1_dm"
           },
           {
@@ -1677,7 +1720,7 @@
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 60.0,
               "cut": 1.0
             }
           },
@@ -1685,21 +1728,21 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 14.0
+              "nothing": 10.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 4.0
+              "cut": 2.0,
+              "nothing": 5.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 1.0
+              "nothing": 0.0
             }
           }
         ]
@@ -3327,74 +3370,11 @@
           "blk": "gameData/FlightModels/weaponPresets/b_24d_20x100lbs.blk",
           "reqModification": "b-24_sbc",
           "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk"
-              },
-              {
-                "amountPerTier": 2.0
-              },
-              {
-                "tier": {
-                  "idx": 1,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 2,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 3,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 4,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 5,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 7,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 8,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 9,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 10,
-                  "iconType": "bombs_small_group_x2"
-                }
-              },
-              {
-                "tier": {
-                  "idx": 11,
-                  "iconType": "bombs_small_group_x2"
-                }
-              }
-            ]
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "amountPerTier": 5.0,
+              "iconType": "bombs_small_group"
+            }
           }
         }
       },
@@ -3410,13 +3390,6 @@
           "name": "b_24d_8x1000lbs",
           "blk": "gameData/FlightModels/weaponPresets/b_24d_8x1000lbs.blk",
           "reqModification": "b-24_lbc"
-        }
-      },
-      {
-        "preset": {
-          "name": "b_24d_4x2000lbs",
-          "blk": "gameData/FlightModels/weaponPresets/b_24d_4x2000lbs.blk",
-          "reqModification": "us_2000lb_m66"
         }
       },
       {
@@ -3567,7 +3540,7 @@
       },
       "b-24_mbc": {
         "modClass": "weapon",
-        "tier": 2,
+        "tier": 3,
         "reqModLevel": 6.0,
         "reqModification": "b-24_sbc"
       },
@@ -3642,14 +3615,9 @@
       },
       "b-24_lbc": {
         "modClass": "weapon",
-        "tier": 3,
+        "tier": 4,
         "reqModLevel": 11.0,
         "reqModification": "b-24_mbc"
-      },
-      "us_2000lb_m66": {
-        "modClass": "weapon",
-        "tier": 4,
-        "reqModification": "b-24_lbc"
       },
       "bmg50_turret_belt_pack": [],
       "bmg50_turret_new_gun": {

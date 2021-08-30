@@ -19,7 +19,7 @@
   "fxSandDust": "dust_ground_wave_sand_big",
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
-  "fxWaterShockWave": "dust_waterwave_big",
+  "fxWaterShockWave": "water_shock_wave_big",
   "sound_path": "ships/weapon_common/cannons",
   "sound_pathStudio": "naval/weapon/cannons",
   "sound": "76mm_f34",
@@ -68,7 +68,7 @@
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
     "ricochetEffect": "hit_81_105mm_metal_ap",
-    "waterCollisionEffect": "hit_81_105mm_water_he",
+    "waterCollisionEffect": "hit_81_105mm_water",
     "explosionPatchRadius": 3.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
@@ -87,7 +87,7 @@
       "detectShells": false
     },
     "shatterDamage": {
-      "breachConeAngle": 60.0
+      "breachConeAngle": 30.0
     },
     "damage": {
       "kinetic": {
@@ -98,26 +98,24 @@
           "useRealShatters": true
         },
         {
-          "countPortion": 0.12
+          "countPortion": 0.35
         },
         {
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "damageScale": 0.65,
             "angles": [0.0,179.0],
-            "countPortion": 0.5,
-            "onHitChanceMultFire": 8.0
+            "countPortion": 0.5
           }
         },
         {
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "damageScale": 0.65,
             "angles": [180.0,359.0],
-            "countPortion": 0.5,
-            "onHitChanceMultFire": 8.0
+            "countPortion": 0.5
           }
         }
       ]

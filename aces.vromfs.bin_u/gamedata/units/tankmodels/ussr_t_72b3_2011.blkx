@@ -120,9 +120,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -261,12 +258,6 @@
         },
         "turret_11_side_dm": {
           "armorThickness": 15.0
-        },
-        "turret_10_side_dm": {
-          "armorThickness": 50.0
-        },
-        "turret_10_back_dm": {
-          "armorThickness": 50.0
         }
       },
       "turret_composite_armor": {
@@ -511,21 +502,36 @@
         "ex_armor_turret_09_dm": [],
         "ex_armor_turret_10_dm": []
       },
-      "era_hull_front": {
+      "era_hull": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 20.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
         "cumulativeArmorQuality": 7.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
+        "ex_era_hull_01_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_02_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_03_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_04_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_05_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_06_dm": {
+          "armorThickness": 30.0
+        },
         "ex_era_hull_07_dm": [],
         "ex_era_hull_08_dm": [],
         "ex_era_hull_09_dm": [],
@@ -535,39 +541,14 @@
         "ex_era_hull_13_dm": [],
         "ex_era_hull_14_dm": []
       },
-      "era_hull_side": {
+      "era_turret": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 20.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "ex_era_hull_01_dm": [],
-        "ex_era_hull_02_dm": [],
-        "ex_era_hull_03_dm": [],
-        "ex_era_hull_04_dm": [],
-        "ex_era_hull_05_dm": [],
-        "ex_era_hull_06_dm": []
-      },
-      "era_turret_front": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 30.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
         "cumulativeArmorQuality": 7.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
@@ -580,22 +561,6 @@
         "ex_era_turret_06_dm": [],
         "ex_era_turret_07_dm": [],
         "ex_era_turret_08_dm": [],
-        "ex_era_turret_17_dm": [],
-        "ex_era_turret_18_dm": []
-      },
-      "era_turret_top": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 350.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericDamageMult": 3.0,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
         "ex_era_turret_09_dm": [],
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
@@ -603,9 +568,11 @@
         "ex_era_turret_13_dm": [],
         "ex_era_turret_14_dm": [],
         "ex_era_turret_15_dm": [],
-        "ex_era_turret_16_dm": []
+        "ex_era_turret_16_dm": [],
+        "ex_era_turret_17_dm": [],
+        "ex_era_turret_18_dm": []
       },
-      "relict_era_turret_side_box": {
+      "relict_era_hull_turret": {
         "armorClass": "ERA_Relict",
         "kineticProtectionEquivalent": 20.0,
         "cumulativeProtectionEquivalent": 600.0,
@@ -613,72 +580,128 @@
         "armorThickness": 30.0,
         "genericArmorQuality": 0.1,
         "cumulativeArmorQuality": 2.0,
-        "explosionArmorQuality": 0.1,
-        "explosionDamageMult": 1.3,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "restrainDamage": 0.5,
-        "ex_era_turret_19_dm": [],
-        "ex_era_turret_20_dm": [],
-        "ex_era_turret_21_dm": [],
-        "ex_era_turret_22_dm": [],
-        "ex_era_turret_23_dm": [],
-        "ex_era_turret_24_dm": [],
-        "ex_era_turret_25_dm": [],
-        "ex_era_turret_26_dm": [],
-        "ex_era_turret_27_dm": []
-      },
-      "relict_era_hull_side_bag": {
-        "armorClass": "ERA_Relict",
-        "kineticProtectionEquivalent": 20.0,
-        "cumulativeProtectionEquivalent": 600.0,
-        "hp": 350.0,
-        "armorThickness": 30.0,
-        "genericArmorQuality": 0.1,
-        "cumulativeArmorQuality": 3.0,
         "explosionArmorQuality": 0.7,
         "explosionDamageMult": 1.1,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
         "restrainDamage": 0.5,
-        "ex_era_hull_15_dm": [],
-        "ex_era_hull_16_dm": [],
-        "ex_era_hull_17_dm": [],
-        "ex_era_hull_18_dm": [],
-        "ex_era_hull_19_dm": [],
-        "ex_era_hull_20_dm": [],
-        "ex_era_hull_21_dm": [],
-        "ex_era_hull_22_dm": [],
-        "ex_era_hull_23_dm": [],
-        "ex_era_hull_24_dm": [],
-        "ex_era_hull_25_dm": [],
-        "ex_era_hull_26_dm": [],
-        "ex_era_hull_27_dm": [],
-        "ex_era_hull_28_dm": [],
-        "ex_era_hull_29_dm": [],
-        "ex_era_hull_30_dm": [],
-        "ex_era_hull_31_dm": [],
-        "ex_era_hull_32_dm": [],
-        "ex_era_hull_33_dm": [],
-        "ex_era_hull_34_dm": [],
-        "ex_era_hull_35_dm": [],
-        "ex_era_hull_36_dm": [],
-        "ex_era_hull_37_dm": [],
-        "ex_era_hull_38_dm": []
+        "ex_era_turret_19_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_20_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_21_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_22_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_23_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_24_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_25_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_26_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_turret_27_dm": {
+          "explosionArmorQuality": 0.1,
+          "explosionDamageMult": 1.3
+        },
+        "ex_era_hull_15_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_16_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_17_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_18_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_19_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_20_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_21_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_22_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_23_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_24_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_25_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_26_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_27_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_28_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_29_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_30_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_31_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_32_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_33_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_34_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_35_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_36_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_37_dm": {
+          "cumulativeArmorQuality": 3.0
+        },
+        "ex_era_hull_38_dm": {
+          "cumulativeArmorQuality": 3.0
+        }
       },
       "relict_era_hull_inner": {
         "armorClass": "ERA_Relict",
         "kineticProtectionEquivalent": 200.0,
         "cumulativeProtectionEquivalent": 600.0,
         "cumulativeEffectiveThicknessMax": 500.0,
-        "genericEffectiveThicknessMax": 300.0,
         "hp": 200.0,
         "armorThickness": 25.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "cumulativeArmorQuality": 7.75,
         "explosionArmorQuality": 0.5,
         "explosionDamageMult": 1.1,
         "stopChanceOnDeadPart": 0.0,
@@ -1525,7 +1548,7 @@
           "titleLoc": "CHA_tank",
           "armorArrayText": {
             "layer": {
-              "dmPart": "composite_armor_turret_02_dm",
+              "dmPart": "turret_03_side_dm",
               "xrayTextThickness": [240.0,180.0]
             }
           }
@@ -3741,11 +3764,11 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-5.67,13.78]
+            "pitch": [-6.22,13.78]
           },
           "limitsTable": {
             "lim1": [-180.0,-150.0,-3.78,13.78],
-            "lim2": [-150.0,150.0,-5.67,13.78],
+            "lim2": [-150.0,150.0,-6.22,13.78],
             "lim3": [150.0,180.0,-3.78,13.78]
           },
           "gunStabilizer": {
@@ -3928,19 +3951,9 @@
       },
       "tracks": {
         "animationMultiplier": -1.4,
-        "height": 0.06,
-        "width": 0.584,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
-        "tracksTensionK": [3.5,10.0,2.0],
-        "trackMesh": "ussr_t_90a_phys_track_line",
-        "trackLen": 0.164,
-        "trackCount": 82,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.17,
-        "trackMaxHeight": 1.16,
-        "trackStartOffset": 0.04,
-        "trackConnector": true
+        "height": 0.045,
+        "width": 0.65,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3955,9 +3968,9 @@
       },
       "mechanics": {
         "maxBrakeForce": 200000.0,
-        "driveGearRadius": 0.31,
+        "driveGearRadius": 0.47,
         "mainGearRatio": 0.95,
-        "sideGearRatio": 4.1,
+        "sideGearRatio": 6.25,
         "gearRatios": [
           {
             "ratio": -14.35
@@ -3995,9 +4008,7 @@
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -5226,11 +5237,11 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-5.67,13.78]
+                  "pitch": [-6.22,13.78]
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-150.0,-3.78,13.78],
-                  "lim2": [-150.0,150.0,-5.67,13.78],
+                  "lim2": [-150.0,150.0,-6.22,13.78],
                   "lim3": [150.0,180.0,-3.78,13.78]
                 },
                 "gunStabilizer": {
@@ -5960,13 +5971,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

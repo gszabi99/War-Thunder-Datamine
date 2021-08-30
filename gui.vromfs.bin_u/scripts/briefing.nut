@@ -1,7 +1,6 @@
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
@@ -735,7 +734,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
 
     local mrankMin = getOptValue(::USEROPT_BR_MIN, 0)
     local mrankMax = getOptValue(::USEROPT_BR_MAX, 0)
-    if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
+    if (mrankMin > 0 || mrankMax < ::MAX_ECONOMIC_RANK)
     {
       ::mission_settings.mrankMin <- mrankMin
       ::mission_settings.mrankMax <- mrankMax

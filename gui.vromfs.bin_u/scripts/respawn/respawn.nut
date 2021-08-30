@@ -2,7 +2,6 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local statsd = require("statsd")
 local time = require("scripts/time.nut")
 local respawnBases = require("scripts/respawn/respawnBases.nut")
-local respawnOptions = require("scripts/respawn/respawnOptionsType.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
@@ -19,12 +18,13 @@ local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
 local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 local { getEventSlotbarHint } = require("scripts/events/eventInfo.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { showedUnit, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -44,6 +44,45 @@ enum ESwitchSpectatorTarget
   E_PREV
 }
 
+::respawn_options <- [
+  {id = "skin",        hint = "options/skin",
+    user_option = ::USEROPT_SKIN, isShowForRandomUnit =false },
+  {id = "user_skins",  hint = "options/user_skins",
+    user_option = ::USEROPT_USER_SKIN, isShowForRandomUnit =false,
+    isVisible = @() ::has_feature("UserSkins") },
+  {id = "gundist",     hint = "options/gun_target_dist",
+    user_option = ::USEROPT_GUN_TARGET_DISTANCE},
+  {id = "gunvertical", hint = "options/gun_vertical_targeting", user_option = ::USEROPT_GUN_VERTICAL_TARGETING},
+  {id = "bomb_activation_type",    hint = "options/bomb_activation_time",
+    user_option = ::USEROPT_BOMB_ACTIVATION_TIME, isShowForRandomUnit =false },
+  {id = "bomb_series",    hint = "options/bomb_series",
+    user_option = ::USEROPT_BOMB_SERIES, isShowForRandomUnit =false },
+  {id = "depthcharge_activation_time",  hint = "options/depthcharge_activation_time",
+     user_option = ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, isShowForRandomUnit =false },
+  {id = "rocket_fuse_dist",  hint = "options/rocket_fuse_dist",
+    user_option = ::USEROPT_ROCKET_FUSE_DIST, isShowForRandomUnit =false },
+  {id = "torpedo_dive_depth",  hint = "options/torpedo_dive_depth",
+    user_option = ::USEROPT_TORPEDO_DIVE_DEPTH, isShowForRandomUnit =false,
+    isVisible = @() !::get_option_torpedo_dive_depth_auto() },
+  {id = "fuel",        hint = "options/fuel_amount",
+    user_option = ::USEROPT_LOAD_FUEL_AMOUNT, isShowForRandomUnit =false },
+  {id = "countermeasures_periods",        hint = "options/countermeasures_periods",
+    user_option = ::USEROPT_COUNTERMEASURES_PERIODS, isShowForRandomUnit =false },
+  {id = "countermeasures_series_periods", hint = "options/countermeasures_series_periods",
+    user_option = ::USEROPT_COUNTERMEASURES_SERIES_PERIODS, isShowForRandomUnit =false },
+  {id = "countermeasures_series",         hint = "options/countermeasures_series",
+    user_option = ::USEROPT_COUNTERMEASURES_SERIES, isShowForRandomUnit =false },
+  {id = "respawn_base",hint = "options/respawn_base",        cb = "onRespawnbaseOptionUpdate", use_margin_top = true},
+  {id = "smoke_type", hint = "options/aerobatics_smoke_type",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_TYPE, cb = "onSmokeTypeUpdate", isSmokeType = true},
+  {id = "smoke_left_color", hint = "options/aerobatics_smoke_left_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, isSmokeColor = true},
+  {id = "smoke_right_color", hint = "options/aerobatics_smoke_right_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, isSmokeColor = true},
+  {id = "smoke_tail_color", hint = "options/aerobatics_smoke_tail_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, isSmokeColor = true},
+]
+
 ::gui_start_respawn <- function gui_start_respawn(is_match_start = false)
 {
   ::mp_stat_handler = ::handlersManager.loadHandler(::gui_handlers.RespawnHandler)
@@ -52,10 +91,8 @@ enum ESwitchSpectatorTarget
 
 class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 {
-  sceneBlkName = "gui/respawn/respawn.blk"
+  sceneBlkName = "gui/respawn.blk"
   shouldBlurSceneBg = true
-  shouldFadeSceneInVr = true
-  shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
 
@@ -68,7 +105,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   needCheckSlotReady = true //!::is_version_equals_or_newer("1.51.7.81")
   slotReadyAtHostMask = 0
   slotsCostSum = 0 //refreash slotbar when unit costs sum will changed after initslotbar.
-  currCrewNamesList = null
 
   isFirstInit = true
   isFirstUnitOptionsInSession = false
@@ -125,7 +161,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   bulletsDescr = array(::BULLETS_SETS_QUANTITY, null)
 
-  optionsFilled = null
+  skins = null
 
   missionRules = null
   slotbarInited = false
@@ -133,6 +169,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   customStateCrewAvailableMask = 0
   curSpawnScore = 0
   crewsSpawnScoreMask = 0 //mask of crews available by spawn score
+
 
   // debug vars
   timeToAutoSelectAircraft = 0.0
@@ -185,7 +222,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     autostartShowTime = blk.autostartShowTime;
     autostartShowInColorTime = blk.autostartShowInColorTime;
 
-    dagor.debug($"stayOnRespScreen = {stayOnRespScreen}")
+    dagor.debug("stayOnRespScreen = "+stayOnRespScreen)
 
     local spectator = isSpectator()
     haveSlotbar = (gameType & (::GT_VERSUS | ::GT_COOPERATIVE)) &&
@@ -219,7 +256,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateButtons()
     ::add_tags_for_mp_players()
 
-    showSceneBtn("screen_button_back", useTouchscreen && !isRespawn)
+    showSceneBtn("screen_button_back", ::use_touchscreen && !isRespawn)
     showSceneBtn("gamercard_bottom", isRespawn)
 
     if (gameType & ::GT_RACE)
@@ -376,7 +413,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   {
     local scoreObj = scene.findObject("gc_spawn_score")
     if (::checkObj(scoreObj) && missionRules.isScoreRespawnEnabled)
-      scoreObj.setValue(::getCompoundedText("".concat(::loc("multiplayer/spawnScore"), " "), curSpawnScore, "activeTextColor"))
+      scoreObj.setValue(::getCompoundedText(::loc("multiplayer/spawnScore") + " ", curSpawnScore, "activeTextColor"))
   }
 
   function updateSpawnScore(isOnInit = false)
@@ -433,11 +470,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
     }
 
-    if (!updateRespawnBases())
-      return
-
     reinitSlotbar()
-    updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
+    updateOtherOptions()
     updateButtons()
     updateApplyText()
     checkReady()
@@ -466,51 +500,47 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function createRespawnOptions()
   {
-    if (optionsFilled != null)
+    local dObj = scene.findObject("respawn_options_table")
+    local optionObj = dObj.findObject("option_row_sample")
+    local newOptionObj = null
+
+    if(!::checkObj(optionObj))
       return
-    optionsFilled = array(respawnOptions.types.len(), false)
 
-    local cells = respawnOptions.types
-      .filter(@(o) o.isAvailableInMission())
-      .map(@(o) {
-          id = o.id
-          label = o.getLabelText()
-          cb = o.cb
-          isList = o.cType == optionControlType.LIST
-          isCheckbox = o.cType == optionControlType.CHECKBOX
-        })
-    local markup = ::handyman.renderCached("gui/respawn/respawnOptions", { cells })
-    guiScene.replaceContentFromText(scene.findObject("respawn_options_table"), markup, markup.len(), this)
-  }
+    foreach (option in ::respawn_options)
+    {
+      local isShow = option?.isVisible ? option.isVisible() : true
+      if (!isShow)
+        continue
 
-  function getOptionsParams()
-  {
-    local unit = getCurSlotUnit()
-    return {
-      handler = this
-      unit
-      isRandomUnit = isUnitRandom(unit)
-      canChangeAircraft = canChangeAircraft
-      respawnBasesList = respawnBasesList
-      curRespawnBase = curRespawnBase
-      haveRespawnBases = haveRespawnBases
-      isRespawnBasesChanged = true
+      local newOptLableObj = null
+      local newDroprightObj = null
+      newOptionObj = optionObj.getClone(dObj, this)
+      newOptionObj.id = option.id + "_tr"
+
+      newOptLableObj = newOptionObj.findObject("option_lable")
+      newOptLableObj.id = "lbl_" + option.id
+      newOptLableObj.setValue(::loc(option.hint))
+
+      newDroprightObj = newOptionObj.findObject("option")
+      newDroprightObj.id = option.id
+      if ("cb" in option && option.cb)
+        newDroprightObj.on_select = option.cb
+      else
+        newDroprightObj.on_select = "checkReady"
+
+      newOptionObj.show(true)
+      newOptionObj.enable(isRespawn)
     }
-  }
-
-  function updateOptions(trigger, paramsOverride = {})
-  {
-    local optionsParams = getOptionsParams().__update(paramsOverride)
-    foreach (idx, option in respawnOptions.types)
-      optionsFilled[idx] = option.update(optionsParams, trigger, optionsFilled[idx]) || optionsFilled[idx]
+    guiScene.destroyElement(optionObj)
   }
 
   function initAircraftSelect()
   {
-    if (showedUnit.value == null)
-      showedUnit(getAircraftByName(::last_ca_aircraft))
+    if (::show_aircraft == null)
+      ::show_aircraft = getAircraftByName(::last_ca_aircraft)
 
-    dagor.debug($"initScreen aircraft {::last_ca_aircraft} showedUnit {showedUnit.value}")
+    dagor.debug("initScreen aircraft "+ ::last_ca_aircraft + " show_aircraft " + ::show_aircraft);
 
     scene.findObject("CA_div").show(haveSlotbar)
     updateSessionWpBalance()
@@ -549,7 +579,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       local air = ::getAircraftByName(airName)
       if (air)
       {
-        showedUnit(air)
+        ::show_aircraft = air
         scene.findObject("air_info_div").show(true)
         local data = ::build_aircraft_item(air.name, air, {
           showBR        = ::has_feature("SlotbarShowBattleRating")
@@ -619,25 +649,24 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         local curWpBalanceString = ::Cost(curWpBalance).toStringWithParams({isWpAlwaysShown = true})
         local curPositiveIncrease = ""
         local curNegativeDecrease = ""
-        local color = info.cur_award_positive > 0? "@goodTextColor" : "@badTextColor"
+        local color = info.cur_award_positive > 0? "good" : "bad"
         local curDifference = info.cur_award_positive
         if (info.cur_award_positive < 0)
         {
           curDifference = info.cur_award_positive - info.cur_award_negative
-          color = "@badTextColor"
+          color = "bad"
         }
         else if (info.cur_award_negative != 0)
-          curNegativeDecrease = ::colorize("@badTextColor",
-            ::Cost(-1 * info.cur_award_negative).toStringWithParams({isWpAlwaysShown = true}))
+          curNegativeDecrease = "<color=@badTextColor>" +
+            ::Cost(-1*info.cur_award_negative).toStringWithParams({isWpAlwaysShown = true}) + "</color>"
 
         if (curDifference != 0)
-          curPositiveIncrease = ::colorize(color, "".concat(curDifference > 0 ? "+" : "",
-            ::Cost(curDifference).toStringWithParams({isWpAlwaysShown = true})))
+          curPositiveIncrease = "<color=@" + color + "TextColor>" + (curDifference > 0? "+" : "") +
+            ::Cost(curDifference).toStringWithParams({isWpAlwaysShown = true}) + "</color>"
 
-        local totalString = "".concat(" = ", ::colorize("@activeTextColor",
-          ::Cost(total).toStringWithParams({isWpAlwaysShown = true})))
-
-        wpBalance = "".concat(curWpBalanceString, curPositiveIncrease, curNegativeDecrease, totalString)
+        local totalString = " = <color=@activeTextColor>" +
+          ::Cost(total).toStringWithParams({isWpAlwaysShown = true}) + "</color>"
+        wpBalance = curWpBalanceString + curPositiveIncrease + curNegativeDecrease + totalString
       }
     }
 
@@ -778,11 +807,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       ::showInfoMsgBox(cantSpawnReason.text, cantSpawnReason.id, true)
   }
 
-  function isUnitRandom(unit)
-  {
-    return unit != null && missionRules?.getRandomUnitsGroupName(unit.name) != null
-  }
-
   function onChangeUnit()
   {
     local unit = getCurSlotUnit()
@@ -800,7 +824,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function updateWeaponsSelector(isUnitChanged)
   {
     local unit = getCurSlotUnit()
-    local isRandomUnit = isUnitRandom(unit)
+    local isRandomUnit = unit && missionRules && missionRules.getRandomUnitsGroupName(unit.name)
     local shouldShowWeaponry = (!isRandomUnit || !isRespawn) && !getOverrideBullets(unit)
     local canChangeWeaponry = canChangeAircraft && shouldShowWeaponry
 
@@ -825,6 +849,22 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     weaponsSelectorObj.show(shouldShowWeaponry)
   }
 
+  function showOptionRow(id, show)
+  {
+    local obj = scene.findObject(id + "_tr")
+    if (!::checkObj(obj))
+      return false
+    local respOption = ::u.search(::respawn_options, @(o) o.id == id)
+    local isShowForRandomUnit = respOption?.isShowForRandomUnit ?? true
+
+    local unit = getCurSlotUnit()
+    local isRandomUnit = unit && missionRules && missionRules.getRandomUnitsGroupName(unit.name)
+    show = show && (isShowForRandomUnit || !isRandomUnit)
+    obj.show(show)
+    obj.inactive = show ? null : "yes"
+    return true
+  }
+
   function getWeaponPrice(airName, weapon)
   {
     if(missionRules.isWarpointsRespawnEnabled
@@ -842,7 +882,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function onSmokeTypeUpdate(obj)
   {
     checkReady(obj)
-    updateOptions(RespawnOptUpdBit.SMOKE_TYPE)
+    showTripleSmokeOptions(isTripleColorSmokeAvailable())
   }
 
   function onRespawnbaseOptionUpdate(obj)
@@ -888,8 +928,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
             {
               hint = ::colorize("userlogColoredText", spawn.getTitle())
               if (spawnId == curRespawnBase?.id)
-                hint = "".concat(hint, ::colorize("activeTextColor", ::loc("ui/parentheses/space",
-                  { text = ::loc(curRespawnBase.isAutoSelected ? "ui/selected_auto" : "ui/selected") })))
+                hint += ::colorize("activeTextColor",
+                  ::loc("ui/parentheses/space",
+                    { text = ::loc(curRespawnBase.isAutoSelected ? "ui/selected_auto" : "ui/selected") }))
               break
             }
 
@@ -948,29 +989,96 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!air) return
 
     ::aircraft_for_weapons = air.name
+    local option = getUserOptionInRespawnOptions(obj?.id)
+    if (!option)
+      return
 
-    local option = respawnOptions.get(obj?.id)
-    if (option.userOption != -1)
-    {
-      local userOpt = ::get_option(option.userOption)
-      local value = obj.getValue()
-      ::set_option(userOpt.type, value, userOpt)
-    }
+    local value = obj.getValue()
+    ::set_option(option.type, value, option)
   }
 
-  function updateRespawnBases()
+  function getUserOptionInRespawnOptions(id)
   {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return false
+    if (!id)
+      return null
 
-    local currBasesList = clone respawnBasesList
+    //search by respawn_option id
+    foreach (option in ::respawn_options)
+      if ("id" in option && option.id)
+        if (id == option.id)
+          if ("user_option" in option && option.user_option)
+            return ::get_option(option.user_option)
+          else
+            return null
 
+    //search by real option id
+    foreach (option in ::respawn_options)
+    {
+      local optType = ::getTblValue("user_option", option)
+      if (optType == null)
+        continue
+
+      local userOption = ::get_option(optType)
+      if (userOption.id == id)
+        return userOption
+    }
+    return null
+  }
+
+  function updateSkin()
+  {
+    local air = getCurSlotUnit()
+    if (!air)
+      return
+
+    local skinObj = scene.findObject("skin")
+    if (!::check_obj(skinObj))
+      return
+
+    local data = []
+    local skinsData = ::g_decorator.getSkinsOption(air.name)
+    local selIndex = skinsData.value
+
+    skins = skinsData.values
+
+    foreach (i, item in skinsData.items)
+    {
+      if (!canChangeAircraft && i != selIndex)
+        continue
+      local tooltipObjMarkup = DECORATION.getMarkup(skinsData.decorators[i].id, ::UNLOCKABLE_SKIN)
+      data.append(::build_option_blk(item.text, item.image || "", i == selIndex, true,
+        item.textStyle, false, "", tooltipObjMarkup))
+    }
+
+    data = ::g_string.implode(data)
+    guiScene.replaceContentFromText(skinObj, data, data.len(), this)
+    showOptionRow("skin", true)
+  }
+
+  function updateUserSkins()
+  {
+    local air = getCurSlotUnit()
+    if (!air) return
+
+    local userSkinsOption = ::get_option(::USEROPT_USER_SKIN)
+
+    local data = ""
+    for(local i = 0; i < userSkinsOption.items.len(); i++)
+      data += ::build_option_blk(userSkinsOption.items[i].text, "", userSkinsOption.value == i, true, "", false, userSkinsOption.items[i].tooltip)
+
+    local uskObj = scene.findObject("user_skins")
+    if (::checkObj(uskObj))
+      guiScene.replaceContentFromText(uskObj, data, data.len(), this)
+    showOptionRow("user_skins", true)
+  }
+
+  function updateRespawnBases(air)
+  {
     if (canChangeAircraft)
     {
       local crew = getCurCrew()
-      ::set_selected_unit_info(unit, crew.idInCountry)
-      local rbData = respawnBases.getRespawnBasesData(unit)
+      ::set_selected_unit_info(air, crew.idInCountry)
+      local rbData = respawnBases.getRespawnBasesData(air)
       curRespawnBase = rbData.selBase
       respawnBasesList = rbData.basesList
       haveRespawnBases = rbData.hasRespawnBases
@@ -983,15 +1091,273 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       canChooseRespawnBase = false
     }
 
-    return !::u.isEqual(respawnBasesList, currBasesList)
-  }
+    if (haveRespawnBases)
+    {
+      local respawnBaseObj = scene.findObject("respawn_base")
+      if (::checkObj(respawnBaseObj))
+      {
+        local data = ""
+        foreach (i, spawn in respawnBasesList)
+          data += ::build_option_blk(spawn.getTitle(), "", curRespawnBase == spawn)
+        guiScene.replaceContentFromText(respawnBaseObj, data, data.len(), this);
+        onRespawnbaseOptionUpdate(respawnBaseObj)
+      }
+    }
 
+    showRespawnTr(haveRespawnBases)
+  }
 
   function showRespawnTr(show)
   {
     local obj = scene.findObject("respawn_base_tr")
     if (::checkObj(obj))
       obj.show(show)
+  }
+
+  function updateGunVerticalOption(unit)
+  {
+    local isAir = unit && (unit.isAir() || unit.isHelicopter())
+    showOptionRow("gunvertical", isAir && ::is_gun_vertical_convergence_allowed())
+
+    local option = ::get_option(::USEROPT_GUN_VERTICAL_TARGETING)
+    local gunVerticalObj = scene.findObject(option.id)
+    if (::checkObj(gunVerticalObj))
+    {
+      if (gunVerticalObj.getValue() != option.value)
+        gunVerticalObj.setValue(option.value)
+    } else
+    {
+      gunVerticalObj = scene.findObject("gunvertical")
+      if (!::checkObj(gunVerticalObj))
+        return
+
+      local parentObj = gunVerticalObj.getParent()
+      option.cb <- "checkReady"
+      local data = ::create_option_switchbox(option)
+      guiScene.replaceContentFromText(parentObj, data, data.len(), this)
+      gunVerticalObj = parentObj.findObject(option.id)
+    }
+
+    if (::checkObj(gunVerticalObj))
+      gunVerticalObj.enable(canChangeAircraft)
+  }
+
+  function updateShipOptions(air, needUpdateOptionItems = true)
+  {
+    local depthChargeDescr = ::get_option(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    if (air.isDepthChargeAvailable() && needUpdateOptionItems)
+    {
+      local data = ""
+      foreach (idx, item in depthChargeDescr.items)
+        data += build_option_blk(item, "", idx == depthChargeDescr.value)
+      local depthChargeTimeObj = scene.findObject(depthChargeDescr.id)
+      if (::checkObj(depthChargeTimeObj))
+        guiScene.replaceContentFromText(depthChargeTimeObj, data, data.len(), this)
+    }
+    showOptionRow(depthChargeDescr.id, air.isDepthChargeAvailable()
+      && air.getAvailableSecondaryWeapons().hasDepthCharges)
+
+    local torpedoDepthDescr = ::get_option(::USEROPT_TORPEDO_DIVE_DEPTH)
+    local isShipOrBoat = air.isShipOrBoat()
+    local torpedoDepthObj = scene.findObject(torpedoDepthDescr.id)
+    if (isShipOrBoat && needUpdateOptionItems && ::check_obj(torpedoDepthObj)) {
+      local data = []
+      foreach (idx, item in torpedoDepthDescr.items)
+        data.append(build_option_blk(item, "", idx == torpedoDepthDescr.value))
+      data = "".join(data)
+      guiScene.replaceContentFromText(torpedoDepthObj, data, data.len(), this)
+    }
+    showOptionRow(torpedoDepthDescr.id, isShipOrBoat
+      && air.getAvailableSecondaryWeapons().hasTorpedoes)
+  }
+
+  function updateAircraftWeaponsOptions(unit, needUpdateOptionItems = true)
+  {
+    local aircraft = unit.isAir() || unit.isHelicopter()
+    local bomb = false
+    local rocket = false
+
+    local weaponName = getSelWeapon()
+    foreach(w in unit.weapons) {
+      if (w.name == weaponName)
+      {
+        bomb = w.bomb
+        rocket = w.rocket
+      }
+    }
+
+    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
+    local bombTimeObj = scene.findObject(bombDescr.id)
+    if (needUpdateOptionItems && ::check_obj(bombTimeObj))
+    {
+      local markup = ""
+      foreach (idx, item in bombDescr.items)
+        if (canChangeAircraft || idx == bombDescr.value)
+          markup += build_option_blk(item.text, "", idx == bombDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(bombTimeObj, markup, markup.len(), this)
+    }
+    showOptionRow(bombDescr.id, aircraft && bomb && unit.getAvailableSecondaryWeapons().hasBombs)
+
+    local bombSeriesDescr = ::get_option(::USEROPT_BOMB_SERIES)
+    local bombSeriesObj = scene.findObject(bombSeriesDescr.id)
+
+    updateOptionImpl(bombSeriesDescr)
+    if (needUpdateOptionItems && ::check_obj(bombSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in bombSeriesDescr.items)
+        if (canChangeAircraft || idx == bombSeriesDescr.value)
+        {
+          if (idx == 0)
+            markup += build_option_blk(item, "", idx == bombSeriesDescr.value)
+          else
+            markup += build_option_blk(item.text, "", idx == bombSeriesDescr.value, true, "", false, item.tooltip)
+        }
+      guiScene.replaceContentFromText(bombSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(bombSeriesDescr.id, aircraft && bomb && bombNbr(unit) > 0)
+
+    local rocketDescr = ::get_option(::USEROPT_ROCKET_FUSE_DIST)
+    local rocketdistObj = scene.findObject(rocketDescr.id)
+    if (needUpdateOptionItems && ::check_obj(rocketdistObj))
+    {
+      local markup = ""
+      foreach (idx, item in rocketDescr.items)
+        if (canChangeAircraft || idx == rocketDescr.value)
+          markup += build_option_blk(item, "", idx == rocketDescr.value)
+      guiScene.replaceContentFromText(rocketdistObj, markup, markup.len(), this)
+      rocketdistObj.setValue(rocketDescr.value)
+    }
+    showOptionRow(rocketDescr.id,
+      aircraft && rocket && unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
+
+    //countermeasures
+    local countermeasuresPeriodsDescr = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
+    local countermeasurePeriodsObj = scene.findObject(countermeasuresPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasurePeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresPeriodsDescr.items)
+        if (canChangeAircraft || idx == countermeasuresPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasurePeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresPeriodsDescr.id, aircraft && hasCountermeasures(unit))
+
+    local countermeasuresSeriesPeriodsDescr = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    local countermeasureSeriesPeriodsObj = scene.findObject(countermeasuresSeriesPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasureSeriesPeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresSeriesPeriodsDescr.items)
+        if (canChangeAircraft || idx == countermeasuresSeriesPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasureSeriesPeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresSeriesPeriodsDescr.id, aircraft && hasCountermeasures(unit))
+
+    local countermeasuresSeriesDescr = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
+    local countermeasureSeriesObj = scene.findObject(countermeasuresSeriesDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasureSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresSeriesDescr.items)
+        if (canChangeAircraft || idx == countermeasuresSeriesDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresSeriesDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasureSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresSeriesDescr.id, aircraft && hasCountermeasures(unit))
+  }
+
+  function updateOptionImpl(option)
+  {
+    local obj = scene.findObject(option.id)
+    if (!::check_obj(obj))
+      return
+
+    if (option.controlType == optionControlType.LIST)
+    {
+      local markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+    } else
+      obj.setValue(option.value)
+  }
+
+  function fillSmokeOptions()
+  {
+    foreach (option in ::respawn_options)
+      if (option?.isSmokeColor || option?.isSmokeType)
+      {
+        local optionObj = scene.findObject(option.id)
+        if (!optionObj?.isValid())
+          continue
+        local optionDescr = ::get_option(option.user_option)
+        local data = ""
+        foreach (idx, item in optionDescr.items)
+          if (canChangeAircraft || idx == optionDescr.value)
+            data += build_option_blk(item, "", idx == optionDescr.value)
+        guiScene.replaceContentFromText(optionObj, data, data.len(), this)
+      }
+  }
+
+  function showTripleSmokeOptions(show)
+  {
+    foreach (option in ::respawn_options)
+      if (option?.isSmokeColor)
+        showOptionRow(option.id, show)
+  }
+
+  function updateSmokeOptions()
+  {
+    if (!getCurSlotUnit()?.isAir())
+    {
+      showOptionRow("smoke_type", false)
+      showTripleSmokeOptions(false)
+      return
+    }
+
+    fillSmokeOptions()
+    showOptionRow("smoke_type", true)
+    showTripleSmokeOptions(isTripleColorSmokeAvailable())
+  }
+
+  function updateOtherOptions()
+  {
+    local air = getCurSlotUnit()
+    if (!air)
+      return
+
+    updateShipOptions(air)
+    updateAircraftWeaponsOptions(air)
+    updateRespawnBases(air)
+
+    local aircraft = air.isAir() || air.isHelicopter()
+
+    local gunDescr = ::get_option(::USEROPT_GUN_TARGET_DISTANCE)
+    local data = ""
+    foreach (idx, item in gunDescr.items)
+      if (canChangeAircraft || idx == gunDescr.value)
+        data += build_option_blk(item, "", idx == gunDescr.value)
+    local gundistObj = scene.findObject("gundist")
+    if (::checkObj(gundistObj))
+      guiScene.replaceContentFromText(gundistObj, data, data.len(), this)
+    showOptionRow("gundist", aircraft)
+
+    updateGunVerticalOption(air)
+
+    local fuelObj = scene.findObject("fuel")
+    if (::checkObj(fuelObj))
+    {
+      local fuelDescr = ::get_option(::USEROPT_LOAD_FUEL_AMOUNT)
+      data = ""
+      foreach (idx, item in fuelDescr.items)
+        if (canChangeAircraft || idx == fuelDescr.value)
+          data += build_option_blk(item, "", idx == fuelDescr.value, true, "id:t='fuel_opt"+idx+"'; ")
+      guiScene.replaceContentFromText(fuelObj, data, data.len(), this)
+      fuelObj.setValue(fuelDescr.value)
+    }
+
+    showOptionRow("fuel", aircraft) //TODO: fuel for tanks
   }
 
   function updateUnitOptions()
@@ -1003,7 +1369,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       isUnitChanged = ::aircraft_for_weapons != unit.name
       ::cur_aircraft_name = unit.name //used in some options
       ::aircraft_for_weapons = unit.name
-      showedUnit(unit)
+      ::show_aircraft = unit
 
       if (isUnitChanged || isFirstUnitOptionsInSession)
         preselectUnitWeapon(unit)
@@ -1012,15 +1378,17 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateTacticalMapUnitType()
 
     updateWeaponsSelector(isUnitChanged)
-    local isRespawnBasesChanged = updateRespawnBases()
-    updateOptions(RespawnOptUpdBit.UNIT_ID, { isRespawnBasesChanged })
+    updateOtherOptions()
+    updateSkin()
+    updateUserSkins()
+    updateSmokeOptions()
     isFirstUnitOptionsInSession = false
     updateLeftPanelBlock()
   }
 
   function preselectUnitWeapon(unit)
   {
-    if (unit && isUnitRandom(unit))
+    if (unit && missionRules.getRandomUnitsGroupName(unit.name))
     {
       setLastWeapon(unit.name, missionRules.getWeaponForRandomUnit(unit, "forceWeapon"))
       return
@@ -1082,11 +1450,14 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function getSelSkin()
   {
-    local unit = getCurSlotUnit()
-    local obj = scene.findObject("skin")
-    if (unit == null || !::check_obj(obj))
-      return null
-    return ::g_decorator.getSkinsOption(unit.name).values?[obj.getValue()]
+    local skinObj = scene.findObject("skin")
+    local skinIndex = null
+    if (!::checkObj(skinObj))
+      return skinIndex
+    skinIndex = skinObj.getValue()
+    if (skinIndex >= 0 && skinIndex < skins.len())
+      return skins[skinIndex]
+    return null
   }
 
   function doSelectAircraftSkipAmmo()
@@ -1113,7 +1484,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     actionBarInfo.cacheActionDescs(requestData.name)
 
-    setShowUnit(::getAircraftByName(requestData.name))
+    ::set_show_aircraft(::getAircraftByName(requestData.name))
   }
 
   function getSelectedRequestData(silent = true)
@@ -1178,16 +1549,16 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         continue
 
       if (getModificationByName(air, modName)) //!default bullets (fake)
-        res[$"bullets{bulletInd}"] <- modName
+        res["bullets" + bulletInd] <- modName
       else
-        res[$"bullets{bulletInd}"] <- ""
-      res[$"bulletCount{bulletInd}"] <- count
+        res["bullets" + bulletInd] <- ""
+      res["bulletCount" + bulletInd] <- count
       bulletInd++;
     }
     while(bulletInd < ::BULLETS_SETS_QUANTITY)
     {
-      res[$"bullets{bulletInd}"] <- ""
-      res[$"bulletCount{bulletInd}"] <- 0
+      res["bullets" + bulletInd] <- ""
+      res["bulletCount" + bulletInd] <- 0
       bulletInd++;
     }
 
@@ -1195,20 +1566,19 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (editSlotbarBullets)
       for (local i = 0; i < ::BULLETS_SETS_QUANTITY; i++)
       {
-        res[$"bullets{i}"] = editSlotbarBullets?[$"bullets{i}"] ?? ""
-        res[$"bulletCount{i}"] = editSlotbarBullets?[$"bulletsCount{i}"] ?? 0
+        res["bullets" + i] = editSlotbarBullets?["bullets" + i] ?? ""
+        res["bulletCount" + i] = editSlotbarBullets?["bulletsCount" + i] ?? 0
       }
 
-    local optionsParams = getOptionsParams()
-
-    foreach (option in respawnOptions.types)
+    foreach(optId in [::USEROPT_GUN_TARGET_DISTANCE, ::USEROPT_GUN_VERTICAL_TARGETING,
+                      ::USEROPT_BOMB_ACTIVATION_TIME,
+                      ::USEROPT_ROCKET_FUSE_DIST, ::USEROPT_LOAD_FUEL_AMOUNT,
+                      ::USEROPT_TORPEDO_DIVE_DEPTH
+                     ])
     {
-      if (!option.needSetToReqData || !option.isVisible(optionsParams))
-        continue
-
-      local opt = ::get_option(option.userOption)
+      local opt = ::get_option(optId)
       if (opt.controlType == optionControlType.LIST)
-        res[opt.id] <- opt.values?[opt.value]
+        res[opt.id] <- ::getTblValue(opt.value, opt.values)
       else
         res[opt.id] <- opt.value
     }
@@ -1267,12 +1637,13 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     }
 
     if (!silent)
-      dagor.debug($"Try to select aircraft {unit.name}")
+      dagor.debug("try to select aircraft " + unit.name)
 
     if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, !silent))
     {
       if (!silent)
-        dagor.debug($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
+        dagor.debug("is_crew_slot_was_ready_at_host return false for" +
+          crew.idInCountry + " - " + unit.name)
       return { text = ::loc("aircraft_not_repaired"), id = "aircraft_not_repaired" }
     }
 
@@ -1320,11 +1691,11 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         break;
 
       default:
-        dagor.debug($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
+        dagor.debug("Respawn Erorr: aircraft accepted cb result = " + result + ", on request:")
         debugTableData(lastRequestData)
         lastRequestData = null
         if (!::checkObj(guiScene["char_connecting_error"]))
-          ::showInfoMsgBox(::loc($"changeAircraftResult/{result}"), "char_connecting_error")
+          ::showInfoMsgBox(::loc("changeAircraftResult/"+result.tostring()), "char_connecting_error")
         break
     }
   }
@@ -1407,25 +1778,24 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     //******************** combine final texts ********************************
 
     local applyTextShort = applyText //for slot battle button
-    local comma = ::loc("ui/comma")
 
     if (shortCostText.len())
       applyTextShort = ::format("%s<b> %s</b>", ::loc("mainmenu/toBattle/short"), shortCostText)
 
-    local costText = comma.join(costTextArr, true)
+    local costText = ::g_string.implode(costTextArr, ", ")
     if (costText.len())
-      applyText = "".concat(applyText, ::loc("ui/parentheses/space", { text = costText }))
+      applyText += ::loc("ui/parentheses/space", { text = costText })
 
-    local infoText = comma.join(infoTextsArr, true)
+    local infoText = ::g_string.implode(infoTextsArr, ", ")
     if (infoText.len())
-      applyText = "".concat(applyText, ::loc("ui/parentheses/space", { text = infoText }))
+      applyText += ::loc("ui/parentheses/space", { text = infoText })
 
     //******************  uodate buttons objects ******************************
 
     foreach (btnId in mainButtonsId)
     {
       local buttonSelectObj = setColoredDoubleTextToButton(scene.findObject("nav-help"), btnId, applyText)
-      buttonSelectObj.tooltip = isSpectate ? tooltipText : "".concat(tooltipText, tooltipEndText)
+      buttonSelectObj.tooltip = isSpectate ? tooltipText : tooltipText + tooltipEndText
       buttonSelectObj.isCancel = isApplyPressed ? "yes" : "no"
       buttonSelectObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
     }
@@ -1479,7 +1849,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!air)
       return true
 
-    local textArr = []
+    local text = "";
     local zero = false;
 
     local weapon = getSelWeapon()
@@ -1488,7 +1858,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       local weaponText = getAmmoAmountData(air, weapon, AMMO.WEAPON)
       if (weaponText.warning)
       {
-        textArr.append("".concat(getWeaponNameText(air.name, false, -1, ::loc("ui/comma")), weaponText.text))
+        text += getWeaponNameText(air.name, false, -1, ", ") + weaponText.text;
         if (!weaponText.amount)
           zero = true
       }
@@ -1508,7 +1878,10 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       if (!modificationText.warning)
         continue
 
-      textArr.append("".concat(getModificationName(air, modifName), modificationText.text))
+      if (text != "")
+        text += "\n"
+      text += getModificationName(air, modifName)
+        + modificationText.text
       if (!modificationText.amount)
         zero = true
     }
@@ -1516,13 +1889,13 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!zero && !::is_game_mode_with_spendable_weapons())
       return true
 
-    if (textArr.len() && (zero || !::get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) //skip warning only
+    if (text != "" && (zero || !::get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) //skip warning only
     {
       ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
         {
           parentHandler = this
           message = ::loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
-          list = "\n".join(textArr)
+          list = text
           ableToStartAndSkip = !zero
           onStartPressed = applyFunc
         })
@@ -1557,14 +1930,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         contentPreset.setPreset(diffCode, newPresetId, true)
         applyFunc()
       }
-      message = " ".concat(
-        ::loc("msgbox/optionWillBeChanged/content_allowed_preset"),
-        ::loc("msgbox/optionWillBeChanged", {
+      message = ::loc("msgbox/optionWillBeChanged/content_allowed_preset")
+        + " " + ::loc("msgbox/optionWillBeChanged", {
           name     = ::colorize("userlogColoredText", ::loc("options/content_allowed_preset"))
-          oldValue = ::colorize("userlogColoredText", ::loc($"content/tag/{curPresetId}"))
-          newValue = ::colorize("userlogColoredText", ::loc($"content/tag/{newPresetId}"))
-        }),
-        ::loc("msgbox/optionWillBeChanged/comment"))
+          oldValue = ::colorize("userlogColoredText", ::loc("content/tag/" + curPresetId))
+          newValue = ::colorize("userlogColoredText", ::loc("content/tag/" + newPresetId))
+        }) + " " + ::loc("msgbox/optionWillBeChanged/comment")
     })
     return false
   }
@@ -1746,7 +2117,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       priceTextObj.setValue(bottomText)
     }
 
-    local nameObj = slotObj.findObject($"{::get_slot_obj_id(countryId, idInCountry)}_txt")
+    local nameObj = slotObj.findObject(::get_slot_obj_id(countryId, idInCountry) + "_txt")
     if (::checkObj(nameObj))
       nameObj.setValue(::get_slot_unit_name_text(unit, params))
 
@@ -1756,13 +2127,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function updateAllCrewSlots()
   {
-    local crewsList = ::get_crews_list_by_country(::get_local_player_country())
-    local newCrewNamesList = crewsList.map(@(crew) crew?.aircraft).filter(@(inst) inst)
-    if (::u.isEqual(currCrewNamesList, newCrewNamesList))
-      return
-
-    currCrewNamesList = newCrewNamesList
-    foreach(crew in crewsList)
+    foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
       updateCrewSlot(crew)
   }
 
@@ -1799,7 +2164,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       btn_spectator =       showButtons && isRespawn && isFriendlyUnitsExists && (!isSpectate || ::is_has_multiplayer())
       btn_mpStat =          showButtons && isRespawn && ::is_has_multiplayer()
       btn_QuitMission =     showButtons && isRespawn && isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
-      btn_back =            showButtons && useTouchscreen && !isRespawn
+      btn_back =            showButtons && ::use_touchscreen && !isRespawn
       btn_activateorder =   showButtons && isRespawn && ::g_orders.showActivateOrderButton() && (!isSpectate || !::show_console_buttons)
     }
     foreach(id, value in buttons)
@@ -1825,7 +2190,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     local btnText = applyText
     if (countdown > 0 && readyForRespawn && isApplyPressed)
-      btnText = "".concat(btnText, ::loc("ui/parentheses/space", { text = "".concat(countdown, ::loc("mainmenu/seconds")) }))
+      btnText += ::loc("ui/parentheses/space", { text = countdown  + ::loc("mainmenu/seconds") })
 
     foreach (btnId in mainButtonsId)
       setColoredDoubleTextToButton(scene, btnId, btnText)
@@ -1837,8 +2202,13 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     local autostartCountdown = get_mp_autostart_countdown()
     local text = ""
     if (use_autostart() && autostartCountdown > 0 && autostartCountdown <= autostartShowTime)
-      text = ::colorize(autostartCountdown <= autostartShowInColorTime ? "@warningTextColor" : "@activeTextColor",
-        "".concat(::loc("mainmenu/autostartCountdown"), " ", autostartCountdown, ::loc("mainmenu/seconds")))
+    {
+      text = ::loc("mainmenu/autostartCountdown") + " " + autostartCountdown + ::loc("mainmenu/seconds")
+      if (autostartCountdown <= autostartShowInColorTime)
+        text = ::colorize("warningTextColor", text)
+      else
+        text = ::colorize("activeTextColor", text)
+    }
     textObj.setValue(text)
   }
 
@@ -1898,10 +2268,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     shouldBlurSceneBg = !isSpectate ? needUseHangarDof() : false
     ::handlersManager.updateSceneBgBlur()
 
-    shouldFadeSceneInVr = !isSpectate
-    ::handlersManager.updateSceneVrParams()
-
     updateTacticalMapUnitType()
+    if ("set_tactical_map_type_without_unit" in ::getroottable()) //compatibility with wop_1_69_1_X
+      if (isSpectate)
+        ::switch_spectator_target(true) //at second openng local player is selected
+      else
+        ::switch_spectator_target_by_id(::getTblValue("id", ::get_local_mplayer(), 0))
 
     if (is_spectator)
     {
@@ -2164,7 +2536,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (missionRules.hasRespawnCost)
       updateCrewSlot(crew)
 
-    updateOptions(RespawnOptUpdBit.UNIT_WEAPONS)
+    updateShipOptions(unit, false)
+    updateAircraftWeaponsOptions(unit, false)
     checkReady()
   }
 
@@ -2322,7 +2695,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   if (!crews)
     return false
 
-  dagor.debug($"Looking for country {country} in team {team}")
+  dagor.debug("looking for country "+country+" in team "+team)
 
   local missionRules = ::g_mis_custom_state.getCurMissionRules()
   local leftRespawns = missionRules.getLeftRespawns()
@@ -2349,7 +2722,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       && curSpawnScore < air.getMinimumSpawnScore())
       continue
 
-    dagor.debug($"has_available_slots true: unit {air.name} in slot {c.idInCountry}")
+    dagor.debug("has_available_slots true: unit "+air.name+" in slot "+c.idInCountry)
     return true
   }
   dagor.debug("has_available_slots false")

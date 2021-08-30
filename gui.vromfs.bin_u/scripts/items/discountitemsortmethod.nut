@@ -1,5 +1,3 @@
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-
 /**
 * Sorts description items with following rules:
 * First items are sorted by categories. Same order

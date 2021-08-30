@@ -132,9 +132,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -235,41 +232,14 @@
         "ex_armor_body_07_dm": [],
         "ex_armor_body_08_dm": []
       },
-      "era_hull_front": {
+      "k_v_era_armor": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 20.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "ex_era_hull_07_dm": [],
-        "ex_era_hull_08_dm": [],
-        "ex_era_hull_09_dm": [],
-        "ex_era_hull_10_dm": [],
-        "ex_era_hull_11_dm": [],
-        "ex_era_hull_12_dm": [],
-        "ex_era_hull_13_dm": [],
-        "ex_era_hull_14_dm": []
-      },
-      "era_hull_side": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 20.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
         "cumulativeArmorQuality": 7.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
@@ -279,23 +249,15 @@
         "ex_era_hull_03_dm": [],
         "ex_era_hull_04_dm": [],
         "ex_era_hull_05_dm": [],
-        "ex_era_hull_06_dm": []
-      },
-      "era_turret_front": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
+        "ex_era_hull_06_dm": [],
+        "ex_era_hull_07_dm": [],
+        "ex_era_hull_08_dm": [],
+        "ex_era_hull_09_dm": [],
+        "ex_era_hull_10_dm": [],
+        "ex_era_hull_11_dm": [],
+        "ex_era_hull_12_dm": [],
+        "ex_era_hull_13_dm": [],
+        "ex_era_hull_14_dm": [],
         "ex_era_turret_01_dm": [],
         "ex_era_turret_02_dm": [],
         "ex_era_turret_03_dm": [],
@@ -303,21 +265,7 @@
         "ex_era_turret_05_dm": [],
         "ex_era_turret_06_dm": [],
         "ex_era_turret_07_dm": [],
-        "ex_era_turret_08_dm": []
-      },
-      "era_turret_top": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 350.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericDamageMult": 3.0,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
+        "ex_era_turret_08_dm": [],
         "ex_era_turret_09_dm": [],
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
@@ -474,12 +422,6 @@
         },
         "turret_06_bottom_dm": {
           "armorThickness": 20.0
-        },
-        "turret_09_side_dm": {
-          "armorThickness": 50.0
-        },
-        "turret_09_back_dm": {
-          "armorThickness": 50.0
         }
       },
       "CHA_hull_turret": {
@@ -2734,17 +2676,17 @@
             "secondGunnerDm": "commander_dm",
             "linkedAnimPart": {
               "verNode": "bone_mount_countermeasure",
-              "verLimits": [-4.5,14.3],
-              "verOriginLimits": [-4.5,14.3]
+              "verLimits": [-4.3,14.3],
+              "verOriginLimits": [-4.3,14.3]
             }
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-4.5,14.3]
+            "pitch": [-4.3,14.3]
           },
           "limitsTable": {
             "lim1": [-180.0,-150.0,-3.78,14.3],
-            "lim2": [-150.0,150.0,-4.5,14.3],
+            "lim2": [-150.0,150.0,-4.3,14.3],
             "lim3": [150.0,180.0,-3.78,14.3]
           },
           "gunStabilizer": {
@@ -3021,19 +2963,9 @@
       },
       "tracks": {
         "animationMultiplier": -0.72,
-        "height": 0.06,
-        "width": 0.584,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
-        "tracksTensionK": [3.5,10.0,2.0],
-        "trackMesh": "ussr_t_90a_phys_track_line",
-        "trackLen": 0.164,
-        "trackCount": 82,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.17,
-        "trackMaxHeight": 1.16,
-        "trackStartOffset": 0.09,
-        "trackConnector": true
+        "height": 0.045,
+        "width": 0.65,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3048,9 +2980,9 @@
       },
       "mechanics": {
         "maxBrakeForce": 220000.0,
-        "driveGearRadius": 0.31,
+        "driveGearRadius": 0.47,
         "mainGearRatio": 0.95,
-        "sideGearRatio": 4.1,
+        "sideGearRatio": 6.25,
         "gearRatios": [
           {
             "ratio": -14.35
@@ -3088,9 +3020,7 @@
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -3745,17 +3675,17 @@
                   "secondGunnerDm": "commander_dm",
                   "linkedAnimPart": {
                     "verNode": "bone_mount_countermeasure",
-                    "verLimits": [-4.5,14.3],
-                    "verOriginLimits": [-4.5,14.3]
+                    "verLimits": [-4.3,14.3],
+                    "verOriginLimits": [-4.3,14.3]
                   }
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-4.5,14.3]
+                  "pitch": [-4.3,14.3]
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-150.0,-3.78,14.3],
-                  "lim2": [-150.0,150.0,-4.5,14.3],
+                  "lim2": [-150.0,150.0,-4.3,14.3],
                   "lim3": [150.0,180.0,-3.78,14.3]
                 },
                 "gunStabilizer": {
@@ -4485,13 +4415,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

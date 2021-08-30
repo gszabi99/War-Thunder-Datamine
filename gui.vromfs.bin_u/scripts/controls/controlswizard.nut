@@ -83,7 +83,6 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
     "ID_ROCKETS"
     "ID_WEAPON_LOCK"
     "ID_AGM_LOCK"
-    "ID_GUIDED_BOMBS_LOCK"
     "ID_FLARES"
     "ID_FUEL_TANKS"
     "ID_AIR_DROP"
@@ -303,8 +302,6 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard()
 {
-  if (!::has_feature("ControlsPresets"))
-    return
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
 }
 

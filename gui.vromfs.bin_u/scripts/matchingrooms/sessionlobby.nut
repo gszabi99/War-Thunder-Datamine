@@ -9,8 +9,6 @@ local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
   updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
 local joiningGameWaitBox = require("scripts/matchingRooms/joiningGameWaitBox.nut")
 local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
 
 /*
 SessionLobby API
@@ -455,7 +453,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   local countriesType = ::getTblValue("countriesType", missionSettings, misCountries.ALL)
   local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
-    fullCountriesList = clone shopCountriesList
+    fullCountriesList = clone ::shopCountriesList
   foreach(name in ["country_allies", "country_axis"])
   {
     local countries = null
@@ -471,7 +469,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
     } else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM)
     {
       local bitMaskKey = (countriesType == misCountries.SYMMETRIC)? "country_allies" : name
-      countries = ::get_array_by_bit_value(::getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), shopCountriesList)
+      countries = ::get_array_by_bit_value(::getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), ::shopCountriesList)
     }
     _settings[name] <- (countries && countries.len())? countries : fullCountriesList
   }
@@ -483,14 +481,14 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
         _settings.mission[unitType.missionSettingsAvailabilityFlag] = false
 
   local mrankMin = missionSettings?.mrankMin ?? 0
-  local mrankMax = missionSettings?.mrankMax ?? getMaxEconomicRank()
+  local mrankMax = missionSettings?.mrankMax ?? ::MAX_ECONOMIC_RANK
   if (mrankMin > mrankMax)
   {
     local temp = mrankMin
     mrankMin = mrankMax
     mrankMax = temp
   }
-  if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
+  if (mrankMin > 0 || mrankMax < ::MAX_ECONOMIC_RANK)
     _settings.mranks <- { min = mrankMin, max = mrankMax }
 
   _settings.chatPassword <- isInRoom() ? getChatRoomPassword() : ::gen_rnd_password(16)
@@ -2692,7 +2690,7 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
       return
 
     sendResp({})
-    ::SessionLobby.joinRoom(inviteData.roomId)
+    ::SessionLobby.joinRoom(inviteData.roomId, null, null)
   }
 
   local rejectInvite = (@(sendResp) function() {

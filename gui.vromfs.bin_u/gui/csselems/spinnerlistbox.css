@@ -81,6 +81,13 @@ spinnerListBox:focus option, spinnerListBox:focus optiontext {
   color:@activeTextColor;
 }
 
+spinnerListBox optiontext{
+  auto-scroll:no;
+}
+
+spinnerListBox:focus optiontext{
+}
+
 .skinsList option > optiontext {
   width:pw;
   input-transparent:yes;
@@ -184,22 +191,10 @@ optionImg[airExpIcon=yes] {
 }
 
 option > colorBlock {
-  size:3ph + 6@dp, ph-6;
+  size:3ph, ph-6;
   pos:0, 50%ph-50%h;
   position:relative;
   margin-right:3@dp;
   border:yes;
   border-color:@grayOptionColor;
-  border-offset:@dp;
 }
-
-option > smallcolorBlock {
-  size: 1ph, ph-6;
-  pos:0, 50%ph-50%h;
-  position:relative;
-  margin-right:3@dp;
-  border:yes;
-  border-color:@grayOptionColor;
-  border-offset:@dp;
-}
-

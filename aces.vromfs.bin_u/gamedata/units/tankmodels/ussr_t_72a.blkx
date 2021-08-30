@@ -120,9 +120,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -236,12 +233,6 @@
         },
         "turret_08_side_dm": {
           "armorThickness": 35.0
-        },
-        "turret_09_side_dm": {
-          "armorThickness": 30.0
-        },
-        "turret_09_back_dm": {
-          "armorThickness": 30.0
         }
       },
       "turret_composite_armor": {
@@ -3483,7 +3474,23 @@
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_back": 0.31,
+        "wheel_l_back": 0.31,
+        "wheel_r_front": 0.3,
+        "wheel_l_front": 0.3,
+        "wheel_r_01": 0.39,
+        "wheel_r_02": 0.39,
+        "wheel_r_03": 0.39,
+        "wheel_r_04": 0.39,
+        "wheel_r_05": 0.39,
+        "wheel_r_06": 0.39,
+        "wheel_l_01": 0.39,
+        "wheel_l_02": 0.39,
+        "wheel_l_03": 0.39,
+        "wheel_l_04": 0.39,
+        "wheel_l_05": 0.39,
+        "wheel_l_06": 0.39
       }
     }
   },
@@ -4899,13 +4906,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

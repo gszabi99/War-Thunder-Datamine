@@ -52,11 +52,11 @@
       }
     },
     "c_dural3": {
-      "elevator0_dm": {
+      "elevon_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "elevator1_dm": {
+      "elevon_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -225,7 +225,7 @@
     {
       "part": [
         {
-          "name": "elevator0_dm"
+          "name": "elevon_l_dm"
         },
         {
           "onHit": {
@@ -282,7 +282,7 @@
     {
       "part": [
         {
-          "name": "elevator1_dm"
+          "name": "elevon_r_dm"
         },
         {
           "onHit": {
@@ -2126,10 +2126,9 @@
             "textureArea": [0.0,0.0,1.0,1.0],
             "page": {
               "type": "plane_ils",
-              "ilsSize": [0.22,0.22],
+              "ilsSize": [0.24,0.28],
               "ilsOffsetForce": 0.0,
-              "brightnessMult": 3.5,
-              "ilsColor": "#0aff0a64"
+              "brightnessMult": 3.5
             }
           }
         }
@@ -2158,16 +2157,6 @@
     }
   ],
   "commonWeapons": [
-    {
-      "hideNodes": [
-        {
-          "node": "fr_phimat_container"
-        },
-        {
-          "node": "fr_phimat_container_cap"
-        }
-      ]
-    },
     {
       "Weapon": {
         "trigger": "cannon",
@@ -2733,65 +2722,7 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": [
-          {
-            "hideNodes": {
-              "node": "fuse_2"
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "cannon2_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 72,
-              "external": false,
-              "separate": false
-            }
-          }
-        ]
-      }
-    },
     "fr_250kg_type_25c": {
-      "prevModification": "countermeasures_belt_pack",
       "modClass": "weapon",
       "tier": 2
     },
@@ -2830,11 +2761,11 @@
   },
   "cutting": {
     "emtr_break_wing1_l_from": [-0.0928195,0.743883,1.9198],
-    "emtr_break_wing1_l_to": [-0.0938195,0.743883,3.08178],
+    "emtr_break_wing1_l_to": [-0.0938195,0.743883,2.38459],
     "emtr_break_wing2_l_from": [-0.0938195,0.743883,3.08178],
     "emtr_break_wing2_l_to": [-0.0938195,0.743883,3.57296],
     "emtr_break_wing1_r_from": [-0.0928195,0.743883,-1.9198],
-    "emtr_break_wing1_r_to": [-0.0938195,0.743883,-3.08178],
+    "emtr_break_wing1_r_to": [-0.0938195,0.743883,-2.38459],
     "emtr_break_wing2_r_from": [-0.0938195,0.743883,-3.08178],
     "emtr_break_wing2_r_to": [-0.0938195,0.743883,-3.57296],
     "emtr_break_wing_tail": [-3.2,0.0,0.0],

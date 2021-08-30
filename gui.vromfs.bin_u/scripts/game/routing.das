@@ -3,14 +3,14 @@ require Mission
 require DagorSystem
 require math
 
-[cpp_event(unicast)]
+[cpp_event]
 struct EventMoveByRoute
   uId : int
   uEid : EntityId
   wpEid : EntityId
   start : bool
 
-[cpp_event(unicast)]
+[cpp_event]
 struct ArrivedToWayPoint
   uId : int
   uEid : EntityId

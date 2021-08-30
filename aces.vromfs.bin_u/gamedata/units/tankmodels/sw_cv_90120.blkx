@@ -235,16 +235,6 @@
           "armorThickness": 10.0,
           "hidableInViewer": true,
           "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_03_dm": {
-          "armorThickness": 10.0,
-          "hidableInViewer": true,
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_04_dm": {
-          "armorThickness": 10.0,
-          "hidableInViewer": true,
-          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -1312,18 +1302,30 @@
     }
   },
   {
-    "xray_viewer_data": {
-      "armorArrayERA": {
-        "xrayDmPartFmt": "composite_armor_hull_%02d_dm",
-        "xrayDmPartRange": [1.0,4.0],
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm"
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_02_dm"
+            }
           }
         }
       }
-    }
+    ]
   },
   {
     "DamageEffects": [

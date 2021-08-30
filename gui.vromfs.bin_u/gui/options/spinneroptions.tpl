@@ -40,12 +40,6 @@
       }
     <</hueColor>>
 
-     <<#smallHueColor>>
-      smallcolorBlock {
-        background-color:t='#<<color>>'
-      }
-    <</smallHueColor>>
-
     <<#text>>
       optiontext {
         id:t='option_text'
@@ -70,7 +64,7 @@
       title:t='$tooltipObj';
       tooltipObj {
         id:t='tooltip_<<id>>';
-        on_tooltip_open:t='<<open>><<^open>>onGenericTooltipOpen<</open>>';
+        on_tooltip_open:t='<<open>>';
         on_tooltip_close:t='<<close>><<^close>>onTooltipObjClose<</close>>';
         display:t='hide';
         <<@tooltipParams>>

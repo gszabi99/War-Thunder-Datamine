@@ -1,5 +1,5 @@
 // warning disable: -egyptian-braces
-local callback = require("callback.nut")
+local callback = require("sqStdLibs/helpers/callback.nut")
 
 const SUBSCRIPTIONS_AMOUNT_TO_CLEAR = 50
 
@@ -95,7 +95,7 @@ local function removeAllListenersByEnv(listener_env) {
 /*
  * Subscribes all handler functions named "onEvent<eventName>" to event <eventName>
 */
-local function subscribeHandler(handler, listener_priority = -1) {
+::subscribeHandler <- function subscribeHandler(handler, listener_priority = -1) {
   if (handler == null)
     return
   foreach (property_name, property in handler) {
@@ -112,7 +112,7 @@ local function subscribeHandler(handler, listener_priority = -1) {
 /*
  * Subscribes all events in list without enviroment
 */
-local function addListenersWithoutEnv(eventsList, listenerPriority = -1) {
+::addListenersWithoutEnv <- function addListenersWithoutEnv(eventsList, listenerPriority = -1) {
   foreach (eventName, func in eventsList)
     addEventListener(eventName, func, null, listenerPriority)
 }
@@ -156,14 +156,14 @@ local function debugLoggingEnable(isEnable  = null) {
 }
 
 return {
-  broadcast
-  addEventListener
-  subscribeHandler
-  addListenersWithoutEnv
-  removeEventListenersByEnv
-  removeAllListenersByEnv
-  setDebugLoggingParams
-  debugLoggingEnable
+  broadcast = broadcast
+  addEventListener = addEventListener
+  subscribeHandler = subscribeHandler
+  addListenersWithoutEnv = addListenersWithoutEnv
+  removeEventListenersByEnv = removeEventListenersByEnv
+  removeAllListenersByEnv = removeAllListenersByEnv
+  setDebugLoggingParams = setDebugLoggingParams
+  debugLoggingEnable = debugLoggingEnable
 
   //standard priorities
   DEFAULT = 0

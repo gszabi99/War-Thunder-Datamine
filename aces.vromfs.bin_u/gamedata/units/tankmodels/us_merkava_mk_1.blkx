@@ -126,9 +126,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -248,14 +245,6 @@
         },
         "composite_armor_hull_06_dm": {
           "armorThickness": 10.0,
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_07_dm": {
-          "armorThickness": 35.0,
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_08_dm": {
-          "armorThickness": 35.0,
           "hidableInXrayViewer": true
         },
         "turret_08_back_dm": {
@@ -2567,12 +2556,13 @@
             },
             "ammo_turret_06_dm": {
               "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "reloadTimeMult": 1.28,
+            },
+            "ammo_turret_07_dm": {
+              "count": 1
+            },
+            "ammo_turret_08_dm": {
+              "count": 1
+            },
             "ammo_body_01_dm": {
               "count": 1
             },
@@ -2590,7 +2580,12 @@
             },
             "ammo_body_06_dm": {
               "count": 1
-            },
+            }
+          }
+        },
+        {
+          "shells": {
+            "reloadTimeMult": 1.28,
             "ammo_body_07_dm": {
               "count": 1
             },
@@ -2733,12 +2728,6 @@
               "count": 1
             },
             "ammo_body_54_dm": {
-              "count": 1
-            },
-            "ammo_body_55_dm": {
-              "count": 1
-            },
-            "ammo_body_56_dm": {
               "count": 1
             }
           }
@@ -3850,28 +3839,6 @@
         }
       },
       {
-        "armorArrayTurretInner": {
-          "xrayDmPart": "composite_armor_hull_07_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_07_dm"
-            }
-          }
-        }
-      },
-      {
-        "armorArrayTurretInner": {
-          "xrayDmPart": "composite_armor_hull_08_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_08_dm"
-            }
-          }
-        }
-      },
-      {
         "armorArrayTurret2": {
           "xrayDmPart": "composite_armor_hull_03_dm",
           "titleLoc": "spaced_armor",
@@ -4470,13 +4437,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

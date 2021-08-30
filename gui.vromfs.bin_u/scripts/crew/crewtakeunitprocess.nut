@@ -1,5 +1,4 @@
 local chard = require("chard")
-local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -349,7 +348,7 @@ class ::CrewTakeUnitProcess
     {
       ::updateAirAfterSwitchMod(unit)
       ::select_crew(crew.idCountry, crew.idInCountry, true)
-      setShowUnit(unit)
+      ::set_show_aircraft(unit)
     }
     ::g_crews_list.flushSlotbarUpdate()
     ::broadcastEvent("CrewTakeUnit", { unit = unit, prevUnit = prevUnit })

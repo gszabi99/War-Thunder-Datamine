@@ -15,7 +15,7 @@
   "fxSandDust": "dust_ground_wave_sand_big",
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
-  "fxWaterShockWave": "dust_waterwave_big",
+  "fxWaterShockWave": "water_shock_wave_big",
   "sound_path": "ships/weapon_common/cannons",
   "sound_pathStudio": "naval/weapon/cannons",
   "sound": "130mm_b13",
@@ -62,7 +62,7 @@
     "explosionEffect": "hit_133_160mm_metal_ap",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_133_160mm_metal_ap",
-    "waterCollisionEffect": "hit_133_160mm_water_ap",
+    "waterCollisionEffect": "hit_133_160mm_water",
     "explosionPatchRadius": 3.2,
     "stabilityRicochetModifier": [
       {
@@ -91,26 +91,26 @@
           "useRealShatters": true
         },
         {
-          "countPortion": 0.1
+          "countPortion": 0.026
         },
         {
           "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "radiusScale": 0.6,
+            "penetrationScale": 1.6,
+            "damageScale": 3.0,
             "angles": [0.0,180.0],
             "countPortion": 0.5,
-            "onHitChanceMultFire": 80.0
+            "onHitChanceMultFire": 50.0
           }
         },
         {
           "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "radiusScale": 0.6,
+            "penetrationScale": 1.6,
+            "damageScale": 3.0,
             "angles": [181.0,359.0],
             "countPortion": 0.5,
-            "onHitChanceMultFire": 80.0
+            "onHitChanceMultFire": 50.0
           }
         }
       ]
@@ -240,7 +240,7 @@
       "explosionEffect": "hit_133_160mm_metal_ap",
       "groundCollisionEffect": "hit_133_160mm_dirt_ap",
       "ricochetEffect": "hit_133_160mm_metal_ap",
-      "waterCollisionEffect": "hit_133_160mm_water_ap",
+      "waterCollisionEffect": "hit_133_160mm_water",
       "explosionPatchRadius": 3.2,
       "stabilityRicochetModifier": [
         {
@@ -269,26 +269,26 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.1
+            "countPortion": 0.026
           },
           {
             "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
+              "radiusScale": 0.6,
+              "penetrationScale": 1.6,
+              "damageScale": 3.0,
               "angles": [0.0,180.0],
               "countPortion": 0.5,
-              "onHitChanceMultFire": 80.0
+              "onHitChanceMultFire": 50.0
             }
           },
           {
             "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
+              "radiusScale": 0.6,
+              "penetrationScale": 1.6,
+              "damageScale": 3.0,
               "angles": [181.0,359.0],
               "countPortion": 0.5,
-              "onHitChanceMultFire": 80.0
+              "onHitChanceMultFire": 50.0
             }
           }
         ]
@@ -421,7 +421,7 @@
       "explosionEffect": "hit_133_160mm_metal_ap",
       "groundCollisionEffect": "hit_133_160mm_dirt_ap",
       "ricochetEffect": "hit_133_160mm_metal_ap",
-      "waterCollisionEffect": "hit_133_160mm_water_ap",
+      "waterCollisionEffect": "hit_133_160mm_water",
       "explosionPatchRadius": 3.2,
       "stabilityRicochetModifier": [
         {
@@ -454,22 +454,58 @@
           },
           {
             "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,180.0],
-              "countPortion": 0.5,
-              "onHitChanceMultFire": 100.0
+              "radiusScale": 0.23,
+              "penetrationScale": 1.3,
+              "damageScale": 2.0,
+              "angles": [0.0,10.0],
+              "countPortion": 0.1
             }
           },
           {
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 0.6,
+              "penetrationScale": 1.2,
+              "damageScale": 1.5,
+              "angles": [11.0,70.0],
+              "countPortion": 0.3,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.5,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [181.0,359.0],
-              "countPortion": 0.5,
-              "onHitChanceMultFire": 100.0
+              "angles": [71.0,180.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.5,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,289.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.5,
+              "penetrationScale": 1.2,
+              "damageScale": 1.5,
+              "angles": [290.0,349.0],
+              "countPortion": 0.3,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.23,
+              "penetrationScale": 1.3,
+              "damageScale": 2.0,
+              "angles": [350.0,359.0],
+              "countPortion": 0.1
             }
           }
         ]

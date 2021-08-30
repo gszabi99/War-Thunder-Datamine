@@ -1,6 +1,5 @@
 local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
 local { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
-local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::getReserveAircraftName <- function getReserveAircraftName(paramsTable)
 {
@@ -43,7 +42,7 @@ local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 {
   local tutorial = "fighter"
 
-  local curUnit = getShowedUnit()
+  local curUnit = ::get_show_aircraft()
   if (curUnit?.isTank() && ::has_feature("Tanks"))
     tutorial = "lightTank"
   else if (curUnit?.isBoat() && ::has_feature("Ships"))

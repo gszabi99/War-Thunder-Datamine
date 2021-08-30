@@ -12,10 +12,10 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/avg_training_ground.bin",
-      "environment": "Day",
-      "weather": "hazy",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
     },
     "spectator_points": []
   },
@@ -92,9 +92,6 @@
           },
           {
             "forceCreate": false
-          },
-          {
-            "ignoreTeamsOnReuse": false
           },
           {
             "target": "artillery_spawn01"
@@ -260,7 +257,7 @@
         }
       }
     },
-    "spawn_plane": {
+    "spawn_plane_exist": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -290,6 +287,44 @@
           "objectExists": {
             "target": "flight_point",
             "type": "area"
+          }
+        }
+      ],
+      "actions": {
+        "triggerEnable": {
+          "target": "spawn_plane"
+        }
+      },
+      "else_actions": []
+    },
+    "spawn_plane": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "type_spaa": true
+            }
+          }
+        },
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "has_proximityFuse_rocket": true
+            }
           }
         }
       ],
@@ -326,7 +361,7 @@
       },
       "else_actions": []
     },
-    "spawn_plane2": {
+    "spawn_plane2_exist": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -360,6 +395,44 @@
         }
       ],
       "actions": {
+        "triggerEnable": {
+          "target": "spawn_plane2"
+        }
+      },
+      "else_actions": []
+    },
+    "spawn_plane2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "type_spaa": true
+            }
+          }
+        },
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "has_proximityFuse_rocket": true
+            }
+          }
+        }
+      ],
+      "actions": {
         "unitLoadBehTree": {
           "name": "missionKamikaze",
           "objects": "flight_target02"
@@ -388,82 +461,6 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "flight_target02"
-        }
-      },
-      "else_actions": []
-    },
-    "mark_battle_area": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "game_area",
-          "type": "area"
-        }
-      },
-      "actions": {
-        "missionBattleArea": {
-          "air": false,
-          "ground": true,
-          "mapArea": true,
-          "airMapArea": false,
-          "killArea": false,
-          "detectionArea": false,
-          "killOutOfBattleArea": true,
-          "area": "game_area",
-          "team": "A"
-        }
-      },
-      "else_actions": []
-    },
-    "mark_rearm_area": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "objectExists": {
-          "target": "rearm_area",
-          "type": "area"
-        }
-      },
-      "actions": {
-        "missionMarkAsRearmZone": {
-          "army": 1,
-          "area_name": "rearm_area",
-          "enabled": true,
-          "restoreWhenNoAmmoLeft": false,
-          "hideMarkers": true,
-          "tags": {
-            "tank": true
-          }
-        },
-        "missionShowMapIcon": {
-          "show": true,
-          "team": "A",
-          "iconName": "ui/gameuiskin#icon_weapons_in_progress",
-          "areaName": "rearm_area",
-          "colorCode": "Ally",
-          "scale": 0.33,
-          "opacity": 192
         }
       },
       "else_actions": []

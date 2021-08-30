@@ -31,10 +31,13 @@ local recalculateHudSize = function(safeArea) {
 local safeAreaSizeHud = ::Computed(@() recalculateHudSize(safeAreaHud.value))
 local safeAreaSizeMenu = ::Computed(@() recalculateHudSize(safeAreaMenu.value))
 
-local rw = ::Computed(@() safeAreaSizeHud.value.size[0])
-local rh = ::Computed(@() safeAreaSizeHud.value.size[1])
-local bw = ::Computed(@() safeAreaSizeHud.value.borders[1])
-local bh = ::Computed(@() safeAreaSizeHud.value.borders[0])
+local function rw(percent) {
+  return (percent / 100.0 * safeAreaSizeHud.value.size[0]).tointeger()
+}
+
+local rh = @(percent) safeAreaSizeHud.value.size[1] * percent * 0.01
+local bw = @() safeAreaSizeHud.value.borders[1]
+local bh = @() safeAreaSizeHud.value.borders[0]
 
 local function setOnVideoMode(...){
   ::gui_scene.setInterval(0.5,

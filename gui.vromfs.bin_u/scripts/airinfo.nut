@@ -21,8 +21,8 @@ local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
 local { boosterEffectType, getActiveBoostersArray,
   getBoostersEffects } = require("scripts/items/boosterEffect.nut")
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
+local { loadModel } = require("scripts/hangarModelLoadManager.nut")
 local { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("scripts/debriefing/rewardSources.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -1016,6 +1016,24 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   })
 }
 
+::get_show_aircraft_name <- function get_show_aircraft_name()
+{
+  return ::show_aircraft? ::show_aircraft.name : ::hangar_get_current_unit_name()
+}
+
+::get_show_aircraft <- function get_show_aircraft()
+{
+  return ::show_aircraft? ::show_aircraft : ::getAircraftByName(::hangar_get_current_unit_name())
+}
+
+::set_show_aircraft <- function set_show_aircraft(unit)
+{
+  if (!unit)
+    return
+  ::show_aircraft = unit
+  loadModel(unit.name)
+}
+
 ::showAirInfo <- function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 {
   handler = handler || ::handlersManager.getActiveBaseHandler()
@@ -2001,7 +2019,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     defaultCountryData[unitType.esUnitType] <- false
 
   ::__types_for_coutries = {}
-  foreach(country in shopCountriesList)
+  foreach(country in ::shopCountriesList)
     ::__types_for_coutries[country] <- clone defaultCountryData
 
   foreach(unit in ::all_units)
@@ -2016,6 +2034,16 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 
   return ::__types_for_coutries
+}
+
+::get_player_cur_unit <- function get_player_cur_unit()
+{
+  local unit = null
+  if (::is_in_flight())
+    unit = ::getAircraftByName(::get_player_unit_name())
+  if (!unit || unit.name == "dummy_plane")
+    unit = ::show_aircraft
+  return unit
 }
 
 ::is_loaded_model_high_quality <- function is_loaded_model_high_quality(def = true)

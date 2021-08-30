@@ -123,9 +123,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -3115,9 +3112,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 52561.0,
+        "Empty": 47000.0,
         "Fuel": 600.0,
-        "TakeOff": 53161.0,
+        "TakeOff": 47600.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.3,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -3352,7 +3349,7 @@
       {
         "Weapon": {
           "trigger": "gunner0",
-          "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_XM_user_cannon.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_M60A1_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "defaultYaw": 0.0,
@@ -3688,19 +3685,18 @@
       },
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
-      "105mm_usa_M456A2_HEAT_MP_FS": [],
       "105mm_usa_HESH": [],
       "105mm_usa_HESH_ammo_pack": {
         "tier": 1
       },
+      "105mm_usa_HEAT_FS": [],
+      "105mm_usa_HEAT_FS_ammo_pack": {
+        "tier": 2
+      },
       "105mm_us_M416_Smoke": [],
-      "105mm_us_M416_Smoke_ammo_pack": {
-        "tier": 1
-      },
+      "105mm_us_M416_Smoke_ammo_pack": [],
       "105mm_usa_M735_APDS_FS": [],
-      "105mm_usa_M735_APDS_FS_ammo_pack": {
-        "tier": 3
-      },
+      "105mm_usa_M735_APDS_FS_ammo_pack": [],
       "tank_rangefinder": [],
       "tank_smoke_screen_system_mod": {
         "tier": 3,
@@ -3709,7 +3705,7 @@
             {
               "Weapon": {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_XM_user_cannon.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_M60A1_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
                 "defaultYaw": 0.0,
@@ -4078,20 +4074,10 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_green*"
-      }
-    }
-  },
-  {
     "user_skin": {
       "name": "us_m60a1_era",
       "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_green*"
+        "from": "us_camo_olive*"
       }
     }
   },
@@ -4195,17 +4181,6 @@
     }
   },
   {
-    "skin": {
-      "name": "us_camo_modern_desert_tan",
-      "nameLocId": "skin/us_camo_modern_desert_tan",
-      "descLocId": "skin/us_camo_modern_desert_tan/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_desert_tan*"
-      }
-    }
-  },
-  {
     "wreckedParts": {
       "part": {
         "node": "bone_turret",
@@ -4218,13 +4193,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

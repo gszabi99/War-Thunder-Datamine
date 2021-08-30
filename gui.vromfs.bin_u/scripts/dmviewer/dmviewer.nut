@@ -11,8 +11,6 @@ local { KGF_TO_NEWTON,
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local { doesLocTextExist = @(k) true } = require("dagor.localize")
 local { hasLoadedModel } = require("scripts/hangarModelLoadManager.nut")
-local { unique } = require("std/underscore.nut")
-local { fileName } = require("std/path.nut")
 
 
 /*
@@ -643,26 +641,6 @@ const AFTERBURNER_CHAMBER = 3
     return null
   }
 
-  function findBlockByName(blk, name)
-  {
-    if (blk.getBlockByName(name) != null)
-      return true
-    for (local b = 0; b < blk.blockCount(); b++)
-      if (findBlockByName(blk.getBlock(b), name))
-        return true
-    return false
-  }
-
-  function findBlockByNameWithParamValue(blk, blockName, paramName, paramValue)
-  {
-    if (blk.getBlockByName(blockName)?[paramName] == paramValue)
-      return true
-    for (local b = 0; b < blk.blockCount(); b++)
-      if (findBlockByNameWithParamValue(blk.getBlock(b), blockName, paramName, paramValue))
-        return true
-    return false
-  }
-
   function getDescriptionInXrayMode(params)
   {
     if (!unit || !unitBlk)
@@ -1015,248 +993,6 @@ const AFTERBURNER_CHAMBER = 3
         desc.extend(getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, isHorizontal, !isHorizontal))
         break
 
-      case "pilot":
-
-        local haveCCIPForTurret = unitBlk.getBool("haveCCIPForTurret", false)
-        local haveCCRPForTurret = unitBlk.getBool("haveCCRPForTurret", false)
-        if (haveCCIPForTurret || haveCCRPForTurret)
-          desc.append(::loc("avionics_sight_turret") + ::loc("ui/colon") + (haveCCIPForTurret ? loc("CCIP") : "") + " " + (haveCCRPForTurret ? loc("CCRP") : ""))
-
-        local haveCCIPForGun = unitBlk.getBool("haveCCIPForGun", false)
-        local haveCCRPForGun = unitBlk.getBool("haveCCRPForGun", false)
-        if (haveCCIPForGun || haveCCRPForGun)
-          desc.append(::loc("avionics_sight_cannon") + ::loc("ui/colon") + (haveCCIPForGun ? loc("CCIP") : "") + " " + (haveCCRPForGun ? loc("CCRP") : ""))
-
-        local haveCCIPForRocket = unitBlk.getBool("haveCCIPForRocket", false)
-        local haveCCRPForRocket = unitBlk.getBool("haveCCRPForRocket", false)
-        if (haveCCIPForRocket || haveCCRPForRocket)
-          desc.append(::loc("avionics_sight_rocket") + ::loc("ui/colon") + (haveCCIPForRocket ? loc("CCIP") : "") + " " + (haveCCRPForRocket ? loc("CCRP") : ""))
-
-        local haveCCIPForBombs = unitBlk.getBool("haveCCIPForBombs", false)
-        local haveCCRPForBombs = unitBlk.getBool("haveCCRPForBombs", false)
-        if (haveCCIPForBombs || haveCCRPForBombs)
-          desc.append(::loc("avionics_sight_bomb") + ::loc("ui/colon") + (haveCCIPForBombs ? loc("CCIP") : "") + " " + (haveCCRPForBombs ? loc("CCRP") : ""))
-
-        for (local b = 0; b < (unitBlk?.sensors.blockCount() ?? 0); b++)
-        {
-          local sensorBlk = unitBlk.sensors.getBlock(b)
-          local sensorFilePath = sensorBlk.getStr("blk", "")
-          if (sensorFilePath == "")
-            continue
-          local sensorPropsBlk = ::DataBlock()
-          sensorPropsBlk.load(sensorFilePath)
-          if (!sensorPropsBlk.getBool("showOnHud", true))
-            continue
-          local radarNameLocId = $"sensors/{fileName(sensorFilePath).slice(0, -4)}"
-          local radarName = doesLocTextExist(radarNameLocId) ? ::loc(radarNameLocId) : (sensorPropsBlk?.name ?? radarNameLocId)
-          local sensorType = sensorPropsBlk.getStr("type", "")
-          desc.append("".concat(::loc($"avinoics_sensor_{sensorType}"), ::loc("ui/colon"), radarName))
-        }
-        break
-
-      case "radar":
-      case "antenna_target_location":
-      case "antenna_target_tagging":
-      case "optic_gun":
-
-        for (local b = 0; b < (unitBlk?.sensors.blockCount() ?? 0); b++)
-        {
-          local sensorBlk = unitBlk.sensors.getBlock(b)
-
-          local dmPartFound = false
-          for (local p = 0; p < sensorBlk.paramCount() && !dmPartFound; p++)
-            if (sensorBlk.getParamName(p) == "dmPart" &&
-                sensorBlk.getParamValue(p) == partName)
-              dmPartFound = true
-          if (!dmPartFound)
-            continue
-
-          local sensorFilePath = sensorBlk.getStr("blk", "")
-          if (sensorFilePath == "")
-            continue
-          local sensorPropsBlk = ::DataBlock()
-          sensorPropsBlk.load(sensorFilePath)
-          local sensorType = sensorPropsBlk.getStr("type", "")
-          if (sensorType == "radar")
-          {
-            local radarNameLocId = $"sensors/{fileName(sensorFilePath).slice(0, -4)}"
-            local radarName = doesLocTextExist(radarNameLocId) ? ::loc(radarNameLocId) : (sensorPropsBlk?.name ?? radarNameLocId)
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), radarName))
-
-            local isRadar = false
-            local isIrst = false
-            local rangeMax = 0.0
-            local transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
-            {
-              local transiverBlk = transiversBlk.getBlock(t)
-              local range = transiverBlk.getReal("range", 0.0)
-              rangeMax = ::max(rangeMax, range)
-              if (transiverBlk?.visibilityType == "infraRed")
-                isIrst = true
-              else
-                isRadar = true
-            }
-
-            local anglesFinder = false
-            local iff = false
-            local lookDown = false
-            local signalsBlk = sensorPropsBlk.getBlockByName("signals")
-            for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++)
-            {
-              local signalBlk = signalsBlk.getBlock(s)
-              anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
-              iff = iff || signalBlk.getBool("friendFoeId", false)
-              local dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
-              if (dopplerSpeedBlk)
-              {
-                if (dopplerSpeedBlk.getBool("presents", false))
-                  lookDown = true
-              }
-            }
-            local isSearchRadar = findBlockByName(sensorPropsBlk, "addTarget")
-            local isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
-
-            local radarType = ""
-            if (isRadar)
-              radarType = "radar"
-            if (isIrst)
-            {
-              if (radarType != "")
-                radarType = radarType + "_"
-              radarType = radarType + "irst"
-            }
-            if (isSearchRadar && isTrackRadar)
-              radarType = "" + radarType
-            else if (isSearchRadar)
-              radarType = "search_" + radarType
-            else if (isTrackRadar)
-            {
-              if (anglesFinder)
-                radarType = "track_" + radarType
-              else
-                radarType = radarType + "_range_finder"
-            }
-            desc.append(::loc("multiplayer/unit_type") + ::loc("ui/colon") + ::loc(radarType))
-            desc.append(::loc("radar_range_max") + ::loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
-
-            local scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
-            local searchZoneAzimuthWidth = 0.0
-            local searchZoneElevationWidth = 0.0
-            for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++)
-            {
-              local scanPatternBlk = scanPatternsBlk.getBlock(p)
-              local scanPatternType = scanPatternBlk.getStr("type", "")
-              local major = 0.0
-              local minor = 0.0
-              local rowMajor = true
-              if (scanPatternType == "cylinder")
-              {
-                major = 360.0
-                minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
-                rowMajor = scanPatternBlk.getBool("rowMajor", true)
-              }
-              else if (scanPatternType == "pyramide")
-              {
-                major = 2.0 * scanPatternBlk.getReal("width", 0.0)
-                minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
-                rowMajor = scanPatternBlk.getBool("rowMajor", true)
-              }
-              else if (scanPatternType == "cone")
-              {
-                major = 2.0 * scanPatternBlk.getReal("width", 0.0)
-                minor = major
-              }
-              if (rowMajor)
-              {
-                searchZoneAzimuthWidth = ::max(searchZoneAzimuthWidth, major)
-                searchZoneElevationWidth = ::max(searchZoneElevationWidth, minor)
-              }
-              else
-              {
-                searchZoneAzimuthWidth = ::max(searchZoneAzimuthWidth, minor)
-                searchZoneElevationWidth = ::max(searchZoneElevationWidth, major)
-              }
-            }
-            if (isSearchRadar)
-              desc.append("".concat(::loc("radar_search_zone_max"), ::loc("ui/colon"),
-                ::round(searchZoneAzimuthWidth), ::loc("measureUnits/deg"), ::loc("ui/multiply"),
-                ::round(searchZoneElevationWidth), ::loc("measureUnits/deg")))
-            if (lookDown)
-              desc.append(::loc("radar_ld"))
-            if (iff)
-              desc.append(::loc("radar_iff"))
-
-            if (isTrackRadar)
-            {
-              local hasBVR = findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
-              if (hasBVR)
-                desc.append(::loc("radar_bvr_mode"))
-              local hasACM = findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
-              if (hasACM)
-                desc.append(::loc("radar_acm_mode"))
-            }
-          }
-        }
-
-        if (partId == "optic_gun")
-        {
-          local info = unitBlk?.cockpit
-          if (info?.sightName)
-            desc.extend(getOpticsDesc(info))
-        }
-        break
-
-      case "countermeasure":
-
-        local counterMeasuresBlk = unitBlk?.counterMeasures
-        if (counterMeasuresBlk)
-        {
-          for (local i = 0; i < counterMeasuresBlk.blockCount(); i++)
-          {
-            local cmBlk = counterMeasuresBlk.getBlock(i)
-            if (cmBlk?.dmPart != partName || (cmBlk?.blk ?? "") == "")
-              continue
-            local info = DataBlock()
-            info.load(cmBlk.blk)
-
-            local locName = ::loc($"countermeasure/{info?.name ?? fileName(cmBlk.blk).slice(0, -4)}")
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), locName))
-
-            foreach (cfg in [
-              { label = "xray/ircm_protected_sector/hor",  sectorKey = "azimuthSector",   directionKey = "azimuth"   }
-              { label = "xray/ircm_protected_sector/vert", sectorKey = "elevationSector", directionKey = "elevation" }
-            ])
-            {
-              local sector = ::round(info?[cfg.sectorKey] ?? 0.0)
-              local direction = ::round((info?[cfg.directionKey] ?? 0.0) * 2.0) / 2
-              if (sector == 0)
-                continue
-              local deg = ::loc("measureUnits/deg")
-              local comment = ""
-              if (direction != 0 && sector < 360)
-              {
-                direction %= 360
-                if (direction < 0)
-                  direction += 360
-                local angles = [
-                  direction - sector / 2
-                  direction + sector / 2
-                ].map(function(a) {
-                  a %= 360
-                  if (a >= 180)
-                    a -= 360
-                  return "".concat(a >= 0 ? "+" : "", a, deg)
-                })
-                comment = ::loc("ui/parentheses/space", { text = "/".join(angles) })
-              }
-              desc.append("".concat(::loc(cfg.label), ::loc("ui/colon"), sector, deg, comment))
-            }
-            break
-          }
-        }
-        break
-
       case "main_caliber_turret":
       case "auxiliary_caliber_turret":
       case "aa_turret":
@@ -1427,61 +1163,14 @@ const AFTERBURNER_CHAMBER = 3
             { thickness = "".concat(::round(coalToSteelMul * 1000).tostring(), " ", ::loc("measureUnits/mm")) }))
         break
 
+      case "optic_gun":
+        local info = unitBlk?.cockpit
+        if (info?.sightName)
+          desc.extend(getOpticsDesc(info))
+        break
       case "commander_panoramic_sight":
         if (unitBlk?.commanderView)
           desc.extend(getOpticsDesc(unitBlk.commanderView))
-        break
-
-      case "rangefinder":
-      case "fire_director":
-        // "partName" node may belong to only one system
-        local fcBlk = getFireControlSystems("dmPart", partName)?[0]
-        if (!fcBlk)
-          break
-
-        // 1. Gives fire solution for
-        local weaponNames = getFireControlWeaponNames(fcBlk)
-        if (weaponNames.len() == 0)
-          break
-
-        desc.append(::loc("xray/fire_control/weapons"))
-        desc.extend(weaponNames
-          .map(@(n) ::loc($"weapons/{n}"))
-          .map(@(n) $"{::loc("ui/bullet")}{n}"))
-
-        // 2. Measure accuracy
-        local accuracy = getFireControlAccuracy(fcBlk)
-        if (accuracy != -1)
-          desc.append(::format("%s %d%s", ::loc("xray/fire_control/accuracy"),
-            accuracy, ::loc("measureUnits/percent")))
-
-        // 3. Fire solution calculation time
-        local lockTime = fcBlk?.targetLockTime
-        if (lockTime)
-          desc.append(::format("%s %d%s", ::loc("xray/fire_control/lock_time"),
-            lockTime, ::loc("measureUnits/seconds")))
-
-        // 4. Fire solution update time
-        local calcTime = fcBlk?.calcTime
-        if (calcTime)
-          desc.append(::format("%s %d%s", ::loc("xray/fire_control/calc_time"),
-            calcTime, ::loc("measureUnits/seconds")))
-
-        break
-
-      case "fire_control_room":
-      case "bridge":
-        local numRangefinders = getNumFireControlNodes(partName, "rangefinder")
-        local numFireDirectors = getNumFireControlNodes(partName, "fire_director")
-        if (numRangefinders == 0 && numFireDirectors == 0)
-          break
-
-        desc.append(::loc("xray/fire_control/devices"))
-        if (numRangefinders > 0)
-          desc.append($"{::loc("ui/bullet")}{::loc("xray/fire_control/num_rangefinders", {n = numRangefinders})}")
-        if (numFireDirectors > 0)
-          desc.append($"{::loc("ui/bullet")}{::loc("xray/fire_control/num_fire_directors", {n = numFireDirectors})}")
-
         break
     }
 
@@ -1494,61 +1183,6 @@ const AFTERBURNER_CHAMBER = 3
 
     local description = ::g_string.implode(desc, "\n")
     return description
-  }
-
-  function getFireControlSystems(key, node)
-  {
-    if (!unitBlk?.sensors)
-      return []
-
-    return (unitBlk.sensors % "fireDirecting")
-      .filter(@(blk) (blk % key).findvalue(@(v) v == node) != null)
-  }
-
-  function getNumFireControlNodes(mainNode, nodeId)
-  {
-    return getFireControlSystems("dmPartMain", mainNode)
-      .map(@(fcBlk) fcBlk % "dmPart")
-      .map(@(nodes) nodes.filter(@(node) node.indexof(nodeId) == 0).len())
-      .reduce(@(sum, num) sum + num, 0)
-  }
-
-  function getFireControlTriggerGroups(fcBlk)
-  {
-    local groupsBlk = fcBlk?.triggerGroupUse
-    if (!groupsBlk)
-      return []
-
-    local res = []
-    for (local i = 0; i < groupsBlk.paramCount(); ++i)
-      if (groupsBlk.getParamValue(i))
-        res.append(groupsBlk.getParamName(i))
-
-    return res
-  }
-
-  function getFireControlWeaponNames(fcBlk)
-  {
-    local triggerGroups = getFireControlTriggerGroups(fcBlk)
-    local weapons = getUnitWeaponList().filter(@(w) triggerGroups.contains(w?.triggerGroup) && w?.blk)
-    return unique(weapons, @(w) w.blk).map(@(w) getWeaponNameByBlkPath(w.blk))
-  }
-
-  function getFireControlAccuracy(fcBlk)
-  {
-    local accuracy = fcBlk?.measureAccuracy
-    if (!accuracy)
-      return -1
-
-    return ::round(accuracy / getModEffect("ship_rangefinder", "shipDistancePrecisionErrorMult") * 100)
-  }
-
-  function getModEffect(modId, effectId)
-  {
-    if (::shop_is_modification_enabled(unit.name, modId))
-      return 1.0
-
-    return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
   }
 
   function getOpticsDesc(info)
@@ -1777,7 +1411,8 @@ const AFTERBURNER_CHAMBER = 3
                            : status.isMachinegun ? a.shipFxName[2]
                            : ""
             local baseSpeed = weaponInfoBlk?[a.blkName] ?? 0
-            local modMul =  getModEffect(modId, effectId)
+            local noModMul = ::get_modifications_blk()?.modifications?[modId]?.effects?[effectId] ?? 1.0
+            local modMul =  ::shop_is_modification_enabled(unit.name, modId) ? 1.0 : noModMul
             speed = baseSpeed * modMul
             break
         }

@@ -2281,9 +2281,6 @@
         },
         "body_back_dm": {
           "armorThickness": 22.0
-        },
-        "turret_03_bottom_dm": {
-          "armorThickness": 5.0
         }
       },
       "body_shields": {
@@ -3074,11 +3071,6 @@
           "mulSideRotMaxSpd": 1.05,
           "mulSideRotMinFric": 0.95,
           "mulSideRotMaxFric": 0.95,
-          "tracks": {
-            "width": 0.56,
-            "trackMesh": "ger_ostketten_phys_track_line",
-            "nonSymmetricMesh": true
-          },
           "hideNodes": [
             {
               "node": "track_l"
@@ -3111,12 +3103,10 @@
               "node": "ex_armor_body_r_04"
             }
           ],
-          "damagePartsOverride": {
-            "tracks": {
-              "hpMult": 1.2,
-              "track_l_01_dm": [],
-              "track_r_01_dm": []
-            }
+          "tracks": {
+            "width": 0.56,
+            "trackMesh": "ger_ostketten_phys_track_line",
+            "nonSymmetricMesh": true
           }
         },
         "disableModEffects": {
@@ -3312,7 +3302,7 @@
               "Weapon": {
                 "trigger": "gunner2",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,

@@ -10,7 +10,6 @@ local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
 local { findChildIndex } = require("sqDagui/daguiUtil.nut")
-local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 local lastUnitType = null
 
@@ -671,7 +670,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     }
 
     local sectionsTotal = treeData.sectionsPos.len() - 1
-    local widthStr = isSmallScreen
+    local widthStr = ::is_small_screen
       ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
       : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
     local totalWidth = guiScene.calcString(widthStr, null)
@@ -720,7 +719,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     local sectionsTotal = treeData.sectionsPos.len() - 1
 
-    local widthStr = isSmallScreen
+    local widthStr = ::is_small_screen
       ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
       : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
     local totalWidth = guiScene.calcString(widthStr, null)
@@ -1291,7 +1290,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       cbOwnerSearchHighlight = ::Callback(searchHighlight, this)
       cbOwnerSearchCancel    = ::Callback(searchCancel,    this)
       cbOwnerShowUnit        = ::Callback(showUnitInShop,  this)
-      cbOwnerClose           = ::Callback(onCloseShop, this)
       getEdiffFunc           = ::Callback(getCurrentEdiff, this)
     })
     registerSubHandler(handler)
@@ -1539,7 +1537,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function updateGroupObjNavBar()
   {
     navBarGroupObj = groupChooseObj.findObject("nav-help-group")
-    navBarGroupObj.hasMaxWindowSize = isSmallScreen ? "yes" : "no"
+    navBarGroupObj.hasMaxWindowSize = ::is_small_screen ? "yes" : "no"
     initShowMode(navBarGroupObj)
     updateButtons()
   }

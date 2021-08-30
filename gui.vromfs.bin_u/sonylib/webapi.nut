@@ -1,9 +1,6 @@
 local DataBlock = require("DataBlock")
 local json = require_optional("json")
-local toJson = json?.to_string ?? getroottable()?.save_to_json
-
-assert(toJson!=null, "no json module found")
-
+local toJson = json?.to_string ?? ::save_to_json
 local nativeApi = require_optional("sony.webapi")
 local {abortAllPendingRequests= @() null,
   getPreferredVersion = @() 2,
@@ -38,7 +35,7 @@ local function createRequest(api, method, path=null, params={}, data=null, force
 
   request.params = DataBlock()
   foreach(key,val in params) {
-    if (type(val) == "array") {
+    if (::type(val) == "array") {
       foreach(v in val)
         request.params[key] <- v
     }
@@ -46,11 +43,11 @@ local function createRequest(api, method, path=null, params={}, data=null, force
       request.params[key] = val
   }
 
-  if (type(data) == "string")
+  if (::type(data) == "string")
     request.request = data
-  if (type(data) == "table")
+  if (::type(data) == "table")
     request.request = toJson(data)
-  else if (type(data) == "array")
+  else if (::type(data) == "array")
     foreach(part in data)
       request.part <- part
 
@@ -73,7 +70,7 @@ local function createPart(mimeType, name, data) {
   if (mimeType == webApiMimeTypeImage)
     part.filePath = data
   else
-    part.data = (type(data) == "table") ? toJson(data) : data
+    part.data = (::type(data) == "table") ? toJson(data) : data
   return part
 }
 
@@ -122,7 +119,7 @@ local session = {
   }
 
   function invite(sessionId, accounts, invitedata={}) {
-    if (type(accounts) == "string")
+    if (::type(accounts) == "string")
       accounts = [accounts]
     local parts = [createPart(webApiMimeTypeJson, "invitation-request", {to=accounts})]
     if (invitedata != null && invitedata.len() > 0)
@@ -134,8 +131,8 @@ local session = {
 
 local sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
 local sessionManager = {
-  function create(data) {
-    return createRequest(sessionManagerApi, webApiMethodPost, null, {}, data)
+  function create(params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, null, {}, params)
   }
   function update(sessionId, param) {
     //Allow to update only one parameter at a time
@@ -144,11 +141,11 @@ local sessionManager = {
   function leave(sessionId) {
     return createRequest(sessionManagerApi, webApiMethodDelete, $"{sessionId}/members/me")
   }
-  function joinAsPlayer(sessionId, data) {
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, data)
+  function joinAsPlayer(sessionId, params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, params)
   }
-  function joinAsSpectator(sessionId, data) {
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, data)
+  function joinAsSpectator(sessionId, params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, params)
   }
   function list(sessionIds = []) {
     return createRequest(sessionManagerApi, webApiMethodGet, null, {fields="customData1,sessionId"},
@@ -160,16 +157,16 @@ local sessionManager = {
       {}, { accountId = accountId, platform = platform })
   }
   function invite(sessionId, accountIds) {
-    local data = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/invitations", {}, data)
+    local params = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/invitations", {}, params)
   }
 }
 
 // ------------ Game Sessions actions
 local gameSessionManagerApi = { group = "sessionManager", path = "/v1/gameSessions" }
 local gameSessionManager = {
-  function create(data) {
-    return createRequest(gameSessionManagerApi, webApiMethodPost, null, {}, data)
+  function create(params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, null, {}, params)
   }
   function update(sessionId, param) {
     //Allow to update only one parameter at a time
@@ -178,11 +175,11 @@ local gameSessionManager = {
   function leave(sessionId) {
     return createRequest(gameSessionManagerApi, webApiMethodDelete, $"{sessionId}/members/me")
   }
-  function joinAsPlayer(sessionId, data) {
-    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, data)
+  function joinAsPlayer(sessionId, params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, params)
   }
-  function joinAsSpectator(sessionId, data) {
-    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, data)
+  function joinAsSpectator(sessionId, params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, params)
   }
 }
 
@@ -271,7 +268,7 @@ local commerce = {
 
   // listing multiple categories at once requires multiple iterators, one per category. We have one.
   function listCategory(category, params={}) {
-    assert(type(category) == "string", "[PSWA] only one category can be listed at a time")
+    assert(::type(category) == "string", "[PSWA] only one category can be listed at a time")
     return createRequest(commerceApi, webApiMethodGet, category, params)
   }
 }
@@ -365,7 +362,7 @@ local function send(action, onResponse=noOpCb) {
 local function fetch(action, onChunkReceived, chunkSize = 20) {
   local function onResponse(response, err) {
     // PSN responses are somewhat inconsistent, but we need proper iterators
-    local entry = ((type(response) == "array") ? response?[0] : response) || {}
+    local entry = ((::type(response) == "array") ? response?[0] : response) || {}
     local received = (getPreferredVersion() == 2)
                    ? (entry?.nextOffset || entry?.totalItemCount)
                    : (entry?.start||0) + (entry?.size||0)

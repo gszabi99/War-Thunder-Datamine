@@ -4,8 +4,6 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 local { findGenByReceptUid } = require("scripts/items/itemsClasses/itemGenerators.nut")
-local { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
-local preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
 
 ::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {})
 {
@@ -324,25 +322,22 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
         unit = ::getAircraftByName(reward[rewardType]) || unit
         //Datablock adapter used only to avoid bug with duplicate timeHours in userlog.
         rentTimeHours = ::DataBlockAdapter(reward)?.timeHours || rentTimeHours
-        continue
       }
 
       if (rewardType == "resource" || rewardType == "resourceType")
-        updateResourceData(reward?.resource, reward?.resourceType)
+      {
+        local decorData = getDecoratorDataToUse(reward?.resource, reward?.resourceType)
+        if (decorData.decorator != null)
+        {
+          decorator = decorData.decorator
+          decoratorUnit = decorData.decoratorUnit
+          decoratorSlot = decorData.decoratorSlot
+          local obj = scene.findObject("btn_use_decorator")
+          if (::check_obj(obj))
+            obj.setValue(::loc($"decorator/use/{decorator.decoratorType.resourceType}"))
+        }
+      }
     }
-  }
-
-  function updateResourceData(resource, resourceType) {
-    local decorData = getDecoratorDataToUse(resource, resourceType)
-    if (decorData.decorator == null)
-      return
-
-    decorator = decorData.decorator
-    decoratorUnit = decorData.decoratorUnit
-    decoratorSlot = decorData.decoratorSlot
-    local obj = scene.findObject("btn_use_decorator")
-    if (obj?.isValid())
-      obj.setValue(::loc($"decorator/use/{decorator.decoratorType.resourceType}"))
   }
 
   function getRewardImage(trophyStyle = "")
@@ -393,9 +388,8 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       : unit && unit.isUsable() && !::isUnitInSlotbar(unit) ? "btn_take_air"
       : rewardItem ? "btn_go_to_item"
       : decorator && canStartPreviewScene(false) ? "btn_use_decorator"
-      : isLoadingBgUnlock(trophyItem?.getUnlockId()) ? "btn_preloader_settings"
       : ""
-    foreach (id in [ "btn_take_air", "btn_go_to_item", "btn_use_decorator", "btn_preloader_settings" ])
+    foreach (id in [ "btn_take_air", "btn_go_to_item", "btn_use_decorator" ])
       showSceneBtn(id, id == prizeActionBtnId)
 
     local canReUseItem = animFinished && reUseRecipe != null
@@ -483,7 +477,6 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   onUseDecorator = @() useDecorator(decorator, decoratorUnit, decoratorSlot)
-  onPreloaderSettings = @() preloaderOptionsModal(getLoadingBgIdByUnlockId(trophyItem.getUnlockId()))
 
   function onReUseItem() {
     if (reUseRecipe == null)

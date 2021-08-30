@@ -152,8 +152,8 @@ local function getOverrideCondType(condBlk, unlockMode) {
     typeFighter       = "type_fighter"
     typeDiveBomber    = "type_dive_bomber"
     typeBomber        = "type_bomber"
-    typeAssault       = "type_strike_aircraft"
-    typeStormovik     = "type_strike_aircraft"
+    typeAssault       = "type_assault"
+    typeStormovik     = "type_assault"
     typeTransport     = "type_transport"
     typeStrikeFighter = "type_strike_fighter"
   }

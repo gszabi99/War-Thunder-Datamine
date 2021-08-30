@@ -136,11 +136,14 @@
           "genericDamageMult": 0.3,
           "hp": 29.0
         },
-        "stab1_dm": {
-          "hp": 24.5
+        "stab_dm": {
+          "hp": 30.0
         },
         "stab2_dm": {
-          "hp": 24.5
+          "hp": 30.0
+        },
+        "stab1_dm": {
+          "hp": 32.6
         }
       },
       "c_dural7": {
@@ -1166,6 +1169,46 @@
       {
         "part": [
           {
+            "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "stab1_dm"
           },
           {
@@ -1176,7 +1219,7 @@
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 60.0,
               "cut": 1.0
             }
           },
@@ -1184,21 +1227,21 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 14.0
+              "nothing": 10.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 4.0
+              "cut": 2.0,
+              "nothing": 5.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 1.0
+              "nothing": 0.0
             }
           }
         ]

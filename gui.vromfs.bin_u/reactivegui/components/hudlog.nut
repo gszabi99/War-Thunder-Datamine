@@ -1,6 +1,6 @@
 local colors = require("reactiveGui/style/colors.nut")
+local hudState = require("reactiveGui/hudState.nut")
 local scrollbar = require("scrollbar.nut")
-local { cursorVisible } = require("reactiveGui/ctrlsState.nut")
 
 local logContainer = @() {
   size = [flex(), SIZE_TO_CONTENT]
@@ -16,13 +16,13 @@ local hudLog = function (params) {
     logComponent.data(@() logContainer, messageComponent),
     {
       scrollHandler = logComponent.scrollHandler
-      barStyle = @(has_scroll) scrollbar.styling.Bar(has_scroll && cursorVisible.value)
+      barStyle = @(has_scroll) scrollbar.styling.Bar(has_scroll && hudState.cursorVisible.value)
       scrollAlign = ALIGN_LEFT
     }
   )
 
   return @() {
-    watch = cursorVisible
+    watch = hudState.cursorVisible
     rendObj = ROBJ_9RECT
     size = [flex(), ::scrn_tgt(0.135)]
     clipChildren = true

@@ -1,8 +1,6 @@
 // TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7].map(@(v) { name = v.tostring() }), callbackFunc = dlog })
 
 local { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::gui_start_wheelmenu <- function gui_start_wheelmenu(params)
 {
@@ -183,7 +181,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local isShow = ::show_console_buttons && axisEnabled
     if (isShow)
     {
-      local shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
+      local shortcuts = ::get_player_cur_unit()?.unitType.wheelmenuAxis ?? []
       local shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
       local axesId = shortcutType.getComplexAxesId(shortcuts)
@@ -194,7 +192,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onWheelmenuItemClick(obj)
   {
-    if (!obj || (!mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()) )
+    if (!obj || (!mouseEnabled && !::use_touchscreen && !::is_cursor_visible_in_gui()) )
       return
 
     local index = obj.index.tointeger()
@@ -237,18 +235,13 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     highlightItemBySide(selection)
   }
 
-  function activateSelectedItem()
+  function onWheelmenuAccesskeyApply(obj)
   {
     if (! joystickSelection) return
 
     local bObj = scene.findObject("wheelmenuItem" + joystickSelection)
     local index = bObj && bObj.index.tointeger()
     sendAvailableAnswerDelayed(index)
-  }
-
-  function onWheelmenuAccesskeyApply(obj)
-  {
-    activateSelectedItem()
   }
 
   function onWheelmenuAccesskeyCancel(obj)
@@ -267,11 +260,6 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isDown)
       sendAvailableAnswerDelayed(index)
     return true // processed
-  }
-
-  function onActivateItemCallback()
-  {
-    activateSelectedItem()
   }
 
   function isItemAvailable(index)

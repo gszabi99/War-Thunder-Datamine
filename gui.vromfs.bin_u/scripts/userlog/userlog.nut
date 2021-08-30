@@ -393,7 +393,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onChangePage(obj)
   {
     local value = obj.getValue()
-    if (value < 0 || value >= obj.childrenCount())
+    if (value < 0 || value > obj.childrenCount())
       return
 
     local idx = ::to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)

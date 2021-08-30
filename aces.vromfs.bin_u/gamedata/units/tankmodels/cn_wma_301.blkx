@@ -189,6 +189,9 @@
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "hull": {
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 16.0
+        },
         "body_front_dm": {
           "armorThickness": 10.0,
           "armorClass": "RHAHH_tank"
@@ -264,10 +267,6 @@
         },
         "turret_04_back_dm": {
           "armorThickness": 20.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
         }
       },
       "RHHA_armor_parts": {
@@ -852,20 +851,6 @@
   {
     "attachables": {
       "superstructure_side_dm": true
-    }
-  },
-  {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
-          }
-        }
-      }
     }
   },
   {
@@ -2555,7 +2540,7 @@
             "speedYaw": 0.0
           },
           {
-            "speedPitch": 5.0
+            "speedPitch": 0.0
           },
           {
             "fireConeAngle": 1.0
@@ -2608,8 +2593,8 @@
           },
           {
             "limits": {
-              "yaw": [0.0,0.0],
-              "pitch": [-4.0,13.0]
+              "yaw": [-0.0,0.0],
+              "pitch": [-0.0,0.0]
             }
           }
         ]
@@ -3647,7 +3632,7 @@
                   "speedYaw": 0.0
                 },
                 {
-                  "speedPitch": 5.0
+                  "speedPitch": 0.0
                 },
                 {
                   "fireConeAngle": 1.0
@@ -3700,8 +3685,8 @@
                 },
                 {
                   "limits": {
-                    "yaw": [0.0,0.0],
-                    "pitch": [-4.0,13.0]
+                    "yaw": [-0.0,0.0],
+                    "pitch": [-0.0,0.0]
                   }
                 }
               ]

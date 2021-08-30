@@ -326,10 +326,6 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_GUIDED_BOMBS"
-    needShowInHelp = true
-  }
-  {
     id = "ID_FUEL_TANKS"
     showFunc = @() ::has_feature("Payload")
     checkAssign = false
@@ -345,10 +341,6 @@ return [
   }
   {
     id = "ID_AGM_LOCK"
-    checkAssign = false
-  }
-  {
-    id = "ID_GUIDED_BOMBS_LOCK"
     checkAssign = false
   }
   {
@@ -444,11 +436,6 @@ return [
   }
   {
     id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER"
-    checkAssign = false
-    //showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
-  {
-    id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER"
     checkAssign = false
     //showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }

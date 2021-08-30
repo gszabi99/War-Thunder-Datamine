@@ -391,12 +391,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     hideSoundPlayed = false
     if (nextSlideImg)
     {
-      local slideImg = $"ui/slides/{nextSlideImg}.jpg"
-      if (!::dd_file_exist(slideImg)) {
-        ::dagor.debug($"LoadingBrief: not exist slide '{slideImg}'. Showed slide_image_in_progress.")
-        slideImg = "ui/slides/dynamic_missions/aircrafts/slide_image_in_progress.jpg"
-      }
-      guiScene["slide-img"]["background-image"] = $"{slideImg}?P1"
+      guiScene["slide-img"]["background-image"] = format("ui/slides/%s.jpg?P1", nextSlideImg)
       place.rotation = (2.0*::math.frnd() - 1.0).tostring()
       place.padding = format("%fsh, %fsh, 0, 0", 0.1*(::math.frnd() - 0.5), 0.05*(::math.frnd() - 0.5))
       nextSlideImg = null

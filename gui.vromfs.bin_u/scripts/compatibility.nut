@@ -58,7 +58,6 @@
   is_perf_metrics_available = @(request_mode) false
   get_option_delayed_download_content = @() false
   set_option_delayed_download_content = @(value) null
-  set_gui_vr_params = @(...) null
   get_commander_camera_in_views = @() 0
   set_commander_camera_in_views = @(value) null
 })
@@ -66,9 +65,5 @@
 //----------------------------wop_2_7_0_X---------------------------------//
 ::apply_compatibilities({
   EXP_EVENT_TIMED_AWARD = 29
-  USEROPT_HUE_AIRCRAFT_HUD = -1
-  USEROPT_HUE_AIRCRAFT_PARAM_HUD = -1
-  USEROPT_HUE_AIRCRAFT_HUD_ALERT = -1
-  USEROPT_HUE_HELICOPTER_PARAM_HUD = -1
 })
 

@@ -7,7 +7,7 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
   needVoiceChat = false
   memberTplName = "gui/squads/squadMembers"
   membersObj = null
-  align = ALIGN.BOTTOM
+  align = AL_ORIENT.BOTTOM
 
   alignObj = null
   squad = null
