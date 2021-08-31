@@ -1,11 +1,11 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "mesh": "uk_hvar",
+  "helicopterGroup": 2,
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
-  "helicopterGroup": 2,
-  "mesh": "uk_hvar",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
@@ -15,10 +15,106 @@
       "caliber": 0.127
     },
     {
-      "mass": 64.0
+      "length": 1.73
     },
     {
       "explosiveType": "tnt"
+    },
+    {
+      "explosiveMass": 3.45
+    },
+    {
+      "mass": 62.8
+    },
+    {
+      "massEnd": 51.1
+    },
+    {
+      "statType": "hydra"
+    },
+    {
+      "bulletType": "rocket_tank"
+    },
+    {
+      "bulletType": "rocket_tank"
+    },
+    {
+      "explodeTreshold": 0.01
+    },
+    {
+      "explodeHitPower": 550.0
+    },
+    {
+      "explodeArmorPower": 75.0
+    },
+    {
+      "explodeRadius": [1.0,3.5]
+    },
+    {
+      "rendinstDamageRadius": 15.0
+    },
+    {
+      "hitPowerMult": 400.0
+    },
+    {
+      "fuseDelayDist": 1.0
+    },
+    {
+      "maxDistance": 7000.0
+    },
+    {
+      "minDistance": 30.0
+    },
+    {
+      "force": 20250.0
+    },
+    {
+      "timeFire": 1.15
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "distFromCmToStab": 0.01
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "dragCx": 0.018
+    },
+    {
+      "CxK": 1.1
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 0.0
+    },
+    {
+      "endSpeed": 0.0
+    },
+    {
+      "maxSpeed": 403.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "amountPerTier": 1.0
+    },
+    {
+      "iconType": "rockets_he_small"
     },
     {
       "normalizationPreset": "heat"
@@ -42,12 +138,6 @@
       "stabilityReductionAfterPenetration": 0.15
     },
     {
-      "bulletType": "rocket_tank"
-    },
-    {
-      "bulletType": "rocket_tank"
-    },
-    {
       "slopeEffectPreset": "ap"
     },
     {
@@ -61,42 +151,6 @@
     },
     {
       "shellAnimation": "video/shells_animations/rocket_he.ivf"
-    },
-    {
-      "explosiveMass": 3.4
-    },
-    {
-      "massEnd": 55.0
-    },
-    {
-      "maxDeltaAngle": 3.5
-    },
-    {
-      "dragCx": 0.018
-    },
-    {
-      "length": 1.8
-    },
-    {
-      "distFromCmToStab": 0.01
-    },
-    {
-      "CxK": 0.01
-    },
-    {
-      "WdK": [0.1,0.1,0.1]
-    },
-    {
-      "force": 28500.0
-    },
-    {
-      "timeFire": 0.9
-    },
-    {
-      "spawnExplosionFx": false
-    },
-    {
-      "spawnExplosionWreckage": false
     },
     {
       "explosionEffect": "explosion_midair_medium"
@@ -126,79 +180,21 @@
       "endSmokeViscosity": 0.05
     },
     {
-      "maxDistance": 7000.0
+      "maxDeltaAngle": 3.5
     },
     {
-      "minDistance": 30.0
+      "armorpower": {
+        "ArmorPower0m": [28.0,10.0],
+        "ArmorPower100m": [25.0,100.0],
+        "ArmorPower7000m": [23.0,7000.0],
+        "ArmorPower10000m": [0.0,10000.0]
+      }
     },
     {
-      "distanceFuse": false
-    },
-    {
-      "hitPowerMult": 400.0
-    },
-    {
-      "fuseDelayDist": 1.0
-    },
-    {
-      "explodeTreshold": 10.0
-    },
-    {
-      "explodeTreshold": 0.01
-    },
-    {
-      "explodeHitPower": 550.0
-    },
-    {
-      "explodeArmorPower": 75.0
-    },
-    {
-      "explodeRadius": [1.0,3.5]
-    },
-    {
-      "rendinstDamageRadius": 15.0
-    },
-    {
-      "statType": "hydra"
-    },
-    {
-      "shutterDamage": true
-    },
-    {
-      "shutterDamageRadius": 17.0
-    },
-    {
-      "shutterAmount": 2000
-    },
-    {
-      "shutterArmorPower": 12.0
-    },
-    {
-      "shutterHit": 10.0
-    },
-    {
-      "advancedMissiles": false
-    },
-    {
-      "useStartSpeed": true
-    },
-    {
-      "startSpeed": 30.0
-    },
-    {
-      "endSpeed": 800.0
-    },
-    {
-      "maxSpeed": 420.0
-    },
-    {
-      "price": 3000.0
-    },
-    {
-      "amountPerTier": 1.0
-    },
-    {
-      "iconType": "rockets_he_small"
+      "hitpower": {
+        "HitPower0m": [400.0,500.0],
+        "HitPower10000m": [400.0,10000.0]
+      }
     },
     {
       "stabilityRicochetModifier": {
@@ -210,6 +206,15 @@
     {
       "pressureDamage": {
         "damageType": "pressure"
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
       }
     },
     {
@@ -226,29 +231,6 @@
         "wood": {
           "fx": "explosion_midair_small"
         }
-      }
-    },
-    {
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      }
-    },
-    {
-      "armorpower": {
-        "ArmorPower0m": [28.0,10.0],
-        "ArmorPower100m": [25.0,100.0],
-        "ArmorPower7000m": [23.0,7000.0],
-        "ArmorPower10000m": [0.0,10000.0]
-      }
-    },
-    {
-      "hitpower": {
-        "HitPower0m": [400.0,500.0],
-        "HitPower10000m": [400.0,10000.0]
       }
     }
   ]

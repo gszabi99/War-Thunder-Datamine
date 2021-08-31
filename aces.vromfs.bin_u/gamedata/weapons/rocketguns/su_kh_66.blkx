@@ -16,6 +16,7 @@
     "autoAimingInArcade": true,
     "autoLeveling": false,
     "autoAimingMaxAngle": 5.0,
+    "autoAimingMultiChannel": true,
     "aimSensitivity": 15.0,
     "maxAxisValues": 0.12,
     "normalizationPreset": "heat",
@@ -35,16 +36,15 @@
     "mass": 278.0,
     "explosiveType": "tg_40",
     "explosiveMass": 51.0,
-    "massEnd": 215.0,
+    "massEnd": 214.5,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.025,
     "length": 3.631,
     "distFromCmToStab": 0.1,
-    "CxK": 2.5,
+    "CxK": 1.2,
     "WdK": [0.1,0.1,0.1],
-    "force": 28000.0,
-    "timeFire": 6.5,
-    "fireDelay": 0.17,
+    "force": 24700.0,
+    "timeFire": 4.9,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "explosionEffect": "explosion_midair_big",
@@ -66,9 +66,10 @@
     "endSmokeViscosity": 0.05,
     "advancedMissiles": false,
     "useStartSpeed": false,
-    "startSpeed": 30.0,
-    "endSpeed": 750.0,
-    "timeLife": 60.0,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 460.0,
+    "timeLife": 25.0,
     "machMax": 2.0,
     "loadFactorMax": 2.0,
     "rangeMax": 10000.0,
@@ -76,7 +77,7 @@
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
     "hasTracerTrail": true,
-    "tracerTrailEmitter": [0.3,-0.15,0.0],
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
       "mod2": [15.0,0.7],
@@ -107,9 +108,10 @@
       }
     },
     "tracerTrail": {
+      "smokeEffect": "",
       "visual": {
         "traceFreq": 1,
-        "tracer": "100mmRed",
+        "tracer": "152mmRed",
         "trail": "noTrail"
       }
     }

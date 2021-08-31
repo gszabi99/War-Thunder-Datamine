@@ -52,7 +52,7 @@
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sam.ivf",
     "bulletName": "165mm_vt_1",
-    "mass": 76.0,
+    "mass": 73.0,
     "caliber": 0.165,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
@@ -82,21 +82,22 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
       "caliber": 0.165,
-      "mass": 76.0,
+      "mass": 73.0,
+      "massEnd": 43.775,
+      "massEnd1": 38.0,
       "explosiveType": "comp_b",
       "explosiveMass": 6.0,
       "maxDeltaAngle": 0.01,
       "dragCx": 0.027,
       "length": 2.35,
       "distFromCmToStab": 0.005,
-      "CxK": 0.92,
+      "CxK": 1.275,
       "WdK": [0.1,0.1,0.1],
-      "force": 30000.0,
-      "timeFire": 1.8,
-      "force1": 3400.0,
-      "timeFire1": 8.0,
-      "massEnd": 58.0,
-      "massEnd1": 40.0,
+      "force": 66000.0,
+      "timeFire": 1.0,
+      "force1": 3300.0,
+      "timeFire1": 4.0,
+      "timeLife": 24.0,
       "thrustDeviation": 0.0,
       "operated": true,
       "operatedDist": 12000.0,
@@ -132,6 +133,8 @@
       "endSpeed": 1250.0,
       "price": 3000.0,
       "mesh": "vt_1_rocket_deployed",
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [-0.5,0.0,0.0],
       "proximityFuse": {
         "radius": 8.0,
         "armDistance": 300.0,
@@ -350,6 +353,14 @@
         "HitPower1500m": [0.65,1500.0],
         "HitPower2500m": [0.5,2500.0],
         "HitPower7000m": [0.0,7000.0]
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "noTrail"
+        }
       }
     }
   },
@@ -368,7 +379,7 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
       "bulletName": "165mm_vt_1",
-      "mass": 76.0,
+      "mass": 73.0,
       "caliber": 0.165,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
@@ -398,21 +409,22 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sam.ivf",
         "caliber": 0.165,
-        "mass": 76.0,
+        "mass": 73.0,
+        "massEnd": 43.775,
+        "massEnd1": 38.0,
         "explosiveType": "comp_b",
         "explosiveMass": 6.0,
         "maxDeltaAngle": 0.01,
         "dragCx": 0.027,
         "length": 2.35,
         "distFromCmToStab": 0.005,
-        "CxK": 0.92,
+        "CxK": 1.275,
         "WdK": [0.1,0.1,0.1],
-        "force": 30000.0,
-        "timeFire": 1.8,
-        "force1": 3400.0,
-        "timeFire1": 8.0,
-        "massEnd": 58.0,
-        "massEnd1": 40.0,
+        "force": 66000.0,
+        "timeFire": 1.0,
+        "force1": 3300.0,
+        "timeFire1": 4.0,
+        "timeLife": 24.0,
         "thrustDeviation": 0.0,
         "operated": true,
         "operatedDist": 12000.0,
@@ -448,6 +460,8 @@
         "endSpeed": 1250.0,
         "price": 3000.0,
         "mesh": "vt_1_rocket_deployed",
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [-0.5,0.0,0.0],
         "proximityFuse": {
           "radius": 8.0,
           "armDistance": 300.0,
@@ -666,6 +680,14 @@
           "HitPower1500m": [0.65,1500.0],
           "HitPower2500m": [0.5,2500.0],
           "HitPower7000m": [0.0,7000.0]
+        },
+        "tracerTrail": {
+          "smokeEffect": "",
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "152mmRed",
+            "trail": "noTrail"
+          }
         }
       }
     }

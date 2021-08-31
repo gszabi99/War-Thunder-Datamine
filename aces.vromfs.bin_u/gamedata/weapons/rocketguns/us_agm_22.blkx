@@ -19,7 +19,7 @@
     "fresnel": [0.23,0.1,2.0],
     "shellAnimation": "video/shells_animations/atgm.ivf",
     "caliber": 0.164,
-    "length": 1.19,
+    "length": 1.21,
     "explosiveType": "comp_b",
     "explosiveMass": 3.47,
     "distFromCmToStab": 0.01,
@@ -42,12 +42,15 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 0.02,
-    "maxDistance": 3000.0,
+    "maxDistance": 3500.0,
     "minDistance": 30.0,
     "mass": 30.0,
-    "massEnd": 6.8,
-    "force": 1200.0,
-    "timeFire": 20.0,
+    "massEnd": 28.4,
+    "massEnd1": 23.0,
+    "force": 2600.0,
+    "timeFire": 1.1,
+    "force1": 575.0,
+    "timeFire1": 19.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -64,17 +67,20 @@
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "dragCx": 0.0035,
-    "CxK": 0.01,
+    "CxK": 3.25,
     "useStartSpeed": true,
-    "startSpeed": 115.0,
-    "endSpeed": 190.0,
-    "maxSpeed": 190.0,
+    "startSpeed": 15.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 220.0,
+    "timeLife": 20.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
       "mod2": [15.0,0.7],
@@ -210,9 +216,17 @@
     },
     "cumulativeDamage": {
       "armorPower": 600.0,
-      "distance": 7.5,
-      "damage": 900.0,
+      "distance": 5.5,
+      "damage": 600.0,
       "onHitChanceMultFire": 25.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
+      }
     }
   }
 }

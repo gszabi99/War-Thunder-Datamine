@@ -52,16 +52,20 @@
     "explosiveType": "comp_b",
     "explosiveMass": 3.47,
     "mass": 15.7,
-    "massEnd": 15.0,
+    "massEnd": 14.98,
+    "massEnd1": 14.45,
     "maxDeltaAngle": 0.03,
     "dragCx": 0.01,
     "length": 1.02,
     "distFromCmToStab": 0.01,
-    "CxK": 0.1,
+    "CxK": 3.2,
     "WdK": [0.1,0.1,0.1],
-    "force": 1800.0,
-    "timeFire": 20.0,
+    "force": 1606.0,
+    "timeFire": 0.8,
+    "force1": 37.98,
+    "timeFire1": 25.0,
     "thrustDeviation": 0.0,
+    "timeLife": 25.0,
     "rotationRocket": 4.0,
     "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
@@ -88,9 +92,11 @@
     "statType": "hydra",
     "advancedMissiles": false,
     "useStartSpeed": true,
-    "startSpeed": 25.0,
+    "startSpeed": 0.0,
     "endSpeed": 85.0,
     "price": 3000.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
     "collisions": {
       "default": {
         "fx": "hit_133_160mm_dirt_he"
@@ -196,6 +202,14 @@
       "cumulativeFragmentsAmount": 40,
       "cumulativeFragmentsArmorPower": 5.0,
       "cumulativeFragmentsHit": 9.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
+      }
     }
   }
 }
