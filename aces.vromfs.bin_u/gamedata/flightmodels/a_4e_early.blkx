@@ -5,10 +5,13 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
+  "haveCCRPForBombs": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
+  "simplifiedJoyAileronMult": 0.0,
+  "simplifiedJoyElevatorMult": 1.0,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -3526,6 +3529,55 @@
         },
         {
           "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_air_to_uni"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "iconType": "bombs_special"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },

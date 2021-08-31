@@ -2261,59 +2261,6 @@
     "commonWeapons": [
       {
         "Weapon": {
-          "trigger": "gunner0",
-          "triggerGroup": "primary",
-          "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
-          "emitter": "gun_barrel_01",
-          "flash": "emtr_gun_flame_01",
-          "useEmitter": true,
-          "barrelDP": "main_caliber_gun_01_dm",
-          "breechDP": "main_caliber_gun_01_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "speedYaw": 40.0,
-          "speedPitch": 25.0,
-          "bullets": 1120,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "turret": {
-            "head": "main_caliber_turret_01",
-            "gun": "main_caliber_gun_01",
-            "barrel": "gun_barrel_01",
-            "gunnerDm": "main_caliber_turret_01_dm",
-            "linkedAnimPart": {
-              "verNode": "sight_01",
-              "verLimits": [0.0,70.0],
-              "verOriginLimits": [0.0,70.0]
-            }
-          },
-          "limits": {
-            "yaw": [-131.0,131.0],
-            "pitch": [-5.0,70.0]
-          },
-          "limitsTable": {
-            "lim1": [-131.0,-60.0,-5.0,70.0],
-            "lim2": [-60.0,60.0,0.0,70.0],
-            "lim3": [60.0,131.0,-5.0,70.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "primary",
           "blk": "gameData/Weapons/navalModels_weapons/40mm_50_2pdr_rolls_royce_mk14_naval_user_cannon.blk",
@@ -2327,6 +2274,7 @@
           "speedYaw": 40.0,
           "speedPitch": 25.0,
           "bullets": 1200,
+          "numWeaponsInSlot": 1,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2375,6 +2323,59 @@
                 "row": [70.0,0.05]
               }
             ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner0",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/navalModels_weapons/40mm_39_2pdr_qf_mk2c_naval_user_cannon.blk",
+          "emitter": "gun_barrel_01",
+          "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
+          "barrelDP": "main_caliber_gun_01_dm",
+          "breechDP": "main_caliber_gun_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 40.0,
+          "speedPitch": 25.0,
+          "bullets": 1120,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4500.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.8,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "main_caliber_turret_01",
+            "gun": "main_caliber_gun_01",
+            "barrel": "gun_barrel_01",
+            "gunnerDm": "main_caliber_turret_01_dm",
+            "linkedAnimPart": {
+              "verNode": "sight_01",
+              "verLimits": [0.0,70.0],
+              "verOriginLimits": [0.0,70.0]
+            }
+          },
+          "limits": {
+            "yaw": [-131.0,131.0],
+            "pitch": [-5.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-131.0,-60.0,-5.0,70.0],
+            "lim2": [-60.0,60.0,0.0,70.0],
+            "lim3": [60.0,131.0,-5.0,70.0]
           }
         }
       },
@@ -2923,7 +2924,8 @@
     "cockpit": {
       "headPos": [0.0,7.0,-26.0],
       "headPosOnShooting": [5.4,6.9,0.0],
-      "detectionsHeigh": 10.0
+      "detectionsHeigh": 10.0,
+      "cameraAhead": true
     }
   },
   {
