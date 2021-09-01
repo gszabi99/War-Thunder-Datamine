@@ -8,6 +8,7 @@ local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
 local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -176,6 +177,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
 
         if (!isHeader && !isEmpty && !table?[i].isBot)
           nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag ?? "")
+        nameText = ::g_string.stripTags(nameText)
 
         local nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         local nameAlign = isRowInvert ? "text-align:t='right' " : ""
@@ -967,7 +969,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(teamObj))
       return
-    foreach (countryName in ::shopCountriesList)
+    foreach (countryName in shopCountriesList)
     {
       local countryFlagObj = teamObj.findObject(countryName)
       if (::checkObj(countryFlagObj))
@@ -996,7 +998,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(countriesBlock))
       return
     local view = {
-      countries = ::shopCountriesList
+      countries = shopCountriesList
         .map(@(countryName) {
           countryName = countryName
           countryIcon = ::get_country_icon(countryName)

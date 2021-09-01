@@ -2,12 +2,14 @@ local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local soundDevice = require("soundDevice")
+local { is_stereo_mode } = ::require_native("vr")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 //
 
 
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local getSystemOptions = @() {
   name = "graphicsParameters"
@@ -25,7 +27,7 @@ local getMainOptions = function()
 
   local isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
     (::current_campaign_mission == "tutorial01")
-  local canChangeViewType = !isFirstTutorial && (::get_player_cur_unit()?.unitType.canChangeViewType ?? false)
+  local canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
 
   return {
     name = ::is_in_flight() ? "main" : "mainParameters"
@@ -46,14 +48,16 @@ local getMainOptions = function()
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_PRELOADER_SETTINGS, "button", ::has_feature("LoadingBackgroundFilter") && !::is_in_flight()],
       [::USEROPT_REVEAL_NOTIFICATIONS, "button"],
+      [::USEROPT_POSTFX_SETTINGS, "button", !::is_compatibility_mode()],
+      [::USEROPT_HDR_SETTINGS, "button", ::is_hdr_enabled()],
 
       ["options/header/commonBattleParameters"],
       [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
       [::USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
       [::USEROPT_CAMERA_SHAKE_MULTIPLIER, "slider"],
-      [::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER, "slider", ::is_stereo_mode()],
+      [::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER, "slider", is_stereo_mode()],
       [::USEROPT_FPS_CAMERA_PHYSICS, "slider"],
-      [::USEROPT_FPS_VR_CAMERA_PHYSICS, "slider", ::is_stereo_mode()],
+      [::USEROPT_FPS_VR_CAMERA_PHYSICS, "slider", is_stereo_mode()],
       [::USEROPT_AUTO_SQUAD, "spinner"],
       [::USEROPT_QUEUE_JIP, "spinner"],
       [::USEROPT_TANK_ALT_CROSSHAIR, "spinner", ::can_add_tank_alt_crosshair()
@@ -62,6 +66,9 @@ local getMainOptions = function()
                                                    )],
 
       ["options/header/air"],
+      [::USEROPT_HUE_AIRCRAFT_HUD, "spinner", ::has_feature("reactivGuiForAircraft")],
+      [::USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner",  ::has_feature("reactivGuiForAircraft")],
+      [::USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner",  ::has_feature("reactivGuiForAircraft")],
       [::USEROPT_VIEWTYPE, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUN_TARGET_DISTANCE, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! ::is_in_flight()],
@@ -88,6 +95,7 @@ local getMainOptions = function()
 
       ["options/header/helicopter"],
       [::USEROPT_HUE_HELICOPTER_HUD, "spinner"],
+      [::USEROPT_HUE_HELICOPTER_PARAM_HUD, "spinner"],
       [::USEROPT_HUE_HELICOPTER_HUD_ALERT, "spinner"],
       [::USEROPT_HUE_HELICOPTER_MFD, "spinner"],
       [::USEROPT_HORIZONTAL_SPEED, "spinner"],
@@ -136,6 +144,7 @@ local getMainOptions = function()
       [::USEROPT_HUE_ENEMY, "spinner"],
       [::USEROPT_HUE_RELOAD, "spinner"],
       [::USEROPT_HUE_RELOAD_DONE, "spinner"],
+      [::USEROPT_HUE_ARBITER_HUD, "spinner", ::has_feature("reactivGuiForArbitrer")],
       [::USEROPT_STROBE_ALLY, "spinner"],
       [::USEROPT_STROBE_ENEMY, "spinner"],
       [::USEROPT_HUD_SHOW_FUEL, "spinner"],

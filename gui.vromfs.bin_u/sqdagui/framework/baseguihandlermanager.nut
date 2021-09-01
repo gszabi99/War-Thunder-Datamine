@@ -494,7 +494,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     local rootObj = guiScene.getRoot()
 
     rootObj["show_console_buttons"] = ::show_console_buttons ? "yes" : "no" //should to force box buttons in WoP?
-    if ("ps4_is_circle_selected_as_enter_button" in ::getroottable() && ::ps4_is_circle_selected_as_enter_button())
+    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
 
     if (!forceUpdate)

@@ -161,14 +161,11 @@
         "genericDamageMult": 0.3,
         "hp": 32.5
       },
-      "stab_dm": {
-        "hp": 30.0
+      "stab1_dm": {
+        "hp": 29.5
       },
       "stab2_dm": {
-        "hp": 30.0
-      },
-      "stab1_dm": {
-        "hp": 39.7
+        "hp": 29.5
       }
     },
     "dural": {
@@ -1303,46 +1300,6 @@
     {
       "part": [
         {
-          "name": "stab_dm"
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
           "name": "stab1_dm"
         },
         {
@@ -1353,7 +1310,7 @@
         },
         {
           "onHit": {
-            "damage": 60.0,
+            "damage": 65.0,
             "cut": 1.0
           }
         },
@@ -1361,14 +1318,14 @@
           "onKill": {
             "damage": 10.0,
             "cut": 1.0,
-            "nothing": 10.0
+            "nothing": 11.0
           }
         },
         {
           "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
+            "damage": 31.0,
+            "cut": 1.0,
+            "nothing": 3.0
           }
         },
         {
@@ -2844,13 +2801,15 @@
     {
       "preset": {
         "name": "Me_410A-1_2xSC250",
-        "blk": "gameData/FlightModels/weaponPresets/me-410_2xsc250.blk"
+        "blk": "gameData/FlightModels/weaponPresets/me-410_2xsc250.blk",
+        "reqModification": "Fw-190D-12_SC250"
       }
     },
     {
       "preset": {
         "name": "Me_410A-1_2xSC500",
-        "blk": "gameData/FlightModels/weaponPresets/me-410_2xsc500.blk"
+        "blk": "gameData/FlightModels/weaponPresets/me-410_2xsc500.blk",
+        "reqModification": "Fw-190D-12_SC500"
       }
     }
   ],
@@ -2969,6 +2928,15 @@
     },
     "mg15120_new_gun": {
       "reqModification": "mg15120_belt_pack"
+    },
+    "Fw-190D-12_SC250": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "Fw-190D-12_SC500": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "Fw-190D-12_SC250"
     }
   },
   "default_skin_tomoe": [

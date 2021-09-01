@@ -169,7 +169,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2736,7 +2737,7 @@
           "armorThickness": 8.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 16.0
         },
         "body_bottom_dm": {
           "armorThickness": 10.0
@@ -2761,6 +2762,9 @@
         },
         "turret_02_front_dm": {
           "armorThickness": 25.0
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -3487,7 +3491,14 @@
             {
               "node": "ex_armor_body_r_10"
             }
-          ]
+          ],
+          "damagePartsOverride": {
+            "tracks": {
+              "hpMult": 1.2,
+              "track_l_01_dm": [],
+              "track_r_01_dm": []
+            }
+          }
         },
         "disableModEffects": {
           "hideNodes": [

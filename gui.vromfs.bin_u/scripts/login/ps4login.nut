@@ -4,6 +4,7 @@ local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { targetPlatform } = require("scripts/clientState/platform.nut")
 local { requestPackageUpdateStatus } = require("sony")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
@@ -18,7 +19,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
     setVersionText(scene)
     ::setProjectAwards(this)
     showTitleLogo(scene, 128)
-    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 

@@ -24,7 +24,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 {
   sceneBlkName   = "gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
-  backSceneFunc = @() ::gui_start_mainmenu()
   handlerLocId = "mainmenu/btnWorldwar"
 
   needToOpenBattles = false

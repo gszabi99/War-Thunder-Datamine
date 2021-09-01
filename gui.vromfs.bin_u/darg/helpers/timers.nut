@@ -1,4 +1,5 @@
-local { gfrnd } = require("dagor.random")
+from "daRg" import gui_scene
+from "dagor.random" import gfrnd
 
 /*
 Creates and returns a new debounced version of the passed function which will postpone its execution until
@@ -15,9 +16,9 @@ local function debounce(func, delay_s, delay_s_max = null){
   local action = @() storage.func()
   local function debounced(...) {
     storage.func <- @() func.acall([null].extend(vargv))
-    ::gui_scene.clearTimer(action)
+    gui_scene.clearTimer(action)
     local time = delay_s_max == null ? delay_s : delay_s + gfrnd() * (delay_s_max - delay_s)
-    ::gui_scene.setTimeout(time, action)
+    gui_scene.setTimeout(time, action)
   }
   return debounced
 }
@@ -34,7 +35,7 @@ local function debounceImmediate(func, delay_s){
       return
     isActionAllowed = false
     func.acall([null].extend(vargv))
-    ::gui_scene.setTimeout(delay_s, allowAction)
+    gui_scene.setTimeout(delay_s, allowAction)
   }
   return debounced
 }
@@ -50,22 +51,31 @@ local defThrottleOptions = {leading = true, trailing=false}
 local function throttle(func, delay_s, options=defThrottleOptions){
   local leading = options?.leading ?? defThrottleOptions.leading
   local trailing = options?.trailing ?? defThrottleOptions.trailing
+  local needCallByTimer = false //only for !trailing version
   assert(leading || trailing, "throttle should be called with at least one front call leading or trailing")
   local curAction = null
   local function throttled(...){
     local doWait = curAction != null
     curAction = @() func.acall([null].extend(vargv))
-    if (doWait)
+    if (doWait) {
+      needCallByTimer = !trailing
       return
+    }
     local function clearThrottled(){
       if (trailing)
         curAction()
+      else if (needCallByTimer) {
+        needCallByTimer = false
+        curAction()
+        gui_scene.setTimeout(delay_s, clearThrottled)
+        return
+      }
       curAction = null
     }
     if (leading){
       curAction()
     }
-    ::gui_scene.setTimeout(delay_s, clearThrottled)
+    gui_scene.setTimeout(delay_s, clearThrottled)
   }
   return throttled
 }

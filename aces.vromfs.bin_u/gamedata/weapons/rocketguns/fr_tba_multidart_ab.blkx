@@ -55,7 +55,7 @@
     "explosionEffect": "explosion_midair_medium",
     "groundCollisionEffect": "hit_133_160mm_dirt_he",
     "ricochetEffect": "hit_133_160mm_metal_ap",
-    "waterCollisionEffect": "hit_133_160mm_water",
+    "waterCollisionEffect": "hit_133_160mm_water_he",
     "explosionPatchRadius": 4.0,
     "fireEffect": "rocket_fire_light",
     "smokeEffect": "",
@@ -64,12 +64,6 @@
     "normalizationPreset": "default",
     "ricochetPreset": "apds_fs_long",
     "secondaryShattersPreset": "apds_fs_long",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.0,
-    "stucking": 0.7,
-    "stuckingAngle": 45.0,
     "bulletType": "apds_fs_long_tank",
     "slopeEffectPreset": "apds_fs_long",
     "fresnel": [0.23,0.1,2.0],
@@ -239,7 +233,7 @@
         "ricochetEffect": "hit_106_132mm_metal_ap"
       },
       {
-        "waterCollisionEffect": "hit_106_132mm_water"
+        "waterCollisionEffect": "hit_106_132mm_water_ap"
       },
       {
         "explosionPatchRadius": 2.8
@@ -474,9 +468,26 @@
         "armorThickness": 1.0
       }
     },
-    "stabilityRicochetModifier": {
-      "mod1": [0.0,0.2],
-      "mod2": [20.0,0.45]
+    "stability": {
+      "precessionDamping": 0.3,
+      "ricochetAnglePrecessionFactor": 5.0,
+      "ricochetAngleOmegaFactor": 0.5,
+      "slopeToOmega": [1.0,10.0,0.0,1.0],
+      "angleLossStabilizationAfterRicochet": 30.0,
+      "penetrationReduction": [
+        {
+          "pnt": [0.0,1.0]
+        },
+        {
+          "pnt": [2.0,0.95]
+        },
+        {
+          "pnt": [10.0,0.5]
+        },
+        {
+          "pnt": [21.0,0.3]
+        }
+      ]
     },
     "tracePattern": {
       "caliber": 10.0,

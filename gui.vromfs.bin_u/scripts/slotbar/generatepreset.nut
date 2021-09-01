@@ -1,5 +1,6 @@
 local { setUnits, getSlotItem, getCurPreset} = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
@@ -78,7 +79,7 @@ local function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroup
     }
   }
 
-  local idCountry = ::shopCountriesList.findindex(@(cName) cName == country)
+  local idCountry = shopCountriesList.findindex(@(cName) cName == country)
   if (hasSlotbarByUnitsGroups && unusedUnits.len() > 0 && idCountry != null) {
     local emptyCrewId = countryCrews.len()
     foreach (unit in unusedUnits) {

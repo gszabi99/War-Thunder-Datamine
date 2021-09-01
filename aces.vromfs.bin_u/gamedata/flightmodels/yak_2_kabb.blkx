@@ -333,10 +333,10 @@
           "hp": 34.5
         },
         "fin1_dm": {
-          "hp": 39.5
+          "hp": 34.5
         },
         "fin2_dm": {
-          "hp": 39.5
+          "hp": 34.5
         },
         "flap1_l_dm": {
           "hp": 34.5
@@ -358,14 +358,11 @@
           "genericDamageMult": 0.3,
           "hp": 34.5
         },
-        "stab_dm": {
-          "hp": 30.0
+        "stab1_dm": {
+          "hp": 34.5
         },
         "stab2_dm": {
-          "hp": 30.0
-        },
-        "stab1_dm": {
-          "hp": 40.9
+          "hp": 34.5
         }
       },
       "dural": {
@@ -837,14 +834,84 @@
         ]
       },
       {
-        "part": {
-          "name": "fin1_dm"
-        }
+        "part": [
+          {
+            "name": "fin1_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 65.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 11.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 31.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
       },
       {
-        "part": {
-          "name": "fin2_dm"
-        }
+        "part": [
+          {
+            "name": "fin2_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 65.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 11.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 31.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
       },
       {
         "part": [
@@ -1678,46 +1745,6 @@
       {
         "part": [
           {
-            "name": "stab_dm"
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
             "name": "stab1_dm"
           },
           {
@@ -1728,7 +1755,7 @@
           },
           {
             "onHit": {
-              "damage": 60.0,
+              "damage": 65.0,
               "cut": 1.0
             }
           },
@@ -1736,14 +1763,14 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 10.0
+              "nothing": 11.0
             }
           },
           {
             "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
+              "damage": 31.0,
+              "cut": 1.0,
+              "nothing": 3.0
             }
           },
           {

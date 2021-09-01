@@ -2304,16 +2304,17 @@
         "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
           "emitter": "bone_mg_aa_v_01",
           "flash": "emtr_mg_flame_04",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_01_dm",
+          "barrelDP": "gun_barrel_03_dm",
           "speedYaw": 24.0,
           "speedPitch": 15.0,
           "fireConeAngle": 1.0,
           "bullets": 900,
+          "isBulletBelt": true,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2490,7 +2491,8 @@
       "hp": 10000.0,
       "hull_CHA": {
         "superstructure_front_dm": {
-          "armorThickness": 110.0
+          "armorThickness": 110.0,
+          "variableThickness": true
         },
         "superstructure_bottom_dm": {
           "armorThickness": 25.4
@@ -2571,7 +2573,7 @@
           "armorThickness": 152.0
         },
         "gun_mask_01_dm": {
-          "armorThickness": 70.0
+          "armorThickness": 29.7
         },
         "gun_mask_02_dm": {
           "armorThickness": 50.0
@@ -2586,83 +2588,84 @@
           "armorThickness": 82.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 70.0
+          "armorThickness": 29.7
+        },
+        "turret_bottom_dm": {
+          "armorThickness": 25.4
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 119.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 136.0
+        },
+        "turret_02_top_dm": {
+          "armorThickness": 173.0,
+          "variableThickness": true
+        },
+        "turret_02_bottom_dm": {
+          "armorThickness": 154.0
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_03_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_03_side_dm": {
+          "armorThickness": 76.0
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 16.0
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 100.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 88.9
+        },
+        "turret_04_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 105.0
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 132.4
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 119.4
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 115.8
+        },
+        "turret_05_back_dm": {
+          "armorThickness": 100.0
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 114.5
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 135.5
+        },
+        "turret_05_bottom_dm": {
+          "armorThickness": 57.0
+        },
+        "turret_05_front_dm": {
+          "armorThickness": 83.2
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 91.5
+        },
+        "turret_06_top_dm": {
+          "armorThickness": 78.2
         }
-      },
-      "turret_bottom_dm": {
-        "armorThickness": 25.4
-      },
-      "turret_01_top_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_01_back_dm": {
-        "armorThickness": 119.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 136.0
-      },
-      "turret_02_top_dm": {
-        "armorThickness": 173.0
-      },
-      "turret_02_bottom_dm": {
-        "armorThickness": 154.0
-      },
-      "turret_02_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_02_side_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_03_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 76.0
-      },
-      "turret_03_top_dm": {
-        "armorThickness": 16.0
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_03_front_dm": {
-        "armorThickness": 88.9
-      },
-      "turret_04_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_04_side_dm": {
-        "armorThickness": 105.0
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 132.4
-      },
-      "turret_04_bottom_dm": {
-        "armorThickness": 119.4
-      },
-      "turret_04_front_dm": {
-        "armorThickness": 115.8
-      },
-      "turret_05_back_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_05_side_dm": {
-        "armorThickness": 114.5
-      },
-      "turret_05_top_dm": {
-        "armorThickness": 135.5
-      },
-      "turret_05_bottom_dm": {
-        "armorThickness": 57.0
-      },
-      "turret_05_front_dm": {
-        "armorThickness": 83.2
-      },
-      "turret_06_front_dm": {
-        "armorThickness": 91.5
-      },
-      "turret_06_top_dm": {
-        "armorThickness": 78.2
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -2803,8 +2806,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 35.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -2827,21 +2830,6 @@
           "hp": 50.0
         },
         "gun_barrel_05_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_06_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_07_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_08_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
@@ -3306,16 +3294,17 @@
               "Weapon": {
                 "trigger": "gunner1",
                 "triggerGroup": "machinegun",
-                "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
                 "emitter": "bone_mg_aa_v_01",
                 "flash": "emtr_mg_flame_04",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_01_dm",
+                "barrelDP": "gun_barrel_03_dm",
                 "speedYaw": 24.0,
                 "speedPitch": 15.0,
                 "fireConeAngle": 1.0,
                 "bullets": 900,
+                "isBulletBelt": true,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,

@@ -40,14 +40,14 @@ local function onGlobalStatusReceived(newData, wasRequestTime) {
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
     if (!::u.isEqual(gsType.getData(curData.value), gsType.getData(newData)))
-      changedListsMask = changedListsMask | gsType.type
+      changedListsMask = changedListsMask | gsType.typeMask
 
   if (!changedListsMask)
     return
 
   foreach(gsType in ::g_ww_global_status_type.types)
     if (gsType.invalidateByOtherStatusType & changedListsMask)
-      changedListsMask = changedListsMask | gsType.type
+      changedListsMask = changedListsMask | gsType.typeMask
 
   curData(newData)
   validListsMask(validListsMask.value & ~changedListsMask)

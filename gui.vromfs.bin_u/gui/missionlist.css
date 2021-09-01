@@ -21,13 +21,16 @@ mission_item_text
   text-align:left;
     padding:1@blockInterval,0,0,0;
   position:relative;
-}
 
-:current mission_item_text, :hover mission_item_text {
   behaviour:OverflowScroller;
   move-pixel-per-sec:20*@scrn_tgt/100.0;
   move-sleep-time:2000;
   move-delay-time:2000;
+  move-start:no;
+}
+
+:current mission_item_text, :hover mission_item_text {
+  move-start:yes;
 }
 
 mission_item_completed, mission_item_unlocked, mission_item_locked,

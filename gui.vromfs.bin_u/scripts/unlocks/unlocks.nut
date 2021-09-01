@@ -11,6 +11,7 @@ local { isLoadingBgUnlock,
         getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
 local { statsTanks } = require("scripts/user/userInfoStats.nut")
 local { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -1039,7 +1040,7 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
     case ::UNLOCKABLE_DYNCAMPAIGN:
       local parts = ::split(id, "_")
       local countryId = (parts.len() > 1) ? "country_" + parts[parts.len() - 1] : null
-      if (::isInArray(countryId, ::shopCountriesList))
+      if (::isInArray(countryId, shopCountriesList))
         parts.pop()
       else
         countryId = null

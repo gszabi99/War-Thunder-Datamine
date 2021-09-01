@@ -216,6 +216,9 @@
         },
         "turret_02_back_dm": {
           "armorThickness": 30.0
+        },
+        "turret_03_side_dm": {
+          "armorThickness": 16.0
         }
       },
       "mask": {
@@ -1797,7 +1800,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2516,6 +2520,7 @@
           "emitter": "bone_mg_aa_barrel",
           "flash": "emtr_mg_flame_03",
           "useEmitter": true,
+          "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
@@ -3567,6 +3572,7 @@
                 "emitter": "bone_mg_aa_barrel",
                 "flash": "emtr_mg_flame_03",
                 "useEmitter": true,
+                "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_02_dm",
@@ -3602,7 +3608,7 @@
               "Weapon": {
                 "trigger": "gunner2",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,

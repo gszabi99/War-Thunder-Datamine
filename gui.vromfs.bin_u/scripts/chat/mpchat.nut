@@ -817,7 +817,7 @@ class ::ChatHandler
 {
   local value = obj.getValue()
   local pos = obj.getIntProp(::dagui_propid.get_name_id(":behaviour_edit_position_pos"), -1)
-  if (pos > 0 && pos < value.len())
+  if (pos > 0 && pos < value.len()) // warning disable: -range-check
     obj.setValue(value.slice(0, pos) + text + value.slice(pos))
   else
     obj.setValue(value + text)

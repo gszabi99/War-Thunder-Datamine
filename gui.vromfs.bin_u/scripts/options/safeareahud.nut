@@ -1,6 +1,8 @@
 local screenInfo = require("scripts/options/screenInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local sony = require("sony")
+local { is_stereo_mode } = ::require_native("vr")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 local defValue  = 1.0
 local values    = [1.0, 0.95, 0.9, 0.85]
@@ -21,8 +23,9 @@ if (::is_platform_xbox)
 
 
 local getFixedValue = @() //return -1 when not fixed
-  ::is_stereo_mode() ? 1.0
+  is_stereo_mode() ? 1.0
   : isPlatformSony ? sony.getDisplaySafeArea()
+  : useTouchscreen ? 0.9
   : -1
 
 local getValue = function()

@@ -1,19 +1,24 @@
 local {Roll, TurretYaw, TurretPitch} = require("planeState.nut")
-local {TrackerVisible, TrackerAngle} = require("agmAimState.nut")
-local lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
+local agmAimState = require("agmAimState.nut")
+local AgmTrackerVisible = agmAimState.TrackerVisible
+local AgmTrackerAngle = agmAimState.TrackerAngle
+local guidedBombsAimState = require("guidedBombsAimState.nut")
+local GuidedBombsTrackerVisible = guidedBombsAimState.TrackerVisible
+local GuidedBombsTrackerAngle = guidedBombsAimState.TrackerAngle
+local lineWidth = hdpx(LINE_WIDTH)
 
 local opticColor = Color(255, 255, 255)
 local crosshair = @() {
-  watch = TrackerVisible
+  watch = [ AgmTrackerVisible, GuidedBombsTrackerVisible ]
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
   color = opticColor
   lineWidth = lineWidth * 2
   commands = [
-    [VECTOR_LINE, 50, 0, 50, TrackerVisible.value ? 49 : 40],
-    [VECTOR_LINE, 0, 50, TrackerVisible.value ? 49 : 40, 50],
-    [VECTOR_LINE, TrackerVisible.value ? 51 : 60, 50, 100, 50],
-    [VECTOR_LINE, 50, TrackerVisible.value ? 51 : 54, 50, 100],
+    [VECTOR_LINE, 50, 0, 50, AgmTrackerVisible.value || GuidedBombsTrackerVisible.value ? 49 : 40],
+    [VECTOR_LINE, 0, 50, AgmTrackerVisible.value || GuidedBombsTrackerVisible.value ? 49 : 40, 50],
+    [VECTOR_LINE, AgmTrackerVisible.value || GuidedBombsTrackerVisible.value ? 51 : 60, 50, 100, 50],
+    [VECTOR_LINE, 50, AgmTrackerVisible.value || GuidedBombsTrackerVisible.value ? 51 : 54, 50, 100],
     [VECTOR_LINE, 48, 55, 52, 55],
     [VECTOR_LINE, 48, 60, 52, 60],
     [VECTOR_LINE, 48, 65, 52, 65],
@@ -64,7 +69,7 @@ local rollIndicator = @() {
   ]
 }
 
-local lockZoneVisible = Computed(@() TrackerAngle.value != 0.0)
+local lockZoneVisible = Computed(@() AgmTrackerAngle.value != 0.0 || GuidedBombsTrackerAngle.value != 0.0)
 local lockZone = @() {
   size = flex()
   watch = lockZoneVisible
@@ -73,7 +78,10 @@ local lockZone = @() {
       watch = [TurretYaw, TurretPitch]
       size = [ph(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
-      pos = [pw(50 + TurretYaw.value / TrackerAngle.value * 2), ph(50 - TurretPitch.value / TrackerAngle.value * 15)]
+      pos = [
+        pw(50 + TurretYaw.value / max(AgmTrackerAngle.value, GuidedBombsTrackerAngle.value) * 2),
+        ph(50 - TurretPitch.value / max(AgmTrackerAngle.value, GuidedBombsTrackerAngle.value) * 15)
+      ]
       color = opticColor
       lineWidth = lineWidth * 2
       commands = [

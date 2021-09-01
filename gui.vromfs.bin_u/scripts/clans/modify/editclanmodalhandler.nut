@@ -23,7 +23,7 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
 
   function initScreen()
   {
-    newClanType = clanData.type
+    newClanType = clanData.clanType
     lastShownHintObj = scene.findObject("req_newclan_name")
     base.initScreen()
     updateSubmitButtonText()
@@ -162,7 +162,7 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
   // Important override.
   function getSelectedClanType()
   {
-    return clanData.type
+    return clanData.clanType
   }
 
   function update()
@@ -178,7 +178,7 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
 
   function updateButtons()
   {
-    local canUpgrade = clanData.type.canUpgradeMembers(clanData.mlimit)
+    local canUpgrade = clanData.clanType.canUpgradeMembers(clanData.mlimit)
     local haveLeaderRight = isInArray("LEADER", myRights)
 
     local upgradeMembersButtonVisible = ::has_feature("ClanUpgradeMembers") &&
@@ -187,8 +187,8 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
 
     if (upgradeMembersButtonVisible)
     {
-      local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.type.getMembersUpgradeCost(clanData.mlimit)
-      local upgStep = clanData.type.getMembersUpgradeStep()
+      local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
+      local upgStep = clanData.clanType.getMembersUpgradeStep()
       placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
     }
 
@@ -199,10 +199,10 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
   // Override
   function onUpgradeMembers()
   {
-    local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.type.getMembersUpgradeCost(clanData.mlimit)
+    local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
     if (::check_balance_msgBox(cost))
     {
-      local step = clanData.type.getMembersUpgradeStep()
+      local step = clanData.clanType.getMembersUpgradeStep()
       local msgText = ::warningIfGold(::loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
             cost = cost.getTextAccordingToBalance()

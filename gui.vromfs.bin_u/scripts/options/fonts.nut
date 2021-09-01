@@ -1,8 +1,10 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local screenInfo = require("scripts/options/screenInfo.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local { is_stereo_mode } = ::require_native("vr")
 local { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -114,7 +116,7 @@ enums.addTypesByGlobalName("g_font",
     sizeMultiplier = 0.5
     sizeOrder = FONT_SIZE_ORDER.TINY
 
-    isAvailable = @(sWidth, sHeight) ::is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 800
+    isAvailable = @(sWidth, sHeight) is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 800
   }
 
   SMALL = {
@@ -122,7 +124,7 @@ enums.addTypesByGlobalName("g_font",
     sizeMultiplier = 0.66667
     sizeOrder = FONT_SIZE_ORDER.SMALL
 
-    isAvailable = @(sWidth, sHeight) ::is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 768
+    isAvailable = @(sWidth, sHeight) is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 768
   }
 
   COMPACT = {
@@ -130,7 +132,7 @@ enums.addTypesByGlobalName("g_font",
     sizeMultiplier = 0.75
     sizeOrder = FONT_SIZE_ORDER.COMPACT
 
-    isAvailable = @(sWidth, sHeight) ::is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 720
+    isAvailable = @(sWidth, sHeight) is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 720
   }
 
   MEDIUM = {
@@ -139,7 +141,7 @@ enums.addTypesByGlobalName("g_font",
     saveIdCompatibility = [FONT_SAVE_ID.PX]
     sizeOrder = FONT_SIZE_ORDER.MEDIUM
 
-    isAvailable = @(sWidth, sHeight) !::is_stereo_mode() && getFontsSh(sWidth, sHeight) >= 720
+    isAvailable = @(sWidth, sHeight) !is_stereo_mode() && getFontsSh(sWidth, sHeight) >= 720
   }
 
   LARGE = {
@@ -147,7 +149,7 @@ enums.addTypesByGlobalName("g_font",
     sizeMultiplier = 1.0
     sizeOrder = FONT_SIZE_ORDER.LARGE
     saveIdCompatibility = [FONT_SAVE_ID.SCALE]
-    isAvailable = @(sWidth, sHeight) !::is_stereo_mode()
+    isAvailable = @(sWidth, sHeight) !is_stereo_mode()
   }
 
   HUGE = {
@@ -155,7 +157,7 @@ enums.addTypesByGlobalName("g_font",
     sizeMultiplier = 1.2
     sizeOrder = FONT_SIZE_ORDER.HUGE
 
-    isAvailable = @(sWidth, sHeight) !::is_stereo_mode() && ::is_small_screen
+    isAvailable = @(sWidth, sHeight) !is_stereo_mode() && isSmallScreen
   }
 },
 null,
@@ -211,11 +213,11 @@ g_font.getDefault <- function getDefault()
   if (fixedFont)
     return fixedFont
 
-  if (::is_stereo_mode())
+  if (is_stereo_mode())
     return SMALL
   if (::is_platform_shield_tv() || isPlatformSony || isPlatformXboxOne || ::is_steam_big_picture())
     return LARGE
-  if (::is_small_screen)
+  if (isSmallScreen)
     return HUGE
 
   local displayScale = ::display_scale()

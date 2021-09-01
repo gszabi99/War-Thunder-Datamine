@@ -1,10 +1,9 @@
-local Color = ::Color
-local sh = ::sh
-local flex = ::flex
+from "daRg" import *
+from "frp" import *
 
 local function defTab(tab_item, is_current, handler) {
-  local grp = ::ElemGroup()
-  local stateFlags = ::Watched(0)
+  local grp = ElemGroup()
+  local stateFlags = Watched(0)
 
   return function () {
     local isHover = (stateFlags.value & S_HOVER)

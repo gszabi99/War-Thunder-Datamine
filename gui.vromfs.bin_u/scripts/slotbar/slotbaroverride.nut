@@ -3,6 +3,7 @@ local { isDataBlock, isEmpty, isEqual } = require("sqStdLibs/helpers/u.nut")
 local overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
 local overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
 local userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
 
@@ -43,7 +44,7 @@ local function calcSlotbarOverrideByMissionName(missionName) {
 
   res = []
   local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
-  foreach(country in ::shopCountriesList)
+  foreach(country in shopCountriesList)
   {
     local countryBlk = editSlotbar?[country]
     if (!isDataBlock(countryBlk) || !countryBlk.blockCount()
@@ -69,7 +70,7 @@ local function getSlotbarOverrideCountriesByMissionName(missionName) {
   if (!editSlotbar)
     return res
 
-  foreach(country in ::shopCountriesList)
+  foreach(country in shopCountriesList)
   {
     local countryBlk = editSlotbar?[country]
     if (isDataBlock(countryBlk) && countryBlk.blockCount()

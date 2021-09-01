@@ -289,7 +289,6 @@ local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/de
     "get_mp_ffa_score_limit"
     "get_mission_difficulty"
     "get_mission_difficulty_int"
-    "get_cd_base_difficulty"
     "get_multiplayer_time_left"
     "is_race_started"
     "get_race_checkpioints_count"

@@ -186,6 +186,16 @@
         },
         "turret_01_back_dm": {
           "armorThickness": 5.0
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -777,6 +787,20 @@
       "ex_decor_l_10_dm": true,
       "ex_decor_r_13_dm": true,
       "ex_decor_l_13_dm": true
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      }
     }
   },
   {
@@ -3512,15 +3536,14 @@
       "105mm_usa_HESH_ammo_pack": {
         "tier": 1
       },
-      "105mm_usa_HEAT_FS": [],
-      "105mm_usa_HEAT_FS_ammo_pack": {
-        "tier": 2
-      },
+      "105mm_usa_M456A2_HEAT_MP_FS": [],
       "105mm_usa_M735_APDS_FS": [],
-      "105mm_usa_M735_APDS_FS_ammo_pack": [],
+      "105mm_usa_M735_APDS_FS_ammo_pack": {
+        "tier": 3
+      },
       "105mm_us_M416_Smoke": [],
       "105mm_us_M416_Smoke_ammo_pack": {
-        "tier": 3
+        "tier": 2
       },
       "tank_smoke_screen_system_mod": {
         "tier": 4,

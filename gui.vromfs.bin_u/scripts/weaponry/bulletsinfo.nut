@@ -7,6 +7,7 @@ local { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("scripts/weaponry/modificationInfo.nut")
 local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local { getGuiOptionsMode } = ::require_native("guiOptions")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -563,6 +564,24 @@ local function getUniqModificationText(modifName, isShortDesc)
   return null
 }
 
+local function getNVDSightText(sight)
+{
+  local res = ""
+  if (sight.contains("commanderView"))
+    res = ::loc("crew/commander")
+  else if (sight.contains("gunner"))
+    res = ::loc("crew/tank_gunner")
+  else if (sight.contains("driver"))
+    res = ::loc("crew/driver")
+
+  if (sight.contains("Thermal"))
+    res = $"{res}{::loc("ui/colon")} {::loc("modification/thermal_vision_system")}"
+  else if (sight.contains("Ir"))
+    res = $"{res}{::loc("ui/colon")} {::loc("modification/night_vision_system")}"
+
+  return ::colorize("goodTextColor", res)
+}
+
 // Generate text description for air.modifications[modificationNo]
 local function getModificationInfo(air, modifName, isShortDesc=false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null)
@@ -606,6 +625,9 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
     res.desc = ::loc("modification/" + locId + ending, "")
     if (res.desc == "" && isShortDesc && limitedName)
       res.desc = ::loc("modification/" + locId, "")
+
+    if (!isShortDesc && modifName == "night_vision_system")
+      res.desc = $"{res.desc}\n\n{"\n".join(air.getNVDSights().map(@(s) getNVDSightText(s)))}"
 
     if (res.desc == "")
     {
@@ -986,7 +1008,7 @@ local function isBulletsGroupActiveByMod(air, mod)
 //to get exact same bullets list as in standart options
 local function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false)
 {
-  local checkPurchased = ::get_gui_options_mode() != ::OPTIONS_MODE_TRAINING
+  local checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
   local res = getBulletsList(air.name, groupIndex, {
     isOnlyBought = checkPurchased
     needCheckUnitPurchase = checkPurchased

@@ -4,6 +4,7 @@ local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 local replayMetadata = require("scripts/replays/replayMetadata.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -172,7 +173,7 @@ enum SPECTATOR_CHAT_TAB {
 
     local objReplayControls = scene.findObject("controls_div")
     ::showBtnTable(objReplayControls, {
-        ID_FLIGHTMENU               = ::use_touchscreen
+        ID_FLIGHTMENU               = useTouchscreen
         ID_MPSTATSCREEN             = mode != SPECTATOR_MODE.REPLAY
         controls_mpstats_replays    = mode == SPECTATOR_MODE.REPLAY
         ID_PREV_PLANE               = true

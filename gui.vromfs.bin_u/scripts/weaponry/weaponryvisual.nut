@@ -55,8 +55,8 @@ getItemImage = function(unit, item)
 local getTooltipId = @(unitName, mod, params)
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
-    : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name)
-    : MODIFICATION.getTooltipId(unitName, mod.name)
+    : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name, params)
+    : MODIFICATION.getTooltipId(unitName, mod.name, params)
 
 local function getWeaponItemViewParams(id, unit, item, params = {})
 {
@@ -228,6 +228,8 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     optStatus = "disabled"
   else if (statusTbl.amount)
     optStatus = "owned"
+  else if (params?.showButtons && statusTbl.canBuyForWP)
+    optStatus = "canBuyForWP"
   else if (isForceHidePlayerInfo || statusTbl.unlocked)
     optStatus = "unlocked"
   else if (isInResearch && visualItem.type == weaponsItem.modification)

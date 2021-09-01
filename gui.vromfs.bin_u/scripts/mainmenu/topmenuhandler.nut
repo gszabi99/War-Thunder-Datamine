@@ -1,7 +1,8 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-
+local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -204,7 +205,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (!isValid())
       return
 
-    if (::is_small_screen)
+    if (isSmallScreen)
     {
       topMenuShopActive(false)
       ::gui_handlers.ShopViewWnd.open({forceUnitType = unitType})
@@ -264,6 +265,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     onHoverSizeMove(obj)
     updateOnShopWndAnim(!topMenuShopActive.value)
+    ::showBtn("gamercard_center", !topMenuShopActive.value)
   }
 
   function onShopWndAnimFinished(obj)
@@ -366,7 +368,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (topMenuShopActive.value && shopWeak)
       shopWeak.onSceneActivate(show)
     if (show) {
-      ::set_show_aircraft(getCurSlotUnit())
+      setShowUnit(getCurSlotUnit())
       enableHangarControls(!topMenuShopActive.value)
     }
   }

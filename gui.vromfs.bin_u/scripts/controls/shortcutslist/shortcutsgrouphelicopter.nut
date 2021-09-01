@@ -237,6 +237,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_GUIDED_BOMBS_LOCK_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+  }
+  {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER"
     showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
@@ -341,6 +346,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_GUIDED_BOMBS_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    needShowInHelp = true
+  }
+  {
     id = "helicopter_atgm_aim_x"
     checkGroup = ctrlGroups.HELICOPTER
     type = CONTROL_TYPE.AXIS
@@ -371,6 +381,11 @@ return [
   }
   {
     id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
+  {
+    id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }

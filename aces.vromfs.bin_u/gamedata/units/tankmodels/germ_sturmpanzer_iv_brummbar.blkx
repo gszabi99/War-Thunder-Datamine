@@ -159,16 +159,27 @@
           "armorThickness": 30.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 85.0
+          "armorThickness": 80.0,
+          "variableThickness": true
         },
         "turret_03_top_dm": {
-          "armorThickness": 50.0
+          "armorThickness": 50.0,
+          "variableThickness": true
         },
         "turret_03_bottom_dm": {
           "armorThickness": 30.0
         },
         "turret_05_bottom_dm": {
           "armorThickness": 5.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 90.0,
+          "armorClass": "armored_glass",
+          "variableThickness": true
+        },
+        "turret_06_bottom_dm": {
+          "armorThickness": 80.0,
+          "variableThickness": true
         }
       },
       "turret": {
@@ -179,7 +190,8 @@
           "armorThickness": 100.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 103.0
+          "armorThickness": 103.0,
+          "variableThickness": true
         },
         "turret_bottom_dm": {
           "armorThickness": 80.0
@@ -1777,7 +1789,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",

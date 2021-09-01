@@ -1,3 +1,6 @@
+local { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode
+} = ::require_native("guiOptions")
+
 global enum optionControlType {
   LIST
   BIT_LIST
@@ -264,6 +267,8 @@ local user_option_names = [
     "USEROPT_AUTOLOGIN",
     "USEROPT_PRELOADER_SETTINGS",
     "USEROPT_REVEAL_NOTIFICATIONS",
+    "USEROPT_HDR_SETTINGS",
+    "USEROPT_POSTFX_SETTINGS",
     "USEROPT_ONLY_FRIENDLIST_CONTACT",
     "USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL",
     "USEROPT_SKIP_WEAPON_WARNING",
@@ -370,9 +375,18 @@ local user_option_names = [
     "USEROPT_HUE_RELOAD_DONE",
     "USEROPT_AIR_DAMAGE_DISPLAY",
     "USEROPT_GUNNER_FPS_CAMERA",
+
+    "USEROPT_HUE_HELICOPTER_PARAM_HUD",
     "USEROPT_HUE_HELICOPTER_HUD",
     "USEROPT_HUE_HELICOPTER_HUD_ALERT",
     "USEROPT_HUE_HELICOPTER_MFD",
+
+    "USEROPT_HUE_AIRCRAFT_PARAM_HUD",
+    "USEROPT_HUE_AIRCRAFT_HUD",
+    "USEROPT_HUE_AIRCRAFT_HUD_ALERT",
+
+    "USEROPT_HUE_ARBITER_HUD",
+
     "USEROPT_HUE_TANK_THERMOVISION",
     "USEROPT_HORIZONTAL_SPEED",
     "USEROPT_HELICOPTER_HELMET_AIM",
@@ -425,14 +439,19 @@ local user_option_names = [
     "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER",
 
     "USEROPT_TORPEDO_DIVE_DEPTH",
-    "USEROPT_DELAYED_DOWNLOAD_CONTENT"
+    "USEROPT_DELAYED_DOWNLOAD_CONTENT",
+
+    //
+
+
+
 ]
 
 ::user_option_name_by_idx <- {}
 
 foreach(idx, modeName in options_mode_names)
 {
-  local res = ::add_option_mode(modeName)
+  local res = addOptionMode(modeName)
   local realIdx = (res != null) ? res : idx
   getroottable()[modeName] <- realIdx
 }
@@ -440,7 +459,7 @@ options_mode_names = null // warning disable: -assigned-never-used
 
 foreach(idx, useropt in user_option_names)
 {
-  local res = ::add_user_option(useropt)
+  local res = addUserOption(useropt)
   local realIdx = (res != null) ? res : idx
   getroottable()[useropt] <- realIdx
   user_option_name_by_idx[realIdx] <- useropt
@@ -450,20 +469,20 @@ user_option_names = null // warning disable: -assigned-never-used
 
 ::get_option_in_mode <- function get_option_in_mode(optionId, mode)
 {
-  local mainOptionsMode = ::get_gui_options_mode()
-  ::set_gui_options_mode(mode)
+  local mainOptionsMode = getGuiOptionsMode()
+  setGuiOptionsMode(mode)
   local res = get_option(optionId)
-  ::set_gui_options_mode(mainOptionsMode)
+  setGuiOptionsMode(mainOptionsMode)
   return res
 }
 
 ::get_gui_option_in_mode <- function get_gui_option_in_mode(optionId, mode, defaultValue = null)
 {
-  local mainOptionsMode = ::get_gui_options_mode()
-  ::set_gui_options_mode(mode)
+  local mainOptionsMode = getGuiOptionsMode()
+  setGuiOptionsMode(mode)
   local res = ::get_gui_option(optionId)
   if (mainOptionsMode >= 0)
-    ::set_gui_options_mode(mainOptionsMode)
+    setGuiOptionsMode(mainOptionsMode)
   if (defaultValue != null && res == null)
     return defaultValue
   return res
@@ -471,8 +490,8 @@ user_option_names = null // warning disable: -assigned-never-used
 
 ::set_gui_option_in_mode <- function set_gui_option_in_mode(optionId, value, mode)
 {
-  local mainOptionsMode = ::get_gui_options_mode()
-  ::set_gui_options_mode(mode)
+  local mainOptionsMode = getGuiOptionsMode()
+  setGuiOptionsMode(mode)
   ::set_gui_option(optionId, value)
-  ::set_gui_options_mode(mainOptionsMode)
+  setGuiOptionsMode(mainOptionsMode)
 }

@@ -1,9 +1,12 @@
 local dagor_sys = require("dagor.system")
-local console = "console" in ::getroottable() ? ::console : {register_command=@(...) null}
-local conprint = "console_print" in ::getroottable() ? ::getroottable().console_print : @(v) print($"{v}\n")
-local clearTimer = "gui_scene" in ::getroottable() ? @(v) ::gui_scene.clearTimer(v) : null
-local setInterval = "gui_scene" in ::getroottable() ? @(time, v) ::gui_scene.setInterval(time, v) : null
+local {gui_scene} = require("daRg")
 local {Watched} = require("frp")
+local console = require("console")
+local log = require("log.nut")()
+local conprint = log.console_print
+
+local clearTimer = @(v) gui_scene.clearTimer(v)
+local setInterval = @(time, v) gui_scene.setInterval(time, v)
 
 local mkWatched = @(id, val) persist(id, @() Watched(val))
 

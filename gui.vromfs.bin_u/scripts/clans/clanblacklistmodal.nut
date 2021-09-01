@@ -161,7 +161,7 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local index = table.getValue()
-    if (index < 0 || index > table.childrenCount())
+    if (index < 0 || index >= table.childrenCount())
       return
 
     local position = table.getChild(index).getPosRC()

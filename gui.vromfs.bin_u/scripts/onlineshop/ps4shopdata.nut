@@ -2,7 +2,7 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local datablock = require("DataBlock")
 
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
-local storeData = require("sonyLib/store/storeData.nut")
+local storeData = require("sonyLib/storeData.nut")
 
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 

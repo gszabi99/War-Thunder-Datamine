@@ -1,3 +1,5 @@
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+
 class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -25,19 +27,19 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
      textObj.setValue(::loc("mainmenu/missionBuilderNotAvailable"))
 
      local air = getCurSlotUnit()
-     ::show_aircraft = air
+     showedUnit(air)
      updateButtons()
   }
 
   function onTakeCancel()
   {
-    ::show_aircraft = shopAir
+    showedUnit(shopAir)
     goBack()
   }
 
   function onApply()
   {
-    if (::show_aircraft && ::show_aircraft.isAir())
+    if (showedUnit.value?.isAir() ?? false)
       return ::gui_start_builder()
 
     msgBox("not_available", ::loc("msg/builderOnlyForAircrafts"),
@@ -47,7 +49,7 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
   function updateButtons()
   {
     scene.findObject("btn_set_air").inactiveColor =
-      (::show_aircraft && ::show_aircraft.isAir()) ? "no"
+      (showedUnit.value?.isAir() ?? false) ? "no"
       : "yes"
   }
 }

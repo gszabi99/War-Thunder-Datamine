@@ -9,6 +9,7 @@ local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -81,7 +82,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     curGMmode = ::SessionLobby.getGameMode()
-    ::set_gui_options_mode(::get_options_mode(curGMmode))
+    setGuiOptionsMode(::get_options_mode(curGMmode))
 
     scene.findObject("mplobby_update").setUserData(this)
 
@@ -143,7 +144,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     {
       curGMmode = mpMode
       ::set_mp_mode(curGMmode)
-      ::set_gui_options_mode(::get_options_mode(curGMmode))
+      setGuiOptionsMode(::get_options_mode(curGMmode))
     }
 
     fillSessionInfo(scene, ::SessionLobby.getSessionInfo())

@@ -12,7 +12,7 @@ callbacks.template <- {
   onCb = @(obj, params) null
   paramsKey = "actionData"
   getParamsMarkup = @(params) ::format("%s:t='%s';", paramsKey, ::save_to_json(params))
-  cbFromObj = @(obj) onCb(obj, ::check_obj(obj) ? ::parse_json(obj?[paramsKey] ?? "") : {})
+  cbFromObj = @(obj) onCb(obj, obj?.isValid() && (obj?[paramsKey] ?? "") != "" ? ::parse_json(obj[paramsKey]) : {})
 }
 
 callbacks.addTypes <- function(typesTable)

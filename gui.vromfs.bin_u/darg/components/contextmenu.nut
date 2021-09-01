@@ -1,3 +1,4 @@
+from "daRg" import *
 local style = require("contextMenu.style.nut")
 local modalWindows = require("modalWindows.nut")
 
@@ -29,7 +30,7 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
   }
 
   local menuCtor = menu_style?.menuCtor ?? defMenuCtor
-  ::set_kb_focus(null)
+  set_kb_focus(null)
   modalWindows.add({
     key = uid
     children = menuCtor()

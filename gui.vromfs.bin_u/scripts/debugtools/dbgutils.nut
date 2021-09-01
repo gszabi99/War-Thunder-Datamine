@@ -11,6 +11,8 @@ local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, 
 } = require("scripts/userstat/userstat.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { getDebriefingResult, setDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
+local applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -172,8 +174,9 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
   })
 }
 
-::debug_export_unit_xray_parts_descriptions <- function debug_export_unit_xray_parts_descriptions()
+::debug_export_unit_xray_parts_descriptions <- function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null)
 {
+  ::dmViewer.isDebugBatchExportProcess = true
   ::dmViewer.toggle(::DM_VIEWER_XRAY)
   dbgExportToFile.export({
     resultFilePath = "export/unitsXray.blk"
@@ -205,14 +208,19 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
       foreach (partName in partNames)
       {
+        if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) ::g_string.startsWith(partName, v)) == null)
+          continue
         local params = { name = partName }
         local info = ::dmViewer.getPartTooltipInfo(::dmViewer.getPartNameId(params), params)
         if (info.desc != "")
           blk[partName] <- ::g_string.stripTags(info.title + "\n" + info.desc)
       }
-      return { key = unit.name, value = blk }
+      return blk.paramCount() != 0 ? { key = unit.name, value = blk } : null
     }
-    onFinish = @() ::dmViewer.toggle(::DM_VIEWER_NONE)
+    onFinish = function() {
+      ::dmViewer.isDebugBatchExportProcess = false
+      ::dmViewer.toggle(::DM_VIEWER_NONE)
+    }
   })
 }
 
@@ -355,7 +363,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
   local unit = ::getAircraftByName(unitId)
   if (!unit)
     return "Not found"
-  ::show_aircraft = unit
+  showedUnit(unit)
   ::gui_start_decals()
   return "Done"
 }
@@ -410,9 +418,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
   if (newResolution == curResolution)
     return done()
   ::setSystemConfigOption("video/resolution", newResolution)
-  ::on_renderer_settings_change()
-  ::perform_delayed(function() {
-    ::handlersManager.getActiveBaseHandler().fullReloadScene()
+  applyRendererSettingsChange(true, false, function() {
     ::call_darg("updateExtWatched", { resolution = newResolution })
     done()
   })

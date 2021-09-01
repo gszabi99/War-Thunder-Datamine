@@ -15,6 +15,9 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isCompatibiliyMode } = require("scripts/options/systemOptions.nut")
 local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -517,7 +520,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   {
     if (!::has_feature("Tanks") && isUnitTypeAvailable(eventData, ::ES_UNIT_TYPE_TANK))
       return false
-    if (::use_touchscreen && eventData.diffWeight >= diffTable.hardcore)
+    if (useTouchscreen && eventData.diffWeight >= diffTable.hardcore)
       return false
 
     if (!("event_access" in eventData))
@@ -789,7 +792,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     else if (isUnitTypeAvailable(event, ::ES_UNIT_TYPE_AIRCRAFT))
       unitTypeName += "air"
 
-    return "video/gameModes/" + unitTypeName + "_" + getEventDiffName(event.name, true) + ".ogv"
+    return $"video/gameModes/{unitTypeName}_{getEventDiffName(event.name, true)}.ivf"
   }
 
   function getCustomVideioPreviewName(event)
@@ -1005,11 +1008,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   function getAvailableCountriesByEvent(event)
   {
     local result = []
-    foreach (country in ::shopCountriesList)
+    foreach (country in shopCountriesList)
       if (isCountryAvailable(event, country))
         result.append(country)
 
-    return result.len() < ::shopCountriesList.len() ? result : []
+    return result.len() < shopCountriesList.len() ? result : []
   }
 
   function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1)
@@ -1022,6 +1025,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (!unit)
       return false
 
+    local maxEconomicRank = getMaxEconomicRank()
     foreach (rule in rulesList)
     {
       if ("name" in rule)
@@ -1034,7 +1038,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       if ("mranks" in rule)
       {
         local unitMRank = ediff != -1 ? unit.getEconomicRank(ediff) : 0
-        if (unitMRank < (rule.mranks?.min ?? 0) || (rule.mranks?.max ?? ::MAX_ECONOMIC_RANK) < unitMRank)
+        if (unitMRank < (rule.mranks?.min ?? 0) || (rule.mranks?.max ?? maxEconomicRank) < unitMRank)
           continue
       }
 
@@ -1074,7 +1078,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (!("mranks" in rule))
       return -1
 
-    local maxBR = ::calc_battle_rating_from_rank(rule.mranks?.max ?? ::MAX_ECONOMIC_RANK)
+    local maxBR = ::calc_battle_rating_from_rank(rule.mranks?.max ?? getMaxEconomicRank())
     return getTierByMaxBr(maxBR)
   }
 
@@ -1995,7 +1999,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     {
       local mranks = rule.mranks
       local minBR = ::format("%.1f", ::calc_battle_rating_from_rank(mranks?.min ?? 0))
-      local maxBR = ::format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? ::MAX_ECONOMIC_RANK))
+      local maxBR = ::format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank()))
       local brText = minBR + ((minBR != maxBR) ? " - " + maxBR : "")
       brText = ::format(::loc("events/br"), brText)
       if (ruleString.len())

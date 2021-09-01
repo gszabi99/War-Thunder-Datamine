@@ -2522,7 +2522,7 @@
       "preset": {
         "name": "scimitar_rp3_24x25lb_rockets",
         "blk": "gameData/FlightModels/weaponPresets/scimitar_rp3_24x25lb_rockets.blk",
-        "reqModification": "sea_hawk_60lb_rocket_mk1"
+        "reqModification": "sea_hawk_25lb_rocket_ap_mk2"
       }
     },
     {
@@ -2537,7 +2537,55 @@
           "reqModification": "swift_2x1000lb_mc"
         },
         {
-          "reqModification": "sea_hawk_60lb_rocket_mk1"
+          "reqModification": "sea_hawk_25lb_rocket_ap_mk2"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk"
+              },
+              {
+                "iconType": "rockets_ap_small_group"
+              },
+              {
+                "amountPerTier": 6.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  }
+                ]
+              }
+            ]
+          }
         }
       ]
     },
@@ -2679,12 +2727,12 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
-    "sea_hawk_60lb_rocket_mk1": {
+    "sea_hawk_25lb_rocket_ap_mk2": {
       "modClass": "weapon",
       "tier": 1
     },
     "swift_2x1000lb_mc": {
-      "reqModification": "sea_hawk_60lb_rocket_mk1",
+      "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
       "modClass": "weapon",
       "tier": 2
     },

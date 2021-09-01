@@ -1,6 +1,5 @@
-local Rand = require("std/rand.nut")
-local flex = ::flex
-local hdpx = ::hdpx
+from "%darg/ui_imports.nut" import *
+local Rand = require("%sqstd/rand.nut")
 
 local defParams = {num=30,emitter_sz=[hdpx(200),hdpx(100)], part=null}
 local function baseParticles(params=defParams){
@@ -26,8 +25,8 @@ local function baseParticles(params=defParams){
     local scaleTo = rnd2(scaleEndRange)
     local partW = part?.size[0] ?? hdpx(10)
     local partH = part?.size[1] ?? hdpx(10)
-    local partMax = ::min(partH,partW)*2/3
-    local partMin = ::max(partH,partW)/3
+    local partMax = min(partH,partW)*2/3
+    local partMin = max(partH,partW)/3
     local posTo = [rnd_a([0-partMin,emitter_sz[0]-partMax]), rnd_a([0-partMin,emitter_sz[1]-partMax])]
     local rotateTo = rnd_a([-rotEndSpr,rotEndSpr])
     local animations = [

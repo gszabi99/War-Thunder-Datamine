@@ -120,6 +120,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -233,6 +236,12 @@
         },
         "turret_08_side_dm": {
           "armorThickness": 35.0
+        },
+        "turret_09_side_dm": {
+          "armorThickness": 30.0
+        },
+        "turret_09_back_dm": {
+          "armorThickness": 30.0
         }
       },
       "turret_composite_armor": {
@@ -3342,8 +3351,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 300,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3366,6 +3375,30 @@
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-4.0,75.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-8.0,15.0]
           }
         }
       },
@@ -3474,23 +3507,7 @@
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_back": 0.31,
-        "wheel_l_back": 0.31,
-        "wheel_r_front": 0.3,
-        "wheel_l_front": 0.3,
-        "wheel_r_01": 0.39,
-        "wheel_r_02": 0.39,
-        "wheel_r_03": 0.39,
-        "wheel_r_04": 0.39,
-        "wheel_r_05": 0.39,
-        "wheel_r_06": 0.39,
-        "wheel_l_01": 0.39,
-        "wheel_l_02": 0.39,
-        "wheel_l_03": 0.39,
-        "wheel_l_04": 0.39,
-        "wheel_l_05": 0.39,
-        "wheel_l_06": 0.39
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -4042,6 +4059,19 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 15.0,
+      "zoomInFov": 14.7,
+      "sightSize": [0.29,0.2],
+      "ircmProjector": {
+        "node": "bone_commander_sight_v",
+        "beamRadius": [600.0,50.0],
+        "projectorPower": [0.02,0.04]
+      }
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
@@ -4294,8 +4324,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -4324,6 +4354,30 @@
             {
               "Weapon": {
                 "trigger": "gunner3",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
+                "turret": {
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-8.0,15.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
                 "weaponType": "rockets",
@@ -4906,8 +4960,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

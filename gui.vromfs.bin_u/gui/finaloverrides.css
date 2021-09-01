@@ -160,8 +160,11 @@ textarea[order-status-text-shade=yes] {
   move-delay-time:4000;
 }
 
-[auto-scroll=no] {
-  move-pixel-per-sec:0;
+optiontext[auto-scroll=fast] {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:50*@scrn_tgt/100.0;
+  move-sleep-time:1000;
+  move-delay-time:2000;
 }
 
 div[application-window], frame[application-window] {

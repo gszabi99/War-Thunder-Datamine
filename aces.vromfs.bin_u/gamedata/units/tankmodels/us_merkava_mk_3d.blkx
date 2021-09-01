@@ -126,6 +126,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -334,6 +337,10 @@
           "cumulativeArmorQuality": 2.2,
           "genericArmorQuality": 0.2,
           "armorClass": "leopard_2a5_turret_nera"
+        },
+        "composite_armor_hull_09_dm": {
+          "armorThickness": 35.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 0.0,
@@ -3870,6 +3877,17 @@
         }
       },
       {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_hull_09_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_09_dm"
+            }
+          }
+        }
+      },
+      {
         "armorArrayTurret2": {
           "xrayDmPart": "composite_armor_hull_03_dm",
           "titleLoc": "spaced_armor",
@@ -4631,9 +4649,9 @@
               "noiseFactor": 0.05
             },
             "commanderViewIr": {
-              "resolution": [1600.0,1200.0],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
+              "resolution": [800.0,600.0],
+              "lightMult": 8.0,
+              "ghosting": 0.75,
               "noiseFactor": 0.2
             },
             "driverIr": {
@@ -4699,8 +4717,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

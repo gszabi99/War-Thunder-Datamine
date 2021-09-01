@@ -3120,26 +3120,62 @@
         }
       },
       {
-        "Weapon": {
-          "trigger": "gunner2",
-          "blk": "gameData/Weapons/cannonMG15120_turret.blk",
-          "breechInCockpit": true,
-          "emitter": "gun2",
-          "flash": "flare2",
-          "dm": "gunner2_dm",
-          "gunnerDm": "gunner2_dm",
-          "gunDm": "gun2_dm",
-          "partsDP": "gun2_dm",
-          "bullets": 450,
-          "turret": {
-            "head": "turret2",
-            "gun": "gun2"
+        "Weapon": [
+          {
+            "trigger": "gunner2"
           },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-5.0,90.0]
+          {
+            "blk": "gameData/Weapons/cannonMG15120_turret.blk"
+          },
+          {
+            "breechInCockpit": true
+          },
+          {
+            "emitter": "gun2"
+          },
+          {
+            "flash": "flare2"
+          },
+          {
+            "dm": "gunner2_dm"
+          },
+          {
+            "gunnerDm": "gunner2_dm"
+          },
+          {
+            "gunDm": "gun2_dm"
+          },
+          {
+            "partsDP": "gun2_dm"
+          },
+          {
+            "bullets": 450
+          },
+          {
+            "turret": {
+              "head": "turret2",
+              "gun": "gun2"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [-5.0,90.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-170.0,-165.0],
+              "pitch": [-45.0,15.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [165.0,170.0],
+              "pitch": [-45.0,15.0]
+            }
           }
-        }
+        ]
       },
       {
         "Weapon": [
@@ -3186,28 +3222,15 @@
             }
           },
           {
-            "limitsTable": {
-              "lim1": [-180.0,-110.0,0.0,90.0],
-              "lim2": [-110.0,-70.0,-5.0,90.0],
-              "lim3": [-70.0,-28.0,0.0,90.0],
-              "lim4": [-28.0,-25.0,-5.0,90.0],
-              "lim5": [-25.0,25.0,-5.0,90.0],
-              "lim6": [25.0,28.0,-5.0,90.0],
-              "lim7": [28.0,70.0,0.0,90.0],
-              "lim8": [70.0,110.0,-5.0,90.0],
-              "lim9": [110.0,180.0,0.0,90.0]
+            "limitsDeadzone": {
+              "yaw": [-29.0,-20.0],
+              "pitch": [-5.0,15.0]
             }
           },
           {
             "limitsDeadzone": {
-              "yaw": [-28.0,-25.0],
-              "pitch": [-5.0,30.0]
-            }
-          },
-          {
-            "limitsDeadzone": {
-              "yaw": [25.0,28.0],
-              "pitch": [-5.0,30.0]
+              "yaw": [20.0,29.0],
+              "pitch": [-5.0,15.0]
             }
           }
         ]

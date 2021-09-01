@@ -3,49 +3,25 @@
     "modalPos": "left",
     "hintText": []
   },
-  "navLeft": [
-    {
-      "Button_text": {
-        "id": "btn_postfx_settings",
-        "text": "#mainmenu/btnPostFxSettings",
-        "_on_click": "onPostFxSettings",
-        "display": "hide",
-        "enable": "no",
-        "btnName": "X",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
-        "id": "web_ui_button",
+  "navLeft": {
+    "Button_text": {
+      "id": "web_ui_button",
+      "text": "#mainmenu/webui_map",
+      "hideText": "yes",
+      "_on_click": "onWebUiMap",
+      "display": "hide",
+      "enable": "no",
+      "externalLink": "yes",
+      "btnName": "Y",
+      "ButtonImg": [],
+      "activeText": {
         "text": "#mainmenu/webui_map",
-        "hideText": "yes",
-        "_on_click": "onWebUiMap",
-        "display": "hide",
-        "enable": "no",
-        "externalLink": "yes",
-        "btnName": "Y",
-        "ButtonImg": [],
-        "activeText": {
-          "text": "#mainmenu/webui_map",
-          "pos": "0, 50%ph-50%h",
-          "position": "relative",
-          "underline": []
-        }
-      }
-    },
-    {
-      "Button_text": {
-        "id": "btn_hdr_settings",
-        "text": "#mainmenu/btnHdrSettings",
-        "_on_click": "onHdrSettings",
-        "display": "hide",
-        "enable": "no",
-        "btnName": "RB",
-        "ButtonImg": []
+        "pos": "0, 50%ph-50%h",
+        "position": "relative",
+        "underline": []
       }
     }
-  ],
+  },
   "navRight": [
     {
       "text": {
@@ -86,6 +62,16 @@
           "id": "btn_restart_text",
           "text": "#msgbox/btn_restart"
         },
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_reset",
+        "text": "#mainmenu/btnReset",
+        "btnName": "R3",
+        "_on_click": "onSystemOptionsReset",
+        "display": "hide",
         "ButtonImg": []
       }
     },

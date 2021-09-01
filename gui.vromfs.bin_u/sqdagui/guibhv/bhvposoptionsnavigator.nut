@@ -66,7 +66,7 @@ class ::gui_bhv.PosOptionsNavigator extends ::gui_bhv.posNavigator
 
   function setValue(obj, value)
   {
-    if (::type(value) != "integer")
+    if (type(value) != "integer")
       return
     local child = null
     eachSelectable(obj, function(elem, idx) {

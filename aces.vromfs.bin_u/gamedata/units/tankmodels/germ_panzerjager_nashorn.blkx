@@ -2180,7 +2180,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2848,6 +2849,14 @@
           "flash": "emtr_gun_flame",
           "shotFreq": 0.15,
           "recoilMultiplier": 0.7,
+          "sleeveEmitter": "emtr_shell",
+          "sleeveMesh": "cartridge_case",
+          "hatchAnimVar": "gun_shutter_move",
+          "openHatchTime": 0.3,
+          "sleevesLifeTime": 10.0,
+          "sleeveImpulse": [5.0,0.0,0.0],
+          "linkSleeveToGun": true,
+          "sleeveExtractSound": "shell_eject",
           "allowableDelta": 20.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2996,7 +3005,10 @@
         "trackStartOffset": 0.19
       },
       "collisionProps": {
-        "cls_body": "convex_hull"
+        "cls_body": "convex_hull",
+        "cls_body_01": "convex_hull",
+        "cls_body_02": "convex_hull",
+        "cls_body_03": "convex_hull"
       },
       "engine": {
         "horsePowers": 300.0,

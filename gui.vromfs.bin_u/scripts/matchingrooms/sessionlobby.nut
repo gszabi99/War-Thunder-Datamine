@@ -9,6 +9,9 @@ local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
   updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
 local joiningGameWaitBox = require("scripts/matchingRooms/joiningGameWaitBox.nut")
 local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
 /*
 SessionLobby API
@@ -298,7 +301,7 @@ local allowed_mission_settings = { //only this settings are allowed in room
   {
     local diffValue = getMissionData(room)?.difficulty
     local difficulty = (diffValue == "custom")
-      ? ::g_difficulty.getDifficultyByDiffCode(::get_cd_base_difficulty())
+      ? ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty())
       : ::g_difficulty.getDifficultyByName(diffValue)
     return difficulty
   }
@@ -453,7 +456,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   local countriesType = ::getTblValue("countriesType", missionSettings, misCountries.ALL)
   local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
-    fullCountriesList = clone ::shopCountriesList
+    fullCountriesList = clone shopCountriesList
   foreach(name in ["country_allies", "country_axis"])
   {
     local countries = null
@@ -469,7 +472,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
     } else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM)
     {
       local bitMaskKey = (countriesType == misCountries.SYMMETRIC)? "country_allies" : name
-      countries = ::get_array_by_bit_value(::getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), ::shopCountriesList)
+      countries = ::get_array_by_bit_value(::getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), shopCountriesList)
     }
     _settings[name] <- (countries && countries.len())? countries : fullCountriesList
   }
@@ -481,14 +484,14 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
         _settings.mission[unitType.missionSettingsAvailabilityFlag] = false
 
   local mrankMin = missionSettings?.mrankMin ?? 0
-  local mrankMax = missionSettings?.mrankMax ?? ::MAX_ECONOMIC_RANK
+  local mrankMax = missionSettings?.mrankMax ?? getMaxEconomicRank()
   if (mrankMin > mrankMax)
   {
     local temp = mrankMin
     mrankMin = mrankMax
     mrankMax = temp
   }
-  if (mrankMin > 0 || mrankMax < ::MAX_ECONOMIC_RANK)
+  if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
     _settings.mranks <- { min = mrankMin, max = mrankMax }
 
   _settings.chatPassword <- isInRoom() ? getChatRoomPassword() : ::gen_rnd_password(16)
@@ -2690,7 +2693,7 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
       return
 
     sendResp({})
-    ::SessionLobby.joinRoom(inviteData.roomId, null, null)
+    ::SessionLobby.joinRoom(inviteData.roomId)
   }
 
   local rejectInvite = (@(sendResp) function() {

@@ -1,6 +1,7 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 return [
   {
@@ -8,7 +9,7 @@ return [
     type = CONTROL_TYPE.HEADER
     unitTypes = [ unitTypes.SHIP ]
     unitTag = "submarine"
-    showFunc = @() ::has_feature("SpecialShips") || ::get_player_cur_unit()?.isSubmarine()
+    showFunc = @() ::has_feature("SpecialShips") || getPlayerCurUnit()?.isSubmarine()
     needShowInHelp = true
   }
 //-------------------------------------------------------

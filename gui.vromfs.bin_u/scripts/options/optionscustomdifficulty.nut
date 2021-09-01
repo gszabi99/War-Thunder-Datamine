@@ -1,4 +1,5 @@
 local { isGameModeCoop, isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
 class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.GenericOptionsModal
 {
@@ -33,8 +34,8 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
     {
       local option = ::get_option(o[0])
       local obj = optListObj.findObject(option.id)
-      if (option.controlType == optionControlType.LIST && option.values[option.value] != ::get_cd_option(option.type))
-        ::dagor.assertf(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + ::get_cd_option(option.type) + "' is out of range.")
+      if (option.controlType == optionControlType.LIST && option.values[option.value] != getCdOption(option.type))
+        ::dagor.assertf(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + getCdOption(option.type) + "' is out of range.")
       if (::checkObj(obj))
         obj.setValue(option.value)
     }
@@ -80,7 +81,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
 
   function updateCurBaseDifficulty()
   {
-    curBaseDifficulty = ::get_cd_base_difficulty()
+    curBaseDifficulty = getCdBaseDifficulty()
 
     local obj = scene.findObject("info_text_top")
     if (!::checkObj(obj))

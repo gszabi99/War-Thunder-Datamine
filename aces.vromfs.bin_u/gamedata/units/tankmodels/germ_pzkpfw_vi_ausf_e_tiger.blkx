@@ -128,6 +128,9 @@
         "body_back_dm": {
           "armorThickness": 82.0
         },
+        "turret_01_back_dm": {
+          "armorThickness": 62.0
+        },
         "superstructure_back_dm": {
           "armorThickness": 82.0
         },
@@ -144,18 +147,39 @@
           "armorThickness": 80.0
         },
         "turret_04_side_dm": {
-          "armorThickness": 85.0,
-          "armorEffectiveThicknessMax": 90.0
+          "armorThickness": 80.0,
+          "variableThickness": true
         },
         "turret_03_top_dm": {
           "armorThickness": 50.0,
-          "armorEffectiveThicknessMax": 55.0
+          "variableThickness": true
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 80.0,
+          "variableThickness": true
         },
         "turret_02_side_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 5.0
         },
         "turret_04_top_dm": {
           "armorThickness": 8.0
+        },
+        "ex_decor_l_04_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_decor_l_05_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_decor_r_06_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_decor_r_07_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 90.0,
+          "armorClass": "armored_glass",
+          "variableThickness": true
         }
       },
       "turret": {
@@ -173,7 +197,7 @@
           "armorThickness": 100.0
         },
         "turret_back_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 5.0
         },
         "turret_01_top_dm": {
           "armorThickness": 80.0
@@ -216,12 +240,12 @@
           "armorThickness": 135.0
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 10.0,
+          "armorThickness": 5.0,
           "armorClass": "RHA_tank"
         },
         "ex_armor_body_04_dm": {
           "armorThickness": 103.0,
-          "armorEffectiveThicknessMax": 105.0
+          "variableThickness": true
         },
         "ex_armor_body_03_dm": {
           "armorThickness": 100.0,
@@ -252,11 +276,7 @@
         "ex_armor_body_r_05_dm": [],
         "ex_armor_body_r_06_dm": [],
         "ex_armor_body_r_07_dm": [],
-        "ex_decor_body_r_09_dm": [],
-        "ex_decor_l_04_dm": [],
-        "ex_decor_l_05_dm": [],
-        "ex_decor_r_06_dm": [],
-        "ex_decor_r_07_dm": []
+        "ex_decor_body_r_09_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -1963,7 +1983,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -3680,7 +3701,7 @@
               "Weapon": {
                 "trigger": "gunner3",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,
