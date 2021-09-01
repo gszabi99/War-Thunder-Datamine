@@ -65,6 +65,9 @@
   {
     "DamageParts": {
       "armor10": {
+        "armor2_dm": {
+          "hp": 40.0
+        },
         "cannon1_dm": {
           "hp": 15.0
         },
@@ -85,38 +88,22 @@
         }
       },
       "armor12": {
+        "armor4_dm": {
+          "hp": 40.0
+        },
         "armor6_dm": {
+          "hp": 40.0
+        },
+        "armor8_dm": {
           "hp": 40.0
         },
         "armor9_dm": {
           "hp": 40.0
         }
       },
-      "armor15": {
-        "armor1_dm": {
-          "hp": 45.0
-        },
-        "armor2_dm": {
-          "hp": 45.0
-        },
-        "armor4_dm": {
-          "hp": 45.0
-        },
-        "armor7_dm": {
-          "hp": 45.0
-        }
-      },
       "armor6": {
-        "armor3_dm": {
+        "armor7_dm": {
           "hp": 35.0
-        }
-      },
-      "armor8": {
-        "armor5_dm": {
-          "hp": 40.0
-        },
-        "armor8_dm": {
-          "hp": 40.0
         }
       },
       "armor_engine": {
@@ -247,6 +234,17 @@
         },
         "spar_r_dm": {
           "hp": 110.5
+        }
+      },
+      "glass65": {
+        "armor1_dm": {
+          "hp": 100.0
+        },
+        "armor3_dm": {
+          "hp": 100.0
+        },
+        "armor5_dm": {
+          "hp": 100.0
         }
       },
       "protected_controls": {
@@ -2870,6 +2868,14 @@
     }
   },
   {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/su_gneys_5s.blk",
+        "dmPart": "radar_dm"
+      }
+    }
+  },
+  {
     "commonWeapons": [
       {
         "Weapon": {
@@ -3137,6 +3143,25 @@
       "new_radiator": [],
       "new_compressor": [],
       "new_engine_injection": [],
+      "ns23_armor_targets": [],
+      "ns23_air_targets": [],
+      "ns23_stealth": [],
+      "ns23_belt_pack": {
+        "tier": 1
+      },
+      "ns23_new_gun": {
+        "reqModification": "ns23_belt_pack",
+        "tier": 2
+      },
+      "ub_turret_ap": [],
+      "ub_turret_api": [],
+      "ub_turret_belt_pack": {
+        "tier": 3
+      },
+      "ub_turret_new_gun": {
+        "reqModification": "ub_turret_belt_pack",
+        "tier": 4
+      },
       "ns45_air_target": [],
       "ns45_armor_target": [],
       "ns45_belt_pack": {
