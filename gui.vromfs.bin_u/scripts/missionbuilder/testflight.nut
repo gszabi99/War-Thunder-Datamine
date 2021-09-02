@@ -2,8 +2,6 @@ local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
 local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -32,29 +30,26 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   shouldSkipUnitCheck = false
 
   unit = null
-  needSlotbar = true
+  needSlotbar = false
 
   weaponsSelectorWeak = null
   lastBulletsCache = null
   lastWeaponCache = null
-  hasMissionBuilder = true
 
   slobarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
 
   function initScreen()
   {
-    unit = unit ?? showedUnit.value
+    unit = unit ?? ::show_aircraft
     if (!unit)
       return goBack()
 
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
-    local btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
-    if (hasMissionBuilder)
-      btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
+    scene.findObject("btn_builder").setValue(::loc("mainmenu/btnBuilder"))
     showSceneBtn("btn_select", true)
 
-    needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
+    needSlotbar = !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
     {
       local frameObj = scene.findObject("wnd_frame")
@@ -74,7 +69,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     if (needSlotbar)
     {
-      showedUnit(unit) //select unit for slotbar
+      ::show_aircraft = unit //select unit for slotbar
       createSlotbar()
     }
     else
@@ -461,7 +456,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   {
     local diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
     local difficulty = (diffValue == "custom") ?
-      ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
+      ::g_difficulty.getDifficultyByDiffCode(::get_cd_base_difficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1)
     {

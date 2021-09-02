@@ -114,13 +114,13 @@
           "armorThickness": 13.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 20.0
         },
         "body_side_dm": {
           "armorThickness": 13.0
         },
         "body_back_dm": {
-          "armorThickness": 7.0
+          "armorThickness": 9.0
         },
         "superstructure_side_dm": {
           "armorThickness": 13.0
@@ -138,14 +138,13 @@
           "armorThickness": 13.0
         },
         "turret_03_front_dm": {
-          "armorThickness": 13.0,
-          "variableThickness": true
+          "armorThickness": 13.0
         },
         "turret_04_front_dm": {
           "armorThickness": 23.0
         },
         "turret_06_front_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 9.0
         },
         "turret_03_top_dm": {
           "armorThickness": 13.0
@@ -154,10 +153,10 @@
           "armorThickness": 7.0
         },
         "turret_05_top_dm": {
-          "armorThickness": 7.0
+          "armorThickness": 9.0
         },
         "superstructure_top_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 5.0
         },
         "turret_02_side_dm": {
           "armorThickness": 13.0
@@ -169,22 +168,22 @@
           "armorThickness": 4.0
         },
         "turret_02_back_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 5.0
         },
         "turret_03_bottom_dm": {
           "armorThickness": 13.0
         },
         "turret_03_back_dm": {
-          "armorThickness": 33.0
+          "armorThickness": 23.0
         },
         "turret_04_back_dm": {
-          "armorThickness": 13.0
+          "armorThickness": 9.0
         },
         "turret_05_back_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 9.0
         },
         "turret_06_top_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 9.0
         },
         "turret_07_front_dm": {
           "armorThickness": 5.0
@@ -193,7 +192,7 @@
           "armorThickness": 13.0
         },
         "turret_02_bottom_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 4.0
         },
         "superstructure_bottom_dm": {
           "armorThickness": 5.0
@@ -208,7 +207,7 @@
           "armorThickness": 13.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 20.0
         },
         "turret_top_dm": {
           "armorThickness": 5.0
@@ -244,10 +243,10 @@
           "armorThickness": 5.0
         },
         "turret_06_back_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 13.0
         },
         "turret_06_bottom_dm": {
-          "armorThickness": 23.0
+          "armorThickness": 13.0
         },
         "turret_06_side_dm": {
           "armorThickness": 33.0
@@ -269,19 +268,13 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
-        "ex_decor_07_dm": {
-          "armorThickness": 13.0
-        },
-        "ex_decor_08_dm": {
-          "armorThickness": 20.0
-        },
+        "ex_decor_07_dm": [],
         "turret_07_top_dm": []
       },
       "mask": {
         "gun_mask_dm": {
           "armorThickness": 13.0,
-          "hp": 10000.0,
-          "variableThickness": true
+          "hp": 10000.0
         }
       },
       "optics": {
@@ -2320,6 +2313,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/40mm_37_42M_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "useEmitter": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2471,8 +2465,8 @@
     "VehiclePhys": {
       "Mass": {
         "Empty": 9000.0,
-        "Fuel": 300.0,
-        "TakeOff": 9300.0,
+        "Fuel": 350.0,
+        "TakeOff": 9350.0,
         "momentOfInertia": [1.4,2.5,2.5],
         "CenterOfGravity": [0.0,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2490,35 +2484,32 @@
       },
       "engine": {
         "horsePowers": 155.0,
-        "maxRPM": 2700.0,
-        "minRPM": 600.0
+        "maxRPM": 3000.0,
+        "minRPM": 800.0
       },
       "mechanics": {
         "maxBrakeForce": 40000.0,
         "driveGearRadius": 0.317,
-        "mainGearRatio": 6.9,
-        "sideGearRatio": 1.0,
+        "mainGearRatio": 2.46,
+        "sideGearRatio": 4.4,
         "gearRatios": [
           {
-            "ratio": -8.65
+            "ratio": -6.0
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 8.94
+            "ratio": 4.51
           },
           {
-            "ratio": 4.55
+            "ratio": 1.48
           },
           {
-            "ratio": 2.53
+            "ratio": 0.83
           },
           {
-            "ratio": 1.43
-          },
-          {
-            "ratio": 1.0
+            "ratio": 0.7
           }
         ]
       },

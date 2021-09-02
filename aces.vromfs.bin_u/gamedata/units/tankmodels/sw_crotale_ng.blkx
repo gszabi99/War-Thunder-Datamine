@@ -266,14 +266,6 @@
         },
         "turret_back_dm": {
           "armorThickness": 8.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_02_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
         }
       },
       "optics": {
@@ -1718,32 +1710,17 @@
     }
   },
   {
-    "xray_viewer_data": [
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_01_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_01_dm",
-              "xrayTextThickness": 5.0
-            }
-          }
-        }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_02_dm",
-              "xrayTextThickness": 5.0
-            }
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
           }
         }
       }
-    ]
+    }
   },
   {
     "MetaParts": {
@@ -2400,8 +2377,7 @@
   },
   {
     "attachables": {
-      "ex_armor_02_dm": true,
-      "ex_armor_01_dm": true
+      "ex_armor_02_dm": true
     }
   },
   {
@@ -3507,6 +3483,12 @@
             "gunnerThermal": {
               "resolution": [500.0,300.0],
               "noiseFactor": 0.05
+            },
+            "commanderViewIr": {
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
+              "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800.0,600.0],

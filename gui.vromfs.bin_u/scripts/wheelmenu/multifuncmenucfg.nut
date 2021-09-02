@@ -30,6 +30,7 @@ local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator()
 local hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
 local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
 local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
+local canUseTargetTracking = memoizeByMission(@(unitId) vehicleModel.canUseTargetTracking())
 local hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
 local getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
 
@@ -50,13 +51,6 @@ local hasCameraGunner   = ::memoize(@(unitId) vehicleModel.hasGunners())
 local hasCameraBombview = ::memoize(@(unitId) vehicleModel.hasBombview())
 
 local hasMissionBombingZones = memoizeByMission(@(unitId) vehicleModel.hasMissionBombingZones())
-
-local hasEnginesWithFeatheringControl = ::memoize(function(unitId) {
-  for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
-    if (vehicleModel.hasFeatheringControl(idx))
-      return true
-  return false
-})
 
 local savedManualEngineControlValue = false
 local function enableManualEngineControl() {
@@ -239,7 +233,6 @@ local cfg = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
       null
       null
       { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
@@ -254,7 +247,6 @@ local cfg = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
       { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = hasLaserDesignator }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
       null
@@ -312,7 +304,7 @@ local cfg = {
     enable = @(unitId) ::get_mission_difficulty_int() >= ::DIFFICULTY_REALISTIC
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE", "ID_TOGGLE_ENGINE_HELICOPTER" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ], enable = hasEnginesWithFeatheringControl }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       { shortcut = [ "ID_COMPLEX_ENGINE" ] }
       { section = "control_engines_separately" }
@@ -362,8 +354,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(0), @(unitId) $"{unitId}/0") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -380,8 +371,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(1), @(unitId) $"{unitId}/1") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -398,8 +388,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(2), @(unitId) $"{unitId}/2") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -416,8 +405,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(3), @(unitId) $"{unitId}/3") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -434,8 +422,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(4), @(unitId) $"{unitId}/4") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -452,8 +439,7 @@ local cfg = {
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
-      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = ::memoize(@(unitId) vehicleModel.hasFeatheringControl(5), @(unitId) $"{unitId}/5") }
+      { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ] }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -503,7 +489,7 @@ local cfg = {
       { shortcut = [ "ID_SELECT_GM_GUN_MACHINEGUN" ], enable = hasWeaponMachinegun }
       { shortcut = [ "ID_SELECT_GM_GUN_RESET" ], enable = hasMultipleWeaponTriggers }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ" ], enable = hasAlternativeShotFrequency }
-      null
+      { shortcut = [ "ID_WEAPON_LOCK_TANK" ] }
       null
       null
     ]
@@ -515,10 +501,10 @@ local cfg = {
       { shortcut = [ "ID_RANGEFINDER" ], enable = canUseRangefinder }
       { shortcut = [ "ID_TANK_NIGHT_VISION" ], enable = hasNightVision }
       { shortcut = [ "ID_IR_PROJECTOR" ], enable = hasInfraredProjector }
+      { shortcut = [ "ID_TARGETING_HOLD_GM" ], enable = canUseTargetTracking }
       { shortcut = [ "ID_ENABLE_GUN_STABILIZER_GM" ], enable = hasGunStabilizer }
       { shortcut = [ "ID_THERMAL_WHITE_IS_HOT" ], enable = hasNightVision }
       { shortcut = [ "ID_IRCM_SWITCH_TANK" ], enable = hasCountermeasureSystemIRCM }
-      null
       null
     ]
   },

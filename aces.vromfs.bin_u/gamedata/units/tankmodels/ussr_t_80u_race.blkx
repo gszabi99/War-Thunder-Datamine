@@ -123,9 +123,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -140,26 +137,22 @@
           "explosionArmorQuality": 2.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 30.0,
           "armorClass": "tank_textolite",
           "genericArmorQuality": 0.45,
           "cumulativeArmorQuality": 0.5,
           "createSecondaryShatters": false
         },
         "turret_02_front_dm": {
-          "armorThickness": 50.0,
           "createSecondaryShatters": false,
           "genericArmorQuality": 1.2
         },
         "turret_03_front_dm": {
-          "armorThickness": 30.0,
           "armorClass": "tank_textolite",
           "genericArmorQuality": 0.45,
           "cumulativeArmorQuality": 0.5,
           "createSecondaryShatters": false
         },
         "turret_04_front_dm": {
-          "armorThickness": 50.0,
           "genericArmorQuality": 1.2
         },
         "composite_armor_hull_01_dm": {
@@ -385,18 +378,15 @@
           "hidableInViewer": true
         }
       },
-      "era_hull_front": {
+      "era_hull": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 20.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
+        "cumulativeArmorQuality": 8.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -409,43 +399,35 @@
         "ex_era_hull_07_dm": [],
         "ex_era_hull_08_dm": [],
         "ex_era_hull_09_dm": [],
-        "ex_era_hull_10_dm": []
+        "ex_era_hull_10_dm": [],
+        "ex_era_hull_11_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_12_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_13_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_14_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_15_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_16_dm": {
+          "armorThickness": 30.0
+        }
       },
-      "era_hull_side": {
+      "era_turret": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 20.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "responseImpulse": 0.5,
-        "ex_era_hull_11_dm": [],
-        "ex_era_hull_12_dm": [],
-        "ex_era_hull_13_dm": [],
-        "ex_era_hull_14_dm": [],
-        "ex_era_hull_15_dm": [],
-        "ex_era_hull_16_dm": []
-      },
-      "era_turret_front": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 30.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
+        "cumulativeArmorQuality": 8.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -458,26 +440,12 @@
         "ex_era_turret_07_dm": [],
         "ex_era_turret_08_dm": [],
         "ex_era_turret_09_dm": [],
-        "ex_era_turret_14_dm": [],
-        "ex_era_turret_15_dm": []
-      },
-      "era_turret_top": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 350.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericDamageMult": 3.0,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
         "ex_era_turret_12_dm": [],
         "ex_era_turret_13_dm": [],
+        "ex_era_turret_14_dm": [],
+        "ex_era_turret_15_dm": [],
         "ex_armor_11_dm": [],
         "ex_armor_12_dm": [],
         "ex_armor_13_dm": [],
@@ -2947,8 +2915,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
           "bullets": 300,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -4027,14 +3995,9 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   },
   {
     "modifications": {
@@ -4288,8 +4251,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -4512,9 +4475,9 @@
               "noiseFactor": 0.05
             },
             "commanderViewIr": {
-              "resolution": [800.0,600.0],
-              "lightMult": 8.0,
-              "ghosting": 0.75,
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
               "noiseFactor": 0.2
             },
             "driverIr": {

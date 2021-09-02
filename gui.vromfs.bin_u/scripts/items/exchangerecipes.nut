@@ -203,7 +203,7 @@ local ExchangeRecipes = class {
   function getText(params = null)
   {
     local list = getItemsListForPrizesView(params)
-    local headerFunc = params?.header ? @(...) params.header : null
+    local headerFunc = params?.header && @(...) params.header
     return ::PrizesView.getPrizesListText(list, headerFunc, false)
   }
 

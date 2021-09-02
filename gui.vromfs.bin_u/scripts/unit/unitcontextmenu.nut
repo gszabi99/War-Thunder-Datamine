@@ -14,7 +14,6 @@ local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut"
 local { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -49,7 +48,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       actionFunc = function () {
         ::queues.checkAndStart(function () {
           ::broadcastEvent("BeforeStartShowroom")
-          showedUnit(unit)
+          ::show_aircraft = unit
           ::handlersManager.animatedSwitchScene(::gui_start_decals)
         }, null, "isCanModifyCrew")
       }
@@ -115,10 +114,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
       showAction = inMenu &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
-      actionFunc = @() weaponryPresetsModal.open({
-        unit = unit
-        curEdiff = curEdiff
-      })
+      actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
     else if (action == "weapons")
     {

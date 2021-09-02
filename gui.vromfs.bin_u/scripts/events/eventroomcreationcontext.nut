@@ -1,5 +1,3 @@
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-
 enum CREWS_READY_STATUS
 {
   HAS_ALLOWED              = 0x0001
@@ -270,7 +268,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function setCurCountries(team, countriesMask)
   {
-    curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, shopCountriesList)
+    curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, ::shopCountriesList)
   }
 
   function setCurCountriesArray(team, countriesSetIdx)

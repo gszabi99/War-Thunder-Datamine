@@ -45,7 +45,6 @@ enums.addTypes(results, {
     checkParams = @(params) (params?.max?.effectiveHit ?? false) &&
       ((params?.max?.penetratedArmor?.generic ?? false) ||
         (params?.max?.penetratedArmor?.genericLongRod ?? false) ||
-        (params?.max?.penetratedArmor?.explosiveFormedProjectile ?? false) ||
         (params?.max?.penetratedArmor?.cumulative ?? false))
     color = "badTextColor"
     loc = "protection_analysis/result/not_penetrated"

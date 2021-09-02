@@ -200,16 +200,6 @@
         },
         "turret_06_front_dm": {
           "armorThickness": 38.4
-        },
-        "composite_armor_hull_02_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_03_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hidableInXrayViewer": true
         }
       },
       "hull_composite_armor": {
@@ -751,52 +741,28 @@
     }
   },
   {
-    "xray_viewer_data": [
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_01_dm",
-          "armorArrayText": [
-            {
-              "layer": {
-                "dmPart": "turret_06_top_dm"
-              }
-            },
-            {
-              "layer": {
-                "dmPart": "composite_armor_hull_01_dm"
-              }
-            },
-            {
-              "layer": {
-                "dmPart": "body_top_dm"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "armorArrayText": [
+          {
             "layer": {
-              "dmPart": "composite_armor_hull_02_dm"
+              "dmPart": "turret_06_top_dm"
+            }
+          },
+          {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          },
+          {
+            "layer": {
+              "dmPart": "body_top_dm"
             }
           }
-        }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_03_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_03_dm"
-            }
-          }
-        }
+        ]
       }
-    ]
+    }
   },
   {
     "sound": {
@@ -2581,7 +2547,7 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "allowableDelta": 360.0,
-          "salvo": 4,
+          "salvo": 8,
           "speedYaw": 24.0,
           "speedPitch": 15.0,
           "fireConeAngle": 1.0,
@@ -3682,7 +3648,7 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "allowableDelta": 360.0,
-                "salvo": 4,
+                "salvo": 8,
                 "speedYaw": 24.0,
                 "speedPitch": 15.0,
                 "fireConeAngle": 1.0,

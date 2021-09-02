@@ -41,7 +41,6 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   isAllBuyProcess      = false
   totalCost            = null
   multiPurchaseList    = null
-  curEdiff             = null
 
   function getSceneTplView()
   {
@@ -279,10 +278,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       showSceneBtn("favoriteBtn", false)
       return
     }
-    updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this, {
-      curEdiff = curEdiff
-      detail = INFO_DETAIL.FULL
-    })
+    updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this, {detail = INFO_DETAIL.FULL})
     local idx = curPresetIdx
     local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     local btnText = itemParams?.weaponryItem.actionBtnText ?? ""

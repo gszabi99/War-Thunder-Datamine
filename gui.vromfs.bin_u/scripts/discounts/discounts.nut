@@ -12,7 +12,6 @@ local { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
 local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
 local topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
 local { eachBlock } = require("std/datablock.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -170,7 +169,7 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
   local pBlk = ::get_price_blk()
 
   local chPath = ["exp_to_gold_rate"]
-  chPath.append(shopCountriesList)
+  chPath.append(::shopCountriesList)
   discountsList.changeExp = getDiscountByPath(chPath, pBlk) > 0
 
   local giftUnits = {}

@@ -323,11 +323,7 @@ tr[iconType=pilot] {
 }
 
 tr[iconType=aircraft] {
-  size:pw, @shopAirHeight + 6@dp;
-}
-
-tr[iconType=aircraft] > td {
-  height:ph;
+  size:pw,@shopAirHeight + 6*@sf/@pf_outdated;
 }
 
 tr[iconType=country] {
@@ -532,17 +528,16 @@ tr[hiddenTr=yes] {
 }
 
 tr > td > optiontext {
-  auto-scroll:fast;
-  move-start:no;
+  auto-scroll:no;
 }
 tr:hover > td > optiontext {
   color:@hoverTextColor;
-  move-start:yes;
+  auto-scroll:yes;
 }
 tr[selected=yes] > td > optiontext {
   color:@activeTextColor;
   font:@option_selected_font;
-  move-start:yes;
+  auto-scroll:yes;
 }
 td[cellType=top] > optiontext {
   color:@grayOptionColor;
@@ -561,7 +556,6 @@ optionValueText {
   position:relative;
   text-align:left;
 }
-[freeWidthOptions=yes] > * > * > optionValueText,
 [fullWidthOptions=yes] > * > * > optionValueText {
   text-align:right;
 }
@@ -648,18 +642,12 @@ tr[inactive=yes] {
   input-transparent:yes;
 }
 
-tr > td[autoScrollText="hoverOrSelect"] > activeText,
-tr > td[autoScrollText="hoverOrSelect"] > activeText {
+tr[selected=yes] > td[autoScrollText="hoverOrSelect"] > activeText,
+tr::hover > td[autoScrollText="hoverOrSelect"] > activeText {
   behaviour:OverflowScroller;
   move-pixel-per-sec:15*@scrn_tgt/100.0;
   move-sleep-time:8000;
   move-delay-time:2000;
-  move-start:no;
-}
-
-tr[selected=yes] > td[autoScrollText="hoverOrSelect"] > activeText,
-tr::hover > td[autoScrollText="hoverOrSelect"] > activeText {
-  move-start:yes;
 }
 
 activeText[caption=yes], textarea[caption=yes], textAreaCentered[caption=yes] {

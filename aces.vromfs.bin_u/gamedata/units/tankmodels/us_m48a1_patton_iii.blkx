@@ -111,8 +111,7 @@
       "hp": 10000.0,
       "hull_CHA": {
         "superstructure_front_dm": {
-          "armorThickness": 110.0,
-          "variableThickness": true
+          "armorThickness": 110.0
         },
         "superstructure_bottom_dm": {
           "armorThickness": 25.4
@@ -155,9 +154,6 @@
         },
         "body_back_dm": {
           "armorThickness": 25.0
-        },
-        "turret_03_front_dm": {
-          "armorThickness": 5.0
         }
       },
       "hull_RHA": {
@@ -190,7 +186,7 @@
           "armorThickness": 114.3
         },
         "gun_mask_01_dm": {
-          "armorThickness": 29.7
+          "armorThickness": 70.0
         },
         "gun_mask_02_dm": {
           "armorThickness": 50.0
@@ -208,7 +204,7 @@
           "armorThickness": 57.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 29.7
+          "armorThickness": 70.0
         },
         "turret_bottom_dm": {
           "armorThickness": 25.4
@@ -243,6 +239,9 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 16.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 88.9
         },
         "turret_04_back_dm": {
           "armorThickness": 55.0
@@ -2572,7 +2571,7 @@
         "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
           "emitter": "bone_gun_barrel_02",
           "flash": "emtr_gun_flame_02",
           "defaultYaw": 0.0,
@@ -2582,7 +2581,6 @@
           "speedPitch": 15.0,
           "fireConeAngle": 1.0,
           "bullets": 900,
-          "isBulletBelt": true,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2639,10 +2637,10 @@
             "parkInDeadzone": false
           },
           {
-            "speedYaw": 24.0
+            "speedYaw": 30.0
           },
           {
-            "speedPitch": 4.0
+            "speedPitch": 20.0
           },
           {
             "fireConeAngle": 1.0

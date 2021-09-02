@@ -155,8 +155,6 @@ local is_keyboard_or_mouse_connected_before = false
 
 local on_controller_event = function()
 {
-  if (!::has_feature("ControlsDeviceChoice") || !::has_feature("ControlsPresets"))
-    return
   local is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
     || controllerState.is_mouse_connected()
   if (is_keyboard_or_mouse_connected_before == is_keyboard_or_mouse_connected)

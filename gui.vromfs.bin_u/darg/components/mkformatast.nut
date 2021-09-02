@@ -1,5 +1,3 @@
-from "%darg/ui_imports.nut" import *
-
 /*
   Here we 'format' 'AST' - array of objects (AST) and return it as one darg Component as result of applying formatters, style and filters
   objects should be {t=[name_of_formatter], v=<value>} and any other fields
@@ -57,20 +55,20 @@ local defStyle = {
   lineGaps = hdpx(5)
 }
 
-local mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, filter = @(obj) false, style = defStyle){
+local mkFormatAst = ::kwarg(function mkFormatAstImpl(formatters = defFormatters, filter = @(obj) false, style = defStyle){
   if (formatters != defFormatters)
     formatters=defFormatters.__merge(formatters)
   if (style != defStyle)
     style = defStyle.__merge(style)
 
   return function formatAst(object, params={}){
-    local formatAstFunc = callee()
-    if (type(object) == "string")
+    local formatAstFunc = ::callee()
+    if (::type(object) == "string")
       return formatters["string"](object, formatAstFunc, style)
     if (object==null)
       return null
 
-    if (type(object) == "table") {
+    if (::type(object) == "table") {
       if (filter(object))
         return null
 
@@ -85,7 +83,7 @@ local mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, f
       return unknownTag(object)
     }
     local ret = []
-    if (type(object) == "array") {
+    if (::type(object) == "array") {
       foreach (t in object)
         ret.append(formatAstFunc(t))
     }

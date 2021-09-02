@@ -393,14 +393,12 @@ local function prepareCalculationParams(unit, effects, modeId)
   needToShowDiff = upgradesKeys.len() > 0 && ::has_feature("ModUpgradeDifference")
 }
 
-local DESC_PARAMS = { needComment = true, curEdiff = null }
+local DESC_PARAMS = { needComment = true }
 local function getDesc(unit, effects, p = DESC_PARAMS)
 {
   p = DESC_PARAMS.__merge(p)
 
-  local modeId = (p.curEdiff != null
-    ? ::get_difficulty_by_ediff(p.curEdiff)
-    : ::get_current_shop_difficulty()).crewSkillName
+  local modeId = ::get_current_shop_difficulty().crewSkillName
   prepareCalculationParams(unit, effects, modeId)
 
   local res = ""

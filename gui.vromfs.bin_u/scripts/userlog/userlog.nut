@@ -1,5 +1,4 @@
 local { actionByLogType, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
@@ -141,8 +140,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillTabs()
   {
-    mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
+    mainOptionsMode = ::get_gui_options_mode()
+    ::set_gui_options_mode(::OPTIONS_MODE_SEARCH)
     local value = ::get_gui_option(::USEROPT_USERLOG_FILTER)
     local curIdx = (value in ::userlog_pages)? value : 0
 
@@ -394,7 +393,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onChangePage(obj)
   {
     local value = obj.getValue()
-    if (value < 0 || value >= obj.childrenCount())
+    if (value < 0 || value > obj.childrenCount())
       return
 
     local idx = ::to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)

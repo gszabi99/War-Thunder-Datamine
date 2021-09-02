@@ -14,8 +14,6 @@ local { getUnitShopPriceText } = require("scripts/shop/unitCardPkg.nut")
 local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 local { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
 local { RANDOM_UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 /*
 if need - put commented in array above
@@ -959,7 +957,7 @@ if need - put commented in array above
 ::getAvailableCrewId <- function getAvailableCrewId(countryId)
 {
   local id=-1
-  local curAircraft = getShowedUnitName()
+  local curAircraft = ::get_show_aircraft_name()
   if ((countryId in ::g_crews_list.get()) && ("crews" in ::g_crews_list.get()[countryId]))
     for(local i=0; i<::g_crews_list.get()[countryId].crews.len(); i++)
     {
@@ -1186,6 +1184,13 @@ if need - put commented in array above
   return ::isInArray(country, ::unlocked_countries) || ::is_country_available(country)
 }
 
+::is_country_visible <- function is_country_visible(country)
+{
+  if (country == "country_china")
+    return ::has_feature("CountryChina")
+  return true
+}
+
 ::unlockCountry <- function unlockCountry(country, hideInUserlog = false, reqUnlock = true)
 {
   if (reqUnlock)
@@ -1203,7 +1208,7 @@ if need - put commented in array above
 
   local unlockAll = isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT) || ::disable_network() || ::has_feature("UnlockAllCountries")
   local wasInList = ::unlocked_countries.len()
-  foreach(i, country in shopCountriesList)
+  foreach(i, country in ::shopCountriesList)
     if (::is_country_available(country))
     {
       if (!::isInArray(country, ::unlocked_countries))

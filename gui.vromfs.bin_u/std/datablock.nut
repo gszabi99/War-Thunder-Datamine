@@ -5,12 +5,12 @@ local { isFunction, isDataBlock } = require("underscore.nut")
 // and block can easily be found by header as in table.
 
 local function fillBlock(id, block, data, arrayKey = "array") {
-  if (type(data) == "array") {
+  if (::type(data) == "array") {
     local newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (idx, v in data)
       fillBlock(v?.label ?? arrayKey, newBl, v)
   }
-  else if (type(data) == "table") {
+  else if (::type(data) == "table") {
     local newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (key, val in data)
       fillBlock(key, newBl, val)
@@ -109,7 +109,7 @@ local function blk2SquirrelObj(blk){
 }
 
 local function normalizeConvertedBlk(obj){
-  local t = type(obj)
+  local t = ::type(obj)
   if (t == "array" && obj.len()==1) {
     return normalizeConvertedBlk(obj[0])
   }
@@ -120,12 +120,12 @@ local function normalizeConvertedBlk(obj){
 }
 
 local function normalizeAndFlattenConvertedBlk(obj){
-  local t = type(obj)
+  local t = ::type(obj)
   if (t == "array" && obj.len()==1) {
     local el = obj[0]
-    if (type(el)=="table" && el.len()==1){
+    if (::type(el)=="table" && el.len()==1){
       foreach(k, v in el){
-        return (type(v)=="array")
+        return (::type(v)=="array")
           ? v.map(normalizeAndFlattenConvertedBlk)
           : el.map(normalizeAndFlattenConvertedBlk)
       }
@@ -182,15 +182,15 @@ local function getBlkValueByPath(blk, path, defVal=null) {
 
 local function setFuncBlkByArrayPath(blk, path, func){
   assert(isFunction(func))
-  if (type(path) != "array")
+  if (::type(path) != "array")
     path = [path]
   assert(path.len()>0)
   local valForSet = path[path.len()-1]
-  assert(type(valForSet)=="string")
+  assert(::type(valForSet)=="string")
 
   local got = blk
   foreach (p in path.slice(-1)){
-    assert(type(p) == "string")
+    assert(::type(p) == "string")
     if (got?[p] != null)
       got = got[p]
     else {

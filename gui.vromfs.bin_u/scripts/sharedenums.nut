@@ -69,64 +69,40 @@ global enum DargWidgets
   ,DAMAGE_PANEL
 };
 
-global enum AirParamsMain
+global enum HelicopterParams
 {
-  RPM =               0,
-  THROTTLE_1 =        1,
-  THROTTLE_2 =        2,
-  THROTTLE_3 =        3,
-  THROTTLE_4 =        4,
-  THROTTLE_5 =        5,
-  THROTTLE_6 =        6,
-  IAS_HUD =           7,
-  SPEED =             8,
-  MACH =              9,
-  ALTITUDE =          10,
-  CANNON_1 =          11,
-  CANNON_2 =          12,
-  CANNON_3 =          13,
-  MACHINE_GUN =       14,
-  CANNON_ADDITIONAL = 15,
-  ROCKET =            16,
-  AGM =               17,
-  AAM =               18,
-  GUIDED_BOMBS =      19,
-  BOMBS =             20,
-  FLARES =            21,
-  CHAFFS =            22,
-  IRCM =              23,
-  RATE_OF_FIRE =      24
-};
-
-global enum AirParamsSecondary
-{
-  OIL_1 =          0,
-  WATER_1 =        1,
-  ENGINE_1 =       2,
-  OIL_2 =          3,
-  WATER_2 =        4,
-  ENGINE_2 =       5,
-  OIL_3 =          6,
-  WATER_3 =        7,
-  ENGINE_3 =       8,
-  OIL_4 =          9,
-  WATER_4 =        10,
-  ENGINE_4 =       11,
-  OIL_5 =          12,
-  WATER_5 =        13,
-  ENGINE_5 =       14,
-  OIL_6 =          15,
-  WATER_6 =        16,
-  ENGINE_6 =       17,
-  TRANSMISSION_1 = 18,
-  TRANSMISSION_2 = 19,
-  TRANSMISSION_3 = 20,
-  TRANSMISSION_4 = 21,
-  TRANSMISSION_5 = 22,
-  TRANSMISSION_6 = 23,
-  FUEL =           24,
-  STAMINA =        25,
-  INSTRUCTOR =     26
+  RPM = 0,
+  THROTTLE = 1,
+  SPEED = 2,
+  CANNON_1 = 3,
+  CANNON_2 = 4,
+  CANNON_3 = 5,
+  MACHINE_GUN = 6,
+  CANNON_ADDITIONAL = 7,
+  ROCKET = 8,
+  AGM = 9,
+  AAM = 10,
+  BOMBS = 11,
+  FLARES = 12,
+  CHAFFS = 13,
+  IRCM = 14,
+  RATE_OF_FIRE = 15,
+  OIL_1 = 16,
+  OIL_2 = 17,
+  OIL_3 = 18,
+  WATER_1 = 19,
+  WATER_2 = 20,
+  WATER_3 = 21,
+  ENGINE_1 = 22,
+  ENGINE_2 = 23,
+  ENGINE_3 = 24,
+  TRANSMISSION_1 = 25,
+  TRANSMISSION_2 = 26,
+  TRANSMISSION_3 = 27,
+  TRANSMISSION_4 = 28,
+  TRANSMISSION_5 = 29,
+  TRANSMISSION_6 = 30,
+  FUEL = 31
 };
 
 global enum TemperatureState
@@ -135,11 +111,10 @@ global enum TemperatureState
   OVERHEAT = 1,
   EMPTY_TANK = 2,
   FUEL_LEAK = 3,
-  FUEL_SEALING = 4,
-  BLANK = 5
+  BLANK = 4
 };
 
-global enum AirThrottleMode
+global enum HelicopterThrottleMode
 {
   DEFAULT_MODE = 0,
   BRAKE = 1,
@@ -166,11 +141,7 @@ global enum CountermeasureMode
 global enum WeaponMode
 {
   CCIP_MODE = 1,
-  CCRP_MODE = 2,
-  BOMB_BAY_OPEN = 3,
-  BOMB_BAY_CLOSED = 4,
-  BOMB_BAY_OPENING = 5,
-  BOMB_BAY_CLOSING = 6
+  CCRP_MODE = 2
 };
 
 global enum IRCMMode
@@ -178,14 +149,5 @@ global enum IRCMMode
   IRCM_ENABLED = 1,
   IRCM_DAMAGED = 2,
   IRCM_DISABLED = 3
-};
-
-global enum HudColorState
-{
-  ACTIV            = 0,
-  PASSIV           = 1,
-  LOW_ALERT        = 2,
-  MEDIUM_ALERT     = 3,
-  HIGH_ALERT       = 4
 };
 

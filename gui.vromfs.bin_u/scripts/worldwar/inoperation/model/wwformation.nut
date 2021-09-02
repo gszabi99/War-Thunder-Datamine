@@ -18,8 +18,11 @@ class ::WwFormation
 
   function clear()
   {
-    owner?.clear()
-    units?.clear()
+    if (owner)
+      owner = owner.clear()
+
+    if (units)
+      units = units.clear()
 
     name = ""
     morale = -1

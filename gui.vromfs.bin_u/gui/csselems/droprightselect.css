@@ -150,20 +150,22 @@ dropright > option {
 }
 
 dropright optiontext{
-  auto-scroll:fast;
-  move-start:no;
+  auto-scroll:no;
 }
 
 dropright:focus > option > optiontext{
-  move-start:yes;
+  auto-scroll:yes;
 }
+
+
+
 
 dropright:expanded > option {
   display:hide;
 }
 
 dropright:expanded option:current > optiontext {
-  move-start:yes;
+  auto-scroll:yes;
 }
 
 dropright > fadePlane > area > SlideListBox option {

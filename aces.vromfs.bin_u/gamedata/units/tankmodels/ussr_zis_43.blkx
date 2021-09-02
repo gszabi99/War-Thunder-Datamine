@@ -2572,11 +2572,6 @@
         "blk": "gameData/Weapons/groundModels_weapons/37mm_61_K_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [2.0,0.0,0.0],
         "recoilOffset": 0.25,
         "recoilTimes": [0.1,0.1],
         "recoilMultiplier": 0.3,
@@ -2634,8 +2629,7 @@
         "momentOfInertia": [2.0,2.0,4.0],
         "CenterOfGravity": [-0.1,0.3,0.0],
         "trackMass": 200.0,
-        "CenterOfGravityClampY": [0.0,0.45],
-        "AdvancedMass": true
+        "CenterOfGravityClampY": [0.0,0.45]
       },
       "tracks": {
         "animationMultiplier": 0.3,
@@ -2645,9 +2639,7 @@
       "collisionProps": {
         "cls_turret_01": "convex_hull",
         "cls_body_01": "convex_hull",
-        "cls_body_02": "convex_hull",
-        "cls_body_03": "convex_hull",
-        "cls_body_04": "convex_hull"
+        "cls_body_02": "convex_hull"
       },
       "engine": {
         "horsePowers": 90.0,
@@ -2682,19 +2674,20 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.03,-0.05,0.05],
-        "defaultGearRadius": 0.08,
-        "topGearRadius": 0.08,
+        "maxDisplacementOffsets": [0.0,0.0],
+        "defaultGearRadius": 0.12,
+        "topGearRadius": 0.1,
         "frontBackGearRadius": 0.34,
+        "wheel_l_01": 0.4,
+        "wheel_r_01": 0.4,
+        "wheel_l_06": 0.34,
+        "wheel_r_06": 0.34,
+        "wheel_l_drive": 0.34,
+        "wheel_r_drive": 0.34,
         "hasSuspensionOnDriveGear": true,
         "defaultDampeningForce": [15000.0,15000.0],
-        "wheel_l_01": 0.39,
-        "wheel_r_01": 0.39,
-        "wheel_l_06": 0.35,
-        "wheel_r_06": 0.35,
-        "wheel_l_drive": 0.35,
-        "wheel_r_drive": 0.35,
-        "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
+        "dampeningRelaxationRatio": 0.1,
+        "dampeningCompressionRatio": 0.05,
         "brokenWheelSteeringDeflection": -15.0,
         "wheels": {
           "wheel_r_01": true,

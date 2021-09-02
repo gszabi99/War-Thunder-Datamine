@@ -1,9 +1,6 @@
-from "frp" import *
-from "daRg" import *
-
-local modalWindows = []
-local modalWindowsGeneration = Watched(0)
-local hasModalWindows = Computed(@() modalWindowsGeneration.value >= 0 && modalWindows.len() > 0)
+local frp = require("frp")
+local list = ::Watched([], frp.DONT_CHECK_NESTED)
+local flex = ::flex // warning disable: -declared-never-used
 
 local WND_PARAMS = {
   key = null //generate automatically when not set
@@ -22,11 +19,10 @@ local WND_PARAMS = {
 }
 
 local function remove(key) {
-  local idx = modalWindows.findindex(@(w) w.key == key)
+  local idx = list.value.findindex(@(w) w.key == key)
   if (idx == null)
     return false
-  modalWindows.remove(idx)
-  modalWindowsGeneration(modalWindowsGeneration.value+1)
+  list(@(l) l.remove(idx))
   return true
 }
 
@@ -37,33 +33,22 @@ local function add(wnd = WND_PARAMS) {
     remove(wnd.key)
   else {
     lastWndIdx++
-    wnd.key = $"modal_wnd_{lastWndIdx}"
+    wnd.key = "modal_wnd_{0}".subst(lastWndIdx)
   }
   wnd.onClick = wnd.onClick ?? @() remove(wnd.key)
-  modalWindows.append(wnd)
-  modalWindowsGeneration(modalWindowsGeneration.value+1)
-}
-
-local function clear() {
-  if (modalWindows.len() == 0)
-    return
-  modalWindows.clear()
-  modalWindowsGeneration(modalWindowsGeneration.value+1)
-}
-
-local modalWindowsComponent = @() {
-  watch = modalWindowsGeneration
-  size = flex()
-  children = modalWindows
+  list.update(@(value) value.append(wnd))
 }
 
 return {
-  add
-  remove
-  addModalWindow = add
-  removeModalWindow = remove
-  hideAll = clear
-  component = modalWindowsComponent
-  modalWindowsComponent
-  hasModalWindows
+  list = list
+  add = add
+  remove = remove
+
+  hideAll = @() list([])
+
+  component = @() {
+    watch = list
+    size = flex()
+    children = list.value
+  }
 }

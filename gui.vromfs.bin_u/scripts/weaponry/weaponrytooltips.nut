@@ -9,7 +9,6 @@ const INFO_DELAY = 2.0
 local infoUnit = null
 local infoMod = null
 local infoHandler = null
-local infoParams = null
 local infoShownTiers = {}
 local infoTooltipTime = 0.0
 
@@ -23,7 +22,7 @@ local lockedTimerHandler = {
 
     local tooltipObj = obj.getParent()
     infoShownTiers[infoMod?.tier ?? 1] <- true
-    updateWeaponTooltip(tooltipObj, infoUnit, infoMod, infoHandler, infoParams)
+    updateWeaponTooltip(tooltipObj, infoUnit, infoMod, infoHandler)
     infoMod = null
     infoHandler = null
   }
@@ -116,15 +115,14 @@ local tooltipTypes = {
         return false
 
       local weaponName = ::getTblValue("weaponName", params, "")
-      local { hasPlayerInfo = true, curEdiff = null } = params
+      local hasPlayerInfo = params?.hasPlayerInfo ?? true
       local effect = hasPlayerInfo ? null : {}
       local weapon = ::u.search(unit.weapons, (@(weaponName) function(w) { return w.name == weaponName })(weaponName))
       if (!weapon)
         return false
 
       updateWeaponTooltip(obj, unit, weapon, handler, {
-        hasPlayerInfo
-        curEdiff
+        hasPlayerInfo = hasPlayerInfo
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, blk) path == params.weaponBlkPath) : null
       }, effect)
       return true
@@ -195,7 +193,6 @@ local tooltipTypes = {
 
       infoMod = mod
       infoHandler = handler
-      infoParams = params
       infoTooltipTime = INFO_DELAY
       obj.findObject("weapons_timer").setUserData(canDisplayInfo ? null : lockedTimerHandler)
       return true

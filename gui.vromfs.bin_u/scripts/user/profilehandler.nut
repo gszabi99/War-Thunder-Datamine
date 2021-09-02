@@ -13,8 +13,6 @@ local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customizat
 local { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { fillProfileSummary } = require("scripts/user/userInfoStats.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -131,8 +129,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     scene.findObject("profile_update").setUserData(this)
 
     //prepare options
-    mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    mainOptionsMode = ::get_gui_options_mode()
+    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
     initStatsParams()
     initSheetsList()
@@ -153,14 +151,14 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
           return (country != "")? country : null
         })
 
-      unlockFilters.UnlockSkin = ::u.filter(shopCountriesList, @(c) ::isInArray(c, skinCountries))
+      unlockFilters.UnlockSkin = ::u.filter(::shopCountriesList, @(c) ::isInArray(c, skinCountries))
     }
 
     //fill medal filters
     if ("Medal" in unlockFilters)
     {
       local medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
-      unlockFilters.Medal = ::u.filter(shopCountriesList, @(c) ::isInArray(c, medalCountries))
+      unlockFilters.Medal = ::u.filter(::shopCountriesList, @(c) ::isInArray(c, medalCountries))
     }
 
     local bntGetLinkObj = scene.findObject("btn_getLink")

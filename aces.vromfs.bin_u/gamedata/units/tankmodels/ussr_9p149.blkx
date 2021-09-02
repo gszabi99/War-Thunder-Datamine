@@ -129,9 +129,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -181,10 +178,6 @@
         },
         "ex_armor_04_dm": {
           "armorThickness": 7.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 7.0,
-          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -652,20 +645,6 @@
         "machine_gunner_02_dm": [],
         "machine_gunner_03_dm": [],
         "machine_gunner_04_dm": []
-      }
-    }
-  },
-  {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 7.0
-          }
-        }
       }
     }
   },
@@ -3084,17 +3063,6 @@
     }
   },
   {
-    "skin": {
-      "name": "ussr_modern_green",
-      "nameLocId": "skin/ussr_modern_green",
-      "descLocId": "skin/ussr_modern_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_modern_green*"
-      }
-    }
-  },
-  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -3127,8 +3095,14 @@
           "irProjectorNode": "",
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [800.0,600.0],
-              "noiseFactor": 0.04
+              "resolution": [500.0,300.0],
+              "noiseFactor": 0.05
+            },
+            "commanderViewIr": {
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
+              "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800.0,600.0],
@@ -3250,13 +3224,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

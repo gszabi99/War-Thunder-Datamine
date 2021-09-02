@@ -112,7 +112,7 @@ local function processPatchnotesList(response){
   }
   local result = []
   try {
-    result = response?.body ? json.parse(response.body.tostring())?.result ?? [] : []
+    result = json.parse((response?.body ?? "").tostring())?.result ?? []
   }
   catch(e) {
   }

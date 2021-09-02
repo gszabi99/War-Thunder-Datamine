@@ -8,7 +8,6 @@ local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
 local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -551,7 +550,7 @@ local logNameByType = {
     return false
   if (country == "country_0")
     return country_0_available
-  if (::isInArray(country, shopCountriesList))
+  if (::isInArray(country, ::shopCountriesList))
     return true
   return false
 }

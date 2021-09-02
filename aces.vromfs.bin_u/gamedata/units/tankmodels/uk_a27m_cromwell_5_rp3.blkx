@@ -699,7 +699,7 @@
   {
     "ammoStowages": {
       "ammo1": {
-        "removeLoadedAmmo": true,
+        "removeLoadedAmmo": false,
         "weaponTrigger": "gunner0",
         "fatalFire": true,
         "fatalExplosion": true,
@@ -730,16 +730,16 @@
         "shells": {
           "fatalFire": false,
           "fatalExplosion": false,
-          "ammo_turret_02_dm": {
-            "count": 1
-          },
-          "ammo_turret_01_dm": {
-            "count": 1
-          },
           "ammo_turret_04_dm": {
             "count": 1
           },
           "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_01_dm": {
             "count": 1
           }
         }
@@ -1805,8 +1805,7 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander",
-        "substitute": "machine_gunner"
+        "role": "commander"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",

@@ -29,7 +29,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    bulletsManager = ::UnitBulletsManager(unit, { isForcedAvailable = isForcedAvailable })
+    bulletsManager = ::UnitBulletsManager(unit)
     updateShowItemParams()
     setUnit(unit, true)
   }
@@ -424,7 +424,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return false
   }
 
-  getBulletsGroups = @() bulletsManager.getBulletsGroups()
+  getBulletsGroups = @() bulletsManager.getBulletsGroups(isForcedAvailable)
   getBulletGroupByIndex = @(groupIdx) getBulletsGroups()?[groupIdx]
 
   function getCurBullet(groupIdx)
@@ -555,7 +555,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onWeaponryActivate(obj)
   {
     local value = obj.getValue()
-    if (0 <= value && value < obj.childrenCount())
+    if (0 <= value && value <= obj.childrenCount())
       openChangeWeaponryMenu(obj.getChild(value).findObject("centralBlock"))
   }
 

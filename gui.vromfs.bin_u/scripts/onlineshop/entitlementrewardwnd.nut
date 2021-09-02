@@ -1,5 +1,6 @@
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local { getEntitlementView, getEntitlementLayerIcons } = require("scripts/onlineShop/entitlementView.nut")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 
 class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
 {
@@ -32,26 +33,44 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
     local decalsNames = entitlementConfig?.decalGift ?? []
     local attachablesNames = entitlementConfig?.attachableGift ?? []
     local skinsNames = entitlementConfig?.skinGift ?? []
-    local resourceType = ""
-    local resource = ""
+    local decoratorType = null
     if (decalsNames.len())
     {
-      resourceType = "decal"
-      resource = decalsNames[0]
+      decoratorType = ::g_decorator_type.DECALS
+      decorator = ::g_decorator.getDecorator(decalsNames[0], decoratorType)
     }
-    else if (attachablesNames.len())
+    if (attachablesNames.len())
     {
-      resourceType = "attachable"
-      resource = attachablesNames[0]
+      decoratorType = ::g_decorator_type.ATTACHABLES
+      decorator = ::g_decorator.getDecorator(attachablesNames[0], decoratorType)
     }
     else if (skinsNames.len())
     {
-      resourceType = "skin"
-      resource = skinsNames[0]
+      decoratorType = ::g_decorator_type.SKINS
+      decorator = ::g_decorator.getDecorator(skinsNames[0], decoratorType)
     }
 
-    if (resource != "")
-      updateResourceData(resource, resourceType)
+    if (!decorator)
+      return
+
+    local decorUnit = decoratorType == ::g_decorator_type.SKINS ?
+      ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id)) :
+      ::get_player_cur_unit()
+
+    if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit)
+      && canStartPreviewScene(false))
+    {
+      local freeSlotIdx = decoratorType.getFreeSlotIdx(decorUnit)
+      local slotIdx = freeSlotIdx != -1 ? freeSlotIdx
+        : (decoratorType.getAvailableSlots(decorUnit) - 1)
+
+      decoratorUnit = decorUnit
+      decoratorSlot = slotIdx
+
+      local obj = scene.findObject("btn_use_decorator")
+      if (::check_obj(obj))
+        obj.setValue(::loc("decorator/use/" + decoratorType.resourceType))
+    }
   }
 
   function getIconData() {

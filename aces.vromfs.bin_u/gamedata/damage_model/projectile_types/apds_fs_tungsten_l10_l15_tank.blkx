@@ -2,30 +2,19 @@
   "normalizationPreset": "apcr",
   "ricochetPreset": "apds_fs",
   "secondaryShattersPreset": "apds_fs",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.0,
+  "stucking": 0.7,
+  "stuckingAngle": 45.0,
   "bulletType": "apds_fs_tungsten_l10_l15_tank",
   "slopeEffectPreset": "apds_fs_tungsten_l10_l15_tank",
   "fresnel": [0.23,0.1,2.0],
   "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-  "stability": {
-    "precessionDamping": 0.3,
-    "ricochetAnglePrecessionFactor": 5.0,
-    "ricochetAngleOmegaFactor": 0.5,
-    "slopeToOmega": [1.0,10.0,0.0,1.0],
-    "angleLossStabilizationAfterRicochet": 30.0,
-    "penetrationReduction": [
-      {
-        "pnt": [0.0,1.0]
-      },
-      {
-        "pnt": [2.0,0.95]
-      },
-      {
-        "pnt": [10.0,0.5]
-      },
-      {
-        "pnt": [21.0,0.3]
-      }
-    ]
+  "stabilityRicochetModifier": {
+    "mod1": [0.0,0.2],
+    "mod2": [20.0,0.45]
   },
   "tracePattern": {
     "caliber": 10.0,

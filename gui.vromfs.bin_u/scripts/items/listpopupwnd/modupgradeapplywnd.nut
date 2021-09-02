@@ -7,7 +7,7 @@ class ::gui_handlers.ModUpgradeApplyWnd extends ::gui_handlers.ItemsListWndBase
   unit = null
   mod = null
 
-  static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = ALIGN.TOP)
+  static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = AL_ORIENT.TOP)
   {
     local list = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE)
     list = ::u.filter(list, @(item) item.canActivateOnMod(unitToActivate, modToActivate))

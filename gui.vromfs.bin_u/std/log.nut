@@ -6,7 +6,7 @@ local tostring_r = string.tostring_r
 local join = string.join //like join, but skip emptylines
 
 local function print_(val, separator="\n"){
-  print($"{val}{separator}")
+  ::print($"{val}{separator}")
 }
 const DEF_MAX_DEEPLEVEL = 4
 local function Log(tostringfunc=null) {
@@ -16,7 +16,7 @@ local function Log(tostringfunc=null) {
       out = tostring_r(vargv[0],{splitlines=false, compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL, tostringfunc=tostringfunc})
     else
       out = join(vargv.map(@(val) tostring_r(val,{splitlines=false, compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL, tostringfunc=tostringfunc}))," ")
-    dagorDebug.screenlog(out.slice(0,min(out.len(),200)))
+    dagorDebug.screenlog(out.slice(0,::min(out.len(),200)))
   }
 
   local function log(...) {
@@ -37,7 +37,7 @@ local function Log(tostringfunc=null) {
       vargv=vargv[0]
     local out = tostring_r(vargv,{tostringfunc=tostringfunc})
     local s = string.split(out,"\n")
-    for (local i=0; i < min(80,s.len()); i++) {
+    for (local i=0; i < ::min(80,s.len()); i++) {
       dagorDebug.screenlog(s[i])
     }
   }
@@ -68,11 +68,11 @@ local function Log(tostringfunc=null) {
   }
 
   local function wlog(watched, prefix = "", logger = log) {
-    if (type(prefix) == "function") {
+    if (::type(prefix) == "function") {
       logger = prefix
       prefix = ""
     }
-    if (type(watched) != "array")
+    if (::type(watched) != "array")
       watched = [watched]
     prefix = prefix != "" ? $"{prefix}" : null
     if (prefix != null)

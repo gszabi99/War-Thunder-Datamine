@@ -1781,8 +1781,7 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander",
-        "substitute": "machine_gunner"
+        "role": "commander"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2540,6 +2539,27 @@
             "lim1": [-180.0,-140.0,-4.0,20.0],
             "lim2": [-140.0,140.0,-10.0,20.0],
             "lim3": [140.0,180.0,-4.0,20.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": false,
+            "hasHorizontal": false,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 50.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 0.7,
+            "verticalSpeedLimitKPH": 24.0,
+            "speedFromVehicleVerticalMult": -1.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.0]
+              },
+              {
+                "row": [10.0,0.05]
+              },
+              {
+                "row": [12.0,0.4]
+              }
+            ]
           }
         }
       },
@@ -2642,8 +2662,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
           "bullets": 500,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,

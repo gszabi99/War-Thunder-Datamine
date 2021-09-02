@@ -126,20 +126,6 @@
     "radarDeployTime": 3.3
   },
   {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
-          }
-        }
-      }
-    }
-  },
-  {
     "DamageEffects": [
       {
         "part": [
@@ -1133,16 +1119,6 @@
     ]
   },
   {
-    "attachables": {
-      "ex_decor_l_13_dm": true,
-      "ex_decor_r_08_dm": true,
-      "ex_decor_l_12_dm": true,
-      "ex_decor_r_16_dm": true,
-      "ex_decor_r_15_dm": true,
-      "ex_decor_l_08_dm": true
-    }
-  },
-  {
     "sound": {
       "EngineName": "engine_type74",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -1169,7 +1145,6 @@
         "trackMass": 3000.0,
         "CenterOfGravityClampY": [0.0,0.6],
         "cls_body": 0.7,
-        "cls_body_01": 0.7,
         "cls_turret": 0.3
       },
       "tracks": {
@@ -1179,8 +1154,7 @@
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
-        "cls_body": "convex_hull",
-        "cls_body_01": "convex_hull"
+        "cls_body": "convex_hull"
       },
       "engine": {
         "horsePowers": 720.0,
@@ -1816,9 +1790,10 @@
   },
   {
     "ircmProjector": {
-      "node": "bone_gun_lantern",
+      "node": "ex_decor_01",
       "beamRadius": [1400.0,100.0],
-      "projectorPower": [0.02,0.07]
+      "projectorPower": [0.02,0.07],
+      "glowOffset": [0.65,0.3,-0.7]
     }
   },
   {
@@ -2899,7 +2874,7 @@
           "sleeveMesh": "auto_cannon_cartridge_case",
           "openHatchTime": 0.0,
           "sleevesLifeTime": 5.0,
-          "sleeveImpulse": [1.0,-4.0,-4.0],
+          "sleeveImpulse": [1.0,-8.0,-4.0],
           "linkSleeveToGun": true,
           "aimingFromBoneGun": true,
           "recoilMultiplier": 0.2,
@@ -3005,7 +2980,7 @@
           "sleeveMesh": "auto_cannon_cartridge_case",
           "openHatchTime": 0.0,
           "sleevesLifeTime": 5.0,
-          "sleeveImpulse": [1.0,-2.0,-2.0],
+          "sleeveImpulse": [1.0,-8.0,-4.0],
           "linkSleeveToGun": true,
           "aimingFromBoneGun": true,
           "recoilMultiplier": 0.2,
@@ -3176,14 +3151,6 @@
     }
   },
   {
-    "default_skin": {
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_modern_green*"
-      }
-    }
-  },
-  {
     "skin": {
       "name": "jp_camo_post_green",
       "nameLocId": "skin/jp_camo_post_green",
@@ -3257,28 +3224,6 @@
       "replace_tex": {
         "from": "jp_camo_sdf_green*",
         "to": "jp_camo_winter_late*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "jp_camo_post_black_gray_green",
-      "nameLocId": "skin/jp_camo_post_black_gray_green",
-      "descLocId": "skin/jp_camo_post_black_gray_green/desc",
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_post_black_gray_green*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "jp_camo_post_sand_gray_green",
-      "nameLocId": "skin/jp_camo_post_sand_gray_green",
-      "descLocId": "skin/jp_camo_post_sand_gray_green/desc",
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_post_sand_gray_green*"
       }
     }
   },
@@ -3374,7 +3319,7 @@
                 "sleeveMesh": "auto_cannon_cartridge_case",
                 "openHatchTime": 0.0,
                 "sleevesLifeTime": 5.0,
-                "sleeveImpulse": [1.0,-4.0,-4.0],
+                "sleeveImpulse": [1.0,-8.0,-4.0],
                 "linkSleeveToGun": true,
                 "aimingFromBoneGun": true,
                 "recoilMultiplier": 0.2,
@@ -3480,7 +3425,7 @@
                 "sleeveMesh": "auto_cannon_cartridge_case",
                 "openHatchTime": 0.0,
                 "sleevesLifeTime": 5.0,
-                "sleeveImpulse": [1.0,-2.0,-2.0],
+                "sleeveImpulse": [1.0,-8.0,-4.0],
                 "linkSleeveToGun": true,
                 "aimingFromBoneGun": true,
                 "recoilMultiplier": 0.2,

@@ -1,6 +1,6 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+
 
 ::g_qi_view_utils <- {}
 
@@ -25,7 +25,7 @@ g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj,
   }
 
   //fillheader
-  foreach(i, countryName in shopCountriesList)
+  foreach(i, countryName in ::shopCountriesList)
     headerColumns.append({
       image = ::get_country_icon(countryName, false, !::events.isCountryAvailable(event, countryName))
     })
@@ -50,7 +50,7 @@ g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj,
         isEven = rank % 2 == 0
       }
 
-      foreach(i, country in shopCountriesList)
+      foreach(i, country in ::shopCountriesList)
         row.columns.append({
           id = country + "_" + rank
           text = ::events.isCountryAvailable(event, country) ? "0" : "-"

@@ -1,5 +1,3 @@
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-
 /**
  * Action to perform after change country window closes.
  */
@@ -130,10 +128,10 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
     local res = []
     local currentMode = ::game_mode_manager.getCurrentGameMode()
     local source = ::getTblValue("source", currentMode, {})
-    foreach (country in shopCountriesList)
+    for (local i = 0; i < ::shopCountriesList.len(); ++i)
     {
-      if (::events.isCountryAvailable(source, country))
-        res.append(country)
+      if (::events.isCountryAvailable(source, ::shopCountriesList[i]))
+        res.append(::shopCountriesList[i])
     }
     return res
   }

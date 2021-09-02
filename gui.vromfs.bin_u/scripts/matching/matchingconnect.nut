@@ -76,7 +76,7 @@ g_matching_connect.showProgressBox <- function showProgressBox(cancelFunc = null
   progressBox = ::scene_msg_box("matching_connect_progressbox",
                                 null,
                                 ::loc("yn1/connecting_msg"),
-                                [["cancel", cancelFunc ?? function(){}]],
+                                [["cancel", cancelFunc || function(){}]],
                                 "cancel",
                                 { waitAnim = true,
                                   delayedButtons = MATCHING_CONNECT_TIMEOUT

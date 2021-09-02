@@ -24,16 +24,14 @@ local function isDataBlock(obj) {
 }
 
 local callableTypes = ["function","table","instance"]
-local recursivetypes =["table","array","class"]
-
 local function isCallable(v) {
-  return callableTypes.indexof(type(v)) != null && (v.getfuncinfos() != null)
+  return callableTypes.indexof(::type(v)) != null && (v.getfuncinfos() != null)
 }
 
 local function mkIteratee(func){
   local infos = func.getfuncinfos()
   local params = infos.parameters.len()-1
-  assert(params>0 && params<3)
+  ::assert(params>0 && params<3)
   if (params == 3)
     return func
   else if (params==2)
@@ -146,14 +144,14 @@ local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams =
 local function isEqual(val1, val2, customIsEqual={}){
   if (val1 == val2)
     return true
-  local valType = type(val1)
-  if (valType != type(val2))
+  local valType = ::type(val1)
+  if (valType != ::type(val2))
     return false
 
   if (valType in customIsEqual)
     return customIsEqual[valType](val1, val2)
 
-  if (recursivetypes.contains(valType)) {
+  if (valType == "array" || valType=="table") {
     if (val1.len() != val2.len())
       return false
     foreach(key, val in val1) {
@@ -232,7 +230,7 @@ foreach (pair in reversed_enumerate(arr)) { // unfortunatel we have no destructu
 // [0]: a
 */
 local function reversed_enumerate(obj) {
-  assert(isArray(obj), "reversed supported only for arrays")
+  assert(::type(obj)=="array", "reversed supported only for arrays")
   local l = obj.len()
   for (local i=l-1; i>=0; --i)
     yield [i, obj[i]]
@@ -243,7 +241,7 @@ local function isEqualSimple(list1, list2, compareFunc=null) {
   compareFunc = compareFunc ?? @(a,b) a!=b
   if (list1 == list2)
     return true
-  if (type(list1) != type(list2) || list1.len() != list2.len())
+  if (::type(list1) != ::type(list2) || list1.len() != list2.len())
     return false
   foreach (val, key in list1) {
     if (key not in list2 || compareFunc(val, list2[key]))
@@ -296,64 +294,6 @@ local function indexBy(list, iteratee) {
   return res
 }
 
-local function deep_clone(val) {
-  if (!recursivetypes.contains(type(val)))
-    return val
-  return val.map(deep_clone)
-}
-
-
-//Updates (mutates) target arrays and tables recursively with source
-/*
- * - if types of target and source doesn't match, target will be overwritten by source
- * - primitive types and arrays at target will be fully overwritten by source
- * - values of target table with same keys from source table will be overritten
- * - new key value pairs from source table will be added to target table
- * - it's impossible to delete key from target table, only overwrite with null value
- */
-local function deep_update(target, source) {
-  if ((recursivetypes.indexof(type(source)) == null)) {
-    target = source
-    return target
-  }
-  if (type(target)!=type(source) || isArray(source)){
-    target = deep_clone(source)
-    return target
-  }
-  foreach(k, v in source){
-    if (!(k in target)){
-      target[k] <- deep_clone(v)
-    }
-    else if (!recursivetypes.contains(type(v))){
-      target[k] = v
-    }
-    else {
-      target[k]=deep_update(target[k], v)
-    }
-  }
-  return target
-}
-
-//Creates new value from target and source, by merges (mutates) target arrays and tables recursively with source
-local function deep_merge(target, source) {
-  local ret = deep_clone(target)
-  return deep_update(ret, source)
-}
-//
-local function flatten(list, depth = -1, level=0){
-  if (!isArray(list))
-    return list
-  local res = []
-  foreach (i in list){
-    if (!isArray(i) || level==depth)
-      res.append(i)
-    else {
-      res.extend(flatten(i, depth, level))
-    }
-  }
-  return res
-}
-
 return {
   invert
   tablesCombine
@@ -375,8 +315,4 @@ return {
   isCallable
   isDataBlock
   indexBy
-  deep_clone
-  deep_update
-  deep_merge
-  flatten
 }

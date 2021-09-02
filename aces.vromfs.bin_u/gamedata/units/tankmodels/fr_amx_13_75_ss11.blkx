@@ -261,16 +261,6 @@
         },
         "turret_04_bottom_dm": {
           "armorThickness": 5.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_02_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
-          "hidableInXrayViewer": true
         }
       },
       "turret_RHA": {
@@ -803,34 +793,6 @@
         }
       }
     }
-  },
-  {
-    "xray_viewer_data": [
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_01_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_01_dm",
-              "xrayTextThickness": 8.0
-            }
-          }
-        }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_hull_02_dm",
-              "xrayTextThickness": 8.0
-            }
-          }
-        }
-      }
-    ]
   },
   {
     "sound": {
@@ -2332,18 +2294,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.06,
-        "width": 0.38,
-        "tracksTensionK": [6.5,8.0,3.0],
-        "trackMesh": "fr_amx_13_early_phys_track_line",
-        "trackLen": 0.122,
-        "trackCount": 85,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.08,
-        "trackMaxHeight": 1.13,
-        "trackStartOffset": 0.12,
-        "trackEmitSparks": true
+        "height": 0.045,
+        "width": 0.38
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2392,11 +2344,7 @@
         "defaultDampeningForce": [60000.0,60000.0],
         "frontBackGearRadius": 0.265,
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.315,
-        "wheel_l_drive": 0.315,
-        "wheel_r_back": 0.28,
-        "wheel_l_back": 0.28
+        "dampeningCompressionRatio": 0.15
       }
     }
   },

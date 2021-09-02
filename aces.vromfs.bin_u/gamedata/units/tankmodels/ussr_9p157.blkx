@@ -138,9 +138,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -1885,7 +1882,7 @@
           },
           "limits": {
             "yaw": [-90.0,90.0],
-            "pitch": [-10.0,20.0]
+            "pitch": [0.0,0.0]
           }
         }
       }
@@ -2641,9 +2638,13 @@
               "resolution": [800.0,600.0],
               "noiseFactor": 0.04
             },
-            "driverIr": {
+            "commanderViewThermal": {
               "resolution": [800.0,600.0],
-              "lightMult": 5.0,
+              "noiseFactor": 0.04
+            },
+            "driverIr": {
+              "resolution": [1200.0,800.0],
+              "lightMult": 7.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }
@@ -2771,13 +2772,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

@@ -5,7 +5,6 @@ local { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
 } = require("scripts/tutorials/tutorialsData.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -183,7 +182,7 @@ local function onOpenTutorialFromPromo(owner, params = []) {
 }
 
 local function getTutorialData() {
-  local curUnit = getShowedUnit()
+  local curUnit = ::get_show_aircraft()
   local {
     mission = null,
     id = ""

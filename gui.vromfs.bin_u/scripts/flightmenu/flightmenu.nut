@@ -3,7 +3,6 @@ local flightMenuButtonTypes = require("scripts/flightMenu/flightMenuButtonTypes.
 local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
@@ -283,7 +282,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (canBailout())
     {
-      msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
+      msgBox("question_bailout", ::get_player_cur_unit()?.unitType.getBailoutQuestionText() ?? "",
         [
           ["yes", doBailout],
           ["no"]

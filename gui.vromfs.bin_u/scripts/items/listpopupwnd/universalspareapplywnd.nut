@@ -10,7 +10,7 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
   maxAmount = 1
   minAmount = 1
 
-  static function open(unitToActivate, wndAlignObj = null, wndAlign = ALIGN.BOTTOM)
+  static function open(unitToActivate, wndAlignObj = null, wndAlign = AL_ORIENT.BOTTOM)
   {
     local list = ::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE)
     list = ::u.filter(list, @(item) item.canActivateOnUnit(unitToActivate))

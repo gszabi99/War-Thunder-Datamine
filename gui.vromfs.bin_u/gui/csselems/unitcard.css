@@ -818,24 +818,15 @@ middleline shopItemPrice {
   text-align:center;
 }
 
-unitCell bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
-unitCell topline > shopItemText,
-unitItemContainer bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
-unitItemContainer topline > shopItemText,
-bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect] {
-  behaviour:OverflowScroller;
-  move-pixel-per-sec:10*@scrn_tgt/100.0;
-  move-sleep-time:2000;
-  move-delay-time:2000;
-  move-start:no;
-}
-
 unitCell[selected=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitCell[selected=yes] topline > shopItemText,
 unitItemContainer[chosen=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitItemContainer[chosen=yes] topline > shopItemText,
 :hover > bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect] {
-  move-start:yes;
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:10*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
 }
 
 [noMoney=yes] shopItemPrice, shopItemText[locked=yes] {

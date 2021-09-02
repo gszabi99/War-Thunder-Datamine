@@ -126,9 +126,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -192,9 +189,9 @@
       "turret_composite_armor": {
         "armorClass": "t_62m_composite_armor",
         "hidableInXrayViewer": true,
-        "cumulativeArmorQuality": 0.675,
         "composite_armor_hull_01_dm": {
-          "armorThickness": 120.0
+          "armorThickness": 120.0,
+          "cumulativeArmorQuality": 0.65
         },
         "composite_armor_turret_01_dm": {
           "armorThickness": 200.0
@@ -217,15 +214,15 @@
           "armorThickness": 50.0
         },
         "turret_03_bottom_dm": {
-          "armorThickness": 55.0,
+          "armorThickness": 65.0,
           "hidableInViewer": true
         },
         "turret_02_bottom_dm": {
-          "armorThickness": 80.0,
+          "armorThickness": 85.0,
           "hidableInViewer": true
         },
         "turret_03_front_dm": {
-          "armorThickness": 55.0,
+          "armorThickness": 65.0,
           "hidableInViewer": true
         }
       },
@@ -2720,8 +2717,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 60.0,
+          "speedPitch": 40.0,
           "bullets": 300,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
@@ -3712,8 +3709,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 60.0,
+                "speedPitch": 40.0,
                 "bullets": 300,
                 "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
@@ -4129,13 +4126,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

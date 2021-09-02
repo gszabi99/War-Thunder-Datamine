@@ -510,16 +510,3 @@ cyber_cafe_boost.loadTables <- function loadTables()
   dagor.debug("get_pve_time_award_stage stage "+timeAwardStage+" sessionTime "+sessionTime+" timeAwardStep "+timeAwardStep+" minutes")
   return timeAwardStage
 }
-
-local maxEconomicRank = null
-local function getMaxEconomicRank() {
-  if (maxEconomicRank != null)
-    return maxEconomicRank
-
-  maxEconomicRank = ::get_wpcost_blk()?.economicRankMax
-  return maxEconomicRank ?? 29
-}
-
-return {
-  getMaxEconomicRank
-}

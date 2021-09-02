@@ -20,7 +20,7 @@
   "fxSandDust": "dust_ground_wave_sand_big",
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
-  "fxWaterShockWave": "dust_waterwave_big",
+  "fxWaterShockWave": "water_shock_wave_big",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -61,7 +61,7 @@
     "explosionEffect": "hit_106_132mm_dirt_ap",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
-    "waterCollisionEffect": "hit_106_132mm_water_ap",
+    "waterCollisionEffect": "hit_106_132mm_water",
     "explosionPatchRadius": 2.8,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.2],
@@ -209,11 +209,11 @@
   "105mm_usa_HESH": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 11.4,
+      "mass": 14.85,
       "explosiveType": "rdx",
-      "explosiveMass": 1.97,
+      "explosiveMass": 2.99,
       "caliber": 0.105,
-      "speed": 720.0,
+      "speed": 730.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
@@ -229,7 +229,7 @@
       "fresnel": [0.23,0.1,2.0],
       "cumulativeByNormal": true,
       "shellAnimation": "video/shells_animations/hesh.ivf",
-      "bulletName": "105mm_slspgr_m61",
+      "bulletName": "105mm_l35",
       "hitPowerMult": 20.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -239,7 +239,7 @@
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_he",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
@@ -458,6 +458,12 @@
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
@@ -468,28 +474,11 @@
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_ap",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
-      "stability": {
-        "precessionDamping": 0.3,
-        "ricochetAnglePrecessionFactor": 5.0,
-        "ricochetAngleOmegaFactor": 0.5,
-        "slopeToOmega": [1.0,10.0,0.0,1.0],
-        "angleLossStabilizationAfterRicochet": 30.0,
-        "penetrationReduction": [
-          {
-            "pnt": [0.0,1.0]
-          },
-          {
-            "pnt": [2.0,0.95]
-          },
-          {
-            "pnt": [10.0,0.5]
-          },
-          {
-            "pnt": [21.0,0.3]
-          }
-        ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.2],
+        "mod2": [20.0,0.45]
       },
       "tracePattern": {
         "caliber": 10.0,
@@ -602,11 +591,11 @@
   "105mm_sweden_HE": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 15.5,
+      "mass": 14.4,
       "explosiveType": "tnt",
       "explosiveMass": 1.83,
       "caliber": 0.105,
-      "speed": 650.0,
+      "speed": 680.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -628,7 +617,7 @@
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_he",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
@@ -870,7 +859,7 @@
       "groundCollisionEffect": "smoke_shell_explosion",
       "groundFxScale": [1.2,1.4],
       "ricochetEffect": "cannon_ricochet",
-      "waterCollisionEffect": "hit_59_80mm_water",
+      "waterCollisionEffect": "120-203_smoke_water_splash",
       "waterFxScale": [0.7,0.8],
       "explosionPatchRadius": 1.5,
       "stabilityRicochetModifier": {

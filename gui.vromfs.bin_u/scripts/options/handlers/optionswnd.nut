@@ -1,6 +1,6 @@
 local optionsListModule = require("scripts/options/optionsList.nut")
 local { isCrossNetworkChatEnabled } = require("scripts/social/crossplay.nut")
-local { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
+local { fillSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
   } = require("scripts/options/systemOptions.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
@@ -53,6 +53,10 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
     groupsObj.show(true)
     groupsObj.setValue(curOption)
+
+    showSceneBtn("btn_postfx_settings", !::is_compatibility_mode())
+    showSceneBtn("btn_hdr_settings", ::is_hdr_enabled())
+    showSceneBtn("btn_preloader_settings", ::has_feature("LoadingBackgroundFilter"))
 
     local showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     showSceneBtn("web_ui_button", showWebUI)
@@ -456,11 +460,6 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   function onSystemOptionsRestartClient(obj)
   {
     onRestartClient()
-  }
-
-  function onSystemOptionsReset(obj)
-  {
-    resetSystemGuiOptions()
   }
 
   function passValueToParent(obj)

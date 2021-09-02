@@ -1,11 +1,11 @@
-from "%darg/ui_imports.nut" import *
+local Color = ::Color
+local defHeight = ::calc_comp_size({rendObj = ROBJ_DTEXT text="A"})[1]
 
-local defHeight = calc_str_box("A")[1]
 
 local function listItem(text, action, is_current, params={}) {
-  local group = ElemGroup()
-  local stateFlags = Watched(0)
-  local xmbNode = XmbNode()
+  local group = ::ElemGroup()
+  local stateFlags = ::Watched(0)
+  local xmbNode = ::XmbNode()
 
   return function() {
     local textColor
@@ -42,7 +42,7 @@ local function closeButton(action) {
     behavior = Behaviors.Button
     onClick = action
     rendObj = ROBJ_FRAME
-    borderWidth = hdpx(1)
+    borderWidth = ::hdpx(1)
     color = Color(250,200,50,200)
   }
 }
@@ -70,7 +70,7 @@ local function boxCtor(params=null) {
       margin = sh(0.5)
       color = color
       commands = [
-        [VECTOR_WIDTH, hdpx(1)],
+        [VECTOR_WIDTH, ::hdpx(1)],
         [VECTOR_POLY, 0,0, 50,100, 100,0],
       ]
     }
@@ -89,7 +89,7 @@ local function boxCtor(params=null) {
 
 
 local function onOpenDropDown(itemXmbNode) {
-  gui_scene.setXmbFocus(null)
+  ::gui_scene.setXmbFocus(null)
 }
 
 

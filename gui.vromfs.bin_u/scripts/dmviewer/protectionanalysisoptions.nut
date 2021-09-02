@@ -14,7 +14,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { WEAPON, MODIFICATION, SINGLE_BULLET } = require("scripts/weaponry/weaponryTooltips.nut")
 local { hasUnitAtRank } = require("scripts/airInfo.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local options = {
   types = []
@@ -95,8 +94,6 @@ local function updateArmorPiercingText(obj) {
   descObj.setValue(desc)
 }
 
-local isBulletAvailable = @() options?.BULLET.value != null
-
 options.template <- {
   id = "" //used from type name
   sortId = 0
@@ -161,14 +158,14 @@ options.addTypes <- function(typesTable)
   types.sort(@(a, b) a.sortId <=> b.sortId)
 }
 
-local sortIdCount = 0
+local sortId = 0
 options.addTypes({
   UNKNOWN = {
-    sortId = sortIdCount++
+    sortId = sortId++
     isVisible = @() false
   }
   UNITTYPE = {
-    sortId = sortIdCount++
+    sortId = sortId++
     labelLocId = "mainmenu/threat"
     isVisible = @() getThreatEsUnitTypes().len() > 1
 
@@ -184,14 +181,14 @@ options.addTypes({
     }
   }
   COUNTRY = {
-    sortId = sortIdCount++
+    sortId = sortId++
     controlStyle = "iconType:t='small';"
     getLabel = @() options.UNITTYPE.isVisible() ? null : ::loc("mainmenu/threat")
 
     updateParams = function(handler, scene)
     {
       local unitType = options.UNITTYPE.value
-      values = ::u.filter(shopCountriesList, @(c) ::isCountryHaveUnitType(c, unitType))
+      values = ::u.filter(::shopCountriesList, @(c) ::isCountryHaveUnitType(c, unitType))
       items  = ::u.map(values, @(c) { text = ::loc(c), image = ::get_country_icon(c) })
       local preferredCountry = value ?? options.targetUnit.shopCountry
       value = values.indexof(preferredCountry) != null ? preferredCountry
@@ -199,7 +196,7 @@ options.addTypes({
     }
   }
   RANK = {
-    sortId = sortIdCount++
+    sortId = sortId++
 
     updateParams = function(handler, scene)
     {
@@ -217,7 +214,7 @@ options.addTypes({
     }
   }
   UNIT = {
-    sortId = sortIdCount++
+    sortId = sortId++
 
     updateParams = function(handler, scene)
     {
@@ -243,7 +240,7 @@ options.addTypes({
     }
   }
   BULLET = {
-    sortId = sortIdCount++
+    sortId = sortId++
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 
@@ -324,7 +321,7 @@ options.addTypes({
                 //Generate set of identical bullets by getting rid of all bullets excluding current.
                 bSet = (clone bulletsSet).map(
                   @(val, p) p == "bullets"
-                    ? [bulletName]
+                    ? [val[idx]]
                     : (p != "bulletNames" && p != "bulletDataByType"
                       && p != "explosiveType" && p != "explosiveMass")
                         ? val
@@ -399,15 +396,10 @@ options.addTypes({
 
     afterChangeFunc = function(obj) {
       updateArmorPiercingText(options.nestObj)
-      local parentObj = obj.getParent().getParent()
-      if (!parentObj?.isValid())
-        return
-
-      parentObj.display = isBulletAvailable() ? "show" : "hide"
     }
   }
   DISTANCE = {
-    sortId = sortIdCount++
+    sortId = sortId++
     labelLocId = "distance"
     value = -1
     defValue = -1
@@ -472,15 +464,12 @@ options.addTypes({
 
     updateView = function(handler, scene) {
       local obj = scene.findObject(id)
-      if (!obj?.isValid())
-        return
-      local parentObj = obj.getParent().getParent()
-      if (isBulletAvailable()) {
+      if (::check_obj(obj))
+      {
         obj.max = maxValue
         obj.optionAlign = step
         obj.setValue(value)
       }
-      parentObj.display = isBulletAvailable() ? "show" : "hide"
     }
   }
 })

@@ -341,6 +341,37 @@
           "ex_armor_body_r_01_dm": []
         }
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 100.0,
+        "armorThickness": 10.0,
+        "gun_barrel_dm": [],
+        "gun_barrel_01_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_03_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_04_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_05_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
@@ -698,17 +729,6 @@
           "armorThrough": 20.0,
           "armorThickness": 10.0,
           "hp": 100.0
-        }
-      },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 120.0,
-        "armorThickness": 20.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
         }
       }
     }
@@ -2272,50 +2292,11 @@
         "AdvancedMass": true,
         "trackMass": 400.0
       },
-      "tracks": [
-        {
-          "animationMultiplier": -0.565
-        },
-        {
-          "height": 0.05
-        },
-        {
-          "width": 0.4
-        },
-        {
-          "tracksTensionK": [10.0,6.0,4.0]
-        },
-        {
-          "trackMesh": "us_lvt_a_1_phys_track_line"
-        },
-        {
-          "trackLen": 0.119
-        },
-        {
-          "trackCount": 125
-        },
-        {
-          "trackFadeTime": 1.1
-        },
-        {
-          "trackConnector": false
-        },
-        {
-          "trackStartOffset": 0.03
-        },
-        {
-          "trackEmitSparks": false
-        },
-        {
-          "trackEmitSparks": true
-        },
-        {
-          "trackMaxHeight": 1.93
-        },
-        {
-          "trackMaxSinking": 0.1
-        }
-      ],
+      "tracks": {
+        "animationMultiplier": -0.565,
+        "height": 0.045,
+        "width": 0.4
+      },
       "collisionProps": {
         "cls_turret": "convex_hull",
         "cls_body": "convex_hull"
@@ -2361,39 +2342,7 @@
         "defaultDampeningForce": [27000.0,27000.0],
         "frontBackGearRadius": 0.35,
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.35,
-        "wheel_l_drive": 0.35,
-        "wheel_r_back": 0.3,
-        "wheel_l_back": 0.3,
-        "wheel_r_top_01": 0.1,
-        "wheel_r_top_02": 0.1,
-        "wheel_r_top_03": 0.1,
-        "wheel_l_top_01": 0.1,
-        "wheel_l_top_02": 0.1,
-        "wheel_l_top_03": 0.1,
-        "wheel_r_01": 0.15,
-        "wheel_r_02": 0.15,
-        "wheel_r_03": 0.15,
-        "wheel_r_04": 0.15,
-        "wheel_r_05": 0.15,
-        "wheel_r_06": 0.15,
-        "wheel_r_07": 0.15,
-        "wheel_r_08": 0.15,
-        "wheel_r_09": 0.15,
-        "wheel_r_10": 0.15,
-        "wheel_r_11": 0.15,
-        "wheel_l_01": 0.15,
-        "wheel_l_02": 0.15,
-        "wheel_l_03": 0.15,
-        "wheel_l_04": 0.15,
-        "wheel_l_05": 0.15,
-        "wheel_l_06": 0.15,
-        "wheel_l_07": 0.15,
-        "wheel_l_08": 0.15,
-        "wheel_l_09": 0.15,
-        "wheel_l_10": 0.15,
-        "wheel_l_11": 0.15
+        "dampeningCompressionRatio": 0.15
       },
       "floats": [
         {
@@ -3027,8 +2976,7 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander",
-        "substitute": "machine_gunner"
+        "role": "commander"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",

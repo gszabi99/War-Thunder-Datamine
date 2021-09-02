@@ -37,7 +37,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   {
     scene.findObject("edit_box_window_header").setValue(title)
     scene.findObject("editbox_label").setValue(label)
-    checkWarningFunc = checkWarningFunc ?? @(...) true
+    checkWarningFunc = checkWarningFunc || @(...) true
 
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
 

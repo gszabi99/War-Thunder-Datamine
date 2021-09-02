@@ -120,9 +120,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -258,12 +255,6 @@
         },
         "turret_10_top_dm": {
           "armorThickness": 15.0
-        },
-        "turret_11_side_dm": {
-          "armorThickness": 50.0
-        },
-        "turret_11_back_dm": {
-          "armorThickness": 50.0
         }
       },
       "turret_composite_armor": {
@@ -430,21 +421,36 @@
         "ex_armor_turret_09_dm": [],
         "ex_armor_turret_10_dm": []
       },
-      "era_hull_front": {
+      "era_hull": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 20.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
         "cumulativeArmorQuality": 7.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
+        "ex_era_hull_01_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_02_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_03_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_04_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_05_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_06_dm": {
+          "armorThickness": 30.0
+        },
         "ex_era_hull_07_dm": [],
         "ex_era_hull_08_dm": [],
         "ex_era_hull_09_dm": [],
@@ -452,42 +458,29 @@
         "ex_era_hull_11_dm": [],
         "ex_era_hull_12_dm": [],
         "ex_era_hull_13_dm": [],
-        "ex_era_hull_14_dm": []
+        "ex_era_hull_14_dm": [],
+        "ex_era_hull_15_dm": [],
+        "ex_era_hull_16_dm": [],
+        "ex_era_hull_17_dm": [],
+        "ex_era_hull_18_dm": [],
+        "ex_era_hull_19_dm": [],
+        "ex_era_hull_20_dm": [],
+        "ex_era_hull_21_dm": [],
+        "ex_era_hull_22_dm": [],
+        "ex_era_hull_23_dm": [],
+        "ex_era_hull_24_dm": [],
+        "ex_era_hull_25_dm": [],
+        "ex_era_hull_26_dm": [],
+        "ex_era_hull_27_dm": []
       },
-      "era_hull_side": {
+      "era_turret": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
         "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 20.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "responseImpulse": 0.5,
-        "ex_era_hull_01_dm": [],
-        "ex_era_hull_02_dm": [],
-        "ex_era_hull_03_dm": [],
-        "ex_era_hull_04_dm": [],
-        "ex_era_hull_05_dm": [],
-        "ex_era_hull_06_dm": []
-      },
-      "era_turret_front": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 130.0,
         "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 30.0,
         "genericDamageMult": 3.0,
-        "genericArmorQuality": 1.7,
-        "genericLongRodArmorQuality": 0.8,
         "cumulativeArmorQuality": 7.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
@@ -499,21 +492,7 @@
         "ex_era_turret_05_dm": [],
         "ex_era_turret_06_dm": [],
         "ex_era_turret_07_dm": [],
-        "ex_era_turret_08_dm": []
-      },
-      "era_turret_top": {
-        "armorClass": "ERA_K_V",
-        "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 450.0,
-        "genericEffectiveThicknessMax": 350.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
-        "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericDamageMult": 3.0,
-        "cumulativeArmorQuality": 7.75,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
+        "ex_era_turret_08_dm": [],
         "ex_era_turret_09_dm": [],
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
@@ -1194,7 +1173,7 @@
         "titleLoc": "CHA_tank",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_02_dm",
+            "dmPart": "turret_03_side_dm",
             "xrayTextThickness": [240.0,180.0]
           }
         }
@@ -2889,11 +2868,11 @@
           ],
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-5.67,13.78]
+            "pitch": [-6.22,13.78]
           },
           "limitsTable": {
             "lim1": [-180.0,-150.0,-3.78,13.78],
-            "lim2": [-150.0,150.0,-5.67,13.78],
+            "lim2": [-150.0,150.0,-6.22,13.78],
             "lim3": [150.0,180.0,-3.78,13.78]
           },
           "gunStabilizer": {
@@ -3019,8 +2998,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
           "bullets": 300,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3043,30 +3022,6 @@
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-4.0,75.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-8.0,15.0]
           }
         }
       },
@@ -3167,7 +3122,21 @@
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15,
         "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31
+        "wheel_l_drive": 0.31,
+        "wheel_r_front": 0.3,
+        "wheel_l_front": 0.3,
+        "wheel_r_01": 0.39,
+        "wheel_r_02": 0.39,
+        "wheel_r_03": 0.39,
+        "wheel_r_04": 0.39,
+        "wheel_r_05": 0.39,
+        "wheel_r_06": 0.39,
+        "wheel_l_01": 0.39,
+        "wheel_l_02": 0.39,
+        "wheel_l_03": 0.39,
+        "wheel_l_04": 0.39,
+        "wheel_l_05": 0.39,
+        "wheel_l_06": 0.39
       }
     }
   },
@@ -3719,19 +3688,6 @@
     ]
   },
   {
-    "commanderView": {
-      "optics": "commander_optics_square",
-      "zoomOutFov": 15.0,
-      "zoomInFov": 14.7,
-      "sightSize": [0.29,0.2],
-      "ircmProjector": {
-        "node": "bone_commander_sight_v",
-        "beamRadius": [600.0,50.0],
-        "projectorPower": [0.02,0.04]
-      }
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
@@ -3857,11 +3813,11 @@
                 ],
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-5.67,13.78]
+                  "pitch": [-6.22,13.78]
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-150.0,-3.78,13.78],
-                  "lim2": [-150.0,150.0,-5.67,13.78],
+                  "lim2": [-150.0,150.0,-6.22,13.78],
                   "lim3": [150.0,180.0,-3.78,13.78]
                 },
                 "gunStabilizer": {
@@ -3987,8 +3943,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -4017,30 +3973,6 @@
             {
               "Weapon": {
                 "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
-                "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-8.0,15.0]
-                }
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
                 "weaponType": "rockets",
@@ -4571,13 +4503,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

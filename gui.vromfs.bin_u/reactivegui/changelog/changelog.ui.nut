@@ -59,7 +59,8 @@ local function patchnote(v) {
       text = v?.title ?? v.tVersion
     }]
     if ((stateFlags.value & S_HOVER) != 0)
-      children.append(focusBorder({ maxWidth = maxPatchnoteWidth }))
+      children.append({ hotkeys = [[$"{JB.A} | J:RT", @() choosePatchnote(v)]] },
+        focusBorder({ maxWidth = maxPatchnoteWidth }))
     return {
       watch = [stateFlags, curPatchnote]
       rendObj = ROBJ_BOX

@@ -28,7 +28,7 @@
   "sound_pathStudio": "ground/weapon/cannons",
   "sound": "40mm_kan",
   "sound_inside": "40mm_kan_interior",
-  "soundLoop": true,
+  "soundLoop": false,
   "sfxReloadBullet": "grd_begleitpanzer_reload",
   "isBulletBelt": false,
   "overheat": [
@@ -44,7 +44,7 @@
   ],
   "bullet": {
     "bulletCount": 25,
-    "mass": 0.5,
+    "mass": 0.25,
     "caliber": 0.04,
     "damageCaliber": 0.016,
     "ballisticCaliber": 0.016,
@@ -54,6 +54,12 @@
     "normalizationPreset": "default",
     "ricochetPreset": "apds_fs_long",
     "secondaryShattersPreset": "apds_fs_25_76mm",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
     "bulletType": "apds_fs_long_tank",
     "slopeEffectPreset": "apds_fs_long",
     "fresnel": [0.23,0.1,2.0],
@@ -67,26 +73,9 @@
     "ricochetEffect": "hit_28_38mm_metal_ap",
     "waterCollisionEffect": "hit_28_38mm_water",
     "explosionPatchRadius": 0.4,
-    "stability": {
-      "precessionDamping": 0.3,
-      "ricochetAnglePrecessionFactor": 5.0,
-      "ricochetAngleOmegaFactor": 0.5,
-      "slopeToOmega": [1.0,10.0,0.0,1.0],
-      "angleLossStabilizationAfterRicochet": 30.0,
-      "penetrationReduction": [
-        {
-          "pnt": [0.0,1.0]
-        },
-        {
-          "pnt": [2.0,0.95]
-        },
-        {
-          "pnt": [10.0,0.5]
-        },
-        {
-          "pnt": [21.0,0.3]
-        }
-      ]
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.2],
+      "mod2": [20.0,0.45]
     },
     "tracePattern": {
       "caliber": 10.0,
@@ -248,42 +237,24 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.125
+            "countPortion": 0.25
           },
           {
             "segment": {
-              "radiusScale": 0.35,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,90.0],
-              "countPortion": 0.4
+              "damageScale": 1.7,
+              "angles": [0.0,179.0],
+              "countPortion": 0.5
             }
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [91.0,180.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [181.0,269.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 0.35,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [270.0,359.0],
-              "countPortion": 0.4
+              "damageScale": 1.7,
+              "angles": [180.0,359.0],
+              "countPortion": 0.5
             }
           }
         ]
@@ -580,7 +551,7 @@
   "40mm_sw_kan_APDSFS": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 0.53,
+      "mass": 0.25,
       "caliber": 0.04,
       "damageCaliber": 0.016,
       "ballisticCaliber": 0.016,
@@ -590,6 +561,12 @@
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_25_76mm",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
@@ -603,26 +580,9 @@
       "ricochetEffect": "hit_28_38mm_metal_ap",
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
-      "stability": {
-        "precessionDamping": 0.3,
-        "ricochetAnglePrecessionFactor": 5.0,
-        "ricochetAngleOmegaFactor": 0.5,
-        "slopeToOmega": [1.0,10.0,0.0,1.0],
-        "angleLossStabilizationAfterRicochet": 30.0,
-        "penetrationReduction": [
-          {
-            "pnt": [0.0,1.0]
-          },
-          {
-            "pnt": [2.0,0.95]
-          },
-          {
-            "pnt": [10.0,0.5]
-          },
-          {
-            "pnt": [21.0,0.3]
-          }
-        ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.2],
+        "mod2": [20.0,0.45]
       },
       "tracePattern": {
         "caliber": 10.0,

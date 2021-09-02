@@ -1,5 +1,4 @@
-from "%darg/ui_imports.nut" import *
-from "math" import PI, sin, cos
+local math = require("math")
 
 
 /*
@@ -11,11 +10,11 @@ local function place_by_circle(params) {
   local objs = params?.objects ?? []
   local radius = params?.radius ?? hdpx(100)
   local offset = params?.offset ?? (3.0/4)
-  local seg_angle = 2.0*PI/objs.len()
+  local seg_angle = 2.0*math.PI/objs.len()
 
   return objs.map(function(o,i) {
-    local angle = seg_angle*i-PI/2
-    local pos = [cos(angle)*radius*offset+radius, sin(angle)*radius*offset+radius]
+    local angle = seg_angle*i-math.PI/2
+    local pos = [math.cos(angle)*radius*offset+radius, math.sin(angle)*radius*offset+radius]
     return {
       pos=pos
       halign = ALIGN_CENTER
@@ -34,7 +33,7 @@ local sectorWidth = 1.0/2
 
 local function mDefCtor(text) {
   return function (curIdx, idx) {
-    return watchElemState(function(sf) {
+    return ::watchElemState(function(sf) {
       return {
         rendObj = ROBJ_DTEXT
         text = text
@@ -45,7 +44,7 @@ local function mDefCtor(text) {
 }
 
 local defParams = {
-  objs=[], radius=hdpx(250) back=null, axisXY=[],
+  objs=[], radius=::hdpx(250) back=null, axisXY=[],
   sectorCtor = null, nullSectorCtor = null,
   eventHandlers= null, hotkeys = null
   devId = DEVID_MOUSE, stickNo = 1
@@ -99,9 +98,9 @@ local function mkPieMenu(params=defParams){
     return back
   local sangle = 360.0 / objsnum/2
 
-  local internalIdx = Watched(null)
-  local curIdx = params?.curIdx ?? Watched(null)
-  local curAngle = Watched(null)
+  local internalIdx = ::Watched(null)
+  local curIdx = params?.curIdx ?? ::Watched(null)
+  local curAngle = ::Watched(null)
   internalIdx.subscribe(function(v) { if (v != null) curIdx(v)})
   local children = place_by_circle({
     radius=radius, objects=objs.map(@(v, i) v?.ctor?(curIdx, i) ?? mDefCtor(v?.text)(curIdx, i) ), offset=3.0/4
@@ -114,7 +113,7 @@ local function mkPieMenu(params=defParams){
       color = Color(0,0,0,180)
       transform = {
         pivot = [0.5,0.5]
-        rotate = (curAngle.value ?? 0.0)*180.0/PI
+        rotate = (curAngle.value ?? 0.0)*180.0/math.PI
       }
       size = size
       watch = curAngle
@@ -182,7 +181,7 @@ local function mkPieMenuActivator(params = defParams){
   local showPieMenu = params?.showPieMenu ?? Watched(hotkeys==null)
   local pieMenu = mkPieMenu(params)
   local eventHandlers = params?.eventHandlers
-  if (type(hotkeys)=="string")
+  if (::type(hotkeys)=="string")
     hotkeys = [[hotkeys, @() showPieMenu(!showPieMenu.value)]]
 
   return function() {

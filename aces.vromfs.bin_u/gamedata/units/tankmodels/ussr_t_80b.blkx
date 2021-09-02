@@ -117,9 +117,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -232,12 +229,6 @@
         },
         "turret_08_bottom_dm": {
           "armorThickness": 5.0
-        },
-        "turret_09_side_dm": {
-          "armorThickness": 50.0
-        },
-        "turret_09_front_dm": {
-          "armorThickness": 50.0
         }
       },
       "turret_composite_armor": {
@@ -397,6 +388,9 @@
         "turret_08_side_dm": {
           "armorThickness": 5.0
         },
+        "turret_09_side_dm": {
+          "armorThickness": 80.0
+        },
         "turret_05_front_dm": {
           "armorThickness": 30.0,
           "armorClass": "RHA_tank_modern"
@@ -406,13 +400,11 @@
         "armorClass": "ERA_K_I",
         "kineticProtectionEquivalent": 5.0,
         "cumulativeProtectionEquivalent": 400.0,
-        "genericEffectiveThicknessMax": 15.0,
-        "cumulativeEffectiveThicknessMax": 475.0,
+        "cumulativeEffectiveThicknessMax": 450.0,
         "hp": 250.0,
         "armorThickness": 70.0,
-        "genericDamageMult": 3.0,
         "genericArmorQuality": 0.08,
-        "cumulativeArmorQuality": 2.86,
+        "genericDamageMult": 3.0,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -2850,8 +2842,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
           "bullets": 300,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3760,9 +3752,9 @@
               "noiseFactor": 0.05
             },
             "commanderViewIr": {
-              "resolution": [800.0,600.0],
-              "lightMult": 8.0,
-              "ghosting": 0.75,
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
               "noiseFactor": 0.2
             },
             "driverIr": {
@@ -3989,8 +3981,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -4413,8 +4405,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -5083,13 +5075,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

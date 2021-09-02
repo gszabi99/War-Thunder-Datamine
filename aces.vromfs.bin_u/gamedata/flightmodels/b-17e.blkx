@@ -9,12 +9,6 @@
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk"
   },
   {
-    "gearSinkRangeLR": 0.066
-  },
-  {
-    "gearSinkRangeC": 0.355
-  },
-  {
     "noEffectsDist": 8.0
   },
   {
@@ -170,11 +164,14 @@
           "genericDamageMult": 0.3,
           "hp": 59.5
         },
-        "stab1_dm": {
-          "hp": 59.5
+        "stab_dm": {
+          "hp": 30.0
         },
         "stab2_dm": {
-          "hp": 59.5
+          "hp": 30.0
+        },
+        "stab1_dm": {
+          "hp": 93.8
         }
       },
       "c_dural30": {
@@ -1632,6 +1629,46 @@
       {
         "part": [
           {
+            "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "stab1_dm"
           },
           {
@@ -1642,7 +1679,7 @@
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 60.0,
               "cut": 1.0
             }
           },
@@ -1650,21 +1687,21 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 14.0
+              "nothing": 10.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 4.0
+              "cut": 2.0,
+              "nothing": 5.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 1.0
+              "nothing": 0.0
             }
           }
         ]

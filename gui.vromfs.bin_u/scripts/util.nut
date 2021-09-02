@@ -10,7 +10,6 @@ local { startLogout } = require("scripts/login/logout.nut")
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
 local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -101,17 +100,19 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getCompoundedText <- function getCompoundedText(firstPart, secondPart, color)
 {
-  return "".concat(firstPart, ::colorize(color, secondPart))
+  return firstPart + colorize(color, secondPart)
 }
 
 ::colorize <- function colorize(color, text)
 {
-  if (!color.len() || text == "")
+  text = text.tostring()
+  if (!color.len() || !text.len())
     return text
 
   local firstSymbol = color.slice(0, 1)
-  local prefix = (firstSymbol == "@" || firstSymbol == "#") ? "" : "@"
-  return "".concat("<color=", prefix, color, ">", text, "</color>")
+  if (firstSymbol != "@" && firstSymbol != "#")
+    color = "@" + color
+  return ::format("<color=%s>%s</color>", color, text)
 }
 
 ::getAircraftByName <- function getAircraftByName(name)
@@ -244,7 +245,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::restart_current_mission <- function restart_current_mission()
 {
-  setGuiOptionsMode(::get_options_mode(::get_game_mode()))
+  ::set_gui_options_mode(::get_options_mode(::get_game_mode()))
   ::restart_mission()
 }
 
@@ -1131,11 +1132,11 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getValueForMode <- function getValueForMode(optionsMode, oType)
 {
-  local mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(optionsMode)
+  local mainOptionsMode = ::get_gui_options_mode()
+  ::set_gui_options_mode(optionsMode)
   local value = get_option(oType)
   value = value.values[value.value]
-  setGuiOptionsMode(mainOptionsMode)
+  ::set_gui_options_mode(mainOptionsMode)
   return value
 }
 
@@ -1305,6 +1306,13 @@ foreach (i, v in ::cssColorsMapDark)
   return ::has_feature("WorldWar")
     && ("g_world_war" in ::getroottable())
     && (!isPlatformSony || isCrossPlayEnabled())
+}
+
+::init_use_touchscreen <- function init_use_touchscreen()
+{
+  if (::is_platform_shield_tv())
+    return false
+  return "is_thouchscreen_enabled" in getroottable() ? ::is_thouchscreen_enabled() : false
 }
 
 ::check_tanks_available <- function check_tanks_available(silent = false)

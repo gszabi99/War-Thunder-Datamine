@@ -259,7 +259,7 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
       return doWhenActiveOnce("fullViewUpdate")
 
     local armies = ::getTblValue("armies", params)
-    if (::u.isEmpty(armies))
+      if (::u.isEmpty(armies))
       return
 
     updateTabs()

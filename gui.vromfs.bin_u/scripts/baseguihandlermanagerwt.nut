@@ -1,6 +1,5 @@
 local colorCorrector = ::require_native("colorCorrector")
 local fonts = require("fonts")
-local { is_stereo_mode } = ::require_native("vr")
 local screenInfo = require("scripts/options/screenInfo.nut")
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
@@ -13,7 +12,6 @@ local { isPlatformSony,
         isPlatformXboxOne,
         targetPlatform } = require("scripts/clientState/platform.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::dagui_propid.add_name_id("has_ime")
 ::dagui_propid.add_name_id("target_platform")
@@ -142,7 +140,7 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
     ::call_darg("updateExtWatched", {
       safeAreaHud = safearea
       safeAreaMenu = safeAreaMenu.getSafearea()
-      isInVr = is_stereo_mode()
+      isInVr = ::is_stereo_mode()
     })
     haveChanges = true
   }
@@ -166,7 +164,15 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
 
 handlersManager.generatePreLoadCssString <- function generatePreLoadCssString()
 {
-  local countriesCount = shopCountriesList.len()
+  local countriesCount = 7
+  if (::g_login.isLoggedIn())
+  {
+    countriesCount = 0
+    foreach(c in ::shopCountriesList)
+      if (::is_country_visible(c))
+        countriesCount++
+  }
+
   local hudSafearea = safeAreaHud.getSafearea()
   local menuSafearea = safeAreaMenu.getSafearea()
 
@@ -178,7 +184,7 @@ handlersManager.generatePreLoadCssString <- function generatePreLoadCssString()
     { name = "_safearea_hud_w",   value = ::format("%.2f", hudSafearea[0]) }
     { name = "_safearea_hud_h",   value = ::format("%.2f", hudSafearea[1]) }
     { name = "slotbarCountries",  value = countriesCount.tostring() }
-    { name = "isInVr",            value = (is_stereo_mode() ? 1 : 0).tostring() }
+    { name = "isInVr",            value = (::is_stereo_mode() ? 1 : 0).tostring() }
   ]
 
   return generateCssString(config)
@@ -398,37 +404,11 @@ handlersManager._updateSceneBgBlur <- function _updateSceneBgBlur(forced = false
   ::hangar_blur(isCurSceneBgBlurred)
 }
 
-handlersManager.updateSceneVrParams <- function updateSceneVrParams()
-{
-  if (!_loadHandlerRecursionLevel)
-    _updateSceneVrParams()
-}
-
-handlersManager._updateSceneVrParams <- function _updateSceneVrParams()
-{
-  if (!is_stereo_mode())
-    return
-
-  local shouldFade = false
-  local shouldCenterToCam = false
-  foreach(wndType, group in handlers)
-  {
-    foreach(h in group)
-      if (isHandlerValid(h, true) && h.isSceneActive())
-      {
-        shouldFade = shouldFade || (h?.shouldFadeSceneInVr ?? false)
-        shouldCenterToCam = shouldCenterToCam || (h?.shouldOpenCenteredToCameraInVr ?? false)
-      }
-  }
-  ::set_gui_vr_params(shouldCenterToCam, shouldFade)
-}
-
 handlersManager.onActiveHandlersChanged <- function onActiveHandlersChanged()
 {
   _updateControlsAllowMask()
   _updateWidgets()
   _updateSceneBgBlur()
-  _updateSceneVrParams()
   ::broadcastEvent("ActiveHandlersChanged")
 }
 
@@ -437,7 +417,6 @@ handlersManager.onEventWaitBoxCreated <- function onEventWaitBoxCreated(p)
   _updateControlsAllowMask()
   _updateWidgets()
   _updateSceneBgBlur()
-  _updateSceneVrParams()
 }
 
 handlersManager.beforeInitHandler <- function beforeInitHandler(handler)

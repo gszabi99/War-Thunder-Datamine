@@ -28,9 +28,7 @@ gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTabl
 } = require("scripts/debriefing/debriefingFull.nut")
 local { needCheckForVictory } = require("scripts/missions/missionsUtils.nut")
 local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
-local { getGoToBattleAction } = require("scripts/debriefing/toBattleAction.nut")
 local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -53,8 +51,8 @@ local statTooltipColumnParamByType = {
     showEmpty = !rowConfig.hideUnitSessionTimeInTooltip
   }
   value = @(rowConfig) {
-    pId = rowConfig.customValueName ?? $"{rowConfig.rowType}{rowConfig.id}"
-    paramType = rowConfig.rowType
+    pId = rowConfig.customValueName ?? $"{rowConfig.type}{rowConfig.id}"
+    paramType = rowConfig.type
   }
   reward = @(rowConfig) {
     pId = $"{rowConfig.rewardType}{rowConfig.id}"
@@ -255,6 +253,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
     guiScene.performDelayed(this, function() { ::handlersManager.updateSceneBgBlur(true) })
 
+    lastProgressRank = {}
     if (isInited)
       scene.findObject("debriefing_timer").setUserData(this)
 
@@ -1238,9 +1237,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         continue
 
       local targetValue = 0
-      if (p != "value" || ::isInArray(row.rowType, ["wp", "exp", "gold"]))
+      if (p != "value" || ::isInArray(row.type, ["wp", "exp", "gold"]))
       {
-        local tblKey = getCountedResultId(row, state, p == "value"? row.rowType : row.rewardType)
+        local tblKey = getCountedResultId(row, state, p == "value"? row.type : row.rewardType)
         targetValue = ::getTblValue(tblKey, debriefingResult.counted_result_by_debrState, 0)
       }
 
@@ -1256,7 +1255,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         nextValue = ::blendProp(row.curValues[p], targetValue, row.isOverall? totalStatsTime : statsTime, dt)
         if (nextValue != targetValue)
           finished = false
-        if (p != "value" || !::isInArray(row.rowType, ["mul", "tim", "pct", "ptm", "tnt"]))
+        if (p != "value" || !::isInArray(row.type, ["mul", "tim", "pct", "ptm", "tnt"]))
           nextValue = nextValue.tointeger()
       }
       else
@@ -1264,7 +1263,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       row.curValues[p] = nextValue
       local showEmpty = ((p == "value") != row.isOverall) && row.isVisibleWhenEmpty()
-      local paramType = p == "value" ? row.rowType : row.rewardType
+      local paramType = p == "value" ? row.type : row.rewardType
 
       if (row.isFreeRP && paramType == "exp")
         paramType = "frp" //show exp as FreeRP currency
@@ -1526,9 +1525,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = getBoostersTotalEffects() })
-      modTooltipId =  mod
-        ? MODIFICATION.getTooltipId(unit.name, mod.name, { diffExp = diffExp, curEdiff = getCurrentEdiff() })
-        : ""
+      modTooltipId =  mod ? MODIFICATION.getTooltipId(unit.name, mod.name, { diffExp = diffExp }) : ""
       isTooltipByHold = ::show_console_buttons
     }
 
@@ -1588,7 +1585,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getParamsForModItem(diffExp)
   {
-    return { diffExp = diffExp, limitedName = false, curEdiff = getCurrentEdiff() }
+    return { diffExp = diffExp, limitedName = false }
   }
 
   function fillLeaderboardChanges()
@@ -1752,7 +1749,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       foreach(currency in [ "exp", "wp" ])
       {
-        if (cfg.row.rowType != currency && cfg.row.rewardType != currency)
+        if (cfg.row.type != currency && cfg.row.rewardType != currency)
           continue
         local currencySourcesView = []
         foreach (source in [ "noBonus", "premAcc", "premMod", "booster" ])
@@ -2816,6 +2813,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         ? ::gui_start_menuUserMissions
         : ::gui_start_menuSingleMissions
     }
+    else if (gm == ::GM_BUILDER)
+      ::go_debriefing_next_func = ::gui_start_menu_builder
     else
       ::go_debriefing_next_func = ::gui_start_mainmenu
   }
@@ -2928,7 +2927,39 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function goToBattle()
   {
-    getGoToBattleAction()()
+    guiScene.performDelayed(getroottable(), function()
+    {
+      if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady())
+      {
+        ::g_squad_manager.setReadyFlag(true)
+        return
+      }
+
+      local lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
+      local eventDisplayType = ::events.getEventDisplayType(lastEvent)
+      local handlerClass = eventDisplayType.showInGamercardDrawer ? ::gui_handlers.MainMenu :
+        eventDisplayType.showInEventsWindow ? ::gui_handlers.EventsHandler :
+        null
+      if (!handlerClass)
+        return
+
+      local handler = ::handlersManager.findHandlerClassInScene(handlerClass)
+      if (handler)
+      {
+        handler.goToBattleFromDebriefing()
+        return
+      }
+
+      if (!handler && eventDisplayType.showInEventsWindow)
+      {
+        ::gui_start_modal_events()
+        ::get_cur_gui_scene().performDelayed(::getroottable(), function() {
+          handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
+          if (handler)
+            handler.goToBattleFromDebriefing()
+        })
+      }
+    })
   }
 
   function isToBattleActionEnabled()
@@ -3083,7 +3114,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     foreach(log in country_unlock_gained)
     {
       ::showUnlockWnd(::build_log_unlock_data(log))
-      if (("unlockId" in log) && log.unlockId!=country && ::isInArray(log.unlockId, shopCountriesList))
+      if (("unlockId" in log) && log.unlockId!=country && ::isInArray(log.unlockId, ::shopCountriesList))
         unlockCountry(log.unlockId)
     }
 
@@ -3337,6 +3368,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   totalRow = null
   totalCurValues = null
   totalTarValues = null
+
+  lastProgressRank = null
+  progressData = [{ type = "prem",  id = "expProgress"}
+                  { type = "bonus", id = "expProgressBonus"}
+                  //{ type = "base",  id = "expProgressBonus"}
+                  { type = "init",  id = "expProgressOld"}
+                 ]
 
   awardsList = null
   curAwardIdx = 0

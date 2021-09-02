@@ -1,5 +1,3 @@
-local { is_stereo_configured, configure_stereo } = ::require_native("vr")
-local applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { get_primary_screen_info } = require("dagor.system")
 local { eachBlock, eachParam } = require("std/datablock.nut")
@@ -27,7 +25,7 @@ mQualityPresets.load("config/graphicsPresets.blk")
 /*
 compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
            Defaults to FALSE for qualityPresetsOptions, and TRUE for standaloneOptions.
-fullMode - When TRUE, Option is enabled in GUI when Compatibility Mode is OFF.
+fullMode - When TRUE, Оption is enabled in GUI when Compatibility Mode is OFF.
            Defaults to TRUE for both qualityPresetsOptions and standaloneOptions.
 */
 local compModeGraphicsOptions = {
@@ -40,7 +38,6 @@ local compModeGraphicsOptions = {
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
-    shadows           = { compMode = true }
   }
   standaloneOptions = {
     dlss              = { compMode = false }
@@ -84,7 +81,6 @@ local mUiStruct = [
       "perfMetrics"
       "texQuality"
       "shadowQuality"
-      "fxResolutionQuality"
       "backgroundScale"
       "cloudsQuality"
       "panoramaResolution"
@@ -106,7 +102,6 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_right"
     items = [
-      "mirrorQuality"
       "shadows"
       "rendinstGlobalShadows"
       "staticShadowsOnEffects"
@@ -274,8 +269,6 @@ local isRestartPending = @() checkChanges(mCfgStartup, mCfgCurrent).needClientRe
 
 local isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineReload
 
-local isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
-
 local function updateGuiNavbar(show=true) {
   local scene = mHandler?.scene
   if (!::check_obj(scene))
@@ -284,8 +277,6 @@ local function updateGuiNavbar(show=true) {
   local showText = show && isRestartPending()
   local showRestartButton = showText && canRestartClient()
   local applyText = ::loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
-
-  mHandler.showSceneBtn("btn_reset", show && isSavePending())
 
   local objNavbarRestartText = scene.findObject("restart_suggestion")
   if (::check_obj(objNavbarRestartText))
@@ -339,7 +330,6 @@ local function localize(optionId, valueId) {
     case "graphicsQuality":
     case "texQuality":
     case "shadowQuality":
-    case "fxResolutionQuality":
     case "tireTracksQuality":
     case "waterQuality":
     case "giQuality":
@@ -562,25 +552,6 @@ mShared = {
     }
   }
 
-  fxResolutionClick = function() {
-    if (getGuiValue("fxResolutionQuality") == "ultrahigh") {
-      local okFunc = function() {
-        setGuiValue("fxResolutionQuality", "ultrahigh")
-        mShared.presetCheck()
-        updateGuiNavbar(true)
-      }
-      local cancelFunc = function() {
-        setGuiValue("fxResolutionQuality", "high")
-        mShared.presetCheck()
-        updateGuiNavbar(true)
-      }
-      mHandler.msgBox("sysopt_fxres", ::loc("msgbox/fxres_warning"), [
-        ["ok", okFunc],
-        ["cancel", cancelFunc],
-      ], "cancel", { cancel_fn = cancelFunc })
-    }
-  }
-
   compatibilityModeClick = function() {
     local isEnable = getGuiValue("compatibilityMode")
     if (isEnable) {
@@ -729,7 +700,7 @@ mSettings = {
     init = function(blk, desc) {
       desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
     }
-    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
+    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost" && !::is_stereo_mode()
   }
   graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
@@ -770,6 +741,7 @@ mSettings = {
       local msaa = (val=="on")? 2 : 0
       set_blk_value_by_path(blk, desc.blk, msaa)
     }
+    enabled = @() !::is_stereo_mode()
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
     values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
@@ -783,7 +755,7 @@ mSettings = {
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && !::is_stereo_mode()
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       local val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -847,10 +819,6 @@ mSettings = {
   }
   shadowQuality= { widgetType="list" def="high" blk="graphics/shadowQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
-  }
-  fxResolutionQuality= { widgetType="list" def="high" blk="graphics/fxTarget" restart=false
-    onChanged = "fxResolutionClick"
-    values = [ "low", "medium", "high", "ultrahigh" ]
   }
   selfReflection = { widgetType="checkbox" def=true blk="render/selfReflection" restart=false
   }
@@ -950,8 +918,6 @@ mSettings = {
   }
   advancedShore = { widgetType="checkbox" def=false blk="graphics/advancedShore" restart=false
   }
-  mirrorQuality = { widgetType="slider" def=5 min=0 max=10 blk="graphics/mirrorQuality" restart=false
-  }
   haze = { widgetType="checkbox" def=false blk="render/haze" restart=false
   }
   softFx = { widgetType="checkbox" def=true blk="render/softFx" restart=false
@@ -968,20 +934,20 @@ mSettings = {
   }
   enableHdr = { widgetType="checkbox" def=false blk="directx/enableHdr" restart=true enabled=@() ::is_hdr_available() }
   enableVr = {
-    widgetType = "checkbox"
-    blk = "gameplay/enableVR"
-    def = is_stereo_configured()
-    getFromBlk = function(blk, desc) { return is_stereo_configured() }
-    setToBlk = function(blk, desc, val)
-    {
-      configure_stereo(val)
-      return set_blk_value_by_path(blk, desc.blk, val)
-    }
-    enabled = @() ::is_platform_windows && (::target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
+    widgetType="checkbox"
+    getFromBlk = function(blk, desc) { return ::is_stereo_mode() }
+    setToBlk = function(blk, desc, val) { return set_blk_value_by_path(blk, desc.blk, val) }
+    def=::is_stereo_mode()
+    blk="gameplay/enableVR"
+    restart=true
+    enabled=@() ::is_platform_windows && (::target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
   }
-  vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false values = [ "left", "right", "both" ]
+  vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false
+    values = [ "left", "right", "both" ]
+    enabled = ::is_stereo_mode
   }
   vrStreamerMode = { widgetType="checkbox" def=false blk="video/vrStreamerMode" restart=false
+    enabled = ::is_stereo_mode
   }
   displacementQuality = { widgetType="slider" def=2 min=0 max=3 blk="graphics/displacementQuality" restart=false
   }
@@ -1169,13 +1135,6 @@ local function configFree() {
   mCfgCurrent = {}
 }
 
-local function resetGuiOptions() {
-  foreach (id, value in mCfgInitial) {
-    setGuiValue(id, value)
-  }
-  updateGuiNavbar()
-}
-
 local function onGuiLoaded() {
   if (!mScriptValid)
     return
@@ -1188,6 +1147,8 @@ local function onGuiLoaded() {
 local function onGuiUnloaded() {
   updateGuiNavbar(false)
 }
+
+local isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 
 local function configMaintain() {
   if (mMaintainDone)
@@ -1237,22 +1198,22 @@ local function applyRestartEngine(reloadScene = false) {
   foreach (id, value in mCfgCurrent)
     mCfgApplied[id] <- value
 
-  local cb = null
-  if (reloadScene) {
-    local params = {
-        resolution = mCfgCurrent.resolution
-        screenMode = mCfgCurrent.mode
-    }
-    cb = @() ::call_darg("updateExtWatched", params)
-  }
-
   ::dagor.debug("[sysopt] Resetting renderer.")
-  applyRendererSettingsChange(reloadScene, true, cb)
+  ::on_renderer_settings_change()
+  ::handlersManager.updateSceneBgBlur(true)
+
+  if (!reloadScene)
+    return
+
+  ::handlersManager.doDelayed(::handlersManager.markfullReloadOnSwitchScene)
+  ::call_darg("updateExtWatched", {
+      resolution = mCfgCurrent.resolution
+      screenMode = mCfgCurrent.mode
+  })
 }
 
 local isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolution
   || mCfgApplied.mode != mCfgCurrent.mode
-  || mCfgApplied.enableVr != mCfgCurrent.enableVr
 
 local function onRestartClient() {
   configWrite()
@@ -1492,7 +1453,6 @@ init()
 //------------------------------------------------------------------------------
 return {
   fillSystemGuiOptions = fillGuiOptions
-  resetSystemGuiOptions = resetGuiOptions
   onSystemGuiOptionChanged = onGuiOptionChanged
   onRestartClient = onRestartClient
   getVideoModes = mShared.getVideoModes

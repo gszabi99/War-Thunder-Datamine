@@ -60,8 +60,8 @@ local DEFAULT_OVERRIDE_PARAMS = {
     res.spaceY = toPixels(guiScene, spaceY)
     res.reserveX = toPixels(guiScene, reserveX)
     res.reserveY = toPixels(guiScene, reserveY)
-    res.itemsCountX = max(1, ((listSize[0] - res.spaceX - res.reserveX) / (res.sizeX + res.spaceX)).tointeger())
-    res.itemsCountY = max(1, ((listSize[1] - res.spaceY - res.reserveY) / (res.sizeY + res.spaceY)).tointeger())
+    res.itemsCountX = ::max(1, ((listSize[0] - res.spaceX - res.reserveX) / (res.sizeX + res.spaceX)).tointeger())
+    res.itemsCountY = ::max(1, ((listSize[1] - res.spaceY - res.reserveY) / (res.sizeY + res.spaceY)).tointeger())
     return res
   }
 
@@ -98,9 +98,9 @@ local DEFAULT_OVERRIDE_PARAMS = {
     local windowSizeY = overrideParams.windowSizeY
 
     local wndSizeX = windowSizeX != -1 ? windowSizeX
-      : min(wndSize[0], wndSize[0] - listSize[0] + (config.spaceX + config.itemsCountX * (config.sizeX + config.spaceX)))
+      : ::min(wndSize[0], wndSize[0] - listSize[0] + (config.spaceX + config.itemsCountX * (config.sizeX + config.spaceX)))
     local wndSizeY = windowSizeY != -1 ? windowSizeY
-      : min(wndSize[1], wndSize[1] - listSize[1] + (config.spaceY + config.itemsCountY * (config.sizeY + config.spaceY)))
+      : ::min(wndSize[1], wndSize[1] - listSize[1] + (config.spaceY + config.itemsCountY * (config.sizeY + config.spaceY)))
     wndObj.size = ::format("%d, %d", wndSizeX, wndSizeY)
     return [wndSizeX, wndSizeY]
   }
@@ -129,10 +129,10 @@ local DEFAULT_OVERRIDE_PARAMS = {
 
   function color4ToDaguiString(color) {
     return ::format("%02X%02X%02X%02X",
-      clamp(255 * color.a, 0, 255),
-      clamp(255 * color.r, 0, 255),
-      clamp(255 * color.g, 0, 255),
-      clamp(255 * color.b, 0, 255))
+      ::clamp(255 * color.a, 0, 255),
+      ::clamp(255 * color.r, 0, 255),
+      ::clamp(255 * color.g, 0, 255),
+      ::clamp(255 * color.b, 0, 255))
   }
 
   function daguiStringToColor4(colorStr) {
@@ -171,8 +171,8 @@ local DEFAULT_OVERRIDE_PARAMS = {
     local reqPos = [toPixels(guiScene, _reqPos[0], obj), toPixels(guiScene, _reqPos[1], obj)]
     local border = [toPixels(guiScene, _border[0], obj), toPixels(guiScene, _border[1], obj)]
 
-    local posX = clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
-    local posY = clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
+    local posX = ::clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
+    local posY = ::clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
 
     if (obj?.pos != null)
       obj.pos = ::format("%d, %d", posX, posY)
@@ -205,7 +205,7 @@ local DEFAULT_OVERRIDE_PARAMS = {
 
     local parentPos  = [0, 0]
     local parentSize = [0, 0]
-    if (type(parentObjOrPos)=="instance" && ::check_obj(parentObjOrPos))
+    if (::type(parentObjOrPos)=="instance" && ::check_obj(parentObjOrPos))
     {
       parentPos  = parentObjOrPos.getPosRC()
       parentSize = parentObjOrPos.getSize()
@@ -427,7 +427,7 @@ local function getSelectedChild(obj) {
   if (total == 0)
     return null
 
-  local value = clamp(obj.getValue(), 0, total - 1)
+  local value = ::clamp(obj.getValue(), 0, total - 1)
   return obj.getChild(value)
 }
 

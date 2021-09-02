@@ -213,14 +213,6 @@ global enum HUD_TYPE {
   NONE
 }
 
-global enum RespawnOptUpdBit {
-  NEVER         = 0x00
-  UNIT_ID       = 0x01
-  UNIT_WEAPONS  = 0x02
-  RESPAWN_BASES = 0x04
-  SMOKE_TYPE    = 0x08
-}
-
 global enum INFO_DETAIL //text detalization level. for weapons and modifications names and descriptions
 {
   LIMITED_11 //must to fit in 11 symbols
@@ -358,8 +350,7 @@ subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
 ::has_feature <- require("scripts/user/features.nut").hasFeature
 
-local { getShortAppName } = ::require_native("app")
-local game = getShortAppName()
+local game = ::get_settings_blk()?["game"] ?? "wt"
 ::dagor.debug($"LOAD GAME SCRIPTS: {game}")
 require_optional($"{game}/scripts/onScriptLoad.nut")
 
@@ -412,8 +403,6 @@ foreach (fn in [
   "scripts/utils/delayedActions.nut"
 
   "scripts/clientState/fpsDrawer.nut"
-
-  "scripts/clientState/applyRendererSettingsChange.nut"
 
   //used in loading screen
   "scripts/controls/input/inputBase.nut"
@@ -493,8 +482,10 @@ local platform = require("scripts/clientState/platform.nut")
   is_pc = @() platform.isPlatformPC
 }
 
-local { is_stereo_mode } = ::require_native("vr")
-::cross_call_api.isInVr <- @() is_stereo_mode()
+::cross_call_api.isInVr <- @() ::is_stereo_mode()
+
+::use_touchscreen <- ::init_use_touchscreen()
+::is_small_screen <- ::use_touchscreen // FIXME: Touch screen is not always small.
 
 //------- ^^^ files before login ^^^ ----------
 

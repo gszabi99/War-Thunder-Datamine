@@ -1,7 +1,6 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { research } = require("scripts/unit/unitActions.nut")
 local { isEqual } = require("sqStdLibs/helpers/u.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 enum windowState
 {
@@ -131,7 +130,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     country = ::get_profile_country_sq()
 
     local view = { items = [] }
-    foreach(idx, countryItem in shopCountriesList)
+    foreach(idx, countryItem in ::shopCountriesList)
     {
       view.items.append({
         id = countryItem
@@ -150,7 +149,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
 
-    foreach(c in shopCountriesList)
+    foreach(c in ::shopCountriesList)
       ::showDiscount(countriesObj.findObject(c + "_discount"), "exp_to_gold_rate", c)
   }
 
@@ -424,10 +423,10 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onCountrySelect()
   {
     local c = scene.findObject("countries_list").getValue()
-    if (!(c in shopCountriesList))
+    if (!(c in ::shopCountriesList))
       return
 
-    country = shopCountriesList[c]
+    country = ::shopCountriesList[c]
 
     unit = getAvailableUnitForConversion()
 

@@ -1,8 +1,9 @@
 local { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText,
         getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { cutPostfix } = require("std/string.nut")
+local { AMMO,
+        getAmmoCost,
+        getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner()
 {
@@ -15,27 +16,17 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
   sceneBlkName = "gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "gui/options/navOptionsBack.blk"
 
+  noChoice = false
   unitsBlk = null
   listA = null
   listW = null
   listS = null
   listC = null
+
   wtags = null
-  defaultW = null
-  defaultS = null
-
-  playerUnitId = ""
-  playerIdx = 0
-
-  commonSquadSize = 4
-  maxSquadSize = 4
 
   function initScreen()
   {
-    playerUnitId = showedUnit.value.name
-
-    guiScene.setUpdatesEnabled(false, false)
-
     setSceneTitle(::loc("mainmenu/btnDynamicPreview"), scene, "menu-title")
 
     unitsBlk = DataBlock()
@@ -45,85 +36,111 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     local listObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
+    for (local i = 1; i < listW.len(); i++)
+      listObj.findObject(i.tostring() + "_w").setValue(0)
+
+    //if (noChoice)
+    //  applyOptions()
+
     //mission preview
     ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), ::mission_settings.missionFull)
+
+    local country = ::getCountryByAircraftName(::mission_settings.mission.getStr("player_class", ""))
+    dagor.debug("1 player_class = "+::mission_settings.mission.getStr("player_class", "") + "; country = " + country)
+    if (country != "")
+      scene.findObject("briefing-flag")["background-image"] = ::get_country_flag_img("bgflag_" + country)
 
     local misObj = ""
     misObj = ::loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
     scene.findObject("mission-objectives").setValue(misObj)
 
-    guiScene.setUpdatesEnabled(true, true)
-
     ::move_mouse_on_obj(scene.findObject("btn_apply"))
   }
 
-  function buildAircraftOption(id, units, selUnitId)
+  function buildAircraftOptions(aircrafts, curA, isPlayer)
   {
-    local value = units.indexof(selUnitId) ?? 0
-    local items = units.map(@(unitId) {
-      text = $"#{unitId}_shop"
-      image = ::image_for_air(unitId)
-    })
-    return {
-      markup = ::create_option_combobox(id, items, value, "onChangeAircraft", true)
-      values = units
-    }
+    local ret = ""
+    for (local i = 0; i < aircrafts.len(); i++)
+      ret += build_option_blk("#" + aircrafts[i] + "_shop", image_for_air(aircrafts[i]), curA == aircrafts[i])
+    listA.append(aircrafts)
+    return ret
   }
 
-  function buildWeaponOption(id, unitId, selWeapon, weapTags, isFull = true)
+  function buildWeaponOptions(aircraft, curW, weapTags)
   {
-    local weapons = getWeaponsList(unitId, weapTags)
+    local weapons = getWeaponsList(aircraft, false, weapTags, false, false) //check_aircraft_purchased=false
     if (weapons.values.len() == 0)
     {
-      dagor.debug($"Bomber without bombs: {unitId}")
-      weapons = getWeaponsList(unitId)
+      dagor.debug("bomber without bombs: "+aircraft)
+      weapons = getWeaponsList(aircraft, false, null, false, false) //check_aircraft_purchased=false
     }
 
-    local value = weapons.values.indexof(selWeapon) ?? 0
-    return {
-      markup = ::create_option_combobox(id, weapons.items, value, null, isFull)
-      values = weapons.values
+    local ret = ""
+    for (local i = 0; i < weapons.values.len(); i++)
+    {
+      ret += (
+        "option { " +
+        "optiontext { text:t = '" + ::locOrStrip(weapons.items[i].text) + "'} " +
+        "tooltip:t = '" + ::locOrStrip(weapons.items[i].tooltip) + "' " +
+        (curW == weapons.values[i] ? "selected:t = 'yes'; " : "") +
+        " max-width:t='p.p.w'; pare-text:t='yes'} " //-10%sh
+      )
     }
+    listW.append(weapons.values)
+    return ret
   }
 
-  function buildSkinOption(id, unitId, selSkin, isFull = true)
+  function buildSkinOptions(aircraft, curS)
   {
-    local skins = ::g_decorator.getSkinsOption(unitId)
-    local value = skins.values.indexof(selSkin) ?? 0
-    return {
-      markup = ::create_option_combobox(id, skins.items, value, null, isFull)
-      values = skins.values
+    local skins = ::g_decorator.getSkinsOption(aircraft)
+
+    local ret = ""
+    for (local i = 0; i < skins.values.len(); i++)
+    {
+      ret += (
+        "option { " +
+          "optiontext { text:t = '" + ::locOrStrip(skins.items[i].text) + "'; " +
+            skins.items[i].textStyle +
+          "} " +
+        (curS == skins.values[i] ? "selected:t = 'yes'; " : "") +
+        " max-width:t='p.p.w'; pare-text:t='yes'} " //-10%sh
+      )
     }
+    listS.append(skins.values)
+    return ret
   }
 
-  function buildCountOption(id, minCount, maxCount, selCount)
+  function buildFuelOptions(desc)
   {
-    local values = []
+    local ret = ""
+    for (local i = 0; i < desc.values.len(); i++)
+    {
+      ret += (
+        "option { " +
+        "optiontext { text:t = '" + ::locOrStrip(desc.items[i]) + "'} " +
+        (desc.values[i] == 50 ? "selected:t = 'yes'; " : "") +
+        " max-width:t='p.p.w'; pare-text:t='yes'} "  //-10%sh
+      )
+    }
+    return ret
+  }
+
+  function buildCountOptions(minCount, maxCount, curC)
+  {
+    local ret = ""
+    local list = []
     for (local i = minCount; i <= maxCount; i++)
-      values.append(i)
-    local value = values.indexof(selCount) ?? 0
-    return {
-      markup = ::create_option_combobox(id, values.map(@(v) v.tostring()), value, null, true)
-      values
+    {
+      ret += (
+        "option { " +
+        "optiontext { text:t = '" + i.tostring() + "'} " +
+        (curC == i ? "selected:t = 'yes'; " : "") +
+        " max-width:t='p.p.w'; pare-text:t='yes'} "  //-10%sh
+      )
+      list.append(i)
     }
-  }
-
-  function mkOptionRowView(labelText, optMarkup, trParams = "")
-  {
-    return {
-      trParams = $"optionWidthInc:t='double'; {trParams}"
-      cell = [ { params = {
-          id = ""
-          cellType = "left"
-          width = "45%pw"
-          rawParam = ::format("overflow:t='hidden'; optiontext{ text:t='%s' }", ::locOrStrip(labelText))
-        } }, { params = {
-          id = ""
-          cellType = "right"
-          width = "55%pw"
-          rawParam = $"padding-left:t='@optPad'; {optMarkup}"
-        } } ]
-    }
+    listC.append(list)
+    return ret
   }
 
   function createOptions()
@@ -133,10 +150,13 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     listS = []
     listC = []
     wtags = []
-    defaultW = {}
-    defaultS = {}
+    noChoice = true
 
-    local rowsView = []
+    local data = ""
+
+    local wLeft  = "45%pw"
+    local wRight = "55%pw"
+    local separator = ""
 
     local isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
 
@@ -144,42 +164,37 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     {
       local armada = unitsBlk.getBlock(i)
 
-      // Player's squad units
-      if (armada?.isPlayer ?? false)
-      {
-        playerIdx = i
-        listA.append([playerUnitId])
-        listW.append([getLastWeapon(playerUnitId)])
-        listS.append([::g_decorator.getLastSkin(playerUnitId)])
-        listC.append([commonSquadSize])
-        wtags.append([])
-        defaultW[playerUnitId] <- listW[i]
-        defaultS[playerUnitId] <- listS[i]
-        continue
-      }
-
       local name = armada.getStr("name","")
       local aircraft = armada.getStr("unit_class", "");
       local weapon = armada.getStr("weapons", "");
       local skin = armada.getStr("skin", "");
-      local count = armada.getInt("count", commonSquadSize);
+      local count = armada.getInt("count", 4);
       local army = armada.getInt("army", 1); //1-ally, 2-enemy
       local isBomber = armada.getBool("mustBeBomber", false);
       local isFighter = armada.getBool("mustBeFighter", false);
       local isAssault = armada.getBool("mustBeAssault", false);
+      local isPlayer = armada.getBool("isPlayer", false);
       local minCount = armada.getInt("minCount", 1);
-      local maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
+      local maxCount = armada.getInt("maxCount", 4);
       local excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
+
+      if (isPlayer)
+      {
+        local airName = ::show_aircraft.name
+        ::mission_settings.mission.player_class = airName
+        armada.unit_class = airName
+        armada.weapons = getLastWeapon(airName)
+        armada.skin = ::g_decorator.getLastSkin(airName)
+        listA.append([armada.unit_class])
+        listW.append([armada.weapons])
+        listS.append([armada.skin])
+        listC.append([4])
+        wtags.append([])
+        continue
+      }
 
       if ((name == "") || (aircraft == ""))
         break;
-
-      // Overriding ally unit params by player's squad unit params, when class is the same.
-      if (aircraft == playerUnitId)
-      {
-        weapon = getLastWeapon(playerUnitId)
-        skin = ::g_decorator.getLastSkin(playerUnitId)
-      }
 
       local adesc = armada.description
       local fmTags = adesc % "needFmTag"
@@ -202,79 +217,195 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
           }
         if (!tagsOk)
           continue
-        if (!hasWeaponsChoice(unit, weapTags))
+        if (getWeaponsList(unit.name, false, weapTags, false, false).values.len() < 1) //check_aircraft_purchased=false
           continue
+        if (isPlayer)
+        {
+//          if (!::is_unlocked_scripted(::UNLOCKABLE_AIRCRAFT, unit.name))
+//            continue
+          if (!unit.isUsable())
+            continue
+        }
         aircrafts.append(unit.name)
       }
-      // make sure that aircraft exists in aircrafts array
-      ::u.appendOnce(aircraft, aircrafts)
 
-      aircrafts.sort()
+      // make sure that aircraft exists in aircrafts array
+      local found = false
+      foreach (k in aircrafts)
+        if (k == aircraft)
+        {
+          found = true;
+          break
+        }
+      if (!found)
+        aircrafts.append(aircraft)
+
+      aircrafts.sort(function(a,b)
+      {
+        if(a > b) return 1
+        else if(a<b) return -1
+        return 0;
+      })
 
       //aircraft type
-      local trId = "".concat(
-        (army == (unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
-        (isBomber ? "Bomber" : isFighter ? "Fighter" : isAssault ? "Assault" : ""))
+      local trId = (army == unitsBlk.getInt("playerSide", 1)) ? "ally" : "enemy"
+      if (isPlayer)
+        trId = "player"
+      if (isBomber)
+        trId += "Bomber"
+      else if (isFighter)
+        trId += "Fighter"
+      else if (isAssault)
+        trId += "Assault"
 
-      local option
+      local trIdN = isPlayer ? trId : trId+i.tostring()
+
+      dagor.debug("building "+trIdN)
+
+      local rowData = ""
+      local elemText = ""
+      local optlist = ""
 
       wtags.append(weapTags)
-      defaultW[aircraft] <- weapon
-      defaultS[aircraft] <- skin
-
-      local airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
 
       // Aircraft
-      option = buildAircraftOption($"{i}_a", aircrafts, aircraft)
-      rowsView.append(mkOptionRowView($"#options/{trId}", option.markup, $"iconType:t='aircraft'; {airSeparatorStyle}"))
-      listA.append(option.values)
+      rowData = "td { cellType:t='left'; width:t='" + wLeft + "'; overflow:t='hidden'; optiontext { id:t = 'lbl_" + trIdN + "_a" + "'; text:t ='" +
+        "#options/" + trId
+        + "'; } }"
+      optlist = buildAircraftOptions(aircrafts, aircraft, isPlayer)
+      elemText = "ComboBox"+" { size:t='pw, ph'; " +
+        "id:t = '" + i.tostring() + "_a'; " + "on_select:t = '" + "onChangeAircraft" + "'; " + optlist
+        + " }"
+      rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemText + separator + " }"
+      if (!isPlayer) data += "tr { width:t='pw'; iconType:t='aircraft'; id:t = '" + trIdN + "_a_tr" + "'; " + rowData + " } "
 
       // Weapon
-      option = buildWeaponOption($"{i}_w", aircraft, weapon, weapTags)
-      rowsView.append(mkOptionRowView("#options/secondary_weapons", option.markup))
-      listW.append(option.values)
+      rowData = "td { cellType:t='left'; width:t='" + wLeft + "'; overflow:t='hidden'; optiontext { id:t = 'lbl_" + trIdN + "_w" + "'; text:t ='" +
+        "#options/secondary_weapons"
+        + "'; } }"
+      optlist = buildWeaponOptions(aircraft, weapon, weapTags)
+      elemText = "ComboBox"+" { size:t='pw, ph'; " +
+        "id:t = '" + i.tostring() + "_w'; " + optlist
+        + " }"
+      rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemText + " }"
+      if (!isPlayer) data += "tr { width:t='pw'; id:t = '" + trIdN + "_w_tr" + "'; " + rowData + " } "
 
       // Skin
-      option = buildSkinOption($"{i}_s", aircraft, skin)
-      rowsView.append(mkOptionRowView("#options/skin", option.markup))
-      listS.append(option.values)
+      rowData = "td { cellType:t='left'; width:t='" + wLeft + "'; overflow:t='hidden'; optiontext { id:t = 'lbl_" + trIdN + "_s" + "'; text:t ='" +
+        "#options/skin"
+        + "'; } }"
+      optlist = buildSkinOptions(aircraft, skin)
+      elemText = "ComboBox"+" { size:t='pw, ph'; " +
+        "id:t = '" + i.tostring() + "_s'; " + optlist
+        + " }"
+      rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemText + " }"
+      if (!isPlayer) data += "tr { width:t='pw'; id:t = '" + trIdN + "_s_tr" + "'; " + rowData + " } "
 
       // Count
-      option = buildCountOption($"{i}_c", minCount, maxCount, count)
-      rowsView.append(mkOptionRowView("#options/count", option.markup))
-      listC.append(option.values)
+      rowData = "td { cellType:t='left'; width:t='" + wLeft + "'; overflow:t='hidden'; optiontext { id:t = 'lbl_" + trIdN + "_c" + "'; text:t ='" +
+        "#options/count"
+        + "'; } }"
+      optlist = buildCountOptions(minCount, maxCount, count)
+      elemText = "ComboBox { size:t='pw, ph'; " +
+        "id:t = '" + i.tostring() + "_c'; " + optlist
+        + " }"
+      rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemText + " }"
+      if (!isPlayer)
+      {
+        data += "tr { width:t='pw'; id:t = '" + trIdN + "_c_tr" + "'; " + rowData + " } "
+        noChoice = false
+      }
+
+      separator = "trSeparator{}"
     }
 
-    return ::handyman.renderCached("gui/options/optionsContainer", {
-      id = "tuner_options"
-      topPos = "(ph-h)/2"
-      position = "absolute"
-      value = 0
-      row = rowsView
-    })
+    local resTbl = @"
+      table
+      {
+        id:t= 'tuner_options';
+        pos:t = '(pw-w)/2,(ph-h)/2';
+        width:t='pw';
+        position:t = 'absolute';
+        class:t = 'optionsTable';
+        baseRow:t = 'yes';
+        focus:t = 'yes';
+        behavior:t = 'PosOptionsNavigator';
+        "
+        + data + @"
+      }
+      "
+    ;
+
+    return resTbl
   }
 
   function onChangeAircraft(obj)
   {
-    local i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
-    if (listA?[i] == null)
-      return
+    for (local i = 0; i < listA.len(); i++)
+    {
+      local airId = i.tostring() + "_a"
+      if (obj?.id == airId)
+      {
+        local aircraft = listA[i][scene.findObject(airId).getValue()]
 
-    local unitId = listA[i][obj.getValue()]
-    local option
-    local optObj
+        local optlist = ""
 
-    // Weapon
-    option = buildWeaponOption(null, unitId, defaultW?[unitId], wtags[i], false)
-    listW[i] = option.values
-    optObj = scene.findObject($"{i}_w")
-    guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
+        local weapons = getWeaponsList(aircraft, false, wtags[i], false, false) //check_aircraft_purchased=false
+        if (weapons.values.len() == 0)
+        {
+          dagor.debug("bomber without bombs: "+aircraft)
+          weapons = getWeaponsList(aircraft, false, null, false, false) //check_aircraft_purchased=false
+        }
 
-    // Skin
-    option = buildSkinOption(null, unitId, defaultS?[unitId], false)
-    listS[i] = option.values
-    optObj = scene.findObject($"{i}_s")
-    guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
+        for (local j = 0; j < weapons.values.len(); j++)
+        {
+          optlist += (
+            "option { " +
+            "optiontext { text:t = '" + ::locOrStrip(weapons.items[j].text) + "'} " +
+            "tooltip:t = '" + ::locOrStrip(weapons.items[j].tooltip) + "' " +
+            ((j==0) ? "selected:t = 'yes'; " : "") +
+            " max-width:t='p.p.w-10%sh'; pare-text:t='yes'} "
+          )
+        }
+        listW[i] = weapons.values
+
+/*
+        local newSpinner = "ComboBox"+" { size:t='pw, ph'; " +
+          "id:t = '" + i.tostring() + "_w'; " + optlist
+          + " }" */
+        local newSpinner = optlist
+
+        local weapObj = scene.findObject(i.tostring() + "_w")
+        guiScene.replaceContentFromText(weapObj, newSpinner, newSpinner.len(), this)
+        weapObj.setValue(0)
+
+        local skins = ::g_decorator.getSkinsOption(aircraft)
+
+        optlist = ""
+        for (local j = 0; j < skins.values.len(); j++)
+        {
+          optlist += (
+            "option { " +
+              "optiontext { text:t = '" + ::locOrStrip(skins.items[j].text) + "'; " +
+                skins.items[j].textStyle +
+              "} " +
+            ((j==0) ? "selected:t = 'yes'; " : "") +
+            " max-width:t='p.p.w-10%sh'; pare-text:t='yes'} "
+          )
+        }
+        listS[i] = skins.values
+
+/*        newSpinner = "spinnerListBox"+" { size:t='pw, ph'; " +
+          "id:t = '" + i.tostring() + "_s'; " + optlist
+          + " }"*/
+        newSpinner = optlist
+
+        local skinObj = scene.findObject(i.tostring() + "_s")
+        guiScene.replaceContentFromText(skinObj, newSpinner, newSpinner.len(), this)
+        skinObj.setValue(0)
+        return
+      }
+    }
   }
 
   function onApply(obj)
@@ -287,16 +418,42 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
     for (local i = 0; i < listA.len(); i++)
     {
-      local isPlayer = i == playerIdx
+      local airId = i.tostring() + "_a"
+      local weapId = i.tostring() + "_w"
+      local skinId = i.tostring() + "_s"
+      local countId = i.tostring() + "_c"
+
+      local aircraft = ""
+      local weapon = ""
+      local skin = ""
+      local count = 4
+      if (i == 0)
+      {
+        count = 4
+        continue;
+      }
+      else
+      {
+        aircraft = listA[i][scene.findObject(airId).getValue()]
+        weapon = listW[i][scene.findObject(weapId).getValue()]
+        skin = listS[i][scene.findObject(skinId).getValue()]
+        count = listC[i][scene.findObject(countId).getValue()]
+      }
+
       local armada = unitsBlk.getBlock(i)
-      armada.setStr("unit_class", listA[i][isPlayer ? 0 : scene.findObject($"{i}_a").getValue()])
-      armada.setStr("weapons",    listW[i][isPlayer ? 0 : scene.findObject($"{i}_w").getValue()])
-      armada.setStr("skin",       listS[i][isPlayer ? 0 : scene.findObject($"{i}_s").getValue()])
-      armada.setInt("count",      listC[i][isPlayer ? 0 : scene.findObject($"{i}_c").getValue()])
+      armada.setStr("unit_class", aircraft);
+      armada.setStr("weapons", weapon);
+      armada.setStr("skin", skin);
+      armada.setInt("count", count);
+    }
+    ::mission_settings.mission.setInt("_gameMode", ::GM_BUILDER)
+    local fuelObj = scene.findObject("fuel_amount")
+    if (fuelObj)
+    {
+      local am = ::get_option(::USEROPT_LOAD_FUEL_AMOUNT).values[fuelObj.getValue()]
+      ::set_gui_option(::USEROPT_LOAD_FUEL_AMOUNT, am)
     }
 
-    ::mission_settings.mission.setInt("_gameMode", ::GM_BUILDER)
-    ::mission_settings.mission.player_class = playerUnitId
     ::dynamic_set_units(::mission_settings.missionFull, unitsBlk)
     ::select_mission_full(::mission_settings.mission,
        ::mission_settings.missionFull)
@@ -305,7 +462,6 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
     local appFunc = function()
     {
-      ::broadcastEvent("BeforeStartMissionBuilder")
       if (::SessionLobby.isInRoom())
         goForward(::gui_start_mp_lobby);
       else if (::mission_settings.coop)
@@ -327,36 +483,45 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
   }
 
-  function hasWeaponsChoice(unit, weapTags)
+  function getWeaponsList(aircraft, need_cost, weapTags, only_bought=false, check_aircraft_purchased=true)
   {
-    foreach (weapon in unit.weapons)
-      if (isWeaponVisible(unit, weapon, false, weapTags))
-        return true
-    return false
-  }
-
-  function getWeaponsList(aircraft, weapTags = null)
-  {
-    local descr = {
-      items = []
-      values = []
-    }
+    local descr = {}
+    descr.items <- []
+    descr.values <- []
+    descr.cost <- []
+    descr.costGold <- []
+    descr.hints <- []
 
     local unit = ::getAircraftByName(aircraft)
     if (!unit)
       return descr
 
+    local optionSeparator = ", "
+    local hintSeparator = "\n"
+
     foreach(weapNo, weapon in unit.weapons)
     {
       local weaponName = weapon.name
-      if (!isWeaponVisible(unit, weapon, false, weapTags))
+      if (!isWeaponVisible(unit, weapon, only_bought, weapTags))
         continue
 
+      local cost = getAmmoCost(unit, weaponName, AMMO.WEAPON)
+      descr.cost.append(cost.wp)
+      descr.costGold.append(cost.gold)
       descr.values.append(weaponName)
+
+      local costText = (need_cost && cost > ::zero_money)? "(" + cost.getUncoloredWpText() + ") " : ""
+      local amountText = check_aircraft_purchased && ::is_game_mode_with_spendable_weapons() ?
+        getAmmoAmountData(unit, weaponName, AMMO.WEAPON).text : "";
+
+      local tooltip = costText + getWeaponInfoText(unit, { isPrimary = false, weaponPreset = weapNo, newLine = hintSeparator })
+        + amountText
+
       descr.items.append({
-        text = getWeaponNameText(unit, false, weapNo)
-        tooltip = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = weapNo })
+        text = costText + getWeaponNameText(unit, false, weapNo, optionSeparator) + amountText
+        tooltip = tooltip
       })
+      descr.hints.append(tooltip)
     }
 
     return descr

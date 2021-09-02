@@ -48,16 +48,7 @@ weaponBody > topLine {
   background-color:@modTopLineColor;
 }
 
-weaponry_item[status=canBuyForWP] > weaponBody {
-  border-color:#ff3e5159;
-}
-
-weaponry_item[status=canBuyForWP] > weaponBody > topLine {
-  background-color:#ff8aa9b1;
-}
-
 weaponry_item[status=owned] > weaponBody statusImg,
-weaponry_item[status=canBuyForWP] > weaponBody statusImg,
 weaponry_item[status=unlocked] > weaponBody statusImg {
   re-type:fgPict;
   size:@modStatusCheckboxHeight, @modStatusCheckboxHeight;
@@ -154,9 +145,7 @@ weaponry_item[status=research] > weaponBody > itemWinkBlock {
 
 weaponry_item[status=locked] > weaponBody > modIcon                       img { color-factor:200; background-color:@shopWeaponLocked; }
 weaponry_item[status=locked] > weaponBody > modIcon[hoverStyle=yes]       img { color-factor:255; background-color:@shopWeaponLocked; }
-weaponry_item[status=canBuyForWP] > weaponBody > modIcon                  img,
 weaponry_item[status=unlocked] > weaponBody > modIcon                     img{ color-factor:160; background-color:@shopAircraft; }
-weaponry_item[status=canBuyForWP] > weaponBody > modIcon[hoverStyle=yes]  img,
 weaponry_item[status=unlocked] > weaponBody > modIcon[hoverStyle=yes]     img{ color-factor:255; background-color:@shopAircraft; }
 weaponry_item[status=researchable] > weaponBody > modIcon                 img{ color-factor:100; background-color:@white; }
 weaponry_item[status=researchable] > weaponBody > modIcon[hoverStyle=yes] img{ color-factor:200; background-color:@white; }

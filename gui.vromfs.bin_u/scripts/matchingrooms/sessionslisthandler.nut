@@ -3,8 +3,7 @@ local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
 local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { setGuiOptionsMode } = ::require_native("guiOptions")
+
 
 ::match_search_gm <- -1
 
@@ -154,7 +153,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
   function initOptions()
   {
-    setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
+    ::set_gui_options_mode(::OPTIONS_MODE_SEARCH)
     local options = null
     if (isCoop)
       options = [
@@ -470,10 +469,10 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
   if (!::check_obj(obj))
     return
 
-  if (obj.childrenCount() != shopCountriesList.len())
+  if (obj.childrenCount() != ::shopCountriesList.len())
   {
     local view = {
-      countries = ::u.map(shopCountriesList, function (countryName) {
+      countries = ::u.map(::shopCountriesList, function (countryName) {
         return {
           countryName = countryName
           countryIcon = ::get_country_icon(countryName)
@@ -484,7 +483,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
   }
 
-  foreach(idx, country in shopCountriesList)
+  foreach(idx, country in ::shopCountriesList)
     if (idx < obj.childrenCount())
       obj.getChild(idx).show(::isInArray(country, countries))
 }

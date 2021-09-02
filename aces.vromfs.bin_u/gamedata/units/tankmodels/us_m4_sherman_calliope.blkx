@@ -189,6 +189,9 @@
         "turret_commander_dm": {
           "armorThickness": 50.8
         },
+        "turret_02_front_dm": {
+          "armorThickness": 34.0
+        },
         "turret_01_side_dm": {
           "armorThickness": 25.4
         },
@@ -231,8 +234,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 150.0,
-        "armorThickness": 30.0,
+        "hp": 200.0,
+        "armorThickness": 20.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -242,7 +245,7 @@
         "gun_barrel_02_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
-          "hp": 200.0,
+          "hp": 400.0,
           "armorClass": "tank_structural_steel"
         }
       },
@@ -279,13 +282,10 @@
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
-        "hp": 200.0,
+        "hp": 1000.0,
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
-        "turret_02_front_dm": {
-          "armorThickness": 10.0
-        },
         "ex_decor_r_02_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
@@ -614,8 +614,7 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander",
-        "substitute": "machine_gunner"
+        "role": "commander"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",

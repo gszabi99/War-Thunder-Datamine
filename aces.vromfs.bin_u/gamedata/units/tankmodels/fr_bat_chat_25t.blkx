@@ -151,10 +151,6 @@
         },
         "turret_04_bottom_dm": {
           "armorThickness": 20.0
-        },
-        "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
         }
       },
       "hull_CHA": {
@@ -744,20 +740,6 @@
           "armorThrough": 20.0,
           "armorThickness": 10.0,
           "hp": 100.0
-        }
-      }
-    }
-  },
-  {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
-          }
         }
       }
     }
@@ -2358,7 +2340,7 @@
       {
         "Weapon": {
           "trigger": "gunner0",
-          "blk": "gameData/Weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/90mm_SA45_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "maxAdditionalPitch": 0.0,
@@ -2503,8 +2485,8 @@
           "defaultPitch": -3.0,
           "barrelDP": "gun_barrel_02_dm",
           "breechDP": "cannon_breech_02_dm",
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 25.0,
+          "speedPitch": 20.0,
           "bullets": 1200,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
@@ -3402,20 +3384,16 @@
       },
       "airstrike": [],
       "improved_optics": [],
-      "90mm_us_M71_HE": [],
-      "90mm_us_M82_APCBC": [],
-      "90mm_us_M82_APCBC_ammo_pack": {
-        "tier": 3
-      },
+      "90mm_SA45_APC": [],
+      "90mm_SA45_HE": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 4,
-        "modClass": "protection",
+        "tier": 3,
         "effects": {
           "commonWeapons": [
             {
               "Weapon": {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/90mm_SA45_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
                 "maxAdditionalPitch": 0.0,
@@ -3560,8 +3538,8 @@
                 "defaultPitch": -3.0,
                 "barrelDP": "gun_barrel_02_dm",
                 "breechDP": "cannon_breech_02_dm",
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 25.0,
+                "speedPitch": 20.0,
                 "bullets": 1200,
                 "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,

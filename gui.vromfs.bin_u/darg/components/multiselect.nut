@@ -1,10 +1,8 @@
-from "%darg/ui_imports.nut" import *
-
 local baseStyle = require("multiselect.style.nut")
 
 local mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key, text }, ...]*/, minOptions = 0, maxOptions = 0, rootOverride = {}, style = baseStyle)
   function() {
-    local numSelected = Computed(@() selected.value.filter(@(v,k) v).len())
+    local numSelected = ::Computed(@() selected.value.filter(@(v,k) v).len())
     local mkOnClick = @(option) function() {
       local curVal = selected.value?[option.key] ?? false
       local resultNum = numSelected.value + (curVal ? -1 : 1)
@@ -20,4 +18,4 @@ local mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key
     .__merge(rootOverride)
  }
 
-return kwarg(mkMultiselect)
+return ::kwarg(mkMultiselect)

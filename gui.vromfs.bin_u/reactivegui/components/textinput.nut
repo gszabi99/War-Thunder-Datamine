@@ -1,4 +1,4 @@
-local textInput = require("daRg/components/textInput.nut")
+local textInputBase = require("daRg/components/textInput.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local focusBorder = require("reactiveGui/components/focusBorder.nut")
 
@@ -18,8 +18,8 @@ local hudFrame = @(inputObj, group, sf) {
 
 
 local export = class {
-  hud = @(text_state, options={}) textInput(text_state, options, hudFrame)
-  _call = @(self, text_state, options={}) textInput(text_state, options)
+  hud = @(text_state, options={}, handlers={}) textInputBase(text_state, options, handlers, hudFrame)
+  _call = @(self, text_state, options={}, handlers={}) textInputBase(text_state, options, handlers)
 }()
 
 

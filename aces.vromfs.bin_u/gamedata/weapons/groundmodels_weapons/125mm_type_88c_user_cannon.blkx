@@ -20,7 +20,7 @@
   "fxSandDust": "dust_ground_wave_sand_big",
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
-  "fxWaterShockWave": "dust_waterwave_big",
+  "fxWaterShockWave": "water_shock_wave_big",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -60,7 +60,7 @@
     "explosionEffect": "hit_106_132mm_metal_he",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
     "ricochetEffect": "hit_106_132mm_metal_ap",
-    "waterCollisionEffect": "hit_106_132mm_water_he",
+    "waterCollisionEffect": "hit_106_132mm_water",
     "explosionPatchRadius": 3.5,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
@@ -296,7 +296,7 @@
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_he",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
@@ -503,6 +503,12 @@
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
@@ -514,28 +520,11 @@
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_ap",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
-      "stability": {
-        "precessionDamping": 0.3,
-        "ricochetAnglePrecessionFactor": 5.0,
-        "ricochetAngleOmegaFactor": 0.5,
-        "slopeToOmega": [1.0,10.0,0.0,1.0],
-        "angleLossStabilizationAfterRicochet": 30.0,
-        "penetrationReduction": [
-          {
-            "pnt": [0.0,1.0]
-          },
-          {
-            "pnt": [2.0,0.95]
-          },
-          {
-            "pnt": [10.0,0.5]
-          },
-          {
-            "pnt": [21.0,0.3]
-          }
-        ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.2],
+        "mod2": [20.0,0.45]
       },
       "tracePattern": {
         "caliber": 10.0,
@@ -670,7 +659,7 @@
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_106_132mm_metal_ap",
-      "waterCollisionEffect": "hit_106_132mm_water_ap",
+      "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
       "stabilityRicochetModifier": [
         {

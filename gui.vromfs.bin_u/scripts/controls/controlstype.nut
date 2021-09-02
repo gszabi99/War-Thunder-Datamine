@@ -1,7 +1,6 @@
 local globalEnv = require("globalEnv")
 local avatars = require("scripts/user/avatars.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
@@ -22,8 +21,8 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    mainOptionsMode = ::get_gui_options_mode()
+    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
     local txt = scene.findObject("txt_icon")
     txt.show(!onlyDevicesChoice)
@@ -101,7 +100,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) //setGuiOptionsMode required
+::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) //set_gui_options_mode required
 {
   ::set_option(::USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
   ::set_control_helpers_mode(mode); //instant
@@ -109,8 +108,8 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id)
 {
-  local mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+  local mainOptionsMode = ::get_gui_options_mode()
+  ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
   local ct_preset = ""
   if (ct_id == "ct_own")
@@ -165,5 +164,5 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
 
   ::save_profile(false)
 
-  setGuiOptionsMode(mainOptionsMode)
+  ::set_gui_options_mode(mainOptionsMode)
 }

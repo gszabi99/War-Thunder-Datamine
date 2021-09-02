@@ -11,7 +11,7 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "haveCCIPForRocket": true,
-  "haveCCIPForBombs": false,
+  "haveCCIPForBombs": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2203,17 +2203,9 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "hideNodes": [
-      {
-        "node": "flare2"
-      },
-      {
-        "node": "sps_141m_pylon"
-      },
-      {
-        "node": "aso_sps_141m"
-      }
-    ],
+    "hideNodes": {
+      "node": "flare2"
+    },
     "Weapon": {
       "trigger": "cannon",
       "blk": "gameData/Weapons/cannonGSh_23L.blk",
@@ -2293,7 +2285,7 @@
   ],
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_sapphire_21.blk",
+      "blk": "gameData/sensors/su_cd-30.blk",
       "dmPart": "radar_dm"
     }
   },
@@ -2558,14 +2550,14 @@
     "new_cover": {
       "tier": 4
     },
-    "GSh_23L_armor_targets": [],
-    "GSh_23L_air_targets": [],
-    "GSh_23L_stealth": [],
-    "GSh_23L_belt_pack": {
+    "ns23_armor_targets": [],
+    "ns23_stealth": [],
+    "ns23_air_targets": [],
+    "ns23_belt_pack": {
       "tier": 1
     },
-    "GSh_23L_new_gun": {
-      "reqModification": "GSh_23L_belt_pack",
+    "ns23_new_gun": {
+      "reqModification": "ns23_belt_pack",
       "tier": 3
     },
     "mi_24_fab_250": {

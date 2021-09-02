@@ -1,4 +1,4 @@
-local { deep_clone } = require("std/underscore.nut")
+local { _clone } = require("std/deep.nut")
 local { BULLET_TYPE } = require("scripts/weaponry/bulletsInfo.nut")
 local { TRIGGER_TYPE,
         getPresetsList,
@@ -296,7 +296,7 @@ local function getTiers(unit, preset)
               preset, res.len() == 0), res.len()))
         }
 
-    // Check tiers count and remove excess tiers
+    // Сheck tiers count and remove excess tiers
     if (res.len() > TIERS_NUMBER)
       do {
         unAllocatedTiers.append(res.remove(0), res.pop())
@@ -367,7 +367,7 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
   // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
   updateUnitWeaponsByPreset(unit)
   local res = {presets = [],
-    presetsList = deep_clone(getPresetsList(unit, chooseMenuList)),
+    presetsList = _clone(getPresetsList(unit, chooseMenuList)),
     favoriteArr = getFavoritePresets(unit.name)}
   local presets = res.presets
   local presetsList = res.presetsList

@@ -2,7 +2,6 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
-local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
 {
@@ -14,7 +13,7 @@ class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
     setVersionText()
     ::setProjectAwards(this)
     showTitleLogo(scene, 128)
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
     local lp = ::get_login_pass()
     defaultSaveLoginFlagVal = lp.login != ""

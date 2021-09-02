@@ -126,9 +126,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -2550,8 +2547,8 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_01_dm",
           "isBulletBelt": true,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 40.0,
+          "speedPitch": 20.0,
           "fireConeAngle": 1.0,
           "bullets": 1000,
           "salvoAmount": 100.0,
@@ -2595,8 +2592,8 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_03_dm",
           "isBulletBelt": true,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 40.0,
+          "speedPitch": 20.0,
           "fireConeAngle": 1.0,
           "bullets": 1400,
           "salvoAmount": 100.0,
@@ -2778,7 +2775,7 @@
         "type": "auto",
         "gearRatios": [
           {
-            "ratio": -0.923
+            "ratio": -0.87
           },
           {
             "ratio": -2.4
@@ -3517,8 +3514,8 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_01_dm",
                 "isBulletBelt": true,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 40.0,
+                "speedPitch": 20.0,
                 "fireConeAngle": 1.0,
                 "bullets": 1000,
                 "salvoAmount": 100.0,
@@ -3562,8 +3559,8 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_03_dm",
                 "isBulletBelt": true,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 40.0,
+                "speedPitch": 20.0,
                 "fireConeAngle": 1.0,
                 "bullets": 1400,
                 "salvoAmount": 100.0,
@@ -3908,13 +3905,8 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   }
 ]

@@ -2,6 +2,7 @@ local { isInFlight } = require("globalState.nut")
 local { inputEnabled, inputChatVisible } = require("hudChatState.nut")
 local extWatched = require("globals/extWatched.nut")
 local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
+local { cursorVisible } = require("hudState.nut")
 
 local ctrlsState = keepref(::Computed(function() {
   if (isInFlight.value && inputEnabled.value && inputChatVisible.value
@@ -23,9 +24,6 @@ local gamepadCursorControl = extWatched("gamepadCursorControl",
 
 local haveXinputDevice = extWatched("haveXinputDevice",  //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
   @() ::cross_call.haveXinputDevice())
-
-local cursorVisible = extWatched("cursorVisible",
-  @() ::cross_call.getValueGuiSceneCursorVisible())
 
 local enabledGamepadCursorControlInScene = keepref(::Computed(
   @() gamepadCursorControl.value && haveXinputDevice.value && cursorVisible.value))
@@ -49,6 +47,5 @@ enabledKBCursorControlInScene.subscribe(updateSceneKBCursorControl)
 local showConsoleButtons = extWatched("showConsoleButtons", @() ::cross_call.isConsoleModeEnabled())
 
 return {
-  showConsoleButtons
-  cursorVisible
+  showConsoleButtons = showConsoleButtons
 }

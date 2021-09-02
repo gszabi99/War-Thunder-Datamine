@@ -2,7 +2,6 @@ local time = require("scripts/time.nut")
 local avatars = require("scripts/user/avatars.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local { eachParam, eachBlock } = require("std/datablock.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local statsFm = ["fighter", "bomber", "assault"]
 local statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -284,7 +283,7 @@ local function getPlayerStatsFromBlk(blk) {
     player.unlocks[uType][unlock] <- uBlk?.stage ?? 1
   })
 
-  foreach(i, country in shopCountriesList)
+  foreach(i, country in ::shopCountriesList)
   {
     local cData = {
       medalsCount = getCountryMedals(country, player).len()

@@ -1,5 +1,3 @@
-from "%darg/ui_imports.nut" import *
-
 local defButtonStyle = {
   text = {
     normal = {

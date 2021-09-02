@@ -1,23 +1,19 @@
-local {IlsVisible, IlsPosSize, IlsColor, Speed, Altitude, ClimbSpeed, Tangage, Mach,
+local {IlsVisible, IlsPosSize, IlsColor, Speed, Altitude, ClimbSpeed, Tangage,
         Roll, CompassValue, BombingMode, TargetPosValid, TargetPos, TimeBeforeBombRelease,
         AimLocked, DistToSafety, Aos, Aoa, DistToTarget, CannonMode, RocketMode, BombCCIPMode,
         BlkFileName, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked, RadarTargetDist,
-        RadarTargetPosValid, RadarTargetPos, AamAccelLock, BarAltitude, Overload,
-        IlsLineScale} = require("planeState.nut")
+        RadarTargetPosValid, RadarTargetPos} = require("planeState.nut")
 local {IlsTrackerVisible, TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("rocketAamAimState.nut")
 local {floor, cos, sin, PI} = require("std/math.nut")
 local {cvt} = require("dagor.math")
 local DataBlock = require("DataBlock")
-local {DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, TargetsTrigger, Azimuth} = require("radarState.nut")
-
-local {mode} = require("radarComponent.nut")
+local {state, mode} = require("radarComponent.nut")
 
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
 const mpsToFpm = 196.8504
 const mpsToKmh = 3.6
-local baseLineWidth = hdpx(4 * LINE_WIDTH)
+local baseLineWidth = 4 * LINE_WIDTH
 
 enum GuidanceLockResult {
   RESULT_INVALID = -1
@@ -39,9 +35,6 @@ local ilsSetting = Computed(function() {
     is410SUM1Ils = false
     isLCOSS = false
     isASP23 = false
-    isEP12 = false
-    isEP08 = false
-    isShimadzu = false
   }
   if (BlkFileName.value == "")
     return res
@@ -59,9 +52,6 @@ local ilsSetting = Computed(function() {
     isLCOSS = blk.getBool("ilsLCOSS", false)
     isASP23 = blk.getBool("ilsASP23", false)
     haveJ7ERadar = blk.getBool("ilsHaveJ7ERadar", false)
-    isEP12 = blk.getBool("ilsEP12", false)
-    isEP08 = blk.getBool("ilsEP08", false)
-    isShimadzu = blk.getBool("ilsShimadzu", false)
   }
 })
 
@@ -71,7 +61,7 @@ local function speedometer(width, height) {
     pos = [width * 0.5, height * 0.5]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
     color = IlsColor.value
     commands = [
       [VECTOR_LINE, -35, -20, -33, -20],
@@ -103,10 +93,10 @@ local function speedometer(width, height) {
   local speedColumn = @() {
     watch = speedMarkLen
     pos = [width * 0.17, height * 0.7 - speedMarkLen.value]
-    size = [baseLineWidth * IlsLineScale.value, speedMarkLen.value]
+    size = [baseLineWidth, speedMarkLen.value]
     rendObj = ROBJ_SOLID
     color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
   }
 
   return {
@@ -119,7 +109,7 @@ local altmeterGrid = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   size = flex()
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   color = IlsColor.value
   commands = [
     [VECTOR_LINE, 0, 0, 100, 0],
@@ -153,10 +143,10 @@ local altColumn = @() {
   watch = altMarkLen
   pos = [0, ph(100 - altMarkLen.value)]
   hplace = ALIGN_RIGHT
-  size = [baseLineWidth * IlsLineScale.value, ph(altMarkLen.value)]
+  size = [baseLineWidth, ph(altMarkLen.value)]
   rendObj = ROBJ_SOLID
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
 }
 
 local climbMarkPos = Computed(@() (clamp(ClimbSpeed.value * mpsToFpm, -999, 999) % 1000 / 10).tointeger())
@@ -166,7 +156,7 @@ local climbMark = @() {
   size = [hdpx(30), hdpx(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * 0.5 * IlsLineScale.value
+  lineWidth = baseLineWidth * 0.5
   commands = [
     [VECTOR_LINE, 100, 50, 100, -50],
     [VECTOR_LINE, 100, 50, 0, 0],
@@ -194,7 +184,7 @@ local function altmeter(width, height) {
             size = flex()
             watch = IlsColor
             rendObj = ROBJ_VECTOR_CANVAS
-            lineWidth = baseLineWidth * IlsLineScale.value
+            lineWidth = baseLineWidth
             color = IlsColor.value
             commands = [
               [VECTOR_LINE, 0, 100, 100, 100],
@@ -208,15 +198,15 @@ local function altmeter(width, height) {
   }
 }
 
-local function flyDirection(width, height, isLockedFlyPath = false) {
+local function flyDirection(width, height) {
   return @() {
     watch = IlsColor
     size = [width * 0.1, height * 0.1]
-    pos = [width * 0.5, height * (BombCCIPMode.value || BombingMode.value || isLockedFlyPath ? 0.5 : 0.3)]
+    pos = [width * 0.5, height * (BombCCIPMode.value || BombingMode.value ? 0.5 : 0.3)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
     commands = [
       [VECTOR_ELLIPSE, 0, 0, 20, 20],
       [VECTOR_LINE, -50, 0, -20, 0],
@@ -250,7 +240,7 @@ local function generatePitchLine(num) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         color = IlsColor.value
         padding = [0, 10]
         commands = [
@@ -265,7 +255,7 @@ local function generatePitchLine(num) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         color = IlsColor.value
         padding = [10, 10]
         commands = [
@@ -326,10 +316,10 @@ local generateCompassMark = function(num) {
       }
       @() {
         watch = IlsColor
-        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * IlsLineScale.value]
+        size = [baseLineWidth, baseLineWidth]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         hplace = ALIGN_CENTER
       }
     ]
@@ -352,9 +342,10 @@ local generateCompassMarkSUM = function(num) {
       }
       @() {
         watch = IlsColor
-        size = [baseLineWidth * 2 * IlsLineScale.value, baseLineWidth * 2 * IlsLineScale.value]
+        size = [baseLineWidth * 2, baseLineWidth * 2]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
+        lineWidth = baseLineWidth
         hplace = ALIGN_CENTER
       }
     ]
@@ -377,17 +368,18 @@ local generateCompassMarkASP = function(num) {
       }
       @() {
         watch = IlsColor
-        size = [baseLineWidth * 0.8 * IlsLineScale.value, baseLineWidth * 6]
+        size = [baseLineWidth * 0.8, baseLineWidth * 6]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         hplace = ALIGN_CENTER
       }
     ]
   }
 }
 
-local function compass(width, generateFunc, step) {
+local function compass(width, generateFunc) {
+  const step = 5.0
   local children = []
 
   for (local i = 0; i <= 2.0 * 360.0 / step; ++i) {
@@ -411,12 +403,12 @@ local function compass(width, generateFunc, step) {
   }
 }
 
-local function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0) {
+local function compassWrap(width, height, pos, generateFunc, scale = 1.0) {
   return {
     size = [width * 0.6 * scale, height * 0.2]
     pos = [width * (1 - 0.6 * scale) * 0.5, height * pos]
     clipChildren = true
-    children = compass(width * 0.6 * scale, generateFunc, step)
+    children = compass(width * 0.6 * scale, generateFunc)
   }
 }
 
@@ -425,7 +417,7 @@ local maverickAimMark = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(2), ph(2)]
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   commands = [
     [VECTOR_LINE, -100, -100, 100, -100],
     [VECTOR_LINE, -100, -100, -100, 100],
@@ -458,7 +450,7 @@ local aimMark = @() {
       size = [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
+      lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE, 0, 0, 0, 0],
         [VECTOR_LINE, 0, 50, 50, 0],
@@ -496,10 +488,10 @@ local function basicInformation(width, height) {
 local function bombFallingLine() {
   return @() {
     watch = IlsColor
-    size = [baseLineWidth * IlsLineScale.value, ph(65)]
+    size = [baseLineWidth, ph(65)]
     rendObj = ROBJ_SOLID
     color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
   }
 }
 
@@ -511,7 +503,7 @@ local function pullupAnticipation(height) {
     pos = [pw(10), height * pullupAnticipPos.value]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
     commands = [
       [VECTOR_LINE, -100, 100, 100, 100],
       [VECTOR_LINE, -100, 100, -100, 0],
@@ -522,10 +514,10 @@ local function pullupAnticipation(height) {
 
 local solutionCue = @() {
   watch = IlsColor
-  size = [pw(100), baseLineWidth * IlsLineScale.value]
+  size = [pw(100), baseLineWidth]
   rendObj = ROBJ_SOLID
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
 }
 
 local aosOffset = Computed(@() Aos.value.tointeger())
@@ -534,7 +526,7 @@ local yawIndicator = @() {
   pos = [pw(50), ph(80)]
   watch = [IlsColor, aosOffset]
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
   commands = [
@@ -552,11 +544,11 @@ local function lowerSolutionCue(height) {
     children = lowerCueShow.value ?
       @() {
         watch = [IlsColor, lowerCuePos]
-        size = [pw(10), baseLineWidth * IlsLineScale.value]
-        pos = [pw(5), lowerCuePos.value * height - baseLineWidth * 0.5 * IlsLineScale.value]
+        size = [pw(10), baseLineWidth]
+        pos = [pw(5), lowerCuePos.value * height - baseLineWidth * 0.5]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
       }
     : null
   }
@@ -574,7 +566,7 @@ local function cancelBombing() {
         pos = [pw(50), ph(20)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         commands = [
           [VECTOR_LINE, -50, -50, 50, 50],
           [VECTOR_LINE, -50, 50, 50, -50]
@@ -640,7 +632,7 @@ local ASP17crosshair = @() {
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   commands = [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, -10, 0, -60, 0],
@@ -656,7 +648,7 @@ local ASP17Roll = @() {
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   fillColor = IlsColor.value
   behavior = Behaviors.RtPropUpdate
   commands = [
@@ -677,17 +669,17 @@ local ASP17Distances = @() {
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
-  fillColor = Color(0, 0, 0, 0)
+  lineWidth = baseLineWidth
+  fillColor = Color(0, 0, 0)
   commands = [
     [VECTOR_SECTOR, 0, 0, 93, 93, -80, max(-80, min(DistToTargetWatch.value, -3))],
     [VECTOR_SECTOR, 0, 0, 90, 90, -90, DistToTargetWatch.value],
-    [VECTOR_WIDTH, baseLineWidth * 1.5 * IlsLineScale.value],
+    [VECTOR_WIDTH, baseLineWidth * 1.5],
     [VECTOR_LINE, 0, -90, 0, -82], //0
     (DistToTargetWatch.value > -30 ? [VECTOR_LINE, 78, -45, 71, -41] : []),  //60
     (DistToTargetWatch.value > -60 ? [VECTOR_LINE, 45, -78, 41, -71] : []), //30
     (DistToTargetWatch.value > 0 ? [VECTOR_LINE, 82, 0, 90, 0] : []), //90
-    [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value],
+    [VECTOR_WIDTH, baseLineWidth],
     (DistToTargetWatch.value >= 15 ? [VECTOR_LINE, 82.1, 22, 86.9, 23.3] : []),  //105
     (DistToTargetWatch.value > -15 ? [VECTOR_LINE, 82.1, -22, 86.9, -23.3] : []),  //75
     (DistToTargetWatch.value > -37.5 ? [VECTOR_LINE, 67.4, -51.7, 71.4, -54.8] : []),  //52,5
@@ -723,7 +715,7 @@ local buccaneerSpeed = @() {
   pos = [pw(40), ph(85)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+  lineWidth = baseLineWidth * 1.5
   commands = [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 33, 0, 33, 0],
@@ -742,7 +734,7 @@ local buccaneerCCRP = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+  lineWidth = baseLineWidth * 1.5
   commands = BucDistMarkVis.value ? [
     [VECTOR_SECTOR, 0, 0, 80, 80, -90, DistToTargetBuc.value],
     [VECTOR_SECTOR, 0, 0, 30, 30, 50, 130],
@@ -759,7 +751,7 @@ local function buccaneerAimMark(width, height) {
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
-        lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+        lineWidth = baseLineWidth * 1.5
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_ELLIPSE, 0, 0, 15, 15],
@@ -776,7 +768,7 @@ local function buccaneerAimMark(width, height) {
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
-        lineWidth = baseLineWidth * 1.5 * IlsLineScale.value
+        lineWidth = baseLineWidth * 1.5
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_LINE, -100, 0, -80, 0],
@@ -827,13 +819,13 @@ local SUMAoa = @() {
   size = [pw(3), ph(40)]
   pos = [pw(15), ph(30)]
   color = IlsColor.value
-  lineWidth = baseLineWidth * 3 * IlsLineScale.value
+  lineWidth = baseLineWidth * 3
   commands = [
     [VECTOR_LINE, 0, 16, 0, 16],
     [VECTOR_LINE, 0, 32, 0, 32],
     [VECTOR_LINE, 0, 48, 0, 48],
     [VECTOR_LINE, 0, 100, 0, 100],
-    [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value],
+    [VECTOR_WIDTH, baseLineWidth],
     [VECTOR_LINE, 0, 80, 100, 80],
     [VECTOR_LINE, 5, SUMAoaMarkH.value, 100, SUMAoaMarkH.value - 5],
     [VECTOR_LINE, 5, SUMAoaMarkH.value, 100, SUMAoaMarkH.value + 5],
@@ -848,7 +840,7 @@ local SUMVerticalSpeed = @() {
   size = [pw(3), ph(40)]
   pos = [pw(85), ph(30)]
   color = IlsColor.value
-  lineWidth = baseLineWidth * 3 * IlsLineScale.value
+  lineWidth = baseLineWidth * 3
   commands = [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 0, 16, 0, 16],
@@ -856,7 +848,7 @@ local SUMVerticalSpeed = @() {
     [VECTOR_LINE, 0, 68, 0, 68],
     [VECTOR_LINE, 0, 84, 0, 84],
     [VECTOR_LINE, 0, 100, 0, 100],
-    [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value],
+    [VECTOR_WIDTH, baseLineWidth],
     [VECTOR_LINE, 0, 34, 100, 34],
     [VECTOR_LINE, 5, SUMVSMarkH.value, 100, SUMVSMarkH.value - 5],
     [VECTOR_LINE, 5, SUMVSMarkH.value, 100, SUMVSMarkH.value + 5],
@@ -871,7 +863,7 @@ local flyDirectionSUM = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   commands = [
     [VECTOR_ELLIPSE, 0, 0, 20, 20],
     [VECTOR_LINE, -50, 0, -20, 0],
@@ -922,7 +914,7 @@ local function generatePitchLineSum(num) {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         color = IlsColor.value
         padding = [0, 10]
         commands = [
@@ -937,7 +929,7 @@ local function generatePitchLineSum(num) {
           size = flex()
           watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
-          lineWidth = baseLineWidth * IlsLineScale.value
+          lineWidth = baseLineWidth
           color = IlsColor.value
           commands = [
             [VECTOR_LINE, 50, sign > 0 ? 0 : 100, 50, sign > 0 ? 30 : 70],
@@ -952,7 +944,7 @@ local function generatePitchLineSum(num) {
           size = flex()
           watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
-          lineWidth = baseLineWidth * IlsLineScale.value
+          lineWidth = baseLineWidth
           color = IlsColor.value
           padding = [10, 10]
           commands = sign > 0 ? [
@@ -1027,7 +1019,7 @@ local function SUMGunReticle(width, height) {
   return {
     size = [width * 0.1, height * 0.1]
     color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
     rendObj = ROBJ_VECTOR_CANVAS
     commands = [
       [VECTOR_LINE, 0, 0, 0, 0],
@@ -1057,7 +1049,7 @@ local SUMCCIPReticle = @() {
   watch = IlsColor
   size = [pw(10), ph(10)]
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = Color(0,0,0,0)
   commands = [
@@ -1086,7 +1078,7 @@ local function SUMCCIPMode(width, height) {
         size = [pw(3), ph(3)]
         pos = [pw(50), ph(BombCCIPMode.value ? 50 : 30)]
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         rendObj = ROBJ_VECTOR_CANVAS
         commands = [
           [VECTOR_LINE, -100, 0, 100, 0],
@@ -1102,7 +1094,7 @@ local function SumAAMCrosshair(position, anim) {
     size = [pw(2), ph(2)]
     pos = position
     color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
+    lineWidth = baseLineWidth
     rendObj = ROBJ_VECTOR_CANVAS
     commands = [
       [VECTOR_LINE, -100, -100, -50, -50],
@@ -1144,10 +1136,10 @@ local function SUMCcrpTarget(width, height) {
     children = AimLocked.value ?
       @() {
         watch = IlsColor
-        size = [pw(10), baseLineWidth * IlsLineScale.value]
+        size = [pw(10), baseLineWidth]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         commands = [
           [VECTOR_LINE, 0, 0, 40, 0],
           [VECTOR_LINE, 60, 0, 100, 0]
@@ -1197,7 +1189,7 @@ local cancelBombingSUM = @() {
       pos = [pw(50), ph(30)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
+      lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE, -40, -50, 40, 50],
         [VECTOR_LINE, -40, 50, 40, -50]
@@ -1214,7 +1206,7 @@ local timeToRelease = @() {
   pos = [pw(50), ph(30)]
   color = IlsColor.value
   fillColor = Color(0,0,0,0)
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   commands = [
     [VECTOR_SECTOR, 0, 0, 80, 80, -90, releaseMarkSector.value],
     [VECTOR_LINE, 0, -80, 0, -100]
@@ -1238,25 +1230,25 @@ local LCOSSRollMark = @() {
   children = [
     {
       pos = [pw(46), pw(27)]
-      size = [baseLineWidth * 4 * IlsLineScale.value, baseLineWidth * 4 * IlsLineScale.value]
+      size = [baseLineWidth * 4, baseLineWidth * 4]
       rendObj = ROBJ_SOLID
       color = IlsColor.value
     },
     {
       pos = [pw(51), pw(27)]
-      size = [baseLineWidth * 4 * IlsLineScale.value, baseLineWidth * 4 * IlsLineScale.value]
+      size = [baseLineWidth * 4, baseLineWidth * 4]
       rendObj = ROBJ_SOLID
       color = IlsColor.value
     },
     {
       pos = [pw(26), pw(48.5)]
-      size = [baseLineWidth * 4 * IlsLineScale.value, baseLineWidth * 4 * IlsLineScale.value]
+      size = [baseLineWidth * 4, baseLineWidth * 4]
       rendObj = ROBJ_SOLID
       color = IlsColor.value
     },
     {
       pos = [pw(71), pw(49)]
-      size = [baseLineWidth * 4 * IlsLineScale.value, baseLineWidth * 4 * IlsLineScale.value]
+      size = [baseLineWidth * 4, baseLineWidth * 4]
       rendObj = ROBJ_SOLID
       color = IlsColor.value
     }
@@ -1275,7 +1267,7 @@ local LCOSSCrosshair = @() {
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   fillColor = Color(0, 0, 0, 0)
   commands = [
     [VECTOR_ELLIPSE, 0, 0, 90, 90],
@@ -1283,7 +1275,7 @@ local LCOSSCrosshair = @() {
     [VECTOR_SECTOR, 0, 0, 50, 50, -35, 35],
     [VECTOR_SECTOR, 0, 0, 50, 50, 55, 125],
     [VECTOR_SECTOR, 0, 0, 50, 50, 145, 215],
-    [VECTOR_WIDTH, baseLineWidth * 3 * IlsLineScale.value],
+    [VECTOR_WIDTH, baseLineWidth * 3],
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 92, 0, 97, 0],
     [VECTOR_LINE, -92, 0, -97, 0],
@@ -1300,7 +1292,7 @@ local LCOSSRadarRangeMark = @() {
   pos = [pw(50), ph(50)]
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * 3 * IlsLineScale.value
+  lineWidth = baseLineWidth * 3
   commands = [
     [VECTOR_SECTOR, 0, 0, 100, 100, RadarDistAngle.value * 180 / PI, 90],
     [VECTOR_LINE, 80 * cos(RadarDistAngle.value), 80 * sin(RadarDistAngle.value), 100 * cos(RadarDistAngle.value), 100 * sin(RadarDistAngle.value)]
@@ -1359,7 +1351,7 @@ local ASPAltitude = @() {
 local ASPAirSymbol = @() {
   size = [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   color = IlsColor.value
   commands = [
     [VECTOR_LINE, -100, 0, -30, 0],
@@ -1386,7 +1378,7 @@ local ASPRoll = @() {
   size = [pw(15), ph(15)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
   color = IlsColor.value
   commands = [
     [VECTOR_LINE, -100, 0, -80, 0],
@@ -1408,7 +1400,7 @@ local ASPRoll = @() {
 local ASPCompassMark = @() {
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+  lineWidth = baseLineWidth * 0.8
   color = IlsColor.value
   fillColor = IlsColor.value
   commands = [
@@ -1430,7 +1422,7 @@ local function ASPTargetMark(width, height, is_radar, is_aam = false) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth * IlsLineScale.value
+        lineWidth = baseLineWidth
         commands = [
           [VECTOR_ELLIPSE, 0, 0, 100, 100],
           (!is_radar ? [VECTOR_LINE, 0, 0, 0, 0] : [])
@@ -1462,7 +1454,7 @@ local ASPLRGrid = @() {
   watch = IlsColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+  lineWidth = baseLineWidth * 0.8
   color = IlsColor.value
   commands = [
     [VECTOR_LINE, 5, 0, 5, 100],
@@ -1489,41 +1481,41 @@ local ASPLRGrid = @() {
 
 local function ASPRadarDist(is_ru, w_pos) {
   return @() {
-    watch = DistanceMax
+    watch = state.DistanceMax
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_DTEXT
     pos = [pw(w_pos), ph(0)]
     color = IlsColor.value
     fontSize = 40
     font = is_ru ? Fonts.ussr_ils : Fonts.usa_ils
-    text = (DistanceMax.value).tointeger()
+    text = (state.DistanceMax.value).tointeger().tostring()
   }
 }
 
 local ASPRadarMode = @() {
-  watch = [RadarModeNameId, IsRadarVisible, Irst]
+  watch = [state.RadarModeNameId, state.IsRadarVisible, state.Irst]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_DTEXT
-  pos = [pw(-7) , Irst.value ? ph(50) : ph(15)]
+  pos = [pw(-7) , state.Irst.value ? ph(50) : ph(15)]
   color = IlsColor.value
   fontSize = 35
   font = Fonts.hud
-  text = Irst.value ? "T" : mode(RadarModeNameId, IsRadarVisible)
+  text = state.Irst.value ? "T" : mode(state.RadarModeNameId, state.IsRadarVisible)
 }
 
 local function createTargetDistASP23(index) {
-  local target = targets[index]
-  local distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
+  local target = state.targets[index]
+  local distanceRel = state.HasDistanceScale.value ? target.distanceRel : 0.9
 
-  local angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
-  local angularWidthRel = HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
+  local angleRel = state.HasAzimuthScale.value ? target.azimuthRel : 0.5
+  local angularWidthRel = state.HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
   local angleLeft = angleRel - 0.5 * angularWidthRel
   local angleRight = angleRel + 0.5 * angularWidthRel
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+    lineWidth = baseLineWidth * 0.8
     color = IlsColor.value
     commands = [
       [VECTOR_LINE,
@@ -1563,8 +1555,8 @@ local function createTargetDistASP23(index) {
 local targetsComponent = function(createTargetDistFunc) {
   local getTargets = function() {
     local targetsRes = []
-    for(local i = 0; i < targets.len(); ++i) {
-      if (!targets[i])
+    for(local i = 0; i < state.targets.len(); ++i) {
+      if (!state.targets[i])
         continue
       targetsRes.append(createTargetDistFunc(i))
     }
@@ -1573,15 +1565,15 @@ local targetsComponent = function(createTargetDistFunc) {
 
   return @() {
     size = flex()
-    children = Irst.value && RadarTargetPosValid.value ? null : getTargets()
-    watch = TargetsTrigger
+    children = state.Irst.value && RadarTargetPosValid.value ? null : getTargets()
+    watch = state.TargetsTrigger
   }
 }
 
 local ASPRadarRoll = @() {
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+  lineWidth = baseLineWidth * 0.8
   color = IlsColor.value
   commands = [
     [VECTOR_LINE, 25, 30, 42, 30],
@@ -1615,21 +1607,21 @@ local function ASPLaunchPermitted(is_ru, l_pos) {
 }
 
 local ASPAzimuthMark = @() {
-  watch = Azimuth
-  size = [pw(5), baseLineWidth * 0.8 * IlsLineScale.value]
-  pos = [pw(Azimuth.value * 100 - 2.5), ph(95)]
+  watch = state.Azimuth
+  size = [pw(5), baseLineWidth * 0.8]
+  pos = [pw(state.Azimuth.value * 100 - 2.5), ph(95)]
   rendObj = ROBJ_SOLID
   color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value
+  lineWidth = baseLineWidth
 }
 
 local function ASP23LongRange(width, height) {
   return @() {
-    watch = Irst
+    watch = state.Irst
     size = [width * 0.5, height * 0.35]
     pos = [width * 0.25, height * 0.4]
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+    lineWidth = baseLineWidth * 0.8
     color = IlsColor.value
     commands = [
       [VECTOR_LINE, 45, 30, 48, 30],
@@ -1638,8 +1630,8 @@ local function ASP23LongRange(width, height) {
       [VECTOR_LINE, 50, 32, 50, 36]
     ]
     children = [
-      (!Irst.value ? ASPLRGrid : null),
-      (!Irst.value ? ASPRadarDist(true, -5) : null),
+      (!state.Irst.value ? ASPLRGrid : null),
+      (!state.Irst.value ? ASPRadarDist(true, -5) : null),
       ASPRadarMode,
       ASPRadarRoll,
       targetsComponent(createTargetDistASP23),
@@ -1650,11 +1642,11 @@ local function ASP23LongRange(width, height) {
 }
 
 local function ASPCCIPDistanceGrid() {
-  local minDist = Computed(@() Altitude.value - DistToSafety.value)
+  local minDist = Altitude.value - DistToSafety.value
   return @() {
-    watch = [IlsColor, minDist]
+    watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+    lineWidth = baseLineWidth * 0.8
     size = flex()
     color = IlsColor.value
     commands = [
@@ -1665,8 +1657,8 @@ local function ASPCCIPDistanceGrid() {
       [VECTOR_LINE, 25, 63.2, 27, 63.2],
       [VECTOR_LINE, 25, 72, 27, 72],
       [VECTOR_LINE, 25, 80, 27, 80],
-      [VECTOR_WIDTH, baseLineWidth * 2.2 * IlsLineScale.value],
-      [VECTOR_LINE, 27.5, (80 - minDist.value / 5000.0 * 42), 30, (80 - minDist.value / 5000.0 * 42)]
+      [VECTOR_WIDTH, baseLineWidth * 2.2],
+      [VECTOR_LINE, 27.5, (80 - minDist / 5000.0 * 42), 30, (80 - minDist / 5000.0 * 42)]
     ]
     children =
     {
@@ -1688,7 +1680,7 @@ local ASPCCIPDistanceMark = @() {
   pos = [pw(27), ph(DistMarkPos.value)]
   children = {
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
+    lineWidth = baseLineWidth * 0.8
     size = flex()
     color = IlsColor.value
     commands = [
@@ -1703,7 +1695,7 @@ local ASPCCIPDistanceMark = @() {
 }
 
 local function ASP23CCIP(width, height) {
-  return {
+  return @() {
     size = [width, height]
     children = [
       ASPTargetMark(width, height, false),
@@ -1715,34 +1707,30 @@ local function ASP23CCIP(width, height) {
 
 local function ASP23ModeSelector(width, height) {
   return @() {
-    watch = [CCIPMode, IsRadarVisible]
+    watch = [CCIPMode, state.IsRadarVisible]
     size = [width, height]
     children = [
       basicASP23(width, height),
-      (IsRadarVisible.value && !CCIPMode.value ? ASP23LongRange(width, height) : ASPRoll),
-      (IsRadarVisible.value && !CCIPMode.value ? ASPTargetMark(width, height, true) : null),
+      (state.IsRadarVisible.value && !CCIPMode.value ? ASP23LongRange(width, height) : ASPRoll),
+      (state.IsRadarVisible.value && !CCIPMode.value ? ASPTargetMark(width, height, true) : null),
       (CCIPMode.value ? ASP23CCIP(width, height) : null)
     ]
   }
 }
 
+local function createTargetDistJ7E(index) {
+  local target = state.targets[index]
+  local distanceRel = state.HasDistanceScale.value ? target.distanceRel : 0.9
 
-
-local createTargetDistJ7E = @(index) function(){
-  local target = targets[index]
-  local distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
-
-  local angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
-  local angularWidthRel = HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
-
+  local angleRel = state.HasAzimuthScale.value ? target.azimuthRel : 0.5
+  local angularWidthRel = state.HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
   local angleLeft = angleRel - 0.15 * angularWidthRel
   local angleRight = angleRel + 0.15 * angularWidthRel
 
   return {
-    watch = [HasAzimuthScale, HasDistanceScale]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = baseLineWidth * 0.6 * IlsLineScale.value
+    lineWidth = baseLineWidth * 0.6
     color = IlsColor.value
     commands = !RadarTargetPosValid.value ? [
       [VECTOR_LINE, 100 * angleLeft, 100 * (1 - distanceRel), 100 * angleRight, 100 * (1 - distanceRel)],
@@ -1759,7 +1747,7 @@ local createTargetDistJ7E = @(index) function(){
 }
 
 local function J7ERadar(width, height) {
-  return {
+  return @() {
     size = [width * 0.7, height * 0.4]
     pos = [width * 0.15, height * 0.3]
     children = [
@@ -1774,733 +1762,35 @@ local function J7ERadar(width, height) {
 
 local function J7EAdditionalHud(width, height) {
   return @() {
-    watch = IsRadarVisible
     size = [width, height]
     children = [
       J7ERadar(width, height),
-      (IsRadarVisible.value ? ASPTargetMark(width, height, true) : null),
+      (state.IsRadarVisible.value ? ASPTargetMark(width, height, true) : null),
       ASPTargetMark(width, height, false, true)
     ]
   }
 }
 
-local function angleTxtEP(num, isLeft, textFont) {
+local function planeIls(width, height) {
   return @() {
-    watch = IlsColor
-    rendObj = ROBJ_DTEXT
-    vplace = ALIGN_BOTTOM
-    hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
-    color = IlsColor.value
-    fontSize = 60
-    font = textFont
-    text = num.tostring()
-  }
-}
-
-local generateCompassMarkEP = function(num) {
-  return {
-    size = [pw(20), ph(100)]
-    flow = FLOW_VERTICAL
+    watch = [BombingMode, CCIPMode, TrackerVisible]
     children = [
-      @() {
-        watch = IlsColor
-        rendObj = ROBJ_DTEXT
-        color = IlsColor.value
-        hplace = ALIGN_CENTER
-        fontSize = 40
-        font = Fonts.hud
-        text = num % 10 == 0 ? (num / 10).tostring() : ""
-      }
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * (num % 10 == 0 ? 2 : 3)]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        hplace = ALIGN_CENTER
-      }
-    ]
-  }
-}
-
-local function generatePitchLineEP(num, isEP12, textPad) {
-  local newNum = num - 5
-  return {
-    size = [pw(100), ph(100)]
-    flow = FLOW_VERTICAL
-    children = num >= 0 ? [
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        padding = [0, textPad]
-        commands = [
-          [VECTOR_LINE, 0, 0, 34, 0],
-          (isEP12 && num != 0 ? [VECTOR_LINE, 66, 0, 100, 0] : [VECTOR_LINE, 66, 0, 74, 0]),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 90, 0, 100 , 0] : []),
-          [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.value],
-          (isEP12 && num == 0 ? [VECTOR_LINE, 37, 0, 37 , 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 42, 0, 42, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 47, 0, 47, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 53, 0, 53, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 58, 0, 58, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 63, 0, 63, 0] : [])
-        ]
-        children =
-        [
-          angleTxtEP(newNum, true, Fonts.hud),
-          !isEP12 ? angleTxtEP(newNum, false, Fonts.hud) : null
-        ]
-      }
-    ] :
-    [
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        padding = [10, textPad]
-        commands = [
-          [VECTOR_LINE, 0, 0, 7, 0],
-          [VECTOR_LINE, 15, 0, 21, 0],
-          [VECTOR_LINE, 28, 0, 34, 0],
-          [VECTOR_LINE, 100, 0, 93, 0],
-          [VECTOR_LINE, 85, 0, 79, 0],
-          [VECTOR_LINE, 72, 0, 66, 0]
-        ]
-        children = newNum >= -90 ?
-        [
-          angleTxtEP(newNum, true, Fonts.hud),
-          !isEP12 ? angleTxtEP(newNum, false, Fonts.hud) : null
-        ] : null
-      }
-    ]
-  }
-}
-
-local function pitchEP(width, height) {
-  const step = 5.0
-  local children = []
-
-  for (local i = 90.0 / step; i >= -90.0 / step; --i) {
-    local num = (i * step).tointeger()
-
-    children.append(generatePitchLineEP(num, true, width * 0.17))
-  }
-
-  return {
-    size = [width * 0.8, height * 0.5]
-    pos = [width * 0.1, pw(50)]
-    flow = FLOW_VERTICAL
-    children = children
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.1]
-      }
-    }
-  }
-}
-
-local EP12SpeedValue = Computed(@() Mach.value < 0.5 ? (Speed.value * mpsToKmh).tointeger() : Mach.value)
-local EP12SpeedVis = Computed(@() Speed.value > 20.8)
-local EP12Speed = @() {
-  watch = EP12SpeedVis
-  size = flex()
-  children = EP12SpeedVis.value ?
-  @() {
-    watch = EP12SpeedValue
-    size = SIZE_TO_CONTENT
-    rendObj = ROBJ_DTEXT
-    pos = [pw(46), ph(80)]
-    color = IlsColor.value
-    fontSize = 50
-    font = Fonts.hud
-    text = string.format(Mach.value < 0.5 ? "%d" : "%.2f", EP12SpeedValue.value)
-  } : null
-}
-
-local generateAltMarkEP = function(num) {
-  local val = num < 100 ? (num * 10) : (num * 0.01)
-  local small = num % 10 > 0
-  return {
-    size = [pw(100), ph(10)]
-    pos = [pw(10), 0]
-    flow = FLOW_HORIZONTAL
-    children = [
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth * (small ? 2 : 4), baseLineWidth * IlsLineScale.value]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        vplace = ALIGN_CENTER
-      },
-      ( num % 20 > 0 ? null :
-        @() {
-          watch = IlsColor
-          rendObj = ROBJ_DTEXT
-          color = IlsColor.value
-          vplace = ALIGN_CENTER
-          fontSize = 40
-          font = Fonts.hud
-          text = string.format(num < 100 ? "%d" : "%.1f", val)
-        }
-      )
-    ]
-  }
-}
-
-local function EPAltitude(height, generateFunc) {
-  local children = []
-
-  for (local i = 2000; i >= 0;) {
-    children.append(generateFunc(i))
-    i -= 5
-  }
-
-  local getOffset = @() (20.0 - Altitude.value * 0.001 - 0.25 + 0.05) * height * 2.0
-  return {
-    size = [pw(100), ph(100)]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, -getOffset()]
-      }
-    }
-    flow = FLOW_VERTICAL
-    children = children
-  }
-}
-
-local function EPAltitudeWrap(width, height, generateFunc) {
-  return {
-    size = [width * 0.2, height * 0.4]
-    pos = [width * 0.7, height * 0.3]
-    clipChildren = true
-    children = [
-      EPAltitude(height * 0.4, generateFunc)
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        commands = [
-          [VECTOR_LINE, 0, 45, 10, 50],
-          [VECTOR_LINE, 0, 55, 10, 50]
-        ]
-      }
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, Tangage.value * height * 0.07]
-      }
-    }
-  }
-}
-
-local function navigationInfo(width, height) {
-  return @() {
-    size = flex()
-    children = [
-      pitchEP(width, height * 0.7),
-      EP12Speed,
-      compassWrap(width, height, 0.3, generateCompassMarkEP, 0.4),
-      EPAltitudeWrap(width, height, generateAltMarkEP)
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        rotate = -Roll.value
-      }
-    }
-  }
-}
-
-local EPAltCCIPWatched = Computed(@() string.format(Altitude.value < 1000 ? "%d" : "%.1f", Altitude.value < 1000 ? Altitude.value : Altitude.value / 1000))
-local EPAltCCIP = @() {
-  watch = [EPAltCCIPWatched, IlsColor]
-  rendObj = ROBJ_DTEXT
-  pos = [pw(-150), ph(-20)]
-  size = flex()
-  color = IlsColor.value
-  fontSize = 50
-  text = EPAltCCIPWatched.value
-  vplace = ALIGN_CENTER
-}
-
-local function EPAimMark(width, height) {
-  return @() {
-    watch = [TargetPosValid, CCIPMode, BombingMode]
-    size = flex()
-    children = CCIPMode.value || BombingMode.value ?
-      @() {
-        watch = IlsColor
-        size = [pw(20), ph(10)]
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        fillColor = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        commands = [
-          [VECTOR_ELLIPSE, 0, 0, 3, 6],
-          [VECTOR_LINE, -100, -100, -100, 100],
-          [VECTOR_LINE, 100, -100, 100, 100],
-          (TargetPosValid.value ? [VECTOR_LINE, -50, 90, 50, 90] : []),
-          (TargetPosValid.value ? [VECTOR_LINE, -30, 90, -30, 70] : []),
-          (TargetPosValid.value ? [VECTOR_LINE, 0, 90, 0, 70] : []),
-          (TargetPosValid.value ? [VECTOR_LINE, 30, 90, 30, 70] : [])
-        ]
-        children = EPAltCCIP
-        behavior = Behaviors.RtPropUpdate
-        update = @() {
-          transform = {
-            translate = TargetPosValid.value && CCIPMode.value ? TargetPos : [width * 0.5, height * 0.5]
-          }
-        }
-      } : null
-  }
-}
-
-local function EPCCRPTargetMark(width, height) {
-  return @() {
-    watch = [TargetPosValid, BombCCIPMode]
-    size = flex()
-    children = BombCCIPMode.value || BombingMode.value ?
-      @() {
-        watch = IlsColor
-        size = [pw(2), ph(2)]
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth * IlsLineScale.value
-        commands = [
-          [VECTOR_ELLIPSE, 0, 0, 100, 100],
-        ]
-        behavior = Behaviors.RtPropUpdate
-        update = @() {
-          transform = {
-            translate = TargetPosValid.value && BombingMode.value ? TargetPos : [width * 0.5, height * 0.5]
-          }
-        }
-      } : null
-  }
-}
-
-local EP08AAMMarker = @() {
-  watch = IlsTrackerVisible
-  size = flex()
-  children = IlsTrackerVisible.value ?
-  @() {
-    watch = GuidanceLockState
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = IlsColor.value
-    fillColor = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
-    commands = [
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, 50, 50, 0.5, 0.5] : []),
-      (GuidanceLockState.value != GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 60, 47, 60, 53] : []),
-      (GuidanceLockState.value != GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 40, 47, 40, 53] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 65, 45, 65, 55] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 35, 45, 35, 55] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 42, 55, 57, 55] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 55, 55, 55, 53] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 50, 55, 50, 53] : []),
-      (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 45, 55, 45, 53] : [])
-    ]
-    children =
-      @() {
-        watch = AamAccelLock
-        size = flex()
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        commands = [
-          (AamAccelLock.value ? [VECTOR_LINE, 42, 50, 48, 50] : []),
-          (AamAccelLock.value ? [VECTOR_LINE, 52, 50, 58, 50] : [])
-        ]
-        animations = [
-          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, play = true, loop = true }
-        ]
-      }
-  } : null
-}
-
-local function swedishEPIls(width, height) {
-  return @() {
-    watch = [CCIPMode, BombingMode, IlsTrackerVisible]
-    size = [width, height]
-    children = [
-      (!CCIPMode.value && !BombingMode.value && !IlsTrackerVisible.value ? flyDirection(width, height, true) : null),
-      (!CCIPMode.value && !BombingMode.value ? navigationInfo(width, height) : null),
-      EPAimMark(width, height),
-      EP08AAMMarker,
-      (ilsSetting.value.isEP08 ? EPCCRPTargetMark(width, height) : null)
-    ]
-  }
-}
-
-local shimadzuRoll = @() {
-  size = [pw(15), ph(5)]
-  pos = [pw(42.5), ph(15)]
-  children =
-  {
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = IlsColor.value
-    lineWidth = baseLineWidth * IlsLineScale.value
-    commands = [
-      [VECTOR_LINE, 0, 0, 10, 0],
-      [VECTOR_LINE, 10, 0, 30, 100],
-      [VECTOR_LINE, 30, 100, 50, 0],
-      [VECTOR_LINE, 50, 0, 70, 100],
-      [VECTOR_LINE, 70, 100, 90, 0],
-      [VECTOR_LINE, 90, 0, 100, 0]
-    ]
-  }
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-      transform = {
-        rotate = -Roll.value
-      }
-    }
-}
-
-local generateSpdMarkShimadzu = function(num) {
-  local ofs = num == 0 ? pw(-20) : (num < 100 ? pw(-30) : pw(-40))
-  return {
-    size = [pw(100), ph(7.5)]
-    pos = [pw(40), 0]
-    children = [
-      ( num % 50 > 0 ? null :
-        @() {
-          watch = IlsColor
-          size = flex()
-          pos = [ofs, 0]
-          rendObj = ROBJ_DTEXT
-          color = IlsColor.value
-          vplace = ALIGN_CENTER
-          fontSize = 40
-          font = Fonts.hud
-          text = num.tostring()
-        }
-      ),
-      @() {
-        watch = IlsColor
-        pos = [0, ph(25)]
-        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.value]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-      }
-    ]
-  }
-}
-
-local function ShimadzuSpeed(height, generateFunc) {
-  local children = []
-
-  for (local i = 0; i <= 1000; i += 10) {
-    children.append(generateFunc(i))
-  }
-
-  local getOffset = @() (Speed.value * mpsToKnots * 0.0075 - 0.5) * height
-  return {
-    size = [pw(100), ph(100)]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, -getOffset()]
-      }
-    }
-    flow = FLOW_VERTICAL
-    children = children
-  }
-}
-
-local function ShimadzuSpeedWrap(width, height, generateFunc) {
-  return {
-    size = [width * 0.17, height * 0.5]
-    pos = [width * 0.1, height * 0.2]
-    clipChildren = true
-    children = [
-      ShimadzuSpeed(height * 0.5, generateFunc),
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        commands = [
-          [VECTOR_LINE, 80, 45, 68, 50],
-          [VECTOR_LINE, 80, 55, 68, 50]
-        ]
-      }
-    ]
-  }
-}
-
-local generateAltMarkShimadzu = function(num) {
-  return {
-    size = [pw(100), ph(7.5)]
-    pos = [pw(15), 0]
-    flow = FLOW_HORIZONTAL
-    children = [
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.value]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        vplace = ALIGN_CENTER
-      },
-      ( num % 50 > 0 ? null :
-        @() {
-          watch = IlsColor
-          size = flex()
-          rendObj = ROBJ_DTEXT
-          color = IlsColor.value
-          vplace = ALIGN_CENTER
-          fontSize = 40
-          font = Fonts.hud
-          text = string.format("%.1f", num / 100.0)
-        }
-      )
-    ]
-  }
-}
-
-local function ShimadzuAlt(height, generateFunc) {
-  local children = []
-
-  for (local i = 2000; i >= 0; i -= 10) {
-    children.append(generateFunc(i))
-  }
-
-  local getOffset = @() ((20000 - BarAltitude.value) * 0.0007425 - 0.4625) * height
-  return {
-    size = [pw(100), ph(100)]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, -getOffset()]
-      }
-    }
-    flow = FLOW_VERTICAL
-    children = children
-  }
-}
-
-local function ShimadzuAltWrap(width, height, generateFunc) {
-  return {
-    size = [width * 0.17, height * 0.5]
-    pos = [width * 0.75, height * 0.2]
-    clipChildren = true
-    children = [
-      ShimadzuAlt(height * 0.5, generateFunc),
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        commands = [
-          [VECTOR_LINE, 0, 45, 10, 50],
-          [VECTOR_LINE, 0, 55, 10, 50]
-        ]
-      }
-    ]
-  }
-}
-
-local MachWatch = Computed(@() (floor(Mach.value * 100)).tointeger())
-local ShimadzuMach = @() {
-  watch = [MachWatch, IlsColor]
-  size = flex()
-  pos = [pw(12), ph(72)]
-  rendObj = ROBJ_DTEXT
-  color = IlsColor.value
-  fontSize = 50
-  text = string.format(MachWatch.value < 100 ? ".%02d" : "%.2f", MachWatch.value < 100 ? MachWatch.value : MachWatch.value / 100.0)
-}
-
-local OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
-local ShimadzuOverload = @() {
-  watch = [OverloadWatch, IlsColor]
-  size = flex()
-  pos = [pw(12), ph(77)]
-  rendObj = ROBJ_DTEXT
-  color = IlsColor.value
-  fontSize = 50
-  text = string.format("%.1fG", OverloadWatch.value / 10.0)
-}
-
-local function generatePitchLineShim(num) {
-  local sign = num > 0 ? 1 : -1
-  local newNum = num >= 0 ? num : (num - 5)
-  return {
-    size = [pw(100), ph(50)]
-    flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        padding = [0, 10]
-        commands = [
-          [VECTOR_LINE, 0, 0, 34, 0],
-          [VECTOR_LINE, 66, 0, 100, 0]
-        ]
-        children = [angleTxt(-5, true, Fonts.hud), angleTxt(-5, false, Fonts.hud)]
-      }
-    ] :
-    [
-      @() {
-        size = flex()
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.value
-        color = IlsColor.value
-        padding = [10, 10]
-        commands = [
-          [VECTOR_LINE, 0, 5 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 34 : 7, 0],
-          (num < 0 ? [VECTOR_LINE, 15, 0, 21, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 28, 0, 34, 0] : []),
-          [VECTOR_LINE, 100, 5 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 66 : 93, 0],
-          (num < 0 ? [VECTOR_LINE, 85, 0, 79, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 72, 0, 66, 0] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, Fonts.hud), angleTxt(newNum, false, Fonts.hud)] : null
-      }
-    ]
-  }
-}
-
-local function ShimadzuPitch(width, height) {
-  const step = 5.0
-  local children = []
-
-  for (local i = 90.0 / step; i >= -90.0 / step; --i) {
-    local num = (i * step).tointeger()
-
-    children.append(generatePitchLineShim(num))
-  }
-
-  return {
-    size = [width * 0.5, height * 0.7]
-    pos = [width * 0.25, height * 0.5]
-    flow = FLOW_VERTICAL
-    children = children
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.07]
-      }
-    }
-  }
-}
-
-local generateCompassMarkShim = function(num) {
-  return {
-    size = [pw(8), ph(100)]
-    flow = FLOW_VERTICAL
-    children = [
-      @() {
-        watch = IlsColor
-        rendObj = ROBJ_DTEXT
-        color = IlsColor.value
-        hplace = ALIGN_CENTER
-        fontSize = 40
-        font = Fonts.hud
-        text = num % 10 == 0 ? (num / 10).tostring() : ""
-      },
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * 5]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        hplace = ALIGN_CENTER
-      }
-    ]
-  }
-}
-
-local function ShimadzuIls(width, height) {
-  return {
-    size = [width, height]
-    children = [
-      flyDirection(width, height, true),
-      shimadzuRoll,
-      ShimadzuSpeedWrap(width, height, generateSpdMarkShimadzu),
-      ShimadzuMach,
-      ShimadzuAltWrap(width, height, generateAltMarkShimadzu),
-      ShimadzuPitch(width, height),
-      ShimadzuOverload,
-      compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 2.0),
-      {
-        size = [pw(2), ph(3)]
-        pos = [pw(50), ph(92)]
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        commands = [
-          [VECTOR_LINE, 0, 0, -100, 100],
-          [VECTOR_LINE, 0, 0, 100, 100]
-        ]
-      },
-      {
-        size = [pw(2), ph(10)]
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        commands = [[VECTOR_LINE, 0, 0, 0, 100]]
-        behavior = Behaviors.RtPropUpdate
-        update = @() {
-          transform = {
-            translate = [Aos.value * width * 0.02 + 0.5 * width, 0.4 * height]
-          }
-        }
-      }
-    ]
-  }
-}
-
-local planeIls = @(width, height) function() {
-
-  local {isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
-    is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu} = ilsSetting.value
-
-  return {
-    watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
-    children = [
-      (isAVQ7 ? basicInformation(width, height) : null),
-      (haveAVQ7Bombing && BombingMode.value ? bombingMode(width, height) : null),
-      (haveAVQ7CCIP && CCIPMode.value ? CCIP(width, height) : null),
-      (isAVQ7 && (!BombingMode.value || !haveAVQ7Bombing) &&
-       (!CCIPMode.value || !haveAVQ7CCIP) ? compassWrap(width, height, 0.1, generateCompassMark) : null),
-      (isASP17 ? ASP17(width, height) : null),
-      (isBuccaneerIls ? buccaneerHUD(width, height) : null),
-      (is410SUM1Ils ? basic410SUM(width, height) : null),
-      (is410SUM1Ils && CCIPMode.value ? SUMCCIPMode(width, height) : null),
-      (is410SUM1Ils && TrackerVisible.value ? SumAAMMode(width, height) : null),
-      (is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
-      (is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
-      (isLCOSS ? LCOSS(width, height) : null),
-      (isASP23 ? ASP23ModeSelector(width, height) : null),
-      (haveJ7ERadar && (!BombingMode.value || !haveAVQ7Bombing) &&
-       (!CCIPMode.value || !haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null),
-      (isEP08 || isEP12 ? swedishEPIls(width, height) : null),
-      (isShimadzu ? ShimadzuIls(width, height) : null)
+      (ilsSetting.value.isAVQ7 ? basicInformation(width, height) : null),
+      (ilsSetting.value.haveAVQ7Bombing && BombingMode.value ? bombingMode(width, height) : null),
+      (ilsSetting.value.haveAVQ7CCIP && CCIPMode.value ? CCIP(width, height) : null),
+      (ilsSetting.value.isAVQ7 && (!BombingMode.value || !ilsSetting.value.haveAVQ7Bombing) &&
+       (!CCIPMode.value || !ilsSetting.value.haveAVQ7CCIP) ? compassWrap(width, height, 0.1, generateCompassMark) : null),
+      (ilsSetting.value.isASP17 ? ASP17(width, height) : null),
+      (ilsSetting.value.isBuccaneerIls ? buccaneerHUD(width, height) : null),
+      (ilsSetting.value.is410SUM1Ils ? basic410SUM(width, height) : null),
+      (ilsSetting.value.is410SUM1Ils && CCIPMode.value ? SUMCCIPMode(width, height) : null),
+      (ilsSetting.value.is410SUM1Ils && TrackerVisible.value ? SumAAMMode(width, height) : null),
+      (ilsSetting.value.is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
+      (ilsSetting.value.is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
+      (ilsSetting.value.isLCOSS ? LCOSS(width, height) : null),
+      (ilsSetting.value.isASP23 ? ASP23ModeSelector(width, height) : null),
+      (ilsSetting.value.haveJ7ERadar && (!BombingMode.value || !ilsSetting.value.haveAVQ7Bombing) &&
+       (!CCIPMode.value || !ilsSetting.value.haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null)
     ]
   }
 }
@@ -2513,4 +1803,11 @@ local planeIlsSwitcher = @() {
   children = IlsVisible.value ? [ planeIls(IlsPosSize[2], IlsPosSize[3])] : null
 }
 
-return planeIlsSwitcher
+local function Root() {
+  return {
+    watch = ilsSetting
+    children = planeIlsSwitcher
+  }
+}
+
+return Root

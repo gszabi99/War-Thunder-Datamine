@@ -214,10 +214,13 @@
           "genericDamageMult": 0.3,
           "hp": 39.5
         },
-        "stab1_dm": {
-          "hp": 39.5
+        "stab_dm": {
+          "hp": 30.0
         },
         "stab2_dm": {
+          "hp": 30.0
+        },
+        "stab1_dm": {
           "hp": 39.5
         }
       },
@@ -1594,6 +1597,46 @@
       {
         "part": [
           {
+            "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "stab1_dm"
           },
           {
@@ -1604,7 +1647,7 @@
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 60.0,
               "cut": 1.0
             }
           },
@@ -1612,21 +1655,21 @@
             "onKill": {
               "damage": 10.0,
               "cut": 1.0,
-              "nothing": 14.0
+              "nothing": 10.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 4.0
+              "cut": 2.0,
+              "nothing": 5.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 1.0
+              "nothing": 0.0
             }
           }
         ]
@@ -2584,10 +2627,7 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_",
-          "type": "leftHand",
-          "detachedNodeYpr": [0.0,-15.0,-90.0],
-          "detachedNodeScale": [1.0,-1.0,1.0],
-          "flexionDir": [0.0,-1.0,0.8]
+          "flexionDir": [0.0,-1.0,0.1]
         }
       },
       {
@@ -2596,10 +2636,7 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_",
-          "type": "rightHand",
-          "detachedNodeYpr": [0.0,-15.0,90.0],
-          "detachedNodeScale": [1.0,-1.0,1.0],
-          "flexionDir": [0.0,-1.0,-0.9]
+          "flexionDir": [0.0,-1.0,-0.1]
         }
       },
       {
@@ -2608,7 +2645,7 @@
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
           "targetNode": "pedal_lfoot_",
-          "flexionDir": [0.0,1.0,0.0]
+          "flexionDir": [0.2,0.0,-1.0]
         }
       },
       {
@@ -2617,7 +2654,7 @@
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
-          "flexionDir": [0.0,1.0,0.0]
+          "flexionDir": [-0.2,0.0,-1.0]
         }
       }
     ]
@@ -2849,12 +2886,6 @@
           "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab250.blk",
           "tags": {
             "free": true
-          },
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-              "iconType": "bombs_middle"
-            }
           }
         }
       },
@@ -2862,122 +2893,48 @@
         "preset": {
           "name": "tu-2_9xfab100",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_9xfab100.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
-              "iconType": "bombs_small"
-            }
-          }
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {
         "preset": {
           "name": "tu-2_2xfab500_2xfab250",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab500_2xfab250.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-                "iconType": "bombs_middle"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
-                "iconType": "bombs_large"
-              }
-            }
-          ]
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {
         "preset": {
           "name": "tu-2_4xfab500",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_4xfab500.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-                "iconType": "bombs_large"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
-                "iconType": "bombs_large"
-              }
-            }
-          ]
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {
         "preset": {
           "name": "tu-2_2xfab500",
-          "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab500.blk",
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-              "iconType": "bombs_large"
-            }
-          }
+          "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab500.blk"
         }
       },
       {
         "preset": {
           "name": "tu-2_1xfab1000",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-              "iconType": "bombs_special"
-            }
-          }
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {
         "preset": {
           "name": "tu-2_1xfab1000_2xfab250",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000_2xfab250.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-                "iconType": "bombs_middle"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-                "iconType": "bombs_special"
-              }
-            }
-          ]
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {
         "preset": {
           "name": "tu-2_1xfab1000_2xfab500",
           "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000_2xfab500.blk",
-          "reqModification": "tu-2_pkd-2",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-                "iconType": "bombs_large"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-                "iconType": "bombs_special"
-              }
-            }
-          ]
+          "reqModification": "tu-2_pkd-2"
         }
       },
       {

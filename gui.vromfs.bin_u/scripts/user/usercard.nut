@@ -12,7 +12,6 @@ local popupFilter = require("scripts/popups/popupFilter.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
 local { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
@@ -346,7 +345,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(countryStatsNest))
       return
 
-    local columns = shopCountriesList.map(@(c) {
+    local columns = ::shopCountriesList.map(@(c) {
       icon            = ::get_country_icon(c)
       unitsCount      = profile.countryStats[c].unitsCount
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
@@ -410,7 +409,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isOwnStats)
     {
       maxMedals = pl.countryStats[curCountryId].medalsCount
-      foreach(idx, countryId in shopCountriesList)
+      foreach(idx, countryId in ::shopCountriesList)
       {
         local medalsCount = pl.countryStats[countryId].medalsCount
         if (maxMedals < medalsCount)
@@ -425,7 +424,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     local curValue = 0
     local view = { items = [] }
     local countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
-    foreach(idx, countryId in shopCountriesList)
+    foreach(idx, countryId in ::shopCountriesList)
     {
       view.items.append({
         id = countryId
@@ -450,7 +449,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(obj) || !::check_obj(nestObj))
       return
 
-    local countryId = shopCountriesList?[obj.getValue()]
+    local countryId = ::shopCountriesList?[obj.getValue()]
     if (!countryId)
       return
 
@@ -590,7 +589,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   function initAirStats()
   {
     countryStats = []
-    foreach(country in shopCountriesList)
+    foreach(country in ::shopCountriesList)
       countryStats.append(country)
     initAirStatsScene(player.userstat)
   }
@@ -658,7 +657,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillCountriesCheckBoxes(sObj)
   {
     availableCountries = {}
-    foreach (idx, inst in shopCountriesList)
+    foreach (idx, inst in ::shopCountriesList)
       availableCountries[inst] <- {
         id    = inst
         idx   = idx
@@ -968,7 +967,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
           else
           {
             if (!row.showLbPlaces)
-              res = lbCategory.getItemCell(lbCategory.lbDataType == ::g_lb_data_type.PERCENT ? -1 : 0)
+              res = lbCategory.getItemCell(lbCategory.type == ::g_lb_data_type.PERCENT ? -1 : 0)
             else
               res = lbCategory.getItemCell(-1, null, false, ::g_lb_data_type.PLACE)
           }

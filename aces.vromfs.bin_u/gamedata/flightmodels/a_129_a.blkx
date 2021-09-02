@@ -1548,14 +1548,9 @@
       }
     },
     {
-      "hideNodes": [
-        {
-          "node": "skin"
-        },
-        {
-          "node": "lipa"
-        }
-      ]
+      "hideNodes": {
+        "node": "skin"
+      }
     },
     {
       "Weapon": {
@@ -4505,7 +4500,7 @@
     {
       "dp": [
         {
-          "dm": "fin_dm"
+          "dm": "tail_dm"
         },
         {
           "dp": "prop01_2"
@@ -4640,115 +4635,7 @@
           "counterMeasure": {
             "blk": "gameData/counterMeasures/an_alq_144.blk"
           }
-        },
-        "commonWeapons": [
-          {
-            "hideDmParts": {
-              "node": "transmission2_dm"
-            }
-          },
-          {
-            "hideNodes": {
-              "node": "skin"
-            }
-          },
-          {
-            "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [-115.0,115.0],
-                "pitch": [-50.0,25.0]
-              }
-            }
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "gunner0"
-              },
-              {
-                "blk": "gameData/Weapons/gunFN_M3M.blk"
-              },
-              {
-                "emitter": "flare1"
-              },
-              {
-                "flash": "flare1"
-              },
-              {
-                "turret": "turret1"
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              },
-              {
-                "shell": "emtr_shellrejection1"
-              },
-              {
-                "dm": "gunner1_dm"
-              },
-              {
-                "gunnerDm": "gunner1_dm"
-              },
-              {
-                "gunDm": "gun1_dm"
-              },
-              {
-                "partsDP": "gun1_dm"
-              },
-              {
-                "bullets": 750
-              },
-              {
-                "recoilOffset": 0.0
-              },
-              {
-                "parkInDeadzone": false
-              },
-              {
-                "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-40.0,25.0]
-                }
-              },
-              {
-                "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
-                }
-              }
-            ]
-          }
-        ]
+        }
       }
     },
     "50cal_universal": [],

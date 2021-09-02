@@ -37,7 +37,7 @@ local function onGlobalStatusReceived(newData) {
   foreach(gsType in ::g_ww_global_status_type.types)
     if (gsType.isAvailableInShortStatus
         && !::u.isEqual(gsType.getShortData(curData.value), gsType.getShortData(newData)))
-      changedListsMask = changedListsMask | gsType.typeMask
+      changedListsMask = changedListsMask | gsType.type
 
   if (!changedListsMask)
     return

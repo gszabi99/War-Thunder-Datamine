@@ -123,9 +123,6 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
-    "smokeScreenDmPart": "engine_dm"
-  },
-  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -2895,8 +2892,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
-          "speedPitch": 90.0,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
           "bullets": 500,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -2919,30 +2916,6 @@
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,60.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-8.0,15.0]
           }
         }
       }
@@ -3504,15 +3477,6 @@
     ]
   },
   {
-    "commanderView": {
-      "optics": "commander_optics_square",
-      "zoomOutFov": 80.0,
-      "zoomInFov": 14.7,
-      "sightSize": [1.775,1.25],
-      "aimModeAvailable": true
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
@@ -3820,14 +3784,9 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": [
-      {
-        "emitter": "emtr_exhaust_01"
-      },
-      {
-        "emitter": "emtr_exhaust_04"
-      }
-    ]
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
+    }
   },
   {
     "VehiclePhys": {
@@ -4135,8 +4094,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
-                "speedPitch": 90.0,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
                 "bullets": 500,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -4159,30 +4118,6 @@
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-5.0,60.0]
-                }
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
-                "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-8.0,15.0]
                 }
               }
             },
@@ -4246,9 +4181,9 @@
               "noiseFactor": 0.05
             },
             "commanderViewIr": {
-              "resolution": [800.0,600.0],
-              "lightMult": 8.0,
-              "ghosting": 0.75,
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
               "noiseFactor": 0.2
             },
             "driverIr": {

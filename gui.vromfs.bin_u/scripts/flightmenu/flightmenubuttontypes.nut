@@ -1,6 +1,5 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local buttons = {
   types = []
@@ -64,7 +63,7 @@ enums.addTypes(buttons, {
     name = "Bailout"
     isVisible = canBailout
     getUpdatedLabelText = function getUpdatedLabelText() {
-      local txt = getPlayerCurUnit()?.unitType.getBailoutButtonText() ?? ""
+      local txt = ::get_player_cur_unit()?.unitType.getBailoutButtonText() ?? ""
       if (!::is_multiplayer() && ::get_mission_restore_type() == ::ERT_ATTEMPTS)
       {
         local attemptsTxt

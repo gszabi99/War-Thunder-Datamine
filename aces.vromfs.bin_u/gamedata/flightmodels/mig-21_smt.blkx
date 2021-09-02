@@ -2190,17 +2190,9 @@
     ]
   },
   "commonWeapons": {
-    "hideNodes": [
-      {
-        "node": "flare2"
-      },
-      {
-        "node": "sps_141m_pylon"
-      },
-      {
-        "node": "aso_sps_141m"
-      }
-    ],
+    "hideNodes": {
+      "node": "flare2"
+    },
     "Weapon": {
       "trigger": "cannon",
       "blk": "gameData/Weapons/cannonGSh_23L.blk",
@@ -2710,123 +2702,60 @@
     }
   ],
   "modifications": {
+    "cd_98": [],
+    "CdMin_Fuse": [],
+    "new_cover": [],
+    "structure_str": [],
+    "hp_105_jet": {
+      "tier": 4
+    },
+    "g_suit": {
+      "prevModification": "cd_98"
+    },
+    "hydravlic_power": {
+      "effects": {
+        "aileronBooster": 0.9
+      }
+    },
     "new_compressor_jet": {
       "tier": 1
     },
-    "hydravlic_power": {
-      "prevModification": "new_compressor_jet",
-      "tier": 2,
-      "effects": {
-        "aileronBooster": 0.9,
-        "elevatorBooster": 0.9
-      }
-    },
-    "cd_98": {
-      "prevModification": "hydravlic_power",
-      "tier": 3
-    },
-    "hp_105_jet": {
-      "prevModification": "cd_98",
-      "tier": 4
-    },
-    "f_4c_CdMin_Fuse": {
+    "ns23_armor_targets": [],
+    "ns23_air_targets": [],
+    "ns23_stealth": [],
+    "ns23_belt_pack": {
       "tier": 1
     },
-    "structure_str": {
-      "tier": 2
-    },
-    "f_4c_g_suit": {
-      "tier": 3
-    },
-    "new_cover": {
-      "tier": 4
-    },
-    "GSh_23L_armor_targets": [],
-    "GSh_23L_air_targets": [],
-    "GSh_23L_stealth": [],
-    "GSh_23L_belt_pack": {
-      "tier": 1
-    },
-    "GSh_23L_new_gun": {
-      "reqModification": "GSh_23L_belt_pack",
+    "ns23_new_gun": {
+      "reqModification": "ns23_belt_pack",
       "tier": 3
     },
     "mi_24_fab_250": {
       "modClass": "weapon",
-      "tier": 2
-    },
-    "mi_24_fab_500": {
-      "modClass": "weapon",
-      "reqModification": "mi_24_fab_250",
-      "tier": 4
+      "tier": 1
     },
     "mig_21_ub16": {
+      "reqModification": "mi_24_fab_250",
       "modClass": "weapon",
-      "tier": 1
+      "tier": 2
     },
     "mig_21_ub32": {
       "reqModification": "mig_21_ub16",
       "modClass": "weapon",
-      "tier": 2
+      "tier": 3
     },
     "il_28sh_s24": {
       "reqModification": "mig_21_ub32",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 4
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
+    "mi_24_fab_500": {
       "modClass": "weapon",
-      "tier": 1,
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": [
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 200,
-              "spread": 1.0,
-              "counterIndex": 1,
-              "gearLimit": [0.0,0.1],
-              "airbrakeRange": [0.0,0.1],
-              "gearName": "gear_c"
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            }
-          }
-        ]
-      }
+      "reqModification": "mi_24_fab_250",
+      "tier": 1
     },
     "mig_19_r3s": {
+      "prevModification": "mi_24_fab_500",
       "tier": 2,
       "modClass": "weapon"
     },

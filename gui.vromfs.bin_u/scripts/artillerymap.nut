@@ -1,6 +1,5 @@
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 enum POINTING_DEVICE
 {
@@ -14,8 +13,6 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/artilleryMap.blk"
   shouldBlurSceneBg = true
-  shouldFadeSceneInVr = true
-  shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_ARTILLERY |
                          CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD |
@@ -70,12 +67,12 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
     watchAxis = ::joystickInterface.getAxisWatch(false, true)
     isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
-    pointingDevice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN
+    pointingDevice = ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN
       : ::is_xinput_device() && !isGamepadMouse ? POINTING_DEVICE.GAMEPAD
       : POINTING_DEVICE.MOUSE
 
-    canUseShortcuts = !useTouchscreen || ::is_xinput_device()
-    shouldMapClickDoApply = !useTouchscreen && !::is_xinput_device()
+    canUseShortcuts = !::use_touchscreen || ::is_xinput_device()
+    shouldMapClickDoApply = !::use_touchscreen && !::is_xinput_device()
 
     ::g_hud_event_manager.subscribe("LocalPlayerDead", function (data) {
       ::close_artillery_map()
@@ -115,7 +112,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
     if (mousePos[0] != prevMousePos[0] || mousePos[1] != prevMousePos[1])
     {
-      curPointingice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
+      curPointingice = ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
       mapCoords = getMouseCursorMapCoords()
     }
     else if (!isGamepadMouse && (joystickData.x || joystickData.y))

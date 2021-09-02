@@ -11,7 +11,6 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
   cbOwnerSearchHighlight = null
   cbOwnerSearchCancel = null
   cbOwnerShowUnit = null
-  cbOwnerClose = null
   getEdiffFunc = null
 
   searchString  = ""
@@ -104,10 +103,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSearchEditBoxCancelEdit(obj)
   {
-    if (obj.getValue() != "")
-      searchCancel()
-    else
-      cbOwnerClose()
+    searchCancel()
   }
 
   function onSearchEditBoxActivate(obj = null)

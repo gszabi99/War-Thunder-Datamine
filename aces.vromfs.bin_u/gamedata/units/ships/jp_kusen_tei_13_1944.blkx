@@ -200,12 +200,6 @@
       },
       {
         "replace_tex": {
-          "from": "flag_ireland_01_c*",
-          "to": "flag_uk_01_c_tomoe*"
-        }
-      },
-      {
-        "replace_tex": {
           "from": "airplane_ger_ar196_c*",
           "to": "airplane_ger_ar196_c_tomoe*"
         }
@@ -1285,22 +1279,22 @@
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
         "compartment_01_dm": {
-          "hp": 1970.0
+          "hp": 1976.0
         },
         "compartment_02_dm": {
-          "hp": 1673.0
+          "hp": 1677.0
         },
         "compartment_03_dm": {
-          "hp": 929.0
+          "hp": 932.0
         },
         "compartment_04_dm": {
-          "hp": 1160.0
+          "hp": 1164.0
         },
         "compartment_05_dm": {
           "hp": 750.0
         },
         "compartment_06_dm": {
-          "hp": 1584.0
+          "hp": 1590.0
         },
         "compartment_07_dm": {
           "hp": 750.0
@@ -1321,16 +1315,16 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 3.0,
         "superstructure_back_dm": {
-          "hp": 632.0
+          "hp": 500.0
         },
         "superstructure_bottom_dm": {
           "hp": 500.0
         },
+        "superstructure_side_dm": {
+          "hp": 800.0
+        },
         "superstructure_top_dm": {
           "hp": 500.0
-        },
-        "superstructure_dm": {
-          "hp": 800.0
         }
       },
       "construction": {
@@ -1386,21 +1380,13 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "mast_01_dm": {
-          "hp": 500.0
+          "hp": 302.0
         }
       },
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
         "dmgState": 0.0
-      },
-      "fire_control": {
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 3.0,
-        "dmgState": 0.0,
-        "rangefinder_01_dm": {
-          "hp": 50.0
-        }
       },
       "engine": {
         "armorThrough": 30.0,
@@ -1421,10 +1407,10 @@
           "hp": 343.0
         },
         "transmission_01_dm": {
-          "hp": 369.0
+          "hp": 394.0
         },
         "transmission_02_dm": {
-          "hp": 369.0
+          "hp": 394.0
         }
       },
       "steering_gear": {
@@ -1491,9 +1477,6 @@
         },
         "turret_05_dm": {
           "hp": 250.0
-        },
-        "turret_06_dm": {
-          "hp": 250.0
         }
       },
       "gun_masks": {
@@ -1511,16 +1494,16 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 78.0
+          "hp": 75.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 100.0
+          "hp": 75.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 100.0
+          "hp": 75.0
         },
         "auxiliary_caliber_turret_04_dm": {
-          "hp": 100.0
+          "hp": 75.0
         }
       },
       "turrets_aa_caliber": {
@@ -1561,13 +1544,7 @@
       "explosives_mounts": {
         "fireProtectionHp": 20.0,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 3.0,
-        "depth_charge_mount_01_dm": {
-          "hp": 250.0
-        },
-        "depth_charge_mount_02_dm": {
-          "hp": 250.0
-        }
+        "armorThickness": 3.0
       },
       "fuel_tanks": {
         "fireProtectionHp": 15.0,
@@ -2821,7 +2798,7 @@
             },
             {
               "linkedAnimPart": {
-                "horNode": "rangefinder_01",
+                "horNode": "ex_decor_06",
                 "horLimits": [-180.0,180.0],
                 "horOriginLimits": [-180.0,180.0]
               }
@@ -3377,7 +3354,7 @@
           "fireEvent": "torpedo_fire"
         },
         {
-          "explosionEvent": "water_under_explosion_medium"
+          "explosionEvent": "torpedo_explosion"
         },
         {
           "fireParamsPreset": "ship_torpedo_fire"
@@ -3446,7 +3423,7 @@
           "fireEvent": "torpedo_fire"
         },
         {
-          "explosionEvent": "water_under_explosion_medium"
+          "explosionEvent": "torpedo_explosion"
         },
         {
           "fireParamsPreset": "ship_torpedo_fire"
@@ -3515,7 +3492,7 @@
           "fireEvent": "torpedo_fire"
         },
         {
-          "explosionEvent": "water_under_explosion_medium"
+          "explosionEvent": "torpedo_explosion"
         },
         {
           "fireParamsPreset": "ship_torpedo_fire"
@@ -3584,7 +3561,7 @@
           "fireEvent": "torpedo_fire"
         },
         {
-          "explosionEvent": "water_under_explosion_medium"
+          "explosionEvent": "torpedo_explosion"
         },
         {
           "fireParamsPreset": "ship_torpedo_fire"

@@ -1,7 +1,6 @@
 local { search } = require("sqStdLibs/helpers/u.nut")
 local platform = require("scripts/clientState/platform.nut")
 local helpTypes = require("scripts/controls/help/controlsHelpTypes.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local tabGroups = [
   {
@@ -84,7 +83,7 @@ local function getPrefferableType(contentSet)
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 
-  local unit = getPlayerCurUnit()
+  local unit = ::get_player_cur_unit()
   local unitTag = unit?.isSubmarine() ? "submarine" : null
 
   foreach (pattern in [

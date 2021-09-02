@@ -872,7 +872,7 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
 
   function getClanUpgradeCost()
   {
-    local cost = clanType.getNextTypeUpgradeCost()
+    local cost = type.getNextTypeUpgradeCost()
     local resultingCostGold = cost.gold - spentForMemberUpgrades // warning disable: -never-declared
     if (resultingCostGold < 0)
       resultingCostGold = 0
@@ -907,7 +907,7 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
 
   function getTypeName()
   {
-    return clanType.getTypeName()
+    return type.getTypeName()
   }
 
   function getCreationDateText()
@@ -966,7 +966,7 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
 
   clan.spentForMemberUpgrades <- ::getTblValue("mspent", clanInfo, 0)
   clan.regionLastUpdate <- ::getTblValue("region_last_updated", clanInfo, 0)
-  clan.clanType   <- ::g_clan_type.getTypeByName(clanInfo?.type ?? "")
+  clan.type   <- ::g_clan_type.getTypeByName(::getTblValue("type", clanInfo, ""))
   clan.autoAcceptMembership <- ::getTblValue("autoaccept",   clanInfo, false)
   clan.membershipRequirements <- ::DataBlock()
   local membReqs = ::clan_get_membership_requirements( clanInfo )

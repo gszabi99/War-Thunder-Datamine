@@ -53,7 +53,6 @@ local DEBUG_TABLE_DATA_PARAMS = {
   local silentMode = params?.silentMode ?? false
   local recursionLevel = params?.recursionLevel ?? 4
   local printFn = params?.printFn
-  local needUnfoldInstances = params?.needUnfoldInstances ?? false
 
   if (printFn == null)
     printFn = silentMode ? @(t) ::print(t + "\n") : ::dagor.debug;
@@ -104,7 +103,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
       if (showBlockBrackets)
         printFn(prefix+addStr+"}")
     }
-    else if (typeof(info)=="array" || typeof(info)=="table" || (typeof(info)=="instance" && needUnfoldInstances))
+    else if (typeof(info)=="array" || typeof(info)=="table")
     {
       if (showBlockBrackets)
         printFn(prefix + addStr + (typeof(info) == "array" ? "[" : "{"))
@@ -112,26 +111,24 @@ local DEBUG_TABLE_DATA_PARAMS = {
       foreach(id, data in info)
       {
         local dType = typeof(data)
-        local isDataBlock = ::can_be_readed_as_datablock(data)
         local idText = tableKeyToString(id)
-        if (isDataBlock || dType=="array" || dType=="table" || (dType=="instance" && needUnfoldInstances))
+        if (dType=="array" || dType=="table" ||  can_be_readed_as_datablock(data))
         {
-          local openBraket = isDataBlock ? "DataBlock {" : dType == "array" ? "[" : "{"
+          local openBraket = ((dType=="array")? "[": ((dType=="table")? "{" : "DataBlock {"))
           local closeBraket = ((dType=="array")? "]":"}")
           if (recursionLevel)
           {
             printFn(prefix + addStr2 + idText + " = " + openBraket)
             ::debugTableData(data,
               {recursionLevel = recursionLevel - 1, addStr = addStr2 + "  ", showBlockBrackets = false,
-                needUnfoldInstances, silentMode, printFn })
+                silentMode = silentMode, printFn = printFn})
 
             printFn(prefix+addStr2+closeBraket)
           }
           else
           {
-            local hasContent = (isDataBlock && (data.paramCount() + data.blockCount()) > 0)
-              || dType=="instance" || data.len() > 0
-            printFn("".concat(prefix, addStr2, idText, " = ", openBraket, hasContent ? "..." : "", closeBraket))
+            local length = (dType=="array" || dType=="table") ? data.len() : (data.paramCount() + data.blockCount())
+            printFn(prefix + addStr2 + idText + " = " + openBraket + (length ? "..." : "") + closeBraket)
           }
         }
         else if (dType=="instance")
