@@ -528,6 +528,12 @@ const AFTERBURNER_CHAMBER = 3
     return nameId
   }
 
+  function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, blk)
+  {
+    local nameLocId = $"{locKeyPrefix}/{blk?.nameLocId ?? fileName(blkFilePath).slice(0, -4)}"
+    return doesLocTextExist(nameLocId) ? ::loc(nameLocId) : (blk?.name ?? nameLocId)
+  }
+
   function getPartTooltipInfo(nameId, params)
   {
     local res = {
@@ -1066,9 +1072,8 @@ const AFTERBURNER_CHAMBER = 3
           }
           else if (sensorType == "lds")
             continue
-          local radarNameLocId = $"sensors/{fileName(sensorFilePath).slice(0, -4)}"
-          local radarName = doesLocTextExist(radarNameLocId) ? ::loc(radarNameLocId) : (sensorPropsBlk?.name ?? radarNameLocId)
-          desc.append("".concat(::loc($"avionics_sensor_{sensorType}"), ::loc("ui/colon"), radarName))
+          desc.append("".concat(::loc($"avionics_sensor_{sensorType}"), ::loc("ui/colon"),
+            getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
         }
         if (unitBlk.getBool("havePointOfInterestDesignator", false))
           desc.append(::loc("avionics_aim_spi"))
@@ -1083,9 +1088,8 @@ const AFTERBURNER_CHAMBER = 3
           local counterMeasurePropsBlk = ::DataBlock()
           counterMeasurePropsBlk.load(counterMeasureFilePath)
           local counterMeasureType = counterMeasurePropsBlk.getStr("type", "")
-          local counterMeasureNameLocId = $"counterMeasures/{fileName(counterMeasureFilePath).slice(0, -4)}"
-          local counterMeasureName = doesLocTextExist(counterMeasureNameLocId) ? ::loc(counterMeasureNameLocId) : (counterMeasurePropsBlk?.name ?? counterMeasureNameLocId)
-          desc.append("".concat(::loc($"avionics_countermeasure_{counterMeasureType}"), ::loc("ui/colon"), counterMeasureName))
+          desc.append("".concat(::loc($"avionics_countermeasure_{counterMeasureType}"), ::loc("ui/colon"),
+            getPartLocNameByBlkFile("counterMeasures", counterMeasureFilePath, counterMeasurePropsBlk)))
         }
         break
 
@@ -1112,13 +1116,13 @@ const AFTERBURNER_CHAMBER = 3
           local sensorType = sensorPropsBlk.getStr("type", "")
           if (sensorType == "radar")
           {
-            local radarNameLocId = $"sensors/{fileName(sensorFilePath).slice(0, -4)}"
-            local radarName = doesLocTextExist(radarNameLocId) ? ::loc(radarNameLocId) : (sensorPropsBlk?.name ?? radarNameLocId)
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), radarName))
+            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"),
+              getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
 
             local isRadar = false
             local isIrst = false
             local rangeMax = 0.0
+            local radarFreqBand = 8
             local transiversBlk = sensorPropsBlk.getBlockByName("transivers")
             for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
             {
@@ -1128,7 +1132,10 @@ const AFTERBURNER_CHAMBER = 3
               if (transiverBlk?.visibilityType == "infraRed")
                 isIrst = true
               else
+              {
                 isRadar = true
+                radarFreqBand = transiverBlk.getInt("band", 8)
+              }
             }
 
             local anglesFinder = false
@@ -1171,6 +1178,8 @@ const AFTERBURNER_CHAMBER = 3
                 radarType = radarType + "_range_finder"
             }
             desc.append(::loc("plane_engine_type") + ::loc("ui/colon") + ::loc(radarType))
+            if (isRadar)
+              desc.append(::loc("radar_freq_band") + ::loc("ui/colon") + ::loc(::format("radar_freq_band_%d", radarFreqBand)))
             desc.append(::loc("radar_range_max") + ::loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
 
             local scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
@@ -1253,8 +1262,8 @@ const AFTERBURNER_CHAMBER = 3
             local info = DataBlock()
             info.load(cmBlk.blk)
 
-            local locName = ::loc($"counterMeasures/{info?.nameLocId ?? fileName(cmBlk.blk).slice(0, -4)}")
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), locName))
+            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"),
+              getPartLocNameByBlkFile("counterMeasures", cmBlk.blk, info)))
 
             foreach (cfg in [
               { label = "xray/ircm_protected_sector/hor",  sectorKey = "azimuthSector",   directionKey = "azimuth"   }

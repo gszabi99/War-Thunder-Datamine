@@ -143,48 +143,120 @@
     ]
   },
   {
-    "frame": {
-      "id": "wnd_frame",
-      "width": "1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding",
-      "pos": "1@bw, sh/2-h/2",
-      "position": "absolute",
-      "class": "wnd",
-      "type": "big",
-      "invisibleSelection": "yes",
-      "frame_header": {
-        "activeText": {
-          "id": "wnd_title",
-          "caption": "yes",
-          "text": "#mainmenu/btnProtectionAnalysis"
+    "frame": [
+      {
+        "id": "wnd_frame"
+      },
+      {
+        "width": "1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding"
+      },
+      {
+        "pos": "1@bw, sh/2-h/2"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wnd"
+      },
+      {
+        "type": "big"
+      },
+      {
+        "invisibleSelection": "yes"
+      },
+      {
+        "frame_header": {
+          "activeText": {
+            "id": "wnd_title",
+            "caption": "yes",
+            "text": "#mainmenu/btnProtectionAnalysis"
+          }
         }
       },
-      "verticalCellsOptions": {
-        "id": "options_container",
-        "width": "pw",
-        "class": "optionsMultiColumn",
-        "fullWidthOptions": "yes",
-        "selfFocusBorder": "yes",
-        "css-hier-invalidate": "yes",
-        "moveY": "linear",
-        "behavior": "PosOptionsNavigator",
-        "navigatorShortcuts": "yes",
-        "on_wrap_left": "onDistanceDec",
-        "on_wrap_right": "onDistanceInc"
+      {
+        "verticalCellsOptions": {
+          "id": "options_container",
+          "width": "pw",
+          "class": "optionsMultiColumn",
+          "fullWidthOptions": "yes",
+          "selfFocusBorder": "yes",
+          "css-hier-invalidate": "yes",
+          "moveY": "linear",
+          "behavior": "PosOptionsNavigator",
+          "navigatorShortcuts": "yes",
+          "on_wrap_left": "onDistanceDec",
+          "on_wrap_right": "onDistanceInc"
+        }
       },
-      "rowSeparator": {
-        "pos": "0, 1@blockInterval"
+      {
+        "rowSeparator": {
+          "pos": "0, 1@blockInterval"
+        }
       },
-      "CheckBox": {
-        "id": "checkboxSaveChoice",
-        "margin": "2@dp, 2@blockInterval, 0, 1@blockInterval",
-        "position": "relative",
-        "text": "#mainmenu/btnSaveChoice",
-        "on_change_value": "onSave",
-        "btnName": "Y",
-        "ButtonImg": [],
-        "CheckBoxImg": []
+      {
+        "rowSeparator": {
+          "id": "rowSeparator",
+          "pos": "0, 1@blockInterval"
+        }
+      },
+      {
+        "CheckBox": {
+          "id": "checkboxSaveChoice",
+          "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+          "position": "relative",
+          "text": "#mainmenu/btnSaveChoice",
+          "on_change_value": "onSave",
+          "btnName": "Y",
+          "ButtonImg": [],
+          "CheckBoxImg": []
+        }
+      },
+      {
+        "CheckBox": {
+          "id": "checkboxVerticalAngle",
+          "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+          "position": "relative",
+          "text": "#mainmenu/considerCameraVerticalAngle",
+          "on_change_value": "onConsiderVerticalAngle",
+          "btnName": "R3",
+          "ButtonImg": [],
+          "CheckBoxImg": []
+        }
+      },
+      {
+        "tdiv": {
+          "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+          "CheckBox": {
+            "id": "checkboxProtectionMap",
+            "position": "relative",
+            "text": "#mainmenu/protectionMap",
+            "on_change_value": "onProtectionMap",
+            "btnName": "X",
+            "ButtonImg": [],
+            "CheckBoxImg": []
+          },
+          "tdiv": {
+            "id": "pa_info_block",
+            "height": "@checkboxSize",
+            "display": "hide",
+            "text": {
+              "id": "pa_wait_text",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "padding": "1@blockInterval, 0"
+            },
+            "animated_wait_icon": {
+              "id": "pa_wait_icon",
+              "class": "byParent",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "background-rotation": "0"
+            }
+          }
+        }
       }
-    }
+    ]
   },
   {
     "gamercard_div": [

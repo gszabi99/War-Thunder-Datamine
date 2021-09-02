@@ -539,6 +539,8 @@ local isWaitMeasureEvent = false
       optionsUtils.fillBoolOption(descr, "enableSoundSpeed", ::OPTION_ENABLE_SOUND_SPEED); break;
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
       optionsUtils.fillBoolOption(descr, "pitchBlockerWhileBraking", ::OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
+    case ::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER:
+      optionsUtils.fillBoolOption(descr, "saveDirWhileSwitchTrigger", ::OPTION_SAVE_DIR_WHILE_SWITCH_TRIGGER); break;
 
     case ::USEROPT_COMMANDER_CAMERA_IN_VIEWS:
       descr.id = "commander_camera_in_views"
@@ -4868,6 +4870,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_MAP_ZOOM_BY_LEVEL:
     case ::USEROPT_SHOW_COMPASS_IN_TANK_HUD:
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
+    case ::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER:
     case ::USEROPT_HIDE_MOUSE_SPECTATOR:
     case ::USEROPT_FIX_GUN_IN_MOUSE_LOOK:
     case ::USEROPT_ENABLE_SOUND_SPEED:

@@ -30,6 +30,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1800kph",
   "fightAiBehaviour": "fighter",
+  "laserDesignator": true,
   "autopilotImpl": "FBW",
   "DamageParts": {
     "armor10": {
@@ -1883,24 +1884,20 @@
     "multifunctionDisplays": [
       {
         "display": {
-          "textureArea": [0.0,0.0,1.0,1.0],
-          "monoDisplayColor": [0.37,0.45,0.4],
+          "textureArea": [0.0,0.0,0.5,0.5],
           "page": {
-            "type": "plane_ils",
-            "ilsSize": [0.15,0.15],
-            "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5,
-            "ilsColor": "#ca650ab4"
+            "type": "rwr",
+            "radarScale": 1.35
           }
         }
       },
       {
         "display": [
           {
-            "textureArea": [0.5,0.5,1.0,1.0]
+            "monoDisplayColor": [0.37,0.45,0.4]
           },
           {
-            "monoDisplayColor": [0.37,0.45,0.4]
+            "textureArea": [0.5,0.5,1.0,1.0]
           },
           {
             "cameraFromShell": true
@@ -1923,8 +1920,11 @@
         "display": {
           "textureArea": [0.0,0.0,1.0,1.0],
           "page": {
-            "type": "rwr",
-            "radarScale": 1.35
+            "type": "plane_ils",
+            "ilsSize": [0.15,0.15],
+            "ilsOffsetForce": 0.0,
+            "brightnessMult": 3.5,
+            "ilsColor": "#ca1e0a78"
           }
         }
       }

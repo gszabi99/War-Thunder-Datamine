@@ -2420,69 +2420,6 @@
       "modClass": "weapon",
       "reqModification": "uk_mk_n1_540lb"
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
-      "tier": 1,
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": [
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "cannon2_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          }
-        ]
-      }
-    },
     "us_aim_9g": {
       "tier": 2,
       "modClass": "weapon"

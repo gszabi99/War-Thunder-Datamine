@@ -1622,14 +1622,7 @@
   },
   "commonWeapons": [
     {
-      "hideNodes": [
-        {
-          "node": "adase_pod_l"
-        },
-        {
-          "node": "adase_pod_r"
-        }
-      ]
+      "hideNodes": []
     },
     {
       "Weapon": {
@@ -2011,6 +2004,178 @@
           "reqModification": "ah_mk1_starstreak"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "ah_mk1_hydra_70_m247_starstreak",
+        "blk": "gameData/flightModels/weaponPresets/ah_mk1_hydra_70_m247_starstreak.blk",
+        "reqModification": "ah_mk1_starstreak"
+      }
+    },
+    {
+      "preset": {
+        "name": "ah_mk1_hydra_70_m247_amase",
+        "blk": "gameData/flightModels/weaponPresets/ah_mk1_hydra_70_m247_amase.blk",
+        "reqModification": "AMASE_heli_false_thermal_targets"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "ah_mk1_8_hellfire_amase"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/ah_mk1_8_hellfire_amase.blk"
+        },
+        {
+          "reqModification": "ah_1_AGM_114_8"
+        },
+        {
+          "reqModification": "AMASE_heli_false_thermal_targets"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "ah_mk1_rocket_4_hellfire_amase"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/ah_mk1_rocket_4_hellfire_amase.blk"
+        },
+        {
+          "reqModification": "ah_1_AGM_114_8"
+        },
+        {
+          "reqModification": "AMASE_heli_false_thermal_targets"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_k.blk"
+                },
+                {
+                  "amountPerTier": 2.0
+                },
+                {
+                  "iconType": "atgm_type_helfire_x2"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_CRV7_m247.blk"
+                },
+                {
+                  "amountPerTier": 19.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "ah_mk1_rocket_8_hellfire_amase"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/ah_mk1_rocket_8_hellfire_amase.blk"
+        },
+        {
+          "reqModification": "ah_1_AGM_114_8"
+        },
+        {
+          "reqModification": "AMASE_heli_false_thermal_targets"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_k.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "atgm_type_helfire_x4"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_CRV7_m247.blk"
+                },
+                {
+                  "amountPerTier": 19.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "ah_mk1_16_hellfire_amase"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/ah_mk1_16_hellfire_amase.blk"
+        },
+        {
+          "reqModification": "ah_1_AGM_114_16"
+        },
+        {
+          "reqModification": "AMASE_heli_false_thermal_targets"
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2094,14 +2259,7 @@
       "effects": {
         "commonWeapons": [
           {
-            "hideNodes": [
-              {
-                "node": "adase_pod_l"
-              },
-              {
-                "node": "adase_pod_r"
-              }
-            ]
+            "hideNodes": []
           },
           {
             "Weapon": {
@@ -2274,193 +2432,134 @@
       "invertEnableLogic": false,
       "reqModification": "MAW_system_heli_false_thermal_targets",
       "group": "countermeasures",
-      "effects": {
-        "commonWeapons": [
-          {
-            "hideNodes": [
-              {
-                "node": "starstreak_pylon_001"
-              },
-              {
-                "node": "starstreak_pylon_cap_1_b001"
-              },
-              {
-                "node": "starstreak_pylon_cap_2_b001"
-              },
-              {
-                "node": "starstreak_pylon_002"
-              },
-              {
-                "node": "starstreak_pylon_cap_1_b002"
-              },
-              {
-                "node": "starstreak_pylon_cap_2_b002"
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [-115.0,115.0],
-                "pitch": [-50.0,25.0]
-              }
-            }
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "gunner0"
-              },
-              {
-                "blk": "gameData/Weapons/cannonM230E1.blk"
-              },
-              {
-                "emitter": "flare1"
-              },
-              {
-                "flash": "flare1"
-              },
-              {
-                "turret": "turret1"
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              },
-              {
-                "dm": "gunner1_dm"
-              },
-              {
-                "gunnerDm": "gunner1_dm"
-              },
-              {
-                "gunDm": "cannon1_dm"
-              },
-              {
-                "partsDP": "cannon1_dm"
-              },
-              {
-                "bullets": 1200
-              },
-              {
-                "recoilOffset": 0.0
-              },
-              {
-                "parkInDeadzone": false
-              },
-              {
-                "limits": {
-                  "yaw": [-86.0,86.0],
-                  "pitch": [-60.0,11.0]
-                }
-              },
-              {
-                "limitsTable": {
-                  "lim1": [-86.0,-75.0,-50.0,19.0],
-                  "lim2": [-75.0,-52.0,-50.0,24.0],
-                  "lim3": [-52.0,-35.0,-50.0,25.0],
-                  "lim4": [-35.0,-15.0,-50.0,23.0],
-                  "lim5": [-15.0,15.0,-50.0,20.0],
-                  "lim6": [15.0,35.0,-50.0,23.0],
-                  "lim7": [35.0,52.0,-50.0,25.0],
-                  "lim8": [52.0,75.0,-50.0,24.0],
-                  "lim9": [75.0,86.0,-50.0,19.0]
-                }
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare4",
-              "bullets": 30,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 30,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare5",
-              "bullets": 30,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare6",
-              "bullets": 32,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare7",
-              "bullets": 32,
-              "external": true
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 8,
-              "external": true,
-              "separate": false
+      "commonWeapons": [
+        {
+          "hideNodes": []
+        },
+        {
+          "Weapon": {
+            "dummy": true,
+            "trigger": "gunner0",
+            "triggerGroup": "primary",
+            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "emitter": "optic1_gun",
+            "defaultYaw": 0.0,
+            "defaultPitch": 0.0,
+            "speedYaw": 25.0,
+            "speedPitch": 25.0,
+            "parkInDeadzone": false,
+            "aimForOperatedShell": true,
+            "turret": {
+              "head": "optic1_turret",
+              "gun": "optic1_gun",
+              "mainTurret": true
+            },
+            "limits": {
+              "yaw": [-115.0,115.0],
+              "pitch": [-50.0,25.0]
             }
           }
-        ],
+        },
+        {
+          "Weapon": [
+            {
+              "trigger": "gunner0"
+            },
+            {
+              "blk": "gameData/Weapons/cannonM230E1.blk"
+            },
+            {
+              "emitter": "flare1"
+            },
+            {
+              "flash": "flare1"
+            },
+            {
+              "turret": "turret1"
+            },
+            {
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1",
+                "mainTurret": true,
+                "ballisticTargeting": true
+              }
+            },
+            {
+              "dm": "gunner1_dm"
+            },
+            {
+              "gunnerDm": "gunner1_dm"
+            },
+            {
+              "gunDm": "cannon1_dm"
+            },
+            {
+              "partsDP": "cannon1_dm"
+            },
+            {
+              "bullets": 1200
+            },
+            {
+              "recoilOffset": 0.0
+            },
+            {
+              "parkInDeadzone": false
+            },
+            {
+              "limits": {
+                "yaw": [-86.0,86.0],
+                "pitch": [-60.0,11.0]
+              }
+            },
+            {
+              "limitsTable": {
+                "lim1": [-86.0,-75.0,-50.0,19.0],
+                "lim2": [-75.0,-52.0,-50.0,24.0],
+                "lim3": [-52.0,-35.0,-50.0,25.0],
+                "lim4": [-35.0,-15.0,-50.0,23.0],
+                "lim5": [-15.0,15.0,-50.0,20.0],
+                "lim6": [15.0,35.0,-50.0,23.0],
+                "lim7": [35.0,52.0,-50.0,25.0],
+                "lim8": [52.0,75.0,-50.0,24.0],
+                "lim9": [75.0,86.0,-50.0,19.0]
+              }
+            }
+          ]
+        },
+        {
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+            "emitter": "emtr_flare6",
+            "bullets": 32,
+            "external": true
+          }
+        },
+        {
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+            "emitter": "emtr_flare7",
+            "bullets": 32,
+            "external": true
+          }
+        },
+        {
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+            "emitter": "emtr_flare1",
+            "bullets": 8,
+            "external": true,
+            "separate": false
+          }
+        }
+      ],
+      "effects": {
         "sensors": [
           {
             "sensor": {

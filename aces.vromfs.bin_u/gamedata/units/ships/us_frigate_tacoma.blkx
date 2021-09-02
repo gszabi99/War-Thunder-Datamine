@@ -81,9 +81,6 @@
     "exhaustFx": "ps_exhaust_blur"
   },
   {
-    "explosionFx": "explosion_ship_small"
-  },
-  {
     "smokeScreenActivateTime": 2.5
   },
   {
@@ -94,6 +91,9 @@
   },
   {
     "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "explosionFx": "explosion_ship_small"
   },
   {
     "canReloadNonGuns": true
@@ -403,7 +403,7 @@
   {
     "ikGunner": [
       {
-        "model": "uk_officer_char"
+        "model": "uk_sailor_char"
       },
       {
         "maxHeadHorAngle": 60.0
@@ -476,7 +476,7 @@
   {
     "ikGunner": [
       {
-        "model": "uk_officer_char"
+        "model": "uk_sailor_char"
       },
       {
         "maxHeadHorAngle": 60.0
@@ -3336,7 +3336,53 @@
     }
   },
   {
+    "cockpit": {
+      "headPos": [0.0,24.0,-61.0],
+      "headPosOnShooting": [21.1,21.5,0.0],
+      "detectionHeight": 25.0
+    }
+  },
+  {
+    "sound": {
+      "EngineName": "engine_shipmid01",
+      "EngineNameAi": "engine_shipmid_ai",
+      "TrackSoundPath": "ships/engines_ships",
+      "TrackSoundPathStudio": "naval/engines",
+      "TrackSoundName": "tracks_mid",
+      "TrackSoundNameCockpit": "tracks_mid_interior",
+      "TrackSoundNameAi": "tracks_ai_mid",
+      "turret_turn": "turret_turn_big"
+    }
+  },
+  {
+    "optics": {
+      "binoculars": "navy_binoculars"
+    }
+  },
+  {
+    "sensors": {
+      "fireDirecting": {
+        "dmPartMain": "bridge_dm",
+        "dmPart": "rangefinder_01_dm",
+        "measureAccuracy": 0.85,
+        "targetLockTime": 30.0,
+        "calcTime": 18.0,
+        "rotationSpeed": 20.0,
+        "triggerGroupUse": {
+          "primary": true,
+          "secondary": false,
+          "machinegun": false
+        }
+      }
+    }
+  },
+  {
     "commonWeapons": [
+      {
+        "animatedBones": {
+          "node": "rangefinder_01"
+        }
+      },
       {
         "Weapon": {
           "trigger": "gunner0",
@@ -3940,6 +3986,7 @@
           "emitter": "emtr_gun_flame_08",
           "flash": "emtr_gun_flame_08",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_01_dm",
           "breechDP": "aa_gun_01_dm",
           "defaultYaw": 0.0,
@@ -4011,6 +4058,7 @@
           "emitter": "emtr_gun_flame_09",
           "flash": "emtr_gun_flame_09",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_02_dm",
           "breechDP": "aa_gun_02_dm",
           "defaultYaw": 0.0,
@@ -4082,6 +4130,7 @@
           "emitter": "emtr_gun_flame_10",
           "flash": "emtr_gun_flame_10",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_03_dm",
           "breechDP": "aa_gun_03_dm",
           "defaultYaw": 0.0,
@@ -4155,6 +4204,7 @@
           "emitter": "emtr_gun_flame_11",
           "flash": "emtr_gun_flame_11",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_04_dm",
           "breechDP": "aa_gun_04_dm",
           "defaultYaw": 0.0,
@@ -4228,6 +4278,7 @@
           "emitter": "emtr_gun_flame_12",
           "flash": "emtr_gun_flame_12",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_05_dm",
           "breechDP": "aa_gun_05_dm",
           "defaultYaw": 0.0,
@@ -4299,6 +4350,7 @@
           "emitter": "emtr_gun_flame_13",
           "flash": "emtr_gun_flame_13",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_06_dm",
           "breechDP": "aa_gun_06_dm",
           "defaultYaw": 0.0,
@@ -4370,6 +4422,7 @@
           "emitter": "emtr_gun_flame_14",
           "flash": "emtr_gun_flame_14",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_07_dm",
           "breechDP": "aa_gun_07_dm",
           "defaultYaw": 0.0,
@@ -4440,6 +4493,7 @@
           "emitter": "emtr_gun_flame_16",
           "flash": "emtr_gun_flame_16",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_09_dm",
           "breechDP": "aa_gun_09_dm",
           "defaultYaw": 0.0,
@@ -4510,6 +4564,7 @@
           "emitter": "emtr_gun_flame_15",
           "flash": "emtr_gun_flame_15",
           "useEmitter": true,
+          "isBulletBelt": true,
           "barrelDP": "aa_gun_08_dm",
           "breechDP": "aa_gun_08_dm",
           "defaultYaw": 0.0,
@@ -4601,22 +4656,49 @@
     ]
   },
   {
-    "cockpit": {
-      "headPos": [0.0,24.0,-61.0],
-      "headPosOnShooting": [21.1,21.5,0.0],
-      "detectionHeight": 25.0
-    }
-  },
-  {
-    "sound": {
-      "EngineName": "engine_shipmid01",
-      "EngineNameAi": "engine_shipmid_ai",
-      "TrackSoundPath": "ships/engines_ships",
-      "TrackSoundPathStudio": "naval/engines",
-      "TrackSoundName": "tracks_mid",
-      "TrackSoundNameCockpit": "tracks_mid_interior",
-      "TrackSoundNameAi": "tracks_ai_mid",
-      "turret_turn": "turret_turn_big"
+    "modifications": {
+      "new_ship_hull": [],
+      "new_ship_rudder": {
+        "prevModification": "new_ship_hull"
+      },
+      "new_ship_screw": [],
+      "new_ship_engine": {
+        "prevModification": "new_ship_screw"
+      },
+      "ship_tool_kit": [],
+      "manual_ship_extinguisher": [],
+      "ship_smoke_screen_system_mod": [],
+      "new_ship_pumps": [],
+      "76mm_usa_navy_he": [],
+      "76mm_usa_navy_AP": [],
+      "76mm_usa_navy_AP_ammo_pack": [],
+      "76mm_usa_AA_radio_fuze": [],
+      "76mm_usa_AA_radio_fuze_ammo_pack": {
+        "prevModification": "76mm_usa_navy_AP_ammo_pack"
+      },
+      "40mm_bofors_l60_navy_universal": [],
+      "40mm_bofors_l60_navy_he": [],
+      "40mm_bofors_l60_navy_he_ammo_pack": [],
+      "40mm_bofors_l60_navy_ap": [],
+      "40mm_bofors_l60_navy_ap_ammo_pack": {
+        "prevModification": "40mm_bofors_l60_navy_he_ammo_pack"
+      },
+      "new_aa_caliber_turrets": [],
+      "new_aux_caliber_turrets": {
+        "reqModification": "new_aa_caliber_turrets"
+      },
+      "new_main_caliber_turrets": {
+        "reqModification": "new_aux_caliber_turrets"
+      },
+      "ship_rangefinder": {
+        "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack"
+      },
+      "ship_depth_charge": {
+        "prevModification": "76mm_usa_AA_radio_fuze_ammo_pack"
+      },
+      "ship_bomb_mortar": {
+        "reqModification": "ship_depth_charge"
+      }
     }
   },
   {
@@ -5437,57 +5519,6 @@
       "bowSplashUpDirMult": 1.6,
       "bowSplashSpawnRate": 1.0,
       "bowSplashNormalMult": 1.2
-    }
-  },
-  {
-    "optics": {
-      "binoculars": "navy_binoculars"
-    }
-  },
-  {
-    "modifications": {
-      "new_ship_hull": [],
-      "new_ship_rudder": {
-        "prevModification": "new_ship_hull"
-      },
-      "new_ship_screw": [],
-      "new_ship_engine": {
-        "prevModification": "new_ship_screw"
-      },
-      "ship_tool_kit": [],
-      "manual_ship_extinguisher": [],
-      "ship_smoke_screen_system_mod": [],
-      "new_ship_pumps": [],
-      "76mm_usa_navy_he": [],
-      "76mm_usa_navy_AP": [],
-      "76mm_usa_navy_AP_ammo_pack": [],
-      "76mm_usa_AA_radio_fuze": [],
-      "76mm_usa_AA_radio_fuze_ammo_pack": {
-        "prevModification": "76mm_usa_navy_AP_ammo_pack"
-      },
-      "40mm_bofors_l60_navy_universal": [],
-      "40mm_bofors_l60_navy_he": [],
-      "40mm_bofors_l60_navy_he_ammo_pack": [],
-      "40mm_bofors_l60_navy_ap": [],
-      "40mm_bofors_l60_navy_ap_ammo_pack": {
-        "prevModification": "40mm_bofors_l60_navy_he_ammo_pack"
-      },
-      "new_aa_caliber_turrets": [],
-      "new_aux_caliber_turrets": {
-        "reqModification": "new_aa_caliber_turrets"
-      },
-      "new_main_caliber_turrets": {
-        "reqModification": "new_aux_caliber_turrets"
-      },
-      "ship_rangefinder": {
-        "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack"
-      },
-      "ship_depth_charge": {
-        "prevModification": "76mm_usa_AA_radio_fuze_ammo_pack"
-      },
-      "ship_bomb_mortar": {
-        "reqModification": "ship_depth_charge"
-      }
     }
   },
   {

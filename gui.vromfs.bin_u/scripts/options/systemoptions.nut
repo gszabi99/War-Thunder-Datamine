@@ -40,6 +40,7 @@ local compModeGraphicsOptions = {
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
+    shadows           = { compMode = true }
   }
   standaloneOptions = {
     dlss              = { compMode = false }

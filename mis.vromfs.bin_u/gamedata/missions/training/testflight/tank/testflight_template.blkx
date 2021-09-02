@@ -229,6 +229,11 @@
           "object": "@target_tank",
           "target": "@tank_spawn_area"
         },
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "object_var_value": 0
+        },
         "varModify": {
           "operator": "add",
           "value": 1.0,
@@ -513,7 +518,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.12
         }
       },
       "conditions": {
@@ -541,7 +546,7 @@
           "input_var": "tank_num"
         },
         "triggerEnable": {
-          "target": "tank_respawn_if_killed"
+          "target": "tick_killed"
         }
       },
       "else_actions": {
@@ -557,7 +562,7 @@
         }
       }
     },
-    "tank_respawn_if_killed": {
+    "tick_killed": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -583,40 +588,78 @@
           "object": "@target_tank"
         }
       },
-      "actions": [
-        {
-          "varSetString": {
-            "value": "tank_spawn_area",
-            "var": "tank_spawn_area"
-          }
+      "actions": {
+        "unitGetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "out_var": "unit_var"
         },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "tank_spawn_area",
-            "input_var": "tank_num"
-          }
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "unit_var"
         },
-        {
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [0.0,0.0,0.0],
-            "object": "@target_tank",
-            "target": "@tank_spawn_area"
-          }
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "input_var": "unit_var"
         },
-        {
-          "triggerEnable": {
-            "target": "set_route"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "iterate_tanks"
-          }
+        "triggerEnable": {
+          "target": "tank_respawn_if_killed"
         }
-      ],
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "iterate_tanks"
+        }
+      }
+    },
+    "tank_respawn_if_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "unit_var",
+          "value": 10,
+          "comparasion_func": "more"
+        }
+      },
+      "actions": {
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "object_var_value": 0
+        },
+        "varSetString": {
+          "value": "tank_spawn_area",
+          "var": "tank_spawn_area"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 2,
+          "var": "tank_spawn_area",
+          "input_var": "tank_num"
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "@target_tank",
+          "target": "@tank_spawn_area"
+        },
+        "triggerEnable": {
+          "target": "set_route"
+        }
+      },
       "else_actions": {
         "triggerEnable": {
           "target": "iterate_tanks"
@@ -644,18 +687,23 @@
         }
       },
       "actions": {
+        "wait": {
+          "time": 0.1
+        },
         "unitSetRoute": {
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "route": "way_target_tank05",
           "teleportToStart": true,
-          "object": "target_tank06",
-          "object_type": "any"
+          "object": "target_tank06"
+        },
+        "triggerEnable": {
+          "target": "iterate_tanks"
         }
       },
       "else_actions": {
-        "triggerDisable": {
-          "target": "set_route"
+        "triggerEnable": {
+          "target": "iterate_tanks"
         }
       }
     },
@@ -686,6 +734,9 @@
         }
       },
       "actions": {
+        "wait": {
+          "time": 10.0
+        },
         "unitRespawn": {
           "delay": 1.0,
           "offset": [0.0,0.0,0.0],
@@ -722,6 +773,9 @@
         }
       },
       "actions": {
+        "wait": {
+          "time": 10.0
+        },
         "unitRespawn": {
           "delay": 1.0,
           "offset": [0.0,0.0,0.0],
@@ -740,7 +794,8 @@
     "target_tank": "",
     "tank_num": 1,
     "tank_spawn_area": "",
-    "tanks_total": 0
+    "tanks_total": 0,
+    "unit_var": 0
   },
   "dialogs": [],
   "airfields": [],

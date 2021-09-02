@@ -67,14 +67,13 @@ local function isFakeBullet(modName)
 
 local function setUnitLastBullets(unit, groupIndex, value)
 {
-  if (unit.unitType.canUseSeveralBulletsForGun)
-    ::set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, value)
-
   local saveValue = getModificationByName(unit, value)? value : "" //'' = default modification
-
   local curBullets = ::get_last_bullets(unit.name, groupIndex)
   if (curBullets != saveValue)
   {
+    if (unit.unitType.canUseSeveralBulletsForGun)
+      ::set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
+
     ::dagor.debug($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
     ::set_last_bullets(unit.name, groupIndex, saveValue)
     ::broadcastEvent("UnitBulletsChanged", { unit = unit,
@@ -750,11 +749,12 @@ local function getModificationName(air, modifName, limitedName = false)
   return getModificationInfo(air, modifName, true, limitedName).desc
 }
 
-local function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true)
+local function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true, saveValue = null)
 {
   local item =  { enabled = enabled }
   descr.items.append(item)
   descr.values.append(modifName)
+  descr.saveValues.append(saveValue ?? modifName)
 
   if (!genTexts)
     return
@@ -768,6 +768,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
   params = BULLETS_LIST_PARAMS.__merge(params)
   local descr = {
     values = []
+    saveValues = []
     isTurretBelt = false
     weaponType = WEAPON_TYPE.GUNS
     caliber = 0
@@ -831,7 +832,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     {
       local bData = getBulletsSetData(air, modifName)
       if (!bData || bData.useDefaultBullet)
-        appendOneBulletsItem(descr, groupName + "_default", air, "", params.needTexts) //default bullets
+        appendOneBulletsItem(descr, $"{groupName}_default", air, "", params.needTexts, true, "") //default bullets
       if ("isTurretBelt" in modif)
         descr.isTurretBelt = modif.isTurretBelt
       if (bData)
@@ -1019,7 +1020,7 @@ local function getOptionsBulletsList(air, groupIndex, needTexts = false, isForce
   local curModif = air.unitType.canUseSeveralBulletsForGun ?
     ::get_unit_option(air.name, ::USEROPT_BULLETS0 + groupIndex) :
     ::get_last_bullets(air.name, groupIndex)
-  local value = curModif? ::find_in_array(res.values, curModif) : -1
+  local value = curModif? ::find_in_array(res.saveValues, curModif) : -1
 
   if (value < 0 || !res.items[value].enabled)
   {

@@ -119,6 +119,7 @@ local getMainOptions = function()
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
       [::USEROPT_COMMANDER_CAMERA_IN_VIEWS, "spinner"],
+      [::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER, "spinner"],
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],

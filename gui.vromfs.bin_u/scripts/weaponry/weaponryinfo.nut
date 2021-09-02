@@ -373,6 +373,28 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
               else
                 item.guidanceType = "ir"
             }
+            if (itemBlk.guidance?.radarSeeker != null)
+            {
+              local active = itemBlk.guidance.radarSeeker?.active ?? false
+              item.guidanceType = active ? "ARH" : "SARH"
+              local distanceGate = false
+              local dopplerSpeedGate = false
+              if (itemBlk.guidance.radarSeeker?.distance != null)
+                distanceGate = itemBlk.guidance.radarSeeker.distance?.presents ?? false
+              if (itemBlk.guidance.radarSeeker?.dopplerSpeed != null)
+                dopplerSpeedGate = itemBlk.guidance.radarSeeker.dopplerSpeed?.presents ?? false
+              if (distanceGate && dopplerSpeedGate)
+                item.radarSignal <- "pulse_doppler"
+              else if (distanceGate)
+                item.radarSignal <- "pulse"
+              else if (dopplerSpeedGate)
+                item.radarSignal <- "CW"
+              if (itemBlk.guidance.radarSeeker?.receiver != null)
+              {
+                local range = itemBlk.guidance.radarSeeker.receiver?.range ?? 0
+                item.seekerRange <- range
+              }
+            }
           }
         }
         if (currentTypeName == WEAPON_TYPE.AAM)
@@ -484,6 +506,11 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     if (weapon?.allAspect != null)
       res.append("".concat(::loc("missile/aspect"), colon,
         ::loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
+    if (weapon?.radarSignal)
+    {
+      local radarSignalTxt = ::loc($"missile/radarSignal/{weapon.radarSignal}")
+      res.append("".concat(::loc("missile/radarSignal"), colon, radarSignalTxt))
+    }
     if (weapon?.seekerRangeRearAspect)
       res.append("".concat(::loc("missile/seekerRange/rearAspect"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)))

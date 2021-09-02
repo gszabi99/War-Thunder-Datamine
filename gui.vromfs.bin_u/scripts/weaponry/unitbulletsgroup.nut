@@ -38,7 +38,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
     bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
     selectedName = ::getTblValue(bullets.value, bullets.values, "")
-    local saveValue = getModificationByName(unit, selectedName) ? selectedName : "" //'' = default modification
+    local saveValue = getBulletNameForCode(selectedName)
 
     if (::get_last_bullets(unit.name, groupIndex) != saveValue)
       setUnitLastBullets(unit, groupIndex, selectedName)
