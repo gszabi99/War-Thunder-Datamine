@@ -14,6 +14,7 @@ local { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/e
 local { eachParam } = require("std/datablock.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
@@ -91,8 +92,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    mainOptionsMode = ::get_gui_options_mode()
-    ::set_gui_options_mode(::OPTIONS_MODE_MP_DOMINATION)
+    mainOptionsMode = getGuiOptionsMode()
+    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
     eventsListObj = scene.findObject("items_list")
     if (!::checkObj(eventsListObj))
       return goBack()

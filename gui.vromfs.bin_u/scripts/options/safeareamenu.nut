@@ -1,14 +1,17 @@
 local screenInfo = require("scripts/options/screenInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local sony = require("sony")
+local { is_stereo_mode } = ::require_native("vr")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 local defValue  = 1.0
 local values    = [ 1.0, 0.95, 0.9 ]
 local items     = ["100%", "95%", "90%"]
 
 local getFixedValue = @() //return -1 when not fixed
-  ::is_stereo_mode() ? 0.8
+  is_stereo_mode() ? 0.8
   : isPlatformSony ? sony.getDisplaySafeArea()
+  : useTouchscreen ? 0.9
   : ::is_low_width_screen() ? 1.0
   : -1
 

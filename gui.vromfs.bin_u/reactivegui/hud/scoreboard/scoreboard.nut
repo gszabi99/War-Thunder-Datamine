@@ -17,6 +17,6 @@ return @() {
   size = flex()
   margin = safeAreaSizeHud.value.borders
   halign = ALIGN_CENTER
-  watch = [gameType, useDeathmatchHUD]
+  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud]
   children = getScoreBoardChildren()
 }

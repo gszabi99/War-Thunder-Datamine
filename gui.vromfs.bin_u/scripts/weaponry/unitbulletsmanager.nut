@@ -1,9 +1,12 @@
 local stdMath = require("std/math.nut")
 local { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
 local { getLinkedGunIdx, getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
-local { getBulletsGroupCount,
+local { getBulletsSetData,
+        getOptionsBulletsList,
+        getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("scripts/weaponry/bulletsInfo.nut")
+local { getGuiOptionsMode } = ::require_native("guiOptions")
 
 global enum bulletsAmountState {
   READY
@@ -19,11 +22,14 @@ global enum bulletsAmountState {
   groupsActiveMask = 0
 
   checkPurchased = true
+  isForcedAvailable = false
+  isBulletDataLoading = false
 
-  constructor(_unit)
+  constructor(_unit, params = {})
   {
     gunsInfo = []
-    checkPurchased = ::get_gui_options_mode() != ::OPTIONS_MODE_TRAINING
+    checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
+    isForcedAvailable = params?.isForcedAvailable ?? false
 
     setUnit(_unit)
     ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
@@ -45,9 +51,9 @@ global enum bulletsAmountState {
     bulGroups = null
   }
 
-  function getBulletsGroups(isForcedAvailable = false)
+  function getBulletsGroups()
   {
-    checkInitBullets(isForcedAvailable)
+    checkInitBullets()
     return bulGroups
   }
 
@@ -69,11 +75,8 @@ global enum bulletsAmountState {
     return gunsInfo.len() || 1
   }
 
-  function getGroupGunInfo(groupIdx)
-  {
-    local linkedIdx = getLinkedGunIdx(groupIdx, getGunTypesCount(), unit.unitType.bulletSetsQuantity)
-    return ::getTblValue(linkedIdx, gunsInfo, null)
-  }
+  getGroupGunInfo = @(linkedIdx, isUniformNoBelts, maxToRespawn) isUniformNoBelts
+    ? gunsInfo?[linkedIdx].__update({total = maxToRespawn}) : gunsInfo?[linkedIdx]
 
   function getUnallocatedBulletCount(bulGroup)
   {
@@ -275,55 +278,103 @@ global enum bulletsAmountState {
 //******************************* PRIVATE ***********************************************
 //**************************************************************************************
 
-  function checkInitBullets(isForcedAvailable = false)
+  function checkInitBullets()
   {
     if (bulGroups)
       return
 
-    loadGunInfo()
-    loadBulGroups(isForcedAvailable)
+    loadBulletsData()
     forcedBulletsCount()
     validateBullets()
     validateBulletsCount()
   }
 
-  function loadGunInfo()
+  function loadBulletsData()
   {
-    if (!unit)
-    {
-      gunsInfo = []
+    if (isBulletDataLoading)
       return
-    }
 
-    gunsInfo = getBulletsInfoForPrimaryGuns(unit)
-    foreach(idx, gInfo in gunsInfo)
-    {
-      gInfo.gunIdx <- idx
-      gInfo.unallocated <- gInfo.total
-      gInfo.notInitedCount <- 0
-    }
+    isBulletDataLoading = true
+    loadGunInfo()
+    loadBulGroups()
+    isBulletDataLoading = false
   }
 
-  function loadBulGroups(isForcedAvailable = false)
+  function loadGunInfo()
+  {
+    gunsInfo = []
+    if (!unit)
+      return
+
+    gunsInfo = getBulletsInfoForPrimaryGuns(unit).map(@(gInfo, idx) gInfo.__merge({
+      gunIdx = idx
+      unallocated = gInfo.total
+      notInitedCount = 0
+    }))
+  }
+
+  function loadBulGroups()
   {
     bulGroups = []
+    groupsActiveMask = unit ? getActiveBulletsGroupInt(unit, checkPurchased) : 0//!!FIX ME: better to detect actives in manager too.
     if (!unit)
-    {
-      groupsActiveMask = 0
       return
-    }
 
-    groupsActiveMask = getActiveBulletsGroupInt(unit, checkPurchased) //!!FIX ME: better to detect actives in manager too.
+    // Preparatory work of Bullet Groups creation
+    local bulletDataByGroup = {}
+    local bullGroupsCountersByGun = {}
+    local bulletsTotal = unit.unitType.canUseSeveralBulletsForGun
+      ? unit.unitType.bulletSetsQuantity : getBulletsGroupCount(unit)
 
-    local canChangeActivity = canChangeBulletsActivity()
-    local bulletsTotal = unit.unitType.canUseSeveralBulletsForGun ? unit.unitType.bulletSetsQuantity : getBulletsGroupCount(unit)
     for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++)
     {
-      bulGroups.append(::BulletGroup(unit, groupIndex, getGroupGunInfo(groupIndex), {
-        isActive = stdMath.is_bit_set(groupsActiveMask, groupIndex)
-        canChangeActivity = canChangeActivity
-        isForcedAvailable = isForcedAvailable
-      }))
+      local linkedIdx = getLinkedGunIdx(groupIndex, getGunTypesCount(),
+        unit.unitType.bulletSetsQuantity)
+      local bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
+      local selectedName = bullets.values?[bullets.value] ?? ""
+      local bulletsSet = getBulletsSetData(unit, selectedName)
+      local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+      //!!FIX ME: Needs to have a bit more reliable way to determine bullets type like by TRIGGER_TYPE for example
+      local currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
+      bulletDataByGroup[groupIndex] <- {
+        linkedIdx = linkedIdx
+        maxToRespawn = maxToRespawn
+      }
+
+      if (!bullGroupsCountersByGun?[linkedIdx])
+        bullGroupsCountersByGun[linkedIdx] <- {
+          limitedGroupCount = 0
+          groupCount = 0
+          beltsCount = 0
+          isUniform = true
+          bulletType = currBulletType// Helper value to define isUniform
+        }
+
+      local currCounters = bullGroupsCountersByGun[linkedIdx]
+      currCounters.limitedGroupCount += maxToRespawn > 0 ? 1 : 0
+      currCounters.beltsCount += bulletsSet?.isBulletBelt ? 1 : 0
+      currCounters.groupCount++
+      currCounters.isUniform = currBulletType == currCounters.bulletType
+    }
+
+    // Check and create Bullet Group Data
+    // User can chose the bullet set where maxToRespawn defined for all gun bullets simultaneously.
+    // There is needs to current logic be changed when all gun bullets are the same type but not belt.
+    // It means that maxToRespawn currently limits count for each bullet in gun,
+    // so for mentioned case total count looks like summ of all maxToRespawn,
+    // that actually is true for belts only.
+    foreach (groupIndex, data in bulletDataByGroup)
+    {
+      local currCounters = bullGroupsCountersByGun[data.linkedIdx]
+      local isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
+        && currCounters.limitedGroupCount == currCounters.groupCount)
+      bulGroups.append(::BulletGroup(unit, groupIndex,
+        getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn), {
+          isActive = stdMath.is_bit_set(groupsActiveMask, groupIndex)
+          canChangeActivity = canChangeBulletsActivity()
+          isForcedAvailable = isForcedAvailable
+          maxToRespawn = data.maxToRespawn
+        }))
     }
   }
 
@@ -455,7 +506,11 @@ global enum bulletsAmountState {
 
   function onEventUnitBulletsChanged(p)
   {
-    if (unit && unit.name == p.unit?.name && p.groupIdx in bulGroups)
+    if (!unit || unit.name != p.unit?.name)
+      return
+
+    loadBulletsData()// Need to reload data because of maxToRespawn in bullet group might be recalculated
+    if (p.groupIdx in bulGroups)
       changeBulletsValue(bulGroups[p.groupIdx], p.bulletName)
   }
 }

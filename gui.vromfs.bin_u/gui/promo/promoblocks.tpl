@@ -55,7 +55,9 @@ promoButton {
 
   uncollapsedContainer {
     size:t='1@arrowButtonWidth, <<h_ratio>>w+1@arrowButtonHeight'
+    <<^hideHeaderBg>>
     headerBg {}
+    <</hideHeaderBg>>
     <<#fillBlocks>>
     fillBlock {
       id:t = '<<blockId>>'

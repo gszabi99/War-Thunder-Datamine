@@ -1,5 +1,6 @@
 local popupFilter = require("scripts/popups/popupFilter.nut")
 local { findChildIndex } = require("sqDagui/daguiUtil.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 local MAX_SLOT_COUNT_X = 4
 local MAX_SLOT_COUNT_Y = 6
@@ -66,7 +67,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         if (!(country in countries))
           countries[country] <- {
             id = country
-            idx = ::shopCountriesList.findindex(@(id) id == country) ?? -1
+            idx = shopCountriesList.findindex(@(id) id == country) ?? -1
             value = true
           }
         if (!(unitTypeStr in unitsTypes))

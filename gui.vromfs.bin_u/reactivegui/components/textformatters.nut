@@ -1,6 +1,5 @@
 local fontsState = require("reactiveGui/style/fontsState.nut")
 local colors = require("reactiveGui/style/colors.nut")
-local JB = require("reactiveGui/control/gui_buttons.nut")
 local {toIntegerSafe} = require("std/string.nut")
 
 local blockInterval = ::fpx(6)
@@ -58,7 +57,6 @@ local function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
       onElemState = @(sf) stateFlags(sf)
       children = [
         {rendObj=ROBJ_FRAME borderWidth = [0,0,borderWidth,0] color=color, size = flex()},
-        stateFlags.value & S_HOVER ? { hotkeys = [[$"{JB.A} | J:RT", onClick]] } : null
       ]
       onClick = onClick
     }.__update(data)

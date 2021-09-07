@@ -266,22 +266,34 @@ promoButton:hover fillBlock[link] > textareaFade > tdiv > textareaNoTab > underl
   background-color:@linkTextHoverColor;
 }
 
-promoButton[type=autoWidth] {
+promoButton[type=autoSize] {
   pos:pw-w, 0;
 }
 
-promoButton[type=autoWidth] > collapsedContainer,
-promoButton[type=autoWidth] > uncollapsedContainer > fillBlock > textareaFade {
+promoButton[type=autoSize] > collapsedContainer,
+promoButton[type=autoSize] > uncollapsedContainer > fillBlock > textareaFade {
   width:0;
   position: relative;
+  padding:1@blockInterval, 0;
 }
 
-promoButton[type=autoWidth] > collapsedContainer > shortHeaderText {
+promoButton[type=autoSize] > uncollapsedContainer {
+  size:1@arrowButtonWidth, 0;
+  max-height:0.75p.p.p.p.p.p.h;
+  overflow-y:auto;
+}
+
+promoButton[type=autoSize] > uncollapsedContainer > fillBlock > textareaFade,
+promoButton[type=autoSize] > uncollapsedContainer > fillBlock {
+  pos:0, 0;
+}
+
+promoButton[type=autoSize] > collapsedContainer > shortHeaderText {
   max-width:p.p.p.w - 1@promoButtonSizeWithOffsets;
 }
 
-promoButton[type=autoWidth] > uncollapsedContainer > fillBlock > textareaFade > tdiv > textareaNoTab {
-  max-width:p.p.p.p.p.w - 1@promoButtonSizeWithOffsets;
+promoButton[type=autoSize] > uncollapsedContainer > fillBlock > textareaFade > tdiv > textareaNoTab {
+    max-width:p.p.p.p.p.w - 1@promoButtonSizeWithOffsets;
 }
 
 promoButton > uncollapsedContainer > fillBlock > textareaFade > tdiv > textareaNoTab[needAutoScroll=yes],

@@ -3,8 +3,8 @@ local Rand = require("rand.nut")
 local function pickword(dictionary, seed=null, allow_cache=false){
   local rand = Rand(seed)
   local totalWeight = 0.0
-  ::assert(["table","array"].indexof(::type(dictionary))!=null, "dictionary should be array or table")
-  if (::type(dictionary) == "table"){
+  assert(["table","array"].indexof(type(dictionary))!=null, "dictionary should be array or table")
+  if (type(dictionary) == "table"){
     if (!("___totalWeight___" in dictionary)) {
       foreach (word, weight in dictionary)
         totalWeight += weight
@@ -22,7 +22,7 @@ local function pickword(dictionary, seed=null, allow_cache=false){
   local ret = null
   local cur_rand_sum = 0
   foreach (key, val in dictionary) {
-    local isArray = ::type(dictionary) == "array"
+    local isArray = type(dictionary) == "array"
     local word = isArray ? val : key
     local weight = isArray ? 1 : val.tofloat()
     if (word == "___totalWeight___")

@@ -872,41 +872,61 @@
           "target": "target_waypoint_bombers"
         }
       },
-      "actions": {
-        "unitMoveTo": {
-          "target": "evac",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "horizontalDirectionForTeleport": true,
-          "object": "#enemy_bomber_group"
+      "actions": [
+        {
+          "unitMoveTo": {
+            "target": "evac",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#enemy_bomber_group"
+          }
         },
-        "unitAttackTarget": {
-          "playerAttracted": false,
-          "object": "#enemy_bomber_group",
-          "target": "#bomb_targets",
-          "fireRandom": true
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "#enemy_bomber_group",
+            "target": "#bomb_targets",
+            "fireRandom": true
+          }
         },
-        "wait": {
-          "time": 20.0
+        {
+          "wait": {
+            "time": 20.0
+          }
         },
-        "triggerDisable": {
-          "target": "intercept_done"
+        {
+          "wait": {
+            "time": 3.0
+          }
         },
-        "moSetObjectiveStatus": {
-          "target": "mo_dynamic_intercept_bombers",
-          "status": 3
+        {
+          "triggerDisable": {
+            "target": "intercept_done"
+          }
         },
-        "triggerEnable": {
-          "target": "dynamic_fail"
+        {
+          "moSetObjectiveStatus": {
+            "target": "mo_dynamic_intercept_bombers",
+            "status": 3
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dynamic_fail"
+          }
+        },
+        {
+          "missionFailed": []
         }
-      },
+      ],
       "else_actions": []
     },
     "dynamic_fail": {

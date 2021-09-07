@@ -1090,7 +1090,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_OPEN_TROPHY)
   {
-    local itemId = log?.itemDefId || log?.id || ""
+    local itemId = log?.itemDefId ?? log?.id ?? ""
     local item = ::ItemsManager.findItemById(itemId)
 
     if(!item && log?.trophyItemDefId)
@@ -1102,65 +1102,78 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (item)
     {
+      local tags = item?.itemDef.tags
+      local isAutoConsume = tags?.autoConsume ?? false
       local cost = item.isEveryDayAward() ? ::Cost() : item.getCost()
       logName = (item?.userlogOpenLoc ?? logName) != logName
         || item.isEveryDayAward() ? item.userlogOpenLoc
           : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
 
-      local usedText = ::loc($"userlog/{logName}/short")
-      res.name = " ".concat(
-          usedText,
-          ::loc("trophy/unlockables_names/trophy"),
-          cost.gold > 0
-            ? ::loc("ui/parentheses/space", {text = $"{cost.getGoldText(true, false)}"}) : ""
-        )
-      res.logImg = item.getSmallIconName()
+      local usedText = isAutoConsume
+        ? ::trophyReward.getRewardText(log, false, "userlogColoredText")
+        : ::loc($"userlog/{logName}/short")
+      local costText = cost.gold > 0
+        ? ::loc("ui/parentheses/space", {text = $"{cost.getGoldText(true, false)}"}) : ""
+      res.name = isAutoConsume
+        ? " ".concat(item.blkType == "unlock" ? ""
+          : ::loc("ItemBlueprintAssembleUnitInfo"), usedText)
+        : " ".concat(usedText, ::loc("trophy/unlockables_names/trophy"), costText)
 
-      res.descriptionBlk <- ::format(textareaFormat,
-        $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}")
-      res.descriptionBlk += item.getNameMarkup()
-      res.descriptionBlk += ::format(textareaFormat,
+      res.logImg = item.getSmallIconName()
+      if (isAutoConsume && "country" in tags
+        && ::checkCountry($"country_{tags.country}", "autoConsume EULT_OPEN_TROPHY"))
+          res.logImg2 = ::get_country_icon($"country_{tags.country}")
+
+      local nameMarkup = item.getNameMarkup()
+      local rewardMarkup = ::format(textareaFormat,
         ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
+      res.descriptionBlk <- isAutoConsume
+        ? ::get_userlog_image_item(item)
+        : "".concat(::format(textareaFormat,
+          $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}"), $"{nameMarkup}{rewardMarkup}")
 
       local resTextArr = []
       local rewards = {}
-      if (log?.item)
+      if(!isAutoConsume)
       {
-        if (typeof(log.item) == "array")
+        if (log?.item)
         {
-          local items = log.item
-          while(items.len())
+          if (typeof(log.item) == "array")
           {
-            local inst = items.pop()
-            if (inst in rewards)
-              rewards[inst] += 1
-            else
-              rewards[inst] <- 1
+            local items = log.item
+            while(items.len())
+            {
+              local inst = items.pop()
+              if (inst in rewards)
+                rewards[inst] += 1
+              else
+                rewards[inst] <- 1
+            }
+          }
+          else
+            rewards = { [log.item] = 1 }
+          foreach (idx, val in rewards)
+          {
+            local data = {
+              type = log.type
+              item = idx
+              count = val
+            }
+            resTextArr.append(::trophyReward.getRewardText(data))
+            res.descriptionBlk = "".concat(res.descriptionBlk,
+              ::trophyReward.getRewardsListViewData(log.__merge(data)))
           }
         }
         else
-          rewards = { [log.item] = 1 }
-        foreach (idx, val in rewards)
         {
-          local data = {
-            type = log.type
-            item = idx
-            count = val
-          }
-          resTextArr.append(::trophyReward.getRewardText(data))
-          res.descriptionBlk = "".concat(res.descriptionBlk,
-            ::trophyReward.getRewardsListViewData(log.__merge(data)))
+          resTextArr = [::trophyReward.getRewardText(log)]
+          res.descriptionBlk = $"{res.descriptionBlk}{::trophyReward.getRewardsListViewData(log)}"
         }
-      }
-      else
-      {
-        resTextArr = [::trophyReward.getRewardText(log)]
-        res.descriptionBlk = $"{res.descriptionBlk}{::trophyReward.getRewardsListViewData(log)}"
-      }
 
-      local rewardText = "\n".join(resTextArr, true)
-      local reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
-      res.tooltip = $"{usedText}{::loc("ui/colon")}{item.getName()}\n{reward}"
+        local rewardText = "\n".join(resTextArr, true)
+        local reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
+        res.tooltip = $"{usedText}{::loc("ui/colon")}{item.getName()}\n{reward}"
+      }
     }
     else
       res.name = ::loc($"userlog/{logName}", { trophy = ::loc("userlog/no_trophy"),

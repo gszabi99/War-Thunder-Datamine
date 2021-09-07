@@ -535,7 +535,17 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#scout_streak"
     _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE")
     isForWheelMenu = @() true
-    getShortcut = @(actionItem, unit = null) "ID_START_SUPPORT_PLANE"
+    getShortcut = @(actionItem, unit = null)
+      //
+
+
+      "ID_START_SUPPORT_PLANE"
+    //
+
+
+
+
+
   }
 
   STEALTH = {

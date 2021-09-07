@@ -1,4 +1,4 @@
-tdiv {
+actionBarItemTextShortcut {
   id:t='shortcut_text';
   position:t='absolute';
   pos:t='pw/2 - w/2, -h';
@@ -9,7 +9,6 @@ tdiv {
   background-position:t='4, 4, 4, 4';
   padding:t='0.002@shHud, 0.002@shHud, 0.002@shHud, 0';
   margin-bottom:t='0.004@shHud'
-  width:t='1@hudActionBarItemSize';
   color-factor:t='192'
   textarea{
     pos:t='pw/2 - w/2';

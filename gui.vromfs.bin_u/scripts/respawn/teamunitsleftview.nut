@@ -30,11 +30,12 @@ class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
     local view = {
       promoButtons = [{
         id = blockId
-        type = "autoWidth"
+        type = "autoSize"
         show = true
         inputTransparent = true
         needTextShade = true
         showTextShade = true
+        hideHeaderBg = true
         collapsed = isCollapsed ? "yes" : "no"
         timerFunc = "onUpdate"
         needCollapsedTextAnimSwitch = true

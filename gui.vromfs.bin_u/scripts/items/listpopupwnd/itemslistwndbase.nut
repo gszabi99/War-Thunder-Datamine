@@ -7,7 +7,7 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
 
   itemsList = null
   alignObj = null
-  align = AL_ORIENT.BOTTOM
+  align = ALIGN.BOTTOM
 
   curItem = null
 

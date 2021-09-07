@@ -108,6 +108,9 @@
     "type": "typeSPAA"
   },
   {
+    "drowningCheckHeightMultiplier": 0.6
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -265,6 +268,10 @@
         },
         "ex_armor_04_dm": {
           "armorThickness": 5.0
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -857,6 +864,20 @@
         }
       }
     ]
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      }
+    }
   },
   {
     "sound": {

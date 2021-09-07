@@ -7,6 +7,8 @@ local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { get_time_msec } = require("dagor.time")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
@@ -111,7 +113,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function initGcBackButton()
   {
-    showSceneBtn("gc_nav_back", canQuitByGoBack && ::use_touchscreen && !::is_in_loading_screen())
+    showSceneBtn("gc_nav_back", canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
   }
 
   function initSquadWidget()
@@ -858,7 +860,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function restoreMainOptions()
   {
     if (mainOptionsMode >= 0)
-      ::set_gui_options_mode(mainOptionsMode)
+      setGuiOptionsMode(mainOptionsMode)
     if (mainGameMode >= 0)
       ::set_mp_mode(mainGameMode)
   }
@@ -875,8 +877,8 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     if (wndOptionsMode < 0)
       return
-    mainOptionsMode = ::get_gui_options_mode()
-    ::set_gui_options_mode(wndOptionsMode)
+    mainOptionsMode = getGuiOptionsMode()
+    setGuiOptionsMode(wndOptionsMode)
   }
 
   function checkAndStart(onSuccess, onCancel, checkName, checkParam = null)

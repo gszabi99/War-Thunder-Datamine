@@ -135,6 +135,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -282,6 +285,10 @@
         },
         "turret_05_back_dm": {
           "armorThickness": 25.4
+        },
+        "composite_armor_hull_02_dm": {
+          "armorThickness": 6.35,
+          "hidableInXrayViewer": true
         }
       },
       "optics": {
@@ -777,6 +784,20 @@
           "armorThrough": 20.0,
           "armorThickness": 10.0,
           "hp": 100.0
+        }
+      }
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm",
+            "xrayTextThickness": 6.35
+          }
         }
       }
     }
@@ -3967,8 +3988,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

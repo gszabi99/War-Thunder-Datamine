@@ -6,6 +6,7 @@ local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.n
 local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatus.nut")
 local { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { setShowUnit, getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -170,7 +171,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     fillCountries()
 
     if (!singleCountry)
-      ::set_show_aircraft(getCurSlotUnit())
+      setShowUnit(getCurSlotUnit())
 
     if (crewId != null)
       crewId = null
@@ -236,8 +237,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       local listCountry = crewsListFull[c].country
-      if ((singleCountry != null && singleCountry != listCountry)
-          || !::is_country_visible(listCountry))
+      if (singleCountry != null && singleCountry != listCountry)
         continue
 
       local countryData = {
@@ -313,7 +313,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   {
     local forcedCountry = getForcedCountry()
     local unitShopCountry = forcedCountry || ::get_profile_country_sq()
-    local curUnit = ::get_show_aircraft()
+    local curUnit = getShowedUnit()
     local curCrewId = crewId
 
     if (!forcedCountry && !curCrewId)
@@ -1082,7 +1082,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         || ::g_crews_list.get()[curSlotCountryId].country != ::get_profile_country_sq()
         || curSlotIdInCountry != ::selected_crews?[curSlotCountryId] || getCurSlotUnit() == null)
       updateSlotbarImpl()
-    else if (selectedCrewData && selectedCrewData?.unit != get_show_aircraft())
+    else if (selectedCrewData && selectedCrewData?.unit != getShowedUnit())
       refreshAll()
   }
 
@@ -1335,7 +1335,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function setCrewUnit(unit)
   {
-    ::set_show_aircraft(unit)
+    setShowUnit(unit)
     //need to send event when crew in country not changed, because main unit changed.
     ::select_crew(curSlotCountryId, curSlotIdInCountry, true)
   }

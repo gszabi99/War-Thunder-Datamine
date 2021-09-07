@@ -1,11 +1,11 @@
 local { getBulletsListHeader } = require("scripts/weaponry/weaponryDescription.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { getBulletsSetData,
-        setUnitLastBullets,
+local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("scripts/weaponry/ammoInfo.nut")
+local { clearUnitOption } = ::require_native("guiOptions")
 
 ::BulletGroup <- class
 {
@@ -20,6 +20,7 @@ local { AMMO,
   active = false
   canChangeActivity = false
   isForcedAvailable = false
+  maxToRespawn = 0
 
   option = null //bullet option. initialize only on request because generate descriptions
   selectedBullet = null //selected bullet from modifications list
@@ -33,15 +34,20 @@ local { AMMO,
     active = params?.isActive ?? active
     canChangeActivity = params?.canChangeActivity ?? canChangeActivity
     isForcedAvailable = params?.isForcedAvailable ?? isForcedAvailable
+    maxToRespawn = params?.maxToRespawn ?? maxToRespawn
 
     bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
     selectedName = ::getTblValue(bullets.value, bullets.values, "")
+    local saveValue = getBulletNameForCode(selectedName)
 
-    if (::get_last_bullets(unit.name, groupIndex) != selectedName)
+    if (::get_last_bullets(unit.name, groupIndex) != saveValue)
       setUnitLastBullets(unit, groupIndex, selectedName)
 
-    local count = ::get_unit_option(unit.name, ::USEROPT_BULLET_COUNT0 + groupIndex)
-    if (count != null)
+    local bulletOptionId = ::USEROPT_BULLET_COUNT0 + groupIndex
+    local count = ::get_unit_option(unit.name, bulletOptionId)
+    if (::type(count) == "string") //validate bullets option type
+      clearUnitOption(unit.name, bulletOptionId)
+    else if (count != null)
       bulletsCount = (count / guns).tointeger()
     updateCounts()
   }
@@ -121,8 +127,6 @@ local { AMMO,
       maxBulletsCount = isForcedAvailable? gunInfo.total : ::min(boughtCount, gunInfo.total)
     }
 
-    local bulletsSet = getBulletsSetData(unit, selectedName)
-    local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
     if (maxToRespawn > 0)
       maxBulletsCount = ::min(maxBulletsCount, maxToRespawn)
 

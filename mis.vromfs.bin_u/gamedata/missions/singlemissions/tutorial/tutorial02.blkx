@@ -2800,12 +2800,24 @@
           }
         },
         {
-          "unitLandOnAirfield": {
-            "onWater": false,
-            "rearmOnAirfield ": false,
-            "disappearAfterLanding": false,
-            "runwayName": "airfield00",
-            "objects": "instructor"
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "airfield00",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "instructor"
           }
         },
         {
@@ -2860,6 +2872,11 @@
         },
         {
           "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
             "time": 296.0
           }
         },
@@ -2900,6 +2917,15 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
+          }
+        },
+        {
+          "unitLandOnAirfield": {
+            "onWater": false,
+            "rearmOnAirfield ": false,
+            "disappearAfterLanding": false,
+            "runwayName": "airfield00",
+            "objects": "instructor"
           }
         },
         {

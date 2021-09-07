@@ -30,7 +30,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1800kph",
   "fightAiBehaviour": "fighter",
-  "laserDesignator": true,
   "autopilotImpl": "FBW",
   "DamageParts": {
     "armor10": {
@@ -1820,7 +1819,7 @@
     "lightRadius3": 0.2,
     "sightInFov": 1.5,
     "sightOutFov": 6.5,
-    "sightFov": 3.1,
+    "sightFov": 1.0,
     "devices": {
       "stick_ailerons": [-1.0,1.0],
       "stick_elevator": [-1.0,1.0],
@@ -1883,12 +1882,21 @@
     },
     "multifunctionDisplays": [
       {
+        "display": {
+          "textureArea": [0.0,0.0,0.5,0.5],
+          "page": {
+            "type": "rwr",
+            "radarScale": 1.35
+          }
+        }
+      },
+      {
         "display": [
           {
-            "textureArea": [0.5,0.5,1.0,1.0]
+            "monoDisplayColor": [0.37,0.45,0.4]
           },
           {
-            "monoDisplayColor": [0.37,0.45,0.4]
+            "textureArea": [0.5,0.5,1.0,1.0]
           },
           {
             "cameraFromShell": true
@@ -1909,22 +1917,13 @@
       },
       {
         "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
-          "page": {
-            "type": "rwr",
-            "radarScale": 1.35
-          }
-        }
-      },
-      {
-        "display": {
           "textureArea": [0.0,0.0,1.0,1.0],
           "page": {
             "type": "plane_ils",
             "ilsSize": [0.15,0.15],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
-            "ilsColor": "#ca1e0ac8"
+            "ilsColor": "#ca1e0a78"
           }
         }
       }
@@ -1951,7 +1950,8 @@
     "pos": [0.3,-0.2,0.0],
     "head": "optic1_turret",
     "crosshairPreset": "test_crosshair",
-    "angularLimits": [-30.0,30.0,-30.0,30.0]
+    "angularLimits": [-20.0,20.0,-20.0,20.0],
+    "opticType": "tv"
   },
   "commonWeapons": [
     {
@@ -1986,8 +1986,8 @@
           "mainTurret": true
         },
         "limits": {
-          "yaw": [-30.0,30.0],
-          "pitch": [-30.0,30.0]
+          "yaw": [-20.0,20.0],
+          "pitch": [-20.0,20.0]
         }
       }
     },
@@ -2951,10 +2951,10 @@
     "chuteFallSpeed": 1.0
   },
   "cutting": {
-    "emtr_break_wing2_l_from": [-0.0845191,-0.754077,2.61744],
-    "emtr_break_wing2_l_to": [-0.0845191,-0.754077,3.34102],
-    "emtr_break_wing2_r_from": [-0.084517,-0.754077,-2.71744],
-    "emtr_break_wing2_r_to": [-0.084517,-0.754077,-3.34102],
+    "emtr_break_wing2_l_from": [-0.0745191,-0.754077,2.61744],
+    "emtr_break_wing2_l_to": [-0.08945191,-0.754077,3.34102],
+    "emtr_break_wing2_r_from": [-0.074517,-0.754077,-2.71744],
+    "emtr_break_wing2_r_to": [-0.0894517,-0.754077,-3.34102],
     "emtr_break_wing_tail": [-3.98667,0.0,0.0],
     "finCut": false,
     "emtr_break_stab_l_from": [-4.80263,0.807726,0.295808],

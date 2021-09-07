@@ -427,6 +427,10 @@
         "ex_decor_02_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
+        },
+        "composite_armor_hull_08_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
         }
       },
       "body_shields": {
@@ -481,6 +485,12 @@
         "ex_decor_l_07_dm": {
           "armorThickness": 4.0,
           "armorClass": "t_90_rubber_fabric_screens"
+        },
+        "turret_09_top_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_09_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "optics": {
@@ -539,7 +549,9 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 200.0,
-          "ex_armor_body_01_dm": []
+          "ex_armor_body_01_dm": [],
+          "ex_armor_01_dm": [],
+          "ex_armor_02_dm": []
         }
       },
       "gun": {
@@ -2633,6 +2645,17 @@
         }
       },
       {
+        "armorArrayHullSideIn": {
+          "xrayDmPart": "composite_armor_hull_08_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_08_dm"
+            }
+          }
+        }
+      },
+      {
         "armorArrayTurretFrontR": {
           "xrayDmPart": "composite_armor_turret_03_dm",
           "armorArrayText": [
@@ -2919,8 +2942,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 3600,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3861,8 +3884,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 3600,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -3973,9 +3996,9 @@
               "noiseFactor": 0.05
             },
             "commanderViewIr": {
-              "resolution": [1600.0,1200.0],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
+              "resolution": [800.0,600.0],
+              "lightMult": 8.0,
+              "ghosting": 0.75,
               "noiseFactor": 0.2
             },
             "driverIr": {

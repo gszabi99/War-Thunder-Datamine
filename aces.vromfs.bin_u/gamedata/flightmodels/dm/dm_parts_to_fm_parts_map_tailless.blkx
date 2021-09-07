@@ -8,7 +8,7 @@
         "dm": "pilot_dm"
       },
       {
-        "dm": "pilot1_dm"
+        "dm": "pilot%d_dm"
       },
       {
         "type": "max"
@@ -27,16 +27,7 @@
         "dm": "fuse_dm"
       },
       {
-        "dm": "fuse1_dm"
-      },
-      {
-        "dm": "fuse2_dm"
-      },
-      {
-        "dm": "fuse3_dm"
-      },
-      {
-        "dm": "fuse4_dm"
+        "dm": "fuse%d_dm"
       },
       {
         "dm": "tail_dm"
@@ -165,7 +156,7 @@
         "dm": "aileron_l_dm"
       },
       {
-        "dm": "aileron1_l_dm"
+        "dm": "aileron%d_l_dm"
       },
       {
         "dm": "elevon_l_dm"
@@ -183,7 +174,7 @@
         "dm": "aileron_interceptor_l_dm"
       },
       {
-        "dm": "aileron_interceptor1_l_dm"
+        "dm": "aileron_interceptor%d_l_dm"
       },
       {
         "type": "average"
@@ -199,7 +190,7 @@
         "dm": "aileron_r_dm"
       },
       {
-        "dm": "aileron1_r_dm"
+        "dm": "aileron%d_r_dm"
       },
       {
         "dm": "elevon_r_dm"
@@ -217,7 +208,7 @@
         "dm": "aileron_interceptor_r_dm"
       },
       {
-        "dm": "aileron_interceptor1_r_dm"
+        "dm": "aileron_interceptor%d_r_dm"
       },
       {
         "type": "average"
@@ -252,6 +243,9 @@
           },
           {
             "dm": "elevon%d_l_dm"
+          },
+          {
+            "type": "average"
           }
         ]
       }
@@ -272,6 +266,9 @@
           },
           {
             "dm": "elevator1_dm"
+          },
+          {
+            "type": "mult"
           }
         ]
       },
@@ -282,6 +279,9 @@
           },
           {
             "dm": "elevon%d_r_dm"
+          },
+          {
+            "type": "average"
           }
         ]
       }
@@ -319,7 +319,7 @@
                 "dm": "rudder_interceptor_l_dm"
               },
               {
-                "dm": "rudder_interceptor1_l_dm"
+                "dm": "rudder_interceptor%d_l_dm"
               },
               {
                 "type": "average"
@@ -352,7 +352,7 @@
                 "dm": "rudder_interceptor_r_dm"
               },
               {
-                "dm": "rudder_interceptor1_r_dm"
+                "dm": "rudder_interceptor%d_r_dm"
               },
               {
                 "type": "average"
@@ -372,13 +372,7 @@
         "dm": "flap_l_dm"
       },
       {
-        "dm": "flap1_l_dm"
-      },
-      {
-        "dm": "flap2_l_dm"
-      },
-      {
-        "dm": "flap3_l_dm"
+        "dm": "flap%d_l_dm"
       },
       {
         "dm": "flap_c_dm"
@@ -387,13 +381,13 @@
         "dm": "flaperon_l_dm"
       },
       {
-        "dm": "flaperon1_l_dm"
+        "dm": "flaperon%d_l_dm"
       },
       {
         "dm": "flap_airbrake_l_dm"
       },
       {
-        "dm": "flap_airbrake1_l_dm"
+        "dm": "flap_airbrake%d_l_dm"
       },
       {
         "type": "average"
@@ -409,13 +403,7 @@
         "dm": "flap_r_dm"
       },
       {
-        "dm": "flap1_r_dm"
-      },
-      {
-        "dm": "flap2_r_dm"
-      },
-      {
-        "dm": "flap3_r_dm"
+        "dm": "flap%d_r_dm"
       },
       {
         "dm": "flap_c_dm"
@@ -424,13 +412,13 @@
         "dm": "flaperon_r_dm"
       },
       {
-        "dm": "flaperon1_r_dm"
+        "dm": "flaperon%d_r_dm"
       },
       {
         "dm": "flap_airbrake_r_dm"
       },
       {
-        "dm": "flap_airbrake1_r_dm"
+        "dm": "flap_airbrake%d_r_dm"
       },
       {
         "type": "average"
@@ -446,10 +434,10 @@
         "dm": "airbrake_l_dm"
       },
       {
-        "dm": "airbrake1_l_dm"
+        "dm": "airbrake%d_l_dm"
       },
       {
-        "dm": "airbrake_l1_dm"
+        "dm": "airbrake_l%d_dm"
       },
       {
         "dm": "airbrake_c_dm"
@@ -458,7 +446,7 @@
         "dm": "flap_airbrake_l_dm"
       },
       {
-        "dm": "flap_airbrake1_l_dm"
+        "dm": "flap_airbrake%d_l_dm"
       },
       {
         "type": "average"
@@ -474,10 +462,10 @@
         "dm": "airbrake_r_dm"
       },
       {
-        "dm": "airbrake1_r_dm"
+        "dm": "airbrake%d_r_dm"
       },
       {
-        "dm": "airbrake_r1_dm"
+        "dm": "airbrake_r%d_dm"
       },
       {
         "dm": "airbrake_c_dm"
@@ -486,7 +474,7 @@
         "dm": "flap_airbrake_r_dm"
       },
       {
-        "dm": "flap_airbrake1_r_dm"
+        "dm": "flap_airbrake%d_r_dm"
       },
       {
         "type": "average"
@@ -502,7 +490,7 @@
         "dm": "gear_l_dm"
       },
       {
-        "dm": "gear_1l_dm"
+        "dm": "gear_%dl_dm"
       },
       {
         "type": "max"
@@ -518,7 +506,7 @@
         "dm": "gear_r_dm"
       },
       {
-        "dm": "gear_1r_dm"
+        "dm": "gear_%dr_dm"
       },
       {
         "type": "max"
@@ -754,129 +742,20 @@
     }
   },
   {
-    "enginesAutoConfiguration": [
-      {
-        "engine": "engine1_dm"
-      },
-      {
-        "engine": "engine2_dm"
-      },
-      {
-        "engine": "engine3_dm"
-      },
-      {
-        "engine": "engine4_dm"
-      },
-      {
-        "engine": "engine5_dm"
-      },
-      {
-        "engine": "engine6_dm"
-      }
-    ]
+    "enginesAutoConfiguration": {
+      "engine": "engine%d_dm"
+    }
   },
   {
-    "fuelTanksAutoConfiguration": [
-      {
-        "fuelTank": "tank1_dm"
-      },
-      {
-        "fuelTank": "tank2_dm"
-      },
-      {
-        "fuelTank": "tank3_dm"
-      },
-      {
-        "fuelTank": "tank4_dm"
-      },
-      {
-        "fuelTank": "tank5_dm"
-      },
-      {
-        "fuelTank": "tank6_dm"
-      },
-      {
-        "fuelTank": "tank7_dm"
-      },
-      {
-        "fuelTank": "tank8_dm"
-      }
-    ]
+    "fuelTanksAutoConfiguration": {
+      "fuelTank": "tank%d_dm"
+    }
   },
   {
-    "radiatorsAutoConfiguration": [
-      {
-        "engine": "engine1_dm"
-      },
-      {
-        "engine": "engine2_dm"
-      },
-      {
-        "engine": "engine3_dm"
-      },
-      {
-        "engine": "engine4_dm"
-      },
-      {
-        "engine": "engine5_dm"
-      },
-      {
-        "engine": "engine6_dm"
-      },
-      {
-        "oil": "oil1_dm"
-      },
-      {
-        "oil": "oil2_dm"
-      },
-      {
-        "oil": "oil3_dm"
-      },
-      {
-        "oil": "oil4_dm"
-      },
-      {
-        "oil": "oil5_dm"
-      },
-      {
-        "oil": "oil6_dm"
-      },
-      {
-        "oil": "oil7_dm"
-      },
-      {
-        "oil": "oil8_dm"
-      },
-      {
-        "oil": "oil9_dm"
-      },
-      {
-        "oil": "oil10_dm"
-      },
-      {
-        "oil": "oil11_dm"
-      },
-      {
-        "oil": "oil12_dm"
-      },
-      {
-        "water": "water1_dm"
-      },
-      {
-        "water": "water2_dm"
-      },
-      {
-        "water": "water3_dm"
-      },
-      {
-        "water": "water4_dm"
-      },
-      {
-        "water": "water5_dm"
-      },
-      {
-        "water": "water6_dm"
-      }
-    ]
+    "radiatorsAutoConfiguration": {
+      "engine": "engine%d_dm",
+      "oil": "oil%d_dm",
+      "water": "water%d_dm"
+    }
   }
 ]

@@ -1,8 +1,10 @@
-local frp = require("frp")
+from "%darg/ui_imports.nut" import *
+
 local defStyling = require("msgbox.style.nut")
 
 local widgets = persist("widgets", @() [])
 local msgboxGeneration = persist("msgboxGeneration", @() Watched(0))
+local hasMsgBoxes = Computed(@() msgboxGeneration.value >= 0 && widgets.len() > 0)
 
 local function getCurMsgbox(){
   if (widgets.len()==0)
@@ -10,15 +12,15 @@ local function getCurMsgbox(){
   return widgets.top()
 }
 
-local log = ::getroottable()?.log ?? @(...) ::print(" ".join(vargv))
+//local log = getroottable()?.log ?? @(...) print(" ".join(vargv))
 
 local function addWidget(w) {
   widgets.append(w)
   msgboxGeneration(msgboxGeneration.value+1)
 }
 
-local function removeWidget(w) {
-  local idx = widgets.indexof(w)
+local function removeWidget(w, uid=null) {
+  local idx = widgets.indexof(w) ?? (uid!=null ? widgets.findindex(@(v) v?.uid == uid) : null)
   if (idx == null)
     return
   widgets.remove(idx)
@@ -30,16 +32,27 @@ local function removeAllMsgboxes() {
   msgboxGeneration(msgboxGeneration.value+1)
 }
 
+local function updateWidget(w, uid){
+  local idx = widgets.findindex(@(w) w.uid == uid)
+  if (idx == null)
+    addWidget(w)
+  else {
+    widgets.remove(idx)
+    addWidget(w)
+  }
+}
+
 local function removeMsgboxByUid(uid) {
   local idx = widgets.findindex(@(w) w.uid == uid)
   if (idx == null)
-    return
+    return false
   widgets.remove(idx)
   msgboxGeneration(msgboxGeneration.value+1)
+  return true
 }
 
 local function isMsgboxInList(uid) {
-  return widgets.findindex(@(w) w.uid == uid)
+  return widgets.findindex(@(w) w.uid == uid) != null
 }
 
 /// Adds messagebox to widgets list
@@ -64,10 +77,11 @@ local defaultButtons = [{text="OK" customStyle={hotkeys=[["^Esc | Enter", skpdes
 
 local function show(params, styling=defStyling) {
   log($"[MSGBOX] show: text = '{params?.text}'")
-  local self = null
+  local self = {v = null}
+  local uid = params?.uid ?? {}
 
   local function doClose() {
-    removeWidget(self)
+    removeWidget(self.v, uid)
     if ("onClose" in params && params.onClose)
       params.onClose()
 
@@ -78,7 +92,7 @@ local function show(params, styling=defStyling) {
     if (button_action) {
       if (button_action?.getfuncinfos?().parameters.len()==2) {
         // handler performs closing itself
-        button_action({doClose=doClose})
+        button_action({doClose})
         return // stop processing, handler will do everything what is needed
       }
 
@@ -88,13 +102,9 @@ local function show(params, styling=defStyling) {
     doClose()
   }
 
-  local uid = params?.uid ?? {}
-  if (params?.uid)
-    removeMsgboxByUid(uid)
-
   local btnsDesc = params?.buttons ?? defaultButtons
-  if (!(btnsDesc instanceof ::Watched))
-    btnsDesc = ::Watched(btnsDesc, frp.DONT_CHECK_NESTED)
+  if (!(btnsDesc instanceof Watched))
+    btnsDesc = Watched(btnsDesc, FRP_DONT_CHECK_NESTED)
 
   local defCancel = null
   local initialBtnIdx = 0
@@ -106,7 +116,7 @@ local function show(params, styling=defStyling) {
       defCancel = bd
   }
 
-  local curBtnIdx = ::Watched(initialBtnIdx)
+  local curBtnIdx = Watched(initialBtnIdx)
 
   local function moveBtnFocus(dir) {
     curBtnIdx.update((curBtnIdx.value + dir + btnsDesc.value.len()) % btnsDesc.value.len())
@@ -136,11 +146,11 @@ local function show(params, styling=defStyling) {
         local onRecalcLayout = (initialBtnIdx==idx)
           ? function(initial, elem) {
               if (initial && styling?.moveMouseCursor.value)
-                ::move_mouse_cursor(elem)
+                move_mouse_cursor(elem)
             }
           : null
         local behaviors = desc?.customStyle?.behavior ?? desc?.customStyle?.behavior
-        behaviors = ::type(behaviors) == "array" ? behaviors : [behaviors]
+        behaviors = type(behaviors) == "array" ? behaviors : [behaviors]
         behaviors.append(Behaviors.RecalcHandler, Behaviors.Button)
         local customStyle = (desc?.customStyle ?? {}).__merge({
           onHover = onHover
@@ -174,14 +184,14 @@ local function show(params, styling=defStyling) {
     ]
   })
 
-  self = styling.BgOverlay.__merge({
-    uid = uid
+  self.v = styling.BgOverlay.__merge({
+    uid
     cursor = styling.cursor
     stopMouse = true
     children = [styling.BgOverlay?.children, root]
   })
 
-  addWidget(self)
+  updateWidget(self.v, uid)
 
   return self
 }
@@ -196,4 +206,5 @@ return {
   isMsgboxInList
   removeMsgboxByUid
   styling = defStyling
+  hasMsgBoxes
 }

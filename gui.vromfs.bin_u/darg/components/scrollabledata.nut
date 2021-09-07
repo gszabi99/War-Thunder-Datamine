@@ -1,5 +1,7 @@
+from "daRg" import *
+
 local function make(log_state) {
-  local scrollHandler = ::ScrollHandler()
+  local scrollHandler = ScrollHandler()
   local scrolledTo = null
   local shouldScroll = false
   return {

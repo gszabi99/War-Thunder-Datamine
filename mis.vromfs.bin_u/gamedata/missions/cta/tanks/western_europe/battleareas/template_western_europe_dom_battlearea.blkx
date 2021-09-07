@@ -1,0 +1,185 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "battleAreaColorPreset": "battleArea",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/western_europe/mainareas/western_europe_Dom_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t2_killarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1556.89,25.7047,3162.37]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_block01"
+          },
+          {
+            "squad_members": "t2_killarea_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_killarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2142.78,4.53406,3211.03]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_block01"
+          },
+          {
+            "squad_members": "t1_killarea_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "dom_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [-2200.0,0.0,-7.06724e-05],
+        [0.0,644.0,0.0],
+        [7.06724e-05,0.0,-2200.0],
+        [300.324,1.16211,-446.968]
+      ],
+      "objLayer": 5,
+      "props": []
+    },
+    "t2_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,97.6116,0.0],
+        [0.0,0.0,150.0],
+        [-465.295,1.28906,-639.304]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,97.6116,0.0],
+        [0.0,0.0,150.0],
+        [545.253,14.3811,452.341]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,97.6116,0.0],
+        [0.0,0.0,150.0],
+        [80.6173,3.4126,-1255.71]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,97.6116,0.0],
+        [0.0,0.0,150.0],
+        [1211.21,19.4463,-121.359]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

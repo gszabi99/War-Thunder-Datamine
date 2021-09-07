@@ -45,16 +45,19 @@
     "bEnablePause": false
   },
   {
-    "bullets": 600
+    "bullets": 150
   },
   {
     "bulletsCluster": 1
   },
   {
-    "reloadTime": 7.0
+    "reloadTime": 8.0
   },
   {
-    "bulletsCartridge": 120
+    "changeBulletTypeReloadTime": 1.0
+  },
+  {
+    "bulletsCartridge": 150
   },
   {
     "fxType": "muzzle_ground_20mm"
@@ -89,10 +92,10 @@
   {
     "overheat": [
       {
-        "overheat": [4.0,0.0]
+        "overheat": [5.0,0.0]
       },
       {
-        "overheat": [6.0,0.1]
+        "overheat": [7.0,0.1]
       },
       {
         "overheat": [9.0,0.5]
@@ -273,15 +276,15 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.7
+            "countPortion": 0.2
           },
           {
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 0.5,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [0.0,179.0],
-              "countPortion": 0.5
+              "angles": [0.0,90.0],
+              "countPortion": 0.4
             }
           },
           {
@@ -289,8 +292,26 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [180.0,359.0],
-              "countPortion": 0.5
+              "angles": [91.0,180.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,269.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.5,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [270.0,359.0],
+              "countPortion": 0.4
             }
           }
         ]
@@ -385,6 +406,9 @@
   {
     "20mm_Oerlikon_HE": [
       {
+        "bulletsCartridge": 150
+      },
+      {
         "bullet": {
           "bulletCount": 10,
           "mass": 0.12,
@@ -416,15 +440,15 @@
                 "useRealShatters": true
               },
               {
-                "countPortion": 0.7
+                "countPortion": 0.2
               },
               {
                 "segment": {
-                  "radiusScale": 1.0,
+                  "radiusScale": 0.5,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [0.0,179.0],
-                  "countPortion": 0.5
+                  "angles": [0.0,90.0],
+                  "countPortion": 0.4
                 }
               },
               {
@@ -432,8 +456,26 @@
                   "radiusScale": 1.0,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [180.0,359.0],
-                  "countPortion": 0.5
+                  "angles": [91.0,180.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [181.0,269.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.5,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [270.0,359.0],
+                  "countPortion": 0.4
                 }
               }
             ]
@@ -557,15 +599,15 @@
                 "useRealShatters": true
               },
               {
-                "countPortion": 0.7
+                "countPortion": 0.2
               },
               {
                 "segment": {
-                  "radiusScale": 1.0,
+                  "radiusScale": 0.5,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [0.0,179.0],
-                  "countPortion": 0.5
+                  "angles": [0.0,90.0],
+                  "countPortion": 0.4
                 }
               },
               {
@@ -573,8 +615,26 @@
                   "radiusScale": 1.0,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [180.0,359.0],
-                  "countPortion": 0.5
+                  "angles": [91.0,180.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [181.0,269.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.5,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [270.0,359.0],
+                  "countPortion": 0.4
                 }
               }
             ]
@@ -813,6 +873,9 @@
   {
     "20mm_Oerlikon_AP": [
       {
+        "bulletsCartridge": 150
+      },
+      {
         "bullet": {
           "bulletCount": 10,
           "mass": 0.111,
@@ -1128,15 +1191,15 @@
                 "useRealShatters": true
               },
               {
-                "countPortion": 0.7
+                "countPortion": 0.2
               },
               {
                 "segment": {
-                  "radiusScale": 1.0,
+                  "radiusScale": 0.5,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [0.0,179.0],
-                  "countPortion": 0.5
+                  "angles": [0.0,90.0],
+                  "countPortion": 0.4
                 }
               },
               {
@@ -1144,8 +1207,26 @@
                   "radiusScale": 1.0,
                   "penetrationScale": 1.0,
                   "damageScale": 1.0,
-                  "angles": [180.0,359.0],
-                  "countPortion": 0.5
+                  "angles": [91.0,180.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [181.0,269.0],
+                  "countPortion": 0.1
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.5,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [270.0,359.0],
+                  "countPortion": 0.4
                 }
               }
             ]

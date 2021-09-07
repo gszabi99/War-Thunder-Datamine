@@ -2157,8 +2157,8 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_ao_25m_1.blk",
-            "amountPerTier": 8.0,
-            "iconType": "bombs_small_group"
+            "amountPerTier": 4.0,
+            "iconType": "bombs_small_group_x4"
           }
         }
       }
@@ -2192,7 +2192,7 @@
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
             "amountPerTier": 3.0,
-            "iconType": "bombs_middle_group"
+            "iconType": "bombs_small_group"
           }
         }
       }
@@ -2206,7 +2206,7 @@
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
             "amountPerTier": 3.0,
-            "iconType": "bombs_middle_group"
+            "iconType": "bombs_small_group"
           }
         }
       }
@@ -2216,13 +2216,76 @@
         "name": "su_6_m71_16x25m1_rs82",
         "blk": "gameData/FlightModels/weaponPresets/su_6_m71_16x25m1_rs82.blk",
         "reqModification": "ro_82_mod",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_ao_25m_1.blk",
-            "amountPerTier": 8.0,
-            "iconType": "bombs_small_group"
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/su_ao_25m_1.blk"
+              },
+              {
+                "amountPerTier": 4.0
+              },
+              {
+                "iconType": "bombs_small_group_x4"
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/su_rs82.blk"
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_he_middle_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "amountPerTier": 3.0,
+                  "iconType": "rockets_he_middle_group_x3"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "amountPerTier": 3.0,
+                  "iconType": "rockets_he_middle_group_x3"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_he_middle_group"
+                }
+              }
+            ]
           }
-        }
+        ]
       }
     },
     {
@@ -2230,13 +2293,76 @@
         "name": "su_6_m71_16x25m1_rbs82",
         "blk": "gameData/FlightModels/weaponPresets/su_6_m71_16x25m1_rbs82.blk",
         "reqModification": "ro_82_mod",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_ao_25m_1.blk",
-            "amountPerTier": 8.0,
-            "iconType": "bombs_small_group"
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/su_ao_25m_1.blk"
+              },
+              {
+                "amountPerTier": 4.0
+              },
+              {
+                "iconType": "bombs_small_group_x4"
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk"
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_ap_middle_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "amountPerTier": 3.0,
+                  "iconType": "rockets_ap_middle_group_x3"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "amountPerTier": 3.0,
+                  "iconType": "rockets_ap_middle_group_x3"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_ap_middle_group"
+                }
+              }
+            ]
           }
-        }
+        ]
       }
     },
     {

@@ -1,12 +1,9 @@
-::gui_start_menu_builder <- function gui_start_menu_builder()
-{
-  ::gui_start_mainmenu()
-  ::gui_start_builder()
-}
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
-::gui_start_builder <- function gui_start_builder()
+::gui_start_builder <- function gui_start_builder(params = {})
 {
-  ::gui_start_modal_wnd(::gui_handlers.MissionBuilder)
+  ::gui_start_modal_wnd(::gui_handlers.MissionBuilder, params)
 }
 
 class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
@@ -19,6 +16,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   applyAtClose = false
   can_generate_missions = true
+  needSlotbar = true
 
   function initScreen()
   {
@@ -75,12 +73,13 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     if (::fetch_first_builder())
       randomize_builder_options()
 
-    createSlotbar({
-      afterSlotbarSelect = function() {
-        if (!(slotbarWeak?.slotbarOninit ?? false))
-          reinitOptionsList()
-       }
-    })
+    if (needSlotbar)
+      createSlotbar({
+        afterSlotbarSelect = function() {
+          if (!(slotbarWeak?.slotbarOninit ?? false))
+            reinitOptionsList()
+         }
+      })
 
     ::move_mouse_on_obj(scene.findObject("btn_select"))
   }
@@ -89,7 +88,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   {
     updateButtons()
 
-    local air = ::show_aircraft
+    local air = showedUnit.value
     if (!air || !::checkObj(scene))
       return goBack()
 
@@ -108,7 +107,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function isBuilderAvailable()
   {
-    return ::show_aircraft!=null && ::isUnitAvailableForGM(::show_aircraft, ::GM_BUILDER)
+    return showedUnit.value != null && ::isUnitAvailableForGM(showedUnit.value, ::GM_BUILDER)
   }
 
   function updateButtons()
@@ -158,13 +157,12 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     local settings = ::DataBlock();
     local playerSide = 1
-    if (::show_aircraft.tags)
-      foreach (tag in ::show_aircraft.tags)
-       if (tag == "axis")
-       {
-         playerSide = 2
-         break
-       }
+    foreach (tag in (showedUnit.value?.tags ?? []))
+      if (tag == "axis")
+      {
+        playerSide = 2
+        break
+      }
     settings.setInt("playerSide", /*getSceneOptValue(::USEROPT_MP_TEAM)*/playerSide)
 
 
@@ -176,10 +174,10 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     if (!can_generate_missions)
       return;
 
-    ::aircraft_for_weapons = ::show_aircraft.name
+    ::aircraft_for_weapons = showedUnit.value.name
 
     local settings = ::DataBlock();
-    settings.setStr("player_class", ::show_aircraft.name)
+    settings.setStr("player_class", showedUnit.value.name)
     settings.setStr("player_weapons", ::get_gui_option(::USEROPT_WEAPONS) ?? "")
     settings.setStr("player_skin", getSceneOptValue(::USEROPT_SKIN) || "")
     settings.setStr("wishSector", getSceneOptValue(::USEROPT_DYN_ZONE))
@@ -450,13 +448,25 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   {
     local diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
     local difficulty = (diffValue == "custom") ?
-      ::g_difficulty.getDifficultyByDiffCode(::get_cd_base_difficulty()) :
+      ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1)
     {
-      local battleType = ::get_battle_type_by_unit(::show_aircraft)
+      local battleType = ::get_battle_type_by_unit(showedUnit.value)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()
+  }
+
+  function getHandlerRestoreData()
+  {
+    return {
+      openData = { needSlotbar = needSlotbar }
+    }
+  }
+
+  function onEventBeforeStartMissionBuilder(p)
+  {
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 }

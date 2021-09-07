@@ -1,3 +1,6 @@
+local { is_stereo_mode } = ::require_native("vr")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 1.0
   invertedByDefault = {}
@@ -6,8 +9,8 @@
   {
     local res = []
     if (isForWheelmenu) {
-      if (::is_xinput_device())
-        res.append(::get_player_cur_unit()?.unitType.wheelmenuAxis ?? [])
+      if (::is_xinput_device() || is_stereo_mode())
+        res.append(getPlayerCurUnit()?.unitType.wheelmenuAxis ?? [])
       else
         res.append(["decal_move_x", "decal_move_y"], ["camx", "camy"])
     }

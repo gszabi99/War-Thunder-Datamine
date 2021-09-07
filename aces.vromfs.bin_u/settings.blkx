@@ -92,7 +92,8 @@
       "waterQuality": "low",
       "giQuality": "low",
       "lowResFx": true,
-      "riGpuObjects": true
+      "riGpuObjects": true,
+      "fxTarget": "auto"
     },
     "sound": {
       "speakerMode": "",
@@ -267,6 +268,24 @@
   "_gameres": {
     "basePkgDir": "content/base/res",
     "patchRoot": "patch"
+  },
+  "mountPoints": {
+    "darg": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\daRg",
+      "forVromfs": "daRg"
+    },
+    "sqstd": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\std",
+      "forVromfs": "std"
+    },
+    "daeditor": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\daeditor",
+      "forVromfs": "daeditor"
+    },
+    "sonyLib": {
+      "forSource": "..\\..\\prog\\scripts\\sonyLib",
+      "forVromfs": "sonyLib"
+    }
   },
   "addons": [
     {
@@ -485,7 +504,7 @@
     "noGuiFade": false,
     "disableHangar": false,
     "disableChat": false,
-    "workThreadsStackSize": 131072,
+    "workThreadsStackSize": 262144,
     "enableMouseHints": true,
     "replayDofFar": [100.0,400.0,0.5],
     "enableNvHighlights": "auto"
@@ -753,13 +772,6 @@
       "VB1": 65536,
       "VB2": 0
     }
-  },
-  "terraform": {
-    "enabled": false,
-    "width": 32768,
-    "height": 32768,
-    "minLevel": -2.0,
-    "maxLevel": 1.5
   },
   "xr": {
     "depthBlacklist": [

@@ -53,12 +53,17 @@
       "actions": [
         {
           "comment": {
-            "value": "указываем максимальное количество баз +1"
+            "value": "set max bases amount +1"
           }
         },
         {
           "comment": {
-            "value": "говорим что шаблон сам себя рестартит"
+            "value": "enable self restarting for template"
+          }
+        },
+        {
+          "comment": {
+            "value": "increase one-moment bases amount"
           }
         },
         {
@@ -72,6 +77,19 @@
             "value": 11,
             "var": "bdt_t2_total_bases_max_count"
           }
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 5
+            },
+            {
+              "var": "bdt_t1_active_bases_max_count"
+            },
+            {
+              "var": "bdt_t2_active_bases_max_count"
+            }
+          ]
         },
         {
           "varSetBool": {

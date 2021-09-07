@@ -120,6 +120,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -230,6 +233,12 @@
         },
         "turret_08_side_dm": {
           "armorThickness": 35.0
+        },
+        "turret_09_side_dm": {
+          "armorThickness": 30.0
+        },
+        "turret_09_back_dm": {
+          "armorThickness": 30.0
         }
       },
       "turret_composite_armor": {
@@ -574,11 +583,13 @@
         "armorClass": "ERA_K_I",
         "kineticProtectionEquivalent": 5.0,
         "cumulativeProtectionEquivalent": 400.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
+        "genericEffectiveThicknessMax": 15.0,
+        "cumulativeEffectiveThicknessMax": 475.0,
         "hp": 250.0,
         "armorThickness": 70.0,
-        "genericArmorQuality": 0.08,
         "genericDamageMult": 3.0,
+        "genericArmorQuality": 0.08,
+        "cumulativeArmorQuality": 2.86,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -632,12 +643,13 @@
         "armorClass": "ERA_K_I",
         "kineticProtectionEquivalent": 5.0,
         "cumulativeProtectionEquivalent": 400.0,
-        "cumulativeEffectiveThicknessMax": 450.0,
+        "genericEffectiveThicknessMax": 15.0,
+        "cumulativeEffectiveThicknessMax": 475.0,
         "hp": 250.0,
         "armorThickness": 70.0,
-        "genericArmorQuality": 0.08,
-        "cumulativeArmorQuality": 3.5,
         "genericDamageMult": 3.0,
+        "genericArmorQuality": 0.08,
+        "cumulativeArmorQuality": 2.86,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -3477,8 +3489,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 15.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 300,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3644,19 +3656,7 @@
         "wheel_r_drive": 0.305,
         "wheel_l_drive": 0.305,
         "wheel_r_front": 0.275,
-        "wheel_l_front": 0.275,
-        "wheel_r_01": 0.38,
-        "wheel_r_02": 0.37,
-        "wheel_r_03": 0.37,
-        "wheel_r_04": 0.37,
-        "wheel_r_05": 0.37,
-        "wheel_r_06": 0.37,
-        "wheel_l_01": 0.38,
-        "wheel_l_02": 0.37,
-        "wheel_l_03": 0.37,
-        "wheel_l_04": 0.37,
-        "wheel_l_05": 0.37,
-        "wheel_l_06": 0.37
+        "wheel_l_front": 0.275
       }
     }
   },
@@ -4441,8 +4441,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 15.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 300,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -5022,8 +5022,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

@@ -7,7 +7,7 @@ local underscore = require("std/underscore.nut")
 local functools = require("std/functools.nut")
 local {isTable, isArray, isDataBlock } = underscore
 
-local rootTable = ::getroottable()
+local rootTable = getroottable()
 local rnd = rootTable?.math?.rnd
   ?? require("math")?.rand
   ?? function() {
@@ -58,7 +58,7 @@ local function map(list, func) {
  */
 local function keys(data) {
   if (typeof data == "array"){
-    local res = ::array(data.len())
+    local res = array(data.len())
     foreach (i, k in res)
       res[i]=i
     return res
@@ -387,7 +387,7 @@ local function wrapIdxInArrayLen(index, length) {
  * @reverseOrder work only with arrays.
  */
 local function search(data, predicate, reverseOrder = false) {
-  if (!reverseOrder || ::type(data) != "array") {
+  if (!reverseOrder || type(data) != "array") {
     foreach(value in data)
       if (predicate(value))
         return value

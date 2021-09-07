@@ -1,4 +1,4 @@
-local frpINITIAL = require("frp").INITIAL
+local { FRP_INITIAL } = require("frp")
 local { maxSeasonLvl, hasBattlePass, battlePassShopConfig, season } = require("scripts/battlePass/seasonState.nut")
 local { refreshUserstatUnlocks, isUserstatMissingData
 } = require("scripts/userstat/userstat.nut")
@@ -9,6 +9,7 @@ local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local { itemsShopListVersion, inventoryListVersion } = require("scripts/items/itemsManager.nut")
 local { isInBattleState } = require("scripts/clientState/clientStates.nut")
 local { isProfileReceived } = require("scripts/login/loginStates.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -29,9 +30,9 @@ local findExchangeItem = @(battlePassUnlockExchangeId) ::ItemsManager.findItemBy
 local canUpdateConfig = ::Computed(@() isProfileReceived.value && !isInBattleState.value)
 
 local seasonShopConfig = ::Computed(function(prev) {
-  if (prev != frpINITIAL && !canUpdateConfig.value)
+  if (prev != FRP_INITIAL && !canUpdateConfig.value)
     return prev
-  else if (prev == frpINITIAL && !canUpdateConfig.value)
+  else if (prev == FRP_INITIAL && !canUpdateConfig.value)
     return {}
 
   local checkItemsShopListVersion = itemsShopListVersion.value // -declared-never-used

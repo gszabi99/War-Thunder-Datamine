@@ -202,6 +202,46 @@
         "bulletMod": "shvak_universal"
       }
     },
+    "GSh_23L_armor_targets": {
+      "reqModification": "GSh_23L_belt_pack",
+      "group": "GSh_23L",
+      "effects": {
+        "bulletMod": "GSh_23L_armor_targets"
+      }
+    },
+    "GSh_23L_air_targets": {
+      "reqModification": "GSh_23L_belt_pack",
+      "group": "GSh_23L",
+      "effects": {
+        "bulletMod": "GSh_23L_air_targets"
+      }
+    },
+    "GSh_23L_stealth": {
+      "reqModification": "GSh_23L_belt_pack",
+      "group": "GSh_23L",
+      "effects": {
+        "bulletMod": "GSh_23L_stealth"
+      }
+    },
+    "GSh_23L_belt_pack": {
+      "image": "#ui/gameuiskin#ammo",
+      "modClass": "weapon",
+      "tier": 3,
+      "caliber": 23.0,
+      "deactivationIsAllowed": false
+    },
+    "GSh_23L_new_gun": {
+      "image": "#ui/gameuiskin#weapon",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 23.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "GSh_23L_new_gun"
+      }
+    },
     "shvak_ground_targets": {
       "reqModification": "shvak_belt_pack",
       "group": "shvak",
@@ -1113,6 +1153,39 @@
       "caliber": 30.0,
       "deactivationIsAllowed": false
     },
+    "akan_m75_ground_targets": {
+      "reqModification": "akan_m75_belt_pack",
+      "group": "akan_m75",
+      "effects": {
+        "bulletMod": "akan_m75_ground_targets"
+      }
+    },
+    "akan_m75_air_targets": {
+      "reqModification": "akan_m75_belt_pack",
+      "group": "akan_m75",
+      "effects": {
+        "bulletMod": "akan_m75_air_targets"
+      }
+    },
+    "akan_m75_belt_pack": {
+      "image": "#ui/gameuiskin#ammo",
+      "modClass": "weapon",
+      "tier": 3,
+      "caliber": 30.0,
+      "deactivationIsAllowed": false
+    },
+    "akan_m75_new_gun": {
+      "image": "#ui/gameuiskin#weapon",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 30.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "akan_m75_new_gun"
+      }
+    },
     "GAU_13A_ground_targets": {
       "reqModification": "GAU_13A_belt_pack",
       "group": "GAU_13A",
@@ -1549,12 +1622,59 @@
         "bulletMod": "m4_ground_targets"
       }
     },
+    "m4_air_targets": {
+      "reqModification": "m4_belt_pack",
+      "group": "m4",
+      "effects": {
+        "bulletMod": "m4_air_targets"
+      }
+    },
     "m4_belt_pack": {
       "image": "#ui/gameuiskin#ammo",
       "modClass": "weapon",
       "tier": 3,
       "caliber": 37.0,
       "deactivationIsAllowed": false
+    },
+    "m9_universal": {
+      "reqModification": "m9_belt_pack",
+      "group": "m9",
+      "effects": {
+        "bulletMod": "m9_universal"
+      }
+    },
+    "m9_ground_targets": {
+      "reqModification": "m9_belt_pack",
+      "group": "m9",
+      "effects": {
+        "bulletMod": "m9_ground_targets"
+      }
+    },
+    "m9_air_targets": {
+      "reqModification": "m9_belt_pack",
+      "group": "m9",
+      "effects": {
+        "bulletMod": "m9_air_targets"
+      }
+    },
+    "m9_belt_pack": {
+      "image": "#ui/gameuiskin#ammo",
+      "modClass": "weapon",
+      "tier": 3,
+      "caliber": 37.0,
+      "deactivationIsAllowed": false
+    },
+    "m9_new_gun": {
+      "image": "#ui/gameuiskin#weapon",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 37.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "m9_new_gun"
+      }
     },
     "7_7mm_universal": {
       "reqModification": "type89_belt_pack",
@@ -4259,6 +4379,20 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "20mm_rh202_APDS": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "20mm_rh202_APDS_ammo_pack",
+      "group": "20mm_AP",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_APDS"
+      }
+    },
+    "20mm_rh202_APDS_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 4,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "30mm_2a42_HE": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -5098,6 +5232,14 @@
         "additiveBulletMod": "100mm_ussr_HE"
       }
     },
+    "100mm_3of_32": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "100mm_HE",
+      "effects": {
+        "additiveBulletMod": "100mm_3of_32"
+      }
+    },
     "100mm_3of70": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -5702,6 +5844,20 @@
     "305mm_ussr_52_obr1907_navy_sap_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "305mm_ussr_52_obr1907_1941_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "305mm_ussr_52_obr1907_1941_navy_he_ammo_pack",
+      "group": "305mm_HE",
+      "effects": {
+        "additiveBulletMod": "305mm_ussr_52_obr1907_1941_navy_he"
+      }
+    },
+    "305mm_ussr_52_obr1907_1941_navy_he_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 4,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -9978,6 +10134,28 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "152mm_jp_type_79_ATGM": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "152mm_AP",
+      "effects": {
+        "additiveBulletMod": "152mm_jp_type_79_ATGM"
+      }
+    },
+    "152mm_jp_type_79_ASM": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "152mm_jp_type_79_ASM_ammo_pack",
+      "group": "152mm_HE",
+      "effects": {
+        "additiveBulletMod": "152mm_jp_type_79_ASM"
+      }
+    },
+    "152mm_jp_type_79_ASM_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 4,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "152mm_us_tow_2": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "152mm_us_tow_2_ammo_pack",
@@ -10324,12 +10502,26 @@
         "additiveBulletMod": "120mm_sweden_HE"
       }
     },
-    "57mm_britain_6pdr_APC_navy": {
+    "57mm_britain_6pdr_apc_navy": {
       "image": "#ui/gameuiskin#tank_ammo",
-      "isReserve": true,
+      "reqModification": "57mm_britain_6pdr_apc_navy_ammo_pack",
       "group": "57mm_AP",
       "effects": {
-        "additiveBulletMod": "57mm_britain_6pdr_APC_navy"
+        "additiveBulletMod": "57mm_britain_6pdr_apc_navy"
+      }
+    },
+    "57mm_britain_6pdr_apc_navy_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "57mm_britain_6pdr_army_he_navy": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "57mm_HE",
+      "effects": {
+        "additiveBulletMod": "57mm_britain_6pdr_army_he_navy"
       }
     },
     "76mm_uk_mk6_nc101_navy_he_radio_fuse": {
@@ -12166,6 +12358,11 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "mig_27_x29t": {
+      "image": "#ui/gameuiskin#agm_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mig_21_x66": {
       "image": "#ui/gameuiskin#agm_missile",
       "modClass": "weapon",
@@ -12207,12 +12404,12 @@
       "deactivationIsAllowed": false
     },
     "uk_matra_7": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "C5": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -12222,32 +12419,32 @@
       "deactivationIsAllowed": false
     },
     "mig_21_ub16": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_21_ub32": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "yak_38_b8m1": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "j_7_hf5": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_q5_hf6": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "C5M": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -12287,6 +12484,11 @@
       "deactivationIsAllowed": false
     },
     "swd_j29_180mm_m49": {
+      "image": "#ui/gameuiskin#pilon_rocket",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "swe_135mm_m70b": {
       "image": "#ui/gameuiskin#pilon_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -13240,6 +13442,11 @@
       "deactivationIsAllowed": false
     },
     "swe_m56d": {
+      "image": "#ui/gameuiskin#pilon_rocket",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "swe_m70d": {
       "image": "#ui/gameuiskin#pilon_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -14737,7 +14944,7 @@
     "356mm_jp_common_type3_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
-      "group": "356mm_he",
+      "group": "356mm_ap",
       "effects": {
         "additiveBulletMod": "356mm_jp_common_type3_navy_he"
       }
@@ -14753,6 +14960,34 @@
     "356mm_jp_type3_navy_apc_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "356mm_jp_type91_navy_apc": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "356mm_jp_type91_navy_apc_ammo_pack",
+      "group": "356mm_ap",
+      "effects": {
+        "additiveBulletMod": "356mm_jp_type91_navy_apc"
+      }
+    },
+    "356mm_jp_type91_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "356mm_jp_ordinary_type0_navy_sap": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "356mm_jp_ordinary_type0_navy_sap_ammo_pack",
+      "group": "356mm_ap",
+      "effects": {
+        "additiveBulletMod": "356mm_jp_ordinary_type0_navy_sap"
+      }
+    },
+    "356mm_jp_ordinary_type0_navy_sap_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -14905,6 +15140,53 @@
       "tier": 2,
       "modClass": "firepower",
       "deactivationIsAllowed": false
+    },
+    "20mm_rh202_naval_universal": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "20mm_he_naval",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_naval_universal"
+      }
+    },
+    "20mm_rh202_naval_heit_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower"
+    },
+    "20mm_rh202_naval_heit": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "20mm_rh202_naval_heit_ammo_pack",
+      "group": "20mm_he_naval",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_naval_heit"
+      }
+    },
+    "20mm_rh202_naval_apit_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
+      "modClass": "firepower"
+    },
+    "20mm_rh202_naval_apit": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "20mm_rh202_naval_apit_ammo_pack",
+      "group": "20mm_ap_naval",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_naval_apit"
+      }
+    },
+    "20mm_rh202_naval_apds_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 4,
+      "modClass": "firepower"
+    },
+    "20mm_rh202_naval_apds": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "20mm_rh202_naval_apds_ammo_pack",
+      "group": "20mm_ap_naval",
+      "effects": {
+        "additiveBulletMod": "20mm_rh202_naval_apds"
+      }
     },
     "12mm_dshk_universal": {
       "image": "#ui/gameuiskin#tank_ammo",
@@ -16591,77 +16873,77 @@
       }
     },
     "tiger_tel12": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "a_129_hl_19_70": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_f8u_ffar": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": true
     },
     "us_2_75_in_ffar_aero_6a": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_x6a": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_aero_7d": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_3a": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_32": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_51": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_rl_7": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f4c_zuni": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f8u_zuni": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "t2_rl4_zuni": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_jlau_3a": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16671,6 +16953,11 @@
       "deactivationIsAllowed": false
     },
     "swe_rb24j": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "swe_rb71": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -16726,16 +17013,29 @@
       "deactivationIsAllowed": false
     },
     "us_aim_7d": {
-      "image": "#ui/gameuiskin#air_to_air_missile",
-      "modClass": "weapon"
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "us_aim_7c": {
-      "image": "#ui/gameuiskin#air_to_air_missile",
-      "modClass": "weapon"
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "us_aim_7e": {
-      "image": "#ui/gameuiskin#air_to_air_missile",
-      "modClass": "weapon"
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "us_aim_7e2": {
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "uk_skyflash": {
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "us_agm_65a": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
@@ -16904,12 +17204,12 @@
       "deactivationIsAllowed": false
     },
     "fr_matra_sneb": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_jl_100r": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16924,7 +17224,7 @@
       "deactivationIsAllowed": false
     },
     "fr_lr_f1": {
-      "image": "#ui/gameuiskin#pilon_rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -17136,6 +17436,15 @@
       }
     },
     "t_62m_1_protection_improvement": {
+      "image": "#ui/gameuiskin#tank_additional_armor",
+      "requiresModelReload": true,
+      "tier": 4,
+      "modClass": "protection",
+      "effects": {
+        "fakeParam": 1.01
+      }
+    },
+    "t_80bvm_protection_improvement": {
       "image": "#ui/gameuiskin#tank_additional_armor",
       "requiresModelReload": true,
       "tier": 4,
@@ -17683,6 +17992,11 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "mig_27_kab_500": {
+      "image": "#ui/gameuiskin#laser_guided_bomb",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mi_4_fab_100": {
       "image": "#ui/gameuiskin#pilon_bomb",
       "modClass": "weapon",
@@ -17783,7 +18097,7 @@
       "deactivationIsAllowed": false
     },
     "uh_1d_lr68": {
-      "image": "#ui/gameuiskin#rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -17958,12 +18272,12 @@
       "group": "mi-24_EVU"
     },
     "ah_1_m200_2": {
-      "image": "#ui/gameuiskin#rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uh_1_xm159": {
-      "image": "#ui/gameuiskin#rocket",
+      "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },

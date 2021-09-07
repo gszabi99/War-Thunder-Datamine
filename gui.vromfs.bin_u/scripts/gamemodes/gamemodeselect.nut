@@ -16,7 +16,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneTplName = "gui/gameModeSelect/gameModeSelect"
   shouldBlurSceneBgFn = needUseHangarDof
-  backSceneFunc = @() ::gui_start_mainmenu()
   needAnimatedSwitchScene = false
 
   restoreFromModal = false
@@ -62,6 +61,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
+    backSceneFunc = ::gui_start_mainmenu
     updateContent()
   }
 
@@ -382,7 +382,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       foreach(countryData in ::g_crews_list.get())
       {
         local country = countryData.country
-        if (::is_country_visible(country) && !::isInArray(country, countries))
+        if (!::isInArray(country, countries))
           lockedCountries.append(country)
       }
 

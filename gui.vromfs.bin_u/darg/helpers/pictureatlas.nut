@@ -1,3 +1,5 @@
+from "daRg" import Picture
+
 local function PictureAtlas(atlas_path_base) {
   local pictures = {}
 
@@ -5,7 +7,7 @@ local function PictureAtlas(atlas_path_base) {
     function _get(key) {
       if (key in pictures)
         return pictures[key]
-      local pic = ::Picture(atlas_path_base+key)
+      local pic = Picture(atlas_path_base+key)
       pictures[key] <- pic
       return pic
     }

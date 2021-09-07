@@ -1,4 +1,5 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 local pseudoAxesList = {
   template = {
@@ -14,7 +15,7 @@ enums.addTypes(pseudoAxesList, {
     id = "pseudo_toggle_view"
     translate = function ()
     {
-      local curUnitType = ::get_es_unit_type(::get_player_cur_unit())
+      local curUnitType = ::get_es_unit_type(getPlayerCurUnit())
       if (curUnitType == ::ES_UNIT_TYPE_TANK)
         return ["ID_TOGGLE_VIEW_GM"]
       else if (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
@@ -32,7 +33,7 @@ enums.addTypes(pseudoAxesList, {
     translate = function()
     {
       local requiredControls = ::getRequiredControlsForUnit(
-        ::get_player_cur_unit(), ::getCurrentHelpersMode())
+        getPlayerCurUnit(), ::getCurrentHelpersMode())
 
       local isMGunsAvailable = ::isInArray("ID_FIRE_MGUNS", requiredControls)
       local isCannonsAvailable = ::isInArray("ID_FIRE_CANNONS", requiredControls)

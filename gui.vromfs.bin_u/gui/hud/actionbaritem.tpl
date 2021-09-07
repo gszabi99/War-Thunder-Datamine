@@ -1,5 +1,4 @@
-tdiv {
-  size:t='1@hudActionBarItemSize, 1@hudActionBarItemSize'
+actionBarItemDiv {
   margin:t='1@hudActionBarItemOffset, 0'
   padding:t='0.003@shHud'
 

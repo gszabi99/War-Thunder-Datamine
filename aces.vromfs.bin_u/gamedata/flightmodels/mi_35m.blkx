@@ -1409,356 +1409,411 @@
     "turretTurnSfxPathStudio": "aircraft/effects",
     "turretTurnSfxName": "turret_turn_servo"
   },
-  "cockpit": {
-    "headPos": [3.158,0.115,0.022],
-    "headPosOnShooting": [3.158,0.115,0.022],
-    "lightPos": [3.833732,-0.228747,0.124572],
-    "lightColor": [0.02,0.1,0.01],
-    "lightRadius": 0.55,
-    "lightPos1": [3.549231,-0.404367,-0.306027],
-    "lightColor1": [0.02,0.1,0.01],
-    "lightRadius1": 0.55,
-    "lightPos2": [3.865871,-0.079488,-0.18869],
-    "lightColor2": [0.02,0.1,0.01],
-    "lightRadius2": 0.05,
-    "zoomOutFov": 22.46,
-    "zoomInFov": 7.37,
-    "sightFov": 0.5,
-    "sightOutFov": 20.0,
-    "sightInFov": 1.0,
-    "devices": {
-      "stick_ailerons": [-1.0,1.0],
-      "stick_elevator": [-1.0,1.0],
-      "weapon1": [0.0,1.0],
-      "weapon2": [0.0,1.0],
-      "weapon3": [0.0,1.0],
-      "weapon4": [0.0,1.0],
-      "throttle": [0.0,1.0],
-      "pedals": [-1.0,1.0],
-      "pedals1": [-1.0,1.0],
-      "pedals2": [-1.0,1.0],
-      "pedals3": [-1.0,1.0],
-      "pedals4": [-1.0,1.0],
-      "pedals5": [-1.0,1.0],
-      "pedals6": [-1.0,1.0],
-      "pedals7": [-1.0,1.0],
-      "aviahorizon_pitch": [-90.0,90.0],
-      "aviahorizon_roll": [-90.0,90.0],
-      "aviahorizon_pitch1": [-90.0,90.0],
-      "aviahorizon_roll1": [-90.0,90.0],
-      "bank": [-1.0,1.0],
-      "bank1": [-1.0,1.0],
-      "turn": [-45.0,45.0],
-      "g_meter": [-2.0,4.0],
-      "g_meter_min": [-2.0,4.0],
-      "g_meter_max": [-2.0,4.0],
-      "clock_hour": [0.0,12.0],
-      "clock_min": [0.0,60.0],
-      "clock_sec": [0.0,60.0],
-      "compass": [0.0,360.0],
-      "compass1": [0.0,360.0],
-      "vario": [-30.0,30.0],
-      "speed": [0.0,125.0],
-      "altitude_hour": [0.0,10000.0],
-      "altitude_min": [0.0,1000.0],
-      "radio_altitude": [0.0,1000.0],
-      "altitude_koef": 1.0,
-      "head_temperature": [0.0,1200.0],
-      "head_temperature1": [0.0,1200.0],
-      "water_temperature": [0.0,1000.0],
-      "water_temperature1": [0.0,1000.0],
-      "oil_pressure": [0.0,8.0],
-      "oil_pressure1": [0.0,8.0],
-      "oil_temperature": [-50.0,150.0],
-      "oil_temperature1": [-50.0,150.0],
-      "fuel1": [0.0,2500.0],
-      "rpm": [0.0,15400.0],
-      "rpm1": [0.0,15400.0]
+  "cockpit": [
+    {
+      "headPos": [3.158,0.115,0.022]
     },
-    "multifunctionDisplays": [
-      {
-        "display": [
-          {
-            "textureArea": [0.0,0.5,0.5,1.0]
-          },
-          {
-            "page": {
-              "type": "map"
-            }
-          },
-          {
-            "page": {
-              "type": "rwr"
-            }
-          },
-          {
-            "page": {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [120.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
-                "size": [192.0,192.0],
-                "color": "#ffff00ff",
-                "valueTextSize": 30.0,
-                "ranges": [
-                  {
-                    "limits": [0.0,50.0,-0.5,-0.46]
-                  },
-                  {
-                    "limits": [50.0,100.0,-0.46,-0.26]
-                  },
-                  {
-                    "limits": [100.0,150.0,-0.26,0.0]
-                  },
-                  {
-                    "limits": [150.0,250.0,0.0,0.5]
-                  },
-                  {
-                    "limits": [250.0,450.0,0.5,1.38]
+    {
+      "headPosOnShooting": [3.158,0.115,0.022]
+    },
+    {
+      "mirror": true
+    },
+    {
+      "mirrorPos": [3.575,0.077,0.0]
+    },
+    {
+      "mirrorNorm": [-1.0,0.0,0.0]
+    },
+    {
+      "mirrorNode": "mirror_l"
+    },
+    {
+      "mirrorNode": "blister13"
+    },
+    {
+      "lightPos": [3.833732,-0.228747,0.124572]
+    },
+    {
+      "lightColor": [0.02,0.1,0.01]
+    },
+    {
+      "lightRadius": 0.55
+    },
+    {
+      "lightPos1": [3.549231,-0.404367,-0.306027]
+    },
+    {
+      "lightColor1": [0.02,0.1,0.01]
+    },
+    {
+      "lightRadius1": 0.55
+    },
+    {
+      "lightPos2": [3.865871,-0.079488,-0.18869]
+    },
+    {
+      "lightColor2": [0.02,0.1,0.01]
+    },
+    {
+      "lightRadius2": 0.05
+    },
+    {
+      "zoomOutFov": 22.46
+    },
+    {
+      "zoomInFov": 7.37
+    },
+    {
+      "sightFov": 0.5
+    },
+    {
+      "sightOutFov": 20.0
+    },
+    {
+      "sightInFov": 1.0
+    },
+    {
+      "devices": {
+        "stick_ailerons": [-1.0,1.0],
+        "stick_elevator": [-1.0,1.0],
+        "weapon1": [0.0,1.0],
+        "weapon2": [0.0,1.0],
+        "weapon3": [0.0,1.0],
+        "weapon4": [0.0,1.0],
+        "throttle": [0.0,1.0],
+        "pedals": [-1.0,1.0],
+        "pedals1": [-1.0,1.0],
+        "pedals2": [-1.0,1.0],
+        "pedals3": [-1.0,1.0],
+        "pedals4": [-1.0,1.0],
+        "pedals5": [-1.0,1.0],
+        "pedals6": [-1.0,1.0],
+        "pedals7": [-1.0,1.0],
+        "aviahorizon_pitch": [-90.0,90.0],
+        "aviahorizon_roll": [-90.0,90.0],
+        "aviahorizon_pitch1": [-90.0,90.0],
+        "aviahorizon_roll1": [-90.0,90.0],
+        "bank": [-1.0,1.0],
+        "bank1": [-1.0,1.0],
+        "turn": [-45.0,45.0],
+        "g_meter": [-2.0,4.0],
+        "g_meter_min": [-2.0,4.0],
+        "g_meter_max": [-2.0,4.0],
+        "clock_hour": [0.0,12.0],
+        "clock_min": [0.0,60.0],
+        "clock_sec": [0.0,60.0],
+        "compass": [0.0,360.0],
+        "compass1": [0.0,360.0],
+        "vario": [-30.0,30.0],
+        "speed": [0.0,125.0],
+        "altitude_hour": [0.0,10000.0],
+        "altitude_min": [0.0,1000.0],
+        "radio_altitude": [0.0,1000.0],
+        "altitude_koef": 1.0,
+        "head_temperature": [0.0,1200.0],
+        "head_temperature1": [0.0,1200.0],
+        "water_temperature": [0.0,1000.0],
+        "water_temperature1": [0.0,1000.0],
+        "oil_pressure": [0.0,8.0],
+        "oil_pressure1": [0.0,8.0],
+        "oil_temperature": [-50.0,150.0],
+        "oil_temperature1": [-50.0,150.0],
+        "fuel": [0.0,2500.0],
+        "rpm": [0.0,15400.0],
+        "rpm1": [0.0,15400.0]
+      }
+    },
+    {
+      "multifunctionDisplays": [
+        {
+          "display": [
+            {
+              "textureArea": [0.0,0.5,0.5,1.0]
+            },
+            {
+              "page": {
+                "type": "map"
+              }
+            },
+            {
+              "page": {
+                "type": "rwr"
+              }
+            },
+            {
+              "page": {
+                "type": "devices",
+                "speed": {
+                  "texture": "su_mfd_speed",
+                  "position": [120.0,110.0],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "backgroundTexCoord": [0.0,0.0,0.91,0.89],
+                  "size": [192.0,192.0],
+                  "color": "#ffff00ff",
+                  "valueTextSize": 30.0,
+                  "ranges": [
+                    {
+                      "limits": [0.0,50.0,-0.5,-0.46]
+                    },
+                    {
+                      "limits": [50.0,100.0,-0.46,-0.26]
+                    },
+                    {
+                      "limits": [100.0,150.0,-0.26,0.0]
+                    },
+                    {
+                      "limits": [150.0,250.0,0.0,0.5]
+                    },
+                    {
+                      "limits": [250.0,450.0,0.5,1.38]
+                    }
+                  ]
+                },
+                "vario": {
+                  "texture": "su_mfd_vario",
+                  "position": [552.0,110.0],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "size": [192.0,192.0],
+                  "color": "#1e1effff",
+                  "valueTextSize": 30.0,
+                  "ranges": [
+                    {
+                      "limits": [-20.0,-10.0,0.25,0.5]
+                    },
+                    {
+                      "limits": [-10.0,10.0,0.5,1.5]
+                    },
+                    {
+                      "limits": [10.0,20.0,1.5,1.75]
+                    }
+                  ]
+                },
+                "altitude_hour": {
+                  "texture": "su_mfd_altitude",
+                  "position": [552.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.47,0.92,0.86,1.0],
+                  "size": [192.0,192.0],
+                  "ranges": {
+                    "limits": [0.0,10.0,-0.5,1.5]
                   }
-                ]
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [552.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "ranges": [
-                  {
-                    "limits": [-20.0,-10.0,0.25,0.5]
-                  },
-                  {
-                    "limits": [-10.0,10.0,0.5,1.5]
-                  },
-                  {
-                    "limits": [10.0,20.0,1.5,1.75]
+                },
+                "altitude_min": {
+                  "texture": "su_mfd_altitude",
+                  "position": [552.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "size": [192.0,192.0],
+                  "color": "#1e1effff",
+                  "valueTextSize": 30.0,
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [0.0,1000.0,-0.5,1.5]
                   }
-                ]
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.47,0.92,0.86,1.0],
-                "size": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,10.0,-0.5,1.5]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [0.0,1000.0,-0.5,1.5]
-                }
-              },
-              "compass": {
-                "texture": "su_mfd_compass",
-                "position": [130.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.5,1.0],
-                "arrowTexCoord": [0.5,0.0,1.0,1.0],
-                "size": [192.0,192.0],
-                "arrowSize": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,360.0,0.0,-2.0]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [340.0,256.0],
-                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.4,1.0,0.6],
-                "size": [180.0,180.0],
-                "ranges": {
-                  "limits": [-90.0,90.0,0.35,-0.35]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [340.0,256.0],
-                "arrowTexCoord": [0.2,0.9,0.8,1.0],
-                "size": [180.0,180.0],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [-180.0,180.0,-1.0,1.0]
+                },
+                "compass": {
+                  "texture": "su_mfd_compass",
+                  "position": [130.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.5,1.0],
+                  "arrowTexCoord": [0.5,0.0,1.0,1.0],
+                  "size": [192.0,192.0],
+                  "arrowSize": [192.0,192.0],
+                  "ranges": {
+                    "limits": [0.0,360.0,0.0,-2.0]
+                  }
+                },
+                "aviahorizon_pitch": {
+                  "texture": "su_mfd_ahorizon",
+                  "arrowTex": "su_mfd_ahorizon_scale",
+                  "position": [340.0,256.0],
+                  "backgroundTexCoord": [0.11,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.0,0.4,1.0,0.6],
+                  "size": [180.0,180.0],
+                  "ranges": {
+                    "limits": [-90.0,90.0,0.35,-0.35]
+                  }
+                },
+                "aviahorizon_roll": {
+                  "texture": "su_mfd_ahorizon",
+                  "position": [340.0,256.0],
+                  "arrowTexCoord": [0.2,0.9,0.8,1.0],
+                  "size": [180.0,180.0],
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [-180.0,180.0,-1.0,1.0]
+                  }
                 }
               }
             }
-          }
-        ]
-      },
-      {
-        "display": [
-          {
-            "textureArea": [0.5,0.5,1.0,1.0]
-          },
-          {
-            "monoDisplayColor": [0.75,0.9,0.8]
-          },
-          {
-            "page": {
-              "type": "target_tracking",
-              "turretIdx": 0
-            }
-          },
-          {
-            "page": {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [120.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
-                "size": [192.0,192.0],
-                "color": "#ffff00ff",
-                "valueTextSize": 30.0,
-                "ranges": [
-                  {
-                    "limits": [0.0,50.0,-0.5,-0.46]
-                  },
-                  {
-                    "limits": [50.0,100.0,-0.46,-0.26]
-                  },
-                  {
-                    "limits": [100.0,150.0,-0.26,0.0]
-                  },
-                  {
-                    "limits": [150.0,250.0,0.0,0.5]
-                  },
-                  {
-                    "limits": [250.0,450.0,0.5,1.38]
+          ]
+        },
+        {
+          "display": [
+            {
+              "textureArea": [0.5,0.5,1.0,1.0]
+            },
+            {
+              "monoDisplayColor": [0.75,0.9,0.8]
+            },
+            {
+              "page": {
+                "type": "target_tracking",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "devices",
+                "speed": {
+                  "texture": "su_mfd_speed",
+                  "position": [120.0,110.0],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "backgroundTexCoord": [0.0,0.0,0.91,0.89],
+                  "size": [192.0,192.0],
+                  "color": "#ffff00ff",
+                  "valueTextSize": 30.0,
+                  "ranges": [
+                    {
+                      "limits": [0.0,50.0,-0.5,-0.46]
+                    },
+                    {
+                      "limits": [50.0,100.0,-0.46,-0.26]
+                    },
+                    {
+                      "limits": [100.0,150.0,-0.26,0.0]
+                    },
+                    {
+                      "limits": [150.0,250.0,0.0,0.5]
+                    },
+                    {
+                      "limits": [250.0,450.0,0.5,1.38]
+                    }
+                  ]
+                },
+                "vario": {
+                  "texture": "su_mfd_vario",
+                  "position": [552.0,110.0],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "size": [192.0,192.0],
+                  "color": "#1e1effff",
+                  "valueTextSize": 30.0,
+                  "ranges": [
+                    {
+                      "limits": [-20.0,-10.0,0.25,0.5]
+                    },
+                    {
+                      "limits": [-10.0,10.0,0.5,1.5]
+                    },
+                    {
+                      "limits": [10.0,20.0,1.5,1.75]
+                    }
+                  ]
+                },
+                "altitude_hour": {
+                  "texture": "su_mfd_altitude",
+                  "position": [552.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.47,0.92,0.86,1.0],
+                  "size": [192.0,192.0],
+                  "ranges": {
+                    "limits": [0.0,10.0,-0.5,1.5]
                   }
-                ]
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [552.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "ranges": [
-                  {
-                    "limits": [-20.0,-10.0,0.25,0.5]
-                  },
-                  {
-                    "limits": [-10.0,10.0,0.5,1.5]
-                  },
-                  {
-                    "limits": [10.0,20.0,1.5,1.75]
+                },
+                "altitude_min": {
+                  "texture": "su_mfd_altitude",
+                  "position": [552.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                  "size": [192.0,192.0],
+                  "color": "#1e1effff",
+                  "valueTextSize": 30.0,
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [0.0,1000.0,-0.5,1.5]
                   }
-                ]
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.47,0.92,0.86,1.0],
-                "size": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,10.0,-0.5,1.5]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [0.0,1000.0,-0.5,1.5]
-                }
-              },
-              "compass": {
-                "texture": "su_mfd_compass",
-                "position": [130.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.5,1.0],
-                "arrowTexCoord": [0.5,0.0,1.0,1.0],
-                "size": [192.0,192.0],
-                "arrowSize": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,360.0,0.0,-2.0]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [340.0,256.0],
-                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.4,1.0,0.6],
-                "size": [180.0,180.0],
-                "ranges": {
-                  "limits": [-90.0,90.0,0.35,-0.35]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [340.0,256.0],
-                "arrowTexCoord": [0.2,0.9,0.8,1.0],
-                "size": [180.0,180.0],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [-180.0,180.0,-1.0,1.0]
+                },
+                "compass": {
+                  "texture": "su_mfd_compass",
+                  "position": [130.0,402.0],
+                  "backgroundTexCoord": [0.0,0.0,0.5,1.0],
+                  "arrowTexCoord": [0.5,0.0,1.0,1.0],
+                  "size": [192.0,192.0],
+                  "arrowSize": [192.0,192.0],
+                  "ranges": {
+                    "limits": [0.0,360.0,0.0,-2.0]
+                  }
+                },
+                "aviahorizon_pitch": {
+                  "texture": "su_mfd_ahorizon",
+                  "arrowTex": "su_mfd_ahorizon_scale",
+                  "position": [340.0,256.0],
+                  "backgroundTexCoord": [0.11,0.0,0.89,0.89],
+                  "arrowTexCoord": [0.0,0.4,1.0,0.6],
+                  "size": [180.0,180.0],
+                  "ranges": {
+                    "limits": [-90.0,90.0,0.35,-0.35]
+                  }
+                },
+                "aviahorizon_roll": {
+                  "texture": "su_mfd_ahorizon",
+                  "position": [340.0,256.0],
+                  "arrowTexCoord": [0.2,0.9,0.8,1.0],
+                  "size": [180.0,180.0],
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [-180.0,180.0,-1.0,1.0]
+                  }
                 }
               }
+            },
+            {
+              "page": {
+                "type": "thermal",
+                "turretIdx": 0
+              }
             }
-          },
-          {
+          ]
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,0.8,0.8],
             "page": {
-              "type": "thermal",
-              "turretIdx": 0
+              "type": "pilot_hud",
+              "ilsNode": "ils",
+              "ilsSize": [0.2,0.2],
+              "ilsProjSize": [0.169,0.169,0.02],
+              "ilsOffsetForce": 0.2,
+              "brightnessMult": 3.5
             }
-          }
-        ]
-      },
-      {
-        "display": {
-          "textureArea": [0.0,0.0,0.8,0.8],
-          "page": {
-            "type": "pilot_hud",
-            "ilsNode": "ils",
-            "ilsSize": [0.2,0.2],
-            "ilsProjSize": [0.169,0.169,0.02],
-            "ilsOffsetForce": 0.2,
-            "brightnessMult": 3.5
           }
         }
-      }
-    ],
-    "parts_holes_dmg": {
-      "part": "fuse"
+      ]
     },
-    "parts_oil_dmg": [
-      {
-        "part": "engine1"
-      },
-      {
-        "part": "engine2"
-      },
-      {
-        "part": "engine3"
-      },
-      {
-        "part": "engine4"
+    {
+      "parts_holes_dmg": {
+        "part": "fuse"
       }
-    ]
-  },
+    },
+    {
+      "parts_oil_dmg": [
+        {
+          "part": "engine1"
+        },
+        {
+          "part": "engine2"
+        },
+        {
+          "part": "engine3"
+        },
+        {
+          "part": "engine4"
+        }
+      ]
+    }
+  ],
   "helicopter": {
     "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
     "propellerStrainCoeff": -0.01
@@ -1799,7 +1854,7 @@
           "mainTurret": true
         },
         "limits": {
-          "yaw": [-180.0,180.0],
+          "yaw": [-135.0,135.0],
           "pitch": [-80.0,30.0]
         }
       }
@@ -1859,7 +1914,7 @@
     "head": "turret1"
   },
   "gunnerOpticFps": {
-    "pos": [0.3,-0.8,0.0],
+    "pos": [0.3,-0.6,-0.1],
     "head": "optic1_turret",
     "crosshairPreset": "test_crosshair",
     "angularLimits": [-135.0,135.0,-80.0,30.0]
@@ -2977,6 +3032,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -3173,6 +3240,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -3367,6 +3446,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -3566,6 +3657,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -3770,6 +3873,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -3970,6 +4085,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -4174,6 +4301,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -4374,6 +4513,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -5141,7 +5292,7 @@
     {
       "dp": [
         {
-          "dm": "tail_dm"
+          "dm": "fin_dm"
         },
         {
           "dp": "prop01_2"
@@ -5288,19 +5439,19 @@
     "new_heli_cover": [],
     "heli_flak_jacket": [],
     "heli_structure": [],
-    "ns23_armor_targets": [],
-    "ns23_air_targets": [],
-    "ns23_stealth": [],
-    "ns23_belt_pack": {
+    "GSh_23L_armor_targets": [],
+    "GSh_23L_air_targets": [],
+    "GSh_23L_stealth": [],
+    "GSh_23L_belt_pack": {
       "tier": 1
     },
-    "ns23_new_gun": {
-      "reqModification": "ns23_belt_pack",
+    "GSh_23L_new_gun": {
+      "reqModification": "GSh_23L_belt_pack",
       "tier": 2
     },
     "il_28sh_upk23_gunpod": {
       "deactivationIsAllowed": false,
-      "prevModification": "ns23_new_gun",
+      "prevModification": "GSh_23L_new_gun",
       "tier": 3,
       "modClass": "weapon"
     },

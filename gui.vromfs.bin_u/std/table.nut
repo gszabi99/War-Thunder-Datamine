@@ -13,31 +13,23 @@ local function setValInTblPath(table, path, value){
 }
 local function getValInTblPath(table, path, startIdx=0){
   local curTbl = table
+  if (path==null)
+    return null
+  if (startIdx > 0)
+    path = path.slice(startIdx)
   foreach (idx, pathPart in path){
-    if (startIdx >= idx)
-      continue
-    if (idx == path.len()-1)
-      return curTbl?[pathPart]
-    else{
-      if (pathPart in curTbl)
-        curTbl = curTbl[pathPart]
-      else
-        return null
-    }
+    curTbl = curTbl?[pathPart]
+    if (curTbl==null)
+      return null
   }
-  return null
+  return curTbl
 }
 
 local function tryGetValInTblPath(table, path){
-  local startIdx = 0
   foreach (idx, _ in path) {
-    local val = getValInTblPath(table, path, startIdx)
+    local val = getValInTblPath(table, path, idx)
     if (val != null)
       return val
-    else if (idx == path.len()-1)
-      return null
-    else
-      startIdx = idx
   }
   return null
 }

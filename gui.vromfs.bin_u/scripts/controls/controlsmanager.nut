@@ -5,6 +5,7 @@
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { eachBlock } = require("std/datablock.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::g_controls_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["curPreset"]
@@ -231,14 +232,14 @@ local { eachBlock } = require("std/datablock.nut")
     if (!::g_login.isProfileReceived())
       return
 
-    local mainOptionsMode = ::get_gui_options_mode()
-    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
+    local mainOptionsMode = getGuiOptionsMode()
+    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
     local prefix = "USEROPT_"
     foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         if (oType in ::getroottable())
           ::set_option(::getroottable()[oType], value)
-    ::set_gui_options_mode(mainOptionsMode)
+    setGuiOptionsMode(mainOptionsMode)
   }
 
   // While controls reloaded on PS4 from uncrorrect blk when mission started

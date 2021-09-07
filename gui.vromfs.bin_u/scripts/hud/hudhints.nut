@@ -1,5 +1,8 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
+local { is_stereo_mode } = ::require_native("vr")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
 
@@ -350,7 +353,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   shouldFadeOut = false
   isSingleInNest = false
 
-  isEnabled = @() (isShowedInVR || !::is_stereo_mode())
+  isEnabled = @() (isShowedInVR || !is_stereo_mode())
     && ::is_hint_enabled(mask)
     && isEnabledByDifficulty()
 
@@ -379,13 +382,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
   OFFER_BAILOUT = {
     getLocId = function(hintData)
     {
-      local curUnit = ::get_player_cur_unit()
+      local curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/ready_to_bailout_helicopter"
       : "hints/ready_to_bailout"
     }
     getNoKeyLocId = function()
     {
-      local curUnit = ::get_player_cur_unit()
+      local curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/ready_to_bailout_helicopter_nokey"
       : "hints/ready_to_bailout_nokey"
     }
@@ -401,7 +404,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
     getLocId = function (hintData)
     {
-      local curUnit = ::get_player_cur_unit()
+      local curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/bailout_helicopter_in_progress"
         : curUnit?.isAir?() ? "hints/bailout_in_progress"
         : "hints/leaving_the_tank_in_progress" //this localization is more general, then the "air" one
@@ -1257,7 +1260,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   OFFER_REPAIR = {
     hintType = ::g_hud_hint_types.REPAIR
     getLocId = function (data) {
-      local unitType = ::get_es_unit_type(::get_player_cur_unit())
+      local unitType = ::get_es_unit_type(getPlayerCurUnit())
       if (::getTblValue("assist", data, false))
       {
         if (unitType == ::ES_UNIT_TYPE_TANK)
@@ -1281,7 +1284,8 @@ enums.addTypesByGlobalName("g_hud_hints", {
     noKeyLocId = "hints/ready_to_bailout_nokey"
     getShortcuts =  function(data)
     {
-      return ::get_player_cur_unit()?.isShipOrBoat() ?
+      local curUnit = getPlayerCurUnit()
+      return curUnit?.isShipOrBoat() ?
         ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
         //
 
@@ -1394,6 +1398,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
   }
 
+  COMMANDER_IS_UNCONSCIOUS = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/commander_is_unconscious"
+    showEvent = "hint:commander_is_unconscious:show"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
   VERY_FEW_CREW = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/is_very_few_crew"
@@ -1494,6 +1506,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
       return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     }
   }
+  //
+
+
+
+
+
+
+
 },
 function() {
   name = "hint_" + typeName.tolower()

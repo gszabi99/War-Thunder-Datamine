@@ -39,6 +39,9 @@
     "canReloadNonGuns": true
   },
   {
+    "canReloadNonGuns": true
+  },
+  {
     "support_unit_class": "structures/ussr_152mm_d1"
   },
   {
@@ -1640,7 +1643,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2981,6 +2985,11 @@
         },
         "turret_bottom_dm": {
           "armorThickness": 17.0
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true,
+          "armorClass": "RHA_tank_modern"
         }
       },
       "optics": {
@@ -3454,6 +3463,19 @@
     }
   },
   {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      }
+    }
+  },
+  {
     "VehiclePhys": {
       "Mass": {
         "Empty": 11800.0,
@@ -3628,8 +3650,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 1000,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3778,8 +3800,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,

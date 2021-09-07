@@ -24,6 +24,11 @@ local { has_forced_crosshair } = ::require_native("crosshair")
 
 
 local { getSlotbarOverrideCountriesByMissionName } = require("scripts/slotbar/slotbarOverride.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+local { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
+  getCdBaseDifficulty } = ::require_native("guiOptions")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -38,7 +43,7 @@ global enum misCountries
   CUSTOM
 }
 
-::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
+setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
 ::game_mode_maps <- []
 ::dynamic_layouts <- []
@@ -88,11 +93,9 @@ global enum misCountries
 
 ::available_mission_types <- ::PlayersMissionType.MissionTypeSingle;
 
-::shopCountriesList <- []
-
 ::g_script_reloader.registerPersistentData("OptionsExtGlobals", ::getroottable(),
   [
-    "game_mode_maps", "dynamic_layouts", "shopCountriesList",
+    "game_mode_maps", "dynamic_layouts",
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",
     "crosshair_icons", "crosshair_colors", "thermovision_colors",
     "reload_cooldown_time"
@@ -211,19 +214,6 @@ local isWaitMeasureEvent = false
   return ::get_color_from_hsv(h, s, v)
 }
 
-::build_option_blk <- function build_option_blk(text, image, selected, enabled = true, textStyle = "", expImg = false, tooltip = "", addDiv = "")
-{
-  return ("option {  " +
-           ( enabled?     "" : "enable:t='no'; ") +
-           ((image=="")? "" : "optionImg { background-image:t='" + image + "' } ") +
-           ( expImg ?         "optionImg { airExpIcon:t='yes' } " : "") +
-           addDiv +
-           ((text=="")? "" : "optiontext { id:t='option_text'; text:t = '" + ::g_string.stripTags(text) + "'; " + textStyle + "} ") +
-           ((tooltip=="")? "" : "tooltip:t = '" + ::locOrStrip(tooltip) + "'; ") +
-           ( selected ?       "selected:t = 'yes'; " : "") +
-         " pare-text:t='yes'} ")
-}
-
 ::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType=null, optionTag = null, params = null)
 {
   if (!optionsUtils.checkArgument(id, items, "array"))
@@ -248,8 +238,11 @@ local isWaitMeasureEvent = false
     opt.selected <- idx == value
     if ("hue" in item)
       opt.hueColor <- ::get_block_hsv_color(item.hue,
-                                             "sat" in item ? item.sat : 0.7,
-                                             "val" in item ? item.val : 0.7)
+        item?.sat ?? 0.7,
+        item?.val ?? 0.7)
+    if ("hues" in item)
+      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue, item?.sat ?? 0.7, item?.val ?? 0.7)  })
+
     if ("rgb" in item)
       opt.hueColor <- item.rgb
 
@@ -404,8 +397,8 @@ local isWaitMeasureEvent = false
   if (!optionsUtils.checkArgument(id, value, "integer"))
     return ""
 
-  local minVal = ::getTblValue("min", params, 0)
-  local maxVal = ::getTblValue("max", params, 100)
+  local minVal = params?.min ?? 0
+  local maxVal = params?.max ?? 100
   local step = params?.step ?? 5
   local clickByPoints = ::abs(maxVal - minVal) == 1 ? "yes" : "no"
   local data = "".concat(
@@ -546,6 +539,8 @@ local isWaitMeasureEvent = false
       optionsUtils.fillBoolOption(descr, "enableSoundSpeed", ::OPTION_ENABLE_SOUND_SPEED); break;
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
       optionsUtils.fillBoolOption(descr, "pitchBlockerWhileBraking", ::OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
+    case ::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER:
+      optionsUtils.fillBoolOption(descr, "saveDirWhileSwitchTrigger", ::OPTION_SAVE_DIR_WHILE_SWITCH_TRIGGER); break;
 
     case ::USEROPT_COMMANDER_CAMERA_IN_VIEWS:
       descr.id = "commander_camera_in_views"
@@ -609,7 +604,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BOMB_SERIES:
       descr.id = "bomb_series"
       descr.values = [0]
-      descr.items = ["#options/disabled"]
+      descr.items = [ { text = "#options/disabled" } ]
       local unit = ::getAircraftByName(::aircraft_for_weapons)
       local bombSeries = [0, 4, 6, 12, 24, 48]
       local nbrBomb = unit != null ? bombNbr(unit) : bombSeries.top()
@@ -924,6 +919,21 @@ local isWaitMeasureEvent = false
       break
 
     //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1848,7 +1858,7 @@ local isWaitMeasureEvent = false
       descr.step <- 1
       descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
       defaultValue = 0
-      descr.getValueLocText = @(val) (100 + 33.3 * val / max).tointeger() + "%"
+      descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
       break
 
     case ::USEROPT_TACTICAL_MAP_SIZE:
@@ -1859,7 +1869,7 @@ local isWaitMeasureEvent = false
       descr.step <- 1
       descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
       defaultValue = 0
-      descr.getValueLocText = @(val) (100 + 33.3 * val / max).tointeger() + "%"
+      descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
       break
 
     case ::USEROPT_AIR_RADAR_SIZE:
@@ -1870,7 +1880,7 @@ local isWaitMeasureEvent = false
       descr.step <- 1
       descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
       defaultValue = 0
-      descr.getValueLocText = @(val) (100 + 33.3 * val / max).tointeger() + "%"
+      descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
       break
 
     case ::USEROPT_SHOW_PILOT:
@@ -2559,26 +2569,26 @@ local isWaitMeasureEvent = false
       descr.trParams <- "iconType:t='listbox_country';"
       descr.listClass <- "countries"
 
-      local allowedMask = (1 << ::shopCountriesList.len()) - 1
+      local allowedMask = (1 << shopCountriesList.len()) - 1
       if (::getTblValue("isEventRoom", context, false))
       {
         local allowedList = context?.countries[team.name]
         if (allowedList)
-          allowedMask = ::get_bit_value_by_array(allowedList, ::shopCountriesList)
+          allowedMask = ::get_bit_value_by_array(allowedList, shopCountriesList)
                         || allowedMask
       }
       else if ("missionName" in context)
       {
         local countries = getSlotbarOverrideCountriesByMissionName(context.missionName)
         if (countries.len())
-          allowedMask = ::get_bit_value_by_array(countries, ::shopCountriesList)
+          allowedMask = ::get_bit_value_by_array(countries, shopCountriesList)
       }
       descr.allowedMask <- allowedMask
 
-      for (local nc = 0; nc < ::shopCountriesList.len(); nc++)
+      for (local nc = 0; nc < shopCountriesList.len(); nc++)
       {
-        local country = ::shopCountriesList[nc]
-        local isEnabled = ::is_country_visible(country) && (allowedMask & (1 << nc)) != 0
+        local country = shopCountriesList[nc]
+        local isEnabled = (allowedMask & (1 << nc)) != 0
         descr.items.append({
           text = "#" + country
           image = ::get_country_icon(country, true)
@@ -2592,7 +2602,7 @@ local isWaitMeasureEvent = false
       {
         local cList = ::SessionLobby.getPublicParam(descr.sideTag, null)
         if (cList)
-          prevValue = ::get_bit_value_by_array(cList, ::shopCountriesList)
+          prevValue = ::get_bit_value_by_array(cList, shopCountriesList)
       }
       descr.value = prevValue || ::get_gui_option(optionId)
       if (!descr.value || !::u.isInteger(descr.value))
@@ -2688,7 +2698,8 @@ local isWaitMeasureEvent = false
       descr.items = []
       descr.values = []
 
-      for (local mrank = 0; mrank <= ::MAX_ECONOMIC_RANK; mrank++)
+      local maxEconomicRank = getMaxEconomicRank()
+      for (local mrank = 0; mrank <= maxEconomicRank; mrank++)
       {
         local br = ::calc_battle_rating_from_rank(mrank)
         descr.values.append(mrank)
@@ -3078,7 +3089,7 @@ local isWaitMeasureEvent = false
           local difOpt = ::get_option(::USEROPT_DIFFICULTY)
           local difficulty = ::SessionLobby.isInRoom() ? ::SessionLobby.getMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
           if (difficulty == "custom")
-            difficulty = ::g_difficulty.getDifficultyByDiffCode(::get_cd_base_difficulty()).name
+            difficulty = ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()).name
           local modOpt = ::get_option(::USEROPT_MODIFICATIONS)
           local useModifications = ::get_game_mode() == ::GM_TEST_FLIGHT || ::get_game_mode() == ::GM_BUILDER ? modOpt.values[modOpt.value] : true
           fuelConsumptionPerHour = ::get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
@@ -3230,16 +3241,16 @@ local isWaitMeasureEvent = false
         descr.listClass <- "countries"
 
         local start = 0; //skip country_0
-        local isDominationMode = ::get_gui_options_mode() == ::OPTIONS_MODE_MP_DOMINATION
+        local isDominationMode = getGuiOptionsMode() == ::OPTIONS_MODE_MP_DOMINATION
         local dMode = ::game_mode_manager.getCurrentGameMode()
         local event = isDominationMode && dMode && dMode.getEvent()
 
-        for (local nc = start; nc < ::shopCountriesList.len(); nc++)
+        for (local nc = start; nc < shopCountriesList.len(); nc++)
         {
           if (::mission_settings.battleMode == BATTLE_TYPES.TANK && nc < 0)
             continue
 
-          local country = (nc < 0) ? "country_0" : ::shopCountriesList[nc]
+          local country = (nc < 0) ? "country_0" : shopCountriesList[nc]
           local enabled = (country == "country_0" || ::isCountryAvailable(country))
                           && (!event || ::events.isCountryAvailable(event, country))
           descr.items.append({
@@ -3397,77 +3408,77 @@ local isWaitMeasureEvent = false
         }
 
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_ENGINE)
+      descr.value = getCdOption(::USEROPT_CD_ENGINE)
       break
     case ::USEROPT_CD_GUNNERY:
       descr.id = "realGunnery"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_GUNNERY)
+      descr.value = !!getCdOption(::USEROPT_CD_GUNNERY)
       break
     case ::USEROPT_CD_DAMAGE:
       descr.id = "realDamageModels"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_DAMAGE)
+      descr.value = !!getCdOption(::USEROPT_CD_DAMAGE)
       break
     case ::USEROPT_CD_FLUTTER:
       descr.id = "flutter"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_FLUTTER)
+      descr.value = !!getCdOption(::USEROPT_CD_FLUTTER)
       break
     case ::USEROPT_CD_STALLS:
       descr.id = "stallsAndSpins"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_STALLS)
+      descr.value = !!getCdOption(::USEROPT_CD_STALLS)
       break
     case ::USEROPT_CD_REDOUT:
       descr.id = "redOuts"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_REDOUT)
+      descr.value = !!getCdOption(::USEROPT_CD_REDOUT)
       break
     case ::USEROPT_CD_MORTALPILOT:
       descr.id = "mortalPilots"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_MORTALPILOT)
+      descr.value = !!getCdOption(::USEROPT_CD_MORTALPILOT)
       break
     case ::USEROPT_CD_BOMBS:
       descr.id = "limitedArmament"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_BOMBS)
+      descr.value = !!getCdOption(::USEROPT_CD_BOMBS)
       break
     case ::USEROPT_CD_BOOST:
       descr.id = "noArcadeBoost"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_BOOST)
+      descr.value = !!getCdOption(::USEROPT_CD_BOOST)
       break
     case ::USEROPT_CD_TPS:
       descr.id = "disableTpsViews"
       descr.items = ["#options/limitViewTps", "#options/limitViewFps", "#options/limitViewCockpit"]
       descr.values = [0, 1, 2]
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_TPS)
+      descr.value = getCdOption(::USEROPT_CD_TPS)
       break
     case ::USEROPT_CD_AIM_PRED:
       descr.id = "hudAimPrediction"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_AIM_PRED)
+      descr.value = !!getCdOption(::USEROPT_CD_AIM_PRED)
       break
     case ::USEROPT_CD_MARKERS:
       local teamAirSb = ::loc("options/ally") + ::loc("ui/parentheses/space", { text = ::loc("missions/air_event_simulator") })
@@ -3475,126 +3486,126 @@ local isWaitMeasureEvent = false
       descr.items = ["#options/no", "#options/ally", "#options/all", teamAirSb]
       descr.values = [0, 1, 2, 3]
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_MARKERS)
+      descr.value = getCdOption(::USEROPT_CD_MARKERS)
       break
     case ::USEROPT_CD_ARROWS:
       descr.id = "hudMarkerArrows"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_ARROWS)
+      descr.value = !!getCdOption(::USEROPT_CD_ARROWS)
       break
     case ::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST:
       descr.id = "hudAircraftMarkersMaxDist"
       descr.items = ["#options/near", "#options/normal", "#options/far", "#options/quality_max"]
       descr.values = [0, 1, 2, 3]
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST)
+      descr.value = getCdOption(::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST)
       break
     case ::USEROPT_CD_INDICATORS:
       descr.id = "hudIndicators"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_INDICATORS)
+      descr.value = !!getCdOption(::USEROPT_CD_INDICATORS)
       break
     case ::USEROPT_CD_SPEED_VECTOR:
       descr.id = "hudShowSpeedVector"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_SPEED_VECTOR)
+      descr.value = !!getCdOption(::USEROPT_CD_SPEED_VECTOR)
       break
     case ::USEROPT_CD_TANK_DISTANCE:
       descr.id = "hudShowTankDistance"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_TANK_DISTANCE)
+      descr.value = !!getCdOption(::USEROPT_CD_TANK_DISTANCE)
       break
     case ::USEROPT_CD_MAP_AIRCRAFT_MARKERS:
       descr.id = "hudMapAircraftMarkers"
       descr.items = ["#options/no", "#options/ally", "#options/all", "#options/player"]
       descr.values = [0, 1, 2, 3]
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_MAP_AIRCRAFT_MARKERS)
+      descr.value = getCdOption(::USEROPT_CD_MAP_AIRCRAFT_MARKERS)
       break
     case ::USEROPT_CD_MAP_GROUND_MARKERS:
       descr.id = "hudMapGroundMarkers"
       descr.items = ["#options/no", "#options/ally", "#options/all"]
       descr.values = [0, 1, 2]
       descr.cb = "onCDChange"
-      descr.value = ::get_cd_option(::USEROPT_CD_MAP_GROUND_MARKERS)
+      descr.value = getCdOption(::USEROPT_CD_MAP_GROUND_MARKERS)
       break
     case ::USEROPT_CD_MARKERS_BLINK:
       descr.id = "hudMarkersBlink"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_MARKERS_BLINK)
+      descr.value = !!getCdOption(::USEROPT_CD_MARKERS_BLINK)
       break
     case ::USEROPT_CD_RADAR:
       descr.id = "hudRadar"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_RADAR)
+      descr.value = !!getCdOption(::USEROPT_CD_RADAR)
       break
     case ::USEROPT_CD_DAMAGE_IND:
       descr.id = "hudDamageIndicator"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_DAMAGE_IND)
+      descr.value = !!getCdOption(::USEROPT_CD_DAMAGE_IND)
       break
     case ::USEROPT_CD_LARGE_AWARD_MESSAGES:
       descr.id = "hudLargeAwardMessages"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_LARGE_AWARD_MESSAGES)
+      descr.value = !!getCdOption(::USEROPT_CD_LARGE_AWARD_MESSAGES)
       break
     case ::USEROPT_CD_WARNINGS:
       descr.id = "hudWarnings"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange"
-      descr.value = !!::get_cd_option(::USEROPT_CD_WARNINGS)
+      descr.value = !!getCdOption(::USEROPT_CD_WARNINGS)
       break
     case ::USEROPT_CD_AIR_HELPERS:
       descr.id = "aircraftHelpers";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange";
-      descr.value = !!::get_cd_option(::USEROPT_CD_AIR_HELPERS)
+      descr.value = !!getCdOption(::USEROPT_CD_AIR_HELPERS)
       break;
     case ::USEROPT_CD_COLLECTIVE_DETECTION:
       descr.id = "collectiveDetection";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange";
-      descr.value = !!::get_cd_option(::USEROPT_CD_COLLECTIVE_DETECTION)
+      descr.value = !!getCdOption(::USEROPT_CD_COLLECTIVE_DETECTION)
       break;
     case ::USEROPT_CD_DISTANCE_DETECTION:
       descr.id = "distanceDetection";
       descr.items = ["#options/near", "#options/normal", "#options/far"];
       descr.values = [0, 1, 2];
       descr.cb = "onCDChange";
-      descr.value = ::get_cd_option(::USEROPT_CD_DISTANCE_DETECTION)
+      descr.value = getCdOption(::USEROPT_CD_DISTANCE_DETECTION)
       break;
     case ::USEROPT_CD_ALLOW_CONTROL_HELPERS:
       descr.id = "allowControlHelpers";
       descr.items = ["#options/allHelpers", "#options/Instructor", "#options/Realistic", "#options/no"];
       descr.values = [0, 1, 2, 3];
       descr.cb = "onCDChange";
-      descr.value = ::get_cd_option(::USEROPT_CD_ALLOW_CONTROL_HELPERS)
+      descr.value = getCdOption(::USEROPT_CD_ALLOW_CONTROL_HELPERS)
       break;
     case ::USEROPT_CD_FORCE_INSTRUCTOR:
       descr.id = "forceInstructor";
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.cb = "onCDChange";
-      descr.value = !!::get_cd_option(::USEROPT_CD_FORCE_INSTRUCTOR)
+      descr.value = !!getCdOption(::USEROPT_CD_FORCE_INSTRUCTOR)
       break;
 
     case ::USEROPT_INTERNET_RADIO_ACTIVE:
@@ -3711,12 +3722,40 @@ local isWaitMeasureEvent = false
       defaultValue = true
       break
 
+    case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_param_hud",
+        10, 0.0, 0.9, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_PARAM_HUD))
+      break;
+
+    case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
+      optionsUtils.fillMultipleHueOption(descr, "color_picker_hue_aircraft_hud_alert", colorCorrector.getAlertAircraftHues())
+      break;
+
+    case ::USEROPT_HUE_AIRCRAFT_HUD:
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_hud",
+        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_HUD))
+      break;
+
     case ::USEROPT_HUE_HELICOPTER_HUD:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_helicopter_hud", 112, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
+        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
+      break;
+
+    case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_param_hud",
+        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD_ALERT:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", 0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT))
+      if (::has_feature("reactivGuiForAircraft"))
+        optionsUtils.fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", colorCorrector.getAlertHelicopterHues())
+      else
+        optionsUtils.fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", 0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH))
+      break;
+
+    case ::USEROPT_HUE_ARBITER_HUD:
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_arbiter_hud",
+        64, 0.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_ARBITER_HUD)) // white default
       break;
 
     case ::USEROPT_HUE_HELICOPTER_MFD:
@@ -3883,7 +3922,7 @@ local isWaitMeasureEvent = false
         descr.values.append(TANK_ALT_CROSSHAIR_ADD_NEW)
       }
 
-      local unit = ::get_player_cur_unit()
+      local unit = getPlayerCurUnit()
       descr.value = unit ? ::find_in_array(descr.values, ::get_option_tank_alt_crosshair(unit.name), 0) : 0
       break
     case ::USEROPT_GAMEPAD_CURSOR_CONTROLLER:
@@ -3974,6 +4013,28 @@ local isWaitMeasureEvent = false
       descr.showTitle <- false
       break
 
+    case ::USEROPT_HDR_SETTINGS:
+      descr.id = "hdr_settings"
+      descr.controlType = optionControlType.BUTTON
+      descr.funcName <- "onHdrSettings"
+      descr.delayed <- true
+      descr.shortcut <- "RB"
+      descr.text <- ::loc("mainmenu/btnHdrSettings")
+      descr.title = descr.text
+      descr.showTitle <- false
+      break
+
+    case ::USEROPT_POSTFX_SETTINGS:
+      descr.id = "postfx_setting"
+      descr.controlType = optionControlType.BUTTON
+      descr.funcName <- "onPostFxSettings"
+      descr.delayed <- true
+      descr.shortcut <- "X"
+      descr.text <- ::loc("mainmenu/btnPostFxSettings")
+      descr.title = descr.text
+      descr.showTitle <- false
+      break
+
     default:
       local optionName = ::user_option_name_by_idx?[optionId] ?? ""
       ::dagor.assertf(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
@@ -3997,7 +4058,7 @@ local isWaitMeasureEvent = false
   if (descr.controlType == optionControlType.SLIDER)
   {
     if (descr.value == null)
-      descr.value = ::clamp(valueToSet || 0, ::getTblValue("min", descr, 0), ::getTblValue("max", descr, 1))
+      descr.value = ::clamp(valueToSet || 0, descr?.min ?? 0, descr?.max ?? 1)
     return descr
   }
 
@@ -4667,8 +4728,32 @@ local isWaitMeasureEvent = false
       ::set_gui_option(optionId, value)
       break
 
+    case ::USEROPT_HUE_AIRCRAFT_HUD:
+      local { sat = 0.7, val = 0.7 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_HUD, descr.values[value], sat, val);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
+    case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
+      local { sat = 0.7, val = 0.7 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_PARAM_HUD, descr.values[value], sat, val);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
+    case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
+      colorCorrector.setAlertAircraftHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
     case ::USEROPT_HUE_HELICOPTER_HUD:
-      ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD, descr.values[value]);
+      local { sat = 0.7, val = 0.7 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_HUD, descr.values[value], sat, val);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
+    case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
+      local { sat = 0.7, val = 0.7 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
@@ -4685,12 +4770,21 @@ local isWaitMeasureEvent = false
     break
 
     case ::USEROPT_HUE_HELICOPTER_HUD_ALERT:
-      ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT, descr.values[value]);
+      if (::has_feature("reactivGuiForAircraft"))
+        colorCorrector.setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
+      else
+        ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_MFD:
       ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
+    case ::USEROPT_HUE_ARBITER_HUD:
+      local { sat = 0.0, val = 1.0 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_ARBITER_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
@@ -4740,7 +4834,7 @@ local isWaitMeasureEvent = false
       {
         optionValue = value
         ::set_gui_option(optionId, value)
-        ::set_cd_option(optionId, value ? 1 : 0)
+        setCdOption(optionId, value ? 1 : 0)
       }
       else if (descr.controlType == optionControlType.LIST)
       {
@@ -4748,7 +4842,7 @@ local isWaitMeasureEvent = false
         {
           optionValue = descr.values[value]
           ::set_gui_option(optionId, optionValue)
-          ::set_cd_option(optionId, optionValue)
+          setCdOption(optionId, optionValue)
         }
         else
           ::dagor.assertf(false, "[ERROR] Value '" + value + "' is out of range in type " + optionId)
@@ -4776,6 +4870,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_MAP_ZOOM_BY_LEVEL:
     case ::USEROPT_SHOW_COMPASS_IN_TANK_HUD:
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
+    case ::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER:
     case ::USEROPT_HIDE_MOUSE_SPECTATOR:
     case ::USEROPT_FIX_GUN_IN_MOUSE_LOOK:
     case ::USEROPT_ENABLE_SOUND_SPEED:
@@ -4964,6 +5059,7 @@ local isWaitMeasureEvent = false
     //
 
 
+
       if (descr.controlType == optionControlType.LIST)
       {
         if (typeof descr.values != "array")
@@ -4980,13 +5076,19 @@ local isWaitMeasureEvent = false
       }
       break
 
+    //
+
+
+
+
+
     case ::USEROPT_AUTOLOGIN:
       ::set_autologin_enabled(value)
       break
 
     case ::USEROPT_DAMAGE_INDICATOR_SIZE:
     case ::USEROPT_TACTICAL_MAP_SIZE:
-      if (value >= ::getTblValue("min", descr, 0) && value <= ::getTblValue("max", descr, 1)
+      if (value >= (descr?.min ?? 0) && value <= (descr?.max ?? 1)
           && (!("step" in descr) || value % descr.step == 0))
       {
         ::set_gui_option_in_mode(optionId, value, ::OPTIONS_MODE_GAMEPLAY)
@@ -5109,7 +5211,7 @@ local isWaitMeasureEvent = false
       ::set_option_tank_gunner_camera_from_sight(value)
       break
     case ::USEROPT_TANK_ALT_CROSSHAIR:
-      local unit = ::get_player_cur_unit()
+      local unit = getPlayerCurUnit()
       local val = descr.values[value]
       if (unit && val != TANK_ALT_CROSSHAIR_ADD_NEW)
         ::set_option_tank_alt_crosshair(unit.name, val)

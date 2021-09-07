@@ -342,6 +342,7 @@
       "alignAnchor": "rb",
       "position": [1264.0,704.0],
       "size": [300.0,300.0],
+      "fovColor": "#0a0000be",
       "line": "thin_line",
       "arrow": "map_arrow",
       "outOfMapArrow": "arrow_mark.svg:15:18:K",
@@ -377,8 +378,8 @@
       "rearmZoneMaxScale": 0.6,
       "iconMaxOverlapping": 0.5,
       "carrier": "objective_carrier",
-      "destroyer": "objective_destroyer",
-      "ship": "objective_ship",
+      "destroyer": "objective_destroyer.svg:36:9:K",
+      "ship": "objective_ship.svg:34:12:K",
       "transport": "objective_cargo",
       "artillery": "objective_aa",
       "tank": "objective_tank",
@@ -387,8 +388,9 @@
       "bridge": "objective_bridge",
       "balloon": "objective_balloon",
       "airfield": "objective_airfield.svg:45:25:K",
-      "fighter": "objective_fighter",
-      "bomber": "objective_bomber",
+      "fighter": "objective_fighter.svg:30:22:K",
+      "bomber": "objective_bomber.svg:34:26:K",
+      "helicopter": "objective_helicopter.svg:32:32:K",
       "truck": "objective_truck",
       "mark": "objective_mark.svg:21:21:K",
       "sunk_carrier": "objective_sunk_carrier",
@@ -706,6 +708,18 @@
       },
       {
         "colorGMShellProjectionFriend": "#145cffff"
+      },
+      {
+        "colorShipAimHairColor": "#010101ff"
+      },
+      {
+        "colorShipHighlightColor": "#ffffffff"
+      },
+      {
+        "colorShipHighlightOffset": 0
+      },
+      {
+        "colorShipHighlightScale": 32
       },
       {
         "mouseAimArrowInVR": false
@@ -1080,7 +1094,7 @@
         "shipTargetingAutoSwitchAngleThreshold": 2.0
       },
       {
-        "shipResetTargetByAngle": true
+        "shipResetTargetByAngle": false
       },
       {
         "sight_distance_change_speed": 7.0
@@ -1350,6 +1364,33 @@
           "special": {
             "icon": "gun_direction.svg:23:23:K"
           }
+        }
+      },
+      {
+        "ship_bullet_fall_spot": {
+          "enabled": true,
+          "widthLimitsPx": [20.0,30.0],
+          "heightLimitsPx": [15.0,30.0],
+          "color": "#00ff0080",
+          "lineWidthPx": 3.0,
+          "worldRadiusM": 30.0,
+          "airRadiusPx": 10.0,
+          "worldMinDistToShow": 30.0,
+          "worldMinDistToShootPos": 5000.0,
+          "showArrows": false
+        }
+      },
+      {
+        "ship_weapon_status": {
+          "enabled": true,
+          "colorReady": "#00ff00ff",
+          "colorOverheat": "#ff0000ff",
+          "colorBroken": "#ff000060",
+          "colorDeadZone": "#808080ff",
+          "colorInnerLine": "#808080ff",
+          "lineWidth": 3.0,
+          "radius": 15.0,
+          "screenRelativeHeight": 0.15
         }
       }
     ]
@@ -3280,6 +3321,12 @@
           "glass": "white@@vs"
         },
         {
+          "color": "#2d3c3cff"
+        },
+        {
+          "needScaleHairs": false
+        },
+        {
           "orient": "lookDirection"
         },
         {
@@ -3289,16 +3336,29 @@
           "size": [1.4,1.4]
         },
         {
+          "sizeInThousandth": [60.0,30.0]
+        },
+        {
+          "needHighlight": true
+        },
+        {
+          "highlightScale": 1.9
+        },
+        {
+          "highlightColor": "#ffffff64"
+        },
+        {
           "thousandths": {
             "line": "mid_line",
-            "center": [0.0,0.0],
-            "offset": [5.0,0.0],
             "direction": [1.0,0.0],
-            "up": [0.0,-1.0],
-            "size": 2.5,
-            "num": 10,
-            "distBetween": 10.0,
-            "width": 1.6,
+            "offset": [15.0,0.0],
+            "up": [0.0,1.0],
+            "size": 2.0,
+            "num": 4,
+            "distBetween": 15.0,
+            "width": 1.1,
+            "markStep": 10,
+            "markOffset": [0.0,2.0],
             "valign": 1,
             "simetrical": true
           }
@@ -3306,14 +3366,12 @@
         {
           "thousandths": {
             "line": "mid_line",
-            "center": [0.0,0.0],
-            "offset": [10.0,0.0],
             "direction": [1.0,0.0],
-            "up": [0.0,-1.0],
-            "size": 4.0,
-            "num": 10,
-            "distBetween": 10.0,
-            "width": 1.6,
+            "up": [0.0,1.0],
+            "size": 0.7,
+            "num": 20,
+            "distBetween": 3.0,
+            "width": 1.0,
             "valign": 1,
             "simetrical": true
           }
@@ -3321,31 +3379,32 @@
         {
           "thousandths": {
             "line": "mid_line",
-            "center": [0.0,0.0],
-            "offset": [0.0,0.0],
+            "center": [-0.18,0.0],
             "direction": [0.0,-1.0],
-            "up": [1.0,0.0],
-            "size": 2.5,
+            "up": [-1.0,0.0],
+            "size": 0.7,
             "num": 10,
-            "distBetween": 5.0,
-            "width": 1.6,
-            "valign": 0,
-            "simetrical": false
+            "distBetween": 3.0,
+            "width": 1.0,
+            "valign": 1,
+            "simetrical": true
           }
         },
         {
           "thousandths": {
             "line": "mid_line",
-            "center": [0.0,0.0],
-            "offset": [0.0,0.0],
+            "center": [-0.18,0.0],
             "direction": [0.0,-1.0],
-            "up": [0.0,-1.0],
-            "size": 2.5,
+            "up": [-1.0,0.0],
+            "size": 2.0,
             "num": 3,
-            "distBetween": 10.0,
-            "width": 1.6,
-            "valign": 0,
-            "simetrical": false
+            "distBetween": 15.0,
+            "width": 1.1,
+            "markStep": 10,
+            "markStartId": 1,
+            "markOffset": [-2.0,0.0],
+            "valign": 1,
+            "simetrical": true
           }
         }
       ],

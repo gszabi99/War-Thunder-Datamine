@@ -1,8 +1,9 @@
-local { generateQrBlocks } = require("std/qrCode.nut")
+from "%darg/ui_imports.nut" import *
+local { generateQrBlocks } = require("%sqstd/qrCode.nut")
 
 local mulArr = @(arr, mul) arr.map(@(v) v * mul)
 
-local function mkQrCode(data, size = ::hdpx(400), darkColor = 0xFF000000, lightColor = 0xFFFFFFFF) {
+local function mkQrCode(data, size = hdpx(400), darkColor = 0xFF000000, lightColor = 0xFFFFFFFF) {
   local list = generateQrBlocks(data)
   local cellSize = (size.tofloat() / (list.size + 2)).tointeger()
   return {
@@ -19,4 +20,4 @@ local function mkQrCode(data, size = ::hdpx(400), darkColor = 0xFF000000, lightC
   }
 }
 
-return ::kwarg(mkQrCode)
+return kwarg(mkQrCode)

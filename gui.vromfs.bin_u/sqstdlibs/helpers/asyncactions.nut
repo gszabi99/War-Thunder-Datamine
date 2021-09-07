@@ -10,5 +10,5 @@ callAsyncActionsList = function(actionsList) {
 }
 
 return {
-  callAsyncActionsList = callAsyncActionsList
+  callAsyncActionsList
 }

@@ -6,13 +6,15 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local twoStepModal = require("scripts/login/twoStepModal.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+local loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
 
 class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 {
-  sceneBlkName = "gui/loginBox.blk"
+  sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
   availableCircuitsBlockName = "multipleAvailableCircuits"
@@ -44,7 +46,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     showTitleLogo(scene, 128)
     initLanguageSwitch()
     checkShardingCircuits()
-    ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     ::enable_keyboard_layout_change_tracking(true)
     ::enable_keyboard_locks_change_tracking(true)

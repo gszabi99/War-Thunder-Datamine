@@ -1,27 +1,24 @@
-local string = require("string")
-local Color = ::Color
-local sh = ::sh
-local flex = ::flex
-local hdpx = ::hdpx
-local fontH = ::fontH
+from "%darg/ui_imports.nut" import *
+from "string" import regexp, split
+
 /*
   todo:
-    - somehow provide result of validation - maybe more complex type of inputState, like ::Watched({text=text isValid=true}))
+    - somehow provide result of validation - maybe more complex type of inputState, like Watched({text=text isValid=true}))
     - important to know about language and CapsLock. The easiest way - show last symbol in password for 0.25 seconds before hide it with *
 
     - replace editor in enlisted with this component (it should be already suitable)
 */
-local rexInt = string.regexp(@"[\+\-]?[0-9]+")
+local rexInt = regexp(@"[\+\-]?[0-9]+")
 local function isStringInt(str){
   return rexInt.match(str) //better use one from string.nut
 }
 
-local rexFloat = string.regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
+local rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 local function isStringFloat(str){
   return rexFloat.match(str) //better use one from string.nut
 }
 
-local rexEng = string.regexp(@"[a-z,A-Z]*")
+local rexEng = regexp(@"[a-z,A-Z]*")
 local function isStringEng(str){
   return rexEng.match(str)
 }
@@ -30,17 +27,17 @@ local function isStringLikelyEmail(str, verbose=true) {
 // Domain part also have at least one period and main domain at least 2 symbols
 // also come correct emails on google are against RFC, for example a.a.a@gmail.com.
 
-  if (::type(str)!="string")
+  if (type(str)!="string")
     return false
-  local split = string.split(str,"@")
-  if (split.len()<2)
+  local splitted = split(str,"@")
+  if (splitted.len()<2)
     return false
-  local locpart = split[0]
-  if (split.len()>2)
-    locpart = "@".join(split.slice(0,-1))
+  local locpart = splitted[0]
+  if (splitted.len()>2)
+    locpart = "@".join(splitted.slice(0,-1))
   if (locpart.len()>64)
     return false
-  local dompart = split[split.len()-1]
+  local dompart = splitted[splitted.len()-1]
   if (dompart.len()>253 || dompart.len()<4) //RFC + domain should be at least x.xx
     return false
   local quotes = locpart.indexof("\"")
@@ -90,7 +87,7 @@ local function isValidStrByType(str, inputType) {
 }
 
 local defaultColors = {
-  placeHolderColor = Color(160, 160, 160)
+  placeHolderColor = Color(80, 80, 80, 80)
   textColor = Color(255,255,255)
   backGroundColor = Color(28, 28, 28, 150)
   highlightFailure = Color(255,60,70)
@@ -107,133 +104,129 @@ local failAnim = @(trigger) {
 
 local interactiveValidTypes = ["num","lat","integer","float"]
 
-local function textInput(text_state, options={}, handlers={}, frameCtor=defaultFrame) {
-  local group = ::ElemGroup()
-  local {font=null, fontSize=null} = options
-  local colors = {}
-  local inputType = options?.inputType
-  local function isValidResultByInput(new_value) {
-    return isValidStrByType(new_value, inputType)
+local function textInput(text_state, options={}, frameCtor=defaultFrame) {
+  local group = ElemGroup()
+  local {
+    setValue = @(v) text_state(v), inputType = null,
+    placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
+    title = null, font = null, fontSize = null, colors = {}, hotkeys = null,
+    size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
+    margin = [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
+    xmbNode = null, imeOpenJoyBtn = null,
+
+    //handlers
+    isValidResult = null, isValidChange = null, onBlur = null, onReturn = null,
+    onEscape = @() set_kb_focus(null), onChange = null, onFocus = null, onAttach = null,
+    onHover = null, onImeFinish = null
+  } = options
+  colors = defaultColors.__merge(colors)
+
+  isValidResult = isValidResult ?? @(new_value) isValidStrByType(new_value, inputType)
+  isValidChange = isValidChange
+    ?? @(new_value) interactiveValidTypes.indexof(inputType) == null
+      || isValidStrByType(new_value, inputType)
+
+  local stateFlags = Watched(0)
+
+  local function onBlurExt() {
+    if (!isValidResult(text_state.value))
+      anim_start(text_state)
+    onBlur?()
   }
 
-  local function isValidChangeByInput(new_value) {
-    if (interactiveValidTypes.indexof(inputType)==null)
-      return true
-    return isValidStrByType(new_value, inputType)
+  local function onReturnExt(){
+    if (!isValidResult(text_state.value))
+      anim_start(text_state)
+    onReturn?()
   }
 
-  if ("colors" in options) {
-    foreach (colorName, color in defaultColors) {
-      colors[colorName] <- options.colors?[colorName] ?? color
-    }
-  } else {
-    colors = defaultColors
+  local function onEscapeExt(){
+    if (!isValidResult(text_state.value))
+      anim_start(text_state)
+    onEscape()
   }
 
-  local function inputObj() {
-    local placeholder = null
-    local isValidResult = handlers?.isValidResult ?? isValidResultByInput
-    local isValidChange = handlers?.isValidChange ?? isValidChangeByInput
-    local text_val = text_state.value
-    if (options?.placeholder && !text_state.value.len()) {
-      placeholder = {
-        rendObj = ROBJ_DTEXT
-        font
-        fontSize
-        color = colors.placeHolderColor
-        text = options.placeholder
-        animations = [failAnim(text_state)]
-        margin = [0, sh(0.5)]
-      }
-    }
+  local function onChangeExt(new_val) {
+    onChange?(new_val)
+    if (!isValidChange(new_val))
+      anim_start(text_state)
+    else
+      setValue(new_val)
+  }
 
-    local function onBlur(){
-      if (!isValidResult(text_val))
-        ::anim_start(text_state)
-      if (handlers?.onBlur)
-        handlers.onBlur()
-    }
-
-    local function onReturn(){
-      if (!isValidResult(text_val))
-        ::anim_start(text_state)
-      if (handlers?.onReturn)
-        handlers.onReturn()
-    }
-
-    local function onEscape(){
-      if (!isValidResult(text_val))
-        ::anim_start(text_state)
-      if (handlers?.onEscape)
-        handlers.onEscape()
-    }
-
-    return {
+  local placeholderObj = null
+  if (placeholder != null) {
+    local phBase = {
+      text = placeholder
       rendObj = ROBJ_DTEXT
-      behavior = Behaviors.TextInput
-
-      size = options?.size ?? [flex(), fontH(100)]
       font
       fontSize
-      color = colors.textColor
-      group
-      margin = options?.textmargin ?? [sh(1), sh(0.5)]
-      valign = options?.valignText ?? ALIGN_BOTTOM
-
+      color = colors.placeHolderColor
       animations = [failAnim(text_state)]
-
-      watch = [text_state]
-      text = text_state.value
-      title = options?.title
-      inputType = inputType
-      password = options?.password
-      key = text_state
-
-      hotkeys = options?.hotkeys
-
-      onChange = function () {
-        local changeHook = handlers?.onChange ?? function (newVal) {}
-        return function(new_val) {
-          changeHook(new_val)
-          if (!isValidChange(new_val)) {
-            ::anim_start(text_state)
-            text_state.trigger() // force rebuild
-          } else {
-            text_state.update(new_val)
-          }
-        }
-      }()
-
-      onFocus  = handlers?.onFocus
-      onBlur   = onBlur
-      onAttach = handlers?.onAttach
-      onReturn = onReturn
-      onEscape = onEscape
-      onImeFinish = handlers?.onImeFinish
-      xmbNode = options?.xmbNode
-      imeOpenJoyBtn = options?.imeOpenJoyBtn
-
-      children = placeholder
+      margin = [0, sh(0.5)]
     }
+    placeholderObj = placeholder instanceof Watched
+      ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
+      : phBase
   }
 
-  local stateFlags = ::Watched(0)
+  local inputObj = @() {
+    watch = [text_state, stateFlags]
+    rendObj = ROBJ_DTEXT
+    behavior = Behaviors.TextInput
+
+    size
+    font
+    fontSize
+    color = colors.textColor
+    group
+    margin = textmargin
+    valign = valignText
+
+    animations = [failAnim(text_state)]
+
+    text = text_state.value
+    title
+    inputType = inputType
+    password = password
+    key = text_state
+
+    maxChars
+    hotkeys
+
+    onChange = onChangeExt
+
+    onFocus
+    onBlur   = onBlurExt
+    onAttach
+    onReturn = onReturnExt
+    onEscape = onEscapeExt
+    onHover
+    onImeFinish
+    xmbNode
+    imeOpenJoyBtn
+
+    children = (text_state.value?.len() ?? 0)== 0
+        && (showPlaceHolderOnFocus || !(stateFlags.value & S_KB_FOCUS))
+      ? placeholderObj
+      : null
+  }
 
   return @() {
     watch = [stateFlags]
     onElemState = @(sf) stateFlags(sf)
-    margin = options?.margin ?? [sh(1), 0]
-    padding = options?.padding ?? 0
+    margin
+    padding
 
     rendObj = ROBJ_BOX
     fillColor = colors.backGroundColor
-    borderWidth =0
-    borderRadius = options?.borderRadius ?? hdpx(3)
+    borderWidth = 0
+    borderRadius
     clipChildren = true
     size = [flex(), SIZE_TO_CONTENT]
     group = group
     animations = [failAnim(text_state)]
-    valign = options?.valign ?? ALIGN_CENTER
+    valign
 
     children = frameCtor(inputObj, group, stateFlags.value)
   }
@@ -242,8 +235,7 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
 
 local export = class{
   defaultColors = defaultColors
-  _call = @(self, text_state, options={}, handlers={}, frameCtor=defaultFrame) textInput(text_state, options, handlers, frameCtor)
-
+  _call = @(self, text_state, options = {}, frameCtor = defaultFrame) textInput(text_state, options, frameCtor)
 }()
 
 return export

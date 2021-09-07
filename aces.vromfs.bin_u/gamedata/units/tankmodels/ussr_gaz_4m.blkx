@@ -1846,7 +1846,9 @@
           "breechDP": "cannon_breech_01_dm",
           "speedYaw": 60.0,
           "speedPitch": 20.0,
-          "bullets": 1000,
+          "yawSpdLowBattery": 60.0,
+          "pitchSpdLowBattery": 20.0,
+          "bullets": 2000,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
@@ -1869,7 +1871,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,45.0]
+            "pitch": [-10.0,50.0]
           }
         }
       },
@@ -1889,7 +1891,9 @@
           "breechDP": "cannon_breech_02_dm",
           "speedYaw": 60.0,
           "speedPitch": 20.0,
-          "bullets": 1000,
+          "yawSpdLowBattery": 60.0,
+          "pitchSpdLowBattery": 20.0,
+          "bullets": 2000,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
@@ -1914,7 +1918,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,45.0]
+            "pitch": [-10.0,50.0]
           }
         }
       },
@@ -1934,7 +1938,9 @@
           "breechDP": "cannon_breech_03_dm",
           "speedYaw": 60.0,
           "speedPitch": 20.0,
-          "bullets": 1000,
+          "yawSpdLowBattery": 60.0,
+          "pitchSpdLowBattery": 20.0,
+          "bullets": 2000,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
@@ -1959,7 +1965,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,45.0]
+            "pitch": [-10.0,50.0]
           }
         }
       },
@@ -1979,7 +1985,9 @@
           "breechDP": "cannon_breech_04_dm",
           "speedYaw": 60.0,
           "speedPitch": 20.0,
-          "bullets": 1000,
+          "yawSpdLowBattery": 60.0,
+          "pitchSpdLowBattery": 20.0,
+          "bullets": 2000,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
@@ -2004,7 +2012,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,45.0]
+            "pitch": [-10.0,50.0]
           }
         }
       }
@@ -2763,11 +2771,25 @@
     }
   },
   {
-    "ammoLoadDistribution": {
-      "removeLoadedAmmo": false,
-      "primaryShells": {
-        "ammo_turret_01_dm": {
-          "count": 4000
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_06_dm": {
+            "count": 3000
+          },
+          "ammo_turret_05_dm": {
+            "count": 3000
+          },
+          "ammo_turret_01_dm": {
+            "count": 2000
+          }
         }
       }
     }

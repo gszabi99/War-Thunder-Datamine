@@ -1,3 +1,5 @@
+local { is_stereo_mode } = ::require_native("vr")
+
 return [
 //-------------------------------------------------------
   {
@@ -18,6 +20,14 @@ return [
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
   }
+  //
+
+
+
+
+
+
+
   {
     id = "tracker_camx"
     type = CONTROL_TYPE.AXIS

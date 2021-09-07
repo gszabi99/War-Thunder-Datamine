@@ -23,6 +23,7 @@ local dbgStartCheck = 0
 
   local handler = ::handlersManager.loadHandler(::gui_handlers.MainMenu)
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
+  ::showBtn("gamercard_center", !topMenuShopActive.value)
 
   if (allowMainmenuActions)
     onMainMenuReturnActions.value?.onMainMenuReturn(handler, false)

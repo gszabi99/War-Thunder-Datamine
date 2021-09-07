@@ -2563,7 +2563,7 @@
       {
         "Weapon": {
           "trigger": "gunner0",
-          "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_M60A1_user_cannon.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_XM_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "recoilOffset": 0.5,
@@ -2690,8 +2690,8 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
           "isBulletBelt": true,
-          "speedYaw": 40.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "fireConeAngle": 1.0,
           "bullets": 1000,
           "salvoAmount": 100.0,
@@ -2748,8 +2748,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 1000,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3659,18 +3659,19 @@
         "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "art_support": [],
+      "105mm_usa_M456A2_HEAT_MP_FS": [],
       "105mm_usa_HESH": [],
       "105mm_usa_HESH_ammo_pack": {
         "tier": 1
       },
-      "105mm_usa_HEAT_FS": [],
-      "105mm_usa_HEAT_FS_ammo_pack": {
-        "tier": 2
-      },
       "105mm_us_M416_Smoke": [],
-      "105mm_us_M416_Smoke_ammo_pack": [],
+      "105mm_us_M416_Smoke_ammo_pack": {
+        "tier": 1
+      },
       "105mm_usa_M735_APDS_FS": [],
-      "105mm_usa_M735_APDS_FS_ammo_pack": [],
+      "105mm_usa_M735_APDS_FS_ammo_pack": {
+        "tier": 3
+      },
       "modern_tank_laser_rangefinder": [],
       "night_vision_system": {
         "image": "#ui/gameuiskin#thermal_sight",
@@ -3680,12 +3681,6 @@
             "gunnerThermal": {
               "resolution": [500.0,300.0],
               "noiseFactor": 0.05
-            },
-            "commanderViewIr": {
-              "resolution": [1600.0,1200.0],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800.0,600.0],

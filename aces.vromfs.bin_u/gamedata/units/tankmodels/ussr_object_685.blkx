@@ -132,6 +132,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -342,8 +345,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 150.0,
-        "armorThickness": 30.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -366,6 +369,21 @@
           "hp": 50.0
         },
         "gun_barrel_05_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_06_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_07_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_08_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
@@ -3806,8 +3824,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

@@ -1,6 +1,7 @@
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
 local { isEqual } = require("sqStdLibs/helpers/u.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -503,7 +504,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
       if ("selAirs" in memberData)
       {
         view.unitList.append({ header = ::loc("mainmenu/instantAction") })
-        foreach(country in ::shopCountriesList)
+        foreach(country in shopCountriesList)
         {
           local countryIcon = ::get_country_icon(country)
           debugTableData(memberData.selAirs)

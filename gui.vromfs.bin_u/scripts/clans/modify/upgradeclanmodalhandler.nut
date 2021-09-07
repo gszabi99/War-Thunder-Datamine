@@ -16,7 +16,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
 
   function initScreen()
   {
-    newClanType = clanData.type.getNextType()
+    newClanType = clanData.clanType.getNextType()
     lastShownHintObj = scene.findObject("req_newclan_tag")
     base.initScreen()
     updateSubmitButtonText()
@@ -43,7 +43,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
   // Important override.
   function getSelectedClanType()
   {
-    return clanData.type.getNextType()
+    return clanData.clanType.getNextType()
   }
 
   function onSubmit()

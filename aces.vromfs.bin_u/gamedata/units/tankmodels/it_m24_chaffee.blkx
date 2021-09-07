@@ -145,13 +145,16 @@
         },
         "body_back_dm": {
           "armorThickness": 19.0
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_04_back_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
         "armorClass": "RHA_tank",
-        "turret_front_dm": {
-          "armorThickness": 38.1
-        },
         "turret_back_dm": {
           "armorThickness": 25.4
         },
@@ -170,6 +173,9 @@
       },
       "mask": {
         "armorClass": "CHA_tank",
+        "turret_front_dm": {
+          "armorThickness": 38.1
+        },
         "gun_mask_dm": {
           "armorThickness": 38.1
         },
@@ -1712,7 +1718,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -2426,8 +2433,8 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 1000,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3377,8 +3384,8 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_02_dm",
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,
@@ -3408,7 +3415,7 @@
               "Weapon": {
                 "trigger": "gunner3",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,

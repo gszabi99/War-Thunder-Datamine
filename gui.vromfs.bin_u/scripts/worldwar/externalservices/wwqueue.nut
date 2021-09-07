@@ -1,6 +1,7 @@
 local { getMyClanOperation, isMyClanInQueue
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::WwQueue <- class
 {
@@ -63,7 +64,7 @@ local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/m
       return
 
     myClanCountries = []
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       local groups = getArmyGroupsByCountry(country)
       local myGroup = groups && ::u.search(groups, (@(myClanId) function(ag) { return ::getTblValue("clanId", ag) == myClanId })(myClanId) )
@@ -84,7 +85,7 @@ local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/m
   function getArmyGroupsAmountByCountries()
   {
     local res = {}
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       local groups = getArmyGroupsByCountry(country)
       res[country] <- groups ? groups.len() : 0
@@ -95,7 +96,7 @@ local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/m
   function getClansNumberInQueueText()
   {
     local clansInQueue = {}
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       local groups = getArmyGroupsByCountry(country)
       if (groups)
@@ -110,7 +111,7 @@ local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/m
   function getArmyGroupsAmountTotal()
   {
     local res = 0
-    foreach(country in ::shopCountriesList)
+    foreach(country in shopCountriesList)
     {
       local groups = getArmyGroupsByCountry(country)
       if (groups)

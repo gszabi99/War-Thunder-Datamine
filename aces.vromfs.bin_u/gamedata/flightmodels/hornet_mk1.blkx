@@ -53,11 +53,11 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 28.8
+        "hp": 30.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 28.8
+        "hp": 30.5
       }
     },
     "c_dural10": {
@@ -101,22 +101,22 @@
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.9
+        "hp": 26.3
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.8
+        "hp": 26.2
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 33.5
+        "hp": 30.8
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 33.5
+        "hp": 30.6
       },
       "fin_dm": {
-        "hp": 39.9
+        "hp": 29.5
       },
       "flap1_l_dm": {
         "hp": 29.5
@@ -132,16 +132,13 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 33.7
-      },
-      "stab_dm": {
-        "hp": 30.0
-      },
-      "stab2_dm": {
-        "hp": 30.0
+        "hp": 28.7
       },
       "stab1_dm": {
-        "hp": 30.7
+        "hp": 29.5
+      },
+      "stab2_dm": {
+        "hp": 29.5
       }
     },
     "dural": {
@@ -246,12 +243,6 @@
       },
       "tank6_dm": {
         "hp": 52.3
-      },
-      "tank7_dm": {
-        "hp": 44.5
-      },
-      "tank8_dm": {
-        "hp": 44.5
       }
     }
   },
@@ -1305,46 +1296,6 @@
     {
       "part": [
         {
-          "name": "stab_dm"
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
           "name": "stab1_dm"
         },
         {
@@ -1355,7 +1306,7 @@
         },
         {
           "onHit": {
-            "damage": 60.0,
+            "damage": 65.0,
             "cut": 1.0
           }
         },
@@ -1363,14 +1314,14 @@
           "onKill": {
             "damage": 10.0,
             "cut": 1.0,
-            "nothing": 10.0
+            "nothing": 11.0
           }
         },
         {
           "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
+            "damage": 31.0,
+            "cut": 1.0,
+            "nothing": 3.0
           }
         },
         {
@@ -1771,116 +1722,6 @@
       "part": [
         {
           "name": "tank6_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.005,
-            "leak": 0.3
-          }
-        },
-        {
-          "onHit": {
-            "damage": 3.0,
-            "fire": 0.01,
-            "leak": 0.5
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "fire": 0.1,
-            "leak": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 70.0,
-            "fire": 0.4,
-            "leak": 0.9
-          }
-        },
-        {
-          "onKill": {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "fire": 45.0,
-            "leak": 25.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 70.0,
-            "fire": 50.0,
-            "leak": 20.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "tank7_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.005,
-            "leak": 0.3
-          }
-        },
-        {
-          "onHit": {
-            "damage": 3.0,
-            "fire": 0.01,
-            "leak": 0.5
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "fire": 0.1,
-            "leak": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 70.0,
-            "fire": 0.4,
-            "leak": 0.9
-          }
-        },
-        {
-          "onKill": {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "fire": 45.0,
-            "leak": 25.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 70.0,
-            "fire": 50.0,
-            "leak": 20.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "tank8_dm"
         },
         {
           "onHit": {

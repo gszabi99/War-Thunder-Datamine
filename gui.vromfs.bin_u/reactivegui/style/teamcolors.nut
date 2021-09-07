@@ -66,7 +66,7 @@ local teamColors = Watched({
     { theme = squadTheme, baseColor = Color(198, 255, 189), name = "chatTextSquadColor" }
   ]) {
     newTeamColors[cfg.name] = isForcedColor
-      ? (cfg.theme == enemyTheme ? enemyTeamColor : allyTeamColor)
+      ? (cfg.theme == enemyTheme ? enemyTeamColor : allyTeamColor) //warnind disable: -func-in-expression
       : cc.correctHueTarget(cfg.baseColor, cfg.theme())
   }
   newTeamColors.teamBlueLightColor  = cc.correctColorLightness(newTeamColors.teamBlueColor, 50)

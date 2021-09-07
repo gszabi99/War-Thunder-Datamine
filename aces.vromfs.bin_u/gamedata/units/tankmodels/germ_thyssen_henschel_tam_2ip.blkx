@@ -195,6 +195,16 @@
         },
         "ex_decor_07_dm": {
           "armorThickness": 5.0
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -225,9 +235,6 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 11.0
-        },
-        "turret_05_top_dm": {
-          "armorThickness": 127.0
         },
         "turret_02_side_dm": {
           "armorThickness": 11.0
@@ -852,6 +859,20 @@
       "ex_armor_turret_01_dm": true,
       "ex_armor_turret_04_dm": true,
       "ex_armor_turret_03_dm": true
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      }
     }
   },
   {
@@ -2633,8 +2654,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 2000,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -3771,8 +3792,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "bullets": 2000,
                 "isBulletBelt": true,
                 "fireConeAngle": 5.0,

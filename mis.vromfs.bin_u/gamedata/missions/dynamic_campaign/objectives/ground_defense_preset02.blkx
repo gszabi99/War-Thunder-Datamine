@@ -1978,21 +1978,37 @@
           "var": "count_to_fail"
         }
       },
-      "actions": {
-        "triggerDisable": {
-          "target": "defend_done"
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "defend_done"
+          }
         },
-        "moSetObjectiveStatus": {
-          "target": "mo_dynamic_defend_ground",
-          "status": 3
+        {
+          "moSetObjectiveStatus": {
+            "target": "mo_dynamic_defend_ground",
+            "status": 3
+          }
         },
-        "wait": {
-          "time": 3.0
+        {
+          "wait": {
+            "time": 3.0
+          }
         },
-        "triggerEnable": {
-          "target": "dynamic_fail"
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dynamic_fail"
+          }
+        },
+        {
+          "missionFailed": []
         }
-      },
+      ],
       "else_actions": []
     },
     "dynamic_fail": {

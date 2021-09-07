@@ -1178,7 +1178,8 @@
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
@@ -1750,7 +1751,7 @@
         "CenterOfGravityClampY": [0.0,0.7]
       },
       "tracks": {
-        "animationMultiplier": -0.75,
+        "animationMultiplier": 0.75,
         "width": 0.6,
         "height": 0.09
       },
@@ -1762,7 +1763,7 @@
       "mechanics": {
         "maxBrakeForce": 156000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 5.13,
+        "mainGearRatio": 5.77,
         "sideGearRatio": 2.71,
         "neutralGearRatio": 15.0,
         "gearRatios": [
@@ -2432,6 +2433,24 @@
         },
         "ex_armor_body_05_dm": {
           "armorThickness": 63.5
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 25.0
+        },
+        "turret_02_front_dm": {
+          "armorThickness": 38.1
+        },
+        "turret_02_top_dm": {
+          "armorThickness": 25.4
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 15.9
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 19.05
         }
       },
       "mask": {
@@ -2481,11 +2500,11 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_01_dm": {
-          "armorThickness": 15.0,
-          "hp": 150.0
+          "armorThickness": 20.0,
+          "hp": 120.0
         },
         "gun_barrel_02_dm": [],
         "gun_barrel_03_dm": {

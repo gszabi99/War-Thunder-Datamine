@@ -12,10 +12,10 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/avg_training_ground.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -92,6 +92,9 @@
           },
           {
             "forceCreate": false
+          },
+          {
+            "ignoreTeamsOnReuse": false
           },
           {
             "target": "artillery_spawn01"
@@ -226,6 +229,11 @@
           "object": "@target_tank",
           "target": "@tank_spawn_area"
         },
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "object_var_value": 0
+        },
         "varModify": {
           "operator": "add",
           "value": 1.0,
@@ -235,29 +243,58 @@
           "target": "name_assemble"
         }
       },
-      "else_actions": {
-        "unitSetRoute": {
-          "route": "way_target_tank05",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "teleportToStart": true,
-          "object": "target_tank06",
-          "object_type": "isActive"
+      "else_actions": [
+        {
+          "unitSetRoute": {
+            "route": "way_target_tank05",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "teleportToStart": true,
+            "object": "target_tank06",
+            "object_type": "isActive"
+          }
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "target_tanks_squad",
-          "forceVisibleOnMap": true,
-          "attack_type": "dont_aim",
-          "speed": 25.0,
-          "lockSpeed": true
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_tanks_squad",
+            "forceVisibleOnMap": true,
+            "attack_type": "dont_aim",
+            "speed": 25.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "tanks_total",
+            "input_var": "tank_num"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "tank_num"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "tanks_total"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "iterate_tanks"
+          }
         }
-      }
+      ]
     },
-    "spawn_plane_exist": {
+    "spawn_plane": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -291,44 +328,6 @@
         }
       ],
       "actions": {
-        "triggerEnable": {
-          "target": "spawn_plane"
-        }
-      },
-      "else_actions": []
-    },
-    "spawn_plane": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [
-        {
-          "unitCheckTag": {
-            "target": "t1_player01",
-            "tags": {
-              "type_spaa": true
-            }
-          }
-        },
-        {
-          "unitCheckTag": {
-            "target": "t1_player01",
-            "tags": {
-              "has_proximityFuse_rocket": true
-            }
-          }
-        }
-      ],
-      "actions": {
         "unitLoadBehTree": {
           "name": "missionKamikaze",
           "objects": "flight_target01"
@@ -357,11 +356,14 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "flight_target01"
+        },
+        "triggerEnable": {
+          "target": "respawn_plane"
         }
       },
       "else_actions": []
     },
-    "spawn_plane2_exist": {
+    "spawn_plane2": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -395,44 +397,6 @@
         }
       ],
       "actions": {
-        "triggerEnable": {
-          "target": "spawn_plane2"
-        }
-      },
-      "else_actions": []
-    },
-    "spawn_plane2": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [
-        {
-          "unitCheckTag": {
-            "target": "t1_player01",
-            "tags": {
-              "type_spaa": true
-            }
-          }
-        },
-        {
-          "unitCheckTag": {
-            "target": "t1_player01",
-            "tags": {
-              "has_proximityFuse_rocket": true
-            }
-          }
-        }
-      ],
-      "actions": {
         "unitLoadBehTree": {
           "name": "missionKamikaze",
           "objects": "flight_target02"
@@ -461,6 +425,363 @@
           "fastClimb": false,
           "destTimeMode": false,
           "object": "flight_target02"
+        },
+        "triggerEnable": {
+          "target": "respawn_plane2"
+        }
+      },
+      "else_actions": []
+    },
+    "mark_battle_area": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "game_area",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": true,
+          "airMapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "game_area",
+          "team": "A"
+        }
+      },
+      "else_actions": []
+    },
+    "mark_rearm_area": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "rearm_area",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "missionMarkAsRearmZone": {
+          "army": 1,
+          "area_name": "rearm_area",
+          "enabled": true,
+          "restoreWhenNoAmmoLeft": false,
+          "hideMarkers": true,
+          "tags": {
+            "tank": true
+          }
+        },
+        "missionShowMapIcon": {
+          "show": true,
+          "team": "A",
+          "iconName": "ui/gameuiskin#icon_weapons_in_progress",
+          "areaName": "rearm_area",
+          "colorCode": "Ally",
+          "scale": 0.33,
+          "opacity": 192
+        }
+      },
+      "else_actions": []
+    },
+    "iterate_tanks": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.12
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "tank_num",
+          "value": 0,
+          "comparasion_func": "less",
+          "var_value_other": "tanks_total"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "tank_num"
+        },
+        "varSetString": {
+          "value": "target_tank",
+          "var": "target_tank"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 2,
+          "var": "target_tank",
+          "input_var": "tank_num"
+        },
+        "triggerEnable": {
+          "target": "tick_killed"
+        }
+      },
+      "else_actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "tank_num"
+        },
+        "triggerActivate": {
+          "target": "iterate_tanks",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "tick_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "@target_tank"
+        }
+      },
+      "actions": {
+        "unitGetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "out_var": "unit_var"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "unit_var"
+        },
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "input_var": "unit_var"
+        },
+        "triggerEnable": {
+          "target": "tank_respawn_if_killed"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "iterate_tanks"
+        }
+      }
+    },
+    "tank_respawn_if_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "unit_var",
+          "value": 10,
+          "comparasion_func": "more"
+        }
+      },
+      "actions": {
+        "unitSetVar": {
+          "object_var_name": "killed",
+          "object": "@target_tank",
+          "object_var_value": 0
+        },
+        "varSetString": {
+          "value": "tank_spawn_area",
+          "var": "tank_spawn_area"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 2,
+          "var": "tank_spawn_area",
+          "input_var": "tank_num"
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [0.0,0.0,0.0],
+          "needStopOnRespawn": true,
+          "object": "@target_tank",
+          "target": "@tank_spawn_area"
+        },
+        "triggerEnable": {
+          "target": "set_route"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "iterate_tanks"
+        }
+      }
+    },
+    "set_route": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "tank_num",
+          "value": 6,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 0.1
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "way_target_tank05",
+          "teleportToStart": true,
+          "object": "target_tank06"
+        },
+        "triggerEnable": {
+          "target": "iterate_tanks"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "iterate_tanks"
+        }
+      }
+    },
+    "respawn_plane": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "flight_target01"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 10.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "flight_target01",
+          "target": "spawn_area"
+        }
+      },
+      "else_actions": []
+    },
+    "respawn_plane2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "flight_target02"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 10.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "flight_target02",
+          "target": "spawn_area02"
         }
       },
       "else_actions": []
@@ -473,7 +794,9 @@
   "variables": {
     "target_tank": "",
     "tank_num": 1,
-    "tank_spawn_area": ""
+    "tank_spawn_area": "",
+    "tanks_total": 0,
+    "unit_var": 0
   },
   "dialogs": [],
   "airfields": [],

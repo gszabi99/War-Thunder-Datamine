@@ -2253,7 +2253,7 @@
       {
         "Weapon": {
           "trigger": "gunner0",
-          "blk": "gameData/Weapons/groundModels_weapons/105mm_L7A3_user_cannon.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/105mm_L7A3_GA_2_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "defaultYaw": 0.0,
@@ -2490,7 +2490,8 @@
       "hp": 10000.0,
       "hull_CHA": {
         "superstructure_front_dm": {
-          "armorThickness": 110.0
+          "armorThickness": 110.0,
+          "variableThickness": true
         },
         "superstructure_bottom_dm": {
           "armorThickness": 25.4
@@ -2590,82 +2591,83 @@
         },
         "turret_07_top_dm": {
           "armorThickness": 60.0
+        },
+        "turret_bottom_dm": {
+          "armorThickness": 25.4
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 119.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 136.0
+        },
+        "turret_02_top_dm": {
+          "armorThickness": 173.0,
+          "variableThickness": true
+        },
+        "turret_02_bottom_dm": {
+          "armorThickness": 154.0
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_03_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_03_side_dm": {
+          "armorThickness": 76.0
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 16.0
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 100.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 88.9
+        },
+        "turret_04_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 105.0
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 132.4
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 119.4
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 115.8
+        },
+        "turret_05_back_dm": {
+          "armorThickness": 100.0
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 114.5
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 135.5
+        },
+        "turret_05_bottom_dm": {
+          "armorThickness": 57.0
+        },
+        "turret_05_front_dm": {
+          "armorThickness": 83.2
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 91.5
+        },
+        "turret_06_top_dm": {
+          "armorThickness": 78.2
         }
-      },
-      "turret_bottom_dm": {
-        "armorThickness": 25.4
-      },
-      "turret_01_top_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_01_back_dm": {
-        "armorThickness": 119.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 136.0
-      },
-      "turret_02_top_dm": {
-        "armorThickness": 173.0
-      },
-      "turret_02_bottom_dm": {
-        "armorThickness": 154.0
-      },
-      "turret_02_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_02_side_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_03_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 76.0
-      },
-      "turret_03_top_dm": {
-        "armorThickness": 16.0
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_03_front_dm": {
-        "armorThickness": 88.9
-      },
-      "turret_04_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_04_side_dm": {
-        "armorThickness": 105.0
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 132.4
-      },
-      "turret_04_bottom_dm": {
-        "armorThickness": 119.4
-      },
-      "turret_04_front_dm": {
-        "armorThickness": 115.8
-      },
-      "turret_05_back_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_05_side_dm": {
-        "armorThickness": 114.5
-      },
-      "turret_05_top_dm": {
-        "armorThickness": 135.5
-      },
-      "turret_05_bottom_dm": {
-        "armorThickness": 57.0
-      },
-      "turret_05_front_dm": {
-        "armorThickness": 83.2
-      },
-      "turret_06_front_dm": {
-        "armorThickness": 91.5
-      },
-      "turret_06_top_dm": {
-        "armorThickness": 78.2
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -3250,14 +3252,14 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 3,
-        "modClass": "firepower",
+        "tier": 4,
+        "modClass": "protection",
         "effects": {
           "commonWeapons": [
             {
               "Weapon": {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/groundModels_weapons/105mm_L7A3_user_cannon.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/105mm_L7A3_GA_2_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
                 "defaultYaw": 0.0,
@@ -3599,12 +3601,11 @@
       "105mm_usa_HESH_ammo_pack": {
         "tier": 1
       },
-      "105mm_usa_HEAT_FS": [],
-      "105mm_usa_HEAT_FS_ammo_pack": {
-        "tier": 2
-      },
+      "105mm_usa_M456A2_HEAT_MP_FS": [],
       "105mm_usa_M735_APDS_FS": [],
-      "105mm_usa_M735_APDS_FS_ammo_pack": [],
+      "105mm_usa_M735_APDS_FS_ammo_pack": {
+        "tier": 3
+      },
       "modern_tank_stereo_rangefinder": [],
       "night_vision_system": {
         "tier": 3,

@@ -150,7 +150,7 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
     }
 
     if (effect)
-      addDesc = weaponryEffects.getDesc(unit, effect)
+      addDesc = weaponryEffects.getDesc(unit, effect, {curEdiff = params?.curEdiff})
     if (!effect && updateEffectFunc)
       res.delayed = ::calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
         updateEffectFunc, null) ?? true
@@ -184,7 +184,7 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
     if (effect)
     {
       desc = getModificationInfo(unit, item.name).desc
-      addDesc = weaponryEffects.getDesc(unit, effect);
+      addDesc = weaponryEffects.getDesc(unit, effect, {curEdiff = params?.curEdiff})
     }
     else
     {

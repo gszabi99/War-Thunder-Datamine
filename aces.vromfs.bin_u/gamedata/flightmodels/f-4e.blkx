@@ -66,6 +66,12 @@
     "paratrooper": "usa_para"
   },
   {
+    "simplifiedJoyAileronMult": 0.0
+  },
+  {
+    "simplifiedJoyElevatorMult": 1.0
+  },
+  {
     "overheatBlk": "gameData/FlightModels/dm/overheat.blk"
   },
   {
@@ -2868,7 +2874,7 @@
   },
   {
     "Sound": {
-      "Engine": "engine23",
+      "Engine": "engine_f4ej",
       "gun": "gun_default"
     }
   },
@@ -2944,7 +2950,7 @@
         "sightOutFov": 6.5
       },
       {
-        "sightFov": 3.1
+        "sightFov": 1.0
       },
       {
         "devices": {
@@ -3026,7 +3032,7 @@
                 "ilsSize": [0.15,0.15],
                 "ilsOffsetForce": 0.0,
                 "brightnessMult": 3.5,
-                "ilsColor": "#ca1e0ac8"
+                "ilsColor": "#ca1e0a78"
               }
             }
           }
@@ -3060,7 +3066,8 @@
       "pos": [0.3,-0.2,0.0],
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
-      "angularLimits": [-30.0,30.0,-30.0,30.0]
+      "angularLimits": [-20.0,20.0,-20.0,20.0],
+      "opticType": "tv"
     }
   },
   {
@@ -3094,8 +3101,8 @@
             "mainTurret": true
           },
           "limits": {
-            "yaw": [-30.0,30.0],
-            "pitch": [-30.0,30.0]
+            "yaw": [-20.0,20.0],
+            "pitch": [-20.0,20.0]
           }
         }
       },
@@ -3172,14 +3179,28 @@
         "preset": {
           "name": "f_4e_bomb_mk83",
           "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk83.blk",
-          "reqModification": "us_1000lb_mk83"
+          "reqModification": "us_1000lb_mk83",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "f_4e_bomb_mk84",
           "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk84.blk",
-          "reqModification": "us_2000lb_mk84"
+          "reqModification": "us_2000lb_mk84",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_heavy"
+            }
+          }
         }
       },
       {
@@ -3432,6 +3453,15 @@
                 "iconType": "missile_type_b_air_to_air"
               }
             }
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_special"
+              }
+            }
           }
         ]
       },
@@ -3448,6 +3478,15 @@
           },
           {
             "reqModification": "us_aim_9j"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_special"
+              }
+            }
           }
         ]
       },
@@ -3466,13 +3505,22 @@
             "reqModification": "us_aim_9e"
           },
           {
-            "weaponConfig": {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
-                "amountPerTier": 1.0,
-                "iconType": "missile_type_b_air_to_air"
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "missile_type_b_air_to_air"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_heavy"
+                }
               }
-            }
+            ]
           }
         ]
       },
@@ -3489,6 +3537,15 @@
           },
           {
             "reqModification": "us_aim_9j"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_heavy"
+              }
+            }
           }
         ]
       },

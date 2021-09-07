@@ -329,7 +329,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (curVal<0 && ::g_chat.rooms.len() > 0)
     {
       curVal = obj.getValue()
-      if (curVal < 0 || curVal > ::g_chat.rooms.len())
+      if (curVal < 0 || curVal >= ::g_chat.rooms.len())
         curVal = ::g_chat.rooms.len()-1
     }
 
@@ -1839,7 +1839,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onUsersListActivate(obj)
   {
     local value = obj.getValue()
-    if (value < 0 || value > obj.childrenCount())
+    if (value < 0 || value >= obj.childrenCount())
       return
 
     if (!curRoom || curRoom.users.len() <= value || !checkScene())

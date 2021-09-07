@@ -1,9 +1,11 @@
-local Color = ::Color
+from "daRg" import *
+from "frp" import *
+
 local contextStyle = {
   menuBgColor = Color(20, 30, 36)
   listItem = function (text, action) {
-    local group = ::ElemGroup()
-    local stateFlags = ::Watched(0)
+    local group = ElemGroup()
+    local stateFlags = Watched(0)
 
     return @() {
       behavior = Behaviors.Button

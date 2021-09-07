@@ -1409,94 +1409,153 @@
     "turretTurnSfxPathStudio": "aircraft/effects",
     "turretTurnSfxName": "turret_turn_servo"
   },
-  "cockpit": {
-    "headPos": [3.158,0.115,0.031],
-    "headPosOnShooting": [3.158,0.115,0.031],
-    "lightPos": [3.800321,-0.279235,0.277099],
-    "lightColor": [0.0,0.15,0.0],
-    "lightRadius": 0.45,
-    "lightPos1": [3.600754,-0.50626,-0.198065],
-    "lightColor1": [0.0,0.15,0.0],
-    "lightRadius1": 0.45,
-    "lightPos2": [3.090114,-0.439532,-0.378126],
-    "lightColor2": [0.0,0.15,0.0],
-    "lightRadius2": 0.45,
-    "lightPos3": [3.183673,-0.319887,0.41043],
-    "lightColor3": [0.0,0.18,0.0],
-    "lightRadius3": 0.55,
-    "zoomOutFov": 22.46,
-    "zoomInFov": 7.37,
-    "sightInFov": 4.91,
-    "sightOutFov": -1.0,
-    "sightFov": 5.5,
-    "devices": {
-      "stick_ailerons": [-1.0,1.0],
-      "stick_elevator": [-1.0,1.0],
-      "weapon1": [0.0,1.0],
-      "weapon2": [0.0,1.0],
-      "weapon3": [0.0,1.0],
-      "weapon4": [0.0,1.0],
-      "throttle": [0.0,1.0],
-      "pedals": [-1.0,1.0],
-      "pedals1": [-1.0,1.0],
-      "pedals2": [-1.0,1.0],
-      "pedals3": [-1.0,1.0],
-      "pedals4": [-1.0,1.0],
-      "pedals5": [-1.0,1.0],
-      "pedals6": [-1.0,1.0],
-      "pedals7": [-1.0,1.0],
-      "aviahorizon_pitch": [-90.0,90.0],
-      "aviahorizon_roll": [-90.0,90.0],
-      "aviahorizon_pitch1": [-90.0,90.0],
-      "aviahorizon_roll1": [-90.0,90.0],
-      "bank": [-1.0,1.0],
-      "bank1": [-1.0,1.0],
-      "turn": [-45.0,45.0],
-      "g_meter": [-2.0,4.0],
-      "g_meter_min": [-2.0,4.0],
-      "g_meter_max": [-2.0,4.0],
-      "clock_hour": [0.0,12.0],
-      "clock_min": [0.0,60.0],
-      "clock_sec": [0.0,60.0],
-      "compass": [0.0,360.0],
-      "compass1": [0.0,360.0],
-      "vario": [-30.0,30.0],
-      "speed": [0.0,125.0],
-      "altitude_hour": [0.0,10000.0],
-      "altitude_min": [0.0,1000.0],
-      "radio_altitude": [0.0,1000.0],
-      "altitude_koef": 1.0,
-      "head_temperature": [0.0,1200.0],
-      "head_temperature1": [0.0,1200.0],
-      "water_temperature": [0.0,1000.0],
-      "water_temperature1": [0.0,1000.0],
-      "oil_pressure": [0.0,8.0],
-      "oil_pressure1": [0.0,8.0],
-      "oil_temperature": [-50.0,150.0],
-      "oil_temperature1": [-50.0,150.0],
-      "fuel1": [0.0,2500.0],
-      "rpm": [0.0,15400.0],
-      "rpm1": [0.0,15400.0],
-      "gears_lamp": [0.0,0.0]
+  "cockpit": [
+    {
+      "headPos": [3.158,0.113,0.014]
     },
-    "parts_holes_dmg": {
-      "part": "fuse"
+    {
+      "headPosOnShooting": [3.158,0.113,0.014]
     },
-    "parts_oil_dmg": [
-      {
-        "part": "engine1"
-      },
-      {
-        "part": "engine2"
-      },
-      {
-        "part": "engine3"
-      },
-      {
-        "part": "engine4"
+    {
+      "mirror": true
+    },
+    {
+      "mirrorPos": [3.575,0.077,0.0]
+    },
+    {
+      "mirrorNorm": [-1.0,0.0,0.0]
+    },
+    {
+      "mirrorNode": "mirror_l"
+    },
+    {
+      "mirrorNode": "blister13"
+    },
+    {
+      "lightPos": [3.800321,-0.279235,0.277099]
+    },
+    {
+      "lightColor": [0.0,0.15,0.0]
+    },
+    {
+      "lightRadius": 0.45
+    },
+    {
+      "lightPos1": [3.600754,-0.50626,-0.198065]
+    },
+    {
+      "lightColor1": [0.0,0.15,0.0]
+    },
+    {
+      "lightRadius1": 0.45
+    },
+    {
+      "lightPos2": [3.090114,-0.439532,-0.378126]
+    },
+    {
+      "lightColor2": [0.0,0.15,0.0]
+    },
+    {
+      "lightRadius2": 0.45
+    },
+    {
+      "lightPos3": [3.183673,-0.319887,0.41043]
+    },
+    {
+      "lightColor3": [0.0,0.18,0.0]
+    },
+    {
+      "lightRadius3": 0.55
+    },
+    {
+      "zoomOutFov": 22.46
+    },
+    {
+      "zoomInFov": 7.37
+    },
+    {
+      "sightInFov": 4.91
+    },
+    {
+      "sightOutFov": -1.0
+    },
+    {
+      "sightFov": 5.5
+    },
+    {
+      "devices": {
+        "stick_ailerons": [-1.0,1.0],
+        "stick_elevator": [-1.0,1.0],
+        "weapon1": [0.0,1.0],
+        "weapon2": [0.0,1.0],
+        "weapon3": [0.0,1.0],
+        "weapon4": [0.0,1.0],
+        "throttle": [0.0,1.0],
+        "pedals": [-1.0,1.0],
+        "pedals1": [-1.0,1.0],
+        "pedals2": [-1.0,1.0],
+        "pedals3": [-1.0,1.0],
+        "pedals4": [-1.0,1.0],
+        "pedals5": [-1.0,1.0],
+        "pedals6": [-1.0,1.0],
+        "pedals7": [-1.0,1.0],
+        "aviahorizon_pitch": [-90.0,90.0],
+        "aviahorizon_roll": [-90.0,90.0],
+        "aviahorizon_pitch1": [-90.0,90.0],
+        "aviahorizon_roll1": [-90.0,90.0],
+        "bank": [-1.0,1.0],
+        "bank1": [-1.0,1.0],
+        "turn": [-45.0,45.0],
+        "g_meter": [-2.0,4.0],
+        "g_meter_min": [-2.0,4.0],
+        "g_meter_max": [-2.0,4.0],
+        "clock_hour": [0.0,12.0],
+        "clock_min": [0.0,60.0],
+        "clock_sec": [0.0,60.0],
+        "compass": [0.0,360.0],
+        "compass1": [0.0,360.0],
+        "vario": [-30.0,30.0],
+        "speed": [0.0,125.0],
+        "altitude_hour": [0.0,10000.0],
+        "altitude_min": [0.0,1000.0],
+        "radio_altitude": [0.0,1000.0],
+        "altitude_koef": 1.0,
+        "head_temperature": [0.0,1200.0],
+        "head_temperature1": [0.0,1200.0],
+        "water_temperature": [0.0,1000.0],
+        "water_temperature1": [0.0,1000.0],
+        "oil_pressure": [0.0,8.0],
+        "oil_pressure1": [0.0,8.0],
+        "oil_temperature": [-50.0,150.0],
+        "oil_temperature1": [-50.0,150.0],
+        "fuel": [0.0,2500.0],
+        "rpm": [0.0,15400.0],
+        "rpm1": [0.0,15400.0],
+        "gears_lamp": [0.0,0.0]
       }
-    ]
-  },
+    },
+    {
+      "parts_holes_dmg": {
+        "part": "fuse"
+      }
+    },
+    {
+      "parts_oil_dmg": [
+        {
+          "part": "engine1"
+        },
+        {
+          "part": "engine2"
+        },
+        {
+          "part": "engine3"
+        },
+        {
+          "part": "engine4"
+        }
+      ]
+    }
+  ],
   "helicopter": {
     "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
     "propellerStrainCoeff": -0.01
@@ -2531,6 +2590,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -2727,6 +2798,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -2921,6 +3004,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -3120,6 +3215,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -3324,6 +3431,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -3524,6 +3643,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -3728,6 +3859,18 @@
           "dp": "flap%d_c_dm"
         },
         {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
+        },
+        {
           "dp": "flap_airbrake_l_dm"
         },
         {
@@ -3928,6 +4071,18 @@
         },
         {
           "dp": "flap%d_c_dm"
+        },
+        {
+          "dp": "flaperon_l_dm"
+        },
+        {
+          "dp": "flaperon%d_l_dm"
+        },
+        {
+          "dp": "flaperon_r_dm"
+        },
+        {
+          "dp": "flaperon%d_r_dm"
         },
         {
           "dp": "flap_airbrake_l_dm"
@@ -4695,7 +4850,7 @@
     {
       "dp": [
         {
-          "dm": "tail_dm"
+          "dm": "fin_dm"
         },
         {
           "dp": "prop01_2"
@@ -4861,13 +5016,13 @@
       "modClass": "weapon",
       "prevModification": "YaK-B_new_gun"
     },
-    "ns23_belt_pack": {
+    "GSh_23L_armor_targets": [],
+    "GSh_23L_air_targets": [],
+    "GSh_23L_stealth": [],
+    "GSh_23L_belt_pack": {
       "reqModification": "il_28sh_upk23_gunpod",
       "tier": 4
     },
-    "ns23_air_targets": [],
-    "ns23_armor_targets": [],
-    "ns23_stealth": [],
     "il_28sh_s24": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",

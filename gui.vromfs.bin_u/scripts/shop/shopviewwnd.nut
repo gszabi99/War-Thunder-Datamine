@@ -1,4 +1,5 @@
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
 {
@@ -13,13 +14,13 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
     ::handlersManager.loadHandler(::gui_handlers.ShopViewWnd, params)
   }
 
-  function getSceneTplView() { return {hasMaxWindowSize = ::is_small_screen} }
+  function getSceneTplView() { return {hasMaxWindowSize = isSmallScreen} }
 
   function initScreen()
   {
     base.initScreen()
 
-    if(!::is_small_screen)
+    if(!isSmallScreen)
       createSlotbar(
         {
           showNewSlot = true,

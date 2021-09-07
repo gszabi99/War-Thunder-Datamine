@@ -40,7 +40,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
           local progress = "0"
           if (value != null)
           {
-            local lbDataType = ::g_lb_category.getTypeByField(reward_blk.fieldName).type
+            local { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)
@@ -64,7 +64,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
           if (value != null)
           {
             value = value % ::EventRewards.getConditionValue(reward_blk)
-            local lbDataType = ::g_lb_category.getTypeByField(reward_blk.fieldName).type
+            local { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)

@@ -506,6 +506,31 @@
           ]
         },
         {
+          "tdiv": [
+            {
+              "height": "0.08@shHud"
+            },
+            {
+              "position": "relative"
+            },
+            {
+              "left": "pw/2 - w/2"
+            },
+            {
+              "div": {
+                "id": "iconed_hints",
+                "height": "ph"
+              }
+            },
+            {
+              "div": {
+                "id": "display_timers",
+                "height": "ph"
+              }
+            }
+          ]
+        },
+        {
           "tdiv": {
             "id": "actionbar_hints_nest",
             "width": "1@shHud",
@@ -553,14 +578,6 @@
           }
         },
         {
-          "div": {
-            "id": "display_timers",
-            "height": "0.08@shHud",
-            "position": "relative",
-            "left": "pw/2 - w/2"
-          }
-        },
-        {
           "textAreaCentered": {
             "id": "low-quality-model-warning",
             "width": "pw",
@@ -589,14 +606,12 @@
   {
     "tdiv": {
       "position": "absolute",
-      "pos": "0, -@bh",
       "hud_touch_shortcut": {
         "id": "flight_menu",
-        "margin-left": "0.190@shHud",
-        "size": "0.087@shHud, 0.048@shHud",
         "background-image": "#ui/gameuiskin#menu_1",
         "shortcut_id": "ID_FLIGHTMENU_SETUP",
-        "touch-area-id": "4"
+        "touch-area-id": "4",
+        "type": "menu"
       }
     }
   },
@@ -606,35 +621,34 @@
         "position": "absolute"
       },
       {
-        "pos": "pw-w, -@bh"
+        "pos": "pw-w, 0"
       },
       {
         "hud_touch_shortcut": {
           "id": "voice",
           "margin-right": "0.02@shHud",
-          "size": "0.078@shHud, 0.048@shHud",
           "background-image": "#ui/gameuiskin#radio_1",
-          "shortcut_id": "ID_SHOW_VOICE_MESSAGE_LIST"
+          "shortcut_id": "ID_SHOW_VOICE_MESSAGE_LIST",
+          "type": "menu"
         }
       },
       {
         "hud_touch_shortcut": {
           "id": "stats",
-          "margin-right": "0.020@shHud",
-          "size": "0.078@shHud, 0.048@shHud",
+          "margin-right": "0.02@shHud",
           "background-image": "#ui/gameuiskin#statistics_1",
           "shortcut_id": "ID_MPSTATSCREEN",
-          "touch-area-id": "3"
+          "touch-area-id": "3",
+          "type": "menu"
         }
       },
       {
         "hud_touch_shortcut": {
           "id": "map",
-          "margin-right": "0.160@shHud",
-          "size": "0.078@shHud, 0.048@shHud",
           "background-image": "#ui/gameuiskin#map_1",
           "shortcut_id": "ID_TACTICAL_MAP",
-          "touch-area-id": "2"
+          "touch-area-id": "2",
+          "type": "menu"
         }
       }
     ]

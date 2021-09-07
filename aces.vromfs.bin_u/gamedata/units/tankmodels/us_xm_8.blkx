@@ -285,7 +285,8 @@
           "armorThickness": 38.1
         },
         "turret_commander_dm": {
-          "armorThickness": 25.4
+          "armorThickness": 25.4,
+          "armorClass": "RHA_tank"
         },
         "gun_mask_dm": {
           "armorThickness": 203.0
@@ -306,7 +307,8 @@
           "armorThickness": 25.4
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 38.1
+          "armorThickness": 38.1,
+          "armorClass": "RHA_tank"
         },
         "turret_top_dm": {
           "armorThickness": 25.4
@@ -2076,8 +2078,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "bullets": 600,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
@@ -2151,7 +2153,7 @@
             "allowableDelta": 360.0
           },
           {
-            "salvo": 8
+            "salvo": 4
           },
           {
             "speedYaw": 24.0
@@ -3012,12 +3014,6 @@
             "gunnerThermal": {
               "resolution": [500.0,300.0],
               "noiseFactor": 0.05
-            },
-            "commanderViewIr": {
-              "resolution": [1600.0,1200.0],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800.0,600.0],

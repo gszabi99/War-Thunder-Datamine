@@ -1,4 +1,6 @@
+from "%darg/ui_imports.nut" import *
 local comboStyle = require("combobox.style.nut")
+
 local ComboPopupLayer = 1
 if ("Layers" in getconsttable()) {
   ComboPopupLayer = Layers?.ComboPopup ?? 1
@@ -16,7 +18,7 @@ local popupWrapperAnim = [
 
 
 local function itemToOption(item, wdata){
-  local tp = ::type(item)
+  local tp = type(item)
   local value
   local text
   local isCurrent
@@ -99,19 +101,19 @@ local function dropdownBgOverlay(onClick) {
 
 
 local function combobox(watches, options, combo_style=comboStyle) {
-  if (::type(options)!="instance")
-    options = ::Watched(options)
+  if (type(options)!="instance")
+    options = Watched(options)
 
-  local comboOpen = ::Watched(false)
-  local group = ::ElemGroup()
-  local stateFlags = ::Watched(0)
+  local comboOpen = Watched(false)
+  local group = ElemGroup()
+  local stateFlags = Watched(0)
   local doClose = @() comboOpen.update(false)
   local wdata, wdisable, wupdate
   local dropDirDown = combo_style?.dropDir != "up"
-  local itemHeight = options.value.len() > 0 ? ::calc_comp_size(combo_style.listItem(options.value[0], @() null, false))[1] : sh(5)
-  local itemGapHt = ::calc_comp_size(combo_style?.itemGap)[1]
+  local itemHeight = options.value.len() > 0 ? calc_comp_size(combo_style.listItem(options.value[0], @() null, false))[1] : sh(5)
+  local itemGapHt = calc_comp_size(combo_style?.itemGap)[1]
   local changeVarOnListUpdate = true
-  local xmbNode = combo_style?.xmbNode ?? ::XmbNode()
+  local xmbNode = combo_style?.xmbNode ?? XmbNode()
 
   if (type(watches) == "table") {
     wdata = watches.value
@@ -129,7 +131,7 @@ local function combobox(watches, options, combo_style=comboStyle) {
 
 
   local function dropdownList() {
-    local xmbNodes = options.value.map(@(_) ::XmbNode())
+    local xmbNodes = options.value.map(@(_) XmbNode())
     local curXmbNode = xmbNodes?[0]
     local children = options.value.map(function(item, idx) {
       local {value, text, isCurrent} = itemToOption(item, wdata)
@@ -159,7 +161,7 @@ local function combobox(watches, options, combo_style=comboStyle) {
       padding = combo_style?.popupBorderWidth ?? 0
       stopMouse = true
       clipChildren = true
-      xmbNode = ::XmbContainer()
+      xmbNode = XmbContainer()
       children = {
         behavior = Behaviors.WheelScroll
         joystickScroll = true

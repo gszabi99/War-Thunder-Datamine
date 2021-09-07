@@ -396,7 +396,7 @@ PrizesView.getPrizeTypeName <- function getPrizeTypeName(prize, colored = true)
   return getPrizeText(prize, colored, true)
 }
 
-PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeName = false, showCount = true, full = false)
+PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeName = false, showCount = true, full = false, forcedColor = "")
 {
   if (!prize)
     return ""
@@ -514,6 +514,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
       if (colored)
       {
         local nameColor = !valid ? "badTextColor"
+          : forcedColor != "" ? forcedColor
           : decorator ? decorator.getRarityColor()
           : "activeTextColor"
         name = ::colorize(nameColor, name)
@@ -573,6 +574,8 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
 
   local commentText = prize?.commentText ?? ""
 
+  if (forcedColor != "")
+    color = forcedColor
   name = colored && color.len() ? ::colorize(color, name) : name
   return name + countText + commentText
 }

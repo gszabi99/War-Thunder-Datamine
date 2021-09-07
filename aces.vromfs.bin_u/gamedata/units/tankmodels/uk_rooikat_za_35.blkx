@@ -126,6 +126,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
@@ -253,6 +256,10 @@
         },
         "turret_04_top_dm": {
           "armorThickness": 10.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
         }
       },
       "optics": {
@@ -2296,7 +2303,7 @@
           "breechDP": "cannon_breech_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 90.0,
+          "speedYaw": 45.0,
           "speedPitch": 42.0,
           "bullets": 230,
           "fireConeAngle": 5.0,
@@ -2347,18 +2354,18 @@
               "linkedAnimPart": {
                 "verNode": "antenna_target_tagging",
                 "verLimits": [0.0,65.0],
-                "verOriginLimits": [-5.0,85.0]
+                "verOriginLimits": [-5.0,81.0]
               }
             }
           ],
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-8.0,85.0]
+            "pitch": [-8.0,81.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-6.0,85.0],
-            "lim2": [-140.0,140.0,-6.0,85.0],
-            "lim3": [140.0,180.0,-6.0,85.0]
+            "lim1": [-180.0,-140.0,-6.0,81.0],
+            "lim2": [-140.0,140.0,-6.0,81.0],
+            "lim3": [140.0,180.0,-6.0,81.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2404,7 +2411,7 @@
           "breechDP": "cannon_breech_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 90.0,
+          "speedYaw": 45.0,
           "speedPitch": 42.0,
           "bullets": 230,
           "fireConeAngle": 5.0,
@@ -2438,12 +2445,12 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-8.0,85.0]
+            "pitch": [-8.0,81.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-6.0,85.0],
-            "lim2": [-140.0,140.0,-8.0,85.0],
-            "lim3": [140.0,180.0,-6.0,85.0]
+            "lim1": [-180.0,-140.0,-6.0,81.0],
+            "lim2": [-140.0,140.0,-8.0,81.0],
+            "lim3": [140.0,180.0,-6.0,81.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2527,6 +2534,12 @@
           },
           {
             "node": "antenna_target_location_mount"
+          },
+          {
+            "node": "turret_02_bottom"
+          },
+          {
+            "node": "turret_02_back"
           }
         ]
       }
@@ -2568,9 +2581,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 26000.0,
-        "Fuel": 500.0,
-        "TakeOff": 26500.0,
+        "Empty": 31000.0,
+        "Fuel": 1000.0,
+        "TakeOff": 32000.0,
         "momentOfInertia": [2.0,2.0,4.0],
         "CenterOfGravity": [-0.1,1.4,0.0],
         "CenterOfGravityClampY": [0.0,0.5],
@@ -3279,6 +3292,24 @@
     }
   },
   {
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_body_dm": {
+            "count": 460
+          }
+        }
+      }
+    }
+  },
+  {
     "modifications": {
       "new_wheels": [],
       "new_car_suspension": [],
@@ -3422,8 +3453,13 @@
     }
   },
   {
-    "smokeScreenExhaustEmitters": {
-      "emitter": "emtr_exhaust_01"
-    }
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]

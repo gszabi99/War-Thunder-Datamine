@@ -38,7 +38,11 @@
 @const sizeTacticalMap:          0.3*@shHud;
 @const sizeDamageIndicatorFull:  0.3*@shHud;
 @const sizeDamageIndicator:      0.62@sizeDamageIndicatorFull;
-@const sizeTouchShortcut:        0.09*@shHud;
+@const menuTouchShortcutWidth:   0.1*@shHud;
+@const menuTouchShortcutHeight:  0.057*@shHud;
+@const sizeTouchShortcut:        0.1*@shHud;
+@const touchShortcutBigSize:     0.14*@shHud;
+@const touchElemetMargin:        0.02*@shHud;
 @const multiplayerScoreHeight:   36@dp;
 @const missionProgressHeight:    @hudMisObjIconsSize + 1@blockInterval;
 @const multiplayerScoreHeightWithOffset: 0.08@scrn_tgt;
@@ -65,6 +69,18 @@ hud_touch_shortcut[shortcut_id]  {
 
 hud_touch_shortcut:pushed {
   background-color:@pushedTouchShortcutColor;
+}
+
+hud_touch_shortcut[type=normal] {
+  size:@sizeTouchShortcut, @sizeTouchShortcut;
+}
+
+hud_touch_shortcut[type=big] {
+  size:@touchShortcutBigSize, @touchShortcutBigSize;
+}
+
+hud_touch_shortcut[type=menu] {
+  size:@menuTouchShortcutWidth, @menuTouchShortcutHeight;
 }
 
 
@@ -269,6 +285,11 @@ hudMessages[message_style=kill_log_notification] > message > textareaNoTab {
   text-shade-y:1;
   text-shade-color:#80000000;
 }
+
+hudMessages[message_style=kill_log_notification][leftTextAlign=yes] > message > textareaNoTab {
+  text-align: left;
+}
+
 
 
 

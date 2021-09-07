@@ -7,6 +7,8 @@ local { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("scripts/weaponry/modificationInfo.nut")
 local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local { getGuiOptionsMode } = ::require_native("guiOptions")
+local { unique } = require("std/underscore.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -66,14 +68,13 @@ local function isFakeBullet(modName)
 
 local function setUnitLastBullets(unit, groupIndex, value)
 {
-  if (unit.unitType.canUseSeveralBulletsForGun)
-    ::set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, value)
-
   local saveValue = getModificationByName(unit, value)? value : "" //'' = default modification
-
   local curBullets = ::get_last_bullets(unit.name, groupIndex)
   if (curBullets != saveValue)
   {
+    if (unit.unitType.canUseSeveralBulletsForGun)
+      ::set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
+
     ::dagor.debug($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
     ::set_last_bullets(unit.name, groupIndex, saveValue)
     ::broadcastEvent("UnitBulletsChanged", { unit = unit,
@@ -563,6 +564,37 @@ local function getUniqModificationText(modifName, isShortDesc)
   return null
 }
 
+local function getNVDSightCrewText(sight)
+{
+  if (sight.contains("commander"))
+    return ::loc("crew/commander")
+  if (sight.contains("gunner"))
+    return ::loc("crew/tank_gunner")
+  if (sight.contains("driver"))
+    return ::loc("crew/driver")
+  return ""
+}
+
+local function getNVDSightSystemText(sight)
+{
+  if (sight.contains("Thermal"))
+    return ::loc("modification/thermal_vision_system")
+  if (sight.contains("Ir"))
+    return ::loc("modification/night_vision_system")
+  return ""
+}
+
+local function getNVDSightText(sight)
+{
+  local crew = getNVDSightCrewText(sight)
+  if (crew == "")
+    return ""
+  local system = getNVDSightSystemText(sight)
+  if (system == "")
+    return ""
+  return ::colorize("goodTextColor", $"{crew}{::loc("ui/colon")} {system}")
+}
+
 // Generate text description for air.modifications[modificationNo]
 local function getModificationInfo(air, modifName, isShortDesc=false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null)
@@ -606,6 +638,13 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
     res.desc = ::loc("modification/" + locId + ending, "")
     if (res.desc == "" && isShortDesc && limitedName)
       res.desc = ::loc("modification/" + locId, "")
+
+    if (!isShortDesc)
+    {
+      local nvdDescs = air.getNVDSights(modifName).map(@(s) getNVDSightText(s)).filter(@(s) s != "")
+      if (nvdDescs.len() > 0)
+        res.desc = $"{res.desc}\n\n{"\n".join(unique(nvdDescs))}"
+    }
 
     if (res.desc == "")
     {
@@ -728,11 +767,12 @@ local function getModificationName(air, modifName, limitedName = false)
   return getModificationInfo(air, modifName, true, limitedName).desc
 }
 
-local function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true)
+local function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true, saveValue = null)
 {
   local item =  { enabled = enabled }
   descr.items.append(item)
   descr.values.append(modifName)
+  descr.saveValues.append(saveValue ?? modifName)
 
   if (!genTexts)
     return
@@ -746,6 +786,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
   params = BULLETS_LIST_PARAMS.__merge(params)
   local descr = {
     values = []
+    saveValues = []
     isTurretBelt = false
     weaponType = WEAPON_TYPE.GUNS
     caliber = 0
@@ -809,7 +850,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     {
       local bData = getBulletsSetData(air, modifName)
       if (!bData || bData.useDefaultBullet)
-        appendOneBulletsItem(descr, groupName + "_default", air, "", params.needTexts) //default bullets
+        appendOneBulletsItem(descr, $"{groupName}_default", air, "", params.needTexts, true, "") //default bullets
       if ("isTurretBelt" in modif)
         descr.isTurretBelt = modif.isTurretBelt
       if (bData)
@@ -986,7 +1027,7 @@ local function isBulletsGroupActiveByMod(air, mod)
 //to get exact same bullets list as in standart options
 local function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false)
 {
-  local checkPurchased = ::get_gui_options_mode() != ::OPTIONS_MODE_TRAINING
+  local checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
   local res = getBulletsList(air.name, groupIndex, {
     isOnlyBought = checkPurchased
     needCheckUnitPurchase = checkPurchased
@@ -997,7 +1038,7 @@ local function getOptionsBulletsList(air, groupIndex, needTexts = false, isForce
   local curModif = air.unitType.canUseSeveralBulletsForGun ?
     ::get_unit_option(air.name, ::USEROPT_BULLETS0 + groupIndex) :
     ::get_last_bullets(air.name, groupIndex)
-  local value = curModif? ::find_in_array(res.values, curModif) : -1
+  local value = curModif? ::find_in_array(res.saveValues, curModif) : -1
 
   if (value < 0 || !res.items[value].enabled)
   {

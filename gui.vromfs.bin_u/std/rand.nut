@@ -13,7 +13,7 @@ const maxrndfloatmask = 16777215 // (1<24)-1
 local maxnoiseint = 0xffffffff // 32 bits
 local function randint_uniform(lo, hi, rand) { // returns random int in range [lo,hi], closed interval
   local n = hi - lo + 1
-  ::assert(n != 0)
+  assert(n != 0)
   local maxx = maxnoiseint - (maxnoiseint % n)
   local x
   do {
@@ -38,35 +38,35 @@ local Rand = class{
 
   function rfloat(start=0.0, end=1.0){ // return float in range [start,end)
     _count += 1
-    local start_ = ::min(end,start)
-    local end_ = ::max(end,start)
+    local start_ = min(end,start)
+    local end_ = max(end,start)
     local runit = (random.uint_noise1D(_seed, _count) & maxrndfloatmask) / maxrndfloat // [0,1]
     return runit * (end_-start_) + start_
   }
 
   static function _rfloat(start=0.0, end=1.0, seed=null, count=null){ // return float in range [start,end)
-    if (::type(seed)=="table") {
+    if (type(seed)=="table") {
       local params = seed
       start=params?.start ?? start
       end=params?.end ?? end
       seed = params?.seed ?? new_rnd_seed()
       count = params?.count ?? count
     }
-    local start_ = ::min(end,start)
-    local end_ = ::max(end,start)
+    local start_ = min(end,start)
+    local end_ = max(end,start)
     local runit = (random.uint_noise1D(seed, count ?? seed) & maxrndfloatmask) / maxrndfloat // [0,1]
     return runit * (end_-start_) + start_
   }
 
   static function _rint(start=0, end=DEFAULT_MAX_INT_RAND, seed=null, count=null){ // return int in range [start, end], i.e. inclusive
-    if (::type(seed)=="table") {
+    if (type(seed)=="table") {
       local params = seed
       start=params?.start ?? start
       end=params?.end ?? end
       seed = params?.seed ?? new_rnd_seed()
       count = params?.count ?? count
     }
-    return randint_uniform(::min(end,start), ::max(end,start), @() random.uint_noise1D(seed, count ?? seed))
+    return randint_uniform(min(end,start), max(end,start), @() random.uint_noise1D(seed, count ?? seed))
   }
 
   function rint(start=0, end = null) { // return int in range [start, end], i.e. inclusive
@@ -76,7 +76,7 @@ local Rand = class{
     else {
       end = end?.tointeger() ?? DEFAULT_MAX_INT_RAND
       start = start.tointeger()
-      return randint_uniform(::min(end,start), ::max(end,start), @() random.uint_noise1D(_seed, _count))
+      return randint_uniform(min(end,start), max(end,start), @() random.uint_noise1D(_seed, _count))
     }
   }
 
@@ -153,7 +153,7 @@ local function testRandomEnoughByPirsonCriteria(){
 }
 local function testShuffle(){
   pp("\nArray of ints shuffled:")
-  ppa(Rand.shuffle(::array(20).map(@(v,i) i)))
+  ppa(Rand.shuffle(array(20).map(@(v,i) i)))
 }
 
 if (this?.__name__ == "__main__") {

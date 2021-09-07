@@ -1,11 +1,17 @@
 local protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
 local protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
-
+local { hasFeature } = require("scripts/user/features.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local controllerState = require("controllerState")
+local { hangar_protection_map_update, protection_map_reset,
+  set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")
 
 
 local switch_damage = false
 local allow_cutting = false
+
+const CB_PROTECTION_MAP = "protectionAnalysis/cbProtectionMapValue"
+const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
 class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -60,6 +66,16 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
     scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
+    local isShowProtectionMapOptions = hasFeature("ProtectionMap")
+    local cbProtectionMapObj = ::showBtn("checkboxProtectionMap", isShowProtectionMapOptions)
+    local cbVerticalAngleObj = ::showBtn("checkboxVerticalAngle", isShowProtectionMapOptions)
+    ::showBtn("rowSeparator", isShowProtectionMapOptions)
+    if (isShowProtectionMapOptions)
+    {
+      cbProtectionMapObj.setValue(::load_local_account_settings(CB_PROTECTION_MAP, false))
+      cbVerticalAngleObj.setValue(::load_local_account_settings(CB_VERTICAL_ANGLE, false))
+    }
+
     local isSimulationEnabled = unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
     local obj = showSceneBtn("switch_damage", isSimulationEnabled)
     if (isSimulationEnabled)
@@ -102,6 +118,10 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
     ::hangar_focus_model(false)
     ::hangar_set_dm_viewer_mode(::DM_VIEWER_NONE)
     ::repairUnit()
+    ::save_local_account_settings(CB_PROTECTION_MAP,
+      scene.findObject("checkboxProtectionMap")?.getValue())
+    ::save_local_account_settings(CB_VERTICAL_ANGLE,
+      scene.findObject("checkboxVerticalAngle")?.getValue())
     base.goBack()
   }
 
@@ -150,6 +170,44 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
         shortcuts.append(::loc("key/LMB"))
       bObj.findObject("push_to_shot").setValue(::g_string.implode(shortcuts, ::loc("ui/comma")))
     }
+  }
+
+  function buildProtectionMap()
+  {
+    local waitTextObj = scene.findObject("pa_wait_text")
+    local cbVerticalAngleObj = scene.findObject("checkboxVerticalAngle")
+    if (!waitTextObj?.isValid() || !cbVerticalAngleObj?.isValid())
+      return
+
+    hangar_protection_map_update()
+    SecondsUpdater(waitTextObj, function(timerObj, p) {
+        local progress = get_protection_map_progress()
+        if (progress < 100)
+          timerObj.setValue($"{progress.tostring()}%")
+        else {
+          ::showBtn("pa_info_block", false)
+          p.cbVerticalAngleObj.enable = "yes"
+        }
+      }, false, {cbVerticalAngleObj})
+  }
+
+  function toggleProtectionMap(state)
+  {
+    local cbVerticalAngleObj = scene.findObject("checkboxVerticalAngle")
+    if (cbVerticalAngleObj?.isValid())
+      cbVerticalAngleObj.enable = state ? "no" : "yes"
+    ::showBtn("pa_info_block", state)
+    if (!state)
+      protection_map_reset()
+    else
+      buildProtectionMap()
+  }
+
+  onProtectionMap = @(obj) toggleProtectionMap(obj.getValue())
+  function onConsiderVerticalAngle(obj)
+  {
+    set_protection_map_y_nulling(obj.getValue())
+    toggleProtectionMap(scene.findObject("checkboxProtectionMap")?.getValue() ?? false)
   }
 }
 
