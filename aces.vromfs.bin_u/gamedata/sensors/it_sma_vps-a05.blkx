@@ -1,23 +1,21 @@
 {
   "type": "radar",
-  "name": "1RL114",
+  "name": "SMA VPS-A05",
   "transivers": {
     "search": {
-      "pulsePower": 10000.0,
-      "pulseWidth": 0.0,
-      "prf": 7500.0,
+      "power": 100.0,
       "band": 4,
-      "rcs": 1.0,
-      "range": 18000.0,
-      "rangeMax": 25000.0,
+      "rcs": 5.0,
+      "range": 15000.0,
+      "rangeMax": 15000.0,
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 5.0,
+          "angleHalfSens": 6.3,
           "sideLobesSensitivity": -30.0
         },
         "elevation": {
-          "angleHalfSens": 15.0,
-          "sideLobesSensitivity": -30.0
+          "angleHalfSens": 17.0,
+          "sideLobesSensitivity": -35.0
         }
       }
     }
@@ -26,12 +24,12 @@
     "search": {
       "type": "cylinder",
       "azimuthLimits": [-180.0,180.0],
-      "elevationLimits": [7.5,7.5],
+      "elevationLimits": [8.5,8.5],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "barHeight": 15.0,
+      "barHeight": 18.0,
       "barsCount": 1,
       "rowMajor": true
     }
@@ -44,7 +42,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 20000.0,
+        "maxValue": 15000.0,
         "maxUnambiguousValue": 80000.0
       },
       "dopplerSpeed": {
@@ -58,7 +56,7 @@
   },
   "scopeRanges": {
     "range1": 10000.0,
-    "range2": 20000.0
+    "range2": 15000.0
   },
   "fsms": {
     "main": {
@@ -82,8 +80,8 @@
             "value": 7.5
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-90.0,90.0],
-            "distanceRange": [0.0,16000.0]
+            "azimuthRange": [-100.0,100.0],
+            "distanceRange": [0.0,15000.0]
           }
         },
         "setStandbyMode": {

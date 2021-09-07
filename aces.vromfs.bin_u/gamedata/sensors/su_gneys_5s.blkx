@@ -4,18 +4,18 @@
   "transivers": {
     "search": {
       "power": 100.0,
-      "band": 1,
+      "band": 0,
       "rcs": 3.0,
       "range": 7000.0,
       "rangeMax": 8000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 60.0,
-          "sideLobesSensitivity": -10.0
+          "sideLobesSensitivity": -9.0
         },
         "elevation": {
           "angleHalfSens": 40.0,
-          "sideLobesSensitivity": -10.0
+          "sideLobesSensitivity": -9.0
         }
       }
     }
@@ -29,11 +29,11 @@
   },
   "signals": {
     "search": {
-      "groundClutter": false,
+      "groundClutter": true,
       "dynamicRange": [30.0,3.0],
       "distance": {
         "presents": true,
-        "minValue": 300.0,
+        "minValue": 200.0,
         "maxValue": 8000.0
       }
     }

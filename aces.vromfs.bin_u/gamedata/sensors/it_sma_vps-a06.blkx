@@ -1,18 +1,22 @@
 {
   "type": "radar",
-  "name": "1RL114",
+  "name": "SMA VPS-A06",
   "transivers": {
     "radarTrack": {
-      "pulsePower": 100000.0,
-      "pulseWidth": 0.0,
-      "prf": 3750.0,
-      "band": 9,
-      "rcs": 1.0,
+      "power": 90.0,
+      "band": 10,
+      "rcs": 5.0,
       "range": 10000.0,
-      "rangeMax": 15000.0,
+      "rangeMax": 10000.0,
       "antenna": {
-        "angleHalfSens": 2.0,
-        "sideLobesSensitivity": -30.0
+        "azimuth": {
+          "angleHalfSens": 1.5,
+          "sideLobesSensitivity": -35.0
+        },
+        "elevation": {
+          "angleHalfSens": 1.5,
+          "sideLobesSensitivity": -35.0
+        }
       }
     },
     "irstTrack": {
@@ -31,36 +35,36 @@
   "scanPatterns": {
     "radarLock": {
       "type": "pyramide",
-      "azimuthLimits": [-90.0,90.0],
-      "elevationLimits": [-15.0,87.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 7.5,
-      "barHeight": 2.0,
+      "width": 8.5,
+      "barHeight": 1.5,
       "barsCount": 3,
       "rowMajor": false,
       "indicate": true
     },
     "radarLosLock": {
       "type": "pyramide",
-      "azimuthLimits": [-90.0,90.0],
-      "elevationLimits": [-15.0,87.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 1.0,
-      "barHeight": 2.0,
+      "width": 0.75,
+      "barHeight": 1.5,
       "barsCount": 1,
       "rowMajor": false,
       "indicate": true
     },
     "radarTrack": {
       "type": "no",
-      "azimuthLimits": [-90.0,90.0],
-      "elevationLimits": [-15.0,87.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0
@@ -97,9 +101,9 @@
       "track": true,
       "distance": {
         "presents": true,
-        "minValue": 75.0,
-        "maxValue": 16000.0,
-        "maxUnambiguousValue": 160000.0
+        "minValue": 500.0,
+        "maxValue": 15000.0,
+        "width": 60.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -170,7 +174,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.5
+            "value": 8.5
           }
         },
         "setIrstStandbyMode": {
@@ -214,7 +218,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.5
+            "value": 8.5
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -265,8 +269,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 8000.0,
-            "width": 16000.0
+            "pos": 8375.0,
+            "width": 15250.0
           }
         },
         "setIrstLosLockMode": {
@@ -276,8 +280,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 4000.0,
-            "width": 8000.0
+            "pos": 5000.0,
+            "width": 10000.0
           }
         },
         "setVisualLockModeCommon": {
@@ -708,6 +712,40 @@
           {
             "actions": {
               "setRadarStandbyMode": []
+            }
+          }
+        ],
+        "switchIrstOn": {
+          "stateFrom": "irstParked",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "irstStandby"
+        },
+        "switchIrstOff": [
+          {
+            "stateFrom": "irstStandby"
+          },
+          {
+            "stateFrom": "irstLosLock"
+          },
+          {
+            "stateFrom": "irstVisualLock"
+          },
+          {
+            "stateFrom": "irstTrack"
+          },
+          {
+            "command": "switch"
+          },
+          {
+            "event": "disable"
+          },
+          {
+            "stateTo": "irstParked"
+          },
+          {
+            "actions": {
+              "setIrstStandbyMode": []
             }
           }
         ]

@@ -1264,15 +1264,18 @@ const AFTERBURNER_CHAMBER = 3
                 major = 2.0 * scanPatternBlk.getReal("width", 0.0)
                 minor = major
               }
-              if (rowMajor)
+              if (major * minor > searchZoneAzimuthWidth * searchZoneElevationWidth)
               {
-                searchZoneAzimuthWidth = ::max(searchZoneAzimuthWidth, major)
-                searchZoneElevationWidth = ::max(searchZoneElevationWidth, minor)
-              }
-              else
-              {
-                searchZoneAzimuthWidth = ::max(searchZoneAzimuthWidth, minor)
-                searchZoneElevationWidth = ::max(searchZoneElevationWidth, major)
+                if (rowMajor)
+                {
+                  searchZoneAzimuthWidth = major
+                  searchZoneElevationWidth = minor
+                }
+                else
+                {
+                  searchZoneAzimuthWidth = minor
+                  searchZoneElevationWidth = major
+                }
               }
             }
             if (isSearchRadar)

@@ -98,7 +98,6 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
     local airObj = scene.findObject("reward_aircrafts")
     guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
-    airObj.setValue(0)
     ::fill_unit_item_timers(airObj.findObject(unit.name), unit, params)
   }
 
@@ -336,11 +335,6 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     ::g_promo.launchAction(actionData, this, null)
-  }
-
-  function onUnitActivate(obj)
-  {
-    openUnitActionsList(obj.findObject(unit.name), true)
   }
 
   function onUseDecorator() {}
