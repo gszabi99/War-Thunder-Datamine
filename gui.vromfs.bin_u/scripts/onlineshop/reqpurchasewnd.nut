@@ -104,4 +104,5 @@ class ::gui_handlers.ReqPurchaseWnd extends ::gui_handlers.BaseGuiHandlerWT
   function sendInvitation() {}
   function onOk() {}
   function onUseDecorator() {}
+  function onUnitActivate() {}
 }

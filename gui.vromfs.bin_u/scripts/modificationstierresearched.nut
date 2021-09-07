@@ -143,4 +143,5 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
   }
 
   function onUseDecorator() {}
+  function onUnitActivate() {}
 }

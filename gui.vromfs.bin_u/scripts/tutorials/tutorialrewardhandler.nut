@@ -88,6 +88,8 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onEventHangarModelLoaded(params = {}) {
     updateDecoratorButton()
   }
+
+  function onUnitActivate() {}
 }
 
 ::gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
