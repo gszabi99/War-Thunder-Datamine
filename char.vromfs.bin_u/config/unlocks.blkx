@@ -4472,6 +4472,52 @@
   },
   {
     "unlockable": {
+      "id": "cardicon_cn_modern_01",
+      "type": "pilot",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "num": 100
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "aam"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_china"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "cardicon_sw_modern_01",
       "type": "pilot",
       "mode": [
@@ -172192,38 +172238,6 @@
       "type": "aircraft",
       "popupImage": "#ui/images/uk_destroyer_clemson_montgomery_g95.jpg?P1",
       "popupInDebriefing": true
-    }
-  },
-  {
-    "unlockable": {
-      "id": "uk_destroyer_v_class_verdun",
-      "type": "aircraft",
-      "popupImage": "#ui/images/uk_destroyer_v_class_verdun.jpg?P1",
-      "popupInDebriefing": true,
-      "mode": [
-        {
-          "type": "char_unlocks"
-        },
-        {
-          "num": 3
-        },
-        {
-          "unlock": "chosen_country_britain"
-        },
-        {
-          "unlock": "chosen_unit_type_ship_without_boat"
-        },
-        {
-          "unlock": "first_battle"
-        },
-        {
-          "condition": {
-            "type": "char_unlocked",
-            "unlock": "uk_destroyer_clemson_montgomery_g95",
-            "positive": false
-          }
-        }
-      ]
     }
   },
   {

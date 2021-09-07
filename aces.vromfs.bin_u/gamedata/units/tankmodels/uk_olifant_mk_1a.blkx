@@ -2611,6 +2611,45 @@
       {
         "Weapon": {
           "trigger": "gunner2",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+          "emitter": "emtr_mg_flame_02",
+          "flash": "emtr_mg_flame_02",
+          "barrelDP": "gun_barrel_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
+          "bullets": 2000,
+          "isBulletBelt": true,
+          "fireConeAngle": 5.0,
+          "ChainfireTime": 0.5,
+          "DelayAfterShoot": 2.0,
+          "accuracyAir": 1.5,
+          "accuracyGnd": 0.0,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm",
+            "rotatedTurret": "bone_mg_aa_h_01"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,50.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
           "triggerGroup": "commander",
           "blk": "gameData/Weapons/dummy_weapon.blk",
           "emitter": "bone_commander_sight_v",
@@ -3750,6 +3789,45 @@
             {
               "Weapon": {
                 "trigger": "gunner2",
+                "triggerGroup": "machinegun",
+                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+                "emitter": "emtr_mg_flame_02",
+                "flash": "emtr_mg_flame_02",
+                "barrelDP": "gun_barrel_02_dm",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
+                "bullets": 2000,
+                "isBulletBelt": true,
+                "fireConeAngle": 5.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_mg_aa_v_01",
+                  "gunnerDm": "commander_dm",
+                  "rotatedTurret": "bone_mg_aa_h_01"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-10.0,50.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner3",
                 "triggerGroup": "commander",
                 "blk": "gameData/Weapons/dummy_weapon.blk",
                 "emitter": "bone_commander_sight_v",
@@ -3773,7 +3851,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner3",
+                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",

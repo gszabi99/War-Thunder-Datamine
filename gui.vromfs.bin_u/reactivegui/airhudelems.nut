@@ -17,7 +17,7 @@ local {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState, IsCannonEmpty,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
-  IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudColor, HudParamColor
+  IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudColor, HudParamColor, MfdColor
 } = require("airState.nut")
 
 local {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor, isColorOrWhite} = require("style/airHudStyle.nut")
@@ -65,12 +65,11 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-local verticalSpeedInd = function(height, isBackground) {
-  return @() styleLineForeground.__merge({
+local verticalSpeedInd = function(height, isBackground, style, color) {
+  return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = HudColor.value
+    color
     size = [height, height]
-    watch = HudColor
     pos = [0, -height*0.25]
     commands = [
       [VECTOR_LINE, 0, 25, 100, 50, 100, 0, 0, 25],
@@ -78,15 +77,14 @@ local verticalSpeedInd = function(height, isBackground) {
   })
 }
 
-local verticalSpeedScale = function(width, height, isBackground) {
+local verticalSpeedScale = function(width, height, isBackground, style, color) {
   local part1_16 = 0.0625 * 100
   local lineStart = 70
 
-  return @() styleLineForeground.__merge({
+  return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [width, height]
-    color = HudColor.value
-    watch = HudColor
+    color
     halign = ALIGN_RIGHT
     commands = [
       [VECTOR_LINE, 0,         0,           100, 0],
@@ -110,7 +108,7 @@ local verticalSpeedScale = function(width, height, isBackground) {
   })
 }
 
-local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, isBackground) {
+local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBackground, elemStyle = styleText) {
 
   local relativeHeight = Computed( @() ::clamp(DistanceToGround.value * 2.0, 0, 100))
 
@@ -118,19 +116,19 @@ local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, isBackgroun
     pos = [posX, posY]
     children = [
       {
-        children = verticalSpeedScale(scaleWidth, height, isBackground)
+        children = verticalSpeedScale(scaleWidth, height, isBackground, elemStyle, color)
       }
       {
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         size = [scaleWidth, height]
-        children = @() styleLineForeground.__merge({
+        children = @() elemStyle.__merge({
           rendObj = ROBJ_VECTOR_CANVAS
           pos = [LINE_WIDTH, 0]
           size = [LINE_WIDTH, height]
           tmpHeight = 0
-          color = HudColor.value
-          watch = [HudColor, DistanceToGround, relativeHeight]
+          watch = [DistanceToGround, relativeHeight]
+          color = color
           opacity = DistanceToGround.value > 50.0 ? 0 : 100
           commands = [[VECTOR_RECTANGLE, 0, 100 - relativeHeight.value, 100, relativeHeight.value]]
         })
@@ -139,12 +137,12 @@ local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, isBackgroun
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         size = [-0.5*scaleWidth, height]
-        children = @() styleText.__merge({
+        children = @() elemStyle.__merge({
           rendObj = ROBJ_DTEXT
           halign = ALIGN_RIGHT
-          color = HudColor.value
+          color
           size = [scaleWidth*4,SIZE_TO_CONTENT]
-          watch = [DistanceToGround, HudColor, IsMfdEnabled]
+          watch = [DistanceToGround, IsMfdEnabled]
           text = IsMfdEnabled.value ? floor(DistanceToGround.value).tostring() :
             ::cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(DistanceToGround.value)
         })
@@ -156,14 +154,14 @@ local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, isBackgroun
           translate = [0, height * 0.01 * clamp(50 - VerticalSpeed.value * 5.0, 0, 100)]
         }
         children = [
-          verticalSpeedInd(hdpx(25), isBackground),
+          verticalSpeedInd(hdpx(25), isBackground, elemStyle, color),
           {
             pos = [scaleWidth + hdpx(10), hdpx(-10)]
-            children = @() styleText.__merge({
+            children = @() elemStyle.__merge({
               rendObj = ROBJ_DTEXT
+              color
               size = [scaleWidth*4,SIZE_TO_CONTENT]
-              color = HudColor.value
-              watch = [VerticalSpeed, HudColor, IsMfdEnabled]
+              watch = [VerticalSpeed, IsMfdEnabled]
               text = IsMfdEnabled.value ?
                 round_by_value(VerticalSpeed.value, 1).tostring() :
                 ::cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.value)
@@ -451,7 +449,7 @@ local function getFuelAlertState(fuelState){
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-local function createParam(param, width, height, isBackground, needCaption = true, for_ils = false, isBomberView = false) {
+local function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false) {
   local {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
 
@@ -471,7 +469,7 @@ local function createParam(param, width, height, isBackground, needCaption = tru
   local colorAlertCaptionW = Computed(@() selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
 
-  local captionComponent = @() styleText.__merge({
+  local captionComponent = @() style.__merge({
     rendObj = ROBJ_DTEXT
     size = [finalTitleSizeX, height]
     watch = [titleComputed, colorAlertCaptionW]
@@ -479,7 +477,7 @@ local function createParam(param, width, height, isBackground, needCaption = tru
     color = colorAlertCaptionW.value
   })
 
-  local selectedComponent = @() styleText.__merge({
+  local selectedComponent = @() style.__merge({
     rendObj = ROBJ_DTEXT
     size = [0.05*width, height]
     watch = [selectedComputed, colorAlertCaptionW]
@@ -489,8 +487,8 @@ local function createParam(param, width, height, isBackground, needCaption = tru
 
   local valueSizeX = @() ::calc_comp_size({rendObj = ROBJ_DTEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
 
-  local valueComponent = @() styleText.__merge({
-    color = selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
+  local valueComponent = @() style.__merge({
+    color = for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
       AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value)
     rendObj = ROBJ_DTEXT
     size = [valueSizeX() + 0.075 * width, height]
@@ -499,7 +497,7 @@ local function createParam(param, width, height, isBackground, needCaption = tru
     text = valueComputed.value
   })
 
-  local additionalComponent = @() styleText.__merge({
+  local additionalComponent = @() style.__merge({
     color = isBackground ? backgroundColor
       : HudParamColor.value
     rendObj = ROBJ_DTEXT
@@ -853,15 +851,15 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 
 local fuelKeyId = AirParamsSecondary.FUEL
 
-local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  local function getChildren(isBackground, isBomberView = false) {
+local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, style = styleText) {
+  local function getChildren(isBackground, style, isBomberView = false) {
     local children = []
 
     foreach(key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, isBackground, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
-        children.append(@() styleText.__merge({
+        children.append(@() style.__merge({
           rendObj = ROBJ_DTEXT
           size = [0, hdpx(12)]
           text = @() ""
@@ -871,13 +869,13 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
 
     if (is_aircraft) {
-      children.append(@() styleText.__merge({
+      children.append(@() style.__merge({
         rendObj = ROBJ_DTEXT
         size = [ 0, hdpx(12)]
         text = @() ""
@@ -886,21 +884,21 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
 
     foreach(key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, isBackground, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
     }
 
     return children
   }
 
-  return function(isBackground, isBomberView = false) {
+  return function(isBackground, style = styleText, isBomberView = false ) {
     return {
-      children = @() styleLineForeground.__merge({
+      children = @() style.__merge({
         watch = [mainMask, secondaryMask, posWatched]
         pos = posWatched.value
         size = [width, SIZE_TO_CONTENT]
         flow = FLOW_VERTICAL
         gap = gap
-        children = getChildren(isBackground, isBomberView)
+        children = getChildren(isBackground, style, isBomberView)
       })
     }
   }
@@ -914,11 +912,10 @@ local function compassComponent(isBackground, size, pos) {
   }
 }
 
-local airHorizonZeroLevel = function(height, isBackground) {
-  return @() styleLineForeground.__merge({
+local airHorizonZeroLevel = function(elemStyle, height, isBackground, color) {
+  return elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = HudColor.value
-    watch = HudColor
+    color
     size = [4*height, height]
     commands = [
       [VECTOR_LINE, 0, 50, 15, 50],
@@ -928,15 +925,15 @@ local airHorizonZeroLevel = function(height, isBackground) {
 }
 
 
-local airHorizon = function(height, isBackground) {
-  return @() styleLineForeground.__merge({
+local airHorizon = function(elemStyle, height, isBackground, color) {
+  return @() elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [4*height, height]
-    color = HudColor.value
+    color
     commands = [
       [VECTOR_LINE, 20, 50,  32, 50,  41, 100,  50, 50,  59, 100,  68, 50,  80, 50],
     ]
-    watch = [HorAngle, HudColor]
+    watch = HorAngle
     transform = {
       pivot = [0.5, 0.5]
       rotate = HorAngle.value
@@ -945,29 +942,28 @@ local airHorizon = function(height, isBackground) {
 }
 
 
-local horizontalSpeedVector = function(height, isBackground) {
-  return @() styleLineForeground.__merge({
+local horizontalSpeedVector = function(elemStyle, height, isBackground, color) {
+  return elemStyle.__merge({
     rendObj = ROBJ_HELICOPTER_HORIZONTAL_SPEED
     size = [height, height]
     minLengthArrowVisibleSq = 200
     velocityScale = 5
-    color = HudColor.value
-    watch = HudColor
+    color
   })
 }
 
-local HelicopterHorizontalSpeedComponent = function(isBackground, posX = sw(50), posY = sh(50), height = hdpx(40)) {
+local HelicopterHorizontalSpeedComponent = function(isBackground, color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
   return function() {
     return {
       pos = [posX - 2* height, posY - height*0.5]
       size = [4*height, height]
       children = [
-        airHorizonZeroLevel(height, isBackground)
-        airHorizon(height, isBackground)
+        airHorizonZeroLevel(elemStyle, height, isBackground, color)
+        airHorizon(elemStyle, height, isBackground, color)
         {
           pos = [height, -0.5*height]
           children = [
-            horizontalSpeedVector(2 * height, isBackground)
+            horizontalSpeedVector(elemStyle, 2 * height, isBackground, color)
           ]
         }
       ]
@@ -1170,17 +1166,17 @@ local function helicopterRocketSightMode(sightMode){
   ]
 }
 
-local helicopterRocketAim = @(width, height, isBackground) function() {
+local helicopterRocketAim = @(width, height, isBackground, color, style = styleLineForeground) function() {
 
   local lines = helicopterRocketSightMode(RocketSightMode.value)
 
-  return styleLineForeground.__merge({
+  return style.__merge({
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
     size = [width, height]
-    color = HudColor.value
-    watch = [RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, HudColor]
+    color
+    watch = [RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode]
     opacity = RocketAimVisible.value ? 100 : 0
     transform = {
       translate = [RocketAimX.value, RocketAimY.value]

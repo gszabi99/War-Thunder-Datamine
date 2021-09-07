@@ -51,14 +51,14 @@ local function helicopterMainHud(isBackground) {
     watch = IsMainHudVisible
     children = IsMainHudVisible.value
     ? [
-      rocketAim(sh(0.8), sh(1.8), isBackground)
+      rocketAim(sh(0.8), sh(1.8), isBackground, HudColor.value)
       aamAim(isBackground, HudColor, AlertColorHigh)
       agmAim(isBackground, HudColor)
       gunDirection(isBackground, false)
       fixedGunsDirection(isBackground)
       helicopterCCRP(isBackground)
-      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), isBackground)
-      horSpeed(isBackground)
+      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value, isBackground)
+      horSpeed(isBackground, HudColor.value)
       helicopterParamsTable(isBackground)
       taTarget(sw(25), sh(25), isBackground)
     ]
@@ -72,7 +72,7 @@ local function helicopterSightHud(isBackground) {
     watch = IsSightHudVisible
     children = IsSightHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), isBackground)
+      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudColor.value, isBackground)
       turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), isBackground)
       agmLaunchZone(sw(100), sh(100), isBackground)
       launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), isBackground)
@@ -101,7 +101,7 @@ local function helicopterGunnerHud(isBackground) {
         gunDirection(isBackground, false)
         fixedGunsDirection(isBackground)
         helicopterCCRP(isBackground)
-        vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), isBackground)
+        vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value, isBackground)
         helicopterParamsTable(isBackground)
       ]
     : null
@@ -113,7 +113,7 @@ local function pilotHud(isBackground) {
     watch = IsPilotHudVisible
     children = IsPilotHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), isBackground)
+      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), HudColor.value, isBackground)
       helicopterParamsTable(isBackground)
     ]
     : null
@@ -134,7 +134,7 @@ local function helicopterArbiterHud(isBackground) {
 local function helicopterHUDs(isBackground) {
 
   return @() {
-    watch = [IsRadarHudVisible, IsMfdEnabled]
+    watch = [IsRadarHudVisible, IsMfdEnabled, HudColor]
     children = [
       helicopterMainHud(isBackground)
       helicopterSightHud(isBackground)

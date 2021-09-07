@@ -1035,7 +1035,7 @@ const AFTERBURNER_CHAMBER = 3
         break
 
       case "pilot":
-
+      case "gunner_helicopter":
         foreach (cfg in [
           { label = "avionics_sight_turret", ccipKey = "haveCCIPForTurret", ccrpKey = "haveCCRPForTurret"  }
           { label = "avionics_sight_cannon", ccipKey = "haveCCIPForGun",    ccrpKey = "haveCCRPForGun"     }
@@ -1050,13 +1050,24 @@ const AFTERBURNER_CHAMBER = 3
               ::loc("ui/comma").join([ haveCcip ? ::loc("CCIP") : "", haveCcrp ? ::loc("CCRP") : "" ], true)))
         }
 
+        local nightVisionBlk = findAnyModEffectValue("nightVision")
+        if (partId == "pilot")
+        {
+          if (nightVisionBlk?.pilotIr != null)
+            desc.append(::loc("modification/night_vision_system"))
+        }
+        else
+        {
+          if (nightVisionBlk?.gunnerIr != null)
+            desc.append(::loc("modification/night_vision_system"))
+        }
+
         if ((unitBlk?.haveOpticTurret || unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER) && unitBlk?.gunnerOpticFps != null)
           if (unitBlk?.cockpit.sightOutFov != null || unitBlk?.cockpit.sightInFov != null)
           {
             local optics = getOpticsParams(unitBlk?.cockpit.sightOutFov ?? 0, unitBlk?.cockpit.sightInFov ?? 0)
             if (optics.zoom != "")
             {
-              local nightVisionBlk = findAnyModEffectValue("nightVision")
               local visionModes = ::loc("ui/comma").join([
                 { mode = "tv",   have = nightVisionBlk?.sightIr != null || nightVisionBlk?.sightThermal != null }
                 { mode = "lltv", have = nightVisionBlk?.sightIr != null }
@@ -1102,10 +1113,12 @@ const AFTERBURNER_CHAMBER = 3
           desc.append("".concat(::loc($"avionics_sensor_{sensorType}"), ::loc("ui/colon"),
             getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
         }
+
         if (unitBlk.getBool("havePointOfInterestDesignator", false) || unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER)
           desc.append(::loc("avionics_aim_spi"))
         if (unitBlk.getBool("laserDesignator", false))
           desc.append(::loc("avionics_aim_laser_designator"))
+
         for (local b = 0; b < (unitBlk?.counterMeasures.blockCount() ?? 0); b++)
         {
           local counterMeasureBlk = unitBlk.counterMeasures.getBlock(b)
