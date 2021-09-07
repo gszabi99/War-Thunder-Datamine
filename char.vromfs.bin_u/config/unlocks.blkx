@@ -172242,6 +172242,47 @@
   },
   {
     "unlockable": {
+      "id": "uk_destroyer_v_class_verdun",
+      "type": "aircraft",
+      "popupImage": "#ui/images/uk_destroyer_v_class_verdun.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_always_progress"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "chosen_country_britain",
+            "positive": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "chosen_unit_type_ship_without_boat",
+            "positive": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "first_battle",
+            "positive": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "uk_destroyer_clemson_montgomery_g95",
+            "positive": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "jp_destroyer_satsuki",
       "type": "aircraft",
       "popupImage": "#ui/images/jp_destroyer_satsuki.jpg?P1",
