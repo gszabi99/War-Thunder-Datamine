@@ -11474,34 +11474,6 @@
   },
   {
     "unlockable": {
-      "id": "korea_dynamic_usa",
-      "type": "dyncampaign",
-      "mode": {
-        "type": "char_aircrafts_in_era",
-        "era": 5,
-        "num": 4,
-        "premium": true,
-        "country": "country_usa",
-        "unitClass": "aircraft_only"
-      }
-    }
-  },
-  {
-    "unlockable": {
-      "id": "korea_dynamic_ussr",
-      "type": "dyncampaign",
-      "mode": {
-        "type": "char_aircrafts_in_era",
-        "era": 5,
-        "num": 4,
-        "premium": true,
-        "country": "country_ussr",
-        "unitClass": "aircraft_only"
-      }
-    }
-  },
-  {
-    "unlockable": {
       "id": "korsun_dynamic_germany",
       "type": "dyncampaign",
       "hideForLang": "HChinese",
@@ -172237,7 +172209,24 @@
       "id": "uk_destroyer_clemson_montgomery_g95",
       "type": "aircraft",
       "popupImage": "#ui/images/uk_destroyer_clemson_montgomery_g95.jpg?P1",
-      "popupInDebriefing": true
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_britain"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
     }
   },
   {
