@@ -2459,16 +2459,6 @@
   {
     "commonWeapons": [
       {
-        "hideNodes": [
-          {
-            "node": "box_3_container"
-          },
-          {
-            "node": "box_3_container_cap"
-          }
-        ]
-      },
-      {
         "Weapon": {
           "trigger": "cannon",
           "blk": "gameData/Weapons/cannonAkan_m49.blk",
@@ -2758,6 +2748,670 @@
           "blk": "gameData/flightModels/weaponPresets/saab_a32a_180mm_hpsrak_m49.blk",
           "reqModification": "swd_j29_180mm_m49"
         }
+      },
+      {
+        "preset": {
+          "name": "saab_a32a_chaff",
+          "blk": "gameData/FlightModels/weaponPresets/saab_a32a_chaff.blk",
+          "reqModification": "chaff_pods",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+              },
+              {
+                "amountPerTier": 16.0
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "ltc"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "ltc"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_120kg_m61_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_120kg_m61_chaff.blk"
+          },
+          {
+            "reqModification": "swe_minb_m61"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "iconType": "bombs_small"
+                  },
+                  {
+                    "tier": {
+                      "idx": 0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_250kg_m50_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_250kg_m50_chaff.blk"
+          },
+          {
+            "reqModification": "swe_minb_m40"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "iconType": "bombs_middle"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_500kg_m56a_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_500kg_m56_chaff.blk"
+          },
+          {
+            "reqModification": "swe_minb_m41"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m56.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_large",
+                  "tier": {
+                    "idx": 6
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_600kg_m50_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_600kg_m50_chaff.blk"
+          },
+          {
+            "reqModification": "swe_minb_m50"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/swd_600kg_minb_m50.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_heavy_middle",
+                  "tier": {
+                    "idx": 6
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_145mm_psrak_m49a_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_145mm_psrak_m49a_chaff.blk"
+          },
+          {
+            "reqModification": "swd_j29_145mm_m49a"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "rockets_ap_large_group_x2"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_150mm_srak_m51_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_150mm_srak_m51_chaff.blk"
+          },
+          {
+            "reqModification": "swd_j29_150mm_m51"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "rockets_he_large_group_x2"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "saab_a32a_180mm_hpsrak_m49_chaff"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/saab_a32a_180mm_hpsrak_m49_chaff.blk"
+          },
+          {
+            "reqModification": "swd_j29_180mm_m49"
+          },
+          {
+            "reqModification": "chaff_pods"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk"
+                  },
+                  {
+                    "amountPerTier": 16.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "rockets_he_large"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "rockets_he_large"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2848,6 +3502,11 @@
       "akan_m47_new_gun": {
         "reqModification": "akan_m47_belt_pack",
         "tier": 3
+      },
+      "chaff_pods": {
+        "prevModification": "akan_m47_belt_pack",
+        "modClass": "weapon",
+        "tier": 4
       },
       "swe_minb_m61": {
         "modClass": "weapon",

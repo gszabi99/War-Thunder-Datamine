@@ -44,6 +44,7 @@ local compModeGraphicsOptions = {
   }
   standaloneOptions = {
     dlss              = { compMode = false }
+    dlssSharpness     = { compMode = false }
   }
 }
 //------------------------------------------------------------------------------
@@ -74,6 +75,7 @@ local mUiStruct = [
     container = "sysopt_bottom_left"
     items = [
       "dlss"
+      "dlssSharpness"
       "anisotropy"
       "msaa"
       "antialiasing"
@@ -504,7 +506,7 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa" ])
+    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -748,6 +750,9 @@ mSettings = {
       local quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
       set_blk_value_by_path(blk, desc.blk, quality)
     }
+  }
+  dlssSharpness = { widgetType="slider" def=0 min=0 max=100 blk="video/dlssSharpness" restart=false
+    enabled = @() getGuiValue("dlss", "off") != "off"
   }
   anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
     values = [ "off", "2X", "4X", "8X", "16X" ]

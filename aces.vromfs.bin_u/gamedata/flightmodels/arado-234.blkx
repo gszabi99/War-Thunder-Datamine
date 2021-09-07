@@ -2118,7 +2118,8 @@
       {
         "preset": {
           "name": "arado234_3x500",
-          "blk": "gameData/FlightModels/weaponPresets/arado-234_b2_3x500.blk"
+          "blk": "gameData/FlightModels/weaponPresets/arado-234_b2_3x500.blk",
+          "reqModification": "ju-88_2xSC500"
         }
       },
       {
@@ -2216,12 +2217,17 @@
       "new_cover": [],
       "structure_str": [],
       "hp_105_jet": [],
-      "ar234_SC1000": {
-        "modClass": "weapon",
-        "tier": 2
-      },
       "new_compressor_jet": {
         "tier": 1
+      },
+      "ju-88_2xSC500": {
+        "tier": 1,
+        "modClass": "weapon"
+      },
+      "ar234_SC1000": {
+        "reqModification": "ju-88_2xSC500",
+        "modClass": "weapon",
+        "tier": 3
       }
     }
   },

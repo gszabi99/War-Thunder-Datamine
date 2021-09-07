@@ -10,7 +10,7 @@
       "rangeMax": 10000.0,
       "visibilityType": "infraRed",
       "antenna": {
-        "angleHalfSens": 0.5,
+        "angleHalfSens": 0.05,
         "sideLobesSensitivity": -60.0
       }
     }
@@ -24,7 +24,7 @@
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 0.25,
+      "width": 0.125,
       "barHeight": 0.5,
       "barsCount": 1,
       "rowMajor": false,
@@ -47,7 +47,7 @@
       "distanceAccuracy": 2.0,
       "distance": {
         "presents": true,
-        "minValue": 30.0,
+        "minValue": 150.0,
         "maxValue": 10000.0
       },
       "dopplerSpeed": {
@@ -163,7 +163,7 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 100.0
+            "width": 1.0
           }
         },
         "setTrackMode": {

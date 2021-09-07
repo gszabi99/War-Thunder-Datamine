@@ -3,39 +3,43 @@
   "name": "GNEYS-5S",
   "transivers": {
     "search": {
-      "pulsePower": 450.0,
-      "pulseWidth": 0.0,
-      "prf": 2700.0,
+      "power": 100.0,
       "band": 1,
-      "range": 4000.0,
-      "rangeMax": 4000.0,
+      "rcs": 3.0,
+      "range": 7000.0,
+      "rangeMax": 8000.0,
       "antenna": {
-        "angleHalfSens": 60.0,
-        "sideLobesSensitivity": -10.0
+        "azimuth": {
+          "angleHalfSens": 60.0,
+          "sideLobesSensitivity": -10.0
+        },
+        "elevation": {
+          "angleHalfSens": 40.0,
+          "sideLobesSensitivity": -10.0
+        }
       }
     }
   },
   "scanPatterns": {
     "search": {
-      "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-30.0,30.0],
+      "azimuthLimits": [-60.0,60.0],
+      "elevationLimits": [-40.0,40.0],
       "type": "no"
     }
   },
   "signals": {
     "search": {
-      "groundClutter": true,
+      "groundClutter": false,
       "dynamicRange": [30.0,3.0],
       "distance": {
         "presents": true,
-        "minValue": 200.0,
-        "maxValue": 4000.0,
-        "maxUnambiguousValue": 220000.0
+        "minValue": 300.0,
+        "maxValue": 8000.0
       }
     }
   },
   "scopeRanges": {
-    "range1": 4000.0
+    "range1": 8000.0
   },
   "fsms": {
     "main": {

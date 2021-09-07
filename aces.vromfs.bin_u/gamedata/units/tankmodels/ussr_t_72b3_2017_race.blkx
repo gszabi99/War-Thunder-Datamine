@@ -2401,8 +2401,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,10.0]
@@ -3337,7 +3337,31 @@
         "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "modern_tank_laser_rangefinder": {
-        "tier": 2
+        "tier": 2,
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
       },
       "125mm_ussr_Practice": [],
       "125mm_ussr_APDS_FS_ammo_pack": [],
@@ -3590,8 +3614,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-5.0,10.0]

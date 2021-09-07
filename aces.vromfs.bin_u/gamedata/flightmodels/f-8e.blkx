@@ -57,6 +57,10 @@
         "genericDamageMult": 0.3,
         "hp": 14.5
       },
+      "airbrake_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -124,9 +128,6 @@
       }
     },
     "dural": {
-      "airbrake_l_dm": {
-        "hp": 19.5
-      },
       "cover1_dm": {
         "hp": 19.5
       }
@@ -193,25 +194,23 @@
       }
     },
     "steel_tank_armor": {
-      "tank4_dm": {
-        "hp": 106.3
-      }
-    },
-    "steel_tank_s": {
       "tank1_dm": {
-        "hp": 70.5
+        "hp": 120.5
       },
       "tank2_dm": {
-        "hp": 70.5
+        "hp": 120.5
       },
       "tank3_dm": {
-        "hp": 70.5
+        "hp": 78.6
+      },
+      "tank4_dm": {
+        "hp": 106.3
       },
       "tank5_dm": {
-        "hp": 70.5
+        "hp": 90.3
       },
       "tank6_dm": {
-        "hp": 70.5
+        "hp": 95.2
       }
     }
   },
@@ -331,9 +330,61 @@
       ]
     },
     {
-      "part": {
-        "name": "airbrake_l_dm"
-      }
+      "part": [
+        {
+          "name": "airbrake_l_dm"
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0,
+            "nothing": 4.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        }
+      ]
     },
     {
       "part": {
@@ -487,6 +538,7 @@
         {
           "onHit": {
             "fire": 0.001,
+            "leak_oil": 0.8,
             "cut": 0.0
           }
         },
@@ -494,19 +546,22 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.005,
+            "leak_oil": 0.95,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 0.1,
+            "fire": 25.0,
+            "leak_oil": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 1.0,
+            "fire": 30.0,
+            "leak_oil": 10.0,
             "cut": 0.0
           }
         }
@@ -1205,6 +1260,24 @@
           "name": "tail_dm"
         },
         {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.25
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 65.0,
+            "cut": 1.0
+          }
+        },
+        {
           "onKill": {
             "tailcontrol_dm": 1.0,
             "nothing": 19.0
@@ -1215,6 +1288,33 @@
             "damage": 10.0,
             "tailcontrol_dm": 1.0,
             "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 4.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 3.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 65.0,
+            "cut": 1.0
           }
         }
       ]
@@ -1231,43 +1331,49 @@
         },
         {
           "onHit": {
-            "fire": 0.05,
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
             "leak": 0.7
           }
         },
         {
           "onHit": {
-            "damage": 10.0,
-            "fire": 0.7,
-            "leak": 0.8
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "fire": 0.9,
+            "damage": 70.0,
+            "fire": 0.01,
             "leak": 0.9
           }
         },
         {
           "onKill": {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           }
         },
         {
           "onKill": {
             "damage": 50.0,
-            "fire": 15.0,
-            "leak": 35.0
+            "fire": 50.0,
+            "leak": 15.0
           }
         },
         {
           "onKill": {
             "damage": 70.0,
             "fire": 50.0,
-            "leak": 30.0
+            "leak": 10.0
           }
         }
       ]
@@ -1279,43 +1385,49 @@
         },
         {
           "onHit": {
-            "fire": 0.05,
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
             "leak": 0.7
           }
         },
         {
           "onHit": {
-            "damage": 10.0,
-            "fire": 0.7,
-            "leak": 0.8
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "fire": 0.9,
+            "damage": 70.0,
+            "fire": 0.01,
             "leak": 0.9
           }
         },
         {
           "onKill": {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           }
         },
         {
           "onKill": {
             "damage": 50.0,
-            "fire": 15.0,
-            "leak": 35.0
+            "fire": 50.0,
+            "leak": 15.0
           }
         },
         {
           "onKill": {
             "damage": 70.0,
             "fire": 50.0,
-            "leak": 30.0
+            "leak": 10.0
           }
         }
       ]
@@ -1327,43 +1439,49 @@
         },
         {
           "onHit": {
-            "fire": 0.05,
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
             "leak": 0.7
           }
         },
         {
           "onHit": {
-            "damage": 10.0,
-            "fire": 0.7,
-            "leak": 0.8
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "fire": 0.9,
+            "damage": 70.0,
+            "fire": 0.01,
             "leak": 0.9
           }
         },
         {
           "onKill": {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           }
         },
         {
           "onKill": {
             "damage": 50.0,
-            "fire": 15.0,
-            "leak": 35.0
+            "fire": 50.0,
+            "leak": 15.0
           }
         },
         {
           "onKill": {
             "damage": 70.0,
             "fire": 50.0,
-            "leak": 30.0
+            "leak": 10.0
           }
         }
       ]
@@ -1429,43 +1547,49 @@
         },
         {
           "onHit": {
-            "fire": 0.05,
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
             "leak": 0.7
           }
         },
         {
           "onHit": {
-            "damage": 10.0,
-            "fire": 0.7,
-            "leak": 0.8
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "fire": 0.9,
+            "damage": 70.0,
+            "fire": 0.01,
             "leak": 0.9
           }
         },
         {
           "onKill": {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           }
         },
         {
           "onKill": {
             "damage": 50.0,
-            "fire": 15.0,
-            "leak": 35.0
+            "fire": 50.0,
+            "leak": 15.0
           }
         },
         {
           "onKill": {
             "damage": 70.0,
             "fire": 50.0,
-            "leak": 30.0
+            "leak": 10.0
           }
         }
       ]
@@ -1477,43 +1601,49 @@
         },
         {
           "onHit": {
-            "fire": 0.05,
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
             "leak": 0.7
           }
         },
         {
           "onHit": {
-            "damage": 10.0,
-            "fire": 0.7,
-            "leak": 0.8
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "fire": 0.9,
+            "damage": 70.0,
+            "fire": 0.01,
             "leak": 0.9
           }
         },
         {
           "onKill": {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           }
         },
         {
           "onKill": {
             "damage": 50.0,
-            "fire": 15.0,
-            "leak": 35.0
+            "fire": 50.0,
+            "leak": 15.0
           }
         },
         {
           "onKill": {
             "damage": 70.0,
             "fire": 50.0,
-            "leak": 30.0
+            "leak": 10.0
           }
         }
       ]
@@ -2305,32 +2435,9 @@
     },
     {
       "preset": {
-        "name": "f_8e_2x_aim9d",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9d.blk",
-        "reqModification": "us_aim_9d",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk"
-            },
-            {
-              "amountPerTier": 1.0
-            },
-            {
-              "iconType": "missile_type_b_air_to_air"
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            }
-          ]
-        }
+        "name": "f_8e_4x_aim9c",
+        "blk": "gameData/FlightModels/weaponPresets/f8u-2_4x_aim9c.blk",
+        "reqModification": "us_aim_9c"
       }
     },
     {
@@ -2367,36 +2474,6 @@
             {
               "tier": {
                 "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "preset": {
-        "name": "f_8e_4x_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_4x_zuni.blk",
-        "reqModification": "f8u_zuni",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
-            },
-            {
-              "iconType": "rockets_he_large_group_x2"
-            },
-            {
-              "amountPerTier": 2.0
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
               }
             }
           ]
@@ -2486,6 +2563,138 @@
               "Weapon": [
                 {
                   "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_8e_2x_aim9c_2x_zuni"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9c_2x_zuni.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "f8u_zuni"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
+                },
+                {
+                  "iconType": "rockets_he_large_group_x2"
+                },
+                {
+                  "amountPerTier": 2.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_8e_2x_aim9d_2x_zuni"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9d_2x_zuni.blk"
+        },
+        {
+          "reqModification": "us_aim_9d"
+        },
+        {
+          "reqModification": "f8u_zuni"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
+                },
+                {
+                  "iconType": "rockets_he_large_group_x2"
+                },
+                {
+                  "amountPerTier": 2.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk"
                 },
                 {
                   "amountPerTier": 1.0
@@ -2694,6 +2903,102 @@
                 },
                 {
                   "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
+                },
+                {
+                  "iconType": "nar_ap_special"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_8e-2_4x_aim9_c2x_zuni_rockets"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_zuni_rockets.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "f8u_zuni"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
                 },
                 {
                   "tier": {
@@ -3085,6 +3390,82 @@
     {
       "preset": [
         {
+          "name": "f_8e-2_4x_aim9c_2x_agm12"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_agm12.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "fj_4b_agm_12b"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                },
+                {
+                  "iconType": "missile_air_to_uni"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "f_8e-2_4x_zuni_2x_agm12"
         },
         {
@@ -3235,6 +3616,92 @@
                 },
                 {
                   "iconType": "missile_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 3.0
+                },
+                {
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_8e-2_4x_aim9c_2x_mk81_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_mk81_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "us_250lb_mk81"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
                 },
                 {
                   "tier": {
@@ -3546,6 +4013,92 @@
     {
       "preset": [
         {
+          "name": "f_8e-2_4x_aim9c_2x_mk82_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_mk82_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                },
+                {
+                  "iconType": "bombs_large_group_x2"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "f_8e-2_4x_zuni_2x_mk82_bombs"
         },
         {
@@ -3764,6 +4317,82 @@
     {
       "preset": [
         {
+          "name": "f_8e-2_4x_aim9c_2x_mk83_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_mk83_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "iconType": "bombs_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "f_8e-2_4x_zuni_2x_mk83_bombs"
         },
         {
@@ -3929,6 +4558,82 @@
                 },
                 {
                   "iconType": "missile_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk"
+                },
+                {
+                  "iconType": "bombs_heavy"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_8e-2_4x_aim9c_2x_mk84_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_8e-2_4x_aim9c_2x_mk84_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9c"
+        },
+        {
+          "reqModification": "us_2000lb_mk84"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9c_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
                 },
                 {
                   "tier": {
@@ -4207,12 +4912,103 @@
       "tier": 2,
       "modClass": "weapon"
     },
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "commonWeapons": [
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          }
+        ]
+      }
+    },
     "us_aim_9b": {
+      "prevModification": "countermeasures_belt_pack",
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9d": {
+    "us_aim_9c": {
       "reqModification": "us_aim_9b",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9d": {
+      "reqModification": "us_aim_9c",
       "tier": 4,
       "modClass": "weapon"
     },

@@ -10,14 +10,14 @@
       "army": 2
     },
     "mission": {
-      "locName": "missions/testFlight",
       "level": "levels/guadalcanal.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0]
+      "windDirection": [1.0,0.0,0.0],
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "briefing": {
       "place_loc": "",
@@ -36,6 +36,9 @@
           },
           {
             "picture": ""
+          },
+          {
+            "showAirMap": false
           },
           {
             "icon": {
@@ -104,8 +107,55 @@
         "spawnOnAirfield": {
           "runwayName": "airfield00",
           "objects": "armada_01"
-        }
-      }
+        },
+        "unitSetProperties": [
+          {
+            "object_marking": 0
+          },
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "object_var_value": 0
+          },
+          {
+            "object": "ai_mov_grnd_trgt_01"
+          },
+          {
+            "object": "ai_mov_grnd_trgt_02"
+          },
+          {
+            "lockSpeed": true
+          },
+          {
+            "waypointReachedDist": 0.0
+          }
+        ],
+        "unitSetRoute": [
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "route": "way_points_01"
+          },
+          {
+            "teleportToStart": true
+          },
+          {
+            "object": "ai_mov_grnd_trgt_01"
+          },
+          {
+            "object": "ai_mov_grnd_trgt_02"
+          }
+        ]
+      },
+      "else_actions": []
     },
     "end": {
       "is_enabled": true,
@@ -156,8 +206,10 @@
           [0.34202,0.0,-0.939693],
           [4014.5,-51.95,-12797.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -167,6 +219,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -199,8 +253,10 @@
           [-0.92388,0.0,-0.382683],
           [3184.7,5.35,-12942.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -210,6 +266,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -232,8 +290,10 @@
           [-0.258819,0.0,-0.965926],
           [2811.6,5.35,-12650.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -243,6 +303,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -265,8 +327,10 @@
           [-0.130526,0.0,-0.991445],
           [3510.6,5.6,-12782.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_ambulance",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -276,6 +340,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -298,8 +364,10 @@
           [0.461749,0.0,-0.887011],
           [3389.65,5.6,-12667.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_cargo_truck",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -309,6 +377,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -318,6 +388,82 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "ai_mov_grnd_trgt_02",
+        "tm": [
+          [-0.012412,0.0,0.999923],
+          [0.0,1.0,0.0],
+          [-0.999923,0.0,-0.012412],
+          [1070.53,29.199,-16720.4]
+        ],
+        "unit_class": "germ_flakpanzer_38t_Gepard",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "ai_mov_grnd_trgt_01",
+        "tm": [
+          [0.0573846,0.0,0.998352],
+          [0.0,1.0,0.0],
+          [-0.998352,0.0,0.0573846],
+          [1066.66,27.0877,-16573.0]
+        ],
+        "unit_class": "germ_pzkpfw_III_ausf_E",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
         },
         "way": []
       }
@@ -376,5 +522,62 @@
         "enabled": true
       }
     }
-  ]
+  ],
+  "wayPoints": {
+    "way_points_01": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [720.669,20.4004,-12955.9]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-2569.12,115.036,-15153.0]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1029.61,29.8746,-16765.2]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    }
+  }
 }

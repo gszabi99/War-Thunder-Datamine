@@ -9132,11 +9132,17 @@
     },
     "305mm_us_mk15_navy_ap": {
       "image": "#ui/gameuiskin#tank_ammo",
-      "isReserve": true,
+      "reqModification": "305mm_us_mk15_navy_ap_ammo_pack",
       "group": "305mm_AP",
       "effects": {
         "additiveBulletMod": "305mm_us_mk15_navy_ap"
       }
+    },
+    "305mm_us_mk15_navy_ap_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
     },
     "356mm_us_45_mk19_navy_hc": {
       "image": "#ui/gameuiskin#tank_ammo",
@@ -18076,9 +18082,7 @@
     },
     "ah_mk1_starstreak": {
       "image": "#ui/gameuiskin#air_to_air_missile",
-      "modClass": "weapon",
-      "group": "mi-24_EVU",
-      "requiresModelReload": true
+      "modClass": "weapon"
     },
     "stinger_heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#air_to_air_missile",
@@ -18118,6 +18122,10 @@
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
+    },
+    "chaff_pods": {
+      "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "modClass": "weapon"
     },
     "f5_us_aim_9e": {
       "image": "#ui/gameuiskin#air_to_air_missile",
@@ -18267,9 +18275,7 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
-      "modClass": "weapon",
-      "requiresModelReload": true,
-      "group": "mi-24_EVU"
+      "modClass": "weapon"
     },
     "ah_1_m200_2": {
       "image": "#ui/gameuiskin#pilon_block_rocket",

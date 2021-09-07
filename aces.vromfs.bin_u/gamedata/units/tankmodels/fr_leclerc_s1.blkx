@@ -3029,8 +3029,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 40.0,
-          "speedPitch": 30.0,
+          "speedYaw": 120.0,
+          "speedPitch": 90.0,
           "turret": {
             "head": "bone_commander_sight_h",
             "gun": "bone_commander_sight_v",
@@ -3777,7 +3777,24 @@
         "tier": 4
       },
       "modern_tank_laser_rangefinder": {
-        "tier": 3
+        "tier": 3,
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": {
+            "sensor": {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            }
+          }
+        }
       },
       "night_vision_system": {
         "image": "#ui/gameuiskin#thermal_sight",
@@ -3984,8 +4001,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 40.0,
-                "speedPitch": 30.0,
+                "speedYaw": 120.0,
+                "speedPitch": 90.0,
                 "turret": {
                   "head": "bone_commander_sight_h",
                   "gun": "bone_commander_sight_v",

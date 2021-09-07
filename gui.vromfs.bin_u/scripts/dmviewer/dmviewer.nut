@@ -44,6 +44,7 @@ const AFTERBURNER_CHAMBER = 3
   crew = null
   unitBlk = null
   unitWeaponBlkList = null
+  unitSensorsBlkList = null
   xrayRemap = {}
   difficulty = null
 
@@ -197,7 +198,8 @@ const AFTERBURNER_CHAMBER = 3
 
   function loadUnitBlk()
   {
-    clearUnitWeaponBlkList() //unit weapons are part of unit blk, should be unloaded togeter with unitBlk
+    // Unit weapons and sensors are part of unit blk, should be unloaded togeter with unitBlk
+    clearCachedUnitBlkNodes()
     unitBlk = ::get_full_unit_blk(unit.name)
   }
 
@@ -253,6 +255,25 @@ const AFTERBURNER_CHAMBER = 3
         if (weapon?.blk && !weapon?.dummy)
           ::u.appendOnce(::u.copy(weapon), unitWeaponBlkList, false, ::u.isEqual)
     }
+  }
+
+  function getUnitSensorsList()
+  {
+    if (unitSensorsBlkList == null)
+    {
+      local sensorsBlk = findAnyModEffectValue("sensors")
+      local isMod = sensorsBlk != null
+      sensorsBlk = sensorsBlk ?? unitBlk?.sensors
+
+      unitSensorsBlkList = []
+      for (local b = 0; b < (sensorsBlk?.blockCount() ?? 0); b++)
+        unitSensorsBlkList.append(sensorsBlk.getBlock(b))
+
+      if (isDebugBatchExportProcess && isMod && unitBlk?.sensors != null)
+        for (local b = 0; b < unitBlk.sensors.blockCount(); b++)
+          ::u.appendOnce(unitBlk.sensors.getBlock(b), unitSensorsBlkList, false, ::u.isEqual)
+    }
+    return unitSensorsBlkList
   }
 
   function collectArmorClassToSteelMuls()
@@ -385,9 +406,10 @@ const AFTERBURNER_CHAMBER = 3
     updateHint({ thickness = 0, name = null, posX = 0, posY = 0})
   }
 
-  function clearUnitWeaponBlkList()
+  function clearCachedUnitBlkNodes()
   {
     unitWeaponBlkList = null
+    unitSensorsBlkList = null
   }
 
   function getHintObj()
@@ -713,18 +735,7 @@ const AFTERBURNER_CHAMBER = 3
         switch (unit.esUnitType)
         {
           case ::ES_UNIT_TYPE_TANK:
-            local infoBlk = unitBlk?.VehiclePhys?.engine
-            if (unitBlk?.modifications != null)
-            {
-              foreach(modName, modification in unitBlk.modifications) {
-                local engine = modification?.effects?.engine
-                if (engine != null && ::shop_is_modification_enabled(unit.name, modName))
-                {
-                  infoBlk = engine
-                  break
-                }
-              }
-            }
+            local infoBlk = findAnyModEffectValue("engine") ?? unitBlk?.VehiclePhys.engine
             if(infoBlk)
             {
               local engineModelName = getEngineModelName(infoBlk)
@@ -1039,9 +1050,25 @@ const AFTERBURNER_CHAMBER = 3
               ::loc("ui/comma").join([ haveCcip ? ::loc("CCIP") : "", haveCcrp ? ::loc("CCRP") : "" ], true)))
         }
 
-        for (local b = 0; b < (unitBlk?.sensors.blockCount() ?? 0); b++)
+        if ((unitBlk?.haveOpticTurret || unit.esUnitType == ::ES_UNIT_TYPE_HELICOPTER) && unitBlk?.gunnerOpticFps != null)
+          if (unitBlk?.cockpit.sightOutFov != null || unitBlk?.cockpit.sightInFov != null)
+          {
+            local optics = getOpticsParams(unitBlk?.cockpit.sightOutFov ?? 0, unitBlk?.cockpit.sightInFov ?? 0)
+            if (optics.zoom != "")
+            {
+              local nightVisionBlk = findAnyModEffectValue("nightVision")
+              local visionModes = ::loc("ui/comma").join([
+                { mode = "tv",   have = nightVisionBlk?.sightIr != null || nightVisionBlk?.sightThermal != null }
+                { mode = "lltv", have = nightVisionBlk?.sightIr != null }
+                { mode = "flir", have = nightVisionBlk?.sightThermal != null }
+              ].map(@(v) v.have ? ::loc($"avionics_sight_vision/{v.mode}") : ""), true)
+              desc.append("".concat(::loc("armor_class/optic"), ::loc("ui/colon"), optics.zoom,
+                visionModes != "" ? ::loc("ui/parentheses/space", { text = visionModes }) : ""))
+            }
+          }
+
+        foreach (sensorBlk in getUnitSensorsList())
         {
-          local sensorBlk = unitBlk.sensors.getBlock(b)
           local sensorFilePath = sensorBlk.getStr("blk", "")
           if (sensorFilePath == "")
             continue
@@ -1102,9 +1129,8 @@ const AFTERBURNER_CHAMBER = 3
         if (unit.isShipOrBoat())
           break
 
-        for (local b = 0; b < (unitBlk?.sensors.blockCount() ?? 0); b++)
+        foreach (sensorBlk in getUnitSensorsList())
         {
-          local sensorBlk = unitBlk.sensors.getBlock(b)
           if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
             continue
 
@@ -1123,6 +1149,8 @@ const AFTERBURNER_CHAMBER = 3
             local isIrst = false
             local rangeMax = 0.0
             local radarFreqBand = 8
+            local searchZoneAzimuthWidth = 0.0
+            local searchZoneElevationWidth = 0.0
             local transiversBlk = sensorPropsBlk.getBlockByName("transivers")
             for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
             {
@@ -1135,6 +1163,22 @@ const AFTERBURNER_CHAMBER = 3
               {
                 isRadar = true
                 radarFreqBand = transiverBlk.getInt("band", 8)
+              }
+              if (transiverBlk?.antenna != null)
+              {
+                if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null)
+                {
+                  local azimuthWidth = 2.0 * (transiverBlk.antenna.azimuth?.angleHalfSens ?? 0.0)
+                  local elevationWidth = 2.0 * (transiverBlk.antenna.elevation?.angleHalfSens ?? 0.0)
+                  searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, azimuthWidth)
+                  searchZoneElevationWidth = max(searchZoneElevationWidth, elevationWidth)
+                }
+                else
+                {
+                  local width = 2.0 * (transiverBlk.antenna?.angleHalfSens ?? 0.0)
+                  searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, width)
+                  searchZoneElevationWidth = max(searchZoneElevationWidth, width)
+                }
               }
             }
 
@@ -1183,8 +1227,6 @@ const AFTERBURNER_CHAMBER = 3
             desc.append(::loc("radar_range_max") + ::loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
 
             local scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
-            local searchZoneAzimuthWidth = 0.0
-            local searchZoneElevationWidth = 0.0
             for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++)
             {
               local scanPatternBlk = scanPatternsBlk.getBlock(p)
@@ -1548,11 +1590,8 @@ const AFTERBURNER_CHAMBER = 3
 
   function getFireControlSystems(key, node)
   {
-    if (!unitBlk?.sensors)
-      return []
-
-    return (unitBlk.sensors % "fireDirecting")
-      .filter(@(blk) (blk % key).findvalue(@(v) v == node) != null)
+    return getUnitSensorsList()
+      .filter(@(blk) blk.getBlockName() == "fireDirecting" && (blk % key).findvalue(@(v) v == node) != null)
   }
 
   function getNumFireControlNodes(mainNode, nodeId)
@@ -1601,25 +1640,47 @@ const AFTERBURNER_CHAMBER = 3
     return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
   }
 
-  function getOpticsDesc(info)
+  function findAnyModEffectValue(effectId)
   {
-    local desc = []
+    for (local b = 0; b < (unitBlk?.modifications.blockCount() ?? 0); b++)
+    {
+      local modBlk = unitBlk.modifications.getBlock(b)
+      local value = modBlk?.effects[effectId]
+      if (value != null
+        && (isDebugBatchExportProcess || ::shop_is_modification_enabled(unit.name, modBlk.getBlockName())))
+          return value
+    }
+    return null
+  }
+
+  function getOpticsParams(zoomOutFov, zoomInFov)
+  {
     local fovToZoom = @(fov) ::sin(80/2*PI/180)/::sin(fov/2*PI/180)
-    local fovOutIn = [info.zoomOutFov, info.zoomInFov]
-    local zoom = ::u.map(fovOutIn, @(fov) fovToZoom(fov))
-    if (::abs(zoom[0] - zoom[1]) < 0.1) {
+    local fovOutIn = [zoomOutFov, zoomInFov].filter(@(fov) fov > 0)
+    local zoom = fovOutIn.map(@(fov) fovToZoom(fov))
+    if (zoom.len() == 2 && ::abs(zoom[0] - zoom[1]) < 0.1) {
       zoom.remove(0)
       fovOutIn.remove(0)
     }
-    local zoomTexts = ::u.map(zoom, @(zoom) zoom ? ::format("%.1fx", zoom) : "")
-    zoomTexts = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
-    if (info?.sightName)
-      desc.append(::loc("sight_model/" + info.sightName, ""))
-    desc.append(::loc("optic/zoom") + ::loc("ui/colon") + zoomTexts)
+    local zoomTexts = ::u.map(zoom, @(zoom) ::format("%.1fx", zoom))
+    local fovTexts = fovOutIn.map(@(fov) "".concat(::round(fov), ::loc("measureUnits/deg")))
+    return {
+      zoom = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
+      fov  = ::g_string.implode(fovTexts,  ::loc("ui/mdash"))
+    }
+  }
 
-    local fovTexts = fovOutIn.map(@(fov) $"{::format("%d", fov)}{::loc("measureUnits/deg")}")
-    fovTexts = ::g_string.implode(fovTexts, ::loc("ui/mdash"))
-    return desc.append($"{::loc("optic/fov")}{::loc("ui/colon")}{fovTexts}")
+  function getOpticsDesc(info)
+  {
+    local desc = []
+    if (info?.sightName)
+      desc.append(::loc($"sight_model/{info.sightName}", ""))
+    local optics = getOpticsParams(info?.zoomOutFov ?? 0, info?.zoomInFov ?? 0)
+    if (optics.zoom != "")
+      desc.append("".concat(::loc("optic/zoom"), ::loc("ui/colon"), optics.zoom))
+    if (optics.fov != "")
+      desc.append("".concat(::loc("optic/fov"), ::loc("ui/colon"), optics.fov))
+    return desc
   }
 
   function getWeaponTotalBulletCount(partId, weaponInfoBlk)
@@ -2203,7 +2264,7 @@ const AFTERBURNER_CHAMBER = 3
   {
     if (p?.unit != unit)
       return
-    recacheWeapons()
+    clearCachedUnitBlkNodes()
     resetXrayCache()
   }
 
@@ -2211,7 +2272,7 @@ const AFTERBURNER_CHAMBER = 3
   {
     if (!unit || p?.unitName != unit.name)
       return
-    recacheWeapons()
+    clearCachedUnitBlkNodes()
     resetXrayCache()
   }
 

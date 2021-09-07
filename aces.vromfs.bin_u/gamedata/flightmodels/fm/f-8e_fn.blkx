@@ -4,8 +4,8 @@
   "RudderEffectiveSpeed": 590.0,
   "ElevatorsEffectiveSpeed": [500.0,500.0],
   "AileronPowerLoss": 1.5,
-  "RudderPowerLoss": 1.5,
-  "ElevatorPowerLoss": [1.5,1.5],
+  "RudderPowerLoss": 1.4,
+  "ElevatorPowerLoss": [1.2,1.4],
   "AlphaAileronMin": 0.01,
   "AlphaRudderMin": 0.01,
   "AlphaElevatorMin": 0.01,
@@ -320,7 +320,7 @@
         "CdMin": 0.083
       },
       "Strength": {
-        "CritOverload": [-291000.0,580600.0],
+        "CritOverload": [-312200.0,666086.0],
         "VNE": 1555.0,
         "MNE": 2.1
       }
@@ -542,8 +542,10 @@
       "SensitivityMultiplier0": [0.0,0.2],
       "SensitivityMultiplier1": [0.2,1.2],
       "SensitivityMultiplier2": [0.35,1.0],
-      "SensitivityMultiplier3": [0.85,1.0],
-      "SensitivityMultiplier4": [1.2,0.8],
+      "SensitivityMultiplier3": [0.72,1.0],
+      "SensitivityMultiplier4": [0.8,0.8],
+      "SensitivityMultiplier5": [0.9,1.0],
+      "SensitivityMultiplier6": [1.2,0.8],
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [0.0,0.0],
       "SensitivityCd": [0.0,0.0],
@@ -1284,9 +1286,9 @@
       "FlapsToThrust": [0.55,1.0,0.85,0.85]
     },
     "Nozzle1": {
-      "Position": [-0.58,0.35,2.5],
+      "Position": [-0.6,0.35,2.5],
       "Direction": [180.0,80.0],
-      "Direction2": [-90.0,-4.28291e-07],
+      "Direction2": [-90.0,-4.0],
       "ThrustRatio": 1.0,
       "ThrustMax": 19500.0,
       "TipPosition": false,
@@ -1301,12 +1303,12 @@
       "RudderToThrust": [0.0,0.0,0.0],
       "VtolToThrust": [0.0,0.0],
       "ReverseToThrust": [0.0,0.0],
-      "FlapsToThrust": [0.55,0.0,0.85,1.0]
+      "FlapsToThrust": [0.65,0.0,0.85,1.0]
     },
     "Nozzle2": {
-      "Position": [-0.58,0.35,-2.5],
+      "Position": [-0.6,0.35,-2.5],
       "Direction": [180.0,80.0],
-      "Direction2": [-90.0,-4.28291e-07],
+      "Direction2": [-90.0,-4.0],
       "ThrustRatio": 1.0,
       "ThrustMax": 19500.0,
       "TipPosition": false,
@@ -1321,7 +1323,7 @@
       "RudderToThrust": [0.0,0.0,0.0],
       "VtolToThrust": [0.0,0.0],
       "ReverseToThrust": [0.0,0.0],
-      "FlapsToThrust": [0.55,0.0,0.85,1.0]
+      "FlapsToThrust": [0.65,0.0,0.85,1.0]
     }
   },
   "Mass": {
@@ -1409,22 +1411,22 @@
     "PartsWithSurface": []
   },
   "SelfSealingTanks": {
-    "tank1_dm": true,
-    "tank2_dm": true,
-    "tank3_dm": true,
-    "tank4_dm": true,
-    "tank5_dm": true,
+    "tank1_dm": false,
+    "tank2_dm": false,
+    "tank3_dm": false,
+    "tank4_dm": false,
+    "tank5_dm": false,
     "tank6_dm": false,
     "tank7_dm": false,
     "tank8_dm": false,
     "tank9_dm": false,
-    "tank10_dm": false,
-    "tank11_dm": false,
-    "tank12_dm": false,
-    "tank13_dm": false,
-    "tank14_dm": false,
-    "tank15_dm": false,
-    "tank16_dm": false
+    "tank10_dm": true,
+    "tank11_dm": true,
+    "tank12_dm": true,
+    "tank13_dm": true,
+    "tank14_dm": true,
+    "tank15_dm": true,
+    "tank16_dm": true
   },
   "Gear": {
     "SinkFactor": 200.0,
@@ -1684,9 +1686,9 @@
       "AngleMax": [-50.0,50.0],
       "VelMax": [0.0,0.0],
       "AngleLim": 190.0,
-      "BalanceLoadFactor": false,
+      "BalanceLoadFactor": true,
       "MaxAoaFactorMult": 0.95,
-      "LoadFactorTimeMult": 0.9,
+      "LoadFactorTimeMult": 0.8,
       "AoaTimeMult": 2.0,
       "AoaDiffMax": 2147440000.0,
       "AoaDiffSpeedMax": 2147440000.0,

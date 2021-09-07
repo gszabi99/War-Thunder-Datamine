@@ -1894,8 +1894,8 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 60.0,
-          "speedPitch": 60.0,
+          "speedYaw": 120.0,
+          "speedPitch": 90.0,
           "turret": {
             "head": "bone_commander_sight_h",
             "gun": "bone_commander_sight_v",
@@ -1938,6 +1938,13 @@
       "preset": {
         "name": "ussr_bmp_2m_default",
         "blk": "gameData/units/tankModels/weaponPresets/ussr_bmp_2m_default.blk"
+      }
+    }
+  },
+  {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
       }
     }
   },
@@ -2845,7 +2852,31 @@
       "tank_new_gun": [],
       "modern_tank_laser_rangefinder": {
         "tier": 3,
-        "modClass": "protection"
+        "modClass": "protection",
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
       },
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_ussr"
@@ -3237,8 +3268,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 60.0,
-                "speedPitch": 60.0,
+                "speedYaw": 120.0,
+                "speedPitch": 90.0,
                 "turret": {
                   "head": "bone_commander_sight_h",
                   "gun": "bone_commander_sight_v",

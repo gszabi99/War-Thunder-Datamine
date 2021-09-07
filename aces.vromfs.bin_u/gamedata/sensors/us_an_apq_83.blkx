@@ -1,133 +1,165 @@
 {
   "type": "radar",
-  "name": "AN/APQ-72",
+  "name": "AN/APQ-83",
   "showMissileLaunchZone": true,
   "transivers": {
-    "common": {
+    "radar": {
       "sideLobesAttenuation": -20.0,
       "power": 300.0,
       "band": 8,
-      "rcs": 5.0,
-      "range": 55500.0,
-      "rangeMax": 100000.0,
+      "rcs": 3.0,
+      "range": 20000.0,
+      "rangeMax": 75000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 4.7,
-        "sideLobesSensitivity": -27.0
+        "angleHalfSens": 4.0,
+        "sideLobesSensitivity": -26.0
+      }
+    },
+    "IRST": {
+      "power": 50.0,
+      "band": 1,
+      "rcs": 24000.0,
+      "range": 22000.0,
+      "range1": 6500.0,
+      "rangeMax": 60000.0,
+      "visibilityType": "infraRed",
+      "antenna": {
+        "angleHalfSens": 2.0,
+        "sideLobesSensitivity": -80.0
       }
     }
   },
   "scanPatterns": {
-    "searchExp": {
+    "searchCenteredRadar": {
       "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
-      "rollStabLimit": 70.0,
-      "period": 0.8,
-      "width": 10.0,
-      "barHeight": 4.1,
+      "azimuthLimits": [-45.0,45.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 0.7,
+      "width": 20.0,
+      "barHeight": 3.0,
+      "barsCount": 3,
+      "rowMajor": true
+    },
+    "searchNormalRadar": {
+      "type": "pyramide",
+      "azimuthLimits": [-45.0,45.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 3.0,
+      "width": 45.0,
+      "barHeight": 3.0,
+      "barsCount": 3,
+      "rowMajor": true
+    },
+    "designationLockRadar": {
+      "type": "pyramide",
+      "azimuthLimits": [-45.0,45.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 0.3,
+      "width": 5.0,
+      "barHeight": 3.0,
       "barsCount": 3,
       "rowMajor": true,
-      "barsOneWay": true
-    },
-    "searchNarrow": {
-      "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
-      "rollStabLimit": 70.0,
-      "period": 2.5,
-      "width": 30.0,
-      "barHeight": 4.1,
-      "barsCount": 3,
-      "rowMajor": true,
-      "barsOneWay": true
-    },
-    "searchWide": {
-      "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
-      "rollStabLimit": 70.0,
-      "period": 5.0,
-      "width": 60.0,
-      "barHeight": 4.1,
-      "barsCount": 3,
-      "rowMajor": true,
-      "barsOneWay": true
-    },
-    "boresightLock": {
-      "type": "cone",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
-      "period": 1.0,
-      "width": 3.3,
       "indicate": true
     },
-    "designationLock": {
-      "type": "pyramide",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0],
-      "rollStabLimit": 70.0,
-      "period": 0.5,
-      "width": 6.2,
-      "barHeight": 3.3,
-      "barsCount": 2,
-      "rowMajor": false,
-      "indicate": true
-    },
-    "track": {
+    "trackRadar": {
       "type": "no",
-      "azimuthLimits": [-60.0,60.0],
-      "elevationLimits": [-60.0,60.0]
+      "azimuthLimits": [-45.0,45.0],
+      "elevationLimits": [-30.0,45.0]
+    },
+    "searchCenteredIrst": {
+      "type": "pyramide",
+      "azimuthLimits": [-38.0,38.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 0.7,
+      "width": 20.0,
+      "barHeight": 2.0,
+      "barsCount": 4,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
+    "searchNormalIrst": {
+      "type": "pyramide",
+      "azimuthLimits": [-38.0,38.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 3.0,
+      "width": 45.0,
+      "barHeight": 2.0,
+      "barsCount": 4,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
+    "designationLockIrst": {
+      "type": "pyramide",
+      "azimuthLimits": [-38.0,38.0],
+      "elevationLimits": [-30.0,45.0],
+      "rollStabLimit": 50.0,
+      "period": 0.3,
+      "width": 5.0,
+      "barHeight": 2.0,
+      "barsCount": 4,
+      "rowMajor": true,
+      "barsOneWay": false,
+      "indicate": true
+    },
+    "trackIrst": {
+      "type": "no",
+      "azimuthLimits": [-38.0,38.0],
+      "elevationLimits": [-30.0,45.0]
     }
   },
   "signals": {
-    "search": {
+    "searchRadar": {
       "dynamicRange": [40.0,10.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
       "distance": {
         "presents": true,
-        "minValue": 500.0,
-        "maxValue": 370000.0,
-        "width": 600.0
+        "minValue": 300.0,
+        "maxValue": 75000.0,
+        "width": 500.0
       }
     },
-    "track": {
-      "dynamicRange": [40.0,10.0],
+    "trackRadar": {
+      "dynamicRange": [40.0,12.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
-      "distanceAccuracy": 15.0,
-      "track": true,
+      "distanceAccuracy": 16.0,
       "distance": {
         "presents": true,
-        "minValue": 200.0,
-        "maxValue": 92500.0,
+        "minValue": 300.0,
+        "maxValue": 75000.0,
         "width": 300.0
       }
+    },
+    "IRST": {
+      "rangeFinder": false,
+      "groundClutter": false,
+      "showBScope": false,
+      "showCScope": true
     }
   },
   "scanPatternSets": {
-    "common": {
-      "scanPattern1": "searchNarrow",
-      "scanPattern2": "searchWide",
-      "scanPattern3": "searchExp"
+    "searchRadar": {
+      "scanPattern1": "searchNormalRadar",
+      "scanPattern2": "searchCenteredRadar"
     },
-    "boresightLock": {
-      "scanPattern1": "boresightLock"
+    "searchIrst": {
+      "scanPattern1": "searchNormalIrst",
+      "scanPattern2": "searchCenteredIrst"
     }
   },
   "scopeRangeSets": {
-    "common": {
-      "range1": 18500.0,
-      "range2": 92500.0,
-      "range3": 185000.0,
-      "range4": 370000.0,
-      "range5": 9250.0
-    },
-    "boresightLock": {
-      "range1": 9250.0
+    "searchRadar": {
+      "range1": 37000.0,
+      "range2": 74000.0
     }
   },
   "fsms": {
@@ -137,22 +169,22 @@
         "init": {
           "setEnabled": {
             "value": false
-          },
-          "setTransiver": {
-            "transiver": "common"
-          },
-          "setSignal": {
-            "signal": "search"
-          },
-          "setTargetDesignationRange": {
-            "azimuthRange": [-60.0,60.0],
-            "distanceRange": [0.0,92500.0]
           }
         },
-        "setStandbyMode": {
-          "setModeName": {
-            "name": "standby"
+        "setRadarModeCommon": {
+          "setTransiver": {
+            "transiver": "radar"
+          }
+        },
+        "setIrstModeCommon": {
+          "setTransiver": {
+            "transiver": "IRST"
           },
+          "setSignal": {
+            "signal": "IRST"
+          }
+        },
+        "setStandbyModeCommon": {
           "setEnabled": {
             "value": false
           },
@@ -160,29 +192,53 @@
             "source": "constant",
             "value": 0.0
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": -2.0
-          },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setSignal": {
-            "signal": "search"
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "common"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
           }
         },
-        "setSearchMode": {
-          "setModeName": {
-            "name": "search"
+        "setRadarStandbyAndSearchModesCommon": {
+          "setSignal": {
+            "signal": "searchRadar"
           },
+          "setScanPatternSet": {
+            "scanPatternSet": "searchRadar"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "searchRadar"
+          }
+        },
+        "setIrstStandbyAndSearchModesCommon": {
+          "setScanPatternSet": {
+            "scanPatternSet": "searchIrst"
+          }
+        },
+        "setRadarStandbyMode": {
+          "setRadarModeCommon": [],
+          "setStandbyModeCommon": [],
+          "setRadarStandbyAndSearchModesCommon": [],
+          "setModeName": {
+            "name": "standby"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          }
+        },
+        "setIrstStandbyMode": {
+          "setIrstModeCommon": [],
+          "setStandbyModeCommon": [],
+          "setIrstStandbyAndSearchModesCommon": [],
+          "setModeName": {
+            "name": "IRST standby"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          }
+        },
+        "setSearchModeCommon": {
           "setEnabled": {
             "value": true
           },
@@ -194,23 +250,34 @@
             "source": "constant",
             "value": 0.0
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": -2.0
-          },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setSignal": {
-            "signal": "search"
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "common"
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
+          }
+        },
+        "setRadarSearchMode": {
+          "setRadarModeCommon": [],
+          "setSearchModeCommon": [],
+          "setRadarStandbyAndSearchModesCommon": [],
+          "setModeName": {
+            "name": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          }
+        },
+        "setIrstSearchMode": {
+          "setIrstModeCommon": [],
+          "setSearchModeCommon": [],
+          "setIrstStandbyAndSearchModesCommon": [],
+          "setModeName": {
+            "name": "IRST search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
           }
         },
         "resetSearchMode": {
@@ -219,99 +286,71 @@
             "active": false
           }
         },
-        "setDesignationLockMode": {
-          "setModeName": {
-            "name": "acquisition"
-          },
+        "setDesignationLockModeCommon": {
           "setEnabled": {
             "value": true
           },
           "clearTargetsOfInterest": [],
           "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
-          "setCenterElevation": {
-            "source": "targetDesignation"
+            "source": "constant",
+            "value": 0.0
           },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 1000.0
           },
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
           "setScanPatternSet": [],
-          "setScanPattern": {
-            "scanPattern": "designationLock"
-          },
           "resetScanPhase": [],
+          "clearTargets": [],
           "setFsmActive": {
             "fsm": "lock",
             "active": true
           },
-          "setSignal": {
-            "signal": "track"
-          },
-          "clearTargets": [],
           "setIllumination": {
             "illumination": false
           }
         },
-        "setBoresightLockMode": {
-          "setModeName": {
-            "name": "ACM"
-          },
-          "setEnabled": {
-            "value": true
-          },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
-          "setScanPatternSet": {
-            "scanPatternSet": "boresightLock"
-          },
+        "setRadarAcquisitionAndTrackCommon": {
+          "setSignal": {
+            "signal": "trackRadar"
+          }
+        },
+        "setRadarDesignationLockMode": {
+          "setDesignationLockModeCommon": [],
+          "setRadarAcquisitionAndTrackCommon": [],
           "setScanPattern": {
-            "scanPattern": "boresightLock"
+            "scanPattern": "designationLockRadar"
           },
-          "resetScanPhase": [],
           "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
+            "source": "targetDesignation"
           },
           "setCenterElevation": {
-            "source": "constant",
-            "value": -2.0
+            "source": "targetDesignation"
           },
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
-          "setSignal": {
-            "signal": "track"
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 4625.0,
-            "width": 9250.0
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "boresightLock"
-          },
-          "setIllumination": {
-            "illumination": false
+          "setModeName": {
+            "name": "IRST acquisition"
           }
         },
-        "setTrackMode": {
-          "setModeName": {
-            "name": "track"
+        "setIrstDesignationLockMode": {
+          "setDesignationLockModeCommon": [],
+          "setScanPattern": {
+            "scanPattern": "designationLockIrst"
           },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setModeName": {
+            "name": "IRST acquisition"
+          }
+        },
+        "setTrackModeCommon": {
           "setEnabled": {
             "value": true
           },
           "setScanPatternSet": [],
-          "setScanPattern": {
-            "scanPattern": "track"
-          },
           "clearTargetsOfInterest": [],
           "addTargetOfInterest": [],
           "setLastTargetOfInterestActive": [],
@@ -326,19 +365,31 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
           "setFsmActive": {
             "fsm": "track",
             "active": true
+          }
+        },
+        "setRadarTrackMode": {
+          "setTrackModeCommon": [],
+          "setRadarAcquisitionAndTrackCommon": [],
+          "setScanPattern": {
+            "scanPattern": "trackRadar"
           },
-          "setSignal": {
-            "signal": "track"
+          "setModeName": {
+            "name": "track"
           },
           "setIllumination": {
             "illumination": true
+          }
+        },
+        "setIrstTrackMode": {
+          "setTrackModeCommon": [],
+          "setScanPattern": {
+            "scanPattern": "trackIrst"
+          },
+          "setModeName": {
+            "name": "IRST track"
           }
         }
       },
@@ -346,33 +397,88 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "standby",
+          "stateTo": "radarStandby",
           "actions": {
             "init": [],
-            "setStandbyMode": []
+            "setRadarStandbyMode": [],
+            "setTargetDesignationRange": {
+              "azimuthRange": [-45.0,45.0],
+              "distanceRange": [0.0,46000.0]
+            }
           }
         },
-        "switchOn": {
-          "stateFrom": "standby",
+        "radarSwitchOn": {
+          "stateFrom": "radarStandby",
           "command": "switch",
           "event": "enable",
-          "stateTo": "search",
+          "stateTo": "radarSearch",
           "actions": {
-            "setSearchMode": []
+            "setRadarSearchMode": []
           }
         },
-        "switchOff": {
-          "stateFrom": "search",
+        "irstSwitchOn": {
+          "stateFrom": "irstStandby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "irstSearch",
+          "actions": {
+            "setIrstSearchMode": []
+          }
+        },
+        "radarSwitchOff": {
+          "stateFrom": "radarSearch",
           "command": "switch",
           "event": "disable",
-          "stateTo": "standby",
+          "stateTo": "radarStandby",
           "actions": {
             "resetSearchMode": [],
-            "setStandbyMode": []
+            "setRadarStandbyMode": []
           }
         },
-        "designationLock": {
-          "stateFrom": "search",
+        "irstSwitchOff": {
+          "stateFrom": "irstSearch",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "irstStandby",
+          "actions": {
+            "resetSearchMode": [],
+            "setIrstStandbyMode": []
+          }
+        },
+        "radarToIrstStandby": {
+          "stateFrom": "radarStandby",
+          "command": "typeSwitch",
+          "stateTo": "irstStandby",
+          "actions": {
+            "setIrstStandbyMode": []
+          }
+        },
+        "irstToRadarStandby": {
+          "stateFrom": "irstStandby",
+          "command": "typeSwitch",
+          "stateTo": "radarStandby",
+          "actions": {
+            "setRadarStandbyMode": []
+          }
+        },
+        "radarToIrstSearch": {
+          "stateFrom": "radarSearch",
+          "command": "typeSwitch",
+          "stateTo": "irstSearch",
+          "actions": {
+            "setIrstSearchMode": []
+          }
+        },
+        "irstToRadarSearch": {
+          "stateFrom": "irstSearch",
+          "command": "typeSwitch",
+          "stateTo": "radarSearch",
+          "actions": {
+            "setRadarSearchMode": []
+          }
+        },
+        "radarDesignationLock": {
+          "stateFrom": "radarSearch",
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
@@ -382,162 +488,151 @@
             }
           }
         },
-        "checkDesignationType0": {
-          "stateFrom": "search",
+        "checkRadarDesignationType0": {
+          "stateFrom": "radarSearch",
           "command": "designateTarget",
-          "stateTo": "checkDesignationType0",
+          "stateTo": "checkRadarDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
               "value": 0
             }
           }
         },
-        "designationLockResponce": {
-          "stateFrom": "checkDesignationType0",
+        "radarDesignationLockResponce": {
+          "stateFrom": "checkRadarDesignationType0",
           "event": "designationTypeEquals",
-          "stateTo": "designationLock",
+          "stateTo": "radarDesignationLock",
           "actions": {
             "resetSearchMode": [],
-            "setDesignationLockMode": []
+            "setRadarDesignationLockMode": []
           }
         },
-        "returnToSearchMode": {
-          "stateFrom": "checkDesignationType0",
+        "returnToRadarSearchMode": {
+          "stateFrom": "checkRadarDesignationType0",
           "event": "designationTypeNotEquals",
-          "stateTo": "search"
+          "stateTo": "radarSearch"
         },
-        "designationTrack": {
-          "stateFrom": "designationLock",
+        "radarDesignationTrack": {
+          "stateFrom": "radarDesignationLock",
           "event": "targetDetected",
-          "stateTo": "designationTrack",
+          "stateTo": "radarDesignationTrack",
           "actions": {
             "setFsmActive": {
               "fsm": "lock",
               "active": false
             },
-            "setTrackMode": []
+            "setRadarTrackMode": []
           }
         },
-        "failedDesignationLock": {
-          "stateFrom": "designationLock",
+        "failedRadarDesignationLock": {
+          "stateFrom": "radarDesignationLock",
           "event": "scanFinished",
-          "stateTo": "search",
+          "stateTo": "radarSearch",
           "actions": {
             "setFsmActive": {
               "fsm": "lock",
               "active": false
             },
-            "setSearchMode": []
+            "setRadarSearchMode": []
           }
         },
-        "finishedDesignationTrack": {
-          "stateFrom": "designationTrack",
+        "finishedRadarDesignationTrack": {
+          "stateFrom": "radarDesignationTrack",
           "event": "activeTargetOfInterestInertialTimeOut",
           "command": "selectTarget",
-          "stateTo": "search",
+          "stateTo": "radarSearch",
           "actions": {
             "setFsmActive": {
               "fsm": "track",
               "active": false
             },
-            "setSearchMode": []
+            "setRadarSearchMode": []
           }
         },
-        "boresightLockFromSearch": {
-          "stateFrom": "search",
-          "command": "acmSwitch",
-          "stateTo": "boresightLock",
-          "actions": {
-            "resetSearchMode": [],
-            "setBoresightLockMode": []
-          }
-        },
-        "boresightLockFromStandby": {
-          "stateFrom": "standby",
+        "irstDesignationLock": {
+          "stateFrom": "irstSearch",
           "command": "selectTarget",
-          "stateTo": "boresightLock",
           "actions": {
-            "resetSearchMode": [],
-            "setBoresightLockMode": []
-          }
-        },
-        "boresightTrack": {
-          "stateFrom": "boresightLock",
-          "event": "targetDetected",
-          "stateTo": "boresightTrack",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setTrackMode": []
-          }
-        },
-        "failedBoresightLock": {
-          "stateFrom": "boresightLock",
-          "command": "selectTarget",
-          "stateTo": "standby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "setStandbyMode": []
-          }
-        },
-        "switchToSearch": [
-          {
-            "stateFrom": "boresightLock"
-          },
-          {
-            "command": "switch"
-          },
-          {
-            "command": "acmSwitch"
-          },
-          {
-            "stateTo": "search"
-          },
-          {
-            "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
-              "setSearchMode": []
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
-        ],
-        "brokenBoresightTrack": {
-          "stateFrom": "boresightTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
-          "stateTo": "boresightLock",
+        },
+        "checkIrstDesignationType0": {
+          "stateFrom": "irstSearch",
+          "command": "designateTarget",
+          "stateTo": "checkIrstDesignationType0",
           "actions": {
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            },
-            "setBoresightLockMode": []
+            "checkDesignationTypeEquals": {
+              "value": 0
+            }
           }
         },
-        "finishedBoresightTrack": {
-          "stateFrom": "boresightTrack",
+        "irstDesignationLockResponce": {
+          "stateFrom": "checkIrstDesignationType0",
+          "event": "designationTypeEquals",
+          "stateTo": "irstDesignationLock",
+          "actions": {
+            "resetSearchMode": [],
+            "setIrstDesignationLockMode": []
+          }
+        },
+        "returnToIrstSearchMode": {
+          "stateFrom": "checkIrstDesignationType0",
+          "event": "designationTypeNotEquals",
+          "stateTo": "irstSearch"
+        },
+        "irstDesignationTrack": {
+          "stateFrom": "irstDesignationLock",
+          "event": "targetDetected",
+          "stateTo": "irstDesignationTrack",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setIrstTrackMode": []
+          }
+        },
+        "failedIrstDesignationLock": {
+          "stateFrom": "irstDesignationLock",
+          "event": "scanFinished",
+          "stateTo": "irstSearch",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setIrstSearchMode": []
+          }
+        },
+        "finishedIrstDesignationTrack": {
+          "stateFrom": "irstDesignationTrack",
+          "event": "activeTargetOfInterestInertialTimeOut",
           "command": "selectTarget",
-          "stateTo": "standby",
+          "stateTo": "irstSearch",
           "actions": {
             "setFsmActive": {
               "fsm": "track",
               "active": false
             },
-            "setStandbyMode": []
+            "setIrstSearchMode": []
           }
         },
         "switchScanPattern": [
           {
-            "stateFrom": "standby"
+            "stateFrom": "radarStandby"
           },
           {
-            "stateFrom": "search"
+            "stateFrom": "irstStandby"
+          },
+          {
+            "stateFrom": "radarSearch"
+          },
+          {
+            "stateFrom": "irstSearch"
           },
           {
             "command": "scanPatternSwitch"
@@ -649,10 +744,6 @@
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
             }
           }
         },
@@ -667,10 +758,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

@@ -2166,6 +2166,12 @@
         },
         {
           "node": "fr_phimat_container_cap"
+        },
+        {
+          "node": "alkan_ll_5020_l"
+        },
+        {
+          "node": "alkan_ll_5020_r"
         }
       ]
     },
@@ -2855,9 +2861,17 @@
       "effects": {
         "commonWeapons": [
           {
-            "hideNodes": {
-              "node": "fuse_2"
-            }
+            "hideNodes": [
+              {
+                "node": "fr_phimat_container"
+              },
+              {
+                "node": "fr_phimat_container_cap"
+              },
+              {
+                "node": "fuse_2"
+              }
+            ]
           },
           {
             "Weapon": {
@@ -2891,8 +2905,19 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 72,
-              "external": false,
+              "bullets": 126,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 126,
+              "external": true,
               "separate": false
             }
           }

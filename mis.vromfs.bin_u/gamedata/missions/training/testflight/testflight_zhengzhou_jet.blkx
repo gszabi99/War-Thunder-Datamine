@@ -91,59 +91,117 @@
         "initMission": []
       },
       "conditions": [],
-      "actions": {
-        "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01",
-          "runwayWidth": 100.0,
-          "army": 1,
-          "spawnPoint": "spawnpoint"
-        },
-        "spawnOnAirfield": {
-          "runwayName": "airfield00",
-          "objects": "armada_01"
-        },
-        "unitSetIndication": [
-          {
-            "set": true
-          },
-          {
-            "target_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "target": "structures_00"
-          },
-          {
-            "target": "structures_01"
-          },
-          {
-            "target": "armada_02"
-          },
-          {
-            "target": "armada_03"
-          },
-          {
-            "target": "structures_02"
+      "actions": [
+        {
+          "addAirfield": {
+            "runwayStart": "airfield00",
+            "runwayEnd": "airfield01",
+            "runwayWidth": 100.0,
+            "army": 1,
+            "spawnPoint": "spawnpoint"
           }
-        ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "structures_02",
-          "useSearchRadar": true
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield00",
+            "objects": "armada_01"
+          }
+        },
+        {
+          "unitSetIndication": [
+            {
+              "set": true
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "target": "structures_00"
+            },
+            {
+              "target": "structures_01"
+            },
+            {
+              "target": "armada_02"
+            },
+            {
+              "target": "armada_03"
+            },
+            {
+              "target": "structures_02"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "structures_02",
+            "useSearchRadar": true
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "structures_03"
+            },
+            {
+              "object": "structures_04"
+            },
+            {
+              "lockSpeed": true
+            },
+            {
+              "waypointReachedDist": 0.0
+            }
+          ]
+        },
+        {
+          "unitSetRoute": [
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "route": "way_points_01"
+            },
+            {
+              "teleportToStart": true
+            },
+            {
+              "object": "structures_03"
+            },
+            {
+              "object": "structures_04"
+            }
+          ]
         }
-      },
+      ],
       "else_actions": []
     },
     "end": {
@@ -648,6 +706,81 @@
       }
     },
     {
+      "tankModels": {
+        "name": "structures_03",
+        "tm": [
+          [-0.971823,0.0,-0.235709],
+          [0.0,1.0,0.0],
+          [0.235709,0.0,-0.971823],
+          [-4195.8,123.4,-1877.95]
+        ],
+        "unit_class": "ussr_zprk_2s6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "structures_04",
+        "tm": [
+          [-0.95381,0.0,-0.300411],
+          [0.0,1.0,0.0],
+          [0.300411,0.0,-0.95381],
+          [-4474.1,123.95,-1939.7]
+        ],
+        "unit_class": "ussr_t_54_1951",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": []
+      }
+    },
+    {
       "objectGroups": {
         "name": "objectGroups_01",
         "tm": [
@@ -752,5 +885,109 @@
       }
     }
   ],
-  "wayPoints": []
+  "wayPoints": {
+    "way_points_01": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-6958.4,117.05,-2009.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-6485.2,113.45,-3218.9]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-5588.85,146.45,-5533.85]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-3788.1,156.55,-5933.85]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-3099.35,125.7,-5246.35]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-3869.05,102.45,-1884.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    }
+  }
 }

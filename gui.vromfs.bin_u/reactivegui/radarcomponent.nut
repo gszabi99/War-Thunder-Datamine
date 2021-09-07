@@ -305,7 +305,7 @@ local createTargetOnRadarSquare = @(index, radius, size, color) function() {
   local res = { watch = [HasAzimuthScale, HasDistanceScale, IsRadar2Visible, AzimuthHalfWidth2, AzimuthHalfWidth, DistanceGateWidthRel] }
   local target = targets[index]
 
-  if (target == null || (!target.isSelected && !target.isDetected && target.isEnemy))
+  if (target == null)
     return res
 
   local opacity = (1.0 - target.ageRel) * target.signalRel
@@ -886,7 +886,7 @@ local createTargetOnRadarPolar = @(index, radius, size, color) function() {
 
   local target = targets[index]
 
-  if (target == null || (!target.isSelected && !target.isDetected && target.isEnemy))
+  if (target == null)
     return res
 
   local angle = HasAzimuthScale.value ? AzimuthMin.value + AzimuthRange.value * target.azimuthRel - PI * 0.5 : -PI * 0.5

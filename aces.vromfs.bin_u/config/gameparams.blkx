@@ -214,6 +214,7 @@
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
+  "allAircraftNodesAnimationHierarchy": true,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -13577,7 +13578,8 @@
       {
         "p": {
           "name": "coal_bunker",
-          "unit": "ship"
+          "unit": "ship",
+          "hideIfDead": true
         }
       },
       {
@@ -13589,6 +13591,13 @@
       {
         "p": {
           "name": "ex_era_turret_",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "at_bulge_",
+          "unit": "ship",
           "hideIfDead": true
         }
       },

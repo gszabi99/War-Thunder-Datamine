@@ -2183,14 +2183,62 @@
     {
       "preset": {
         "name": "av_8a_default",
-        "blk": "gameData/FlightModels/weaponPresets/av_8a_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/av_8a_ltc.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "amountPerTier": 240.0,
+            "tier": {
+              "idx": 6,
+              "iconType": "ltc"
+            }
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "av_8a_bomb_mk81",
         "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk81.blk",
-        "reqModification": "us_250lb_mk81"
+        "reqModification": "us_250lb_mk81",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "bombs_small"
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -2224,156 +2272,6 @@
       ]
     },
     {
-      "preset": {
-        "name": "av_8a_rocket_aim_9",
-        "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_aim_9.blk",
-        "reqModification": "us_aim_9g",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
-            },
-            {
-              "amountPerTier": 1.0
-            },
-            {
-              "iconType": "missile_type_b_air_to_air"
-            },
-            {
-              "tier": {
-                "idx": 4
-              }
-            },
-            {
-              "tier": {
-                "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "preset": {
-        "name": "av_8a_rocket_lau68",
-        "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau68.blk",
-        "reqModification": "us_2_75_in_ffar_aero_6a",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
-            },
-            {
-              "amountPerTier": 7.0
-            },
-            {
-              "iconType": "nar_ap_small"
-            },
-            {
-              "tier": {
-                "idx": 4
-              }
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "tier": {
-                "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "preset": {
-        "name": "av_8a_rocket_lau60",
-        "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau60.blk",
-        "reqModification": "us_2_75_in_ffar_aero_7d",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
-            },
-            {
-              "amountPerTier": 19.0
-            },
-            {
-              "iconType": "nar_ap_large"
-            },
-            {
-              "tier": {
-                "idx": 4
-              }
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "tier": {
-                "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "preset": {
-        "name": "av_8a_rocket_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_zuni.blk",
-        "reqModification": "f4c_zuni",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
-            },
-            {
-              "amountPerTier": 4.0
-            },
-            {
-              "iconType": "nar_ap_block"
-            },
-            {
-              "tier": {
-                "idx": 4
-              }
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "tier": {
-                "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "preset": [
         {
           "name": "av_8a_bomb_mk81_aim9"
@@ -2386,6 +2284,60 @@
         },
         {
           "reqModification": "us_aim_9g"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_small"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2399,22 +2351,6 @@
         },
         {
           "reqModification": "us_500lb_mk82"
-        },
-        {
-          "reqModification": "us_aim_9g"
-        }
-      ]
-    },
-    {
-      "preset": [
-        {
-          "name": "av_8a_bomb_mk83_aim9"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk83_aim9.blk"
-        },
-        {
-          "reqModification": "us_1000lb_mk83"
         },
         {
           "reqModification": "us_aim_9g"
@@ -2443,16 +2379,753 @@
     {
       "preset": [
         {
-          "name": "av_8a_rocket_lau68_aim9"
+          "name": "av_8a_bomb_mk81_ltc"
         },
         {
-          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau68_aim9.blk"
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk81_ltc.blk"
+        },
+        {
+          "reqModification": "us_250lb_mk81"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_small"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk82_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk82_ltc.blk"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk83_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk83_ltc.blk"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk82_mk83_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk82_mk83_ltc.blk"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_rocket_aim_9_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_aim_9_ltc.blk"
+        },
+        {
+          "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_rocket_lau68_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau68_ltc.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_aero_6a"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+                },
+                {
+                  "amountPerTier": 7.0
+                },
+                {
+                  "iconType": "nar_ap_small"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_rocket_lau60_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau60_ltc.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_aero_7d"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+                },
+                {
+                  "amountPerTier": 19.0
+                },
+                {
+                  "iconType": "nar_ap_large"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_rocket_zuni_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_zuni_ltc.blk"
+        },
+        {
+          "reqModification": "f4c_zuni"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_zuni_wafar_mk32.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk81_aim9_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk81_aim9_ltc.blk"
+        },
+        {
+          "reqModification": "us_250lb_mk81"
+        },
+        {
+          "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_small"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk82_aim9_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk82_aim9_ltc.blk"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_bomb_mk83_aim9_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_bomb_mk83_aim9_ltc.blk"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_type_b_air_to_air"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "av_8a_rocket_lau68_aim9_ltc"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau68_aim9_ltc.blk"
         },
         {
           "reqModification": "us_2_75_in_ffar_aero_6a"
         },
         {
           "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
         },
         {
           "weaponConfig": [
@@ -2501,6 +3174,16 @@
                   }
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
             }
           ]
         }
@@ -2509,32 +3192,98 @@
     {
       "preset": [
         {
-          "name": "av_8a_rocket_lau60_aim9"
+          "name": "av_8a_rocket_lau60_aim9_ltc"
         },
         {
-          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau60_aim9.blk"
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_lau60_aim9_ltc.blk"
         },
         {
           "reqModification": "us_2_75_in_ffar_aero_7d"
         },
         {
           "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+                },
+                {
+                  "amountPerTier": 19.0
+                },
+                {
+                  "iconType": "nar_ap_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
       "preset": [
         {
-          "name": "av_8a_rocket_zuni_aim9"
+          "name": "av_8a_rocket_zuni_aim9_ltc"
         },
         {
-          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_zuni_aim9.blk"
+          "blk": "gameData/FlightModels/weaponPresets/av_8a_rocket_zuni_aim9_ltc.blk"
         },
         {
           "reqModification": "f4c_zuni"
         },
         {
           "reqModification": "us_aim_9g"
+        },
+        {
+          "reqModification": "countermeasures_belt_pack"
         },
         {
           "weaponConfig": [
@@ -2583,6 +3332,16 @@
                   }
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "amountPerTier": 240.0,
+                "tier": {
+                  "idx": 6,
+                  "iconType": "ltc"
+                }
+              }
             }
           ]
         }
@@ -2726,6 +3485,15 @@
       "reqModification": "us_2_75_in_ffar_aero_7d",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
+      "tier": 1,
+      "requiresModelReload": false
     },
     "us_aim_9g": {
       "tier": 2,

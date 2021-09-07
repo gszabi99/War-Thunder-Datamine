@@ -182,11 +182,13 @@
         },
         "composite_armor_hull_01_dm": {
           "armorThickness": 5.0,
-          "hidableInXrayViewer": true
+          "hidableInXrayViewer": true,
+          "armorClass": "RHA_tank"
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 5.0,
-          "hidableInXrayViewer": true
+          "hidableInXrayViewer": true,
+          "armorClass": "RHA_tank"
         },
         "turret_03_side_dm": {
           "armorThickness": 5.0,
@@ -246,7 +248,7 @@
       "tank_structural_steel_elements": {
         "armorClass": "tank_structural_steel",
         "armorThickness": 5.0,
-        "hp": 1000.0,
+        "hp": 500.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "ex_armor_body_r_01_dm": [],
@@ -266,7 +268,11 @@
         "ex_decor_l_11_dm": [],
         "ex_decor_r_11_dm": [],
         "turret_05_side_dm": [],
-        "turret_05_back_dm": []
+        "turret_05_back_dm": [],
+        "ex_armor_r_01_dm": [],
+        "ex_armor_r_06_dm": [],
+        "ex_armor_l_01_dm": [],
+        "ex_armor_l_06_dm": []
       },
       "turret": {
         "armorClass": "RHA_tank",
@@ -335,22 +341,10 @@
         "ex_armor_l_03_dm": [],
         "ex_armor_l_04_dm": [],
         "ex_armor_l_05_dm": [],
-        "ex_armor_l_01_dm": {
-          "armorClass": "tank_structural_steel"
-        },
-        "ex_armor_l_06_dm": {
-          "armorClass": "tank_structural_steel"
-        },
         "ex_armor_r_02_dm": [],
         "ex_armor_r_03_dm": [],
         "ex_armor_r_04_dm": [],
         "ex_armor_r_05_dm": [],
-        "ex_armor_r_01_dm": {
-          "armorClass": "tank_structural_steel"
-        },
-        "ex_armor_r_06_dm": {
-          "armorClass": "tank_structural_steel"
-        },
         "ex_decor_l_02_dm": {
           "armorThickness": 4.0
         },
@@ -2431,9 +2425,9 @@
             "pitch": [-9.0,27.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-1.0,27.0],
+            "lim1": [-180.0,-140.0,-7.0,27.0],
             "lim2": [-140.0,140.0,-9.0,27.0],
-            "lim3": [140.0,180.0,-1.0,27.0]
+            "lim3": [140.0,180.0,-7.0,27.0]
           }
         }
       },
@@ -3404,9 +3398,9 @@
                   "pitch": [-9.0,27.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-1.0,27.0],
+                  "lim1": [-180.0,-140.0,-7.0,27.0],
                   "lim2": [-140.0,140.0,-9.0,27.0],
-                  "lim3": [140.0,180.0,-1.0,27.0]
+                  "lim3": [140.0,180.0,-7.0,27.0]
                 }
               }
             },

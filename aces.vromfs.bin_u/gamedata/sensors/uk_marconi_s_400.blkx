@@ -32,6 +32,20 @@
     }
   },
   "scanPatterns": {
+    "search60": {
+      "type": "pyramide",
+      "azimuthLimits": [-180.0,180.0],
+      "elevationLimits": [-10.0,90.0],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 0.8,
+      "width": 7.5,
+      "barHeight": 1.5,
+      "barsCount": 41,
+      "rowMajor": false,
+      "barsOneWay": false
+    },
     "search360": {
       "type": "cylinder",
       "azimuthLimits": [-180.0,180.0],
@@ -134,9 +148,8 @@
   },
   "scanPatternSets": {
     "search": {
-      "scanPattern2": "search60",
       "scanPattern1": "search360",
-      "scanPattern3": "searchVertical"
+      "scanPattern2": "searchVertical"
     }
   },
   "scopeRangeSets": {

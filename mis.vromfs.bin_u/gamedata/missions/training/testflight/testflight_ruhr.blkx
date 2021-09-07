@@ -10,14 +10,14 @@
       "army": 2
     },
     "mission": {
-      "locName": "missions/testFlight",
       "level": "levels/ruhr.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
-      "windDirection": [1.0,0.0,0.0]
+      "windDirection": [1.0,0.0,0.0],
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": [],
     "briefing": {
@@ -139,7 +139,53 @@
           "distanceBetweenUnits": 0.8,
           "object": "train",
           "killLeaderToStop": true
-        }
+        },
+        "unitSetProperties": [
+          {
+            "object_marking": 0
+          },
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "object_var_value": 0
+          },
+          {
+            "object": "structures_05"
+          },
+          {
+            "object": "structures_06"
+          },
+          {
+            "lockSpeed": true
+          },
+          {
+            "waypointReachedDist": 0.0
+          }
+        ],
+        "unitSetRoute": [
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "route": "way_points_01"
+          },
+          {
+            "teleportToStart": true
+          },
+          {
+            "object": "structures_05"
+          },
+          {
+            "object": "structures_06"
+          }
+        ]
       },
       "else_actions": []
     },
@@ -205,6 +251,8 @@
               "shouldKeepFormation": false,
               "teleportHeightValue": 1000.0,
               "horizontalDirectionForTeleport": true,
+              "fastClimb": false,
+              "destTimeMode": false,
               "object": "ai_plane_fighters",
               "follow_radius": 400.0,
               "follow_offset": [-250.0,500.0,20.0]
@@ -226,6 +274,8 @@
               "shouldKeepFormation": false,
               "teleportHeightValue": 1000.0,
               "horizontalDirectionForTeleport": true,
+              "fastClimb": false,
+              "destTimeMode": false,
               "object": "ai_plane_atackers"
             }
           },
@@ -278,13 +328,13 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target_type": "isAlive",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object": "ai_plane_atackers",
-            "target": "randevu_point"
+            "target": "randevu_point",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -303,6 +353,8 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ai_plane_atackers"
           }
         },
@@ -329,13 +381,13 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target_type": "isAlive",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object": "ai_plane_atackers",
-            "target": "frontline_point"
+            "target": "frontline_point",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -369,10 +421,10 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "func": "less",
             "value": 1,
-            "object": "ai_plane_atackers"
+            "object": "ai_plane_atackers",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -449,13 +501,13 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target_type": "isAlive",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object": "locomotive",
-            "target": "train_point01"
+            "target": "train_point01",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -498,6 +550,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -545,6 +599,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -592,6 +648,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -637,6 +695,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -672,6 +732,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -707,6 +769,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -742,6 +806,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -777,6 +843,82 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "structures_05",
+        "tm": [
+          [0.662945,0.0,-0.748667],
+          [0.0,1.0,0.0],
+          [0.748667,0.0,0.662945],
+          [419.9,46.85,796.9]
+        ],
+        "unit_class": "ussr_t_34_1941",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 40,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "structures_06",
+        "tm": [
+          [0.978133,0.0,0.207981],
+          [0.0,1.0,0.0],
+          [-0.207981,0.0,0.978133],
+          [-33.25,45.8,773.1]
+        ],
+        "unit_class": "ussr_truck_gaz_aaa",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 40,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -813,6 +955,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1155,6 +1299,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -1180,6 +1326,9 @@
           [1290.54,29.4902,2034.44]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "locomotive"
           },
@@ -1277,5 +1426,141 @@
       }
     }
   ],
-  "wayPoints": []
+  "wayPoints": {
+    "way_points_01": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1113.7,48.95,328.0]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [825.55,26.5,2326.75]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [371.65,28.25,2614.65]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-308.3,22.35,3039.0]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-1135.25,34.8,1936.85]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-997.2,30.8,1275.95]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_07": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-858.95,34.0,494.9]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "way_points_01_wp_08": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-589.8,38.3,595.75]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "USE_SPLINES",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    }
+  }
 }

@@ -545,7 +545,7 @@ local yawIndicator = @() {
 
 local lowerCuePos = Computed(@() clamp(0.4 - TimeBeforeBombRelease.value * 0.05, 0.1, 0.5))
 local lowerCueShow = Computed(@() AimLocked.value && TimeBeforeBombRelease.value > 0.0)
-local function lowerSolutionCue(height) {
+local function lowerSolutionCue(height, posX) {
   return @() {
     watch = lowerCueShow
     size = flex()
@@ -553,7 +553,7 @@ local function lowerSolutionCue(height) {
       @() {
         watch = [IlsColor, lowerCuePos]
         size = [pw(10), baseLineWidth * IlsLineScale.value]
-        pos = [pw(5), lowerCuePos.value * height - baseLineWidth * 0.5 * IlsLineScale.value]
+        pos = [pw(posX), lowerCuePos.value * height - baseLineWidth * 0.5 * IlsLineScale.value]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -563,15 +563,15 @@ local function lowerSolutionCue(height) {
 }
 
 local cancelBombVisible = Computed(@() DistToSafety.value <= 0.0)
-local function cancelBombing() {
+local function cancelBombing(posY, size) {
   return @() {
     watch = cancelBombVisible
     size = flex()
     children = cancelBombVisible.value ?
       @() {
         watch = IlsColor
-        size = [pw(20), ph(20)]
-        pos = [pw(50), ph(20)]
+        size = [pw(size), ph(size)]
+        pos = [pw(50), ph(posY)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -592,7 +592,7 @@ local function rotatedBombReleaseReticle(width, height) {
     size = flex()
     children = [
       pullupAnticipation(height),
-      lowerSolutionCue(height),
+      lowerSolutionCue(height, 5),
       {
         size = [pw(20), flex()]
         flow = FLOW_VERTICAL
@@ -616,7 +616,7 @@ local function CCIP(width, height) {
     size = [width, height]
     children = [
       compassWrap(width, height, 0.85, generateCompassMark),
-      cancelBombing(),
+      cancelBombing(20, 20),
       yawIndicator
     ]
   }
@@ -628,7 +628,7 @@ local function bombingMode(width, height) {
     children = [
       rotatedBombReleaseReticle(width, height),
       compassWrap(width, height, 0.85, generateCompassMark),
-      cancelBombing(),
+      cancelBombing(20, 20),
       yawIndicator
     ]
   }
@@ -2435,6 +2435,84 @@ local generateCompassMarkShim = function(num) {
   }
 }
 
+local function f16CcipMark(width, height) {
+  return @() {
+    watch = [IlsColor, TargetPosValid]
+    size = [pw(3), ph(3)]
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    rendObj = ROBJ_VECTOR_CANVAS
+    fillColor = Color(0,0,0,0)
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100],
+      (TargetPosValid.value ? [VECTOR_LINE, -100, -100, 100, -100] : []),
+      [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.value],
+      [VECTOR_ELLIPSE, 0, 0, 0, 0],
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = TargetPosValid.value ? TargetPos : [width * 0.5, height * 0.6]
+      }
+    }
+  }
+}
+
+local function f16CcrpMark(width, height) {
+  return {
+    size = flex()
+    children = [
+      {
+        size = flex()
+        children = [
+          lowerSolutionCue(height, -5),
+          bombFallingLine()
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = @() {
+          transform = {
+            translate = [TargetPos[0], height * 0.1]
+            rotate = -Roll.value
+            pivot=[0.1, TargetPos[1] / height - 0.1]
+          }
+        }
+      },
+      {
+        size = [pw(3), ph(3)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_LINE, -100, -100, 100, -100],
+          [VECTOR_LINE, -100, -100, -100, 100],
+          [VECTOR_LINE, -100, 100, 100, 100],
+          [VECTOR_LINE, 100, -100, 100, 100],
+          [VECTOR_WIDTH, baseLineWidth * IlsLineScale.value * 2],
+          [VECTOR_LINE, 0, 0, 0, 0]
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = @() {
+          transform = {
+            translate = TargetPos
+          }
+        }
+      },
+      cancelBombing(50, 40)
+    ]
+  }
+}
+
+local ShimadzuMode = @() {
+  watch = [CCIPMode, BombingMode]
+  size = flex()
+  pos = [pw(78), ph(77)]
+  rendObj = ROBJ_DTEXT
+  color = IlsColor.value
+  fontSize = 50
+  font = Fonts.hud
+  text = CCIPMode.value ? "CCIP" : (BombingMode.value ? "CCRP" : "NAV")
+}
+
 local function ShimadzuIls(width, height) {
   return {
     size = [width, height]
@@ -2446,6 +2524,7 @@ local function ShimadzuIls(width, height) {
       ShimadzuAltWrap(width, height, generateAltMarkShimadzu),
       ShimadzuPitch(width, height),
       ShimadzuOverload,
+      ShimadzuMode,
       compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 2.0),
       {
         size = [pw(2), ph(3)]
@@ -2470,6 +2549,19 @@ local function ShimadzuIls(width, height) {
             translate = [Aos.value * width * 0.02 + 0.5 * width, 0.4 * height]
           }
         }
+      },
+      @() {
+        watch = CCIPMode
+        size = flex()
+        children = [
+          (CCIPMode.value ? f16CcipMark(width, height) : null),
+          (CCIPMode.value ? cancelBombing(50, 40) : null)
+        ]
+      },
+      @() {
+        watch = BombingMode
+        size = flex()
+        children = [BombingMode.value ? f16CcrpMark(width, height) : null]
       }
     ]
   }

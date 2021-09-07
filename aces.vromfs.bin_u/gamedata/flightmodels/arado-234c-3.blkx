@@ -2270,7 +2270,8 @@
       {
         "preset": {
           "name": "arado234_3x500",
-          "blk": "gameData/FlightModels/weaponPresets/Arado-234_3x500.blk"
+          "blk": "gameData/FlightModels/weaponPresets/Arado-234_3x500.blk",
+          "reqModification": "ju-88_2xSC500"
         }
       },
       {
@@ -2373,13 +2374,21 @@
       "mg151_armor_targets": [],
       "mg151_all_tracers": [],
       "mg151_stealth": [],
-      "mg15120_belt_pack": [],
+      "mg15120_belt_pack": {
+        "tier": 2
+      },
       "mg15120_new_gun": {
+        "tier": 4,
         "reqModification": "mg15120_belt_pack"
       },
+      "ju-88_2xSC500": {
+        "tier": 1,
+        "modClass": "weapon"
+      },
       "ar234_SC1000": {
+        "reqModification": "ju-88_2xSC500",
         "modClass": "weapon",
-        "tier": 2
+        "tier": 3
       }
     }
   },

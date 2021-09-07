@@ -2873,6 +2873,31 @@
             }
           }
         ]
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,10.0]
+          },
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm",
+            "rotatedTurret": "bone_mg_aa_h_01"
+          }
+        }
       }
     ]
   },
@@ -3528,6 +3553,14 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 7.47,
+      "zoomInFov": 7.37,
+      "sightSize": [0.146,0.103]
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 12.3,
       "zoomInFov": 4.1,
@@ -3924,6 +3957,31 @@
             {
               "Weapon": {
                 "trigger": "gunner3",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 90.0,
+                "speedPitch": 90.0,
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-5.0,10.0]
+                },
+                "turret": {
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm",
+                  "rotatedTurret": "bone_mg_aa_h_01"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",
