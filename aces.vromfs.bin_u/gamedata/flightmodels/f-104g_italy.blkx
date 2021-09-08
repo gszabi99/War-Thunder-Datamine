@@ -1998,6 +1998,12 @@
     },
     {
       "preset": {
+        "name": "f-104g_italy_default_aim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_default_aim_9b.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "f-104g_italy_bomb_m117",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_m117.blk",
         "reqModification": "us_750lb_m117a1"
@@ -2036,13 +2042,6 @@
         "name": "f-104g_italy_rockets_zuni",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_rockets_zuni.blk",
         "reqModification": "f4c_zuni"
-      }
-    },
-    {
-      "preset": {
-        "name": "f-104g_italy_rockets_aim_9b",
-        "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_rockets_aim_9b.blk",
-        "reqModification": "us_aim_9b"
       }
     },
     {
@@ -2154,6 +2153,125 @@
         },
         {
           "reqModification": "us_aim_9b"
+        }
+      ]
+    },
+    {
+      "preset": {
+        "name": "f-104g_italy_rockets_aim_9j",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_rockets_aim_9j.blk",
+        "reqModification": "us_aim_9j"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_bomb_m117_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_m117_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_bomb_mk82_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_mk82_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_bomb_mk83_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_mk83_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_bomb_mk84_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_mk84_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_2000lb_mk84"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_bomb_mk84_mk83_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_bomb_mk84_mk83_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_2000lb_mk84"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_rockets_aero_7_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_rockets_aero_7_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_lau_3a"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_italy_rockets_zuni_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_italy_rockets_zuni_aim_9j.blk"
+        },
+        {
+          "reqModification": "f4c_zuni"
+        },
+        {
+          "reqModification": "us_aim_9j"
         }
       ]
     }
@@ -2305,7 +2423,7 @@
     },
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
-      "tier": 2,
+      "tier": 3,
       "modClass": "weapon"
     },
     "countermeasures_launcher_chaff_only": [],
@@ -2394,7 +2512,12 @@
     },
     "us_aim_9b": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 3,
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "us_aim_9j": {
+      "reqModification": "us_aim_9b",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

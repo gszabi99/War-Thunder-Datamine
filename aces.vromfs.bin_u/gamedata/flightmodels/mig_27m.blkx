@@ -2444,7 +2444,13 @@
       "preset": {
         "name": "mig_27m_rocket_b8m",
         "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_b8m.blk",
-        "reqModification": "yak_38_b8m1"
+        "reqModification": "yak_38_b8m1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+            "iconType": "nar_he_large"
+          }
+        }
       }
     },
     {
@@ -2703,29 +2709,82 @@
           "reqModification": "mig_19_r13m"
         },
         {
-          "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk"
-              },
-              {
-                "amountPerTier": 1.0
-              },
-              {
-                "iconType": "missile_type_c_air_to_air"
-              },
-              {
-                "tier": {
-                  "idx": 5
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_type_c_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
                 }
-              },
-              {
-                "tier": {
-                  "idx": 7
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk"
+                },
+                {
+                  "amountPerTier": 20.0
+                },
+                {
+                  "iconType": "nar_he_large"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
                 }
-              }
-            ]
-          }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_special"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2974,14 +3033,26 @@
       "preset": {
         "name": "mig_27m_rocket_b8m_fab500m_62",
         "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_b8m_fab500m_62.blk",
-        "reqModification": "mi_24_fab_500"
+        "reqModification": "mi_24_fab_500",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+            "iconType": "nar_he_large"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "mig_27m_rocket_b8m_ofab250m_62",
         "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_b8m_ofab250m_62.blk",
-        "reqModification": "mi_24_fab_250"
+        "reqModification": "mi_24_fab_250",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+            "iconType": "nar_he_large"
+          }
+        }
       }
     },
     {
@@ -3000,6 +3071,14 @@
         },
         {
           "reqModification": "mi_24_r_60m"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+              "iconType": "nar_he_large"
+            }
+          }
         }
       ]
     },
@@ -3019,6 +3098,14 @@
         },
         {
           "reqModification": "mi_24_r_60m"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+              "iconType": "nar_he_large"
+            }
+          }
         }
       ]
     },
@@ -3035,6 +3122,14 @@
         },
         {
           "reqModification": "yak_38_b8m1"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+              "iconType": "nar_he_large"
+            }
+          }
         }
       ]
     },
@@ -3090,7 +3185,13 @@
       "preset": {
         "name": "mig_27m_rocket_s24_b8m",
         "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_s24_b8m.blk",
-        "reqModification": "il_28sh_s24"
+        "reqModification": "il_28sh_s24",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+            "iconType": "nar_he_large"
+          }
+        }
       }
     },
     {
@@ -3109,6 +3210,14 @@
         },
         {
           "reqModification": "yak_38_b8m1"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+              "iconType": "nar_he_large"
+            }
+          }
         }
       ]
     },
@@ -3198,6 +3307,14 @@
         },
         {
           "reqModification": "yak_38_b8m1"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk",
+              "iconType": "nar_he_large"
+            }
+          }
         }
       ]
     },
