@@ -2424,43 +2424,43 @@
               {
                 "tier": {
                   "idx": 3,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 4,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 5,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 6,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 7,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 8,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               },
               {
                 "tier": {
                   "idx": 9,
-                  "iconType": "bombs_middle_group_x2"
+                  "iconType": "bombs_small_group_x2"
                 }
               }
             ]
@@ -2478,7 +2478,14 @@
         "preset": {
           "name": "am_1_mauler_bomb_3x1000lb",
           "blk": "gameData/FlightModels/weaponPresets/am_1_mauler_bomb_3x1000lb.blk",
-          "reqModification": "us_1000lb_m65"
+          "reqModification": "us_1000lb_m65",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special"
+            }
+          }
         }
       },
       {
@@ -2492,7 +2499,14 @@
         "preset": {
           "name": "am_1_mauler_bomb_2000lb",
           "blk": "gameData/FlightModels/weaponPresets/am_1_mauler_bomb_2000lb.blk",
-          "reqModification": "us_2000lb_m66"
+          "reqModification": "us_2000lb_m66",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_heavy"
+            }
+          }
         }
       },
       {
@@ -2584,13 +2598,22 @@
             "reqModification": "us_1000lb_m65"
           },
           {
-            "weaponConfig": {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-                "amountPerTier": 2.0,
-                "iconType": "rockets_he_middle_group"
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_he_middle_group"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_special"
+                }
               }
-            }
+            ]
           }
         ]
       },
@@ -2612,13 +2635,22 @@
             "reqModification": "us_1000lb_m65"
           },
           {
-            "weaponConfig": {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-                "amountPerTier": 2.0,
-                "iconType": "rockets_he_middle_group"
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_he_middle_group"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_special"
+                }
               }
-            }
+            ]
           }
         ]
       },
@@ -2662,13 +2694,22 @@
             "reqModification": "us_2000lb_m66"
           },
           {
-            "weaponConfig": {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-                "amountPerTier": 2.0,
-                "iconType": "rockets_he_middle_group"
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                  "amountPerTier": 2.0,
+                  "iconType": "rockets_he_middle_group"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_heavy"
+                }
               }
-            }
+            ]
           }
         ]
       },
@@ -2676,7 +2717,14 @@
         "preset": {
           "name": "am_1_mauler_bomb_12x250lb_3x500lb",
           "blk": "gameData/FlightModels/weaponPresets/am_1_mauler_bomb_12x250lb_3x500lb.blk",
-          "reqModification": "us_500lb_m64"
+          "reqModification": "us_500lb_m64",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_small"
+            }
+          }
         }
       },
       {
@@ -2692,6 +2740,31 @@
           },
           {
             "reqModification": "us_1000lb_m65"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_special"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_middle"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "bombs_small"
+                }
+              }
+            ]
           }
         ]
       },
@@ -2699,7 +2772,23 @@
         "preset": {
           "name": "am_1_mauler_bomb_12x250lb_2000lb",
           "blk": "gameData/FlightModels/weaponPresets/am_1_mauler_bomb_12x250lb_2000lb.blk",
-          "reqModification": "us_2000lb_m66"
+          "reqModification": "us_2000lb_m66",
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_heavy"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_small"
+              }
+            }
+          ]
         }
       }
     ]
