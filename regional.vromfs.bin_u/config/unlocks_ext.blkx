@@ -12734,6 +12734,39 @@
   },
   {
     "unlockable": {
+      "id": "ussr_kv_1e_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-09-10 00:00:00",
+        "endDate": "2021-09-13 08:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "ussr_kv_1e_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_kv_1e_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "ussr_kv_1e",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2021-09-10 00:00:00",
+          "endDate": "2021-09-13 08:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "sw_strv_103_0_check_popup",
       "type": "achievement",
       "hidden": true,
@@ -15570,7 +15603,6 @@
       "id": "2021_09_10_tankers_day_decor",
       "type": "achievement",
       "chapter": "tankers_day_2017",
-      "hidden": true,
       "costGold": 499,
       "mode": [
         {

@@ -45,7 +45,6 @@ local g_string =  require("std/string.nut")
   local delayedButtons = options?.delayedButtons ?? 0
   local baseHandler = options?.baseHandler
   local needAnim = ::need_new_msg_box_anim()
-  local countdown = options?.countdown ?? -1
 
   local cancel_fn = options?.cancel_fn
   local needCancelFn = options?.need_cancel_fn
@@ -86,7 +85,7 @@ local g_string =  require("std/string.nut")
   textObj.setValue(text)
 
   local handlerObj = null
-  if (buttons || countdown > 0)
+  if (buttons)
   {
     local handlerClass = class {
       function onButtonId(id)
@@ -187,19 +186,6 @@ local g_string =  require("std/string.nut")
           need_cancel_fn = null;
           onButtonId("");
         }
-        // If countdown need
-        if (countdown > 0)
-          if (countdownTimer > 0)
-          {
-            textObj.setValue("".concat(text, "\n", ::loc("multiplayer/timeLeft"),
-              " ", ::ceil(countdownTimer).tostring()))
-            countdownTimer -= dt
-          }
-          else
-          {
-            guiScene.destroyElement(msgbox)
-            ::broadcastEvent("ModalWndDestroy")
-          }
       }
 
       sourceHandlerObj = null
@@ -209,12 +195,10 @@ local g_string =  require("std/string.nut")
       showButtonsTimer = -1
       startingDialogNow = false
       need_cancel_fn = null
-      countdownTimer = -1
     }
 
     handlerObj = handlerClass()
     handlerObj.guiScene = gui_scene
-    handlerObj.countdownTimer = countdown
 
     if (buttons)
     {
@@ -294,8 +278,6 @@ local g_string =  require("std/string.nut")
       if (navObj != null)
         gui_scene.appendWithBlk(navObj, navText, handlerObj)
     }
-    if (countdown > 0 || delayedButtons > 0)
-      msgbox.findObject("msg_box_timer").setUserData(handlerObj)
   }
   if (!buttons)
     needWaitAnim = true  //if no buttons, than wait anim always need
