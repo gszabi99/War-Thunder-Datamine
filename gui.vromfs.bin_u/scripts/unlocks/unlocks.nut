@@ -268,7 +268,7 @@ local unlockConditionUnitclasses = {
     showProgress = true
     getProgressBarData = function()
     {
-      local res = ::UnlockConditions.getProgressBarData(type, curVal, maxVal)
+      local res = ::UnlockConditions.getProgressBarData(this.type, curVal, maxVal)
       res.show = res.show && showProgress
       return res
     }

@@ -222,6 +222,7 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
         && (isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown)
           || isRequireCondition(itemBlock?.reqItemExistsForDisplaying ?? [], itemsList, hasAmount)))
     hasItemBackground = itemBlock?.hasItemBackground ?? true
+    posXY = itemBlock?.posXY ?? ::Point2(0, 0)
   }
 }
 
@@ -281,8 +282,8 @@ local getItemBlockView = ::kwarg(
       blockPos = overridePos ?? sizeAndPosViewConfig.itemPos({
         itemSizes = itemSizes
         bodyIdx = itemBlock.bodyIdx
-        itemPosX = itemBlock.posXY.x - 1
-        itemPosY = itemBlock.posXY.y - 1
+        itemPosX = itemConfig.posXY.x - 1
+        itemPosY = itemConfig.posXY.y - 1
       })
       hasComponent = itemConfig.hasComponent
       isFullSize = itemBlock?.isFullSize ?? false
@@ -303,6 +304,7 @@ local function getRowsElementsView(rows, itemSizes, itemsList, allowableResource
   local shopArrows = []
   local conectionsInRow = []
   local itemBlocksArr = []
+  local lastFilled = {}
   foreach (row in rows)
   {
     local hasPrevItemInRow = false
@@ -315,6 +317,11 @@ local function getRowsElementsView(rows, itemSizes, itemsList, allowableResource
         local itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
         if (itemConfig.isHidden)
           continue
+
+        local curColumnIdx = itemConfig.posXY.x.tointeger() - 1
+        lastFilled[curColumnIdx] <- (lastFilled?[curColumnIdx] ?? 0)+1
+        if(itemBlock?.shouldRemoveBlankRows ?? false)
+          itemConfig.posXY.y = lastFilled[curColumnIdx]
 
         local itemBlockView = getItemBlockView({
           itemBlock = itemBlock,
@@ -340,7 +347,7 @@ local function getRowsElementsView(rows, itemSizes, itemsList, allowableResource
         local hasCurItem = itemConfig.item != null
         if (hasPrevItemInRow && hasCurItem)
         {
-          local itemPosX = itemBlock.posXY.x - 1
+          local itemPosX = itemConfig.posXY.x - 1
           local curBranchIdx = itemSizes.paramsPosColumnsByBodies[itemBlock.bodyIdx][itemPosX].columnBranchsCount
           if (prevBranchIdx == curBranchIdx)
             conectionsInRow.append({ conectionInRowText = itemBlock.conectionInRowText }.__update(
@@ -348,7 +355,7 @@ local function getRowsElementsView(rows, itemSizes, itemsList, allowableResource
                 itemSizes = itemSizes
                 bodyIdx = itemBlock.bodyIdx
                 itemPosX = itemPosX
-                itemPosY = itemBlock.posXY.y - 1
+                itemPosY = itemConfig.posXY.y - 1
               })
             ))
           prevBranchIdx = curBranchIdx
@@ -577,26 +584,48 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local titleMargin = ::to_pixels("1@dp")
     local items = itemsList
     foreach (idx, rows in craftTree.treeRowsByBodies) {
-      local visibleItemsCountY = 0
-      for (local i = rows.len(); i > 0; i--)
-        if (rows[i-1].findindex(@(row)
-          row?.findindex(function (itemBlock) {
-            local item = items?[itemBlock?.id]
+      local visibleItemsCountY = null
+      local lastFilled = {}
+      for (local i = rows.len() - 1; i >= 0; i--) {
+        foreach (row in rows[i]) {
+          local findVisibleItemInColumn = {}
+          foreach (itemBlock in (row ?? [])) {
+            local { id = "", reqItemForDisplaying = [], reqItemExistsForDisplaying = [],
+              shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
+            local item = items?[id]
             local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
-            return !item?.isHiddenItem()
+            local hasVisibleItem = !item?.isHiddenItem()
               && (hasItemInInventory
-                || (!isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], items, isItemIdKnown)
-                  && !isRequireCondition(itemBlock?.reqItemExistsForDisplaying ?? [], items, hasAmount)))
-          }) != null
-        ) != null)
-        {
-          visibleItemsCountY = i
-          break
+                || (!isRequireCondition(reqItemForDisplaying, items, isItemIdKnown)
+                  && !isRequireCondition(reqItemExistsForDisplaying, items, hasAmount)))
+            if (!hasVisibleItem) {
+              if (shouldRemoveBlankRows)
+                findVisibleItemInColumn[posXY.x] <- findVisibleItemInColumn?[posXY.x] ?? false
+              continue
+            }
+
+            if (shouldRemoveBlankRows)
+              findVisibleItemInColumn[posXY.x] <- true
+            else {
+              visibleItemsCountY = i + 1
+            }
+          }
+          if (visibleItemsCountY != null)
+            break
+
+          foreach (posX, value in findVisibleItemInColumn)
+            if (value && (posX not in lastFilled))
+              lastFilled[posX] <- i + 1
+            else if (!value && (posX in lastFilled))
+              lastFilled[posX] = lastFilled[posX] - 1
         }
+        if (visibleItemsCountY != null)
+          break
+      }
       local textBlocks = bodiesConfig[idx].textBlocks
       textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
-      visibleItemsCountY = ::max(visibleItemsCountY,
+      visibleItemsCountY = ::max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
       curBodiesOffset += isShowHeaderPlace || idx == 0 || visibleItemsCountYByBodies[idx-1] == 0 ? 0
         : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight

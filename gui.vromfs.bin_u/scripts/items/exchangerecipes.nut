@@ -464,14 +464,6 @@ local ExchangeRecipes = class {
 
   static function tryUse(recipes, componentItem, params = {})
   {
-    if (componentItem.hasReachedMaxAmount())
-    {
-      ::scene_msg_box("reached_max_amount", null,
-        ::loc(componentItem.getLocIdsList().reachedMaxAmount),
-        [["cancel"]], "cancel")
-      return false
-    }
-
     local recipe = null
     foreach (r in recipes)
       if (r.isUsable)
@@ -480,57 +472,64 @@ local ExchangeRecipes = class {
         break
       }
 
-    if (recipe)
+    if (recipe == null) {
+      showUseErrorMsg(recipes, componentItem)
+      return false
+    }
+
+    if (componentItem.hasReachedMaxAmount() && !recipe.isDisassemble)
     {
-      if (params?.shouldSkipMsgBox)
-      {
-        recipe.doExchange(componentItem, 1, params)
-        return true
-      }
+      ::scene_msg_box("reached_max_amount", null,
+      ::loc(componentItem.getLocIdsList().reachedMaxAmount),
+        [["cancel"]], "cancel")
+      return false
+    }
 
-      local msgData = componentItem.getConfirmMessageData(recipe)
-      local msgboxParams = { cancel_fn = function() {} }
-
-      if (msgData?.needRecipeMarkup)
-        msgboxParams.__update({
-          data_below_text = recipe.getExchangeMarkup(componentItem,
-            { header = msgData?.headerRecipeMarkup ?? ""
-              headerFont = "mediumFont"
-              widthByParentParent = true
-              hasHeaderPadding = true
-              isCentered = true })
-          baseHandler = ::get_cur_base_gui_handler()
-        })
-      if (recipe.isDisassemble && params?.bundleContent)
-      {
-        msgboxParams.__update({
-          data_below_text = (msgboxParams?.data_below_text ?? "")
-            + ::PrizesView.getPrizesListView(params.bundleContent,
-                { header = ::loc("mainmenu/you_will_receive")
-                  headerFont = "mediumFont"
-                  widthByParentParent = true
-                  hasHeaderPadding = true
-                  isCentered = true }, false)
-          baseHandler = ::get_cur_base_gui_handler()
-        })
-      }
-
-      ::scene_msg_box("chest_exchange", null, msgData.text, [
-        [ "yes", ::Callback(function()
-          {
-            recipe.updateComponents()
-            if (recipe.isUsable)
-              recipe.doExchange(componentItem, 1, params)
-            else
-              showUseErrorMsg(recipes, componentItem)
-          }, this) ],
-        [ "no" ]
-      ], "yes", msgboxParams)
+    if (params?.shouldSkipMsgBox)
+    {
+      recipe.doExchange(componentItem, 1, params)
       return true
     }
 
-    showUseErrorMsg(recipes, componentItem)
-    return false
+    local msgData = componentItem.getConfirmMessageData(recipe)
+    local msgboxParams = { cancel_fn = function() {} }
+
+    if (msgData?.needRecipeMarkup)
+      msgboxParams.__update({
+        data_below_text = recipe.getExchangeMarkup(componentItem,
+          { header = msgData?.headerRecipeMarkup ?? ""
+            headerFont = "mediumFont"
+            widthByParentParent = true
+            hasHeaderPadding = true
+            isCentered = true })
+        baseHandler = ::get_cur_base_gui_handler()
+      })
+    if (recipe.isDisassemble && params?.bundleContent)
+    {
+      msgboxParams.__update({
+        data_below_text = (msgboxParams?.data_below_text ?? "")
+          + ::PrizesView.getPrizesListView(params.bundleContent,
+              { header = ::loc("mainmenu/you_will_receive")
+                headerFont = "mediumFont"
+                widthByParentParent = true
+                hasHeaderPadding = true
+                isCentered = true }, false)
+        baseHandler = ::get_cur_base_gui_handler()
+      })
+    }
+
+    ::scene_msg_box("chest_exchange", null, msgData.text, [
+      [ "yes", ::Callback(function()
+        {
+          recipe.updateComponents()
+          if (recipe.isUsable)
+            recipe.doExchange(componentItem, 1, params)
+          else
+            showUseErrorMsg(recipes, componentItem)
+        }, this) ],
+      [ "no" ]
+    ], "yes", msgboxParams)
+    return true
   }
 
   static function showUseErrorMsg(recipes, componentItem)

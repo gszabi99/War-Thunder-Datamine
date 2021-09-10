@@ -462,6 +462,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onCreateRoom() {}
+  onShowOnlyAvailableRooms = @() null
 
   //----END_CONTROLLER----//
 

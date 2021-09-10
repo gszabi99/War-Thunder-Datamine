@@ -339,7 +339,7 @@ local ItemExternal = class extends ::BaseItem
 
   function getMarketablePropDesc()
   {
-    if (!::has_feature("Marketplace") || shouldAutoConsume)
+    if (!::has_feature("Marketplace") || shouldAutoConsume || (itemDef?.tags.hideMarketablePropDesc ?? false))
       return ""
 
     local canSell = itemDef?.marketable

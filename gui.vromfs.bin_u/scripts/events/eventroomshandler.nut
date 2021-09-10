@@ -1,4 +1,5 @@
 local stdMath = require("std/math.nut")
+local { cutPrefix } = require("std/string.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
@@ -12,7 +13,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 
   ROOM_TIER             = 0x4000 //5 bits to room tier. used only to sort rooms
 
-  //                    = 0x0100
+  AVAILABLE_FOR_SQUAD   = 0x0100
   HAS_PLACES            = 0x0080
   HAS_PLACES_IN_MY_TEAM = 0x0040
 
@@ -61,6 +62,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   isMouseMode = true
   initTime = -1
 
+  showOnlyAvailableRooms = true
+
   static TEAM_DIVIDE = "/"
   static COUNTRY_DIVIDE = ", "
 
@@ -98,6 +101,9 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     roomsListObj = scene.findObject("items_list")
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
     eventDescription = ::create_event_description(scene)
+    showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
+    local obj = showSceneBtn("only_available_rooms", true)
+    obj.setValue(showOnlyAvailableRooms)
     refreshList()
     fillRoomsList()
     updateWindow()
@@ -342,7 +348,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getMGameModeFlags(mGameMode, room, isMultiSlot)
   {
     local res = eRoomFlags.NONE
-    if (!::events.getAvailableTeams(mGameMode).len())
+    local teams = ::events.getAvailableTeams(mGameMode)
+    if (teams.len() == 0)
       return res
     res = res | eRoomFlags.HAS_COUNTRY
 
@@ -360,6 +367,14 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::events.isAllowedByRoomBalance(mGameMode, room))
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
+
+    if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader()) {
+      local membersTeams = ::events.getMembersTeamsData(event, room, teams)
+      if (!(membersTeams?.haveRestrictions ?? false))
+        res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
+    }
+    else
+      res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
 
     return res
   }
@@ -409,23 +424,26 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return hasChanges
   }
 
-  function getRoomNameView(room)
-  {
-    local isLocked = false
-    local flags = room[EROOM_FLAGS_KEY_NAME]
+  function isLockedByMask(flags) {
     local mustHaveMask = eRoomFlags.HAS_COUNTRY
                        | eRoomFlags.HAS_AVAILABLE_UNITS | eRoomFlags.HAS_REQUIRED_UNIT
                        | eRoomFlags.HAS_PLACES | eRoomFlags.HAS_PLACES_IN_MY_TEAM
-                       | eRoomFlags.IS_ALLOWED_BY_BALANCE
-    if ((flags & mustHaveMask) != mustHaveMask)
-      isLocked = true
+                       | eRoomFlags.IS_ALLOWED_BY_BALANCE | eRoomFlags.AVAILABLE_FOR_SQUAD
+
+    return (flags & mustHaveMask) != mustHaveMask
+  }
+
+  function getRoomNameView(room)
+  {
+    local roomFlags = room[EROOM_FLAGS_KEY_NAME]
+    local isLocked = isLockedByMask(roomFlags)
 
     local text = ::SessionLobby.getMissionNameLoc(room)
     local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
     if (reqUnits)
     {
       local color = ""
-      if (!isLocked && !(room[EROOM_FLAGS_KEY_NAME] & eRoomFlags.HAS_UNIT_MATCH_RULES))
+      if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
 
       local rankText = ::events.getTierTextByRules(reqUnits)
@@ -480,14 +498,32 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     chaptersTree.clear()
     foreach (idx, room in roomsList)
     {
-      local roomMGM = ::SessionLobby.getMGameMode(room, false)
-      local foundChapter = ::u.search(chaptersTree, function(chapter) {return chapter.chapterGameMode == roomMGM})
+      local chapterGameMode = ::SessionLobby.getMGameMode(room, true)
+      local isCustomMode = ::events.isCustomGameMode(chapterGameMode)
+      local isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
+      local itemView = {
+        itemText = isSeparateCustomRoomsList
+          ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
+          : null
+      }
+      local name = ""
+      foreach(side in ::events.getSidesList(chapterGameMode)) {
+        local countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
+        name = isSeparateCustomRoomsList ? "customRooms"
+          : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
+        if (!isCustomMode || !isSeparateCustomRoomsList)
+          itemView[$"{::g_team.getTeamByCode(side).name}Countries"] <- {
+            country = getFlagsArrayByCountriesArray(countries)
+        }
+      }
+
+      local foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
       if (foundChapter == null)
       {
         chaptersTree.append({
-          name = roomMGM? roomMGM.gameModeId.tostring() : "",
-          chapterGameMode = roomMGM,
-          [EROOM_FLAGS_KEY_NAME] = room[EROOM_FLAGS_KEY_NAME],
+          name
+          [EROOM_FLAGS_KEY_NAME] = room[EROOM_FLAGS_KEY_NAME]
+          itemView
           rooms = [room]
         })
       }
@@ -515,7 +551,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     foreach (idx, chapter in chaptersTree)
     {
       local haveRooms = chapter.rooms.len() > 0
-      if (!haveRooms)
+      if (!haveRooms || (showOnlyAvailableRooms && isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
         continue
 
       if (chapter.name == curChapterId)
@@ -525,21 +561,14 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         id = chapter.name
         isCollapsable = true
         isNeedOnHover = ::show_console_buttons
-      }
-      local mGameMode = chapter.chapterGameMode
-      if (::events.isCustomGameMode(mGameMode))
-        listRow.itemText <- ::colorize("activeTextColor", ::loc("events/playersRooms"))
-      else
-        foreach(side in ::events.getSidesList(mGameMode))
-          listRow[::g_team.getTeamByCode(side).name + "Countries"] <-
-          {
-            country = getFlagsArrayByCountriesArray(
-                        ::events.getCountries(::events.getTeamData(mGameMode, side)))
-          }
+      }.__update(chapter.itemView)
       view.items.append(listRow)
 
       foreach (roomIdx, room in chapter.rooms)
       {
+        if (showOnlyAvailableRooms && isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
+          continue
+
         local roomId = room.roomId
         if (roomId == curRoomId || roomId == roomIdToSelect)
         {
@@ -566,10 +595,11 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     viewRoomList = view
     local data = ::handyman.renderCached("gui/events/eventRoomsList", view)
     guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
-    for (local i = 0; i < roomsListObj.childrenCount(); i++)
+    local roomsCount = roomsListObj.childrenCount()
+    for (local i = 0; i < roomsCount; i++)
       roomsListObj.getChild(i).setIntProp(listIdxPID, i)
 
-    if (roomsList.len())
+    if (roomsCount > 0)
     {
       roomsListObj.setValue(selectedIdx)
       if (roomIdToSelect == curRoomId)
@@ -812,4 +842,14 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onLeaveEvent() {}
   function onDownloadPack() {}
   function onQueueOptions() {}
+
+  function onShowOnlyAvailableRooms(obj) {
+    local newValue = obj.getValue()
+    if (newValue == showOnlyAvailableRooms)
+      return
+
+    showOnlyAvailableRooms = newValue
+    ::save_local_account_settings("events/showOnlyAvailableRooms", newValue)
+    fillRoomsList()
+  }
 }

@@ -773,8 +773,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (isWide)
       return null
 
-    local isEventNeedPreview = isEventMatchesType(event, EVENT_TYPE.ANY & (~EVENT_TYPE.NEWBIE_BATTLES)) &&
-      (::isInArray(event.name, ::event_ids_for_main_game_mode_list) ||
+    local isEventNeedPreview = (::isInArray(event.name, ::event_ids_for_main_game_mode_list) ||
       (::events.getEventDisplayType(event).showInGamercardDrawer && isEventActive(event)))
 
     if (!isEventNeedPreview)

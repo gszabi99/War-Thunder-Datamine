@@ -10,7 +10,7 @@ local DEFAULT_BRANCH_CONFIG = {
   branchItems = {}
   bodyIdx = 0
   textBlocks = []
-  buttonBlk = null
+  buttonConfig = null
   itemsIdList = {}
 }
 
@@ -78,7 +78,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
   local notFoundReqForItems = {}
   local minPosX = null
   local maxPosX = null
-  local resourcesInColumn = {}
+  local resourcesInColumn = {}//!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
   local reqItemsWithDownOutArrows = {}
   local bodyIdx = branchBlk?.bodyItemIdx ?? 0
   local hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
@@ -90,6 +90,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
   {
     local iBlk = branchBlk.getBlock(i)
     local id = iBlk.getBlockName()
+    local shouldRemoveBlankRows = branchBlk?.shouldRemoveBlankRows ?? false
     if (id == "textArea") {
       local posX = iBlk.posXYFrom.x.tointeger()
       local posY = iBlk.posXYFrom.y.tointeger()
@@ -126,7 +127,8 @@ local function generateRows(branchBlk, treeRows, treeBlk)
       reqItemForIdentification = []
       reqItemForCrafting = []
       arrows = []
-      hasItemBackground = hasItemBackground
+      hasItemBackground
+      shouldRemoveBlankRows
     }
 
     foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying",
@@ -220,7 +222,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
       columnWithResourcesCount = resourcesInColumn.reduce(@(res, value) res + value, 0)
       bodyIdx = bodyIdx
       textBlocks = textBlocks
-      buttonBlk = branchBlk?.button
+      buttonConfig = ("button" in branchBlk) ? ::buildTableFromBlk(branchBlk.button) : null
       itemsIdList = itemsIdList
     })
   }
@@ -311,9 +313,7 @@ local function generateTreeConfig(blk)
      curBodyConfig.textBlocks.extend(branch.textBlocks)
      curBodyConfig.availableBranchByColumns[branch.minPosX-1] <- true
      curBodyConfig.resourcesInColumn.__update(branch.resourcesInColumn)
-     curBodyConfig.button = branch.buttonBlk != null
-       ? ::buildTableFromBlk(branch.buttonBlk)
-       : curBodyConfig.button
+     curBodyConfig.button = branch.buttonConfig ?? curBodyConfig.button
   }
 
   local craftTreeItemsIdArray = craftTreeItemsList.keys()
