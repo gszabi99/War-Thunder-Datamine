@@ -15567,6 +15567,76 @@
   },
   {
     "unlockable": {
+      "id": "2021_09_10_tankers_day_decor",
+      "type": "achievement",
+      "chapter": "tankers_day_2017",
+      "hidden": true,
+      "costGold": 499,
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "num": 5
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_ussr"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-10 13:00:00",
+            "endDate": "2021-09-13 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2021_09_10_tankers_day_decor_gift",
+      "userLogId": "tankers_day_decor_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2021_09_10_tankers_day_decor"
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "2021_08_12_vks_russia_decal",
       "type": "achievement",
       "chapter": "vvs_ussr",

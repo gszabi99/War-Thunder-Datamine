@@ -9,7 +9,7 @@ local {floor, cos, sin, PI} = require("std/math.nut")
 local {cvt} = require("dagor.math")
 local DataBlock = require("DataBlock")
 local {DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, TargetsTrigger, Azimuth} = require("radarState.nut")
+  HasAzimuthScale, TargetsTrigger, Azimuth, IsCScopeVisible} = require("radarState.nut")
 
 local {mode} = require("radarComponent.nut")
 
@@ -1513,7 +1513,8 @@ local ASPRadarMode = @() {
 
 local function createTargetDistASP23(index) {
   local target = targets[index]
-  local distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
+  local dist = HasDistanceScale.value ? target.distanceRel : 0.9;
+  local distanceRel = IsCScopeVisible.value ? target.elevationRel : dist
 
   local angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
   local angularWidthRel = HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
@@ -1591,7 +1592,7 @@ local ASPRadarRoll = @() {
   update = @() {
     transform = {
       rotate = Roll.value
-      pivot = [0.5, 0.5]
+      pivot = [0.5, 0.3]
     }
   }
 }
