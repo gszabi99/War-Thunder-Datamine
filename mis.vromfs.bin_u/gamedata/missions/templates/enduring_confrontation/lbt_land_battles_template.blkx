@@ -52,8 +52,33 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "lbt_descriptor_check"
+          "comment": {
+            "value": "wait for 30 seconds and start all procedures"
+          }
+        },
+        {
+          "comment": {
+            "value": "heat checks"
+          }
+        },
+        {
+          "comment": {
+            "value": "active battle time check"
+          }
+        },
+        {
+          "comment": {
+            "value": "battle result check"
+          }
+        },
+        {
+          "comment": {
+            "value": "counting active batles amount (for other templates)"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
           }
         },
         {
@@ -75,185 +100,9 @@
           "triggerEnable": {
             "target": "lbt_counter_restart"
           }
-        },
-        {
-          "comment": {
-            "value": "ждем 30 секунд и запускаем все процедуры"
-          }
-        },
-        {
-          "comment": {
-            "value": "проверку heat"
-          }
-        },
-        {
-          "comment": {
-            "value": "проверку времени битвы"
-          }
-        },
-        {
-          "comment": {
-            "value": "проверку результатов битвы"
-          }
-        },
-        {
-          "comment": {
-            "value": "подсчет убитых"
-          }
-        },
-        {
-          "comment": {
-            "value": "подсчет количества активных битв (для других шаблонов)"
-          }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
-          "__triggerEnable": {
-            "target": "lbt_damage_restart"
-          }
         }
       ],
       "else_actions": []
-    },
-    "lbt_descriptor_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [
-        {
-          "varCompareReal": {
-            "var_value": "lbt_battle_t1_advantage",
-            "value": 0.0,
-            "comparasion_func": "equal"
-          }
-        },
-        {
-          "varCompareReal": {
-            "var_value": "lbt_battle_t2_advantage",
-            "value": 0.0,
-            "comparasion_func": "equal"
-          }
-        }
-      ],
-      "actions": {
-        "comment": {
-          "value": "надо проверить режим игры и выставить дефолтные значения"
-        },
-        "triggerEnable": {
-          "target": "lbt_descriptor_set_defaults"
-        }
-      },
-      "else_actions": [
-        {
-          "comment": {
-            "value": "дескрипторы в порядке"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "lbt_battle_t1_reference_units_ratio"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "lbt_battle_t2_reference_units_ratio"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "lbt_battle_t1_reference_units_ratio",
-            "use_variable": true,
-            "var_value": "lbt_battle_t1_advantage"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "lbt_battle_t2_reference_units_ratio",
-            "use_variable": true,
-            "var_value": "lbt_battle_t2_advantage"
-          }
-        }
-      ]
-    },
-    "lbt_descriptor_set_defaults": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareString": {
-          "var_value": "lbt_game_mode",
-          "value": "pve",
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": [
-        {
-          "comment": {
-            "value": "PVE режим. у команды 2 должно быть преимущество в 2 раза"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 1,
-            "var": "lbt_battle_t1_reference_units_ratio"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 2,
-            "var": "lbt_battle_t2_reference_units_ratio"
-          }
-        }
-      ],
-      "else_actions": {
-        "comment": {
-          "value": "PVP режим, обе команды равноправны"
-        },
-        "varSetInt": [
-          {
-            "value": 1
-          },
-          {
-            "var": "lbt_battle_t1_reference_units_ratio"
-          },
-          {
-            "var": "lbt_battle_t2_reference_units_ratio"
-          }
-        ]
-      }
     },
     "lbt_matching": {
       "isCategory": true,
@@ -1163,17 +1012,12 @@
             },
             {
               "comment": {
-                "value": "берем юнитов аткивной битвы, целиком их восстанавливаем и прячем"
+                "value": "set active battle units to sleep"
               }
             },
             {
               "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": "разбиваем процесс спавнана два разных эвента для удобства"
+                "value": "continue spawn in separate trigger just for better view"
               }
             },
             {
@@ -1183,44 +1027,12 @@
               }
             },
             {
-              "unitRestore": [
-                {
-                  "ressurectIfDead": true
-                },
-                {
-                  "fullRestore": true
-                },
-                {
-                  "target_marking": 0
-                },
-                {
-                  "target": "@lbt_battle_t1_army_squad_name"
-                },
-                {
-                  "target": "@lbt_battle_t2_army_squad_name"
-                }
-              ]
-            },
-            {
               "unitPutToSleep": [
                 {
                   "target": "@lbt_battle_t1_army_squad_name"
                 },
                 {
                   "target": "@lbt_battle_t2_army_squad_name"
-                }
-              ]
-            },
-            {
-              "varSetReal": [
-                {
-                  "value": 0.0
-                },
-                {
-                  "var": "lbt_battle_t1_num_spawnded_units"
-                },
-                {
-                  "var": "lbt_battle_t2_num_spawnded_units"
                 }
               ]
             },
@@ -1249,32 +1061,32 @@
           "actions": [
             {
               "comment": {
-                "value": "запрещаем стрельбу"
+                "value": "set shoots off"
               }
             },
             {
               "comment": {
-                "value": "создаем имя спавна"
+                "value": "creating spawn name"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменно со значением heat"
+                "value": "creating heat variable name"
               }
             },
             {
               "comment": {
-                "value": "обнуляем heat"
+                "value": "setting heat to 0"
               }
             },
             {
               "comment": {
-                "value": "запускаем спавны"
+                "value": "starting spawns"
               }
             },
             {
               "comment": {
-                "value": "запускаем битву"
+                "value": "waiting 10 seconds and strt battle"
               }
             },
             {
@@ -1393,30 +1205,6 @@
           ],
           "else_actions": []
         },
-        "lbt_battle_spawn_t1_rotator": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 2.0
-            }
-          },
-          "conditions": [],
-          "actions": {
-            "comment": {
-              "value": "просто вызываем спавн танков. все проверки внутри"
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t1_tank_spawn"
-            }
-          },
-          "else_actions": []
-        },
         "lbt_battle_t1_tank_spawn": {
           "is_enabled": false,
           "comments": "",
@@ -1445,15 +1233,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t1_tank_name",
-              "var": "lbt_battle_t1_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t2_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t1_tank_name"
             }
           },
           "actions": {
@@ -1463,23 +1245,15 @@
               "object": "@lbt_battle_t1_tank_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t1_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t1_rotator"
+              "target": "lbt_battle_t1_acar_spawn"
             }
           },
           "else_actions": {
@@ -1523,17 +1297,9 @@
                 "object_marking": 0,
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
-                "func": "notLess",
-                "value": 1,
-                "object": "@lbt_battle_t1_acar_name",
-                "var": "lbt_battle_t1_reference_units_ratio"
-              }
-            },
-            {
-              "varCompareBool": {
-                "var_value": "lbt_battle_t2_spawn_in_progress",
-                "value": true,
-                "comparasion_func": "equal"
+                "func": "more",
+                "value": 0,
+                "object": "@lbt_battle_t1_acar_name"
               }
             }
           ],
@@ -1544,23 +1310,15 @@
               "object": "@lbt_battle_t1_acar_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t1_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t1_rotator"
+              "target": "lbt_battle_t1_aaa_spawn"
             }
           },
           "else_actions": {
@@ -1604,17 +1362,9 @@
                 "object_marking": 0,
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
-                "func": "notLess",
-                "value": 1,
-                "object": "@lbt_battle_t1_aaa_name",
-                "var": "lbt_battle_t1_reference_units_ratio"
-              }
-            },
-            {
-              "varCompareBool": {
-                "var_value": "lbt_battle_t2_spawn_in_progress",
-                "value": true,
-                "comparasion_func": "equal"
+                "func": "more",
+                "value": 0,
+                "object": "@lbt_battle_t1_aaa_name"
               }
             }
           ],
@@ -1625,23 +1375,15 @@
               "object": "@lbt_battle_t1_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t1_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t1_rotator"
+              "target": "lbt_battle_t1_bunker_spawn"
             }
           },
           "else_actions": {
@@ -1681,15 +1423,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t1_bunker_name",
-              "var": "lbt_battle_t1_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t2_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t1_bunker_name"
             }
           },
           "actions": {
@@ -1699,23 +1435,15 @@
               "object": "@lbt_battle_t1_bunker_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t1_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t1_rotator"
+              "target": "lbt_battle_t1_art_spawn"
             }
           },
           "else_actions": {
@@ -1750,15 +1478,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t1_art_name",
-              "var": "lbt_battle_t1_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t2_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t1_art_name"
             }
           },
           "actions": {
@@ -1768,23 +1490,15 @@
               "object": "@lbt_battle_t1_art_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t1_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t1_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t1_rotator"
+              "target": "lbt_battle_t1_spawn_end"
             }
           },
           "else_actions": {
@@ -1831,30 +1545,6 @@
             }
           }
         },
-        "lbt_battle_spawn_t2_rotator": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 2.0
-            }
-          },
-          "conditions": [],
-          "actions": {
-            "comment": {
-              "value": "просто вызываем спавн танков. все проверки внутри"
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t2_tank_spawn"
-            }
-          },
-          "else_actions": []
-        },
         "lbt_battle_t2_tank_spawn": {
           "is_enabled": false,
           "comments": "",
@@ -1883,15 +1573,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t2_tank_name",
-              "var": "lbt_battle_t2_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t1_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t2_tank_name"
             }
           },
           "actions": {
@@ -1901,23 +1585,15 @@
               "object": "@lbt_battle_t2_tank_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t2_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t2_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t2_rotator"
+              "target": "lbt_battle_t2_acar_spawn"
             }
           },
           "else_actions": {
@@ -1961,10 +1637,9 @@
                 "object_marking": 0,
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
-                "func": "notLess",
-                "value": 1,
-                "object": "@lbt_battle_t2_acar_name",
-                "var": "lbt_battle_t1_reference_units_ratio"
+                "func": "more",
+                "value": 0,
+                "object": "@lbt_battle_t2_acar_name"
               }
             },
             {
@@ -1982,23 +1657,15 @@
               "object": "@lbt_battle_t2_acar_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t2_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t2_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t2_rotator"
+              "target": "lbt_battle_t2_aaa_spawn"
             }
           },
           "else_actions": {
@@ -2042,17 +1709,9 @@
                 "object_marking": 0,
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
-                "func": "notLess",
-                "value": 1,
-                "object": "@lbt_battle_t2_aaa_name",
-                "var": "lbt_battle_t1_reference_units_ratio"
-              }
-            },
-            {
-              "varCompareBool": {
-                "var_value": "lbt_battle_t1_spawn_in_progress",
-                "value": true,
-                "comparasion_func": "equal"
+                "func": "more",
+                "value": 0,
+                "object": "@lbt_battle_t2_aaa_name"
               }
             }
           ],
@@ -2063,23 +1722,15 @@
               "object": "@lbt_battle_t2_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t2_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t2_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t2_rotator"
+              "target": "lbt_battle_t2_bunker_spawn"
             }
           },
           "else_actions": {
@@ -2119,15 +1770,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t2_bunker_name",
-              "var": "lbt_battle_t2_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t1_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t2_bunker_name"
             }
           },
           "actions": {
@@ -2137,23 +1782,15 @@
               "object": "@lbt_battle_t2_bunker_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t2_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t2_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t2_rotator"
+              "target": "lbt_battle_t2_art_spawn"
             }
           },
           "else_actions": {
@@ -2188,15 +1825,9 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "func": "notLess",
-              "value": 1,
-              "object": "@lbt_battle_t2_art_name",
-              "var": "lbt_battle_t2_reference_units_ratio"
-            },
-            "varCompareBool": {
-              "var_value": "lbt_battle_t1_spawn_in_progress",
-              "value": true,
-              "comparasion_func": "equal"
+              "func": "more",
+              "value": 0,
+              "object": "@lbt_battle_t2_art_name"
             }
           },
           "actions": {
@@ -2206,23 +1837,15 @@
               "object": "@lbt_battle_t2_art_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
-              "randomObjectsCountVar": "lbt_battle_t2_reference_units_ratio",
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
-            },
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "lbt_battle_t2_num_spawnded_units",
-              "use_variable": true,
-              "var_value": "lbt_battle_t2_reference_units_ratio"
             },
             "comment": {
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_spawn_t2_rotator"
+              "target": "lbt_battle_t2_spawn_end"
             }
           },
           "else_actions": {
@@ -2300,147 +1923,98 @@
           ],
           "actions": [
             {
-              "__triggerDisable": [
-                {
-                  "target": "lbt_battle_t1_tank_spawn"
-                },
-                {
-                  "target": "lbt_battle_t1_art_spawn"
-                },
-                {
-                  "target": "lbt_battle_t1_bunker_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_tank_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_art_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_bunker_spawn"
-                }
-              ]
-            },
-            {
-              "__triggerDisable": [
-                {
-                  "target": "lbt_battle_t1_tank_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_tank_spawn"
-                },
-                {
-                  "target": "lbt_battle_t1_bunker_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_bunker_spawn"
-                },
-                {
-                  "target": "lbt_battle_t1_art_spawn"
-                },
-                {
-                  "target": "lbt_battle_t2_art_spawn"
-                }
-              ]
-            },
-            {
               "comment": {
-                "value": "рисуем стрелку"
+                "value": "draw attack arrow"
               }
             },
             {
               "comment": {
-                "value": "отключаем спавны"
+                "value": "creating battle time variable name"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной хранящей время боя"
+                "value": "reseting current battle time"
               }
             },
             {
               "comment": {
-                "value": "обнуляем текущее время миссии"
+                "value": "enable shooting and set visibility"
               }
             },
             {
               "comment": {
-                "value": "разрешаем атаковать и ставим видимость"
+                "value": "set force shoot to battle squads"
               }
             },
             {
               "comment": {
-                "value": "говорим команду стрелять"
+                "value": "start tanks moving"
               }
             },
             {
               "comment": {
-                "value": "говорим танкам двигаться"
+                "value": "trurning indication (will work in RB)"
               }
             },
             {
               "comment": {
-                "value": "мигаем целями для РБ"
+                "value": "variable name for activity of team A players"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, хранящей активность игроков команды А"
+                "value": "variable name for activity of team B players"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, хранящей активность игроков команды Б"
+                "value": "reseting activity for both teams"
               }
             },
             {
               "comment": {
-                "value": "обнуляем активность обеих команд для этой битвы"
+                "value": "variable name for counting dead units for A team"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, хранящей количество убитых юнитов команды А"
+                "value": "variable name for counting dead units for B team"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, хранящей количество убитых юнитов команды Б"
+                "value": "reseting dead units count for current battle"
               }
             },
             {
               "comment": {
-                "value": "обнуляем количество мертвых юнитов для этой битвы"
+                "value": "variable name where is battle active flag is keeping"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной активности боя"
+                "value": "setting battle to active state"
               }
             },
             {
               "comment": {
-                "value": "говорим что битва активна"
+                "value": "variable name that keeps attack from direction square"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной хранящей откуда напали"
+                "value": "storing attack from direction square"
               }
             },
             {
               "comment": {
-                "value": "запоминаем имя сектора с которого напали"
+                "value": "variable name that keeps attack to direction square"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной хранящей куда напали"
-              }
-            },
-            {
-              "comment": {
-                "value": "запоминаем имя сектора с которого напали"
+                "value": "storing attack to direction square"
               }
             },
             {
@@ -2675,7 +2249,7 @@
                   "object": "@lbt_battle_t2_army_squad_name"
                 },
                 {
-                  "stealthRadius": 64000.0
+                  "stealthRadius": 128000.0
                 },
                 {
                   "attack_type": "fire_at_will"
@@ -2718,7 +2292,7 @@
                   "set": true
                 },
                 {
-                  "radius": 64000.0
+                  "radius": 128000.0
                 },
                 {
                   "target": "@lbt_battle_t1_army_squad_name"
@@ -5889,16 +5463,6 @@
           },
           {
             "comment": {
-              "value": "creating var name for counting team A dead units"
-            }
-          },
-          {
-            "comment": {
-              "value": "creating var name for counting team B dead units"
-            }
-          },
-          {
-            "comment": {
               "value": "получаем переменную, хранящую армию атакующего"
             }
           },
@@ -5925,11 +5489,6 @@
           {
             "comment": {
               "value": "gaining number of active units for team B"
-            }
-          },
-          {
-            "comment": {
-              "value": "getting value with ratio"
             }
           },
           {
@@ -6089,46 +5648,6 @@
             ]
           },
           {
-            "__varSetString": {
-              "value": "lbt_damage_",
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "__varSetString": {
-              "value": "lbt_damage_",
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "@lbt_end_cur_idx",
-              "digits": 2,
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "_t1_death_counter",
-              "digits": 2,
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "@lbt_end_cur_idx",
-              "digits": 2,
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "_t2_death_counter",
-              "digits": 2,
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "lbt_end_from_army",
@@ -6154,30 +5673,6 @@
               "target": "@lbt_end_t2_battle_squad_name",
               "target_type": "isActive",
               "var": "lbt_end_t2_active_units_count"
-            }
-          },
-          {
-            "__varSetReal": {
-              "value": 0.0,
-              "var": "lbt_end_t2_result_counter"
-            }
-          },
-          {
-            "__varModify": {
-              "operator": "add",
-              "value": 0.0,
-              "var": "lbt_end_t2_result_counter",
-              "use_variable": true,
-              "var_value": "@lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "__varModify": {
-              "operator": "mul",
-              "value": 1.0,
-              "var": "lbt_end_t2_result_counter",
-              "use_variable": true,
-              "var_value": "lbt_battle_t1_reference_units_ratio"
             }
           }
         ],
@@ -7741,12 +7236,6 @@
     "lbt_damage_is_active_var_name": "",
     "lbt_end_redraw_is_active_var_name": "",
     "lbt_game_mode": "pvp",
-    "lbt_battle_t1_reference_units_ratio": 0,
-    "lbt_battle_t2_reference_units_ratio": 0,
-    "lbt_battle_t1_num_spawnded_units": 0.0,
-    "lbt_battle_t2_num_spawnded_units": 0.0,
-    "lbt_battle_t1_spawn_in_progress": false,
-    "lbt_battle_t2_spawn_in_progress": false,
     "lbt_end_t1_result_counter": 0.0,
     "lbt_end_t2_result_counter": 0.0,
     "lbt_counter_attack_t1_is_enable": false,
@@ -7761,7 +7250,9 @@
     "lbt_battle_t1_acar_name": "",
     "lbt_battle_t2_acar_name": "",
     "lbt_battle_t1_aaa_name": "",
-    "lbt_battle_t2_aaa_name": ""
+    "lbt_battle_t2_aaa_name": "",
+    "lbt_battle_t1_spawn_in_progress": false,
+    "lbt_battle_t2_spawn_in_progress": false
   },
   "dialogs": [],
   "airfields": [],
