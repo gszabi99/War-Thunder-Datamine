@@ -177491,16 +177491,16 @@
         {
           "condition": [
             {
-              "type": "offenderType"
+              "type": "playerTag"
             },
             {
-              "unitType": "typeLightTank"
+              "tag": "type_light_tank"
             },
             {
-              "unitType": "typeMediumTank"
+              "tag": "type_medium_tank"
             },
             {
-              "unitType": "typeHeavyTank"
+              "tag": "type_heavy_tank"
             }
           ]
         },
@@ -177559,8 +177559,8 @@
         },
         {
           "condition": {
-            "type": "offenderType",
-            "unitType": "typeTankDestroyer"
+            "type": "playerTag",
+            "tag": "type_tank_destroyer"
           }
         },
         {
@@ -177812,16 +177812,16 @@
         {
           "condition": [
             {
-              "type": "offenderType"
+              "type": "playerTag"
             },
             {
-              "unitType": "typeSubmarineChaser"
+              "tag": "type_submarine_chaser"
             },
             {
-              "unitType": "typeMinelayer"
+              "tag": "type_minelayer"
             },
             {
-              "unitType": "typeGunBoat"
+              "tag": "type_gun_boat"
             }
           ]
         },
@@ -177872,10 +177872,23 @@
           }
         },
         {
-          "condition": {
-            "type": "offenderType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerTag"
+            },
+            {
+              "tag": "type_light_cruiser"
+            },
+            {
+              "tag": "type_heavy_cruiser"
+            },
+            {
+              "tag": "type_battlecruiser"
+            },
+            {
+              "tag": "type_battleship"
+            }
+          ]
         },
         {
           "condition": {
