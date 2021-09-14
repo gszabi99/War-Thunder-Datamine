@@ -1,4 +1,4 @@
-local awardRanks = [2, 3, 5]
+local awardRanks = [3, 4, 7]
 local awardVesselsRanks = [3, 4, 5]
 local awards = [[70000, 0], [300000, 100], [0, 2500]]
 
