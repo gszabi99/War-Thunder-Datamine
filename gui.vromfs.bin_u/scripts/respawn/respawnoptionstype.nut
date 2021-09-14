@@ -142,7 +142,7 @@ options.addTypes({
     sortIdx = idx++
     userOption = ::USEROPT_BOMB_SERIES
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
-    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     isShowForRandomUnit = false
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter()) && bombNbr(p.unit) > 1
   }

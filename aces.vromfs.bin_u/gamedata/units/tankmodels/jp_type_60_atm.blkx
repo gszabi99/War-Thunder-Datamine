@@ -1078,6 +1078,26 @@
   {
     "tank_crew": {
       "changeTimeMult": 1.0,
+      "gunner": [
+        {
+          "dmPart": "gunner_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "substitute": "machine_gunner"
+        },
+        {
+          "substitute": "loader1"
+        },
+        {
+          "substitute": "loader2"
+        },
+        {
+          "substitute": "commander"
+        }
+      ],
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
         "role": "radio_gunner"
@@ -1097,6 +1117,9 @@
         },
         {
           "substitute": "loader2"
+        },
+        {
+          "substitute": "commander"
         }
       ],
       "loader2": {
@@ -1111,10 +1134,7 @@
       },
       "commander": [
         {
-          "dmPart": "gunner_dm"
-        },
-        {
-          "role": "tank_gunner"
+          "dmPart": "commander_dm"
         },
         {
           "role": "commander"
