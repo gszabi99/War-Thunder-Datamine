@@ -11,7 +11,7 @@ local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
 local {paramsTable, taTarget, compassElem}  = require("airHudElems.nut")
 
-local {aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight} = require("airSight.nut")
+local {aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight, laserPointComponent} = require("airSight.nut")
 
 local {radarElement, twsElement} = require("airHudComponents.nut")
 
@@ -130,8 +130,9 @@ local function aircraftHUDs(isBackground) {
       twsElement(HudColor, twsPosWatched, twsSize)
       radarElement(HudColor, radarPosComputed, radarSize)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
-      !IndicatorsVisible.value ? null : agmAimIndicator(isBackground)
+      agmAimIndicator(isBackground)
       !IndicatorsVisible.value ? null : weaponHud(isBackground)
+      laserPointComponent(isBackground)
       LaserAtgmSightVisible.value && !isBackground ? laserAtgmSight(sw(100), sh(100)) : null
       !IsRadarHudVisible.value && !LaserAtgmSightVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
     ]

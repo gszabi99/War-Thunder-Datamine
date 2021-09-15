@@ -12668,6 +12668,51 @@
   },
   {
     "unlockable": {
+      "id": "spitfire_bzb_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-09-15 00:00:00",
+        "endDate": "2021-09-17 07:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "spitfire_bzb_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "spitfire_bzb_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": [
+        {
+          "compareOR": true
+        },
+        {
+          "type": "char_unit_exist"
+        },
+        {
+          "unit": "spitfire_fr_mk14e"
+        },
+        {
+          "unit": "spitfire_ix_plagis"
+        },
+        {
+          "condition": {
+            "type": "char_time_range",
+            "beginDate": "2021-09-15 00:00:00",
+            "endDate": "2021-09-17 07:00:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "p-39n_su_check_popup",
       "type": "achievement",
       "hidden": true,
@@ -15596,6 +15641,75 @@
       "chapter": "decals",
       "group": "axis_emblems",
       "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2021_09_15_bzb_day_decal",
+      "type": "achievement",
+      "chapter": "battle_of_britain",
+      "costGold": 199,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 3
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_britain"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-15 11:00:00",
+            "endDate": "2021-09-17 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2021_09_15_bzb_day_decal_gift",
+      "userLogId": "2021_09_15_bzb_day_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2021_09_15_bzb_day_decal"
+      }
     }
   },
   {

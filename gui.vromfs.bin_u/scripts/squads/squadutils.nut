@@ -4,6 +4,7 @@ local platformModule = require("scripts/clientState/platform.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { recentBR, getBRDataByMrankDiff } = require("scripts/battleRating.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -42,6 +43,38 @@ systemMsg.registerLocTags(locTags)
 
   getMembersFlyoutDataByUnitsGroups = @() ::g_squad_manager.getMembers().map(
     @(member) { crafts_info = member?.craftsInfoByUnitsGroups })
+
+  canShowMembersBRDiffMsg = @() ::g_login.isProfileReceived()
+    && !::load_local_account_settings("skipped_msg/membersBRDiff", false)
+
+  checkMembersMrankDiff = function(handler, okFunc) {
+    if (!::g_squad_manager.isSquadLeader())
+      return okFunc()
+
+    local brData = getBRDataByMrankDiff()
+    if (brData.len() == 0)
+      return okFunc()
+
+    if (!canShowMembersBRDiffMsg())
+      return okFunc()
+
+    local message = ::loc("multiplayer/squad/members_br_diff_warning", {
+      squadBR = format("%.1f", recentBR.value)
+      players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
+        "".concat(::colorize("userlogColoredText", k), ::loc("ui/colon"), format("%.1f", v))), []))
+    })
+
+    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
+      parentHandler = handler
+      message = message
+      ableToStartAndSkip = true
+      startBtnText = ::loc("msgbox/btn_yes")
+      onStartPressed = okFunc
+      skipFunc = function(value) {
+        ::save_local_account_settings("skipped_msg/membersBRDiff", value)
+      }
+    })
+  }
 }
 
 g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null,

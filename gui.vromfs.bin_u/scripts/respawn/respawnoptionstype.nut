@@ -30,18 +30,23 @@ local function _update(p, trigger, isAlreadyFilled) {
   local obj = p.handler.scene.findObject(id)
   if (obj?.isValid()) {
     obj.enable(isEnable)
-    if (isShow && isNeedUpdateContent) {
+    if (isShow) {
       local opt = getUseropt(p)
-      if (cType == optionControlType.LIST) {
-        local markup = ::create_option_list(null, opt.items, opt.value, null, false)
-        p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
+      local objOptionValue = obj.getValue()
+      if (isNeedUpdateContent) {
+        if (cType == optionControlType.LIST) {
+          local markup = ::create_option_list(null, opt.items, opt.value, null, false)
+          p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
+        }
+        else if (cType == optionControlType.CHECKBOX)
+          if (objOptionValue != opt.value)
+            obj.setValue(opt.value)
+        isFilled = true
+        if (needCallCbOnContentUpdate)
+          p.handler?[cb].call(p.handler, obj)
       }
-      else if (cType == optionControlType.CHECKBOX)
-        if (obj.getValue() != opt.value)
-          obj.setValue(opt.value)
-      isFilled = true
-      if (needCallCbOnContentUpdate)
-        p.handler?[cb].call(p.handler, obj)
+      if (needCheckValueWhenOptionUpdate && objOptionValue != opt.value)
+        obj.setValue(opt.value)
     }
   }
 
@@ -72,6 +77,8 @@ options.template <- {
   isNeedUpdateByTrigger = _isNeedUpdateByTrigger
   isNeedUpdContentByTrigger = _isNeedUpdContentByTrigger
   update = _update
+
+  needCheckValueWhenOptionUpdate = false //some options save by unit, and when unit changed need update option value if it changed
 }
 
 options.addTypes <- function(typesTable) {
@@ -163,6 +170,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
+    needCheckValueWhenOptionUpdate = true
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
       && p.unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse
   }
@@ -173,6 +181,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
+    needCheckValueWhenOptionUpdate = true
     isAvailableInMission = @() !::get_option_torpedo_dive_depth_auto()
     isShowForUnit = @(p) p.unit.isShipOrBoat() && p.unit.getAvailableSecondaryWeapons().hasTorpedoes
   }
@@ -183,6 +192,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
+    needCheckValueWhenOptionUpdate =true
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
   }
   countermeasures_periods = {

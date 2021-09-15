@@ -182,7 +182,7 @@
             "transiver": "common"
           },
           "setSignal": {
-            "signal": "pulseSearch"
+            "signal": "pulseDopplerSearch"
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-60.0,60.0],
@@ -228,7 +228,7 @@
             "name": "PD VS standby"
           },
           "setSignal": {
-            "signal": "pulseSearch"
+            "signal": "pulseDopplerSearch"
           }
         },
         "setSearchModeCommon": {
@@ -452,10 +452,10 @@
           "init": {
             "stateFrom": "init",
             "event": "init",
-            "stateTo": "pulseStandby",
+            "stateTo": "pulseDopplerStandby",
             "actions": {
               "init": [],
-              "setPulseStandbyMode": []
+              "setPulseDopplerStandbyMode": []
             }
           }
         },

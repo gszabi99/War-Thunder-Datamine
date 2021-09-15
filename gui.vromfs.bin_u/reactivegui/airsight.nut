@@ -468,9 +468,9 @@ local aircraftRocketSight = @(width, height, isBackground) function() {
 
 local function laserPoint(isBackground) {
   return {
-    size = [pw(5), pw(5)]
+    size = [ph(1.5), ph(1.5)]
     rendObj = ROBJ_VECTOR_CANVAS
-    color = isBackground ? backgroundColor : HudColor.value
+    color = HudColor.value
     fillColor = Color(0, 0, 0, 0)
     commands = [
       [VECTOR_ELLIPSE, 0, 0, 100, 100]
@@ -488,7 +488,7 @@ local function laserPointComponent(isBackground) {
   return @() {
     watch = HaveLaserPoint
     size = flex()
-    children = HaveLaserPoint.value ? laserPoint(isBackground) : null
+    children = HaveLaserPoint.value && !isBackground ? laserPoint(isBackground) : null
   }
 }
 

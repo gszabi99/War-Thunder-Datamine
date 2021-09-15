@@ -9,12 +9,13 @@ local brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
 local recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
 local recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
 local recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
+local recentBRData = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
 recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
 
-local function calcSquadBattleRating(brData) {
+local function calcSquadMrank(brData) {
   if (!brData)
-    return 0
+    return -1
 
   local maxBR = -1
   foreach (name, idx in brData)
@@ -25,8 +26,23 @@ local function calcSquadBattleRating(brData) {
       maxBR = ::max(maxBR, val)
     }
   }
-  // maxBR < 0  means empty received data and no BR string needed in game mode header
-  return maxBR < 0 ? 0 : ::calc_battle_rating_from_rank(maxBR)
+  return maxBR
+}
+
+local function calcSquadBattleRating(brData) {
+  local mrank = calcSquadMrank(brData)
+  // mrank < 0  means empty received data and no BR string needed in game mode header
+  return mrank < 0 ? 0 : ::calc_battle_rating_from_rank(mrank)
+}
+
+local function getBRDataByMrankDiff(diff = 3) {
+  local squadMrank = calcSquadMrank(recentBRData.value)
+  if (squadMrank < 0)
+    return []
+
+  return recentBRData.value
+    .filter(@(v, n) (v?[0].mrank ?? -1) >= 0 && (squadMrank - v[0].mrank >= diff))
+    .map(@(v) ::calc_battle_rating_from_rank(v[0].mrank))
 }
 
 local function calcBattleRating(brData) {
@@ -76,7 +92,7 @@ local function setBattleRating(recentUserData, brData) {
   local { gameModeId, players } = recentUserData
   if (brData) {
     local br = calcBattleRating(brData)
-    brInfoByGamemodeId[gameModeId] <- { br, players }
+    brInfoByGamemodeId[gameModeId] <- { br, players, brData = clone brData }
   }
   else if (gameModeId in brInfoByGamemodeId.value)
     brInfoByGamemodeId(@(v) delete v[gameModeId])
@@ -219,4 +235,5 @@ return {
   getCrafts
   recentBrGameModeId
   recentBR
+  getBRDataByMrankDiff
 }

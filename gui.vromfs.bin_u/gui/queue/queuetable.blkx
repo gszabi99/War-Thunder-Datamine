@@ -178,19 +178,40 @@
             ]
           },
           {
-            "tdiv": {
-              "width": "pw",
-              "margin-bottom": "14@sf/@pf",
-              "flow": "vertical",
-              "activeText": {
-                "id": "battle_rating",
-                "commonButtonColor": "yes",
-                "pos": "50%pw-50%w, 0",
-                "position": "relative",
-                "smallFont": "yes",
-                "hideEmptyText": "yes"
+            "tdiv": [
+              {
+                "margin-bottom": "14@sf/@pf"
+              },
+              {
+                "flow": "horizontal"
+              },
+              {
+                "pos": "50%pw-50%w, 0"
+              },
+              {
+                "position": "relative"
+              },
+              {
+                "activeText": {
+                  "id": "battle_rating_label",
+                  "position": "relative",
+                  "pos": "0, 50%ph-50%h",
+                  "smallFont": "yes",
+                  "commonButtonColor": "yes",
+                  "hideEmptyText": "yes"
+                }
+              },
+              {
+                "activeText": {
+                  "id": "battle_rating",
+                  "position": "relative",
+                  "pos": "1@blockInterval, 50%ph-50%h-2@dp",
+                  "normalBoldFont": "yes",
+                  "overlayTextColor": "userlog",
+                  "hideEmptyText": "yes"
+                }
               }
-            }
+            ]
           },
           {
             "tdiv": [

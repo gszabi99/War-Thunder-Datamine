@@ -246,7 +246,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function goToBattleFromDebriefing()
   {
-    determineAndStartAction(true)
+    ::g_squad_utils.checkMembersMrankDiff(this, ::Callback(@() determineAndStartAction(true), this))
   }
 
   function onEventShowingGameModesUpdated(params)
@@ -428,7 +428,8 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!::g_squad_manager.isMeReady())
       ::game_mode_manager.setUserGameModeId(::game_mode_manager.getCurrentGameModeId())
-    determineAndStartAction()
+
+    ::g_squad_utils.checkMembersMrankDiff(this, ::Callback(@() determineAndStartAction(), this))
   }
 
   function onEventSquadDataUpdated(params)

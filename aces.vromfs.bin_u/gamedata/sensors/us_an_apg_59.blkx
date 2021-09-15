@@ -3,14 +3,27 @@
   "name": "AN/APG-59",
   "showMissileLaunchZone": true,
   "transivers": {
-    "common": {
+    "pulse": {
       "sideLobesAttenuation": -20.0,
       "power": 400.0,
       "band": 8,
       "rcs": 5.0,
-      "range": 80000.0,
+      "range": 70000.0,
       "rangeMax": 150000.0,
       "timeGainControl": true,
+      "antenna": {
+        "angleHalfSens": 3.5,
+        "sideLobesSensitivity": -30.0
+      }
+    },
+    "pulseDoppler": {
+      "sideLobesAttenuation": -20.0,
+      "power": 400.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 90000.0,
+      "rangeMax": 150000.0,
+      "timeGainControl": false,
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -30.0
@@ -178,7 +191,7 @@
             "value": false
           },
           "setTransiver": {
-            "transiver": "common"
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseSearch"
@@ -217,6 +230,9 @@
           "setModeName": {
             "name": "standby"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseSearch"
           }
@@ -225,6 +241,9 @@
           "setStandbyModeCommon": [],
           "setModeName": {
             "name": "PD VS standby"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseSearch"
@@ -263,6 +282,9 @@
           "setModeName": {
             "name": "search"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseSearch"
           }
@@ -271,6 +293,9 @@
           "setSearchModeCommon": [],
           "setModeName": {
             "name": "PD VS search"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerSearch"
@@ -320,6 +345,9 @@
           "setModeName": {
             "name": "acquisition"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
           }
@@ -328,6 +356,9 @@
           "setDesignationLockModeCommon": [],
           "setModeName": {
             "name": "PD VS acquisition"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -380,6 +411,9 @@
           "setModeName": {
             "name": "ACM"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
           }
@@ -388,6 +422,9 @@
           "setBoresightLockModeCommon": [],
           "setModeName": {
             "name": "PD VS ACM"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -432,6 +469,9 @@
           "setModeName": {
             "name": "track"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
           }
@@ -440,6 +480,9 @@
           "setTrackModeCommon": [],
           "setModeName": {
             "name": "PD track"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
