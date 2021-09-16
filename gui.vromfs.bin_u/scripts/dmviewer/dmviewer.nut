@@ -1085,19 +1085,20 @@ const AFTERBURNER_CHAMBER = 3
             continue
           local sensorPropsBlk = ::DataBlock()
           sensorPropsBlk.load(sensorFilePath)
-          if (!sensorPropsBlk.getBool("showOnHud", true))
-            continue
           local sensorType = sensorPropsBlk.getStr("type", "")
           if (sensorType == "radar")
           {
             local isRadar = false
             local isIrst = false
+            local isTv = false
             local transiversBlk = sensorPropsBlk.getBlockByName("transivers")
             for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
             {
               local transiverBlk = transiversBlk.getBlock(t)
               if (transiverBlk?.visibilityType == "infraRed")
                 isIrst = true
+              else if (transiverBlk?.visibilityType == "optic")
+                isTv = true
               else
                 isRadar = true
             }
@@ -1107,6 +1108,8 @@ const AFTERBURNER_CHAMBER = 3
               sensorType = "radar"
             else if (isIrst)
               sensorType = "irst"
+            else if (isTv)
+              sensorType = "tv"
           }
           else if (sensorType == "lds")
             continue

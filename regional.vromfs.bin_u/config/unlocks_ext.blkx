@@ -33670,6 +33670,86 @@
   },
   {
     "unlockable": {
+      "id": "battlepass_season_4_challenge_9",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 4,
+      "hidden": false,
+      "chapter": "battlepass_season4",
+      "mode": [
+        {
+          "type": "unlockStageCount"
+        },
+        {
+          "num": 10
+        },
+        {
+          "unlock": "tank_marked_enemy_destroyed_by_ally"
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-15 12:00:00",
+            "endDate": "2021-10-06 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 4
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "battlepass_season_4_challenge_8",
       "locDescId": "challenge_deal_naval_damage_on_boat_to_ship/desc",
       "type": "achievement",
@@ -33734,86 +33814,6 @@
           "condition": {
             "type": "targetType",
             "unitType": "ship"
-          }
-        },
-        {
-          "condition": {
-            "type": "timeRange",
-            "beginDate": "2021-09-15 12:00:00",
-            "endDate": "2021-10-06 12:00:00"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerHasFeature",
-            "feature": "BattlePass"
-          }
-        },
-        {
-          "condition": {
-            "type": "battlepassSeason",
-            "season": 4
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "battlepass_season_4_challenge_9",
-      "type": "achievement",
-      "amount_exp": 0,
-      "amount_warpoints": 0,
-      "forUserstat": true,
-      "battlePassSeason": 4,
-      "hidden": false,
-      "chapter": "battlepass_season4",
-      "mode": [
-        {
-          "type": "unlockStageCount"
-        },
-        {
-          "num": 10
-        },
-        {
-          "unlock": "tank_marked_enemy_destroyed_by_ally"
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": [
-            {
-              "type": "gameModeInfoString"
-            },
-            {
-              "name": "name"
-            },
-            {
-              "exactName": true
-            },
-            {
-              "value": "tank_event_in_random_battles_arcade"
-            },
-            {
-              "value": "tank_event_in_random_battles_historical"
-            },
-            {
-              "locParamName": "conditions/missionType"
-            },
-            {
-              "locValuePrefix": "missions/short/"
-            }
-          ]
-        },
-        {
-          "condition": {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
           }
         },
         {

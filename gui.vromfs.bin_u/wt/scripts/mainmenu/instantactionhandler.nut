@@ -246,7 +246,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function goToBattleFromDebriefing()
   {
-    ::g_squad_utils.checkMembersMrankDiff(this, ::Callback(@() determineAndStartAction(true), this))
+    determineAndStartAction(true)
   }
 
   function onEventShowingGameModesUpdated(params)
@@ -429,7 +429,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     if (!::g_squad_manager.isMeReady())
       ::game_mode_manager.setUserGameModeId(::game_mode_manager.getCurrentGameModeId())
 
-    ::g_squad_utils.checkMembersMrankDiff(this, ::Callback(@() determineAndStartAction(), this))
+    determineAndStartAction()
   }
 
   function onEventSquadDataUpdated(params)
@@ -491,14 +491,16 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       missionsComplete = ::my_stats.getMissionsComplete()
     }
 
-    checkedNewFlight(function() {
-      ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
-      onStartAction()
-    }.bindenv(this),
-    function() {
-      configForStatistic.canIntoToBattle <- false
-      ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
-    }.bindenv(this))
+    ::g_squad_utils.checkMembersMrankDiff(this, ::Callback(@()
+      checkedNewFlight(function() {
+        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        onStartAction()
+      }.bindenv(this),
+      function() {
+        configForStatistic.canIntoToBattle <- false
+        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+      }.bindenv(this))
+    , this))
   }
 
   function isCrossPlayEventAvailable(event)
