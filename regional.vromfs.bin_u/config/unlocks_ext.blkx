@@ -12713,6 +12713,51 @@
   },
   {
     "unlockable": {
+      "id": "2021_us_air_force_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-09-17 00:00:00",
+        "endDate": "2021-09-20 07:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "2021_us_air_force_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2021_us_air_force_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": [
+        {
+          "compareOR": true
+        },
+        {
+          "type": "char_unit_exist"
+        },
+        {
+          "unit": "p-47m-1-re"
+        },
+        {
+          "unit": "p-51d-10"
+        },
+        {
+          "condition": {
+            "type": "char_time_range",
+            "beginDate": "2021-09-17 00:00:00",
+            "endDate": "2021-09-20 07:00:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "p-39n_su_check_popup",
       "type": "achievement",
       "hidden": true,
