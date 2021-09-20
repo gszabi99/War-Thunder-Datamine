@@ -1949,7 +1949,8 @@ local lockZoneComponent = @(color) function() {
 
   local res =  { watch = [IsLockZoneVisible, LockZoneWatched] }
   if (!IsLockZoneVisible.value)
-    return res
+    return res.__update({
+      animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.25, play = true, loop = true, easing = InOutSine}]})
 
   local width = sw(100)
   local height = sh(100)
@@ -2091,58 +2092,56 @@ local compassComponent = @(color) function() {
 
 
 local createAzimuthMark = @(size, is_selected, is_detected, is_enemy, color)
+  function() {
 
-  !is_selected && !is_detected && is_enemy ? null
-    : function() {
+    local frame = null
 
-      local frame = null
+    local frameSizeW = size[0] * 1.5
+    local frameSizeH = size[1] * 1.5
+    local commands = []
 
-      local frameSizeW = size[0] * 1.5
-      local frameSizeH = size[1] * 1.5
-      local commands = []
-
-      if (is_selected)
-        commands.append(
-          [VECTOR_LINE, 0, 0, 100, 0],
-          [VECTOR_LINE, 100, 0, 100, 100],
-          [VECTOR_LINE, 100, 100, 0, 100],
-          [VECTOR_LINE, 0, 100, 0, 0]
-        )
-      else if (is_detected)
-        commands.append(
-          [VECTOR_LINE, 100, 0, 100, 100],
-          [VECTOR_LINE, 0, 100, 0, 0]
-        )
-      if (!is_enemy) {
-        local yOffset = is_selected ? 110 : 95
-        local xOffset = is_selected ? 0 : 10
-        commands.append([VECTOR_LINE, xOffset, yOffset, 100.0 - xOffset, yOffset])
-      }
-
-      frame = {
-        size = [frameSizeW, frameSizeH]
-        pos = [(size[0] - frameSizeW) * 0.5, (size[1] - frameSizeH) * 0.5 ]
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(2)
-        color
-        fillColor = 0
-        commands = commands
-      }
-
-      return {
-        size
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(3)
-        color
-        fillColor = 0
-        commands = [
-          [VECTOR_LINE, 0, 100, 50, 0],
-          [VECTOR_LINE, 50, 0, 100, 100],
-          [VECTOR_LINE, 100, 100, 0, 100]
-        ]
-        children = frame
-      }
+    if (is_selected)
+      commands.append(
+        [VECTOR_LINE, 0, 0, 100, 0],
+        [VECTOR_LINE, 100, 0, 100, 100],
+        [VECTOR_LINE, 100, 100, 0, 100],
+        [VECTOR_LINE, 0, 100, 0, 0]
+      )
+    else if (is_detected)
+      commands.append(
+        [VECTOR_LINE, 100, 0, 100, 100],
+        [VECTOR_LINE, 0, 100, 0, 0]
+      )
+    if (!is_enemy) {
+      local yOffset = is_selected ? 110 : 95
+      local xOffset = is_selected ? 0 : 10
+      commands.append([VECTOR_LINE, xOffset, yOffset, 100.0 - xOffset, yOffset])
     }
+
+    frame = {
+      size = [frameSizeW, frameSizeH]
+      pos = [(size[0] - frameSizeW) * 0.5, (size[1] - frameSizeH) * 0.5 ]
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = hdpx(2)
+      color
+      fillColor = 0
+      commands = commands
+    }
+
+    return {
+      size
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = hdpx(3)
+      color
+      fillColor = 0
+      commands = [
+        [VECTOR_LINE, 0, 100, 50, 0],
+        [VECTOR_LINE, 50, 0, 100, 100],
+        [VECTOR_LINE, 100, 100, 0, 100]
+      ]
+      children = frame
+    }
+  }
 
 local createAzimuthMarkWithOffset = @(id, size, total_width, angle, is_selected, is_detected, is_enemy, isSecondRound, color) function() {
   local offset = (isSecondRound ? total_width : 0) +

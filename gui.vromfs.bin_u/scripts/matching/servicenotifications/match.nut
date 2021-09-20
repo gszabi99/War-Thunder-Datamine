@@ -74,7 +74,7 @@ subscriptions.addListenersWithoutEnv({
 
 ::fetch_clusters_list <- function fetch_clusters_list(params, cb)
 {
-  matching_api_func("match.fetch_clusters_list", cb, params)
+  matching_api_func("wtmm_static.fetch_clusters_list", cb, params)
 }
 
 ::fetch_game_modes_info <- function fetch_game_modes_info(params, cb)
@@ -84,7 +84,7 @@ subscriptions.addListenersWithoutEnv({
 
 ::fetch_game_modes_digest <- function fetch_game_modes_digest(params, cb)
 {
-  matching_api_func("match.fetch_game_modes_digest", cb, params)
+  matching_api_func("wtmm_static.fetch_game_modes_digest", cb, params)
 }
 
 ::leave_session_queue <- function leave_session_queue(params, cb)
