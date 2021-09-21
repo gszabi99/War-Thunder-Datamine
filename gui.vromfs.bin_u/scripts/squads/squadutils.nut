@@ -1,6 +1,6 @@
 local systemMsg = require("scripts/utils/systemMsg.nut")
 local playerContextMenu = require("scripts/user/playerContextMenu.nut")
-local platformModule = require("scripts/clientState/platform.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
 local { startLogout } = require("scripts/login/logout.nut")
@@ -61,7 +61,7 @@ systemMsg.registerLocTags(locTags)
     local message = ::loc("multiplayer/squad/members_br_diff_warning", {
       squadBR = format("%.1f", recentBR.value)
       players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
-        "".concat(::colorize("userlogColoredText", k), ::loc("ui/colon"), format("%.1f", v))), []))
+        "".concat(::colorize("userlogColoredText", getPlayerName(k)), ::loc("ui/colon"), format("%.1f", v))), []))
     })
 
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
@@ -138,7 +138,7 @@ g_squad_utils.checkCrossPlayCondition <- function checkCrossPlayCondition()
     return true
 
   local locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay? "disabled" : "enabled")
-  local membersNamesArray = members.map(@(member) ::colorize("warningTextColor", platformModule.getPlayerName(member.name)))
+  local membersNamesArray = members.map(@(member) ::colorize("warningTextColor", getPlayerName(member.name)))
   ::showInfoMsgBox(
     ::loc(locId,
       { names = ::g_string.implode(membersNamesArray, ",")}
@@ -394,7 +394,7 @@ g_squad_utils.checkAndShowHasOfflinePlayersPopup <- function checkAndShowHasOffl
 
   local text = ::loc("squad/has_offline_members") + ::loc("ui/colon")
   text += ::g_string.implode(::u.map(offlineMembers,
-                            @(memberData) ::colorize("warningTextColor", platformModule.getPlayerName(memberData.name))
+                            @(memberData) ::colorize("warningTextColor", getPlayerName(memberData.name))
                            ),
                     ::loc("ui/comma")
                    )
@@ -489,7 +489,7 @@ g_squad_utils.isEventAllowedForAllMembers <- function isEventAllowedForAllMember
     return res
 
   local mText = ::g_string.implode(
-    ::u.map(notAvailableMemberNames, @(name) ::colorize("userlogColoredText", platformModule.getPlayerName(name)))
+    ::u.map(notAvailableMemberNames, @(name) ::colorize("userlogColoredText", getPlayerName(name)))
     ", "
   )
   local msg = ::loc("msg/members_no_access_to_mode", {  members = mText  })
