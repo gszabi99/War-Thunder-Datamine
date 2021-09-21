@@ -431,18 +431,21 @@ local function getSelectedChild(obj) {
   return obj.getChild(value)
 }
 
-local function findChildIndex(obj, func) {
+local function findChild(obj, func) {
   local total = obj.childrenCount()
   for (local i = 0; i < total; ++i) {
-    local child = obj.getChild(i)
-    if (child?.isValid() && func(child))
-      return i
+    local childObj = obj.getChild(i)
+    if (childObj?.isValid() && func(childObj))
+      return {childIdx = i, childObj}
   }
-  return -1
+  return {childIdx = -1, childObj = null}
 }
+
+local findChildIndex = @(obj, func) findChild(obj, func).childIdx
 
 return {
   setFocusToNextObj
   getSelectedChild
   findChildIndex
+  findChild
 }

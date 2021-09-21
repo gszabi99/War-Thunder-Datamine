@@ -128,6 +128,7 @@ local getMainOptions = function()
       [::USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner", ::has_feature("Ships")],
       [::USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE, "spinner", ::has_feature("Ships")],
       [::USEROPT_BULLET_FALL_INDICATOR_SHIP, "spinner", ::has_feature("Ships")],
+      [::USEROPT_BULLET_FALL_SPOT_SHIP, "spinner", ::has_feature("Ships")],
       [::USEROPT_BULLET_FALL_SOUND_SHIP, "spinner", ::has_feature("Ships")],
       [::USEROPT_AUTO_TARGET_CHANGE_SHIP, "spinner", ::has_feature("Ships")],
       [::USEROPT_REALISTIC_AIMING_SHIP, "spinner", ::has_feature("Ships")

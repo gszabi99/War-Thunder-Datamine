@@ -384,15 +384,6 @@ g_squad_manager.canInviteMemberByPlatform <- function canInviteMemberByPlatform(
   return true
 }
 
-g_squad_manager.canInvitePlayerToSessionByName <- function canInvitePlayerToSessionByName(name)
-{
-  if (::SessionLobby.getGameMode() != ::GM_SKIRMISH)
-    return true
-
-  local platformInfo = getPlatformInfo()
-  return platformInfo.len() == 1 || !platformModule.isXBoxPlayerName(name)
-}
-
 g_squad_manager.getMaxSquadSize <- function getMaxSquadSize()
 {
   return squadData.properties.maxMembers
@@ -1070,12 +1061,8 @@ g_squad_manager.requestMemberDataCallback <- function requestMemberDataCallback(
     if (!::g_squad_manager.readyCheck())
       ::queues.leaveAllQueues()
 
-    if (::SessionLobby.canInviteIntoSession()
-        && memberData.canJoinSessionRoom()
-        && ::g_squad_manager.canInvitePlayerToSessionByName(memberData.name))
-    {
+    if (::SessionLobby.canInviteIntoSession() && memberData.canJoinSessionRoom())
       ::SessionLobby.invitePlayer(memberData.uid)
-    }
   }
 
   ::g_squad_manager.joinSquadChatRoom()
@@ -1684,20 +1671,6 @@ g_squad_manager.startWWBattlePrepare <- function startWWBattlePrepare(battleId =
 
   updatePresenceSquad()
   updateSquadData()
-}
-
-g_squad_manager.getNotInvitedToSessionUsersList <- function getNotInvitedToSessionUsersList()
-{
-  if (!isSquadLeader())
-    return []
-
-  local res = []
-  foreach (uid, member in getMembers())
-    if (member.online
-        && !member.isMe()
-        && !canInvitePlayerToSessionByName(member.name) )
-      res.append(member)
-  return res
 }
 
 g_squad_manager.cancelWwBattlePrepare <- function cancelWwBattlePrepare()

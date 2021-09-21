@@ -571,6 +571,8 @@ local logNameByType = {
  *   filters (table) - any custom key -> value pairs to filter userlogs
  *   disableVisible (boolean) - marks all related userlogs as seen
  */
+local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHiddenItem()
+
 ::isUserlogVisible <- function isUserlogVisible(blk, filter, idx)
 {
   if (blk?.type == null)
@@ -582,6 +584,8 @@ local logNameByType = {
   if (("checkFunc" in filter) && !filter.checkFunc(blk))
     return false
   if (::getTblValue("currentRoomOnly", filter, false) && !::is_user_log_for_current_room(idx))
+    return false
+  if (haveHiddenItem(blk?.body.itemDefId))
     return false
   return true
 }
@@ -668,7 +672,11 @@ local logNameByType = {
         }
       }
       else if (block instanceof ::DataBlock)
+      {
+        if (haveHiddenItem(block?.itemDefId))
+          continue
         log[name] <- ::buildTableFromBlk(block)
+      }
     }
 
     local skip = false

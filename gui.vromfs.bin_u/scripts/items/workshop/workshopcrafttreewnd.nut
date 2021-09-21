@@ -1,4 +1,6 @@
 local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+local { findChild } = require("sqDagui/daguiUtil.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 
 ::dagui_propid.add_name_id("itemId")
 
@@ -160,50 +162,20 @@ local sizeAndPosViewConfig = {
   })
 }
 
-local function needReqItems(itemBlock, itemsList) {
-  foreach(reqItemId in (itemBlock?.reqItems ?? []))
-    if (reqItemId != null && (itemsList?[reqItemId].getAmount() ?? 0) == 0)
-      return true
-
-  return false
-}
-
-local function isRequireCondition(reqItems, itemsList, isMetConditionFunc) {
-  local needCondForCraft = false
-  foreach (reqItemBlock in (reqItems)) {
-    local canCraft = true
-    foreach (itemId, needHave in reqItemBlock) {
-      local isMetCondition = isMetConditionFunc(itemsList, itemId)
-      if ((needHave && isMetCondition) || (!needHave && !isMetCondition))
-        continue
-
-      canCraft = false
-      break
-    }
-
-    if (canCraft)
-      return false
-
-    needCondForCraft = true
-  }
-
-  return needCondForCraft
-}
-
-local hasAmount = @(itemsList, itemId) (itemsList?[itemId].getAmount() ?? 0) > 0
-
 local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
 {
   local item = itemsList?[itemBlock?.id]
   local hasComponent = itemBlock?.showResources
   local itemId = item?.id ?? "-1"
-  local isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
-  local needReqItemForCraft = isRequireCondition(itemBlock?.reqItemForCrafting ?? [], itemsList, hasAmount)
-  local isDisabledAction = !isCraftingOrHasCraftResult
-    && (needReqItemForCraft || needReqItems(itemBlock, itemsList))
-  local isItemIdKnown = (@(itemsList, itemId) workshopSet.isItemIdKnown(itemId)).bindenv(workshopSet)
-  local isDisguised = isRequireCondition(itemBlock?.reqItemForIdentification ?? [], itemsList, isItemIdKnown)
   local hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
+  local isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
+  local needReqItemForCraft = workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)
+  local altActionName = item?.getAltActionName() ?? ""
+  local hasMainAction = isCraftingOrHasCraftResult
+    || (!needReqItemForCraft && !workshopSet.needReqItems(itemBlock, itemsList))
+  local hasAltAction = !isCraftingOrHasCraftResult && hasReachedMaxAmount && altActionName != ""
+  local isDisabledAction = !hasMainAction && !hasAltAction
+  local isDisguised = workshopSet.isDisquised(itemBlock, itemsList)
   local hasItemInInventory = (item?.getAmount() ?? 0) != 0 || isCraftingOrHasCraftResult
   return {
     item = item
@@ -214,13 +186,16 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     isDisabledAction = isDisabledAction
     isDisabled = item != null && !hasItemInInventory
       && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
+    overrideMainActionData = hasAltAction ? {
+      isInactive = false
+      btnName = altActionName
+      onItemAction = "onAltItemAction"
+    } : null
     iconInsteadAmount = hasReachedMaxAmount ? ::loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
     isHidden = item?.isHiddenItem()
-      || (!hasItemInInventory
-        && (isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown)
-          || isRequireCondition(itemBlock?.reqItemExistsForDisplaying ?? [], itemsList, hasAmount)))
+      || (!hasItemInInventory && workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
     hasItemBackground = itemBlock?.hasItemBackground ?? true
     posXY = itemBlock?.posXY ?? ::Point2(0, 0)
   }
@@ -245,6 +220,7 @@ local getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipl
 
 local viewItemsParams = {
   showAction = false,
+  overrideMainActionData = null,
   showButtonInactiveIfNeed = true,
   showPrice = false,
   contentIcon = false
@@ -273,6 +249,7 @@ local getItemBlockView = ::kwarg(
       items = [item.getViewData(viewItemsParams.__merge({
         itemIndex = itemConfig.itemId,
         showAction = !itemConfig.isDisabledAction
+        overrideMainActionData = itemConfig.overrideMainActionData
         count = count
         hasIncrasedAmountTextSize = count != null
         showTooltip = !itemConfig.isDisguised
@@ -526,6 +503,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   itemSizes        = null
   itemsListObj     = null
   showItemOnInit   = null
+  tutorialItem     = null
 
   function getSceneTplView()
   {
@@ -547,6 +525,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     scene.findObject("update_timer").setUserData(this)
     itemsListObj = scene.findObject("craft_body")
+
+    if (tutorialItem)
+    {
+      accentAssembleBtn()
+      return
+    }
+
     setFocusItem(showItemOnInit)
     ::move_mouse_on_child_by_value(itemsListObj)
   }
@@ -578,11 +563,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local itemBlockInterval = ::to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
     local itemBlockHeight = itemHeight + itemBlockInterval
     local headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
-    local wSet = workshopSet
-    local isItemIdKnown = @(itemsList, itemId) wSet.isItemIdKnown(itemId)
     local buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
     local titleMargin = ::to_pixels("1@dp")
-    local items = itemsList
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       local visibleItemsCountY = null
       local lastFilled = {}
@@ -590,15 +572,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         foreach (row in rows[i]) {
           local findVisibleItemInColumn = {}
           foreach (itemBlock in (row ?? [])) {
-            local { id = "", reqItemForDisplaying = [], reqItemExistsForDisplaying = [],
-              shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
-            local item = items?[id]
+            local { id = "", shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
+            local item = itemsList?[id]
             local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
             local hasVisibleItem = !item?.isHiddenItem()
-              && (hasItemInInventory
-                || (!isRequireCondition(reqItemForDisplaying, items, isItemIdKnown)
-                  && !isRequireCondition(reqItemExistsForDisplaying, items, hasAmount)))
+              && (hasItemInInventory || !workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
             if (!hasVisibleItem) {
               if (shouldRemoveBlankRows)
                 findVisibleItemInColumn[posXY.x] <- findVisibleItemInColumn?[posXY.x] ?? false
@@ -837,6 +816,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     doMainAction(item, itemObj)
   }
 
+  function onAltItemAction(buttonObj)
+  {
+    local id = buttonObj?.holderId ?? "-1"
+    local item = itemsList?[id.tointeger()]
+    local itemObj = findItemObj(id)
+    doAltAction(item, itemObj)
+  }
+
   function onItemHover(obj) {
     local id = obj?.holderId ?? "-1"
     local item = itemsList?[id.tointeger()]
@@ -868,25 +855,64 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           break
       }
 
-    if (!(item.isCrafting() || item.hasCraftResult())
-        && (needReqItems(itemBlock, itemsList)
-          || isRequireCondition(itemBlock?.reqItemForCrafting ?? [], itemsList, hasAmount)))
-      return
-
-    doMainAction(item, itemObj)
+    if (item.isCrafting() || item.hasCraftResult()
+        || (!workshopSet.needReqItems(itemBlock, itemsList)
+          && workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)))
+      doMainAction(item, itemObj)
+    else if (item.getAltActionName() != "")
+      doAltAction(item, itemObj)
   }
 
-  function doMainAction(item, obj)
+  function accentAssembleBtn()
   {
-    if (item == null)
-      return
+    local item = tutorialItem
+    local {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
+    itemsListObj.setValue(childIdx)
 
-    item.doMainAction(null, this, {
-      obj = obj
-      isHidePrizeActionBtn = true
-      canConsume = false
-    })
+    local actionBtnObj = childObj.findObject("actionBtn")
+    actionBtnObj.scrollToView()
+
+    local steps = [{
+      obj = [actionBtnObj]
+      text = ::loc("workshop/tutorial/pressButton", {
+        button_name = item.getAssembleText()
+      })
+      actionType = tutorAction.OBJ_CLICK
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      cb = @() doMainAction(item, childObj, true)
+    }]
+    ::gui_modal_tutor(steps, this, true)
   }
+
+  function accentCraftTime()
+  {
+    local item = tutorialItem
+    local {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
+    itemsListObj.setValue(childIdx)
+
+    local timeObj = childObj.findObject("timePlace")
+    timeObj.scrollToView()
+
+    local steps = [{
+      obj = [timeObj]
+      text = ::loc("workshop/tutorial/wait")
+      actionType = tutorAction.ANY_CLICK
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      waitTime = item.getCraftTimeLeft()
+    }]
+    ::gui_modal_tutor(steps, this, true)
+  }
+
+  getActionParams = @(item, obj, showTutorial = false) {
+    obj = obj
+    isHidePrizeActionBtn = !item.hasCustomMission()
+    canConsume = false
+    showTutorial = showTutorial
+  }
+
+  doMainAction = @(item, obj, showTutorial = false)
+    item?.doMainAction(null, this, getActionParams(item, obj, showTutorial))
+  doAltAction = @(item, obj) item?.doAltAction(getActionParams(item, obj))
 
   function getCurItemParam()
   {
@@ -946,6 +972,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
     data = ::handyman.renderCached("gui/items/craftTreeBody", view)
     guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
+    if (tutorialItem?.isCrafting() && tutorialItem.getCraftTimeLeft() > 0)
+    {
+      accentCraftTime()
+      tutorialItem = null
+      return
+    }
     setFocusItem(curItemParam.item)
     ::move_mouse_on_child_by_value(itemsListObj)
   }

@@ -391,12 +391,25 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local prizeActionBtnId = isHidePrizeActionBtn || !animFinished ? ""
       : unit && unit.isUsable() && !::isUnitInSlotbar(unit) ? "btn_take_air"
-      : rewardItem ? "btn_go_to_item"
+      : rewardItem?.canRunCustomMission() ? "btn_run_custom_mission"
+      : canGoToItem() ? "btn_go_to_item"
       : decorator && canStartPreviewScene(false) ? "btn_use_decorator"
       : isLoadingBgUnlock(trophyItem?.getUnlockId()) ? "btn_preloader_settings"
       : ""
-    foreach (id in [ "btn_take_air", "btn_go_to_item", "btn_use_decorator", "btn_preloader_settings" ])
+
+    local btnIds = [
+      "btn_take_air",
+      "btn_go_to_item",
+      "btn_use_decorator",
+      "btn_preloader_settings",
+      "btn_run_custom_mission"
+    ]
+
+    foreach (id in btnIds)
       showSceneBtn(id, id == prizeActionBtnId)
+
+    if (prizeActionBtnId == "btn_run_custom_mission")
+      scene.findObject(prizeActionBtnId).setValue(rewardItem?.getCustomMissionButtonText())
 
     local canReUseItem = animFinished && reUseRecipe != null
     btnObj = showSceneBtn("btn_re_use_item", canReUseItem)
@@ -466,8 +479,6 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
           continue
 
         isRewardItemActual = true
-        if (!sheets.getSheetDataByItem(rewardItem))
-          rewardItem = null
         return true
       }
     return false
@@ -478,12 +489,13 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
   function onGoToItem()
   {
     goBack()
-    if (rewardItem)
+    if (canGoToItem())
       ::gui_start_items_list(-1, { curItem = rewardItem })
   }
 
   onUseDecorator = @() useDecorator(decorator, decoratorUnit, decoratorSlot)
   onPreloaderSettings = @() preloaderOptionsModal(getLoadingBgIdByUnlockId(trophyItem.getUnlockId()))
+  onRunCustomMission = @() rewardItem?.runCustomMission()
 
   function onReUseItem() {
     if (reUseRecipe == null)
@@ -494,6 +506,8 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       isHidePrizeActionBtn  = isHidePrizeActionBtn
     }))
   }
+
+  canGoToItem = @() !!(rewardItem && sheets.getSheetDataByItem(rewardItem))
 
   isCreation = @() (!shouldShowRewardItem && configsArray[0]?.item == trophyItem.id)
   getRewardsListLocId = @() rewardListLocId && rewardListLocId != "" ? rewardListLocId

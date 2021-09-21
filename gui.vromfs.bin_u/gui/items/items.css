@@ -208,7 +208,9 @@ itemDiv[showButtonAlways=yes] > Button_text {
 
 [show_console_buttons=yes] craftBranchBody > itemBlock:hover > itemDiv > Button_text,
 [show_console_buttons=no] itemDiv:hover > Button_text,
-[show_console_buttons=no] itemDiv > Button_text:hover {
+[show_console_buttons=no] itemDiv > Button_text:hover,
+[showItemButton=yes] itemDiv:hover > Button_text,
+[showItemButton=yes] itemDiv > Button_text:hover {
   display:show;
   enable:yes;
 }

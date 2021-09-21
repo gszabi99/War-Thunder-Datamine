@@ -314,7 +314,7 @@ local ItemExternal = class extends ::BaseItem
     params.header <- headers
     local recipes = []
     local resultContent = []
-    if (needShowAsDisassemble())
+    if (needShowAsDisassemble() || (hasReachedMaxAmount() && isAltActionDisassemble()))
     {
       local recipe = getDisassembleRecipe()
       if (recipe)
@@ -456,6 +456,10 @@ local ItemExternal = class extends ::BaseItem
       || runCustomMission()
   }
 
+  isAltActionDisassemble = @() amount > 0 && (!canConsume() || !canAssemble())
+    && !canConvertToWarbonds()
+    && !hasMainActionDisassemble() && canDisassemble() && !isCrafting() && !hasCraftResult()
+
   getAltActionName   = @() (amount && canConsume() && canAssemble()) ? ::loc(getLocIdsList().assemble)
     : canConvertToWarbonds() ? ::loc("items/exchangeTo", { currency = getWarbondExchangeAmountText() })
     : (!hasMainActionDisassemble() && canDisassemble() && amount > 0 && !isCrafting() && !hasCraftResult())
@@ -561,6 +565,7 @@ local ItemExternal = class extends ::BaseItem
       headerText = getAssembleHeader()
       buttonText = getAssembleText()
       alignObj = params?.obj
+      showTutorial = params?.showTutorial
       onAcceptCb = function(recipe)
       {
         ExchangeRecipes.tryUse([recipe], item, params)
@@ -865,16 +870,25 @@ local ItemExternal = class extends ::BaseItem
     return null
   }
 
-  function getCraftTimeTextShort()
+  function getCraftTimeLeft()
   {
     local craftingItem = getCraftingItem()
     local craftTimeSec = craftingItem?.expiredTimeSec ?? 0
     if (craftTimeSec <= 0)
-      return ""
+      return -1
 
     local curSeconds = ::dagor.getCurTime() * 0.001
     local deltaSeconds = (craftTimeSec - curSeconds).tointeger()
-    if (deltaSeconds < 0)
+    return ::max(0, deltaSeconds)
+  }
+
+  function getCraftTimeTextShort()
+  {
+    local deltaSeconds = getCraftTimeLeft()
+    if (deltaSeconds == -1)
+      return ""
+
+    if (deltaSeconds == 0)
     {
       if (isInventoryItem)
         onItemCraft()
@@ -998,7 +1012,8 @@ local ItemExternal = class extends ::BaseItem
     return misBlk
   }
 
-  canRunCustomMission = @() amount > 0 && getCustomMissionBlk() != null
+  hasCustomMission = @() getCustomMissionBlk() != null
+  canRunCustomMission = @() amount > 0 && hasCustomMission()
   getCustomMissionButtonText = @() get_mission_name(itemDef.tags.canRunCustomMission, getCustomMissionBlk())
 
   function runCustomMission()
@@ -1113,6 +1128,7 @@ local ItemExternal = class extends ::BaseItem
       : defaultLocIdsList.reUseItemLocId
   })
 
+  hasUsableRecipe = @() getVisibleRecipes().findindex(@(r) r.isUsable) != null
   needOfferBuyAtExpiration = @() !isHiddenItem() && itemDef?.tags?.offerToBuyAtExpiration
   isVisibleInWorkshopOnly = @() itemDef?.tags?.showInWorkshopOnly ?? false
   getDescRecipesMarkup = @(params) ExchangeRecipes.getRequirementsMarkup(getMyRecipes(), this, params)

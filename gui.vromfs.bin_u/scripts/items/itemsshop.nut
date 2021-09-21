@@ -55,7 +55,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   itemsList = null
   curPage = 0
   shouldSetPageByItem = false
-  needHoverSelect = false
 
   slotbarActions = [ "preview", "testflightforced", "sec_weapons", "weapons", "info" ]
   displayItemTypes = null
@@ -74,11 +73,13 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   itemsListValid = false
 
   infoHandler = null
+  isMouseMode = true
 
   function initScreen()
   {
     setBreadcrumbGoBackParams(this)
-    needHoverSelect = ::show_console_buttons
+    updateMouseMode()
+    updateShowItemButton()
     infoHandler = itemInfoHandler(scene.findObject("item_info"))
     initNavigation()
     sheets.updateWorkshopSheets()
@@ -339,6 +340,12 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     applyFilters()
   }
 
+  function onEventWorkshopAvailableChanged(p)
+  {
+    if (curTab == itemsTab.WORKSHOP)
+      updateSheets()
+  }
+
   function onNavCollapseCb (isCollapsed)
   {
     isNavCollapsed = isCollapsed
@@ -426,7 +433,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
             needShowActionButtonAlways = false
           }
           : null
-        showTooltip = !needHoverSelect
+        showTooltip = isMouseMode
         onHover = "onItemHover"
       }))
     }
@@ -617,7 +624,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtonsBar() {
     local obj = getItemsListObj()
-    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    local isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
@@ -638,8 +645,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (curSet != null && needShowCraftTree)
     {
       craftTreeBtnObj.setValue(openCraftTreeBtnText)
-      if (curSet.needShowAccentToCraftTreeBtn())
-        showAccentToCraftTreeBtn(curSet, craftTreeBtnObj)
+      local tutorialItem = curSet.findTutorialItem()
+      if (tutorialItem)
+        startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj)
     }
 
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
@@ -937,7 +945,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     openCraftTree()
   }
 
-  function openCraftTree(showItem = null)
+  function openCraftTree(showItem = null, tutorialItem = null)
   {
     local curSet = curSheet?.getSet()
     if (curSet?.getCraftTree() == null)
@@ -946,13 +954,14 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     workshopCraftTreeWnd.open({
       workshopSet = curSet
       showItemOnInit = showItem
+      tutorialItem = tutorialItem
     })
   }
 
   onShowSpecialTasks = @(obj) null
 
-  function showAccentToCraftTreeBtn(curSet, craftTreeBtnObj) {
-    curSet.saveShowedAccentCraftTreeBtn()
+  function startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj) {
+    curSet.saveTutorialWasShown()
     local steps = [{
       obj = [craftTreeBtnObj]
       text = ::loc("workshop/accentCraftTreeButton", {
@@ -960,13 +969,19 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       })
       shortcut = ::SHORTCUT.GAMEPAD_RSTICK_PRESS
       actionType = tutorAction.OBJ_CLICK
-      cb = openCraftTree
+      cb = @() openCraftTree(null, tutorialItem)
     }]
     ::gui_modal_tutor(steps, this, true)
   }
 
   function onItemHover(obj) {
-    if (!needHoverSelect)
+    if (!::show_console_buttons)
+      return
+    local wasMouseMode = isMouseMode
+    updateMouseMode()
+    if (wasMouseMode != isMouseMode)
+      updateShowItemButton()
+    if (isMouseMode)
       return
     hoverHoldAction(obj, function(focusObj) {
       local idx = focusObj.holderId.tointeger()
@@ -975,6 +990,13 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
         listObj.setValue(value)
     }.bindenv(this))
+  }
+
+  updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+  function updateShowItemButton() {
+    local listObj = getItemsListObj()
+    if (listObj?.isValid())
+      listObj.showItemButton = isMouseMode ? "yes" : "no"
   }
 }
 

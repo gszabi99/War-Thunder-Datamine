@@ -999,6 +999,13 @@ local isWaitMeasureEvent = false
       })
       break
 
+    case ::USEROPT_BULLET_FALL_SPOT_SHIP:
+      descr.id = "bulletFallSpotShip"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
     case ::USEROPT_BULLET_FALL_SOUND_SHIP:
       descr.id = "bulletFallSoundShip"
       descr.controlType = optionControlType.CHECKBOX
@@ -5056,6 +5063,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_GAMEPAD_ENGINE_DEADZONE:
     case ::USEROPT_GAMEPAD_GYRO_TILT_CORRECTION:
     case ::USEROPT_FOLLOW_BULLET_CAMERA:
+    case ::USEROPT_BULLET_FALL_SPOT_SHIP:
     //
 
 

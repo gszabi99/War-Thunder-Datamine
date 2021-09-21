@@ -228,13 +228,13 @@ local function generateRows(branchBlk, treeRows, treeBlk)
   }
 }
 
-local function getAllowableResources(resourcesBlk)
+local function getAllowableResources(resourcesBlk, resourcesName)
 {
   if (resourcesBlk == null)
     return null
 
   local allowableResources = {}
-  foreach(res in (resourcesBlk % "allowableResource"))
+  foreach(res in (resourcesBlk % resourcesName))
     allowableResources[::to_integer_safe(res, res, false)] <- true
 
   return allowableResources
@@ -291,7 +291,7 @@ local function generateTreeConfig(blk)
          columnWithResourcesCount = 0
          title = bodyTitle
          bodyTiledBackImage = bodyTiledBackImage?[bodyIdx] ?? ""
-         allowableResources = getAllowableResources(allowableResources?[bodyIdx])
+         allowableResources = getAllowableResources(allowableResources?[bodyIdx], "allowableResource")
          hasBranchesTitles = false
          bodyTitlesCount = bodyTitle != "" ? 1 : 0
          treeColumnsCount = 0
@@ -324,7 +324,8 @@ local function generateTreeConfig(blk)
     headerlocId = blk?.main_header ?? ""
     headerItemsTitle = blk?.headerItemsTitle
     openButtonLocId = blk?.openButtonLocId ?? ""
-    allowableResourcesForCraftResult = getAllowableResources(allowableResources?[bodiesConfig.len()])
+    allowableResourcesForCraftResult = getAllowableResources(allowableResources?[bodiesConfig.len()], "allowableResource")
+    allowableItemsForCraftingTutorial = getAllowableResources(blk?.allowableItemsForCraftingTutorial, "item")
     craftTreeItemsIdArray = craftTreeItemsIdArray
     branches = branches
     treeRowsByBodies = treeRowsByBodies

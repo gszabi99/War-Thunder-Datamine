@@ -23,8 +23,6 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   curSheetId = null
   curItem = null
 
-  needHoverSelect = null
-
   itemsPerPage = -1
   itemsList = null
   curPage = 0
@@ -43,11 +41,12 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   needWaitIcon = false
   isLoadingInProgress = false
   hoverHoldAction = null
+  isMouseMode = true
 
   function initScreen()
   {
-    needHoverSelect = ::show_console_buttons
-
+    updateMouseMode()
+    updateShowItemButton()
     local infoObj = scene.findObject("item_info")
     guiScene.replaceContent(infoObj, "gui/items/itemDesc.blk", this)
 
@@ -458,7 +457,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtonsBar() {
     local obj = getItemsListObj()
-    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    local isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
@@ -558,7 +557,13 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onItemHover(obj) {
-    if (!needHoverSelect)
+    if (!::show_console_buttons)
+      return
+    local wasMouseMode = isMouseMode
+    updateMouseMode()
+    if (wasMouseMode != isMouseMode)
+      updateShowItemButton()
+    if (isMouseMode)
       return
 
     hoverHoldAction(obj, function(focusObj) {
@@ -568,5 +573,12 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
       if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
         listObj.setValue(value)
     }.bindenv(this))
+  }
+
+  updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+  function updateShowItemButton() {
+    local listObj = getItemsListObj()
+    if (listObj?.isValid())
+      listObj.showItemButton = isMouseMode ? "yes" : "no"
   }
 }

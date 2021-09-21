@@ -393,6 +393,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onOk()
   {
+    if (!isLoginEditsFilled())
+      return
+
     isLoginRequestInprogress = true
     requestGet2stepCodeAtempt = MAX_GET_2STEP_CODE_ATTEMPTS
     doLoginWaitJob()
@@ -406,9 +409,6 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function doLoginWaitJob()
   {
-    if (!isLoginEditsFilled())
-      return
-
     ::disable_autorelogin_once <- false
     local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
     local result = requestLogin(no_dump_login)

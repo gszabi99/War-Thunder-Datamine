@@ -442,6 +442,7 @@ local user_option_names = [
     "USEROPT_TORPEDO_DIVE_DEPTH",
     "USEROPT_DELAYED_DOWNLOAD_CONTENT",
 
+    "USEROPT_BULLET_FALL_SPOT_SHIP",
     //
 
 

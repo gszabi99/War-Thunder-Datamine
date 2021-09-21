@@ -1148,6 +1148,11 @@ PrizesView.getPrizesListView <- function getPrizesListView(content, params = nul
     return ""
 
   local view = params ? clone params : {}
+  if ("headerParams" in params) {
+    view.__update(params.headerParams)
+    params.rawdelete("headerParams")
+  }
+
   if (content.len() == 1)
   {
     if (!params)

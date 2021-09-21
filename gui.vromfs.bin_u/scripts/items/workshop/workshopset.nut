@@ -1,5 +1,6 @@
 local workshopCraftTree = require("workshopCraftTree.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
+local { getTimestampFromStringUtc } = require("scripts/time.nut")
 
 const KNOWN_ITEMS_SAVE_ID = "workshop/known"
 const KNOWN_REQ_ITEMS_SAVE_ID = "workshop/knownReqItems"
@@ -12,6 +13,7 @@ local WorkshopSet = class {
   id = "" //name of config blk. not unique
   uid = -1
   reqFeature = null //""
+  isForcedDisplayByDate = null
   locId = ""
 
   itemdefsSorted = null //[]
@@ -89,10 +91,11 @@ local WorkshopSet = class {
       curSubsetId = ::load_local_account_settings(CURRENT_SUBSET_SAVE_PATH + id, firstSubsetId)
 
     ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
+    checkForcedDisplayTime(blk?.forcedDisplayWithoutFeature)
   }
 
   isValid                   = @() id.len() > 0 && itemdefs.len() > 0
-  isVisible                 = @() !reqFeature || ::has_feature(reqFeature)
+  isVisible                 = @() !reqFeature || ::has_feature(reqFeature) || isForcedDisplayByDate
   isItemDefAlwaysVisible    = @(itemdef) itemdef in alwaysVisibleItemdefs
   getItemdefs               = @() itemdefsSorted
   getLocName                = @() ::loc(locId)
@@ -477,10 +480,120 @@ local WorkshopSet = class {
     return null
   }
 
+  function needReqItems(itemBlock, itemsList)
+  {
+    foreach (reqItemId in (itemBlock?.reqItems ?? []))
+      if (reqItemId != null && (itemsList?[reqItemId].getAmount() ?? 0) == 0)
+        return true
+
+    return false
+  }
+
+  function isRequireCondition(reqItems, itemsList, isMetConditionFunc)
+  {
+    local needCondForCraft = false
+    foreach (reqItemBlock in (reqItems ?? []))
+    {
+      local canCraft = true
+      foreach (itemId, needHave in reqItemBlock)
+      {
+        local isMetCondition = isMetConditionFunc(itemsList, itemId)
+        if ((needHave && isMetCondition) || (!needHave && !isMetCondition))
+          continue
+
+        canCraft = false
+        break
+      }
+
+      if (canCraft)
+        return false
+
+      needCondForCraft = true
+    }
+    return needCondForCraft
+  }
+
+  hasAmountFunc = @(itemsList, itemId) (itemsList?[itemId].getAmount() ?? 0) > 0
+  isItemIdKnownFunc = @(itemsList, itemId) isItemIdKnown(itemId)
+
+  isRequireItemsForCrafting = @(itemBlock, itemsList)
+    isRequireCondition(itemBlock?.reqItemForCrafting, itemsList, hasAmountFunc)
+  isDisquised = @(itemBlock, itemsList)
+    isRequireCondition(itemBlock?.reqItemForIdentification, itemsList, isItemIdKnownFunc)
+  isRequireItemsForDisplaying = @(itemBlock, itemsList)
+    isRequireCondition(itemBlock?.reqItemForDisplaying, itemsList, isItemIdKnownFunc) ||
+    isRequireCondition(itemBlock?.reqItemExistsForDisplaying, itemsList, hasAmountFunc)
+
+  function findTutorialItem()
+  {
+    if (::load_local_account_settings(getCraftTreeIdPathForSave(), false))
+      return null
+
+    local craftTree = getCraftTree()
+    if (!craftTree)
+      return null
+
+    local branches = craftTree.branches
+    local itemsList = getItemsListForCraftTree(craftTree)
+
+    foreach (branch in branches)
+      foreach (itemBlock in branch.branchItems)
+      {
+        if (!craftTree.allowableItemsForCraftingTutorial?[itemBlock?.id])
+          continue
+
+        local item = itemsList?[itemBlock.id]
+        if (!item?.id)
+          continue
+
+        if (item.isHiddenItem()
+            || (item.getAmount() == 0 && isRequireItemsForDisplaying(itemBlock, itemsList)))
+          continue
+
+        if (item.isCrafting() || item.hasCraftResult()
+            || isRequireItemsForCrafting(itemBlock, itemsList)
+            || needReqItems(itemBlock, itemsList)
+            || (item.hasMainActionDisassemble() && item.canDisassemble() && item.getAmount() > 0)
+            || !item.canAssemble() || item.hasReachedMaxAmount() || !item.hasUsableRecipe())
+          continue
+
+        return item
+      }
+
+    return null
+  }
+
   getCraftTreeIdPathForSave = @() "".join([ACCENT_CRAFT_TREE_SAVE_PATH, id])
-  needShowAccentToCraftTreeBtn = @() getCraftTree() != null
-    && !::load_local_account_settings(getCraftTreeIdPathForSave(), false)
-  saveShowedAccentCraftTreeBtn = @()  ::save_local_account_settings(getCraftTreeIdPathForSave(), true)
+  saveTutorialWasShown = @() ::save_local_account_settings(getCraftTreeIdPathForSave(), true)
+
+  function checkForcedDisplayTime(forcedDisplayWithoutFeature)
+  {
+    if (!forcedDisplayWithoutFeature)
+      return
+
+    local startTime = getTimestampFromStringUtc(forcedDisplayWithoutFeature.beginDate)
+    local endTime = getTimestampFromStringUtc(forcedDisplayWithoutFeature.endDate)
+    local currentTime = ::get_charserver_time_sec()
+
+    if (currentTime >= endTime)
+      return
+
+    if(currentTime >= startTime && currentTime < endTime)
+    {
+      isForcedDisplayByDate = true
+      ::g_delayed_actions.add(::Callback(function() {
+          isForcedDisplayByDate = false
+          ::broadcastEvent("WorkshopAvailableChanged")
+        }, this), (endTime - currentTime)*1000)
+
+      return
+    }
+
+    ::g_delayed_actions.add(::Callback(function() {
+        isForcedDisplayByDate = true
+        ::broadcastEvent("WorkshopAvailableChanged")
+      }, this), (startTime - currentTime)*1000)
+  }
 }
 
 return WorkshopSet

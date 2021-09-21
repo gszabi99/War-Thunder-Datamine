@@ -867,7 +867,8 @@ local function getDebriefingGiftItemsInfo(skipItemId = null) {
       if (typeof(data) != "table" || !("itemDefId" in data))
         continue
 
-      res.append({item=data.itemDefId, count=data?.quantity ?? 1, needOpen=false, enableBackground=true})
+      res.append({
+        item=data.itemDefId, count=data?.quantity ?? 1, needOpen=false, enableBackground=true})
       ::ItemsManager.findItemById(data.itemDefId) // Requests itemdefs for unknown items
     }
 

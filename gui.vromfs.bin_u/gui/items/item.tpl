@@ -300,7 +300,7 @@ itemDiv {
     <<#itemIndex>>
     holderId:t='<<itemIndex>>'
     <</itemIndex>>
-    on_click:t='onItemAction'
+    on_click:t='<<^onItemAction>>onItemAction<</onItemAction>><<onItemAction>>'
     btnName:t=''
     <<#isInactive>>
     inactiveColor:t='yes'

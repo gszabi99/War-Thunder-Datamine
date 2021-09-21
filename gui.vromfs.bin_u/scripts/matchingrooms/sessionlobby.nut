@@ -2341,8 +2341,7 @@ SessionLobby.checkSquadAutoInvite <- function checkSquadAutoInvite()
     if (member.online
         && member.isReady
         && !member.isMe()
-        && !::u.search(members, @(m) m.userId == uid)
-        && ::g_squad_manager.canInvitePlayerToSessionByName(member.name))
+        && !::u.search(members, @(m) m.userId == uid))
     {
       invitePlayer(uid)
     }

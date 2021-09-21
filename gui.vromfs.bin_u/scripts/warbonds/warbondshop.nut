@@ -23,6 +23,7 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   slotbarActions = [ "preview", "testflight", "sec_weapons", "weapons", "info" ]
 
   hoverHoldAction = null
+  isMouseMode = true
 
   function initScreen()
   {
@@ -30,6 +31,8 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     if (!wbList.len())
       return goBack()
 
+    updateMouseMode()
+    updateShowItemButton()
     local infoObj = scene.findObject("item_info")
     guiScene.replaceContent(infoObj, "gui/items/itemDesc.blk", this)
 
@@ -240,7 +243,7 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtonsBar() {
     local obj = getItemsListObj()
-    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    local isButtonsVisible =  isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
@@ -508,6 +511,12 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   function onItemHover(obj) {
     if (!::show_console_buttons)
       return
+    local wasMouseMode = isMouseMode
+    updateMouseMode()
+    if (wasMouseMode != isMouseMode)
+      updateShowItemButton()
+    if (isMouseMode)
+      return
     hoverHoldAction(obj, function(focusObj) {
       local id = focusObj?.holderId
       local value = curPageAwards.findindex(@(a) a.getFullId() == id)
@@ -534,4 +543,10 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   function onAltAction(obj) {}
   function onChangeSortOrder(obj) {}
   onChangeSortParam = @(obj) null
+  updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+  function updateShowItemButton() {
+    local listObj = getItemsListObj()
+    if (listObj?.isValid())
+      listObj.showItemButton = isMouseMode ? "yes" : "no"
+  }
 }

@@ -113,8 +113,6 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     initChat()
     local sessionInfo = ::SessionLobby.getSessionInfo()
     ::update_vehicle_info_button(scene, sessionInfo)
-
-    checkNotInvitedPlayers()
   }
 
   function initTeams()
@@ -630,19 +628,6 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       teamDataByTeamName = ::SessionLobby.getSessionInfo()
       roomSpecialRules = ::SessionLobby.getRoomSpecialRules()
     })
-  }
-
-  function checkNotInvitedPlayers()
-  {
-    if (curGMmode != ::GM_SKIRMISH)
-      return
-
-    local members = ::g_squad_manager.getNotInvitedToSessionUsersList()
-    if (members.len())
-    {
-      local namesText = members.map(@(m) ::colorize("mySquadColor", m.name))
-      ::g_popups.add(::loc("mainmenu/playersAreNotInvited"), ::g_string.implode(namesText, ", "))
-    }
   }
 
   function onPlayersListHover(tblId, isHovered) {

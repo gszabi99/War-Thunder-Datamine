@@ -414,6 +414,7 @@ class ::BaseItem
       {
         res.modActionName <- mainActionData?.btnColoredName ?? mainActionData.btnName
         res.needShowActionButtonAlways <- mainActionData?.needShowActionButtonAlways ?? needShowActionButtonAlways(params)
+        res.onItemAction <- mainActionData?.onItemAction
       }
     }
 
@@ -783,6 +784,7 @@ class ::BaseItem
   isCrafting = @() !!getCraftingItem()
   hasCraftTimer = @() isCrafting()
   getCraftTimeTextShort = @() ""
+  getCraftTimeLeft = @() -1
   getCraftTimeText = @() ""
   isCraftResult = @() false
   getCraftResultItem = @() null
@@ -804,6 +806,7 @@ class ::BaseItem
   getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
   consume = @(cb, params) false
   showAllowableRecipesOnly = @() false
+  hasUsableRecipe = @() false
   canRecraftFromRewardWnd = @() false
   canOpenForGold = @() false
   getTopPrize = @() null

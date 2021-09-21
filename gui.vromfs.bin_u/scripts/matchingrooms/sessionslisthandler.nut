@@ -111,8 +111,6 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     onSessionsUpdate(null, 0.0)
     updateRoomsList()
     updateButtons()
-
-    checkNotInvitablePlayers()
   }
 
   function initRoomsPerPage()
@@ -452,16 +450,6 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     ::gui_start_modal_wnd(::gui_handlers.VehiclesWindow, {
       teamDataByTeamName = ::getTblValue("public", getCurRoom())
     })
-  }
-
-  function checkNotInvitablePlayers()
-  {
-    local members = ::g_squad_manager.getNotInvitedToSessionUsersList()
-    if (members.len())
-    {
-      local namesText = members.map(@(m) ::colorize("mySquadColor", m.name))
-      ::g_popups.add(::loc("mainmenu/playersCannotBeInvites"), ::g_string.implode(namesText, ", "))
-    }
   }
 }
 

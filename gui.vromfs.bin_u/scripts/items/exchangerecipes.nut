@@ -18,6 +18,12 @@ global enum MARK_RECIPE {
 
 local markRecipeSaveId = "markRecipe/"
 
+local recipeComponentHeaderParams = {
+  headerFont = "mediumFont"
+  hasHeaderPadding = true
+  isCentered = true
+}
+
 local defaultLocIdsList = {
   craftTime                 = "msgBox/assembleItem/time"
   rewardTitle               = "mainmenu/itemAssembled/title"
@@ -472,16 +478,16 @@ local ExchangeRecipes = class {
         break
       }
 
-    if (recipe == null) {
-      showUseErrorMsg(recipes, componentItem)
-      return false
-    }
-
-    if (componentItem.hasReachedMaxAmount() && !recipe.isDisassemble)
+    if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false))
     {
       ::scene_msg_box("reached_max_amount", null,
       ::loc(componentItem.getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
+      return false
+    }
+
+    if (recipe == null) {
+      showUseErrorMsg(recipes, componentItem)
       return false
     }
 
@@ -498,10 +504,9 @@ local ExchangeRecipes = class {
       msgboxParams.__update({
         data_below_text = recipe.getExchangeMarkup(componentItem,
           { header = msgData?.headerRecipeMarkup ?? ""
-            headerFont = "mediumFont"
+            headerParams = recipeComponentHeaderParams
             widthByParentParent = true
-            hasHeaderPadding = true
-            isCentered = true })
+          })
         baseHandler = ::get_cur_base_gui_handler()
       })
     if (recipe.isDisassemble && params?.bundleContent)
@@ -510,10 +515,9 @@ local ExchangeRecipes = class {
         data_below_text = (msgboxParams?.data_below_text ?? "")
           + ::PrizesView.getPrizesListView(params.bundleContent,
               { header = ::loc("mainmenu/you_will_receive")
-                headerFont = "mediumFont"
+                headerParams = recipeComponentHeaderParams
                 widthByParentParent = true
-                hasHeaderPadding = true
-                isCentered = true }, false)
+              }, false)
         baseHandler = ::get_cur_base_gui_handler()
       })
     }
@@ -539,7 +543,7 @@ local ExchangeRecipes = class {
     local msgboxParams = {
       data_below_text = getRequirementsMarkup(recipes, componentItem, {
         widthByParentParent = true
-        hasHeaderPadding = true
+        headerParams = { hasHeaderPadding = true }
       }),
       baseHandler = ::get_cur_base_gui_handler(), //FIX ME: used only for tooltip
       cancel_fn = function() {}
@@ -607,6 +611,7 @@ local ExchangeRecipes = class {
     local resultItems = []
     local usedUidsList = {}
     local recipe = this //to not remove recipe until operation complete
+    params.rewardTitle <- getRewardTitleLocId(false)
     if (componentItem.canRecraftFromRewardWnd())
       params.reUseRecipeUid <- uid
 
@@ -656,7 +661,7 @@ local ExchangeRecipes = class {
       local isUserstatRewards = userstatItemRewardData != null
       local rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
         : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
-        : ""
+        : (params?.rewardTitle ?? "")
       local rewardListLocId = isUserstatRewards ? userstatItemsListLocId
         : params?.rewardListLocId ? params.rewardListLocId
         : parentRecipe ? componentItem.getItemsListLocId()

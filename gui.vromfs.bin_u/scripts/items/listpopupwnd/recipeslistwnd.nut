@@ -1,6 +1,8 @@
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 local u = require("sqStdLibs/helpers/u.nut")
 local stdMath = require("std/math.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
@@ -19,6 +21,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   align = "bottom"
   needMarkRecipes = false
   showRecipeAsProduct = false
+  showTutorial = false
 
   function getSceneTplView()
   {
@@ -82,6 +85,60 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.applyPendingChanges(false)
     ::move_mouse_on_child_by_value(recipesListObj)
     updateCurRecipeInfo()
+
+    if (showTutorial)
+      startTutorial()
+  }
+
+  function startTutorial()
+  {
+    local steps = [{
+      obj = getUsableRecipeObjs()
+      text = ::loc("workshop/tutorial/selectRecipe")
+      actionType = tutorAction.OBJ_CLICK
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      cb = @() selectRecipe()
+    },
+    {
+      obj = scene.findObject("btn_apply")
+      text = ::loc("workshop/tutorial/pressButton", {
+        button_name = buttonText
+      })
+      actionType = tutorAction.OBJ_CLICK
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      cb = @() onRecipeApply()
+    }]
+    ::gui_modal_tutor(steps, this, true)
+  }
+
+  function selectRecipe()
+  {
+    local recipesListObj = scene.findObject("recipes_list")
+    if (!recipesListObj?.isValid())
+      return
+
+    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    local idx = findChildIndex(recipesListObj, function(childObj) {
+      local posRC = childObj.getPosRC()
+      local size = childObj.getSize()
+      return cursorPos[0] >= posRC[0] && cursorPos[0] <= posRC[0] + size[0]
+        && cursorPos[1] >= posRC[1] && cursorPos[1] <= posRC[1] + size[1]
+    })
+
+    if (idx == -1 || idx == recipesListObj.getValue())
+      return
+
+    recipesListObj.setValue(idx)
+  }
+
+  function getUsableRecipeObjs()
+  {
+    local res = []
+    local recipesListObj = scene.findObject("recipes_list")
+    foreach (recipe in recipesList)
+      if (!recipe?.isSeparator && recipe.isUsable && !recipe.isRecipeLocked())
+        res.append(recipesListObj.findObject($"id_{recipe.uid}"))
+    return res
   }
 
   function updateCurRecipeInfo()
