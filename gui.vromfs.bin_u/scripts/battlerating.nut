@@ -160,7 +160,7 @@ local function requestBattleRating(cb, recentUserData, onError=null) {
   isUpdating = true
   lastRequestTimeMsec  = ::dagor.getCurTime()
 
-  ::request_matching("match.calc_ranks", cb, onError, recentUserData, {
+  ::request_matching("wtmm_static.calc_ranks", cb, onError, recentUserData, {
     showError = false
   })
 }

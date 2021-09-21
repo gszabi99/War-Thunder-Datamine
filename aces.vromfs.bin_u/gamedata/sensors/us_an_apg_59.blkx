@@ -170,13 +170,16 @@
     }
   },
   "scopeRangeSets": {
-    "common": {
+    "pulse": {
       "range1": 18500.0,
       "range2": 46250.0,
       "range3": 92500.0,
       "range4": 185000.0,
       "range5": 370000.0,
       "range6": 9250.0
+    },
+    "pulseDoppler": {
+      "range3": 92500.0
     },
     "boresightLock": {
       "range1": 9250.0
@@ -218,9 +221,6 @@
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
           }
@@ -235,6 +235,9 @@
           },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerStandbyMode": {
@@ -247,6 +250,9 @@
           },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         },
         "setSearchModeCommon": {
@@ -270,9 +276,6 @@
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
           }
@@ -287,6 +290,9 @@
           },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerSearchMode": {
@@ -299,6 +305,9 @@
           },
           "setSignal": {
             "signal": "pulseDopplerSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         },
         "resetSearchMode": {
