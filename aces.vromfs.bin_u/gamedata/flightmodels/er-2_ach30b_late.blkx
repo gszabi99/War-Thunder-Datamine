@@ -2929,7 +2929,13 @@
         "preset": {
           "name": "er-2_8xfab250",
           "blk": "gameData/FlightModels/weaponPresets/er-2_8xfab250.blk",
-          "reqModification": "er-2_kd-3-240"
+          "reqModification": "er-2_kd-3-240",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+              "iconType": "bombs_middle"
+            }
+          }
         }
       },
       {
@@ -2940,7 +2946,7 @@
           "weaponConfig": {
             "Weapon": {
               "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
-              "iconType": "bombs_middle"
+              "iconType": "bombs_large"
             }
           }
         }
@@ -3064,13 +3070,22 @@
           "name": "er-2_3xfab1000_4xfab500",
           "blk": "gameData/FlightModels/weaponPresets/er-2_3xfab1000_4xfab500.blk",
           "reqModification": "er-2_kd-3-240",
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_special"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_large"
+              }
             }
-          }
+          ]
         }
       }
     ]

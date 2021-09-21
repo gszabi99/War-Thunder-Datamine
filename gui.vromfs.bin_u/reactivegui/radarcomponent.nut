@@ -2082,9 +2082,9 @@ local forestallTargetLine = @(color) function() {
 
 
 local compassComponent = @(color) function() {
-  return !HasCompass.value ? { watch = HasCompass}
+  return !HasCompass.value || AzimuthRange.value < PI ? { watch = [ HasCompass, AzimuthRange ]}
     : {
-      watch = HasCompass
+      watch = [ HasCompass, AzimuthRange ]
       pos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
       children = compass(compassSize, color)
     }
@@ -2207,12 +2207,13 @@ local createAzimuthMarkStrikeComponent = @(size, total_width, styleColor) functi
   }
 }
 
-
-local function azimuthMarkStrike(styleColor) {
+local azimuthMarkStrike = @(styleColor) function() {
   local width = compassSize[0] * 1.5
   local totalWidth = 2.0 * getCompassStrikeWidth(compassOneElementWidth, compassStep)
 
-  return {
+  return AzimuthRange.value < PI ? { watch = AzimuthRange } :
+  {
+    watch = AzimuthRange
     pos = [sw(50) - 0.5 * width, sh(17)]
     children = [
       createAzimuthMarkStrikeComponent([width, hdpx(30)], totalWidth, styleColor)
