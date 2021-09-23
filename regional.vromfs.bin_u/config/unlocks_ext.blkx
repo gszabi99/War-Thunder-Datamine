@@ -49304,5 +49304,119 @@
         }
       ]
     }
+  },
+  {
+    "unlockable": {
+      "id": "craft_2021_autumn_1st_place_award",
+      "type": "inventory",
+      "userLogId": "2904022",
+      "isMultiUnlock": true,
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 1
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-23 12:00:00",
+            "endDate": "2021-10-04 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "tank_random_battles_simulation"
+            },
+            {
+              "value": "tank_random_battles_simulation_1"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "minStat",
+            "value": [1.0,1.0,1.0],
+            "stat": "place"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "unlocked",
+            "positive": false,
+            "unlock": "craft_2021_autumn_1st_place_check"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "craft_2021_autumn_1st_place_check",
+      "type": "achievement",
+      "chapter": "craft_2021_autumn",
+      "isAfterFlight": true,
+      "hidden": false,
+      "mode": {
+        "type": "unlockOpenCount",
+        "num": 200,
+        "unlock": "craft_2021_autumn_1st_place_award",
+        "condition": {
+          "type": "timeRange",
+          "beginDate": "2021-09-23 12:00:00",
+          "endDate": "2021-10-04 12:00:00"
+        }
+      }
+    }
   }
 ]

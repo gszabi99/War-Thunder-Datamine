@@ -2336,17 +2336,9 @@
   ],
   "commonWeapons": [
     {
-      "hideNodes": [
-        {
-          "node": "ltc"
-        },
-        {
-          "node": "tail_spo"
-        },
-        {
-          "node": "tail_type941"
-        }
-      ]
+      "hideNodes": {
+        "node": "ltc"
+      }
     },
     {
       "Weapon": {
@@ -2387,6 +2379,13 @@
         "name": "a_5c_4x500kg_bombs",
         "blk": "gameData/FlightModels/weaponPresets/a_5c_4x500kg_bombs.blk",
         "reqModification": "us_500lb_mk82"
+      }
+    },
+    {
+      "preset": {
+        "name": "a_5c_4x750lbs_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/a_5c_4x750lbs_bombs.blk",
+        "reqModification": "us_750lb_m117a1"
       }
     },
     {
@@ -2444,12 +2443,62 @@
             },
             {
               "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
                 "idx": 5
               }
             },
             {
               "tier": {
                 "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": {
+        "name": "a_5c_type130_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/a_5c_type130_rockets.blk",
+        "reqModification": "q_5b_type130",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+            },
+            {
+              "iconType": "nar_ap_block"
+            },
+            {
+              "amountPerTier": 4.0
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
               }
             }
           ]
@@ -2535,6 +2584,82 @@
     {
       "preset": [
         {
+          "name": "a_5c_matra550_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_matra550_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "fr_matra_r_550_magic_1"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air_midrange_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "a_5c_matra550_type90_4x500kg_bombs"
         },
         {
@@ -2564,12 +2689,12 @@
                 },
                 {
                   "tier": {
-                    "idx": 2
+                    "idx": 1
                   }
                 },
                 {
                   "tier": {
-                    "idx": 10
+                    "idx": 11
                   }
                 }
               ]
@@ -2587,12 +2712,22 @@
                 },
                 {
                   "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
                     "idx": 3
                   }
                 },
                 {
                   "tier": {
                     "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
                   }
                 }
               ]
@@ -2604,6 +2739,342 @@
                 },
                 {
                   "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_matra550_type90_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_matra550_type90_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "fr_matra_r_550_magic_1"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "cn_q5_hf6"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air_midrange_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type90_heat.blk"
+                },
+                {
+                  "iconType": "nar_ap_special"
+                },
+                {
+                  "amountPerTier": 7.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_matra550_type130_4x500kg_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_matra550_type130_4x500kg_bombs.blk"
+        },
+        {
+          "reqModification": "fr_matra_r_550_magic_1"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air_midrange_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/china_250kg_mk_82.blk"
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_matra550_type130_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_matra550_type130_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "fr_matra_r_550_magic_1"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air_midrange_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
                 },
                 {
                   "amountPerTier": 1.0
@@ -2653,6 +3124,22 @@
     {
       "preset": [
         {
+          "name": "a_5c_aim9_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_aim9_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "a_5c_aim9_type90_4x500kg_bombs"
         },
         {
@@ -2682,12 +3169,12 @@
                 },
                 {
                   "tier": {
-                    "idx": 2
+                    "idx": 1
                   }
                 },
                 {
                   "tier": {
-                    "idx": 10
+                    "idx": 11
                   }
                 }
               ]
@@ -2705,12 +3192,134 @@
                 },
                 {
                   "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
                     "idx": 3
                   }
                 },
                 {
                   "tier": {
                     "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/china_250kg_mk_82.blk"
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_aim9_type130_4x500kg_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_aim9_type130_4x500kg_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
                   }
                 }
               ]
@@ -2781,12 +3390,22 @@
                 },
                 {
                   "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
                     "idx": 3
                   }
                 },
                 {
                   "tier": {
                     "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
                   }
                 }
               ]
@@ -2798,6 +3417,488 @@
                 },
                 {
                   "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_aim9_type90_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_aim9_type90_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "cn_q5_hf6"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type90_heat.blk"
+                },
+                {
+                  "iconType": "nar_ap_special"
+                },
+                {
+                  "amountPerTier": 7.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_type90_rockets_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_type90_rockets_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "cn_q5_hf6"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type90_heat.blk"
+                },
+                {
+                  "iconType": "nar_ap_special"
+                },
+                {
+                  "amountPerTier": 7.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_aim9_type130_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_aim9_type130_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_type130_rockets_4x500kg_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_type130_rockets_4x500kg_bombs.blk"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/china_250kg_mk_82.blk"
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_5c_type130_rockets_4x750lb_bombs"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_5c_type130_rockets_4x750lb_bombs.blk"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "q_5b_type130"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/cn_type130_ap.blk"
+                },
+                {
+                  "iconType": "nar_ap_block"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                },
+                {
+                  "iconType": "bombs_large"
                 },
                 {
                   "amountPerTier": 1.0
@@ -3089,22 +4190,22 @@
     },
     "us_500lb_mk82": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
+    },
+    "us_750lb_m117a1": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "us_500lb_mk82"
     },
     "cn_q5_hf6": {
-      "reqModification": "us_500lb_mk82",
+      "reqModification": "us_750lb_m117a1",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "q_5b_type130": {
+      "reqModification": "cn_q5_hf6",
       "modClass": "weapon",
       "tier": 4
-    },
-    "fr_matra_r_550_magic_1": {
-      "reqModification": "q_5b_ltc",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_aim_9p": {
-      "reqModification": "fr_matra_r_550_magic_1",
-      "tier": 4,
-      "modClass": "weapon"
     },
     "q_5b": {
       "turn_it_off": false,
@@ -3114,14 +4215,9 @@
       "effects": {
         "commonWeapons": [
           {
-            "hideNodes": [
-              {
-                "node": "tail_spo"
-              },
-              {
-                "node": "tail_type941"
-              }
-            ]
+            "hideNodes": {
+              "node": "ltc"
+            }
           },
           {
             "Weapon": {
@@ -3170,14 +4266,9 @@
       "effects": {
         "commonWeapons": [
           {
-            "hideNodes": [
-              {
-                "node": "tail_no_spo"
-              },
-              {
-                "node": "tail_no_type941"
-              }
-            ]
+            "hideNodes": {
+              "node": "ltc_cap"
+            }
           },
           {
             "Weapon": {
@@ -3223,6 +4314,15 @@
           }
         }
       }
+    },
+    "fr_matra_r_550_magic_1": {
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9p": {
+      "reqModification": "fr_matra_r_550_magic_1",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "user_skin": [

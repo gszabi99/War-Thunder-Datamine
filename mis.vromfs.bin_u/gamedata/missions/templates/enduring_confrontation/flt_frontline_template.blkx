@@ -8518,6 +8518,12 @@
             "var_value": "flt_random_battle_t1_assigned",
             "value": false,
             "comparasion_func": "equal"
+          },
+          "varCompareInt": {
+            "var_value": "flt_state_cur_col",
+            "value": 4,
+            "comparasion_func": "equal",
+            "var_value_other": "flt_army_A_width"
           }
         },
         "actions": {
@@ -8530,7 +8536,7 @@
             "value": "check random battle"
           },
           "triggerEnable": {
-            "target": "flt_random_battles_t1_check"
+            "target": "flt_random_battles_t1_check_battle"
           }
         },
         "else_actions": {
@@ -8560,6 +8566,12 @@
             "var_value": "flt_random_battle_t2_assigned",
             "value": false,
             "comparasion_func": "equal"
+          },
+          "varCompareInt": {
+            "var_value": "flt_state_cur_col",
+            "value": 4,
+            "comparasion_func": "equal",
+            "var_value_other": "flt_army_B_width"
           }
         },
         "actions": {
@@ -8572,7 +8584,7 @@
             "value": "check random battle"
           },
           "triggerEnable": {
-            "target": "flt_random_battles_t2_check"
+            "target": "flt_random_battles_t2_check_battle"
           }
         },
         "else_actions": {
@@ -8584,7 +8596,7 @@
           }
         }
       },
-      "flt_random_battles_t1_check": {
+      "flt_random_battles_t1_check_battle": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -8597,24 +8609,14 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "flt_random_battle_t1_chance",
-              "value": 0,
-              "comparasion_func": "less",
-              "var_value_other": "flt_random_battle_t1_cur_chance"
-            }
-          },
-          {
-            "varCompareInt": {
-              "var_value": "flt_state_cur_col",
-              "value": 4,
-              "comparasion_func": "equal",
-              "var_value_other": "flt_army_A_width"
-            }
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battle_t1_chance",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_random_battle_t1_cur_chance"
           }
-        ],
+        },
         "actions": [
           {
             "comment": {
@@ -8672,6 +8674,12 @@
             "triggerEnable": {
               "target": "flt_state_mirror_check_col"
             }
+          },
+          {
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
+            }
           }
         ],
         "else_actions": [
@@ -8699,7 +8707,7 @@
           }
         ]
       },
-      "flt_random_battles_t2_check": {
+      "flt_random_battles_t2_check_battle": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -8712,24 +8720,14 @@
             "time": 0.0
           }
         },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "flt_random_battle_t2_chance",
-              "value": 0,
-              "comparasion_func": "less",
-              "var_value_other": "flt_random_battle_t2_cur_chance"
-            }
-          },
-          {
-            "varCompareInt": {
-              "var_value": "flt_state_cur_col",
-              "value": 4,
-              "comparasion_func": "equal",
-              "var_value_other": "flt_army_B_width"
-            }
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_random_battle_t2_chance",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_random_battle_t2_cur_chance"
           }
-        ],
+        },
         "actions": [
           {
             "comment": {
@@ -8786,6 +8784,12 @@
           {
             "triggerEnable": {
               "target": "flt_state_mirror_check_col"
+            }
+          },
+          {
+            "__missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
             }
           }
         ],
@@ -9206,8 +9210,8 @@
     "flt_mirrior_start": false,
     "flt_random_battle_t1_chance": 0,
     "flt_random_battle_t2_chance": 0,
-    "flt_random_battle_t1_cur_chance": 15,
-    "flt_random_battle_t2_cur_chance": 15,
+    "flt_random_battle_t1_cur_chance": 5,
+    "flt_random_battle_t2_cur_chance": 5,
     "flt_random_battle_t1_heat_var_name": "",
     "flt_random_battle_t2_heat_var_name": "",
     "flt_random_battle_t1_assigned": false,

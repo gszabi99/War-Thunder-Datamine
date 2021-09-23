@@ -2424,6 +2424,35 @@
     },
     {
       "preset": {
+        "name": "mig_27m_rocket_r13m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_r13m.blk",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "missile_type_c_air_to_air"
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": {
         "name": "mig_27m_bomb_ofab250m_62",
         "blk": "gameData/FlightModels/weaponPresets/mig_27m_bomb_ofab250m_62.blk",
         "reqModification": "mi_24_fab_250"
@@ -2678,36 +2707,6 @@
             ]
           }
         ]
-      }
-    },
-    {
-      "preset": {
-        "name": "mig_27m_rocket_r13m",
-        "blk": "gameData/FlightModels/weaponPresets/mig_27m_rocket_r13m.blk",
-        "reqModification": "mig_19_r13m",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk"
-            },
-            {
-              "amountPerTier": 1.0
-            },
-            {
-              "iconType": "missile_type_c_air_to_air"
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            }
-          ]
-        }
       }
     },
     {
@@ -3757,9 +3756,6 @@
               },
               {
                 "node": "chute4"
-              },
-              {
-                "node": "su_infrared_flare_bp_50_60"
               }
             ]
           },
@@ -3833,7 +3829,40 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 12,
+              "bullets": 6,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 6,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
               "external": true,
               "separate": false
             }
