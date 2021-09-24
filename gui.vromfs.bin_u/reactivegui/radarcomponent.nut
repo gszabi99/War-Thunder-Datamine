@@ -1916,9 +1916,8 @@ local scanZoneAzimuthComponent = @(color) function() {
 
 local scanZoneElevationComponent = @(color) function() {
 
-  local isTank = AzimuthRange.value > PI
-  if (!IsScanZoneElevationVisible.value || isTank)
-    return { watch = [IsScanZoneElevationVisible, AzimuthRange] }
+  if (!IsScanZoneElevationVisible.value)
+    return { watch = [IsScanZoneElevationVisible] }
 
   local width = sw(100)
   local height = sh(100)
@@ -1935,7 +1934,7 @@ local scanZoneElevationComponent = @(color) function() {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     opacity = 0.3
-    watch = [ScanZoneWatched, IsScanZoneElevationVisible, AzimuthRange]
+    watch = [ScanZoneWatched, IsScanZoneElevationVisible]
     lineWidth = hdpx(4)
     color
     fillColor = 0
@@ -2082,9 +2081,9 @@ local forestallTargetLine = @(color) function() {
 
 
 local compassComponent = @(color) function() {
-  return !HasCompass.value || AzimuthRange.value < PI ? { watch = [ HasCompass, AzimuthRange ]}
+  return !HasCompass.value ? { watch = [ HasCompass ]}
     : {
-      watch = [ HasCompass, AzimuthRange ]
+      watch = [ HasCompass ]
       pos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
       children = compass(compassSize, color)
     }
@@ -2207,20 +2206,17 @@ local createAzimuthMarkStrikeComponent = @(size, total_width, styleColor) functi
   }
 }
 
-local azimuthMarkStrike = @(styleColor) function() {
+local function azimuthMarkStrike(styleColor) {
   local width = compassSize[0] * 1.5
   local totalWidth = 2.0 * getCompassStrikeWidth(compassOneElementWidth, compassStep)
 
-  return AzimuthRange.value < PI ? { watch = AzimuthRange } :
-  {
-    watch = AzimuthRange
+  return {
     pos = [sw(50) - 0.5 * width, sh(17)]
     children = [
       createAzimuthMarkStrikeComponent([width, hdpx(30)], totalWidth, styleColor)
     ]
   }
 }
-
 
 local mkRadarBase = @(posWatch, size, isAir, color, mode, fontScale = 1.0) function() {
 
@@ -2299,7 +2295,18 @@ local mkRadar = @(posWatched, radarSize = sh(28), isAir = false, radar_color_wat
 
   local color = radar_color_watch.value;
 
-  local radarHudVisibleChildren = [
+  local radarHudVisibleChildren = !isAir ?
+  [
+    targetsOnScreenComponent(color)
+    forestallComponent(color)
+    forestallTargetLine(color)
+    mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode)
+    scanZoneAzimuthComponent(color)
+    lockZoneComponent(color)
+    compassComponent(color)
+    azimuthMarkStrike(color)
+  ] :
+  [
     targetsOnScreenComponent(color)
     forestallComponent(color)
     forestallTargetLine(color)
@@ -2307,8 +2314,6 @@ local mkRadar = @(posWatched, radarSize = sh(28), isAir = false, radar_color_wat
     scanZoneAzimuthComponent(color)
     scanZoneElevationComponent(color)
     lockZoneComponent(color)
-    compassComponent(color)
-    azimuthMarkStrike(color)
   ]
 
   return res.__update({
