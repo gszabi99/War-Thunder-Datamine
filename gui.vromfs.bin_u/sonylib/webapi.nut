@@ -320,7 +320,7 @@ local function psnMatchLeave(id, player) {
 }
 
 local function psnMatchReportResults(id, result) {
-  local data = {matchResults = {version = 1, competitiveResult = result}}
+  local data = {matchResults = {version = "1", competitiveResult = result}}
   return createRequest(matchesApi, webApiMethodPost, $"{id}/results", {}, data)
 }
 
