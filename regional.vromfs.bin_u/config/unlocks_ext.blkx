@@ -1712,6 +1712,14 @@
   },
   {
     "unlockable": {
+      "id": "title_on_the_plus_side",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
       "id": "title_runestone_dragon",
       "type": "title",
       "chapter": "title",
@@ -13001,7 +13009,163 @@
   },
   {
     "unlockable": {
-      "id": "ussr_12th_guards_tank_regiment",
+      "id": "cn_zhanma_81st_army_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "mode": [
+        {
+          "type": "unlockStageCount"
+        },
+        {
+          "num": 20
+        },
+        {
+          "unlock": "tank_marked_enemy_destroyed_by_ally"
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_china"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "usa_5th_battalion_2nd_ada",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 20
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "targetType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_usa"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "uk_ptf_omega",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 15
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "aam"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_britain"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "hr_191_sqn_knight",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -13010,7 +13174,100 @@
           "type": "missionsPlayedScore"
         },
         {
-          "num": 15
+          "num": 7
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "minStat",
+            "value": [1.0,1.0,1.0],
+            "stat": "place"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "jp_ijaaf_78_snt_blossom",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 40
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_japan"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_4_guards_tank_division",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 10
         },
         {
           "condition": {
@@ -13050,19 +13307,16 @@
   },
   {
     "unlockable": {
-      "id": "jp_12th_reconnaissance_group",
+      "id": "ger_3rd_sboot_fl_seahorse",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "awardDamage"
         },
         {
-          "num": 30
-        },
-        {
-          "unlock": "tank_marked_enemy_destroyed_by_ally"
+          "num": 20000
         },
         {
           "condition": {
@@ -13074,19 +13328,27 @@
             "type": "playerUnitRank",
             "minRank": 2,
             "maxRank": 7,
-            "inSession": false
+            "inSession": true,
+            "inSessionAnd": false
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "tank"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
             "type": "playerTag",
-            "tag": "country_japan"
+            "tag": "country_germany"
           }
         }
       ]
@@ -13094,7 +13356,7 @@
   },
   {
     "unlockable": {
-      "id": "fr_ec3_2_alsace",
+      "id": "fr_8th_regiment_de_cuirassiers",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -13130,7 +13392,7 @@
         {
           "condition": {
             "type": "offenderType",
-            "unitType": "aircraft"
+            "unitType": "tank"
           }
         },
         {
@@ -13144,87 +13406,7 @@
   },
   {
     "unlockable": {
-      "id": "isr_319th_armored_division",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "mode": [
-        {
-          "type": "unlockStageCount"
-        },
-        {
-          "num": 5
-        },
-        {
-          "unlock": "heroic_tankman"
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerUnitRank",
-            "minRank": 2,
-            "maxRank": 7,
-            "inSession": true,
-            "inSessionAnd": false
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "tank"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "us_22_bg_red_raiders",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "mode": [
-        {
-          "type": "amountDamagesZone"
-        },
-        {
-          "num": 30000
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerUnitRank",
-            "minRank": 2,
-            "maxRank": 7,
-            "inSession": false
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "aircraft"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerTag",
-            "tag": "country_usa"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "ge_293rd_pz_bat",
+      "id": "it_divisione_pozzuolo_del_friuli",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -13233,7 +13415,7 @@
           "type": "missionsPlayedScore"
         },
         {
-          "num": 15
+          "num": 10
         },
         {
           "condition": {
@@ -13265,10 +13447,64 @@
         {
           "condition": {
             "type": "playerTag",
-            "tag": "country_germany"
+            "tag": "country_italy"
           }
         }
       ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_12th_guards_tank_regiment",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "jp_12th_reconnaissance_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "fr_ec3_2_alsace",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "isr_319th_armored_division",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "us_22_bg_red_raiders",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ge_293rd_pz_bat",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
     }
   },
   {
@@ -13277,48 +13513,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
-      "mode": [
-        {
-          "type": "killedPlayersScore"
-        },
-        {
-          "num": 40
-        },
-        {
-          "mulArcade": 1
-        },
-        {
-          "mulRealistic": 2
-        },
-        {
-          "mulHardcore": 2
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerUnitRank",
-            "minRank": 2,
-            "maxRank": 7,
-            "inSession": false
-          }
-        },
-        {
-          "condition": {
-            "type": "offenderType",
-            "unitType": "aircraft"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerTag",
-            "tag": "country_britain"
-          }
-        }
-      ]
+      "hideUntilUnlocked": true
     }
   },
   {
@@ -13327,37 +13522,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
-      "mode": [
-        {
-          "type": "unlockStageCount"
-        },
-        {
-          "num": 5
-        },
-        {
-          "unlock": "heroic_fighter"
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerUnitRank",
-            "minRank": 2,
-            "maxRank": 7,
-            "inSession": true,
-            "inSessionAnd": false
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "aircraft"
-          }
-        }
-      ]
+      "hideUntilUnlocked": true
     }
   },
   {
@@ -14667,15 +14832,6 @@
   },
   {
     "unlockable": {
-      "id": "ussr_4_guards_tank_division",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    }
-  },
-  {
-    "unlockable": {
       "id": "uk_no_11_sqn",
       "type": "decal",
       "chapter": "decals",
@@ -14722,15 +14878,6 @@
   {
     "unlockable": {
       "id": "us_174_ahc_surfer",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    }
-  },
-  {
-    "unlockable": {
-      "id": "it_divisione_pozzuolo_del_friuli",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -14794,15 +14941,6 @@
   {
     "unlockable": {
       "id": "uk_no_31_sqn_flash",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    }
-  },
-  {
-    "unlockable": {
-      "id": "ger_3rd_sboot_fl_seahorse",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -15406,15 +15544,6 @@
   {
     "unlockable": {
       "id": "usa_65th_ir_borinqueneers",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    }
-  },
-  {
-    "unlockable": {
-      "id": "jp_ijaaf_78_snt_blossom",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -34074,9 +34203,6 @@
             },
             {
               "value": "air_realistic"
-            },
-            {
-              "value": "tank_event_in_random_battles_arcade"
             },
             {
               "value": "tank_event_in_random_battles_historical"
