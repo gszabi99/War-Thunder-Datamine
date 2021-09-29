@@ -4280,6 +4280,31 @@
   },
   {
     "unlockable": {
+      "id": "title_phantom_forever",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true,
+      "mode": [
+        {
+          "type": "char_resources"
+        },
+        {
+          "num": 3
+        },
+        {
+          "resource": "to_the_next_era"
+        },
+        {
+          "resource": "to_the_next_era_colored"
+        },
+        {
+          "resource": "air_development_and_test_wing"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "gift_fifa_cup",
       "type": "inventory",
       "userLogId": "310022",
@@ -4290,6 +4315,211 @@
         "num": 1,
         "resource": "ball_france"
       }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "air_development_and_test_wing",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 1
+        },
+        {
+          "unlock": "air_development_and_test_wing_dmm"
+        },
+        {
+          "unlock": "air_development_and_test_wing_scej"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "air_development_and_test_wing_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-09-30 08:00:00",
+        "endDate": "2021-12-31 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "air_development_and_test_wing_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-09-30 08:00:00",
+        "endDate": "2021-12-31 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "to_the_next_era_decal_trophy_gift_1",
+      "userLogId": "to_the_next_era_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 10
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "aam"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_japan"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-30 08:00:00",
+            "endDate": "2021-12-31 14:59:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "to_the_next_era_decal_trophy_gift_2",
+      "userLogId": "to_the_next_era_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 20
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "aam"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_japan"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-09-30 08:00:00",
+            "endDate": "2021-12-31 14:59:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "phantom_forever",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": [
+        {
+          "type": "char_resources"
+        },
+        {
+          "num": 3
+        },
+        {
+          "resource": "to_the_next_era"
+        },
+        {
+          "resource": "to_the_next_era_colored"
+        },
+        {
+          "resource": "air_development_and_test_wing"
+        }
+      ]
     }
   },
   {
