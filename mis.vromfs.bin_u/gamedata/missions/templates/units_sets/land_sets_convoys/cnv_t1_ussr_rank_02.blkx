@@ -1,0 +1,471 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "flt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/air_afghan.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "squad": {
+        "name": "cnv_t1_convoy_01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [21383.5,1.7,47318.7]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_truck"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_acar"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_aaa"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t1_convoy_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [19724.0,1.7,47099.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_truck"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_acar"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_aaa"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t1_all_convoys_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20433.2,14.6,46217.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_squad"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_squad"
+          }
+        ]
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_01_tank",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68831.1,0.55,36832.1]
+        ],
+        "unit_class": "uk_crusader_mk_3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_02_tank",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68871.0,0.55,36810.3]
+        ],
+        "unit_class": "uk_crusader_mk_3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_01_truck",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68852.5,0.55,36869.7]
+        ],
+        "unit_class": "us_truck_us6_studebaker_tent",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_02_truck",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68885.7,0.55,36853.8]
+        ],
+        "unit_class": "us_truck_us6_studebaker_tent",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_01_acar",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68877.3,0.55,36902.9]
+        ],
+        "unit_class": "uk_marmon_herrington_mk_6_6pdr",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_02_acar",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68908.5,0.55,36887.7]
+        ],
+        "unit_class": "uk_marmon_herrington_mk_6_6pdr",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_01_aaa",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68903.8,0.55,36944.0]
+        ],
+        "unit_class": "uk_crusader_aa_mk_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_02_aaa",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68938.7,0.55,36928.5]
+        ],
+        "unit_class": "uk_crusader_aa_mk_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

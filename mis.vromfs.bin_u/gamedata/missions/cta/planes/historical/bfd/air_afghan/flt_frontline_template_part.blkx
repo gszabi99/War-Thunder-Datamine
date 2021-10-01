@@ -1,0 +1,511 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "flt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": []
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_afghan/frontline/flt_frontline_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_01.blk",
+        "rankRange": [0.0,3.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_02.blk",
+        "rankRange": [4.0,7.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_03.blk",
+        "rankRange": [8.0,11.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_04.blk",
+        "rankRange": [12.0,16.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_05.blk",
+        "rankRange": [17.0,20.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t1_ussr_rank_06.blk",
+        "rankRange": [21.0,50.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_01.blk",
+        "rankRange": [0.0,3.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_02.blk",
+        "rankRange": [4.0,7.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_03.blk",
+        "rankRange": [8.0,11.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_04.blk",
+        "rankRange": [12.0,16.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_05.blk",
+        "rankRange": [17.0,20.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/units_sets/land_sets_frontline/flt_t2_usa_rank_06.blk",
+        "rankRange": [21.0,50.0],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "flt_parts_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetInt": {
+            "value": 10,
+            "var": "flt_big_aaa_weight"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 10,
+            "var": "flt_small_aaa_weight"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 20,
+            "var": "flt_art_weight"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 50,
+            "var": "flt_tank_weight"
+          }
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_row"
+            },
+            {
+              "var": "flt_zones_in_col_real"
+            }
+          ]
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_col"
+            },
+            {
+              "var": "flt_zones_in_row_real"
+            }
+          ]
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_total_zones"
+          }
+        },
+        {
+          "comment": {
+            "value": "настройки фронтлайна"
+          }
+        },
+        {
+          "comment": {
+            "value": "общее количество зон"
+          }
+        },
+        {
+          "comment": {
+            "value": "высчитываем количество зон показывающих глубину фронта"
+          }
+        },
+        {
+          "comment": {
+            "value": "помечаем зоны команд (в цикле по алгоритму)"
+          }
+        },
+        {
+          "comment": {
+            "value": "рисуем линию фронта"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "flt_mirrior_start"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "flt_army_state_start"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "flt_draw_frontline"
+          }
+        },
+        {
+          "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "flt_battle_area",
+            "newGridHorizontalCellCount": 8,
+            "gridCellCountVar": "flt_zones_in_row"
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "squad": {
+        "name": "flt_t1_forces_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-33154.3,0.0,57058.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t1_tanks_squad"
+          },
+          {
+            "squad_members": "flt_t1_art_squad"
+          },
+          {
+            "squad_members": "flt_t1_big_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t1_small_aaa_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_forces_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2729.05,0.0,62561.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t2_tanks_squad"
+          },
+          {
+            "squad_members": "flt_t2_art_squad"
+          },
+          {
+            "squad_members": "flt_t2_big_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t2_small_aaa_squad"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}
