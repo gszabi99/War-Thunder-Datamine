@@ -12972,6 +12972,39 @@
   },
   {
     "unlockable": {
+      "id": "sea_hawk_mk100_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-10-01 00:00:00",
+        "endDate": "2021-10-03 15:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "sea_hawk_mk100_force_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "sea_hawk_mk100_force_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "sea_hawk_mk100",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2021-10-01 00:00:00",
+          "endDate": "2021-10-03 15:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "2021_us_air_force_check_popup",
       "type": "achievement",
       "hidden": true,
