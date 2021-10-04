@@ -1,3 +1,5 @@
+local { getRespawnBaseNameById, isDefaultRespawnBase } = require_native("guiRespawn")
+
 local MAP_SELECT_NOTHING = -1
 
 local RespawnBase = class
@@ -16,9 +18,9 @@ local RespawnBase = class
   {
     id = _id
     isAutoSelected = _isAutoSelected
-    name = ::get_respawn_base_name_by_id(id)
+    name = getRespawnBaseNameById(id)
     isRandom = name == "missions/random_spawn" || name == "missions/ground_spawn_random"
-    isDefault = ::is_default_respawn_base(id)
+    isDefault = isDefaultRespawnBase(id)
     isMapSelectable = !isRandom && !isAutoSelected
     mapId = !isRandom ? id : MAP_ID_NOTHING
   }

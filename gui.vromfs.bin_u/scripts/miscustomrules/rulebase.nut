@@ -1,3 +1,4 @@
+local { getAvailableRespawnBases } = require_native("guiRespawn")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
 local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -180,7 +181,7 @@ class ::mission_rules.Base
             && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
             && isUnitEnabledBySessionRank(air)
           ) {
-            local respBases = ::get_available_respawn_bases(air.tags)
+            local respBases = getAvailableRespawnBases(air.tags)
             if (respBases.len() != 0)
               return true
           }
@@ -261,7 +262,7 @@ class ::mission_rules.Base
 
       if (!::is_crew_available_in_session(c.idInCountry, false)
           || !::is_crew_slot_was_ready_at_host(c.idInCountry, unit.name, false)
-          || !::get_available_respawn_bases(unit.tags).len()
+          || !getAvailableRespawnBases(unit.tags).len()
           || !getUnitLeftRespawns(unit)
           || !isUnitEnabledBySessionRank(unit)
           || unit.disableFlyout)

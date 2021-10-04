@@ -109,9 +109,13 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
           }
           if (!isAnyYearUnlocked)
           {
-            blk = build_conditions_config(::g_unlocks.getUnlockById("country_" + country + "_" + yearsArray[0]))
-            ::build_unlock_desc(blk)
-            lockReason += blk.text
+            local yearUnlock = ::g_unlocks.getUnlockById($"country_{country}_{yearsArray[0]}")
+            if (yearUnlock)
+            {
+              blk = build_conditions_config(yearUnlock)
+              ::build_unlock_desc(blk)
+              lockReason += blk.text
+            }
           }
           isAnyCountryUnlocked = isAnyYearUnlocked
           isCountryUnlocked = isAnyYearUnlocked

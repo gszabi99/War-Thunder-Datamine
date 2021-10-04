@@ -7,6 +7,7 @@ local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatu
 local { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local { setShowUnit, getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getAvailableRespawnBases } = require_native("guiRespawn")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -277,7 +278,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
           {
             local disabled = !::is_unit_enabled_for_slotbar(unit, this)
             if (checkRespawnBases)
-              disabled = disabled || !::get_available_respawn_bases(unit.tags).len()
+              disabled = disabled || !getAvailableRespawnBases(unit.tags).len()
             if (disabled)
               status = bit_unit_status.disabled
           }

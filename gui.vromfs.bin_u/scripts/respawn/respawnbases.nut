@@ -1,3 +1,4 @@
+local { getAvailableRespawnBases } = require_native("guiRespawn")
 local RespawnBase = require("scripts/respawn/respawnBase.nut")
 
 local respawnBases = {
@@ -18,7 +19,7 @@ local respawnBases = {
       selBase = null
     }
 
-    local rbs = ::get_available_respawn_bases(unit.tags)
+    local rbs = getAvailableRespawnBases(unit.tags)
     if (!rbs.len())
       return res
 

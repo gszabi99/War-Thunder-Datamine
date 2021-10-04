@@ -66,9 +66,6 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
   MissionTypeOnline = 2,
 };
 
-::unit_year_selection_min <- 1940
-::unit_year_selection_max <- 1945
-
 ::KG_TO_TONS <- 0.001
 
 ::ttv_video_sizes <- [
@@ -2860,9 +2857,13 @@ local isWaitMeasureEvent = false
       descr.id = "year"
       //filled by onLayoutChange()
       descr.trParams <- "optionWidthInc:t='double';"
-      local yearsArray = ["1940", "1941", "1942", "1943", "1944", "1945"]
-      descr.items <- yearsArray
-      descr.values = ["year1940", "year1941", "year1942", "year1943", "year1944", "year1945"];
+      local isKoreanWarDC = ::get_game_mode() == ::GM_DYNAMIC && ::current_campaign?.id == "korea_dynamic"
+      local yearsArray = !isKoreanWarDC
+        ? [ 1940, 1941, 1942, 1943, 1944, 1945 ]
+        : [ 1950, 1951, 1952, 1953 ]
+      descr.valuesInt <- yearsArray
+      descr.items <- yearsArray.map(@(yyyy) yyyy.tostring())
+      descr.values = yearsArray.map(@(yyyy) $"year{yyyy}")
       if (::get_game_mode() == ::GM_DYNAMIC && ::current_campaign)
       {
         local teamOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY)
@@ -2882,13 +2883,15 @@ local isWaitMeasureEvent = false
             tooltip = enabled? "" : config.text
           }
           descr.items.append({
-            text = yearsArray[i]
+            text = yearsArray[i].tostring()
             enabled = enabled
             tooltip = tooltip
           })
         }
       }
-      defaultValue = "year1940";
+      defaultValue = descr.values[0]
+      prevValue = ::get_gui_option(::USEROPT_YEAR)
+      descr.value = ::find_in_array(descr.values, prevValue, 0)
       descr.cb = "onYearChange"
       break
 

@@ -961,10 +961,10 @@ foreach (i, v in ::cssColorsMapDark)
   object[parameter]++;
 }
 
-::get_number_of_units_by_years <- function get_number_of_units_by_years(country)
+::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years)
 {
   local result = {}
-  for (local year = ::unit_year_selection_min; year <= ::unit_year_selection_max; year++)
+  foreach (year in years)
   {
     result["year" + year] <- 0
     result["beforeyear" + year] <- 0
@@ -980,7 +980,7 @@ foreach (i, v in ::cssColorsMapDark)
       continue;
 
     local maxYear = 0
-    for (local year = ::unit_year_selection_min; year <= ::unit_year_selection_max; year++)
+    foreach (year in years)
     {
       local parameter = "year" + year;
       foreach(tag in air.tags)
@@ -991,8 +991,9 @@ foreach (i, v in ::cssColorsMapDark)
         }
     }
     if (maxYear)
-      for (local year = maxYear + 1; year <= ::unit_year_selection_max; year++)
-        result["beforeyear" + year]++
+      foreach (year in years)
+        if (year > maxYear)
+          result[$"beforeyear{year}"]++
   }
   return result;
 }

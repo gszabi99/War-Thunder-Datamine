@@ -1,3 +1,5 @@
+local { getAvailableRespawnBases } = require_native("guiRespawn")
+
 enum MIS_LOAD { //bit enum
   //loading parts
   ECONOMIC_STATE      = 0x0001
@@ -72,7 +74,7 @@ g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
     if (!unit)
       continue
 
-    if (!::get_available_respawn_bases(unit.tags).len())
+    if (!getAvailableRespawnBases(unit.tags).len())
       continue
 
     hasRespBases = true

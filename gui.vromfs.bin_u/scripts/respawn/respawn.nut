@@ -1,3 +1,12 @@
+local { fetchChangeAircraftOnStart,
+        canRespawnCaNow,
+        canRequestAircraftNow,
+        setSelectedUnitInfo,
+        getAvailableRespawnBases,
+        getRespawnBaseTimeLeftById,
+        selectRespawnBase,
+        highlightRespawnBase,
+        getRespawnBase } = require_native("guiRespawn")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local statsd = require("statsd")
 local time = require("scripts/time.nut")
@@ -151,6 +160,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   {
     showSceneBtn("tactical-map-box", true)
     showSceneBtn("tactical-map", true)
+    if (curRespawnBase != null)
+      selectRespawnBase(curRespawnBase.mapId)
 
     missionRules = ::g_mis_custom_state.getCurMissionRules()
 
@@ -194,9 +205,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     isGTCooperative = (gameType & ::GT_COOPERATIVE) != 0
     canChangeAircraft = haveSlotbar && !stayOnRespScreen && isRespawn
 
-    if (fetch_change_aircraft_on_start() && !stayOnRespScreen && !spectator)
+    if (fetchChangeAircraftOnStart() && !stayOnRespScreen && !spectator)
     {
-      dagor.debug("fetch_change_aircraft_on_start() true")
+      dagor.debug("fetchChangeAircraftOnStart() true")
       isRespawn = true
       stayOnRespScreen = false
       canChangeAircraft = true
@@ -297,7 +308,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     local text = ""
     if (isRespawn && respawnBasesList.len())
     {
-      local timeLeft = curRespawnBase ? ::get_respawn_base_time_left_by_id(curRespawnBase.id) : -1
+      local timeLeft = curRespawnBase ? getRespawnBaseTimeLeftById(curRespawnBase.id) : -1
       if (timeLeft > 0)
         text = ::loc("multiplayer/respawnBaseAvailableTime", { time = time.secondsToString(timeLeft) })
     }
@@ -858,7 +869,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (curRespawnBase != spawn) //selected by user
       respawnBases.selectBase(getCurSlotUnit(), spawn)
     curRespawnBase = spawn
-    ::select_respawnbase(curRespawnBase.mapId)
+    selectRespawnBase(curRespawnBase.mapId)
     updateRespawnBaseTimerText()
     checkReady()
   }
@@ -867,6 +878,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   {
     local hint = ""
     local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
+    local highlightSpawnMapId = -1
     if (!isRespawn)
       hint = ::colorize("activeTextColor", ::loc("voice_message_attention_to_point_2"))
     else
@@ -881,11 +893,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       }
       else
       {
-        local spawnId = coords ? ::get_respawn_base(coords[0], coords[1]) : respawnBases.MAP_ID_NOTHING
+        local spawnId = coords ? getRespawnBase(coords[0], coords[1]) : respawnBases.MAP_ID_NOTHING
         if (spawnId != respawnBases.MAP_ID_NOTHING)
           foreach (spawn in respawnBasesList)
             if (spawn.id == spawnId && spawn.isMapSelectable)
             {
+              highlightSpawnMapId = spawn.mapId
               hint = ::colorize("userlogColoredText", spawn.getTitle())
               if (spawnId == curRespawnBase?.id)
                 hint = "".concat(hint, ::colorize("activeTextColor", ::loc("ui/parentheses/space",
@@ -901,6 +914,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       }
     }
 
+    highlightRespawnBase(highlightSpawnMapId)
+
     tmapHintObj.setValue(hint)
     tmapIconObj["background-image"] = hintIcon
   }
@@ -911,7 +926,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
 
     local coords = ::get_mouse_relative_coords_on_obj(tmapBtnObj)
-    local spawnId = coords ? ::get_respawn_base(coords[0], coords[1]) : respawnBases.MAP_ID_NOTHING
+    local spawnId = coords ? getRespawnBase(coords[0], coords[1]) : respawnBases.MAP_ID_NOTHING
 
     local selIdx = -1
     if (spawnId != -1)
@@ -969,7 +984,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (canChangeAircraft)
     {
       local crew = getCurCrew()
-      ::set_selected_unit_info(unit, crew.idInCountry)
+      setSelectedUnitInfo(unit, crew.idInCountry)
       local rbData = respawnBases.getRespawnBasesData(unit)
       curRespawnBase = rbData.selBase
       respawnBasesList = rbData.basesList
@@ -1462,7 +1477,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     reset_mp_autostart_countdown()
     if (readyForRespawn)
       setApplyPressed()
-    else if (canChangeAircraft && !isApplyPressed && ::can_request_aircraft_now())
+    else if (canChangeAircraft && !isApplyPressed && canRequestAircraftNow())
       doSelectAircraft()
   }
 
@@ -1618,7 +1633,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       if (checkSpawnInterrupt())
         return
 
-      if (::can_respawn_ca_now() && countdown < -100)
+      if (canRespawnCaNow() && countdown < -100)
       {
         ::disable_flight_menu(false)
         if (respawnRecallTimer < 0)
@@ -1662,7 +1677,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       lastRequestData = null
     }
     updateButtons()
-    ::select_respawnbase(-1)
+    selectRespawnBase(-1)
   }
 
   function checkSpawnInterrupt()
@@ -1812,7 +1827,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function updateCountdown(countdown)
   {
-    local isLoadingUnitModel = !stayOnRespScreen && !::can_request_aircraft_now()
+    local isLoadingUnitModel = !stayOnRespScreen && !canRequestAircraftNow()
     showLoadAnim(!isGTCooperative
       && (isLoadingUnitModel || !::g_mis_loading_state.isReadyToShowRespawn()))
     updateButtons(!isLoadingUnitModel, true)
@@ -2010,7 +2025,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (showHud())
       return; //was hidden, ignore menu opening
 
-    if (!isRespawn || !::can_request_aircraft_now())
+    if (!isRespawn || !canRequestAircraftNow())
       return
 
     if (isSpectate && onSpectator() && ::has_available_slots())
@@ -2024,7 +2039,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function onSpectator(obj = null)
   {
-    if (!::can_request_aircraft_now() || !isRespawn)
+    if (!canRequestAircraftNow() || !isRespawn)
       return false
     setSpectatorMode(!isSpectate)
     return true
@@ -2107,7 +2122,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function onSpectatorNext(obj)
   {
-    if (!::can_request_aircraft_now())
+    if (!canRequestAircraftNow())
       return
     if (isRespawn && isSpectate)
       switchSpectatorTargetToNext();
@@ -2115,7 +2130,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function onSpectatorPrev(obj)
   {
-    if (!::can_request_aircraft_now())
+    if (!canRequestAircraftNow())
       return
     if (isRespawn && isSpectate)
       switchSpectatorTargetToPrev();
@@ -2123,7 +2138,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function onMpStatScreen(obj)
   {
-    if (!::can_request_aircraft_now())
+    if (!canRequestAircraftNow())
       return
 
     guiScene.performDelayed(this, function() {
@@ -2338,7 +2353,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     if (!::is_crew_available_in_session(c.idInCountry, false)
         || !::is_crew_slot_was_ready_at_host(c.idInCountry, air.name, false)
-        || !::get_available_respawn_bases(air.tags).len()
+        || !getAvailableRespawnBases(air.tags).len()
         || !missionRules.getUnitLeftRespawns(air)
         || !missionRules.isUnitEnabledBySessionRank(air)
         || air.disableFlyout)

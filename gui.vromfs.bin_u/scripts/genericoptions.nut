@@ -492,12 +492,13 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       country = get_country_by_team(cobj.getValue())
       ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    local unitsByYears = get_number_of_units_by_years(country);
-    local yearObj = getObj(get_option(::USEROPT_YEAR).id);
+    local yearOption = get_option(::USEROPT_YEAR)
+    local unitsByYears = get_number_of_units_by_years(country, yearOption.valuesInt)
+    local yearObj = getObj(yearOption.id)
     if (!yearObj)
       return;
 
-    dagor.assert(yearObj.childrenCount() == ::unit_year_selection_max - ::unit_year_selection_min + 1);
+    dagor.assert(yearObj.childrenCount() == yearOption.values.len())
     for (local i = 0; i < yearObj.childrenCount(); i++)
     {
       local line = yearObj.getChild(i);
@@ -511,11 +512,9 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       local tooltip = ""
       if (::current_campaign && country!="")
       {
-        local yearId = country + "_" + ::get_option(::USEROPT_YEAR).values[i]
+        local yearId = $"{country}_{yearOption.values[i]}"
         local unlockBlk = ::g_unlocks.getUnlockById(yearId)
-        if (!unlockBlk)
-          ::dagor.assertf(false, "Error: not found year unlock = " + yearId)
-        else
+        if (unlockBlk)
         {
           local blk = build_conditions_config(unlockBlk)
           ::build_unlock_desc(blk)
@@ -526,13 +525,9 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
       line.enable(enabled)
       line.tooltip = tooltip
-      local year = ::unit_year_selection_min + i;
-      local parameter1 = "year" + year;
-      local units1 = (parameter1 in unitsByYears) ? unitsByYears[parameter1] : 0;
-      local parameter2 = "beforeyear" + year;
-      local units2 = (parameter2 in unitsByYears) ? unitsByYears[parameter2] : 0;
-      local optionText = format(::loc("options/year_text"), year, units1, units2);
-      text.setValue(optionText);
+      local year = yearOption.valuesInt[i]
+      text.setValue(format(::loc("options/year_text"), year,
+        unitsByYears[$"year{year}"], unitsByYears[$"beforeyear{year}"]))
     }
 
     local value = yearObj.getValue();
