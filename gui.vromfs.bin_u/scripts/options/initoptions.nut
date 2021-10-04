@@ -3,6 +3,7 @@ local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 local { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
 local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { initWeaponParams } = require("scripts/weaponry/weaponsParams.nut")
 
 ::all_units <- {}
 
@@ -157,15 +158,7 @@ if (showedUnit.value != null)
 
   function()
   {
-    local blk = ::DataBlock()
-    blk.load("config/gameplay.blk")
-    ::reload_cooldown_time = {}
-    local cooldown_time = blk?.reloadCooldownTimeByCaliber
-    if (!cooldown_time)
-      return
-
-    foreach (time in cooldown_time % "time")
-      ::reload_cooldown_time[time.x] <- time.y
+    initWeaponParams()
   }
 
   function()

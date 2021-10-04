@@ -7,6 +7,7 @@ local { getBulletsSetData,
         getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
+local { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -244,7 +245,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1"])
       param[p] <- bullet_params?[p] ?? 0
 
-    foreach(p in ["reloadTimes", "autoAiming", "weaponBlkPath"])
+    foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "weaponBlkPath"])
     {
       if(p in bullet_params)
         param[p] <- bullet_params[p]
@@ -298,13 +299,33 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
 
     if ("autoAiming" in param)
     {
-      local aimingTypeLocId = "guidanceSystemType/" + (param.autoAiming ? "semiAuto" : "handAim")
+      local isBeamRider = param?.isBeamRider ?? false
+      local aimingTypeLocId = "".concat("guidanceSystemType/",
+      !param.autoAiming ? "handAim"
+      : isBeamRider ? "beamRider"
+      : "semiAuto")
       addProp(p, ::loc("guidanceSystemType/header"), ::loc(aimingTypeLocId))
+      if ("irBeaconBand" in param)
+        if (param.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+          addProp(p, ::loc("missile/eccm"), ::loc("options/yes"))
     }
 
     local operatedDist = param?.operatedDist ?? 0
     if (operatedDist)
       addProp(p, ::loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
+
+    if ("guaranteedRange" in param)
+      addProp(p, ::loc("guaranteedRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(param.guaranteedRange))
+
+    if ("timeLife" in param)
+    {
+      if ("guidanceType" in param || "autoAiming" in param)
+        addProp(p, ::loc("missile/timeGuidance"),
+          ::format("%.1f %s", param.timeLife, ::loc("measureUnits/seconds")))
+      else
+        addProp(p, ::loc("missile/timeSelfdestruction"),
+          ::format("%.1f %s", param.timeLife, ::loc("measureUnits/seconds")))
+    }
 
     local explosiveType = param?.explosiveType
     if (explosiveType)

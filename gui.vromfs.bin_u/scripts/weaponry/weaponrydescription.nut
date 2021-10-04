@@ -8,6 +8,7 @@ local { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLast
 } = require("scripts/weaponry/weaponryInfo.nut")
 local { getBulletsSetData, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
+local { reloadCooldownTimeByCaliber } = require("scripts/weaponry/weaponsParams.nut")
 
 
 local function getReloadTimeByCaliber(caliber, ediff = null)
@@ -15,7 +16,7 @@ local function getReloadTimeByCaliber(caliber, ediff = null)
   local diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
   if (diff != ::g_difficulty.ARCADE)
     return null
-  return ::reload_cooldown_time?[caliber]
+  return reloadCooldownTimeByCaliber.value?[caliber]
 }
 
 local getTextNoWeapons = @(unit, isPrimary) isPrimary ? ::loc("weapon/noPrimaryWeapon")

@@ -7,6 +7,7 @@ local { AMMO,
         getAmmoAmount,
         checkAmmoAmount,
         getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
+local { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
 local { getMissionEditSlotbarBlk } = require("scripts/slotbar/slotbarOverride.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
@@ -325,6 +326,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       {
         item.machMax  <- itemBlk?.machMax ?? 0
         item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
+        if ((itemBlk?.guaranteedRange ?? 0) != 0)
+          item.guaranteedRange <- itemBlk.guaranteedRange
 
         if (currentTypeName == WEAPON_TYPE.AAM ||
             currentTypeName == WEAPON_TYPE.AGM ||
@@ -334,12 +337,18 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
           {
             item.autoAiming <- itemBlk?.autoAiming ?? false
             item.isBeamRider <- itemBlk?.isBeamRider ?? false
+            if (itemBlk?.irBeaconBand)
+              if (itemBlk.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+                item.guidanceECCM <- true
           }
           else
             item.guidanceType <- itemBlk?.guidanceType
 
           if ((itemBlk?.rangeMax ?? 0) != 0)
             item.launchRange <- itemBlk.rangeMax
+
+          if ((itemBlk?.timeLife ?? 0) != 0)
+            item.timeLife <- itemBlk.timeLife
 
           if (itemBlk?.guidance != null)
           {
@@ -502,6 +511,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         ? ::loc($"missile/aiming/{aimingType}")
         : ::loc($"missile/guidance/{weapon.guidanceType}")
       res.append("".concat(::loc("missile/guidance"), colon, guidanceTxt))
+      if (weapon?.guidanceECCM)
+        res.append("".concat(::loc("missile/eccm"), colon, ::loc("options/yes")))
     }
     if (weapon?.allAspect != null)
       res.append("".concat(::loc("missile/aspect"), colon,
@@ -540,6 +551,18 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     if (weapon?.operatedDist)
       res.append("".concat(::loc("firingRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.operatedDist)))
+    if (weapon?.guaranteedRange)
+      res.append("".concat(::loc("guaranteedRange"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.guaranteedRange)))
+    if (weapon?.timeLife)
+    {
+      if (weapon?.guidanceType != null || weapon?.autoAiming != null)
+        res.append("".concat(::loc("missile/timeGuidance"), colon,
+          ::format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
+      else
+        res.append("".concat(::loc("missile/timeSelfdestruction"), colon,
+          ::format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
+    }
   }
   else if (weaponType == "torpedoes")
   {

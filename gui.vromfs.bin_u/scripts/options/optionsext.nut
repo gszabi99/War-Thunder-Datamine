@@ -78,7 +78,6 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
   [1280,720],
   [1920,1088],
 ]
-::reload_cooldown_time <- {}
 
 ::image_for_air <- function image_for_air(air)
 {
@@ -97,8 +96,7 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
   [
     "game_mode_maps", "dynamic_layouts",
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",
-    "crosshair_icons", "crosshair_colors", "thermovision_colors",
-    "reload_cooldown_time"
+    "crosshair_icons", "crosshair_colors", "thermovision_colors"
   ])
 
 ::check_aircraft_tags <- function(airtags, filtertags)
