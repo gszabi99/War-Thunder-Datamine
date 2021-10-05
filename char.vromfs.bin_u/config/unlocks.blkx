@@ -7628,6 +7628,67 @@
   },
   {
     "unlockable": {
+      "id": "steam_trophy_100_battles_on_rank_7",
+      "type": "trophy_steam",
+      "amount_exp": 100,
+      "amount_warpoints": 100,
+      "icon": "!ui/trophies_icons/064_steam_trophy_100_battles_on_rank_7.png",
+      "chapter": "trophy_steam",
+      "forUserstat": true,
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "num": 100
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 7,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 50
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "win32"
+            },
+            {
+              "platform": "win32_wow64"
+            },
+            {
+              "platform": "win64"
+            },
+            {
+              "platform": "linux64"
+            },
+            {
+              "platform": "macosx"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "steam_trophy_triple_strike",
       "type": "trophy_steam",
       "amount_exp": 100,
