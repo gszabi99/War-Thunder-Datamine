@@ -186,7 +186,7 @@
   {
     "DamageParts": {
       "formatVersion": 2,
-      "armorClass": "RHA_tank",
+      "armorClass": "RHA_tank_modern",
       "hp": 10000.0,
       "hull": {
         "superstructure_side_dm": {
@@ -291,10 +291,12 @@
           "armorThickness": 25.0
         },
         "composite_armor_hull_01_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 8.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 8.0,
+          "hidableInXrayViewer": true
         },
         "turret_03_back_dm": {
           "armorThickness": 15.0
@@ -360,6 +362,22 @@
         "turret_06_front_dm": {
           "armorThickness": 5.0,
           "hidableInViewer": true
+        },
+        "turret_06_side_dm": {
+          "armorThickness": 200.0,
+          "armorClass": "hull_side_special_armor",
+          "cumulativeArmorQuality": 1.05,
+          "genericArmorQuality": 0.35,
+          "explosionArmorQuality": 0.5,
+          "hidableInViewer": true
+        },
+        "turret_06_back_dm": {
+          "armorThickness": 200.0,
+          "armorClass": "hull_side_special_armor",
+          "cumulativeArmorQuality": 1.05,
+          "genericArmorQuality": 0.35,
+          "explosionArmorQuality": 0.5,
+          "hidableInViewer": true
         }
       },
       "optics": {
@@ -404,11 +422,12 @@
         "ex_decor_r_08_dm": [],
         "ex_decor_r_09_dm": [],
         "turret_side_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank_modern"
         }
       },
       "side_skirts": {
-        "armorClass": "RHA_tank",
+        "armorClass": "RHA_tank_modern",
         "armorThickness": 15.0,
         "hp": 1000.0,
         "stopChanceOnDeadPart": 0.0,
@@ -3404,7 +3423,7 @@
       "sightName": "tzf_1a",
       "openedCockpit": false,
       "headPos": [0.0,4.0,-8.5],
-      "headPosOnShooting": [0.3,3.3,0.6],
+      "headPosOnShooting": [0.3,3.4,0.6],
       "detectionHeight": 2.87
     }
   },

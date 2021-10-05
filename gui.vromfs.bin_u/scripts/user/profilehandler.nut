@@ -15,6 +15,7 @@ local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { fillProfileSummary } = require("scripts/user/userInfoStats.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -99,6 +100,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
   curAchievementGroupName = ""
   filterCountryName = null
   filterUnitTag = ""
+  initSkinId = ""
   filterGroupName = null
 
   unlockFilters = {
@@ -324,6 +326,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
+      btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
     }
 
     ::showBtnTable(scene, buttonsList)
@@ -485,11 +488,12 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
   function onSubPageChange(obj = null)
   {
     local subSwitch = getObj("unit_type_list")
-    if (::check_obj(subSwitch))
+    if (subSwitch?.isValid())
     {
       local value = subSwitch.getValue()
       local unitType = unitTypes.getByEsUnitType(value)
       curSubFilter = unitType.esUnitType
+      filterUnitTag = unitType.tag
       refreshOwnUnitControl(value)
     }
     fillUnlocksList()
@@ -622,6 +626,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     guiScene.setUpdatesEnabled(false, false)
     local data = ""
+    local curIndex = 0
     local lowerCurPage = curPage.tolower()
     local pageTypeId = ::get_unlock_type(lowerCurPage)
     local itemSelectFunc  = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
@@ -634,7 +639,12 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (pageTypeId == ::UNLOCKABLE_DECAL)
       data = getDecoratorsMarkup(decoratorType)
     else if (pageTypeId == ::UNLOCKABLE_SKIN)
-      data = getSkinsMarkup()
+    {
+      local itemsView = getSkinsView()
+      data = ::handyman.renderCached("gui/missions/missionBoxItemsList", { items = itemsView })
+      local skinId = initSkinId
+      curIndex = itemsView.findindex(@(p) p.id == skinId) ?? 0
+    }
     else
     {
       local view = { items = [] }
@@ -644,8 +654,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     local unlocksObj = scene.findObject(containerObjId)
 
-    local curIndex = 0
-    local isAchievementPage = lowerCurPage == "achievement"
+    local isAchievementPage = pageTypeId == ::UNLOCKABLE_ACHIEVEMENT
     local view = { items = [] }
     foreach (chapterName, chapterItem in unlocksTree)
     {
@@ -690,7 +699,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     updateFavoritesCheckboxesInList()
   }
 
-  function getSkinsMarkup()
+  function getSkinsView()
   {
     local itemsView = []
     local comma = ::loc("ui/comma")
@@ -704,8 +713,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
         itemIcon = decorator.isUnlocked() ? "#ui/gameuiskin#unlocked" : "#ui/gameuiskin#locked"
       })
     }
-    itemsView.sort(@(a, b) a.itemText <=> b.itemText)
-    return ::handyman.renderCached("gui/missions/missionBoxItemsList", { items = itemsView })
+    return itemsView.sort(@(a, b) a.itemText <=> b.itemText)
   }
 
   function generateItems(pageTypeId)
@@ -1291,6 +1299,36 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     }
   }
 
+  function onSkinPreview(obj)
+  {
+    local list = scene.findObject("unlocks_group_list")
+    local index = list.getValue()
+    if ((index < 0) || (index >= list.childrenCount()))
+      return
+
+    local skinId = list.getChild(index).id
+    local decorator = ::g_decorator.getDecoratorById(skinId)
+    initSkinId = skinId
+    if (decorator && canStartPreviewScene(true, true))
+      guiScene.performDelayed(this, @() decorator.doPreview())
+  }
+
+  function getHandlerRestoreData() {
+    local data = {
+     openData = {
+        initialSheet = "UnlockSkin"
+        initSkinId = initSkinId
+        filterCountryName = curFilter
+        filterUnitTag = filterUnitTag
+      }
+    }
+    return data
+  }
+
+  function onEventBeforeStartShowroom(p) {
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+  }
+
   function getCurSheet()
   {
     local obj = scene.findObject("profile_sheet_list")
@@ -1611,16 +1649,18 @@ local openProfileSheetParamsFromPromo = {
     curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
   }
   Medal = @(p1, p2) { filterCountryName = p1 }
-  UnlockSkin = @(p1, p2) {
+  UnlockSkin = @(p1, p2, p3) {
     filterCountryName = p1
     filterUnitTag = p2
+    initSkinId = p3
   }
   UnlockDecal = @(p1, p2) { filterGroupName = p1 }
 }
 
 local function openProfileFromPromo(params, sheet = null) {
   sheet = sheet ?? params?[0]
-  local launchParams = openProfileSheetParamsFromPromo?[sheet](params?[1], params?[2] ?? "") ?? {}
+  local launchParams = openProfileSheetParamsFromPromo?[sheet](
+    params?[1], params?[2] ?? "", params?[3] ?? "") ?? {}
   launchParams.__update({ initialSheet = sheet })
   ::gui_start_profile(launchParams)
 }

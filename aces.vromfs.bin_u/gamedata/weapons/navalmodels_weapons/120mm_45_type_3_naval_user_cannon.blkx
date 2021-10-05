@@ -41,7 +41,6 @@
     "caliber": 0.12,
     "speed": 850.0,
     "maxDistance": 20000.0,
-    "Cx": 1.0,
     "speedDispersion": 0.016,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -254,7 +253,6 @@
       "caliber": 0.12,
       "speed": 850.0,
       "maxDistance": 20000.0,
-      "Cx": 1.0,
       "speedDispersion": 0.016,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -468,7 +466,6 @@
       "caliber": 0.12,
       "speed": 850.0,
       "maxDistance": 20000.0,
-      "Cx": 1.0,
       "speedDispersion": 0.016,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -644,7 +641,6 @@
       "caliber": 0.12,
       "speed": 850.0,
       "maxDistance": 20000.0,
-      "Cx": 1.0,
       "speedDispersion": 0.016,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
@@ -686,6 +682,13 @@
         }
       ],
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.815,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "shatter": [
           {
             "useRealShatters": true
@@ -713,14 +716,7 @@
               "onHitChanceMultFire": 80.0
             }
           }
-        ],
-        "kinetic": {
-          "damageType": "generic",
-          "demarrePenetrationK": 0.65,
-          "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
-          "demarreCaliberPow": 1.07
-        }
+        ]
       },
       "hitpower": {
         "HitPower0m": [1.0,500.0],

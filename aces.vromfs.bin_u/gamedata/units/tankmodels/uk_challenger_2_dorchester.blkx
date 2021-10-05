@@ -145,8 +145,8 @@
         "turret_06_bottom_dm": {
           "armorThickness": 400.0,
           "armorClass": "leopard_2a5_turret_nera",
-          "cumulativeArmorQuality": 1.95,
-          "genericArmorQuality": 0.97,
+          "cumulativeArmorQuality": 2.05,
+          "genericArmorQuality": 1.01,
           "hidableInXrayViewer": true,
           "createSecondaryShatters": false
         },
@@ -173,8 +173,8 @@
         "composite_armor_turret_01_dm": {
           "armorThickness": 400.0,
           "armorClass": "leopard_2a5_turret_nera",
-          "cumulativeArmorQuality": 1.226,
-          "genericArmorQuality": 0.69,
+          "cumulativeArmorQuality": 1.25,
+          "genericArmorQuality": 0.695,
           "hidableInXrayViewer": true,
           "createSecondaryShatters": false
         },
@@ -4167,12 +4167,29 @@
                 "turret": {
                   "head": "bone_mg_aa_h_02",
                   "gun": "bone_mg_aa_v_02",
-                  "gunnerDm": "commander_dm"
+                  "gunnerDm": "loader_dm"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-10.0,50.0]
-                }
+                },
+                "limitsTable": [
+                  {
+                    "lim1": [-180.0,-160.0,-7.0,25.0]
+                  },
+                  {
+                    "lim3": [-160.0,110.0,-10.0,25.0]
+                  },
+                  {
+                    "lim3": [110.0,125.0,3.0,25.0]
+                  },
+                  {
+                    "lim4": [125.0,150.0,-2.0,25.0]
+                  },
+                  {
+                    "lim5": [150.0,180.0,-7.0,25.0]
+                  }
+                ]
               }
             },
             {

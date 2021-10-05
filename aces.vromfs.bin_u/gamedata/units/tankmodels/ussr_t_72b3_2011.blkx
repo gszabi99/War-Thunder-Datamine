@@ -1513,12 +1513,26 @@
       {
         "armorArrayTurret": {
           "xrayDmPart": "composite_armor_turret_01_dm",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_turret_01_dm",
-              "xrayTextThickness": [340.0,320.0]
+          "armorArrayText": [
+            {
+              "layer": {
+                "dmPart": "turret_02_side_dm",
+                "xrayTextThickness": [95.0,120.0]
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "composite_armor_turret_01_dm",
+                "xrayTextThickness": [320.0,340.0]
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_02_side_dm",
+                "xrayTextThickness": [170.0,200.0]
+              }
             }
-          }
+          ]
         }
       },
       {
@@ -1528,7 +1542,7 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "composite_armor_turret_02_dm",
-              "xrayTextThickness": [240.0,180.0]
+              "xrayTextThickness": [180.0,240.0]
             }
           }
         }
