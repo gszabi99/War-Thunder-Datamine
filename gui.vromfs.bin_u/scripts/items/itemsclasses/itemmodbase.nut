@@ -47,6 +47,10 @@ local ModificationBase = class extends ::BaseItem
     if (intro)
       textParts.extend(intro)
 
+    local expireText = getCurExpireTimeText()
+    if (expireText != "")
+      textParts.append(expireText)
+
     if (modsList)
     {
       local locMods = u.map(modsList,

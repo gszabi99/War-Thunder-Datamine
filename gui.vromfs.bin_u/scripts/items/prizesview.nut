@@ -1038,7 +1038,7 @@ PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize
 
 PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params = null)
 {
-  local id = prize?.resource
+  local id = prize?.resource ?? ""
   local decoratorType = ::g_decorator_type.getTypeByResourceType(prize?.resourceType)
   local isHave = decoratorType.isPlayerHaveDecorator(id)
   local isReceivedPrizes = params?.receivedPrizes ?? false

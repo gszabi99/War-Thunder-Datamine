@@ -1,5 +1,6 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 ::TrophyMultiAward <- class
 {
@@ -204,7 +205,7 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
   function _addCondUnitClass(awardBlk, condList)
   {
-    local classes = awardBlk % "unitClass"
+    local classes = processUnitTypeArray(awardBlk % "unitClass")
     if (!classes.len())
       return
 

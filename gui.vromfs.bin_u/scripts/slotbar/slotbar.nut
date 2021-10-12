@@ -1201,7 +1201,7 @@ if need - put commented in array above
   if (::is_need_first_country_choice())
     return curUnlocked
 
-  local unlockAll = isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT) || ::disable_network() || ::has_feature("UnlockAllCountries")
+  local unlockAll = ::disable_network() || ::has_feature("UnlockAllCountries") || isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT)
   local wasInList = ::unlocked_countries.len()
   foreach(i, country in shopCountriesList)
     if (::is_country_available(country))

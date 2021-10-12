@@ -775,7 +775,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!itemsListValid)
       return
 
-    local selItemIdx = null
     local listObj = getItemsListObj()
     local startIdx = curPage * itemsPerPage
     local lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
@@ -787,7 +786,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       local itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
       if (::check_obj(itemObj))
       {
-        selItemIdx = listObj.getValue()
         local timeTxtObj = itemObj.findObject("expire_time")
         if (::check_obj(timeTxtObj))
           timeTxtObj.setValue(itemsList[i].getTimeLeftText())
@@ -797,8 +795,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    if ((selItemIdx ?? -1) >= 0)
-      fillDescTextAboutDiv(itemsList[selItemIdx], infoHandler.scene)
+    local selItem = getCurItem()
+    if (selItem?.hasTimer())
+      fillDescTextAboutDiv(selItem, infoHandler.scene)
 
   }
 

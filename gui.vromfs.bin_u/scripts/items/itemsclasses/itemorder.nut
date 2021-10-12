@@ -186,37 +186,42 @@ class ::items_classes.Order extends ::BaseItem
   /** Description for tooltip. */
   function getDescription()
   {
-    local description = ""
+    local textParts = []
     if (!::g_orders.checkCurrentMission(this))
     {
       local warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
-      description += ::colorize("redMenuButtonColor", warningText) + "\n\n"
+      textParts.append($"{::colorize("redMenuButtonColor", warningText)}\n")
     }
-    description += getLongDescription()
-    return description
+    textParts.append(getLongDescription())
+    return "\n".join(textParts)
   }
 
   /** Description for shop. */
   function getLongDescription()
   {
-    local description = ""
+    local textParts = []
 
     local orderTypeDescription = orderType.getTypeDescription(colorScheme)
     if (orderTypeDescription.len() > 0)
-      description += orderTypeDescription + "\n"
+      textParts.append(orderTypeDescription)
 
     local typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
     if (typeParamsDescription.len() > 0)
-      description += typeParamsDescription + "\n"
+      textParts.append(typeParamsDescription)
 
     if (timeTotal > 0)
-    {
-      description += ::loc("items/order/timeTotal") + ::loc("ui/colon")
-        + ::colorize("activeTextColor", time.secondsToString(timeTotal, true, true)) + "\n\n"
-    }
+      textParts.append("".concat(::loc("items/order/timeTotal"), ::loc("ui/colon"),
+        ::colorize("activeTextColor", time.secondsToString(timeTotal, true, true))))
+
+    local expireText = getCurExpireTimeText()
+    if (expireText != "")
+      textParts.append(expireText)
+
+    if (textParts.len())
+      textParts.append("")
 
     local awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
-    description += ::loc("items/order/awardMode/" + awardMode.name + "/header", awardModeLocParams) + "\n"
+    textParts.append(::loc($"items/order/awardMode/{awardMode.name}/header", awardModeLocParams))
     foreach (difficulty in ::g_difficulty.types)
     {
       if (::isInArray(difficulty, disabledDifficulties)
@@ -224,22 +229,22 @@ class ::items_classes.Order extends ::BaseItem
         continue
       local awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
       if (awardText.len() > 0)
-        description += ::loc("options/" + difficulty.name) + ::loc("ui/colon") + awardText + "\n"
+        textParts.append("".concat(::loc($"options/{difficulty.name}"), ::loc("ui/colon"), awardText))
     }
     local awardModeDescriptionFooter = ::loc("items/order/awardMode/"
       + awardMode.name + "/footer", "", awardModeLocParams)
     if (awardModeDescriptionFooter.len() > 0)
-      description += awardModeDescriptionFooter + "\n"
+      textParts.append(awardModeDescriptionFooter)
 
-    description += "\n"
+    textParts.append("")
 
     if (delayFromStart > 0)
-      description += ::loc("items/order/delayFromStart") + ::loc("ui/colon")
-      + ::colorize("activeTextColor", time.secondsToString(delayFromStart, true, true)) + "\n"
-    description += ::colorize("grayOptionColor", ::loc("items/order/onlyIssuerTeam/"
-      + onlyIssuerTeam.tostring())) + "\n"
-    description += ::colorize("grayOptionColor", ::loc("items/order/awardOnCancel/"
-      + awardOnCancel.tostring())) + "\n"
+      textParts.append("".concat(::loc("items/order/delayFromStart"), ::loc("ui/colon"),
+        ::colorize("activeTextColor", time.secondsToString(delayFromStart, true, true))))
+    textParts.append(::colorize("grayOptionColor",
+      ::loc($"items/order/onlyIssuerTeam/{onlyIssuerTeam.tostring()}")))
+    textParts.append(::colorize("grayOptionColor",
+      ::loc($"items/order/awardOnCancel/{awardOnCancel.tostring()}")))
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
@@ -247,10 +252,11 @@ class ::items_classes.Order extends ::BaseItem
       return ::loc("options/" + diff.name)
     })
     disabledItems.append(::loc("mainmenu/events"))
-    description += ::colorize("grayOptionColor", ::loc("items/order/disabledDifficulties")
-      + ::loc("ui/colon") + ::g_string.implode(disabledItems, ", "))
+    textParts.append(::colorize("grayOptionColor",
+      "".concat(::loc("items/order/disabledDifficulties"),
+        ::loc("ui/colon"),  ::loc("ui/comma").join(disabledItems))))
 
-    return description
+    return "\n".join(textParts)
   }
 
   //

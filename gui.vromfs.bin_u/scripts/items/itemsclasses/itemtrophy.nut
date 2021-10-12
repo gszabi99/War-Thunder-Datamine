@@ -30,6 +30,7 @@ class ::items_classes.Trophy extends ::BaseItem
   numTotal = -1
   showDropChance = false
   showTillValue = false
+  showNameAsSingleAward = false
 
   constructor(blk, invBlk = null, slotData = null)
   {
@@ -46,6 +47,7 @@ class ::items_classes.Trophy extends ::BaseItem
     openingCaptionLocId = blk?.captionLocId
     showDropChance = blk?.showDropChance ?? false
     showTillValue = blk?.showTillValue ?? false
+    showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
 
     local blksArray = [blk]
     if (::u.isDataBlock(blk?.prizes))
@@ -212,6 +214,15 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function getName(colored = true)
   {
+    local content = getContent()
+    if (showNameAsSingleAward && content.len() == 1) {
+      local awardCount = content[0]?.count ?? 1
+      local awardType = ::PrizesView.getPrizeTypeName(content[0], false)
+      return (awardCount > 1)
+        ? ::loc("multiAward/name/count/singleType", { awardType, awardCount })
+        : ::loc(awardType)
+    }
+
     local name = ::loc(locId || ("item/" + id), "")
     local hasCustomName = name != ""
     if (!hasCustomName)
@@ -222,7 +233,7 @@ class ::items_classes.Trophy extends ::BaseItem
     {
       local prizeTypeName = ""
       if (showRangePrize)
-        prizeTypeName = ::PrizesView.getPrizesListText(getContent())
+        prizeTypeName = ::PrizesView.getPrizesListText(content)
       else
         prizeTypeName = ::PrizesView.getPrizeTypeName(getTopPrize(), colored)
 

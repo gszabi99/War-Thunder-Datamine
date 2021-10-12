@@ -848,6 +848,7 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
     return ::loc(typeLocIDWithoutValue)
 
   local bitMode = isBitModeType(modeType)
+  local haveModeTypeLocID = "modeTypeLocID" in condition
 
   if (maxValue == null)
     maxValue = ::getTblValue("rewardNum", condition) || ::getTblValue("num", condition)
@@ -861,8 +862,9 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
   if (bitMode && ::is_numeric(maxValue))
     maxValue = stdMath.number_of_set_bits(maxValue)
 
-  if (isCheckedBySingleAttachment(modeType) && condition.values && condition.values.len() == 1)
-    return _getSingleAttachmentConditionText(condition, curValue, maxValue)
+  if (isCheckedBySingleAttachment(modeType) && !haveModeTypeLocID
+    && condition.values && condition.values.len() == 1)
+      return _getSingleAttachmentConditionText(condition, curValue, maxValue)
 
   local textId = "conditions/" + modeType
   local textParams = {}
@@ -896,7 +898,7 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
   if(params?.isProgressTextOnly)
     return progressText
 
-  if ("modeTypeLocID" in condition)
+  if (haveModeTypeLocID)
     textId = condition.modeTypeLocID
   else if (modeType == "rank" || modeType == "char_country_rank")
   {

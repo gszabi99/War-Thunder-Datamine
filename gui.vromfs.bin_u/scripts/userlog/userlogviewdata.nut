@@ -16,27 +16,27 @@ local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t=
 local descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
 local clanActionNames = {
-  [ULC_CREATE]                  = "create",
-  [ULC_DISBAND]                 = "disband",
+  [::ULC_CREATE]                  = "create",
+  [::ULC_DISBAND]                 = "disband",
 
-  [ULC_REQUEST_MEMBERSHIP]      = "request_membership",
-  [ULC_CANCEL_MEMBERSHIP]       = "cancel_membership",
-  [ULC_REJECT_MEMBERSHIP]       = "reject_candidate",
-  [ULC_ACCEPT_MEMBERSHIP]       = "accept_candidate",
+  [::ULC_REQUEST_MEMBERSHIP]      = "request_membership",
+  [::ULC_CANCEL_MEMBERSHIP]       = "cancel_membership",
+  [::ULC_REJECT_MEMBERSHIP]       = "reject_candidate",
+  [::ULC_ACCEPT_MEMBERSHIP]       = "accept_candidate",
 
-  [ULC_DISMISS]                 = "dismiss_member",
-  [ULC_CHANGE_ROLE]             = "change_role",
-  [ULC_CHANGE_ROLE_AUTO]        = "change_role_auto",
-  [ULC_LEAVE]                   = "leave",
-  [ULC_DISBANDED_BY_LEADER]     = "disbanded_by_leader",
+  [::ULC_DISMISS]                 = "dismiss_member",
+  [::ULC_CHANGE_ROLE]             = "change_role",
+  [::ULC_CHANGE_ROLE_AUTO]        = "change_role_auto",
+  [::ULC_LEAVE]                   = "leave",
+  [::ULC_DISBANDED_BY_LEADER]     = "disbanded_by_leader",
 
-  [ULC_ADD_TO_BLACKLIST]        = "add_to_blacklist",
-  [ULC_DEL_FROM_BLACKLIST]      = "remove_from_blacklist",
-  [ULC_CHANGE_CLAN_INFO]        = "clan_info_was_changed",
-  [ULC_CLAN_INFO_WAS_CHANGED]   = "clan_info_was_renamed",
-  [ULC_DISBANDED_BY_ADMIN]      = "clan_disbanded_by_admin",
-  [ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
-  [ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
+  [::ULC_ADD_TO_BLACKLIST]        = "add_to_blacklist",
+  [::ULC_DEL_FROM_BLACKLIST]      = "remove_from_blacklist",
+  [::ULC_CHANGE_CLAN_INFO]        = "clan_info_was_changed",
+  [::ULC_CLAN_INFO_WAS_CHANGED]   = "clan_info_was_renamed",
+  [::ULC_DISBANDED_BY_ADMIN]      = "clan_disbanded_by_admin",
+  [::ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
+  [::ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
 }
 local getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
 
@@ -1273,7 +1273,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   {
     local itemId = ::getTblValue("id", log, "")
     local item = ::ItemsManager.findItemById(itemId)
-    local reason = ::getTblValue("reason", log, "unknown")
+    local reason = log?.reason ?? "unknown"
     local nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
     local locId = $"userlog/{nameId}/{reason}"
     if (reason == "replaced")
@@ -1293,8 +1293,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
                    })
       res.descriptionBlk <- ::get_userlog_image_item(item)
     }
-    local itemTypeValue = ::getTblValue("itemType", log, "")
-    if (itemTypeValue == "universalSpare")
+    local itemTypeValue = log?.itemType ?? ""
+    if (itemTypeValue == "universalSpare" && reason == "unknown")
     {
       locId = "userlog/" + logName
       local unit =  ::getTblValue("unit", log)

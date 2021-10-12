@@ -444,6 +444,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
     isAvailable = @(unit, checkUnitUsable = true) !!unit && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(function isPlayerHaveDecorator(decoratorName)
     {
+      if (decoratorName == "")
+        return false
       if (::g_unlocks.isDefaultSkin(decoratorName))
         return true
 
