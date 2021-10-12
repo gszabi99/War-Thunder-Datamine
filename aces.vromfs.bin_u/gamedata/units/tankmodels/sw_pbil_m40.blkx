@@ -223,7 +223,7 @@
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
-        "hp": 1000.0,
+        "hp": 500.0,
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
@@ -1658,10 +1658,10 @@
           "substitute": "machine_gunner_02"
         },
         {
-          "substitute": "machine_gunner_01"
+          "substitute": "commander"
         },
         {
-          "substitute": "commander"
+          "substitute": "machine_gunner_01"
         }
       ],
       "driver": [
@@ -1678,10 +1678,10 @@
           "substitute": "machine_gunner_02"
         },
         {
-          "substitute": "machine_gunner_01"
+          "substitute": "commander"
         },
         {
-          "substitute": "commander"
+          "substitute": "machine_gunner_01"
         }
       ],
       "commander": [
@@ -1699,9 +1699,6 @@
         },
         {
           "substitute": "machine_gunner_02"
-        },
-        {
-          "substitute": "machine_gunner_01"
         }
       ],
       "machine_gunner": {
@@ -1711,6 +1708,9 @@
       "machine_gunner_01": [
         {
           "dmPart": "machine_gunner_01_dm"
+        },
+        {
+          "role": "radio_gunner"
         },
         {
           "role": "driver"
@@ -2515,6 +2515,8 @@
         "steeringDeflection": {
           "wheel_l_01": 30.0,
           "wheel_r_01": 30.0,
+          "wheel_l_02": -15.0,
+          "wheel_r_02": -15.0,
           "steeringTau": 1000000.0,
           "steeringSpd": 1.0,
           "steeringNeutralSpd": 3.0

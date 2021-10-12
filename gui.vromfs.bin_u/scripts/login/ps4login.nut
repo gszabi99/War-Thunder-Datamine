@@ -52,23 +52,24 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
     scene.findObject("user_notify_text").setValue(text)
   }
 
+  function abortLogin(isUpdateAvailable)
+  {
+    isLoggingIn = false
+    isAutologin = false
+    updateButtons(isUpdateAvailable)
+  }
+
   function onPackageUpdateCheckResult(isUpdateAvailable) {
     isPendingPackageCheck = false
 
-    if (isUpdateAvailable) {
-      isAutologin = false
-      updateButtons(isUpdateAvailable)
-      msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
-      return
-    }
-
-    if ((::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
+    local loginStatus = 0
+    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
     {
       statsd.send_counter("sq.game_start.request_login", 1, {login_type = "ps4"})
       ::dagor.debug("PS4 Login: ps4_login")
       isLoggingIn = true
-      local ret = ::ps4_login();
-      if (ret >= 0)
+      loginStatus = ::ps4_login();
+      if (loginStatus >= 0)
       {
         local cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
@@ -77,16 +78,15 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
             configPath = $"/app0/{targetPlatform}/{cfgName}"
             onFinishCallback = ::ps4_load_after_login
           })
-      }
-      else
-      {
-        isLoggingIn = false
-        isAutologin = false
-        updateButtons(isUpdateAvailable)
-        if (ret == -1)
-          msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
+        return
       }
     }
+
+    abortLogin(isUpdateAvailable)
+    if (isUpdateAvailable)
+      msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
+    else if (loginStatus == -1)
+      msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
   }
 
 
