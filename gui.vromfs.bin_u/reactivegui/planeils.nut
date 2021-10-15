@@ -3,7 +3,7 @@ local {IlsVisible, IlsPosSize, IlsColor, Speed, Altitude, ClimbSpeed, Tangage, M
         AimLocked, DistToSafety, Aos, Aoa, DistToTarget, CannonMode, RocketMode, BombCCIPMode,
         BlkFileName, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked, RadarTargetDist,
         RadarTargetPosValid, RadarTargetPos, AamAccelLock, BarAltitude, Overload,
-        IlsLineScale} = require("planeState.nut")
+        IlsLineScale, ShellCnt} = require("planeState.nut")
 local {IlsTrackerVisible, TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("rocketAamAimState.nut")
 local {floor, cos, sin, PI} = require("std/math.nut")
 local {cvt} = require("dagor.math")
@@ -1824,6 +1824,44 @@ local generateCompassMarkEP = function(num) {
   }
 }
 
+local generateCompassMarkEP08 = function(num) {
+  return {
+    size = [pw(20), ph(100)]
+    flow = FLOW_VERTICAL
+    children = [
+      (num % 10 == 0 ? @() {
+        watch = IlsColor
+        rendObj = ROBJ_DTEXT
+        color = IlsColor.value
+        hplace = ALIGN_CENTER
+        fontSize = 50
+        font = Fonts.hud
+        text = num % 10 == 0 ? (num / 10).tostring() : ""
+      } : null),
+      (num % 10 != 0 ? @() {
+        watch = IlsColor
+        size = [baseLineWidth * IlsLineScale.value, baseLineWidth * 5]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        hplace = ALIGN_CENTER
+      } : null)
+    ]
+  }
+}
+
+local EPAltCCIPWatched = Computed(@() string.format(Altitude.value < 1000 ? "%d" : "%.1f", Altitude.value < 1000 ? Altitude.value : Altitude.value / 1000))
+local EPAltCCIP = @() {
+  watch = [EPAltCCIPWatched, IlsColor]
+  rendObj = ROBJ_DTEXT
+  pos = [pw(-150), ph(-20)]
+  size = flex()
+  color = IlsColor.value
+  fontSize = 50
+  text = EPAltCCIPWatched.value
+  vplace = ALIGN_CENTER
+}
+
 local function generatePitchLineEP(num, isEP12, textPad) {
   local newNum = num - 5
   return {
@@ -1838,10 +1876,12 @@ local function generatePitchLineEP(num, isEP12, textPad) {
         color = IlsColor.value
         padding = [0, textPad]
         commands = [
-          [VECTOR_LINE, 0, 0, 34, 0],
+          [VECTOR_LINE, 0, 0, !isEP12 && num == 0 ? 45 : 34, 0],
           (isEP12 && num != 0 ? [VECTOR_LINE, 66, 0, 100, 0] : [VECTOR_LINE, 66, 0, 74, 0]),
           (isEP12 && num == 0 ? [VECTOR_LINE, 90, 0, 100 , 0] : []),
+          (!isEP12 ? [VECTOR_LINE, num == 0 ? 55 : 66, 0, 100, 0] : []),
           [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.value],
+          (!isEP12 && num == 0 ? [VECTOR_LINE, 50, 0, 50, 0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 37, 0, 37 , 0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 42, 0, 42, 0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 47, 0, 47, 0] : []),
@@ -1851,8 +1891,8 @@ local function generatePitchLineEP(num, isEP12, textPad) {
         ]
         children =
         [
-          angleTxtEP(newNum, true, Fonts.hud),
-          !isEP12 ? angleTxtEP(newNum, false, Fonts.hud) : null
+          isEP12 || newNum != 0 ? angleTxtEP(newNum, true, Fonts.hud) : null,
+          !isEP12 && newNum != 0 ? angleTxtEP(newNum, false, Fonts.hud) : null
         ]
       }
     ] :
@@ -1865,12 +1905,12 @@ local function generatePitchLineEP(num, isEP12, textPad) {
         color = IlsColor.value
         padding = [10, textPad]
         commands = [
-          [VECTOR_LINE, 0, 0, 7, 0],
-          [VECTOR_LINE, 15, 0, 21, 0],
-          [VECTOR_LINE, 28, 0, 34, 0],
-          [VECTOR_LINE, 100, 0, 93, 0],
-          [VECTOR_LINE, 85, 0, 79, 0],
-          [VECTOR_LINE, 72, 0, 66, 0]
+          (isEP12 ? [VECTOR_LINE, 0, 0, 7, 0] : [VECTOR_LINE, 0, 0, 34, 0]),
+          (isEP12 ? [VECTOR_LINE, 15, 0, 21, 0] : []),
+          (isEP12 ? [VECTOR_LINE, 28, 0, 34, 0] : []),
+          (isEP12 ? [VECTOR_LINE, 100, 0, 93, 0] : [VECTOR_LINE, 100, 0, 66, 0]),
+          (isEP12 ? [VECTOR_LINE, 85, 0, 79, 0] : []),
+          (isEP12 ? [VECTOR_LINE, 72, 0, 66, 0] : [])
         ]
         children = newNum >= -90 ?
         [
@@ -1882,14 +1922,14 @@ local function generatePitchLineEP(num, isEP12, textPad) {
   }
 }
 
-local function pitchEP(width, height) {
+local function pitchEP(width, height, isEP12) {
   const step = 5.0
   local children = []
 
   for (local i = 90.0 / step; i >= -90.0 / step; --i) {
     local num = (i * step).tointeger()
 
-    children.append(generatePitchLineEP(num, true, width * 0.17))
+    children.append(generatePitchLineEP(num, isEP12, width * 0.17))
   }
 
   return {
@@ -2005,14 +2045,27 @@ local function EPAltitudeWrap(width, height, generateFunc) {
   }
 }
 
-local function navigationInfo(width, height) {
+local function EP08Alt(width, height) {
+  return {
+    size = [pw(15), ph(10)]
+    children = [EPAltCCIP]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [width * 0.5, (Tangage.value * 0.07 + 0.47) * height]
+      }
+    }
+  }
+}
+
+local function navigationInfo(width, height, isEP08) {
   return @() {
     size = flex()
     children = [
-      pitchEP(width, height * 0.7),
-      EP12Speed,
-      compassWrap(width, height, 0.3, generateCompassMarkEP, 0.4),
-      EPAltitudeWrap(width, height, generateAltMarkEP)
+      pitchEP(width, height * 0.7, !isEP08),
+      !isEP08 ? EP12Speed : EP08Alt(width, height),
+      !isEP08 ? compassWrap(width, height, 0.3, generateCompassMarkEP, 0.4) : compassWrap(width, height, 0.85, generateCompassMarkEP08, 1.4),
+      !isEP08 ? EPAltitudeWrap(width, height, generateAltMarkEP) : null
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
@@ -2023,21 +2076,10 @@ local function navigationInfo(width, height) {
   }
 }
 
-local EPAltCCIPWatched = Computed(@() string.format(Altitude.value < 1000 ? "%d" : "%.1f", Altitude.value < 1000 ? Altitude.value : Altitude.value / 1000))
-local EPAltCCIP = @() {
-  watch = [EPAltCCIPWatched, IlsColor]
-  rendObj = ROBJ_DTEXT
-  pos = [pw(-150), ph(-20)]
-  size = flex()
-  color = IlsColor.value
-  fontSize = 50
-  text = EPAltCCIPWatched.value
-  vplace = ALIGN_CENTER
-}
-
+local haveShell = Computed(@() ShellCnt.value > 0)
 local function EPAimMark(width, height) {
   return @() {
-    watch = [TargetPosValid, CCIPMode, BombingMode]
+    watch = [TargetPosValid, CCIPMode, BombingMode, haveShell]
     size = flex()
     children = CCIPMode.value || BombingMode.value ?
       @() {
@@ -2051,6 +2093,8 @@ local function EPAimMark(width, height) {
           [VECTOR_ELLIPSE, 0, 0, 3, 6],
           [VECTOR_LINE, -100, -100, -100, 100],
           [VECTOR_LINE, 100, -100, 100, 100],
+          [VECTOR_FILL_COLOR, Color(0,0,0,0)],
+          (haveShell.value ? [VECTOR_ELLIPSE, 60, -80, 10, 20] : []),
           (TargetPosValid.value ? [VECTOR_LINE, -50, 90, 50, 90] : []),
           (TargetPosValid.value ? [VECTOR_LINE, -30, 90, -30, 70] : []),
           (TargetPosValid.value ? [VECTOR_LINE, 0, 90, 0, 70] : []),
@@ -2138,7 +2182,7 @@ local function swedishEPIls(width, height) {
     size = [width, height]
     children = [
       (!CCIPMode.value && !BombingMode.value && !IlsTrackerVisible.value ? flyDirection(width, height, true) : null),
-      (!CCIPMode.value && !BombingMode.value ? navigationInfo(width, height) : null),
+      (!CCIPMode.value && !BombingMode.value ? navigationInfo(width, height, ilsSetting.value.isEP08) : null),
       EPAimMark(width, height),
       EP08AAMMarker,
       (ilsSetting.value.isEP08 ? EPCCRPTargetMark(width, height) : null)

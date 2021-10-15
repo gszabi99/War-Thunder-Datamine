@@ -2225,6 +2225,14 @@
         },
         {
           "reqModification": "mig_19_r3s"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+              "iconType": "bombs_small"
+            }
+          }
         }
       ]
     },
@@ -2243,12 +2251,20 @@
           "reqModification": "mig_19_r13m"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-              "iconType": "missile_type_c_air_to_air"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
+                "iconType": "missile_type_c_air_to_air"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+                "iconType": "bombs_small"
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -2267,12 +2283,20 @@
           "reqModification": "mi_24_r_60m"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
-              "iconType": "missile_type_b_air_to_air"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+                "iconType": "missile_type_b_air_to_air"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+                "iconType": "bombs_small"
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -2289,6 +2313,14 @@
         },
         {
           "reqModification": "mig_23_r_23"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+              "iconType": "bombs_small"
+            }
+          }
         }
       ]
     },
@@ -2305,6 +2337,14 @@
         },
         {
           "reqModification": "mig_23_r_23"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+              "iconType": "bombs_small"
+            }
+          }
         }
       ]
     },
@@ -3028,8 +3068,8 @@
     }
   ],
   "parachutes": {
-    "emitterRange": [0.0,1.0],
-    "emitterName": "emtr_chute%d",
+    "emitterRange": [1.0,1.0],
+    "emitterName": "emtr_chute",
     "chuteModel": "chute_mig_19_char",
     "chuteAnimVarName": "chute_state_switch",
     "chuteFlapVarName": "fire_chute",

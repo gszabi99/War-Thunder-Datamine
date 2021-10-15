@@ -5,9 +5,10 @@ local {colors, gridHeight, gridMargin} = require("style.nut")
 local {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj} = require("attrUtil.nut")
 local entity_editor = require("entity_editor")
 
-local getCompVal = @(eid, obj, path, comp_name) path!=null ? getValFromObj(obj, path) : obsolete_dbg_get_comp_val(eid, comp_name)
+local getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : obsolete_dbg_get_comp_val(eid, comp_name)
+
 local function fieldEditText_(params={}) {
-  local {eid, obj, comp_name, compVal, setVal, path} = params
+  local {eid, comp_name, compVal, setVal, path, rawComponentName=null} = params
 
   local curText = Watched(compValToString(compVal))
   local group = ElemGroup()
@@ -30,7 +31,7 @@ local function fieldEditText_(params={}) {
     local isValid = isValueTextValid(compType, curText.value)
 
     local function updateTextFromEcs() {
-      local val = getCompVal(eid, obj, path, comp_name)
+      local val = getCompVal(eid, rawComponentName, path)
       local compTextVal = compValToString(val)
       curText.update(compTextVal)
     }
@@ -106,10 +107,10 @@ local function fieldEditText_(params={}) {
 }
 
 local function fieldEditText(params={}){
-  local {eid, obj, comp_name, path=null, onChange=null} = params
+  local {eid, comp_name, rawComponentName, path=null, onChange=null} = params
   local function setVal(val) {
     if (path != null) {
-      setValToObj(obj, path, val)
+      setValToObj(eid, rawComponentName, path, val)
       onChange?()
       return true
     }
@@ -129,7 +130,7 @@ local function fieldEditText(params={}){
   }
 
   params = params.__merge({
-    compVal = getCompVal(eid, obj, path, comp_name)
+    compVal = getCompVal(eid, rawComponentName, path)
     setVal = setVal
   })
   return fieldEditText_(params)

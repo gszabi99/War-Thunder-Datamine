@@ -25,12 +25,12 @@ local function subscribe(service, pushContextId, dataType, extdDataKey, notify) 
   if (activeSubscriptions.value?[pushContextId] == null)
     subscribeWithContext(service, pushContextId, dataType, extdDataKey)
 
-  activeSubscriptions.update(@(v) v[pushContextId] <- notify)
+  activeSubscriptions.mutate(@(v) v[pushContextId] <- notify)
 }
 
 local function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
-  activeSubscriptions.update(@(v) delete v[pushContextId])
+  activeSubscriptions.mutate(@(v) delete v[pushContextId])
 }
 
 

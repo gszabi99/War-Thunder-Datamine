@@ -113,7 +113,12 @@ local function isWeaponEnabled(unit, weapon)
              || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
 }
 
-local function isWeaponVisible(unit, weapon, onlyBought = true, weaponTags = null)
+local function getWeaponDisabledMods(unit, weapon)
+{
+  return weapon?.reqModification.filter(@(n) !::shop_is_modification_enabled(unit.name, n)) ?? []
+}
+
+local function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
 {
   if (isWeaponAux(weapon))
     return false
@@ -131,8 +136,10 @@ local function isWeaponVisible(unit, weapon, onlyBought = true, weaponTags = nul
       return false
   }
 
-  if (onlyBought &&  !::shop_is_weapon_purchased(unit.name, weapon.name)
-      && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
+  if (onlySelectable
+      && ((!::shop_is_weapon_purchased(unit.name, weapon.name)
+        && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
+        || getWeaponDisabledMods(unit, weapon).len() > 0))
     return false
 
   return true
@@ -156,6 +163,32 @@ local function getLastWeapon(unitName)
       return weapon.name
     }
   return res
+}
+
+local getWeaponByName = @(unit, weaponName) unit?.weapons.findvalue(@(w) w.name == weaponName)
+
+local function validateLastWeapon(unitName)
+{
+  local weaponName = ::get_last_weapon(unitName)
+  if (weaponName == "")
+    return ""
+
+  local unit = ::getAircraftByName(unitName)
+  if (!unit)
+    return ""
+
+  local curWeapon = getWeaponByName(unit, weaponName)
+  if (isWeaponVisible(unit, curWeapon) && isWeaponEnabled(unit, curWeapon))
+    return weaponName
+
+  foreach (weapon in unit.weapons)
+    if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon))
+    {
+      ::set_last_weapon(unitName, weapon.name)
+      return weapon.name
+    }
+
+  return ""
 }
 
 local function setLastWeapon(unitName, weaponName)
@@ -786,16 +819,6 @@ local function isWeaponUnlocked(unit, weapon)
   return true
 }
 
-local function getWeaponByName(unit, weaponName)
-{
-  if (!("weapons" in unit))
-    return null
-
-  return ::u.search(unit.weapons, (@(weaponName) function(weapon) {
-      return weapon.name == weaponName
-    })(weaponName))
-}
-
 local function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true)
 {
   if (!unit)
@@ -897,6 +920,7 @@ return {
   CONSUMABLE_TYPES
   WEAPON_TEXT_PARAMS
   getLastWeapon
+  validateLastWeapon
   setLastWeapon
   getSecondaryWeaponsList
   getPresetsList
@@ -922,4 +946,5 @@ return {
   checkBadWeapons
   getOverrideBullets
   needSecondaryWeaponsWnd
+  getWeaponDisabledMods
 }

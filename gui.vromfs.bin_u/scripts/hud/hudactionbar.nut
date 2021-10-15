@@ -3,6 +3,11 @@ local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName
 } = require("scripts/hud/hudActionBarInfo.nut")
+local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems, getWheelBarItems, activateActionBarAction,
+  getActionBarUnitName } = ::require_native("hudActionBar")
+local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
+} = ::require_native("hudActionBarConst")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -79,7 +84,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function getActionBarUnit()
   {
-    return ::getAircraftByName(::get_action_bar_unit_name())
+    return ::getAircraftByName(getActionBarUnitName())
   }
 
   function fill()
@@ -88,7 +93,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return
 
     curActionBarUnit = getActionBarUnit()
-    actionItems = getActionBarItems()
+    actionItems = getActionBar()
 
     local view = {
       items = ::u.map(actionItems, (@(a) buildItemView(a, true)).bindenv(this))
@@ -164,12 +169,12 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
       viewItem.tooltipDelayed <- !canControl
     }
-    else if (item.type == ::EII_ARTILLERY_TARGET)
+    else if (item.type == EII_ARTILLERY_TARGET)
     {
       viewItem.activatedShortcutId <- "ID_SHOOT_ARTILLERY"
     }
 
-    if (!modifName && item.type != ::EII_BULLET && item.type != ::EII_FORCED_GUN)
+    if (!modifName && item.type != EII_BULLET && item.type != EII_FORCED_GUN)
     {
       local killStreakTag = ::getTblValue("killStreakTag", item)
       local killStreakUnitTag = ::getTblValue("killStreakUnitTag", item)
@@ -205,7 +210,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     local prevKillStreaksActions = killStreaksActions
 
     local prevActionItems = actionItems
-    actionItems = getActionBarItems()
+    actionItems = getActionBar()
 
     if (useWheelmenu)
       updateKillStreakWheel(prevKillStreaksActions)
@@ -216,9 +221,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       foreach (id, item in actionItems)
         if (item.id != prevActionItems[id].id
           || (item?.isStreakEx && item.count < 0 && prevActionItems[id].count >= 0)
-          || ((item.type == ::EII_BULLET || item.type == ::EII_FORCED_GUN)
+          || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
             && item?.modificationName != prevActionItems[id]?.modificationName)
-          || ((item.type == ::EII_ROCKET)
+          || ((item.type == EII_ROCKET)
             && item?.bulletName != prevActionItems[id]?.bulletName))
         {
           fullUpdate = true
@@ -248,7 +253,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       if (::check_obj(automaticObj))
         automaticObj.show(ship && item?.automatic)
 
-      if (item.type != ::EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
+      if (item.type != EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
         blink(itemObj)
 
       handleIncrementCount(item, prevActionItems, itemObj)
@@ -277,9 +282,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
         if (backgroundImage.len() > 0)
           iconObj["background-image"] = backgroundImage
       }
-      if (item.type == ::EII_EXTINGUISHER && ::checkObj(mainActionButtonObj))
+      if (item.type == EII_EXTINGUISHER && ::checkObj(mainActionButtonObj))
         mainActionButtonObj.show(item.cooldown == 0)
-      if (item.type == ::EII_ARTILLERY_TARGET && item.active != artillery_target_mode)
+      if (item.type == EII_ARTILLERY_TARGET && item.active != artillery_target_mode)
       {
         artillery_target_mode = item.active
         ::broadcastEvent("ArtilleryTarget", { active = artillery_target_mode })
@@ -334,19 +339,19 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   }
 
   /* *
-   * Wrapper for ::get_action_bar_items().
+   * Wrapper for getActionBarItems().
    * Need to separate killstreak reward form other
    * action bar items.
    * Works only with gamepad controls.
    * */
-  function getActionBarItems()
+  function getActionBar()
   {
     local isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ::ES_UNIT_TYPE_INVALID
-    local rawActionBarItem = isUnitValid ? ::get_action_bar_items() : []
+    local rawActionBarItem = isUnitValid ? getActionBarItems() : []
     if (!useWheelmenu)
       return rawActionBarItem
 
-    local rawWheelItem = isUnitValid ? (::getWheelBarItems() ?? []) : []
+    local rawWheelItem = isUnitValid ? (getWheelBarItems() ?? []) : []
     killStreaksActions = []
     weaponActions = []
     for (local i = rawActionBarItem.len() - 1; i >= 0; i--)
@@ -372,7 +377,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     {
       local shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
       if (shortcut)
-        toggle_shortcut(shortcut)
+        toggleShortcut(shortcut)
     }
   }
 
@@ -383,7 +388,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     if (action)
     {
       local shortcutIdx = ::getTblValue("shortcutIdx", action, action.id) //compatibility with 1.67.2.X
-      ::activate_action_bar_action(shortcutIdx)
+      activateActionBarAction(shortcutIdx)
     }
     else if (streakId >= 0) //something goes wrong; -1 is valid situation = player does not choose smthng
     {
@@ -399,7 +404,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     if (action)
     {
       local shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
-      toggle_shortcut(shortcut)
+      toggleShortcut(shortcut)
     }
   }
 

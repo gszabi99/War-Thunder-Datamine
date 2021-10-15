@@ -11,6 +11,7 @@
   "maxArmorEffectiveScale": 20.0,
   "waterArmorThicknessEquivalent": 5.0,
   "waterToAirDistanceEquivalent": 800.0,
+  "groundArmorThicknessEquivalent": 0.05,
   "armorBreachK": 7.0,
   "damageToHpRicochetThreshold": 1.1,
   "ricochetNormalRandomMult": 0.01,
@@ -2691,6 +2692,7 @@
     "it_destroyer_comandanti_medaglie_doro": 113,
     "it_destroyer_dardo": 120,
     "it_destroyer_leone_class": 120,
+    "it_destroyer_leone_class_tigre": 120,
     "it_destroyer_soldati_serie1": 120,
     "it_destroyer_soldati_serie1_camicianera": 120,
     "it_destroyer_soldati_serie1_geniere": 120,
@@ -2712,7 +2714,7 @@
     "it_vas_baglietto_68t_1serie": 31,
     "jp_abtei_pr1": 23,
     "jp_abtei_pr4": 23,
-    "jp_armoredcruiser_ikoma": 195,
+    "jp_armoredcruiser_ikoma": 189,
     "jp_battleship_hyuga": 307,
     "jp_battleship_settsu": 279,
     "jp_cruiser_agano": 148,
@@ -2763,6 +2765,7 @@
     "uk_battlecruiser_invincible": 280,
     "uk_battleship_colossus": 280,
     "uk_battleship_dreadnought": 280,
+    "uk_battleship_marlborough": 333,
     "uk_brave_borderer": 35,
     "uk_corvette_orla": 42,
     "uk_corvette_peacock": 42,
@@ -2820,7 +2823,7 @@
     "uk_sgb_309": 34,
     "us_admirable_class": 42,
     "us_ashville_class": 47,
-    "us_battleship_north_dakota": 277,
+    "us_battleship_north_dakota": 296,
     "us_battleship_wyoming_class": 277,
     "us_cruiser_atlanta_class_atlanta": 140,
     "us_cruiser_baltimore_class": 222,
@@ -2842,6 +2845,7 @@
     "us_destroyer_fletcher": 120,
     "us_destroyer_fletcher_bennion": 120,
     "us_destroyer_fletcher_cowell": 120,
+    "us_destroyer_mitscher": 120,
     "us_destroyer_porter_1941": 120,
     "us_destroyer_porter_1942": 120,
     "us_destroyer_porter_1944": 120,
@@ -2850,12 +2854,14 @@
     "us_elco_77ft_pt20": 31,
     "us_elco_77ft_pt59": 30,
     "us_elco_80ft_pt109_boat": 31,
+    "us_elco_80ft_pt174": 31,
     "us_elco_80ft_pt_boat": 35,
     "us_elco_80ft_pt_boat_mod01": 31,
     "us_elco_80ft_pt_boat_mod02": 31,
     "us_elco_80ft_pt_boat_thunderbolt": 31,
     "us_frigate_tacoma": 120,
     "us_higgins_78ft_pt625": 31,
+    "us_higgins_78ft_pt658": 35,
     "us_higgins_78ft_pt71": 31,
     "us_lcs_l_3": 30,
     "us_nasty_ptf": 32,
@@ -2909,6 +2915,7 @@
     "ussr_mpk_122a": 35,
     "ussr_mpk_122bis": 41,
     "ussr_mpk_163": 38,
+    "ussr_mpk_201m": 42,
     "ussr_mpk_pr12412": 42,
     "ussr_od_200": 35,
     "ussr_pr_1204": 42,
@@ -6524,5 +6531,174 @@
       "modelName": "tank_bullet_apdc",
       "gbufferModelName": "tank_shell_apds"
     }
-  }
+  },
+  "angleAndSpeedToRicochetProbabilityInWater": [
+    {
+      "angle0": [
+        {
+          "degToWater": 0.0
+        },
+        {
+          "speed2probability": [100.0,1.0]
+        },
+        {
+          "speed2probability": [500.0,1.0]
+        },
+        {
+          "speed2probability": [1000.0,1.0]
+        }
+      ]
+    },
+    {
+      "angle1": [
+        {
+          "degToWater": 5.0
+        },
+        {
+          "speed2probability": [100.0,1.0]
+        },
+        {
+          "speed2probability": [500.0,1.0]
+        },
+        {
+          "speed2probability": [1000.0,1.0]
+        }
+      ]
+    },
+    {
+      "angle2": [
+        {
+          "degToWater": 10.0
+        },
+        {
+          "speed2probability": [100.0,0.7]
+        },
+        {
+          "speed2probability": [500.0,0.9]
+        },
+        {
+          "speed2probability": [1000.0,1.0]
+        }
+      ]
+    },
+    {
+      "angle2": [
+        {
+          "degToWater": 12.0
+        },
+        {
+          "speed2probability": [100.0,0.7]
+        },
+        {
+          "speed2probability": [500.0,0.8]
+        },
+        {
+          "speed2probability": [1000.0,1.0]
+        }
+      ]
+    },
+    {
+      "angle3": [
+        {
+          "degToWater": 15.0
+        },
+        {
+          "speed2probability": [100.0,0.6]
+        },
+        {
+          "speed2probability": [500.0,0.7]
+        },
+        {
+          "speed2probability": [1000.0,0.8]
+        }
+      ]
+    },
+    {
+      "angle4": [
+        {
+          "degToWater": 20.0
+        },
+        {
+          "speed2probability": [100.0,0.2]
+        },
+        {
+          "speed2probability": [500.0,0.3]
+        },
+        {
+          "speed2probability": [1000.0,0.5]
+        }
+      ]
+    },
+    {
+      "angle5": [
+        {
+          "degToWater": 25.0
+        },
+        {
+          "speed2probability": [100.0,0.1]
+        },
+        {
+          "speed2probability": [500.0,0.15]
+        },
+        {
+          "speed2probability": [1000.0,0.2]
+        }
+      ]
+    },
+    {
+      "angle6": [
+        {
+          "degToWater": 30.0
+        },
+        {
+          "speed2probability": [100.0,0.1]
+        },
+        {
+          "speed2probability": [500.0,0.1]
+        },
+        {
+          "speed2probability": [1000.0,0.1]
+        }
+      ]
+    },
+    {
+      "angle7": [
+        {
+          "degToWater": 45.0
+        },
+        {
+          "speed2probability": [100.0,0.0]
+        },
+        {
+          "speed2probability": [1000.0,0.0]
+        }
+      ]
+    },
+    {
+      "angle8": [
+        {
+          "degToWater": 60.0
+        },
+        {
+          "speed2probability": [100.0,0.0]
+        },
+        {
+          "speed2probability": [1000.0,0.0]
+        }
+      ]
+    },
+    {
+      "angle9": [
+        {
+          "degToWater": 90.0
+        },
+        {
+          "speed2probability": [100.0,0.0]
+        },
+        {
+          "speed2probability": [300.0,0.0]
+        }
+      ]
+    }
+  ]
 }

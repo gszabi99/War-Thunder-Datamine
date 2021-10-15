@@ -121,6 +121,7 @@ guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = nu
     res.id <- id
   res.onClick <- ::getTblValue("onClick", objData, defOnClick)
   res.isNoDelayOnClick <- objData?.isNoDelayOnClick ?? _isNoDelayOnClick
+  res.hasArrow <- objData?.hasArrow ?? false
   return res
 }
 
@@ -184,6 +185,9 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
 
   function showStep()
   {
+    if (!ownerWeak)
+      return finalizeTutorial()
+
     local stepData = config[stepIdx]
     local actionType = ::getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
     local params = {
@@ -206,11 +210,9 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
     local objList = stepData?.obj ?? []
     if (!::u.isArray(objList))
       objList = [objList]
+
     foreach(obj in objList)
     {
-      if (!ownerWeak)
-        return finalizeTutorial()
-
       local block = ::guiTutor.getBlockFromObjData(obj, ownerWeak.scene)
       if (!block)
         continue
@@ -224,7 +226,35 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
       blocksList.append(block)
     }
 
-    updateObjectsPos(blocksList, ::getTblValue("haveArrow", stepData, true))
+    local needArrow = (stepData?.haveArrow ?? true) && blocksList.len() > 0
+    if (needArrow && !blocksList.findvalue(@(b) b?.hasArrow == true))
+      blocksList[0].hasArrow = true
+
+    updateObjectsPos(blocksList, needArrow)
+
+    if (needArrow) {
+      local mainMsgY = scene.findObject("msg_block").getPosRC()[1]
+      local arrowWidth = ::to_pixels("1@tutorArrowSize")
+      local arrowHeight = ::to_pixels("3@tutorArrowSize")
+      local view = { arrows = [] }
+
+      foreach (block in blocksList)
+      {
+        if (!block.hasArrow)
+          continue
+
+        local isTop = mainMsgY < block.box.c1[1]
+        view.arrows.append({
+          left     = (block.box.c1[0] + block.box.c2[0] - arrowWidth) / 2
+          top      = isTop ? block.box.c1[1] - arrowHeight : block.box.c2[1]
+          rotation = isTop ? 0 : 180
+        })
+      }
+
+      local blk = ::handyman.renderCached("gui/tutorials/tutorArrow", view)
+      guiScene.replaceContentFromText(scene.findObject("arrows_container"), blk, blk.len(), this)
+    }
+
     if (actionType == tutorAction.FIRST_OBJ_CLICK && blocksList.len() > 0)
     {
       blocksList[0].onClick = "onNext"
@@ -258,38 +288,25 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
   function updateObjectsPos(blocks, needArrow = true)
   {
     guiScene.applyPendingChanges(false)
+
     local boxList = []
     foreach(b in blocks)
       boxList.append(b.box)
-    local targetBox = ::getTblValue(0, boxList)
 
-    //place main text and target  arrow
-    needArrow = needArrow && (targetBox != null)
-    local arrowObj = scene.findObject("anim_arrow_block")
-    arrowObj.show(needArrow)
     if (needArrow)
     {
-      local incSize = arrowObj.getSize()[1]
-      boxList.append(targetBox.cloneBox(incSize)) //inc targetBox for correct place message
+      local incSize = ::to_pixels("3@tutorArrowSize") // arrow height
+      foreach(b in blocks)
+        if (b.hasArrow)
+          boxList.append(b.box.cloneBox(incSize)) // inc targetBox for correct place message
     }
 
     local mainMsgObj = scene.findObject("msg_block")
     local minPos = guiScene.calcString("1@bh", null)
     local maxPos = guiScene.calcString("sh -1@bh", null)
-    local newPos = LinesGenerator.findGoodPos(mainMsgObj, 1, boxList,
-                     minPos, maxPos)
+    local newPos = LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
     if (newPos != null)
       mainMsgObj.top = newPos.tostring()
-
-    if (needArrow)
-    {
-      local isTop = mainMsgObj.getPosRC()[1] < targetBox.c1[1]
-      local aSize = arrowObj.getSize()
-      arrowObj.left = ((targetBox.c1[0] + targetBox.c2[0] - aSize[0]) /2 ).tointeger().tostring()
-      arrowObj.top = isTop ? targetBox.c1[1] - aSize[1] : targetBox.c2[1]
-      local imgObj = scene.findObject("anim_arrow")
-      imgObj.rotation = isTop ? "0" : "180"
-    }
   }
 
   function timerNext(timerStep)

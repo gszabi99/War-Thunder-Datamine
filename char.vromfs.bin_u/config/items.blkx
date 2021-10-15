@@ -1211,6 +1211,84 @@
       }
     }
   },
+  "booster_wp_900_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "wpRate": 900,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_rp_900_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "xpRate": 900,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_wp_700_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "wpRate": 700,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_rp_700_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "xpRate": 700,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_wp_600_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "wpRate": 600,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_rp_600_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "xpRate": 600,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
   "booster_wp_500_1mp": {
     "expiredTimeH": 72.0,
     "expiredTimeHAfterActivation": 24.0,
@@ -2434,234 +2512,6 @@
       "stop": {
         "type": "killedGround",
         "num": 240
-      }
-    }
-  },
-  "order_score": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_score",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": true,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [10000.0,15000.0,20000.0],
-      "awardModeRaw": true,
-      "awardModeMulProgress": false,
-      "awardModeMulAward": false,
-      "mode": {
-        "type": "score"
-      }
-    }
-  },
-  "order_universalKiller": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_universalKiller",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": false,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [10000.0,15000.0,20000.0],
-      "awardModeRaw": true,
-      "mode": {
-        "type": "universalKiller"
-      }
-    }
-  },
-  "order_streak": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_streak",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": false,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [10000.0,15000.0,20000.0],
-      "awardModeRaw": true,
-      "mode": {
-        "type": "streak",
-        "num": 3
-      }
-    }
-  },
-  "order_rocketMan": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_rocketMan",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": false,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [10000.0,15000.0,20000.0],
-      "awardModeRaw": true,
-      "mode": {
-        "type": "rocketMan"
-      }
-    }
-  },
-  "order_randomHunt": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_randomHunt",
-      "onlyIssuerTeam": false,
-      "timeTotal": 360,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": false,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [3000.0,5000.0,7000.0],
-      "awardModeRaw": true,
-      "mode": {
-        "type": "randomHunt",
-        "huntTime": 120,
-        "numTargets": 5
-      }
-    }
-  },
-  "order_revengeHunt": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_revengeHunt",
-      "onlyIssuerTeam": false,
-      "timeTotal": 360,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": false,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [3000.0,5000.0,7000.0],
-      "awardModeRaw": true,
-      "mode": {
-        "type": "revengeHunt",
-        "huntTime": 120,
-        "numTargets": 5
-      }
-    }
-  },
-  "order_eventMul_kill": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "missionOrderParams": {
-      "name": "order_eventMul",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": true,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [3.0,3.0,3.0],
-      "awardXp": [0.0,0.0,0.0],
-      "awardModeMulAward": true,
-      "mode": {
-        "type": "eventMul",
-        "event": "GAMEPLAY_EVENT_KILL",
-        "target": "aircraft"
-      }
-    }
-  },
-  "order_eventMul_ground": {
-    "type": "missionOrder",
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "iconStyle": "order_eventMul_ground",
-    "missionOrderParams": {
-      "name": "order_eventMul",
-      "onlyIssuerTeam": false,
-      "timeTotal": 300,
-      "cooldown": 30,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 30,
-      "awardOnCancel": true,
-      "disabledDifficulty": "hardcore",
-      "awardWp": [3.0,3.0,3.0],
-      "awardXp": [0.0,0.0,0.0],
-      "awardModeMulAward": true,
-      "mode": {
-        "type": "eventMul",
-        "event": "GAMEPLAY_EVENT_KILL",
-        "target": "ground",
-        "missionRestriction": {
-          "type": "missionPostfix",
-          "postfix": "_AD"
-        }
-      }
-    }
-  },
-  "order_score_dev_item_1": {
-    "type": "missionOrder",
-    "costGold": 300,
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "purchase_feature": "devItemShop",
-    "missionOrderParams": {
-      "name": "order_score_dev_item_1",
-      "onlyIssuerTeam": false,
-      "timeTotal": 20,
-      "cooldown": 15,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 5,
-      "awardOnCancel": true,
-      "disabledDifficulty": "hardcore",
-      "awardXp": [10000.0,20000.0,30000.0],
-      "awardWp": [10000.0,20000.0,30000.0],
-      "awardModeRaw": true,
-      "awardModeMulProgress": false,
-      "awardModeMulAward": false,
-      "mode": {
-        "type": "score"
-      }
-    }
-  },
-  "order_score_dev_item_2": {
-    "type": "missionOrder",
-    "costGold": 300,
-    "sell_count_step": 10,
-    "sell_count_max": 1000,
-    "purchase_feature": "devItemShop",
-    "missionOrderParams": {
-      "name": "order_score_dev_item_2",
-      "onlyIssuerTeam": false,
-      "timeTotal": 20,
-      "cooldown": 15,
-      "cooldownOtherTeam": 15,
-      "delayFromStart": 5,
-      "awardOnCancel": true,
-      "disabledDifficulty": "hardcore",
-      "awardXp": [10000.0,20000.0,30000.0],
-      "awardWp": [10000.0,20000.0,30000.0],
-      "awardModeRaw": true,
-      "awardModeMulProgress": false,
-      "awardModeMulAward": false,
-      "mode": {
-        "type": "score"
       }
     }
   },
@@ -15708,7 +15558,1010 @@
       }
     }
   },
+  "wager_10stages_win_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10win_3fail_everyDayAward",
+    "type": "wager",
+    "costGold": 10000,
+    "purchase_feature": "devItemShop",
+    "wagerParams": {
+      "maxWins": 10,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "missionsWon",
+        "num": 1,
+        "typeLocIDWithoutValue": "conditions/win"
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [0.5,0.0,5000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [1.25,0.0,12500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [2.5,0.0,25000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 4,
+            "wpRewardParams": [3.75,0.0,37500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 5,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 6,
+            "wpRewardParams": [6.25,0.0,62500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 7,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 8,
+            "wpRewardParams": [8.75,0.0,87500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 9,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 10,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_3stages_5kills_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_3win5kills_3fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 3,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "killedPlayersScore",
+        "num": 5,
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [0.1,0.0,10000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [2.5,0.0,25000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_10stages_10kills_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10win10kills_10fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 10,
+      "maxFails": 10,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [6.25,0.0,62500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 4,
+            "wpRewardParams": [8.75,0.0,87500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 5,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 6,
+            "wpRewardParams": [11.25,0.0,112500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 7,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 8,
+            "wpRewardParams": [13.75,0.0,137500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 9,
+            "wpRewardParams": [15.0,0.0,150000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 10,
+            "wpRewardParams": [25.0,0.0,250000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_3stages_missionMaker_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10winMission_maker_3fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 3,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "unlocks",
+        "unlock": "heroic_mission_maker"
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [20.0,0.0,200000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_3stages_tankAntiAircraft_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10winTank_best_antiAircraft_3fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 3,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "unlocks",
+        "unlock": "tank_best_antiAircraft"
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [15.0,0.0,150000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_10stages_heroicStreak_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 10,
+      "maxFails": 6,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": [
+        {
+          "type": "unlocks"
+        },
+        {
+          "num": 1
+        },
+        {
+          "unlock": "heroic_fighter"
+        },
+        {
+          "unlock": "trophy_near_fighter"
+        },
+        {
+          "unlock": "heroic_bomber"
+        },
+        {
+          "unlock": "trophy_near_bomber"
+        },
+        {
+          "unlock": "heroic_tankman"
+        },
+        {
+          "unlock": "trophy_near_tankman"
+        },
+        {
+          "unlock": "heroic_water"
+        },
+        {
+          "unlock": "trophy_near_water"
+        }
+      ],
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        },
+        {
+          "condition": {
+            "type": "missionPostfix",
+            "allowed": false,
+            "postfix": "_AD"
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [1.25,0.0,12500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [2.5,0.0,25000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [3.75,0.0,37500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 4,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 5,
+            "wpRewardParams": [6.25,0.0,62500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 6,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 7,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 8,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 9,
+            "wpRewardParams": [15.0,0.0,150000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 10,
+            "wpRewardParams": [25.0,0.0,250000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_10stages_heroicWingman_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10winHeroic_wingman_3fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 10,
+      "maxFails": 6,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": [
+        {
+          "type": "unlocks"
+        },
+        {
+          "num": 1
+        },
+        {
+          "unlock": "heroic_wingman"
+        },
+        {
+          "unlock": "trophy_near_wingman"
+        }
+      ],
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [1.25,0.0,12500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [2.5,0.0,25000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [3.75,0.0,37500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 4,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 5,
+            "wpRewardParams": [6.25,0.0,62500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 6,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 7,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 8,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 9,
+            "wpRewardParams": [15.0,0.0,150000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 10,
+            "wpRewardParams": [25.0,0.0,250000.0]
+          }
+        }
+      ]
+    }
+  },
+  "wager_10stages_squadBest_expiring": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 168.0,
+    "locId": "item/wager_10winSquad_best_3fail_everyDayAward",
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 10,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "unlocks",
+        "unlock": "squad_best"
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 7
+        },
+        {
+          "skipTemporary": true
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        },
+        {
+          "condition": {
+            "type": "inSquad"
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [0.5,0.0,5000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [1.25,0.0,12500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [2.5,0.0,25000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 4,
+            "wpRewardParams": [3.75,0.0,37500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 5,
+            "wpRewardParams": [5.0,0.0,50000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 6,
+            "wpRewardParams": [6.25,0.0,62500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 7,
+            "wpRewardParams": [7.5,0.0,75000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 8,
+            "wpRewardParams": [8.75,0.0,87500.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 9,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 10,
+            "wpRewardParams": [12.5,0.0,125000.0]
+          }
+        }
+      ]
+    }
+  },
+  "order_score": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_score",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "awardModeMulProgress": false,
+      "awardModeMulAward": false,
+      "mode": {
+        "type": "score"
+      }
+    }
+  },
+  "order_universalKiller": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_universalKiller",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "universalKiller"
+      }
+    }
+  },
+  "order_streak": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_streak",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "streak",
+        "num": 3
+      }
+    }
+  },
+  "order_rocketMan": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_rocketMan",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "rocketMan"
+      }
+    }
+  },
+  "order_randomHunt": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_randomHunt",
+      "onlyIssuerTeam": false,
+      "timeTotal": 360,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3000.0,5000.0,7000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "randomHunt",
+        "huntTime": 120,
+        "numTargets": 5
+      }
+    }
+  },
+  "order_revengeHunt": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_revengeHunt",
+      "onlyIssuerTeam": false,
+      "timeTotal": 360,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3000.0,5000.0,7000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "revengeHunt",
+        "huntTime": 120,
+        "numTargets": 5
+      }
+    }
+  },
+  "order_eventMul_kill": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "missionOrderParams": {
+      "name": "order_eventMul",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3.0,3.0,3.0],
+      "awardXp": [0.0,0.0,0.0],
+      "awardModeMulAward": true,
+      "mode": {
+        "type": "eventMul",
+        "event": "GAMEPLAY_EVENT_KILL",
+        "target": "aircraft"
+      }
+    }
+  },
+  "order_eventMul_ground": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_eventMul_ground",
+    "missionOrderParams": {
+      "name": "order_eventMul",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3.0,3.0,3.0],
+      "awardXp": [0.0,0.0,0.0],
+      "awardModeMulAward": true,
+      "mode": {
+        "type": "eventMul",
+        "event": "GAMEPLAY_EVENT_KILL",
+        "target": "ground",
+        "missionRestriction": {
+          "type": "missionPostfix",
+          "postfix": "_AD"
+        }
+      }
+    }
+  },
+  "order_score_dev_item_1": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "costGold": 300,
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "purchase_feature": "devItemShop",
+    "missionOrderParams": {
+      "name": "order_score_dev_item_1",
+      "onlyIssuerTeam": false,
+      "timeTotal": 20,
+      "cooldown": 15,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 5,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardXp": [10000.0,20000.0,30000.0],
+      "awardWp": [10000.0,20000.0,30000.0],
+      "awardModeRaw": true,
+      "awardModeMulProgress": false,
+      "awardModeMulAward": false,
+      "mode": {
+        "type": "score"
+      }
+    }
+  },
+  "order_score_dev_item_2": {
+    "expiredAt": "2022-02-01 10:00:00",
+    "type": "missionOrder",
+    "costGold": 300,
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "purchase_feature": "devItemShop",
+    "missionOrderParams": {
+      "name": "order_score_dev_item_2",
+      "onlyIssuerTeam": false,
+      "timeTotal": 20,
+      "cooldown": 15,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 5,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardXp": [10000.0,20000.0,30000.0],
+      "awardWp": [10000.0,20000.0,30000.0],
+      "awardModeRaw": true,
+      "awardModeMulProgress": false,
+      "awardModeMulAward": false,
+      "mode": {
+        "type": "score"
+      }
+    }
+  },
   "wagerGold_20win_3fail": {
+    "expiredAt": "2022-03-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 20,
@@ -15880,6 +16733,7 @@
     }
   },
   "wagerGold_10win_3fail": {
+    "expiredAt": "2022-03-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -15991,6 +16845,7 @@
     }
   },
   "wagerGold_25win_3fail": {
+    "expiredAt": "2022-03-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 25,
@@ -16294,6 +17149,7 @@
     }
   },
   "wager_3win5kills_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 3,
@@ -16356,6 +17212,7 @@
     }
   },
   "wager_10win10kills_10fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -16460,6 +17317,7 @@
     }
   },
   "wager_10winMission_maker_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -16561,6 +17419,7 @@
     }
   },
   "wager_10winHeroic_fighter_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -16672,6 +17531,7 @@
     }
   },
   "wager_10winTank_best_antiAircraft_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -16773,6 +17633,7 @@
     }
   },
   "wager_10winHeroic_bomber_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -16903,6 +17764,7 @@
     }
   },
   "wager_10winHeroic_wingman_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -17014,6 +17876,7 @@
     }
   },
   "wager_10winSquad_best_3fail_everyDayAward": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "wagerParams": {
       "maxWins": 10,
@@ -17120,6 +17983,7 @@
     }
   },
   "wager_firstBlood_test": {
+    "expiredAt": "2022-02-01 10:00:00",
     "type": "wager",
     "costGold": 10000,
     "purchase_feature": "devItemShop",
@@ -17178,6 +18042,207 @@
           }
         }
       ]
+    }
+  },
+  "order_score_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_score",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_score",
+    "missionOrderParams": {
+      "name": "order_score",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "awardModeMulProgress": false,
+      "awardModeMulAward": false,
+      "mode": {
+        "type": "score"
+      }
+    }
+  },
+  "order_universalKiller_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_universalKiller",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_universalKiller",
+    "missionOrderParams": {
+      "name": "order_universalKiller",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "universalKiller"
+      }
+    }
+  },
+  "order_streak_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_streak",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_streak",
+    "missionOrderParams": {
+      "name": "order_streak",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "streak",
+        "num": 3
+      }
+    }
+  },
+  "order_rocketMan_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_rocketMan",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_rocketMan",
+    "missionOrderParams": {
+      "name": "order_rocketMan",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [10000.0,15000.0,20000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "rocketMan"
+      }
+    }
+  },
+  "order_randomHunt_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_randomHunt",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_randomHunt",
+    "missionOrderParams": {
+      "name": "order_randomHunt",
+      "onlyIssuerTeam": false,
+      "timeTotal": 360,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3000.0,5000.0,7000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "randomHunt",
+        "huntTime": 120,
+        "numTargets": 5
+      }
+    }
+  },
+  "order_revengeHunt_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_revengeHunt",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_revengeHunt",
+    "missionOrderParams": {
+      "name": "order_revengeHunt",
+      "onlyIssuerTeam": false,
+      "timeTotal": 360,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": false,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3000.0,5000.0,7000.0],
+      "awardModeRaw": true,
+      "mode": {
+        "type": "revengeHunt",
+        "huntTime": 120,
+        "numTargets": 5
+      }
+    }
+  },
+  "order_eventMul_kill_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_eventMul_kill",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_eventMul_kill",
+    "missionOrderParams": {
+      "name": "order_eventMul",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3.0,3.0,3.0],
+      "awardXp": [0.0,0.0,0.0],
+      "awardModeMulAward": true,
+      "mode": {
+        "type": "eventMul",
+        "event": "GAMEPLAY_EVENT_KILL",
+        "target": "aircraft"
+      }
+    }
+  },
+  "order_eventMul_ground_expiring": {
+    "expiredTimeH": 72.0,
+    "locId": "item/order_eventMul_ground",
+    "type": "missionOrder",
+    "sell_count_step": 10,
+    "sell_count_max": 1000,
+    "iconStyle": "order_eventMul_ground",
+    "missionOrderParams": {
+      "name": "order_eventMul",
+      "onlyIssuerTeam": false,
+      "timeTotal": 300,
+      "cooldown": 30,
+      "cooldownOtherTeam": 15,
+      "delayFromStart": 30,
+      "awardOnCancel": true,
+      "disabledDifficulty": "hardcore",
+      "awardWp": [3.0,3.0,3.0],
+      "awardXp": [0.0,0.0,0.0],
+      "awardModeMulAward": true,
+      "mode": {
+        "type": "eventMul",
+        "event": "GAMEPLAY_EVENT_KILL",
+        "target": "ground",
+        "missionRestriction": {
+          "type": "missionPostfix",
+          "postfix": "_AD"
+        }
+      }
     }
   }
 }

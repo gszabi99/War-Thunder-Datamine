@@ -1,19 +1,24 @@
-// Put to global namespace for compatibility
-::getroottable().__update(require("daRg"))
-require("reactiveGui/library.nut")
-local {editor, editorIsActive} = require("editor.nut")
+return {}
+/*
+from "daRg" import flex
+from "ecs" import clear_vm_entity_systems
+
+clear_vm_entity_systems()
+
+local editorIsActive
+
+if (require_optional("daEditor4") != null) {
+  editorIsActive = require_optional("%daeditor/state.nut").editorIsActive
+}
+
 
 local function root() {
-  local children = []
-
-  if (editorIsActive.value)
-    children = [editor]
-
-  return {
-    watch = [editorIsActive]
+  return editorIsActive != null ? {
+    watch = editorIsActive
     size = flex()
-    children
-  }
+    children = editorIsActive.value ? require_optional("%daeditor/editor.nut") : null
+  } : null
 }
 
 return root
+*/

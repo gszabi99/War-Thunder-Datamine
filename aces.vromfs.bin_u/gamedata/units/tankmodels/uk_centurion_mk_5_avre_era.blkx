@@ -105,10 +105,16 @@
     "type": "typeMediumTank"
   },
   {
+    "bladeAnimVar": "centurion_mk_5_avre_era_dozer_blade_action"
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
     "canReloadNonGuns": true
+  },
+  {
+    "digForwardOffset": 1.5
   },
   {
     "DamageParts": {
@@ -267,7 +273,8 @@
           "armorThickness": 90.0
         },
         "gun_mask_dm": {
-          "armorThickness": 120.0
+          "armorThickness": 120.0,
+          "variableThickness": true
         },
         "gun_mask_01_dm": {
           "armorThickness": 200.0
@@ -2081,6 +2088,13 @@
     ]
   },
   {
+    "attachables": {
+      "turret_02_top_dm": false,
+      "turret_04_top_dm": false,
+      "turret_03_top_dm": false
+    }
+  },
+  {
     "MetaParts": {
       "closed_fightning_compartment": [
         {
@@ -3094,6 +3108,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3101,6 +3122,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3126,6 +3150,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3235,6 +3262,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3463,6 +3493,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3704,6 +3741,10 @@
       },
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
+      },
+      "tank_bulldozer_blade": {
+        "modClass": "protection",
+        "tier": 4
       },
       "165mm_britain_HESH": [],
       "tank_smoke_screen_system_mod": {

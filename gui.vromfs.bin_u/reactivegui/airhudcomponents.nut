@@ -23,7 +23,7 @@ local twsElement = @(colorWatch, posWatched, size) function() {
   }
   if (IsMlwsLwsHudVisible.value || IsRwrHudVisible.value) {
     return res.__update({
-      pos = [bw.value + 0.74 * rw.value, bh.value + 0.03 * rh.value]
+      pos = [bw.value + 0.75 * rw.value, bh.value + 0.03 * rh.value]
       size = [sh(5), sh(5)]
       rendObj = ROBJ_IMAGE
       image = rwrPic
@@ -46,7 +46,7 @@ local radarElement = @(colorWatch, posWatched, size) function() {
   }
   if (IsRadarHudVisible.value){
     return res.__update({
-      pos = [bw.value + 0.74 * rw.value, bh.value + 0.3 * rh.value]
+      pos = [bw.value + 0.75 * rw.value, bh.value + 0.1 * rh.value]
       size = [sh(5), sh(5)]
       rendObj = ROBJ_IMAGE
       image = radarPic

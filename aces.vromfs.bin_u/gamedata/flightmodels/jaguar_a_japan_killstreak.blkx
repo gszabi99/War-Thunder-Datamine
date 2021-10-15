@@ -6,6 +6,8 @@
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "is410SUM1Ils": true,
+  "isBwOpticSight": true,
+  "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
   "JetNozzlesAnim1": [0.3,0.5],
@@ -32,6 +34,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1700kph",
   "fightAiBehaviour": "assault",
+  "laserDesignator": true,
   "autopilotImpl": "FBW",
   "isNuclearBomber": true,
   "customClassIco": "!#ui/gameuiskin#jaguar_a_ico.svg",
@@ -2000,6 +2003,18 @@
   },
   "cockpit": [
     {
+      "targetingPodFov": [12.0,2.9]
+    },
+    {
+      "sightInFov": 50.5
+    },
+    {
+      "sightOutFov": 40.5
+    },
+    {
+      "sightFov": 1.0
+    },
+    {
       "headPos": [4.2,1.03,0.0]
     },
     {
@@ -2162,6 +2177,24 @@
       ]
     }
   ],
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [1920.0,1080.0],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [1920.0,1080.0],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "sightThermal": {
+      "resolution": [1024.0,768.0],
+      "noiseFactor": 0.05
+    }
+  },
   "commonWeapons": [
     {
       "hideNodes": [
@@ -2178,6 +2211,30 @@
           "node": "alkan_ll_5020_r"
         }
       ]
+    },
+    {
+      "Weapon": {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "optic1_gun",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 200.0,
+        "speedPitch": 200.0,
+        "parkInDeadzone": true,
+        "aimForOperatedShell": true,
+        "turret": {
+          "head": "optic1_turret",
+          "gun": "optic1_gun",
+          "mainTurret": true
+        },
+        "limits": {
+          "yaw": [-180.0,180.0],
+          "pitch": [-90.0,90.0]
+        }
+      }
     },
     {
       "Weapon": {
@@ -2206,11 +2263,29 @@
       }
     }
   ],
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apr_25.blk"
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [-5.2,-1.0,0.0],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [-180.0,180.0,-170.0,15.0],
+      "opticType": "targeting",
+      "turretNo": 1
     }
   },
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/tv_tracker_tgp.blk",
+        "node": "optic1_gun"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_25.blk"
+      }
+    }
+  ],
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2274,14 +2349,30 @@
     "turnTime": 23.0
   },
   "modifications": {
-    "cd_98": [],
-    "CdMin_Fuse": [],
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
     "new_cover": [],
-    "structure_str": [],
-    "hp_105_jet": [],
-    "g_suit": [],
-    "new_compressor_jet": [],
+    "f_4c_CdMin_Fuse": {
+      "tier": 1
+    },
+    "structure_str": {
+      "tier": 2
+    },
+    "f_4c_g_suit": {
+      "tier": 3
+    },
+    "new_compressor_jet": {
+      "tier": 1
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
@@ -2321,6 +2412,30 @@
                 "node": "fuse_2"
               }
             ]
+          },
+          {
+            "Weapon": {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [-180.0,180.0],
+                "pitch": [-180.0,180.0]
+              }
+            }
           },
           {
             "Weapon": {
@@ -2401,6 +2516,25 @@
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "fr_lr_100_4"
+    },
+    "fr_atlis2": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "fr_bgl400": {
+      "reqModification": "fr_atlis2",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "fr_bgl1000": {
+      "reqModification": "fr_bgl400",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "fr_as_30l": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "fr_bgl1000"
     }
   },
   "parachutes": {

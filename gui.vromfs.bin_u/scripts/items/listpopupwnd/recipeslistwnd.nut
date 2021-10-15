@@ -93,7 +93,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   function startTutorial()
   {
     local steps = [{
-      obj = getUsableRecipeObjs()
+      obj = getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
       text = ::loc("workshop/tutorial/selectRecipe")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::GAMEPAD_ENTER_SHORTCUT

@@ -111,6 +111,12 @@
     "type": "typeMediumTank"
   },
   {
+    "bladeAnimVar": "type_90_dozer_blade_action"
+  },
+  {
+    "digForwardOffset": 1.2
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -2815,7 +2821,8 @@
         "trackFadeTime": 1.1,
         "trackConnector": true,
         "trackStartOffset": 0.05,
-        "trackMaxHeight": 1.27
+        "trackMaxHeight": 1.27,
+        "trackMaxSinking": 0.1
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3067,6 +3074,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3074,6 +3088,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3099,6 +3116,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3208,6 +3228,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3436,6 +3459,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3498,6 +3528,77 @@
       },
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
+      },
+      "tank_bulldozer_blade": {
+        "modClass": "firepower",
+        "tier": 1,
+        "requiresModelReload": true,
+        "turn_it_off": false,
+        "effects": {
+          "rcostAddParam": 0.99,
+          "diggingAvailable": true,
+          "diggingActivateTime": 5.0,
+          "diggingLevel": 0.2,
+          "digMaxSpeed": 7.0,
+          "digMaxRevSpeed": -7.0,
+          "hideNodes": [
+            {
+              "node": "ex_decor_01"
+            },
+            {
+              "node": "ex_decor_l_01"
+            },
+            {
+              "node": "ex_decor_r_01"
+            },
+            {
+              "node": "ex_decor_02"
+            },
+            {
+              "node": "ex_lantern_r_02"
+            },
+            {
+              "node": "ex_lantern_l_02"
+            },
+            {
+              "node": "body_01"
+            }
+          ]
+        },
+        "disableModEffects": {
+          "hideNodes": [
+            {
+              "node": "ex_decor_l_03"
+            },
+            {
+              "node": "ex_decor_r_03"
+            },
+            {
+              "node": "ex_decor_l_02"
+            },
+            {
+              "node": "ex_decor_r_02"
+            },
+            {
+              "node": "roll_01"
+            },
+            {
+              "node": "ex_lantern_r_03"
+            },
+            {
+              "node": "ex_lantern_l_03"
+            },
+            {
+              "node": "body_02"
+            },
+            {
+              "node": "ex_armor_03"
+            },
+            {
+              "node": "roll_02"
+            }
+          ]
+        }
       },
       "120mm_NATO_HEAT_FS": [],
       "120mm_NATO_APDS_FS": [],

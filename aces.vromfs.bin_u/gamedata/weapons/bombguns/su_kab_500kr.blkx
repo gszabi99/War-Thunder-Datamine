@@ -23,7 +23,7 @@
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
     "isHasTVChannel": true,
-    "guidanceType": "opticalFlow",
+    "guidanceType": "ir",
     "opticSightFov": [12.0,2.9],
     "timeLife": 40.0,
     "sound": "weapon.bomb_std",
@@ -57,22 +57,28 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "uncageBeforeLaunch": true,
       "breakLockMaxTime": 2.0,
-      "opticalFlowSeeker": {
+      "irSeeker": {
         "visibilityType": "optic",
-        "range": 15000.0,
-        "fov": 2.0,
+        "rangeBand0": 6000.0,
+        "rangeMax": 15000.0,
+        "rangeSurface": 15000.0,
+        "fov": 0.1,
+        "gateWidth": 0.1,
+        "minAngleToSun": 0.0,
         "lockAngleMax": 55.0,
         "angleMax": 58.0,
         "rateMax": 7.0,
-        "prolongationTimeMax": 0.5,
+        "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 1,
-        "constantDesignationSourceTypeMask": 1
+        "constantDesignationSourceTypeMask": 1,
+        "aircraftAsTarget": false,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true
       },
       "guidanceAutopilot": {
         "timeToGain0": [0.0,1.0],

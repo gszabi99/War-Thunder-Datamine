@@ -1,5 +1,10 @@
-local log_ = require("std/log.nut")()
-::debugTableData <- log_.debugTableData //used for sq debugger
+local log_ = require("std/log.nut")(
+  [{
+    compare = @(val) type(val)=="instance" && "formatAsString" in val
+    tostring = @(val) val.formatAsString()
+  }]
+)
+require("%sqstd/regScriptDebugger.nut")(log_.debugTableData)
 
 global enum Layers {
   Default

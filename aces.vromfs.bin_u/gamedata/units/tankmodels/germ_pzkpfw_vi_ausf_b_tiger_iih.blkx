@@ -1340,7 +1340,7 @@
           "useEmitter": true,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_02_dm",
+          "barrelDP": "gun_barrel_03_dm",
           "parkInDeadzone": false,
           "speedYaw": 90.0,
           "speedPitch": 90.0,
@@ -1783,6 +1783,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -1790,6 +1797,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -1815,6 +1825,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -1924,6 +1937,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2152,6 +2168,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -2272,16 +2295,18 @@
           "armorThickness": 30.0
         },
         "turret_front_dm": {
-          "armorThickness": 185.0
+          "armorThickness": 185.0,
+          "variableThickness": true
         }
       },
       "mask": {
         "armorClass": "CHA_tank",
         "gun_mask_dm": {
-          "armorThickness": 50.0
+          "armorThickness": 90.0,
+          "variableThickness": true
         },
         "gun_mask_01_dm": {
-          "armorThickness": 200.0
+          "armorThickness": 185.0
         },
         "gun_mask_02_dm": {
           "armorThickness": 50.0
@@ -3516,7 +3541,7 @@
                 "useEmitter": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_02_dm",
+                "barrelDP": "gun_barrel_03_dm",
                 "parkInDeadzone": false,
                 "speedYaw": 90.0,
                 "speedPitch": 90.0,
