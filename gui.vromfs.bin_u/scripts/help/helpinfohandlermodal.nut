@@ -76,6 +76,8 @@ class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerW
 
     local linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
     guiScene.replaceContentFromText(scene.findObject("lines_block"), linesData, linesData.len(), this)
+
+    scene.findObject("anim_arrow_block").show(false)
   }
 
   getLinesGeneratorConfig = @() {

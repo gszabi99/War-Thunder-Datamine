@@ -848,9 +848,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     {
       local animObj = crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
-
-      if (animObj?.id != animBlockId && animObj?["_transp-timer"] == null)
-        animObj["_transp-timer"] = "0"
     }
 
     local animBlockObj = crewsObj.findObject(animBlockId)

@@ -209,7 +209,6 @@ global enum HUD_TYPE {
   TANK,
   SHIP,
   HELICOPTER,
-  FREECAM,
 
   NONE
 }

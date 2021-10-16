@@ -18,7 +18,7 @@ local PSN_SESSION_TYPE = {
 */
 local createdSessionData = persist("createdSessionData", @() ::Watched({}))
 local dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
-   createdSessionData.mutate(@(v) v[sessionId] <- {
+   createdSessionData.update(@(v) v[sessionId] <- {
       sType = sType
       pushContextId = pushContextId
       data = copy(sessionData)
@@ -174,7 +174,7 @@ local getSessionJoinData = @(pushContextId, isSpectator = false) {
 local create = function(sType, saveSessionIdCb) {
   local pushContextId = psnNotify.createPushContext()
   local sessionData = getSessionData(sType, pushContextId)
-  pendingSessions.mutate(@(v) v[sType] <- copy(sessionData))
+  pendingSessions.update(@(v) v[sType] <- copy(sessionData))
 
   psnsm.create(
     pendingSessions.value[sType],
@@ -186,7 +186,7 @@ local create = function(sType, saveSessionIdCb) {
         dumpSessionData(sessionId, sType, pushContextId, pendingSessions.value[sType])
       }
 
-      pendingSessions.mutate(@(v) delete v[sType])
+      pendingSessions.update(@(v) delete v[sType])
     }, this)
   )
 }
@@ -199,7 +199,7 @@ local destroy = function(sType) {
       psnsm.destroy(
         sId,
         ::Callback(function(r, err) {
-          createdSessionData.mutate(@(v) delete v[sId])
+          createdSessionData.update(@(v) delete v[sId])
         }, this)
       )
     }
@@ -213,7 +213,7 @@ local update = function(sessionId, sType) {
     existSessionInfo?.data.playerSessions[0],
     sessionData.playerSessions[0],
     ::Callback(function(r, err) {
-      createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
+      createdSessionData.update(@(v) v[sessionId].data = copy(sessionData))
     }, this)
   )
 }
@@ -227,7 +227,7 @@ local join = function(sessionId, isSpectator, onFinishCb) {
     psnsm.joinAsPlayer(sessionId, sessionData, pushContextId, onFinishCb)
 }
 
-local postponeInvite = @(params) postponedInvitations.mutate(@(v) v.append(params))
+local postponeInvite = @(params) postponedInvitations.update(@(v) v.append(params))
 
 local afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
   if (err) {

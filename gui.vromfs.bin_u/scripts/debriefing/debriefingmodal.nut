@@ -3035,7 +3035,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local eventId = ::getTblValue("eventId", debriefingResult)
     if (eventId)
       ::broadcastEvent("EventBattleEnded", {eventId = eventId})
-    ::broadcastEvent("BattleEnded", { battleResult = debriefingResult?.exp.result })
+    ::broadcastEvent("BattleEnded")
   }
 
   function checkPopupWindows()

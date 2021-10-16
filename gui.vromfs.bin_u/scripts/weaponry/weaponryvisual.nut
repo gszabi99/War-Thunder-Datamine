@@ -131,10 +131,8 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       visualItem.type <- weaponsItem.bundle
   }
   res.nameText = getModItemName(unit, visualItem, params?.limitedName ?? true)
+  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params)
   local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
-  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
-    hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo
-  }))
   local bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
   if (bIcoItem)
   {

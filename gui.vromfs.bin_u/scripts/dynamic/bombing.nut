@@ -264,10 +264,19 @@
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
   ::mgSetEffShootingRate(0.1);
 
-  if (playerBomberPlane == "")
-    return
+  local sector = ::mgGetMissionSector();
+  local level = ::mgGetLevelName();
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), ground_type)
+  local player_plane_name = "";
+  local enemy_plane_name = "";
+  if (playerBomberPlane != "")
+  {
+    player_plane_name = ::mgUnitClassFromDescription(playerBomberPlane);
+  }
+  else
+    return;
+
+  ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, ground_type);
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
 

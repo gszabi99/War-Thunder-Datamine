@@ -2429,7 +2429,6 @@
           "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
           "emitter": "bone_mg_aa_v_01",
           "flash": "emtr_mg_aa_flame_01",
-          "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_01_dm",
@@ -2458,7 +2457,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,25.0]
+            "pitch": [-10.0,40.0]
           }
         }
       },
@@ -2740,13 +2739,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "useVelocity": false
-            }
           }
         ]
       },
@@ -2754,9 +2746,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2782,9 +2771,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2894,9 +2880,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3125,13 +3108,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3529,7 +3505,6 @@
                 "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
                 "emitter": "bone_mg_aa_v_01",
                 "flash": "emtr_mg_aa_flame_01",
-                "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_01_dm",
@@ -3558,7 +3533,7 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,25.0]
+                  "pitch": [-10.0,40.0]
                 }
               }
             },

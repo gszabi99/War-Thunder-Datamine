@@ -47,7 +47,7 @@ local CHOOSE_WEAPON_PARAMS = {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   local curWeaponName = params.getLastWeapon(unit.name)
-  local hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  local hasOnlyBought = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
   local isForcedAvailable = params.isForcedAvailable
   local onChangeValueCb = function(weapon) {
     params.setLastWeapon(unit.name, weapon.name)
@@ -57,7 +57,7 @@ local CHOOSE_WEAPON_PARAMS = {
   local list = []
   foreach(weapon in unit.weapons)
   {
-    if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
+    if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlyBought))
       continue
 
     list.append({

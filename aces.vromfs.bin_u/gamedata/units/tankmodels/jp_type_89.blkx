@@ -2346,7 +2346,6 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
-          "autoLoader": true,
           "speedYaw": 60.0,
           "speedPitch": 60.0,
           "fireConeAngle": 1.0,
@@ -2376,14 +2375,12 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,35.0]
+            "pitch": [-9.0,60.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-3.0,35.0],
-            "lim2": [-140.0,-35.0,-10.0,35.0],
-            "lim3": [-35.0,-20.0,-9.0,35.0],
-            "lim4": [-20.0,140.0,-10.0,35.0],
-            "lim5": [140.0,180.0,-3.0,35.0]
+            "lim1": [-180.0,-140.0,-3.0,60.0],
+            "lim2": [-140.0,140.0,-9.0,60.0],
+            "lim3": [140.0,180.0,-3.0,60.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2660,7 +2657,7 @@
             "ratio": 1.452
           },
           {
-            "ratio": 1.02
+            "ratio": 0.9746
           }
         ]
       },
@@ -2836,13 +2833,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "useVelocity": false
-            }
           }
         ]
       },
@@ -2850,9 +2840,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2878,9 +2865,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2990,9 +2974,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3221,13 +3202,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3305,7 +3279,6 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
-                "autoLoader": true,
                 "speedYaw": 60.0,
                 "speedPitch": 60.0,
                 "fireConeAngle": 1.0,
@@ -3335,14 +3308,12 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,35.0]
+                  "pitch": [-9.0,60.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-3.0,35.0],
-                  "lim2": [-140.0,-35.0,-10.0,35.0],
-                  "lim3": [-35.0,-20.0,-9.0,35.0],
-                  "lim4": [-20.0,140.0,-10.0,35.0],
-                  "lim5": [140.0,180.0,-3.0,35.0]
+                  "lim1": [-180.0,-140.0,-3.0,60.0],
+                  "lim2": [-140.0,140.0,-9.0,60.0],
+                  "lim3": [140.0,180.0,-3.0,60.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,

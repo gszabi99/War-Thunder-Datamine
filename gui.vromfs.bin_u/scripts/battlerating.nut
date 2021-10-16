@@ -92,10 +92,10 @@ local function setBattleRating(recentUserData, brData) {
   local { gameModeId, players } = recentUserData
   if (brData) {
     local br = calcBattleRating(brData)
-    brInfoByGamemodeId.mutate(@(v) v[gameModeId] <- { br, players, brData = clone brData })
+    brInfoByGamemodeId[gameModeId] <- { br, players, brData = clone brData }
   }
   else if (gameModeId in brInfoByGamemodeId.value)
-    brInfoByGamemodeId.mutate(@(v) delete v[gameModeId])
+    brInfoByGamemodeId(@(v) delete v[gameModeId])
 }
 
 local function getBestCountryData(event)
@@ -174,7 +174,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
   recentBrSourceGameModeId(gameMode?.source.gameModeId)
   local recentUserData = getUserData()
   if (recentBrSourceGameModeId.value == null || !recentUserData) {
-    brInfoByGamemodeId.mutate(@(v) v.clear())
+    brInfoByGamemodeId(@(v) v.clear())
     return
   }
 

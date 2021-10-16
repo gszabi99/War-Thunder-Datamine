@@ -53,7 +53,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
       selectBulletsByManager = (canChangeWeaponry && canChangeBulletsAmount) ? bulletsManager : null
       needSliderButtons = canChangeBulletsAmount
       hasMenu = false
-      isForceHidePlayerInfo = isForcedAvailable
+      isForceHidePlayerInfo = isForcedAvailable && !::isUnitUsable(unit)
     }
   }
 
@@ -411,10 +411,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function hasWeaponsToChooseFrom()
   {
     local count = 0
-    local hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+    local hasOnlyBought = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
     foreach(weapon in unit.weapons)
     {
-      if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
+      if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlyBought))
         continue
 
       count++

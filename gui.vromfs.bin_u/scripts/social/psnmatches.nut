@@ -8,7 +8,6 @@ local match = {
   id = null
   isOwner = false
   playerId = null
-  teamId = null
   props = { // Reflects PSN structure
     activityId = null
     inGameRoster = {
@@ -34,8 +33,6 @@ local function processMemberList(members) {
           playerType = "PSN_PLAYER"
         }
         players[m.userId.tostring()] <- player
-        if (isMe)
-          match.teamId = player.teamId
       }
       minMemberId = (minMemberId) == null ? m.memberId : ::min(m.memberId, minMemberId)
     }
@@ -102,12 +99,6 @@ local function tryCreateMatch(info) {
   }
 }
 
-local function markMatchCompleted() {
-  match.lastId = match.id
-  match.id = null
-  match.teamId = null
-  match.players = {}
-}
 
 local function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
   if (match.id == null)
@@ -119,7 +110,9 @@ local function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
   }
   ::dagor.debug($"[PSMT] leaving match {match.id}, reason {reason}")
   psn.send(psn.matches.leave(match.id, player))
-  markMatchCompleted()
+  match.lastId = match.id
+  match.id = null
+  match.players = {}
 }
 
 local function updateMatchStatus(eventData) {
@@ -132,22 +125,9 @@ local function updateMatchStatus(eventData) {
   }
 }
 
-local function onBattleEnded(p) {
-  if (match.id == null || p?.battleResult == null)
-    return
-
-  local isVictoryOurs = (p.battleResult == ::STATS_RESULT_SUCCESS)
-  local winnerTeamId = isVictoryOurs ? match.teamId : (3 - match.teamId) // only two teams
-  local teamResults = []
-  foreach (team in match.props.inGameRoster.teams) {
-    teamResults.append({
-      teamId = $"{team.teamId}",
-      rank = $"{(winnerTeamId == team.teamId) ? 1 : 2}"
-    })
-  }
-
-  psn.send(psn.matches.reportResults(match.id, {teamResults}))
-  markMatchCompleted()
+local function onIsInRoomChanged(p) {
+  if (!::SessionLobby.isInRoom())
+    leaveMatch()
 }
 
 local function enableMatchesReporting() {
@@ -156,9 +136,9 @@ local function enableMatchesReporting() {
   ::add_event_listener("LobbyMembersChanged", @(p) updateMatchData())
   ::add_event_listener("LobbyMemberInfoChanged", @(p) updateMatchData())
   ::add_event_listener("LobbyStatusChange", updateMatchStatus)
+  ::add_event_listener("LobbyIsInRoomChanged", onIsInRoomChanged)
   ::add_event_listener("PlayerQuitMission", @(p) leaveMatch(psn.matches.LeaveReason.QUIT))
   ::add_event_listener("UpdateExternalsIDs", onReceivedExternalIds)
-  ::add_event_listener("BattleEnded", onBattleEnded)
 }
 
 local function openPlayerReviewDialog() {

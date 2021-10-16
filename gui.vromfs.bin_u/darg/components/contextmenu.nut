@@ -1,12 +1,12 @@
 from "daRg" import *
 local style = require("contextMenu.style.nut")
-local {addModalWindow, removeModalWindow} = require("modalWindows.nut")
+local modalWindows = require("modalWindows.nut")
 
 local lastMenuIdx = 0
 local function contextMenu(x, y, width, actions, menu_style = style) {
   lastMenuIdx++
   local uid = "context_menu_{0}".subst(lastMenuIdx)
-  local closeMenu = @() removeModalWindow(uid)
+  local closeMenu = @() modalWindows.remove(uid)
   local menuBgColor = menu_style?.menuBgColor ?? style.menuBgColor
   local closeHotkeys = menu_style?.closeHotkeys ?? [ ["Esc", closeMenu] ]
   local function defMenuCtor(){
@@ -31,7 +31,7 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
 
   local menuCtor = menu_style?.menuCtor ?? defMenuCtor
   set_kb_focus(null)
-  addModalWindow({
+  modalWindows.add({
     key = uid
     children = menuCtor()
   })
@@ -41,5 +41,5 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
 
 return {
   contextMenu
-  remove = removeModalWindow
+  remove = modalWindows.remove
 }

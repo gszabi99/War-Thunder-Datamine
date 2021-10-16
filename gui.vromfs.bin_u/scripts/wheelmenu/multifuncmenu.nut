@@ -1,6 +1,5 @@
 local { openMfm, getMfmSectionTitle, getMfmHandler } = require("scripts/wheelmenu/multifuncMenuTools.nut")
 local cfg = require("scripts/wheelmenu/multifuncmenuCfg.nut")
-local { emulateShortcut } = ::require_native("controls")
 
 //--------------------------------------------------------------------------------------------------
 
@@ -42,7 +41,7 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
     if (::is_xinput_device())
       switchControlsAllowMask(wndControlsAllowMaskWhenInactive)
 
-    emulateShortcut(shortcutId)
+    ::emulate_shortcut(shortcutId)
 
     if (::is_xinput_device() && isActive)
       switchControlsAllowMask(wndControlsAllowMaskWhenActive)

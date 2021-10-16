@@ -316,10 +316,7 @@ global enum bulletsAmountState {
   function loadBulGroups()
   {
     bulGroups = []
-    groupsActiveMask = unit ? getActiveBulletsGroupInt(unit, {
-      checkPurchased = checkPurchased,
-      isForcedAvailable = isForcedAvailable
-    }) : 0 //!!FIX ME: better to detect actives in manager too.
+    groupsActiveMask = unit ? getActiveBulletsGroupInt(unit, checkPurchased) : 0//!!FIX ME: better to detect actives in manager too.
     if (!unit)
       return
 

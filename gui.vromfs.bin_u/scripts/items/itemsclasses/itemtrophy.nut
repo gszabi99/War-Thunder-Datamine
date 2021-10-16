@@ -61,14 +61,6 @@ class ::items_classes.Trophy extends ::BaseItem
       {
         local prize = ::DataBlock()
         prize.setFrom(_prize)
-
-        local needMultiAwardInfo = _prize?.ranksRange != null && _prize?.resourceType != null && _prize.blockCount() == 0
-        if (needMultiAwardInfo)
-        {
-          prize["multiAwardsOnWorthGold"] = 0
-          prize.addBlock(_prize.resourceType).setFrom(_prize)
-        }
-
         contentRaw.append(prize)
       }
     }
