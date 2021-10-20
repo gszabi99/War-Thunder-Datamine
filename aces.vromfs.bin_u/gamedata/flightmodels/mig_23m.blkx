@@ -2225,31 +2225,6 @@
         },
         {
           "reqModification": "mig_19_r3s"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk"
-              },
-              {
-                "iconType": "bombs_small_group_x4"
-              },
-              {
-                "amountPerTier": 4.0
-              },
-              {
-                "tier": {
-                  "idx": 5
-                }
-              },
-              {
-                "tier": {
-                  "idx": 7
-                }
-              }
-            ]
-          }
         }
       ]
     },
@@ -2268,37 +2243,12 @@
           "reqModification": "mig_19_r13m"
         },
         {
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
-                "iconType": "missile_type_c_air_to_air"
-              }
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk"
-                },
-                {
-                  "iconType": "bombs_small_group_x4"
-                },
-                {
-                  "amountPerTier": 4.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 7
-                  }
-                }
-              ]
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
+              "iconType": "missile_type_c_air_to_air"
             }
-          ]
+          }
         }
       ]
     },
@@ -2317,37 +2267,12 @@
           "reqModification": "mi_24_r_60m"
         },
         {
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
-                "iconType": "missile_type_b_air_to_air"
-              }
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk"
-                },
-                {
-                  "iconType": "bombs_small_group_x4"
-                },
-                {
-                  "amountPerTier": 4.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 7
-                  }
-                }
-              ]
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "iconType": "missile_type_b_air_to_air"
             }
-          ]
+          }
         }
       ]
     },
@@ -2364,31 +2289,6 @@
         },
         {
           "reqModification": "mig_23_r_23"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk"
-              },
-              {
-                "iconType": "bombs_small_group_x4"
-              },
-              {
-                "amountPerTier": 4.0
-              },
-              {
-                "tier": {
-                  "idx": 5
-                }
-              },
-              {
-                "tier": {
-                  "idx": 7
-                }
-              }
-            ]
-          }
         }
       ]
     },
@@ -2405,31 +2305,6 @@
         },
         {
           "reqModification": "mig_23_r_23"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": [
-              {
-                "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk"
-              },
-              {
-                "iconType": "bombs_small_group_x4"
-              },
-              {
-                "amountPerTier": 4.0
-              },
-              {
-                "tier": {
-                  "idx": 5
-                }
-              },
-              {
-                "tier": {
-                  "idx": 7
-                }
-              }
-            ]
-          }
         }
       ]
     },
@@ -3067,7 +2942,7 @@
               "emitter": "emtr_flare1",
               "bullets": 12,
               "external": true,
-              "separate": true
+              "separate": false
             }
           }
         ]
@@ -3153,8 +3028,8 @@
     }
   ],
   "parachutes": {
-    "emitterRange": [1.0,1.0],
-    "emitterName": "emtr_chute",
+    "emitterRange": [0.0,1.0],
+    "emitterName": "emtr_chute%d",
     "chuteModel": "chute_mig_19_char",
     "chuteAnimVarName": "chute_state_switch",
     "chuteFlapVarName": "fire_chute",

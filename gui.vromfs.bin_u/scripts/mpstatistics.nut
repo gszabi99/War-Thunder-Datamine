@@ -237,7 +237,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
         local width = "width:t='" + ::getTblValue("width", markup[hdr[j]], "1") + "'; "
         tdData += ::format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
-      else if (::isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
+      else if (::isInArray(hdr[j], [ "aiTotalKills", "assists", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
       {
         local txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += ::format("activeText { text:t='%s' halign:t='center' } ", txt)
@@ -617,7 +617,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
       {
         objTd.getChild(0).setValue(item)
       }
-      else if (::isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
+      else if (::isInArray(hdr, [ "aiTotalKills", "assists", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
       {
         local paramType = isEmpty ? null : ::g_mplayer_param_type.getTypeById(hdr)
         local txt = paramType ? paramType.printFunc(item, table[i]) : ""
@@ -874,7 +874,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
   function onActivateOrder()
   {
-    ::g_orders.openOrdersInventory()
+    ::g_orders.openOrdersInventory(true)
   }
 
   function updateTimeToKick(dt)
@@ -1474,7 +1474,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
         if (!isTeamplay)
           playerTeam = Team.A
 
-        setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, showAircrafts, customTbl) // warning disable: -param-pos
+        setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, showAircrafts, customTbl)
         if (!showLocalTeamOnly && playerTeam > 0)
           setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam, isShowEnemyAirs(), customTbl)
       }

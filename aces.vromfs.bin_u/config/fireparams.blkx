@@ -41,7 +41,7 @@
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.15,
-      "radiusScales": [0.2,0.6],
+      "radiusScales": [0.15,0.5],
       "maxFireTime": [5.0,90.0],
       "extinguishChance": 0.15,
       "allowMultipleFires": true,
@@ -72,7 +72,7 @@
       "checkAdditionalWater": true
     },
     "ship_compartment_destroyer": {
-      "damage": 16.0,
+      "damage": 20.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.15,
@@ -84,15 +84,14 @@
       "fxPresetName": "compartment_fire",
       "underwaterExtinguishTime": 8.0,
       "underwaterExtinguishAdditionalWater": 0.05,
-      "checkAdditionalWater": true,
-      "penetration": 3.0
+      "checkAdditionalWater": true
     },
     "ship_compartment_cruiser": {
-      "damage": 20.0,
+      "damage": 30.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.2,
-      "radiusScales": [0.3,0.6],
+      "radiusScales": [0.2,0.5],
       "maxFireTime": [10.0,45.0],
       "extinguishChance": 0.1,
       "allowMultipleFires": false,
@@ -100,8 +99,7 @@
       "fxPresetName": "compartment_fire",
       "underwaterExtinguishTime": 12.0,
       "underwaterExtinguishAdditionalWater": 0.05,
-      "checkAdditionalWater": true,
-      "penetration": 3.0
+      "checkAdditionalWater": true
     },
     "ship_compartment_battleship": {
       "damage": 50.0,
@@ -116,8 +114,7 @@
       "fxPresetName": "compartment_fire",
       "underwaterExtinguishTime": 12.0,
       "underwaterExtinguishAdditionalWater": 0.75,
-      "checkAdditionalWater": true,
-      "penetration": 3.0
+      "checkAdditionalWater": true
     },
     "ship_cover_cruiser": {
       "damage": 0.08,
@@ -199,32 +196,31 @@
       "checkAdditionalWater": true
     },
     "ship_engine_room": {
-      "damage": 112.0,
+      "damage": 30.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.2,
-      "radiusScales": [0.25,0.4],
-      "maxFireTime": [10.0,45.0],
+      "radiusScales": [0.2,0.35],
+      "maxFireTime": [10.0,90.0],
       "extinguishChance": 0.15,
       "allowMultipleFires": false,
       "underwaterExtinguishTime": 10.0,
       "underwaterExtinguishAdditionalWater": 0.03,
-      "checkAdditionalWater": true,
-      "penetration": 3.0
+      "checkAdditionalWater": true
     },
     "ship_boiler_room": {
-      "damage": 60.0,
+      "damage": 40.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.3,
       "radiusScales": [0.3,0.5],
-      "maxFireTime": [5.0,60.0],
+      "maxFireTime": [10.0,60.0],
       "extinguishChance": 0.15,
       "allowMultipleFires": false,
       "underwaterExtinguishTime": 10.0,
       "underwaterExtinguishAdditionalWater": 0.03,
       "checkAdditionalWater": true,
-      "penetration": 3.0
+      "penetration": 7.0
     },
     "ship_turrets": {
       "damage": 20.0,
@@ -239,47 +235,47 @@
       "penetration": 5.0
     },
     "ship_heavy_turrets": {
-      "damage": 51.0,
+      "damage": 50.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.3,
       "radiusScales": [0.3,0.5],
-      "maxFireTime": [3.0,35.0],
+      "maxFireTime": [3.0,30.0],
       "extinguishChance": 0.15,
       "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "turret_fire",
-      "penetration": 5.0
+      "penetration": 10.0
     },
     "ship_barbettes": {
       "damage": 75.0,
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.5,
-      "radiusScales": [0.2,0.8],
+      "radiusScales": [0.5,0.85],
       "maxFireTime": [1.0,45.0],
       "extinguishChance": 0.1,
       "allowMultipleFires": false,
       "allowMultipleFx": false,
       "fxPresetName": "compartment_fire",
-      "penetration": 5.0,
+      "penetration": 30.0,
       "underwaterExtinguishTime": 20.0,
       "underwaterExtinguishAdditionalWater": 0.75,
       "checkAdditionalWater": true
     },
     "ship_cruiser_barbettes": {
-      "damage": 51.0,
+      "damage": 50.0,
       "isDamageRelative": false,
       "damageType": "fire",
-      "radiusScale": 0.2,
-      "radiusScales": [0.2,0.8],
-      "maxFireTime": [1.0,30.0],
+      "radiusScale": 0.4,
+      "radiusScales": [0.4,1.0],
+      "maxFireTime": [1.0,45.0],
       "extinguishChance": 0.1,
       "allowMultipleFires": false,
       "allowMultipleFx": false,
       "fxPresetName": "compartment_fire",
-      "penetration": 5.0,
-      "underwaterExtinguishTime": 10.0,
+      "penetration": 30.0,
+      "underwaterExtinguishTime": 20.0,
       "underwaterExtinguishAdditionalWater": 0.75,
       "checkAdditionalWater": true
     },
@@ -359,16 +355,15 @@
       "isDamageRelative": false,
       "damageType": "fire",
       "radiusScale": 0.5,
-      "radiusScales": [0.5,0.8],
-      "maxFireTime": [5.0,30.0],
+      "radiusScales": [0.5,1.0],
+      "maxFireTime": [5.0,45.0],
       "extinguishChance": 0.1,
       "allowMultipleFires": false,
       "allowMultipleFx": true,
       "fxPresetName": "compartment_fire",
       "underwaterExtinguishTime": 5.0,
       "underwaterExtinguishAdditionalWater": 0.5,
-      "checkAdditionalWater": true,
-      "penetration": 5.0
+      "checkAdditionalWater": true
     },
     "ship_torpedo_fire": {
       "damage": 30.0,

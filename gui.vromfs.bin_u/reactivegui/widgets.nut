@@ -3,7 +3,6 @@ local widgetsState = require("widgetsState.nut")
 local hudState = require("hudState.nut")
 local hudUnitType = require("hudUnitType.nut")
 local shipHud = require("shipHud.nut")
-local shipHudTouch = require("reactiveGui/hud/shipHudTouch.nut")
 local shipExHud = require("shipExHud.nut")
 local tankExHud = require("tankExHud.nut")
 local shipObstacleRf = require("shipObstacleRangefinder.nut")
@@ -47,16 +46,6 @@ local widgetsMap = {
 
     else
       return null
-  },
-
-  [DargWidgets.HUD_TOUCH] = function() {
-    if (!globalState.isInFlight.value)
-      return null
-
-    if (hudUnitType.isShip())
-      return shipHudTouch
-    else
-      return this[DargWidgets.HUD]()
   },
 
   [DargWidgets.SHIP_OBSTACLE_RF] = function () {

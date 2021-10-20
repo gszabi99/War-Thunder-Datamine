@@ -1,4 +1,4 @@
-from "%darg/ui_imports.nut" import *
+from "%sqstd/functools.nut" import pipe
 from "ecs" import *
 local string = require("string")
 local dagorMath = require("dagor.math")
@@ -186,13 +186,11 @@ local function compValToString(v, max_cvstr_len = 80){
     : (map_type_to_str?[type(v)]?(v) ?? v.tostring())
 }
 
-local function getValFromObj(eid, comp_name, path=null){
-  local object = obsolete_dbg_get_comp_val(eid, comp_name)
-  object = object?.getAll() ?? object
+local function getValFromObj(object, path=null){
   local res = object
   foreach (key in (path ?? [])) {
-    if (key in res) {
-      res = res[key]
+    if (res?[key] != null || key in object || object?.indexof(key)!=null) {
+      res = res?[key]
     }
     else
       break
@@ -200,8 +198,7 @@ local function getValFromObj(eid, comp_name, path=null){
   return res
 }
 
-local function setValToObj(eid, comp_name, path, val){
-  local object = obsolete_dbg_get_comp_val(eid, comp_name).getAll()
+local function setValToObj(object, path, val){
   local res = object
   local lastkey = path?[path.len()-1]
   local lasfoundIdx = -1
@@ -219,7 +216,6 @@ local function setValToObj(eid, comp_name, path, val){
   if (lasfoundIdx == path.len()-1) {
     res[lastkey] = val
   }
-  obsolete_dbg_set_comp_val(eid, comp_name, object)
 }
 
 local exports = {

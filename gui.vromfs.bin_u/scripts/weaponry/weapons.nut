@@ -24,7 +24,6 @@ local { isBullets, getBulletsList, setUnitLastBullets,
   getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TAG,
         getLastWeapon,
-        validateLastWeapon,
         setLastWeapon,
         checkUnitBullets,
         checkUnitSecondaryWeapons,
@@ -44,16 +43,14 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::tooltip_display_delay <- 2
 ::max_spare_amount <- 100
 
-::enable_modifications <- function enable_modifications(unitName, modNames, enable)
+::enable_modification <- function enable_modification(unitName, modificationName, enable)
 {
-  modNames = modNames?.filter(@(n) n != "")
-  if ((modNames?.len() ?? 0) == 0)
-    return
+  if (modificationName == "")
+    return;
 
   local db = ::DataBlock()
   db[unitName] <- ::DataBlock()
-  foreach (modName in modNames)
-    db[unitName][modName] <- enable
+  db[unitName][modificationName] <- enable
   return ::shop_enable_modifications(db)
 }
 
@@ -437,7 +434,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onEventSlotbarPresetLoaded(params) { onSlotbarSelect() }
   function onEventCrewsListChanged(params) { onSlotbarSelect() }
 
-  function onEventUnitWeaponChanged(params = null)
+  function onEventUnitWeaponChanged(params)
   {
     if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWnd(air)) {
       updateAllItems()
@@ -910,7 +907,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isUnitHaveSecondaryWeapons(air))
     {
       local secondaryWeapons = getSecondaryWeaponsList(air)
-      lastWeapon = validateLastWeapon(airName) //real weapon or ..._default
+      lastWeapon = getLastWeapon(airName) //real weapon or ..._default
       dagor.debug("initial set lastWeapon " + lastWeapon )
       if (needSecondaryWeaponsWnd(air)) {
         local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
@@ -1468,22 +1465,19 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doSwitchMod(item, equipped)
   {
+    local wndUpdateItems = ::Callback(function() {
+      updateAllItems()
+      unstickCurBundle()
+    }, this)
+
     local taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
-      ::broadcastEvent("ModificationChanged")
+      ::broadcastEvent("ModificationChanged", {unit = air, modName = item.name})
+      wndUpdateItems()
     }) (air, item)
 
-    local taskId = enable_modifications(airName, [item.name], !equipped)
+    local taskId = enable_modification(airName, item.name, !equipped)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
-  }
-
-  function onEventModificationChanged(p) {
-    doWhenActiveOnce("updateAllItems")
-    doWhenActiveOnce("unstickCurBundle")
-
-    local curWeapon = validateLastWeapon(airName)
-    if (curWeapon != lastWeapon)
-      doWhenActiveOnce("onEventUnitWeaponChanged")
   }
 
   function checkSaveBulletsAndDo(func)

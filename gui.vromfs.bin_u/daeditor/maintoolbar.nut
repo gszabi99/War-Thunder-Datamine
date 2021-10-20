@@ -1,11 +1,11 @@
 from "%darg/ui_imports.nut" import *
-from "%darg/laconic.nut" import *
 local {showEntitySelect, propPanelVisible, showHelp, de4editMode, showUIinEditor} = require("state.nut")
 local pictureButton = require("components/pictureButton.nut")
 local cursors =  require("components/cursors.nut")
 local daEditor4 = require("daEditor4")
-local {DE4_MODE_CREATE_ENTITY, get_instance} = require("entity_editor")
+local entity_editor = require("entity_editor")
 local {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_SELECT, getEditMode, setEditMode} = daEditor4
+local {DE4_MODE_CREATE_ENTITY} = entity_editor
 
 local function toolbarButton(image, action, tooltip_text, checked=null) {
   local function onHover(on) {
@@ -67,7 +67,8 @@ local function mainToolbar() {
     padding =hdpx(4)
 
     children = [
-//      comp(Watch(scenePath), txt(scenePath.value, {color = Color(170,170,170), padding=[0, hdpx(10)], maxWidth = sw(15)}), ClipChildren)
+      {size=[sw(10), 1]} //< padding to move away from FPS counter
+
       toolbarButton(svg("select_by_name"), toggleEntitySelect, "Select by name", showEntitySelect.value)
       separator
       modeButton(svg("select"), DE4_MODE_SELECT, "Select")
@@ -77,12 +78,12 @@ local function mainToolbar() {
       modeButton(svg("create"), DE4_MODE_CREATE_ENTITY, "Create entity")
       separator
       toolbarButton(svg("properties"), togglePropPanel, "Property panel", propPanelVisible.value)
-      toolbarButton(svg("hide"), @() get_instance().hideSelectedTemplate(), "Hide")
-      toolbarButton(svg("show"), @() get_instance().unhideAll(), "Unhide all")
+      toolbarButton(svg("hide"), @() entity_editor.get_instance().hideSelectedTemplate(), "Hide")
+      toolbarButton(svg("show"), @() entity_editor.get_instance().unhideAll(), "Unhide all")
       separator
       toolbarButton(svg("gui_toggle"), @() showUIinEditor(!showUIinEditor.value), "Switch UI visibility")
       separator
-      toolbarButton(svg("save"), @() get_instance().saveObjects(""), "Save")
+      toolbarButton(svg("save"), @() entity_editor.get_instance().saveObjects(""), "Save")
       toolbarButton(svg("help"), toggleHelp, "Help", showHelp.value)
     ]
 
