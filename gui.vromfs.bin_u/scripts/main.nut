@@ -558,6 +558,9 @@ local isFullScriptsLoaded = false
   }
 }
 
+if (::is_platform_pc && !::isProductionCircuit() && getSystemConfigOption("debug/netLogerr") == null)
+  ::setSystemConfigOption("debug/netLogerr", true)
+
 if (::g_login.isAuthorized() //scripts reload
     || ::should_disable_menu())
 {
