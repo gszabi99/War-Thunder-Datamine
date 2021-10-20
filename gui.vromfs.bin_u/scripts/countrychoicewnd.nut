@@ -374,7 +374,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
    * required to create newbie presets.
    * @see ::slotbarPresets.newbieInit(...)
    */
-  function createNewbiePresetsData(selCountry, selUnitType)
+  function createNewbiePresetsData()
   {
     local presetDataItems = []
     local selEsUnitType = ::ES_UNIT_TYPE_INVALID
@@ -404,14 +404,17 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
           tasksData = tasksData
         })
 
-        if (hasUnits
-            && (unitType == selUnitType || selEsUnitType == ::ES_UNIT_TYPE_INVALID))
-          selEsUnitType = unitType.esUnitType
+        if (hasUnits) {
+          selectedCountry = selectedCountry ?? country
+          selectedUnitType = selectedUnitType ?? unitType
+          if (unitType == selectedUnitType || selEsUnitType == ::ES_UNIT_TYPE_INVALID)
+            selEsUnitType = unitType.esUnitType
+        }
       }
     }
     return {
       presetDataItems = presetDataItems
-      selectedCountry = selCountry
+      selectedCountry = selectedCountry
       selectedUnitType = selEsUnitType
     }
   }
@@ -455,7 +458,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function goBack()
   {
-    local presetsData = createNewbiePresetsData(selectedCountry, selectedUnitType)
+    local presetsData = createNewbiePresetsData()
     local handler = this
     clnSetStartingInfo(presetsData, (@(presetsData, handler) function () {
         // This call won't procude any additional char-requests

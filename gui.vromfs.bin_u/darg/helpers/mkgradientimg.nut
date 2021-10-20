@@ -15,7 +15,7 @@ local blendModesPrefix = {
 
 local function mkGradPointStyle(point, idx, points){
   local offset = point?.offset ?? (100 * idx/(points.len()-1))
-  assert(offset<=100 && offset >=0 && (["integer", "float"].contains(type(offset))))
+//  assert(offset<=100 && offset >=0 && (["integer", "float"].contains(type(offset))))
   local color = point?.color
   if (color==null && type(point)=="array")
     color = point
@@ -44,7 +44,7 @@ local function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null
   assert(width>1 && height>1 && width+height > 15, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)
-    transform = " ".join(transform.reduce(@(prev, v, k) prev.append($"{k}({v}))", [])))
+    transform = " ".join(transform.reduce(function(prev, v, k) {prev.append($"{k}({v}))"); return prev;}, []))
   local gradientTransformStr = transform!=null ? $"gradientTransform='{transform}'" : ""
   local header = $"<svg xmlns='http://www.w3.org/2000/svg' version='1.1'><defs>\n  <linearGradient spreadMethod='{spreadMethod}' id='gradient' {gradientTransformStr} x1='{x1}' y1='{y1}' x2='{x2}' y2='{y2}'>"
   local footer = $"  </linearGradient>\n</defs>\n<rect width='{width}' height='{height}' y='0' x='0' fill='url(#gradient)'/></svg>"
@@ -65,7 +65,7 @@ local function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r
   assert(width>1 && height>1 && width+height > 15, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)
-    transform = " ".join(transform.reduce(@(prev, v, k) prev.append($"{k}({v}))", [])))
+    transform = " ".join(transform.reduce(function(prev, v, k) {prev.append($"{k}({v}))"); return prev;}, []))
   local focus = " ".join([
     fx != null ? $"fx='{fx}'" : "",
     fy != null ? $"fy='{fy}'" : ""
@@ -89,10 +89,19 @@ local green = [0, 255, 0]
 local blue = [0, 0, 255]
 {
   rendObj = ROBJ_IMAGE
-  image = mkRadialGradientImg({points=[red, {color = green, offset=66}, blue], width=256, height=256}))
+  image = mkRadialGradientImg({points=[red, {color = green, offset=66}, blue], width=256, height=256, transform = {rotate = 90}}))
   size = flex()
 }
 */
+local   mkRadialGradSvgTxt = kwarg(mkRadialGradSvgTxtImpl)
+
+print(mkRadialGradSvgTxt({
+          points = [{offset = 90 color = [255,255,255,255]}, {offset = 100 color = [0, 0, 0, 190]}]
+          width = 16
+          height = 128
+          transform = {rotate = 90}
+          premultiplied = true
+        }))
 
 local mkRadialGradientImg = kwarg(function(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_PREMULTIPLIED){
   local svg = mkRadialGradSvgTxtImpl(points, width, height, cx,cy,r,fx,fy, spreadMethod, transform)

@@ -148,13 +148,11 @@ local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 // Public methods
 //
 
-g_orders.openOrdersInventory <- function openOrdersInventory(checkOrdersToActivate)
+g_orders.openOrdersInventory <- function openOrdersInventory()
 {
-  if (checkOrdersToActivate && !::g_orders.hasOrdersToActivate())
-  {
-    ::showInfoMsgBox(::loc("items/order/noOrdersAvailable"), "no_orders_available")
-    return
-  }
+  if (!::g_orders.orderCanBeActivated())
+    return ::showInfoMsgBox(::g_orders.getWarningText(), "orders_cant_be_activated")
+
   ::gui_start_order_activation_window()
 }
 
@@ -187,6 +185,8 @@ g_orders.getWarningText <- function getWarningText(selectedOrderItem = null)
 {
   if (hasActiveOrder)
     return ::loc("items/order/activateOrderWarning/hasActiveOrder")
+  if (!::g_orders.hasOrdersToActivate())
+    return ::loc("items/order/noOrdersAvailable")
   local timeleft = getCooldownTimeleft()
   if (timeleft > 0)
   {

@@ -220,6 +220,8 @@
           "text": "#mainmenu/considerCameraVerticalAngle",
           "on_change_value": "onConsiderVerticalAngle",
           "btnName": "R3",
+          "display": "hide",
+          "enable": "no",
           "ButtonImg": [],
           "CheckBoxImg": []
         }
@@ -227,18 +229,20 @@
       {
         "tdiv": {
           "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-          "CheckBox": {
-            "id": "checkboxProtectionMap",
+          "Button_text": {
+            "id": "btnProtectionMap",
             "position": "relative",
             "text": "#mainmenu/protectionMap",
-            "on_change_value": "onProtectionMap",
+            "on_click": "onProtectionMap",
             "btnName": "X",
-            "ButtonImg": [],
-            "CheckBoxImg": []
+            "noMargin": "yes",
+            "display": "hide",
+            "enable": "no",
+            "ButtonImg": []
           },
           "tdiv": {
             "id": "pa_info_block",
-            "height": "@checkboxSize",
+            "height": "1@buttonHeight",
             "display": "hide",
             "text": {
               "id": "pa_wait_text",

@@ -1,4 +1,4 @@
-local SqratDataBlock = require("DataBlock")
+local { isDataBlock } = require("std/underscore.nut")
 
 //to use table by DataBlock api
 //Only get Data from table, not set.
@@ -13,13 +13,6 @@ local SqratDataBlock = require("DataBlock")
 // paramCount
 // getParamValue(i)
 // getParamName(i)
-
-::can_be_readed_as_datablock <- function can_be_readed_as_datablock(blk)
-{
-  return blk instanceof ::DataBlock
-      || blk instanceof ::DataBlockAdapter
-      || blk instanceof SqratDataBlock
-}
 
 ::DataBlockAdapter <- class
 {
@@ -92,7 +85,7 @@ local SqratDataBlock = require("DataBlock")
     if (!(key in ___originData___))
       return null
     local realVal = ___checkReturn___(___originData___[key], key)
-    if (!::can_be_readed_as_datablock(realVal))
+    if (!isDataBlock(realVal))
       return null
     return realVal
   }
@@ -103,7 +96,7 @@ local SqratDataBlock = require("DataBlock")
     if (realVal == null)
       return
 
-    if (::can_be_readed_as_datablock(realVal))
+    if (isDataBlock(realVal))
     {
       ___blocksList___.append(realVal)
       return
@@ -168,5 +161,17 @@ local SqratDataBlock = require("DataBlock")
     ___initCountsOnce___()
     ___blocksList___.append(val)
     return val
+  }
+
+  function formatAsString()
+  {
+    local res = []
+    ::debugTableData(___originData___, {
+      recursionLevel = 4,
+      showBlockBrackets = true,
+      silentMode = true,
+      printFn = @(str) res.append(str)
+    })
+    return "".concat($"{getBlockName()} = DataBlockAdapter ", "\n".join(res))
   }
 }

@@ -136,20 +136,10 @@ missionGenFunctions.append( function (isFreeFlight)
 //  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_temp.blk");
   ::mgSetEffShootingRate(0.1);
 
- local sector = ::mgGetMissionSector();
- local level = ::mgGetLevelName();
+  if (playerFighterPlane == "" || enemyFighterPlane == "")
+    return
 
- local player_plane_name = "";
- local enemy_plane_name = "";
- if (playerFighterPlane != "" && enemyFighterPlane != "")
- {
-   player_plane_name = ::mgUnitClassFromDescription(playerFighterPlane);
-   enemy_plane_name = ::mgUnitClassFromDescription(enemyFighterPlane);
- }
- else
-   return;
-
- ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, "air");
+  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
 
   if (::mgFullLogs())
     dagor.debug_dump_stack();

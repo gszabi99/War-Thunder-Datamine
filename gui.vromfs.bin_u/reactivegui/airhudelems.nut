@@ -17,7 +17,8 @@ local {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState, IsCannonEmpty,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
-  IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudColor, HudParamColor, MfdColor
+  IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudColor, HudParamColor, MfdColor,
+  TargetPodHudColor
 } = require("airState.nut")
 
 local {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor, isColorOrWhite} = require("style/airHudStyle.nut")
@@ -449,17 +450,18 @@ local function getFuelAlertState(fuelState){
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-local function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false) {
+local function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false, isTargetPodView = false) {
   local {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
 
-  local selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
+  local selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor, targetPodColor) {
     return (state == HudColorState.PASSIV) ? passivColor
       : (state == HudColorState.LOW_ALERT) ? lowAlertColor
       : (state == HudColorState.MEDIUM_ALERT) ? mediumAlertColor
       : (state == HudColorState.HIGH_ALERT) ? highAlertColor
       : isBackground ? backgroundColor
       : isBomberView ? isColorOrWhite(activeColor)
+      : isTargetPodView ? targetPodColor
       : activeColor
   }
 
@@ -467,7 +469,7 @@ local function createParam(param, width, height, isBackground, style, needCaptio
   local finalTitleSizeX = ::max(captionSizeX() + 0.1 * width, 0.4 * width)
 
   local colorAlertCaptionW = Computed(@() selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
-    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
+    AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value))
 
   local captionComponent = @() style.__merge({
     rendObj = ROBJ_DTEXT
@@ -489,7 +491,7 @@ local function createParam(param, width, height, isBackground, style, needCaptio
 
   local valueComponent = @() style.__merge({
     color = for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
-      AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value)
+      AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value)
     rendObj = ROBJ_DTEXT
     size = [valueSizeX() + 0.075 * width, height]
     watch = [valueComputed, alertValueStateComputed, HudParamColor, PassivColor,
@@ -852,12 +854,12 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 local fuelKeyId = AirParamsSecondary.FUEL
 
 local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, style = styleText) {
-  local function getChildren(isBackground, style, isBomberView = false) {
+  local function getChildren(isBackground, style, isBomberView = false, isTargetPod = false) {
     local children = []
 
     foreach(key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_DTEXT
@@ -869,7 +871,7 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -884,13 +886,13 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
 
     foreach(key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, isBackground, style, needCaption, forIls, isBomberView, isTargetPod))
     }
 
     return children
   }
 
-  return function(isBackground, style = styleText, isBomberView = false ) {
+  return function(isBackground, isTargetPod = false, style = styleText, isBomberView = false ) {
     return {
       children = @() style.__merge({
         watch = [mainMask, secondaryMask, posWatched]
@@ -898,7 +900,7 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
         size = [width, SIZE_TO_CONTENT]
         flow = FLOW_VERTICAL
         gap = gap
-        children = getChildren(isBackground, style, isBomberView)
+        children = getChildren(isBackground, style, isBomberView, isTargetPod)
       })
     }
   }
@@ -1025,7 +1027,7 @@ local function getAgmLaunchDistanceRangeCommands(visible, enabled, distMin, dist
 
 
 
-local function turretAngles(colorWatch, width, height, aspect, isBackground) {
+local function turretAngles(colorWatch, width, height, aspect, isBackground, blinkDuration = 0.5) {
 
   local offset = 1.3
   local crossL = 2
@@ -1083,7 +1085,7 @@ local function turretAngles(colorWatch, width, height, aspect, isBackground) {
             ]
             commands = getAgmLaunchAngularRangeCommands(IsAgmLaunchZoneVisible.value, AgmLaunchZoneYawMin.value, AgmLaunchZoneYawMax.value,
               AgmLaunchZonePitchMin.value, AgmLaunchZonePitchMax.value)
-            animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, play = atgmLaunchZoneBlinking.value,
+            animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchZoneBlinking.value,
               loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger}]
           }) : null,
       isAtgmGuidanceRangeVisible.value
@@ -1100,7 +1102,7 @@ local function turretAngles(colorWatch, width, height, aspect, isBackground) {
             color = colorWatch.value
             commands = getAgmGuidanceRangeCommands(IsAgmLaunchZoneVisible.value, AgmRotatedLaunchZoneYawMin.value, AgmRotatedLaunchZoneYawMax.value,
               AgmRotatedLaunchZonePitchMin.value, AgmRotatedLaunchZonePitchMax.value)
-            animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, play = atgmLaunchZoneBlinking.value,
+            animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchZoneBlinking.value,
               loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger}]
           }) : null,
         isAtgmGuidanceRangeVisible.value
@@ -1117,7 +1119,7 @@ local function turretAngles(colorWatch, width, height, aspect, isBackground) {
               ]
               commands = getAgmLaunchDistanceRangeCommands(IsAgmLaunchZoneVisible.value, IsRangefinderEnabled.value,
                 AgmLaunchZoneDistMin.value, AgmLaunchZoneDistMax.value, RangefinderDist.value)
-              animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, play = atgmLaunchDistanceblinking.value,
+              animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchDistanceblinking.value,
                 loop = true, easing = InOutSine, trigger = atgmLaunchDistanceTrigger}]
             }) : null
     ]
@@ -1186,11 +1188,11 @@ local helicopterRocketAim = @(width, height, isBackground, color, style = styleL
 }
 
 local turretAnglesAspect = 2.0
-local turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBackground) {
+local turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBackground, blinkDuration = 0.5) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
     size = SIZE_TO_CONTENT
-    children = turretAngles(colorWatch, width, height, turretAnglesAspect, isBackground)
+    children = turretAngles(colorWatch, width, height, turretAnglesAspect, isBackground, blinkDuration)
   }
 }
 

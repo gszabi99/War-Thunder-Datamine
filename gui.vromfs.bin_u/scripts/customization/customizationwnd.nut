@@ -2386,6 +2386,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     // clear only when closed by player to can go through test fly with previewed skin
     ::g_decorator.clearLivePreviewParams()
     guiScene.performDelayed(this, base.goBack)
+    ::hangar_focus_model(false)
   }
 
   function onDestroy()

@@ -55,7 +55,7 @@ local SquadApplicationsList = class
       if (!(squadId in applicationsList))
       {
         leadersArr.append(squadId)
-        addApplication(squadId, squadId, false)
+        addApplication(squadId, squadId, false) // warning disable: -param-pos
         isEventNeed = true
       }
     }

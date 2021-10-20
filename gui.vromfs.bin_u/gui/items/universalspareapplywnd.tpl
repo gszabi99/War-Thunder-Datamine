@@ -109,6 +109,7 @@ popup_menu {
     }
     navRight{
       Button_text {
+        id:t='buttonActivate'
         text:t='#msgbox/btn_activate'
         on_click:t='onActivate'
         btnName:t='A'
@@ -120,4 +121,11 @@ popup_menu {
   <<#hasPopupMenuArrow>>
   popup_menu_arrow{}
   <</hasPopupMenuArrow>>
+}
+
+timer
+{
+  id:t='update_timer'
+  timer_handler_func:t='onTimer'
+  timer_interval_msec:t='1000'
 }

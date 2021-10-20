@@ -41,6 +41,7 @@ local compModeGraphicsOptions = {
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
     shadows           = { compMode = true }
+    compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
     dlss              = { compMode = false }
@@ -86,6 +87,7 @@ local mUiStruct = [
       "perfMetrics"
       "texQuality"
       "shadowQuality"
+      "compatibilityShadowQuality"
       "fxResolutionQuality"
       "backgroundScale"
       "cloudsQuality"
@@ -341,6 +343,7 @@ local function localize(optionId, valueId) {
     case "graphicsQuality":
     case "texQuality":
     case "shadowQuality":
+    case "compatibilityShadowQuality":
     case "fxResolutionQuality":
     case "tireTracksQuality":
     case "waterQuality":
@@ -850,8 +853,11 @@ mSettings = {
     }
     values =   [ "low", "medium", "high" ]
   }
-  shadowQuality= { widgetType="list" def="high" blk="graphics/shadowQuality" restart=false
+  shadowQuality = { widgetType="list" def="high" blk="graphics/shadowQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
+  }
+  compatibilityShadowQuality = { widgetType="list" def="low" blk="graphics/compatibilityShadowQuality" restart=false
+    values = [ "ultralow", "low", "medium" ]
   }
   fxResolutionQuality= { widgetType="list" def="high" blk="graphics/fxTarget" restart=false
     onChanged = "fxResolutionClick"

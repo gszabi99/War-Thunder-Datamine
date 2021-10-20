@@ -116,29 +116,26 @@
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "hull": {
-        "turret_front_dm": {
-          "armorThickness": 50.0
-        },
         "superstructure_side_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 16.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 18.0
         },
         "body_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 16.0
         },
         "body_side_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 16.0
         },
         "body_back_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 14.0
         },
         "body_top_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 8.0
         },
         "turret_side_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 14.0
         },
         "superstructure_bottom_dm": {
           "armorThickness": 8.0
@@ -147,10 +144,10 @@
           "armorThickness": 10.0
         },
         "turret_top_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 8.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 20.0,
+          "armorThickness": 16.0,
           "armorClass": "CHA_tank"
         },
         "turret_01_side_dm": {
@@ -170,14 +167,14 @@
           "armorThickness": 20.0
         },
         "turret_commander_dm": {
-          "armorThickness": 10.0,
+          "armorThickness": 12.0,
           "armorClass": "CHA_tank"
         },
         "body_bottom_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 12.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 14.0
         },
         "turret_bottom_dm": {
           "armorThickness": 12.7
@@ -1839,7 +1836,7 @@
           "parkInDeadzone": false,
           "speedYaw": 90.0,
           "speedPitch": 90.0,
-          "bullets": 2500,
+          "bullets": 800,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
@@ -1856,7 +1853,7 @@
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "commander_dm"
           },
           "limits": {
             "yaw": [-45.0,45.0],
@@ -1903,7 +1900,7 @@
             "fireConeAngle": 15.0
           },
           {
-            "bullets": 3000
+            "bullets": 1500
           },
           {
             "isBulletBelt": true
@@ -2189,6 +2186,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -2196,6 +2200,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2221,6 +2228,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2330,6 +2340,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2558,6 +2571,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

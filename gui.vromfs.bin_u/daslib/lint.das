@@ -1,0 +1,71 @@
+options indenting = 4
+options no_unused_block_arguments = false
+options no_unused_function_arguments = false
+options no_aot = true
+
+module lint shared private
+
+require daslib/strings_boost
+require daslib/ast_boost
+require daslib/strings_boost
+
+[lint_macro]
+class LintEverything : AstPassMacro
+    def override apply ( prog:ProgramPtr; mod:Module? ) : bool
+        paranoid(prog, true)
+        return true
+
+class LintVisitor : AstVisitor
+    astVisitorAdapter : smart_ptr<ast::VisitorAdapter>
+    exprForTerminator : array<uint64>
+    compile_time_errors : bool
+    noLint : bool = false
+    def LintVisitor()
+        pass
+    def lint_error ( text:string; at:LineInfo ) : void
+        if noLint
+            return
+        if compile_time_errors
+            compiling_program() |> macro_error(at, text)
+        else
+            error("{text} at {describe(at)}\n")
+    def override preVisitFunction(fun:FunctionPtr) : void
+        noLint = false
+        for ann in fun.annotations
+            if eq(ann.annotation.name,"no_lint")
+                noLint = true
+                break
+    def override visitFunction(fun:FunctionPtr) : FunctionPtr
+        noLint = false
+        return fun
+    def override preVisitExprBlock(blk:smart_ptr<ExprBlock>) : void
+        exprForTerminator |> push(0ul)
+    def override visitExprBlock(blk:smart_ptr<ExprBlock>) : ExpressionPtr
+        exprForTerminator |> pop()
+        return blk
+    def override visitExprBlockExpression(blk:smart_ptr<ExprBlock>;expr:ExpressionPtr) : ExpressionPtr
+        let lb = exprForTerminator |> back()
+        if lb != 0ul
+            let eb = intptr(get_ptr(expr))
+            if lb != eb
+                self->lint_error("unreachable code", expr.at)
+        return expr
+    def override preVisitExprLabel(expr:smart_ptr<ExprLabel>) : void
+        exprForTerminator |> pop()
+        exprForTerminator |> push(0ul)
+    def override preVisitExprReturn(expr:smart_ptr<ExprReturn>) : void
+        exprForTerminator |> pop()
+        exprForTerminator |> push(intptr(get_ptr(expr)))
+    def override preVisitExprCall(expr:smart_ptr<ExprCall>): void
+        if expr.name |> eq <| "panic" && expr.func._module.name |> eq <| "$"
+            exprForTerminator |> pop()
+            exprForTerminator |> push(intptr(get_ptr(expr)))
+
+def public paranoid ( prog:ProgramPtr; compile_time_errors : bool )
+    var astVisitor = new [[LintVisitor() compile_time_errors=compile_time_errors]]
+    unsafe
+        astVisitor.astVisitorAdapter <- make_visitor(*astVisitor)
+    visit ( prog, astVisitor.astVisitorAdapter )
+    astVisitor.astVisitorAdapter := null
+    unsafe
+        delete astVisitor

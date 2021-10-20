@@ -2,6 +2,9 @@
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
+    "ri_preload:GpuObjectRiResourcePreload": {
+      "_tags": "render"
+    },
     "ri_gpu_object.node_based_shader_preload": {
       "_tags": "render"
     },
@@ -136,10 +139,13 @@
       "light.nightly": true
     },
     {
-      "_tracked": "^(spot_light\\..*)$"
+      "light.texture_name": ""
     },
     {
-      "_replicated": "^(spot_light\\..*)$"
+      "_tracked": "^(light\\.texture_name|spot_light\\..*)$"
+    },
+    {
+      "_replicated": "^(light\\.texture_name|spot_light\\..*)$"
     },
     {
       "spot_light": {
@@ -203,6 +209,106 @@
       "omni_light:_namespace": []
     }
   ],
+  "field_light_orange_large": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 3.0
+    },
+    {
+      "light.max_radius": 2.0
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_orange_extralarge": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 50.0
+    },
+    {
+      "light.max_radius": 200.0
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_orange_medium": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 10.0
+    },
+    {
+      "light.max_radius": 20.0
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_orange_small": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 1.0
+    },
+    {
+      "light.max_radius": 1.0
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_orange_smallest": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 0.3
+    },
+    {
+      "light.max_radius": 1.0
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
   "field_light_blue": [
     {
       "_extends": "field_light_orange"
@@ -217,6 +323,29 @@
       "omni_light:_namespace": []
     }
   ],
+  "field_light_blue_extralarge": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 10.0
+    },
+    {
+      "light.max_radius": 100.0
+    },
+    {
+      "light.color": "#3232ffff"
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
   "field_light_red": [
     {
       "_extends": "field_light_orange"
@@ -226,6 +355,52 @@
     },
     {
       "light.color": "#f05032ff"
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_red_extralarge": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 10.0
+    },
+    {
+      "light.max_radius": 100.0
+    },
+    {
+      "light.color": "#f05032ff"
+    },
+    {
+      "light.contact_shadows": false
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_green_extralarge": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 10.0
+    },
+    {
+      "light.max_radius": 100.0
+    },
+    {
+      "light.color": "#0a961eff"
+    },
+    {
+      "light.contact_shadows": false
     },
     {
       "omni_light:_namespace": []

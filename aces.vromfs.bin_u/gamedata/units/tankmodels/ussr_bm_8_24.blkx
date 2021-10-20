@@ -1766,8 +1766,18 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.018,
-        "width": 0.24
+        "height": 0.04,
+        "width": 0.24,
+        "tracksTensionK": [8.0,10.0,6.0],
+        "trackMesh": "ussr_010_07_100_phys_track_line",
+        "trackLen": 0.098,
+        "trackCount": 90,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxHeight": 1.06,
+        "trackMaxSinking": 0.05,
+        "trackStartOffset": 0.14,
+        "trackEmitSparks": true
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -1811,7 +1821,17 @@
         "defaultGearRadius": 0.27,
         "frontBackGearRadius": 0.2,
         "topGearRadius": 0.1,
-        "defaultDampeningForce": [150000.0,150000.0]
+        "defaultDampeningForce": [150000.0,150000.0],
+        "wheel_r_drive": 0.255,
+        "wheel_l_drive": 0.255,
+        "wheel_r_back": 0.235,
+        "wheel_l_back": 0.235,
+        "wheel_l_top_01": 0.12,
+        "wheel_l_top_02": 0.12,
+        "wheel_l_top_03": 0.12,
+        "wheel_r_top_01": 0.12,
+        "wheel_r_top_02": 0.12,
+        "wheel_r_top_03": 0.12
       }
     }
   },
@@ -1977,6 +1997,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -1984,6 +2011,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2009,6 +2039,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2118,6 +2151,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2346,6 +2382,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

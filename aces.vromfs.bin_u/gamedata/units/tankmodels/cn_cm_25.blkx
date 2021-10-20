@@ -2444,6 +2444,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -2451,6 +2458,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2476,6 +2486,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2585,6 +2598,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2813,6 +2829,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3598,10 +3621,10 @@
           "defaultPitch": 0.0,
           "allowableDelta": 20.0,
           "barrelDP": "gun_barrel_dm",
-          "speedYaw": 18.0,
-          "speedPitch": 8.0,
-          "yawSpdLowBattery": 18.0,
-          "pitchSpdLowBattery": 8.0,
+          "speedYaw": 30.0,
+          "speedPitch": 30.0,
+          "yawSpdLowBattery": 30.0,
+          "pitchSpdLowBattery": 30.0,
           "fireConeAngle": 1.0,
           "bullets": 10,
           "salvoAmount": 100.0,
@@ -3748,10 +3771,10 @@
                 "defaultPitch": 0.0,
                 "allowableDelta": 20.0,
                 "barrelDP": "gun_barrel_dm",
-                "speedYaw": 18.0,
-                "speedPitch": 8.0,
-                "yawSpdLowBattery": 18.0,
-                "pitchSpdLowBattery": 8.0,
+                "speedYaw": 30.0,
+                "speedPitch": 30.0,
+                "yawSpdLowBattery": 30.0,
+                "pitchSpdLowBattery": 30.0,
                 "fireConeAngle": 1.0,
                 "bullets": 10,
                 "salvoAmount": 100.0,

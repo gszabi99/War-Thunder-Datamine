@@ -1302,11 +1302,11 @@ const AFTERBURNER_CHAMBER = 3
           }
         }
 
-        if (partId == "optic_gun")
-        {
+        if (partId == "optic_gun") {
           local info = unitBlk?.cockpit
-          if (info?.sightName)
-            desc.extend(getOpticsDesc(info))
+          local cockpitMod = findAnyModEffectValue("cockpit");
+          if (info?.sightName || cockpitMod?.sightName)
+            desc.extend(getOpticsDesc(info, cockpitMod))
         }
         break
 
@@ -1689,12 +1689,16 @@ const AFTERBURNER_CHAMBER = 3
     }
   }
 
-  function getOpticsDesc(info)
-  {
+  function getOpticsDesc(info, mod = null) {
     local desc = []
-    if (info?.sightName)
-      desc.append(::loc($"sight_model/{info.sightName}", ""))
-    local optics = getOpticsParams(info?.zoomOutFov ?? 0, info?.zoomInFov ?? 0)
+    local sightName = mod && mod?.sightName
+      ? mod?.sightName
+      : info?.sightName
+    if (sightName)
+      desc.append(::loc($"sight_model/{sightName}", ""))
+    local zoomOutFov = mod?.zoomOutFov ?? (info?.zoomOutFov ?? 0)
+    local zoomInFov = mod?.zoomInFov ?? (info?.zoomInFov ?? 0)
+    local optics = getOpticsParams(zoomOutFov, zoomInFov)
     if (optics.zoom != "")
       desc.append("".concat(::loc("optic/zoom"), ::loc("ui/colon"), optics.zoom))
     if (optics.fov != "")
@@ -1849,6 +1853,8 @@ const AFTERBURNER_CHAMBER = 3
     return { isPrimary = true, isSecondary = false, isMachinegun = false }
   }
 
+  getSign = @(n) n < 0 ? -1 : 1
+
   function getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, needAxisX, needAxisY)
   {
     local desc = []
@@ -1864,14 +1870,18 @@ const AFTERBURNER_CHAMBER = 3
     local horizontalLabel = "shop/angleHorizontalGuidance"
 
     foreach (g in [
-      { need = needAxisX, angles = weaponInfoBlk?.limits?.yaw,   label = isInverted ? verticalLabel : horizontalLabel, canSwap = true }
-      { need = needAxisY, angles = weaponInfoBlk?.limits?.pitch, label = isInverted ? horizontalLabel : verticalLabel, canSwap = false }
+      { need = needAxisX, angles = weaponInfoBlk?.limits.yaw,   label = isInverted ? verticalLabel   : horizontalLabel, canSwap = true  }
+      { need = needAxisY, angles = weaponInfoBlk?.limits.pitch, label = isInverted ? horizontalLabel : verticalLabel,   canSwap = false }
     ]) {
       if (!g.need || (!g.angles?.x && !g.angles?.y))
         continue
-      local anglesText = (g.angles.x + g.angles.y == 0) ? ::format("±%d%s", g.angles.y, deg)
-        : (isSwaped && g.canSwap ? ::format("-%d%s/+%d%s", ::abs(g.angles.y), deg, ::abs(g.angles.x), deg) : ::format("%d%s/+%d%s", g.angles.x, deg, g.angles.y, deg))
-      desc.append(::loc(g.label) + " " + anglesText)
+
+      local { x, y } = g.angles
+      local anglesText = (x + y == 0) ? ::format("±%d%s", ::abs(y), deg)
+        : (isSwaped && g.canSwap) ? ::format("%+d%s/%+d%s", ::abs(y) * getSign(x), deg, ::abs(x) * getSign(y), deg)
+        : ::format("%+d%s/%+d%s", x, deg, y, deg)
+
+      desc.append(" ".concat(::loc(g.label), anglesText))
     }
 
     if (needSingleAxis || status.isPrimary || unit?.isShipOrBoat())

@@ -4,7 +4,7 @@ local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/obje
 class ::gui_handlers.LoadingHangarHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/loading/loadingHangar.blk"
-  sceneNavBlkName = "gui/loadingNav.blk"
+  sceneNavBlkName = "gui/loading/loadingNav.blk"
 
   isEnteringMission = false // true on entering mission, false on quiting.
 

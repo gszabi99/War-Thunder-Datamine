@@ -259,9 +259,7 @@
           "armorThickness": 15.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 25.0,
-          "cumulativeArmorQuality": 10.0,
-          "genericArmorQuality": 2.0
+          "armorThickness": 25.0
         },
         "turret_03_front_dm": {
           "armorThickness": 15.0
@@ -323,11 +321,9 @@
           "explosionArmorQuality": 0.5
         },
         "turret_front_dm": {
-          "armorThickness": 40.0,
-          "armorClass": "hull_side_special_armor",
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.3,
-          "explosionArmorQuality": 0.5
+          "armorThickness": 5.0,
+          "ignoreSolidDimension": true,
+          "hidableInViewer": true
         },
         "turret_04_top_dm": {
           "armorThickness": 20.0
@@ -2917,9 +2913,9 @@
     "commanderView": {
       "aimModeAvailable": true,
       "optics": "commander_optics_square",
-      "zoomOutFov": 37.5,
-      "zoomInFov": 9.21,
-      "sightSize": [0.74,0.52]
+      "zoomOutFov": 18.5,
+      "zoomInFov": 5.54,
+      "sightSize": [0.355,0.25]
     }
   },
   {
@@ -3030,6 +3026,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3037,6 +3040,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3062,6 +3068,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3171,6 +3180,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3399,6 +3411,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3417,10 +3436,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 9.2,
-      "zoomInFov": 4.63,
-      "sightFov": 4.5,
-      "sightName": "tzf_1a",
+      "zoomOutFov": 18.5,
+      "zoomInFov": 5.54,
+      "sightFov": 8.0,
+      "sightName": "type_10_sight",
       "openedCockpit": false,
       "headPos": [0.0,4.0,-8.5],
       "headPosOnShooting": [0.3,3.4,0.6],

@@ -3,6 +3,22 @@ local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
+local expEventLocIds = {
+  [::EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
+  [::EXP_EVENT_DESTROY_ZONE]       = "expEventScore/destroyZone",
+  [::EXP_EVENT_KILL]               = "expEventScore/kill",
+  [::EXP_EVENT_KILL_GROUND]        = "expEventScore/killGround",
+  [::EXP_EVENT_CRITICAL_HIT]       = "expEventScore/criticalHit",
+  [::EXP_EVENT_HIT]                = "expEventScore/hit",
+  [::EXP_EVENT_ASSIST]             = "expEventScore/assist",
+  [::EXP_EVENT_DAMAGE_ZONE]        = "expEventScore/damageZone",
+  [::EXP_EVENT_UNIT_DAMAGE]        = "expEventScore/unitDamage",
+  [::EXP_EVENT_SCOUT]              = "expEventScore/scout",
+  [::EXP_EVENT_SCOUT_CRITICAL_HIT] = "expEventScore/scoutCriticalHit",
+  [::EXP_EVENT_SCOUT_KILL]         = "expEventScore/scoutKill",
+  [::EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
+  [::EXP_EVENT_DEATH]              = "expEventScore/death"
+}
 
 ::g_mplayer_param_type <- {
   types = []
@@ -112,6 +128,21 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/mpstats/score"
     tooltip = "multiplayer/score"
     relWidth = 25
+
+    getTooltip = function(val, player, defText) {
+      local res = []
+      for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
+        local rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
+        if (rowVal <= 0)
+          continue
+        local evLocId = expEventLocIds?[i] ?? ""
+        if (evLocId == "")
+          continue
+        res.append("".concat(::loc(evLocId), ::loc("ui/colon"), rowVal))
+      }
+      res.append("".concat(::loc("expEventScore/total"), ::loc("ui/colon"), (player?.score ?? 0)))
+      return "\n".join(res)
+    }
   }
 
   AIR_KILLS = {

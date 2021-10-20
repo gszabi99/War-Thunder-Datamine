@@ -1648,7 +1648,7 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -2615,7 +2615,7 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2657,11 +2657,14 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 2,
+      "invertEnableLogic": false,
+      "enabled": false
     },
     "stinger_aam": {
       "modClass": "weapon",
-      "tier": 3
+      "tier": 3,
+      "enabled": false
     }
   },
   "user_skin": [

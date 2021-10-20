@@ -35,7 +35,7 @@ local getSessionJoinData = function(pushContextId, isSpectator = false) {
 
 local createdSessionData = persist("createdSessionData", @() ::Watched({}))
 local dumpSessionData = function(sessionId, pushContextId, sessionData) {
-  createdSessionData.update(@(v) v[sessionId] <- {
+  createdSessionData.mutate(@(v) v[sessionId] <- {
     pushContextId = pushContextId
     data = copy(sessionData)
   })
@@ -48,7 +48,7 @@ local pendingSessions = persist("pendingSessions", @() ::Watched({}))
 local create = function() {
   local pushContextId = psnNotify.createPushContext()
   local sessionData = getSessionData(pushContextId)
-  pendingSessions.update(@(v) v[pushContextId] <- copy(sessionData))
+  pendingSessions.mutate(@(v) v[pushContextId] <- copy(sessionData))
 
   psnsm.create(
     pendingSessions.value[pushContextId],
@@ -60,7 +60,7 @@ local create = function() {
         dumpSessionData(sessionId, pushContextId, pendingSessions.value[pushContextId])
       }
 
-      pendingSessions.update(@(v) delete v[pushContextId])
+      pendingSessions.mutate(@(v) delete v[pushContextId])
     }, this)
   )
 }
@@ -72,7 +72,7 @@ local destroy = function() {
       psnsm.destroy(
         sId,
         ::Callback(function(r, err) {
-          createdSessionData.update(@(v) delete v[sId])
+          createdSessionData.mutate(@(v) delete v[sId])
         }, this)
       )
     }
@@ -86,7 +86,7 @@ local update = function(sessionId) {
     existSessionInfo?.data.gameSessions[0],
     sessionData.gameSessions[0],
     ::Callback(function(r, err) {
-      createdSessionData.update(@(v) v[sessionId].data = copy(sessionData))
+      createdSessionData.mutate(@(v) v[sessionId].data = copy(sessionData))
     }, this)
   )
 }
@@ -111,7 +111,7 @@ addListenersWithoutEnv({
     else if (!isEmpty(sessionId)
              && !(sessionId in createdSessionData.value)
              && !(sessionId in pendingSessions.value)) {
-      pendingSessions.update(@(v) v[sessionId] <- {})
+      pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
         ::SessionLobby.spectator,
@@ -119,7 +119,7 @@ addListenersWithoutEnv({
         ::Callback(function(sId, pushContextId, r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
-          pendingSessions.update(@(v) delete v[sId])
+          pendingSessions.mutate(@(v) delete v[sId])
         }, this)
       )
     }
@@ -148,7 +148,7 @@ addListenersWithoutEnv({
     if (::SessionLobby.isRoomOwner)
       update(sessionId)
     else if (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value)) {
-      pendingSessions.update(@(v) v[sessionId] <- {})
+      pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
         ::SessionLobby.spectator,
@@ -156,7 +156,7 @@ addListenersWithoutEnv({
         ::Callback(function(sId, pushContextId, r, err) {
           if (!err)
             dumpSessionData(sId, pushContextId, {})
-          pendingSessions.update(@(v) delete v[sId])
+          pendingSessions.mutate(@(v) delete v[sId])
         }, this)
       )
     }

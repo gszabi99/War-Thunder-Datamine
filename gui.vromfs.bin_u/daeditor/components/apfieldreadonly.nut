@@ -4,8 +4,8 @@ from "ecs" import *
 local {getValFromObj, compValToString} = require("attrUtil.nut")
 
 local function fieldReadOnly(params = {}) {
-  local {obj, path, eid, comp_name} = params
-  local val = path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(obj, path)
+  local {path, eid, comp_name} = params
+  local val = path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(eid, comp_name, path)
   local valText = compValToString(val)
 
   return {
