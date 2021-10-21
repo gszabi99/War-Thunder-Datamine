@@ -376,7 +376,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!countryId)
       countryId = ::get_profile_country_sq()
-    if (!(countryId in presets))
+    if (!canEditCountryPresets(countryId) || !(countryId in presets))
       return false
     local cfgBlk = ::loadLocalByAccount("slotbar_presets/" + countryId)
     local blk = null

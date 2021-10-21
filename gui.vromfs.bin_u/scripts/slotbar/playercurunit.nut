@@ -25,7 +25,8 @@ local function getFallbackUnitForHangar(params) {
   // Trying a currently loaded hangar unit
   local countryId = params?.country ?? ::get_profile_country_sq()
   local curHangarUnit = ::getAircraftByName(::hangar_get_current_unit_name())
-  if (curHangarUnit?.shopCountry == countryId)
+  if (curHangarUnit?.shopCountry == countryId
+      && (params?.slotbarUnits ?? []).indexof(curHangarUnit) != null)
     return curHangarUnit
 
   // Trying any other unit from country slotbar

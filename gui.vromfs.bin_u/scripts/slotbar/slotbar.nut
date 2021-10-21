@@ -1042,10 +1042,10 @@ local function selectAvailableCrew(countryId)
       {
         local unitId = ::getReserveAircraftName({ country = country.country })
         if (unitId != "")
-          batchTrainCrew({
+          batchTrainCrew([{
             crewId = country.crews[0].id
             airName = unitId
-          })
+          }])
       }
       needSave = needSave || ::selected_crews[cIdx] != crewIdx
     }
