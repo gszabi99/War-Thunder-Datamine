@@ -21,6 +21,7 @@ local fcsState = {
   IsVisible = Watched(false)
   IsBinocular = Watched(false)
   OpticsWidth = Watched(0.0)
+  StaticFov = Watched(0.0)
   CalcProgress = Watched(-1.0)
 
   IsTargetSelected = Watched(false)
@@ -180,8 +181,8 @@ local roundIndicator = @() {
 }
 
 local progressBar = @() {
-  watch = fcsState.OpticsWidth
-  pos = [sw(50) + fcsState.OpticsWidth.value, sh(53)]
+  watch = [fcsState.OpticsWidth, fcsState.StaticFov]
+  pos = [sw(50) + fcsState.OpticsWidth.value, fcsState.StaticFov.value > 6. ? sh(54.5) : sh(53)]
   children = {
     halign = ALIGN_RIGHT
     size = flex()

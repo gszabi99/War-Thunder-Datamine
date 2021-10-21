@@ -3,6 +3,7 @@ local vehicleModel = require("vehicleModel")
 local { is_bit_set, number_of_set_bits } = require("std/math.nut")
 local { getCantUseVoiceMessagesReason } = require("scripts/wheelmenu/voiceMessages.nut")
 local memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
+local { emulateShortcut } = ::require_native("controls")
 
 local getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 local toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
@@ -29,6 +30,7 @@ local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComput
 local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
 local hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
 local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
+local isTerraformAvailable = ::memoize(@(unitId) vehicleModel.isTerraformAvailable())
 local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
 local hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
 local getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
@@ -92,7 +94,7 @@ local function voiceMessagesMenuFunc() {
     && getCantUseVoiceMessagesReason(true) == ""
   return {
     action = ::Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
-      @() ::emulate_shortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
+      @() emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
     label  = ::loc(shouldUseSquadMsg
       ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"
       : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
@@ -528,7 +530,7 @@ local cfg = {
     items = [
       { shortcut = [ "ID_TOGGLE_GM_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_TRANSMISSION_MODE_GM" ] }
-      null
+      { shortcut = [ "ID_GM_TERRAFORM_TOGGLE" ], enable = isTerraformAvailable }
       null
       null
       null

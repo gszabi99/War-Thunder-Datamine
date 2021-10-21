@@ -436,6 +436,16 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t1_unit_01_to_spawn",
                 "object_marking": 10,
@@ -459,157 +469,12 @@
               }
             },
             {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_01"
-              }
-            }
-          ],
-          "else_actions": {
-            "comment": {
-              "value": "all units has been spawned. disabling trigger"
-            },
-            "triggerDisable": {
-              "target": "lum_t1_unit_rotator_01"
-            }
-          }
-        },
-        "lum_t1_unit_spawn_01": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t1_unit_01_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t1_unit_01_to_spawn",
-                "object_type": "isDelayed",
-                "target": "@lum_t1_spawn_01_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_01"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t1_unit_road_set_01": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": [
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_squad_01_name"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_squad_01_name"
-              }
-            }
-          ],
-          "actions": [
-            {
-              "comment": {
-                "value": "changing lum_state for spawned unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
-              }
-            },
-            {
-              "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t1_squad_01_name",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t1_squad_01_name",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
               "unitSetRoute": {
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
                 "route": "@lum_t1_road_01_name",
                 "teleportToStart": false,
-                "object": "@lum_t1_squad_01_name",
-                "useForTriggerFiltered": true
+                "object": "@lum_t1_unit_01_to_spawn"
               }
             },
             {
@@ -619,15 +484,15 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t1_unit_rotator_01"
+                "target": "lum_t1_check_objects_01"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
             },
-            "triggerEnable": {
+            "triggerDisable": {
               "target": "lum_t1_unit_rotator_01"
             }
           }
@@ -717,6 +582,16 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t2_unit_01_to_spawn",
                 "object_marking": 10,
@@ -740,157 +615,12 @@
               }
             },
             {
-              "triggerEnable": {
-                "target": "lum_t2_unit_road_set_01"
-              }
-            }
-          ],
-          "else_actions": {
-            "comment": {
-              "value": "all units has been spawned. disabling trigger"
-            },
-            "triggerDisable": {
-              "target": "lum_t2_unit_rotator_01"
-            }
-          }
-        },
-        "lum_t2_unit_spawn_01": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t2_unit_01_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t2_unit_01_to_spawn",
-                "object_type": "isDelayed",
-                "target": "@lum_t2_spawn_01_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t2_unit_road_set_01"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t2_unit_road_set_01": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": [
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_squad_01_name"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_squad_01_name"
-              }
-            }
-          ],
-          "actions": [
-            {
-              "comment": {
-                "value": "changing lum_state for spawned unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
-              }
-            },
-            {
-              "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t2_squad_01_name",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t2_squad_01_name",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
               "unitSetRoute": {
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
                 "route": "@lum_t2_road_01_name",
                 "teleportToStart": false,
-                "object": "@lum_t2_squad_01_name",
-                "useForTriggerFiltered": true
+                "object": "@lum_t2_unit_01_to_spawn"
               }
             },
             {
@@ -900,15 +630,15 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t2_unit_rotator_01"
+                "target": "lum_t2_check_objects_01"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
             },
-            "triggerEnable": {
+            "triggerDisable": {
               "target": "lum_t2_unit_rotator_01"
             }
           }
@@ -976,7 +706,7 @@
           },
           "conditions": {
             "unitWhenCountMatches": {
-              "object_type": "isMarked",
+              "object_type": "isDelayed",
               "object_marking": 10,
               "object_var_name": "lum_state",
               "object_var_comp_op": "equal",
@@ -1002,12 +732,22 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t1_unit_02_to_spawn",
                 "object_marking": 10,
                 "check_objects": "any",
                 "squad": "@lum_t1_squad_02_name",
-                "object_type": "isMarked"
+                "object_type": "isDelayed"
               }
             },
             {
@@ -1018,156 +758,10 @@
                 "object_var_comp_op": "equal",
                 "object_var_value": 0,
                 "object": "@lum_t1_unit_02_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
+                "object_type": "isDelayed",
                 "target": "@lum_t1_spawn_02_name",
                 "randomObjectsCount": 1,
                 "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_02"
-              }
-            }
-          ],
-          "else_actions": {
-            "comment": {
-              "value": "all units has been spawned. disabling trigger"
-            },
-            "triggerDisable": {
-              "target": "lum_t1_unit_rotator_02"
-            }
-          }
-        },
-        "lum_t1_unit_spawn_02": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t1_unit_02_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t1_unit_02_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "target": "@lum_t1_spawn_02_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_02"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t1_unit_road_set_02": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": [
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_unit_02_to_spawn"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_unit_02_to_spawn"
-              }
-            }
-          ],
-          "actions": [
-            {
-              "comment": {
-                "value": "changing lum_state for spawned unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
-              }
-            },
-            {
-              "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t1_unit_02_to_spawn",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t1_unit_02_to_spawn",
-                "useForTriggerFiltered": true
               }
             },
             {
@@ -1176,8 +770,7 @@
                 "object_var_comp_op": "equal",
                 "route": "@lum_t1_road_02_name",
                 "teleportToStart": false,
-                "object": "@lum_t1_unit_02_to_spawn",
-                "useForTriggerFiltered": true
+                "object": "@lum_t1_unit_02_to_spawn"
               }
             },
             {
@@ -1187,15 +780,15 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t1_unit_rotator_02"
+                "target": "lum_t1_check_objects_02"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
             },
-            "triggerEnable": {
+            "triggerDisable": {
               "target": "lum_t1_unit_rotator_02"
             }
           }
@@ -1259,7 +852,7 @@
           },
           "conditions": {
             "unitWhenCountMatches": {
-              "object_type": "isMarked",
+              "object_type": "isDelayed",
               "object_marking": 10,
               "object_var_name": "lum_state",
               "object_var_comp_op": "equal",
@@ -1285,12 +878,22 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t2_unit_02_to_spawn",
                 "object_marking": 10,
                 "check_objects": "any",
                 "squad": "@lum_t2_squad_02_name",
-                "object_type": "isMarked"
+                "object_type": "isDelayed"
               }
             },
             {
@@ -1301,156 +904,10 @@
                 "object_var_comp_op": "equal",
                 "object_var_value": 0,
                 "object": "@lum_t2_unit_02_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
+                "object_type": "isDelayed",
                 "target": "@lum_t2_spawn_02_name",
                 "randomObjectsCount": 1,
                 "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t2_unit_road_set_02"
-              }
-            }
-          ],
-          "else_actions": {
-            "comment": {
-              "value": "all units has been spawned. disabling trigger"
-            },
-            "triggerDisable": {
-              "target": "lum_t2_unit_rotator_02"
-            }
-          }
-        },
-        "lum_t2_unit_spawn_02": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t2_unit_02_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t2_unit_02_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "target": "@lum_t2_spawn_02_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t2_unit_road_set_02"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t2_unit_road_set_02": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": [
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_unit_02_to_spawn"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_unit_02_to_spawn"
-              }
-            }
-          ],
-          "actions": [
-            {
-              "comment": {
-                "value": "changing lum_state for spawned unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
-              }
-            },
-            {
-              "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t2_unit_02_to_spawn",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t2_unit_02_to_spawn",
-                "useForTriggerFiltered": true
               }
             },
             {
@@ -1470,15 +927,15 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t2_unit_rotator_02"
+                "target": "lum_t2_check_objects_02"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
             },
-            "triggerEnable": {
+            "triggerDisable": {
               "target": "lum_t2_unit_rotator_02"
             }
           }
@@ -1546,7 +1003,7 @@
           },
           "conditions": {
             "unitWhenCountMatches": {
-              "object_type": "isMarked",
+              "object_type": "isDelayed",
               "object_marking": 10,
               "object_var_name": "lum_state",
               "object_var_comp_op": "equal",
@@ -1572,12 +1029,22 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t1_unit_03_to_spawn",
                 "object_marking": 10,
                 "check_objects": "any",
                 "squad": "@lum_t1_squad_03_name",
-                "object_type": "isMarked"
+                "object_type": "isDelayed"
               }
             },
             {
@@ -1588,156 +1055,10 @@
                 "object_var_comp_op": "equal",
                 "object_var_value": 0,
                 "object": "@lum_t1_unit_03_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
+                "object_type": "isDelayed",
                 "target": "@lum_t1_spawn_03_name",
                 "randomObjectsCount": 1,
                 "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_03"
-              }
-            }
-          ],
-          "else_actions": {
-            "comment": {
-              "value": "all units has been spawned. disabling trigger"
-            },
-            "triggerDisable": {
-              "target": "lum_t1_unit_rotator_03"
-            }
-          }
-        },
-        "lum_t1_unit_spawn_03": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t1_unit_03_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t1_unit_03_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "target": "@lum_t1_spawn_03_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t1_unit_road_set_03"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t1_unit_road_set_03": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": [
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_unit_03_to_spawn"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t1_unit_03_to_spawn"
-              }
-            }
-          ],
-          "actions": [
-            {
-              "comment": {
-                "value": "changing lum_state for spawned unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
-              }
-            },
-            {
-              "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t1_unit_03_to_spawn",
-                "useForTriggerFiltered": true
-              }
-            },
-            {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t1_unit_03_to_spawn",
-                "useForTriggerFiltered": true
               }
             },
             {
@@ -1746,8 +1067,7 @@
                 "object_var_comp_op": "equal",
                 "route": "@lum_t1_road_03_name",
                 "teleportToStart": false,
-                "object": "@lum_t1_unit_03_to_spawn",
-                "useForTriggerFiltered": true
+                "object": "@lum_t1_unit_03_to_spawn"
               }
             },
             {
@@ -1757,15 +1077,15 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t1_unit_rotator_03"
+                "target": "lum_t1_check_objects_03"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
             },
-            "triggerEnable": {
+            "triggerDisable": {
               "target": "lum_t1_unit_rotator_03"
             }
           }
@@ -1829,7 +1149,7 @@
           },
           "conditions": {
             "unitWhenCountMatches": {
-              "object_type": "isMarked",
+              "object_type": "isDelayed",
               "object_marking": 10,
               "object_var_name": "lum_state",
               "object_var_comp_op": "equal",
@@ -1855,12 +1175,22 @@
               }
             },
             {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
               "unitGetRandomNameFromSquad": {
                 "string_var": "lum_t2_unit_03_to_spawn",
                 "object_marking": 10,
                 "check_objects": "any",
                 "squad": "@lum_t2_squad_03_name",
-                "object_type": "isMarked"
+                "object_type": "isDelayed"
               }
             },
             {
@@ -1871,16 +1201,29 @@
                 "object_var_comp_op": "equal",
                 "object_var_value": 0,
                 "object": "@lum_t2_unit_03_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
+                "object_type": "isDelayed",
                 "target": "@lum_t2_spawn_03_name",
                 "randomObjectsCount": 1,
                 "resetFormation": true
               }
             },
             {
+              "unitSetRoute": {
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "route": "@lum_t2_road_03_name",
+                "teleportToStart": false,
+                "object": "@lum_t2_unit_03_to_spawn"
+              }
+            },
+            {
+              "wait": {
+                "time": 3.0
+              }
+            },
+            {
               "triggerEnable": {
-                "target": "lum_t2_unit_road_set_03"
+                "target": "lum_t2_check_objects_03"
               }
             }
           ],
@@ -1892,61 +1235,12 @@
               "target": "lum_t2_unit_rotator_03"
             }
           }
-        },
-        "lum_t2_unit_spawn_03": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "objectExists": {
-              "target": "@lum_t2_unit_03_to_spawn",
-              "type": "unit"
-            }
-          },
-          "actions": [
-            {
-              "comment": {
-                "value": "respawing ONE unit"
-              }
-            },
-            {
-              "comment": {
-                "value": "setting road for spawned unit"
-              }
-            },
-            {
-              "unitRespawn": {
-                "delay": 0.0,
-                "offset": [0.0,0.0,0.0],
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "object_var_value": 0,
-                "object": "@lum_t2_unit_03_to_spawn",
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "target": "@lum_t2_spawn_03_name",
-                "randomObjectsCount": 1,
-                "resetFormation": true
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lum_t2_unit_road_set_03"
-              }
-            }
-          ],
-          "else_actions": []
-        },
-        "lum_t2_unit_road_set_03": {
+        }
+      },
+      "road_04": {
+        "isCategory": true,
+        "is_enabled": true,
+        "lum_t1_check_objects_04": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -1961,47 +1255,73 @@
           },
           "conditions": [
             {
-              "unitWhenCountMatches": {
-                "object_type": "isMarked",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_unit_03_to_spawn"
+              "objectExists": {
+                "target": "@lum_t1_spawn_04_name",
+                "type": "area"
               }
             },
             {
-              "unitWhenCountMatches": {
-                "object_type": "isActive",
-                "object_marking": 10,
-                "object_var_name": "lum_state",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lum_t2_unit_03_to_spawn"
+              "objectExists": {
+                "target": "@lum_t1_squad_04_name",
+                "type": "squad"
               }
             }
           ],
+          "actions": {
+            "comment": {
+              "value": "all is ok"
+            },
+            "triggerEnable": {
+              "target": "lum_t1_unit_rotator_04"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "objects dosn't exist. disabling_trigger"
+            },
+            "triggerDisable": {
+              "target": "lum_t1_check_objects_04"
+            }
+          }
+        },
+        "lum_t1_unit_rotator_04": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "unitWhenCountMatches": {
+              "object_type": "isDelayed",
+              "object_marking": 10,
+              "object_var_name": "lum_state",
+              "object_var_comp_op": "equal",
+              "func": "more",
+              "value": 0,
+              "object": "@lum_t1_squad_04_name"
+            }
+          },
           "actions": [
             {
               "comment": {
-                "value": "changing lum_state for spawned unit"
+                "value": "there is units for spawn"
               }
             },
             {
               "comment": {
-                "value": "setting road for unit that have zeroed lum_state"
+                "value": "spawning_unit"
               }
             },
             {
               "comment": {
-                "value": "changing lum_state for units on road"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
+                "value": "setting road for spawned unit"
               }
             },
             {
@@ -2010,27 +1330,40 @@
               }
             },
             {
-              "unitMark": {
-                "target_marking": 12,
-                "target": "@lum_t2_unit_03_to_spawn",
-                "useForTriggerFiltered": true
+              "comment": {
+                "value": ""
               }
             },
             {
-              "unitMark": {
-                "target_marking": 13,
-                "target": "@lum_t2_unit_03_to_spawn",
-                "useForTriggerFiltered": true
+              "unitGetRandomNameFromSquad": {
+                "string_var": "lum_t1_unit_04_to_spawn",
+                "object_marking": 10,
+                "check_objects": "any",
+                "squad": "@lum_t1_squad_04_name",
+                "object_type": "isDelayed"
+              }
+            },
+            {
+              "unitRespawn": {
+                "delay": 0.0,
+                "offset": [0.0,0.0,0.0],
+                "object_var_name": "lum_state",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@lum_t1_unit_04_to_spawn",
+                "object_type": "isDelayed",
+                "target": "@lum_t1_spawn_04_name",
+                "randomObjectsCount": 1,
+                "resetFormation": true
               }
             },
             {
               "unitSetRoute": {
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
-                "route": "@lum_t2_road_03_name",
+                "route": "@lum_t1_road_04_name",
                 "teleportToStart": false,
-                "object": "@lum_t2_unit_03_to_spawn",
-                "useForTriggerFiltered": true
+                "object": "@lum_t1_unit_04_to_spawn"
               }
             },
             {
@@ -2040,16 +1373,162 @@
             },
             {
               "triggerEnable": {
-                "target": "lum_t2_unit_rotator_03"
+                "target": "lum_t1_check_objects_04"
               }
             }
           ],
           "else_actions": {
             "comment": {
-              "value": ""
+              "value": "all units has been spawned. disabling trigger"
+            },
+            "triggerDisable": {
+              "target": "lum_t1_unit_rotator_04"
+            }
+          }
+        },
+        "lum_t2_check_objects_04": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": [
+            {
+              "objectExists": {
+                "target": "@lum_t2_spawn_04_name",
+                "type": "area"
+              }
+            },
+            {
+              "objectExists": {
+                "target": "@lum_t2_squad_04_name",
+                "type": "squad"
+              }
+            }
+          ],
+          "actions": {
+            "comment": {
+              "value": "all is ok"
             },
             "triggerEnable": {
-              "target": "lum_t2_unit_rotator_03"
+              "target": "lum_t2_unit_rotator_04"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "objects dosn't exist. disabling_trigger"
+            },
+            "triggerDisable": {
+              "target": "lum_t2_check_objects_04"
+            }
+          }
+        },
+        "lum_t2_unit_rotator_04": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "unitWhenCountMatches": {
+              "object_type": "isDelayed",
+              "object_marking": 10,
+              "object_var_name": "lum_state",
+              "object_var_comp_op": "equal",
+              "func": "more",
+              "value": 0,
+              "object": "@lum_t2_squad_04_name"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "there is units for spawn"
+              }
+            },
+            {
+              "comment": {
+                "value": "spawning_unit"
+              }
+            },
+            {
+              "comment": {
+                "value": "setting road for spawned unit"
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": ""
+              }
+            },
+            {
+              "unitGetRandomNameFromSquad": {
+                "string_var": "lum_t2_unit_04_to_spawn",
+                "object_marking": 10,
+                "check_objects": "any",
+                "squad": "@lum_t2_squad_04_name",
+                "object_type": "isDelayed"
+              }
+            },
+            {
+              "unitRespawn": {
+                "delay": 0.0,
+                "offset": [0.0,0.0,0.0],
+                "object_var_name": "lum_state",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@lum_t2_unit_04_to_spawn",
+                "object_type": "isDelayed",
+                "target": "@lum_t2_spawn_04_name",
+                "randomObjectsCount": 1,
+                "resetFormation": true
+              }
+            },
+            {
+              "unitSetRoute": {
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "route": "@lum_t2_road_04_name",
+                "teleportToStart": false,
+                "object": "@lum_t2_unit_04_to_spawn"
+              }
+            },
+            {
+              "wait": {
+                "time": 3.0
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lum_t2_check_objects_04"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "all units has been spawned. disabling trigger"
+            },
+            "triggerDisable": {
+              "target": "lum_t2_unit_rotator_04"
             }
           }
         }

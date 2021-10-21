@@ -2513,6 +2513,7 @@ SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, te
     teamsToCheck = [teamToCheck]
 
   local hasTeamData = false
+  local hasUnitsInSlotbar = false
   local hasAnyAvailable = false
   local isCurUnitAvailable = false
   local hasRespawns = getMaxRespawns() != 1
@@ -2531,6 +2532,7 @@ SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, te
     foreach (crew in crews)
     {
       local unit = ::g_crew.getCrewUnit(crew)
+      hasUnitsInSlotbar = hasUnitsInSlotbar || unit != null
       if (!unit || !::events.isUnitAllowedByTeamData(teamData, unit.name, ediff))
         continue
 
@@ -2542,7 +2544,9 @@ SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, te
 
   if (hasTeamData) //allow all when no team data
   {
-    if (!hasRespawns && !isCurUnitAvailable)
+    if (!hasUnitsInSlotbar)
+      res.reasonText = ::loc("events/empty_slotbar")
+    else if (!hasRespawns && !isCurUnitAvailable)
       res.reasonText = ::loc("events/selected_craft_is_not_allowed")
     else if (!hasAnyAvailable)
       res.reasonText = ::loc("events/no_allowed_crafts")

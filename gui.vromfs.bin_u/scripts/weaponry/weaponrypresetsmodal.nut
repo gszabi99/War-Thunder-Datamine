@@ -5,7 +5,9 @@ local { TIERS_NUMBER,
         setFavoritePresets,
         getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon,
-        setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+        setLastWeapon,
+        getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
+local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
 local { getTierDescTbl, updateWeaponTooltip } = require("scripts/weaponry/weaponryTooltipPkg.nut")
@@ -228,11 +230,43 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
           return
         return onBuy(item)
       }
+
+      local disabledMods = getWeaponDisabledMods(unit, item)
+      if (disabledMods.len() > 0)
+      {
+        showReqModsMsg(disabledMods)
+        return
+      }
+
       setLastWeapon(unit.name, item.name)
       ::check_secondary_weapon_mods_recount(unit)
       checkSaveBulletsAndDo()
     }
     guiScene.performDelayed(this, @()goBack())
+  }
+
+  function showReqModsMsg(disabledMods)
+  {
+    local aUnit = unit
+    local modNames = disabledMods.map(@(n) ::colorize("userlogColoredText", getModificationName(aUnit, n)))
+    local text = ::loc("weaponry/require_mod_install", {
+      modNames = ::loc("ui/colon").join(modNames)
+      numMods = disabledMods.len()
+    })
+    local onOk = ::Callback(@() installMods(disabledMods), this)
+    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
+  }
+
+  function installMods(disabledMods)
+  {
+    local aUnit = unit
+    local onSuccess = ::Callback(function() {
+      disabledMods.each(@(n) ::updateAirAfterSwitchMod(aUnit, n))
+      ::broadcastEvent("ModificationChanged")
+    }, this)
+
+    local taskId = enable_modifications(unit.name, disabledMods, true)
+    ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
   }
 
   function onBuy(item)

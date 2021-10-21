@@ -2194,19 +2194,14 @@
         "Weapon": {
           "trigger": "gunner0",
           "triggerGroup": "primary",
-          "blk": "gameData/Weapons/navalModels_weapons/37mm_56_an_m4_naval_user_cannon.blk",
-          "emitter": "emtr_gun_flame_01",
-          "flash": "emtr_gun_flame_01",
+          "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_07",
+          "flash": "emtr_gun_flame_07",
           "useEmitter": true,
-          "barrelDP": "main_caliber_gun_02_dm",
-          "breechDP": "main_caliber_gun_02_dm",
-          "useGunnerTargetingQuality": false,
+          "barrelDP": "main_caliber_gun_01_dm",
+          "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "isBulletBelt": true,
-          "speedYaw": 45.0,
-          "speedPitch": 70.0,
-          "bullets": 420,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2223,6 +2218,82 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 40.0,
+          "speedPitch": 30.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "numWeaponsInSlot": 1,
+          "turret": {
+            "head": "main_caliber_turret_01",
+            "gun": "main_caliber_gun_01",
+            "barrel": "gun_barrel_06",
+            "gunnerDm": "main_caliber_turret_01_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-7.0,88.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-164.0,36.0,88.0],
+            "lim2": [-164.0,-150.0,20.0,88.0],
+            "lim3": [-150.0,-143.0,10.0,88.0],
+            "lim4": [-143.0,-120.0,-3.0,88.0],
+            "lim5": [-120.0,129.0,-7.0,88.0],
+            "lim6": [129.0,180.0,36.0,88.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner1",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/navalModels_weapons/37mm_56_an_m4_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_01",
+          "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
+          "barrelDP": "main_caliber_gun_02_dm",
+          "breechDP": "main_caliber_gun_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "isBulletBelt": true,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4500.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.8,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "speedYaw": 45.0,
+          "speedPitch": 35.0,
+          "bullets": 900,
+          "useGunnerTargetingQuality": false,
+          "numWeaponsInSlot": 1,
           "turret": [
             {
               "head": "main_caliber_turret_02"
@@ -2276,301 +2347,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner1",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
-          "emitter": "emtr_gun_flame_05",
-          "flash": "emtr_gun_flame_05",
-          "useEmitter": true,
-          "barrelDP": "auxiliary_caliber_gun_02_dm",
-          "breechDP": "auxiliary_caliber_gun_02_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "isBulletBelt": true,
-          "speedYaw": 60.0,
-          "speedPitch": 70.0,
-          "bullets": 1000,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "bone_mg_mount_h_02",
-            "gun": "bone_mg_mount_v_02",
-            "gunnerDm": "auxiliary_caliber_turret_02_dm",
-            "linkedAnimPart": {
-              "verNode": "Bip01 Pelvis_5",
-              "verLimits": [0.0,30.0],
-              "verOriginLimits": [20.0,60.0]
-            }
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-7.0,60.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-150.0,9.0,60.0],
-            "lim2": [-150.0,-45.0,-7.0,60.0],
-            "lim3": [-45.0,-22.0,8.0,60.0],
-            "lim4": [-22.0,53.0,26.0,60.0],
-            "lim5": [53.0,134.0,-7.0,60.0],
-            "lim6": [134.0,180.0,9.0,60.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner1",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
-          "emitter": "emtr_gun_flame_06",
-          "flash": "emtr_gun_flame_06",
-          "useEmitter": true,
-          "barrelDP": "auxiliary_caliber_gun_02_dm",
-          "breechDP": "auxiliary_caliber_gun_02_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "isBulletBelt": true,
-          "speedYaw": 60.0,
-          "speedPitch": 70.0,
-          "bullets": 1000,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "bone_mg_mount_h_02",
-            "gun": "bone_mg_mount_v_02",
-            "gunnerDm": "auxiliary_caliber_turret_02_dm",
-            "linkedAnimPart": {
-              "verNode": "bone_radius_hands_02",
-              "verLimits": [0.0,-20.0],
-              "verOriginLimits": [0.0,60.0]
-            }
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-7.0,60.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-150.0,9.0,60.0],
-            "lim2": [-150.0,-45.0,-7.0,60.0],
-            "lim3": [-45.0,-22.0,8.0,60.0],
-            "lim4": [-22.0,53.0,26.0,60.0],
-            "lim5": [53.0,134.0,-7.0,60.0],
-            "lim6": [134.0,180.0,9.0,60.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
-          }
-        }
-      },
-      {
-        "Weapon": {
           "trigger": "gunner2",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
-          "emitter": "emtr_gun_flame_03",
-          "flash": "emtr_gun_flame_03",
-          "useEmitter": true,
-          "barrelDP": "auxiliary_caliber_gun_01_dm",
-          "breechDP": "auxiliary_caliber_gun_01_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "isBulletBelt": true,
-          "speedYaw": 60.0,
-          "speedPitch": 70.0,
-          "bullets": 1000,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "bone_mg_mount_h_01",
-            "gun": "bone_mg_mount_v_01",
-            "gunnerDm": "auxiliary_caliber_turret_01_dm",
-            "linkedAnimPart": {
-              "verNode": "Bip01 Pelvis_4",
-              "verLimits": [0.0,30.0],
-              "verOriginLimits": [20.0,60.0]
-            }
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-7.0,60.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-47.0,-3.0,60.0],
-            "lim2": [-47.0,-17.0,8.0,60.0],
-            "lim3": [-17.0,57.0,26.0,60.0],
-            "lim4": [57.0,136.0,10.0,60.0],
-            "lim5": [136.0,180.0,-3.0,60.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner2",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
-          "emitter": "emtr_gun_flame_04",
-          "flash": "emtr_gun_flame_04",
-          "useEmitter": true,
-          "barrelDP": "auxiliary_caliber_gun_01_dm",
-          "breechDP": "auxiliary_caliber_gun_01_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "isBulletBelt": true,
-          "speedYaw": 60.0,
-          "speedPitch": 70.0,
-          "bullets": 1000,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "bone_mg_mount_h_01",
-            "gun": "bone_mg_mount_v_01",
-            "gunnerDm": "auxiliary_caliber_turret_01_dm",
-            "linkedAnimPart": {
-              "verNode": "bone_radius_hands_01",
-              "verLimits": [0.0,-20.0],
-              "verOriginLimits": [0.0,60.0]
-            }
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-7.0,60.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-47.0,-3.0,60.0],
-            "lim2": [-47.0,-17.0,8.0,60.0],
-            "lim3": [-17.0,57.0,26.0,60.0],
-            "lim4": [57.0,136.0,10.0,60.0],
-            "lim5": [136.0,180.0,-3.0,60.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
           "triggerGroup": "secondary",
           "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
           "emitter": "emtr_gun_flame_02",
@@ -2580,9 +2357,6 @@
           "breechDP": "auxiliary_caliber_gun_03_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 55.0,
-          "speedPitch": 70.0,
-          "bullets": 420,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2599,6 +2373,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 75.0,
+          "speedPitch": 65.0,
+          "bullets": 1800,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "auxiliary_caliber_turret_03",
@@ -2643,21 +2420,17 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner4",
-          "triggerGroup": "primary",
-          "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
-          "emitter": "emtr_gun_flame_07",
-          "flash": "emtr_gun_flame_07",
+          "trigger": "gunner3",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+          "emitter": "emtr_gun_flame_05",
+          "flash": "emtr_gun_flame_05",
           "useEmitter": true,
-          "numWeaponsInSlot": 1,
-          "barrelDP": "main_caliber_gun_01_dm",
-          "breechDP": "main_caliber_gun_01_dm",
-          "useGunnerTargetingQuality": false,
+          "barrelDP": "auxiliary_caliber_gun_02_dm",
+          "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 24.0,
-          "speedPitch": 30.0,
-          "bullets": 2000,
+          "isBulletBelt": true,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2674,23 +2447,251 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
-            "head": "main_caliber_turret_01",
-            "gun": "main_caliber_gun_01",
-            "barrel": "gun_barrel_06",
-            "gunnerDm": "main_caliber_turret_01_dm"
+            "head": "bone_mg_mount_h_02",
+            "gun": "bone_mg_mount_v_02",
+            "gunnerDm": "auxiliary_caliber_turret_02_dm",
+            "linkedAnimPart": {
+              "verNode": "Bip01 Pelvis_5",
+              "verLimits": [0.0,30.0],
+              "verOriginLimits": [20.0,60.0]
+            }
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-7.0,88.0]
+            "pitch": [-7.0,60.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-164.0,36.0,88.0],
-            "lim2": [-164.0,-150.0,20.0,88.0],
-            "lim3": [-150.0,-143.0,10.0,88.0],
-            "lim4": [-143.0,-120.0,-3.0,88.0],
-            "lim5": [-120.0,129.0,-7.0,88.0],
-            "lim6": [129.0,180.0,36.0,88.0]
+            "lim1": [-180.0,-150.0,9.0,60.0],
+            "lim2": [-150.0,-45.0,-7.0,60.0],
+            "lim3": [-45.0,-22.0,8.0,60.0],
+            "lim4": [-22.0,53.0,26.0,60.0],
+            "lim5": [53.0,134.0,-7.0,60.0],
+            "lim6": [134.0,180.0,9.0,60.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+          "emitter": "emtr_gun_flame_06",
+          "flash": "emtr_gun_flame_06",
+          "useEmitter": true,
+          "barrelDP": "auxiliary_caliber_gun_02_dm",
+          "breechDP": "auxiliary_caliber_gun_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "isBulletBelt": true,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4500.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.8,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "turret": {
+            "head": "bone_mg_mount_h_02",
+            "gun": "bone_mg_mount_v_02",
+            "gunnerDm": "auxiliary_caliber_turret_02_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_radius_hands_02",
+              "verLimits": [0.0,-20.0],
+              "verOriginLimits": [0.0,60.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-7.0,60.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-150.0,9.0,60.0],
+            "lim2": [-150.0,-45.0,-7.0,60.0],
+            "lim3": [-45.0,-22.0,8.0,60.0],
+            "lim4": [-22.0,53.0,26.0,60.0],
+            "lim5": [53.0,134.0,-7.0,60.0],
+            "lim6": [134.0,180.0,9.0,60.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner4",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+          "emitter": "emtr_gun_flame_03",
+          "flash": "emtr_gun_flame_03",
+          "useEmitter": true,
+          "barrelDP": "auxiliary_caliber_gun_01_dm",
+          "breechDP": "auxiliary_caliber_gun_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "isBulletBelt": true,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4500.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.8,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "turret": {
+            "head": "bone_mg_mount_h_01",
+            "gun": "bone_mg_mount_v_01",
+            "gunnerDm": "auxiliary_caliber_turret_01_dm",
+            "linkedAnimPart": {
+              "verNode": "Bip01 Pelvis_4",
+              "verLimits": [0.0,30.0],
+              "verOriginLimits": [20.0,60.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-7.0,60.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-47.0,-3.0,60.0],
+            "lim2": [-47.0,-17.0,8.0,60.0],
+            "lim3": [-17.0,57.0,26.0,60.0],
+            "lim4": [57.0,136.0,10.0,60.0],
+            "lim5": [136.0,180.0,-3.0,60.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner4",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+          "emitter": "emtr_gun_flame_04",
+          "flash": "emtr_gun_flame_04",
+          "useEmitter": true,
+          "barrelDP": "auxiliary_caliber_gun_01_dm",
+          "breechDP": "auxiliary_caliber_gun_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "isBulletBelt": true,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4500.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.8,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "turret": {
+            "head": "bone_mg_mount_h_01",
+            "gun": "bone_mg_mount_v_01",
+            "gunnerDm": "auxiliary_caliber_turret_01_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_radius_hands_01",
+              "verLimits": [0.0,-20.0],
+              "verOriginLimits": [0.0,60.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-7.0,60.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-47.0,-3.0,60.0],
+            "lim2": [-47.0,-17.0,8.0,60.0],
+            "lim3": [-17.0,57.0,26.0,60.0],
+            "lim4": [57.0,136.0,10.0,60.0],
+            "lim5": [136.0,180.0,-3.0,60.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -2734,7 +2735,8 @@
     "cockpit": {
       "headPos": [0.0,8.5,-22.0],
       "headPosOnShooting": [0.2,7.5,0.5],
-      "detectionHeight": 6.4
+      "detectionHeight": 6.4,
+      "cameraAhead": true
     }
   },
   {
@@ -2757,19 +2759,19 @@
           },
           {
             "fx": {
-              "name": "ship_engine_fire",
+              "name": "ship_fire_medium",
               "emitter": "emtr_fire_engine_01"
             }
           },
           {
             "fx": {
-              "name": "ship_engine_fire",
+              "name": "ship_fire_small",
               "emitter": "emtr_fire_engine_02"
             }
           },
           {
             "fx": {
-              "name": "ship_engine_fire",
+              "name": "ship_fire_small",
               "emitter": "emtr_fire_engine_03"
             }
           }
@@ -2779,7 +2781,7 @@
         "event": {
           "name": "compartment_fire",
           "fx": {
-            "name": "ship_fire",
+            "name": "ship_fire_small",
             "centerDmgPart": true
           }
         }
@@ -2788,7 +2790,7 @@
         "event": {
           "name": "superstructure_fire",
           "fx": {
-            "name": "ship_fire",
+            "name": "ship_fire_small",
             "centerDmgPart": true
           }
         }
@@ -2797,7 +2799,7 @@
         "event": {
           "name": "turret_fire",
           "fx": {
-            "name": "ship_fire",
+            "name": "ship_fire_small",
             "centerDmgPart": true
           }
         }
@@ -2806,7 +2808,7 @@
         "event": {
           "name": "fuel_tank_fire",
           "fx": {
-            "name": "ship_fire",
+            "name": "ship_fire_small",
             "centerDmgPart": true
           }
         }
@@ -2873,25 +2875,25 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_fire_ammo_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_fire_ammo_02"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_fire_ammo_03"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_fire_ammo_04"
             }
           }
@@ -2904,109 +2906,109 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "ship_smoke_medium",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "ship_smoke_medium",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_03"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_04"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_05"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_06"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_07"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_08"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_09"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_10"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_11"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_12"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_13"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_14"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_15"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_16"
             }
           }
@@ -3019,217 +3021,217 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_medium",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_medium",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_03"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_04"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_05"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_06"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_07"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_08"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_09"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_10"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_11"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_12"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_13"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_14"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_15"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_small",
+              "name": "ship_smoke_small",
               "emitter": "emtr_smoke_small_dmg_16"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_big",
+              "name": "ship_fire_medium",
               "emitter": "emtr_fire_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_big",
+              "name": "ship_fire_medium",
               "emitter": "emtr_fire_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_02"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_03"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_04"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_05"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_06"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_07"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_08"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_09"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_10"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_11"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_12"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_13"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_14"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_15"
             }
           },
           {
             "fx": {
-              "name": "tank_fire_small",
+              "name": "ship_fire_tiny",
               "emitter": "emtr_fire_small_dmg_16"
             }
           }
@@ -3462,7 +3464,7 @@
         "procedural": {
           "name": "default",
           "fx": {
-            "name": "ship_hit_fire"
+            "name": "ship_fire_tiny"
           }
         }
       }
@@ -3615,13 +3617,22 @@
           "weaponTrigger": "gunner1"
         },
         {
+          "weaponTrigger": "gunner2"
+        },
+        {
+          "weaponTrigger": "gunner3"
+        },
+        {
+          "weaponTrigger": "gunner4"
+        },
+        {
           "shells": {
             "fatalFire": true,
             "fatalExplosion": true,
             "fireEvent": "ammo_fire_1",
             "explosionEvent": "ammo_explosion_1",
             "ammunition_storage_01_dm": {
-              "count": 2420
+              "count": 12700
             }
           }
         }

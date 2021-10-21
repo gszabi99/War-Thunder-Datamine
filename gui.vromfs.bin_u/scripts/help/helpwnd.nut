@@ -5,6 +5,7 @@ local helpTabs = require("scripts/controls/help/controlsHelpTabs.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { EII_BULLET } = ::require_native("hudActionBarConst")
 
 require("scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -766,7 +767,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     viewItem.selected           <- item?.selected ? "yes" : "no"
     viewItem.active             <- item?.active ? "yes" : "no"
 
-    if (item.type == ::EII_BULLET)
+    if (item.type == EII_BULLET)
       viewItem.icon <- item.icon
     else
       viewItem.icon <- actionBarType.getIcon(null, ::getAircraftByName(actionBar?.unitId ?? ""))

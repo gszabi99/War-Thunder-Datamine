@@ -2067,6 +2067,13 @@ local isWaitMeasureEvent = false
       descr.value = ::get_option_autorearm_on_airfield()
       break
 
+    case ::USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH:
+      descr.id = "enable_laser_designatior_before_launch"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_enable_laser_designatior_before_launch()
+      break;
+
     case ::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN:
       descr.id = "activate_airborne_radar_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
@@ -2260,12 +2267,18 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_MODIFICATIONS:
+      local unit = ::getAircraftByName(::aircraft_for_weapons)
+      local showFullList = unit?.isBought() || !::isUnitSpecial(unit)
       descr.id = "enable_modifications"
-      descr.items = ["#options/reference_aircraft", "#options/modified_aircraft"]
-      descr.values = [false, true]
+      descr.items = showFullList
+        ? ["#options/reference_aircraft", "#options/modified_aircraft"]
+        : ["#options/reference_aircraft"]
+      descr.values = showFullList
+        ? [false, true]
+        : [false]
       descr.cb = "onUserModificationsUpdate"
       descr.controlType = optionControlType.LIST
-      defaultValue = true
+      defaultValue = false
       break
 
     case ::USEROPT_SKIN:
@@ -4584,6 +4597,9 @@ local isWaitMeasureEvent = false
       break;
     case ::USEROPT_AUTOREARM_ON_AIRFIELD:
       ::set_option_autorearm_on_airfield(value)
+      break;
+    case ::USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH:
+      ::set_enable_laser_designatior_before_launch(value)
       break;
     case ::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN:
       ::set_option_activate_airborne_radar_on_spawn(value)

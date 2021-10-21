@@ -4,6 +4,7 @@ local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { getCdBaseDifficulty } = ::require_native("guiOptions")
+local { getActionBarUnitName } = ::require_native("hudActionBar")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -35,8 +36,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   needSlotbar = true
 
   weaponsSelectorWeak = null
-  lastBulletsCache = null
-  lastWeaponCache = null
   hasMissionBuilder = true
 
   slobarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
@@ -93,7 +92,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function updateLinkedOptions() {
     checkBulletsRows()
-    checkVehicleModificationRow()
     updateWeaponOptions()
     updateTripleAerobaticsSmokeOptions()
   }
@@ -135,12 +133,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     }
 
     local weaponryObj = scene.findObject("unit_weapons_selector")
-    local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler,
-                                       { scene = weaponryObj
-                                         unit = unit
-                                         canChangeBulletsAmount = true
-                                         isForcedAvailable = ::isUnitSpecial(unit)
-                                       })
+
+    local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
+      scene = weaponryObj
+      unit = unit
+      canChangeBulletsAmount = true
+      isForcedAvailable = ::isUnitSpecial(unit) && !unit.isBought()
+    })
 
     weaponsSelectorWeak = handler.weakref()
     registerSubHandler(handler)
@@ -211,9 +210,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function updateAircraft()
   {
-    lastBulletsCache = null
-    lastWeaponCache = null
-
     updateButtons()
     updateWeaponsSelector()
 
@@ -262,7 +258,8 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!::checkObj(scene))
       return
 
-    scene.findObject("btn_builder").inactiveColor = (isBuilderAvailable() && ::isUnitInSlotbar(unit))? "no" : "yes"
+    scene.findObject("btn_builder").inactiveColor = (isBuilderAvailable()
+      && unit?.name == ::hangar_get_current_unit_name()) ? "no" : "yes"
     scene.findObject("btn_select").inactiveColor = isTestFlightAvailable()? "no" : "yes"
   }
 
@@ -274,10 +271,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       }))
       return
 
-    if (!::isUnitInSlotbar(unit))
+    if (unit?.name != ::hangar_get_current_unit_name())
     {
       saveAircraftOptions()
-      ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = unit })
+      if (needSlotbar) // There is a slotbar in this scene, but user selected an empty crew.
+        msgBox("not_in_slotbar", ::loc("events/empty_crew"), [["ok"]], "ok")
+      else
+        ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = unit })
       return
     }
 
@@ -366,7 +366,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
 
-    actionBarInfo.cacheActionDescs(::get_action_bar_unit_name())
+    actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
     ::select_training_mission(misBlk)
     guiScene.performDelayed(this, ::gui_start_flight)
@@ -493,8 +493,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       return
 
     local crewUnit = ::get_cur_slotbar_unit()
-    if (!crewUnit || crewUnit == unit)
+    if (crewUnit == unit)
       return
+    if (crewUnit == null)
+    {
+      updateButtons()
+      return
+    }
 
     applyFunc = ::Callback(function()
       {
@@ -517,36 +522,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
         ::set_option(option.type, obj.getValue())
         updateOption(option.type)
       })
-    }
-
-    if (!weaponsSelectorWeak)
-      return
-
-    if (!obj.getValue()) {//default mod option selected
-      lastWeaponCache = weaponsSelectorWeak.getCurWeapon().name
-      setLastBulletsCache()
-
-      local defaultWeap = unit.getDefaultWeapon()
-      if (defaultWeap)
-        weaponsSelectorWeak.setWeapon(defaultWeap)
-
-      local bulletGroups = weaponsSelectorWeak.bulletsManager.getBulletsGroups()
-      foreach(idx, bulGroup in bulletGroups) {
-        if (!bulGroup.active)
-          continue
-
-        local defBulletName = bulGroup.getBulletNameByIdx(0)
-        if (bulletGroups.findvalue(@(gr) gr.selectedName == defBulletName) != null)
-          continue
-
-        weaponsSelectorWeak.bulletsManager.changeBulletsValue(bulGroup, defBulletName)
-      }
-    }
-    else//current mod option selected
-    {
-      if (lastWeaponCache)
-        weaponsSelectorWeak.setWeapon(lastWeaponCache)
-      setUnitLastBulletsFromCache()
     }
 
     ::enable_bullets_modifications(unit.name)
@@ -575,56 +550,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     ::set_option(option.type, obj.getValue(), option)
     updateTripleAerobaticsSmokeOptions()
-  }
-
-  function setLastBulletsCache()
-  {
-    local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
-    lastBulletsCache = bulletGroups.filter(@(bulGroup) bulGroup.active).map(@(bulGroup) {
-      groupIndex = bulGroup.groupIndex,
-      bulletName = bulGroup.selectedName
-    })
-  }
-
-  function setUnitLastBulletsFromCache()
-  {
-    if (!weaponsSelectorWeak)
-      return
-
-    if ((lastBulletsCache?.len() ?? 0) == 0)
-      return
-
-    foreach (groupInfo in lastBulletsCache)
-    {
-      local bulGroup = weaponsSelectorWeak.getBulletGroupByIndex(groupInfo.groupIndex)
-      if (bulGroup)
-        weaponsSelectorWeak.bulletsManager.changeBulletsValue(bulGroup, groupInfo.bulletName)
-    }
-  }
-
-  function checkVehicleModificationRow() {
-    local option = findOptionInContainers(::USEROPT_MODIFICATIONS)
-    if (option && !option.value) {
-      local referenceWeap = unit.getDefaultWeapon() == getLastWeapon(unit.name)
-
-      if (referenceWeap) {
-        local bulletGroups = weaponsSelectorWeak.bulletsManager.getBulletsGroups()
-        foreach(idx, bulGroup in bulletGroups) {
-          local defBulletName = bulGroup.getBulletNameByIdx(0)
-          if (bulGroup.selectedName != defBulletName) {
-            referenceWeap = false
-            break
-          }
-        }
-      }
-
-      if (!referenceWeap) {
-        guiScene.performDelayed(this, function() {
-          ::set_option(option.type, 1)
-          updateOption(option.type)
-        })
-      }
-    }
   }
 
   function checkRocketDisctanceFuseRow()
@@ -726,12 +651,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       showOptionRow(option, diffName != ::g_difficulty.ARCADE.name)
   }
 
-  function onEventBulletsGroupsChanged(p) {
-    checkVehicleModificationRow()
-  }
-
   function onEventUnitWeaponChanged(p) {
-    checkVehicleModificationRow()
     updateWeaponOptions()
   }
 

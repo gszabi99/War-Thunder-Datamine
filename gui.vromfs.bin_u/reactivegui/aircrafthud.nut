@@ -1,7 +1,8 @@
 local { bw, bh, rw, rh } = require("style/screenState.nut")
 local opticAtgmSight = require("opticAtgmSight.nut")
 local laserAtgmSight = require("laserAtgmSight.nut")
-local {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible } = require("planeState.nut")
+local targetingPodSight = require("targetingPodSight.nut")
+local {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("planeState.nut")
 local {
   IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
@@ -50,7 +51,7 @@ local function aircraftMainHud(isBackground) {
           ]
             : IsBomberViewHudVisible.value
         ? [
-            aircraftParamsTable(isBackground, true)
+            aircraftParamsTable(isBackground, false, true)
           ]
             : null
   }
@@ -119,7 +120,7 @@ local function aircraftHUDs(isBackground) {
   ])
 
   return @() {
-    watch = [OpticAtgmSightVisible, IndicatorsVisible, LaserAtgmSightVisible]
+    watch = [OpticAtgmSightVisible, IndicatorsVisible, LaserAtgmSightVisible, TargetingPodSightVisible]
     children =
     [
       !IndicatorsVisible.value ? null : aircraftMainHud(isBackground)
@@ -133,6 +134,7 @@ local function aircraftHUDs(isBackground) {
       !IndicatorsVisible.value ? null : weaponHud(isBackground)
       laserPointComponent(isBackground)
       LaserAtgmSightVisible.value && !isBackground ? laserAtgmSight(sw(100), sh(100)) : null
+      TargetingPodSightVisible.value && !isBackground ? targetingPodSight(sw(100), sh(100)) : null
       !LaserAtgmSightVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
     ]
   }

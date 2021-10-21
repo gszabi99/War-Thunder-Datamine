@@ -1,6 +1,8 @@
 // warning disable: -file:forbidden-function
 
 local time = require("scripts/time.nut")
+local sqdebugger = require_optional("sqdebugger")
+local { isDataBlock } = require("std/underscore.nut")
 
 ::dlog <- function dlog(...)
 {
@@ -15,11 +17,6 @@ local time = require("scripts/time.nut")
 {
   foreach (arg in vargv)
     ::dagor.console_print(":  ".concat(time.getCurTimeMillisecStr(), ::type(arg) == "string" ? arg : ::toString(arg)))
-}
-
-::can_be_readed_as_datablock <- function can_be_readed_as_datablock(blk) //can be overrided by dataBlockAdapter
-{
-  return u.isDataBlock(blk)
 }
 
 function initEventBroadcastLogging()
@@ -67,7 +64,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
     printFn(prefix + "null");
   else
   {
-    if (::can_be_readed_as_datablock(info))
+    if (isDataBlock(info))
     {
       local blockName = (info.getBlockName()!="")? info.getBlockName()+" " : ""
       if (showBlockBrackets)
@@ -112,11 +109,11 @@ local DEBUG_TABLE_DATA_PARAMS = {
       foreach(id, data in info)
       {
         local dType = typeof(data)
-        local isDataBlock = ::can_be_readed_as_datablock(data)
+        local isDataBlockType = isDataBlock(data)
         local idText = tableKeyToString(id)
-        if (isDataBlock || dType=="array" || dType=="table" || (dType=="instance" && needUnfoldInstances))
+        if (isDataBlockType || dType=="array" || dType=="table" || (dType=="instance" && needUnfoldInstances))
         {
-          local openBraket = isDataBlock ? "DataBlock {" : dType == "array" ? "[" : "{"
+          local openBraket = isDataBlockType ? "DataBlock {" : dType == "array" ? "[" : "{"
           local closeBraket = ((dType=="array")? "]":"}")
           if (recursionLevel)
           {
@@ -129,7 +126,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
           }
           else
           {
-            local hasContent = (isDataBlock && (data.paramCount() + data.blockCount()) > 0)
+            local hasContent = (isDataBlockType && (data.paramCount() + data.blockCount()) > 0)
               || dType=="instance" || data.len() > 0
             printFn("".concat(prefix, addStr2, idText, " = ", openBraket, hasContent ? "..." : "", closeBraket))
           }
@@ -176,7 +173,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
 {
   if (::type(val) == "instance")
   {
-    if (::can_be_readed_as_datablock(val))
+    if (isDataBlock(val))
     {
       local rootBlockName = val.getBlockName() ?? ""
       local iv = []
@@ -256,5 +253,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
     str = val.len() ? "..." : ""
   return isArray ? ("[ " + str + " ]") : ("{ " + str + " }")
 }
+
+sqdebugger?.setObjPrintFunc(::debugTableData)
 
 initEventBroadcastLogging()

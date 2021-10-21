@@ -108,6 +108,9 @@
     "type": "typeMediumTank"
   },
   {
+    "bladeAnimVar": "leopard_2a4_dozer_blade_action"
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -121,6 +124,15 @@
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
       "hp": 10000.0,
+      "hull_front_composite_armor": {
+        "armorClass": "leopard_2a5_turret_nera",
+        "body_front_dm": {
+          "armorThickness": 400.0,
+          "genericArmorQuality": 0.31,
+          "cumulativeArmorQuality": 0.88,
+          "createSecondaryShatters": false
+        }
+      },
       "hull": {
         "armorClass": "RHA_tank_modern",
         "superstructure_front_dm": {
@@ -147,9 +159,6 @@
         },
         "body_shield_dm": {
           "armorThickness": 20.0
-        },
-        "body_front_dm": {
-          "armorThickness": 40.0
         },
         "turret_08_bottom_dm": {
           "armorThickness": 20.0
@@ -417,9 +426,9 @@
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_01_dm": {
-          "armorThickness": 520.0,
-          "genericArmorQuality": 0.31,
-          "cumulativeArmorQuality": 0.88
+          "armorThickness": 0.0,
+          "genericArmorQuality": 0.0,
+          "cumulativeArmorQuality": 0.0
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 280.0,
@@ -2037,29 +2046,8 @@
             },
             {
               "layer": {
-                "dmPart": "composite_armor_hull_01_dm"
-              }
-            },
-            {
-              "layer": {
-                "dmPart": "turret_04_bottom_dm"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "armorArrayHullTop": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "armorArrayText": [
-            {
-              "layer": {
-                "dmPart": "superstructure_side_dm"
-              }
-            },
-            {
-              "layer": {
-                "dmPart": "composite_armor_hull_02_dm"
+                "dmPart": "body_front_dm",
+                "xrayTextThickness": [280.0,520.0]
               }
             },
             {
@@ -3134,6 +3122,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3141,6 +3136,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3166,6 +3164,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3275,6 +3276,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3503,6 +3507,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

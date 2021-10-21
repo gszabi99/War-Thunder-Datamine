@@ -263,10 +263,12 @@
           "armorThickness": 35.0,
           "hp": 150.0,
           "ignoreDeadWithSplash": true,
-          "armorEffectiveThicknessMax": 50.0
+          "armorEffectiveThicknessMax": 50.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_turret_05_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 35.0,
+          "hidableInXrayViewer": true
         },
         "ex_decor_l_02_dm": {
           "armorThickness": 20.0
@@ -288,6 +290,11 @@
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 17.25,
+          "armorClass": "tank_structural_steel",
+          "hidableInXrayViewer": true
+        },
+        "composite_armor_hull_03_dm": {
+          "armorThickness": 5.0,
           "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
         }
@@ -1010,6 +1017,17 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "composite_armor_hull_02_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_03_dm",
+          "titleLoc": "tank_structural_steel",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_03_dm"
             }
           }
         }
@@ -3066,6 +3084,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3073,6 +3098,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3098,6 +3126,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3207,6 +3238,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3435,6 +3469,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

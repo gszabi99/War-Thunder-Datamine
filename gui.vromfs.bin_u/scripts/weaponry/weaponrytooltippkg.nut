@@ -11,6 +11,7 @@ local { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsLis
 local { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
 local { getActionItemAmountText, getActionItemModificationName } = require("scripts/hud/hudActionBarInfo.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
 
 
 local function updateModType(unit, mod)
@@ -218,7 +219,7 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
   }
   else if (params?.isInHudActionBar)
   {
-    local modData = ::u.search(::get_action_bar_items(),
+    local modData = ::u.search(getActionBarItems(),
       @(itemData) getActionItemModificationName(itemData, unit) == item.name)
     if (modData)
       res.amountText <- getActionItemAmountText(modData, true)

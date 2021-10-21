@@ -4,6 +4,7 @@ local { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
 local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { initWeaponParams } = require("scripts/weaponry/weaponsParams.nut")
+local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 
 ::all_units <- {}
 
@@ -133,7 +134,7 @@ if (showedUnit.value != null)
   function()
   {
     local blk = ::DataBlock()
-    blk.load("config/hud.blk")
+    blk.load($"{controlsPresetConfigPath.value}config/hud.blk")
     if (blk?.crosshair)
     {
       local crosshairs = blk.crosshair % "pictureTpsView"

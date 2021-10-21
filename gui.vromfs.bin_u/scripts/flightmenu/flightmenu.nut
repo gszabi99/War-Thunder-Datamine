@@ -313,6 +313,14 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
       return
     lastSelectedBtnId = isHover ? id : null
   }
+
+  function onFreecam(obj)
+  {
+    onResumeRaw()
+
+    if ("toggle_freecam" in getroottable())
+      ::toggle_freecam()
+  }
 }
 
 ::quit_mission <- function quit_mission()

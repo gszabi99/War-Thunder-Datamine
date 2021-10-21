@@ -165,14 +165,6 @@
         "chatId": "zh",
         "hasUnitSpeech": false
       }
-    },
-    "vietnam": {
-      "lang": {
-        "id": "Vietnamese",
-        "icon": "#ui/gameuiskin#lang_vietnam.svg",
-        "chatId": "vn",
-        "hasUnitSpeech": false
-      }
     }
   },
   "chat_categories": {
@@ -485,6 +477,9 @@
       "login_layer_m1a1_hc": 4.0
     },
     {
+      "login_layer_wiesels": 4.0
+    },
+    {
       "unlocks": {
         "login_layer_atomic_tank": "loading_screen_atomic_tank",
         "login_layer_m6a2e1": "loading_screen_m6a2e1",
@@ -565,6 +560,11 @@
         },
         "beforeLogin": {
           "default_chance": 0.0,
+          "login_layer_d1": 1.0,
+          "login_layer_p1": 1.0,
+          "login_layer_v1": 1.0,
+          "login_layer_l1": 1.0,
+          "login_bkg_1_67_nolayers_ger": 1.0,
           "login_layer_m1": 1.0,
           "login_layer_e1": 1.0,
           "login_layer_it_gg": 1.0,
@@ -585,6 +585,8 @@
         },
         "beforeLogin": {
           "default_chance": 0.0,
+          "login_bkg_1_63_nolayers_jp": 1.0,
+          "login_bkg_1_67_nolayers_jp": 1.0,
           "login_layer_g1": 1.0,
           "login_layer_1_87_t2": 1.0,
           "login_layer_yugumo": 1.0,
@@ -2163,6 +2165,30 @@
         "h": 0.848,
         "img": "#ui/images/chests/items_box7_small_open"
       },
+      "silver_iron_chest_big": {
+        "x": 0.1,
+        "w": 0.924,
+        "h": 0.686,
+        "img": "#ui/images/chests/items_box17"
+      },
+      "silver_iron_chest": {
+        "x": 0.03,
+        "w": 1.128,
+        "h": 0.848,
+        "img": "#ui/images/chests/items_box17_small"
+      },
+      "silver_iron_chest_opened_big": {
+        "x": 0.1,
+        "w": 0.924,
+        "h": 0.686,
+        "img": "#ui/images/chests/items_box17_open"
+      },
+      "silver_iron_chest_opened": {
+        "x": 0.03,
+        "w": 1.128,
+        "h": 0.848,
+        "img": "#ui/images/chests/items_box17_small_open"
+      },
       "small_gold_chest_big": {
         "x": 0.14,
         "w": 0.895,
@@ -2212,6 +2238,32 @@
         "w": 1.088,
         "h": 0.768,
         "img": "#ui/images/chests/items_box9_small_open"
+      },
+      "big_green_chest_big": {
+        "x": 0.1,
+        "w": 0.934,
+        "h": 0.664,
+        "img": "#ui/images/chests/items_box18"
+      },
+      "big_green_chest": {
+        "x": 0.02,
+        "y": 0.08,
+        "w": 1.088,
+        "h": 0.768,
+        "img": "#ui/images/chests/items_box18_small"
+      },
+      "big_green_chest_opened_big": {
+        "x": 0.1,
+        "w": 0.934,
+        "h": 0.664,
+        "img": "#ui/images/chests/items_box18_open"
+      },
+      "big_green_chest_opened": {
+        "x": 0.02,
+        "y": 0.08,
+        "w": 1.088,
+        "h": 0.768,
+        "img": "#ui/images/chests/items_box18_small_open"
       },
       "group_big_gold_chest_big": {
         "x": 0.1,
@@ -4276,11 +4328,14 @@
       "country_sweden_locked": "#ui/gameuiskin#country_sweden_locked.svg",
       "country_sweden_big": "#ui/gameuiskin#country_sweden_big",
       "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_big_locked",
+      "country_israel": "#ui/gameuiskin#country_israel.svg",
+      "country_israel_locked": "#ui/gameuiskin#country_israel_locked.svg",
+      "country_israel_big": "#ui/gameuiskin#country_israel_big",
+      "country_israel_big_locked": "#ui/gameuiskin#country_israel_big_locked",
       "country_canada": "#ui/gameuiskin#country_canada.svg",
       "country_canada_modern": "#ui/gameuiskin#country_canada_modern.svg",
       "country_gdr": "#ui/gameuiskin#country_gdr.svg",
       "country_germany_modern": "#ui/gameuiskin#country_germany_modern.svg",
-      "country_israel": "#ui/gameuiskin#country_israel.svg",
       "country_italy_modern": "#ui/gameuiskin#country_italy_modern.svg",
       "country_italy_kingdom": "#ui/gameuiskin#country_italy_kingdom.svg",
       "country_japan_modern": "#ui/gameuiskin#country_japan_modern.svg",
@@ -4323,6 +4378,7 @@
       "first_choice_country_france_aviation": "#ui/first_choice/france_aviation.png",
       "first_choice_country_china_aviation": "#ui/first_choice/china_aviation.png",
       "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation.png",
+      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation.png",
       "first_choice_country_usa_army": "#ui/first_choice/usa_army.png",
       "first_choice_country_germany_army": "#ui/first_choice/germany_army.png",
       "first_choice_country_ussr_army": "#ui/first_choice/ussr_army.png",
@@ -4365,6 +4421,7 @@
       "decal_locked_country_china": "#ui/gameuiskin#decal_country_china_locked",
       "decal_locked_country_france": "#ui/gameuiskin#decal_country_france_locked.png",
       "decal_locked_country_sweden": "#ui/gameuiskin#decal_country_sweden_locked.png",
+      "decal_locked_country_israel": "#ui/gameuiskin#decal_country_israel_locked.png",
       "country_germany_aircraft_unit": "#ui/images/researches/ger_finishedresearch.jpg?P1",
       "country_germany_tank_unit": "#ui/images/researches/ger_ground_finishedresearch.jpg?P1",
       "country_germany_ship_unit": "#ui/images/researches/ger_ship_finishedresearch.jpg?P1",
@@ -4384,6 +4441,7 @@
       "country_japan_tank_unit": "#ui/images/researches/japan_ground_finishedResearch.jpg?P1",
       "country_japan_ship_unit": "#ui/images/researches/japan_ship_finishedresearch.jpg?P1",
       "country_japan_boat_unit": "#ui/images/researches/japan_boat_finishedResearch.jpg?P1",
+      "country_japan_helicopter_unit": "#ui/images/researches/usa_heli_finishedresearch.jpg?P1",
       "country_britain_aircraft_unit": "#ui/images/researches/uk_finishedresearch.jpg?P1",
       "country_britain_tank_unit": "#ui/images/researches/uk_ground_finishedresearch.jpg?P1",
       "country_britain_ship_unit": "#ui/images/researches/uk_ship_finishedresearch.jpg?P1",
@@ -4395,11 +4453,13 @@
       "country_italy_tank_unit": "#ui/images/researches/italy_ground_finishedresearch.jpg?P1",
       "country_italy_ship_unit": "#ui/images/researches/italy_ship_finishedresearch.jpg?P1",
       "country_italy_boat_unit": "#ui/images/researches/italy_boat_finishedresearch.jpg?P1",
+      "country_italy_helicopter_unit": "#ui/images/researches/usa_heli_finishedresearch.jpg?P1",
       "country_france_aircraft_unit": "#ui/images/researches/france_finishedresearch.jpg?P1",
       "country_france_tank_unit": "#ui/images/researches/france_ground_finishedresearch.jpg?P1",
       "country_france_helicopter_unit": "#ui/images/researches/france_heli_finishedresearch.jpg?P1",
       "country_sweden_aircraft_unit": "#ui/images/researches/sweden_finishedresearch.jpg?P1",
       "country_sweden_tank_unit": "#ui/images/researches/sweden_ground_finishedresearch.jpg?P1",
+      "country_israel_aircraft_unit": "#ui/images/researches/britain_finishedresearch.jpg?P1",
       "country_germany_aircraft_modification": "#ui/images/researches/ger_newmodificationresearch.jpg?P1",
       "country_germany_tank_modification": "#ui/images/researches/ger_ground_newmodificationresearch.jpg?P1",
       "country_germany_ship_modification": "#ui/images/researches/ger_ship_newmodificationresearch.jpg?P1",
@@ -4419,6 +4479,7 @@
       "country_japan_tank_modification": "#ui/images/researches/japan_ground_newmodificationResearch.jpg?P1",
       "country_japan_ship_modification": "#ui/images/researches/japan_ship_newmodificationresearch.jpg?P1",
       "country_japan_boat_modification": "#ui/images/researches/japan_boat_newmodificationResearch.jpg?P1",
+      "country_japan_helicopter_modification": "#ui/images/researches/usa_heli_newmodificationresearch.jpg?P1",
       "country_britain_aircraft_modification": "#ui/images/researches/uk_newmodificationresearch.jpg?P1",
       "country_britain_tank_modification": "#ui/images/researches/uk_ground_newmodificationresearch.jpg?P1",
       "country_britain_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
@@ -4430,11 +4491,13 @@
       "country_italy_tank_modification": "#ui/images/researches/italy_ground_newmodificationresearch.jpg?P1",
       "country_italy_ship_modification": "#ui/images/researches/italy_ship_newmodificationresearch.jpg?P1",
       "country_italy_boat_modification": "#ui/images/researches/italy_boat_newmodificationresearch.jpg?P1",
+      "country_italy_helicopter_modification": "#ui/images/researches/usa_heli_newmodificationresearch.jpg?P1",
       "country_france_aircraft_modification": "#ui/images/researches/france_newmodificationresearch.jpg?P1",
       "country_france_tank_modification": "#ui/images/researches/france_ground_newmodificationresearch.jpg?P1",
       "country_france_helicopter_modification": "#ui/images/researches/france_heli_newmodificationresearch.jpg?P1",
       "country_sweden_aircraft_modification": "#ui/images/researches/sweden_newmodificationresearch.jpg?P1",
       "country_sweden_tank_modification": "#ui/images/researches/sweden_ground_newmodificationresearch.jpg?P1",
+      "country_israel_aircraft_modification": "#ui/images/researches/uk_newmodificationresearch.jpg?P1",
       "tutorial_fighter": "#ui/images/tutorial_fighter.jpg?P1",
       "tutorial_fighter_win": "#ui/images/tutorial_fighter_win.jpg?P1",
       "tutorial_bomber": "#ui/images/tutorial_bomber.jpg?P1",
@@ -4492,11 +4555,14 @@
       "country_sweden_locked": "#ui/gameuiskin#country_sweden_alt_locked.svg",
       "country_sweden_big": "#ui/gameuiskin#country_sweden_alt_big",
       "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_alt_big_locked",
+      "country_israel": "#ui/gameuiskin#country_israel_alt.svg",
+      "country_israel_locked": "#ui/gameuiskin#country_israel_alt_locked.svg",
+      "country_israel_big": "#ui/gameuiskin#country_israel_alt_big",
+      "country_israel_big_locked": "#ui/gameuiskin#country_israel_alt_big_locked",
       "country_canada": "",
       "country_canada_modern": "",
       "country_gdr": "#ui/gameuiskin#country_germany_alt.svg",
       "country_germany_modern": "#ui/gameuiskin#country_germany_alt.svg",
-      "country_israel": "",
       "country_italy_modern": "#ui/gameuiskin#country_italy_alt.svg",
       "country_italy_kingdom": "#ui/gameuiskin#country_italy_alt.svg",
       "country_japan_modern": "#ui/gameuiskin#country_japan_alt.svg",
@@ -4537,6 +4603,7 @@
       "first_choice_country_france_aviation": "#ui/first_choice/france_aviation_alt.png",
       "first_choice_country_china_aviation": "#ui/first_choice/china_aviation_alt.png",
       "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation_alt.png",
+      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation_alt.png",
       "first_choice_country_usa_army": "#ui/first_choice/usa_army_alt.png",
       "first_choice_country_germany_army": "#ui/first_choice/germany_army_alt.png",
       "first_choice_country_ussr_army": "#ui/first_choice/ussr_army_alt.png",
@@ -4579,6 +4646,7 @@
       "decal_locked_country_china": "#ui/gameuiskin#decal_locked_country.png",
       "decal_locked_country_france": "#ui/gameuiskin#decal_locked_country.png",
       "decal_locked_country_sweden": "#ui/gameuiskin#decal_locked_country.png",
+      "decal_locked_country_israel": "#ui/gameuiskin#decal_locked_country.png",
       "country_germany_aircraft_unit": "#ui/images/researches/ger_finishedresearch_alt.jpg?P1",
       "country_germany_tank_unit": "#ui/images/researches/ger_ground_finishedresearch_alt.jpg?P1",
       "country_japan_aircraft_unit": "#ui/images/researches/japan_finishedresearch_alt.jpg?P1",

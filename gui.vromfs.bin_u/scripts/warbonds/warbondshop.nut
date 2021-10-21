@@ -517,6 +517,8 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       updateShowItemButton()
     if (isMouseMode)
       return
+    if (obj.holderId == getCurAwardObj()?.holderId)
+      return
     hoverHoldAction(obj, function(focusObj) {
       local id = focusObj?.holderId
       local value = curPageAwards.findindex(@(a) a.getFullId() == id)

@@ -33,7 +33,7 @@ local function makeUpdatable(persistName, request, defValue, forceRefreshEvents 
   }
 
   local function prepareToRequest() {
-    lastTime(@(v) v.request = get_time_msec())
+    lastTime.mutate(@(v) v.request = get_time_msec())
   }
 
   local function refresh(cb = null) {
@@ -54,7 +54,7 @@ local function makeUpdatable(persistName, request, defValue, forceRefreshEvents 
   }
 
   local function forceRefresh(cb = null) {
-    lastTime(@(v) v.__update({ update = 0, request = 0}))
+    lastTime.mutate(@(v) v.__update({ update = 0, request = 0}))
     refresh(cb)
   }
 

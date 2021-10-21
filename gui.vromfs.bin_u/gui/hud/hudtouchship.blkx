@@ -605,67 +605,14 @@
   },
   {
     "tdiv": {
-      "position": "absolute",
-      "hud_touch_shortcut": {
-        "id": "flight_menu",
-        "background-image": "#ui/gameuiskin#menu_1",
-        "shortcut_id": "ID_FLIGHTMENU_SETUP",
-        "touch-area-id": "4",
-        "type": "menu"
-      }
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "position": "absolute"
-      },
-      {
-        "pos": "pw-w, 0"
-      },
-      {
-        "hud_touch_shortcut": {
-          "id": "voice",
-          "margin-right": "0.02@shHud",
-          "background-image": "#ui/gameuiskin#radio_1",
-          "shortcut_id": "ID_SHOW_VOICE_MESSAGE_LIST",
-          "type": "menu"
-        }
-      },
-      {
-        "hud_touch_shortcut": {
-          "id": "stats",
-          "margin-right": "0.02@shHud",
-          "background-image": "#ui/gameuiskin#statistics_1",
-          "shortcut_id": "ID_MPSTATSCREEN",
-          "touch-area-id": "3",
-          "type": "menu"
-        }
-      },
-      {
-        "hud_touch_shortcut": {
-          "id": "map",
-          "background-image": "#ui/gameuiskin#map_1",
-          "shortcut_id": "ID_TACTICAL_MAP",
-          "touch-area-id": "2",
-          "type": "menu"
-        }
-      }
-    ]
-  },
-  {
-    "tdiv": {
-      "id": "order_status",
-      "width": "0.8@itemInfoWidth",
-      "min-width": "0.6@itemInfoWidth",
+      "behaviour": "darg",
       "position": "root",
-      "pos": "sw - 1@bwHud - 1@itemInfoWidth + 60/720*@scrn_tgt, 1@bhHud + 240/720*@scrn_tgt"
+      "pos": "0, 0",
+      "size": "pw, ph"
     }
   },
   {
     "tdiv": {
-      "position": "absolute",
-      "pos": "0, @menuTouchShortcutHeight + @touchElemetMargin",
       "flow": "vertical",
       "tacticalMap": {
         "id": "hud_tank_tactical_map",
@@ -719,103 +666,6 @@
         "flow": "vertical"
       }
     }
-  },
-  {
-    "tdiv": {
-      "id": "hud_action_bar",
-      "position": "root",
-      "pos": "sw/2 - w/2, @actionBarBottomPos - h",
-      "increasedActionBar": "yes"
-    }
-  },
-  {
-    "tdiv": {
-      "position": "absolute",
-      "pos": "0, ph-h-1@missionProgressHeight",
-      "tdiv": [
-        {
-          "flow": "vertical"
-        },
-        {
-          "size": "3@touchShortcutBigSize + 2@touchElemetMargin, 2@touchShortcutBigSize + @touchElemetMargin"
-        },
-        {
-          "hud_touch_shortcut": {
-            "position": "absolute",
-            "pos": "0, 0.5ph-0.5h",
-            "background-image": "#ui/gameuiskin#accelerator_left",
-            "shortcut_id": "ship_steering_rangeMax",
-            "type": "big"
-          }
-        },
-        {
-          "hud_touch_shortcut": {
-            "position": "absolute",
-            "pos": "pw-w, 0.5ph-0.5h",
-            "background-image": "#ui/gameuiskin#accelerator_right",
-            "shortcut_id": "ship_steering_rangeMin",
-            "type": "big"
-          }
-        },
-        {
-          "hud_touch_shortcut": {
-            "position": "absolute",
-            "pos": "0.5pw-0.5w, 0",
-            "background-image": "#ui/gameuiskin#accelerator_up_v1",
-            "shortcut_id": "ship_main_engine_rangeMax",
-            "type": "big"
-          }
-        },
-        {
-          "hud_touch_shortcut": {
-            "position": "absolute",
-            "pos": "0.5pw-0.5w, ph-h",
-            "background-image": "#ui/gameuiskin#accelerator_down_v1",
-            "shortcut_id": "ship_main_engine_rangeMin",
-            "type": "big"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "position": "absolute"
-      },
-      {
-        "pos": "pw-w, ph-h"
-      },
-      {
-        "size": "@touchShortcutBigSize + 1.5@sizeTouchShortcut, @touchShortcutBigSize + 1.5@sizeTouchShortcut"
-      },
-      {
-        "hud_touch_shortcut": {
-          "position": "absolute",
-          "background-image": "#ui/gameuiskin#sniper_mode",
-          "shortcut_id": "ID_TOGGLE_VIEW_SHIP",
-          "type": "normal"
-        }
-      },
-      {
-        "hud_touch_shortcut": {
-          "position": "absolute",
-          "pos": "pw-w, 0",
-          "background-image": "#ui/gameuiskin#zoom",
-          "shortcut_id": "ID_ZOOM_TOGGLE",
-          "type": "normal"
-        }
-      },
-      {
-        "hud_touch_shortcut": {
-          "position": "absolute",
-          "pos": "0.5pw-0.5w, 0.6ph-0.5h",
-          "background-image": "#ui/gameuiskin#fire",
-          "shortcut_id": "ID_SHIP_WEAPON_ALL",
-          "type": "big"
-        }
-      }
-    ]
   },
   {
     "timer": {

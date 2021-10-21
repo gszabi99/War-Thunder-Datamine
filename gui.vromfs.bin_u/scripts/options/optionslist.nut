@@ -80,6 +80,7 @@ local getMainOptions = function()
       [::USEROPT_SHOW_PILOT, "spinner"],
       [::USEROPT_AUTOPILOT_ON_BOMBVIEW, "spinner"],
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
+      [::USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],

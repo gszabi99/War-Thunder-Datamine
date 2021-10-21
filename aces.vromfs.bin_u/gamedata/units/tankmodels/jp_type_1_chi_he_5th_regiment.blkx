@@ -122,9 +122,6 @@
         "superstructure_back_dm": {
           "armorThickness": 50.0
         },
-        "superstructure_top_dm": {
-          "armorThickness": 8.5
-        },
         "superstructure_bottom_dm": {
           "armorThickness": 8.5
         },
@@ -279,7 +276,8 @@
         "wheel_r_top_03_dm": [],
         "ex_armor_body_03_dm": [],
         "ex_armor_body_04_dm": [],
-        "wheel_support_dm": []
+        "wheel_support_dm": [],
+        "superstructure_top_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -2391,6 +2389,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -2398,6 +2403,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2423,6 +2431,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2532,6 +2543,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2760,6 +2774,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

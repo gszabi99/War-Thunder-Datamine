@@ -132,6 +132,82 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.6,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -1.0,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -3.0,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      }
+    ]
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -3101,6 +3177,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "useVelocity": false
+            }
           }
         ]
       },
@@ -3108,6 +3191,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3133,6 +3219,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3242,6 +3331,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3470,6 +3562,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
