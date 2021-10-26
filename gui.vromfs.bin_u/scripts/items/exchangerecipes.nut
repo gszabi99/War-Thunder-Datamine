@@ -611,6 +611,7 @@ local ExchangeRecipes = class {
     local resultItems = []
     local usedUidsList = {}
     local recipe = this //to not remove recipe until operation complete
+    params = params ?? {}
     params.rewardTitle <- getRewardTitleLocId(false)
     if (componentItem.canRecraftFromRewardWnd())
       params.reUseRecipeUid <- uid

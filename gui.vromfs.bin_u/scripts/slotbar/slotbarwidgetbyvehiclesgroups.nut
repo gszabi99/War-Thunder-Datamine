@@ -122,15 +122,6 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
     return countryPresets?[crew.country].units[crew.idInCountry]
   }
 
-  function getHangarFallbackUnitParams()
-  {
-    return {
-      country = getCurCountry()
-      slotbarUnits = (countryPresets?[getCurCountry()].units ?? [])
-        .filter(@(unit) unit != null)
-    }
-  }
-
   function onEventPresetsByGroupsChanged(p)
   {
     local newCrew = p?.crew

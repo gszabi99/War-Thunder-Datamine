@@ -2490,15 +2490,8 @@
       },
       "tracks": {
         "animationMultiplier": -0.37,
-        "height": 0.06,
-        "width": 0.305,
-        "tracksTensionK": [10.0,6.0,4.0],
-        "trackMesh": "jp_type_97_chi_ha_phys_track_line",
-        "trackLen": 0.122,
-        "trackCount": 120,
-        "trackFadeTime": 1.1,
-        "trackMaxHeight": 1.27,
-        "trackStartOffset": 0.16
+        "height": 0.04,
+        "width": 0.305
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2549,10 +2542,6 @@
         "defaultDampeningForce": [80000.0,80000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31,
-        "wheel_r_back": 0.3,
-        "wheel_l_back": 0.3,
         "offsets": {
           "wheel_l_back": [-0.14,-0.11,0.07],
           "wheel_r_back": [-0.14,-0.11,0.07]
@@ -2846,13 +2835,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "useVelocity": false
-            }
           }
         ]
       },
@@ -2860,9 +2842,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2888,9 +2867,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3000,9 +2976,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3231,13 +3204,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

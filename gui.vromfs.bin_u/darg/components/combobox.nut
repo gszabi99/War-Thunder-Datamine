@@ -161,12 +161,12 @@ local function combobox(watches, options, combo_style=comboStyle) {
       padding = combo_style?.popupBorderWidth ?? 0
       stopMouse = true
       clipChildren = true
-      xmbNode = XmbContainer({scrollToEdge=true})
+      xmbNode = XmbContainer()
       children = {
         behavior = Behaviors.WheelScroll
         joystickScroll = true
         flow = FLOW_VERTICAL
-        children
+        children = children
         gap = combo_style?.itemGap
         size = [flex(), SIZE_TO_CONTENT]
         maxHeight = itemHeight*10.5 + itemGapHt*9 //this is ugly workaround with overflow of combobox size

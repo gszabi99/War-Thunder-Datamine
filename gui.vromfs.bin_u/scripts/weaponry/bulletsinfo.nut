@@ -874,7 +874,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
   return descr
 }
 
-local function getActiveBulletsGroupIntForDuplicates(unit, params)
+local function getActiveBulletsGroupIntForDuplicates(unit, checkPurchased = true)
 {
   local res = 0
   local groupsCount = getBulletsGroupCount(unit, false)
@@ -888,11 +888,8 @@ local function getActiveBulletsGroupIntForDuplicates(unit, params)
     if (linkedIdx == lastLinkedIdx) {
       duplicates++
     } else {
-      local checkPurchased = params?.checkPurchased ?? true
       local bullets = getBulletsList(unit.name, i, {
-        isOnlyBought = checkPurchased,
-        needCheckUnitPurchase = checkPurchased,
-        isForcedAvailable = params?.isForcedAvailable ?? false
+        isOnlyBought = checkPurchased, needCheckUnitPurchase = checkPurchased
       })
       lastIdxTotal = bullets.values.len()
       lastLinkedIdx = linkedIdx
@@ -955,7 +952,7 @@ local function getBulletSetNameByBulletName(unit, bulletName)
   return null
 }
 
-local function getActiveBulletsGroupInt(air, params = null)
+local function getActiveBulletsGroupInt(air, checkPurchased = true)
 {
   local primaryWeapon = getLastPrimaryWeapon(air)
   local secondaryWeapon = getLastWeapon(air.name)
@@ -1008,7 +1005,7 @@ local function getActiveBulletsGroupInt(air, params = null)
   if (canBulletsBeDuplicate(air))
   {
     res = res & ~((1 << air.unitType.bulletSetsQuantity) - 1) //use only fake bullets mask
-    res = res | getActiveBulletsGroupIntForDuplicates(air, params)
+    res = res | getActiveBulletsGroupIntForDuplicates(air, checkPurchased)
   }
   return res
 }

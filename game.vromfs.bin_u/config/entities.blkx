@@ -7,16 +7,6 @@
     "_singleton": true,
     "msg_sink": []
   },
-  "server_load_stat": {
-    "_extends": "replicating",
-    "_replicated": "^server_load_stat\\.(load)$",
-    "_tracked": "^server_load_stat\\.(load)$",
-    "server_load_stat:_namespace": {
-      "frameCnt": 0,
-      "timer": 1.0,
-      "load": 0.0
-    }
-  },
   "unit_loader": {
     "setting:_namespace": {
       "className": "",
@@ -160,9 +150,6 @@
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
-    "ri_preload:GpuObjectRiResourcePreload": {
-      "_tags": "render"
-    },
     "ri_gpu_object.node_based_shader_preload": {
       "_tags": "render"
     },
@@ -297,13 +284,10 @@
       "light.nightly": true
     },
     {
-      "light.texture_name": ""
+      "_tracked": "^(spot_light\\..*)$"
     },
     {
-      "_tracked": "^(light\\.texture_name|spot_light\\..*)$"
-    },
-    {
-      "_replicated": "^(light\\.texture_name|spot_light\\..*)$"
+      "_replicated": "^(spot_light\\..*)$"
     },
     {
       "spot_light": {
@@ -341,53 +325,6 @@
       "spot_light:_namespace": []
     }
   ],
-  "spot_light_small": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.max_radius": 5.0
-    },
-    {
-      "light.brightness": 15.0
-    },
-    {
-      "spot_light:_namespace": {
-        "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
-      }
-    }
-  ],
-  "field_light_large": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 20.0
-    },
-    {
-      "light.max_radius": 30.0
-    },
-    {
-      "light.color": "#ffffffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_orange": [
     {
       "_extends": "omni_light"
@@ -414,106 +351,6 @@
       "omni_light:_namespace": []
     }
   ],
-  "field_light_orange_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 3.0
-    },
-    {
-      "light.max_radius": 2.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 50.0
-    },
-    {
-      "light.max_radius": 200.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_medium": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 20.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_small": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 1.0
-    },
-    {
-      "light.max_radius": 1.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_smallest": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 0.3
-    },
-    {
-      "light.max_radius": 1.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_blue": [
     {
       "_extends": "field_light_orange"
@@ -528,52 +365,6 @@
       "omni_light:_namespace": []
     }
   ],
-  "field_light_blue_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 300.0
-    },
-    {
-      "light.max_radius": 1000.0
-    },
-    {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_blue_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#3232ffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_red": [
     {
       "_extends": "field_light_orange"
@@ -583,52 +374,6 @@
     },
     {
       "light.color": "#f05032ff"
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_red_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#f05032ff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_green_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#0a961eff"
-    },
-    {
-      "light.contact_shadows": false
     },
     {
       "omni_light:_namespace": []
@@ -715,30 +460,6 @@
     },
     {
       "spot_light:_namespace": []
-    }
-  ],
-  "spot_light_orange_medium": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.max_radius": 300.0
-    },
-    {
-      "light.brightness": 1000.0
-    },
-    {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": {
-        "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
-      }
     }
   ],
   "spot_light_blue_large": [
@@ -991,36 +712,41 @@
       "useRandomWaves": false,
       "useDynamicWaterLevel": false
     },
-    "floatingRiSystem.volumePresets:object": {
-      "default_1:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.8,
-        "middleDepth": 0.0,
-        "volumesCount": 1
+    "floatingRiSystem.volumePresets:array": [
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.8,
+          "middleDepth": 0.0,
+          "volumesCount": 1
+        }
       },
-      "default_4:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.57,
-        "sideDepth": 0.0,
-        "volumesCount": 4
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.57,
+          "sideDepth": 0.0,
+          "volumesCount": 4
+        }
       },
-      "default_12:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.37,
-        "middleDepth": 0.5,
-        "sideDepth": 0.0,
-        "volumesCount": 12
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.37,
+          "middleDepth": 0.5,
+          "sideDepth": 0.0,
+          "volumesCount": 12
+        }
       }
-    }
+    ]
   },
   "floating_rendinst_res_group": {
-    "_tracked": "^floatingRiGroup\\.(resName|mass|inertiaMult|volumesCount|volumePresetName|geomCenterShift|physBboxSizeMul)$",
+    "_tracked": "^floatingRiGroup\\.(resName|mass|inertiaMult|volumesCount|geomCenterShift)$",
     "floatingRiGroup:_namespace": {
       "resName": "",
       "mass": 1.0,
       "inertiaMult": [80.0,0.1,80.0],
-      "volumesCount": -1,
-      "volumePresetName": "",
+      "volumesCount": 0,
       "wreckageFloatDuration": 15.0,
       "updateDist": 1000.0,
       "interactionType": 0,
@@ -1028,8 +754,7 @@
       "elasticity": 0.1,
       "physUpdateDt": 0.0417,
       "maxShiftDist": 1000.0,
-      "geomCenterShift": [0.0,0.0,0.0],
-      "physBboxSizeMul": [1.0,1.0,1.0]
+      "geomCenterShift": [0.0,0.0,0.0]
     },
     "floatingRiGroup.riPhysFloatingModel": []
   },
@@ -1072,9 +797,6 @@
     },
     {
       "_replicated": "^(uid)$"
-    },
-    {
-      "_tracked": "^playerNo$"
     }
   ],
   "unit": {
@@ -1137,6 +859,9 @@
       "_tags": "render"
     }
   },
+  "player_tank": {
+    "_extends": "tank"
+  },
   "simple_ship": {
     "_extends": "simple_ground_unit"
   },
@@ -1147,14 +872,8 @@
       "_tags": "sound"
     }
   },
-  "controlled_hero": {
-    "controlledHero:tag": []
-  },
-  "watched_hero": {
-    "watchedHero:tag": []
-  },
-  "player_unit": {
-    "playerUnit:tag": []
+  "player_ship": {
+    "_extends": "ship"
   },
   "walker": {
     "_extends": "ground_unit"
@@ -1169,10 +888,15 @@
     "_extends": "unit"
   },
   "weapon": {
-    "_extends": "root"
+    "_extends": "root",
+    "weapon_ref": [],
+    "weapon_ref:_namespace": {
+      "ptr": 0
+    }
   },
   "gun": {
-    "_extends": "weapon"
+    "_extends": "weapon",
+    "weapon_proj_bullet": []
   },
   "bomb_gun": {
     "_extends": "weapon"

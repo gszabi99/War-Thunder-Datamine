@@ -169,12 +169,6 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     local countryId = ::get_profile_country_sq()
     return (countryId in presets) && presets[countryId].len() < getMaxPresetsCount(countryId)
-      && canEditCountryPresets(countryId)
-  }
-
-  function canEditCountryPresets(country = null)
-  {
-    return ::is_country_has_usable_units(country ?? ::get_profile_country_sq())
   }
 
   function getPresetsReseveTypesText(country = null)
@@ -376,7 +370,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!countryId)
       countryId = ::get_profile_country_sq()
-    if (!canEditCountryPresets(countryId) || !(countryId in presets))
+    if (!(countryId in presets))
       return false
     local cfgBlk = ::loadLocalByAccount("slotbar_presets/" + countryId)
     local blk = null
@@ -398,9 +392,12 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
                                ::getTblValue("gameModeId", p, "")],
                               "|"))
       }
-      if (presetsList.len() == 0 )
+      if (presetsList.len() == 0)
+      {
+        local savedPresets = ::toString(cfgBlk) // warning disable: -declared-never-used
+        ::script_net_assert_once("attempt_save_not_valid_presets", "Attempt save not valid presets")
         return false
-
+      }
       blk = ::array_to_blk(presetsList, "preset")
       if (selected[countryId] != null)
         blk.selected <- selected[countryId]
@@ -575,9 +572,6 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function setCurrentGameModeByPreset(country, preset = null)
   {
-    if (!::is_country_slotbar_has_units(::get_profile_country_sq()))
-      return
-
     if (!preset)
       preset = getCurrentPreset(::get_profile_country_sq())
 

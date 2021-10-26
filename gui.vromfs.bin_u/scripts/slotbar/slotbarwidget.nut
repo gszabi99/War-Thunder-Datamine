@@ -172,7 +172,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     fillCountries()
 
     if (!singleCountry)
-      setShowUnit(getCurSlotUnit(), getHangarFallbackUnitParams())
+      setShowUnit(getCurSlotUnit())
 
     if (crewId != null)
       crewId = null
@@ -205,9 +205,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
     data.crewIdVisible <- data?.crewIdVisible ?? list.len()
 
-    local canSelectEmptyCrew = shouldSelectCrewRecruit
-      || !needActionsWithEmptyCrews
-      || (crew?.country != null && !::is_country_slotbar_has_units(crew.country))
+    local canSelectEmptyCrew = shouldSelectCrewRecruit || !needActionsWithEmptyCrews
     data.isSelectable <- data?.isSelectable
       ?? ((data.isUnlocked || !shouldSelectAvailableUnit) && (canSelectEmptyCrew || data.unit != null))
     local isControlledUnit = !::is_respawn_screen()
@@ -612,16 +610,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     return ::get_slot_obj(scene, curSlotCountryId, curSlotIdInCountry)
   }
 
-  function getHangarFallbackUnitParams()
-  {
-    return {
-      country = getCurCountry()
-      slotbarUnits = (::g_crews_list.get()?[curSlotCountryId].crews ?? [])
-        .map(@(crew) ::g_crew.getCrewUnit(crew))
-        .filter(@(unit) unit != null)
-    }
-  }
-
   function getSlotIdByObjId(slotObjId, countryId)
   {
     local prefix = "td_slot_"+countryId+"_"
@@ -721,8 +709,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (crew)
     {
       local unit = getCrewUnit(crew)
-      setCrewUnit(unit)
-      if (!unit && needActionsWithEmptyCrews && ::is_country_has_usable_units(crew.country))
+      if (unit)
+        setCrewUnit(unit)
+      else if (needActionsWithEmptyCrews)
         onSlotChangeAircraft()
       return
     }
@@ -859,9 +848,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     {
       local animObj = crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
-
-      if (animObj?.id != animBlockId && animObj?["_transp-timer"] == null)
-        animObj["_transp-timer"] = "0"
     }
 
     local animBlockObj = crewsObj.findObject(animBlockId)
@@ -1093,12 +1079,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (ignoreCheckSlotbar || !::isInMenu())
       return
 
-    local curCountry = ::get_profile_country_sq()
-
     if (!(curSlotCountryId in ::g_crews_list.get())
-        || ::g_crews_list.get()[curSlotCountryId].country != curCountry
-        || curSlotIdInCountry != ::selected_crews?[curSlotCountryId]
-        || (getCurSlotUnit() == null && ::is_country_slotbar_has_units(curCountry)))
+        || ::g_crews_list.get()[curSlotCountryId].country != ::get_profile_country_sq()
+        || curSlotIdInCountry != ::selected_crews?[curSlotCountryId] || getCurSlotUnit() == null)
       updateSlotbarImpl()
     else if (selectedCrewData && selectedCrewData?.unit != getShowedUnit())
       refreshAll()
@@ -1353,7 +1336,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function setCrewUnit(unit)
   {
-    setShowUnit(unit, getHangarFallbackUnitParams())
+    setShowUnit(unit)
     //need to send event when crew in country not changed, because main unit changed.
     ::select_crew(curSlotCountryId, curSlotIdInCountry, true)
   }

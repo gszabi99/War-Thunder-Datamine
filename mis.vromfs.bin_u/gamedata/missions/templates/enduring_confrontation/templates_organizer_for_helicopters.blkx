@@ -116,7 +116,7 @@
           }
         },
         {
-          "__varSetRandomInt": {
+          "varSetRandomInt": {
             "var": "to_randomizer",
             "from": 1,
             "to_not_including": 3,
@@ -124,8 +124,8 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 1,
+          "__varSetInt": {
+            "value": 5,
             "var": "to_randomizer"
           }
         },
@@ -266,13 +266,7 @@
           "time": 1.0
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "to_pve_enable",
-          "value": false,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": [],
       "actions": {
         "comment": {
           "value": "задаем армию для события 1 и 2 - соответсвующие армии"
@@ -286,18 +280,7 @@
           "target": "to_template_check_army"
         }
       },
-      "else_actions": {
-        "comment": {
-          "value": ""
-        },
-        "varSetInt": {
-          "value": 2,
-          "var": "to_army"
-        },
-        "triggerEnable": {
-          "target": "to_template_choosing"
-        }
-      }
+      "else_actions": []
     },
     "to_template_check_army": {
       "is_enabled": false,
@@ -366,7 +349,7 @@
         }
       }
     },
-    "01 - assaults": {
+    "02 - assaults": {
       "isCategory": true,
       "is_enabled": true,
       "to_template_01_at_check": {
@@ -386,7 +369,7 @@
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 1,
+              "value": 4,
               "comparasion_func": "equal"
             }
           },
@@ -584,8 +567,7 @@
     "to_force_template_idx": 0,
     "at_is_launch_alowed": false,
     "to_last_randomizer": 0,
-    "to_delay_timer": 240,
-    "to_pve_enable": false
+    "to_delay_timer": 240
   },
   "dialogs": [],
   "airfields": [],

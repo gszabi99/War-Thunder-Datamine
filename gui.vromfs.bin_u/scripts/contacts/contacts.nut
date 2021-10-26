@@ -486,8 +486,8 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     {
       view.unitList <- []
 
-      if (memberData?.country != null && ::checkCountry(memberData.country, $"memberData of contact = {contact.uid}")
-          && (memberData?.crewAirs[memberData.country] ?? []).len() != 0)
+      if (("country" in memberData) && ::checkCountry(memberData.country, "memberData of contact = " + contact.uid)
+          && ("crewAirs" in memberData) && (memberData.country in memberData.crewAirs))
       {
         view.unitList.append({ header = ::loc("mainmenu/arcadeInstantAction") })
         foreach(unitName in memberData.crewAirs[memberData.country])
@@ -508,10 +508,10 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
         {
           local countryIcon = ::get_country_icon(country)
           debugTableData(memberData.selAirs)
-          local unitName = memberData.selAirs?[country] ?? ""
-          local unit = ::getAircraftByName(unitName)
-          if (unit != null)
+          if (country in memberData.selAirs)
           {
+            local unitName = memberData.selAirs[country]
+            local unit = ::getAircraftByName(unitName)
             view.unitList.append({
               countryIcon = countryIcon
               rank = ::is_default_aircraft(unitName) ? ::loc("shop/reserve/short") : unit.rank

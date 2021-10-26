@@ -10,7 +10,6 @@ class ::items_classes.Wager extends ::BaseItem
   static defaultTextType = "maxwins_text"
 
   static hasRecentItemConfirmMessageBox = false
-  static isPreferMarkupDescInTooltip = true
 
   canBuy = true
   allowBigPicture = false

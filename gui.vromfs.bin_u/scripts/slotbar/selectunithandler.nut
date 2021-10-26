@@ -113,7 +113,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
 
     local needEmptyCrewButton = initAvailableUnitsArray()
-    if (unitsList.len() == 0 || totalUsableUnits == 0)
+    if (unitsList.len() == 0)
       return goBack()
 
     curVisibleSlots = firstPageSlots
@@ -198,12 +198,6 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         && (isSelectByGroups || unit.canAssignToCrew(country)))
         unitsArray.append(unit)
 
-    unitsArray = sortUnitsList(unitsArray)
-    if (selectedUnit != null)
-      unitsArray.insert(0, selectedUnit)
-
-    totalUsableUnits = unitsArray.len()
-
     unitsList = []
 
     if (slotbarWeak?.ownerWeak?.canShowShop && slotbarWeak.ownerWeak.canShowShop())
@@ -213,6 +207,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
       && ("aircraft" in crew && busyUnits.len() >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
     if (needEmptyCrewButton)
       unitsList.append(SEL_UNIT_BUTTON.EMPTY_CREW)
+
+    unitsArray = sortUnitsList(unitsArray)
+
+    if (selectedUnit != null)
+      unitsList.append(selectedUnit)
 
     unitsList.extend(unitsArray)
     unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
@@ -275,11 +274,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillUnitsList()
   {
     local markupArr = []
+    totalUsableUnits = 0
     foreach(idx, unit in unitsList)
     {
-      local rowData = ""
+      local rowData = "unitCell {}"
       if (!::u.isInteger(unit))
-        rowData = "unitCell {}"
+        totalUsableUnits++
       else if (unit == SEL_UNIT_BUTTON.SHOP)
         rowData = getTextSlotMarkup("shop_item", "#mainmenu/btnShop")
       else if (unit == SEL_UNIT_BUTTON.EMPTY_CREW)
@@ -725,10 +725,6 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 return {
   open = @(crew, slotbar) ::get_cur_gui_scene().performDelayed({},
     function() {
-
-      if (!::is_country_has_usable_units(crew.country))
-        return
-
       local params = getParamsFromSlotbarConfig(crew, slotbar)
       if (params == null)
         return

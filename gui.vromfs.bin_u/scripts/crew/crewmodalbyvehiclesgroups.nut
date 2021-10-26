@@ -23,13 +23,13 @@ local class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
       return
 
     local curUnit = getCrewUnit(crew)
-    local curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
+    local curGoupName = curCountryGroups.groupIdByUnitName?[curUnit.name] ?? ""
 
     local sortData = [] // { unit, locname }
-    foreach(unit in (curCountryGroups.groups?[curGroupName].units ?? []))
+    foreach(unit in (curCountryGroups.groups?[curGoupName].units ?? []))
       if (unit.getCrewUnitType() == curCrewUnitType)
       {
-        local isCurrent = curUnit?.name == unit.name
+        local isCurrent = curUnit.name == unit.name
         if (isCurrent)
           airList.append(unit)
         else

@@ -17,7 +17,7 @@ local function getLoadState() {
 }
 
 local function loadModel(modelName) {
-  if (modelName == "" || modelName == ::hangar_get_current_unit_name())
+  if (modelName == ::hangar_get_current_unit_name())
     return
   isLoading(true)
   ::hangar_load_model(modelName)

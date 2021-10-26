@@ -67,7 +67,6 @@ global enum DargWidgets
   ,SCOREBOARD
   ,CHANGE_LOG
   ,DAMAGE_PANEL
-  ,HUD_TOUCH
 };
 
 global enum AirParamsMain

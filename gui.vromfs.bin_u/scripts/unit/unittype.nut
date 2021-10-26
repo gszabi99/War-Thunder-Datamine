@@ -2,7 +2,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 //************************************************************************//
 //*********************functions to work with esUnitType******************//
-//*******************but better to work with unitTypes enum***************//
+//********************but better to work with g_unit_type*****************//
 //************************************************************************//
 
 ::getUnitTypeText <- function getUnitTypeText(esUnitType)

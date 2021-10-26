@@ -2021,7 +2021,7 @@ local mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   return ::loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
 }
 
-//works like get_shortcut_text, but returns only first bound shortcut for action
+//works like get_shortcut_text, but returns only first binded shortcut for action
 //needed wor hud
 ::get_first_shortcut_text <- function get_first_shortcut_text(shortcutData)
 {
@@ -2761,6 +2761,22 @@ local function getWeaponFeatures(weaponsBlkList)
         return true
     }
   return false
+}
+
+
+::toggle_shortcut <- function toggle_shortcut(shortcutName)
+{
+  ::activate_shortcut(shortcutName, true, true)
+}
+
+::set_shortcut_on <- function set_shortcut_on(shortcutName)
+{
+  ::activate_shortcut(shortcutName, true, false)
+}
+
+::set_shortcut_off <- function set_shortcut_off(shortcutName)
+{
+  ::activate_shortcut(shortcutName, false, false)
 }
 
 ::is_device_connected <- function is_device_connected(devId = null)

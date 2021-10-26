@@ -368,7 +368,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (topMenuShopActive.value && shopWeak)
       shopWeak.onSceneActivate(show)
     if (show) {
-      setShowUnit(getCurSlotUnit(), getHangarFallbackUnitParams())
+      setShowUnit(getCurSlotUnit())
       enableHangarControls(!topMenuShopActive.value)
     }
   }

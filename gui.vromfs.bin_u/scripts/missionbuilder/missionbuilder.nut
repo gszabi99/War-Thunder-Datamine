@@ -86,14 +86,11 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function reinitOptionsList()
   {
-    if (!::check_obj(scene))
-      return goBack()
+    updateButtons()
 
     local air = showedUnit.value
-    if (air?.name != ::hangar_get_current_unit_name())
+    if (!air || !::checkObj(scene))
       return goBack()
-
-    updateButtons()
 
     local showOptions = isBuilderAvailable()
 

@@ -60,10 +60,10 @@
     "moveType": "vehicle"
   },
   {
-    "maxFwdSpeed": 70.0
+    "maxFwdSpeed": 60.0
   },
   {
-    "maxRevSpeed": 20.0
+    "maxRevSpeed": 10.0
   },
   {
     "maxAngSpeed": 30.0
@@ -121,9 +121,6 @@
   },
   {
     "type": "typeLightTank"
-  },
-  {
-    "bladeAnimVar": "bmp_3_dozer_blade_action"
   },
   {
     "rearmSmokeTimeOnField": 60.0
@@ -2861,48 +2858,30 @@
       "mechanics": {
         "maxBrakeForce": 130000.0,
         "driveGearRadius": 0.35,
-        "mainGearRatio": 1.357,
-        "sideGearRatio": 5.45,
+        "mainGearRatio": 1.38,
+        "sideGearRatio": 5.545,
         "neutralGearRatio": 5.0,
         "gearRatios": [
           {
-            "ratio": -2.27
-          },
-          {
-            "ratio": -2.7
+            "ratio": -2.16
           },
           {
             "ratio": -3.886
           },
           {
-            "ratio": -5.0
-          },
-          {
             "ratio": 0.0
           },
           {
-            "ratio": 4.259
+            "ratio": 5.0
           },
           {
-            "ratio": 3.31
-          },
-          {
-            "ratio": 1.934
+            "ratio": 1.734
           },
           {
             "ratio": 1.132
           },
           {
-            "ratio": 0.9
-          },
-          {
-            "ratio": 0.8
-          },
-          {
-            "ratio": 0.73
-          },
-          {
-            "ratio": 0.662
+            "ratio": 0.64
           }
         ]
       },
@@ -3158,13 +3137,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "useVelocity": false
-            }
           }
         ]
       },
@@ -3172,9 +3144,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3200,9 +3169,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3312,9 +3278,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3543,13 +3506,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3761,10 +3717,6 @@
           }
         }
       },
-      "tank_bulldozer_blade": {
-        "modClass": "mobility",
-        "tier": 1
-      },
       "bmp_3_upgrade_modification": {
         "invertEnableLogic": false,
         "turn_it_off": false,
@@ -3788,11 +3740,6 @@
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }
-          },
-          "cockpit": {
-            "zoomOutFov": 29.8,
-            "zoomInFov": 6.14,
-            "sightFov": 14.0
           },
           "hideNodes": [
             {

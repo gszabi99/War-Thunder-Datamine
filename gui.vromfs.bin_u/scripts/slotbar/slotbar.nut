@@ -948,21 +948,6 @@ if need - put commented in array above
   return res
 }
 
-::is_country_slotbar_has_units <- function is_country_slotbar_has_units(countryId)
-{
-  return ::get_crews_list_by_country(countryId).findvalue(@(crew) (crew?.aircraft ?? "") != "") != null
-}
-
-local countriesWithBoughtUnits = {}
-::is_country_has_usable_units <- function is_country_has_usable_units(countryId)
-{
-  if (!(countriesWithBoughtUnits?[countryId] ?? false))
-    countriesWithBoughtUnits[countryId] <-
-      ::all_units.findvalue(@(u) u.shopCountry == countryId && u.isBought()) != null
-  return countriesWithBoughtUnits[countryId]
-    || ::all_units.findvalue(@(u) u.shopCountry == countryId && u.isRented()) != null
-}
-
 ::get_crews_list_by_country <- function get_crews_list_by_country(country)
 {
   foreach(countryData in ::g_crews_list.get())
@@ -971,10 +956,10 @@ local countriesWithBoughtUnits = {}
   return []
 }
 
-local function getAvailableCrewId(countryId)
+::getAvailableCrewId <- function getAvailableCrewId(countryId)
 {
   local id=-1
-  local curUnitId = getShowedUnitName()
+  local curAircraft = getShowedUnitName()
   if ((countryId in ::g_crews_list.get()) && ("crews" in ::g_crews_list.get()[countryId]))
     for(local i=0; i<::g_crews_list.get()[countryId].crews.len(); i++)
     {
@@ -982,7 +967,7 @@ local function getAvailableCrewId(countryId)
       if (("aircraft" in crew) && crew.aircraft!="")
       {
         if (id<0) id=i
-        if (curUnitId != "" && crew.aircraft == curUnitId)
+        if (crew.aircraft==curAircraft)
         {
           id=i
           break
@@ -992,7 +977,7 @@ local function getAvailableCrewId(countryId)
   return id
 }
 
-local function selectAvailableCrew(countryId)
+::selectAvailableCrew <- function selectAvailableCrew(countryId)
 {
   local isAnyUnitInSlotbar = false
   if ((countryId in ::g_crews_list.get()) && (countryId in ::selected_crews))
@@ -1040,14 +1025,13 @@ local function selectAvailableCrew(countryId)
     {
       if (!selectAvailableCrew(cIdx))
       {
-        local unitId = ::getReserveAircraftName({ country = country.country })
-        if (unitId != "")
-          batchTrainCrew([{
-            crewId = country.crews[0].id
-            airName = unitId
-          }])
+        local requestData = [{
+          crewId = country.crews[0].id
+          airName = ::getReserveAircraftName({country = country.country})
+        }]
+        batchTrainCrew(requestData)
       }
-      needSave = needSave || ::selected_crews[cIdx] != crewIdx
+      needSave = true
     }
   }
   if (needSave)
@@ -1067,7 +1051,8 @@ local function selectAvailableCrew(countryId)
 ::select_crew <- function select_crew(countryId, idInCountry, airChanged = false)
 {
   init_selected_crews()
-  if (::selected_crews[countryId] == idInCountry && !airChanged)
+  local air = getSlotAircraft(countryId, idInCountry)
+  if (!air || (::selected_crews[countryId] == idInCountry && !airChanged))
     return
 
   ::select_crew_silent_no_check(countryId, idInCountry)
@@ -1142,8 +1127,8 @@ local function selectAvailableCrew(countryId)
   local slots = {}
   foreach(cIdx, country in ::g_crews_list.get())
   {
-    local unit = getSlotAircraft(cIdx, ::selected_crews[cIdx])
-    if (unit == null && ::is_country_slotbar_has_units(country.country))
+    local air = getSlotAircraft(cIdx, ::selected_crews[cIdx])
+    if (!air)
     {
       dagor.debug("selected crews = ")
       debugTableData(::selected_crews)

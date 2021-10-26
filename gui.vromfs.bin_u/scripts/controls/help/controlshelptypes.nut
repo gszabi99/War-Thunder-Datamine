@@ -6,9 +6,6 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
-  EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
-  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = ::require_native("hudActionBarConst")
 
 local isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -36,8 +33,6 @@ local result = {
 
 local function isUnitWithRadarOrRwr(unit)
 {
-  if (!unit)
-    return false
   local unitBlk = ::get_full_unit_blk(unit?.name ?? "")
   local sensorTypes = [ "radar", "rwr" ]
   if (unitBlk?.sensors)
@@ -217,35 +212,35 @@ enums.addTypes(result, {
         unitId = "ussr_t_34_85_zis_53"
         items = [
           {
-            type = EII_BULLET
+            type = ::EII_BULLET
             active = true
             id = "ammo_1"
             selected = true
             icon = "#ui/gameuiskin#apcbc_tank"
           }
           {
-            type = EII_BULLET
+            type = ::EII_BULLET
             id = "ammo_2"
             icon = "#ui/gameuiskin#he_frag_tank"
           }
           {
-            type = EII_SCOUT
+            type = ::EII_SCOUT
             id = "scout"
           }
           {
-            type = EII_ARTILLERY_TARGET
+            type = ::EII_ARTILLERY_TARGET
             id = "artillery"
           }
           {
-            type = EII_SMOKE_GRENADE
+            type = ::EII_SMOKE_GRENADE
             id = "smoke_grenade"
           }
           {
-            type = EII_SMOKE_SCREEN
+            type = ::EII_SMOKE_SCREEN
             id = "smoke_screen"
           }
           {
-            type = EII_MEDICALKIT
+            type = ::EII_MEDICALKIT
             id = "medicalkit"
           }
         ]
@@ -302,15 +297,15 @@ enums.addTypes(result, {
         unitId = "us_elco_80ft_pt_boat_mod01"
         items = [
           {
-            type = EII_EXTINGUISHER
+            type = ::EII_EXTINGUISHER
             id = "ab_extinguisher"
           }
           {
-            type = EII_TOOLKIT
+            type = ::EII_TOOLKIT
             id = "ab_repair"
           }
           {
-            type = EII_REPAIR_BREACHES
+            type = ::EII_REPAIR_BREACHES
             id = "ab_breaches"
           }
         ]
@@ -320,15 +315,15 @@ enums.addTypes(result, {
         unitId = "us_elco_80ft_pt_boat_mod01"
         items = [
           {
-            type = EII_ROCKET
+            type = ::EII_ROCKET
             id = "ab_rocket"
           }
           {
-            type = EII_DEPTH_CHARGE
+            type = ::EII_DEPTH_CHARGE
             id = "ab_depth_charge"
           }
           {
-            type = EII_TORPEDO
+            type = ::EII_TORPEDO
             id = "ab_torpedo"
           }
         ]

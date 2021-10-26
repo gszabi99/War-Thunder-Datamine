@@ -1,1 +1,0 @@
-return ::Watched(null)

@@ -183,10 +183,20 @@
 
   ::mgSetEffShootingRate(0.1);
 
-  if (playerFighterPlane == "" || allyAssaultPlane == "")
-    return
+ local sector = ::mgGetMissionSector();
+ local level = ::mgGetLevelName();
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
+ local player_plane_name = "";
+ local enemy_plane_name = "";
+ if (playerFighterPlane != "" && allyAssaultPlane != "")
+ {
+   player_plane_name = ::mgUnitClassFromDescription(playerFighterPlane);
+   enemy_plane_name = ::mgUnitClassFromDescription(allyAssaultPlane);
+ }
+ else
+   return;
+
+ ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, "air");
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
  // mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testAssaultCover_temp.blk");

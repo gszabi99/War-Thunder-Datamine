@@ -142,27 +142,31 @@ local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
   localPlayerData = null
   isOrdersContainerVisible = false
   isOrdersHidden = false
-  ordersToActivate = null
 }
 
 //
 // Public methods
 //
 
-g_orders.openOrdersInventory <- function openOrdersInventory()
+g_orders.openOrdersInventory <- function openOrdersInventory(checkOrdersToActivate)
 {
-  if (!::g_orders.orderCanBeActivated())
-    return ::showInfoMsgBox(::g_orders.getWarningText(), "orders_cant_be_activated")
-
+  if (checkOrdersToActivate && !::g_orders.hasOrdersToActivate())
+  {
+    ::showInfoMsgBox(::loc("items/order/noOrdersAvailable"), "no_orders_available")
+    return
+  }
   ::gui_start_order_activation_window()
 }
 
-// This takes in account fact that item was used during current battle.
-// @see ::items_classes.Order::getAmount()
-g_orders.collectOrdersToActivate <- @() ordersToActivate = ::ItemsManager.getInventoryList(
-  itemType.ORDER, @(item) item.getAmount() > 0)
-
-g_orders.hasOrdersToActivate <- @() (ordersToActivate?.len() ?? 0) > 0
+g_orders.hasOrdersToActivate <- function hasOrdersToActivate()
+{
+  local list = ::ItemsManager.getInventoryList(itemType.ORDER, function (item) {
+    // This takes in account fact that item was used during current battle.
+    // @see ::items_classes.Order::getAmount()
+    return item.getAmount() > 0
+  })
+  return list.len() > 0
+}
 
 g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
 {
@@ -183,8 +187,6 @@ g_orders.getWarningText <- function getWarningText(selectedOrderItem = null)
 {
   if (hasActiveOrder)
     return ::loc("items/order/activateOrderWarning/hasActiveOrder")
-  if (!::g_orders.hasOrdersToActivate())
-    return ::loc("items/order/noOrdersAvailable")
   local timeleft = getCooldownTimeleft()
   if (timeleft > 0)
   {
@@ -930,7 +932,6 @@ g_orders.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)
 
 g_orders.onEventActiveOrderChanged <- function onEventActiveOrderChanged(params)
 {
-  collectOrdersToActivate()
   updateOrderStatus(true)
   local text
   if (::g_orders.hasActiveOrder)

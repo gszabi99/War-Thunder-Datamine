@@ -6,7 +6,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 local { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -52,7 +51,6 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   sceneBlkName = "gui/slotInfoPanel.blk"
   showTabs = false
   configSavePath = ""
-  isSceneVisibilityAllowed = true
   isSceneForceHidden = false
   infoPanelObj = null
   listboxObj = null
@@ -125,9 +123,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       local data = ::handyman.renderCached("gui/SlotInfoTabItem", view)
       guiScene.replaceContentFromText(listboxObj, data, data.len(), this)
 
-      local unit = getCurShowUnit()
-      updateUnitIcon(unit)
-
+      updateUnitIcon()
       local savedIndex = ::g_login.isProfileReceived() ?
         ::load_local_account_settings(configSavePath, 0) : 0
       listboxObj.setValue(::min(savedIndex, showTabsCount - 1))
@@ -146,18 +142,16 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
     // Fixes DM selector being locked after battle.
     ::dmViewer.update()
-
-    updateSceneVisibility()
   }
 
   function getCurShowUnitName()
   {
-    return getShowedUnitName()
+    return ::hangar_get_current_unit_name()
   }
 
   function getCurShowUnit()
   {
-    return getShowedUnit()
+    return ::getAircraftByName(getCurShowUnitName())
   }
 
   function onUnitInfoTestDrive()
@@ -262,8 +256,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAirInfo(force = false)
   {
-    local unit = getCurShowUnit()
-    updateUnitIcon(unit)
+    local unit = updateUnitIcon()
 
     local contentObj = scene.findObject("air_info_content")
     if ( !::checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
@@ -288,23 +281,9 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       doWhenActiveOnce("updateAirInfo")
   }
 
-  function canShowScene()
-  {
-    return !isSceneForceHidden && getCurShowUnit() != null
-  }
-
-  function updateSceneVisibility()
-  {
-    local canShow = canShowScene()
-    if (isSceneVisibilityAllowed == canShow)
-      return
-    isSceneVisibilityAllowed = canShow
-    onSceneActivate(canShow)
-  }
-
   function onSceneActivate(show)
   {
-    if (show && !canShowScene())
+    if (show && isSceneForceHidden)
       return
 
     if (show)
@@ -319,8 +298,8 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventShopWndVisible(p)
   {
-    isSceneForceHidden = p?.isShopShow ?? false
-    updateSceneVisibility()
+    isSceneForceHidden = ::getTblValue("isShopShow", p, false)
+    onSceneActivate(!isSceneForceHidden)
   }
 
   function onEventModalWndDestroy(p)
@@ -334,7 +313,6 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   {
     doWhenActiveOnce("updateAirInfo")
     doWhenActiveOnce("updateCrewInfo")
-    updateSceneVisibility()
   }
 
   function onEventCurrentGameModeIdChanged(params)
@@ -470,14 +448,17 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     doWhenActiveOnce("updateCrewInfo")
   }
 
-  function updateUnitIcon(unit)
+  function updateUnitIcon()
   {
+    local unit = getCurShowUnit()
     if (!unit)
-      return
+      return null
 
     local iconObj = scene.findObject("slot_info_vehicle_icon")
     if (::checkObj(iconObj))
       iconObj["background-image"] = unit.unitType.testFlightIcon
+
+    return unit
   }
 
   function updateTestDriveButtonText(unit)
