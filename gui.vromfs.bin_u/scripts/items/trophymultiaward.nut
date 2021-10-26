@@ -21,6 +21,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     specialization = 4
     modificationsList = 5
     resource = 6
+    skin = 7
   }
 
   static maxRouletteIcons = 5
@@ -100,6 +101,9 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false)
   {
     local curAwardType = awardBlk.getBlockName()
+    if (curAwardType == "resource" && awardBlk?.resourceType == "skin")
+      curAwardType = "skin"
+
     if (curAwardType == "unlocks")
     {
       if (skipUnconditional)
