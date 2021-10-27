@@ -34,12 +34,16 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
     amountTextObj = scene.findObject("amount_text")
 
     base.initScreen()
+
+    if (itemsList.findindex(@(i) i.hasTimer()) != null)
+      scene.findObject("update_timer").setUserData(this)
   }
 
   function setCurItem(item)
   {
     base.setCurItem(item)
     updateAmountSlider()
+    updateButtons()
   }
 
   function updateAmountSlider()
@@ -49,12 +53,12 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
     maxAmount = ::min(itemsAmount, availableAmount)
     curAmount = 1
 
-    local canChangeAmount = maxAmount > minAmount
+    local canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
     showSceneBtn("slider_block", canChangeAmount)
+    showSceneBtn("buttonMax", canChangeAmount)
     if (!canChangeAmount)
       return
 
-    showSceneBtn("buttonMax", true)
     sliderObj.min = minAmount.tostring()
     sliderObj.max = maxAmount.tostring()
     sliderObj.setValue(curAmount)
@@ -65,6 +69,38 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
   {
     amountTextObj.setValue(curAmount + ::loc("icon/universalSpare"))
     scene.findObject("buttonMax").enable(curAmount != maxAmount)
+  }
+
+  function updateButtons()
+  {
+    scene.findObject("buttonActivate").enable(!curItem.isExpired())
+  }
+
+  function onTimer(obj, dt)
+  {
+    local listObj = scene.findObject("items_list")
+    if (!listObj?.isValid())
+      return
+
+    for (local i = 0; i < itemsList.len(); ++i)
+    {
+      local item = itemsList[i]
+      if (!item.hasTimer())
+        continue
+
+      local itemObj = listObj.getChild(i)
+      if (!itemObj?.isValid())
+        continue
+
+      local timeTxtObj = itemObj.findObject("expire_time")
+      if (!timeTxtObj?.isValid())
+        continue
+
+      timeTxtObj.setValue(item.getTimeLeftText())
+    }
+
+    updateAmountSlider()
+    updateButtons()
   }
 
   function onAmountInc()

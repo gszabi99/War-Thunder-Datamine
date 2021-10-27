@@ -192,6 +192,11 @@
         "hp": 32.0
       }
     },
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
+      }
+    },
     "glass50": {
       "armor6_dm": {
         "hp": 100.0
@@ -1078,6 +1083,11 @@
     {
       "part": {
         "name": "pilot_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "radar_dm"
       }
     },
     {
@@ -2004,6 +2014,15 @@
   },
   "cockpit": [
     {
+      "sightInFov": 5.5
+    },
+    {
+      "sightOutFov": 5.5
+    },
+    {
+      "sightFov": 2.0
+    },
+    {
       "headPos": [3.14,0.415,0.0]
     },
     {
@@ -2025,13 +2044,31 @@
       "mirrorNode": "blister4"
     },
     {
-      "lightPos": [3.76015,0.093684,0.00155]
+      "lightPos": [3.723,0.029,0.004]
     },
     {
-      "lightColor": [9.3,0.55,0.0]
+      "lightColor": [0.52,0.02,0.01]
     },
     {
-      "lightRadius": 0.27
+      "lightRadius": 0.35
+    },
+    {
+      "lightPos1": [3.526,0.0,-0.363]
+    },
+    {
+      "lightColor1": [0.52,0.02,0.01]
+    },
+    {
+      "lightRadius1": 0.25
+    },
+    {
+      "lightPos2": [3.526,0.0,0.363]
+    },
+    {
+      "lightColor2": [0.52,0.02,0.01]
+    },
+    {
+      "lightRadius2": 0.25
     },
     {
       "devices": {
@@ -2056,16 +2093,20 @@
         "altitude_hour": [0.0,10000.0],
         "altitude_min": [0.0,1000.0],
         "altitude1_hour": [0.0,100000.0],
-        "radio_altitude": [0.0,5000.0],
+        "altitude1_min": [0.0,1000.0],
+        "radio_altitude": [0.0,10000.0],
         "altitude_koef": 3.28,
         "bank": [-8.0,8.0],
         "bank1": [-8.0,8.0],
         "turn": [-0.23562,0.23562],
-        "aviahorizon_pitch": [-70.0,70.0],
+        "aviahorizon_pitch": [-80.0,80.0],
         "aviahorizon_roll": [-180.0,180.0],
         "aviahorizon_pitch1": [-90.0,90.0],
         "aviahorizon_roll1": [-180.0,180.0],
         "aoa": [-10.0,40.0],
+        "aoa_indexer1": [19.5,30.0],
+        "aoa_indexer2": [17.9,20.1],
+        "aoa_indexer3": [0.0,18.5],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "compass2": [0.0,360.0],
@@ -2073,18 +2114,42 @@
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
         "fuel_consume": [0.0,100.0],
-        "rpm": [0.0,10000.0],
+        "rpm_hour": [0.0,11700.0],
+        "rpm_min": [0.0,1000.0],
         "oil_pressure": [0.0,160.0],
-        "water_temperature": [200.0,900.0],
+        "water_temperature": [0.0,1000.0],
         "fuel_pressure": [0.0,15.0],
         "fuel_pressure1": [0.0,15.0],
-        "fuel": [0.0,2630.0],
+        "fuel": [0.0,2903.0],
         "fuel1": [0.0,3630.0],
         "g_meter": [-5.0,10.0],
         "g_meter_min": [-5.0,10.0],
         "g_meter_max": [-5.0,10.0],
         "gears_lamp": [0.0,0.0]
       }
+    },
+    {
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.0,0.5,0.5],
+            "page": {
+              "type": "radar",
+              "radarScale": 1.0,
+              "radarColor": "#ff0a0aff"
+            }
+          }
+        },
+        {
+          "display": {
+            "textureArea": [0.5,0.5,1.0,1.0],
+            "page": {
+              "type": "rwr",
+              "radarScale": 1.35
+            }
+          }
+        }
+      ]
     },
     {
       "parts_holes_dmg": {
@@ -2106,6 +2171,26 @@
           "part": "engine4"
         }
       ]
+    }
+  ],
+  "gunnerOpticFps": {
+    "pos": [0.3,-0.2,0.0],
+    "head": "optic1_turret",
+    "crosshairPreset": "test_crosshair",
+    "angularLimits": [-30.0,30.0,-30.0,30.0],
+    "opticType": "tv"
+  },
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_36.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apq_126.blk",
+        "dmPart": "radar_dm"
+      }
     }
   ],
   "commonWeapons": [
@@ -3876,6 +3961,285 @@
           ]
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "a_4e_early_agm_62",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_agm_62.blk",
+        "reqModification": "us_agm_62",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "guided_bomb_red"
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_early_agm_62_mk81"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_early_agm_62_mk81.blk"
+        },
+        {
+          "reqModification": "us_agm_62"
+        },
+        {
+          "reqModification": "us_250lb_mk81"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "guided_bomb_red"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "amountPerTier": 3.0,
+                    "iconType": "bombs_small_group"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "amountPerTier": 3.0,
+                    "iconType": "bombs_small_group"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_early_agm_62_mk82"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_early_agm_62_mk82.blk"
+        },
+        {
+          "reqModification": "us_agm_62"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "guided_bomb_red"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "amountPerTier": 3.0,
+                    "iconType": "bombs_middle_group"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "amountPerTier": 3.0,
+                    "iconType": "bombs_middle_group"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_early_agm_62_mk117"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_early_agm_62_mk117.blk"
+        },
+        {
+          "reqModification": "us_agm_62"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "guided_bomb_red"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_large",
+                "tier": {
+                  "idx": 6
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_early_agm_62_mk83"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_early_agm_62_mk83.blk"
+        },
+        {
+          "reqModification": "us_agm_62"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_agm_62a_er.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "guided_bomb_red"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "iconType": "bombs_special"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -3944,20 +4308,34 @@
     "turnTime": 28.1492
   },
   "modifications": {
-    "cd_98": [],
-    "CdMin_Fuse": [],
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
     "new_cover": [],
-    "structure_str": [],
+    "f_4c_CdMin_Fuse": {
+      "tier": 1
+    },
+    "structure_str": {
+      "tier": 2
+    },
+    "f_4c_g_suit": {
+      "tier": 3
+    },
+    "new_compressor_jet": {
+      "tier": 1
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
-    },
-    "hp_105_jet": [],
-    "g_suit": [],
-    "new_compressor_jet": {
-      "tier": 1
     },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],
@@ -3973,13 +4351,37 @@
         "commonWeapons": [
           {
             "Weapon": {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [-30.0,30.0],
+                "pitch": [-30.0,30.0]
+              }
+            }
+          },
+          {
+            "Weapon": {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
               "dm": "cannon1_dm",
-              "bullets": 100,
+              "bullets": 150,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -3988,12 +4390,12 @@
           {
             "Weapon": {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
               "dm": "cannon2_dm",
-              "bullets": 100,
+              "bullets": 150,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -4023,6 +4425,11 @@
           }
         ]
       }
+    },
+    "us_aim_9b": {
+      "reqModification": "countermeasures_belt_pack",
+      "tier": 3,
+      "modClass": "weapon"
     },
     "mk_12_mod3_universal": [],
     "mk_12_mod3_ground_targets": [],
@@ -4075,8 +4482,8 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_9b": {
-      "reqModification": "f4c_zuni",
+    "us_agm_62": {
+      "prevModification": "f4c_zuni",
       "tier": 4,
       "modClass": "weapon"
     }

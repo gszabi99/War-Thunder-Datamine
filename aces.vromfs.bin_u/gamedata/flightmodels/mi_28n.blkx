@@ -1779,7 +1779,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1887,6 +1887,46 @@
       "preset": {
         "name": "mi_28n_rocket_c_8_ko",
         "blk": "gameData/flightModels/weaponPresets/mi_28n_rocket_c_8_ko.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mi_28n_rocket_4x_9M120",
+        "blk": "gameData/flightModels/weaponPresets/mi_28n_rocket_4x_9M120.blk",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_9M120M.blk",
+              "amountPerTier": 4.0,
+              "tier": {
+                "amountPerTier": 1.0,
+                "idx": 4,
+                "iconType": "atgm_type1_x4"
+              }
+            }
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/su_s_8ko_rocket.blk"
+              },
+              {
+                "tier": {
+                  "amountPerTier": 20.0,
+                  "idx": 5,
+                  "iconType": "nar_ap_large"
+                }
+              },
+              {
+                "tier": {
+                  "amountPerTier": 20.0,
+                  "idx": 7,
+                  "iconType": "nar_ap_large"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -5193,7 +5233,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },

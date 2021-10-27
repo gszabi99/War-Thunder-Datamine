@@ -243,7 +243,7 @@ local fillDynMapOption = function(descr)
     {
       local db = blkFromPath(layout.mis_file)
       local tags = db.mission_settings.mission.tags % "tag"
-      local airTags = showedUnit.value.tags
+      local airTags = showedUnit.value?.tags ?? []
       local skip = false
       foreach (tag in tags)
       {

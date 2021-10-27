@@ -78,7 +78,7 @@ return {
   open = function(crew, slotbar) {
     local params = getParamsFromSlotbarConfig(crew, slotbar)
     if (params == null)
-      return
+      return ::broadcastEvent("ModalWndDestroy")
 
     ::handlersManager.destroyPrevHandlerAndLoadNew(SelectGroupHandler, params)
   }

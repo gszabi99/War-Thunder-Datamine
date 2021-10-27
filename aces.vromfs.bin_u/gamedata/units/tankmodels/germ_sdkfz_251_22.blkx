@@ -2791,6 +2791,14 @@
         "blk": "gameData/Weapons/groundModels_weapons/75mm_PaK40_3_L46_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "sleeveEmitter": "emtr_shell",
+        "sleeveMesh": "cartridge_case",
+        "hatchAnimVar": "gun_shutter_move",
+        "openHatchTime": 0.3,
+        "sleevesLifeTime": 5.0,
+        "sleeveImpulse": [5.0,0.0,0.0],
+        "linkSleeveToGun": true,
+        "sleeveExtractSound": "shell_eject",
         "recoilTimes": [0.1,0.65],
         "recoilOffset": 0.57,
         "allowableDelta": 20.0,
@@ -3091,6 +3099,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "setOrientation": true
+            }
           }
         ]
       },
@@ -3098,6 +3113,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3123,6 +3141,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3232,6 +3253,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3460,6 +3484,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

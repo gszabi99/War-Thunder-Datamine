@@ -241,6 +241,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       ::need_race_finish_results = !finished
     }
 
+    ::g_orders.collectOrdersToActivate()
     local ordersButton = scene.findObject("btn_activateorder")
     if (::checkObj(ordersButton))
       ordersButton.setUserData(this)
@@ -1661,7 +1662,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!doRespawnCalled)
     {
       onApply()
-      ::showInfoMsgBox(::loc("msg/something_went_wrong"), "something_went_wrong", true)
+      ::showInfoMsgBox(::loc("msg/error_when_try_to_respawn"), "error_when_try_to_respawn", true)
       return
     }
 

@@ -105,6 +105,9 @@
     "radiatorHeatSourceSize": [1.0,0.6,1.0]
   },
   {
+    "bladeAnimVar": "t_80u_dozer_blade_action"
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -1168,6 +1171,22 @@
           }
         }
       }
+    }
+  },
+  {
+    "chainIK": {
+      "points": [
+        {
+          "point": {
+            "nameTemplate": "roll_2"
+          }
+        },
+        {
+          "point": {
+            "nameTemplate": "roll_1"
+          }
+        }
+      ]
     }
   },
   {
@@ -3296,6 +3315,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "setOrientation": true
+            }
           }
         ]
       },
@@ -3303,6 +3329,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3328,6 +3357,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3437,6 +3469,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3665,6 +3700,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3758,6 +3800,10 @@
             }
           ]
         }
+      },
+      "tank_bulldozer_blade": {
+        "modClass": "protection",
+        "tier": 1
       },
       "125mm_ussr_HE": [],
       "125mm_ussr_APDS_FS": [],

@@ -1649,7 +1649,7 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1803,7 +1803,6 @@
       "preset": {
         "name": "ah_64d_japan_rocket_4_hellfire",
         "blk": "gameData/flightModels/weaponPresets/ah_64d_japan_rocket_4_hellfire.blk",
-        "reqModification": "ah_1_AGM_114_8",
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_k.blk",
@@ -2007,10 +2006,6 @@
           "sightThermal": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
-          },
-          "sightIr": {
-            "resolution": [1024.0,768.0],
-            "noiseFactor": 0.05
           }
         }
       }
@@ -2166,7 +2161,7 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2188,7 +2183,8 @@
       "deactivationIsAllowed": false,
       "reqModification": "countermeasures_belt_pack",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 3,
+      "enabled": false
     }
   },
   "default_skin_tomoe": [

@@ -1514,7 +1514,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1701,6 +1701,60 @@
             }
           ]
         }
+      }
+    },
+    {
+      "preset": {
+        "name": "a_129_cbt_4xiTOW_rocket_ffar",
+        "blk": "gameData/flightModels/weaponPresets/a_129_cbt_4xiTOW_rocket_ffar.blk",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "iconType": "nar_ap_middle"
+              },
+              {
+                "amountPerTier": 7.0
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk"
+              },
+              {
+                "iconType": "atgm_type2_x2"
+              },
+              {
+                "amountPerTier": 2.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -5827,10 +5881,6 @@
           "sightThermal": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
-          },
-          "sightIr": {
-            "resolution": [1024.0,768.0],
-            "noiseFactor": 0.05
           }
         }
       }
@@ -5989,7 +6039,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },

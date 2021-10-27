@@ -522,7 +522,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
 ::isUnitAvailableForGM <- function isUnitAvailableForGM(air, gm)
 {
-  if (!air.unitType.isAvailable())
+  if (air == null || !air.unitType.isAvailable())
     return false
   if (gm == ::GM_TEST_FLIGHT)
     return air.testFlight != ""

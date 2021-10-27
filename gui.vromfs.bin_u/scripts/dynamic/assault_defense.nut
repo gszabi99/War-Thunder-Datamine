@@ -215,19 +215,10 @@
 
   ::mgSetEffShootingRate(0.1);
 
- local sector = ::mgGetMissionSector();
- local level = ::mgGetLevelName();
+  if (playerFighterPlane == "")
+    return
 
- local player_plane_name = "";
- local enemy_plane_name = "";
- if (playerFighterPlane != "")
- {
-   player_plane_name = ::mgUnitClassFromDescription(playerFighterPlane);
- }
- else
-   return;
-
- ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, ground_type);
+  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), ground_type)
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
 

@@ -1,6 +1,8 @@
 {
   "model": "boomerang_mki",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "gearSinkRangeLR": 0.102,
+  "gearSinkRangeC": 0.061,
   "type": "typeFighter",
   "paratrooper": "raf_para",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -42,6 +44,9 @@
     },
     "armor3": {
       "armor2_dm": {
+        "hp": 35.0
+      },
+      "armor3_dm": {
         "hp": 35.0
       }
     },
@@ -87,11 +92,8 @@
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "stab1_dm": {
-        "hp": 14.5
-      },
-      "stab2_dm": {
-        "hp": 14.5
+      "stab_dm": {
+        "hp": 21.9
       }
     },
     "c_dural7": {
@@ -167,6 +169,9 @@
       }
     },
     "steel": {
+      "gear_c_dm": {
+        "hp": 39.5
+      },
       "gear_l_dm": {
         "hp": 48.5
       },
@@ -190,7 +195,7 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 70.5
+        "hp": 57.0
       },
       "tank2_dm": {
         "hp": 39.5
@@ -323,6 +328,11 @@
     {
       "part": {
         "name": "armor2_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor3_dm"
       }
     },
     {
@@ -902,6 +912,42 @@
     {
       "part": [
         {
+          "name": "gear_c_dm"
+        },
+        {
+          "onHit": {
+            "damage": 15.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 25.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 40.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
           "name": "gear_l_dm"
         },
         {
@@ -1106,47 +1152,7 @@
     {
       "part": [
         {
-          "name": "stab1_dm"
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "stab2_dm"
+          "name": "stab_dm"
         },
         {
           "onHit": {
@@ -1727,9 +1733,9 @@
     "mirror": true,
     "mirrorPos": [-0.162,0.957,0.0],
     "mirrorNorm": [-0.987,-0.163,0.0],
-    "lightPos": [-0.141131,0.318684,-0.009757],
-    "lightColor": [0.01,0.45,0.55],
-    "lightRadius": 0.42,
+    "lightPos": [-0.051,0.474,-0.0],
+    "lightColor": [0.5,0.31,0.05],
+    "lightRadius": 0.35,
     "devices": {
       "speed": [0.0,222.0],
       "pedals1": [-1.0,1.0],
@@ -2028,19 +2034,21 @@
     }
   ],
   "cutting": {
-    "_emtr_break_wing0_l_from": [-0.450123,-0.630856,0.981106],
-    "_emtr_break_wing0_l_to": [-0.450123,-0.630856,1.78887],
+    "emtr_break_wing0_l_from": [-0.450123,-0.630856,0.981106],
+    "emtr_break_wing0_l_to": [-0.450123,-0.630856,1.78887],
     "emtr_break_wing1_l_from": [-0.450123,-0.630856,3.00051],
     "emtr_break_wing1_l_to": [-0.450123,-0.630856,3.54973],
-    "emtr_break_wing2_l_from": [-0.450123,-0.630856,5.49216],
-    "emtr_break_wing2_l_to": [-0.450123,-0.630856,5.50216],
-    "_emtr_break_wing0_r_from": [-0.450123,-0.630856,-0.981106],
-    "_emtr_break_wing0_r_to": [-0.450123,-0.630856,-1.78887],
+    "emtr_break_wing0_r_from": [-0.450123,-0.630856,-0.981106],
+    "emtr_break_wing0_r_to": [-0.450123,-0.630856,-1.78887],
     "emtr_break_wing1_r_from": [-0.450123,-0.630856,-3.00051],
     "emtr_break_wing1_r_to": [-0.450123,-0.630856,-3.54973],
-    "emtr_break_wing2_r_from": [-0.450123,-0.630856,-5.49216],
-    "emtr_break_wing2_r_to": [-0.450123,-0.630856,-5.50216],
-    "emtr_break_wing_tail": [-2.19233,0.0,0.0],
-    "finCut": false
+    "emtr_break_wing_tail": [-2.87737,0.0,0.0],
+    "finCut": false,
+    "emtr_break_stab_l_from": [-4.11705,0.302556,0.392475],
+    "emtr_break_stab_l_to": [-4.11705,0.302556,1.5699],
+    "emtr_break_stab_r_from": [-4.11705,0.302556,-0.392291],
+    "emtr_break_stab_r_to": [-4.11705,0.302556,-1.56916],
+    "emtr_break_fin_from": [-4.26219,0.592251,0.00122716],
+    "emtr_break_fin_to": [-4.26219,1.28853,0.00122716]
   }
 }

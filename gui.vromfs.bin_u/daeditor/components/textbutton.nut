@@ -1,4 +1,5 @@
 from "%darg/ui_imports.nut" import *
+local {deep_merge} = require("%sqstd/underscore.nut")
 
 local style = {
   text = {
@@ -36,8 +37,8 @@ local style = {
 local function textButton(text, handler, params = {}){
   local stateFlags = Watched(0)
   local disabled = params?.disabled
-  local textStyle = style.text
-  local boxStyle = style.box
+  local textStyle = deep_merge(style.text, params?.textStyle ?? {})
+  local boxStyle = deep_merge(style.box, params?.boxStyle ?? {})
   local textNormal = textStyle.normal
   local boxNormal = boxStyle.normal
   return function(){

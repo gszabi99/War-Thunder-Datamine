@@ -566,6 +566,8 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     if (isMouseMode)
       return
 
+    if (obj.holderId == getCurItemObj()?.holderId)
+      return
     hoverHoldAction(obj, function(focusObj) {
       local idx = focusObj.holderId.tointeger()
       local value = idx - curPage * itemsPerPage

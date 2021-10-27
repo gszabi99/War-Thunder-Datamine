@@ -423,6 +423,9 @@ local function setFocusToNextObj(scene, objIdsList, increment) {
 }
 
 local function getSelectedChild(obj) {
+  if (!obj?.isValid())
+    return null
+
   local total = obj.childrenCount()
   if (total == 0)
     return null
@@ -432,13 +435,17 @@ local function getSelectedChild(obj) {
 }
 
 local function findChild(obj, func) {
+  local res = {childIdx = -1, childObj = null}
+  if (!obj?.isValid())
+    return res
+
   local total = obj.childrenCount()
   for (local i = 0; i < total; ++i) {
     local childObj = obj.getChild(i)
     if (childObj?.isValid() && func(childObj))
       return {childIdx = i, childObj}
   }
-  return {childIdx = -1, childObj = null}
+  return res
 }
 
 local findChildIndex = @(obj, func) findChild(obj, func).childIdx

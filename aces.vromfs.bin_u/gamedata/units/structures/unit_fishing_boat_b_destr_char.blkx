@@ -1,0 +1,36 @@
+{
+  "model": "unit_fishing_boat_b_destr",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": false,
+  "useDestrPhysObj": false,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "explosionImpulse": 100.0,
+  "DamageParts": {
+    "steel": {
+      "armorClass": "tank_structural_steel",
+      "cls_fishboat_b_dm": {
+        "armorThickness": 1000.0,
+        "hp": 1000000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "cls_fishboat_b_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  }
+}

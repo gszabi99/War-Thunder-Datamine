@@ -1585,7 +1585,7 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1740,7 +1740,6 @@
       "preset": {
         "name": "ah_mk1_rocket_4_hellfire",
         "blk": "gameData/flightModels/weaponPresets/ah_mk1_rocket_4_hellfire.blk",
-        "reqModification": "ah_1_AGM_114_8",
         "weaponConfig": [
           {
             "Weapon": [
@@ -2520,10 +2519,6 @@
           "sightThermal": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
-          },
-          "sightIr": {
-            "resolution": [1024.0,768.0],
-            "noiseFactor": 0.05
           }
         }
       }
@@ -2688,7 +2683,7 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2723,11 +2718,13 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "tier": 3,
-      "invertEnableLogic": false
+      "invertEnableLogic": false,
+      "enabled": false
     },
     "ah_mk1_starstreak": {
       "tier": 4,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "enabled": false
     }
   },
   "user_skin": [

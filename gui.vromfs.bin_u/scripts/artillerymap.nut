@@ -1,6 +1,9 @@
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
+local { EII_ARTILLERY_TARGET } = ::require_native("hudActionBarConst")
 
 enum POINTING_DEVICE
 {
@@ -307,7 +310,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeTargetingMode(obj)
   {
-    ::toggle_shortcut("ID_CHANGE_ARTILLERY_TARGETING_MODE")
+    toggleShortcut("ID_CHANGE_ARTILLERY_TARGETING_MODE")
   }
 
   function getShortcutFrameForHelp(shortcut)
@@ -363,7 +366,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function getArtilleryStatus()
   {
-    local { cooldown = 1 } = ::get_action_bar_items().findvalue(@(i) i.type == ::EII_ARTILLERY_TARGET)
+    local { cooldown = 1 } = getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET)
     return {
       enabled = cooldown != 1
       ready = cooldown == 0

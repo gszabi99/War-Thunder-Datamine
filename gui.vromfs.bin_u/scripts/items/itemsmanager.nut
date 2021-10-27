@@ -833,8 +833,7 @@ local lastInventoryUpdateDelayedCall = 0
 
 ::ItemsManager.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p)
 {
-  itemsByItemdefId = {}
-  inventoryClient.forceRefreshItemDefs()
+  inventoryClient.forceRefreshItemDefs((@() itemsByItemdefId = {}).bindenv(this))
 }
 
 ::ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL)

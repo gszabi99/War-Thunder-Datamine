@@ -161,8 +161,10 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
   local function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (typeof(bhv)!="array")
+    if (typeof(bhv) != "array")
       bhv = [bhv]
+    else
+      bhv = clone bhv
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
 
     return class extends rootBase {
@@ -174,7 +176,6 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
       joystickScroll = options.joystickScroll
       maxHeight = options.maxHeight
       maxWidth = options.maxWidth
-
       children = content
     }
   }
@@ -204,6 +205,8 @@ local function makeHVScrolls(content, options={}) {
     local bhv = rootBase?.behavior ?? []
     if (typeof(bhv)!="array")
       bhv = [bhv]
+    else
+      bhv = clone bhv
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
 
     return class extends rootBase {

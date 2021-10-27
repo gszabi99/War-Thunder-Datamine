@@ -4,35 +4,31 @@ local { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4
 local PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 local PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
-local persistentData = {
-  crossNetworkPlayStatus = null
-  crossNetworkChatStatus = null
-}
+local crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
+crossNetworkPlayStatus.subscribe(@(v) v == null ? null : ::broadcastEvent("CrossPlayOptionChanged"))
 
-local resetCrossPlayStatus = @() persistentData.crossNetworkPlayStatus = null
-local resetCrossNetworkChatStatus = @() persistentData.crossNetworkChatStatus = null
+local crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
 
-::g_script_reloader.registerPersistentData("crossplay", persistentData,
-  ["crossNetworkPlayStatus", "crossNetworkChatStatus"])
+local resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
+local resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
-local updateCrossNetworkPlayStatus = function()
+local updateCrossNetworkPlayStatus = function(needOverrideValue = false)
 {
-  if (persistentData.crossNetworkPlayStatus != null)
+  if (!needOverrideValue && crossNetworkPlayStatus.value != null)
     return
 
-  persistentData.crossNetworkPlayStatus = true
   if (isPlatformXboxOne)
-    persistentData.crossNetworkPlayStatus = ::check_crossnetwork_play_privilege()
+    crossNetworkPlayStatus(::check_crossnetwork_play_privilege())
   else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
-    persistentData.crossNetworkPlayStatus = ::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true)
-
-  ::broadcastEvent("CrossPlayOptionChanged")
+    crossNetworkPlayStatus(::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true))
+  else
+    crossNetworkPlayStatus(true)
 }
 
 local isCrossNetworkPlayEnabled = function()
 {
   updateCrossNetworkPlayStatus()
-  return persistentData.crossNetworkPlayStatus
+  return crossNetworkPlayStatus.value
 }
 
 local setCrossNetworkPlayStatus = function(val)
@@ -45,22 +41,23 @@ local setCrossNetworkPlayStatus = function(val)
   updateCrossNetworkPlayStatus()
 }
 
-local updateCrossNetworkChatStatus = function()
+local updateCrossNetworkChatStatus = function(needOverrideValue = false)
 {
-  if (persistentData.crossNetworkChatStatus != null)
+  if (!needOverrideValue && crossNetworkChatStatus.value != null)
     return
 
-  persistentData.crossNetworkChatStatus = XBOX_COMMUNICATIONS_ALLOWED
   if (isPlatformXboxOne)
-    persistentData.crossNetworkChatStatus = ::check_crossnetwork_communications_permission()
+    crossNetworkChatStatus(::check_crossnetwork_communications_permission())
   else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
-    persistentData.crossNetworkChatStatus = ::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED)
+    crossNetworkChatStatus(::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED))
+  else
+    crossNetworkChatStatus(XBOX_COMMUNICATIONS_ALLOWED)
 }
 
 local getCrossNetworkChatStatus = function()
 {
   updateCrossNetworkChatStatus()
-  return persistentData.crossNetworkChatStatus
+  return crossNetworkChatStatus.value
 }
 
 local isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNICATIONS_ALLOWED
@@ -110,13 +107,11 @@ local invalidateCache = function()
 }
 
 local function reinitCrossNetworkStatus() {
-  invalidateCache()
-  updateCrossNetworkPlayStatus()
-  updateCrossNetworkChatStatus()
+  updateCrossNetworkPlayStatus(true)
+  updateCrossNetworkChatStatus(true)
 }
 
 subscriptions.addListenersWithoutEnv({
-  XboxSystemUIReturn = @(p) reinitCrossNetworkStatus()
   SignOut = @(p) invalidateCache()
   ProfileReceived = @(p) reinitCrossNetworkStatus()
   XboxMultiplayerPrivilegeUpdated = @(p) reinitCrossNetworkStatus()

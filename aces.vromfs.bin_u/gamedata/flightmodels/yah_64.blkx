@@ -1646,7 +1646,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1682,6 +1682,11 @@
     "crosshairPreset": "test_crosshair"
   },
   "commonWeapons": [
+    {
+      "hideNodes": {
+        "node": "lipa"
+      }
+    },
     {
       "Weapon": {
         "dummy": true,
@@ -1862,10 +1867,6 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
-            "resolution": [1024.0,768.0],
-            "noiseFactor": 0.05
-          },
-          "sightIr": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
           }

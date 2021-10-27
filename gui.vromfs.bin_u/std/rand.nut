@@ -1,5 +1,5 @@
 local random = require("dagor.random")
-local cdate = (require_optional("system")?.date ?? @(date=null,format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
+local cdate = (require_optional("datetime")?.date ?? @(date=null,format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
 local _default_seed = random.get_rnd_seed() + cdate.sec + cdate.min*60 + cdate.yday*86400
 local position = 0
 local function new_rnd_seed(){//setting new rnd

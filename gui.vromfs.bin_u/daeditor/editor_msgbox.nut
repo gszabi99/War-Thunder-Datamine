@@ -1,0 +1,1 @@
+return require("%darg/components/mkMsgbox.nut")("editor_")

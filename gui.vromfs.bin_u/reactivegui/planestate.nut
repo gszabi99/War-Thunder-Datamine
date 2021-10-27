@@ -29,6 +29,7 @@ local BlkFileName = Watched("")
 local IsMfdEnabled = Watched(false)
 local OpticAtgmSightVisible = Watched(false)
 local LaserAtgmSightVisible = Watched(false)
+local TargetingPodSightVisible = Watched(false)
 local LaserAtgmSightColor = Watched(Color(255, 255, 0, 240))
 local MfdOpticAtgmSightVis = Watched(false)
 local MfdSightPosSize = [0, 0, 0, 0]
@@ -50,6 +51,7 @@ local MfdRadarWithNavVis = Watched(false)
 local MfdRadarNavPosSize = [0, 0, 0, 0]
 local LaserAgmName = Watched("")
 local LaserAgmCnt = Watched(0)
+local ShellCnt = Watched(0)
 
 local planeState = {
   BlkFileName,
@@ -81,6 +83,7 @@ local planeState = {
   IsMfdEnabled,
   OpticAtgmSightVisible,
   LaserAtgmSightVisible,
+  TargetingPodSightVisible,
   MfdOpticAtgmSightVis,
   MfdSightPosSize,
   TurretYaw,
@@ -101,7 +104,8 @@ local planeState = {
   MfdRadarNavPosSize,
   LaserAgmName,
   LaserAgmCnt,
-  LaserAtgmSightColor
+  LaserAtgmSightColor,
+  ShellCnt
 }
 
 ::interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

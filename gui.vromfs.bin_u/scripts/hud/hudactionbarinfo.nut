@@ -1,5 +1,6 @@
 local { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
 local { getBulletSetNameByBulletName } = require("scripts/weaponry/bulletsInfo.nut")
+local { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = ::require_native("hudActionBarConst")
 
 local cachedUnitId = ""
 local cache = {}
@@ -31,7 +32,7 @@ local function getActionItemAmountText(modData, isFull = false) {
     return ""
 
   local text = ""
-  if (modData.type == ::EII_SMOKE_GRENADE && "salvo" in modData)
+  if (modData.type == EII_SMOKE_GRENADE && "salvo" in modData)
     text = $"{modData.salvo}/{modData.count}"
   else
   {
@@ -52,10 +53,10 @@ local function getActionItemModificationName(item, unit) {
 
   switch (item.type)
   {
-    case ::EII_ROCKET:
+    case EII_ROCKET:
       return getBulletSetNameByBulletName(unit, item?.bulletName)
-    case ::EII_BULLET:
-    case ::EII_FORCED_GUN:
+    case EII_BULLET:
+    case EII_FORCED_GUN:
       return item?.modificationName ?? getDefaultBulletName(unit)
   }
 

@@ -460,6 +460,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     return slotbar && slotbar.getCurSlotUnit()
   }
 
+  function getHangarFallbackUnitParams()
+  {
+    return getSlotbar()?.getHangarFallbackUnitParams()
+  }
+
   function getCurCrew()
   {
     local slotbar = getSlotbar()

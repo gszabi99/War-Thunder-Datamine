@@ -5,18 +5,18 @@ local {ControlBg, Interactive, Hover} = require("style.nut").colors
 local {setValToObj, getValFromObj} = require("attrUtil.nut")
 local entity_editor = require("entity_editor")
 
-local getVal = @(eid, comp_name, obj, path) path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(obj, path)
+local getVal = @(eid, comp_name, path) path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(eid, comp_name, path)
 local function fieldBoolCheckbox(params = {}) {
-  local {obj, eid, comp_name, path} = params
-  local curVal = getVal(eid, comp_name, obj, path)
+  local {eid, comp_name, path} = params
+  local curVal = getVal(eid, comp_name, path)
   curVal = Watched(curVal)
 
   local group = ElemGroup()
   local stateFlags = Watched(0)
   local function onClick() {
-    local val = !getVal(eid, comp_name, obj, path)
+    local val = !getVal(eid, comp_name, path)
     if (path!=null)
-      setValToObj(obj, path, val)
+      setValToObj(eid, comp_name, path, val)
     else
       obsolete_dbg_set_comp_val(eid, comp_name, val)
     entity_editor.save_component(eid, comp_name)
