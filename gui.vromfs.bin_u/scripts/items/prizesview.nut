@@ -519,9 +519,6 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
           : "activeTextColor"
         name = ::colorize(nameColor, name)
       }
-
-      if (prize?.gold)
-        name += " " + ::Cost(0, prize.gold).toStringWithParams({isGoldAlwaysShown = true, isColored = colored})
     }
   }
   else if (prize?.resourceType)

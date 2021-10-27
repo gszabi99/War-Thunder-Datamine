@@ -474,16 +474,6 @@ return [
     needShowInHelp = true
     showFunc = @() ::has_feature("PointOfInterestDesignator")
   }
-  {
-    id = "ID_LOCK_TARGETING"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_UNLOCK_TARGETING"
-    checkAssign = false
-    needShowInHelp = true
-  }
 //-------------------------------------------------------
   {
     id = "ID_PLANE_GUNNERS_HEADER"
@@ -677,11 +667,6 @@ return [
   {
     id = "ID_MFD_ZOOM_PLANE"
     checkGroup = ctrlGroups.AIR
-    checkAssign = false
-  }
-  {
-    id = "ID_PLANE_NIGHT_VISION"
-    checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
   {

@@ -84,11 +84,14 @@
   return missionWpCost;
 }
 
-::slidesReplace <- function slidesReplace(level, sector, target_type)
+::slidesReplace <- function slidesReplace(level, sector, playerPlaneName, enemyPlaneName, target_type)
 {
 
   ::mgReplace("mission_settings/briefing", "picture", "dynamic_missions/berlin_02_01",
     "dynamic_missions/"+level+"_"+sector+"_0"+::rndRangeInt(1,3));
+
+  ::mgReplace("mission_settings/briefing", "picture", "dynamic_missions/aircrafts/slide_a-20g",
+    "dynamic_missions/aircrafts/slide_"+playerPlaneName);
 
   local target_side = "";
   if (::mgGetPlayerSide() == 1)
@@ -101,6 +104,9 @@
   if (target_type != "air")
     ::mgReplace("mission_settings/briefing", "picture", "dynamic_missions/mission_targets/ruhr_allies_tank",
       "dynamic_missions/mission_targets/"+level+"_"+target_side+"_"+target_type);
+  else if (target_type != "none")
+    ::mgReplace("mission_settings/briefing", "picture", "dynamic_missions/mission_targets/ruhr_allies_tank",
+      "dynamic_missions/aircrafts/slide_"+enemyPlaneName);
 
   return
 }

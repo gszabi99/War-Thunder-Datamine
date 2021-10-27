@@ -105,12 +105,6 @@
     "type": "typeMediumTank"
   },
   {
-    "bladeAnimVar": "m1a1_hc_abrams_dozer_blade_action"
-  },
-  {
-    "digForwardOffset": 1.9
-  },
-  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -385,10 +379,6 @@
         },
         "turret_03_side_dm": {
           "armorThickness": 101.0
-        },
-        "ex_armor_08_dm": {
-          "armorThickness": 30.0,
-          "armorClass": "tank_structural_steel"
         }
       },
       "side_skirts": {
@@ -2977,13 +2967,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "setOrientation": true
-            }
           }
         ]
       },
@@ -2991,9 +2974,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3019,9 +2999,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3131,9 +3108,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3362,13 +3336,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3411,46 +3378,6 @@
       "tank_new_gun": [],
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
-      "tank_bulldozer_blade": {
-        "modClass": "firepower",
-        "tier": 2,
-        "requiresModelReload": true,
-        "turn_it_off": false,
-        "effects": {
-          "rcostAddParam": 0.99,
-          "diggingAvailable": true,
-          "diggingActivateTime": 5.0,
-          "diggingLevel": 0.2,
-          "digMaxSpeed": 7.0,
-          "digMaxRevSpeed": -7.0,
-          "hideNodes": []
-        },
-        "disableModEffects": {
-          "hideNodes": [
-            {
-              "node": "ex_armor_08"
-            },
-            {
-              "node": "body_01"
-            },
-            {
-              "node": "body_02"
-            },
-            {
-              "node": "roll_01"
-            },
-            {
-              "node": "roll_02"
-            },
-            {
-              "node": "roll_03"
-            },
-            {
-              "node": "roll_04"
-            }
-          ]
-        }
-      },
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_us"
       },

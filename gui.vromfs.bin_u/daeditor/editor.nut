@@ -10,8 +10,8 @@ local templateSelect = require("templateSelect.nut")
 local attrPanel = require("attrPanel.nut")
 local help = require("components/help.nut")(showHelp)
 local cursors = require("components/cursors.nut")
-local {modalWindowsComponent} = require("components/modalWindows.nut")
-local {msgboxComponent} = require("editor_msgbox.nut")
+
+
 return function() {
   if (!editorIsActive.value) {
     return {
@@ -36,8 +36,6 @@ return function() {
       (showEntitySelect.value && !showHelp.value ? entitySelect : null),
       (showTemplateSelect.value && !showHelp.value ? templateSelect : null),
       (showHelp.value ? help : null),
-      modalWindowsComponent,
-      msgboxComponent,
     ]
   }
 }

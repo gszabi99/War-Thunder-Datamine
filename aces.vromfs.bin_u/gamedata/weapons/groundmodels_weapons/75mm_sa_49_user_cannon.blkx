@@ -31,14 +31,14 @@
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
   "bullet": {
-    "bulletCount": 25,
-    "mass": 6.3,
+    "bulletCount": 300,
+    "mass": 6.4,
     "caliber": 0.075,
-    "speed": 619.0,
-    "Cx": 0.5,
+    "speed": 625.0,
+    "Cx": 0.4,
     "maxDistance": 10000.0,
-    "normalizationPreset": "ap",
-    "ricochetPreset": "ap",
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -46,11 +46,11 @@
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "ap_tank",
-    "slopeEffectPreset": "ap",
+    "bulletType": "apcbc_solid_medium_caliber_tank",
+    "slopeEffectPreset": "apc",
     "fresnel": [0.23,0.1,2.0],
     "shellAnimation": "video/shells_animations/ap.ivf",
-    "bulletName": "75mm_m72",
+    "bulletName": "75mm_pcot51p",
     "relativeVelHitShift": [300.0,1000.0],
     "relativeVelArmorShift": [200.0,1000.0],
     "explosionEffect": "hit_59_80mm_metal_ap",
@@ -80,7 +80,7 @@
     "damage": {
       "kinetic": {
         "damageType": "generic",
-        "demarrePenetrationK": 0.9,
+        "demarrePenetrationK": 1.0,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
@@ -173,16 +173,16 @@
       }
     }
   },
-  "75mm_usa_AP": {
+  "75mm_SA50_APC": {
     "bullet": {
-      "bulletCount": 25,
-      "mass": 6.3,
+      "bulletCount": 300,
+      "mass": 6.4,
       "caliber": 0.075,
-      "speed": 619.0,
-      "Cx": 0.5,
+      "speed": 625.0,
+      "Cx": 0.4,
       "maxDistance": 10000.0,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -190,11 +190,11 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "ap_tank",
-      "slopeEffectPreset": "ap",
+      "bulletType": "apcbc_solid_medium_caliber_tank",
+      "slopeEffectPreset": "apc",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/ap.ivf",
-      "bulletName": "75mm_m72",
+      "bulletName": "75mm_pcot51p",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "explosionEffect": "hit_59_80mm_metal_ap",
@@ -224,7 +224,7 @@
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.9,
+          "demarrePenetrationK": 1.0,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
@@ -467,14 +467,13 @@
       }
     }
   },
-  "75mm_usa_HE": {
+  "75mm_SA50_HE": {
     "bullet": {
-      "bulletCount": 40,
-      "mass": 6.3,
+      "mass": 6.2,
       "explosiveType": "tnt",
-      "explosiveMass": 0.666,
+      "explosiveMass": 0.675,
       "caliber": 0.075,
-      "speed": 463.0,
+      "speed": 600.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -489,8 +488,8 @@
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
-      "bulletName": "75mm_m48",
-      "hitPowerMult": 2.0,
+      "bulletName": "75mm_sa50_he",
+      "hitPowerMult": 5.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
       "explosionEffect": "hit_59_80mm_metal_he",
@@ -599,7 +598,8 @@
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
-        "tracer": "noColor"
+        "tracer": "30mmLightRed",
+        "trail": "curved"
       },
       "collisions": {
         "default": {
@@ -680,76 +680,6 @@
         "stone_snow": {
           "fx": "hit_59_80mm_snow_he"
         }
-      }
-    }
-  },
-  "75mm_us_M89_Smoke": {
-    "bullet": {
-      "bulletCount": 40,
-      "mass": 3.0,
-      "damageMass": 0.15,
-      "explosiveType": "smoke_composition",
-      "explosiveMass": 0.05,
-      "caliber": 0.075,
-      "speed": 259.0,
-      "maxDistance": 10000.0,
-      "normalizationPreset": "heat",
-      "ricochetPreset": "he",
-      "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "smoke_tank",
-      "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
-      "fresnel": [0.23,0.1,2.0],
-      "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/smoke.ivf",
-      "bulletName": "75mm_m89",
-      "hitPowerMult": 2.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "nearArmorPower": [3.0,150.0],
-      "midArmorPower": [3.0,600.0],
-      "farArmorPower": [3.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
-      "explodeTreshold": 0.5,
-      "explodeHitPower": 90.0,
-      "explodeArmorPower": 8.0,
-      "explodeRadius": [0.4,0.8],
-      "fuseDelayDist": 0.4,
-      "shutterDamage": true,
-      "shutterDamageRadius": 18.5,
-      "shutterAmount": 130,
-      "shutterArmorPower": 7.5,
-      "shutterHit": 11.0,
-      "smokeShell": true,
-      "smokeShellRad": 13.0,
-      "smokeActivateTime": 5.0,
-      "smokeTime": 20.0,
-      "groundCollisionEffect": "smoke_shell_explosion",
-      "ricochetEffect": "cannon_ricochet",
-      "waterCollisionEffect": "hit_39_58mm_water",
-      "waterFxScale": [0.6,0.7],
-      "explosionPatchRadius": 1.1,
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
-      },
-      "collisions": {
-        "steel": {
-          "fx": "smoke_shell_explosion"
-        }
-      },
-      "visual": {
-        "range_percent_of_ammo": [100.0,0.0],
-        "traceFreq": 1,
-        "tracer": "noColor"
       }
     }
   }

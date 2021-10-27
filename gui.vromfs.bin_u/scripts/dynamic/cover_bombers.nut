@@ -289,10 +289,20 @@
 
   ::mgSetEffShootingRate(0.1);
 
-  if (playerFighterPlane == "" || allyBomberPlane == "")
-    return
+ local sector = ::mgGetMissionSector();
+ local level = ::mgGetLevelName();
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "air")
+ local player_plane_name = "";
+ local enemy_plane_name = "";
+ if (playerFighterPlane != "" && allyBomberPlane != "")
+ {
+   player_plane_name = ::mgUnitClassFromDescription(playerFighterPlane);
+   enemy_plane_name = ::mgUnitClassFromDescription(allyBomberPlane);
+ }
+ else
+   return;
+
+ ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, "air");
 
   ::mgSetBool("variables/training_mode", isFreeFlight);
 

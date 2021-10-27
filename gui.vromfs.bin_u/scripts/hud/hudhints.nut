@@ -1365,14 +1365,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
   }
 
-  NEED_STOP_FOR_TERRAFORM = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/need_stop_for_terraform"
-    showEvent = "hint:need_stop_for_terraform"
-    lifeTime = 5.0
-    isHideOnDeath = true
-  }
-
   WAIT_LAUNCHER = {
     hintType = ::g_hud_hint_types.COMMON
     locId     = "hints/wait_launcher_ready"

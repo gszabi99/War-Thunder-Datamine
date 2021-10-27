@@ -2,9 +2,6 @@
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
-    "ri_preload:GpuObjectRiResourcePreload": {
-      "_tags": "render"
-    },
     "ri_gpu_object.node_based_shader_preload": {
       "_tags": "render"
     },
@@ -33,7 +30,6 @@
       "decal": false,
       "transparent": false,
       "place_on_water": false,
-      "enable_displacement": true,
       "ri_placer_list:array": [],
       "biome_params:array": [],
       "multiple_objects:array": []
@@ -140,13 +136,10 @@
       "light.nightly": true
     },
     {
-      "light.texture_name": ""
+      "_tracked": "^(spot_light\\..*)$"
     },
     {
-      "_tracked": "^(light\\.texture_name|spot_light\\..*)$"
-    },
-    {
-      "_replicated": "^(light\\.texture_name|spot_light\\..*)$"
+      "_replicated": "^(spot_light\\..*)$"
     },
     {
       "spot_light": {
@@ -184,152 +177,6 @@
       "spot_light:_namespace": []
     }
   ],
-  "spot_light_small": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.max_radius": 5.0
-    },
-    {
-      "light.brightness": 15.0
-    },
-    {
-      "spot_light:_namespace": {
-        "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
-      }
-    }
-  ],
-  "spot_light_huge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.max_radius": 25000.0
-    },
-    {
-      "light.brightness": 250000.0
-    },
-    {
-      "spot_light:_namespace": {
-        "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
-      }
-    }
-  ],
-  "field_light_huge": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 35000.0
-    },
-    {
-      "light.max_radius": 10000.0
-    },
-    {
-      "light.color": "#ffffffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_blue_huge": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 15000.0
-    },
-    {
-      "light.max_radius": 400.0
-    },
-    {
-      "light.color": "#326432ff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_large": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 20.0
-    },
-    {
-      "light.max_radius": 30.0
-    },
-    {
-      "light.color": "#ffffffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_medium": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 30.0
-    },
-    {
-      "light.max_radius": 30.0
-    },
-    {
-      "light.color": "#ffffffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_orange": [
     {
       "_extends": "omni_light"
@@ -356,126 +203,6 @@
       "omni_light:_namespace": []
     }
   ],
-  "field_light_orange_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 3.0
-    },
-    {
-      "light.max_radius": 2.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 50.0
-    },
-    {
-      "light.max_radius": 200.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_huge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10000.0
-    },
-    {
-      "light.max_radius": 400.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_medium": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 20.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_small": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 1.0
-    },
-    {
-      "light.max_radius": 1.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_orange_smallest": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 0.3
-    },
-    {
-      "light.max_radius": 1.0
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_blue": [
     {
       "_extends": "field_light_orange"
@@ -490,52 +217,6 @@
       "omni_light:_namespace": []
     }
   ],
-  "field_light_blue_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 300.0
-    },
-    {
-      "light.max_radius": 1000.0
-    },
-    {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_blue_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#3232ffff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
   "field_light_red": [
     {
       "_extends": "field_light_orange"
@@ -545,52 +226,6 @@
     },
     {
       "light.color": "#f05032ff"
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_red_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#f05032ff"
-    },
-    {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
-    }
-  ],
-  "field_light_green_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.brightness": 10.0
-    },
-    {
-      "light.max_radius": 100.0
-    },
-    {
-      "light.color": "#0a961eff"
-    },
-    {
-      "light.contact_shadows": false
     },
     {
       "omni_light:_namespace": []
@@ -677,30 +312,6 @@
     },
     {
       "spot_light:_namespace": []
-    }
-  ],
-  "spot_light_orange_medium": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light.max_radius": 50.0
-    },
-    {
-      "light.brightness": 500.0
-    },
-    {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": {
-        "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
-      }
     }
   ],
   "spot_light_blue_large": [

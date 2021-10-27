@@ -557,12 +557,14 @@ return [
     checkAssign = false
     showFunc = @() ::can_add_tank_alt_crosshair() && ::has_feature("TankAltCrosshair")
   }
-  {
-    id = "ID_GM_TERRAFORM_TOGGLE"
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-    showFunc = @() ::has_feature("tankTerraform")
-  }
+  //
+
+
+
+
+
+
+
   {
     id = "gm_sight_distance"
     type = CONTROL_TYPE.AXIS

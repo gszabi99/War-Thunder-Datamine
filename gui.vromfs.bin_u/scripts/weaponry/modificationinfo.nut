@@ -141,9 +141,6 @@ local function updateRelationModificationList(unit, modifName)
   }
 }
 
-::cross_call_api.getModificationByName <- @(unitName, modName)
-  getModificationByName(::getAircraftByName(unitName), modName)
-
 return {
   canBuyMod
   isModResearched

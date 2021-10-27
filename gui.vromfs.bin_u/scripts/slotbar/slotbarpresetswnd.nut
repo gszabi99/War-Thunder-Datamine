@@ -178,15 +178,12 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     local isCurrentPresetSelected = chosenValue == activePreset
     local isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
     local selectedPresetEnabled = isCurrentPresetSelected || ((chosenValue in presets) ? presets[chosenValue].enabled : false)
-    local canEdit = ::slotbarPresets.canEditCountryPresets(::get_profile_country_sq())
 
     ::enableBtnTable(scene, {
-        btn_preset_create = canEdit
-        btn_preset_rename = canEdit
-        btn_preset_delete = canEdit && ::slotbarPresets.canErase() && isNonCurrentPresetSelected
-        btn_preset_load   = ::slotbarPresets.canLoad()  && isAnyPresetSelected && selectedPresetEnabled
-        btn_preset_move_up= canEdit && isAnyPresetSelected && chosenValue > 0
-        btn_preset_move_dn= canEdit && isAnyPresetSelected && chosenValue < presets.len() - 1
+        btn_preset_delete = ::slotbarPresets.canErase()  && isNonCurrentPresetSelected
+        btn_preset_load   = ::slotbarPresets.canLoad()   && isAnyPresetSelected && selectedPresetEnabled
+        btn_preset_move_up= isAnyPresetSelected && chosenValue > 0
+        btn_preset_move_dn= isAnyPresetSelected && chosenValue < presets.len() - 1
     })
 
     local objBtn = scene.findObject("btn_preset_load")

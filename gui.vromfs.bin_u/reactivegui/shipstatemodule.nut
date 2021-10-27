@@ -1,9 +1,8 @@
-local { brokenEnginesCount, enginesInCooldown, enginesCount,
+local {speed, portSideMachine, sideboardSideMachine, stopping, brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
   steering, sightAngle, fwdAngle, hasAiGunners, fov
 } = require("shipState.nut")
-local { speedValue, speedUnits, machineSpeed } = require("reactiveGui/hud/shipStateView.nut")
 local { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
 local { isVisibleDmgIndicator } = require("hudState.nut")
@@ -15,6 +14,30 @@ local {lerp, sin} = require("std/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
+
+local machineDirectionLoc = [
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
+  ::loc("HUD/ENGINE_REV_BACK_SHORT")
+  ""
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+  ::loc("HUD/ENGINE_REV_AHEAD_SHORT")
+]
+
+local machineSpeedLoc = [
+  ::loc("HUD/ENGINE_REV_FULL_SHORT")
+  ::loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
+  ::loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
+  ::loc("HUD/ENGINE_REV_STOP_SHORT")
+  ::loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
+  ::loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
+  ::loc("HUD/ENGINE_REV_STANDARD_SHORT")
+  ::loc("HUD/ENGINE_REV_FULL_SHORT")
+  ::loc("HUD/ENGINE_REV_FLANK_SHORT")
+]
 
 local images = {
   engine = Picture("!ui/gameuiskin#engine_state_indicator")
@@ -42,8 +65,59 @@ local images = {
   ]
 }
 
+local fitTextToBox = ::kwarg(function(box, text, font, fontSize=null, minSize = 8){
+  local sz = ::calc_comp_size({rendObj = ROBJ_DTEXT, text, font, fontSize})
+  fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_DTEXT, text = "A", font, fontSize})
+  sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
+  local scale = min(box[0]/sz[0], box[1]/sz[1])
+  if (scale >= 1.0)
+    return fontSize
+  local res = fontSize*scale
+  if (res < minSize)
+    return minSize
+  return res
+})
+
 local fontFxColor = Color(80, 80, 80)
 local fontFx = FFT_GLOW
+local font = Fonts.tiny_text_hud
+
+local speedValue = @() {
+  watch = speed
+  rendObj = ROBJ_DTEXT
+  text = speed.value.tostring()
+  font = Fonts.tiny_text_hud
+  margin = [0,0,0,sh(1)]
+}
+
+local function speedUnits(){
+  local text = ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
+  local tgtFontSize = hdpx(13)
+  local fontFitIntoBox = [hdpx(50), hdpx(18.5)]
+  local fontSize = fitTextToBox({text, box = fontFitIntoBox, fontSize = tgtFontSize, font})
+  return {
+    rendObj = ROBJ_DTEXT
+    font
+    fontSize
+    text
+    margin = [0,0,hdpx(1.5),sh(0.5)]
+  }
+}
+
+local averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
+
+local function machine() {
+  local text = $"{machineSpeedLoc[averageSpeed.value]}  {machineDirectionLoc[averageSpeed.value]}"
+  local fontSize = fitTextToBox({fontSize = hdpx(18.5), text, box = [hdpx(200), hdpx(18.5)], font})
+  return {
+    watch = [averageSpeed, stopping]
+    rendObj = ROBJ_DTEXT
+    font
+    fontSize
+    color = stopping.value ? Color(255, 100, 100) : Color(200, 200, 200)
+    text
+  }
+}
 
 local function speedComp() {
   return {
@@ -56,16 +130,17 @@ local function speedComp() {
     children = [
       {
         size = [flex(4), SIZE_TO_CONTENT]
-        children = machineSpeed({ box = [hdpx(200), hdpx(18.5)], fontSize = hdpx(18.5) })
+        children = machine
         halign = ALIGN_RIGHT
       }
       {
         size = [flex(1.8), SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
         valign = ALIGN_BOTTOM
+
         children = [
-          speedValue()
-          speedUnits({ box = [hdpx(50), hdpx(18.5)], fontSize = hdpx(13) })
+          speedValue
+          speedUnits
         ]
       }
     ]

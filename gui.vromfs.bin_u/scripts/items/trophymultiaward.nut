@@ -1,6 +1,5 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { isDataBlock } = require("std/underscore.nut")
 local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 ::TrophyMultiAward <- class
@@ -102,6 +101,9 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false)
   {
     local curAwardType = awardBlk.getBlockName()
+    if (curAwardType == "resource" && awardBlk?.resourceType == "skin")
+      curAwardType = "skin"
+
     if (curAwardType == "unlocks")
     {
       if (skipUnconditional)
@@ -236,7 +238,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   {
     local res = []
     local resBlk = blk?.result
-    if (!isDataBlock(resBlk))
+    if (!::can_be_readed_as_datablock(resBlk))
       return res
 
     _addResUnlocks(resBlk, res)
@@ -251,7 +253,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResUnlocks(resBlk, resList)
   {
     local unlocksBlk = resBlk?.unlocks
-    if (!isDataBlock(unlocksBlk))
+    if (!::can_be_readed_as_datablock(unlocksBlk))
       return
 
     for(local i = 0; ; i++)
@@ -296,7 +298,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResSpare(resBlk, resList)
   {
     local spareBlk = resBlk?.spare
-    if (!isDataBlock(spareBlk))
+    if (!::can_be_readed_as_datablock(spareBlk))
       return
 
     local list = []
@@ -354,7 +356,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResSpecialization(resBlk, resList)
   {
     local qBlk = resBlk?.specialization
-    if (!isDataBlock(qBlk))
+    if (!::can_be_readed_as_datablock(qBlk))
       return
 
     local list = {}
@@ -413,7 +415,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResResources(resBlk, resList)
   {
     local resourcesBlk = resBlk?.resource
-    if (!isDataBlock(resourcesBlk))
+    if (!::can_be_readed_as_datablock(resourcesBlk))
       return
 
     for(local i = 0; ; i++)

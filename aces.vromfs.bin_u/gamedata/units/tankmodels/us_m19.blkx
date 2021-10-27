@@ -666,6 +666,12 @@
         "body_back_dm": {
           "armorThickness": 12.7
         },
+        "ex_armor_01_dm": {
+          "armorThickness": 20.0,
+          "hp": 120.0,
+          "armorClass": "tank_barrel",
+          "armorThrough": 20.0
+        },
         "turret_04_front_dm": {
           "armorThickness": 5.0
         },
@@ -778,14 +784,10 @@
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
-        "hp": 500.0,
+        "hp": 1000.0,
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
-        "ex_armor_01_dm": {
-          "armorThickness": 20.0,
-          "hp": 120.0
-        },
         "ex_decor_l_01_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
@@ -3303,13 +3305,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "setOrientation": true
-            }
           }
         ]
       },
@@ -3317,9 +3312,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3345,9 +3337,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3457,9 +3446,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3688,13 +3674,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

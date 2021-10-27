@@ -42,7 +42,7 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
     if (showedUnit.value?.isAir() ?? false)
       return ::gui_start_builder()
 
-    msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+    msgBox("not_available", ::loc("msg/builderOnlyForAircrafts"),
       [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 

@@ -152,8 +152,8 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
       progressBarValue = progressBarValue
 
       btnSpec = [
-        getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, crewLevel, unit, specType), // warning disable: -param-pos
-        getRowSpecButtonConfig(::g_crew_spec_type.ACE, crewLevel, unit, specType) // warning disable: -param-pos
+        getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, crewLevel, unit, specType),
+        getRowSpecButtonConfig(::g_crew_spec_type.ACE, crewLevel, unit, specType)
       ]
     }
   }

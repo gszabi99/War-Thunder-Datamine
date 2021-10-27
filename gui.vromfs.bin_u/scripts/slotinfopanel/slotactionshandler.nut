@@ -1,6 +1,5 @@
 local protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
 local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-local { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 
 local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -25,12 +24,12 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurShowUnitName()
   {
-    return getShowedUnitName()
+    return ::hangar_get_current_unit_name()
   }
 
   function getCurShowUnit()
   {
-    return getShowedUnit()
+    return ::getAircraftByName(getCurShowUnitName())
   }
 
   function onUnitInfoTestDrive()
@@ -54,9 +53,6 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
   function onProtectionAnalysis()
   {
     local unit = getCurShowUnit()
-    if (!unit)
-      return
-
     checkedCrewModify(
       @() ::handlersManager.animatedSwitchScene(@() protectionAnalysis.open(unit)))
   }

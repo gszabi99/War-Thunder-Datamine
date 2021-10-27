@@ -34,8 +34,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "rearmSmokeTimeOnField": 60.0,
-  "canReloadNonGuns": true,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2492,13 +2490,6 @@
             "emitter": "emtr_fire_ammo_10",
             "useVelocity": false
           }
-        },
-        {
-          "fx": {
-            "name": "fire_tank_ammo_gun_fire_cmps_fx",
-            "emitter": "emtr_gun_flame",
-            "setOrientation": true
-          }
         }
       ]
     },
@@ -2506,9 +2497,6 @@
       "event": [
         {
           "name": "light_smoke"
-        },
-        {
-          "lifetime": 60.0
         },
         {
           "fx": {
@@ -2534,9 +2522,6 @@
       "event": [
         {
           "name": "total_smoke"
-        },
-        {
-          "lifetime": 60.0
         },
         {
           "fx": {
@@ -2646,9 +2631,6 @@
       "event": [
         {
           "name": "total_fire"
-        },
-        {
-          "lifetime": 60.0
         },
         {
           "fx": {
@@ -2877,13 +2859,6 @@
     {
       "event": {
         "name": "big_bang",
-        "lifetime": 10.0,
-        "wreckages": {
-          "count": 3,
-          "speed": 10.0,
-          "angle": 80.0,
-          "fxName": "fire_tank_explosion_trails"
-        },
         "fx": {
           "name": "tank_explosion",
           "emitter": "emtr_explosion_center"
@@ -2997,257 +2972,7 @@
     "85mm_HEAT_FS_ammo_pack": {
       "tier": 2
     },
-    "85mm_ussr_HE": [],
-    "tank_smoke_screen_system_mod": {
-      "tier": 3,
-      "effects": {
-        "commonWeapons": [
-          {
-            "Weapon": {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/85mm_Type_62_85_TC_user_cannon.blk",
-              "emitter": "bone_gun_barrel",
-              "flash": "emtr_gun_flame",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_dm",
-              "breechDP": "cannon_breech_dm",
-              "speedYaw": 10.0,
-              "speedPitch": 10.0,
-              "fireConeAngle": 1.0,
-              "bullets": 47,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
-              "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_turret",
-                "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
-              },
-              "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-5.0,22.0]
-              },
-              "limitsTable": {
-                "lim1": [-180.0,-179.0,5.0,22.0],
-                "lim2": [-179.0,160.0,-5.0,22.0],
-                "lim3": [160.0,180.0,5.0,22.0]
-              }
-            }
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "gunner1"
-              },
-              {
-                "triggerGroup": "coaxial"
-              },
-              {
-                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_SGMT_user_machinegun.blk"
-              },
-              {
-                "emitter": "bone_mg_gun_twin_01"
-              },
-              {
-                "flash": "emtr_mg_flame_01"
-              },
-              {
-                "defaultYaw": 0.0
-              },
-              {
-                "defaultPitch": 0.0
-              },
-              {
-                "barrelDP": "gun_barrel_01_dm"
-              },
-              {
-                "useAnimFlashNode": true
-              },
-              {
-                "speedYaw": 5.5
-              },
-              {
-                "speedPitch": 4.0
-              },
-              {
-                "fireConeAngle": 1.0
-              },
-              {
-                "fireConeAngle": 15.0
-              },
-              {
-                "bullets": 2000
-              },
-              {
-                "ChainfireTime": 3.0
-              },
-              {
-                "DelayAfterShoot": 3.0
-              },
-              {
-                "accuracyAir": 0.0
-              },
-              {
-                "accuracyGnd": 0.0
-              },
-              {
-                "errMeasureVel": 0.0
-              },
-              {
-                "errMeasureVelFast": 0.0
-              },
-              {
-                "errMeasureVelFwdShift": 0.0
-              },
-              {
-                "errMeasureVelDir": 0.0
-              },
-              {
-                "errTargettingOn100kmph": 0.0
-              },
-              {
-                "errTargetting": 3.0
-              },
-              {
-                "errExplTime": 0.0
-              },
-              {
-                "turret": {
-                  "head": "bone_mg_gun_twin_01",
-                  "gun": "bone_mg_gun_twin_01",
-                  "gunnerDm": "gunner_dm"
-                }
-              },
-              {
-                "limits": {
-                  "yaw": [-0.0,0.0],
-                  "pitch": [0.0,0.0]
-                }
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "trigger": "gunner2",
-              "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
-              "emitter": "bone_mg_aa_v_01",
-              "flash": "emtr_mg_flame_04",
-              "defaultYaw": 0.0,
-              "defaultPitch": 25.0,
-              "barrelDP": "gun_barrel_02_dm",
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "bullets": 500,
-              "fireConeAngle": 5.0,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_mg_aa_h_01",
-                "gun": "bone_mg_aa_v_01",
-                "gunnerDm": "loader_dm"
-              },
-              "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-2.0,60.0]
-              }
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "gunner3",
-              "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_commander_sight_v",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "turret": {
-                "head": "bone_commander_sight_h",
-                "gun": "bone_commander_sight_v",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm"
-              },
-              "limits": {
-                "yaw": [-180.0,180.0],
-                "pitch": [-5.0,10.0]
-              }
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "gunner4",
-              "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/type_62_smoke_barrel_launcher.blk",
-              "weaponType": "rockets",
-              "startFx": "",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [1.0,2.0],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "allowableDelta": 360.0,
-              "salvo": 1,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": 1.0,
-              "bullets": 2,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
-              "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [-0.0,0.0],
-                "pitch": [0.0,0.0]
-              }
-            }
-          }
-        ]
-      }
-    }
+    "85mm_ussr_HE": []
   },
   "default_skin": {
     "name": "default",

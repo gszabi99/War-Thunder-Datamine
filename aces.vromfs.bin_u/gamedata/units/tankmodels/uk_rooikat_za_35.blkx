@@ -257,10 +257,6 @@
         "turret_04_top_dm": {
           "armorThickness": 10.0
         },
-        "turret_03_front_dm": {
-          "armorThickness": 19.0,
-          "armorClass": "aluminum_armor_5083"
-        },
         "turret_04_bottom_dm": {
           "armorThickness": 5.0,
           "armorClass": "tank_structural_steel"
@@ -2356,13 +2352,6 @@
             },
             {
               "linkedAnimPart": {
-                "verNode": "bone_gun_03",
-                "verLimits": [0.0,65.0],
-                "verOriginLimits": [-5.0,81.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
                 "verNode": "antenna_target_tagging",
                 "verLimits": [0.0,65.0],
                 "verOriginLimits": [-5.0,81.0]
@@ -2439,46 +2428,21 @@
           "errExplTime": 0.0,
           "reuseYawTrigger": 10,
           "reusePitchTrigger": 10,
-          "turret": [
-            {
-              "head": "bone_turret"
-            },
-            {
-              "gun": "bone_gun"
-            },
-            {
-              "barrel": "bone_gun_barrel_01"
-            },
-            {
-              "gunnerDm": "gunner_dm"
-            },
-            {
-              "secondGunnerDm": "commander_dm"
-            },
-            {
-              "loaderDm": "loader_02_dm"
-            },
-            {
-              "verDriveDm": "drive_turret_v_dm"
-            },
-            {
-              "horDriveDm": "drive_turret_h_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_gun_03",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "barrel": "bone_gun_barrel_01",
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
+            "loaderDm": "loader_02_dm",
+            "verDriveDm": "drive_turret_v_dm",
+            "horDriveDm": "drive_turret_h_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
             }
-          ],
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-8.0,81.0]
@@ -2921,13 +2885,6 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
-          },
-          {
-            "fx": {
-              "name": "fire_tank_ammo_gun_fire_cmps_fx",
-              "emitter": "emtr_gun_flame",
-              "setOrientation": true
-            }
           }
         ]
       },
@@ -2935,9 +2892,6 @@
         "event": [
           {
             "name": "light_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2963,9 +2917,6 @@
         "event": [
           {
             "name": "total_smoke"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3075,9 +3026,6 @@
         "event": [
           {
             "name": "total_fire"
-          },
-          {
-            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3306,13 +3254,6 @@
       {
         "event": {
           "name": "big_bang",
-          "lifetime": 10.0,
-          "wreckages": {
-            "count": 3,
-            "speed": 10.0,
-            "angle": 80.0,
-            "fxName": "fire_tank_explosion_trails"
-          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"

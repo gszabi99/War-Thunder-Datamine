@@ -5,8 +5,6 @@ local replayMetadata = require("scripts/replays/replayMetadata.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
-local { getActionBarUnitName } = ::require_native("hudActionBar")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -361,7 +359,7 @@ enum SPECTATOR_CHAT_TAB {
     local isUpdateByCooldown = updateCooldown <= 0.0
 
     local targetNick  = ::get_spectator_target_name()
-    local hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
+    local hudUnitType = ::getAircraftByName(::get_action_bar_unit_name())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
     local isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
     lastTargetNick  = targetNick
     lastHudUnitType = hudUnitType
@@ -768,7 +766,7 @@ enum SPECTATOR_CHAT_TAB {
   {
     local id = ::check_obj(obj) ? (obj?.id ?? "") : ""
     if (id.len() > 3 && id.slice(0, 3) == "ID_")
-      toggleShortcut(id)
+      ::toggle_shortcut(id)
   }
 
   function onMapClick(obj = null)

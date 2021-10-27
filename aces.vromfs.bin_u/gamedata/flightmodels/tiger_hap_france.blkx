@@ -1641,7 +1641,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gameData/sensors/tv_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -2152,7 +2152,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gameData/sensors/tv_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2191,6 +2191,10 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
+            "resolution": [1024.0,768.0],
+            "noiseFactor": 0.05
+          },
+          "sightIr": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
           }

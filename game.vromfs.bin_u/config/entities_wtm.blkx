@@ -1,0 +1,1014 @@
+{
+  "replicating": {
+    "replication": []
+  },
+  "msg_sink": {
+    "_extends": "replicating",
+    "_singleton": true,
+    "msg_sink": []
+  },
+  "unit_loader": {
+    "setting:_namespace": {
+      "className": "",
+      "playerNo": -1,
+      "unitType": "",
+      "crewSkillK": -1.0,
+      "weapons": "",
+      "skin": "",
+      "canChangeUnit": false,
+      "isPhysPredictionEnabled": false,
+      "loadAnim": false,
+      "unit_class": "",
+      "applyAllMods": false,
+      "closed_waypoints": false,
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "isDelayed": false,
+      "shouldDrawSmallIndForMissTarget": true,
+      "uniqueName": "",
+      "count": 1,
+      "attack_type": "",
+      "army": 0,
+      "formation_type": "cols",
+      "formation_div": 1,
+      "formation_step": [1.0,1.0],
+      "formation_noise": [0.1,0.1],
+      "stealthRadius": -1.0,
+      "supportUnitType": 0,
+      "targetAir": true,
+      "targetGnd": true,
+      "targetAAA": true,
+      "accuracy": 1.0,
+      "maxDeviationAngle": 0.0,
+      "effShootingRate": 1.0,
+      "lightlyArmored": false,
+      "avoidObstacles": false,
+      "targetableByAi": true,
+      "isImmortal": false,
+      "calmDetection": false,
+      "name": "",
+      "flags": 0,
+      "aiReloadMult": 1.0,
+      "speed": 0.0,
+      "routeName": "",
+      "toGround": false,
+      "bullets:list<t>": [],
+      "bulletsCount:list<i>": [],
+      "unit_target_list:list<t>": []
+    }
+  },
+  "spawn_point": {
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "spawnPointType": "",
+    "missionObject:tag": []
+  },
+  "backmodel_spawn_point": {
+    "_extends": "spawn_point",
+    "forPremiumVehicle": false
+  },
+  "route": {
+    "route:_namespace": {
+      "routeId": "",
+      "isLooped": false,
+      "wayPointsNames:list<t>": [],
+      "wayPoints:list<eid>": []
+    },
+    "missionObject:tag": []
+  },
+  "way_point": {
+    "way_point:_namespace": {
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "name": "",
+      "moveType": "",
+      "speed": 30.0,
+      "radius": 5.0
+    },
+    "missionObject:tag": []
+  },
+  "unit_current_route": {
+    "unit_current_route.routeEid:eid": [],
+    "unit_current_route.curWayPoint:eid": []
+  },
+  "unit_target_list": {
+    "unit_target_list:list<t>": []
+  },
+  "delayed_action": {
+    "delayed_action:_namespace": {
+      "doAtTime": -1.0,
+      "timer": 0.0
+    }
+  },
+  "delayed_unit_shot": {
+    "_extends": "delayed_action",
+    "delayed_unit_shot:_namespace": {
+      "unitName": "",
+      "triggerGroup": 0
+    }
+  },
+  "action_by_date": {
+    "action_by_date:_namespace": {
+      "yearFrom": 1900,
+      "monthFrom": 1,
+      "dayFrom": 1,
+      "hourFrom": 0,
+      "minFrom": 0,
+      "secFrom": 0,
+      "yearTo": 1901,
+      "monthTo": 1,
+      "dayTo": 1,
+      "hourTo": 0,
+      "minTo": 0,
+      "secTo": 0,
+      "timeFrom": 0,
+      "timeTo": 0,
+      "delayFromCreate": 30.0,
+      "doAtTime": -1.0,
+      "onlyFirstEnter": false
+    }
+  },
+  "unit_shot_by_date": {
+    "_extends": "action_by_date",
+    "unit_shot_by_date:_namespace": {
+      "unitName": "",
+      "triggerGroup": 0
+    }
+  },
+  "ri_gpu_object": {
+    "_tracked": "^ri_gpu_object\\.",
+    "_extends": "replicating",
+    "ri_gpu_object.node_based_shader_preload": {
+      "_tags": "render"
+    },
+    "ri_gpu_object:_namespace": {
+      "name": "ammunition_box_n",
+      "grid_tiling": 4,
+      "grid_size": 16,
+      "cell_size": 8.0,
+      "seed": 0,
+      "up_vector": [0.0,1.0,0.0],
+      "scale_range": [1.0,1.0],
+      "biom_indexes": [-1.0,-1.0,-1.0,-1.0],
+      "is_using_normal": false,
+      "incline_delta": 0.0,
+      "rotate_range": [0.0,0.0],
+      "map": "",
+      "map_size": [512.0,512.0],
+      "map_offset": [0.0,0.0],
+      "color_from": "#7f7f7f7f",
+      "color_to": "#7f7f7f7f",
+      "max_placed_on_ri": 0,
+      "slope_factor": [1.0,0.0],
+      "shader_graph": "",
+      "hardness": 1.0,
+      "sparse_weight": 0.0,
+      "decal": false,
+      "transparent": false,
+      "place_on_water": false,
+      "ri_placer_list:array": [],
+      "biome_params:array": [],
+      "multiple_objects:array": []
+    }
+  },
+  "light": {
+    "_extends": "replicating",
+    "light.max_radius": 0.0,
+    "light.offset": [0.0,0.0,0.0],
+    "light.color": "#fffac8ff",
+    "light.brightness": 1.0,
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "_tracked": "^(light\\.(max_radius|offset|color|brightness|dynamic_light|affect_volumes))|transform$",
+    "_replicated": "^(light\\.(max_radius|offset|color|brightness|dynamic_light|affect_volumes))|transform$"
+  },
+  "omni_light": [
+    {
+      "_extends": "light"
+    },
+    {
+      "light.contact_shadows": true
+    },
+    {
+      "_tracked": "^light\\.contact_shadows$"
+    },
+    {
+      "_tracked": "^light\\.use_box$"
+    },
+    {
+      "_tracked": "^light\\.automatic_box$"
+    },
+    {
+      "_tracked": "^light\\.box$"
+    },
+    {
+      "_tracked": "^light\\.direction$"
+    },
+    {
+      "_tracked": "^light\\.texture_name$"
+    },
+    {
+      "light.use_box": true
+    },
+    {
+      "light.automatic_box": false
+    },
+    {
+      "light.box": [
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0]
+      ]
+    },
+    {
+      "light.direction": [0.0,-1.0,0.0]
+    },
+    {
+      "light.texture_name": ""
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "_replicated": "^light\\.contact_shadows$"
+    },
+    {
+      "_replicated": "^light\\.use_box$"
+    },
+    {
+      "_replicated": "^light\\.box$"
+    },
+    {
+      "_replicated": "^light\\.automatic_box$"
+    },
+    {
+      "omni_light": {
+        "_tags": "render"
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "spot_light": [
+    {
+      "_extends": "light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 100.0
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "_tracked": "^(spot_light\\..*)$"
+    },
+    {
+      "_replicated": "^(spot_light\\..*)$"
+    },
+    {
+      "spot_light": {
+        "_tags": "render"
+      }
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.9,
+        "dynamic_light": false,
+        "shadows": true,
+        "dynamic_obj_shadows": false,
+        "shadow_shrink": 0
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "spot_light_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "field_light_orange": [
+    {
+      "_extends": "omni_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 2.0
+    },
+    {
+      "light.max_radius": 2.0
+    },
+    {
+      "light.color": "#ff640aff"
+    },
+    {
+      "light.contact_shadows": true
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_blue": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.color": "#6464ffff"
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_red": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.color": "#f05032ff"
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "aircraft_warning_light_red": [
+    {
+      "_extends": "omni_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.max_radius": 15.0
+    },
+    {
+      "light.color": "#ff0000ff"
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "spot_light_red_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.color": "#ff0a0aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_magenta_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.color": "#ba0affff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_orange_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.color": "#ff640aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_blue_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.color": "#0af5ffff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_green_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "light.color": "#32ff0aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_orange_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 300.0
+    },
+    {
+      "light.brightness": 1200.0
+    },
+    {
+      "light.color": "#ff640aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_red_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 250.0
+    },
+    {
+      "light.brightness": 1200.0
+    },
+    {
+      "light.color": "#ff0a0aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_magenta_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 250.0
+    },
+    {
+      "light.brightness": 1200.0
+    },
+    {
+      "light.color": "#ba0affff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_green_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 250.0
+    },
+    {
+      "light.brightness": 1200.0
+    },
+    {
+      "light.color": "#32ff0aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_blue_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 200.0
+    },
+    {
+      "light.brightness": 55.0
+    },
+    {
+      "light.color": "#0af5ffff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "lamppost_a": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 14.0
+    },
+    {
+      "light.brightness": 60.0
+    },
+    {
+      "light.color": "#ffdca0ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5,
+        "dynamic_obj_shadows": true
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "lamppost_b": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 9.0
+    },
+    {
+      "light.brightness": 15.0
+    },
+    {
+      "light.color": "#fffab4ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5,
+        "dynamic_obj_shadows": true
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "lamppost_c": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 19.0
+    },
+    {
+      "light.brightness": 150.0
+    },
+    {
+      "light.color": "#fffab4ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5,
+        "dynamic_obj_shadows": true
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "spot_light_footbal_field": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 55.0
+    },
+    {
+      "light.brightness": 250.0
+    },
+    {
+      "light.color": "#fffab4ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "dynamic_obj_shadows": true
+      }
+    }
+  ],
+  "floating_rendinst_system": {
+    "_singleton": true,
+    "floatingRiSystem:_namespace": {
+      "useRandomWaves": false,
+      "useDynamicWaterLevel": false
+    },
+    "floatingRiSystem.volumePresets:array": [
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.8,
+          "middleDepth": 0.0,
+          "volumesCount": 1
+        }
+      },
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.57,
+          "sideDepth": 0.0,
+          "volumesCount": 4
+        }
+      },
+      {
+        "preset:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.37,
+          "middleDepth": 0.5,
+          "sideDepth": 0.0,
+          "volumesCount": 12
+        }
+      }
+    ]
+  },
+  "floating_rendinst_res_group": {
+    "_tracked": "^floatingRiGroup\\.(resName|mass|inertiaMult|volumesCount|geomCenterShift)$",
+    "floatingRiGroup:_namespace": {
+      "resName": "",
+      "mass": 1.0,
+      "inertiaMult": [80.0,0.1,80.0],
+      "volumesCount": 0,
+      "wreckageFloatDuration": 15.0,
+      "updateDist": 1000.0,
+      "interactionType": 0,
+      "interactionDist": 0.0,
+      "elasticity": 0.1,
+      "physUpdateDt": 0.0417,
+      "maxShiftDist": 1000.0,
+      "geomCenterShift": [0.0,0.0,0.0]
+    },
+    "floatingRiGroup.riPhysFloatingModel": []
+  },
+  "root": {
+    "active": true
+  },
+  "daeditor_selected": {
+    "daeditor.selected:tag": []
+  },
+  "simple_unit": [
+    {
+      "_extends": "root"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "uid": -1
+    },
+    {
+      "className": ""
+    },
+    {
+      "playerNo": -1
+    },
+    {
+      "is_local": false
+    },
+    {
+      "unitVersion": 0
+    },
+    {
+      "unitType": -1
+    },
+    {
+      "canChangeUnit": false
+    },
+    {
+      "missionUnitName": ""
+    },
+    {
+      "_replicated": "^(uid)$"
+    }
+  ],
+  "unit": {
+    "_extends": "simple_unit"
+  },
+  "simple_ground_unit": {
+    "_extends": "unit",
+    "aim_component": []
+  },
+  "ground_unit": {
+    "_extends": "simple_ground_unit",
+    "move_sys.maxDecel": 0.0,
+    "unit_fire": [],
+    "unit_fire_fx": [],
+    "unit_extinguish": [],
+    "unit_crew": [],
+    "unit_repair": [],
+    "unit_fx": [],
+    "fuel_tanks": [],
+    "ammo_stowage": [],
+    "fire_damage": [],
+    "fire_damage:_namespace": {
+      "update_burn_interval": 1.0,
+      "isBurn": false
+    },
+    "toolkit": [],
+    "toolkit:_namespace": {
+      "name": "tank_tool_kit_expendable",
+      "enabled_without_mod": true
+    },
+    "extinguisher": [],
+    "extinguisher:_namespace": {
+      "name": "manual_extinguisher_expendable",
+      "enabled_without_mod": true
+    }
+  },
+  "light_vehicle": {
+    "_extends": "simple_ground_unit"
+  },
+  "fortification": {
+    "_extends": "simple_ground_unit"
+  },
+  "simple_tank": {
+    "_extends": "simple_ground_unit"
+  },
+  "tank": {
+    "_extends": "ground_unit",
+    "medicalkit": [],
+    "medicalkit:_namespace": {
+      "name": "tank_medical_kit_expendable",
+      "enabled_without_mod": false
+    },
+    "track_sound": {
+      "_tags": "sound"
+    },
+    "physical_tracks": {
+      "_tags": "render"
+    },
+    "physical_tracks.isLeft:list<b>": {
+      "_tags": "render"
+    }
+  },
+  "player_tank": {
+    "_extends": "tank"
+  },
+  "simple_ship": {
+    "_extends": "simple_ground_unit"
+  },
+  "ship": {
+    "_extends": "ground_unit",
+    "extinguisher.enabled_without_mod": false,
+    "track_sound": {
+      "_tags": "sound"
+    }
+  },
+  "player_ship": {
+    "_extends": "ship"
+  },
+  "walker": {
+    "_extends": "ground_unit"
+  },
+  "barrage_ballon": {
+    "_extends": "unit"
+  },
+  "infantry_troop": {
+    "_extends": "simple_ground_unit"
+  },
+  "aircraft": {
+    "_extends": "unit"
+  },
+  "weapon": {
+    "_extends": "root",
+    "weapon_ref": [],
+    "weapon_ref:_namespace": {
+      "ptr": 0
+    }
+  },
+  "gun": {
+    "_extends": "weapon",
+    "weapon_proj_bullet": []
+  },
+  "bomb_gun": {
+    "_extends": "weapon"
+  },
+  "rocket_gun": {
+    "_extends": "weapon"
+  },
+  "torpedo_gun": {
+    "_extends": "weapon"
+  },
+  "player": {
+    "player_id": -1,
+    "connId": -1,
+    "_tracked": "connId",
+    "m_player": []
+  },
+  "background_model": {
+    "background_model_res": [],
+    "background_model:_namespace": {
+      "model": "",
+      "skin": "",
+      "unitName": "",
+      "weapon": "",
+      "isPlane": false,
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "canOutline": false,
+      "bullets:list<t>": [],
+      "spawnEid:eid": []
+    }
+  },
+  "level": {
+    "isLocal": true,
+    "level:_namespace": {
+      "blk": "",
+      "bin": "",
+      "environment": "Day",
+      "loaded": false,
+      "weather": "hazy"
+    }
+  },
+  "render_view_cam": {
+    "camera.active": false,
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "_singleton": true,
+    "camera_view:tag": []
+  },
+  "static_cam": {
+    "camera.active": false,
+    "fov": 90.0,
+    "znear": 0.01,
+    "zfar": 10000.0,
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "static_camera_view:tag": []
+  },
+  "game_objects": {
+    "_singleton": true,
+    "nonCreatableObj": true,
+    "game_objects": [],
+    "game_objects:_namespace": {
+      "createChance:object": {
+        "stationary_mg42": 0.4,
+        "chimney_exhaust": 0.15
+      }
+    }
+  },
+  "smoke": {
+    "_extends": "replicating",
+    "_replicated": "^smoke\\.(pos|radius|visibility_type_flags|transparent_for_thermal|fx_id)$",
+    "smoke:_namespace": {
+      "activate_time": 0.0,
+      "time": 0.0,
+      "pos": [0.0,0.0,0.0],
+      "radius": 0.0,
+      "visibility_type_flags": 0,
+      "transparent_for_thermal": false,
+      "fx_id": -1
+    },
+    "smoke.smoke_fx": {
+      "_tags": "render"
+    }
+  },
+  "base_ship_hp_regen": {
+    "meta_parts_hp_regen.speed": 0.002,
+    "meta_parts_hp_regen.limit": 1.0,
+    "_replicated": "^meta_parts\\.hp$",
+    "meta_parts_hp_regen.limitFixed:u16": [],
+    "meta_parts.hp:list<u16>": []
+  },
+  "base_ship_wtm": [
+    {
+      "_extends": "ship"
+    },
+    {
+      "_extends": "base_ship_hp_regen"
+    }
+  ],
+  "ship_wtm": {
+    "_extends": "base_ship_wtm"
+  }
+}

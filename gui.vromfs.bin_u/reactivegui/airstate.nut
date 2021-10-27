@@ -60,7 +60,6 @@ local SightMask = Watched(0)
 local IlsMask = Watched(0)
 local MfdSightMask = Watched(0)
 local EmptyMask = Watched(0)
-local TargetPodMask = Watched(0)
 
 local HudColor = Watched(Color(71, 232, 39, 240))
 local HudParamColor = Watched(Color(240, 240, 240, 240))
@@ -69,7 +68,6 @@ local AlertColorMedium = Watched(Color(220, 120, 120, 240))
 local AlertColorHigh = Watched(Color(230, 0, 0, 240))
 local MfdColor = Watched(Color(71, 232, 39, 240))
 local PassivColor = Watched(Color(160, 160, 160, 240))
-local TargetPodHudColor = Watched(Color(71, 232, 39, 240))
 
 local TrtMode = []
 local Trt = []
@@ -299,7 +297,6 @@ local helicopterState = {
   IlsMask,
   MfdSightMask,
   EmptyMask,
-  TargetPodMask,
 
   HudColor,
   HudParamColor,
@@ -308,7 +305,6 @@ local helicopterState = {
   AlertColorHigh,
   MfdColor,
   PassivColor,
-  TargetPodHudColor,
 
   TrtMode,
   Trt,

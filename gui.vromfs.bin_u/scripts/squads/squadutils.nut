@@ -287,10 +287,10 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
 
       if (!respawn)
       {
-        local unitName = memberData.selAirs?[country] ?? ""
-        if (unitName == "")
+        if (!(country in memberData.selAirs))
           continue
 
+        local unitName = memberData.selAirs[country]
         haveAvailable = ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
         local isBroken = ::isInArray(unitName, memberData.brokenAirs)
         if (isBroken)
@@ -300,7 +300,7 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
       }
       else
       {
-        if ((memberData.crewAirs?[country] ?? []).len() == 0)
+        if (!(country in memberData.crewAirs))
           continue
 
         foreach(unitName in memberData.crewAirs[country])
@@ -357,7 +357,7 @@ g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailable
                                memberData = memberData
                              }
 
-  if ((memberData.crewAirs?[country] ?? []).len() == 0)
+  if (!(country in memberData.crewAirs))
   {
     memberCantJoinData.canFlyout = false
     memberCantJoinData.joinStatus = memberStatus.AIRS_NOT_AVAILABLE

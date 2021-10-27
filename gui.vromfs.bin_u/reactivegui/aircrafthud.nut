@@ -1,8 +1,7 @@
 local { bw, bh, rw, rh } = require("style/screenState.nut")
 local opticAtgmSight = require("opticAtgmSight.nut")
 local laserAtgmSight = require("laserAtgmSight.nut")
-local targetingPodSight = require("targetingPodSight.nut")
-local {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("planeState.nut")
+local {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible } = require("planeState.nut")
 local {
   IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
@@ -11,12 +10,7 @@ local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
 local {paramsTable, taTarget, compassElem}  = require("airHudElems.nut")
 
-local {
-  aircraftTurretsComponent,
-  fixedGunsDirection,
-  aircraftRocketSight,
-  laserPointComponent,
-  laserDesignatorStatusComponent } = require("airSight.nut")
+local {aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight, laserPointComponent} = require("airSight.nut")
 
 local {radarElement, twsElement} = require("airHudComponents.nut")
 
@@ -56,7 +50,7 @@ local function aircraftMainHud(isBackground) {
           ]
             : IsBomberViewHudVisible.value
         ? [
-            aircraftParamsTable(isBackground, false, true)
+            aircraftParamsTable(isBackground, true)
           ]
             : null
   }
@@ -125,7 +119,7 @@ local function aircraftHUDs(isBackground) {
   ])
 
   return @() {
-    watch = [OpticAtgmSightVisible, IndicatorsVisible, LaserAtgmSightVisible, TargetingPodSightVisible]
+    watch = [OpticAtgmSightVisible, IndicatorsVisible, LaserAtgmSightVisible]
     children =
     [
       !IndicatorsVisible.value ? null : aircraftMainHud(isBackground)
@@ -139,8 +133,6 @@ local function aircraftHUDs(isBackground) {
       !IndicatorsVisible.value ? null : weaponHud(isBackground)
       laserPointComponent(isBackground)
       LaserAtgmSightVisible.value && !isBackground ? laserAtgmSight(sw(100), sh(100)) : null
-      TargetingPodSightVisible.value && !isBackground ? targetingPodSight(sw(100), sh(100)) : null
-      TargetingPodSightVisible.value && !isBackground ? laserDesignatorStatusComponent(isBackground) : null
       !LaserAtgmSightVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
     ]
   }

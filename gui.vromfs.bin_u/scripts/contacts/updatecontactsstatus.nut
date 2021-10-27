@@ -44,7 +44,7 @@ local updateBlocklist = function() {
       for (local i = 0; i < response.paramCount(); i++) {
         local uid = response.getParamName(i)
 
-        cachedUids.mutate(@(v) v[uid.tostring()] <- ::dagor.getCurTime())
+        cachedUids.update(@(v) v[uid.tostring()] <- ::dagor.getCurTime())
         local contact = ::getContact(uid)
         if (!contact)
         {
@@ -64,7 +64,7 @@ local updateBlocklist = function() {
       ::debugTableData(waitingUids)
 
       //Save to pending ids, so we will try again in next call
-      pendingUids.mutate(@(v) v.extend(waitingUids))
+      pendingUids.update(@(v) v.extend(waitingUids))
       callCbOnce()
     }, this)
   )

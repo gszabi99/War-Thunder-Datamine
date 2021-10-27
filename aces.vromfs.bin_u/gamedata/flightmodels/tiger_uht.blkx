@@ -1681,7 +1681,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gameData/sensors/tv_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1729,34 +1729,6 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_rocket.blk",
         "tags": {
           "free": true
-        }
-      }
-    },
-    {
-      "preset": {
-        "name": "tiger_uht_4x_hot3",
-        "blk": "gameData/flightModels/weaponPresets/tiger_uht_4x_hot3.blk",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk"
-            },
-            {
-              "amountPerTier": 2.0
-            },
-            {
-              "tier": {
-                "idx": 5,
-                "iconType": "atgm_type2_x2"
-              }
-            },
-            {
-              "tier": {
-                "idx": 7,
-                "iconType": "atgm_type2_x2"
-              }
-            }
-          ]
         }
       }
     },
@@ -2700,7 +2672,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gameData/sensors/tv_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2777,6 +2749,10 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
+            "resolution": [1024.0,768.0],
+            "noiseFactor": 0.05
+          },
+          "sightIr": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
           }

@@ -6,11 +6,28 @@ local {getValFromObj} = require("components/attrUtil.nut")
 local {filterString, propPanelVisible, selectedCompName, extraPropPanelCtors, selectedEntity} = require("state.nut")
 local {colors, gridHeight} = require("components/style.nut")
 local cursors = require("components/cursors.nut")
-local {getCompSqTypePropEdit, getCompNamePropEdit} = require("propPanelControls.nut")
+
 local scrollbar = require("%darg/components/scrollbar.nut")
 
 local fieldReadOnly = require("components/apFieldReadOnly.nut")
+local fieldEditText = require("components/apFieldEditText.nut")
+local fieldBoolCheckbox = require("components/apFieldBoolCheckbox.nut")
 local compNameFilter = require("components/apNameFilter.nut")(filterString, selectedCompName)
+
+local fieldCtors = {
+  string  = fieldEditText
+  integer = fieldEditText
+  float   = fieldEditText
+  Point2  = fieldEditText
+  Point3  = fieldEditText
+  DPoint3 = fieldEditText
+  Point4  = fieldEditText
+  IPoint2 = fieldEditText
+  IPoint3 = fieldEditText
+  E3DCOLOR= fieldEditText
+  bool    = fieldBoolCheckbox
+}
+
 
 local windowState = Watched({
   pos = [-fsh(1), fsh(5)]
@@ -78,9 +95,9 @@ local toggleBg = makeBgToggle()
 local function panelCompRow(params={}) {
   local comp_name_ext = params?.comp_name_ext
   local comp_flags = params?.comp_flags ?? 0
-  local {eid, comp_sq_type, rawComponentName, obj=null} = params
+  local {eid, comp_sq_type, obj=null} = params
   local comp_name = params?.comp_name ?? comp_name_ext
-  local fieldEditCtor = getCompNamePropEdit(rawComponentName) ?? getCompSqTypePropEdit(comp_sq_type) ?? fieldReadOnly
+  local fieldEditCtor = fieldCtors?[comp_sq_type] ?? fieldReadOnly
   local isOdd = toggleBg()
   local stateFlags = Watched(0)
   local group = ElemGroup()
@@ -114,7 +131,7 @@ local function panelCompRow(params={}) {
           flow = FLOW_HORIZONTAL
           children = [
             mkCompNameText(comp_name_text, group)
-            fieldEditCtor(params.__merge({eid, obj, comp_name, rawComponentName}))
+            fieldEditCtor(params.__merge({eid=eid, obj=obj, comp_name=comp_name}))
           ]
         }
       ]
@@ -275,7 +292,7 @@ mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange
   caption = caption ?? rawComponentName
   isFirst = isFirst || rawComponentName==caption
   onChange = onChange ?? (@() update_component(eid, rawComponentName) ?? true)
-  local object = getValFromObj(eid, rawComponentName, path)
+  local object = getValFromObj(rawObject, path)
   local objData = object?.getAll() ?? object
   local objLen = objData.len()
   path = path ?? []
@@ -294,7 +311,7 @@ mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange
         contentChildren.append(mkComp(eid, rawComponentName, rawObject, ok, onChange, nkeys))
       }
       else {
-        contentChildren.append(panelCompRow({rawComponentName, comp_name_ext = ok, obj=rawObject, eid, comp_sq_type = typeof objData[ok], onChange, path=nkeys}))
+        contentChildren.append(panelCompRow({comp_name_ext = ok, obj=rawObject, eid, comp_sq_type = typeof objData[ok], onChange, path=nkeys}))
       }
     }
     return contentChildren
@@ -321,7 +338,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
   local isFirst = caption == null
   caption = caption ?? rawComponentName
   onChange = onChange ?? (@() update_component(eid, rawComponentName) ?? true)
-  local object = getValFromObj(eid, rawComponentName, path)
+  local object = getValFromObj(rawObject, path)
   local len = object?.len() ?? 0
   path = path ?? []
   local function childrenCtor(){
@@ -341,7 +358,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
 
 mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
   onChange = path != null ? @() update_component(eid, rawComponentName) : null
-  local object = getValFromObj(eid, rawComponentName, path)
+  local object = getValFromObj(rawObject, path)
   local comp_sq_type = typeof object
 
   local isFirst = caption==null
@@ -349,14 +366,13 @@ mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = nul
     eid, comp_sq_type, onChange, path
     comp_flags = isFirst ? get_comp_flags(eid, rawComponentName) : null,
     comp_name=rawComponentName,
-    rawComponentName,
     comp_name_ext = caption
     obj = rawObject
   }
   if (get_comp_type(eid, rawComponentName) != TYPE_STRING && typeof object == "string"){
     return panelCompRow(params.__merge({comp_sq_type="null" comp_flags = get_comp_flags(eid, rawComponentName)}))
   }
-  if (getCompSqTypePropEdit(comp_sq_type) != null) {
+  if (fieldCtors?[comp_sq_type] != null) {
     return panelCompRow(params)
   }
   if (type(object) == "table" || object instanceof CompObject) {
@@ -372,16 +388,13 @@ local function ecsObjToQuirrel(x) {
   return x.map(@(val) val?.getAll() ?? val)
 }
 
-local getCurComps = @() (selectedEntity.value ?? INVALID_ENTITY_ID) == INVALID_ENTITY_ID ? {} : ecsObjToQuirrel(_dbg_get_all_comps(selectedEntity.value))
-local curEntityComponents = Watched(getCurComps())
-local setCurComps = @() curEntityComponents(getCurComps())
+local curEntityComponents = mkWatched(persist, "curEntityComponents", selectedEntity.value!=null ? {} : ecsObjToQuirrel(_dbg_get_all_comps(selectedEntity.value)))
 
 selectedEntity.subscribe(function(eid){
-  gui_scene.resetTimeout(0.1, setCurComps)
+  gui_scene.setTimeout(0.1, @() curEntityComponents(ecsObjToQuirrel(_dbg_get_all_comps(selectedEntity.value))))
 })
 
 local isCurEntityComponents = Computed(@() curEntityComponents.value.len()>0)
-
 local filteredCurComponents = Computed(function(){
   local res = []
   foreach(compName, comp in curEntityComponents.value) {
@@ -461,3 +474,4 @@ local function compPanel() {
 }
 
 return compPanel
+

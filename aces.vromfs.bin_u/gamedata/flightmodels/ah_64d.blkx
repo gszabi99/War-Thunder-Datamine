@@ -1648,7 +1648,7 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gameData/sensors/tv_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1801,8 +1801,9 @@
     },
     {
       "preset": {
-        "name": "ah_64d_rocket_4_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/ah_64d_rocket_4_hellfire.blk",
+        "name": "ah_64d_8_hellfire",
+        "blk": "gameData/flightModels/weaponPresets/ah_64d_8_hellfire.blk",
+        "reqModification": "ah_1_AGM_114_8",
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_k.blk",
@@ -1814,8 +1815,8 @@
     },
     {
       "preset": {
-        "name": "ah_64d_8_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/ah_64d_8_hellfire.blk",
+        "name": "ah_64d_rocket_4_hellfire",
+        "blk": "gameData/flightModels/weaponPresets/ah_64d_rocket_4_hellfire.blk",
         "reqModification": "ah_1_AGM_114_8",
         "weaponConfig": {
           "Weapon": {
@@ -2466,6 +2467,10 @@
           "sightThermal": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
+          },
+          "sightIr": {
+            "resolution": [1024.0,768.0],
+            "noiseFactor": 0.05
           }
         }
       }
@@ -2610,7 +2615,7 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gameData/sensors/tv_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2652,14 +2657,11 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "modClass": "weapon",
-      "tier": 2,
-      "invertEnableLogic": false,
-      "enabled": false
+      "tier": 2
     },
     "stinger_aam": {
       "modClass": "weapon",
-      "tier": 3,
-      "enabled": false
+      "tier": 3
     }
   },
   "user_skin": [

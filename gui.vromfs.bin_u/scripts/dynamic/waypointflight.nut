@@ -87,12 +87,21 @@ missionGenFunctions.append( function (isFreeFlight)
 
   ::mgSetInt("mission_settings/mission/wpAward", 0);
 
-  if (playerFighterPlane == "")
-    return
+ local sector = ::mgGetMissionSector();
+ local level = ::mgGetLevelName();
 
-  ::mgSetMinMaxAircrafts("player", "", 1, 8)
+ local player_plane_name = "";
+ local enemy_plane_name = "";
+ if (playerFighterPlane != "")
+ {
+   player_plane_name = ::mgUnitClassFromDescription(playerFighterPlane);
+ }
+ else
+   return;
 
-  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "none")
+ ::mgSetMinMaxAircrafts("player", "", 1, 8)
+
+ ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, "none");
 
 //  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_wpFlight_temp.blk");
   if (::mgFullLogs())

@@ -38,28 +38,6 @@ local function getParamsFromSlotbarConfig(crew, slotbar) {
   if (!::check_obj(slotObj))
     return null
 
-  local isSelectByGroups = slotbar?.unitsGroupsByCountry != null
-  local country = crew.country
-
-  local busyUnitsCount = 0
-  local unitsArray = []
-  if (!isSelectByGroups) {
-    local crewUnitId = ::g_crew.getCrewUnit(crew)?.name ?? ""
-    local busyUnits = ::get_crews_list_by_country(country)
-      .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
-    busyUnitsCount = busyUnits.len()
-    unitsArray = ::all_units.filter(@(u) busyUnits.indexof(u.name) == null
-      && u.canAssignToCrew(country)).values()
-  }
-  else {
-    local unitsGroups = slotbar.unitsGroupsByCountry?[country]
-    local crewUnit = slotbar?.countryPresets[country].units[crew.idInCountry]
-    local selectedGroupName = unitsGroups?.groupIdByUnitName[crewUnit?.name] ?? ""
-    unitsArray = unitsGroups?.groups[selectedGroupName].units.values() ?? []
-  }
-  if (unitsArray.len() == 0)
-    return null
-
   return {
     countryId = crew.idCountry,
     idInCountry = crew.idInCountry,
@@ -67,9 +45,7 @@ local function getParamsFromSlotbarConfig(crew, slotbar) {
     slotObj = slotObj,
     slotbarWeak = slotbar,
     crew = crew
-    isSelectByGroups
-    busyUnitsCount
-    unitsArray
+    isSelectByGroups = slotbar?.unitsGroupsByCountry != null
   }
 }
 
@@ -87,9 +63,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   slotObj = null
   curClonObj = null
 
-  unitsArray = null // array of units
-  unitsList = null  // array of menu items
-  busyUnitsCount = 0
+  unitsList = null
+  totalUsableUnits = 0
 
   wasReinited = false
 
@@ -131,10 +106,6 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     tdClone["class"] = "slotbarClone"
     curClonObj = tdClone
 
-    // When menu opens on switching to country, slots are invisible due to animation
-    if ((tdClone?["color-factor"] ?? "255") != "255")
-      ::gui_bhv_deprecated.massTransparency.setTranspRecursive(tdClone, 255)
-
     local curUnitCloneObj = ::get_slot_obj(tdClone, countryId, idInCountry)
     ::fill_unit_item_timers(curUnitCloneObj, getCrewUnit())
     ::gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
@@ -142,6 +113,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
 
     local needEmptyCrewButton = initAvailableUnitsArray()
+    if (unitsList.len() == 0)
+      return goBack()
 
     curVisibleSlots = firstPageSlots
 
@@ -153,7 +126,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillLegend()
     fillUnitsList()
     updateUnitsList()
-    ::move_mouse_on_obj(curUnitCloneObj)
+    ::move_mouse_on_child_by_value(scene.findObject("airs_table"))
     updateOptionShowUnsupportedForCustomList()
     showSceneBtn("choose_popup_menu", !isEmptyOptionsList || needEmptyCrewButton || hasGroupText())
   }
@@ -192,17 +165,54 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(legendNest, markup, markup.len(), this)
   }
 
+  function getUsingUnitsArray()
+  {
+    local res = []
+    if (isSelectByGroups)
+      return res
+
+    local crewsList = ::g_crews_list.get()[countryId]
+    foreach(idx, c in crewsList.crews)
+      if (idx != idInCountry && ("aircraft" in c))
+        res.append(c.aircraft)
+    return res
+  }
+
+  function getUnitsList()
+  {
+    if (!isSelectByGroups)
+      return ::all_units
+
+    return getSelectedGroup()?.units.values() ?? []
+  }
+
   function initAvailableUnitsArray()
   {
-    unitsArray = sortUnitsList(unitsArray)
+    local busyUnits = getUsingUnitsArray()
+
+    local unitsArray = []
+    local selectedUnit = getCrewUnit()
+
+    foreach(unit in getUnitsList())
+      if (!::isInArray(unit.name, busyUnits) && selectedUnit != unit
+        && (isSelectByGroups || unit.canAssignToCrew(country)))
+        unitsArray.append(unit)
 
     unitsList = []
+
     if (slotbarWeak?.ownerWeak?.canShowShop && slotbarWeak.ownerWeak.canShowShop())
       unitsList.append(SEL_UNIT_BUTTON.SHOP)
+
     local needEmptyCrewButton = !isSelectByGroups
-      && ((crew?.aircraft ?? "") != "" && busyUnitsCount >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
+      && ("aircraft" in crew && busyUnits.len() >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
     if (needEmptyCrewButton)
       unitsList.append(SEL_UNIT_BUTTON.EMPTY_CREW)
+
+    unitsArray = sortUnitsList(unitsArray)
+
+    if (selectedUnit != null)
+      unitsList.append(selectedUnit)
+
     unitsList.extend(unitsArray)
     unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
 
@@ -216,11 +226,10 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     local getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
                                           : unit.trainCost ? -1
                                           : 0
-    local selectedUnit = getCrewUnit()
+
     local groupIdByUnitName = config?.unitsGroupsByCountry[country].groupIdByUnitName
     local unitsSortArr = units.map(@(unit)
       {
-        isCurrent = unit == selectedUnit
         groupId = groupIdByUnitName?[unit.name] ?? ""
         economicRank = unit.getEconomicRank(ediff)
         isDefaultAircraft = ::is_default_aircraft(unit.name)
@@ -230,8 +239,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     )
 
     unitsSortArr.sort(@(a, b)
-         b.isCurrent <=> a.isCurrent
-      || a.groupId <=> b.groupId
+         a.groupId <=> b.groupId
       || a.economicRank <=> b.economicRank
       || b.isDefaultAircraft <=> a.isDefaultAircraft
       || a.sortSpecialization <=> b.sortSpecialization
@@ -266,11 +274,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillUnitsList()
   {
     local markupArr = []
+    totalUsableUnits = 0
     foreach(idx, unit in unitsList)
     {
-      local rowData = ""
+      local rowData = "unitCell {}"
       if (!::u.isInteger(unit))
-        rowData = "unitCell {}"
+        totalUsableUnits++
       else if (unit == SEL_UNIT_BUTTON.SHOP)
         rowData = getTextSlotMarkup("shop_item", "#mainmenu/btnShop")
       else if (unit == SEL_UNIT_BUTTON.EMPTY_CREW)
@@ -644,7 +653,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isEmptyOptionsList)
       scene.findObject("filtered_units_text").setValue(
         ::loc("mainmenu/filteredUnits", {
-          total = unitsArray.len()
+          total = totalUsableUnits
           filtered = ::colorize("activeTextColor", visibleAmount)
         }))
 
@@ -716,11 +725,9 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 return {
   open = @(crew, slotbar) ::get_cur_gui_scene().performDelayed({},
     function() {
-
       local params = getParamsFromSlotbarConfig(crew, slotbar)
       if (params == null)
-        return ::broadcastEvent("ModalWndDestroy")
-
+        return
       ::handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
     })
   getParamsFromSlotbarConfig = getParamsFromSlotbarConfig

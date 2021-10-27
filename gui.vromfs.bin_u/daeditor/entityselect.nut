@@ -5,10 +5,10 @@ from "ecs" import *
 local {showEntitySelect} = require("state.nut")
 local {colors} = require("components/style.nut")
 local textButton = require("components/textButton.nut")
-local mkWindow = require("components/window.nut")
 local nameFilter = require("components/nameFilter.nut")
 local scrollbar = require("%darg/components/scrollbar.nut")
 local string = require("string")
+local cursors = require("components/cursors.nut")
 local {checkbox} = require("%darg/components/checkbox.nut")
 local entity_editor = require("entity_editor")
 
@@ -29,7 +29,7 @@ local filteredEntitesByNow = Computed(function(){
 })
 
 local function setFilter(cb) {
-  filterState.mutate(function(value) {
+  filterState.update(function(value) {
     foreach (k, v in value)
       value[k] = cb(k, v)
   })
@@ -47,7 +47,7 @@ local function matchEntityByText(eid, text) {
 }
 
 local function setSelection(cb) {
-  selectionState.mutate(function(value) {
+  selectionState.update(function(value) {
     foreach (k, v in value)
       value[k] = cb(k, v)
   })
@@ -56,7 +56,7 @@ local function setSelectionFiltered(cb) {
   if (!filterEntities.value)
     setSelection(cb)
   else
-    selectionState.mutate(function(value) {
+    selectionState.update(function(value) {
       foreach (k, v in value) {
         if (matchEntityByText(k, filterByNameText.value))
           value[k] = cb(k, v)
@@ -190,7 +190,7 @@ local function listRow(entity, idx) {
 
       function onClick(evt) {
         if (evt.ctrlKey) {
-          selectionState.mutate(function(value) {
+          selectionState.update(function(value) {
             value[entity.getEid()] <- !value?[entity.getEid()]
           })
         }
@@ -211,6 +211,21 @@ local function listRow(entity, idx) {
   })
 }
 
+
+local windowState = mkWatched(persist, "windowState", {
+  pos = [0, 0]
+  size = [sw(40), sh(65)]
+})
+
+
+local function onMoveResize(dx, dy, dw, dh) {
+  local w = windowState.value
+  w.pos[0] = clamp(w.pos[0]+dx, -(sw(100)-w.size[0]), 0)
+  w.pos[1] = max(w.pos[1]+dy, 0)
+  w.size[0] = clamp(w.size[0]+dw, sw(14), sw(80))
+  w.size[1] = clamp(w.size[1]+dh, sh(25), sh(90))
+  return w
+}
 
 local function updateEntites(){
   local entities = entity_editor.get_instance().getEntities()
@@ -251,11 +266,25 @@ local function entitySelectRoot() {
   })
 
 
-  local content = @(){
+  return {
+    onAttach = updateEntites
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_WORLD_BLUR
+    color = Color(150,150,150,250)
     flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    moveResizeModes = MR_AREA | MR_L | MR_R | MR_T | MR_B
+    onMoveResize = onMoveResize
+    size = windowState.value.size
+    pos = windowState.value.pos
+    moveResizeCursors = cursors.moveResizeCursors
+    behavior = [Behaviors.MoveResize]
+    key = "entity_select"
+    padding = fsh(0.5)
     gap = fsh(0.5)
-    watch = entitiesState
-    size = flex()
+    watch = [windowState, entitiesState]
+    stopMouse = true
     children = [
       @(){watch = filterEntities, children = filterEntities.value ? filter : select, size = [flex(), SIZE_TO_CONTENT]}
       {
@@ -284,11 +313,6 @@ local function entitySelectRoot() {
       }
     ]
   }
-  return mkWindow({
-    onAttach = updateEntites
-    id = "entity_select"
-    content
-  })()
 }
 
 

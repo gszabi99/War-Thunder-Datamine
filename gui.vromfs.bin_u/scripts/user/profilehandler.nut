@@ -16,7 +16,6 @@ local { fillProfileSummary } = require("scripts/user/userInfoStats.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -515,7 +514,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     {
       local filterUnitType = unitTypes.getByTag(filterUnitTag)
       if (!filterUnitType.isAvailable())
-        filterUnitType = unitTypes.getByEsUnitType(::get_es_unit_type(getPlayerCurUnit()))
+        filterUnitType = unitTypes.getByEsUnitType(::get_es_unit_type(::get_cur_slotbar_unit()))
 
       local view = { items = [] }
       foreach(unitType in unitTypes.types)

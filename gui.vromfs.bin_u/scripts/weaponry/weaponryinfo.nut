@@ -88,12 +88,6 @@ local WEAPON_TEXT_PARAMS = { //const
   weaponsFilterFunc     = null //function. When set, only filtered weapons are collected from weaponPreset.
 }
 
-local triggerGroupImageParameterById = {
-  [TRIGGER_GROUP_PRIMARY]         = "triggerGroupPrimaryImage",
-  [TRIGGER_GROUP_SECONDARY]       = "triggerGroupSecondaryImage",
-  [TRIGGER_GROUP_MACHINE_GUN]     = "triggerGroupMachineGunImage"
-}
-
 local function isWeaponAux(weapon)
 {
   local aux = false
@@ -119,12 +113,7 @@ local function isWeaponEnabled(unit, weapon)
              || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
 }
 
-local function getWeaponDisabledMods(unit, weapon)
-{
-  return weapon?.reqModification.filter(@(n) !::shop_is_modification_enabled(unit.name, n)) ?? []
-}
-
-local function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
+local function isWeaponVisible(unit, weapon, onlyBought = true, weaponTags = null)
 {
   if (isWeaponAux(weapon))
     return false
@@ -142,10 +131,8 @@ local function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags =
       return false
   }
 
-  if (onlySelectable
-      && ((!::shop_is_weapon_purchased(unit.name, weapon.name)
-        && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
-        || getWeaponDisabledMods(unit, weapon).len() > 0))
+  if (onlyBought &&  !::shop_is_weapon_purchased(unit.name, weapon.name)
+      && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
     return false
 
   return true
@@ -169,32 +156,6 @@ local function getLastWeapon(unitName)
       return weapon.name
     }
   return res
-}
-
-local getWeaponByName = @(unit, weaponName) unit?.weapons.findvalue(@(w) w.name == weaponName)
-
-local function validateLastWeapon(unitName)
-{
-  local weaponName = ::get_last_weapon(unitName)
-  if (weaponName == "")
-    return ""
-
-  local unit = ::getAircraftByName(unitName)
-  if (!unit)
-    return ""
-
-  local curWeapon = getWeaponByName(unit, weaponName)
-  if (isWeaponVisible(unit, curWeapon) && isWeaponEnabled(unit, curWeapon))
-    return weaponName
-
-  foreach (weapon in unit.weapons)
-    if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon))
-    {
-      ::set_last_weapon(unitName, weapon.name)
-      return weapon.name
-    }
-
-  return ""
 }
 
 local function setLastWeapon(unitName, weaponName)
@@ -825,6 +786,16 @@ local function isWeaponUnlocked(unit, weapon)
   return true
 }
 
+local function getWeaponByName(unit, weaponName)
+{
+  if (!("weapons" in unit))
+    return null
+
+  return ::u.search(unit.weapons, (@(weaponName) function(weapon) {
+      return weapon.name == weaponName
+    })(weaponName))
+}
+
 local function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true)
 {
   if (!unit)
@@ -918,20 +889,6 @@ local function getOverrideBullets(unit)
 
 local needSecondaryWeaponsWnd = @(unit) (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
 
-local cachedTriggerGroupImageByUnitName = {}
-local function getImageByTriggerFromUnit(unitName, triggerGroup) {
-  if (unitName in cachedTriggerGroupImageByUnitName)
-    return cachedTriggerGroupImageByUnitName[unitName]?[triggerGroup]
-  local unitBlk = ::get_full_unit_blk(unitName)
-  if (unitBlk == null)
-    return null
-
-  cachedTriggerGroupImageByUnitName[unitName] <- triggerGroupImageParameterById.map(@(name) unitBlk?[name])
-  return cachedTriggerGroupImageByUnitName[unitName]?[triggerGroup]
-}
-
-::cross_call_api.getImageByTriggerFromUnit <- getImageByTriggerFromUnit
-
 return {
   KGF_TO_NEWTON
   TRIGGER_TYPE
@@ -940,7 +897,6 @@ return {
   CONSUMABLE_TYPES
   WEAPON_TEXT_PARAMS
   getLastWeapon
-  validateLastWeapon
   setLastWeapon
   getSecondaryWeaponsList
   getPresetsList
@@ -966,5 +922,4 @@ return {
   checkBadWeapons
   getOverrideBullets
   needSecondaryWeaponsWnd
-  getWeaponDisabledMods
 }

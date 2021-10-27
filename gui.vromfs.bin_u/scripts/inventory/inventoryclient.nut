@@ -699,10 +699,9 @@ local InventoryClient = class {
     return ::has_feature("ExtInventory")
   }
 
-  function forceRefreshItemDefs(cb)
+  function forceRefreshItemDefs()
   {
     requestItemDefs(function() {
-      cb()
       notifyInventoryUpdate(true, true)
     }, true)
   }

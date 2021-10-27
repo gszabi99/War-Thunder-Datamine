@@ -24,8 +24,8 @@ local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/obje
 
 class ::gui_handlers.LoadingHandler extends ::BaseGuiHandler
 {
-  sceneBlkName = "gui/loading/loading.blk"
-  sceneNavBlkName = "gui/loading/loadingNav.blk"
+  sceneBlkName = "gui/loading.blk"
+  sceneNavBlkName = "gui/loadingNav.blk"
 
   function initScreen()
   {
