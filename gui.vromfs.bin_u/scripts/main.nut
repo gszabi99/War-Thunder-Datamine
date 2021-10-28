@@ -209,6 +209,7 @@ global enum HUD_TYPE {
   TANK,
   SHIP,
   HELICOPTER,
+  FREECAM,
 
   NONE
 }
@@ -556,6 +557,9 @@ local isFullScriptsLoaded = false
     return shouldDisableMenu
   }
 }
+
+if (::is_platform_pc && !::isProductionCircuit() && getSystemConfigOption("debug/netLogerr") == null)
+  ::setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() //scripts reload
     || ::should_disable_menu())

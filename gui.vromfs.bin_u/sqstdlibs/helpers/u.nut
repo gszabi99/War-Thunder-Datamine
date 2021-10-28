@@ -12,7 +12,6 @@ local rnd = rootTable?.math?.rnd
   ?? require("math")?.rand
   ?? function() {
        throw("no math library exist")
-       return 0
      }
 
 /**

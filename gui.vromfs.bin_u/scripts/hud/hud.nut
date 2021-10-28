@@ -9,6 +9,8 @@ local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { initIconedHints } = require("scripts/hud/iconedHints.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -44,10 +46,10 @@ local defaultFontSize = "small"
 
 globalCallbacks.addTypes({
   onShortcutOn = {
-    onCb = @(obj, params) ::set_shortcut_on(obj.shortcut_id)
+    onCb = @(obj, params) setShortcutOn(obj.shortcut_id)
   }
   onShortcutOff = {
-    onCb = @(obj, params) ::set_shortcut_off(obj.shortcut_id)
+    onCb = @(obj, params) setShortcutOff(obj.shortcut_id)
   }
 })
 
@@ -56,14 +58,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   sceneBlkName         = "gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
-  widgetsList = [
-    {
-      widgetId = DargWidgets.HUD
-    }
-    {
-      widgetId = DargWidgets.SCOREBOARD
-    }
-  ]
 
   ucWarningActive   = false
   ucWarningTimeShow = 0.0
@@ -121,6 +115,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
+    initDargWidgetsList()
     ::init_options()
     ::g_hud_event_manager.init()
     ::g_streaks.clear()
@@ -149,6 +144,14 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     ::g_hud_tutorial_elements.init(scene)
 
     updateControlsAllowMask()
+  }
+
+  function initDargWidgetsList() {
+    local hudWidgetId = useTouchscreen ? DargWidgets.HUD_TOUCH : DargWidgets.HUD
+    widgetsList = [
+      { widgetId = hudWidgetId }
+      { widgetId = DargWidgets.SCOREBOARD }
+    ]
   }
 
   function updateControlsAllowMask()
@@ -267,6 +270,8 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       currentHud = ::handlersManager.loadHandler(useTouchscreen && !isXinput ? ::HudTouchShip : ::HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       currentHud = ::handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
+    else if (newHudType == HUD_TYPE.FREECAM && useTouchscreen && !isXinput)
+      currentHud = ::handlersManager.loadHandler(::HudTouchFreecam, { scene = hudObj })
     else //newHudType == HUD_TYPE.NONE
       currentHud = null
 
@@ -304,7 +309,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateObjectsSize(params = null)
   {
-    local actionBarItemsAmount = params?.actionBarItemsAmount ?? ::get_action_bar_items().len()
+    local actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
     if (actionBarItemsAmount)
     {
       local actionBarSize = ::to_pixels("1@hudActionBarItemSize")
@@ -331,6 +336,8 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       return HUD_TYPE.SPECTATOR
     else if (::get_game_mode() == ::GM_BENCHMARK)
       return HUD_TYPE.BENCHMARK
+    else if (::is_freecam_enabled())
+      return HUD_TYPE.FREECAM
     else
     {
       local unit = getPlayerCurUnit()
@@ -932,6 +939,34 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     base.initScreen()
+    ::g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
+      @(eventData) updateMissionProgressPlace(), this)
+    updateMissionProgressPlace()
+  }
+
+  function reinitScreen(params = {})
+  {
+    base.reinitScreen()
+  }
+
+  function updateMissionProgressPlace() {
+    local obj = scene.findObject("movement_controls")
+    if (!obj?.isValid())
+      return
+
+    obj.top = $"ph - h{isProgressVisible() ? " - @missionProgressHeight" : ""}"
+  }
+}
+
+::HudTouchFreecam <- class extends ::gui_handlers.BaseUnitHud
+{
+  scene        = null
+  sceneBlkName = "gui/hud/hudTouchFreecam.blk"
+  wndType      = handlerType.CUSTOM
+
+  function initScreen()
+  {
+    base.initScreen()
   }
 
   function reinitScreen(params = {})
@@ -939,7 +974,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     base.reinitScreen()
   }
 }
-
 
 ::gui_start_hud <- function gui_start_hud()
 {

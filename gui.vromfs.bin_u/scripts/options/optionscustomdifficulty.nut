@@ -58,7 +58,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
         {
           id = "btn_reset"
           text = "#mainmenu/btnReset"
-          shortcut = "X"
+          shortcut = "Y"
           funcName = "onListCdPresets"
           button = true
         },
@@ -67,7 +67,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
         {
           id = "btn_apply"
           text = "#mainmenu/btnApply"
-          shortcut = "A"
+          shortcut = "X"
           funcName = "onApply"
           isToBattle = true
           button = true

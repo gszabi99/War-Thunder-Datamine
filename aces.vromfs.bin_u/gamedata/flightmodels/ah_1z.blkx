@@ -1818,7 +1818,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1957,6 +1957,58 @@
       "preset": {
         "name": "ah_1z_hydra_70_m247",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_hydra_70_m247.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "ah_1z_4_hellfire_ffar",
+        "blk": "gameData/flightModels/weaponPresets/ah_1z_4_hellfire_ffar.blk",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk"
+              },
+              {
+                "amountPerTier": 2.0
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "atgm_type_helfire_x2"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "atgm_type_helfire_x2"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk"
+              },
+              {
+                "amountPerTier": 19.0
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "nar_ap_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "nar_ap_large"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -5258,7 +5310,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },

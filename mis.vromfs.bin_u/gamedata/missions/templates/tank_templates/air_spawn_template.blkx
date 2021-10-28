@@ -110,9 +110,17 @@
         "comment": {
           "value": "no forced spawn. let's spawn in the usual way"
         },
-        "triggerEnable": {
-          "target": "air_spawn_start"
-        }
+        "triggerEnable": [
+          {
+            "target": "air_ab_spawn_start"
+          },
+          {
+            "target": "air_rb_spawn_start"
+          },
+          {
+            "target": "air_sb_spawn_start"
+          }
+        ]
       },
       "else_actions": {
         "comment": {
@@ -123,7 +131,7 @@
         }
       }
     },
-    "air_spawn_start": {
+    "air_ab_spawn_start": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -136,14 +144,14 @@
       },
       "conditions": {
         "gameWhenDifficulty": {
-          "difficulty": "simulator",
-          "is": "notEqual"
+          "difficulty": "arcade",
+          "is": "equal"
         }
       },
       "actions": [
         {
           "comment": {
-            "value": "non-simulator mode"
+            "value": "arcade mode"
           }
         },
         {
@@ -172,14 +180,102 @@
         },
         {
           "triggerEnable": {
+            "target": "ab_air_spawn"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "disabling trigger"
+        },
+        "triggerDisable": {
+          "target": "air_ab_spawn_start"
+        }
+      }
+    },
+    "air_rb_spawn_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "realistic",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "arcade mode"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_air_spawn_hardcore",
+            "var": "t1_air_spawn_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_air_spawn_hardcore",
+            "var": "t2_air_spawn_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_air_spawn_hardcore",
+            "var": "t1_bombers_spawn_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_air_spawn_hardcore",
+            "var": "t2_bombers_spawn_str"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "rb_air_spawn"
           }
         }
       ],
-      "else_actions": [
+      "else_actions": {
+        "comment": {
+          "value": "simulator and rb mode"
+        },
+        "triggerDisable": {
+          "target": "air_rb_spawn_start"
+        }
+      }
+    },
+    "air_sb_spawn_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": [
         {
           "comment": {
-            "value": "simulator mode"
+            "value": "arcade mode"
           }
         },
         {
@@ -199,9 +295,17 @@
             "target": "sb_air_spawn"
           }
         }
-      ]
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "simulator mode"
+        },
+        "triggerDisable": {
+          "target": "air_sb_spawn_start"
+        }
+      }
     },
-    "rb_air_spawn": {
+    "ab_air_spawn": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -261,6 +365,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_bombers_spawn_str",
             "team": "A",
             "tags": {
@@ -293,6 +398,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_bombers_spawn_str",
             "team": "B",
             "tags": {
@@ -325,6 +431,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_air_spawn_str",
             "team": "A",
             "tags": {
@@ -357,11 +464,203 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_air_spawn_str",
             "team": "B",
             "tags": {
               "type_longrange_bomber": false,
               "airfield_take_off": false,
+              "helicopter": false,
+              "type_attack_helicopter": false,
+              "type_utility_helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false
+            }
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_airfield",
+            "var": "t1_airfield_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_airfield",
+            "var": "t2_airfield_str"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "airfields_init"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "rb_air_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_air_spawn_str",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_air_spawn_str",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t1_bombers_spawn_str",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_bombers_spawn_str",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "non-simulator mode - spawn in the air"
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/bombers_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@t1_bombers_spawn_str",
+            "team": "A",
+            "tags": {
+              "type_longrange_bomber": true,
+              "airfield_take_off": false,
+              "helicopter": false,
+              "type_attack_helicopter": false,
+              "type_utility_helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false
+            }
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/bombers_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@t2_bombers_spawn_str",
+            "team": "B",
+            "tags": {
+              "type_longrange_bomber": true,
+              "airfield_take_off": false,
+              "helicopter": false,
+              "type_attack_helicopter": false,
+              "type_utility_helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false
+            }
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "missions/air_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@t1_air_spawn_str",
+            "team": "A",
+            "tags": {
+              "helicopter": false,
+              "type_attack_helicopter": false,
+              "type_utility_helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false
+            }
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "missions/air_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@t2_air_spawn_str",
+            "team": "B",
+            "tags": {
               "helicopter": false,
               "type_attack_helicopter": false,
               "type_utility_helicopter": false,
@@ -440,6 +739,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_bombers_spawn_str",
             "team": "A",
             "tags": {
@@ -472,6 +772,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_bombers_spawn_str",
             "team": "B",
             "tags": {
@@ -611,6 +912,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn_arcade",
             "spawnArrangeTo": "@battlearea_name",
             "team": "A",
@@ -643,6 +945,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_air_spawn_arcade",
             "spawnArrangeTo": "@battlearea_name",
             "team": "A",
@@ -675,6 +978,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_air_spawn_hardcore",
             "spawnArrangeTo": "@battlearea_name",
             "team": "B",
@@ -713,6 +1017,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn_arcade",
             "spawnArrangeTo": "@battlearea_name",
             "team": "B",
@@ -745,6 +1050,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_air_spawn_arcade",
             "spawnArrangeTo": "@battlearea_name",
             "team": "B",
@@ -777,6 +1083,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_air_spawn_hardcore",
             "spawnArrangeTo": "@battlearea_name",
             "team": "A",
@@ -833,6 +1140,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn_arcade",
             "team": "A",
             "tags": {
@@ -862,6 +1170,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn_arcade",
             "team": "B",
             "tags": {
@@ -891,6 +1200,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t1_air_spawn_arcade",
             "team": "A",
             "tags": {
@@ -921,6 +1231,7 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "t2_air_spawn_arcade",
             "team": "B",
             "tags": {
@@ -1121,6 +1432,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t1_airfield_str",
               "team": "A",
               "tags": {
@@ -1151,6 +1463,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t2_airfield_str",
               "team": "B",
               "tags": {
@@ -1381,6 +1694,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t1_helipad_farspawn",
               "team": "A",
               "tags": {
@@ -1411,6 +1725,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t2_helipad_farspawn",
               "team": "B",
               "tags": {
@@ -1492,6 +1807,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t1_helipad_str",
               "team": "A",
               "tags": {
@@ -1522,6 +1838,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@t2_helipad_str",
               "team": "B",
               "tags": {

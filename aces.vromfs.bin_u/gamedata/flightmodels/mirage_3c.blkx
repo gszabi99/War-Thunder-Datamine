@@ -178,6 +178,11 @@
         "hp": 39.5
       }
     },
+    "steel_cooling_sys": {
+      "oil1_dm": {
+        "hp": 11.5
+      }
+    },
     "steel_pilot": {
       "pilot_dm": {
         "fireProtectionHp": 20.0,
@@ -994,6 +999,17 @@
           }
         }
       ]
+    },
+    {
+      "part": {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      }
     },
     {
       "part": {

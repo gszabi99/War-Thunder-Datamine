@@ -10,7 +10,7 @@ local mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key
       local resultNum = numSelected.value + (curVal ? -1 : 1)
       if ((minOptions == 0 || resultNum >= minOptions) //result num would
           && (maxOptions==0 || resultNum <= maxOptions))
-        selected(function(s) { s[option.key] <- !curVal })
+        selected.mutate(function(s) { s[option.key] <- !curVal })
 
     }
     return style.root.__merge({

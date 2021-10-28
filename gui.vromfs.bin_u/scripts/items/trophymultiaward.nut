@@ -1,5 +1,6 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { isDataBlock } = require("std/underscore.nut")
 local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 ::TrophyMultiAward <- class
@@ -238,7 +239,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   {
     local res = []
     local resBlk = blk?.result
-    if (!::can_be_readed_as_datablock(resBlk))
+    if (!isDataBlock(resBlk))
       return res
 
     _addResUnlocks(resBlk, res)
@@ -253,7 +254,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResUnlocks(resBlk, resList)
   {
     local unlocksBlk = resBlk?.unlocks
-    if (!::can_be_readed_as_datablock(unlocksBlk))
+    if (!isDataBlock(unlocksBlk))
       return
 
     for(local i = 0; ; i++)
@@ -298,7 +299,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResSpare(resBlk, resList)
   {
     local spareBlk = resBlk?.spare
-    if (!::can_be_readed_as_datablock(spareBlk))
+    if (!isDataBlock(spareBlk))
       return
 
     local list = []
@@ -356,7 +357,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResSpecialization(resBlk, resList)
   {
     local qBlk = resBlk?.specialization
-    if (!::can_be_readed_as_datablock(qBlk))
+    if (!isDataBlock(qBlk))
       return
 
     local list = {}
@@ -415,7 +416,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   function _addResResources(resBlk, resList)
   {
     local resourcesBlk = resBlk?.resource
-    if (!::can_be_readed_as_datablock(resourcesBlk))
+    if (!isDataBlock(resourcesBlk))
       return
 
     for(local i = 0; ; i++)

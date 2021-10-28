@@ -2465,6 +2465,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "setOrientation": true
+            }
           }
         ]
       },
@@ -2472,6 +2479,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2497,6 +2507,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2606,6 +2619,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2834,6 +2850,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -2872,7 +2895,7 @@
   },
   {
     "ircmProjector": {
-      "node": "ex_decor_02",
+      "node": "bone_gun_lantern",
       "beamRadius": [1500.0,200.0],
       "projectorPower": [0.03,0.07],
       "projectorGlowOffset": [0.5,0.2,0.0],

@@ -845,6 +845,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shouldBlink = true
   }
 
+  MOVE_SUSPENSION_BLOCKED_HINT = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/move_suspension_blocked"
+    showEvent = "hint:move_suspension_blocked"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
   YOU_CAN_EXIT_HINT = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/you_can_exit"
@@ -1361,6 +1369,22 @@ enums.addTypesByGlobalName("g_hud_hints", {
     locId     = "hints/need_stop_for_hull_aiming"
     showEvent = "hint:need_stop_for_hull_aiming:show"
     hideEvent = "hint:need_stop_for_hull_aiming:hide"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
+  STOP_TERRAFORM_FOR_HULL_AIMING = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/stop_terraform_for_hull_aiming"
+    showEvent = "hint:stop_terraform_for_hull_aiming"
+    lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
+  NEED_STOP_FOR_TERRAFORM = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/need_stop_for_terraform"
+    showEvent = "hint:need_stop_for_terraform"
     lifeTime = 5.0
     isHideOnDeath = true
   }

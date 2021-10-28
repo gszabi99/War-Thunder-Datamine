@@ -105,6 +105,12 @@
     "type": "typeMediumTank"
   },
   {
+    "bladeAnimVar": "chieftain_mk_3_dozer_blade_action"
+  },
+  {
+    "digForwardOffset": 1.5
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -310,6 +316,15 @@
         "armorThickness": 13.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
+        "turret_08_front_dm": {
+          "armorThickness": 8.0
+        },
+        "turret_08_bottom_dm": {
+          "armorThickness": 8.0
+        },
+        "ex_armor_01_dm": {
+          "armorThickness": 30.0
+        },
         "ex_armor_body_r_01_dm": [],
         "ex_armor_body_r_02_dm": [],
         "ex_armor_body_r_03_dm": [],
@@ -2360,6 +2375,13 @@
     }
   },
   {
+    "attachables": {
+      "ex_decor_r_11_dm": true,
+      "ex_decor_l_10_dm": true,
+      "ex_decor_05_dm": true
+    }
+  },
+  {
     "gunConvergence": {
       "defaultDistance": 1200.0,
       "vertical": true,
@@ -2935,6 +2957,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "setOrientation": true
+            }
           }
         ]
       },
@@ -2942,6 +2971,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2967,6 +2999,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3076,6 +3111,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -3304,6 +3342,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -3374,6 +3419,92 @@
       },
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
+      },
+      "tank_bulldozer_blade": {
+        "modClass": "protection",
+        "tier": 4,
+        "requiresModelReload": true,
+        "turn_it_off": false,
+        "effects": {
+          "rcostAddParam": 0.99,
+          "diggingAvailable": true,
+          "diggingActivateTime": 5.0,
+          "diggingLevel": 0.2,
+          "digMaxSpeed": 7.0,
+          "digMaxRevSpeed": -7.0,
+          "hideNodes": [
+            {
+              "node": "ex_lantern_l_02"
+            },
+            {
+              "node": "ex_armor_body_r_01"
+            },
+            {
+              "node": "ex_lantern_r_04"
+            },
+            {
+              "node": "ex_decor_l_01"
+            },
+            {
+              "node": "ex_decor_r_01"
+            },
+            {
+              "node": "body_01"
+            }
+          ]
+        },
+        "disableModEffects": {
+          "hideNodes": [
+            {
+              "node": "ex_decor_l_12"
+            },
+            {
+              "node": "ex_decor_r_12"
+            },
+            {
+              "node": "ex_lantern_l_05"
+            },
+            {
+              "node": "body_02"
+            },
+            {
+              "node": "ex_armor_body_r_10"
+            },
+            {
+              "node": "ex_lantern_r_05"
+            },
+            {
+              "node": "ex_decor_l_13"
+            },
+            {
+              "node": "ex_decor_r_13"
+            },
+            {
+              "node": "ex_decor_04"
+            },
+            {
+              "node": "roll_03"
+            },
+            {
+              "node": "roll_02"
+            },
+            {
+              "node": "roll_01"
+            },
+            {
+              "node": "ex_armor_01"
+            },
+            {
+              "node": "roll_04"
+            },
+            {
+              "node": "turret_08_bottom"
+            },
+            {
+              "node": "turret_08_front"
+            }
+          ]
+        }
       },
       "120mm_britain_L37A7_HESH": [],
       "120mm_britain_Smoke": [],
@@ -3843,16 +3974,19 @@
         {
           "shells": {
             "reloadTimeMult": 1.34,
-            "ammo_body_25_dm": {
+            "ammo_body_27_dm": {
+              "count": 1
+            },
+            "ammo_body_41_dm": {
+              "count": 1
+            },
+            "ammo_body_42_dm": {
               "count": 1
             },
             "ammo_body_26_dm": {
               "count": 1
             },
-            "ammo_body_27_dm": {
-              "count": 1
-            },
-            "ammo_body_28_dm": {
+            "ammo_body_25_dm": {
               "count": 1
             },
             "ammo_body_29_dm": {
@@ -3871,9 +4005,6 @@
               "count": 1
             },
             "ammo_body_34_dm": {
-              "count": 1
-            },
-            "ammo_body_35_dm": {
               "count": 1
             },
             "ammo_body_36_dm": {
@@ -3935,16 +4066,90 @@
         {
           "charges": {
             "firstStage": true,
-            "ammo_turret_01_dm": {
+            "ammo_turret_03_dm": {
+              "count": 1
+            },
+            "ammo_turret_04_dm": {
               "count": 1
             },
             "ammo_turret_02_dm": {
               "count": 1
             },
-            "ammo_turret_03_dm": {
+            "ammo_turret_01_dm": {
               "count": 1
             },
-            "ammo_turret_04_dm": {
+            "ammo_turret_07_dm": {
+              "count": 1
+            },
+            "ammo_turret_09_dm": {
+              "count": 1
+            },
+            "ammo_turret_11_dm": {
+              "count": 1
+            },
+            "ammo_turret_53_dm": {
+              "count": 1
+            },
+            "ammo_turret_57_dm": {
+              "count": 1
+            },
+            "ammo_turret_52_dm": {
+              "count": 1
+            },
+            "ammo_turret_51_dm": {
+              "count": 1
+            },
+            "ammo_turret_50_dm": {
+              "count": 1
+            },
+            "ammo_turret_49_dm": {
+              "count": 1
+            },
+            "ammo_turret_13_dm": {
+              "count": 1
+            },
+            "ammo_turret_15_dm": {
+              "count": 1
+            },
+            "ammo_turret_17_dm": {
+              "count": 1
+            },
+            "ammo_turret_48_dm": {
+              "count": 1
+            },
+            "ammo_turret_47_dm": {
+              "count": 1
+            },
+            "ammo_turret_46_dm": {
+              "count": 1
+            },
+            "ammo_turret_45_dm": {
+              "count": 1
+            },
+            "ammo_turret_55_dm": {
+              "count": 1
+            },
+            "ammo_turret_56_dm": {
+              "count": 1
+            },
+            "ammo_turret_54_dm": {
+              "count": 1
+            },
+            "ammo_turret_44_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "charges": {
+            "reloadTimeMult": 1.34,
+            "ammo_turret_43_dm": {
+              "count": 1
+            },
+            "ammo_turret_42_dm": {
+              "count": 1
+            },
+            "ammo_turret_41_dm": {
               "count": 1
             },
             "ammo_turret_05_dm": {
@@ -3953,114 +4158,52 @@
             "ammo_turret_06_dm": {
               "count": 1
             },
-            "ammo_turret_07_dm": {
-              "count": 1
-            },
-            "ammo_turret_08_dm": {
-              "count": 1
-            },
-            "ammo_turret_09_dm": {
-              "count": 1
-            },
-            "ammo_turret_10_dm": {
-              "count": 1
-            },
-            "ammo_turret_11_dm": {
-              "count": 1
-            },
-            "ammo_turret_12_dm": {
-              "count": 1
-            },
-            "ammo_turret_13_dm": {
-              "count": 1
-            },
-            "ammo_turret_14_dm": {
-              "count": 1
-            },
-            "ammo_turret_15_dm": {
-              "count": 1
-            },
-            "ammo_turret_16_dm": {
-              "count": 1
-            },
-            "ammo_turret_17_dm": {
-              "count": 1
-            },
-            "ammo_turret_18_dm": {
-              "count": 1
-            },
-            "ammo_turret_19_dm": {
-              "count": 1
-            },
-            "ammo_turret_20_dm": {
-              "count": 1
-            },
-            "ammo_turret_21_dm": {
-              "count": 1
-            },
-            "ammo_turret_22_dm": {
-              "count": 1
-            },
-            "ammo_turret_23_dm": {
-              "count": 1
-            },
-            "ammo_turret_24_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "charges": {
-            "reloadTimeMult": 1.34,
-            "ammo_turret_25_dm": {
-              "count": 1
-            },
-            "ammo_turret_26_dm": {
-              "count": 1
-            },
-            "ammo_turret_27_dm": {
-              "count": 1
-            },
-            "ammo_turret_28_dm": {
-              "count": 1
-            },
-            "ammo_turret_29_dm": {
-              "count": 1
-            },
-            "ammo_turret_30_dm": {
-              "count": 1
-            },
-            "ammo_turret_31_dm": {
-              "count": 1
-            },
-            "ammo_turret_32_dm": {
-              "count": 1
-            },
-            "ammo_turret_33_dm": {
-              "count": 1
-            },
-            "ammo_turret_34_dm": {
-              "count": 1
-            },
-            "ammo_turret_35_dm": {
-              "count": 1
-            },
-            "ammo_turret_36_dm": {
-              "count": 1
-            },
-            "ammo_turret_37_dm": {
+            "ammo_turret_39_dm": {
               "count": 1
             },
             "ammo_turret_38_dm": {
-              "count": 1
-            },
-            "ammo_turret_39_dm": {
               "count": 1
             },
             "ammo_turret_40_dm": {
               "count": 1
             },
             "ammo_body_r_01_dm": {
+              "count": 1
+            },
+            "ammo_turret_33_dm": {
+              "count": 1
+            },
+            "ammo_turret_32_dm": {
+              "count": 1
+            },
+            "ammo_turret_31_dm": {
+              "count": 1
+            },
+            "ammo_turret_30_dm": {
+              "count": 1
+            },
+            "ammo_turret_37_dm": {
+              "count": 1
+            },
+            "ammo_turret_36_dm": {
+              "count": 1
+            },
+            "ammo_turret_35_dm": {
+              "count": 1
+            },
+            "ammo_turret_34_dm": {
+              "count": 1
+            },
+            "ammo_body_r_10_dm": {
+              "count": 1
+            },
+            "ammo_body_r_11_dm": {
+              "count": 1
+            },
+            "ammo_body_r_12_dm": {
+              "count": 1
+            },
+            "ammo_body_r_13_dm": {
               "count": 1
             },
             "ammo_body_r_02_dm": {
@@ -4085,18 +4228,6 @@
               "count": 1
             },
             "ammo_body_r_09_dm": {
-              "count": 1
-            },
-            "ammo_body_r_10_dm": {
-              "count": 1
-            },
-            "ammo_body_r_11_dm": {
-              "count": 1
-            },
-            "ammo_body_r_12_dm": {
-              "count": 1
-            },
-            "ammo_body_r_13_dm": {
               "count": 1
             }
           }

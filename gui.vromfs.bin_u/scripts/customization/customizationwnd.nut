@@ -154,6 +154,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     owner = this
     unit = showedUnit.value
+    if (!unit)
+      return goBack()
     ::cur_aircraft_name = unit.name
 
     access_WikiOnline = ::has_feature("WikiUnitInfo")
@@ -2147,6 +2149,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       local newUnitName = getShowedUnitName()
       if (unit.name != newUnitName)
       {
+        ::cur_aircraft_name = newUnitName
         owner.unit = ::getAircraftByName(newUnitName)
         owner.previewSkinId = null
         if (owner && ("initMainParams" in owner) && owner.initMainParams)
@@ -2386,6 +2389,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     // clear only when closed by player to can go through test fly with previewed skin
     ::g_decorator.clearLivePreviewParams()
     guiScene.performDelayed(this, base.goBack)
+    ::hangar_focus_model(false)
   }
 
   function onDestroy()

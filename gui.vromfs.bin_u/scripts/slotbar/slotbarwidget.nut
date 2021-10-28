@@ -6,8 +6,10 @@ local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.n
 local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatus.nut")
 local { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
 local { setShowUnit, getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { getAvailableRespawnBases } = require_native("guiRespawn")
+local { getShopVisibleCountries } = require("scripts/shop/shopCountriesList.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -172,7 +174,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     fillCountries()
 
     if (!singleCountry)
-      setShowUnit(getCurSlotUnit())
+      setShowUnit(getCurSlotUnit(), getHangarFallbackUnitParams())
 
     if (crewId != null)
       crewId = null
@@ -205,7 +207,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
     data.crewIdVisible <- data?.crewIdVisible ?? list.len()
 
-    local canSelectEmptyCrew = shouldSelectCrewRecruit || !needActionsWithEmptyCrews
+    local canSelectEmptyCrew = shouldSelectCrewRecruit
+      || !needActionsWithEmptyCrews
+      || (crew?.country != null && !isCountrySlotbarHasUnits(crew.country) && data.idInCountry == 0)
     data.isSelectable <- data?.isSelectable
       ?? ((data.isUnlocked || !shouldSelectAvailableUnit) && (canSelectEmptyCrew || data.unit != null))
     local isControlledUnit = !::is_respawn_screen()
@@ -237,8 +241,10 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       if (onlyForCountryIdx != null && onlyForCountryIdx != c)
         continue
 
+      local visibleCountries = getShopVisibleCountries()
       local listCountry = crewsListFull[c].country
-      if (singleCountry != null && singleCountry != listCountry)
+      if ((singleCountry != null && singleCountry != listCountry)
+        || visibleCountries.indexof(listCountry) == null)
         continue
 
       local countryData = {
@@ -610,6 +616,16 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     return ::get_slot_obj(scene, curSlotCountryId, curSlotIdInCountry)
   }
 
+  function getHangarFallbackUnitParams()
+  {
+    return {
+      country = getCurCountry()
+      slotbarUnits = (::g_crews_list.get()?[curSlotCountryId].crews ?? [])
+        .map(@(crew) ::g_crew.getCrewUnit(crew))
+        .filter(@(unit) unit != null)
+    }
+  }
+
   function getSlotIdByObjId(slotObjId, countryId)
   {
     local prefix = "td_slot_"+countryId+"_"
@@ -709,9 +725,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (crew)
     {
       local unit = getCrewUnit(crew)
-      if (unit)
+      if (unit != null || (!isCountrySlotbarHasUnits(crew.country) && curSlotIdInCountry == 0))
         setCrewUnit(unit)
-      else if (needActionsWithEmptyCrews)
+      if (!unit && needActionsWithEmptyCrews)
         onSlotChangeAircraft()
       return
     }
@@ -819,6 +835,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSlotbarDblClick()
   {
+    local cellObj = scene.findObject($"td_slot_{curSlotCountryId}_{curSlotIdInCountry}")
+    if (!cellObj?.isValid() || !cellObj.isHovered())
+      return
     onSlotDblClick(getCurCrew())
   }
 
@@ -848,6 +867,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     {
       local animObj = crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
+
+      if (animObj?.id != animBlockId && animObj?["_transp-timer"] == null)
+        animObj["_transp-timer"] = "0"
     }
 
     local animBlockObj = crewsObj.findObject(animBlockId)
@@ -1015,6 +1037,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (!crew)
       return
 
+    if (!isCountrySlotbarHasUnits(crew.country) && crew.idInCountry != 0)
+      return checkSlotbar()
+
     local slotbar = this
     ignoreCheckSlotbar = true
     checkedCrewAirChange(function() {
@@ -1079,9 +1104,12 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (ignoreCheckSlotbar || !::isInMenu())
       return
 
+    local curCountry = ::get_profile_country_sq()
+
     if (!(curSlotCountryId in ::g_crews_list.get())
-        || ::g_crews_list.get()[curSlotCountryId].country != ::get_profile_country_sq()
-        || curSlotIdInCountry != ::selected_crews?[curSlotCountryId] || getCurSlotUnit() == null)
+        || ::g_crews_list.get()[curSlotCountryId].country != curCountry
+        || curSlotIdInCountry != ::selected_crews?[curSlotCountryId]
+        || (getCurSlotUnit() == null && isCountrySlotbarHasUnits(curCountry)))
       updateSlotbarImpl()
     else if (selectedCrewData && selectedCrewData?.unit != getShowedUnit())
       refreshAll()
@@ -1336,7 +1364,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function setCrewUnit(unit)
   {
-    setShowUnit(unit)
+    setShowUnit(unit, getHangarFallbackUnitParams())
     //need to send event when crew in country not changed, because main unit changed.
     ::select_crew(curSlotCountryId, curSlotIdInCountry, true)
   }
@@ -1353,13 +1381,21 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onSlotbarActivate(obj) {
+    local cellObj = scene.findObject($"td_slot_{curSlotCountryId}_{curSlotIdInCountry}")
+    if (!cellObj?.isValid() || !cellObj.isHovered())
+      return
     onSlotActivate(getCurCrew())
   }
 
   function defaultOnSlotActivateFunc(crew)
   {
     if (hasActions && !::g_crews_list.isCrewListOverrided)
-      openUnitActionsList(getCurrentCrewSlot())
+    {
+      if (isCountrySlotbarHasUnits(::get_profile_country_sq()))
+        openUnitActionsList(getCurrentCrewSlot())
+      else
+        onSlotChangeAircraft()
+    }
   }
 
   function updateWeaponryData(unitSlots = null) {
@@ -1398,6 +1434,11 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventLobbyIsInRoomChanged(p) {
     if (p.wasSessionInLobby != ::SessionLobby.hasSessionInLobby())
+      fullUpdate()
+  }
+
+  function onEventVisibleCountriesCacheInvalidate(p) {
+    if (loadedCountries.len() != getShopVisibleCountries().len())
       fullUpdate()
   }
 }

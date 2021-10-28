@@ -268,6 +268,10 @@ local function calculateRanksAndSectionsPos(page)
   }
   if (hasRankPosXY)
     sectionsPos[sectionsPos.len()-1] = maxColumns
+  // removing reserchable units section when only premium units found
+  if (foundPremium && sectionsPos[1] == 0)
+    sectionsPos.remove(0)
+
   //summ absolute height fr each rank
   for (local i = res.len() - 1; i >= 0; i--)
   {

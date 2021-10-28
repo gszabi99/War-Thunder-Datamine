@@ -16,7 +16,7 @@ local styling = {
 
   Root = {
     rendObj = ROBJ_SOLID
-    color = Color(30,30,30,190)
+    color = Color(30,30,30,250)
     size = [sw(100), sh(50)]
     vplace = ALIGN_CENTER
     padding = sh(2)
@@ -31,7 +31,7 @@ local styling = {
   BgOverlay = {
     rendObj = ROBJ_SOLID
     size = [sw(100), sh(100)]
-    color = Color(0, 0, 0, 150)
+    color = Color(0, 0, 0, 200)
     behavior = Behaviors.Button
     transform = {}
     animations = [

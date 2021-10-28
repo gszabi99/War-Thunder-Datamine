@@ -19,7 +19,8 @@ local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundM
 local { getToBattleLocIdShort } = require("scripts/viewUtils/interfaceCustomization.nut")
 local { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("scripts/changelog/changeLogState.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
+local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
 } = require("scripts/hangar/backgroundModelHint.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
@@ -942,7 +943,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     local isGold = false
     if (obj?.id == "btn_unlock_crew_gold")
       isGold = true
-    local unit = getPlayerCurUnit()
+    local unit = getShowedUnit()
     if (!unit)
       return
 
@@ -1001,7 +1002,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function tryToStartUpgradeCrewTutorial()
   {
     local curCrew = getCurCrew()
-    if (!curCrew)
+    if (curCrew == null || curCrew.isEmpty)
       return
 
     local curCrewSlot = getCurrentCrewSlot()
@@ -1074,6 +1075,9 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     if (missionCounter >= SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
+    if (!::slotbarPresets.canEditCountryPresets(getCurCountry()))
+      return false
+
     local tutorial = SlotbarPresetsTutorial()
     tutorial.currentCountry = getCurCountry()
     tutorial.tutorialGameMode = currentGameMode
@@ -1109,6 +1113,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       || ::my_stats.getMissionsComplete(["pvp_played", "skirmish_played"])
            < SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || ::g_squad_manager.isNotAloneOnline()
+      || !isCountrySlotbarHasUnits(::get_profile_country_sq())
       || !::isCountryAllCrewsUnlockedInHangar(::get_profile_country_sq()))
       return
 

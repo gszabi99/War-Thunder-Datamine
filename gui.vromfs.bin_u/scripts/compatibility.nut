@@ -46,15 +46,6 @@
 
 //----------------------------wop_2_5_0_X---------------------------------//
 ::apply_compatibilities({
-  EII_AUTO_TURRET = 31
-  get_autoturret_state = @() 0
-  AI_GUNNERS_SHELL = 4
-  EII_SUPPORT_PLANE = 32
-  EII_STEALTH = 33
-  EII_LOCK = 34
-  //
-
-
   is_perf_metrics_available = @(request_mode) false
   get_option_delayed_download_content = @() false
   set_option_delayed_download_content = @(value) null
@@ -70,5 +61,12 @@
   USEROPT_HUE_AIRCRAFT_PARAM_HUD = -1
   USEROPT_HUE_AIRCRAFT_HUD_ALERT = -1
   USEROPT_HUE_HELICOPTER_PARAM_HUD = -1
+  is_freecam_enabled = @() false
+})
+
+//----------------------------wop_2_9_0_X---------------------------------//
+::apply_compatibilities({
+  EXP_EVENT_DEATH = 30
+  EXP_EVENT_TOTAL = 31
 })
 

@@ -1648,7 +1648,7 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       }
     },
@@ -1777,6 +1777,60 @@
       "preset": {
         "name": "tiger_had_france_default",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_default.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "tiger_had_france_4x_hot3_tel12",
+        "blk": "gameData/flightModels/weaponPresets/tiger_had_france_4x_hot3_tel12.blk",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk"
+              },
+              {
+                "amountPerTier": 6.0
+              },
+              {
+                "iconType": "nar_ap_rocket_s"
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk"
+              },
+              {
+                "amountPerTier": 2.0
+              },
+              {
+                "iconType": "atgm_type2_x2"
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -2465,7 +2519,7 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
+              "blk": "gameData/sensors/ir_tracker.blk",
               "node": "optic1_gun"
             }
           },
@@ -2527,10 +2581,6 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
-            "resolution": [1024.0,768.0],
-            "noiseFactor": 0.05
-          },
-          "sightIr": {
             "resolution": [1024.0,768.0],
             "noiseFactor": 0.05
           }

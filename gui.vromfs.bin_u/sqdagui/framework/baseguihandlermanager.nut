@@ -727,9 +727,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return true
     }
 
-    local restoreDataArray = restoreDataByTriggerHandler?[triggerHandlerClass] || []
-    restoreDataArray.append(restoreData)
-    restoreDataByTriggerHandler[triggerHandlerClass] <- restoreDataArray
+    restoreDataByTriggerHandler[triggerHandlerClass] <- restoreData
     return true
   }
 
@@ -739,21 +737,17 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
    */
   function restoreHandlers(triggerHandlerClass)
   {
-    local restoreDataArray = restoreDataByTriggerHandler?[triggerHandlerClass]
-    if (restoreDataArray == null)
+    local restoreData = restoreDataByTriggerHandler?[triggerHandlerClass]
+    if (restoreData == null)
       return
     restoreDataByTriggerHandler[triggerHandlerClass] <- null
-    for (local i = 0; i < restoreDataArray.len(); ++i) // First in - first out.
-    {
-      local restoreData = restoreDataArray[i]
 
-      local openData = restoreData?.openData
-      local handler = loadHandler(restoreData.handlerClass, openData || {})
+    local openData = restoreData?.openData
+    local handler = loadHandler(restoreData.handlerClass, openData || {})
 
-      local stateData = restoreData?.stateData
-      if (stateData != null)
-        handler.restoreHandler(stateData)
-    }
+    local stateData = restoreData?.stateData
+    if (stateData != null)
+      handler.restoreHandler(stateData)
   }
 
   function findLastBaseHandlerStartData(guiScene)

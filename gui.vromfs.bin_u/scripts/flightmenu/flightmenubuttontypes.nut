@@ -94,6 +94,11 @@ enums.addTypes(buttons, {
       )
     }
   }
+  FREECAM = {
+    idx = idx++
+    name = "Freecam"
+    isVisible = @() ("toggle_freecam" in getroottable())
+  }
 }, typeConstructor)
 
 buttons.types.sort(@(a, b) a.idx <=> b.idx)

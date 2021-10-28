@@ -1,6 +1,7 @@
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
 local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getShopVisibleCountries } = require("scripts/shop/shopCountriesList.nut")
 
 local handlerClass = class extends ::gui_handlers.SlotbarWidget
 {
@@ -30,8 +31,10 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
       if (onlyForCountryIdx != null && onlyForCountryIdx != idx)
         continue
 
+      local visibleCountries = getShopVisibleCountries()
       local listCountry = coutryCrews.country
-      if (singleCountry != null && singleCountry != listCountry)
+      if ((singleCountry != null && singleCountry != listCountry)
+        || visibleCountries.indexof(listCountry) == null)
         continue
 
       local countryData = {
@@ -120,6 +123,15 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
   function getCrewUnit(crew)
   {
     return countryPresets?[crew.country].units[crew.idInCountry]
+  }
+
+  function getHangarFallbackUnitParams()
+  {
+    return {
+      country = getCurCountry()
+      slotbarUnits = (countryPresets?[getCurCountry()].units ?? [])
+        .filter(@(unit) unit != null)
+    }
   }
 
   function onEventPresetsByGroupsChanged(p)

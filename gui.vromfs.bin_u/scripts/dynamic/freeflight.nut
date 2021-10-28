@@ -112,8 +112,6 @@ mgSetInt("mission_settings/mission/wpAward", 1000);
  static const char * mgGetMissionSector()
  static const char * mgGetLevelName()
 
- static const char * mgUnitClassFromDescription(const char * description)
-
  mgEnsurePointsInMap(SquirrelObject pointsList) ["wp1", "wp2",..]
 
  ::is_existing_file("filename", false)
@@ -155,17 +153,10 @@ missionGenFunctions.append( function (isFreeFlight) // isFreeFlight = Mission Ed
   ::mgSetMinMaxAircrafts("player", "", 1, 8);
 
   //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testFreeFlight_temp.blk");
- local sector = ::mgGetMissionSector();
- local level = ::mgGetLevelName();
+  if (playerAnyPlane != "")
+    return
 
- local player_plane_name = "";
- local enemy_plane_name = "";
- if (playerAnyPlane != "")
-   player_plane_name = ::mgUnitClassFromDescription(playerAnyPlane);
- else
-   return;
-
- ::slidesReplace(level, sector, player_plane_name, enemy_plane_name, "none");
+  ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "none")
 
   if (::mgFullLogs())
     dagor.debug_dump_stack();

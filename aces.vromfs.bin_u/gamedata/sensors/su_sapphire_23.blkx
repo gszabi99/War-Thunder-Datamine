@@ -105,7 +105,7 @@
     "searchOLST1": {
       "type": "pyramide",
       "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-30.0,30.0],
+      "elevationLimits": [-30.0,8.0],
       "rollStabLimit": 70.0,
       "period": 2.0,
       "centerElevation": -7.0,
@@ -118,7 +118,7 @@
     "searchOLST2": {
       "type": "pyramide",
       "azimuthLimits": [-30.0,30.0],
-      "elevationLimits": [-30.0,5.0],
+      "elevationLimits": [-30.0,8.0],
       "rollStabLimit": 70.0,
       "period": 0.2,
       "centerElevation": -2.0,
@@ -278,7 +278,7 @@
             "signal": "MTI"
           }
         },
-        "setOlsModeCommon": {
+        "setOLSModeCommon": {
           "setTransiver": {
             "transiver": "OLS"
           },
@@ -466,12 +466,12 @@
             }
           }
         ],
-        "setOlsStandbyMode": [
+        "setOLSStandbyMode": [
           {
             "setStandbyModeCommon": []
           },
           {
-            "setOlsModeCommon": []
+            "setOLSModeCommon": []
           },
           {
             "setHighAltModeCommon": []
@@ -687,7 +687,7 @@
             "setSearchModeCommon": []
           },
           {
-            "setOlsModeCommon": []
+            "setOLSModeCommon": []
           },
           {
             "setHighAltModeCommon": []
@@ -724,6 +724,18 @@
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
+            "active": false
+          }
+        },
+        "resetLockMode": {
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          }
+        },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
             "active": false
           }
         },
@@ -846,7 +858,7 @@
           "setScanPattern": {
             "scanPattern": "designationLockOLS"
           },
-          "setOlsModeCommon": [],
+          "setOLSModeCommon": [],
           "setHighAltModeCommon": [],
           "setCenterAzimuth": {
             "source": "targetDesignation"
@@ -972,7 +984,7 @@
         },
         "setOLSTrackMode": {
           "setOLSTrackModeCommon": [],
-          "setOlsModeCommon": [],
+          "setOLSModeCommon": [],
           "setHighAltModeCommon": [],
           "setModeName": {
             "name": "IRST track"
@@ -1117,7 +1129,7 @@
             "stateTo": "OLSFromLookUpStandby",
             "actions": {
               "resetSearchMode": [],
-              "setOlsStandbyMode": []
+              "setOLSStandbyMode": []
             }
           }
         },
@@ -1129,7 +1141,7 @@
             "stateTo": "OLSFromLookDownStandby",
             "actions": {
               "resetSearchMode": [],
-              "setOlsStandbyMode": []
+              "setOLSStandbyMode": []
             }
           }
         },
@@ -1229,7 +1241,7 @@
             },
             {
               "actions": {
-                "setOlsStandbyMode": []
+                "setOLSStandbyMode": []
               }
             }
           ]
@@ -1250,7 +1262,7 @@
             },
             {
               "actions": {
-                "setOlsStandbyMode": []
+                "setOLSStandbyMode": []
               }
             }
           ]
@@ -1466,10 +1478,7 @@
             "event": "targetDetected",
             "stateTo": "BSVDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setBSVTrackMode": []
             }
           }
@@ -1480,10 +1489,7 @@
             "event": "scanFinished",
             "stateTo": "BSVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setBSVSearchMode": []
             }
           }
@@ -1495,10 +1501,7 @@
             "command": "selectTarget",
             "stateTo": "BSVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setBSVSearchMode": []
             }
           }
@@ -1510,10 +1513,7 @@
             "command": "selectTarget",
             "stateTo": "BSVdHSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setBSVdHSearchMode": []
             }
           }
@@ -1525,10 +1525,7 @@
             "command": "selectTarget",
             "stateTo": "SMVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setSMVSearchMode": []
             }
           }
@@ -1540,10 +1537,7 @@
             "command": "selectTarget",
             "stateTo": "MVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setMVSearchMode": []
             }
           }
@@ -1555,10 +1549,7 @@
             "command": "selectTarget",
             "stateTo": "OLSFromLookUpSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setOLSSearchMode": []
             }
           }
@@ -1570,10 +1561,7 @@
             "command": "selectTarget",
             "stateTo": "OLSFromLookDownSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
+              "resetTrackMode": [],
               "setOLSSearchMode": []
             }
           }
@@ -1627,10 +1615,7 @@
             "event": "targetDetected",
             "stateTo": "BSVdHDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setBSVdHTrackMode": []
             }
           }
@@ -1641,10 +1626,7 @@
             "event": "scanFinished",
             "stateTo": "BSVdHSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setBSVdHSearchMode": []
             }
           }
@@ -1698,10 +1680,7 @@
             "event": "targetDetected",
             "stateTo": "SMVDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setSMVTrackMode": []
             }
           }
@@ -1712,10 +1691,7 @@
             "event": "scanFinished",
             "stateTo": "SMVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setSMVSearchMode": []
             }
           }
@@ -1769,10 +1745,7 @@
             "event": "targetDetected",
             "stateTo": "MVDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setMVTrackMode": []
             }
           }
@@ -1783,10 +1756,7 @@
             "event": "scanFinished",
             "stateTo": "MVSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setMVSearchMode": []
             }
           }
@@ -1840,10 +1810,7 @@
             "event": "targetDetected",
             "stateTo": "OLSFromLookUpDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setOLSTrackMode": []
             }
           }
@@ -1854,10 +1821,7 @@
             "event": "scanFinished",
             "stateTo": "OLSFromLookUpSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setOLSSearchMode": []
             }
           }
@@ -1911,10 +1875,7 @@
             "event": "targetDetected",
             "stateTo": "OLSFromLookDownDesignationTrack",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setOLSTrackMode": []
             }
           }
@@ -1925,10 +1886,7 @@
             "event": "scanFinished",
             "stateTo": "OLSFromLookDownSearch",
             "actions": {
-              "setFsmActive": {
-                "fsm": "lock",
-                "active": false
-              },
+              "resetLockMode": [],
               "setOLSSearchMode": []
             }
           }

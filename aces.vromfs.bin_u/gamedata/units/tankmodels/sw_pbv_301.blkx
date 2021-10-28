@@ -194,7 +194,7 @@
       "RHA_hull": {
         "armorClass": "RHA_tank",
         "superstructure_front_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 20.0
         },
         "superstructure_bottom_dm": {
           "armorThickness": 8.0
@@ -203,19 +203,19 @@
           "armorThickness": 8.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 20.0
         },
         "superstructure_top_dm": {
           "armorThickness": 8.0
         },
         "body_side_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 15.0
         },
         "body_front_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 50.0
         },
         "body_top_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 20.0
         },
         "body_bottom_dm": {
           "armorThickness": 8.0
@@ -224,7 +224,7 @@
           "armorThickness": 8.0
         },
         "turret_01_back_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 10.0
         },
         "body_back_dm": {
           "armorThickness": 8.0
@@ -233,7 +233,7 @@
           "armorThickness": 8.0
         },
         "turret_front_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 20.0
         },
         "turret_03_front_dm": {
           "armorThickness": 8.0
@@ -245,10 +245,10 @@
           "armorThickness": 8.0
         },
         "turret_top_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 15.0
         },
         "turret_bottom_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 10.0
         },
         "ex_armor_body_01_dm": {
           "armorThickness": 5.0,
@@ -266,7 +266,7 @@
       "mask": {
         "armorClass": "CHA_tank",
         "gun_mask_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 10.0
         }
       },
       "optics": {
@@ -1854,12 +1854,12 @@
         ],
         "limits": {
           "yaw": [-180.0,180.0],
-          "pitch": [-9.0,40.0]
+          "pitch": [-15.0,48.0]
         },
         "limitsTable": {
-          "lim1": [-180.0,-142.0,-8.0,40.0],
-          "lim2": [-142.0,170.0,-9.0,40.0],
-          "lim3": [170.0,180.0,-8.0,40.0]
+          "lim1": [-180.0,-100.0,-8.0,48.0],
+          "lim2": [-100.0,170.0,-15.0,48.0],
+          "lim3": [170.0,180.0,-8.0,48.0]
         }
       }
     }
@@ -2126,6 +2126,13 @@
               "emitter": "emtr_fire_ammo_10",
               "useVelocity": false
             }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_ammo_gun_fire_cmps_fx",
+              "emitter": "emtr_gun_flame",
+              "setOrientation": true
+            }
           }
         ]
       },
@@ -2133,6 +2140,9 @@
         "event": [
           {
             "name": "light_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2158,6 +2168,9 @@
         "event": [
           {
             "name": "total_smoke"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2267,6 +2280,9 @@
         "event": [
           {
             "name": "total_fire"
+          },
+          {
+            "lifetime": 60.0
           },
           {
             "fx": {
@@ -2495,6 +2511,13 @@
       {
         "event": {
           "name": "big_bang",
+          "lifetime": 10.0,
+          "wreckages": {
+            "count": 3,
+            "speed": 10.0,
+            "angle": 80.0,
+            "fxName": "fire_tank_explosion_trails"
+          },
           "fx": {
             "name": "tank_explosion",
             "emitter": "emtr_explosion_center"
@@ -2616,12 +2639,12 @@
                 ],
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-9.0,40.0]
+                  "pitch": [-15.0,48.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-142.0,-8.0,40.0],
-                  "lim2": [-142.0,170.0,-9.0,40.0],
-                  "lim3": [170.0,180.0,-8.0,40.0]
+                  "lim1": [-180.0,-100.0,-8.0,48.0],
+                  "lim2": [-100.0,170.0,-15.0,48.0],
+                  "lim3": [170.0,180.0,-8.0,48.0]
                 }
               }
             },
