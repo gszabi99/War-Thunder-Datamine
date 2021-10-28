@@ -2180,19 +2180,11 @@
     "angularLimits": [-30.0,30.0,-30.0,30.0],
     "opticType": "tv"
   },
-  "sensors": [
-    {
-      "sensor": {
-        "blk": "gameData/sensors/us_an_apr_36.blk"
-      }
-    },
-    {
-      "sensor": {
-        "blk": "gameData/sensors/us_an_apq_126.blk",
-        "dmPart": "radar_dm"
-      }
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_apr_36.blk"
     }
-  ],
+  },
   "commonWeapons": [
     {
       "Weapon": {
@@ -4351,37 +4343,13 @@
         "commonWeapons": [
           {
             "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [-30.0,30.0],
-                "pitch": [-30.0,30.0]
-              }
-            }
-          },
-          {
-            "Weapon": {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
               "dm": "cannon1_dm",
-              "bullets": 150,
+              "bullets": 100,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -4390,12 +4358,12 @@
           {
             "Weapon": {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
               "dm": "cannon2_dm",
-              "bullets": 150,
+              "bullets": 100,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
