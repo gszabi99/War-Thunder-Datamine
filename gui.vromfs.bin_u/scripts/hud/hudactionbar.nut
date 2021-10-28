@@ -6,7 +6,7 @@ local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificat
 local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
 local { getActionBarItems, getWheelBarItems, activateActionBarAction,
   getActionBarUnitName } = ::require_native("hudActionBar")
-local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
+local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_WINCH
 } = ::require_native("hudActionBarConst")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
@@ -360,6 +360,13 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       if (actionBarType.isForWheelMenu())
         killStreaksActions.insert(0, rawActionBarItem[i])
     }
+    if (killStreaksActions.len() > 8)
+      // Temporary fix for invisible EII_TERRAFORM action
+      foreach (list in [ rawActionBarItem, killStreaksActions ]) {
+        local actionIdxWinch = list.findindex(@(a) a.type == EII_WINCH)
+        if (actionIdxWinch != null)
+          list.remove(actionIdxWinch)
+      }
     for (local i = rawWheelItem.len() - 1; i >= 0; i--)
     {
       local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawWheelItem[i])
