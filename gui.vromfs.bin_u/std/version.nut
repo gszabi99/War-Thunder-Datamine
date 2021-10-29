@@ -1,14 +1,16 @@
+local {logerr} = require("dagor.debug")
+local regexp2 = require("regexp2")
+
+local dotCase = regexp2(@"^\d+\.\d+\.\d+\.\d+$")
+local dashCase = regexp2(@"^\d+\_\d+\_\d+\_\d+$")
+
 local function mkVersionFromString(version){
-  if (version.indexof("_") != null) {
-    version = version.split("_")
-    assert(version.len()==4, "_ case, version should have 4 digits")
-    return version
-  }
-  else if (version.indexof(".") != null) {
-    version = version.split(".")
-    assert(version.len()==4, ". case, version should have 4 digits")
-    return version
-  }
+  if (dotCase.match(version))
+    return version.split(".")
+  if (dashCase.match(version))
+    return version.split("_")
+
+  logerr($"CHANGELOG: Version string {version} has invalid chars")
   return null
 }
 
@@ -17,7 +19,10 @@ local function mkVersionFromInt(version){
 }
 
 local function versionToInt(version){
-  return ((version[0]).tointeger() << 24) | ((version[1]).tointeger() << 16) | ((version[2]).tointeger() << 8) | (version[3]).tointeger()
+  return version
+    ? ((version[0]).tointeger() << 24) | ((version[1]).tointeger() << 16)
+      | ((version[2]).tointeger() << 8) | (version[3]).tointeger()
+    : -1
 }
 
 local class Version {

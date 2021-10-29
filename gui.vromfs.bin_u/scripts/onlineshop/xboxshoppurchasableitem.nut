@@ -1,5 +1,8 @@
 local { calcPercent } = require("std/math.nut")
 local statsd = require("statsd")
+local { cutPrefix } = require("std/string.nut")
+
+local XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
 local XboxShopPurchasableItem = class
 {
@@ -37,7 +40,12 @@ local XboxShopPurchasableItem = class
       defaultIconStyle = "reward_gold"
 
     name = blk?.Name ?? ""
-    shortName = blk?.ReducedName ?? ""
+    //HACK: On GDK no param ReducedName, c++ code copy to this key original name
+    //Because of difficulties in searching packs by game title on xbox store
+    //We don't want to change packs names
+    //So have to try cut prefix if ReducedName is equal as Name
+    //On XDK they are different and correct
+    shortName = blk?.ReducedName == name ? cutPrefix(name, XBOX_SHORT_NAME_PREFIX_CUT, "") : (blk?.ReducedName ?? "")
     description = blk?.Description ?? ""
 
     releaseDate = blk?.ReleaseDate ?? 0

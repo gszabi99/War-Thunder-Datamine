@@ -125,19 +125,21 @@ collectCategories = function(response, err = null) {
     {status = "success", request = "dig_category"})
 
   local categories = []
-  foreach (data in response) {
-    local products = []
+  if (response != null)//!!!FIX ME after the case with null response will be caught
+    foreach (data in response) {
+      local products = []
 
-    foreach (block in data.children) {
-      if (block.type == "category")
-        categories.append(block.label)
-      else
-        products.append(block)
+      foreach (block in data.children) {
+        if (block.type == "category")
+          categories.append(block.label)
+        else
+          products.append(block)
+      }
+
+      if (products.len())
+        fillBlock(data.label, categoriesData, data)
     }
-
-    if (products.len())
-      fillBlock(data.label, categoriesData, data)
-  }
+  else logerr("PSN: Shop Data: Dig Category: Null in error and response")
 
   if (categories.len())
     psn.send(psn.inGameCatalog.get(categories, psn.serviceLabel), collectCategories)

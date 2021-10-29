@@ -2147,7 +2147,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     // TestFlight wnd can have a Slotbar, where unit can be changed.
     local afterCloseFunc = (@(owner, unit) function() {
       local newUnitName = getShowedUnitName()
-      if (unit.name != newUnitName)
+      if (newUnitName != "" && unit.name != newUnitName)
       {
         ::cur_aircraft_name = newUnitName
         owner.unit = ::getAircraftByName(newUnitName)

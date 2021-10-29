@@ -167,8 +167,8 @@ local function findBestVersionToshow(versionsList, lastSeenVersionNum) {
       break
   return res
 }
-local haveNewVersions = ::Computed(@() versions.value?[0].tVersion
-  ? lastLoadedVersionInfoNum.value < versionToInt(versions.value[0].tVersion) : false)
+local haveNewVersions = ::Computed(@() versions.value?[0].iVersion
+  ? lastLoadedVersionInfoNum.value < versions.value[0].iVersion : false)
 local unseenPatchnote = ::Computed(function() {
   if (lastSeenVersionInfoNum.value == -1)
     return null

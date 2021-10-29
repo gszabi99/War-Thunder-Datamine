@@ -835,6 +835,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSlotbarDblClick()
   {
+    if (!isValid())
+      return
     local cellObj = scene.findObject($"td_slot_{curSlotCountryId}_{curSlotIdInCountry}")
     if (!cellObj?.isValid() || !cellObj.isHovered())
       return
@@ -1381,6 +1383,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onSlotbarActivate(obj) {
+    if (!isValid())
+      return
     local cellObj = scene.findObject($"td_slot_{curSlotCountryId}_{curSlotIdInCountry}")
     if (!cellObj?.isValid() || !cellObj.isHovered())
       return
