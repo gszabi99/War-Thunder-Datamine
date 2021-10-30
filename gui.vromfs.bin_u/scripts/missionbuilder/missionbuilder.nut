@@ -89,10 +89,6 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     if (!::check_obj(scene))
       return goBack()
 
-    local air = showedUnit.value
-    if (air?.name != ::hangar_get_current_unit_name())
-      return goBack()
-
     updateButtons()
 
     local showOptions = isBuilderAvailable()
@@ -100,7 +96,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     local optListObj = scene.findObject("options_data")
     local textObj = scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
-    textObj.setValue(showOptions? "" : ::loc("msg/builderOnlyForAircrafts"))
+    textObj.setValue(showOptions ? ""
+      : ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
 
     if (!showOptions)
       return
@@ -110,7 +107,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function isBuilderAvailable()
   {
-    return showedUnit.value != null && ::isUnitAvailableForGM(showedUnit.value, ::GM_BUILDER)
+    return ::isUnitAvailableForGM(showedUnit.value, ::GM_BUILDER)
   }
 
   function updateButtons()
@@ -133,7 +130,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
       return
 
     if (!isBuilderAvailable())
-      return msgBox("not_available", ::loc("msg/builderOnlyForAircrafts"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      return msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+        [["ok"]], "ok")
 
     if (::isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
@@ -176,6 +174,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   {
     if (!can_generate_missions)
       return;
+    if (showedUnit.value == null)
+      return
 
     ::aircraft_for_weapons = showedUnit.value.name
 
@@ -294,7 +294,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
           LIMITED_FUEL = scene.findObject(::get_option(::USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
           LIMITED_AMMO = scene.findObject(::get_option(::USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
         })
-      local currentUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
+      local currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
+      local slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
       local optId = desc.id                              // warning disable: -declared-never-used
       local values = ::toString(desc.values)             // warning disable: -declared-never-used
       ::script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")

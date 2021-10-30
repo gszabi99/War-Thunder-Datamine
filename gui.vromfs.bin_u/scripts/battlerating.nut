@@ -156,11 +156,11 @@ local function getUserData() {
   }
 }
 
-local function requestBattleRating(cb, recentUserData, onError=null) {
+local function requestBattleRating(cb, recentUserData) {
   isUpdating = true
   lastRequestTimeMsec  = ::dagor.getCurTime()
-
-  ::request_matching("wtmm_static.calc_ranks", cb, onError, recentUserData, {
+  local errorCB = @(...) isUpdating = false
+  ::request_matching("wtmm_static.calc_ranks", cb, errorCB, recentUserData, {
     showError = false
   })
 }

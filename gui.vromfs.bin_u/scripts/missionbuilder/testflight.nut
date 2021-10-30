@@ -258,8 +258,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!::checkObj(scene))
       return
 
-    scene.findObject("btn_builder").inactiveColor = (isBuilderAvailable()
-      && unit?.name == ::hangar_get_current_unit_name()) ? "no" : "yes"
+    scene.findObject("btn_builder").inactiveColor = isBuilderAvailable() ? "no" : "yes"
     scene.findObject("btn_select").inactiveColor = isTestFlightAvailable()? "no" : "yes"
   }
 
@@ -271,18 +270,18 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       }))
       return
 
-    if (unit?.name != ::hangar_get_current_unit_name())
+    if (!isBuilderAvailable())
     {
       saveAircraftOptions()
-      if (needSlotbar) // There is a slotbar in this scene, but user selected an empty crew.
-        msgBox("not_in_slotbar", ::loc("events/empty_crew"), [["ok"]], "ok")
+
+      if (needSlotbar) // There is a slotbar in this scene
+        msgBox("not_available",
+          ::loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
+          [["ok"]], "ok")
       else
         ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = unit })
       return
     }
-
-    if (!isBuilderAvailable())
-      return msgBox("not_available", ::loc("msg/builderOnlyForAircrafts"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
 
     applyFunc = function()
     {
@@ -380,6 +379,9 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function saveAircraftOptions()
   {
+    if (!unit)
+      return
+
     local dif = ::get_option(::USEROPT_DIFFICULTY)
     local difValue = dif.values[dif.value]
 
@@ -493,9 +495,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       return
 
     local crewUnit = ::get_cur_slotbar_unit()
-    if (crewUnit == unit)
-      return
-    if (crewUnit == null)
+    if (crewUnit == unit || crewUnit == null)
     {
       updateButtons()
       return

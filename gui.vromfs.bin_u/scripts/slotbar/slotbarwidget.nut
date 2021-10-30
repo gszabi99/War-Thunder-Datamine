@@ -244,7 +244,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       local visibleCountries = getShopVisibleCountries()
       local listCountry = crewsListFull[c].country
       if ((singleCountry != null && singleCountry != listCountry)
-        || visibleCountries.indexof(listCountry) == null)
+        || visibleCountries.indexof(listCountry) == null
+        || (!needEmptySlot && !isCountrySlotbarHasUnits(listCountry)))
         continue
 
       local countryData = {

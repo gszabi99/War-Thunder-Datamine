@@ -526,8 +526,10 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     return false
   if (gm == ::GM_TEST_FLIGHT)
     return air.testFlight != ""
-  if (gm == ::GM_DYNAMIC || gm == ::GM_BUILDER)
+  if (gm == ::GM_DYNAMIC)
     return air.isAir()
+  if (gm == ::GM_BUILDER)
+    return air.isAir() && air == ::get_cur_slotbar_unit()
   return true
 }
 

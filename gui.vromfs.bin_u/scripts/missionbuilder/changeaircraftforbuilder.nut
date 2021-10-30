@@ -43,7 +43,7 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
       return ::gui_start_builder()
 
     msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
-      [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      [["ok"]], "ok")
   }
 
   function updateButtons()
