@@ -10,6 +10,10 @@ global enum queueStates
   IN_QUEUE
 }
 
+local hiddenMatchingError = {
+  SERVER_ERROR_NOT_IN_QUEUE = true
+}
+
 ::queue_classes <- {}
 
 foreach (fn in [
@@ -262,21 +266,13 @@ foreach (fn in [
     if (findQueue(params))
       return dagor.debug("Error: cancel join queue becoase already exist.")
 
-    showProgressBox(true)
     local queue = createQueue(params, true)
-
-    queue.join(
+    queue.join((@(_) null),
       ::Callback(function(response) {
-        showProgressBox(false)
-        afterJoinQueue(queue)
-      }, this),
-      ::Callback(function(response) {
-        showProgressBox(false)
         removeQueue(queue)
       }, this)
     )
-
-    changeState(queue, queueStates.JOINING_QUEUE)
+    afterJoinQueue(queue)
   }
 
   function afterJoinQueue(queue)
@@ -322,7 +318,8 @@ foreach (fn in [
       }
       else
       {
-        ::checkMatchingError(response, !silent)
+        if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
+          ::checkMatchingError(response, !silent)
         afterLeaveQueues({})
 
         // This check is a workaround that fixes
@@ -384,8 +381,9 @@ foreach (fn in [
         return
       }
 
-      ::checkMatchingError(response)
-        removeQueue(queue)
+      if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
+        ::checkMatchingError(response)
+      removeQueue(queue)
     }, this)
   }
 
