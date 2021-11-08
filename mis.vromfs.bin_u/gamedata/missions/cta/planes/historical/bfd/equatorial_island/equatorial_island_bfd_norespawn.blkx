@@ -401,6 +401,22 @@
     },
     {
       "import_record": {
+        "file": "gameData/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
         "file": "gameData/missions/templates/land_units_move_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -841,52 +857,6 @@
             "object_var_value": 0,
             "target": "t2_quest_units_squad",
             "team": "A"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "update_indicators": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [],
-      "actions": [
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isActive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "tank",
-            "icon army": 1,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_quest_units_squad"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isActive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "tank",
-            "icon army": 2,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t2_quest_units_squad"
           }
         }
       ],
