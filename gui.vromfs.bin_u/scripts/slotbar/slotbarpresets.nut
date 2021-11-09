@@ -712,8 +712,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function updatePresetFromSlotbar(preset, countryId)
   {
-    if (isLoading)
-      return null
+    if (isLoading)    //not need update preset from slotbar if loading process
+      return preset   //but can not return null, because this value used in create new preset
 
     ::init_selected_crews()
     local units = []

@@ -119,10 +119,6 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
     ::hangar_focus_model(false)
     ::hangar_set_dm_viewer_mode(::DM_VIEWER_NONE)
     ::repairUnit()
-    local cbObj = scene.findObject("checkboxVerticalAngle")
-    if (cbObj?.isValid())
-      ::save_local_account_settings(CB_VERTICAL_ANGLE, cbObj.getValue())
-
     base.goBack()
   }
 
@@ -195,7 +191,11 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   onProtectionMap = @() buildProtectionMap()
-  onConsiderVerticalAngle = @(obj) set_protection_map_y_nulling(!obj.getValue())
+  onConsiderVerticalAngle = function(obj) {
+    local value = obj.getValue()
+    ::save_local_account_settings(CB_VERTICAL_ANGLE, value)
+    set_protection_map_y_nulling(!value)
+  }
 }
 
 return {

@@ -459,6 +459,8 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   function getSceneOptValue(optName)
   {
     local option = get_option_by_id(optName) || ::get_option(optName)
+    if (option.values.len() == 0)
+      return null
     local obj = scene.findObject(option.id)
     local value = obj? obj.getValue() : option.value
     if (value in option.values)

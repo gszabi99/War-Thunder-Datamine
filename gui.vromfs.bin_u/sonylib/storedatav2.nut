@@ -92,6 +92,12 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
       return
     }
 
+    if (response == null) {
+      log($"Received response of requestCategoryFullLinksList by Category {category}")
+      logerr($"PSN: Shop Data: requestCategoryFullLinksList response is null")
+      return
+    }
+
     if (!(category in categoriesData))
       return
 

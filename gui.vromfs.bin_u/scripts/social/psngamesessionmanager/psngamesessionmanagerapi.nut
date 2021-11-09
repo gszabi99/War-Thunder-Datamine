@@ -22,8 +22,8 @@ local updateInfo = function(sessionId, curData, newData, onFinishCb) {
   if (isEqual(curData, newData))
     return
 
-  foreach (key, val in curData) {
-    if (isEqual(val, newData[key]))
+  foreach (key, val in (curData ?? newData)) {
+    if (curData != null && isEqual(val, newData[key]))
       continue
 
     local pair = {[key] = newData[key]}
