@@ -7,7 +7,7 @@ module regex_boost shared private
 require ast
 require strings
 require daslib/ast_boost
-require daslib/regex public
+require daslib/regex
 
 [reader_macro(name="regex")]
 class RegexReader : AstReaderMacro

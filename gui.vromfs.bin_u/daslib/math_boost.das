@@ -4,11 +4,9 @@ options indenting = 4
 
 module math_boost shared public
 
-
 // _rh, _lh - right handed vs left handed
 //  OpenGL, Vulkan - RH
 
-require daslib/math_bits public
 require math public
 
 struct AABR
@@ -25,9 +23,6 @@ def degrees(f:float)
 
 def radians(f:float)
     return f*PI/180.
-
-def RGBA_TO_UCOLOR(x,y,z,w:float)
-    return pack_float_to_byte(float4(x,y,z,w)*255.)
 
 def UCOLOR_TO_RGBA(x:uint)
     return float4(
@@ -71,6 +66,7 @@ def look_at_lh ( Eye,At,Up:float3 )
     tm[3] = float4( -dot(xaxis, Eye),
                     -dot(yaxis, Eye),
                     -dot(zaxis, Eye),1.)
+    print("{xaxis} {yaxis} {zaxis} {tm}\n")
     return tm
 
 def look_at_rh ( Eye,At,Up:float3 )

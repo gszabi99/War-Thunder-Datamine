@@ -453,7 +453,7 @@ class private DAStackWalker: DapiStackWalker
         unsafe
             dataWalkerAdapter <- make_data_walker(dataWalker)
 
-    def operator delete
+    def finalize()
         unsafe
             delete dataWalkerAdapter
             delete dataWalker
@@ -675,7 +675,7 @@ class private DAgent: DapiDebugAgent
         if agent == thisAgent
             delete self
 
-    def operator delete
+    def finalize()
         unsafe
             delete walkerAdapter
             delete walker
