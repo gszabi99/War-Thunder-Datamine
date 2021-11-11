@@ -46,9 +46,17 @@ var blocked_defines : array<string> <- [{string []
 
 var blocked_defines_table : table<string;bool>
 
+var blocked_enumerations : array<string>
+
+var blocked_enumerations_table : table<string;bool>
+
 var is_function_blocked : lambda<(name:string):bool>
 
 var is_const_blocked : lambda<(name:string):bool>
+
+var is_struct_blocked : lambda<(name:string):bool>
+
+var alt_struct_name : lambda<(name:string):string>
 
 var cmres_functions : array<string>
 
@@ -66,6 +74,22 @@ var generate_split_functions = false
 var split_prefix = ""
 var split_cpp_prefix = ""
 var split_cpp_suffix = ""
+
+var enum_suffix = ""
+
+var const_type_table : table<string; string>
+
+var const_uint8_type = "uint8_t"
+var const_uint16_type = "uint16_t"
+
+var ex_keywords : table<string; bool>
+
+var all_keywords = [[string
+    "float";    "double";
+    "uint";     "uint8";    "uint16";   "uint64";   "uint2";    "uint3";    "uint4";
+    "int";      "int8";     "int16";    "int64";    "int2";     "int3";     "int4";
+    "bool"
+]]
 
 /*
     end of configuration
@@ -225,7 +249,7 @@ def onEnum(var root)
             print("enum {tag} {name} : {qtype} // {fullName}\n")
         ast.enums[fullName] <- [[ClangEnum
             name=name,
-            cppName=fullName,
+            cppName="{fullName}{enum_suffix}",
             eclass=true,
             etype=qtype
         ]]
@@ -234,7 +258,7 @@ def onEnum(var root)
             print("enum {name} // {fullName}\n")
         ast.enums[fullName] <- [[ClangEnum
             name=name,
-            cppName=fullName,
+            cppName="{fullName}{enum_suffix}",
             eclass=false
         ]]
     root |> with_array("inner") <| $ ( inner )
@@ -317,7 +341,7 @@ def onInitArg(var root)
                 print("warning: unsupproted init kind {kind}\n")
     return [[auto value, valueType]]
 
-def onFunctionBody(var root; isMethod:bool) : ClangFunc
+def onFunctionBody(var root; isMethod:bool; ofClass:string="") : ClangFunc
     let name = root["name"] as _string
     let fullName = getCppName(name)
     let mangledName = root["mangledName"] as _string // todo: undecorate mangled name
@@ -334,7 +358,8 @@ def onFunctionBody(var root; isMethod:bool) : ClangFunc
         mangledName=mangledName,
         ftype=qualType,
         isMethod=isMethod,
-        isStatic=isStatic
+        isStatic=isStatic,
+        ofClass=ofClass
     ]]
     if root |> key_exists("inner")
         root |> with_array("inner") <| $ ( inner )
@@ -361,8 +386,11 @@ def onFunctionBody(var root; isMethod:bool) : ClangFunc
     return <- ffunc
 
 def onMethod(var root)
-    var in_class = struct_stack[length(struct_stack)-1]
-    ast.structs[in_class].methods |> emplace <| onFunctionBody(root,true)
+    if length(struct_stack)>0
+        var in_class = struct_stack[length(struct_stack)-1]
+        ast.structs[in_class].methods |> emplace <| onFunctionBody(root,true,join(struct_stack,"::"))
+    else
+        print("WARNING: method not in class {root["name"]}")
 
 def onFunction(var root)
     var fdecl <- onFunctionBody(root,false)
@@ -471,6 +499,8 @@ def genEnums(hf,mf,df:FILE const?)
             enName = val.name
             removePrefix = val.removePrefix
             isFlags = val.isFlags
+        if blocked_enumerations_table |> key_exists(en.cppName)
+            continue
         fprint(df,"#ifdef {getDefinePrefix(en.cppName)}\n")
         fprint(df,"addEnumeration(make_smart<Enumeration{enName}>());\n");
         if isFlags
@@ -491,6 +521,7 @@ public:
         cppName = \"{en.cppName}\";
         baseType = (das::Type) das::ToBasicType< das::underlying_type< {en.cppName} >::type >::type;
 ")
+        let uename = to_upper(en.name)
         for ene in en.edecl
             var entryName = ene
             var entryCppName = ene
@@ -499,8 +530,14 @@ public:
                     entryName = slice(ene,length(en.name)+1)
                 elif ene |> starts_with(en.name)
                     entryName = slice(ene,length(en.name))
+                elif ene |> starts_with("{uename}_")
+                    entryName = slice(ene,length(en.name)+1)
+                elif ene |> starts_with(uename)
+                    entryName = slice(ene,length(en.name))
                 else
                     print("warning: {ene} does not start with {en.name}\n")
+            if ex_keywords |> key_exists(entryName)
+                entryName = "_{entryName}"
             fprint(mf,"\t\taddIEx(\"{entryName}\", \"{entryCppName}\", int64_t({en.cppName}::{ene}), das::LineInfo());\n")
         fprint(mf,"\t\}\n\};\n")
         fprint(mf,"#endif\n")
@@ -510,7 +547,9 @@ public:
 def needToGenStruct(st)
     if empty(st.name)
         return false
-    // TODO: skip unrelated
+    if is_struct_blocked!=null
+        if invoke(is_struct_blocked, st.name)
+            return false
     return true
 
 def needToGenField(fld)
@@ -521,6 +560,11 @@ def needToGenField(fld)
     if fld.qtype |> isBlockedType
         return false
     return true
+
+def getBindFldName(name:string)
+    if name=="type"
+        return "_{name}"
+    return name
 
 def genStructs(hf,mf,df:FILE const?)
     fprint(hf,"// ------------\n// structures\n// ------------\n\n")
@@ -575,9 +619,9 @@ def genStructs(hf,mf,df:FILE const?)
                 if val != null
                     substType = *val
             if substType |> empty()
-                fprint(mf,"\t\taddField<DAS_BIND_MANAGED_FIELD({fld.cppName})>(\"{fld.name}\",\"{fld.cppName}\");\n")
+                fprint(mf,"\t\taddField<DAS_BIND_MANAGED_FIELD({fld.cppName})>(\"{getBindFldName(fld.name)}\",\"{fld.cppName}\");\n")
             else
-                fprint(mf,"\t\taddField<{substType},offsetof(ManagedType,{fld.cppName})>(\"{fld.name}\",\"{fld.cppName}\")\n")
+                fprint(mf,"\t\taddField<{substType},offsetof(ManagedType,{fld.cppName})>(\"{getBindFldName(fld.name)}\",\"{fld.cppName}\")\n")
                 fprint(mf,"\t\t\t.adjustAot(\"das_reinterpret<{substType}>::pass(\",\")\");\n")
         fprint(mf,"\t\}\n\};\n")
         fprint(mf,"#endif\n")
@@ -619,6 +663,11 @@ def qType2FnType(st)
     assert(ob!=-1)
     return slice(st,0,ob) + "(*)" + slice(st,ob)
 
+def qType2FnTypeClass(st,className)
+    let ob = find(st,"(")
+    assert(ob!=-1)
+    return slice(st,0,ob) + "({className}::*)" + slice(st,ob)
+
 def getFunRetType(fn)
     let ob = find(fn.ftype,"(")
     assert(ob!=-1)
@@ -653,6 +702,11 @@ def isCmresFun(fn)
             return false
     if ast.structs |> key_exists(cppResType)
         return true
+    if alt_struct_name!=null
+        let aname = invoke(alt_struct_name, cppResType)
+        if aname!=""
+            if ast.structs |> key_exists(aname)
+                return true
     for bf in cmres_functions
         if bf == fn.cppName
             return true
@@ -709,6 +763,9 @@ def getFunctions(df,df_method:FILE const?)
                 continue
             let castbind = all_met[fn.name] > 1
             genFunction(fn, castbind, df_method)
+            if generate_split_functions
+                openSplitFile()
+                genFunction(fn, castbind, g_split_file)
 
 var
     reg_args <- %regex~(.+)\s*\((.+)\)%%
@@ -732,12 +789,17 @@ def genFunction(fn:ClangFunc; castbind:bool; df:FILE const?)
     var bind_enchantation = ""
     var cpp_enchantation = ""
     var using_mname = ""
+    var using_mname_expr = ""
     if gen_fn_callback != null
         invoke(gen_fn_callback, fn)
     if fn.isMethod
         if castbind
-            print("warning: skipping methods {fn.cppName}, multiple definitions will requre clang ast bindging\n")
-            return
+            let fType = qType2FnTypeClass(fn.ftype,fn.ofClass)
+            using_mname = methodName(fn.name)
+            using_mname_expr = "das::das_call_member<{fType},&{fn.cppName}>"
+            bind_enchantation = "DAS_CALL_METHOD({using_mname})"
+            cpp_enchantation = "\"das_call_member<{fType},&{fn.cppName}>::invoke\""
+            print("warning: {fn.cppName} using clang-ast binding of {fType}\n")
         else
             using_mname = methodName(fn.name)
             bind_enchantation = "DAS_CALL_METHOD({using_mname})"
@@ -758,7 +820,10 @@ def genFunction(fn:ClangFunc; castbind:bool; df:FILE const?)
         extra_enchantation = ", SimNode_ExtFuncCallAndCopyOrMove"
     fprint(df,"#ifdef {getDefinePrefix(fn.cppName)}\n")
     if !empty(using_mname)
-        fprint(df,"using {using_mname} = DAS_CALL_MEMBER({fn.cppName});\n");
+        if !empty(using_mname_expr)
+            fprint(df,"using {using_mname} = {using_mname_expr};\n");
+        else
+            fprint(df,"using {using_mname} = DAS_CALL_MEMBER({fn.cppName});\n");
     fprint(df,"addExtern<{bind_enchantation}{extra_enchantation}>(*this, lib, \"{fn.name}\",SideEffects::worstDefault, {cpp_enchantation})\n")
     fprint(df,"\t->args(\{")
     if fn.isMethod
@@ -827,6 +892,10 @@ def bindHeaders ( fname, outprefix:string )
         blocked_functions_table[fn] = true
     for enk,env in keys(ex_enums),values(ex_enums)
         rev_enums[env.name] = enk
+    for kwd in all_keywords
+        ex_keywords[kwd] = true
+    for be in blocked_enumerations
+        blocked_enumerations_table[be] = true
     fopen(fname, "rb") <| $ ( f )
         if f==null
             print("can't open {fname}")
@@ -859,6 +928,23 @@ def genDefineConstants(fname,prefix:string)
     defer <| { delete fnames; }
     fnames |> genDefineConstants <| prefix
 
+def getGenConstType ( name, default_name:string )
+    return const_type_table?[name] ?? default_name
+
+def searchAndGenConst ( var regex_def:Regex; defTName,suffix:string; var ofs:table<int; bool>; data:string; var dup:table<string;bool>; hf:FILE const? )
+    regex_foreach(regex_def,data) <| $ ( r )
+        if ! ofs |> key_exists(r.x)
+            let DEF = regex_group(regex_def,1,data)
+            let VAL = regex_group(regex_def,2,data)
+            if !blocked_defines_table |> key_exists(DEF)
+                if is_const_blocked==null || !invoke(is_const_blocked,DEF)
+                    let ctt = getGenConstType(DEF,defTName)
+                    if !dup[DEF]
+                        fprint(hf,"addConstant<{ctt}>(*this,\"{DEF}\",{ctt}({VAL}{suffix}));\n")
+                        dup[DEF] = true
+                    else
+                        print("const: duplicate {DEF}\n")
+        return true
 
 def genDefineConstants(fnames:array<string>; prefix:string)
     delete blocked_defines_table
@@ -866,6 +952,10 @@ def genDefineConstants(fnames:array<string>; prefix:string)
         blocked_defines_table[bd] = true
     var reg_def_hex <- %regex~#define\s+(\w+)\s+(0x[0-9A-Za-z]+)%%
     var reg_def_dec <- %regex~#define\s+(\w+)\s+(\d+)%%
+    var reg_def_UINT8 <- %regex~#define\s+(\w+)\s+UINT8_C\s*\((0x[0-9A-Za-z]+)\)%%
+    var reg_def_UINT16 <- %regex~#define\s+(\w+)\s+UINT16_C\s*\((0x[0-9A-Za-z]+)\)%%
+    var reg_def_UINT32 <- %regex~#define\s+(\w+)\s+UINT32_C\s*\((0x[0-9A-Za-z]+)\)%%
+    var reg_def_UINT64 <- %regex~#define\s+(\w+)\s+UINT64_C\s*\((0x[0-9A-Za-z]+)\)%%
     fopen("{prefix}.const_inc","wb") <| $(hf)
         if hf==null
             panic("can't write {prefix}.const_inc")
@@ -875,19 +965,10 @@ def genDefineConstants(fnames:array<string>; prefix:string)
                     panic("can't open {fname}")
                 var ofs : table<int; bool>
                 let data = fread(f)
-                regex_foreach(reg_def_hex,data) <| $ ( r )
-                    ofs[r.x] = true
-                    let DEF = regex_group(reg_def_hex,1,data)
-                    let VAL = regex_group(reg_def_hex,2,data)
-                    if !blocked_defines_table |> key_exists(DEF)
-                        if is_const_blocked==null || !invoke(is_const_blocked,DEF)
-                            fprint(hf,"addConstant(*this,\"{DEF}\",uint32_t({VAL}));\n")
-                    return true
-                regex_foreach(reg_def_dec,data) <| $ ( r )
-                    if ! ofs |> key_exists(r.x)
-                        let DEF = regex_group(reg_def_dec,1,data)
-                        let VAL = regex_group(reg_def_dec,2,data)
-                        if !blocked_defines_table |> key_exists(DEF)
-                            if is_const_blocked==null || !invoke(is_const_blocked,DEF)
-                                fprint(hf,"addConstant(*this,\"{DEF}\",int32_t({VAL}));\n")
-                    return true
+                var dup : table<string; bool>
+                searchAndGenConst(reg_def_hex, "uint32_t", "u", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_dec, "int32_t", "", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_UINT8, const_uint8_type, "u", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_UINT16, const_uint16_type, "u", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_UINT32, "uint32_t", "u", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_UINT64, "uint64_t", "ul", ofs, data, dup, hf)
