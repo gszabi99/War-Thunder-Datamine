@@ -85,18 +85,18 @@ local centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size =
   }
 })
 
-local targetOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
-local targetOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetOpacityMult.value)
+local targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
+local targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
 
 local createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false) function() {
 
   return styleLineBackground.__merge({
-    watch = [targetOpacity, colorWatched]
+    watch = [targetsOpacity, colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(LINE_WIDTH)
     fillColor = backGroundColorEnabled ? backgroundColor : Color(0,0,0,0)
     color = colorWatched.value
-    opacity = !isForTank ? 1.0 : targetOpacity.value
+    opacity = !isForTank ? 1.0 : targetsOpacity.value
     size = flex()
     commands =
       [
@@ -120,13 +120,13 @@ local function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
   ])
 
   return @() styleLineBackground.__merge({
-    watch = [targetOpacity, colorWatch]
+    watch = [targetsOpacity, colorWatch]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(1)
     fillColor = Color(0, 0, 0, 0)
     size = flex()
     color = colorWatch.value
-    opacity = !isForTank ? 0.42 : targetOpacity.value * 0.42
+    opacity = !isForTank ? 0.42 : targetsOpacity.value * 0.42
     commands = azimuthMarksCommands
   })
 }
@@ -196,7 +196,7 @@ local rocketVector =
 
 local function createMlwsTarget(index, colorWatch) {
   local target = mlwsTargets[index]
-
+  local targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
   local targetComponent = @() {
     watch = [targetOpacity, colorWatch]
     color = isColorOrWhite(colorWatch.value)
@@ -238,6 +238,7 @@ local function createMlwsTarget(index, colorWatch) {
 
 local function createLwsTarget(index, colorWatched, isForTank = false) {
   local target = lwsTargets[index]
+  local targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
   local targetComponent = @() {
     watch = [targetOpacity, colorWatched]
     color = isColorOrWhite(colorWatched.value)
