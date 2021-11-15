@@ -132,6 +132,14 @@
         },
         {
           "triggerActivate": {
+            "target": "to_template_01_lpt_check",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        {
+          "triggerActivate": {
             "target": "to_template_02_bt_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
@@ -149,7 +157,192 @@
       ],
       "else_actions": []
     },
-    "01 - boombers": {
+    "01 - lookup_plane": {
+      "isCategory": true,
+      "is_enabled": true,
+      "to_template_01_lpt_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 5.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "to_randomizer",
+              "value": 1,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "lpt_is_launch_alowed",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "lpt_is_template_active",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "triggerStatus": {
+              "status": "disabled",
+              "target": "to_template_01_lpt_end"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем армию"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем стартер шаблона"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lpt_army_both_zero"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "to_template_01_lpt_choose"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "to_template_01_lpt_choose": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "to_cur_launched_templates"
+            }
+          },
+          {
+            "comment": {
+              "value": "ставим флаг, что шаблон запустился"
+            }
+          },
+          {
+            "comment": {
+              "value": "задаем случайное время старта"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем событие"
+            }
+          },
+          {
+            "varSetBool": {
+              "value": true,
+              "var": "lpt_is_template_active"
+            }
+          },
+          {
+            "varSetRandomInt": {
+              "var": "lpt_delay_timer",
+              "from": 10,
+              "to_not_including": 30
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lpt_start"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "to_template_01_lpt_run": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "comment": {
+            "value": "включаем проверку выключения шаблона"
+          },
+          "triggerEnable": {
+            "target": "to_template_01_lpt_end"
+          }
+        },
+        "else_actions": []
+      },
+      "to_template_01_lpt_end": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "lpt_is_template_active",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "шаблон разведчиков завершил работу"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "to_cur_launched_templates"
+          }
+        },
+        "else_actions": []
+      }
+    },
+    "02 - boombers": {
       "isCategory": true,
       "is_enabled": true,
       "to_template_02_bt_check": {
@@ -169,7 +362,7 @@
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 1,
+              "value": 2,
               "comparasion_func": "equal"
             }
           },
@@ -317,7 +510,7 @@
         "else_actions": []
       }
     },
-    "02 - assaults": {
+    "03 - assaults": {
       "isCategory": true,
       "is_enabled": true,
       "to_template_03_at_check": {
@@ -337,7 +530,7 @@
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 2,
+              "value": 3,
               "comparasion_func": "equal"
             }
           },
@@ -514,7 +707,7 @@
     "is_enabled": true
   },
   "variables": {
-    "to_templates_quantity": 3,
+    "to_templates_quantity": 4,
     "to_cur_launched_templates": 0,
     "to_max_templates_to_launch": 3,
     "to_randomizer": 0,
