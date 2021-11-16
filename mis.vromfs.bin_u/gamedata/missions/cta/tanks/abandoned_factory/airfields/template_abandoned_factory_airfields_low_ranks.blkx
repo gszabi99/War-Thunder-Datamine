@@ -2,261 +2,17 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
     "mission": {
       "level": "levels/avg_abandoned_factory.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear",
-      "scoreLimit": 14000,
-      "timeLimit": 25,
-      "deathPenaltyMul": 1.0,
-      "ctaCaptureZoneEqualPenaltyMul": 0.0,
-      "remapAiTankModels": true,
-      "country_axis": "germany",
-      "country_allies": "ussr"
-    },
-    "spectator_points": [
-      {
-        "spectatorPoint": "spectator_point_island1"
-      },
-      {
-        "spectatorPoint": "spectator_point_island2"
-      }
-    ],
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": [
-        {
-          "event": ""
-        },
-        {
-          "minTime": 0
-        },
-        {
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "t1_tankSpawn_Rb_02"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "t2_tankSpawn_Rb_02"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlA"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "dbttl_t1_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlB"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "enemy",
-                "target": "dbttl_t2_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        }
-      ]
+      "weather": "clear"
     }
   },
   "imports": [],
@@ -309,7 +65,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa01",
+        "name": "t1_airfield_aaa_small_01",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -345,7 +101,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa02",
+        "name": "t1_airfield_aaa_small_02",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -381,7 +137,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa03",
+        "name": "t1_airfield_aaa_small_03",
         "tm": [
           [0.34202,0.0,-0.939693],
           [0.0,1.0,0.0],
@@ -417,7 +173,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa04",
+        "name": "t1_airfield_aaa_small_04",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -453,7 +209,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa05",
+        "name": "t1_airfield_aaa_small_05",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -489,7 +245,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa06",
+        "name": "t1_airfield_aaa_small_06",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -525,14 +281,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa07",
+        "name": "t1_airfield_aaa_big_01",
         "tm": [
           [0.34202,0.0,-0.939693],
           [0.0,1.0,0.0],
           [0.939693,0.0,0.34202],
           [10019.8,92.2658,4109.28]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -561,14 +317,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa08",
+        "name": "t1_airfield_aaa_big_02",
         "tm": [
           [0.34202,0.0,-0.939693],
           [0.0,1.0,0.0],
           [0.939693,0.0,0.34202],
           [10182.9,91.5316,4154.95]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -597,14 +353,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa09",
+        "name": "t1_airfield_aaa_big_03",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
           [0.996195,0.0,0.0871556],
           [9733.84,79.801,3895.44]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -633,14 +389,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa10",
+        "name": "t1_airfield_aaa_big_04",
         "tm": [
           [0.0871556,0.0,-0.996195],
           [0.0,1.0,0.0],
           [0.996195,0.0,0.0871556],
           [10754.7,87.8685,4133.4]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -669,7 +425,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa01",
+        "name": "t2_airfield_aaa_small_01",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -705,7 +461,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa02",
+        "name": "t2_airfield_aaa_small_02",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -741,7 +497,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa03",
+        "name": "t2_airfield_aaa_small_03",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -777,7 +533,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa04",
+        "name": "t2_airfield_aaa_small_04",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -813,7 +569,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa05",
+        "name": "t2_airfield_aaa_small_05",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -849,7 +605,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa06",
+        "name": "t2_airfield_aaa_small_06",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
@@ -885,14 +641,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa07",
+        "name": "t2_airfield_aaa_big_01",
         "tm": [
           [0.111086,0.0,-0.99381],
           [0.0,1.0,0.0],
           [0.99381,0.0,0.111086],
           [-4843.75,53.6053,-1547.93]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -921,14 +677,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa08",
+        "name": "t2_airfield_aaa_big_02",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
           [0.261831,0.0,-0.965114],
           [-5528.65,48.7528,-1800.62]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -957,14 +713,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa09",
+        "name": "t2_airfield_aaa_big_03",
         "tm": [
           [0.111086,0.0,-0.99381],
           [0.0,1.0,0.0],
           [0.99381,0.0,0.111086],
           [-5031.86,49.0211,-1625.72]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -993,14 +749,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa10",
+        "name": "t2_airfield_aaa_big_04",
         "tm": [
           [-0.965114,0.0,-0.261831],
           [0.0,1.0,0.0],
           [0.261831,0.0,-0.965114],
           [-5114.15,47.9543,-1779.13]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1041,34 +797,34 @@
             "object_marking": 0
           },
           {
-            "squad_members": "t1_airfield_aaa01"
+            "squad_members": "t1_airfield_aaa_small_01"
           },
           {
-            "squad_members": "t1_airfield_aaa02"
+            "squad_members": "t1_airfield_aaa_small_02"
           },
           {
-            "squad_members": "t1_airfield_aaa03"
+            "squad_members": "t1_airfield_aaa_small_03"
           },
           {
-            "squad_members": "t1_airfield_aaa04"
+            "squad_members": "t1_airfield_aaa_small_04"
           },
           {
-            "squad_members": "t1_airfield_aaa05"
+            "squad_members": "t1_airfield_aaa_small_05"
           },
           {
-            "squad_members": "t1_airfield_aaa06"
+            "squad_members": "t1_airfield_aaa_small_06"
           },
           {
-            "squad_members": "t1_airfield_aaa07"
+            "squad_members": "t1_airfield_aaa_big_01"
           },
           {
-            "squad_members": "t1_airfield_aaa08"
+            "squad_members": "t1_airfield_aaa_big_02"
           },
           {
-            "squad_members": "t1_airfield_aaa09"
+            "squad_members": "t1_airfield_aaa_big_03"
           },
           {
-            "squad_members": "t1_airfield_aaa10"
+            "squad_members": "t1_airfield_aaa_big_04"
           }
         ]
       }
@@ -1087,34 +843,34 @@
             "object_marking": 0
           },
           {
-            "squad_members": "t2_airfield_aaa01"
+            "squad_members": "t2_airfield_aaa_small_01"
           },
           {
-            "squad_members": "t2_airfield_aaa02"
+            "squad_members": "t2_airfield_aaa_small_02"
           },
           {
-            "squad_members": "t2_airfield_aaa03"
+            "squad_members": "t2_airfield_aaa_small_03"
           },
           {
-            "squad_members": "t2_airfield_aaa04"
+            "squad_members": "t2_airfield_aaa_small_04"
           },
           {
-            "squad_members": "t2_airfield_aaa05"
+            "squad_members": "t2_airfield_aaa_small_05"
           },
           {
-            "squad_members": "t2_airfield_aaa06"
+            "squad_members": "t2_airfield_aaa_small_06"
           },
           {
-            "squad_members": "t2_airfield_aaa07"
+            "squad_members": "t2_airfield_aaa_big_01"
           },
           {
-            "squad_members": "t2_airfield_aaa08"
+            "squad_members": "t2_airfield_aaa_big_02"
           },
           {
-            "squad_members": "t2_airfield_aaa09"
+            "squad_members": "t2_airfield_aaa_big_03"
           },
           {
-            "squad_members": "t2_airfield_aaa10"
+            "squad_members": "t2_airfield_aaa_big_04"
           }
         ]
       }

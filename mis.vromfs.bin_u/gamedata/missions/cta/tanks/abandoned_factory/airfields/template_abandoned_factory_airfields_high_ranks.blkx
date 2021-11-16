@@ -2,261 +2,17 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": [
-      {
-        "army": 1
-      },
-      {
-        "wing": "t1_player01"
-      },
-      {
-        "wing": "t1_player02"
-      },
-      {
-        "wing": "t1_player03"
-      },
-      {
-        "wing": "t1_player04"
-      },
-      {
-        "wing": "t1_player05"
-      },
-      {
-        "wing": "t1_player06"
-      },
-      {
-        "wing": "t1_player07"
-      },
-      {
-        "wing": "t1_player08"
-      },
-      {
-        "wing": "t1_player09"
-      },
-      {
-        "wing": "t1_player10"
-      },
-      {
-        "wing": "t1_player11"
-      },
-      {
-        "wing": "t1_player12"
-      },
-      {
-        "wing": "t1_player13"
-      },
-      {
-        "wing": "t1_player14"
-      },
-      {
-        "wing": "t1_player15"
-      },
-      {
-        "wing": "t1_player16"
-      }
-    ],
-    "player_teamB": [
-      {
-        "army": 2
-      },
-      {
-        "wing": "t2_player01"
-      },
-      {
-        "wing": "t2_player02"
-      },
-      {
-        "wing": "t2_player03"
-      },
-      {
-        "wing": "t2_player04"
-      },
-      {
-        "wing": "t2_player05"
-      },
-      {
-        "wing": "t2_player06"
-      },
-      {
-        "wing": "t2_player07"
-      },
-      {
-        "wing": "t2_player08"
-      },
-      {
-        "wing": "t2_player09"
-      },
-      {
-        "wing": "t2_player10"
-      },
-      {
-        "wing": "t2_player11"
-      },
-      {
-        "wing": "t2_player12"
-      },
-      {
-        "wing": "t2_player13"
-      },
-      {
-        "wing": "t2_player14"
-      },
-      {
-        "wing": "t2_player15"
-      },
-      {
-        "wing": "t2_player16"
-      },
-      {
-        "wing": "t2_player17"
-      }
-    ],
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
     "mission": {
       "level": "levels/avg_abandoned_factory.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear",
-      "scoreLimit": 14000,
-      "timeLimit": 25,
-      "deathPenaltyMul": 1.0,
-      "ctaCaptureZoneEqualPenaltyMul": 0.0,
-      "remapAiTankModels": true,
-      "country_axis": "germany",
-      "country_allies": "ussr"
-    },
-    "spectator_points": [
-      {
-        "spectatorPoint": "spectator_point_island1"
-      },
-      {
-        "spectatorPoint": "spectator_point_island2"
-      }
-    ],
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": [
-        {
-          "event": ""
-        },
-        {
-          "minTime": 0
-        },
-        {
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "t1_tankSpawn_Rb_02"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "t2_tankSpawn_Rb_02"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlA"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "dbttl_t1_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlB"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "enemy",
-                "target": "dbttl_t2_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        }
-      ]
+      "weather": "clear"
     }
   },
   "imports": [],
@@ -309,7 +65,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa01",
+        "name": "t1_airfield_aaa_small_01",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -330,6 +86,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -345,7 +103,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa02",
+        "name": "t1_airfield_aaa_small_02",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -366,6 +124,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -381,7 +141,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa03",
+        "name": "t1_airfield_aaa_small_03",
         "tm": [
           [0.173648,0.0,-0.984808],
           [0.0,1.0,0.0],
@@ -402,6 +162,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -417,7 +179,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa04",
+        "name": "t1_airfield_aaa_small_04",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -438,6 +200,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -453,7 +217,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa05",
+        "name": "t1_airfield_aaa_small_05",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -474,6 +238,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -489,7 +255,7 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa06",
+        "name": "t1_airfield_aaa_small_06",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
@@ -510,6 +276,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -525,14 +293,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa07",
+        "name": "t1_airfield_aaa_big_01",
         "tm": [
           [0.173648,0.0,-0.984808],
           [0.0,1.0,0.0],
           [0.984808,0.0,0.173648],
           [13612.4,100.757,8311.96]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -546,6 +314,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -561,14 +331,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa08",
+        "name": "t1_airfield_aaa_big_02",
         "tm": [
           [0.173648,0.0,-0.984808],
           [0.0,1.0,0.0],
           [0.984808,0.0,0.173648],
           [14750.7,79.4738,8662.82]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -582,6 +352,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -597,14 +369,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa09",
+        "name": "t1_airfield_aaa_big_03",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
           [0.996195,0.0,-0.0871559],
           [16297.1,96.8739,8287.62]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -618,6 +390,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -633,14 +407,14 @@
     },
     {
       "air_defence": {
-        "name": "t1_airfield_aaa10",
+        "name": "t1_airfield_aaa_big_04",
         "tm": [
           [-0.0871559,0.0,-0.996195],
           [0.0,1.0,0.0],
           [0.996195,0.0,-0.0871559],
           [15812.6,99.3422,8110.27]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -654,6 +428,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -669,7 +445,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa01",
+        "name": "t2_airfield_aaa_small_01",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -690,6 +466,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -705,7 +483,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa02",
+        "name": "t2_airfield_aaa_small_02",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -726,6 +504,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -741,7 +521,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa03",
+        "name": "t2_airfield_aaa_small_03",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -762,6 +542,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -777,7 +559,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa04",
+        "name": "t2_airfield_aaa_small_04",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -798,6 +580,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -813,7 +597,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa05",
+        "name": "t2_airfield_aaa_small_05",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -834,6 +618,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -849,7 +635,7 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa06",
+        "name": "t2_airfield_aaa_small_06",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
@@ -870,6 +656,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -885,14 +673,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa07",
+        "name": "t2_airfield_aaa_big_01",
         "tm": [
           [0.236824,0.0,-0.971552],
           [0.0,1.0,0.0],
           [0.971552,0.0,0.236824],
           [-8645.71,34.0124,-4075.67]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -906,6 +694,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -921,14 +711,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa08",
+        "name": "t2_airfield_aaa_big_02",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
           [0.382684,0.0,-0.92388],
           [-11819.3,52.1246,-5434.32]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -942,6 +732,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -957,14 +749,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa09",
+        "name": "t2_airfield_aaa_big_03",
         "tm": [
           [0.236824,0.0,-0.971552],
           [0.0,1.0,0.0],
           [0.971552,0.0,0.236824],
           [-10672.0,34.2187,-4116.08]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -978,6 +770,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -993,14 +787,14 @@
     },
     {
       "air_defence": {
-        "name": "t2_airfield_aaa10",
+        "name": "t2_airfield_aaa_big_04",
         "tm": [
           [-0.92388,0.0,-0.382684],
           [0.0,1.0,0.0],
           [0.382684,0.0,-0.92388],
           [-9228.59,61.3596,-4268.39]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1014,6 +808,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1041,34 +837,34 @@
             "object_marking": 0
           },
           {
-            "squad_members": "t1_airfield_aaa01"
+            "squad_members": "t1_airfield_aaa_small_01"
           },
           {
-            "squad_members": "t1_airfield_aaa02"
+            "squad_members": "t1_airfield_aaa_small_02"
           },
           {
-            "squad_members": "t1_airfield_aaa03"
+            "squad_members": "t1_airfield_aaa_small_03"
           },
           {
-            "squad_members": "t1_airfield_aaa04"
+            "squad_members": "t1_airfield_aaa_small_04"
           },
           {
-            "squad_members": "t1_airfield_aaa05"
+            "squad_members": "t1_airfield_aaa_small_05"
           },
           {
-            "squad_members": "t1_airfield_aaa06"
+            "squad_members": "t1_airfield_aaa_small_06"
           },
           {
-            "squad_members": "t1_airfield_aaa07"
+            "squad_members": "t1_airfield_aaa_big_01"
           },
           {
-            "squad_members": "t1_airfield_aaa08"
+            "squad_members": "t1_airfield_aaa_big_02"
           },
           {
-            "squad_members": "t1_airfield_aaa09"
+            "squad_members": "t1_airfield_aaa_big_03"
           },
           {
-            "squad_members": "t1_airfield_aaa10"
+            "squad_members": "t1_airfield_aaa_big_04"
           }
         ]
       }
@@ -1087,34 +883,34 @@
             "object_marking": 0
           },
           {
-            "squad_members": "t2_airfield_aaa01"
+            "squad_members": "t2_airfield_aaa_small_01"
           },
           {
-            "squad_members": "t2_airfield_aaa02"
+            "squad_members": "t2_airfield_aaa_small_02"
           },
           {
-            "squad_members": "t2_airfield_aaa03"
+            "squad_members": "t2_airfield_aaa_small_03"
           },
           {
-            "squad_members": "t2_airfield_aaa04"
+            "squad_members": "t2_airfield_aaa_small_04"
           },
           {
-            "squad_members": "t2_airfield_aaa05"
+            "squad_members": "t2_airfield_aaa_small_05"
           },
           {
-            "squad_members": "t2_airfield_aaa06"
+            "squad_members": "t2_airfield_aaa_small_06"
           },
           {
-            "squad_members": "t2_airfield_aaa07"
+            "squad_members": "t2_airfield_aaa_big_01"
           },
           {
-            "squad_members": "t2_airfield_aaa08"
+            "squad_members": "t2_airfield_aaa_big_02"
           },
           {
-            "squad_members": "t2_airfield_aaa09"
+            "squad_members": "t2_airfield_aaa_big_03"
           },
           {
-            "squad_members": "t2_airfield_aaa10"
+            "squad_members": "t2_airfield_aaa_big_04"
           }
         ]
       }
