@@ -127,6 +127,10 @@ class CreateTemplateAnnotation : AstStructureAnnotation
             set(cmp, f, fieldName, (econst ?as ExprConstBool)?.value ?? false)
           elif field._type.baseType==Type tInt
             set(cmp, f, fieldName, (econst ?as ExprConstInt)?.value ?? 0)
+          elif field._type.baseType==Type tUInt
+            set(cmp, f, fieldName, (econst ?as ExprConstUInt)?.value ?? 0u)
+          elif field._type.baseType==Type tUInt64
+            set(cmp, f, fieldName, (econst ?as ExprConstUInt64)?.value ?? uint64(0))
           elif field._type.baseType==Type tInt2
             set(cmp, f, fieldName, (econst ?as ExprConstInt2)?.value ?? int2(0))
           elif field._type.baseType==Type tInt3
@@ -156,6 +160,9 @@ class CreateTemplateAnnotation : AstStructureAnnotation
             elif field._type.annotation.name == "Object"
               assert(field.init == null)
               set_undef(cmp, f, fieldName, "ecs::Object")
+            elif field._type.annotation.name == "Tag"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Tag")
             else
               logerr("Template {st.name} declared at {st.at.fileInfo.name} has field <{fieldName}> of unknown handleType <{field._type.annotation.name}> fullName <{describe(field._type)}>")
     return !hadErrors
