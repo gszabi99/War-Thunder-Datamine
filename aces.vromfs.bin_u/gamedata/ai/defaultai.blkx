@@ -2163,5 +2163,134 @@
         ]
       }
     ]
+  },
+  {
+    "selector": [
+      {
+        "name": "missionFlightWithoutEvaidance"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "reaction": {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "collisionAhead",
+          "parallel": {
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      },
+      {
+        "selector": [
+          {
+            "selectStrategy": "ordered"
+          },
+          {
+            "name": "taxi_and_takeoff"
+          },
+          {
+            "reaction": {
+              "event": "groundAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField"
+            }
+          },
+          {
+            "sequencer": {
+              "isOnAirfield": [],
+              "findClosestAirfield": [],
+              "waitForAirfieldClearance": [],
+              "taxiOnAirfield": [],
+              "takeoff": []
+            }
+          },
+          {
+            "waitOnLand": []
+          }
+        ]
+      },
+      {
+        "sequencer": {
+          "reaction": {
+            "event": "outsideBattleField"
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
+              },
+              "flyToPos": {
+                "speed": 350.0,
+                "dist": -1.0,
+                "minAlt": 10.0
+              }
+            },
+            "waypointFollow": {
+              "maxRoll": 90.0,
+              "maxPitch": 80.0,
+              "aggressiveness": 5.0
+            }
+          }
+        }
+      },
+      {
+        "sequencer": [
+          {
+            "name": "unitLandOnAirfield"
+          },
+          {
+            "reaction": {
+              "event": "groundAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField"
+            }
+          },
+          {
+            "land": []
+          },
+          {
+            "afterLanding": []
+          }
+        ]
+      }
+    ]
   }
 ]
