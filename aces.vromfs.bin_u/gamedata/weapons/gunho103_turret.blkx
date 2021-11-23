@@ -334,15 +334,20 @@
       "caliber": 0.0127,
       "speed": 760.0,
       "Cx": 0.15,
-      "maxDistance": 1500.0,
-      "normalizationPreset": "default",
-      "ricochetPreset": "default",
+      "maxDistance": 3000.0,
+      "explosiveType": "petn",
+      "explosiveMass": 0.0008,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.3,
-      "bulletType": "he_i_ball",
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "he_frag",
       "slopeEffectPreset": "ap",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "modelName": "tank_bullet_ball",
       "hitPowerMult": 3.0,
       "onHitChanceMultFire": 8.0,
@@ -378,6 +383,9 @@
           "mod3": [45.0,0.3]
         }
       ],
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "hitpower": {
         "HitPower10m": [1.0,10.0],
         "HitPower1000m": [0.95,1000.0],
@@ -1733,15 +1741,20 @@
           "caliber": 0.0127,
           "speed": 760.0,
           "Cx": 0.15,
-          "maxDistance": 1500.0,
-          "normalizationPreset": "default",
-          "ricochetPreset": "default",
+          "maxDistance": 3000.0,
+          "explosiveType": "petn",
+          "explosiveMass": 0.0008,
+          "normalizationPreset": "heat",
+          "ricochetPreset": "he",
+          "secondaryShattersPreset": "ap",
           "stabilityThreshold": 0.05,
           "stabilityCaliberToArmorThreshold": 5.0,
           "stabilityReductionAfterRicochet": 0.5,
-          "stabilityReductionAfterPenetration": 0.3,
-          "bulletType": "he_i_fuse_ball",
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "he_i",
           "slopeEffectPreset": "ap",
+          "fresnel": [0.23,0.1,2.0],
+          "explodeOnRendinst": true,
           "modelName": "tank_bullet_ball",
           "hitPowerMult": 3.0,
           "onHitChanceMultFire": 10.0,
@@ -1777,6 +1790,9 @@
               "mod3": [45.0,0.3]
             }
           ],
+          "pressureDamage": {
+            "damageType": "pressure"
+          },
           "hitpower": {
             "HitPower10m": [1.0,10.0],
             "HitPower1000m": [0.95,1000.0],

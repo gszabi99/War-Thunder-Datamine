@@ -78,3 +78,14 @@ g_team.getTeamByCountriesOption <- function getTeamByCountriesOption(optionId)
 {
   return enums.getCachedType("teamCountriesOption", optionId, cache.byCountriesOption, this, NONE)
 }
+
+g_team.isInMyTeam <- function isInMyTeam(name)
+{
+  foreach(team in [::g_team.A, ::g_team.B])
+  {
+    local pList = ::get_mplayers_list(team.code, true)
+    if (pList.findindex(@(u) u.name == name) && pList.findindex(@(u) u.userId == ::my_user_id_str))
+      return true
+  }
+  return false
+}
