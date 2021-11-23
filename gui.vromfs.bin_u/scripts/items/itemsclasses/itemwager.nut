@@ -583,7 +583,7 @@ class ::items_classes.Wager extends ::BaseItem
         [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
         [ "no", @() cb({success=false}) ]
       ],
-      "yes")
+      "yes", { cancel_fn = @() cb({success=false}) })
   }
 
   function getWagerDescriptionForMessageBox(uid)

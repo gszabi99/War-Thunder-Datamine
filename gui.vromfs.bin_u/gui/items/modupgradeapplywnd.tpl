@@ -66,7 +66,7 @@ popup_menu {
     position:t='relative'
     text:t='#mainmenu/btnUpgrade'
     on_click:t='onActivate'
-    btnName:t='A'
+    btnName:t='X'
     ButtonImg{}
   }
 

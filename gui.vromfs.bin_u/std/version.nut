@@ -1,16 +1,18 @@
 local {logerr} = require("dagor.debug")
 local regexp2 = require("regexp2")
 
+local verTrim = regexp2(@"^\s+|\s+$")
 local dotCase = regexp2(@"^\d+\.\d+\.\d+\.\d+$")
-local dashCase = regexp2(@"^\d+\_\d+\_\d+\_\d+$")
+local dashCase = regexp2(@"^\d+_\d+_\d+_\d+$")
 
-local function mkVersionFromString(version){
+local function mkVersionFromString(versionRaw){
+  local version = verTrim.replace("", versionRaw)
   if (dotCase.match(version))
     return version.split(".")
   if (dashCase.match(version))
     return version.split("_")
 
-  logerr($"CHANGELOG: Version string {version} has invalid chars")
+  logerr($"CHANGELOG: Version string \"{versionRaw}\" has invalid format")
   return null
 }
 

@@ -73,6 +73,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     if (needSlotbar)
     {
+      ::switch_profile_country(unit.shopCountry) //select country for slotbar
       showedUnit(unit) //select unit for slotbar
       createSlotbar()
     }

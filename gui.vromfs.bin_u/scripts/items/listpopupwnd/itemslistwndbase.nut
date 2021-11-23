@@ -27,10 +27,10 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
   {
     setCurItem(itemsList[0])
     updateWndAlign()
-    guiScene.performDelayed(this, function() {
+    guiScene.performDelayed(this, @() guiScene.performDelayed(this, function() {
       if (scene.isValid())
-        ::move_mouse_on_child(scene.findObject("items_list"), 0)
-    })
+        ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+    }))
   }
 
   function updateWndAlign()

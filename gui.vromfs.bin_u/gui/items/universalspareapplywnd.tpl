@@ -112,7 +112,7 @@ popup_menu {
         id:t='buttonActivate'
         text:t='#msgbox/btn_activate'
         on_click:t='onActivate'
-        btnName:t='A'
+        btnName:t='X'
         ButtonImg{}
       }
     }

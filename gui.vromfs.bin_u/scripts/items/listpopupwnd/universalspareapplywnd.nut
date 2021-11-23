@@ -129,7 +129,7 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
     local item = curItem
     local amount = curAmount
     local onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
-    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
+    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn=@()null })
   }
 
   function onButtonMax()

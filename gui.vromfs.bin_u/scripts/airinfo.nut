@@ -529,7 +529,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (gm == ::GM_DYNAMIC)
     return air.isAir()
   if (gm == ::GM_BUILDER)
-    return air.isAir() && air == ::get_cur_slotbar_unit()
+    return air.isAir() && ::isUnitInSlotbar(air)
   return true
 }
 

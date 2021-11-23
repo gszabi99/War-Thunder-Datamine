@@ -17,7 +17,7 @@ local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { isCollectionPrize, isCollectionItem } = require("scripts/collections/collections.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 local { loadModel } = require("scripts/hangarModelLoadManager.nut")
-local { showedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
+local { showedUnit, getShowedUnitName, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -2147,7 +2147,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     // TestFlight wnd can have a Slotbar, where unit can be changed.
     local afterCloseFunc = (@(owner, unit) function() {
       local newUnitName = getShowedUnitName()
-      if (newUnitName != "" && unit.name != newUnitName)
+      if (newUnitName == "")
+        return setShowUnit(unit)
+
+      if (unit.name != newUnitName)
       {
         ::cur_aircraft_name = newUnitName
         owner.unit = ::getAircraftByName(newUnitName)
