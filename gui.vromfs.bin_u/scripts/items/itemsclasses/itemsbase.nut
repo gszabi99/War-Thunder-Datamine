@@ -43,6 +43,7 @@
 local { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
 local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 local lottie = require("scripts/utils/lottie.nut")
+local { checkLegalRestrictions } = require("scripts/items/itemRestrictions.nut")
 
 ::items_classes <- {}
 
@@ -107,6 +108,7 @@ class ::BaseItem
   maxAmount = -1 // -1 means no max item amount
   lottieAnimation = null
 
+  restrictedInCountries = null
 
   constructor(blk, invBlk = null, slotData = null)
   {
@@ -123,6 +125,7 @@ class ::BaseItem
     link = blk?.link ?? ""
     forceExternalBrowser = blk?.forceExternalBrowser ?? false
     shouldAutoConsume = blk?.shouldAutoConsume ?? false
+    restrictedInCountries = blk?.restrictedInCountries
 
     shopFilterMask = iType
     local types = blk % "additionalShopItemType"
@@ -519,7 +522,14 @@ class ::BaseItem
       return false
     }
 
-    handler = handler || ::get_cur_base_gui_handler()
+    checkLegalRestrictions(restrictedInCountries, ::Callback(@() showBuyConfirm(cb, handler, params), this))
+    return true
+  }
+
+  function showBuyConfirm(cb, handler, params)
+  {
+    if (!handler?.isValid())
+      handler = ::get_cur_base_gui_handler()
 
     local name = getName()
     local cost = getCost()
@@ -533,8 +543,6 @@ class ::BaseItem
     handler.msgBox("need_money", msgText,
           [["purchase", (@(item, cb, params) function() { item._buy(cb, params) })(item, cb, params) ],
           ["cancel", function() {} ]], "purchase")
-
-    return true
   }
 
   function getBuyText(colored, short, locIdBuyText = "mainmenu/btnBuy", cost = null)
