@@ -6,7 +6,8 @@ local isPurchaseAllowed = persist("isPurchaseAllowed", @() ::Watched(true))
 
 local countryCodeToLocId = {
   BE = "country_belgium",
-  NL = "country_netherlands"
+  NL = "country_netherlands",
+  RU = "country_russia"
 }
 
 // restrictedInCountries - comma-separated country codes
