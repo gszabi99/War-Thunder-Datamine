@@ -176457,18 +176457,76 @@
     "unlockable": {
       "id": "per_month_award",
       "type": "award",
-      "mode": {
-        "type": "char_once_calendar_on_login_award",
-        "trophy": "trophy_PS_Plus_monthly_award",
-        "awardWP": 0,
-        "awardExp": 0,
-        "awardGold": 0,
-        "inMonth": 1,
-        "condition": {
-          "type": "char_player_has_feature",
-          "feature": "onceCalendarLoginAward"
+      "mode": [
+        {
+          "type": "char_once_calendar_on_login_award"
+        },
+        {
+          "trophy": "trophy_PS_Plus_monthly_award"
+        },
+        {
+          "awardWP": 0
+        },
+        {
+          "awardExp": 0
+        },
+        {
+          "awardGold": 0
+        },
+        {
+          "inMonth": 1
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "onceCalendarLoginAward"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "PSPlusAccount"
+          }
         }
-      }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "per_month_award_XBOXPlus",
+      "type": "award",
+      "mode": [
+        {
+          "type": "char_once_calendar_on_login_award"
+        },
+        {
+          "trophy": "trophy_XBOXPlus_monthly_award"
+        },
+        {
+          "awardWP": 0
+        },
+        {
+          "awardExp": 0
+        },
+        {
+          "awardGold": 0
+        },
+        {
+          "inMonth": 1
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "onceCalendarLoginAward"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "XBOXPlusAccount"
+          }
+        }
+      ]
     }
   },
   {

@@ -607,16 +607,19 @@
               "forceCreate": false
             },
             {
+              "ignoreTeamsOnReuse": false
+            },
+            {
               "target": "@t1_spawn_01_name"
             },
             {
               "target": "@t1_spawn_02_name"
             },
             {
-              "team": "A"
+              "areaNameForSortingByProximity": "@t2_zone_name"
             },
             {
-              "offset": [0.0,0.0,0.0]
+              "team": "A"
             },
             {
               "tags": {
@@ -673,16 +676,19 @@
               "forceCreate": false
             },
             {
+              "ignoreTeamsOnReuse": false
+            },
+            {
               "target": "@t2_spawn_01_name"
             },
             {
               "target": "@t2_spawn_02_name"
             },
             {
-              "team": "B"
+              "areaNameForSortingByProximity": "@t1_zone_name"
             },
             {
-              "offset": [0.0,0.0,0.0]
+              "team": "B"
             },
             {
               "tags": {
@@ -733,9 +739,10 @@
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_01_name",
+            "areaNameForSortingByProximity": "@t2_zone_name",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -758,9 +765,10 @@
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_01_name",
+            "areaNameForSortingByProximity": "@t1_zone_name",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -892,9 +900,10 @@
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_02_name",
+            "areaNameForSortingByProximity": "@t2_zone_name",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -917,9 +926,10 @@
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_02_name",
+            "areaNameForSortingByProximity": "@t1_zone_name",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -952,11 +962,11 @@
           "mapArea": true,
           "killOutOfBattleArea": true,
           "target": "@battle_area_name",
-          "newGridHorizontalCellCount": 0,
           "killArea": false,
           "detectionArea": false,
           "airMapArea": false,
-          "area": "@battle_area_name"
+          "area": "@battle_area_name",
+          "newGridHorizontalCellCount": 0
         }
       },
       "else_actions": []

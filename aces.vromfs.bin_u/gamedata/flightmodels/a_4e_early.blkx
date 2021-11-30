@@ -7,6 +7,7 @@
   "gearSinkRangeC": 0.355,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "isBwOpticSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -2131,14 +2132,35 @@
     {
       "multifunctionDisplays": [
         {
-          "display": {
-            "textureArea": [0.0,0.0,0.5,0.5],
-            "page": {
-              "type": "radar",
-              "radarScale": 1.0,
-              "radarColor": "#ff0a0aff"
+          "display": [
+            {
+              "textureArea": [0.0,0.0,0.5,0.5]
+            },
+            {
+              "monoDisplayColor": [0.37,0.45,0.4]
+            },
+            {
+              "cameraFromShell": true
+            },
+            {
+              "page": {
+                "type": "target_tracking",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "thermal",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "radar",
+                "turretIdx": 0
+              }
             }
-          }
+          ]
         },
         {
           "display": {

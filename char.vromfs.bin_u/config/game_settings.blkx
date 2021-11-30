@@ -3244,10 +3244,17 @@
     "everyDayLoginAwardDebugEnable": {
       "condition": "dev_test_feature_access"
     },
-    "onceCalendarLoginAward": {
-      "condition": "PSPlusAccount",
-      "platform_lock": "pc;android"
-    },
+    "onceCalendarLoginAward": [
+      {
+        "condition": "PSPlusAccount"
+      },
+      {
+        "condition": "XBOXPlusAccount"
+      },
+      {
+        "platform_lock": "pc;android"
+      }
+    ],
     "onceCalendarLoginAwardDebug": {
       "condition": "dev_test_feature_access"
     },

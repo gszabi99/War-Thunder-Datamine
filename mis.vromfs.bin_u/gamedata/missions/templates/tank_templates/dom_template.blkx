@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": ""
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -124,8 +123,7 @@
           }
         }
       }
-    },
-    "spectator_points": []
+    }
   },
   "imports": [],
   "triggers": {
@@ -704,6 +702,62 @@
       ],
       "actions": [
         {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t1_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t1_spawn_01_name"
+            },
+            {
+              "target": "@t1_spawn_02_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t2_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t2_spawn_01_name"
+            },
+            {
+              "target": "@t2_spawn_02_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
           "missionMarkAsRespawnPoint": [
             {
               "loc_name": "missions/spawn_random"
@@ -751,16 +805,19 @@
               "forceCreate": false
             },
             {
+              "ignoreTeamsOnReuse": false
+            },
+            {
               "target": "@t1_spawn_01_name"
             },
             {
               "target": "@t1_spawn_02_name"
             },
             {
-              "team": "A"
+              "areaNameForSortingByProximity": "@t1_spawn_nearest_area_name"
             },
             {
-              "offset": [0.0,0.0,0.0]
+              "team": "A"
             },
             {
               "tags": {
@@ -817,16 +874,19 @@
               "forceCreate": false
             },
             {
+              "ignoreTeamsOnReuse": false
+            },
+            {
               "target": "@t2_spawn_01_name"
             },
             {
               "target": "@t2_spawn_02_name"
             },
             {
-              "team": "B"
+              "areaNameForSortingByProximity": "@t2_spawn_nearest_area_name"
             },
             {
-              "offset": [0.0,0.0,0.0]
+              "team": "B"
             },
             {
               "tags": {
@@ -861,6 +921,56 @@
       "conditions": [],
       "actions": [
         {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t1_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t1_spawn_01_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t2_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t2_spawn_01_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/spawn_01",
             "spawnEffect": false,
@@ -877,9 +987,10 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_01_name",
+            "areaNameForSortingByProximity": "@t1_spawn_nearest_area_name",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -902,7 +1013,9 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_01_name",
+            "areaNameForSortingByProximity": "@t2_spawn_nearest_area_name",
             "team": "B",
             "tags": {
               "tank": true
@@ -1028,6 +1141,56 @@
       ],
       "actions": [
         {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t1_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t1_spawn_02_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
+          "getNearestAreaByMask": [
+            {
+              "dist_min_value": 10.0
+            },
+            {
+              "dist_max_value": 5000.0
+            },
+            {
+              "out_var": "t2_spawn_nearest_area_name"
+            },
+            {
+              "target": "@t2_spawn_02_name"
+            },
+            {
+              "areas": "@zone_01_name"
+            },
+            {
+              "areas": "@zone_02_name"
+            },
+            {
+              "areas": "@zone_03_name"
+            }
+          ]
+        },
+        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/spawn_02",
             "spawnEffect": false,
@@ -1044,9 +1207,10 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_02_name",
+            "areaNameForSortingByProximity": "@t1_spawn_nearest_area_name",
             "team": "A",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -1069,9 +1233,10 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "replaceAreas": false,
             "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_02_name",
+            "areaNameForSortingByProximity": "@t2_spawn_nearest_area_name",
             "team": "B",
-            "offset": [0.0,0.0,0.0],
             "tags": {
               "tank": true
             }
@@ -1104,11 +1269,11 @@
           "mapArea": true,
           "killOutOfBattleArea": true,
           "target": "@battle_area_name",
-          "newGridHorizontalCellCount": 0,
           "killArea": false,
           "detectionArea": false,
           "airMapArea": false,
-          "area": "@battle_area_name"
+          "area": "@battle_area_name",
+          "newGridHorizontalCellCount": 0
         }
       },
       "else_actions": []
@@ -1146,7 +1311,9 @@
     "temp_t1_spawn_02_name": "",
     "temp_t2_spawn_01_name": "",
     "temp_t2_spawn_02_name": "",
-    "temp_battle_area_name": ""
+    "temp_battle_area_name": "",
+    "t1_spawn_nearest_area_name": "",
+    "t2_spawn_nearest_area_name": ""
   },
   "dialogs": [],
   "airfields": [],
