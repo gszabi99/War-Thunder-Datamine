@@ -1,150 +1,6 @@
 [
   {
     "unlockable": {
-      "id": "test_capturesShip",
-      "type": "challenge",
-      "chapter": "test",
-      "hidden": true,
-      "mode": [
-        {
-          "type": "captures"
-        },
-        {
-          "num": 15
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": false,
-            "value": "ship_event_in_random_battles"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "test_awardDamage",
-      "type": "challenge",
-      "chapter": "test",
-      "hidden": true,
-      "mode": [
-        {
-          "type": "awardDamage"
-        },
-        {
-          "num": 15000
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "test_missionsWonScoreShip",
-      "type": "challenge",
-      "hidden": true,
-      "mode": [
-        {
-          "type": "missionsWonScore"
-        },
-        {
-          "num": 10
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "activity",
-            "percent": 50
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "test_killed_TorpedoShip",
-      "type": "challenge",
-      "hidden": true,
-      "mode": [
-        {
-          "type": "killedPlayersScore"
-        },
-        {
-          "num": 3
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "weaponType",
-            "weapon": "torpedo"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
-      "id": "test_killed_destroerShip",
-      "type": "challenge",
-      "hidden": true,
-      "mode": [
-        {
-          "type": "killedPlayersScore"
-        },
-        {
-          "num": 3
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "exp_destroyer"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
       "id": "gift_special_offer_90_all_premium_20210701",
       "type": "inventory",
       "userLogId": "200248",
@@ -4424,7 +4280,7 @@
         },
         {
           "condition": {
-            "type": "playerType",
+            "type": "offenderType",
             "unitType": "aircraft"
           }
         },
@@ -4486,7 +4342,7 @@
         },
         {
           "condition": {
-            "type": "playerType",
+            "type": "offenderType",
             "unitType": "aircraft"
           }
         },
@@ -10664,8 +10520,8 @@
         },
         {
           "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "aircraft"
+            "type": "targetType",
+            "unitType": "aircraft"
           }
         }
       ]
@@ -13485,7 +13341,7 @@
         },
         {
           "condition": {
-            "type": "playerType",
+            "type": "offenderType",
             "unitType": "aircraft"
           }
         },
@@ -19767,9 +19623,8 @@
         },
         {
           "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": false
+            "type": "offenderType",
+            "unitType": "ship"
           }
         },
         {
@@ -20238,9 +20093,8 @@
         },
         {
           "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": false
+            "type": "offenderType",
+            "unitType": "ship"
           }
         },
         {
@@ -20709,9 +20563,8 @@
         },
         {
           "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": false
+            "type": "offenderType",
+            "unitType": "ship"
           }
         },
         {
@@ -21180,9 +21033,8 @@
         },
         {
           "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": false
+            "type": "offenderType",
+            "unitType": "ship"
           }
         },
         {
@@ -38636,16 +38488,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -39650,16 +39499,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -40664,16 +40510,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -41678,16 +41521,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -42692,16 +42532,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -43706,16 +43543,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -44720,16 +44554,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -45734,16 +45565,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -46748,16 +46576,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -47762,16 +47587,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -48776,16 +48598,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -49790,16 +49609,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -50477,16 +50293,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -50528,16 +50341,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -50579,16 +50389,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
@@ -50630,16 +50437,13 @@
         {
           "condition": [
             {
-              "type": "playerType"
+              "type": "offenderType"
             },
             {
               "unitType": "ship"
             },
             {
               "unitType": "boat"
-            },
-            {
-              "inSession": false
             }
           ]
         },
