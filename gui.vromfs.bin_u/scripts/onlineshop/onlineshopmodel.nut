@@ -5,6 +5,7 @@ local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWi
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -97,7 +98,7 @@ OnlineShopModel.getPriceBlk <- function getPriceBlk()
 //If prise.blk is rotten, upfate price.blk and then perform action.
 OnlineShopModel.__assyncActionWrap <- function __assyncActionWrap(action)
 {
-  local isActual = ::configs.ENTITLEMENTS_PRICE.checkUpdate(
+  local isActual = ENTITLEMENTS_PRICE.checkUpdate(
     action ? (@() action()).bindenv(this) : null,
     null,
     true,

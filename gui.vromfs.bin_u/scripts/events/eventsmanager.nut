@@ -18,6 +18,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -98,7 +99,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function initBrToTierConformity()
   {
-    local brToTierBlk = ::configs.GUI.get()?.events_br_to_tier_conformity
+    local brToTierBlk = GUI.get()?.events_br_to_tier_conformity
     if (!brToTierBlk)
       return
 
@@ -2877,11 +2878,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     }
 
     return reasonText
-  }
-
-  function isPveEvent(event)
-  {
-    return event?.pveMode ?? false
   }
 }
 

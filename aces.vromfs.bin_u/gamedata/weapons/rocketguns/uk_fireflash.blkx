@@ -15,9 +15,6 @@
       "operatedDist": 4000.0
     },
     {
-      "operationTimer": 0.01
-    },
-    {
       "autoAiming": true
     },
     {
@@ -36,7 +33,25 @@
       "aimSensitivity": 15.0
     },
     {
-      "maxAxisValues": 0.12
+      "maxAxisValues": 1.0
+    },
+    {
+      "operationTimer": 0.01
+    },
+    {
+      "maxLateralAcceleration": 6.0
+    },
+    {
+      "aimCorrectionVelMin": 1000.0
+    },
+    {
+      "wingAreaMult": 1.2
+    },
+    {
+      "CyK": 5.0
+    },
+    {
+      "CyMaxAoA": 1.8
     },
     {
       "normalizationPreset": "heat"
@@ -120,7 +135,7 @@
       "groundCollisionEffect": "explosion_midair_small"
     },
     {
-      "ricochetEffect": "cannon_ricochet"
+      "ricochetEffect": "hit_59_80mm_metal_ap"
     },
     {
       "waterCollisionEffect": "hit_59_80mm_water"
@@ -229,6 +244,12 @@
     },
     {
       "iconType": "missile_air_to_air"
+    },
+    {
+      "hasTracerTrail": true
+    },
+    {
+      "tracerTrailEmitter": [-0.5,0.0,0.0]
     },
     {
       "stabilityRicochetModifier": [
@@ -407,6 +428,16 @@
       "hitpower": {
         "HitPower0m": [400.0,500.0],
         "HitPower10000m": [400.0,10000.0]
+      }
+    },
+    {
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "noTrail"
+        }
       }
     }
   ]

@@ -1,10 +1,7 @@
-::g_script_reloader.loadOnce("scripts/utils/configBase.nut")
+local ConfigBase = require("configBase.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-::configs <- {
-  list = []
-}
-
-local configs_init_tbl = {
+local configs = {
   PRICE = {
     getImpl = ::get_price_blk
     isActual = ::is_price_actual
@@ -47,21 +44,11 @@ local configs_init_tbl = {
     needScriptedCache = true
   }
 }
+  .map(@(cData, id) ConfigBase(cData.__merge({ id })))
 
-foreach(id, cData in configs_init_tbl)
-{
-  cData.id <- id
-  local cfg = ::ConfigBase(cData)
-  ::configs[id] <- cfg
-  ::configs.list.append(cfg)
-}
+addListenersWithoutEnv({
+  AuthorizeComplete = @(p) configs.each(@(cfg) cfg.invalidateCache())
+},
+  ::g_listener_priority.CONFIG_VALIDATION)
 
-
-
-configs.onEventAuthorizeComplete <- function onEventAuthorizeComplete(p)
-{
-  foreach(cfg in list)
-    cfg.invalidateCache()
-}
-
-::subscribe_handler(::configs, ::g_listener_priority.CONFIG_VALIDATION)
+return configs

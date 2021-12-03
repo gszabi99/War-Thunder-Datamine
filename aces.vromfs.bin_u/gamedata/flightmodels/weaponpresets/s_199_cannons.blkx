@@ -1,0 +1,93 @@
+[
+  {
+    "hideNodes": [
+      {
+        "node": "mgun1"
+      },
+      {
+        "node": "mgun2"
+      },
+      {
+        "node": "flare5"
+      },
+      {
+        "node": "flare6"
+      }
+    ]
+  },
+  {
+    "hideDmParts": [
+      {
+        "node": "cover6_dm"
+      },
+      {
+        "node": "cover7_dm"
+      },
+      {
+        "node": "mgun3_dm"
+      },
+      {
+        "node": "mgun4_dm"
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "machine gun",
+      "blk": "gameData/Weapons/gunMG131.blk",
+      "emitter": "flare1",
+      "flash": "flare1",
+      "shell": "emtr_shellrejection1",
+      "dm": "mgun1_dm",
+      "bullets": 250,
+      "spread": 1.0,
+      "counterIndex": 1
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "machine gun",
+      "blk": "gameData/Weapons/gunMG131.blk",
+      "emitter": "flare2",
+      "flash": "flare2",
+      "shell": "emtr_shellrejection2",
+      "dm": "mgun2_dm",
+      "bullets": 250,
+      "spread": 1.0,
+      "traceOffset": 1,
+      "counterIndex": 2
+    }
+  },
+  {
+    "Weapon": {
+      "cmOffset": [-0.5,0.0,0.0],
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+      "emitter": "cannon1_dm",
+      "flash": "flare5",
+      "shell": "emtr_shellrejection3",
+      "dm": "cannon1_dm",
+      "bullets": 135,
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 1,
+      "external": true
+    }
+  },
+  {
+    "Weapon": {
+      "cmOffset": [-0.5,0.0,0.0],
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+      "emitter": "cannon2_dm",
+      "flash": "flare6",
+      "shell": "emtr_shellrejection4",
+      "dm": "cannon2_dm",
+      "bullets": 135,
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 5,
+      "external": true
+    }
+  }
+]

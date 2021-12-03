@@ -4,7 +4,7 @@ local filter = function(object) {
   return !(object?.platform == null || object.platform.indexof(::get_platform())!=null
     || (::cross_call.platform.is_pc() && object.platform.indexof("pc")!=null))
 }
-local formatText = require("daRg/components/mkFormatAst.nut")({formatters=formatters, style=defStyle, filter=filter})
+local formatText = require("%darg/components/mkFormatAst.nut")({formatters=formatters, style=defStyle, filter=filter})
 
 return {
   formatText = formatText

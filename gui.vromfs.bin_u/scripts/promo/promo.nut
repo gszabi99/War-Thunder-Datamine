@@ -4,6 +4,7 @@ local promoConditions = require("scripts/promo/promoConditions.nut")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local { getPromoAction, isVisiblePromoByAction } = require("scripts/promo/promoActions.nut")
 local { getPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
@@ -91,7 +92,7 @@ g_promo.recievePromoBlk <- function recievePromoBlk()
   local showAllPromo = ::g_promo.getShowAllPromoBlocks()
 
   local promoBlk = ::u.copy(customPromoBlk)
-  local guiBlk = ::configs.GUI.get()
+  local guiBlk = GUI.get()
   local staticPromoBlk = guiBlk?.static_promo_block
 
   if (!::u.isEmpty(staticPromoBlk))

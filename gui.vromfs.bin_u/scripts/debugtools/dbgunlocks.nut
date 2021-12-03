@@ -126,7 +126,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
     blk.desc = desc
     res[id] = blk
   }
-  ::dd_mkpath(fullPath)
+  ::dd_mkpath?(fullPath)
   res.saveToTextFile(fullPath)
 }
 

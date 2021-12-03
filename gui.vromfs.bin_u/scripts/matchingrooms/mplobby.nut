@@ -10,6 +10,7 @@ local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundM
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {

@@ -14,7 +14,7 @@ local function initWeaponParams() {
     return
 
   foreach (time in cooldown_time % "time")
-    reloadCooldownTimeByCaliber[time.x] <- time.y
+    reloadCooldownTimeByCaliber.mutate(@(v) v[time.x] <- time.y) // warning disable: -iterator-in-lambda
 }
 
 return {

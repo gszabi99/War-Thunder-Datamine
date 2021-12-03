@@ -643,6 +643,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   {
     base.initScreen()
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_AIRCRAFT)
+    actionBar = ActionBar(scene.findObject("hud_action_bar"))
 
     updateTacticalMapVisibility()
     updateDmgIndicatorVisibility()
@@ -663,6 +664,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     updateTacticalMapVisibility()
     updateDmgIndicatorVisibility()
     updateShowHintsNest()
+    actionBar.reinit()
   }
 
   function updateTacticalMapVisibility()

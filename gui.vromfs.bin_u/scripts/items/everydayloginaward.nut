@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 local { todayLoginExp,loginStreak, getExpRangeTextOfLoginStreak } = require("scripts/battlePass/seasonState.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::gui_start_show_login_award <- function gui_start_show_login_award(blk)
 {
@@ -79,7 +80,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateGuiBlkData()
   {
-    local guiBlk = ::configs.GUI.get()
+    local guiBlk = GUI.get()
     local data = guiBlk?.every_day_login_award
     if (!data)
       return
@@ -261,7 +262,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
     curPeriodicAwardData = ::DataBlock()
     if (!guiBlkEDLAdata)
     {
-      local guiBlk = ::configs.GUI.get()
+      local guiBlk = GUI.get()
       guiBlkEDLAdata = guiBlk?.every_day_login_award
     }
 

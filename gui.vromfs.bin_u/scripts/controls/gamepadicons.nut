@@ -88,8 +88,8 @@ local btnNameByIndex = [
   "r_stick_left"  // 23 JOY_XBOX_REAL_BTN_R_THUMB_LEFT
   "r_stick_up"    // 24 JOY_XBOX_REAL_BTN_R_THUMB_UP
   "r_stick_down"  // 25 JOY_XBOX_REAL_BTN_R_THUMB_DOWN
-  "l_stick_pressed" // 26 JOY_XBOX_REAL_BTN_L_THUMB
-  "r_stick_pressed" // 27 JOY_XBOX_REAL_BTN_R_THUMB
+  "l_stick_center" // 26 JOY_XBOX_REAL_BTN_L_THUMB_CENTER
+  "r_stick_center" // 27 JOY_XBOX_REAL_BTN_R_THUMB_CENTER
 ]
 
 local mouseButtonTextures = [

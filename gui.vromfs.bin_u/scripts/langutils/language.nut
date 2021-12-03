@@ -1,6 +1,7 @@
 local stdMath = require("std/math.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { get_default_lang } = require("platform")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::g_language <- {
   currentLanguage = null
@@ -262,7 +263,7 @@ g_language.checkInitList <- function checkInitList()
   local ttBlk = locBlk?.text_translation ?? ::DataBlock()
   local existingLangs = ttBlk % "lang"
 
-  local guiBlk = ::configs.GUI.get()
+  local guiBlk = GUI.get()
   local blockName = ::is_vendor_tencent() ? "tencent" : ::is_vietnamese_version() ? "vietnam" : "default"
   local preset = guiBlk?.game_localization[blockName] ?? ::DataBlock()
   for (local l = 0; l < preset.blockCount(); l++)

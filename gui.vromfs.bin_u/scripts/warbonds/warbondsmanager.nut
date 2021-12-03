@@ -1,4 +1,5 @@
 local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local { PRICE } = require("scripts/utils/configs.nut")
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -39,7 +40,7 @@ g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null)
 
 g_warbonds.validateList <- function validateList()
 {
-  ::configs.PRICE.checkUpdate()
+  PRICE.checkUpdate()
   if (isListValid)
     return
   isListValid = true

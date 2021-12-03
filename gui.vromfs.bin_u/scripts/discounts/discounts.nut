@@ -13,6 +13,7 @@ local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWa
 local topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
 local { eachBlock } = require("std/datablock.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -65,7 +66,7 @@ local updateGiftUnitsDiscountTask = -1
       updateGiftUnitsDiscountTask = -1
     }
 
-    local discountsBlk = ::configs.GUI.get()?.entitlement_units_discount
+    local discountsBlk = GUI.get()?.entitlement_units_discount
     if (discountsBlk == null)
       return
 

@@ -2,18 +2,20 @@
 
 local string=require("string")
 local math=require("math")
+local regexp2 = require_optional("regexp2")
+local regexp = string.regexp
+local utf8 = require_optional("utf8")
+
 //pairs list taken from http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/nls/rbagslowtoupmaptable.htm
 const CASE_PAIR_LOWER = "abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷźżžƃƅƈƌƒƙơƣƥƨƭưƴƶƹƽǆǉǌǎǐǒǔǖǘǚǜǟǡǣǥǧǩǫǭǯǳǵǻǽǿȁȃȅȇȉȋȍȏȑȓȕȗɓɔɗɘəɛɠɣɨɩɯɲɵʃʈʊʋʒάέήίαβγδεζηθικλμνξοπρστυφχψωϊϋόύώϣϥϧϩϫϭϯабвгдежзийклмнопрстуфхцчшщъыьэюяёђѓєѕіїјљњћќўџѡѣѥѧѩѫѭѯѱѳѵѷѹѻѽѿҁґғҕҗҙқҝҟҡңҥҧҩҫҭүұҳҵҷҹһҽҿӂӄӈӌӑӓӕӗәӛӝӟӡӣӥӧөӫӯӱӳӵӹաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰჱჲჳჴჵḁḃḅḇḉḋḍḏḑḓḕḗḙḛḝḟḡḣḥḧḩḫḭḯḱḳḵḷḹḻḽḿṁṃṅṇṉṋṍṏṑṓṕṗṙṛṝṟṡṣṥṧṩṫṭṯṱṳṵṷṹṻṽṿẁẃẅẇẉẋẍẏẑẓẕạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹἀἁἂἃἄἅἆἇἐἑἒἓἔἕἠἡἢἣἤἥἦἧἰἱἲἳἴἵἶἷὀὁὂὃὄὅὑὓὕὗὠὡὢὣὤὥὦὧᾀᾁᾂᾃᾄᾅᾆᾇᾐᾑᾒᾓᾔᾕᾖᾗᾠᾡᾢᾣᾤᾥᾦᾧᾰᾱῐῑῠῡⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ"
 const CASE_PAIR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮIĲĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŹŻŽƂƄƇƋƑƘƠƢƤƧƬƯƳƵƸƼǄǇǊǍǏǑǓǕǗǙǛǞǠǢǤǦǨǪǬǮǱǴǺǼǾȀȂȄȆȈȊȌȎȐȒȔȖƁƆƊƎƏƐƓƔƗƖƜƝƟƩƮƱƲƷΆΈΉΊΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΪΫΌΎΏϢϤϦϨϪϬϮАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁЂЃЄЅІЇЈЉЊЋЌЎЏѠѢѤѦѨѪѬѮѰѲѴѶѸѺѼѾҀҐҒҔҖҘҚҜҞҠҢҤҦҨҪҬҮҰҲҴҶҸҺҼҾӁӃӇӋӐӒӔӖӘӚӜӞӠӢӤӦӨӪӮӰӲӴӸԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖႠႡႢႣႤႥႦႧႨႩႪႫႬႭႮႯႰႱႲႳႴႵႶႷႸႹႺႻႼႽႾႿჀჁჂჃჄჅḀḂḄḆḈḊḌḎḐḒḔḖḘḚḜḞḠḢḤḦḨḪḬḮḰḲḴḶḸḺḼḾṀṂṄṆṈṊṌṎṐṒṔṖṘṚṜṞṠṢṤṦṨṪṬṮṰṲṴṶṸṺṼṾẀẂẄẆẈẊẌẎẐẒẔẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸἈἉἊἋἌἍἎἏἘἙἚἛἜἝἨἩἪἫἬἭἮἯἸἹἺἻἼἽἾἿὈὉὊὋὌὍὙὛὝὟὨὩὪὫὬὭὮὯᾈᾉᾊᾋᾌᾍᾎᾏᾘᾙᾚᾛᾜᾝᾞᾟᾨᾩᾪᾫᾬᾭᾮᾯᾸᾹῘῙῨῩⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
 local INVALID_INDEX = -1
 
-local rootTable = getroottable()
 local intRegExp = null
 local floatRegExp = null
 local trimRegExp = null
 local stripTagsConfig = null
 local escapeConfig = null
-local utf8 = require_optional("utf8")
 
 /**
  * Joins array elements into a string with the glue string between each element.
@@ -56,8 +58,7 @@ local function split(joined, glue, isIgnoreEmpty = false) {
             : joined.split(glue).filter(@(v) v!="")
 }
 
-if ("regexp2" in rootTable) {
-  local regexp2 = rootTable.regexp2
+if (regexp2 != null) {
   intRegExp = regexp2(@"^-?\d+$")
   floatRegExp  = regexp2(@"^-?\d+\.?\d*$")
   trimRegExp = regexp2(@"^\s+|\s+$")
@@ -95,8 +96,7 @@ if ("regexp2" in rootTable) {
       repl = string.format(@"\\u%04X", ch)
     })
 }
-else if ("regexp" in rootTable) {
-  local regexp = rootTable.regexp
+else if (regexp != null) {
   intRegExp = regexp(@"^-?(\d+)$")
   floatRegExp  = regexp(@"^-?(\d+)(\.?)(\d*)$")
   trimRegExp = regexp(@"^(\s+)|(\s+)$")
@@ -592,14 +592,12 @@ local function isStringInteger(str) {
 
   if (startsWith(str,"-"))
     str=str.slice(1)
-  local ok = false
-  try {
-    ok = str.tointeger().tostring() == str
-  }
-  catch(e) {
-    ok = false
-  }
-  return ok
+  if (str == "")
+    return false
+  for (local i = 0; i < str.len(); i++)
+    if (str[i] < '0' || str[i] > '9')
+      return false
+  return true
 }
 
 local function isStringFloat(str, separator=".") {
@@ -607,23 +605,22 @@ local function isStringFloat(str, separator=".") {
     return true
   if (type(str) != "string")
     return false
-  if (floatRegExp != null)
+  if (floatRegExp != null && separator == ".")
     return floatRegExp.match(str)
+
   if (startsWith(str,"-"))
     str=str.slice(1)
   local s_list = split(str,separator)
   if (s_list.len() > 2)
     return false
-  local ok = true
   foreach (s in s_list) {
-    if (startsWith(s,"-"))
-      ok = false
-    try {
-      ok = ok && s.tointeger().tostring() == s
-    }
-    catch(e) { ok = false }
+    if (s == "")
+      return false
+    for (local i = 0; i < s.len(); i++)
+      if (s[i] < '0' || s[i] > '9')
+        return false
   }
-  return ok
+  return true
 }
 
 local function toIntegerSafe(str, defValue = 0, needAssert = true) {
@@ -838,6 +835,22 @@ local function clearBorderSymbolsMultiline(str) {
   return clearBorderSymbols(str, [" ", 0x0A.tochar(), 0x0D.tochar()])
 }
 
+local function splitStringBySize(str, maxSize) {
+  if (maxSize <= 0) {
+    assert(false, $"maxSize = {maxSize}")
+    return [str]
+  }
+  local result = []
+  local start = 0
+  local len = str.len()
+  while (start < len) {
+    local pieceSize = min(len - start, maxSize)
+    result.append(str.slice(start, start + pieceSize))
+    start += pieceSize
+  }
+  return result
+}
+
 return {
   INVALID_INDEX
   CASE_PAIR_LOWER
@@ -878,4 +891,5 @@ return {
   clearBorderSymbolsMultiline
 
   toIntegerSafe
+  splitStringBySize
 }

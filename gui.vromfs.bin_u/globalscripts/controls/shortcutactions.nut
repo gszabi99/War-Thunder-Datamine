@@ -1,4 +1,4 @@
-local { activateShortcut } = ::require_native("controls")
+local { activateShortcut, setAxisValue } = ::require_native("controls")
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 
@@ -10,4 +10,5 @@ return {
   toggleShortcut
   setShortcutOn
   setShortcutOff
+  setAxisValue
 }

@@ -52,6 +52,7 @@ local MfdRadarNavPosSize = [0, 0, 0, 0]
 local LaserAgmName = Watched("")
 local LaserAgmCnt = Watched(0)
 local ShellCnt = Watched(0)
+local Accel = Watched(0.0)
 
 local planeState = {
   BlkFileName,
@@ -105,7 +106,8 @@ local planeState = {
   LaserAgmName,
   LaserAgmCnt,
   LaserAtgmSightColor,
-  ShellCnt
+  ShellCnt,
+  Accel
 }
 
 ::interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

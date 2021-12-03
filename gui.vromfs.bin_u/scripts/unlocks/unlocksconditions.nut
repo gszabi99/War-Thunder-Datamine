@@ -212,6 +212,18 @@ local function getOverrideCondType(condBlk, unlockMode) {
 
   nestedUnlockModes = ["unlockOpenCount", "unlockStageCount", "unlocks", "char_unlocks"]
 
+  getRankRangeText = @(range) getRangeTextByPoint2(range, {
+      rangeStr = ::loc("events/rank")
+      maxOnlyStr = ::loc("conditions/unitRank/format_max")
+      minOnlyStr = ::loc("conditions/unitRank/format_min")
+    }, true)
+
+  getMRankRangeText = @(range) getRangeTextByPoint2(range, {
+      rangeStr = ::loc("events/br")
+      maxOnlyStr = ::loc("conditions/unitRank/format_max")
+      minOnlyStr = ::loc("conditions/unitRank/format_min")
+    }, false)
+
   function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false)
   {
     if (!(type(val) == "instance" && (val instanceof ::Point2)) && !(type(val) == "table"))
@@ -548,29 +560,34 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     res.values = (blk % "country")
   else if (t == "playerUnitRank")
   {
-    local range = blk?.minRank || blk?.maxRank ? ::Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0) : blk?.range
-    local v = getRangeTextByPoint2(range, {
-      rangeStr = ::loc("events/rank")
-      maxOnlyStr = ::loc("conditions/unitRank/format_max")
-      minOnlyStr = ::loc("conditions/unitRank/format_min")
-    }, true)
+    local range = ::Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0)
+    local rangeForEvent = ::Point2(blk?.minRankForEvent ?? range.x, blk?.maxRankForEvent ?? range.y)
+    local v = getRankRangeText(range)
+    if (!::u.isEqual(range, rangeForEvent)) {
+      local valForEvent = getRankRangeText(rangeForEvent)
+      v = "".concat(v, ::loc("ui/parentheses/space", { text = ::loc("conditions/forEventUnit", { condition = valForEvent }) }))
+    }
     res.values = v != "" ? v : null
     res.needToShowInHeader = true
   }
   else if (t == "playerUnitMRank")
   {
-    local range = blk?.minMRank || blk?.maxMRank
-      ? ::Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
-      : blk?.range ?? ::Point2(0,0)
+    local range = ::Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
+    local rangeForEvent = ::Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
+    local hasForEventCond = !::u.isEqual(range, rangeForEvent)
     range = ::Point2(
-      range.x.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.x) : 0,
+      ::calc_battle_rating_from_rank(range.x),
       range.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.y) : 0
     )
-    local v = getRangeTextByPoint2(range, {
-      rangeStr = ::loc("events/br")
-      maxOnlyStr = ::loc("conditions/unitRank/format_max")
-      minOnlyStr = ::loc("conditions/unitRank/format_min")
-    })
+    local v = getMRankRangeText(range)
+    if (hasForEventCond) {
+      rangeForEvent = ::Point2(
+        ::calc_battle_rating_from_rank(rangeForEvent.x),
+        rangeForEvent.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(rangeForEvent.y) : 0
+      )
+      local valForEvent = getMRankRangeText(rangeForEvent)
+      v = "".concat(v, ::loc("ui/parentheses/space", { text = ::loc("conditions/forEventUnit", { condition = valForEvent }) }))
+    }
     res.values = v != "" ? v : null
     res.needToShowInHeader = true
   }

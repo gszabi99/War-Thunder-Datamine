@@ -2,6 +2,7 @@ local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
 local { getUnitClassTypesByEsUnitType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
+local { getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
 
 /*
 my_stats API
@@ -415,7 +416,7 @@ local summaryNameArray = [
 
     if (unitType == null)
     {
-      unitType = ::get_first_chosen_unit_type(::ES_UNIT_TYPE_AIRCRAFT)
+      unitType = getFirstChosenUnitType(::ES_UNIT_TYPE_AIRCRAFT)
       if (checkSlotbar)
       {
         local types = getSlotbarUnitTypes(country)

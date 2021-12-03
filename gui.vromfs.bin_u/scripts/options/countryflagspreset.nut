@@ -1,5 +1,6 @@
 ::g_script_reloader.loadOnce("scripts/options/bhvHarmonizedImage.nut")
 local { eachParam } = require("std/datablock.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::country_flags_preset <- {}
 
@@ -27,7 +28,7 @@ local { eachParam } = require("std/datablock.nut")
 
 ::init_country_flags_preset <- function init_country_flags_preset()
 {
-  local blk = ::configs.GUI.get()
+  local blk = GUI.get()
   if (!blk)
     return
   local texBlk = blk?.texture_presets

@@ -12,6 +12,7 @@ local { getLastWeapon,
 local { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local MOD_TIERS_COUNT = 4
 
@@ -52,6 +53,7 @@ local Unit = class
    expMul = 1.0
    gift = null //""
    giftParam = null //""
+   event = null //""
    premPackAir = false
    repairCost = 0
    repairTimeHrsArcade = 0
@@ -185,6 +187,7 @@ local Unit = class
     trainCost                 = uWpCost?.trainCost ?? warpoints?.trainCostByRank?["rank"+rank] ?? 0
     gift                      = uWpCost?.gift
     giftParam                 = uWpCost?.giftParam
+    event                     = uWpCost?.event
     premPackAir               = uWpCost?.premPackAir ?? false
     hasDepthCharge            = uWpCost?.hasDepthCharge ?? false
     commonWeaponImage         = uWpCost?.commonWeaponImage ?? commonWeaponImage
@@ -317,7 +320,7 @@ local Unit = class
     local releaseDate = ::get_unittags_blk()?[name]?.releaseDate
     if (releaseDate)
     {
-      local recentlyReleasedUnitsDays = ::configs.GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
+      local recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
       if (recentlyReleasedUnitsDays)
       {
         local releaseTime = time.getTimestampFromStringUtc(releaseDate)

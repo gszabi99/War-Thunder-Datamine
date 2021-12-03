@@ -11,65 +11,61 @@
     "_extends": "replicating",
     "_replicated": "^server_load_stat\\.(load)$",
     "_tracked": "^server_load_stat\\.(load)$",
-    "server_load_stat:_namespace": {
-      "frameCnt": 0,
-      "timer": 1.0,
-      "load": 0.0
-    }
+    "server_load_stat__frameCnt": 0,
+    "server_load_stat__timer": 1.0,
+    "server_load_stat__load": 0.0
   },
   "unit_loader": {
-    "setting:_namespace": {
-      "className": "",
-      "playerNo": -1,
-      "unitType": "",
-      "crewSkillK": -1.0,
-      "weapons": "",
-      "skin": "",
-      "canChangeUnit": false,
-      "isPhysPredictionEnabled": false,
-      "loadAnim": false,
-      "unit_class": "",
-      "applyAllMods": false,
-      "closed_waypoints": false,
-      "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,0.0,0.0]
-      ],
-      "isDelayed": false,
-      "shouldDrawSmallIndForMissTarget": true,
-      "uniqueName": "",
-      "count": 1,
-      "attack_type": "",
-      "army": 0,
-      "formation_type": "cols",
-      "formation_div": 1,
-      "formation_step": [1.0,1.0],
-      "formation_noise": [0.1,0.1],
-      "stealthRadius": -1.0,
-      "supportUnitType": 0,
-      "targetAir": true,
-      "targetGnd": true,
-      "targetAAA": true,
-      "accuracy": 1.0,
-      "maxDeviationAngle": 0.0,
-      "effShootingRate": 1.0,
-      "lightlyArmored": false,
-      "avoidObstacles": false,
-      "targetableByAi": true,
-      "isImmortal": false,
-      "calmDetection": false,
-      "name": "",
-      "flags": 0,
-      "aiReloadMult": 1.0,
-      "speed": 0.0,
-      "routeName": "",
-      "toGround": false,
-      "bullets:list<t>": [],
-      "bulletsCount:list<i>": [],
-      "unit_target_list:list<t>": []
-    }
+    "setting__className": "",
+    "setting__playerNo": -1,
+    "setting__unitType": "",
+    "setting__crewSkillK": -1.0,
+    "setting__weapons": "",
+    "setting__skin": "",
+    "setting__canChangeUnit": false,
+    "setting__isPhysPredictionEnabled": false,
+    "setting__loadAnim": false,
+    "setting__unit_class": "",
+    "setting__applyAllMods": false,
+    "setting__closed_waypoints": false,
+    "setting__tm": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "setting__isDelayed": false,
+    "setting__shouldDrawSmallIndForMissTarget": true,
+    "setting__uniqueName": "",
+    "setting__count": 1,
+    "setting__attack_type": "",
+    "setting__army": 0,
+    "setting__formation_type": "cols",
+    "setting__formation_div": 1,
+    "setting__formation_step": [1.0,1.0],
+    "setting__formation_noise": [0.1,0.1],
+    "setting__stealthRadius": -1.0,
+    "setting__supportUnitType": 0,
+    "setting__targetAir": true,
+    "setting__targetGnd": true,
+    "setting__targetAAA": true,
+    "setting__accuracy": 1.0,
+    "setting__maxDeviationAngle": 0.0,
+    "setting__effShootingRate": 1.0,
+    "setting__lightlyArmored": false,
+    "setting__avoidObstacles": false,
+    "setting__targetableByAi": true,
+    "setting__isImmortal": false,
+    "setting__calmDetection": false,
+    "setting__name": "",
+    "setting__flags": 0,
+    "setting__aiReloadMult": 1.0,
+    "setting__speed": 0.0,
+    "setting__routeName": "",
+    "setting__toGround": false,
+    "setting__bullets:list<t>": [],
+    "setting__bulletsCount:list<i>": [],
+    "setting__unit_target_list:list<t>": []
   },
   "spawn_point": {
     "transform": [
@@ -86,123 +82,109 @@
     "forPremiumVehicle": false
   },
   "route": {
-    "route:_namespace": {
-      "routeId": "",
-      "isLooped": false,
-      "wayPointsNames:list<t>": [],
-      "wayPoints:list<eid>": []
-    },
-    "missionObject:tag": []
+    "route__routeId": "",
+    "route__isLooped": false,
+    "missionObject:tag": [],
+    "route__wayPointsNames:list<t>": [],
+    "route__wayPoints:list<eid>": []
   },
   "way_point": {
-    "way_point:_namespace": {
-      "transform": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,0.0,0.0]
-      ],
-      "name": "",
-      "moveType": "",
-      "speed": 30.0,
-      "radius": 5.0
-    },
+    "way_point__transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "way_point__name": "",
+    "way_point__moveType": "",
+    "way_point__speed": 30.0,
+    "way_point__radius": 5.0,
     "missionObject:tag": []
   },
   "unit_current_route": {
-    "unit_current_route.routeEid:eid": [],
-    "unit_current_route.curWayPoint:eid": []
+    "unit_current_route__routeEid:eid": [],
+    "unit_current_route__curWayPoint:eid": []
   },
   "unit_target_list": {
     "unit_target_list:list<t>": []
   },
   "delayed_action": {
-    "delayed_action:_namespace": {
-      "doAtTime": -1.0,
-      "timer": 0.0
-    }
+    "delayed_action__doAtTime": -1.0,
+    "delayed_action__timer": 0.0
   },
   "delayed_unit_shot": {
     "_extends": "delayed_action",
-    "delayed_unit_shot:_namespace": {
-      "unitName": "",
-      "triggerGroup": 0
-    }
+    "delayed_unit_shot__unitName": "",
+    "delayed_unit_shot__triggerGroup": 0
   },
   "action_by_date": {
-    "action_by_date:_namespace": {
-      "yearFrom": 1900,
-      "monthFrom": 1,
-      "dayFrom": 1,
-      "hourFrom": 0,
-      "minFrom": 0,
-      "secFrom": 0,
-      "yearTo": 1901,
-      "monthTo": 1,
-      "dayTo": 1,
-      "hourTo": 0,
-      "minTo": 0,
-      "secTo": 0,
-      "timeFrom": 0,
-      "timeTo": 0,
-      "delayFromCreate": 30.0,
-      "doAtTime": -1.0,
-      "onlyFirstEnter": false
-    }
+    "action_by_date__yearFrom": 1900,
+    "action_by_date__monthFrom": 1,
+    "action_by_date__dayFrom": 1,
+    "action_by_date__hourFrom": 0,
+    "action_by_date__minFrom": 0,
+    "action_by_date__secFrom": 0,
+    "action_by_date__yearTo": 1901,
+    "action_by_date__monthTo": 1,
+    "action_by_date__dayTo": 1,
+    "action_by_date__hourTo": 0,
+    "action_by_date__minTo": 0,
+    "action_by_date__secTo": 0,
+    "action_by_date__timeFrom": 0,
+    "action_by_date__timeTo": 0,
+    "action_by_date__delayFromCreate": 30.0,
+    "action_by_date__doAtTime": -1.0,
+    "action_by_date__onlyFirstEnter": false
   },
   "unit_shot_by_date": {
     "_extends": "action_by_date",
-    "unit_shot_by_date:_namespace": {
-      "unitName": "",
-      "triggerGroup": 0
-    }
+    "unit_shot_by_date__unitName": "",
+    "unit_shot_by_date__triggerGroup": 0
   },
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
+    "ri_gpu_object__name": "ammunition_box_n",
+    "ri_gpu_object__grid_tiling": 4,
+    "ri_gpu_object__grid_size": 16,
+    "ri_gpu_object__cell_size": 8.0,
+    "ri_gpu_object__seed": 0,
+    "ri_gpu_object__up_vector": [0.0,1.0,0.0],
+    "ri_gpu_object__scale_range": [1.0,1.0],
+    "ri_gpu_object__biom_indexes": [-1.0,-1.0,-1.0,-1.0],
+    "ri_gpu_object__is_using_normal": false,
+    "ri_gpu_object__incline_delta": 0.0,
+    "ri_gpu_object__rotate_range": [0.0,0.0],
+    "ri_gpu_object__map": "",
+    "ri_gpu_object__map_size": [512.0,512.0],
+    "ri_gpu_object__map_offset": [0.0,0.0],
+    "ri_gpu_object__color_from": "#7f7f7f7f",
+    "ri_gpu_object__color_to": "#7f7f7f7f",
+    "ri_gpu_object__max_placed_on_ri": 0,
+    "ri_gpu_object__slope_factor": [1.0,0.0],
+    "ri_gpu_object__shader_graph": "",
+    "ri_gpu_object__hardness": 1.0,
+    "ri_gpu_object__sparse_weight": 0.0,
+    "ri_gpu_object__decal": false,
+    "ri_gpu_object__transparent": false,
+    "ri_gpu_object__place_on_water": false,
+    "ri_gpu_object__enable_displacement": true,
     "ri_preload:GpuObjectRiResourcePreload": {
       "_tags": "render"
     },
-    "ri_gpu_object.node_based_shader_preload": {
+    "ri_gpu_object__node_based_shader_preload": {
       "_tags": "render"
     },
-    "ri_gpu_object:_namespace": {
-      "name": "ammunition_box_n",
-      "grid_tiling": 4,
-      "grid_size": 16,
-      "cell_size": 8.0,
-      "seed": 0,
-      "up_vector": [0.0,1.0,0.0],
-      "scale_range": [1.0,1.0],
-      "biom_indexes": [-1.0,-1.0,-1.0,-1.0],
-      "is_using_normal": false,
-      "incline_delta": 0.0,
-      "rotate_range": [0.0,0.0],
-      "map": "",
-      "map_size": [512.0,512.0],
-      "map_offset": [0.0,0.0],
-      "color_from": "#7f7f7f7f",
-      "color_to": "#7f7f7f7f",
-      "max_placed_on_ri": 0,
-      "slope_factor": [1.0,0.0],
-      "shader_graph": "",
-      "hardness": 1.0,
-      "sparse_weight": 0.0,
-      "decal": false,
-      "transparent": false,
-      "place_on_water": false,
-      "enable_displacement": true,
-      "ri_placer_list:array": [],
-      "biome_params:array": [],
-      "multiple_objects:array": []
-    }
+    "ri_gpu_object__ri_placer_list:array": [],
+    "ri_gpu_object__biome_params:array": [],
+    "ri_gpu_object__multiple_objects:array": []
   },
   "light": {
     "_extends": "replicating",
-    "light.max_radius": 0.0,
-    "light.offset": [0.0,0.0,0.0],
-    "light.color": "#fffac8ff",
-    "light.brightness": 1.0,
+    "light__max_radius": 0.0,
+    "light__offset": [0.0,0.0,0.0],
+    "light__color": "#fffac8ff",
+    "light__brightness": 1.0,
     "transform": [
       [1.0,0.0,0.0],
       [0.0,1.0,0.0],
@@ -217,7 +199,7 @@
       "_extends": "light"
     },
     {
-      "light.contact_shadows": true
+      "light__contact_shadows": true
     },
     {
       "_tracked": "^light\\.contact_shadows$"
@@ -235,16 +217,16 @@
       "_tracked": "^light\\.direction$"
     },
     {
-      "_tracked": "^light\\.texture_name$"
+      "_tracked": "^light\\.(texture_name|contact_shadows|use_box|box|automatic_box)$"
     },
     {
-      "light.use_box": true
+      "light__use_box": true
     },
     {
-      "light.automatic_box": false
+      "light__automatic_box": false
     },
     {
-      "light.box": [
+      "light__box": [
         [0.0,0.0,0.0],
         [0.0,0.0,0.0],
         [0.0,0.0,0.0],
@@ -252,25 +234,16 @@
       ]
     },
     {
-      "light.direction": [0.0,-1.0,0.0]
+      "light__direction": [0.0,-1.0,0.0]
     },
     {
-      "light.texture_name": ""
+      "light__texture_name": ""
     },
     {
-      "light.nightly": true
+      "light__nightly": true
     },
     {
-      "_replicated": "^light\\.contact_shadows$"
-    },
-    {
-      "_replicated": "^light\\.use_box$"
-    },
-    {
-      "_replicated": "^light\\.box$"
-    },
-    {
-      "_replicated": "^light\\.automatic_box$"
+      "_replicated": "^light\\.(texture_name|contact_shadows|use_box|box|automatic_box)$"
     },
     {
       "omni_light": {
@@ -289,16 +262,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 100.0
+      "light__brightness": 100.0
     },
     {
-      "light.nightly": true
+      "light__nightly": true
     },
     {
-      "light.texture_name": ""
+      "light__texture_name": ""
     },
     {
       "_tracked": "^(light\\.texture_name|spot_light\\..*)$"
@@ -312,13 +285,13 @@
       }
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.9,
-        "dynamic_light": false,
-        "shadows": true,
-        "dynamic_obj_shadows": false,
-        "shadow_shrink": 0
+        "spot_light__inner_attenuation": 0.9,
+        "spot_light__dynamic_light": false,
+        "spot_light__shadows": true,
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadow_shrink": 0
       }
     },
     {
@@ -333,13 +306,10 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
-    },
-    {
-      "spot_light:_namespace": []
+      "light__brightness": 200.0
     }
   ],
   "spot_light_small": [
@@ -350,16 +320,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 5.0
+      "light__max_radius": 5.0
     },
     {
-      "light.brightness": 15.0
+      "light__brightness": 15.0
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -371,16 +341,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 25000.0
+      "light__max_radius": 25000.0
     },
     {
-      "light.brightness": 250000.0
+      "light__brightness": 250000.0
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -392,22 +362,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 35000.0
+      "light__brightness": 35000.0
     },
     {
-      "light.max_radius": 10000.0
+      "light__max_radius": 10000.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_blue_huge": [
@@ -418,22 +385,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 15000.0
+      "light__brightness": 15000.0
     },
     {
-      "light.max_radius": 400.0
+      "light__max_radius": 400.0
     },
     {
-      "light.color": "#326432ff"
+      "light__color": "#326432ff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_large": [
@@ -444,22 +408,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 20.0
+      "light__brightness": 20.0
     },
     {
-      "light.max_radius": 30.0
+      "light__max_radius": 30.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_medium": [
@@ -470,22 +431,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 30.0
+      "light__brightness": 30.0
     },
     {
-      "light.max_radius": 30.0
+      "light__max_radius": 30.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_orange": [
@@ -496,22 +454,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 2.0
+      "light__brightness": 2.0
     },
     {
-      "light.max_radius": 2.0
+      "light__max_radius": 2.0
     },
     {
-      "light.color": "#ff640aff"
+      "light__color": "#ff640aff"
     },
     {
-      "light.contact_shadows": true
+      "light__contact_shadows": true
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_orange_large": [
@@ -522,16 +477,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 3.0
+      "light__brightness": 3.0
     },
     {
-      "light.max_radius": 2.0
+      "light__max_radius": 2.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_extralarge": [
@@ -542,16 +494,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 50.0
+      "light__brightness": 50.0
     },
     {
-      "light.max_radius": 200.0
+      "light__max_radius": 200.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_huge": [
@@ -562,16 +511,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10000.0
+      "light__brightness": 10000.0
     },
     {
-      "light.max_radius": 400.0
+      "light__max_radius": 400.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_medium": [
@@ -582,16 +528,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 20.0
+      "light__max_radius": 20.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_small": [
@@ -602,16 +545,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 1.0
+      "light__brightness": 1.0
     },
     {
-      "light.max_radius": 1.0
+      "light__max_radius": 1.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_smallest": [
@@ -622,16 +562,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 0.3
+      "light__brightness": 0.3
     },
     {
-      "light.max_radius": 1.0
+      "light__max_radius": 1.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_blue": [
@@ -642,10 +579,7 @@
       "_extends": "replicating"
     },
     {
-      "light.color": "#6464ffff"
-    },
-    {
-      "omni_light:_namespace": []
+      "light__color": "#6464ffff"
     }
   ],
   "field_light_blue_large": [
@@ -656,19 +590,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 300.0
+      "light__brightness": 300.0
     },
     {
-      "light.max_radius": 1000.0
+      "light__max_radius": 1000.0
     },
     {
-      "light.color": "#0af5ffff"
+      "light__color": "#0af5ffff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_blue_extralarge": [
@@ -679,19 +610,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#3232ffff"
+      "light__color": "#3232ffff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_red": [
@@ -702,10 +630,7 @@
       "_extends": "replicating"
     },
     {
-      "light.color": "#f05032ff"
-    },
-    {
-      "omni_light:_namespace": []
+      "light__color": "#f05032ff"
     }
   ],
   "field_light_red_extralarge": [
@@ -716,19 +641,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#f05032ff"
+      "light__color": "#f05032ff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_green_extralarge": [
@@ -739,19 +661,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#0a961eff"
+      "light__color": "#0a961eff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "aircraft_warning_light_red": [
@@ -762,19 +681,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.max_radius": 15.0
+      "light__max_radius": 15.0
     },
     {
-      "light.color": "#ff0000ff"
+      "light__color": "#ff0000ff"
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "spot_light_red_large": [
@@ -785,16 +701,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ff0a0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff0a0aff"
     }
   ],
   "spot_light_magenta_large": [
@@ -805,16 +718,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ba0affff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ba0affff"
     }
   ],
   "spot_light_orange_large": [
@@ -825,16 +735,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff640aff"
     }
   ],
   "spot_light_orange_medium": [
@@ -845,19 +752,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 50.0
+      "light__max_radius": 50.0
     },
     {
-      "light.brightness": 500.0
+      "light__brightness": 500.0
     },
     {
-      "light.color": "#ff640aff"
+      "light__color": "#ff640aff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -869,16 +776,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#0af5ffff"
     }
   ],
   "spot_light_green_large": [
@@ -889,16 +793,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#32ff0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#32ff0aff"
     }
   ],
   "spot_light_orange_extralarge": [
@@ -909,16 +810,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 300.0
+      "light__max_radius": 300.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff640aff"
     }
   ],
   "spot_light_red_extralarge": [
@@ -929,16 +827,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ff0a0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff0a0aff"
     }
   ],
   "spot_light_magenta_extralarge": [
@@ -949,16 +844,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ba0affff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ba0affff"
     }
   ],
   "spot_light_green_extralarge": [
@@ -969,16 +861,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#32ff0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#32ff0aff"
     }
   ],
   "spot_light_blue_extralarge": [
@@ -989,16 +878,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 200.0
+      "light__max_radius": 200.0
     },
     {
-      "light.brightness": 55.0
+      "light__brightness": 55.0
     },
     {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#0af5ffff"
     }
   ],
   "lamppost_a": [
@@ -1009,19 +895,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 14.0
+      "light__max_radius": 14.0
     },
     {
-      "light.brightness": 60.0
+      "light__brightness": 60.0
     },
     {
-      "light.color": "#ffdca0ff"
+      "light__color": "#ffdca0ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -1036,19 +922,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 9.0
+      "light__max_radius": 9.0
     },
     {
-      "light.brightness": 15.0
+      "light__brightness": 15.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -1063,19 +949,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 19.0
+      "light__max_radius": 19.0
     },
     {
-      "light.brightness": 150.0
+      "light__brightness": 150.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -1090,28 +976,26 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 55.0
+      "light__max_radius": 55.0
     },
     {
-      "light.brightness": 250.0
+      "light__brightness": 250.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": true
+        "spot_light__dynamic_obj_shadows": true
       }
     }
   ],
   "floating_rendinst_system": {
     "_singleton": true,
-    "floatingRiSystem:_namespace": {
-      "useRandomWaves": false,
-      "useDynamicWaterLevel": false
-    },
-    "floatingRiSystem.volumePresets:object": {
+    "floatingRiSystem__useRandomWaves": false,
+    "floatingRiSystem__useDynamicWaterLevel": false,
+    "floatingRiSystem__volumePresets:object": {
       "default_1:object": {
         "floatVolumesCd": 0.57,
         "sphereRad": 0.8,
@@ -1135,29 +1019,27 @@
   },
   "floating_rendinst_res_group": {
     "_tracked": "^floatingRiGroup\\.(resName|mass|inertiaMult|volumesCount|volumePresetName|geomCenterShift|physBboxSizeMul)$",
-    "floatingRiGroup:_namespace": {
-      "resName": "",
-      "mass": 1.0,
-      "inertiaMult": [80.0,0.1,80.0],
-      "volumesCount": -1,
-      "volumePresetName": "",
-      "wreckageFloatDuration": 15.0,
-      "updateDist": 1000.0,
-      "interactionType": 0,
-      "interactionDist": 0.0,
-      "elasticity": 0.1,
-      "physUpdateDt": 0.0417,
-      "maxShiftDist": 1000.0,
-      "geomCenterShift": [0.0,0.0,0.0],
-      "physBboxSizeMul": [1.0,1.0,1.0]
-    },
-    "floatingRiGroup.riPhysFloatingModel": []
+    "floatingRiGroup__resName": "",
+    "floatingRiGroup__mass": 1.0,
+    "floatingRiGroup__inertiaMult": [80.0,0.1,80.0],
+    "floatingRiGroup__volumesCount": -1,
+    "floatingRiGroup__volumePresetName": "",
+    "floatingRiGroup__wreckageFloatDuration": 15.0,
+    "floatingRiGroup__updateDist": 1000.0,
+    "floatingRiGroup__interactionType": 0,
+    "floatingRiGroup__interactionDist": 0.0,
+    "floatingRiGroup__elasticity": 0.1,
+    "floatingRiGroup__physUpdateDt": 0.0417,
+    "floatingRiGroup__maxShiftDist": 1000.0,
+    "floatingRiGroup__geomCenterShift": [0.0,0.0,0.0],
+    "floatingRiGroup__physBboxSizeMul": [1.0,1.0,1.0],
+    "floatingRiGroup__riPhysFloatingModel": []
   },
   "root": {
     "active": true
   },
   "daeditor_selected": {
-    "daeditor.selected:tag": []
+    "daeditor__selected:tag": []
   },
   "simple_unit": [
     {
@@ -1206,9 +1088,17 @@
   },
   "ground_unit": {
     "_extends": "simple_ground_unit",
-    "move_sys.maxDecel": 0.0,
+    "move_sys__maxDecel": 0.0,
+    "fire_damage__update_burn_interval": 1.0,
+    "fire_damage__isBurn": false,
+    "toolkit__name": "tank_tool_kit_expendable",
+    "toolkit__enabled_without_mod": true,
+    "extinguisher__name": "manual_extinguisher_expendable",
+    "extinguisher__enabled_without_mod": true,
     "unit_fire": [],
-    "unit_fire_fx": [],
+    "fire_fx__id:list<i>": [],
+    "fire_fx__fxId:list<i>": [],
+    "fire_fx__paramsId:list<i>": [],
     "unit_extinguish": [],
     "unit_crew": [],
     "unit_repair": [],
@@ -1216,20 +1106,8 @@
     "fuel_tanks": [],
     "ammo_stowage": [],
     "fire_damage": [],
-    "fire_damage:_namespace": {
-      "update_burn_interval": 1.0,
-      "isBurn": false
-    },
     "toolkit": [],
-    "toolkit:_namespace": {
-      "name": "tank_tool_kit_expendable",
-      "enabled_without_mod": true
-    },
-    "extinguisher": [],
-    "extinguisher:_namespace": {
-      "name": "manual_extinguisher_expendable",
-      "enabled_without_mod": true
-    }
+    "extinguisher": []
   },
   "light_vehicle": {
     "_extends": "simple_ground_unit"
@@ -1242,18 +1120,16 @@
   },
   "tank": {
     "_extends": "ground_unit",
+    "medicalkit__name": "tank_medical_kit_expendable",
+    "medicalkit__enabled_without_mod": false,
     "medicalkit": [],
-    "medicalkit:_namespace": {
-      "name": "tank_medical_kit_expendable",
-      "enabled_without_mod": false
-    },
     "track_sound": {
       "_tags": "sound"
     },
     "physical_tracks": {
       "_tags": "render"
     },
-    "physical_tracks.isLeft:list<b>": {
+    "physical_tracks__isLeft:list<b>": {
       "_tags": "render"
     },
     "physical_tracks_force_update:b": {
@@ -1266,7 +1142,7 @@
   },
   "ship": {
     "_extends": "ground_unit",
-    "extinguisher.enabled_without_mod": false,
+    "extinguisher__enabled_without_mod": false,
     "track_sound": {
       "_tags": "sound"
     }
@@ -1314,36 +1190,32 @@
     "m_player": []
   },
   "background_model": {
+    "background_model__model": "",
+    "background_model__skin": "",
+    "background_model__unitName": "",
+    "background_model__weapon": "",
+    "background_model__isPlane": false,
+    "background_model__tm": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "background_model__canOutline": false,
     "background_model_res": [],
-    "background_model:_namespace": {
-      "model": "",
-      "skin": "",
-      "unitName": "",
-      "weapon": "",
-      "isPlane": false,
-      "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [0.0,0.0,0.0]
-      ],
-      "canOutline": false,
-      "bullets:list<t>": [],
-      "spawnEid:eid": []
-    }
+    "background_model__bullets:list<t>": [],
+    "background_model__spawnEid:eid": []
   },
   "level": {
     "isLocal": true,
-    "level:_namespace": {
-      "blk": "",
-      "bin": "",
-      "environment": "Day",
-      "loaded": false,
-      "weather": "hazy"
-    }
+    "level__blk": "",
+    "level__bin": "",
+    "level__environment": "Day",
+    "level__loaded": false,
+    "level__weather": "hazy"
   },
   "render_view_cam": {
-    "camera.active": false,
+    "camera__active": false,
     "transform": [
       [1.0,0.0,0.0],
       [0.0,1.0,0.0],
@@ -1354,7 +1226,7 @@
     "camera_view:tag": []
   },
   "static_cam": {
-    "camera.active": false,
+    "camera__active": false,
     "fov": 90.0,
     "znear": 0.01,
     "zfar": 10000.0,
@@ -1370,26 +1242,22 @@
     "_singleton": true,
     "nonCreatableObj": true,
     "game_objects": [],
-    "game_objects:_namespace": {
-      "createChance:object": {
-        "stationary_mg42": 0.4,
-        "chimney_exhaust": 0.15
-      }
+    "game_objects__createChance:object": {
+      "stationary_mg42": 0.4,
+      "chimney_exhaust": 0.15
     }
   },
   "smoke": {
     "_extends": "replicating",
     "_replicated": "^smoke\\.(pos|radius|visibility_type_flags|transparent_for_thermal|fx_id)$",
-    "smoke:_namespace": {
-      "activate_time": 0.0,
-      "time": 0.0,
-      "pos": [0.0,0.0,0.0],
-      "radius": 0.0,
-      "visibility_type_flags": 0,
-      "transparent_for_thermal": false,
-      "fx_id": -1
-    },
-    "smoke.smoke_fx": {
+    "smoke__activate_time": 0.0,
+    "smoke__time": 0.0,
+    "smoke__pos": [0.0,0.0,0.0],
+    "smoke__radius": 0.0,
+    "smoke__visibility_type_flags": 0,
+    "smoke__transparent_for_thermal": false,
+    "smoke__fx_id": -1,
+    "smoke__smoke_fx": {
       "_tags": "render"
     }
   }

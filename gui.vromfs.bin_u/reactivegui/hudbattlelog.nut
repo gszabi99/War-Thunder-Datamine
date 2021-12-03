@@ -1,5 +1,5 @@
 local state = require("battleLogState.nut")
-local scrollableData = require("daRg/components/scrollableData.nut")
+local scrollableData = require("components/scrollableData.nut")
 local hudLog = require("components/hudLog.nut")
 local teamColors = require("style/teamColors.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")

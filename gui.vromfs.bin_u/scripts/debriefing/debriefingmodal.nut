@@ -31,6 +31,7 @@ local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
 local { getGoToBattleAction } = require("scripts/debriefing/toBattleAction.nut")
 local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -311,9 +312,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         resTitle = ::loc("MISSION_SUCCESS")
         resTheme = DEBR_THEME.WIN
 
-        local victoryBonus = (isMp && isDebriefingResultFull()) ? getMissionVictoryBonusText() : ""
+        local victoryBonus = (isMp && isDebriefingResultFull()) ? getMissionBonusText() : ""
         if (victoryBonus != "")
-          resReward = ::loc("debriefing/MissionWinReward") + ::loc("ui/colon") + victoryBonus
+          resReward = "".concat(::loc("debriefing/MissionWinReward"), ::loc("ui/colon"), victoryBonus)
 
         local currentMajorVersion = ::get_game_version() >> 16
         local lastWinVersion = ::load_local_account_settings(LAST_WON_VERSION_SAVE_ID, 0)
@@ -324,6 +325,10 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       {
         resTitle = ::loc("MISSION_FAIL")
         resTheme = DEBR_THEME.LOSE
+
+        local loseBonus = (isMp && isDebriefingResultFull()) ? getMissionBonusText() : ""
+        if (loseBonus != "")
+          resReward = "".concat(::loc("debriefing/MissionLoseReward"), ::loc("ui/colon"), loseBonus)
       }
       else if (mpResult == ::STATS_RESULT_ABORTED_BY_KICK)
       {
@@ -3250,23 +3255,22 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     return ""
   }
 
-  function getMissionVictoryBonusText()
+  function getMissionBonusText()
   {
     if (gm != ::GM_DOMINATION)
       return ""
 
-    local bonusWp = ::get_warpoints_blk()?.winK ?? 0.0
+    local isWin = debriefingResult.isSucceed
+    local bonusWp = (isWin ? ::get_warpoints_blk()?.winK : ::get_warpoints_blk()?.defeatK) ?? 0.0
     local rBlk = ::get_ranks_blk()
-    local expPlaying = rBlk?.expForPlayingVersus ?? 0
-    local expVictory = rBlk?.expForVictoryVersus ?? 0
-    local bonusRpRaw = (expPlaying && expVictory) ?
-      (1.0 / (expPlaying.tofloat() / (expVictory - expPlaying))) :
-      0.0
-    local rp = ::floor(bonusRpRaw * 100).tointeger()
-    local wp = stdMath.round_by_value(bonusWp * 100, 1).tointeger()
-    local textRp = rp ? ::getRpPriceText("+" + rp + "%", true) : ""
-    local textWp = wp ? ::getWpPriceText("+" + wp + "%", true) : ""
-    return ::g_string.implode([ textRp, textWp ], ::loc("ui/comma"))
+    local missionRp = (isWin ? rBlk?.expForVictoryVersusPerSec : rBlk?.expForPlayingVersusPerSec) ?? 0.0
+    local baseRp = rBlk?.expBaseVersusPerSec ?? 0
+    local bonusRp = (baseRp > 0) ? (missionRp.tofloat() / baseRp - 1.0) : 0.0
+    local rp = (bonusRp > 0) ? ::ceil(bonusRp * 100) : 0
+    local wp = (bonusWp > 0) ? ::ceil(bonusWp * 100) : 0
+    local textRp = rp ? ::getRpPriceText($"+{rp}%", true) : ""
+    local textWp = wp ? ::getWpPriceText($"+{wp}%", true) : ""
+    return ::g_string.implode([textRp, textWp], ::loc("ui/comma"))
   }
 
   function getCurAwardText()

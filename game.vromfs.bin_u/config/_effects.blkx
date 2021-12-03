@@ -2,49 +2,47 @@
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
+    "ri_gpu_object__name": "ammunition_box_n",
+    "ri_gpu_object__grid_tiling": 4,
+    "ri_gpu_object__grid_size": 16,
+    "ri_gpu_object__cell_size": 8.0,
+    "ri_gpu_object__seed": 0,
+    "ri_gpu_object__up_vector": [0.0,1.0,0.0],
+    "ri_gpu_object__scale_range": [1.0,1.0],
+    "ri_gpu_object__biom_indexes": [-1.0,-1.0,-1.0,-1.0],
+    "ri_gpu_object__is_using_normal": false,
+    "ri_gpu_object__incline_delta": 0.0,
+    "ri_gpu_object__rotate_range": [0.0,0.0],
+    "ri_gpu_object__map": "",
+    "ri_gpu_object__map_size": [512.0,512.0],
+    "ri_gpu_object__map_offset": [0.0,0.0],
+    "ri_gpu_object__color_from": "#7f7f7f7f",
+    "ri_gpu_object__color_to": "#7f7f7f7f",
+    "ri_gpu_object__max_placed_on_ri": 0,
+    "ri_gpu_object__slope_factor": [1.0,0.0],
+    "ri_gpu_object__shader_graph": "",
+    "ri_gpu_object__hardness": 1.0,
+    "ri_gpu_object__sparse_weight": 0.0,
+    "ri_gpu_object__decal": false,
+    "ri_gpu_object__transparent": false,
+    "ri_gpu_object__place_on_water": false,
+    "ri_gpu_object__enable_displacement": true,
     "ri_preload:GpuObjectRiResourcePreload": {
       "_tags": "render"
     },
-    "ri_gpu_object.node_based_shader_preload": {
+    "ri_gpu_object__node_based_shader_preload": {
       "_tags": "render"
     },
-    "ri_gpu_object:_namespace": {
-      "name": "ammunition_box_n",
-      "grid_tiling": 4,
-      "grid_size": 16,
-      "cell_size": 8.0,
-      "seed": 0,
-      "up_vector": [0.0,1.0,0.0],
-      "scale_range": [1.0,1.0],
-      "biom_indexes": [-1.0,-1.0,-1.0,-1.0],
-      "is_using_normal": false,
-      "incline_delta": 0.0,
-      "rotate_range": [0.0,0.0],
-      "map": "",
-      "map_size": [512.0,512.0],
-      "map_offset": [0.0,0.0],
-      "color_from": "#7f7f7f7f",
-      "color_to": "#7f7f7f7f",
-      "max_placed_on_ri": 0,
-      "slope_factor": [1.0,0.0],
-      "shader_graph": "",
-      "hardness": 1.0,
-      "sparse_weight": 0.0,
-      "decal": false,
-      "transparent": false,
-      "place_on_water": false,
-      "enable_displacement": true,
-      "ri_placer_list:array": [],
-      "biome_params:array": [],
-      "multiple_objects:array": []
-    }
+    "ri_gpu_object__ri_placer_list:array": [],
+    "ri_gpu_object__biome_params:array": [],
+    "ri_gpu_object__multiple_objects:array": []
   },
   "light": {
     "_extends": "replicating",
-    "light.max_radius": 0.0,
-    "light.offset": [0.0,0.0,0.0],
-    "light.color": "#fffac8ff",
-    "light.brightness": 1.0,
+    "light__max_radius": 0.0,
+    "light__offset": [0.0,0.0,0.0],
+    "light__color": "#fffac8ff",
+    "light__brightness": 1.0,
     "transform": [
       [1.0,0.0,0.0],
       [0.0,1.0,0.0],
@@ -59,7 +57,7 @@
       "_extends": "light"
     },
     {
-      "light.contact_shadows": true
+      "light__contact_shadows": true
     },
     {
       "_tracked": "^light\\.contact_shadows$"
@@ -77,16 +75,16 @@
       "_tracked": "^light\\.direction$"
     },
     {
-      "_tracked": "^light\\.texture_name$"
+      "_tracked": "^light\\.(texture_name|contact_shadows|use_box|box|automatic_box)$"
     },
     {
-      "light.use_box": true
+      "light__use_box": true
     },
     {
-      "light.automatic_box": false
+      "light__automatic_box": false
     },
     {
-      "light.box": [
+      "light__box": [
         [0.0,0.0,0.0],
         [0.0,0.0,0.0],
         [0.0,0.0,0.0],
@@ -94,25 +92,16 @@
       ]
     },
     {
-      "light.direction": [0.0,-1.0,0.0]
+      "light__direction": [0.0,-1.0,0.0]
     },
     {
-      "light.texture_name": ""
+      "light__texture_name": ""
     },
     {
-      "light.nightly": true
+      "light__nightly": true
     },
     {
-      "_replicated": "^light\\.contact_shadows$"
-    },
-    {
-      "_replicated": "^light\\.use_box$"
-    },
-    {
-      "_replicated": "^light\\.box$"
-    },
-    {
-      "_replicated": "^light\\.automatic_box$"
+      "_replicated": "^light\\.(texture_name|contact_shadows|use_box|box|automatic_box)$"
     },
     {
       "omni_light": {
@@ -131,16 +120,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 100.0
+      "light__brightness": 100.0
     },
     {
-      "light.nightly": true
+      "light__nightly": true
     },
     {
-      "light.texture_name": ""
+      "light__texture_name": ""
     },
     {
       "_tracked": "^(light\\.texture_name|spot_light\\..*)$"
@@ -154,13 +143,13 @@
       }
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.9,
-        "dynamic_light": false,
-        "shadows": true,
-        "dynamic_obj_shadows": false,
-        "shadow_shrink": 0
+        "spot_light__inner_attenuation": 0.9,
+        "spot_light__dynamic_light": false,
+        "spot_light__shadows": true,
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadow_shrink": 0
       }
     },
     {
@@ -175,13 +164,10 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
-    },
-    {
-      "spot_light:_namespace": []
+      "light__brightness": 200.0
     }
   ],
   "spot_light_small": [
@@ -192,16 +178,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 5.0
+      "light__max_radius": 5.0
     },
     {
-      "light.brightness": 15.0
+      "light__brightness": 15.0
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -213,16 +199,16 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 25000.0
+      "light__max_radius": 25000.0
     },
     {
-      "light.brightness": 250000.0
+      "light__brightness": 250000.0
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -234,22 +220,42 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 35000.0
+      "light__brightness": 35000.0
     },
     {
-      "light.max_radius": 10000.0
+      "light__max_radius": 10000.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
+      "light__nightly": true
+    }
+  ],
+  "field_light_orange_largest": [
+    {
+      "_extends": "omni_light"
     },
     {
-      "omni_light:_namespace": []
+      "_extends": "replicating"
+    },
+    {
+      "light__brightness": 20000.0
+    },
+    {
+      "light__max_radius": 10000.0
+    },
+    {
+      "light__color": "#ffb978ff"
+    },
+    {
+      "light__contact_shadows": false
+    },
+    {
+      "light__nightly": true
     }
   ],
   "field_light_blue_huge": [
@@ -260,22 +266,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 15000.0
+      "light__brightness": 15000.0
     },
     {
-      "light.max_radius": 400.0
+      "light__max_radius": 400.0
     },
     {
-      "light.color": "#326432ff"
+      "light__color": "#326432ff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_large": [
@@ -286,22 +289,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 20.0
+      "light__brightness": 20.0
     },
     {
-      "light.max_radius": 30.0
+      "light__max_radius": 30.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_medium": [
@@ -312,22 +312,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 30.0
+      "light__brightness": 30.0
     },
     {
-      "light.max_radius": 30.0
+      "light__max_radius": 30.0
     },
     {
-      "light.color": "#ffffffff"
+      "light__color": "#ffffffff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_orange": [
@@ -338,22 +335,19 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 2.0
+      "light__brightness": 2.0
     },
     {
-      "light.max_radius": 2.0
+      "light__max_radius": 2.0
     },
     {
-      "light.color": "#ff640aff"
+      "light__color": "#ff640aff"
     },
     {
-      "light.contact_shadows": true
+      "light__contact_shadows": true
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "field_light_orange_large": [
@@ -364,16 +358,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 3.0
+      "light__brightness": 3.0
     },
     {
-      "light.max_radius": 2.0
+      "light__max_radius": 2.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_extralarge": [
@@ -384,16 +375,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 50.0
+      "light__brightness": 50.0
     },
     {
-      "light.max_radius": 200.0
+      "light__max_radius": 200.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_huge": [
@@ -404,16 +392,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10000.0
+      "light__brightness": 10000.0
     },
     {
-      "light.max_radius": 400.0
+      "light__max_radius": 400.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_medium": [
@@ -424,16 +409,53 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 20.0
+      "light__max_radius": 20.0
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
+    }
+  ],
+  "field_light_orange_medium_a": [
+    {
+      "_extends": "field_light_orange"
     },
     {
-      "omni_light:_namespace": []
+      "_extends": "replicating"
+    },
+    {
+      "light__brightness": 30.0
+    },
+    {
+      "light__max_radius": 20.0
+    },
+    {
+      "light__contact_shadows": false
+    },
+    {
+      "light__color": "#c86414ff"
+    }
+  ],
+  "field_light_orange_medium_b": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light__brightness": 30.0
+    },
+    {
+      "light__max_radius": 20.0
+    },
+    {
+      "light__contact_shadows": true
+    },
+    {
+      "light__color": "#c86414ff"
     }
   ],
   "field_light_orange_small": [
@@ -444,16 +466,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 1.0
+      "light__brightness": 1.0
     },
     {
-      "light.max_radius": 1.0
+      "light__max_radius": 1.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_orange_smallest": [
@@ -464,16 +483,13 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 0.3
+      "light__brightness": 0.3
     },
     {
-      "light.max_radius": 1.0
+      "light__max_radius": 1.0
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_blue": [
@@ -484,10 +500,7 @@
       "_extends": "replicating"
     },
     {
-      "light.color": "#6464ffff"
-    },
-    {
-      "omni_light:_namespace": []
+      "light__color": "#6464ffff"
     }
   ],
   "field_light_blue_large": [
@@ -498,19 +511,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 300.0
+      "light__brightness": 300.0
     },
     {
-      "light.max_radius": 1000.0
+      "light__max_radius": 1000.0
     },
     {
-      "light.color": "#0af5ffff"
+      "light__color": "#0af5ffff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_blue_extralarge": [
@@ -521,19 +531,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#3232ffff"
+      "light__color": "#3232ffff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_red": [
@@ -544,10 +551,7 @@
       "_extends": "replicating"
     },
     {
-      "light.color": "#f05032ff"
-    },
-    {
-      "omni_light:_namespace": []
+      "light__color": "#f05032ff"
     }
   ],
   "field_light_red_extralarge": [
@@ -558,19 +562,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#f05032ff"
+      "light__color": "#f05032ff"
     },
     {
-      "light.contact_shadows": false
-    },
-    {
-      "omni_light:_namespace": []
+      "light__contact_shadows": false
     }
   ],
   "field_light_green_extralarge": [
@@ -581,19 +582,36 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 10.0
+      "light__brightness": 10.0
     },
     {
-      "light.max_radius": 100.0
+      "light__max_radius": 100.0
     },
     {
-      "light.color": "#0a961eff"
+      "light__color": "#0a961eff"
     },
     {
-      "light.contact_shadows": false
+      "light__contact_shadows": false
+    }
+  ],
+  "field_light_green_small": [
+    {
+      "_extends": "field_light_orange"
     },
     {
-      "omni_light:_namespace": []
+      "_extends": "replicating"
+    },
+    {
+      "light__brightness": 5.0
+    },
+    {
+      "light__max_radius": 100.0
+    },
+    {
+      "light__color": "#3cc8149b"
+    },
+    {
+      "light__contact_shadows": false
     }
   ],
   "aircraft_warning_light_red": [
@@ -604,19 +622,16 @@
       "_extends": "replicating"
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.max_radius": 15.0
+      "light__max_radius": 15.0
     },
     {
-      "light.color": "#ff0000ff"
+      "light__color": "#ff0000ff"
     },
     {
-      "light.nightly": true
-    },
-    {
-      "omni_light:_namespace": []
+      "light__nightly": true
     }
   ],
   "spot_light_red_large": [
@@ -627,16 +642,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ff0a0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff0a0aff"
     }
   ],
   "spot_light_magenta_large": [
@@ -647,16 +659,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ba0affff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ba0affff"
     }
   ],
   "spot_light_orange_large": [
@@ -667,16 +676,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff640aff"
     }
   ],
   "spot_light_orange_medium": [
@@ -687,19 +693,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 50.0
+      "light__max_radius": 50.0
     },
     {
-      "light.brightness": 500.0
+      "light__brightness": 500.0
     },
     {
-      "light.color": "#ff640aff"
+      "light__color": "#ff640aff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": false,
-        "shadows": false
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadows": false
       }
     }
   ],
@@ -711,16 +717,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#0af5ffff"
     }
   ],
   "spot_light_green_large": [
@@ -731,16 +734,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 75.0
+      "light__max_radius": 75.0
     },
     {
-      "light.brightness": 200.0
+      "light__brightness": 200.0
     },
     {
-      "light.color": "#32ff0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#32ff0aff"
     }
   ],
   "spot_light_orange_extralarge": [
@@ -751,16 +751,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 300.0
+      "light__max_radius": 300.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ff640aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff640aff"
     }
   ],
   "spot_light_red_extralarge": [
@@ -771,16 +768,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ff0a0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ff0a0aff"
     }
   ],
   "spot_light_magenta_extralarge": [
@@ -791,16 +785,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#ba0affff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#ba0affff"
     }
   ],
   "spot_light_green_extralarge": [
@@ -811,16 +802,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 250.0
+      "light__max_radius": 250.0
     },
     {
-      "light.brightness": 1200.0
+      "light__brightness": 1200.0
     },
     {
-      "light.color": "#32ff0aff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#32ff0aff"
     }
   ],
   "spot_light_blue_extralarge": [
@@ -831,16 +819,13 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 200.0
+      "light__max_radius": 200.0
     },
     {
-      "light.brightness": 55.0
+      "light__brightness": 55.0
     },
     {
-      "light.color": "#0af5ffff"
-    },
-    {
-      "spot_light:_namespace": []
+      "light__color": "#0af5ffff"
     }
   ],
   "lamppost_a": [
@@ -851,19 +836,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 14.0
+      "light__max_radius": 14.0
     },
     {
-      "light.brightness": 60.0
+      "light__brightness": 60.0
     },
     {
-      "light.color": "#ffdca0ff"
+      "light__color": "#ffdca0ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -878,19 +863,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 9.0
+      "light__max_radius": 9.0
     },
     {
-      "light.brightness": 15.0
+      "light__brightness": 15.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -905,19 +890,19 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 19.0
+      "light__max_radius": 19.0
     },
     {
-      "light.brightness": 150.0
+      "light__brightness": 150.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "inner_attenuation": 0.5,
-        "dynamic_obj_shadows": true
+        "spot_light__inner_attenuation": 0.5,
+        "spot_light__dynamic_obj_shadows": true
       }
     },
     {
@@ -932,18 +917,18 @@
       "_extends": "replicating"
     },
     {
-      "light.max_radius": 55.0
+      "light__max_radius": 55.0
     },
     {
-      "light.brightness": 250.0
+      "light__brightness": 250.0
     },
     {
-      "light.color": "#fffab4ff"
+      "light__color": "#fffab4ff"
     },
     {
-      "spot_light:_namespace": {
+      "_group": {
         "_tags": "render",
-        "dynamic_obj_shadows": true
+        "spot_light__dynamic_obj_shadows": true
       }
     }
   ]

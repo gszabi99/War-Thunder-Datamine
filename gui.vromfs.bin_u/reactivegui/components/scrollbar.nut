@@ -1,4 +1,4 @@
-local scrollbarBase = require("daRg/components/scrollbar.nut")
+local scrollbarBase = require("%darg/components/scrollbar.nut")
 local colors = require("reactiveGui/style/colors.nut")
 
 

@@ -661,6 +661,7 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
     local defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
     local page = {
       id = pName,
+      image = blk?.crew_skills_calc[pName].image ?? ""
       crewUnitTypeMask = defaultCrewUnitTypeMask
       items = []
       isVisible = function(crewUnitType) { return (crewUnitTypeMask & (1 << crewUnitType)) != 0 }

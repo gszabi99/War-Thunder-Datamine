@@ -6,6 +6,7 @@ local { TRIGGER_TYPE,
         isWeaponEnabled,
         isWeaponUnlocked } = require("scripts/weaponry/weaponryInfo.nut")
 local { WEAPON_PRESET_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -32,7 +33,7 @@ local unAllocatedTiers = []
 
 local function getWeaponrySize(massKg)
 {
-  local blk = ::configs.GUI.get()?.weaponrySizes
+  local blk = GUI.get()?.weaponrySizes
   if (blk == null)
     return ""
 
@@ -242,6 +243,7 @@ local function getPredefinedTiers(preset)
               tType = triggerType
               isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
               iconType  = tier?.iconType ?? iconType
+              tooltipLang = tier?.tooltipLang
             }
             if (filledTiers?[tierId])
             {

@@ -190,13 +190,15 @@ def find_unique_generic ( mod : Module?; name : string; canfail:bool = false )
         return [[FunctionPtr]]
     return res
 
-def setup_call_list(name: string; at:LineInfo; isInit:bool = false) : ExprBlock?
+def setup_call_list(name: string; at:LineInfo; isInit:bool = false; isPrivate:bool = true) : ExprBlock?
     var fn <- compiling_module() |> find_unique_function(name)
     if fn == null
         fn <- new [[Function() at=at, atDecl=at, name:="{name}"]]
         fn.flags |= FunctionFlags generated
         if isInit
             fn.flags |= FunctionFlags init
+        if isPrivate
+            fn.flags |= FunctionFlags privateFunction
         fn.result <- new [[TypeDecl() baseType=Type autoinfer, at=at]]
         var blk <- new [[ExprBlock() at=at]]
         var res = get_ptr(blk)
@@ -217,6 +219,7 @@ def setup_macro(name: string; at:LineInfo) : ExprBlock?
         fn <- new [[Function() at=at, atDecl=at, name:="{name}"]]
         fn.flags |= FunctionFlags generated
         fn.flags |= FunctionFlags macroInit
+        fn.flags |= FunctionFlags privateFunction
         fn.result <- new [[TypeDecl() baseType=Type autoinfer, at=at]]
         var blk <- new [[ExprBlock() at=at]]
         var iblk <- new [[ExprBlock() at=at]]
@@ -364,6 +367,7 @@ def private makeAsOrSafeAs ( expr; var enull:ExpressionPtr )
         left <- vcast,
         right <- enull
     ]]
+    tri.genFlags = expr.genFlags
     return tri
 
 // replacing ExprIsVariant(value,name) => ExprOp2('==",value.__rtti,"name")

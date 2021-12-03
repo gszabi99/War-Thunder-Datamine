@@ -153,7 +153,7 @@ missionGenFunctions.append( function (isFreeFlight) // isFreeFlight = Mission Ed
   ::mgSetMinMaxAircrafts("player", "", 1, 8);
 
   //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testFreeFlight_temp.blk");
-  if (playerAnyPlane != "")
+  if (playerAnyPlane == "")
     return
 
   ::slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "none")

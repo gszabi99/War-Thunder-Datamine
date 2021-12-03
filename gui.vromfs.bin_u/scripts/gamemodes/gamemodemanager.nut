@@ -6,6 +6,7 @@ local { isCrossPlayEnabled,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
 
 
 ::featured_modes <- [
@@ -546,7 +547,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
 
     // Step 6. Newbie event not found. If player is newbie and he has
     //         valid unit type we select easiest game mode.
-    local firstUnitType = ::get_first_chosen_unit_type(::ES_UNIT_TYPE_INVALID)
+    local firstUnitType = getFirstChosenUnitType(::ES_UNIT_TYPE_INVALID)
     if (unitType == ::ES_UNIT_TYPE_INVALID
         && firstUnitType != ::ES_UNIT_TYPE_INVALID
         && ::my_stats.isMeNewbie())

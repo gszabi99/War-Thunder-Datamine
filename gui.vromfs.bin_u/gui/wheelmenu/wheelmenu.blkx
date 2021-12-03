@@ -242,27 +242,76 @@
             }
           },
           {
-            "textareaNoTab": {
-              "id": "wheel_menu_category",
-              "width": "pw",
-              "top": "-1.5h",
-              "position": "absolute",
-              "text": "",
-              "shadeStyle": "HudHeader3D",
-              "hideEmptyText": "yes",
-              "text-align": "center",
-              "input-transparent": "yes"
-            }
+            "tdiv": [
+              {
+                "id": "wheel_menu_title"
+              },
+              {
+                "width": "pw"
+              },
+              {
+                "top": "-h -15@sf/@pf"
+              },
+              {
+                "topWithTopMenuItem": "-h -15@sf/@pf"
+              },
+              {
+                "topWithoutTopMenuItem": "-h -15@sf/@pf +1@wheelmenuBtnHeight"
+              },
+              {
+                "position": "absolute"
+              },
+              {
+                "flow": "vertical"
+              },
+              {
+                "textareaNoTab": {
+                  "id": "wheel_menu_category",
+                  "width": "pw",
+                  "text": "",
+                  "overlayTextColor": "active",
+                  "shadeStyle": "HudHeader3D",
+                  "hideEmptyText": "yes",
+                  "text-align": "center",
+                  "input-transparent": "yes"
+                }
+              },
+              {
+                "textareaNoTab": {
+                  "id": "wheel_menu_page",
+                  "width": "pw",
+                  "text": "",
+                  "overlayTextColor": "active",
+                  "shadeStyle": "HudHeader3D",
+                  "hideEmptyText": "yes",
+                  "text-align": "center",
+                  "input-transparent": "yes"
+                }
+              }
+            ]
           },
           {
             "Button_text": {
               "id": "btnSwitchChannel",
-              "right": "0",
+              "left": "0",
               "bottom": "0",
               "position": "absolute",
               "text": "#voicechat/switchChannel",
               "_on_click": "onVoiceMessageSwitchChannel",
               "btnName": "Y",
+              "display": "hide",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btnSwitchPage",
+              "right": "0",
+              "bottom": "0",
+              "position": "absolute",
+              "text": "#mainmenu/btnMoreOptions",
+              "_on_click": "onWheelmenuSwitchPage",
+              "btnName": "LB",
               "display": "hide",
               "ButtonImg": []
             }

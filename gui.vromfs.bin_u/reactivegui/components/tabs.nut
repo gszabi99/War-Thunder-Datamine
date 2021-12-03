@@ -1,4 +1,4 @@
-local tabsBase = require("daRg/components/tabs.nut")
+local tabsBase = require("%darg/components/tabs.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")
 

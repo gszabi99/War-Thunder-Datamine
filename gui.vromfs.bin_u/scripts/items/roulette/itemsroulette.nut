@@ -1,4 +1,5 @@
 local u = require("sqStdLibs/helpers/u.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 /*
 ItemsRoulette API:
@@ -74,7 +75,7 @@ ItemsRoulette.reinitParams <- function reinitParams()
   if (!loadParams)
     return
 
-  local blk = ::configs.GUI.get()
+  local blk = GUI.get()
   foreach(param in params)
   {
     local val = blk?[param] ?? 1.0
