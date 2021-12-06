@@ -59,8 +59,7 @@ class TemplateMacro : AstFunctionAnnotation
             if (argExpr is ExprRef2Value)
                 let r2v = newcall.arguments[argidx] as ExprRef2Value
                 argExpr := r2v.subexpr
-            let canStrip = t.basicType==Type tBool ? t.bValue : true
-            if canStrip && !(argExpr is ExprTypeDecl)
+            if !(argExpr is ExprTypeDecl)
                 errors := "template argument must be type<...> and not {describe(newcall.arguments[argidx])}. {newcall.arguments[argidx].__rtti}"
                 fclone := [[FunctionPtr]]
                 newcall := [[smart_ptr<ExprCallFunc>]]
@@ -73,7 +72,7 @@ class TemplateMacro : AstFunctionAnnotation
         fclone.annotations |> erase(taidx)
         // name it
         fclone.name := "`template{extra}`{fclone.name}"
-        newcall.name := "_::{fclone.name}"
+        newcall.name := fclone.name
         // result
         compiling_module() |> add_function(fclone)
         return newcall

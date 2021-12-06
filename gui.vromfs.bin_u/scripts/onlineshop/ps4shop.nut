@@ -8,7 +8,6 @@ local seenEnumId = SEEN.EXT_PS4_SHOP
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
 local shopData = require("scripts/onlineShop/ps4ShopData.nut")
-local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
 local persistent = {
   sheetsArray = []
@@ -167,7 +166,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     local wasBought = curItem?.isBought
     curItem?.updateIsBoughtStatus()
     if (wasBought != curItem?.isBought)
-      ENTITLEMENTS_PRICE.checkUpdate()
+      ::configs.ENTITLEMENTS_PRICE.checkUpdate()
 
     updateSorting()
     fillItemsList()

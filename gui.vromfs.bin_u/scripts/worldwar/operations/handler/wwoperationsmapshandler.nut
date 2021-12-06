@@ -9,9 +9,10 @@ local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
 local stdMath = require("std/math.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { getBgFullPath, loadBgData } = require("scripts/worldWar/wwAnimBg.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-local wwAnimBgLoad = require("scripts/worldWar/wwAnimBg.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -95,7 +96,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     collectMaps()
     findMapForSelection()
-    wwAnimBgLoad(selMap?.name)
+    animBgLoad(getBgFullPath(selMap?.name), null, loadBgData())
     updateRewardsPanel()
     onClansQueue()
   }
@@ -348,7 +349,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     updateUnseen()
     updateDescription()
     updateButtons()
-    wwAnimBgLoad(selMap?.name)
   }
 
   function getSelectedMapObj()

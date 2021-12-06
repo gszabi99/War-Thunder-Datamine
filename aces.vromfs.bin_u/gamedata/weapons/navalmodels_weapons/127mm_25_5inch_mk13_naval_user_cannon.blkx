@@ -36,16 +36,16 @@
     "fxType": "muzzle_naval_100mm"
   },
   {
-    "fxGroundDust": ""
+    "fxGroundDust": "dust_ground_wave_dirt_big"
   },
   {
-    "fxSandDust": ""
+    "fxSandDust": "dust_ground_wave_sand_big"
   },
   {
-    "fxSnowDust": ""
+    "fxSnowDust": "dust_ground_wave_snow_big"
   },
   {
-    "fxConcreteDust": ""
+    "fxConcreteDust": "dust_ground_wave_asphalt_big"
   },
   {
     "fxWaterShockWave": "dust_waterwave_big"
@@ -92,7 +92,6 @@
       "speed": 792.0,
       "maxDistance": 50000.0,
       "speedDispersion": 0.015,
-      "Cx": 0.2753,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -304,7 +303,6 @@
       "caliber": 0.127,
       "speed": 657.0,
       "maxDistance": 50000.0,
-      "Cx": 0.2753,
       "timeFuseDistanceError": 50.0,
       "explosionInAir": true,
       "shellExplScale": 2.0,
@@ -475,14 +473,13 @@
     "127mm_usa_mk46_special_common_sap": {
       "bullet": {
         "bulletCount": 25,
-        "mass": 25.0,
+        "mass": 25.02,
         "explosiveType": "exp_d",
         "explosiveMass": 0.925,
         "caliber": 0.127,
         "speed": 792.0,
         "maxDistance": 50000.0,
         "speedDispersion": 0.015,
-        "Cx": 0.2753,
         "normalizationPreset": "apbc",
         "ricochetPreset": "apbc",
         "secondaryShattersPreset": "ap_large_caliber",
@@ -499,9 +496,8 @@
         "dynamicKv": true,
         "relativeVelArmorShift": [200.0,1000.0],
         "explodeTreshold": 5.0,
-        "fuseDelay": 0.01,
+        "fuseDelayDist": 4.0,
         "hpThresholdForFuse": 0.0,
-        "fuseOnWater": false,
         "explosionEffect": "hit_133_160mm_metal_ap",
         "groundCollisionEffect": "hit_133_160mm_dirt_ap",
         "ricochetEffect": "hit_133_160mm_metal_ap",
@@ -664,7 +660,6 @@
         "caliber": 0.127,
         "speed": 657.0,
         "maxDistance": 50000.0,
-        "Cx": 0.2753,
         "timeFuseDistanceError": 50.0,
         "explosionInAir": true,
         "shellExplScale": 2.0,
@@ -842,7 +837,6 @@
         "caliber": 0.127,
         "speed": 657.0,
         "maxDistance": 50000.0,
-        "Cx": 0.2753,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",

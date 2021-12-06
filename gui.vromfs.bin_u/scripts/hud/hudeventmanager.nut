@@ -67,5 +67,3 @@
     return eventsStack.len() ? eventsStack.top() : null
   }
 }
-
-::cross_call_api.onHudEvent <- @(event_name, event_data = {}) ::g_hud_event_manager.onHudEvent(event_name, event_data)

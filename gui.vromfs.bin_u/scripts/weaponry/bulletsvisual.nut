@@ -8,7 +8,6 @@ local { getBulletsSetData,
 local { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -29,7 +28,7 @@ local function initBulletIcons(blk = null)
     return
 
   if (!blk)
-    blk = GUI.get()
+    blk = ::configs.GUI.get()
 
   copyParamsToTable(blk?.bullet_icons, bulletIcons)
   copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)

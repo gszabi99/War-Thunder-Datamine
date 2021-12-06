@@ -74,12 +74,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
       randomize_builder_options()
 
     if (needSlotbar)
-      createSlotbar({
-        afterSlotbarSelect = function() {
-          if (!(slotbarWeak?.slotbarOninit ?? false))
-            reinitOptionsList()
-         }
-      })
+      createSlotbar()
 
     ::move_mouse_on_obj(scene.findObject("btn_select"))
   }
@@ -473,4 +468,6 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
+
+  onEventShowedUnitChanged = @(p) reinitOptionsList()
 }

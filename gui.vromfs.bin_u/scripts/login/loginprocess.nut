@@ -8,8 +8,8 @@ enum LOGIN_PROGRESS
 }
 
 local matchingStageToLoginState = {
-  [ONLINE_BINARIES_INITED] = LOGIN_STATE.ONLINE_BINARIES_INITED, // warning disable: -const-never-declared
-  [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED                   // warning disable: -const-never-declared
+  [ONLINE_BINARIES_INITED] = LOGIN_STATE.ONLINE_BINARIES_INITED,
+  [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED
 }
 
 ::online_init_stage_finished <- function online_init_stage_finished(stage, ...)
@@ -18,7 +18,7 @@ local matchingStageToLoginState = {
     ::g_login.addState(matchingStageToLoginState[stage])
 }
 
-class LoginProcess
+class ::LoginProcess
 {
   curProgress = LOGIN_PROGRESS.NOT_STARTED
 
@@ -110,5 +110,3 @@ class LoginProcess
       curProgress = LOGIN_PROGRESS.NOT_STARTED
   }
 }
-
-return LoginProcess

@@ -40,7 +40,6 @@ SessionLobby API
 local time = require("scripts/time.nut")
 local ingame_chat = require("scripts/chat/mpChatModel.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 
 const NET_SERVER_LOST = 0x82220002  //for hostCb
@@ -55,6 +54,22 @@ const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
 ::LAST_SESSION_DEBUG_INFO <- ""
 
 ::last_round <- true
+
+global enum lobbyStates
+{
+  NOT_IN_ROOM,
+  WAIT_FOR_QUEUE_ROOM,
+  CREATING_ROOM,
+  JOINING_ROOM,
+  IN_ROOM,
+  IN_LOBBY,
+  IN_LOBBY_HIDDEN, //in loby, but hidden by joining wnd. Used when lobby after queue before session
+  UPLOAD_CONTENT,
+  START_SESSION,
+  JOINING_SESSION,
+  IN_SESSION,
+  IN_DEBRIEFING
+}
 
 local allowed_mission_settings = { //only this settings are allowed in room
                               //default params used only to check type atm

@@ -1,5 +1,6 @@
 local chard = require("chard")
 local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -96,7 +97,7 @@ class ::CrewTakeUnitProcess
               break
           }
 
-        if (!hasUnit)
+        if (!hasUnit && hasDefaultUnitsInCountry(crew.country))
           return remove()
         if (!hasAllowedUnit)
         {

@@ -13,8 +13,6 @@ require daslib/templates_boost
 require daslib/strings_boost
 require daslib/ast_block_to_loop
 
-require daslib/decs_state
-
 /*
 from:
     query ( ) <| $ ( pos:float3&; vel:float3; col:uint=0x12345678 )
@@ -34,9 +32,6 @@ class DecsReqN : AstFunctionAnnotation {}
 [structure_macro(name="decs_template")]
 class DecsTemplate : AstStructureAnnotation
     def override apply ( var st:StructurePtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
-        if length(st.fields)==0
-            errors := "expecting at least one field in the desc_template {st.name}"
-            return false
         let ppref = decs_prefix(args)
         let prefix = (ppref is yes) ? (ppref as yes) : "{st.name}_"
         var fnApply <- new [[Function() at=st.at, atDecl=st.at, name:="apply_decs_template"]]
@@ -118,10 +113,10 @@ def build_req_from_args ( qblk:ExprBlock? )
             let detp = a |> is_decs_template
             if detp is yes
                 for f in a._type.structType.fields
-                    req.req |> push("{detp as yes}{f.name}")
+                    if f.init == null
+                        req.req |> push("{detp as yes}{f.name}")
             else
-                if !(find_arg("optional",a.annotation) ?as tBool ?? false)
-                    req.req |> push(string(a.name))
+                req.req |> push(string(a.name))
     for aa in qblk.annotations
         let isreq = aa.annotation.name=="REQUIRE"
         let isreqn = aa.annotation.name=="REQUIRE_NOT"
@@ -133,51 +128,36 @@ def build_req_from_args ( qblk:ExprBlock? )
     return <- req
 
 [macro_function]
-def getter_name ( a; const_parent:bool; can_be_optional:bool )
+def getter_name ( a; const_parent:bool )
     var getter = "get_ro"
-    static_if typeinfo(stripped_typename a)=="ast::FieldDeclaration"        // part of the desc_template
-        if a.init != null && can_be_optional
+    if typeinfo(stripped_typename a)=="ast::FieldDeclaration"
+        if a.init != null
             getter = "get_default_ro"
         elif !const_parent
             getter = "get"
     else
-        if find_arg("optional",a.annotation) ?as tBool ?? false
-            if a.init != null
-                macro_error(compiling_program(),a.at,"optional argument {a.name} can't have a default value")
-                return ""
-            elif !a._type.isPointer
-                macro_error(compiling_program(),a.at,"optional argument {a.name} must be a pointer")
-                return ""
-            getter = "get_optional"
-        elif a.init != null && can_be_optional
+        if a.init != null
             if a._type.flags.ref || !a._type.flags.constant
                 macro_error(compiling_program(),a.at,"argument {a.name} has default value, it can't be & or var")
                 return ""
             getter = "get_default_ro"
-        elif (a._type.isRef && !a._type.isRefType)
+        elif a._type.isRef && !a._type.isRefType
             if a._type.flags.constant
                 macro_error(compiling_program(),a.at,"argument {a.name} is both & and constant")
                 return ""
             getter = "get"
-        elif a._type.isRefType && !a._type.flags.constant
-            getter = "get"
     return getter
 
 [macro_function]
-def private append_iterator ( arch_name:string; var qloop:smart_ptr<ExprFor>; a; prefix,suffix:string; const_parent : bool = false; can_be_optional : bool = true )
+def private append_iterator ( arch_name:string; var qloop:smart_ptr<ExprFor>; a; prefix,suffix:string; const_parent : bool = false )
     let qli = length(qloop.iterators)
     qloop.iterators |> resize( qli + 1 )
     qloop.iterators[qli] := "{prefix}{a.name}{suffix}"
-    qloop.iteratorsAka |> resize( qli + 1 )
-    if typeinfo(has_field<_aka> a)
-        qloop.iteratorsAka[qli] := a._aka
-    else
-        qloop.iteratorsAka[qli] := ""
     qloop.iteratorsAt |> push(a.at)
     var ftype <- clone_type(a._type)
     ftype.flags &= ~ TypeDeclFlags constant
     ftype.flags &= ~ TypeDeclFlags ref
-    var getter = getter_name(a,const_parent,can_be_optional)
+    var getter = getter_name(a,const_parent)
     if empty(getter)
         return false
     var cget <- new [[ExprCall() name:=getter, at=a.at]]
@@ -191,11 +171,11 @@ def private append_iterator ( arch_name:string; var qloop:smart_ptr<ExprFor>; a;
     return true
 
 [macro_function]
-def private append_index_lookup ( arch_name:string; var qblock:smart_ptr<ExprBlock>; a; prefix, suffix:string; const_parent : bool = false; can_be_optional : bool = true )
+def private append_index_lookup ( arch_name:string; var qblock:smart_ptr<ExprBlock>; a; prefix, suffix:string; const_parent : bool = false )
     var ftype <- clone_type(a._type)
     ftype.flags &= ~ TypeDeclFlags constant
     ftype.flags &= ~ TypeDeclFlags ref
-    var getter = getter_name(a,const_parent,can_be_optional)
+    var getter = getter_name(a,const_parent)
     if empty(getter)
         return false
     var iget : ExpressionPtr
@@ -212,7 +192,6 @@ def private append_index_lookup ( arch_name:string; var qblock:smart_ptr<ExprBlo
                 index <- new [[ExprVar() at=a.at, name:="entity_index"]]
             ]]
     var vlet <- new [[ExprLet() at=a.at, atInit=a.at]]
-    vlet.genFlags |= ExprGenFlags alwaysSafe
     vlet.variables |> emplace_new() <| new [[Variable() at = a.at,
         name := "{prefix}{a.name}{suffix}",
         _type <- clone_type(a._type),
@@ -229,20 +208,6 @@ enum private DecsQueryType
 
 [call_macro(name="query")]
 class DecsQueryMacro : AstCallMacro
-    def override preVisit ( prog:ProgramPtr; mod:Module?; var expr:smart_ptr<ExprCallMacro> ) : void
-        let totalArgs = length(expr.arguments)
-        if totalArgs!=1 && totalArgs!=2
-            return
-        let qt = totalArgs==2 ? DecsQueryType eid_query : DecsQueryType query
-        let block_arg_index = totalArgs-1
-        if !(expr.arguments[block_arg_index] is ExprMakeBlock)
-            return
-        var mblk = expr.arguments[block_arg_index] as ExprMakeBlock
-        var qblk = mblk._block as ExprBlock
-        for arg in qblk.arguments
-            if arg._type != null
-                if !arg._type.flags.constant
-                    arg._type.flags |= TypeDeclFlags ref
     def override visit ( prog:ProgramPtr; mod:Module?; var expr:smart_ptr<ExprCallMacro> ) : ExpressionPtr
         let totalArgs = length(expr.arguments)
         if totalArgs!=1 && totalArgs!=2
@@ -313,7 +278,7 @@ class DecsQueryMacro : AstCallMacro
                 if detp is yes
                     kaboom |> push <| [[auto string(a.name),detp as yes,"_{a.name}"]]
                     for f in a._type.structType.fields
-                        if !append_index_lookup(arch_name, qlbody, f, detp as yes, "_{a.name}", a._type.flags.constant, false)
+                        if !append_index_lookup(arch_name, qlbody, f, detp as yes, "_{a.name}", a._type.flags.constant)
                             return [[ExpressionPtr]]
                 else
                     if !append_index_lookup(arch_name, qlbody, a, "", "")
@@ -334,7 +299,7 @@ class DecsQueryMacro : AstCallMacro
                 if detp is yes
                     kaboom |> push <| [[auto string(a.name),detp as yes,"_{a.name}"]]
                     for f in a._type.structType.fields
-                        if !append_iterator(arch_name, qloop, f, detp as yes, "_{a.name}", a._type.flags.constant, false)
+                        if !append_iterator(arch_name, qloop, f, detp as yes, "_{a.name}", a._type.flags.constant)
                             return [[ExpressionPtr]]
                 else
                     if !append_iterator(arch_name, qloop, a, "", "")
@@ -387,14 +352,13 @@ class DecsEcsMacro : AstFunctionAnnotation
             return false
         let passName = argPass as tString
         let passFuncName = "decs`pass`{passName}"
-        var blk <- setup_call_list(passFuncName, func.at, false, true)
+        var blk <- setup_call_list(passFuncName, func.at)
         if length(blk.list)==0
-            var reg <- setup_call_list("register`decs`passes", func.at, true, true)
+            var reg <- setup_call_list("register`decs`passes", func.at, true)
             var regc <- new [[ExprCall() at=func.at, name:="decs::register_decs_stage_call"]]
             regc.arguments |> emplace_new <| new [[ExprConstString() at=func.at, value:=passName]]
             regc.arguments |> emplace_new <| new [[ExprAddr() at=func.at, target:=passFuncName]]
             reg.list |> emplace(regc)
-        func.flags |= FunctionFlags privateFunction
         blk.list |> emplace_new <| new [[ExprCall() at=func.at, name:="_::{func.name}"]]
         var fblk <- new [[ExprBlock() at=func.body.at]]                 // new function block
         var cqq <- make_call(func.at,"query")

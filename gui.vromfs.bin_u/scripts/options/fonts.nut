@@ -154,7 +154,7 @@ enums.addTypesByGlobalName("g_font",
 
   HUGE = {
     saveId = FONT_SAVE_ID.HUGE
-    sizeMultiplier = 1.5
+    sizeMultiplier = 1.2
     sizeOrder = FONT_SIZE_ORDER.HUGE
 
     isAvailable = @(sWidth, sHeight) isSmallScreen && !is_stereo_mode()

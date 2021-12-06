@@ -54,6 +54,10 @@ local function setShowUnit(unit, params = null) {
   loadModel(unit?.name ?? getFallbackUnitForHangar(params)?.name ?? "")
 }
 
+showedUnit.subscribe(function(v) {
+  ::broadcastEvent("ShowedUnitChanged")
+})
+
 local function getPlayerCurUnit() {
   local unit = null
   if (::is_in_flight())

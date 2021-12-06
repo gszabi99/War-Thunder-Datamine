@@ -13,7 +13,6 @@ local { doesLocTextExist = @(k) true } = require("dagor.localize")
 local { hasLoadedModel } = require("scripts/hangarModelLoadManager.nut")
 local { unique } = require("std/underscore.nut")
 local { fileName } = require("std/path.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 
 /*
@@ -105,7 +104,7 @@ const AFTERBURNER_CHAMBER = 3
     unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
     offset = [ screen[1] * 0.1, 0 ]
 
-    local cfgBlk = GUI.get()?.xray
+    local cfgBlk = ::configs.GUI.get()?.xray
     absoluteArmorThreshold = cfgBlk?.armor_thickness_absolute_threshold ?? absoluteArmorThreshold
     relativeArmorThreshold = cfgBlk?.armor_thickness_relative_threshold ?? relativeArmorThreshold
     showStellEquivForArmorClassesList = (cfgBlk?.show_steel_thickness_equivalent_for_armor_class
@@ -606,14 +605,13 @@ const AFTERBURNER_CHAMBER = 3
         ::colorize("activeTextColor", thicknessStr) + ::nbsp + ::loc("measureUnits/mm"))
     }
 
-    local normalAngleValue = ::getTblValue("normal_angle", params, null)
-    if (normalAngleValue != null)
-      desc.append(::loc("armor_class/normal_angle") + ::nbsp +
-        (normalAngleValue+0.5).tointeger() + ::nbsp + ::loc("measureUnits/deg"))
-
     local angleValue = ::getTblValue("angle", params, null)
     if (angleValue != null)
       desc.append(::loc("armor_class/impact_angle") + ::nbsp + ::round(angleValue) + ::nbsp + ::loc("measureUnits/deg"))
+
+    local headingAngleValue = ::getTblValue("heading_angle", params, null)
+    if (headingAngleValue != null)
+      desc.append("headingAngle" + ::nbsp + ::round(headingAngleValue) + ::nbsp + ::loc("measureUnits/deg"))
 
     if (effectiveThickness)
     {
@@ -640,6 +638,11 @@ const AFTERBURNER_CHAMBER = 3
           ::round(effectiveThicknessClamped) + ::nbsp + ::loc("measureUnits/mm"))
       }
     }
+
+    local normalAngleValue = ::getTblValue("normal_angle", params, null)
+    if (normalAngleValue != null)
+      desc.append(::loc("armor_class/normal_angle") + ::nbsp +
+        (normalAngleValue+0.5).tointeger() + ::nbsp + ::loc("measureUnits/deg"))
 
     if(isDebugMode)
       desc.append("\n" + ::colorize("badTextColor", params.nameId))

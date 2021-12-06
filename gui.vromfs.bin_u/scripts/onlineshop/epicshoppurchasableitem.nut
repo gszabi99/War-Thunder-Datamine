@@ -1,5 +1,4 @@
 local statsd = require("statsd")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local EpicShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
@@ -63,7 +62,7 @@ local EpicShopPurchasableItem = class {
     if (isPurchasable)
       amount = getPriceText()
 
-    local shopBlk = GUI.get()?.epic_ingame_shop
+    local shopBlk = ::configs.GUI.get()?.epic_ingame_shop
     local ingameShopImages = shopBlk?.items
     if (ingameShopImages?[id] && shopBlk?.mainPart && shopBlk?.fileExtension)
       imagePath = $"!{shopBlk.mainPart}{id}{shopBlk.fileExtension}"

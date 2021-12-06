@@ -1,6 +1,5 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local cache = persist("cache", @() {})
 local function clearCache() {
@@ -22,7 +21,7 @@ local function getBundlesList(blockName) {
       return ""
     }
 
-    local guiBlk = GUI.get()?.bundles
+    local guiBlk = ::configs.GUI.get()?.bundles
     if (!guiBlk)
       return ""
 

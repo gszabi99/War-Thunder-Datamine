@@ -5,7 +5,6 @@ local psnUser = require("sony.user")
 local statsd = require("statsd")
 local { serviceLabel } = require("sonyLib/webApi.nut")
 local { subscribe } = require("eventbus")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local IMAGE_TYPE_INDEX = 1 //240x240
 local BQ_DEFAULT_ACTION_ERROR = -1
@@ -104,7 +103,7 @@ local Ps4ShopPurchasableItem = class
     if (imageIndex != null && imagesArray[imageIndex]?.url)
       imagePath = $"{imagesArray[imageIndex].url}?P1"
     else {
-      local psnShopBlk = GUI.get()?.ps4_ingame_shop
+      local psnShopBlk = ::configs.GUI.get()?.ps4_ingame_shop
       local ingameShopImages = psnShopBlk?.items
       if (ingameShopImages?[id] != null && psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
         imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
@@ -195,7 +194,7 @@ local Ps4ShopPurchasableItem = class
                              : ::LayersIcon.getIconData(null, null, 1.0, defaultIconStyle)
 
   getBigIcon = function() {
-    local ps4ShopBlk = GUI.get()?.ps4_ingame_shop
+    local ps4ShopBlk = ::configs.GUI.get()?.ps4_ingame_shop
     local ingameShopImages = ps4ShopBlk?.items
     if (ingameShopImages?[id] && ps4ShopBlk?.mainPart && ps4ShopBlk?.fileExtension)
       return ::LayersIcon.getCustomSizeIconData("!" + ps4ShopBlk.mainPart + id + ps4ShopBlk.fileExtension, "pw, ph")

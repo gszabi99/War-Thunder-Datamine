@@ -15,6 +15,14 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   return unitTypes.getByName(typeName, caseSensitive).esUnitType
 }
 
+::get_first_chosen_unit_type <- function get_first_chosen_unit_type(defValue = ::ES_UNIT_TYPE_INVALID)
+{
+  foreach(unitType in unitTypes.types)
+    if (unitType.isFirstChosen())
+      return unitType.esUnitType
+  return defValue
+}
+
 ::get_unit_class_icon_by_unit <- function get_unit_class_icon_by_unit(unit, iconName)
 {
   local esUnitType = ::get_es_unit_type(unit)

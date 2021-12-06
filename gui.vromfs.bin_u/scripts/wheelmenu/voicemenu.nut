@@ -136,6 +136,4 @@ class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
   {
     ::switch_voice_message_list_in_squad()
   }
-
-  function onWheelmenuSwitchPage(obj) {}
 }

@@ -6,9 +6,8 @@ local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificat
 local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
 local { getActionBarItems, getWheelBarItems, activateActionBarAction,
   getActionBarUnitName } = ::require_native("hudActionBar")
-local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
+local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_WINCH
 } = ::require_native("hudActionBarConst")
-local { arrangeStreakWheelActions } = require("scripts/hud/hudActionBarStreakWheel.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -21,7 +20,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   canControl              = true
   useWheelmenu            = false
   killStreaksActions      = null
-  killStreaksActionsOrdered = null
   weaponActions           = null
 
   artillery_target_mode = false
@@ -360,8 +358,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     {
       local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawActionBarItem[i])
       if (actionBarType.isForWheelMenu())
-        killStreaksActions.append(rawActionBarItem[i])
+        killStreaksActions.insert(0, rawActionBarItem[i])
     }
+    if (killStreaksActions.len() > 8)
+      // Temporary fix for invisible EII_TERRAFORM action
+      foreach (list in [ rawActionBarItem, killStreaksActions ]) {
+        local actionIdxWinch = list.findindex(@(a) a.type == EII_WINCH)
+        if (actionIdxWinch != null)
+          list.remove(actionIdxWinch)
+      }
     for (local i = rawWheelItem.len() - 1; i >= 0; i--)
     {
       local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawWheelItem[i])
@@ -386,13 +391,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   //Only for streak wheel menu
   function activateStreak(streakId)
   {
-    local action = killStreaksActionsOrdered?[streakId]
+    local action = ::getTblValue(streakId, killStreaksActions)
     if (action)
-      return activateActionBarAction(action.shortcutIdx)
-
-    if (streakId >= 0) //something goes wrong; -1 is valid situation = player does not choose smthng
     {
-      debugTableData(killStreaksActionsOrdered)
+      local shortcutIdx = ::getTblValue("shortcutIdx", action, action.id) //compatibility with 1.67.2.X
+      activateActionBarAction(shortcutIdx)
+    }
+    else if (streakId >= 0) //something goes wrong; -1 is valid situation = player does not choose smthng
+    {
+      debugTableData(killStreaksActions)
       callstack()
       ::dagor.assertf(false, "Error: killStreak id out of range.")
     }
@@ -447,13 +454,11 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     fillKillStreakWheel()
   }
 
-  function fillKillStreakWheel(isUpdate = false)
+  function fillKillStreakWheel()
   {
-    killStreaksActionsOrdered = arrangeStreakWheelActions(getActionBarUnit(), killStreaksActions)
-
     local menu = []
-    foreach(action in killStreaksActionsOrdered)
-      menu.append(action != null ? buildItemView(action) : null)
+    foreach(action in killStreaksActions)
+      menu.append(buildItemView(action))
 
     local params = {
       menu            = menu
@@ -462,7 +467,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       owner           = this
     }
 
-    ::gui_start_wheelmenu(params, isUpdate)
+    ::gui_start_wheelmenu(params)
   }
 
   function updateKillStreakWheel(prevActions)
@@ -488,7 +493,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     }
 
     if (update)
-      fillKillStreakWheel(true)
+      fillKillStreakWheel()
   }
 
   function toggleSelectWeaponWheel(open)

@@ -562,7 +562,6 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "offset": [0.0,0.0,0.0],
@@ -590,7 +589,6 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "offset": [0.0,0.0,0.0],
@@ -1117,7 +1115,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1143,7 +1140,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_01",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -1151,7 +1148,7 @@
           [0.766045,0.0,-0.642788],
           [39.7892,104.9,-6011.61]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1166,7 +1163,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1294,7 +1290,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_02",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -1302,7 +1298,7 @@
           [0.766045,0.0,-0.642788],
           [-984.9,104.9,-4504.2]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1317,7 +1313,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1445,7 +1440,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_01",
         "tm": [
           [0.300706,0.0,0.953717],
@@ -1453,7 +1448,7 @@
           [-0.953717,0.0,0.300706],
           [-3087.39,89.6499,-11141.6]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1468,7 +1463,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1564,7 +1558,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_02",
         "tm": [
           [0.707107,0.0,0.707107],
@@ -1572,7 +1566,7 @@
           [-0.707107,0.0,0.707107],
           [-6466.75,89.65,-8669.9]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1587,7 +1581,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1667,515 +1660,7 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t1_truck_01",
-        "tm": [
-          [-0.642788,0.0,-0.766045],
-          [0.0,1.0,0.0],
-          [0.766045,0.0,-0.642788],
-          [231.576,104.9,-5858.51]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_tank_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-319.815,105.42,-6234.18]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1166.25,87.4651,-6862.64]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2762.22,76.1597,-7786.66]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3246.62,75.3994,-8404.29]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4099.08,75.1499,-9770.06]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3968.69,91.9001,-10653.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3809.1,92.4993,-11442.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t1_truck_02",
-        "tm": [
-          [-0.642788,0.0,-0.766045],
-          [0.0,1.0,0.0],
-          [0.766045,0.0,-0.642788],
-          [-822.498,104.9,-4282.78]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_tank_03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1437.35,90.35,-5859.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2342.07,93.55,-6964.74]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3328.0,84.95,-7471.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4859.95,77.0,-9884.45]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5651.95,75.4,-9204.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_13": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-7160.05,75.3,-9106.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_03_wp_14": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-6523.4,76.45,-7664.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t1_truck_03",
-        "tm": [
-          [-0.642788,0.0,-0.766045],
-          [0.0,1.0,0.0],
-          [0.766045,0.0,-0.642788],
-          [-1573.06,104.9,-3782.4]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_truck_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2327.53,85.7,-4728.53]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3889.3,86.55,-6557.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-6175.35,81.9,-8202.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4904.65,78.6,-9621.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t1_truck_04",
-        "tm": [
-          [-0.642788,0.0,-0.766045],
-          [0.0,1.0,0.0],
-          [0.766045,0.0,-0.642788],
-          [984.211,104.901,-7091.04]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_truck_04_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [300.973,101.3,-8088.47]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_04_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1117.66,85.1516,-8772.69]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_04_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1838.02,77.15,-8928.22]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_04_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2869.73,84.9,-10626.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_03",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -2183,7 +1668,7 @@
           [0.766045,0.0,-0.642788],
           [-1712.72,104.9,-3910.24]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2198,7 +1683,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -2278,7 +1762,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_04",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -2286,7 +1770,7 @@
           [0.766045,0.0,-0.642788],
           [917.699,13.406,-7292.23]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2301,7 +1785,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -2381,7 +1864,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_03",
         "tm": [
           [0.707107,0.0,0.707107],
@@ -2389,7 +1872,7 @@
           [-0.707107,0.0,0.707107],
           [-4145.69,89.6499,-10799.8]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2404,7 +1887,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -2516,7 +1998,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_04",
         "tm": [
           [0.999048,0.0,0.043619],
@@ -2524,7 +2006,7 @@
           [-0.043619,0.0,0.999048],
           [-5352.7,89.65,-10048.0]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2539,7 +2021,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -2619,467 +2100,7 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t2_truck_01",
-        "tm": [
-          [0.300706,0.0,0.953717],
-          [0.0,1.0,0.0],
-          [-0.953717,0.0,0.300706],
-          [-3213.43,89.6504,-11461.6]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2440.33,99.2,-10013.6]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1697.77,82.95,-8678.17]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1077.46,106.501,-8750.59]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [52.2726,112.65,-8340.97]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [504.973,98.7501,-7761.32]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t2_truck_02",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [-6554.41,89.65,-8787.78]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_05_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3076.71,103.05,-4481.67]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2685.15,114.05,-3650.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1258.51,115.287,-4410.41]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1322.03,89.343,-5781.82]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t2_truck_03",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [-4289.7,89.6499,-10935.6]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_05_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4103.78,95.3596,-10393.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3886.14,104.949,-9441.04]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3391.27,110.052,-8360.71]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2533.31,10.2273,-7785.12]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1436.27,13.4829,-7196.32]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-330.926,13.4307,-6192.28]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "t2_truck_04",
-        "tm": [
-          [0.999048,0.0,0.043619],
-          [0.0,1.0,0.0],
-          [-0.043619,0.0,0.999048],
-          [-5573.56,89.65,-10064.0]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_05_wp_13": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3672.1,83.4,-7717.85]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_14": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2087.42,100.856,-5703.33]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_15": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1112.05,109.1,-5347.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_05_wp_16": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2700.8,104.85,-3586.85]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_05",
         "tm": [
           [-0.0436192,0.0,-0.999048],
@@ -3087,7 +2108,7 @@
           [0.999048,0.0,-0.0436192],
           [-3100.6,104.9,-3084.2]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3102,7 +2123,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3182,110 +2202,7 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t1_truck_05",
-        "tm": [
-          [-0.21644,0.0,-0.976296],
-          [0.0,1.0,0.0],
-          [0.976296,0.0,-0.21644],
-          [-3071.7,104.9,-2908.8]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_truck_05_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3828.1,85.7,-4548.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_05_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4744.6,86.55,-6489.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_05_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-6285.2,81.9,-7778.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_truck_05_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4795.5,78.6,-9678.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_05",
         "tm": [
           [0.707107,0.0,0.707107],
@@ -3293,7 +2210,7 @@
           [-0.707107,0.0,0.707107],
           [-6783.65,89.65,-7915.2]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3308,7 +2225,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -3388,110 +2304,7 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t2_truck_05",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [-6960.75,89.65,-8055.7]
-        ],
-        "unit_class": "ussr_zis_12_94KM_1945",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [36.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_truck_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4695.05,103.05,-6398.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_05_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2641.1,114.05,-3663.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_05_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1282.3,115.3,-3754.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_truck_05_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1205.35,89.35,-4955.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_additional_tank_01",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -3499,7 +2312,7 @@
           [0.766045,0.0,-0.642788],
           [1320.97,13.4058,-6881.62]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3514,7 +2327,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -3594,7 +2406,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_additional_tank_02",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -3602,7 +2414,7 @@
           [0.766045,0.0,-0.642788],
           [394.829,104.9,-5714.6]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3617,7 +2429,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -3745,7 +2556,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_additional_tank_01",
         "tm": [
           [0.300706,0.0,0.953717],
@@ -3753,7 +2564,7 @@
           [-0.953717,0.0,0.300706],
           [-3307.49,89.6499,-11654.4]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3768,7 +2579,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -3864,7 +2674,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_additional_tank_02",
         "tm": [
           [0.707107,0.0,0.707107],
@@ -3872,7 +2682,7 @@
           [-0.707107,0.0,0.707107],
           [-7060.4,89.6499,-8401.61]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3887,7 +2697,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -3983,7 +2792,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_additional_tank_03",
         "tm": [
           [-0.642788,0.0,-0.766045],
@@ -3991,7 +2800,7 @@
           [0.766045,0.0,-0.642788],
           [-2588.86,104.899,-2823.3]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "ussr_is2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4006,7 +2815,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -4134,7 +2942,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_additional_tank_03",
         "tm": [
           [0.707107,0.0,0.707107],
@@ -4142,7 +2950,7 @@
           [-0.707107,0.0,0.707107],
           [-5722.06,89.6523,-10245.0]
         ],
-        "unit_class": "ussr_t_34_1941",
+        "unit_class": "germ_tigerI",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4157,7 +2965,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4837,7 +3644,7 @@
           [0.970178,0.0,-0.242396],
           [-2774.79,210.831,-4269.16]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4852,7 +3659,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4875,7 +3681,7 @@
           [0.853696,0.0,-0.520773],
           [-1429.2,122.437,-4671.87]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4890,7 +3696,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4913,7 +3718,7 @@
           [0.505871,-0.00198033,-0.862607],
           [-367.324,41.4965,-5724.36]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4928,7 +3733,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4951,7 +3755,7 @@
           [-0.642788,-3.72529e-09,0.766045],
           [-6363.87,90.0949,-8169.71]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -4966,7 +3770,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4989,7 +3792,7 @@
           [-0.92388,0.0,0.382683],
           [-4425.88,91.1061,-10480.9]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -5004,7 +3807,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5027,7 +3829,7 @@
           [-0.81952,0.0438679,0.571369],
           [-3367.04,61.3346,-10780.2]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -5042,7 +3844,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5065,7 +3866,7 @@
           [0.505871,-0.00198033,-0.862607],
           [128.285,18.7167,-7388.65]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -5080,7 +3881,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5103,7 +3903,7 @@
           [-0.80166,-3.72529e-09,0.597782],
           [-5771.47,43.4606,-9570.27]
         ],
-        "unit_class": "swe_152mm_for_land_battles",
+        "unit_class": "uk_bunker_light_fat",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -5118,7 +3918,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5130,6 +3929,1170 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_01",
+        "tm": [
+          [-0.642788,0.0,-0.766045],
+          [0.0,1.0,0.0],
+          [0.766045,0.0,-0.642788],
+          [231.576,104.9,-5858.51]
+        ],
+        "unit_class": "ussr_ba64",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tank_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-319.815,105.42,-6234.18]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1166.25,87.4651,-6862.64]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2762.22,76.1597,-7786.66]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3246.62,75.3994,-8404.29]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4099.08,75.1499,-9770.06]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3968.69,91.9001,-10653.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3809.1,92.4993,-11442.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_02",
+        "tm": [
+          [-0.642788,0.0,-0.766045],
+          [0.0,1.0,0.0],
+          [0.766045,0.0,-0.642788],
+          [-822.498,104.9,-4282.78]
+        ],
+        "unit_class": "ussr_ba64",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tank_03_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1437.35,90.35,-5859.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2342.07,93.55,-6964.74]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3328.0,84.95,-7471.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4859.95,77.0,-9884.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5651.95,75.4,-9204.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-7160.05,75.3,-9106.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_03_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6523.4,76.45,-7664.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_03",
+        "tm": [
+          [-0.642788,0.0,-0.766045],
+          [0.0,1.0,0.0],
+          [0.766045,0.0,-0.642788],
+          [-1573.06,104.9,-3782.4]
+        ],
+        "unit_class": "ussr_ba64",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_truck_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2327.53,85.7,-4728.53]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3889.3,86.55,-6557.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6175.35,81.9,-8202.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4904.65,78.6,-9621.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_04",
+        "tm": [
+          [-0.642788,0.0,-0.766045],
+          [0.0,1.0,0.0],
+          [0.766045,0.0,-0.642788],
+          [984.211,104.901,-7091.04]
+        ],
+        "unit_class": "ussr_ba64",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_truck_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [300.973,101.3,-8088.47]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1117.66,85.1516,-8772.69]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1838.02,77.15,-8928.22]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2869.73,84.9,-10626.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_01",
+        "tm": [
+          [0.300706,0.0,0.953717],
+          [0.0,1.0,0.0],
+          [-0.953717,0.0,0.300706],
+          [-3213.43,89.6504,-11461.6]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2440.33,99.2,-10013.6]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1697.77,82.95,-8678.17]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1077.46,106.501,-8750.59]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [52.2726,112.65,-8340.97]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [504.973,98.7501,-7761.32]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_02",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [-6554.41,89.65,-8787.78]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_05_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3076.71,103.05,-4481.67]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2685.15,114.05,-3650.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1258.51,115.287,-4410.41]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1322.03,89.343,-5781.82]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_03",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [-4289.7,89.6499,-10935.6]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_05_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4103.78,95.3596,-10393.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3886.14,104.949,-9441.04]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3391.27,110.052,-8360.71]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2533.31,10.2273,-7785.12]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1436.27,13.4829,-7196.32]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-330.926,13.4307,-6192.28]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_04",
+        "tm": [
+          [0.999048,0.0,0.043619],
+          [0.0,1.0,0.0],
+          [-0.043619,0.0,0.999048],
+          [-5573.56,89.65,-10064.0]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_05_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3672.1,83.4,-7717.85]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2087.42,100.856,-5703.33]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_15": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1112.05,109.1,-5347.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_05_wp_16": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2700.8,104.85,-3586.85]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_05",
+        "tm": [
+          [-0.21644,0.0,-0.976296],
+          [0.0,1.0,0.0],
+          [0.976296,0.0,-0.21644],
+          [-3071.7,104.9,-2908.8]
+        ],
+        "unit_class": "ussr_ba64",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_truck_05_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3828.1,85.7,-4548.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_05_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4744.6,86.55,-6489.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_05_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6285.2,81.9,-7778.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_truck_05_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4795.5,78.6,-9678.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_05",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [-6960.75,89.65,-8055.7]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [36.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_truck_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4695.05,103.05,-6398.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_05_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2641.1,114.05,-3663.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_05_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1282.3,115.3,-3754.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_05_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1205.35,89.35,-4955.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
       }
     },
     {
@@ -5156,7 +5119,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5194,7 +5156,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5232,7 +5193,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5270,7 +5230,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5308,7 +5267,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5346,7 +5304,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5384,7 +5341,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5422,7 +5378,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5460,7 +5415,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5498,7 +5452,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5536,7 +5489,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5574,7 +5526,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5612,7 +5563,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5650,7 +5600,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5688,7 +5637,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5726,7 +5674,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5764,7 +5711,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5802,7 +5748,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5840,7 +5785,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5878,7 +5822,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5916,7 +5859,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5954,7 +5896,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5992,7 +5933,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6030,7 +5970,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6068,7 +6007,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6106,7 +6044,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6144,7 +6081,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6182,7 +6118,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6220,7 +6155,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6258,7 +6192,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6296,7 +6229,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6334,7 +6266,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6372,7 +6303,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6410,7 +6340,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6448,7 +6377,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6486,7 +6414,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6524,7 +6451,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6562,7 +6488,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6600,7 +6525,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6638,7 +6562,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6676,7 +6599,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6714,7 +6636,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6752,7 +6673,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -6790,7 +6710,6 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,

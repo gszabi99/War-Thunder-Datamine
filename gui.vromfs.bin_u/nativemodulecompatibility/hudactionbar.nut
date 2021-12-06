@@ -9,5 +9,4 @@ return {
   getAutoturretState = @() ::get_autoturret_state?()
   getCurrentTriggerGroup = @() ::get_current_trigger_group?()
   singleTorpedoSelected = @() ::single_torpedo_selected?()
-  selectActionBarAction = @(shortcutId) null
 }

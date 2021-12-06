@@ -14,7 +14,7 @@ local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuc
 local { checkShowRateWnd } = require("scripts/user/suggestionRateGame.nut")
 
 //called after all first mainmenu actions
-local function onMainMenuReturn(handler, isAfterLogin) {
+onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
   if (!handler)
     return
   local isAllowPopups = ::g_login.isProfileReceived() && !::getFromSettingsBlk("debug/skipPopups")
@@ -126,5 +126,3 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   ::broadcastEvent("MainMenuReturn")
 }
-
-onMainMenuReturnActions.mutate(@(v) v.onMainMenuReturn <- onMainMenuReturn)

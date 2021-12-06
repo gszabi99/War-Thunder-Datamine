@@ -16,7 +16,6 @@ local { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
 local { RANDOM_UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { isNeedFirstCountryChoice } = require("scripts/firstChoice/firstChoice.nut")
 
 /*
 if need - put commented in array above
@@ -1207,7 +1206,7 @@ local function selectAvailableCrew(countryId)
 ::checkUnlockedCountries <- function checkUnlockedCountries()
 {
   local curUnlocked = []
-  if (isNeedFirstCountryChoice())
+  if (::is_need_first_country_choice())
     return curUnlocked
 
   local unlockAll = ::disable_network() || ::has_feature("UnlockAllCountries") || isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT)

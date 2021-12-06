@@ -83,8 +83,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
     }
 
     local isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
-    local weapTypeCount = 0 //for shortDesc only
-    local gunNames = []     //for shortDesc only
+    local weapTypeCount = 0; //for shortDesc only
     foreach (trigger in triggers)
     {
       local tText = ""
@@ -126,11 +125,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           else
           {
             if (isShortDesc)
-            {
-              if(!::isInArray(weaponName, gunNames))
-                gunNames.append(weaponName)
               weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger)? 0 : weapon.num
-            }
             else
             {
               tText += ::loc($"weapons/{weaponName}")
@@ -178,13 +173,11 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
     }
     if (weapTypeCount>0)
     {
-      if (text!="") text = "".concat(text, p.newLine)
+      if (text!="") text += p.newLine
       if (isShortDesc)
-        text = "".concat(text, "".join(gunNames.map(@(n) ::loc($"weapons/{n}"))),
-          ::nbsp, ::format(::loc("weapons/counter/right/short"), weapTypeCount))
+        text += ::loc("weapons_types/" + weaponType) + ::nbsp + ::format(::loc("weapons/counter/right/short"), weapTypeCount)
       else
-        text = "".concat(text, ::loc("weapons_types/" + weaponType),
-          ::format(::loc("weapons/counter"), weapTypeCount))
+        text += ::loc("weapons_types/" + weaponType) + ::format(::loc("weapons/counter"), weapTypeCount)
     }
   }
 

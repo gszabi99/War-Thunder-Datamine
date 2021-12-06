@@ -32,8 +32,6 @@ local getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
   return res
 }
 
-local getUnit = @() ::getAircraftByName(getActionBarUnitName())
-
 ::g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
@@ -72,7 +70,7 @@ local getUnit = @() ::getAircraftByName(getActionBarUnitName())
   getShortcut = function(actionItem = null, unit = null)
   {
     if (!unit)
-      unit = getUnit()
+      unit = ::getAircraftByName(getActionBarUnitName())
     local shortcutIdx = actionItem?.shortcutIdx ?? getActionShortcutIndexByType(code)
     if (shortcutIdx < 0)
       return null
@@ -94,7 +92,7 @@ local getUnit = @() ::getAircraftByName(getActionBarUnitName())
       return getShortcut(actionItem, unit)
 
     if (!unit)
-      unit = getUnit()
+      unit = ::getAircraftByName(getActionBarUnitName())
     if (unit?.isSubmarine())
       return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     if (unit?.isShipOrBoat())
@@ -231,7 +229,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
     _icon = "#ui/gameuiskin#smoke_screen"
     getTitle = @(killStreakTag = null)
-      !getUnit()?.isShipOrBoat()
+      !::getAircraftByName(getActionBarUnitName())?.isShipOrBoat()
         ? ::loc("hotkeys/ID_SMOKE_SCREEN")
         : ::loc("hotkeys/ID_SHIP_SMOKE_GRENADE")
     getShortcut = @(actionItem, unit = null)
@@ -252,20 +250,18 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         return "ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES"
       if (unit?.isShipOrBoat())
         return "ID_SHIP_SMOKE_SCREEN_GENERATOR"
-      if (unit?.isTank())
-        return "ID_SMOKE_SCREEN_GENERATOR"
-      return "ID_PLANE_SMOKE_SCREEN_GENERATOR"
+      return "ID_SMOKE_SCREEN_GENERATOR"
     }
     getIcon = function(killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
+      unit = unit || ::getAircraftByName(getActionBarUnitName())
       return unit?.isSubmarine() ? "#ui/gameuiskin#acoustic_countermeasures" : _icon
     }
     getTitle = @(killStreakTag = null)
-      getUnit()?.isSubmarine()
+      ::getAircraftByName(getActionBarUnitName())?.isSubmarine()
         ? ::loc("hotkeys/ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES")
         : _title
     getName = @(killStreakTag = null)
-      getUnit()?.isSubmarine()
+      ::getAircraftByName(getActionBarUnitName())?.isSubmarine()
         ? "acoustic_countermeasure"
         : _name
   }
@@ -312,27 +308,27 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   EXTINGUISHER = {
     code = EII_EXTINGUISHER
-    isForWheelMenu = @() getUnit()?.isShipOrBoat()
-    canSwitchAutomaticMode = @() getUnit()?.isShipOrBoat()
+    isForWheelMenu = @() ::getAircraftByName(getActionBarUnitName())?.isShipOrBoat()
+    canSwitchAutomaticMode = @() ::getAircraftByName(getActionBarUnitName())?.isShipOrBoat()
     _name = "extinguisher"
     _icon = "#ui/gameuiskin#extinguisher"
     _title = ::loc("hotkeys/ID_ACTION_BAR_ITEM_6")
     needAnimOnIncrementCount = true
     getIcon = function(killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
+      unit = unit || ::getAircraftByName(getActionBarUnitName())
       return unit?.isShipOrBoat() ? "#ui/gameuiskin#manual_ship_extinguisher" : "#ui/gameuiskin#extinguisher"
     }
   }
 
   TOOLKIT = {
     code = EII_TOOLKIT
-    isForWheelMenu = @() getUnit()?.isShipOrBoat()
-    canSwitchAutomaticMode = @() getUnit()?.isShipOrBoat()
+    isForWheelMenu = @() ::getAircraftByName(getActionBarUnitName())?.isShipOrBoat()
+    canSwitchAutomaticMode = @() ::getAircraftByName(getActionBarUnitName())?.isShipOrBoat()
     _name = "toolkit"
     _icon = "#ui/gameuiskin#tank_tool_kit"
     _title = ::loc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11")
     getIcon = function(killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
+      unit = unit || ::getAircraftByName(getActionBarUnitName())
       return unit?.isShipOrBoat() ? "#ui/gameuiskin#ship_tool_kit" : "#ui/gameuiskin#tank_tool_kit"
     }
   }
@@ -346,7 +342,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     needAnimOnIncrementCount = true
 
     getIcon = function (killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
+      unit = unit || ::getAircraftByName(getActionBarUnitName())
       local mod = getModificationByName(unit, "tank_medical_kit")
       return mod?.image ?? ""
     }
@@ -400,7 +396,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(actionItem, unit = null) "ID_EVENT_ACTION"
 
     getIcon = function (killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
+      unit = unit || ::getAircraftByName(getActionBarUnitName())
       local mod = getModificationByName(unit, "ship_race_speed_boost")
       return mod?.image ?? ""
     }
@@ -462,14 +458,6 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
           return "!ui/gameuiskin#artillery_secondary_weapon_state_indicator"
         case TRIGGER_GROUP_MACHINE_GUN:
           return "!ui/gameuiskin#machine_gun_weapon_state_indicator"
-        case TRIGGER_GROUP_EXTRA_GUN_1:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator"
-        case TRIGGER_GROUP_EXTRA_GUN_2:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator"
-        case TRIGGER_GROUP_EXTRA_GUN_3:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator"
-        case TRIGGER_GROUP_EXTRA_GUN_4:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator"
       }
       return "!ui/gameuiskin#artillery_weapon_state_indicator"
     }
@@ -561,14 +549,16 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null)
-      unit?.isTank() ? "ID_START_SUPPORT_PLANE" : "ID_START_SUPPORT_PLANE_SHIP"
-    getName = @(killStreakTag = null)
-      getUnit()?.isTank() ? _name
-        : "support_plane_ship"
-    getIcon = function(killStreakTag = null, unit = null) {
-      unit = unit || getUnit()
-      return unit?.isTank() ? "#ui/gameuiskin#scout_streak" : "#ui/gameuiskin#shipSupportPlane"
-    }
+      //
+
+
+      "ID_START_SUPPORT_PLANE"
+    //
+
+
+
+
+
   }
 
   STEALTH = {

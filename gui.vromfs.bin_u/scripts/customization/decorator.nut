@@ -7,7 +7,6 @@ local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 local { copyParamsToTable, eachParam } = require("std/datablock.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 ::Decorator <- class
 {
@@ -357,7 +356,7 @@ local { GUI } = require("scripts/utils/configs.nut")
   function getTagsLoc()
   {
     local res = rarity.tag ? [ rarity.tag ] : []
-    local tagsVisibleBlk = GUI.get()?.decorator_tags_visible
+    local tagsVisibleBlk = ::configs.GUI.get()?.decorator_tags_visible
     if (tagsVisibleBlk && tags)
       foreach (tagBlk in tagsVisibleBlk % "i")
         if (tags?[tagBlk.tag])

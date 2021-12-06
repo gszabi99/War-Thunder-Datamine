@@ -1,5 +1,3 @@
-local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
-
 class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL

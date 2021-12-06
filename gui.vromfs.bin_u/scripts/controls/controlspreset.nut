@@ -2,6 +2,7 @@
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { copyParamsToTable, eachBlock, eachParam } = require("std/datablock.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+local controlsPresetDefault = require("scripts/controls/controlsPresetDefault.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
@@ -1009,7 +1010,12 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       local indexConfigFolder = presetPath.indexof("config/hotkeys/hotkey")
       if (indexConfigFolder == 0)
         presetPath = $"{controlsPresetConfigPath.value}{presetPath}"
+      else if (indexConfigFolder == null
+        || presetPath.slice(0, indexConfigFolder) != controlsPresetConfigPath.value)
+          presetPath = ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
 
+      if (controlsPresetDefault.value != null && !::dd_file_exist(presetPath))
+        presetPath = controlsPresetDefault.value
       return presetPath
     }
 

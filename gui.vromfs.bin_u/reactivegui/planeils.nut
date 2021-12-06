@@ -3,7 +3,7 @@ local {IlsVisible, IlsPosSize, IlsColor, Speed, Altitude, ClimbSpeed, Tangage, M
         AimLocked, DistToSafety, Aos, Aoa, DistToTarget, CannonMode, RocketMode, BombCCIPMode,
         BlkFileName, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked, RadarTargetDist,
         RadarTargetPosValid, RadarTargetPos, AamAccelLock, BarAltitude, Overload,
-        IlsLineScale, ShellCnt, Accel} = require("planeState.nut")
+        IlsLineScale, ShellCnt} = require("planeState.nut")
 local {IlsTrackerVisible, TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("rocketAamAimState.nut")
 local {floor, cos, sin, PI} = require("std/math.nut")
 local {cvt} = require("dagor.math")
@@ -42,7 +42,6 @@ local ilsSetting = Computed(function() {
     isEP12 = false
     isEP08 = false
     isShimadzu = false
-    isIPP2_53 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -63,7 +62,6 @@ local ilsSetting = Computed(function() {
     isEP12 = blk.getBool("ilsEP12", false)
     isEP08 = blk.getBool("ilsEP08", false)
     isShimadzu = blk.getBool("ilsShimadzu", false)
-    isIPP2_53 = blk.getBool("ilsIPP_2_53", false)
   }
 })
 
@@ -1419,7 +1417,7 @@ local ASPCompassMark = @() {
   ]
 }
 
-local function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
+local function ASPTargetMark(width, height, is_radar, is_aam = false) {
   local watchVar = is_aam ? IlsTrackerVisible : (is_radar ? RadarTargetPosValid : TargetPosValid)
   local value = is_aam ? [IlsTrackerX.value, IlsTrackerY.value] : (is_radar ? RadarTargetPos : TargetPos)
   return @() {
@@ -1427,7 +1425,7 @@ local function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
     size = flex()
     children = watchVar.value ?
       @() {
-        watch = [IlsColor, BombingMode]
+        watch = IlsColor
         size = [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -1441,23 +1439,8 @@ local function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
         update = @() {
           transform = {
             translate = watchVar.value ? (is_aam ? [IlsTrackerX.value, IlsTrackerY.value] : value) : [width * 0.5, height * 0.575]
-            rotate = -Roll.value
-            pivot = [0, 0]
           }
         }
-        children = [
-          isIpp && BombingMode.value ? @() {
-            watch = DistToTargetBuc
-            size = flex()
-            rendObj = ROBJ_VECTOR_CANVAS
-            color = IlsColor.value
-            fillColor = Color(0, 0, 0, 0)
-            lineWidth = baseLineWidth * IlsLineScale.value
-            commands = [
-              [VECTOR_SECTOR, 0, 0, 200, 200, -90, DistToTargetBuc.value],
-            ]
-          } : null
-        ]
       }
       : null
   }
@@ -1720,147 +1703,26 @@ local ASPCCIPDistanceMark = @() {
   }
 }
 
-local function IPPCCRPLine(width, height) {
-  return @() {
-    watch = TargetPosValid
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-    size = flex()
-    color = IlsColor.value
-    commands = [
-      (TargetPosValid.value ? [VECTOR_LINE, 0, 0, 0, -100] : [])
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = TargetPosValid.value ? [TargetPos[0], clamp(TargetPos[1], 0, height)] : [TargetPos[0], height]
-        rotate = -Roll.value
-        pivot = [0, 0]
-      }
-    }
-  }
-}
-
-local function ASP23CCIP(width, height, isIpp) {
+local function ASP23CCIP(width, height) {
   return {
     size = [width, height]
     children = [
-      ASPTargetMark(width, height, false, isIpp),
-      (!isIpp ? ASPCCIPDistanceGrid() : null),
-      (!isIpp ? ASPCCIPDistanceMark : null),
-      (isIpp ? IPPCCRPLine(width, height) : null)
+      ASPTargetMark(width, height, false),
+      ASPCCIPDistanceGrid(),
+      ASPCCIPDistanceMark
     ]
   }
 }
 
-local IPPAccelWatch = Computed(@() clamp((50.0 - Accel.value * mpsToKmh), 0, 100).tointeger())
-local IPPAcceleration = @(){
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-  size = [pw(10), ph(5)]
-  pos = [pw(15), ph(35)]
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, 0, 0, 0, 50],
-    [VECTOR_LINE, 25, 25, 25, 25],
-    [VECTOR_LINE, 100, 0, 100, 50],
-    [VECTOR_LINE, 75, 25, 75, 25],
-    [VECTOR_LINE, 50, 0, 50, 50]
-  ]
-  children = @(){
-    watch = IPPAccelWatch
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-    size = flex()
-    color = IlsColor.value
-    commands = [
-      [VECTOR_LINE, 100 - IPPAccelWatch.value, 65, 100 - IPPAccelWatch.value + 20, 100],
-      [VECTOR_LINE, 100 - IPPAccelWatch.value, 65, 100 - IPPAccelWatch.value - 20, 100],
-      [VECTOR_LINE, 100 - IPPAccelWatch.value - 20, 100, 100 - IPPAccelWatch.value + 20, 100]
-    ]
-  }
-}
-
-local IPPClimbWatch = Computed(@() clamp((3.0 - ClimbSpeed.value) / 6.0 * 100.0, 0, 100).tointeger())
-local IPPClimb = @(){
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-  size = [pw(5), ph(30)]
-  pos = [pw(70), ph(40)]
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, 0, 0, 50, 0],
-    [VECTOR_LINE, 0, 16.6, 50, 16.6],
-    [VECTOR_LINE, 0, 33.3, 50, 33.3],
-    [VECTOR_LINE, 0, 50, 50, 50],
-    [VECTOR_LINE, 0, 66.6, 50, 66.6],
-    [VECTOR_LINE, 0, 66.6, 50, 66.6],
-    [VECTOR_LINE, 0, 83.4, 50, 83.4],
-    [VECTOR_LINE, 0, 100, 50, 100],
-  ]
-  children = [
-    {
-      size = flex()
-      rendObj = ROBJ_DTEXT
-      pos = [pw(60), ph(-5)]
-      color = IlsColor.value
-      fontSize = 40
-      font = Fonts.ussr_ils
-      text = "3"
-    },
-    {
-      size = flex()
-      rendObj = ROBJ_DTEXT
-      pos = [pw(60), ph(95)]
-      color = IlsColor.value
-      fontSize = 40
-      font = Fonts.ussr_ils
-      text = "3"
-    },
-    {
-      size = flex()
-      rendObj = ROBJ_DTEXT
-      pos = [pw(60), ph(45)]
-      color = IlsColor.value
-      fontSize = 40
-      font = Fonts.ussr_ils
-      text = "0"
-    },
-    @() {
-      watch = IPPClimbWatch
-      rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-      size = flex()
-      color = IlsColor.value
-      commands = [
-        [VECTOR_LINE, -50, IPPClimbWatch.value - 5, -10, IPPClimbWatch.value],
-        [VECTOR_LINE, -50, IPPClimbWatch.value + 5, -10, IPPClimbWatch.value],
-        [VECTOR_LINE, -50, IPPClimbWatch.value - 5, -50, IPPClimbWatch.value + 5]
-      ]
-    }
-  ]
-}
-
-local function basicIPP253(width, height) {
-  return {
-    size = [width, height]
-    children = [
-      IPPAcceleration,
-      IPPClimb
-    ]
-  }
-}
-
-local function ASP23ModeSelector(width, height, isIPP) {
+local function ASP23ModeSelector(width, height) {
   return @() {
-    watch = [CCIPMode, IsRadarVisible, BombingMode]
+    watch = [CCIPMode, IsRadarVisible]
     size = [width, height]
     children = [
       basicASP23(width, height),
       (IsRadarVisible.value && !CCIPMode.value ? ASP23LongRange(width, height) : ASPRoll),
-      (IsRadarVisible.value && !CCIPMode.value ? ASPTargetMark(width, height, true, false) : null),
-      (CCIPMode.value || BombingMode.value ? ASP23CCIP(width, height, isIPP) : null),
-      (isIPP ? basicIPP253(width, height) : null)
+      (IsRadarVisible.value && !CCIPMode.value ? ASPTargetMark(width, height, true) : null),
+      (CCIPMode.value ? ASP23CCIP(width, height) : null)
     ]
   }
 }
@@ -1917,8 +1779,8 @@ local function J7EAdditionalHud(width, height) {
     size = [width, height]
     children = [
       J7ERadar(width, height),
-      (IsRadarVisible.value ? ASPTargetMark(width, height, true, false) : null),
-      ASPTargetMark(width, height, false, false, true)
+      (IsRadarVisible.value ? ASPTargetMark(width, height, true) : null),
+      ASPTargetMark(width, height, false, true)
     ]
   }
 }
@@ -2753,7 +2615,7 @@ local function ShimadzuIls(width, height) {
 local planeIls = @(width, height) function() {
 
   local {isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
-    is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53} = ilsSetting.value
+    is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu} = ilsSetting.value
 
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
@@ -2771,7 +2633,7 @@ local planeIls = @(width, height) function() {
       (is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
       (is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
       (isLCOSS ? LCOSS(width, height) : null),
-      (isASP23 || isIPP2_53 ? ASP23ModeSelector(width, height, isIPP2_53) : null),
+      (isASP23 ? ASP23ModeSelector(width, height) : null),
       (haveJ7ERadar && (!BombingMode.value || !haveAVQ7Bombing) &&
        (!CCIPMode.value || !haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null),
       (isEP08 || isEP12 ? swedishEPIls(width, height) : null),

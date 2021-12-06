@@ -1,5 +1,4 @@
 local { getTimestampFromStringUtc } = require("scripts/time.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local baseCustomizationArray = null
 
@@ -17,7 +16,7 @@ local function initCustomConfigOnce() {
     return
 
   baseCustomizationArray = []
-  local customizationsBlk = GUI.get()?.interface_customization
+  local customizationsBlk = ::configs.GUI.get()?.interface_customization
   if (customizationsBlk == null)
     return
 

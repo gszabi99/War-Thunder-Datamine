@@ -1,4 +1,5 @@
 local { canAssignInSlot, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW
@@ -200,8 +201,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     unitsList = []
     if (slotbarWeak?.ownerWeak?.canShowShop && slotbarWeak.ownerWeak.canShowShop())
       unitsList.append(SEL_UNIT_BUTTON.SHOP)
-    local needEmptyCrewButton = !isSelectByGroups
-      && ((crew?.aircraft ?? "") != "" && busyUnitsCount >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
+    local needEmptyCrewButton = !isSelectByGroups && ((crew?.aircraft ?? "") != "")
+      && (!hasDefaultUnitsInCountry(country) || busyUnitsCount >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
     if (needEmptyCrewButton)
       unitsList.append(SEL_UNIT_BUTTON.EMPTY_CREW)
     unitsList.extend(unitsArray)

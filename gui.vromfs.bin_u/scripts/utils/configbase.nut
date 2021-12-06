@@ -1,4 +1,4 @@
-class ConfigBase
+class ::ConfigBase
 {
   //main params to set in constructor
   id = ""
@@ -138,5 +138,3 @@ class ConfigBase
     cache = null
   }
 }
-
-return ConfigBase

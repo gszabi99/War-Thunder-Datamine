@@ -1,4 +1,4 @@
-local textInput = require("%darg/components/textInput.nut")
+local textInput = require("daRg/components/textInput.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local focusBorder = require("reactiveGui/components/focusBorder.nut")
 

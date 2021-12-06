@@ -445,9 +445,11 @@ return [
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }
-  {
-    id = "ID_START_SUPPORT_PLANE_SHIP"
-    checkGroup = ctrlGroups.SHIP
-    checkAssign = false
-  }
+  //
+
+
+
+
+
+
 ]

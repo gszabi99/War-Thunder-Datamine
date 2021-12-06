@@ -203,7 +203,6 @@ local function setFuncBlkByArrayPath(blk, path, func){
 }
 
 return {
-  isDataBlock
   fillBlock
   eachBlock
   eachParam

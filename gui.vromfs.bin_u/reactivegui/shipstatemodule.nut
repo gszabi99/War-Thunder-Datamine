@@ -376,6 +376,7 @@ local shipStateDisplay = @() {
   ]
 }
 
+local updateFunc = null
 
 local xraydoll = {
   rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
@@ -388,17 +389,27 @@ return @() setHudBg({
   padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
   gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
   watch = isVisibleDmgIndicator
-  behavior = Behaviors.RecalcHandler
-  function onRecalcLayout(initial, elem) {
-    if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      ::cross_call.update_damage_panel_state({
-        pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-        size = [elem.getWidth(), elem.getHeight()]
-        visible = true
-      })
+  onAttach = function(elem) {
+    if (updateFunc)
+      ::gui_scene.clearTimer(updateFunc)
+    updateFunc = function() {
+      if(elem.getWidth() > 1 && elem.getHeight() > 1) {
+        ::gui_scene.clearTimer(callee())
+        ::cross_call.update_damage_panel_state({
+          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
+          size = [elem.getWidth(), elem.getHeight()]
+          visible = true })
+      }
+    }
+    gui_scene.setInterval(0.1, updateFunc)
+  }
+  onDetach = function(elem) {
+    ::cross_call.update_damage_panel_state(null)
+    if (updateFunc) {
+      ::gui_scene.clearTimer(updateFunc)
+      updateFunc = null
     }
   }
-
   children = isVisibleDmgIndicator.value
     ? [
         speedComp

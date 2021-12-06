@@ -5,7 +5,6 @@ local statsd = require("statsd")
 local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlocksState.nut")
 local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
 } = require("scripts/utils/genericTooltipTypes.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 ::g_battle_tasks <- null
 
@@ -780,7 +779,7 @@ local { GUI } = require("scripts/utils/configs.nut")
     if (::u.isEmpty(playbackName))
       return ""
 
-    local guiBlk = GUI.get()
+    local guiBlk = ::configs.GUI.get()
     local unlockPlaybackPath = guiBlk?.unlockPlaybackPath
     if (!unlockPlaybackPath)
       return ""

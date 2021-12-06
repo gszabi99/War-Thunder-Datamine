@@ -582,7 +582,7 @@ local B_ScopeSquareMarkers = @(size, color) function() {
         watch = [VelocitySearch, DistanceMax, DistanceScalesMax ]
         rendObj = ROBJ_DTEXT
         color
-        pos = [size[0] * 0.75, -hdpx(20)]
+        pos = [max(size[0] * 0.75, hdpx(70)), -hdpx(20)]
         text = "".concat(VelocitySearch.value
                 ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
                 : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
@@ -593,7 +593,7 @@ local B_ScopeSquareMarkers = @(size, color) function() {
         watch = [VelocitySearch, DistanceMin ]
         rendObj = ROBJ_DTEXT
         color
-        pos = [size[0] * 0.75, size[1] + hdpx(6)]
+        pos = [max(size[0] * 0.75, hdpx(70)), size[1] + hdpx(6)]
         text = VelocitySearch.value
           ? ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
           : ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
@@ -625,9 +625,9 @@ local B_ScopeSquareMarkers = @(size, color) function() {
           pos = [size[0] * 0.5, -hdpx(50)]
         }, color),
       noiseSignal(
-        [size[0] * 0.06, size[0] * 0.06],
-        [size[0] * 0.35, -hdpx(25)],
-        [size[0] * 0.35, -hdpx(55)],
+        [max(size[0] * 0.06, hdpx(20)), max(size[0] * 0.06, hdpx(20))],
+        [size[0] * 0.5 - max(size[0] * 0.15, hdpx(60)), -hdpx(25)],
+        [size[0] * 0.5 - max(size[0] * 0.15, hdpx(60)), -hdpx(55)],
         color)
     ]
   })

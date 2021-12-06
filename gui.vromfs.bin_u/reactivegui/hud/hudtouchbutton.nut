@@ -39,7 +39,7 @@ local touchButtonsConfigs = {
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
     onClick = @() setShortcutOn(id)
-    onTouchEnd = @() setShortcutOff(id)
+    onDoubleClick = @() setShortcutOff(id)
   },
   ["ship_steering_rangeMin"] = {
     id = "ship_steering_rangeMin"
@@ -47,7 +47,7 @@ local touchButtonsConfigs = {
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
     onClick = @() setShortcutOn(id)
-    onTouchEnd = @() setShortcutOff(id)
+    onDoubleClick = @() setShortcutOff(id)
   },
   ["ship_main_engine_rangeMax"] = {
     id = "ship_main_engine_rangeMax"

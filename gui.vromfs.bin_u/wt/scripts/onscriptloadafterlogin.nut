@@ -47,7 +47,7 @@ foreach (fn in [
   "scripts/utils/genericTooltip.nut"
 
   "scripts/eulaWnd.nut"
-  "scripts/firstChoice/countryChoiceWnd.nut"
+  "scripts/countryChoiceWnd.nut"
 
   "scripts/measureType.nut"
   "scripts/genericOptions.nut"

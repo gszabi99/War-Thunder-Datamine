@@ -260,7 +260,7 @@ local function openChangelog() {
     lastLoadedVersionInfoNum(loadedVersionInfoNum)
   }
   choosePatchnote(curr)
-  emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
+  emptySceneWithDarg({ widgetsList = [{ widgetId = DargWidgets.CHANGE_LOG }] })
 }
 
 chosenPatchnoteContent.subscribe(@(value)

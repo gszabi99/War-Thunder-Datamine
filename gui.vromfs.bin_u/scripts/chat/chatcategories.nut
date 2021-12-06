@@ -1,5 +1,3 @@
-local { GUI } = require("scripts/utils/configs.nut")
-
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories <- {
@@ -28,7 +26,7 @@ g_chat_categories.initThreadCategories <- function initThreadCategories()
   searchCategories.clear()
   defaultCategoryName = ""
 
-  local guiBlk = GUI.get()
+  local guiBlk = ::configs.GUI.get()
   local listBlk = guiBlk?.chat_categories
   if (!::u.isDataBlock(listBlk))
     return

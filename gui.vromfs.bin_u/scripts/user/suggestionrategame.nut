@@ -4,7 +4,6 @@ local { TIME_HOUR_IN_SECONDS } = require("std/time.nut")
 local { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
 local steamRateGameWnd = require("steamRateGameWnd.nut")
 local { debriefingRows } = require("scripts/debriefing/debriefingFull.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local log = require("std/log.nut")().with_prefix("[UserUtils] ")
 
@@ -33,7 +32,7 @@ local function initConfig() {
     return
   isConfigInited = true
 
-  local guiBlk = GUI.get()
+  local guiBlk = ::configs.GUI.get()
   local cfgBlk = guiBlk?.suggestion_rate_game
   foreach (k, v in cfg)
     cfg[k] = cfgBlk?[k] ?? cfg[k]

@@ -56,7 +56,7 @@ local function patchnote(v) {
       valign = ALIGN_CENTER
       color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent())
       font = fontsState.get("small")
-      text = v?.titleshort ?? v?.title ?? v.tVersion
+      text = v?.title ?? v.tVersion
     }]
     if ((stateFlags.value & S_HOVER) != 0)
       children.append(focusBorder({ maxWidth = maxPatchnoteWidth }))

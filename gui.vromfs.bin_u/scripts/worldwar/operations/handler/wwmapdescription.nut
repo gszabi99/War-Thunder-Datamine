@@ -60,6 +60,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     updateName()
     updateDescription()
+    updateWorldCoords()
     updateCountriesList()
     updateTotalClansText()
     updateAvailableText()
@@ -90,6 +91,13 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
     local desctObj = scene.findObject("item_desc")
     if (::checkObj(desctObj))
       desctObj.setValue(descItem.getDescription())
+  }
+
+  function updateWorldCoords()
+  {
+    local obj = scene.findObject("world_coords_text")
+    if (::checkObj(obj))
+      obj.setValue(descItem.getGeoCoordsText())
   }
 
   function mapCountriesToView(countries)

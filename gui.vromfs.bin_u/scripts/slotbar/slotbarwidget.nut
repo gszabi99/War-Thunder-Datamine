@@ -1040,9 +1040,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (!crew)
       return
 
-    if (!isCountrySlotbarHasUnits(crew.country) && crew.idInCountry != 0)
-      return checkSlotbar()
-
     local slotbar = this
     ignoreCheckSlotbar = true
     checkedCrewAirChange(function() {

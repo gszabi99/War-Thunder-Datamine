@@ -2,7 +2,6 @@ local time = require("scripts/time.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local ent = require("scripts/onlineShop/entitlements.nut")
-local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
 local payMethodsCfg = [
   { id = ::YU2_PAY_QIWI,        name = "qiwi" }
@@ -51,7 +50,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!scene)
       return goBack()
 
-    ENTITLEMENTS_PRICE.checkUpdate(
+    ::configs.ENTITLEMENTS_PRICE.checkUpdate(
       ::Callback(function()
       {
         reinitScreen()

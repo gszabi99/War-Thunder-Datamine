@@ -2,7 +2,6 @@
 
 local avatars = require("scripts/user/avatars.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 if (!("EUCT_TOTAL" in ::getroottable()))
   ::EUCT_TOTAL <- 7 //temporary to work without new exe

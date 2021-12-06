@@ -7,8 +7,6 @@ local hudState = persist("hudState", @(){
   isPlayingReplay = Watched(false)
   isVisibleDmgIndicator = Watched(isDmgIndicatorVisible())
   dmgIndicatorStates = Watched({ size = [0, 0], pos = [0, 0], padding = [0, 0, 0, 0]})
-  hasTarget = Watched(false)
-  canZoom = Watched(false)
 })
 
 

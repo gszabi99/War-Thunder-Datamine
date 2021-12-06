@@ -1,6 +1,5 @@
 local clustersModule = require("scripts/clusterSelect.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 global enum queueStates
 {
@@ -34,16 +33,6 @@ foreach (fn in [
                ])
   ::g_script_reloader.loadOnce("scripts/queue/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
-::matching_rpc_subscribe("mkeeper.notify_service_started", function(params){
-  if (params?.service != "match" || ::queues.lastQueueReqParams == null)
-    return
-
-  ::queues.init()
-  ::g_delayed_actions.add(
-    ::Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
-    5000 + ::math.rnd() % 5000)
-})
-
 ::queues <- null //init in second mainmenu
 
 ::QueueManager <- class {
@@ -52,8 +41,6 @@ foreach (fn in [
   progressBox        = null
   queuesList         = null
   lastId             = -1
-  lastQueueReqParams = null
-  isLeaveDelayed     = false
 
   delayedInfoUpdateEventtTime = -1
 
@@ -277,22 +264,15 @@ foreach (fn in [
   function joinQueue(params)
   {
     if (findQueue(params))
-      return dagor.debug("Error: cancel join queue because already exist.")
+      return dagor.debug("Error: cancel join queue becoase already exist.")
 
-    isLeaveDelayed = false
-    lastQueueReqParams = clone params
     local queue = createQueue(params, true)
-    queue.join(
-      ::Callback(function(response) {
-        afterJoinQueue(queue)
-        if (isLeaveDelayed)
-          leaveQueue(queue)
-      }, this),
+    queue.join((@(_) null),
       ::Callback(function(response) {
         removeQueue(queue)
       }, this)
     )
-    changeState(queue, queueStates.JOINING_QUEUE)
+    afterJoinQueue(queue)
   }
 
   function afterJoinQueue(queue)
@@ -371,14 +351,7 @@ foreach (fn in [
       return
     if (queue.state == queueStates.NOT_IN_QUEUE)
       return removeQueue(queue)
-    if (queue.state == queueStates.JOINING_QUEUE)
-    {
-      isLeaveDelayed = true
-      showProgressBox(true, "wait/queueLeave")
-      return
-    }
 
-    lastQueueReqParams = null
     showProgressBox(true, "wait/queueLeave")
 
     ::add_big_query_record("exit_waiting_for_battle_screen",
@@ -689,12 +662,6 @@ foreach (fn in [
       [["ok", ::Callback(@() leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
       "ok",
       { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
-  }
-
-  function onEventLobbyStatusChange(p)
-  {
-    if (::SessionLobby.status == lobbyStates.IN_SESSION)
-      lastQueueReqParams = null
   }
 }
 

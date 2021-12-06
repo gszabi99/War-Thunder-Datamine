@@ -1,5 +1,3 @@
-local { GUI } = require("scripts/utils/configs.nut")
-
 local awardRanks = [3, 4, 7]
 local awardVesselsRanks = [3, 4, 5]
 local awards = [[70000, 0], [300000, 100], [0, 2500]]
@@ -32,7 +30,7 @@ local function showViralAcquisitionWnd() {
   local formatImg = "ui/images/%s.jpg?P1"
   local image = ::format(formatImg, "facebook_invite")
   local height = 400
-  local guiBlk = GUI.get()
+  local guiBlk = ::configs.GUI.get()
 
   if (guiBlk?.invites_notification_window_images
       && guiBlk.invites_notification_window_images.paramCount() > 0) {

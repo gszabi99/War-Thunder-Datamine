@@ -1,6 +1,5 @@
 local psn = require("sonyLib/webApi.nut")
 local statsd = require("statsd")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local requestsTable = {
   player = "$USER_NAME_OR_ID",
@@ -49,7 +48,7 @@ local function getActivityFeedImageByCountry(feed, imagesConfig) {
 }
 
 local function getActivityFeedImages(feed) {
-  local guiBlk = GUI.get()
+  local guiBlk = ::configs.GUI.get()
   local imagesConfig = guiBlk?.activity_feed_image_url
   if (u.isEmpty(imagesConfig))
   {

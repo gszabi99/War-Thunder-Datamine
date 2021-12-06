@@ -601,9 +601,6 @@
         },
         "turret_02_side_dm": {
           "armorThickness": 15.0
-        },
-        "turret_02_top_dm": {
-          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -2842,40 +2839,19 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "bone_turret"
-            },
-            {
-              "gun": "bone_gun"
-            },
-            {
-              "barrel": "bone_gun_barrel_01"
-            },
-            {
-              "gunnerDm": "gunner_01_dm"
-            },
-            {
-              "verDriveDm": "drive_turret_v_dm"
-            },
-            {
-              "horDriveDm": "drive_turret_h_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_gun_system",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "barrel": "bone_gun_barrel_01",
+            "gunnerDm": "gunner_01_dm",
+            "verDriveDm": "drive_turret_v_dm",
+            "horDriveDm": "drive_turret_h_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
             }
-          ],
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,85.0]
@@ -3532,7 +3508,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 15.0,
+            "speed": 10.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

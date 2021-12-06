@@ -1,4 +1,4 @@
-require("globalScripts/ui_globals.nut")
+require("scripts/ui_globals.nut")
 
 local __string = require("string")
 foreach (name, func in require("dagor.localize"))
@@ -18,9 +18,9 @@ local frp = require("frp")
 ::Computed <-frp.Computed
 
 ::script_protocol_version <- null
-require("globalScripts/version.nut")
+require("scripts/version.nut")
 require("sqStdLibs/scriptReloader/scriptReloader.nut")
-require("globalScripts/sqModuleHelpers.nut")
+require("scripts/sqModuleHelpers.nut")
 require("sqStdLibs/helpers/backCompatibility.nut")
 require("scripts/compatibility.nut")
 require("scripts/clientState/errorHandling.nut")
@@ -359,12 +359,6 @@ subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
 ::has_feature <- require("scripts/user/features.nut").hasFeature
 
-foreach(fn in [
-  "scripts/debugTools/dbgToString.nut"
-  "sqDagui/framework/framework.nut"
-])
-  require(fn)
-
 local { getShortAppName } = ::require_native("app")
 local game = getShortAppName()
 ::dagor.debug($"LOAD GAME SCRIPTS: {game}")
@@ -372,7 +366,7 @@ require_optional($"{game}/scripts/onScriptLoad.nut")
 
 
 foreach (fn in [
-  "globalScripts/sharedEnums.nut"
+  "scripts/sharedEnums.nut"
 
   "std/math.nut"
 
@@ -383,7 +377,11 @@ foreach (fn in [
   "scripts/onlineShop/url.nut"
 
   "sqStdLibs/helpers/handyman.nut"
+  "scripts/debugTools/dbgToString.nut"
 
+  "sqDagui/framework/framework.nut"
+
+  "scripts/utils/configs.nut"
   "sqDagui/daguiUtil.nut"
   "scripts/viewUtils/layeredIcon.nut"
   "scripts/viewUtils/projectAwards.nut"
@@ -427,6 +425,9 @@ foreach (fn in [
   "scripts/viewUtils/bhvHint.nut"
 
   "scripts/loading/loading.nut"
+  "scripts/login/loginMain.nut"
+  "scripts/pseudoThread.nut"
+  "scripts/loginWT.nut"
 
   "scripts/options/gamepadCursorControls.nut"
   "scripts/unit/unitType.nut"

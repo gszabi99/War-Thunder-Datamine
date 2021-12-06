@@ -3,7 +3,6 @@ local time = require("scripts/time.nut")
 local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
-local { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -110,8 +109,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       checkAdvert()
     }
 
-    PRICE.checkUpdate()
-    ENTITLEMENTS_PRICE.checkUpdate()
+    ::configs.PRICE.checkUpdate()
+    ::configs.ENTITLEMENTS_PRICE.checkUpdate()
   }
 
   function checkAdvert()

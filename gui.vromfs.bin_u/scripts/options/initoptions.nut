@@ -5,8 +5,6 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { initWeaponParams } = require("scripts/weaponry/weaponsParams.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
-local { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 ::all_units <- {}
 
@@ -120,7 +118,7 @@ if (showedUnit.value != null)
 
   function()
   {
-    local blk = GUI.get()
+    local blk = ::configs.GUI.get()
 
     initBulletIcons(blk)
 

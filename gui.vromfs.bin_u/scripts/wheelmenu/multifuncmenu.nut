@@ -91,8 +91,8 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
 }
 
 // Called from client
-::on_multifunc_menu_item_selected <- function on_multifunc_menu_item_selected(btnIdx, isDown) {
-  getMfmHandler()?.onShortcutSelectCallback(btnIdx, isDown)
+::on_multifunc_menu_item_selected <- function on_multifunc_menu_item_selected(index, isDown) {
+  getMfmHandler()?.onShortcutSelectCallback(index, isDown)
   return true
 }
 

@@ -2,7 +2,7 @@ return {
   fetchChangeAircraftOnStart = @() ::fetch_change_aircraft_on_start?()
   canRespawnCaNow = @() ::can_respawn_ca_now?()
   canRequestAircraftNow = @() ::can_request_aircraft_now?()
-  setSelectedUnitInfo = @(unitName, slot_num) null
+  setSelectedUnitInfo = @(unit, slot_num) ::set_selected_unit_info?(unit, slot_num)
   getAvailableRespawnBases = @(arr) ::get_available_respawn_bases?(arr)
   getAvailableRespawnBasesDebug = @(arr) ::get_available_respawn_bases_debug?(arr)
   getRespawnBaseNameById = @(id) ::get_respawn_base_name_by_id?(id)

@@ -32,12 +32,15 @@
   "dirtBackSpawnRateMaxSpd": 3.0,
   "dirtBackSpawnRateSpdMult": 0.8,
   "wreckageAircraftSplash": {
-    "groundFx": "ad_sand",
-    "waterFx": "bomb_reflection"
+    "groundFx": "ground_splash",
+    "waterFx": "medium_water_splash",
+    "sizeMult": 0.5,
+    "minScale": 0.5,
+    "maxScale": 1.5
   },
   "wreckageGmSplash": {
-    "groundFx": "ad_sand",
-    "waterFx": "bomb_reflection"
+    "groundFx": "ground_splash",
+    "waterFx": "hit_12_18mm_water"
   },
   "rotorFxForMaterial": {
     "sfxPath": "sounds/effects",
@@ -85,7 +88,7 @@
     "ice": "snow"
   },
   "splashEffects": {
-    "name": "water_splash_medium_bow",
+    "name": "ship_water_splashes",
     "horzVel": [1.0,5.0],
     "horzVelScale": [0.1,2.0],
     "vertVel": [0.1,1.5],
@@ -93,7 +96,7 @@
     "velSqScale": [0.0,1.0]
   },
   "backSplashEffects": {
-    "name": "water_splash_massive",
+    "name": "ship_rear_water_splashes",
     "horzVel": [1.0,5.0],
     "horzVelScale": [0.0,1.0],
     "vertVel": [0.0,1.0],
@@ -135,6 +138,1628 @@
       "defaultCollisionGroundScrapeFx": "ship_scrape_ground_steel"
     }
   },
+  "ground_splash": {
+    "fx": "20_37_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "ground_splash",
+    "soundEnableDistance": 150.0
+  },
+  "hit_rocket_zero_gravity": {
+    "fx": "hit_rocket_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 50,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_s_zero_grav",
+    "soundEnableDistance": 10.0
+  },
+  "bullet_self_expl_zero_gravity": {
+    "fx": "hit_40mm_self_expl_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 50,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_s_zero_grav",
+    "soundEnableDistance": 10.0
+  },
+  "7_20_hit_ground_zero_gravity": {
+    "fx": "hit_7mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 50
+  },
+  "7_20_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_7mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 50
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    }
+  ],
+  "30_hit_ground_zero_gravity": {
+    "fx": "hit_30mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 10
+  },
+  "30_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_30mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 10
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "sfxPathStudio": "space_program/effects"
+    },
+    {
+      "sfxEvent": "explosion_zero_gravity"
+    },
+    {
+      "soundEnableDistance": 10.0
+    }
+  ],
+  "40_hit_ground_zero_gravity": {
+    "fx": "hit_40mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 20,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_zero_gravity",
+    "soundEnableDistance": 10.0
+  },
+  "40_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_40mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 20
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "sfxPathStudio": "space_program/effects"
+    },
+    {
+      "sfxEvent": "explosion_zero_gravity"
+    },
+    {
+      "soundEnableDistance": 10.0
+    }
+  ],
+  "7_20_hit_stone": {
+    "fx": "7_20_stone_composite_fx",
+    "lifeTime": 2.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 20,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "7_20_hit_glass": {
+    "fx": "7_20_glass_composite_fx",
+    "lifeTime": 2.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 20,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "7_20_hit_wood": {
+    "fx": "7_20_wood_composite_fx",
+    "lifeTime": 2.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 20,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "7_20_hit_ground": {
+    "fx": "7_20_ground_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "7_20_hit_snow": {
+    "fx": "7_20_ground_snow_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "7_20_hit_sand": {
+    "fx": "7_20_ground_sand_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 14
+  },
+  "20_37_ap_hit_ground": {
+    "fx": "20_37_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8
+  },
+  "20_37_ap_hit_sand": {
+    "fx": "20_37_ap_hit_ground_sand_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8
+  },
+  "20_37_ap_hit_snow": {
+    "fx": "20_37_ap_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8
+  },
+  "20_37_ap_hit_stone": {
+    "fx": "20_37_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 500,
+    "numReserved": 20,
+    "minScale": 0.6,
+    "maxScale": 1.1,
+    "onePointNumber": 4
+  },
+  "20_37_ap_hit_snow_stone": {
+    "fx": "20_37_ap_hit_stone_composite_snow",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 500,
+    "numReserved": 20,
+    "minScale": 0.6,
+    "maxScale": 1.1,
+    "onePointNumber": 4
+  },
+  "20_37_he_hit_stone": {
+    "fx": "20_37_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 500,
+    "numReserved": 20,
+    "minScale": 0.6,
+    "maxScale": 1.1,
+    "onePointNumber": 4,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_20_37",
+    "soundEnableDistance": 500.0
+  },
+  "20_37_he_hit_snow_stone": {
+    "fx": "20_37_he_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 500,
+    "numReserved": 20,
+    "minScale": 0.6,
+    "maxScale": 1.1,
+    "onePointNumber": 4,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_20_37",
+    "soundEnableDistance": 500.0
+  },
+  "20_37_he_hit_ground": {
+    "fx": "20_37_he_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_20_37",
+    "soundEnableDistance": 500.0
+  },
+  "20_37_he_hit_snow": {
+    "fx": "20_37_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_20_37",
+    "soundEnableDistance": 500.0
+  },
+  "37_50_ap_hit_ground": {
+    "fx": "37_50_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_37_50",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_ap_hit_snow": {
+    "fx": "37_50_ap_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_37_50",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_ap_hit_stone": {
+    "fx": "37_50_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_stone_small",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_ap_hit_snow_stone": {
+    "fx": "37_50_ap_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_stone_small",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_he_hit_ground": {
+    "fx": "37_50_he_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_37_50",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_he_hit_snow": {
+    "fx": "37_50_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground_37_50",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_he_hit_stone": {
+    "fx": "37_50_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_stone_small",
+    "soundEnableDistance": 2000.0
+  },
+  "37_50_he_hit_snow_stone": {
+    "fx": "37_50_he_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 200,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_stone_small",
+    "soundEnableDistance": 2000.0
+  },
+  "50_75_ap_hit_ground": {
+    "fx": "50_75_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "50_75_ap_hit_snow": {
+    "fx": "50_75_ap_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "50_75_ap_hit_stone": {
+    "fx": "50_75_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "50_75_ap_hit_snow_stone": {
+    "fx": "50_75_ap_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "50_75_he_hit_ground": {
+    "fx": "50_75_he_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "50_75_he_hit_snow": {
+    "fx": "50_75_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "50_75_he_hit_stone": {
+    "fx": "50_75_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "50_75_he_hit_snow_stone": {
+    "fx": "50_75_he_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "75_122_ap_hit_ground": {
+    "fx": "75_122_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_ap_hit_snow": {
+    "fx": "75_122_ap_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_ap_hit_stone": {
+    "fx": "75_122_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_ap_hit_snow_stone": {
+    "fx": "75_122_ap_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_he_hit_ground": {
+    "fx": "75_122_he_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_he_hit_snow": {
+    "fx": "75_122_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_he_hit_stone": {
+    "fx": "75_122_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "75_122_he_hit_snow_stone": {
+    "fx": "75_122_he_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_ap_hit_ground": {
+    "fx": "122_152_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_ap_hit_snow": {
+    "fx": "122_152_ap_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_ap_hit_stone": {
+    "fx": "122_152_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_ap_hit_snow_stone": {
+    "fx": "122_152_ap_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_he_hit_ground": {
+    "fx": "122_152_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_he_hit_snow": {
+    "fx": "122_152_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_he_hit_stone": {
+    "fx": "122_152_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "122_152_he_hit_snow_stone": {
+    "fx": "122_152_he_hit_stone_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 5000.0
+  },
+  "smoke_shell_explosion": {
+    "fx": "smoke_shell_expl_flash_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_gr_smoke",
+    "soundEnableDistance": 1000.0
+  },
+  "big_ground_splash": {
+    "fx": "50_75_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0
+  },
+  "art_ground_splash": {
+    "fx": "artillelry_he_hit_ground_composite",
+    "farPlane": 10000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "atgm_hit": {
+    "fx": "atgm_hit_composite_fx",
+    "farPlane": 10000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.1,
+    "maxScale": 1.3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects/ai",
+    "sfxEvent": "hit_atgm",
+    "soundEnableDistance": 5000.0
+  },
+  "big_art_ground_splash": {
+    "fx": "122_152_he_hit_ground_composite",
+    "farPlane": 10000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.2,
+    "maxScale": 1.3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "big_art_snow_splash": {
+    "fx": "122_152_he_hit_ground_snow_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.2,
+    "maxScale": 1.3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bullet_dist_fuze_expl": {
+    "fx": "airexplosion_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_splash": {
+    "fx": "bulletsplash_0_20mm_composite_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 0.1,
+    "granularity": 8,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 40,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_water",
+    "soundEnableDistance": 100.0
+  },
+  "water_splash_20_76": {
+    "fx": "bulletsplash_20_76mm_composite_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 0.1,
+    "granularity": 8,
+    "numInstances": 80,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_water_small",
+    "soundEnableDistance": 500.0
+  },
+  "water_splash_76_00_he": {
+    "fx": "bulletsplash_76_00mm_he_composite_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 0.1,
+    "granularity": 8,
+    "numInstances": 80,
+    "numReserved": 30,
+    "farPlane": 9000.0,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "water_splash_76_00": {
+    "fx": "bulletsplash_76_00mm_composite_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 0.1,
+    "granularity": 8,
+    "numInstances": 80,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "big_water_splash": {
+    "fx": "pv_hit_water_composite_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 0.1,
+    "granularity": 8,
+    "numInstances": 80,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0,
+    "group": "water_proj"
+  },
+  "chaff_fire": {
+    "fx": "rocketflame_fx",
+    "lifeTime": 100.0,
+    "numInstances": 10,
+    "numReserved": 3,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 0.2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "chaff_smoke": {
+    "fx": "rocket_smoke_far_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [70.0,300.0],
+    "numInstances": 8,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "chaff_explosion": {
+    "fx": "rocket_expl_fx",
+    "lifeTime": 100.0,
+    "numInstances": 0,
+    "numReserved": 0,
+    "softnessDepth": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rocket_fire_cruisemissile": {
+    "fx": "rocketflame_cruisemissile_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 5,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.1,
+    "onePointNumber": 4,
+    "sortDistanceOffset": 0.2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rocket_smoke": {
+    "fx": "rocket_smoke_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "numInstances": 120,
+    "numReserved": 5,
+    "onePointNumber": 4,
+    "sortDistanceOffset": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rocket_expl": {
+    "fx": "rocket_expl_fx",
+    "lifeTime": 30.0,
+    "groundSpotTexName": "ground_spot",
+    "groundSpotRadius": 6.0,
+    "groundSpotAtTime": 1.0,
+    "numInstances": 30,
+    "numReserved": 1,
+    "softnessDepth": 5.0,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "crv7_expl": {
+    "fx": "hydra_expl_fx",
+    "lifeTime": 30.0,
+    "groundSpotTexName": "ground_spot",
+    "groundSpotRadius": 6.0,
+    "groundSpotAtTime": 1.0,
+    "numInstances": 0,
+    "numReserved": 0,
+    "softnessDepth": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "crv7_smoke": {
+    "fx": "crv7_smoke_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "numInstances": 0,
+    "numReserved": 0,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "trail_smoke": {
+    "fx": "trail_smoke_composite_fx",
+    "lifeTime": 80.0,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [4.0,240.0],
+    "numInstances": 120,
+    "numReserved": 30,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hydra_bubbles": {
+    "fx": "hydra_bubbles_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "onePointNumber": 15,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hydra_smoke_cruisemissile": {
+    "fx": "hydra_smoke_cruisemissile_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.0,
+    "alphaHeightRange": [10.0,230.0],
+    "numInstances": 90,
+    "numReserved": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hydra_smoke_modern": {
+    "fx": "hydra_smoke_modern_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "numInstances": 60,
+    "numReserved": 30,
+    "farPlane": 10000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hydra_smoke": {
+    "fx": "hydra_smoke_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "numInstances": 60,
+    "numReserved": 30,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "fx1400_smoke": {
+    "fx": "fx1400_smoke_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "numInstances": 60,
+    "numReserved": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hydra_expl": {
+    "fx": "hydra_expl_fx",
+    "groundSpotTexName": "ground_spot",
+    "groundSpotRadius": 6.0,
+    "groundSpotAtTime": 1.0,
+    "numInstances": 40,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 3,
+    "onePointRadius": 5.0,
+    "onePointTime": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hlfr_smoke": {
+    "fx": "hellfire_smoke_fx",
+    "lifeTime": 100.0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "alphaHeightRange": [30.0,200.0],
+    "sortDistanceOffset": 2.0,
+    "numInstances": 0,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hlfr_expl": {
+    "fx": "hellfire_expl_fx",
+    "lifeTime": 30.0,
+    "groundSpotTexName": "ground_spot",
+    "groundSpotRadius": 6.0,
+    "groundSpotAtTime": 1.0,
+    "numInstances": 0,
+    "numReserved": 0,
+    "softnessDepth": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hlfr_fire": {
+    "fx": "hellfire_flame_fx",
+    "lifeTime": 100.0,
+    "numInstances": 0,
+    "numReserved": 0,
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 0.2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pylon_smoke_cruisemissile": {
+    "fx": "pv_rl_cruisemissile_fire_composite_fx",
+    "lifeTime": 4.0,
+    "numInstances": 40,
+    "numReserved": 10,
+    "onePointNumber": 40,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rocket_drown": {
+    "fx": "rocket_water_splash_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 20,
+    "numReserved": 3,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "bomb_ground_explosion_big": {
+    "fx": "bomb_big_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 10.0,
+    "minScale": 0.6,
+    "maxScale": 1.5,
+    "numInstances": 14,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bomb_ground_explosion_huge": {
+    "fx": "bomb_big_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 10.0,
+    "minScale": 1.6,
+    "maxScale": 2.5,
+    "numInstances": 14,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bomb_ground_explosion_big_sfx": {
+    "fx": "bomb_big_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 10.0,
+    "minScale": 0.6,
+    "maxScale": 1.5,
+    "numInstances": 14,
+    "numReserved": 2,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bomb_ground_explosion_med": {
+    "fx": "bomb_big_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 10.0,
+    "minScale": 0.3,
+    "maxScale": 1.0,
+    "numInstances": 28,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bomb_ground_explosion_small": {
+    "fx": "bomb_small_expl_composite_fx",
+    "lifeTime": 10.0,
+    "farPlane": 10000.0,
+    "softnessDepth": 5.0,
+    "minScale": 0.6,
+    "maxScale": 1.9,
+    "numInstances": 56,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
+  },
+  "bomb_splash": {
+    "fx": "bigsplashexplosion_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "groundSpotTexName": "ground_spot",
+    "groundSpotRadius": 6.0,
+    "groundSpotAtTime": 3.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "torpedo_ground": {
+    "fx": "bomb_ground_explosion_fx",
+    "softnessDepth": 5.0,
+    "numInstances": 5,
+    "numReserved": 1,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "torpedo_broken": {
+    "fx": "bigsplashexplosion_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 5,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "torpedo_explosion": {
+    "fx": "bomb_water_small_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "torpedo_explosion_unit_bubble": {
+    "fx": "torpedo_explosion_unit_bubble_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "torpedo_explosion_unit",
+    "soundEnableDistance": 5000.0,
+    "group": "underwater"
+  },
+  "torpedo_explosion_unit": {
+    "fx": "bomb_water_med_expl_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "torpedo_explosion_unit",
+    "soundEnableDistance": 5000.0
+  },
+  "mine_explosion_unit": {
+    "fx": "120_203mm_water_smoke_hit_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "farPlane": 12000.0,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "mine_explosion",
+    "soundEnableDistance": 5000.0
+  },
+  "mine_drown": {
+    "fx": "pv_hit_water_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 15,
+    "numReserved": 3,
+    "farPlane": 1000.0,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "mine_explosion",
+    "soundEnableDistance": 5000.0
+  },
+  "stone_splash": {
+    "fx": "20_37_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "122_he_stone_splash": {
+    "fx": "122_152_he_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "122_he_wood_splash": {
+    "fx": "122_152_he_hit_wood_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "122_he_steel": {
+    "fx": "122_152_he_hit_steel_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "122_ap_stone_splash": {
+    "fx": "122_152_ap_hit_stone_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_concrete",
+    "soundEnableDistance": 1000.0
+  },
+  "20_ap_wood_splash": {
+    "fx": "pv_hit_wood_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "20_ap_water_splash": {
+    "fx": "pv_cannonball_splash_fx",
+    "group": "water_proj",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "20mm_water_splash",
+    "soundEnableDistance": 50.0
+  },
+  "120-203_water_splash": {
+    "fx": "120_203mm_water_hit_composite_fx",
+    "group": "water_proj",
+    "farPlane": 30000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "120-203_smoke_water_splash": {
+    "fx": "120_203mm_water_smoke_hit_composite_fx",
+    "group": "water_proj",
+    "farPlane": 15000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "120-203_he_water_splash": {
+    "fx": "120_203mm_he_water_hit_composite_fx",
+    "group": "water_proj",
+    "farPlane": 30000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "300_water_splash": {
+    "fx": "300mm_water_hit_composite_fx",
+    "group": "water_proj",
+    "farPlane": 30000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "300_he_water_splash": {
+    "fx": "300mm_he_water_hit_composite_fx",
+    "group": "water_proj",
+    "farPlane": 30000.0,
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "cannon_hit_ship_cumulative": {
+    "fx": "ps_hit_cumulative_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "bullethit_metal",
+    "soundEnableDistance": 1000.0
+  },
+  "ps_hit_152_203mm_ground_splash": {
+    "fx": "122_152_he_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 15000.0
+  },
+  "ps_hit_100_152mm_ap_hit_ground": {
+    "fx": "122_152_ap_hit_ground_composite",
+    "lifeTime": 0.0,
+    "softnessDepth": 1.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "art_explosion_ground",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 15000.0
+  },
+  "ps_hit_100_152mm_armor_ap": {
+    "fx": "pv_hit_ricochet_ap_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 10,
+    "onePointNumber": 80,
+    "farPlane": 15000.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "bullethit_metal",
+    "soundEnableDistance": 200.0
+  },
+  "ps_hit_150mm_cumulative": {
+    "fx": "ps_hit_150mm_cumulative_composite_fx",
+    "farPlane": 15000.0,
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "bullethit_metal",
+    "soundEnableDistance": 200.0
+  },
+  "cannon_hit_ship_ap": {
+    "fx": "ps_hit_ap_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "bullethit_metal",
+    "soundEnableDistance": 200.0
+  },
+  "autocannon_hit_ship_he": {
+    "fx": "ps_hit_cumulative_smoke_composite_fx",
+    "lifeTime": 6.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "bullethit_metal",
+    "soundEnableDistance": 200.0
+  },
   "gun_fire": {
     "cols": 4,
     "rows": 2,
@@ -154,12 +1779,1355 @@
       "action": 1.0
     }
   },
+  "aircraft_wheels_water_splashes": {
+    "fx": "water_oceanwave_splash_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rotor_ground_dust": {
+    "fx": "rotor_dust_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 8,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rotor_water_splashes": {
+    "fx": "rotor_water_composite_fx",
+    "softnessDepth": 1.0,
+    "numInstances": 7,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rotor_snow_dust": {
+    "fx": "rotor_snow_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 8,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rotor_sand_dust": {
+    "fx": "rotor_sand_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 8,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rotor_water_foam": {
+    "fx": "rotor_foam_fx",
+    "softnessDepth": 1.0,
+    "numInstances": 7,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "air_hit": {
+    "fx": "airhit_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "cannon_air_hit": {
+    "fx": "cannon_airhit_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "explosion_pony": {
+    "fx": "expl_pieces_fx",
+    "lifeTime": 10.0,
+    "numInstances": 20,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_explosion_plane": {
+    "fx": "bigsplashexplosion_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 8.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "plane_explosion_water",
+    "soundEnableDistance": 5000.0
+  },
+  "aircraft_ground_dust": {
+    "fx": "aircraft_ground_dust_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 10,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_dust": {
+    "fx": "aircraft_wheels_dust_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 1.0,
+    "numInstances": 10,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "motor_exhaust": {
+    "fx": "motor_exhaust_fx",
+    "lifeTime": 3.0,
+    "isTrail": true,
+    "onePointNumber": 8,
+    "numInstances": 20,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "motor_100throttle": {
+    "fx": "motor_100throttle_fx",
+    "lifeTime": 3.0,
+    "isTrail": true,
+    "onePointNumber": 8,
+    "numInstances": 20,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "motor_wep": {
+    "fx": "motor_wep_fx",
+    "lifeTime": 3.0,
+    "isTrail": true,
+    "onePointNumber": 8,
+    "numInstances": 20,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "jet_haze": {
+    "fx": "trail_haze_fx",
+    "lifeTime": 0.0,
+    "isTrail": true,
+    "numInstances": 12,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "jet_exhaust": {
+    "fx": "jet_exhaust_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 20.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "exhaustVelMult": 0.012,
+    "jetRpmToExhaustVel": 300.0,
+    "jetSpeedToExhaustVel": 50.0
+  },
+  "jet_start_exhaust": {
+    "fx": "jet_start_exhaust_fx",
+    "lifeTime": 2.0,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 20.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "jet_afterburner_exhaust": {
+    "fx": "jet_afterburner_exhaust_fx",
+    "lifeTime": 2.0,
+    "nonPlayerFadeDistScale": 2.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 20.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "exhaustVelMult": 0.03,
+    "jetAfterburnerRpmToExhaustVel": 300.0,
+    "jetAfterburnerSpeedToExhaustVel": 50.0
+  },
+  "pony_exhaust": {
+    "fx": "motor_exhaust_fx",
+    "lifeTime": 3.0,
+    "isTrail": true,
+    "numInstances": 20,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "motor_exhaust_wep": {
+    "fx": "motor_exhaust_wep_fx",
+    "lifeTime": 2.0,
+    "isTrail": true,
+    "onePointNumber": 8,
+    "numInstances": 8,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "major_skin_smoke": {
+    "fx": "major_skin_smoke_fx",
+    "lifeTime": 10.0,
+    "isTrail": true,
+    "sortDistanceOffset": 7.5,
+    "nonPlayerFadeDistScale": 6.0,
+    "playerFadeDistScale": 0.4,
+    "numInstances": 20,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "major_skin_fire": {
+    "fx": "major_skin_fire_fx",
+    "lifeTime": 10.0,
+    "isTrail": true,
+    "sortDistanceOffset": 7.5,
+    "nonPlayerFadeDistScale": 6.0,
+    "playerFadeDistScale": 0.4,
+    "numInstances": 20,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "jet_flame": {
     "fps": 45.0,
     "numFrames": 4,
     "enginePowerScale": [0.2,1.0],
     "enginePowerFullScale": [0.65,1.0],
     "randomScale": [0.0,0.0]
+  },
+  "contrail": {
+    "fx": "trail_contrail_fx",
+    "lifeTime": 18.0,
+    "alphaHeightRange": [50.0,300.0],
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 3.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 20.0,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "numInstances": 50,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "inversionTrailVelMult": 0.03,
+    "jetAfterburnerRpmToInversionTrailVel": 300.0
+  },
+  "extinguisher": {
+    "fx": "pilotage_trail_white_fx",
+    "lifeTime": 0.25,
+    "alphaHeightRange": [50.0,300.0],
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 3.0,
+    "playerFadeDistScale": 1.5,
+    "sortDistanceOffset": 20.0,
+    "minScale": 2.0,
+    "maxScale": 4.0,
+    "numInstances": 50,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "extinguisher",
+    "inversionTrailVelMult": 0.03,
+    "jetAfterburnerRpmToInversionTrailVel": 300.0
+  },
+  "trail_jet": {
+    "fx": "trail_jet_fx",
+    "lifeTime": 18.0,
+    "alphaHeightRange": [1200.0,3000.0],
+    "isTrail": true,
+    "nonPlayerFadeDistScale": 5.0,
+    "playerFadeDistScale": 2.0,
+    "numInstances": 20,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "gun_smoke_0": {
+    "fx": "aircraft_guns_smoke_fx",
+    "isTrail": true,
+    "onePointNumber": 20,
+    "numInstances": 40,
+    "numReserved": 20,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "gun_smoke_1": {
+    "fx": "artillery_flash_fx",
+    "numInstances": 15,
+    "numReserved": 0,
+    "softnessDepth": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "gun_smoke_2": {
+    "fx": "tank_flash_fx",
+    "numInstances": 15,
+    "numReserved": 0,
+    "softnessDepth": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "part_cut": {
+    "fx": "part_cut_fx",
+    "numInstances": 5,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "part_meet_ground": {
+    "fx": "rotor_collision_ground_fx",
+    "numInstances": 8,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "part_meet_water": {
+    "fx": "water_singlesplash_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "propellor_meet_ground": {
+    "fx": "rotor_collision_ground_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "propellor_meet_water": {
+    "fx": "water_singlesplash_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_dirt_back": {
+    "fx": "pv_track_dirt_back_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_dirt_front": {
+    "fx": "pv_track_dirt_front_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_dirt_top": {
+    "fx": "pv_track_dirt_top_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_move_dirt": {
+    "fx": "pv_move_dirt_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_sand_back": {
+    "fx": "pv_track_sand_back_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_sand_front": {
+    "fx": "pv_track_sand_front_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_sand_top": {
+    "fx": "pv_track_sand_top_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_move_sand": {
+    "fx": "pv_move_sand_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_snow_back": {
+    "fx": "pv_track_snow_back_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_snow_front": {
+    "fx": "pv_track_snow_front_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_snow_top": {
+    "fx": "pv_track_snow_top_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_move_snow": {
+    "fx": "pv_move_snow_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_water_splashes": {
+    "fx": "pv_move_water_fx",
+    "numInstances": 50,
+    "numReserved": 20,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "road_barrier_splash": {
+    "fx": "pv_cannonball_splash_fx",
+    "group": "water_proj",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "road_barrier",
+    "soundEnableDistance": 50.0
+  },
+  "unit_explosion_zero_gravity": {
+    "fx": "unit_explosion_zero_gravity_composite_fx",
+    "numInstances": 50,
+    "farPlane": 10000.0,
+    "numReserved": 8,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_zero_gravity",
+    "soundEnableDistance": 3.0,
+    "lightColor": [10.0,2.0,2.0,100.0]
+  },
+  "slug_explosion": {
+    "fx": "slug_expl_splash_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "destroy",
+    "soundEnableDistance": 5000.0,
+    "minScale": 4.0,
+    "maxScale": 4.0
+  },
+  "tank_broken_exhaust": {
+    "fx": "pv_broken_exhaust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_exhaust_nightvision": {
+    "fx": "pv_exhaust_nightvision_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_exhaust": {
+    "fx": "pv_exhaust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "unit_exhaust_zero_gravity": {
+    "fx": "pv_air_discharge_composite_fx",
+    "numInstances": 350,
+    "numReserved": 100,
+    "onePointNumber": 0,
+    "group": "highres",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_smokescreen": {
+    "fx": "pv_smokescreen_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_modern_light_exhaust": {
+    "fx": "pv_modern_light_exhaust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "lightning_ball": {
+    "fx": "lightning_ball_continuous_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "big_gun_flame": {
+    "fx": "pv_gun_flame_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "big_gun_flame_recoilless": {
+    "fx": "pv_gun_flame_recoilless_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "40mm_gun_flame": {
+    "fx": "pv_gun_flame_40mm_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "20mm_gun_flame_gatling": {
+    "fx": "pv_gun_flame_20mm_gatling_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "7mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_7mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "13mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_13mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "30mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_30mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "40mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_40mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "shell_ejection_effect": {
+    "fx": "pv_shell_ejection_effect_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 100,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "70mm_gun_flame": {
+    "fx": "pv_gun_flame_70mm_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "farPlane": 8000.0,
+    "minScale": 0.45,
+    "maxScale": 0.55,
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 10,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "200mm_gun_flame": {
+    "fx": "pv_gun_flame_200mm_fire_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "farPlane": 10000.0,
+    "minScale": 0.45,
+    "maxScale": 0.55,
+    "numInstances": 50,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "400mm_gun_flame": {
+    "fx": "pv_gun_flame_400mm_fire_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "farPlane": 15000.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "gunpowder_gun_flame": {
+    "fx": "pv_gunpowder_flame_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "group": "highres",
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aaa_gun_flame": {
+    "fx": "pv_gun_flame_fire_composite_fx",
+    "lifeTime": 5.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "big_gun_turbo_flame": {
+    "fx": "pv_gun_turbo_flame_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "big_gun_mb_flame": {
+    "fx": "pv_gun_mb_flame_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pv_gun_dust_special": {
+    "fx": "lightning_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "mg_flame_muzzle_brake": {
+    "fx": "pv_mg_flame_muzzle_brake_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 80,
+    "numReserved": 1,
+    "onePointNumber": 8
+  },
+  "machine_gun_flame": {
+    "fx": "pv_mg_flame_composite_fx",
+    "lifeTime": 3.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 80,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "small_gun_flame": {
+    "fx": "pv_gun_sc_flame_fire_composite_fx",
+    "lifeTime": 3.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "small_gun_mb_flame": {
+    "fx": "pv_aa_quadruple_gun_mb_composite_fx",
+    "lifeTime": 3.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "23mm_aa_gun_flame": {
+    "fx": "pv_aa_gun_front_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 60,
+    "numReserved": 1,
+    "onePointNumber": 60,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_shock_wave": {
+    "fx": "pv_gun_water_shock_wave_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_shock_wave_little": {
+    "fx": "pv_gun_flame_water_dust_little_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "group": "water_proj",
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_shock_wave_medium": {
+    "fx": "pv_gun_flame_water_dust_medium_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "group": "water_proj",
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_shock_wave_big": {
+    "fx": "pv_gun_flame_water_dust_big_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "group": "water_proj",
+    "numInstances": 50,
+    "numReserved": 1,
+    "onePointNumber": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "cannon_hit_light": {
+    "fx": "pv_hit_penetration_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "cannon_hit_armor": {
+    "fx": "pv_hit_penetration_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "cannon_hit_apds": {
+    "fx": "pv_hit_apds_ap_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "cannon_hit_armor_cumulative": {
+    "fx": "pv_hit_cumulative_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "cannon_ricochet": {
+    "fx": "pv_hit_ricochet_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "onePointNumber": 40,
+    "softnessDepth": 0.3
+  },
+  "bullet_hit_mg": [
+    {
+      "fx": "pv_mg_hit_penetration_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 80
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    }
+  ],
+  "bullet_hit_light": {
+    "fx": "pv_hit_penetration_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "bullet_hit_armor_cumulative": {
+    "fx": "pv_hit_cumulative_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "bullet_hit_armor": {
+    "fx": "pv_hit_penetration_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "bullet_HE_hit_armor": {
+    "fx": "pv_hit_cumulative_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "bullet_hit_gatling_armor": {
+    "fx": "pv_hit_gatling_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 80,
+    "softnessDepth": 0.3
+  },
+  "fire_small_zero_gravity": {
+    "fx": "fire_zero_gravity_composite_fx",
+    "lifeTime": 10.0,
+    "farPlane": 2000.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "suit_destroyed",
+    "soundEnableDistance": 100.0
+  },
+  "tank_fuel_explosion": {
+    "fx": "pv_fuel_explosion_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "explosion_gasoline",
+    "soundEnableDistance": 1000.0
+  },
+  "tank_fuel_explosion_soundless": {
+    "fx": "muzzle_ground_125mm_brake_cmps_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "football_event",
+    "sfxEvent": "tank_jump"
+  },
+  "pv_point_smoke_blue": {
+    "fx": "pv_point_smoke_blue_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pv_point_smoke_white": {
+    "fx": "pv_point_smoke_white_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pv_point_smoke_red": {
+    "fx": "pv_point_smoke_red_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ji_ha_death": {
+    "fx": "slug_expl_splash_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "tanks/effects_tanks",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "snail_death",
+    "minScale": 4.0,
+    "maxScale": 4.0,
+    "farPlane": 15000.0
+  },
+  "tank_light_smoke": {
+    "fx": "pv_smoke_small_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_smoke_city": {
+    "fx": "location_smoke_city_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "bonfire_composite": {
+    "fx": "bonfire_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "onePointNumber": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fire_hangar",
+    "soundEnableDistance": 200.0
+  },
+  "xmass_tree_sparklers_composite": {
+    "fx": "xmass_sparkles_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 5,
+    "onePointNumber": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hangar_hmb_light_hangar_ny": {
+    "fx": "hmb_hangar_ny_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 250,
+    "numReserved": 5,
+    "onePointNumber": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hangar_hmb_light": {
+    "fx": "hmb_light_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 250,
+    "numReserved": 5,
+    "onePointNumber": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hangar_hmb_light_noshaft": {
+    "fx": "hmb_light_noshaft_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 250,
+    "numReserved": 5,
+    "onePointNumber": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hangar_hmb_low_light_yellow": {
+    "fx": "hmb_low_light_yellow_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 250,
+    "numReserved": 20,
+    "onePointNumber": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "impact_dust": {
+    "fx": "pv_step_dirt_composite_fx",
+    "numInstances": 15,
+    "numReserved": 2,
+    "minScale": 0.8,
+    "maxScale": 1.1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_jet": {
+    "fx": "pv_water_jet_composite_fx",
+    "numInstances": 16,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "old_ship_hit_ball": {
+    "fx": "pv_hit_wood_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.3,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "minScale": 0.8,
+    "maxScale": 1.0,
+    "onePointNumber": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "old_ship_hit"
+  },
+  "old_ship_expl": {
+    "fx": "grnd_expl_composite_fx",
+    "lifeTime": 100.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 1.0,
+    "numInstances": 10,
+    "numReserved": 1,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "explosion_old_ship"
+  },
+  "old_ship_expl_battle_area": {
+    "fx": "water_crash_splash_fx",
+    "lifeTime": 100.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 1.0,
+    "numInstances": 10,
+    "numReserved": 1,
+    "sfxPath": "sounds/explosions",
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "explosion_old_ship_cr"
+  },
+  "ship_engine_fire_underwater": {
+    "fx": "ps_engine_fire_underwater_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0,
+    "minScale": 1.0,
+    "maxScale": 1.5,
+    "group": "underwater"
+  },
+  "ship_engine_fire": {
+    "fx": "ps_engine_fire_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "engine_burn",
+    "soundEnableDistance": 150.0,
+    "minScale": 1.2,
+    "maxScale": 1.5,
+    "group": "water_proj",
+    "farPlane": 15000.0
+  },
+  "ship_hit_fire": {
+    "fx": "ps_hit_fire_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "softnessDepth": 0.5,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 12000.0
+  },
+  "ship_fire": {
+    "fx": "ps_fire_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 5000.0
+  },
+  "ship_smoke": {
+    "fx": "ps_smoke_small_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "farPlane": 5000.0
+  },
+  "ship_smoke_large": {
+    "fx": "ps_smoke_large_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_fire_large": {
+    "fx": "ps_fire_large_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_big",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 15000.0
+  },
+  "ship_fire_mainsmoke": {
+    "fx": "ps_fire_mainsmoke_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_big",
+    "onePointNumber": 1,
+    "soundEnableDistance": 5000.0,
+    "farPlane": 15000.0
+  },
+  "ship_fire_add": {
+    "fx": "ps_fire_add_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 5000.0
+  },
+  "ship_ammo_fire_underwater": {
+    "fx": "ps_ammo_fire_underwater_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "ammo_explode",
+    "soundEnableDistance": 5000.0,
+    "group": "underwater"
+  },
+  "start_torpedo_submerged": {
+    "fx": "ps_trp_submerged_fire_composite_fx",
+    "lifeTime": 3.0,
+    "numInstances": 10,
+    "numReserved": 4,
+    "onePointNumber": 4,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "start_torpedo": {
+    "fx": "ps_trp_fire_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 10,
+    "numReserved": 4,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pumpkin_expl": {
+    "fx": "pumpkin_expl_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 20,
+    "numReserved": 4,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "pumpkin_flame": {
+    "fx": "pumpkin_flame_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "onePointNumber": 200,
+    "numReserved": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "light_indoor_20": {
+    "fx": "light_indoor_20_fx",
+    "lifeTime": 2.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "light_indoor_10_yellow": {
+    "fx": "light_indoor_10_yellow_fx",
+    "lifeTime": 2.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "light_indoor_football": {
+    "fx": "light_indoor_football_fx",
+    "lifeTime": 2.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "repair_ground": {
+    "fx": "repair_ground_fx",
+    "group": "highres",
+    "softnessDepth": 5.0,
+    "numInstances": 50,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_signal_red": {
+    "fx": "smoke_signal_red_cmps_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dstr_wood_target_red_smoke": {
+    "fx": "dstr_wood_target_cmps_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 8,
+    "softnessDepth": 0.3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_pieces": {
+    "fx": "dust_pieces_cmps_fx",
+    "lifeTime": 10.0,
+    "numInstances": 80,
+    "numReserved": 3,
+    "onePointNumber": 8,
+    "softnessDepth": 0.3
+  },
+  "location_ground_papers": {
+    "fx": "location_ground_papers_10m_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 500,
+    "numReserved": 10,
+    "group": "highres"
+  },
+  "location_ground_leaves": {
+    "fx": "location_ground_leaves_10m_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 1000,
+    "numReserved": 10,
+    "group": "highres"
   },
   "shell_reject": {
     "emitter": "emtr_shellrejection",
@@ -337,17 +3305,9 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "haze_jet": {
-    "fx": "haze_jet_cmps_fx",
-    "lifeTime": 15.0,
-    "numInstances": 70,
-    "numReserved": 20,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
   "haze_missile": {
     "fx": "haze_missile_cmps_fx",
-    "lifeTime": 15.0,
+    "lifeTime": 2.0,
     "numInstances": 70,
     "numReserved": 20,
     "sfxPath": "sounds/effects",
@@ -436,25 +3396,6 @@
     "softnessDepth": 2.0,
     "numInstances": 20,
     "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "extinguisher_air": {
-    "fx": "water_air_leak_cmps_fx",
-    "alphaHeightRange": [50.0,300.0],
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "ground/effects",
-    "sfxEvent": "extinguisher"
-  },
-  "smoke_exhaust_air": {
-    "fx": "smoke_exhaust_air_cmps_fx",
-    "lifeTime": 5.0,
-    "onePointNumber": 4,
-    "numInstances": 20,
-    "numReserved": 8,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -1352,7 +4293,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "ship_model_fire": {
-    "fx": "fire_base_massive_cmps_fx",
+    "fx": "ps_fire_large_composite_fx",
     "lifeTime": 10.0,
     "numInstances": 50,
     "numReserved": 10,
@@ -1364,7 +4305,7 @@
     "soundEnableDistance": 5000.0
   },
   "ship_model_expl": {
-    "fx": "explosion_ship_large_second_cmps_fx",
+    "fx": "ps_expl_large_composite_fx",
     "lifeTime": 10.0,
     "numInstances": 50,
     "numReserved": 10,
@@ -1860,205 +4801,12 @@
     "onePointNumber": 2,
     "farPlane": 200.0
   },
-  "dust_tank_digging_ground_sand": {
-    "fx": "dust_tank_digging_ground_sand_cmps_fx",
-    "numInstances": 100,
-    "numReserved": 50,
-    "onePointNumber": 2,
-    "farPlane": 200.0
-  },
-  "dust_tank_digging_ground_snow": {
-    "fx": "dust_tank_digging_ground_snow_cmps_fx",
-    "numInstances": 100,
-    "numReserved": 50,
-    "onePointNumber": 2,
-    "farPlane": 200.0
-  },
   "dust_tank_digging_shovel": {
     "fx": "dust_tank_digging_shovel_cmps_fx",
     "numInstances": 100,
     "numReserved": 50,
     "onePointNumber": 2,
     "farPlane": 200.0
-  },
-  "dust_tank_digging_shovel_snow": {
-    "fx": "dust_tank_digging_shovel_snow_cmps_fx",
-    "numInstances": 100,
-    "numReserved": 50,
-    "onePointNumber": 2,
-    "farPlane": 200.0
-  },
-  "dust_tank_digging_shovel_sand": {
-    "fx": "dust_tank_digging_shovel_sand_cmps_fx",
-    "numInstances": 100,
-    "numReserved": 50,
-    "onePointNumber": 2,
-    "farPlane": 200.0
-  },
-  "dust_ground_trail": {
-    "fx": "dust_ground_trail_cmps_fx",
-    "lifeTime": 10.0,
-    "softnessDepth": 5.0,
-    "numInstances": 90,
-    "numReserved": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_dirt_back": {
-    "fx": "dust_tank_track_back_dirt_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_dirt_front": {
-    "fx": "dust_tank_track_front_dirt_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_dirt_top": {
-    "fx": "dust_tank_track_top_dirt_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_move_dirt": {
-    "fx": "pv_move_dirt_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_snow_back": {
-    "fx": "dust_tank_track_back_snow_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_snow_front": {
-    "fx": "dust_tank_track_front_snow_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_snow_top": {
-    "fx": "dust_tank_track_top_snow_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_move_snow": {
-    "fx": "pv_move_snow_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_sand_back": {
-    "fx": "dust_tank_track_back_sand_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_sand_front": {
-    "fx": "dust_tank_track_front_sand_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_sand_top": {
-    "fx": "dust_tank_track_top_sand_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_move_sand": {
-    "fx": "pv_move_sand_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_broken_exhaust": {
-    "fx": "smoke_exhaust_broken_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_exhaust_nightvision": {
-    "fx": "pv_exhaust_nightvision_composite_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_exhaust": {
-    "fx": "smoke_exhaust_small_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 4,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_modern_light_exhaust": {
-    "fx": "smoke_exhaust_small_modern_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_steam": {
-    "fx": "smoke_exhaust_steam_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "farPlane": 7000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_exhaust_large": {
-    "fx": "smoke_exhaust_large_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "farPlane": 15000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_exhaust": {
-    "fx": "smoke_exhaust_ship_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 6,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_exhaust_blur": {
-    "fx": "smoke_exhaust_ship_blur_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
   },
   "sparks_ground_friction_dirt": {
     "fx": "sparks_ground_firction_dirt_cmps_fx",
@@ -2115,8 +4863,39 @@
     "sfxPathStudio": "aircraft/effects",
     "soundEnableDistance": 700.0
   },
-  "misc_placeholder": {
-    "fx": "misc_placeholder_cmps_fx",
+  "ps_steam": {
+    "fx": "smoke_exhaust_steam_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "farPlane": 7000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_exhaust": {
+    "fx": "ship_exhaust_fx",
+    "numInstances": 50,
+    "numReserved": 0,
+    "softnessDepth": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ps_exhaust_blur": {
+    "fx": "ps_exhaust_blur_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ps_exhaust": {
+    "fx": "ps_exhaust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 6,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ps_exhaust_large": {
+    "fx": "smoke_exhaust_large_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "farPlane": 15000.0,
@@ -2302,15 +5081,6 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "explosion_air_small"
-  },
-  "start_torpedo": {
-    "fx": "smoke_start_torpedo_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 10,
-    "numReserved": 4,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
   },
   "muzzle_air_8mm": {
     "fx": "muzzle_air_8mm_cmps_fx",
@@ -4897,6 +7667,7 @@
     "fx": "water_under_explosion_massive_cmps_fx",
     "numInstances": 15,
     "numReserved": 3,
+    "group": "water_proj",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "bomb_explosion_water",
@@ -4906,6 +7677,7 @@
     "fx": "water_under_explosion_big_cmps_fx",
     "numInstances": 15,
     "numReserved": 3,
+    "group": "water_proj",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "bomb_explosion_water",
@@ -4915,6 +7687,7 @@
     "fx": "water_under_explosion_medium_cmps_fx",
     "numInstances": 15,
     "numReserved": 3,
+    "group": "water_proj",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "bomb_expl_water_mid",
@@ -4924,31 +7697,11 @@
     "fx": "water_explosion_small_cmps_fx",
     "numInstances": 15,
     "numReserved": 3,
+    "group": "water_proj",
     "sfxPath": "ships/explosions_ships",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "bomb_expl_water_small",
     "soundEnableDistance": 5000.0
-  },
-  "water_splash_tank": {
-    "fx": "water_splash_tank_cmps_fx",
-    "lifeTime": 3.0,
-    "numInstances": 30,
-    "numReserved": 10,
-    "onePointNumber": 25
-  },
-  "water_ship_foam": {
-    "fx": "water_ship_foam_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "water_tank_foam": {
-    "fx": "water_tank_foam_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
   },
   "misc_bats": {
     "fx": "misc_bats_up_cmps_fx",
@@ -4990,456 +7743,276 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "special_snow_ball": {
-    "fx": "special_snow_ball_cmps_fx",
-    "numInstances": 70,
+  "medium_water_splash": {
+    "fx": "water_crash_splash_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 10.0,
+    "granularity": 8,
+    "numInstances": 40,
     "numReserved": 20,
-    "onePointNumber": 32,
+    "minScale": 0.65,
+    "maxScale": 1.1,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "repair_ground": {
-    "fx": "misc_repair_ground_cmps_fx",
-    "group": "highres",
-    "softnessDepth": 5.0,
-    "numInstances": 50,
-    "numReserved": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "rotor_sand_dust": {
-    "fx": "dust_rotor_sand_cmps_fx",
-    "lifeTime": 10.0,
-    "softnessDepth": 1.0,
-    "numInstances": 8,
-    "numReserved": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "rotor_snow_dust": {
-    "fx": "dust_rotor_snow_cmps_fx",
-    "lifeTime": 10.0,
-    "softnessDepth": 1.0,
-    "numInstances": 8,
-    "numReserved": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "rotor_ground_dust": {
-    "fx": "dust_rotor_dust_cmps_fx",
-    "lifeTime": 10.0,
-    "softnessDepth": 1.0,
-    "numInstances": 8,
-    "numReserved": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "rotor_water_splashes": {
-    "fx": "dust_rotor_water_cmps_fx",
-    "softnessDepth": 1.0,
-    "numInstances": 7,
-    "numReserved": 1,
-    "group": "water_proj",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "location_lighthouse_50_fx": {
-    "fx": "location_lighthouse_50m_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 500,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
-    "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "dust_pieces": {
-    "fx": "dust_flying_pieces_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 80,
-    "numReserved": 3,
-    "onePointNumber": 8,
-    "softnessDepth": 0.3
-  },
-  "location_ground_leaves": {
-    "fx": "location_flying_leaves_cmps_fx",
-    "lifeTime": 0.0,
+  "water_units_dust": {
+    "fx": "water_engine_fx",
+    "lifeTime": 20.0,
     "softnessDepth": 2.0,
-    "granularity": 4,
-    "numInstances": 1000,
-    "numReserved": 10,
-    "group": "highres"
-  },
-  "location_ground_papers": {
-    "fx": "location_flying_papers_cmps_fx",
-    "lifeTime": 0.0,
-    "softnessDepth": 2.0,
-    "granularity": 4,
-    "numInstances": 500,
-    "numReserved": 10,
-    "group": "highres"
-  },
-  "ship_propeller_water_splashes": {
-    "fx": "water_propeller_splashes_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 200,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
     "granularity": 8,
-    "lowresFarPlane": 100.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_collision_unit_steel": {
-    "fx": "sparks_ship_collision_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_scrape_steel": {
-    "fx": "sparks_ship_collision_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_collision_unit_ground_steel": {
-    "fx": "sparks_ship_collision_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 18,
+    "numInstances": 30,
     "numReserved": 1,
+    "minScale": 0.8,
+    "maxScale": 1.1,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "ship_scrape_ground_steel": {
-    "fx": "sparks_ship_collision_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_white": {
-    "fx": "smoke_point_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_blue": {
-    "fx": "smoke_point_blue_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pv_point_smoke_red": {
-    "fx": "smoke_point_red_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_smokescreen": {
-    "fx": "smoke_exhaust_smokescreen_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "jet_exhaust": {
-    "fx": "smoke_air_jet_exhaust_cmps_fx",
-    "lifeTime": 4.0,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.5,
-    "sortDistanceOffset": 20.0,
-    "numInstances": 20,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "exhaustVelMult": 0.012,
-    "jetRpmToExhaustVel": 300.0,
-    "jetSpeedToExhaustVel": 50.0
-  },
-  "jet_afterburner_exhaust": {
-    "fx": "smoke_air_jet_afterbrun_exhaust_cmps_fx",
-    "lifeTime": 2.0,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.5,
-    "sortDistanceOffset": 20.0,
-    "numInstances": 20,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "exhaustVelMult": 0.03,
-    "jetAfterburnerRpmToExhaustVel": 300.0,
-    "jetAfterburnerSpeedToExhaustVel": 50.0
-  },
-  "ship_water_jet_ap": {
-    "fx": "water_jet_stream_cmps_fx",
-    "lifeTime": 4.0,
-    "numInstances": 200,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 40,
+  "water_units_move_splash": {
+    "fx": "water_oceanwave_splash_fx",
+    "lifeTime": 20.0,
+    "softnessDepth": 2.0,
     "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_water_jet": {
-    "fx": "water_jet_tail_cmps_fx",
-    "lifeTime": 4.0,
-    "numInstances": 200,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 40,
-    "granularity": 8,
-    "group": "water_proj",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "tank_fuel_explosion_soundless": {
-    "fx": "muzzle_ground_125mm_brake_cmps_fx",
-    "lifeTime": 10.0,
     "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "tanks/explosions_tanks",
-    "sfxPathStudio": "football_event",
-    "sfxEvent": "tank_jump"
-  },
-  "location_factory_smoke_large_fx": {
-    "fx": "location_factory_smoke_big_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 200,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
-    "granularity": 8,
+    "numReserved": 1,
+    "minScale": 0.8,
+    "maxScale": 1.1,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "location_sand_wind_composite_fx": {
-    "fx": "location_sand_wind_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 500,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
-    "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "location_sand_wind_dense_composite_fx": {
-    "fx": "location_sand_wind_dense_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 650,
-    "numReserved": 650,
-    "softnessDepth": 5.0,
-    "onePointNumber": 20,
-    "hideByCameraHeight": true,
-    "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "hydra_smoke_cruisemissile": {
-    "fx": "fires_rocket_tail_light_nofire_cmps_fx",
-    "lifeTime": 100.0,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.0,
-    "alphaHeightRange": [10.0,230.0],
-    "numInstances": 90,
-    "numReserved": 30,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "motor_exhaust_wep": {
-    "fx": "fire_engine_wep_cmps_fx",
-    "onePointNumber": 8,
-    "numInstances": 8,
-    "numReserved": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "motor_exhaust": {
-    "fx": "smoke_air_motor_exhaust_cmps_fx",
-    "lifeTime": 3.0,
-    "isTrail": true,
-    "onePointNumber": 8,
-    "numInstances": 20,
-    "numReserved": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_collision_unit_ground_underwater": {
-    "fx": "sparks_ship_collision_cmps_fx",
+  "shell_expl_long_fireworks": {
+    "fx": "fireworks_expl_composite_fx",
     "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "group": "underwater",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_collision_unit_steel_underwater": {
-    "fx": "sparks_ship_collision_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "group": "underwater",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_engine_fire_underwater": {
-    "fx": "fire_engine_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "tanks/explosions_tanks",
-    "sfxPathStudio": "naval/explosions",
-    "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 5000.0,
-    "group": "underwater"
-  },
-  "jet_start_exhaust": {
-    "fx": "smoke_air_jet_start_exhaust_cmps_fx",
-    "lifeTime": 2.0,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.5,
-    "sortDistanceOffset": 20.0,
-    "numInstances": 20,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "trail_jet": {
-    "fx": "smoke_air_jet_trail_cmps_fx",
-    "lifeTime": 18.0,
-    "alphaHeightRange": [1200.0,3000.0],
-    "isTrail": true,
-    "nonPlayerFadeDistScale": 5.0,
-    "playerFadeDistScale": 2.0,
-    "numInstances": 20,
-    "numReserved": 4,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "part_cut": {
-    "fx": "dust_destruction_part_cut_cmps_fx",
-    "numInstances": 5,
-    "numReserved": 2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "part_damage": {
-    "fx": "dust_destruction_part_damage_cmps_fx",
-    "softnessDepth": 1.0,
-    "numInstances": 10,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "smoke_shell_explosion": {
-    "fx": "explosion_smoke_cmps_fx",
-    "lifeTime": 0.0,
-    "softnessDepth": 1.0,
-    "granularity": 4,
+    "nonPlayerFadeDistScale": 1.2,
     "numInstances": 100,
-    "numReserved": 30,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 0.3,
+    "maxScale": 0.8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "fireworks_fountain": {
+    "fx": "fireworks_fountain_composite_fx",
+    "lifeTime": 6.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
     "minScale": 1.0,
-    "maxScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fireworks_fountain"
+  },
+  "firework_large_single": {
+    "fx": "firework_large_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_yellow_single": {
+    "fx": "firework_large_yellow_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_red_single": {
+    "fx": "firework_large_red_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_green_single": {
+    "fx": "firework_large_green_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_blue_single": {
+    "fx": "firework_large_blue_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_score_ginger": {
+    "fx": "firework_score_ginger_composite_fx",
+    "lifeTime": 7.0,
+    "nonPlayerFadeDistScale": 0.6,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 1.4,
+    "sfxPath": "tanks/football_event",
+    "sfxPathStudio": "football_event",
+    "sfxEvent": "ball_firework"
+  },
+  "firework_score_turquoise": {
+    "fx": "firework_score_turquoise_composite_fx",
+    "lifeTime": 7.0,
+    "nonPlayerFadeDistScale": 0.6,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 1.4,
+    "sfxPath": "tanks/football_event",
+    "sfxPathStudio": "football_event",
+    "sfxEvent": "ball_firework"
+  },
+  "firework_large_single_sparks": {
+    "fx": "firework_large_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_yellow_single_sparks": {
+    "fx": "firework_large_yellow_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_red_single_sparks": {
+    "fx": "firework_large_red_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_green_single_sparks": {
+    "fx": "firework_large_green_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "firework_large_blue_single_sparks": {
+    "fx": "firework_large_blue_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 1.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "shell_expl_long": {
+    "fx": "shell_expl_fx",
+    "lifeTime": 4.0,
+    "nonPlayerFadeDistScale": 1.2,
+    "numInstances": 100,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 0.3,
+    "maxScale": 0.8,
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "explosion_air",
+    "soundEnableDistance": 5000.0
+  },
+  "shell_expl_short": {
+    "fx": "shell_expl_fast_fx",
+    "lifeTime": 1.0,
+    "nonPlayerFadeDistScale": 1.6,
+    "numInstances": 90,
+    "numReserved": 0,
+    "updateInvisible": true,
+    "minScale": 0.3,
+    "maxScale": 0.8,
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "explosion_air_small",
+    "soundEnableDistance": 3750.0
+  },
+  "water_explosion_pieces": {
+    "fx": "waterpiecesmoke_fx",
+    "lifeTime": 2.0,
+    "softnessDepth": 5.0,
+    "numInstances": 12,
+    "numReserved": 3,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ground_model_fire": {
+    "fx": "gm_fire_fx",
+    "lifeTime": 1800.0,
+    "farPlane": 10000.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 60,
+    "numReserved": 1,
+    "minScale": 0.6,
+    "maxScale": 1.4,
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "explosion_gr_smoke",
-    "soundEnableDistance": 1000.0
-  },
-  "bonfire_composite": {
-    "fx": "fire_bonfire_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "onePointNumber": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "sfxEvent": "fire_hangar",
-    "soundEnableDistance": 200.0
-  },
-  "location_smoke_city": {
-    "fx": "location_smoke_city_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "light_indoor_10_yellow": {
-    "fx": "light_indoor_10_yellow_fx",
-    "lifeTime": 2.0,
-    "numInstances": 30,
-    "numReserved": 10,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "light_indoor_20": {
-    "fx": "light_indoor_20_fx",
-    "lifeTime": 2.0,
-    "numInstances": 30,
-    "numReserved": 10,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "hangar_hmb_light_noshaft": {
-    "fx": "misc_fake_hmb_light_noshaft_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 250,
-    "numReserved": 5,
-    "onePointNumber": 10,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "hangar_hmb_low_light_yellow": {
-    "fx": "misc_fake_hmb_light_yellow_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 250,
-    "numReserved": 20,
-    "onePointNumber": 10,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "hangar_hmb_light": {
-    "fx": "misc_fake_hmb_light_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 250,
-    "numReserved": 5,
-    "onePointNumber": 10,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "volcano_smoke": {
-    "fx": "location_volcano_cmps_fx",
-    "numInstances": 5,
-    "numReserved": 0,
-    "softnessDepth": 3.0,
-    "farPlane": 15000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0
   },
   "ground_model_gray_smoke": {
-    "fx": "smoke_base_gray_cmps_fx",
+    "fx": "graysmoke",
+    "lifeTime": 1800.0,
     "softnessDepth": 5.0,
     "sortDistanceOffset": 0.0,
     "numInstances": 200,
@@ -5449,462 +8022,156 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "location_waterfall_10m_composite_fx": {
-    "fx": "water_location_waterfall_10m_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 500,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
-    "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "location_waterfall_50m_composite_fx": {
-    "fx": "water_location_waterfall_50m_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 500,
-    "numReserved": 50,
-    "softnessDepth": 0.5,
-    "onePointNumber": 20,
-    "granularity": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "hydra_bubbles": {
-    "fx": "water_under_tail_cmps_fx",
-    "lifeTime": 20.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "onePointNumber": 15,
-    "group": "underwater",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_fire_large": {
-    "fx": "fire_base_huge_cmps_fx",
+  "cut_tail_smoke": {
+    "fx": "gm_fire_fx",
     "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "tanks/explosions_tanks",
-    "sfxPathStudio": "naval/explosions",
-    "sfxEvent": "fire_big",
-    "soundEnableDistance": 5000.0,
-    "farPlane": 15000.0
-  },
-  "contrail": {
-    "fx": "smoke_air_contrail_cmps_fx",
-    "lifeTime": 18.0,
-    "alphaHeightRange": [50.0,300.0],
-    "isTrail": true,
-    "sortDistanceOffset": 20.0,
-    "numInstances": 50,
-    "numReserved": 5,
+    "softnessDepth": 0.5,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 0,
+    "numReserved": 0,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "inversionTrailVelMult": 0.03,
-    "jetAfterburnerRpmToInversionTrailVel": 300.0
+    "sfxPathStudio": "aircraft/effects"
   },
-  "waypoint_ground_arrow": {
-    "fx": "misc_markers_waypoint_arrow_ground_cmps_fx",
-    "group": "highres",
+  "ground_model_smoke": {
+    "fx": "gm_enginesmoke_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 18,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ground_light": {
+    "fx": "artillery_ground_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ground_flash": {
+    "fx": "artillery_flash_fx",
+    "lifeTime": 10.0,
     "softnessDepth": 5.0,
     "numInstances": 10,
     "numReserved": 0,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "waypoint_ground": {
-    "fx": "misc_markers_waypoint_ground_cmps_fx",
-    "group": "highres",
+  "tank_dust": {
+    "fx": "tanks_dust_fx",
+    "lifeTime": 10.0,
     "softnessDepth": 5.0,
-    "numInstances": 5,
-    "numReserved": 0,
+    "numInstances": 90,
+    "numReserved": 1,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "lava_smoke": {
-    "fx": "location_smoke_lava_cmps_fx",
-    "numInstances": 5,
-    "numReserved": 0,
-    "softnessDepth": 3.0,
-    "farPlane": 15000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ship_smoke": {
-    "fx": "smoke_ship_medium_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "farPlane": 5000.0
-  },
-  "ship_smoke_large": {
-    "fx": "smoke_ship_massive_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "farPlane": 15000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "road_barrier_splash": {
-    "fx": "hit_39_58mm_water_cmps_fx",
-    "group": "water_proj",
-    "lifeTime": 0.0,
-    "softnessDepth": 2.0,
-    "granularity": 4,
-    "numInstances": 100,
-    "numReserved": 30,
-    "minScale": 0.8,
-    "maxScale": 1.0,
-    "onePointNumber": 8,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "road_barrier",
-    "soundEnableDistance": 50.0
-  },
-  "trail_smoke": {
-    "fx": "smoke_air_dark_cmps_fx",
-    "lifeTime": 80.0,
-    "nonPlayerFadeDistScale": 5.0,
-    "playerFadeDistScale": 2.0,
-    "alphaHeightRange": [4.0,240.0],
-    "numInstances": 120,
-    "numReserved": 30,
-    "onePointNumber": 4,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ps_bubbles_dust": {
-    "fx": "water_under_bubbels_cmps_fx",
+  "jump": {
+    "fx": "jump_composite_fx",
     "numInstances": 50,
-    "numReserved": 20,
-    "onePointNumber": 20,
-    "minScale": 1.1,
-    "maxScale": 1.8,
-    "group": "underwater",
+    "numReserved": 8,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "ps_bubbles": {
-    "fx": "water_under_bubbels_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 20,
-    "onePointNumber": 20,
-    "minScale": 1.1,
-    "maxScale": 1.8,
-    "group": "underwater",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "pumpkin_expl": {
-    "fx": "dust_destruction_pumpkin_cmps_fx",
-    "lifeTime": 2.0,
-    "numInstances": 20,
-    "numReserved": 4,
-    "onePointNumber": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "part_meet_water": {
-    "fx": "water_splash_small_cmps_fx",
-    "numInstances": 10,
-    "numReserved": 4,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ground_model_fire": {
-    "fx": "explosion_destruction_big_cmps_fx",
-    "numInstances": 60,
-    "numReserved": 15,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "rocket_fire_cruisemissile": {
-    "fx": "fires_rocket_tail_cruise_missile_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 80,
-    "numReserved": 5,
-    "isTrail": true,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.1,
-    "onePointNumber": 4,
-    "sortDistanceOffset": 0.2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "aircraft_wheels_water_splashes": {
-    "fx": "water_splash_ocean_wave_cmps_fx",
-    "lifeTime": 10.0,
-    "softnessDepth": 1.0,
-    "numInstances": 20,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ad_dust_stucco": {
-    "fx": "dust_destruction_base_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 15,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "concrete_mid",
-    "soundEnableDistance": 50.0
-  },
-  "ad_dust_red_bricks": {
-    "fx": "dust_destruction_red_brick_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "concrete_mid",
-    "soundEnableDistance": 50.0
-  },
-  "ad_sand": {
-    "fx": "dust_destruction_base_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "sandbag",
-    "soundEnableDistance": 50.0
-  },
-  "px_ground_sand_fx": {
-    "fx": "dust_destruction_sand_med_cmps_fx",
+  "object_ground_explosion": {
+    "fx": "grnd_expl_composite_fx",
     "lifeTime": 4.0,
     "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "numInstances": 1000,
-    "numReserved": 25,
+    "numInstances": 18,
+    "numReserved": 1,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "ad_metal": {
-    "fx": "dust_destruction_metal_med_cmps_fx",
+  "object_water_explosion": {
+    "fx": "bigsplashexplosion_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "wind_particles": {
+    "fx": "air_dust_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "isTrail": true,
+    "heightRange": [300.0,1000.0],
+    "spawnRange": [1.0,0.0],
+    "cameraOffset": [0.0,0.0,600.0],
+    "spawnKoefByType": 0.5,
+    "numInstances": 0,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "haze_cruisemissile": {
+    "fx": "trail_haze_fx",
+    "lifeTime": 2.0,
+    "isTrail": true,
+    "numInstances": 12,
+    "numReserved": 5,
+    "onePointNumber": 4,
+    "minScale": 6.3,
+    "maxScale": 10.8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "haze": {
+    "fx": "trail_haze_fx",
+    "lifeTime": 0.0,
+    "isTrail": true,
+    "numInstances": 12,
+    "numReserved": 5,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "area_fx_0": {
+    "fx": "smoke_ground_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 18,
+    "numReserved": 2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "area_fx_1": {
+    "fx": "gm_fire_fx",
     "numInstances": 20,
+    "numReserved": 2,
+    "updateInvisible": false,
+    "farPlane": 7000.0,
+    "softnessDepth": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "part_damage": {
+    "fx": "part_damage_fx",
+    "softnessDepth": 1.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "building_expl": {
+    "fx": "building_expl_fx",
+    "numInstances": 50,
     "numReserved": 5,
     "softnessDepth": 5.0,
-    "onePointNumber": 5,
     "minScale": 0.8,
     "maxScale": 1.2,
+    "sfxEvent": "building_big",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "bollard",
-    "soundEnableDistance": 50.0
-  },
-  "ad_metal_small": {
-    "fx": "dust_destruction_metal_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "metal_small",
-    "soundEnableDistance": 50.0
-  },
-  "ad_metal_fence_grid": {
-    "fx": "dust_destruction_metal_wires_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "metal_grid",
-    "soundEnableDistance": 50.0
-  },
-  "ad_barbwire": {
-    "fx": "dust_destruction_metal_wires_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "metal_grid_fall",
-    "soundEnableDistance": 50.0
-  },
-  "ad_dust_bollard": {
-    "fx": "dust_destruction_metal_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "bollard",
-    "soundEnableDistance": 50.0
-  },
-  "ad_church_bell": {
-    "fx": "dust_destruction_metal_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/ambient_tanks",
-    "sfxPathStudio": "ground/ambient",
-    "sfxEvent": "church_bell_hit",
-    "soundEnableDistance": 200.0
-  },
-  "ad_tree_felling_leaves_green_medium": {
-    "fx": "dust_destruction_tree_green_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_leaves_green_small": {
-    "fx": "dust_destruction_tree_green_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_small_ground": {
-    "fx": "dust_destruction_tree_ground_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_medium_ground": {
-    "fx": "dust_destruction_tree_ground_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_bush_felling_leaves_green": {
-    "fx": "dust_destruction_bush_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/effects_tanks",
-    "sfxPathStudio": "ground/effects",
-    "sfxEvent": "collision_bushes",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_leaves_sakura_medium": {
-    "fx": "dust_destruction_tree_sakura_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_bush_felling_leaves_sakura": {
-    "fx": "dust_destruction_bush_sakura_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/effects_tanks",
-    "sfxPathStudio": "ground/effects",
-    "sfxEvent": "collision_bushes",
-    "soundEnableDistance": 50.0
-  },
-  "ad_bush_felling_leaves_fall": {
-    "fx": "dust_destruction_bush_fall_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/effects_tanks",
-    "sfxPathStudio": "ground/effects",
-    "sfxEvent": "collision_bushes",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_snow_medium": {
-    "fx": "dust_destruction_tree_snow_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_leaves_fall_medium": {
-    "fx": "dust_destruction_tree_fall_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
+    "soundEnableDistance": 1000.0
   },
   "tree_expl": {
-    "fx": "dust_destruction_tree_ground_med_cmps_fx",
+    "fx": "ad_tree_felling_leaves_green_medium_composite_fx",
     "numInstances": 15,
     "numReserved": 2,
     "minScale": 5.0,
@@ -5914,8 +8181,262 @@
     "sfxPathStudio": "aircraft/effects",
     "soundEnableDistance": 50.0
   },
+  "ground_model_hit": {
+    "fx": "hitPieces_fx",
+    "farPlane": 10000.0,
+    "numInstances": 12,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ground_explosion_fx": {
+    "fx": "ground_explosion_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "softnessDepth": 2.0,
+    "farPlane": 3000.0,
+    "minScale": 1.0,
+    "maxScale": 2.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ufo_hit": {
+    "fx": "ufo_hit_composite_fx",
+    "numInstances": 12,
+    "numReserved": 0,
+    "minScale": 3.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "isTrail": true
+  },
+  "ufo_exhaust": {
+    "fx": "ufo_exhaust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ufo_hit_red": {
+    "fx": "ufo_hit_red_composite_fx",
+    "numInstances": 12,
+    "numReserved": 0,
+    "minScale": 3.0,
+    "maxScale": 4.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ufo_exhaust_red": {
+    "fx": "ufo_exhaust_red_composite_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rocks_explosion_fx": {
+    "fx": "rocks_explosion_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "beton_explosion_fx": {
+    "fx": "concrete_explosion_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "concrete_explosion_fx": {
+    "fx": "concrete_explosion_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "buildings_explosion_fx": {
+    "fx": "buildings_explosion_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "crash_smoke_burst_fx": {
+    "fx": "crash_smoke_burst_fx",
+    "numInstances": 0,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "crash_smoke_fx": {
+    "fx": "crash_smoke_fx",
+    "numInstances": 0,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "huge_explosion_fx": {
+    "fx": "huge_explosion_fx",
+    "numInstances": 1,
+    "numReserved": 0,
+    "minScale": 3.0,
+    "maxScale": 3.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "hangar_smoke_fx": {
+    "fx": "hangar_smoke_fx",
+    "numInstances": 0,
+    "numReserved": 0,
+    "softnessDepth": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "rain_splash": {
+    "fx": "rain_splash_fx",
+    "numInstances": 800,
+    "numReserved": 4,
+    "softnessDepth": 5.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ps_bubbles": {
+    "fx": "trp_propeller_splashes_layer1_fx",
+    "numInstances": 50,
+    "numReserved": 20,
+    "onePointNumber": 20,
+    "minScale": 1.1,
+    "maxScale": 1.8,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ps_bubbles_dust": {
+    "fx": "water_bubbles_dust_composite_fx",
+    "numInstances": 50,
+    "numReserved": 20,
+    "onePointNumber": 20,
+    "minScale": 1.1,
+    "maxScale": 1.8,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "boat_exhaust": {
+    "fx": "boat_exhaust_fx",
+    "numInstances": 50,
+    "numReserved": 0,
+    "softnessDepth": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_foam": {
+    "fx": "water_foam_fx",
+    "numInstances": 50,
+    "numReserved": 5,
+    "group": "water_proj_only",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_small_splash": {
+    "fx": "water_splash_small_fx",
+    "numInstances": 50,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ground_smoke": {
+    "fx": "engine_smoke_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_smoke": {
+    "fx": "location_volcano_composite_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "lava_smoke": {
+    "fx": "location_lava_smoke_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "white_smoke": {
+    "fx": "whitesmoke",
+    "numInstances": 10,
+    "numReserved": 0,
+    "softnessDepth": 2.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "lightning_ray": {
+    "fx": "lightning_ray_fx.fx",
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "lightning_ball_continuous": {
+    "fx": "lightning_ball_continuous_fx",
+    "softnessDepth": 5.0,
+    "numInstances": 25,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "waypoint_ground": {
+    "fx": "waypoint_ground_fx",
+    "group": "highres",
+    "softnessDepth": 5.0,
+    "numInstances": 5,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "waypoint_ground_arrow": {
+    "fx": "waypoint_ground_arrow_fx",
+    "group": "highres",
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "am_ap_smoke_fx": {
+    "fx": "am_ap_smoke_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "softnessDepth": 2.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ad_wood_pieces": {
+    "fx": "ad_hit_wood_small_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 15,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "wood_mid",
+    "soundEnableDistance": 50.0
+  },
   "ad_wood_small": {
-    "fx": "dust_destruction_wood_small_cmps_fx",
+    "fx": "ad_wood_small_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -5928,7 +8449,7 @@
     "soundEnableDistance": 50.0
   },
   "ad_wood_big": {
-    "fx": "dust_destruction_wood_big_cmps_fx",
+    "fx": "ad_wood_big_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -5940,97 +8461,8 @@
     "sfxEvent": "wood_big",
     "soundEnableDistance": 50.0
   },
-  "ad_shlagbaum": {
-    "fx": "dust_destruction_wood_sparks_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "wood_metal",
-    "soundEnableDistance": 50.0
-  },
-  "ad_fence_wood_small": {
-    "fx": "dust_destruction_wood_small_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "wood_small",
-    "soundEnableDistance": 50.0
-  },
   "ad_wood_metal_big": {
-    "fx": "dust_destruction_wood_sparks_big_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "wood_metal_big",
-    "soundEnableDistance": 50.0
-  },
-  "crash_loudspeaker": {
-    "fx": "dust_destruction_wood_sparks_big_cmps_fx",
-    "numInstances": 10,
-    "numReserved": 0,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "speaker_destroy",
-    "soundEnableDistance": 300.0
-  },
-  "px_ground_snow_fx": {
-    "fx": "dust_destruction_snow_big_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "numInstances": 1000,
-    "numReserved": 25,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "ad_dust_snow": {
-    "fx": "dust_destruction_snow_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.5,
-    "maxScale": 0.9,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "concrete_mid",
-    "soundEnableDistance": 50.0
-  },
-  "ad_metal_snow": {
-    "fx": "dust_destruction_snow_dirt_big_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "bollard",
-    "soundEnableDistance": 50.0
-  },
-  "ad_wood_metal_snow_big": {
-    "fx": "dust_destruction_snow_wood_big_fx",
+    "fx": "ad_wood_big_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6043,7 +8475,7 @@
     "soundEnableDistance": 50.0
   },
   "ad_wood_snow_big": {
-    "fx": "dust_destruction_snow_wood_big_fx",
+    "fx": "ad_wood_snow_big_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6055,8 +8487,34 @@
     "sfxEvent": "wood_big",
     "soundEnableDistance": 50.0
   },
-  "ad_wood_snow_small": {
-    "fx": "dust_destruction_snow_wood_med_cmps_fx",
+  "ad_wood_metal_snow_big": {
+    "fx": "ad_wood_snow_big_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "wood_metal_big",
+    "soundEnableDistance": 50.0
+  },
+  "ad_snowman": {
+    "fx": "ad_snow_explotion_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "sandbag",
+    "soundEnableDistance": 50.0
+  },
+  "ad_fence_wood_small": {
+    "fx": "ad_wood_small_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6068,18 +8526,307 @@
     "sfxEvent": "wood_small",
     "soundEnableDistance": 50.0
   },
-  "dstr_wood_target_red_smoke": {
-    "fx": "dust_destruction_target_red_smoke_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 80,
-    "numReserved": 3,
-    "onePointNumber": 8,
-    "softnessDepth": 0.3,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+  "ad_wood_snow_small": {
+    "fx": "ad_wood_snow_small_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "wood_small",
+    "soundEnableDistance": 50.0
+  },
+  "ad_shlagbaum": {
+    "fx": "ad_wood_small_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "wood_metal",
+    "soundEnableDistance": 50.0
+  },
+  "ad_dust_red_bricks": {
+    "fx": "ad_dust_red_bricks_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "concrete_mid",
+    "soundEnableDistance": 50.0
+  },
+  "ad_dust_stucco": {
+    "fx": "ad_dust_stucco_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 15,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "concrete_mid",
+    "soundEnableDistance": 50.0
+  },
+  "ad_dust_snow": {
+    "fx": "ad_snow_explotion_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "concrete_mid",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_snow_medium": {
+    "fx": "ad_tree_felling_snow_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_leaves_green_medium": {
+    "fx": "ad_tree_felling_leaves_green_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_leaves_fall_medium": {
+    "fx": "ad_tree_felling_leaves_fall_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_leaves_sakura_medium": {
+    "fx": "ad_tree_felling_leaves_sakura_medium_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_leaves_green_small": {
+    "fx": "ad_tree_felling_leaves_green_small_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_bush_felling_leaves_green": {
+    "fx": "ad_bush_felling_leaves_green_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/effects_tanks",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "collision_bushes",
+    "soundEnableDistance": 50.0
+  },
+  "ad_bush_felling_leaves_fall": {
+    "fx": "ad_bush_felling_leaves_fall_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/effects_tanks",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "collision_bushes",
+    "soundEnableDistance": 50.0
+  },
+  "ad_bush_felling_leaves_sakura": {
+    "fx": "ad_bush_felling_leaves_sakura_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/effects_tanks",
+    "sfxPathStudio": "ground/effects",
+    "sfxEvent": "collision_bushes",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_medium_ground": {
+    "fx": "ad_tree_felling_medium_ground_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_tree_felling_small_ground": {
+    "fx": "ad_tree_felling_small_ground_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "ad_metal": {
+    "fx": "ad_metal_sparks_large_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "bollard",
+    "soundEnableDistance": 50.0
+  },
+  "ad_church_bell": {
+    "fx": "ad_metal_sparks_large_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/ambient_tanks",
+    "sfxPathStudio": "ground/ambient",
+    "sfxEvent": "church_bell_hit",
+    "soundEnableDistance": 200.0
+  },
+  "ad_metal_small": {
+    "fx": "ad_metal_sparks_small_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "metal_small",
+    "soundEnableDistance": 50.0
+  },
+  "ad_metal_snow": {
+    "fx": "ad_metal_snow_big_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "bollard",
+    "soundEnableDistance": 50.0
+  },
+  "ad_metal_snow_small": {
+    "fx": "ad_metal_snow_small_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "metal_small",
+    "soundEnableDistance": 50.0
+  },
+  "ad_metal_fence_grid": {
+    "fx": "ad_metal_sparks_small_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "metal_grid",
+    "soundEnableDistance": 50.0
+  },
+  "ad_dust_bollard": {
+    "fx": "ad_metal_sparks_large_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "bollard",
+    "soundEnableDistance": 50.0
+  },
+  "ad_sand": {
+    "fx": "ad_dust_sand_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "sandbag",
+    "soundEnableDistance": 50.0
   },
   "ad_haystack": {
-    "fx": "dust_destruction_haystack_cmps_fx",
+    "fx": "ad_haystack_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6091,44 +8838,34 @@
     "sfxEvent": "haystack",
     "soundEnableDistance": 50.0
   },
-  "ad_car_wreck": {
-    "fx": "dust_destruction_car_big_cmps_fx",
+  "ad_explosion_small": {
+    "fx": "ad_explosion_small_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
+    "minScale": 0.9,
+    "maxScale": 1.1,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "car_wreck",
-    "soundEnableDistance": 50.0
-  },
-  "ad_car_wreck_small": {
-    "fx": "dust_destruction_car_med_cmps_fx",
-    "numInstances": 20,
-    "numReserved": 5,
-    "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "car_wreck",
-    "soundEnableDistance": 50.0
+    "sfxEvent": "explosion_gasoline",
+    "soundEnableDistance": 200.0
   },
   "ad_explosion_big": {
-    "fx": "explosion_destruction_base_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 10,
+    "fx": "ad_explosion_big_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
     "onePointNumber": 5,
+    "minScale": 0.9,
+    "maxScale": 1.1,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "explosion_gasoline",
     "soundEnableDistance": 200.0
   },
   "ad_chemicals_explosion_small": {
-    "fx": "dust_destruction_chemical_explosion_cmps_fx",
+    "fx": "ad_chemicals_explosion_small_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6141,7 +8878,7 @@
     "soundEnableDistance": 200.0
   },
   "ad_explosion_mine": {
-    "fx": "explosion_destruction_mid_cmps_fx",
+    "fx": "ad_explosion_mine_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6153,21 +8890,21 @@
     "sfxEvent": "explosion_mine",
     "soundEnableDistance": 200.0
   },
-  "ad_explosion_small": {
-    "fx": "explosion_destruction_mid_cmps_fx",
+  "ad_explosion_glass": {
+    "fx": "ad_glass_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
-    "onePointNumber": 5,
-    "minScale": 0.9,
-    "maxScale": 1.1,
+    "onePointNumber": 10,
+    "minScale": 0.8,
+    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "explosion_gasoline",
-    "soundEnableDistance": 200.0
+    "sfxEvent": "projector",
+    "soundEnableDistance": 50.0
   },
-  "ad_paper_splash_medium": {
-    "fx": "dust_destruction_paper_med_cmps_fx",
+  "ad_explosion_glass_snow": {
+    "fx": "ad_glass_snow_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6176,22 +8913,50 @@
     "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "haystack",
+    "sfxEvent": "projector",
     "soundEnableDistance": 50.0
   },
-  "ad_hydrant_destruction_faded": {
-    "fx": "water_hydrant_cmps_fx",
+  "ad_icefloe_big": {
+    "fx": "ad_icefloe_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "hydrant",
+    "sfxEvent": "wood_big",
+    "soundEnableDistance": 50.0
+  },
+  "ad_car_wreck": {
+    "fx": "ad_car_big_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "car_wreck",
+    "soundEnableDistance": 50.0
+  },
+  "ad_car_wreck_small": {
+    "fx": "ad_car_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "car_wreck",
     "soundEnableDistance": 50.0
   },
   "ad_buildings_destructions_big": {
-    "fx": "dust_construction_collapse_massive_cmps_fx",
+    "fx": "ad_buildings_big_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6203,31 +8968,21 @@
     "sfxEvent": "building_big",
     "soundEnableDistance": 1000.0
   },
-  "px_fracture_fx": {
-    "fx": "dust_falling_medium_cmps_fx",
-    "lifeTime": 4.0,
-    "numInstances": 200,
-    "numReserved": 50,
+  "ad_buildings_straw_destructions_big": {
+    "fx": "ad_buildings_straw_big_composite_fx",
+    "numInstances": 20,
+    "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
     "minScale": 0.8,
     "maxScale": 1.2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "px_ground_fx": {
-    "fx": "dust_construction_collapse_local_medium_cmps_fx",
-    "lifeTime": 4.0,
-    "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
-    "numInstances": 1000,
-    "numReserved": 25,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "building_big",
+    "soundEnableDistance": 1000.0
   },
   "ad_buildings_destructions_part": {
-    "fx": "dust_construction_collapse_local_medium_cmps_fx",
+    "fx": "ad_buildings_part_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6239,8 +8994,8 @@
     "sfxEvent": "concrete_big",
     "soundEnableDistance": 50.0
   },
-  "ad_buildings_straw_destructions_big": {
-    "fx": "dust_construction_collapse_massive_cmps_fx",
+  "ad_windows_big": {
+    "fx": "ad_windows_big_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6253,7 +9008,7 @@
     "soundEnableDistance": 1000.0
   },
   "ad_metal_buildings_destructions_part": {
-    "fx": "dust_construction_collapse_local_small_cmps_fx",
+    "fx": "ad_buildings_part_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6265,21 +9020,30 @@
     "sfxEvent": "wood_metal_big",
     "soundEnableDistance": 50.0
   },
-  "ad_explosion_glass": {
-    "fx": "dust_destruction_snow_glass_cmps_fx",
+  "ad_hydrant_destruction": {
+    "fx": "pv_water_jet_small_composite_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "wood_metal",
+    "sfxEvent": "projector",
     "soundEnableDistance": 50.0
   },
-  "ad_windows_big": {
-    "fx": "dust_destruction_glass_med_cmps_fx",
+  "ad_hydrant_destruction_faded": {
+    "fx": "pv_water_jet_small_composite_fx_faded",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "hydrant",
+    "soundEnableDistance": 50.0
+  },
+  "ad_paper_splash_medium": {
+    "fx": "ad_crumbled_paper_splash_medium_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,
@@ -6288,7 +9052,430 @@
     "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "building_big",
-    "soundEnableDistance": 1000.0
+    "sfxEvent": "haystack",
+    "soundEnableDistance": 50.0
+  },
+  "px_ground_fx": {
+    "fx": "ad_buildings_part_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "numInstances": 1000,
+    "numReserved": 25,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "px_ground_sand_fx": {
+    "fx": "ad_buildings_part_sand_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "numInstances": 1000,
+    "numReserved": 25,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "px_ground_snow_fx": {
+    "fx": "ad_buildings_part_snow_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "numInstances": 1000,
+    "numReserved": 25,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "px_fracture_fx": {
+    "fx": "ad_buildings_fracture_composite_fx",
+    "lifeTime": 4.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_water_splashes": {
+    "fx": "ps_water_splash_composite",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "lowresFarPlane": 100.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_water_jet_ap": {
+    "fx": "ps_water_jet_ap",
+    "lifeTime": 4.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 40,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_water_jet": {
+    "fx": "ps_water_jet_composite",
+    "lifeTime": 4.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 40,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_rear_water_splashes": {
+    "fx": "ps_rear_water_splash_composite",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "trp_propeller_water_splashes": {
+    "fx": "trp_propeller_water_splashes_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "farPlane": 100.0,
+    "granularity": 2,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_propeller_underwater_splashes": {
+    "fx": "ps_propeller_underwater_splash_composite",
+    "lifeTime": 4.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_propeller_water_splashes": {
+    "fx": "ps_propeller_water_splash_composite",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "lowresFarPlane": 100.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "golden_light_area_fx": {
+    "fx": "golden_trails_composite_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 18,
+    "numReserved": 2,
+    "minScale": 1.0,
+    "maxScale": 1.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_factory_smoke_large_fx": {
+    "fx": "location_factory_smoke_large_fx",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_ground_smoke_distortion": {
+    "fx": "ps_ammo_fire_underwater_ring_distortion_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_factory_smoke_small_fx": {
+    "fx": "location_factory_smoke_small_fx",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_lighthouse_50_fx": {
+    "fx": "lighthouse_50_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_sand_wind_composite_fx": {
+    "fx": "location_sand_wind_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_sand_wind_dense_composite_fx": {
+    "fx": "location_sand_wind_dense_composite_fx",
+    "lifeTime": 2.0,
+    "numInstances": 650,
+    "numReserved": 650,
+    "softnessDepth": 5.0,
+    "onePointNumber": 20,
+    "hideByCameraHeight": true,
+    "granularity": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_waterfall_10m_composite_fx": {
+    "fx": "location_waterfall_10m_composite",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_waterfall_50m_composite_fx": {
+    "fx": "location_waterfall_50m_composite",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "toon_waterfall_100m_composite_fx": {
+    "fx": "toon_waterfall_100m_composite",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "toon_waterfall_250m_composite_fx": {
+    "fx": "toon_waterfall_250m_composite",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "toon_waterfall_50m_splashes_composite": {
+    "fx": "toon_waterfall_50m_splashes_composite",
+    "lifeTime": 2.0,
+    "numInstances": 500,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
+    "group": "water_proj",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_collision_unit": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_scrape": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_steel_underwater": {
+    "fx": "ps_collision_steel_underwater_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_ground_underwater": {
+    "fx": "ps_collision_ground_underwater_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_steel": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_wood": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_ground_wood": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 18,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_collision_unit_ground_steel": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 18,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_scrape_steel": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_scrape_wood": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_scrape_ground_wood": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_scrape_ground_steel": {
+    "fx": "ps_collision_sparks_composite_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "world_map_click": {
+    "fx": "world_map_click_composite_fx",
+    "numInstances": 30,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "group": "highres",
+    "farPlane": 30000.0,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "world_map_marker": {
+    "fx": "world_map_marker_composite_fx",
+    "numInstances": 30,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "group": "highres",
+    "farPlane": 30000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "world_map_hover": {
+    "fx": "world_map_target_composite_fx",
+    "numInstances": 30,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "group": "highres",
+    "farPlane": 30000.0,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "crash_loudspeaker": {
+    "fx": "ad_wood_big_composite_fx",
+    "numInstances": 10,
+    "numReserved": 0,
+    "softnessDepth": 5.0,
+    "onePointNumber": 5,
+    "minScale": 0.8,
+    "maxScale": 1.2,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "speaker_destroy",
+    "soundEnableDistance": 300.0
   }
 }

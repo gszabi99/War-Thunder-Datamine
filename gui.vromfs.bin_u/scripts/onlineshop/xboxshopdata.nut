@@ -2,7 +2,6 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 local statsd = require("statsd")
 local progressMsg = require("sqDagui/framework/progressMsg.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
 
@@ -27,7 +26,7 @@ local haveItemDiscount = null
     return
   }
 
-  local xboxShopBlk = GUI.get()?.xbox_ingame_shop
+  local xboxShopBlk = ::configs.GUI.get()?.xbox_ingame_shop
   local skipItemsList = xboxShopBlk?.itemsHide ?? ::DataBlock()
   xboxProceedItems.clear()
   itemsList.clear()

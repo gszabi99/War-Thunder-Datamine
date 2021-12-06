@@ -2,7 +2,7 @@ local time = require("scripts/time.nut")
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 
-const AUTO_ACTIVATE_TIME = 60
+
 /**
  * This method is called from within C++.
  * Triggered only when some player gets a reward.
@@ -25,8 +25,6 @@ const AUTO_ACTIVATE_TIME = 60
                               "orderStatusPosition", "orderStatusSize"
                              ]
 
-  autoActivateHint = ::loc("guiHints/order_auto_activate",
-    {time = $"{AUTO_ACTIVATE_TIME} {::loc("mainmenu/seconds")}"})
   hasActiveOrder = false
   activeOrder = {
     orderId = -1
@@ -145,7 +143,6 @@ const AUTO_ACTIVATE_TIME = 60
   isOrdersContainerVisible = false
   isOrdersHidden = false
   ordersToActivate = null
-  isActivationProgress = false
 }
 
 //
@@ -163,7 +160,7 @@ g_orders.openOrdersInventory <- function openOrdersInventory()
 // This takes in account fact that item was used during current battle.
 // @see ::items_classes.Order::getAmount()
 g_orders.collectOrdersToActivate <- @() ordersToActivate = ::ItemsManager.getInventoryList(
-  itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
+  itemType.ORDER, @(item) item.getAmount() > 0)
 
 g_orders.hasOrdersToActivate <- @() (ordersToActivate?.len() ?? 0) > 0
 
@@ -414,30 +411,6 @@ g_orders.updateHideOrderBlock <- function updateHideOrderBlock()
     hideOrderTextIconObj.show(isHideOrderBtnVisible && isOrdersHidden)
 }
 
-// Activates order, which soon expire.
-g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
-{
-  if (isActivationProgress)
-    return
-
-  // If some orders expired during other one active
-  ordersToActivate = ordersToActivate.filter(@(inst) !inst.isExpired())
-
-  for (local i = 0; i < ordersToActivate.len(); i++)
-  {
-    local order = ordersToActivate[i]
-    if (order.isActivateBeforeExpired && order.hasExpireTimer()
-      && order.expiredTimeSec - ::dagor.getCurTime() * 0.001 <= AUTO_ACTIVATE_TIME)
-      {
-        activateOrder(order,
-          function(p){
-            if(p.useResult == ::g_order_use_result.OK)
-              ordersToActivate.remove(i)
-            }, true)
-          break
-      }
-  }
-}
 
 /** Returns true if player can activate some order now. */
 g_orders.orderCanBeActivated <- function orderCanBeActivated()
@@ -476,9 +449,8 @@ g_orders.showActivateOrderButton <- function showActivateOrderButton()
   return !isInSpectatorMode() && ordersCanBeUsed()
 }
 
-g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null, isSilent = false)
+g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null)
 {
-  isActivationProgress = true
   if (activatingLocalOrderId != null)
   {
     if (onComplete != null)
@@ -498,11 +470,11 @@ g_orders.activateOrder <- function activateOrder(orderItem, onComplete = null, i
     + "Order ID: " + activatingLocalOrderId + " Order UID: " + orderItem.uids[0])
   if (checkCurrentMission(orderItem))
   {
-    ::set_order_accepted_cb(::g_orders, @(res) onOrderAccepted(res, isSilent))
+    ::set_order_accepted_cb(::g_orders, onOrderAccepted)
     ::use_order_request(orderItem.uids[0])
   }
   else
-    onOrderAccepted(::g_order_use_result.RESTRICTED_MISSION.code, isSilent)
+    onOrderAccepted(::g_order_use_result.RESTRICTED_MISSION.code)
 }
 
 /**
@@ -776,16 +748,15 @@ g_orders.getActiveOrderObjective <- function getActiveOrderObjective()
   return null
 }
 
-g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = false)
+g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode)
 {
   local useResult = ::g_order_use_result.getOrderUseResultByCode(useResultCode)
   debugPrint("g_orders::onOrderAccepted: Activation complete. Result: "
     + ::toString(useResult))
-  if (!isSilent)
-    ::scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
-      [["ok", function() {
-        ::broadcastEvent("OrderUseResultMsgBoxClosed")
-      } ]], "ok")
+  ::scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
+    [["ok", function() {
+      ::broadcastEvent("OrderUseResultMsgBoxClosed")
+    } ]], "ok")
   if (useResult == ::g_order_use_result.OK)
   {
     if (activatingLocalOrderId == null)
@@ -808,7 +779,6 @@ g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = f
   }
   activatingLocalOrderId = null
   ::set_order_accepted_cb(::g_orders, null)
-  isActivationProgress = false
 }
 
 /** This is order counter local in scope of one battle. */

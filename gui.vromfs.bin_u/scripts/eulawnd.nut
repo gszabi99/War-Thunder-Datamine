@@ -1,6 +1,5 @@
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
-local { fillUserNick } = require("scripts/firstChoice/firstChoice.nut")
 
 ::gui_start_eula <- function gui_start_eula(eulaType, isForView = false)
 {
@@ -17,7 +16,6 @@ class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    fillUserNick(scene.findObject("usernick_place"))
     local textObj = scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
     local isEULA = eulaType == ::TEXT_EULA

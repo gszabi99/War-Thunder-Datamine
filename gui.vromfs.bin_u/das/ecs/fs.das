@@ -10,7 +10,7 @@ def load_folder(path : string) : bool
   find_files_in_folder(path, "*.das") <| $(files)
     for file in files
       n += 1
-      ok = load_das(file) && ok
+      ok = load_es(file) && ok
   if n == 0
     logerr("folder `{path}` is empty, maybe wrong path")
   return ok
@@ -20,5 +20,5 @@ def load_optional_folder(path : string) : bool
   var ok = true
   find_files_in_folder(path, "*.das") <| $(files)
     for file in files
-      ok = load_das(file) && ok
+      ok = load_es(file) && ok
   return ok

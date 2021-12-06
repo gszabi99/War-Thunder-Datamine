@@ -99,27 +99,7 @@ def are_approximately_equal(a, b : float; epsilon : float = 8.0 * FLT_EPSILON) /
 def cross2d(a, b : float2) : float
   return a.y * b.x - a.x * b.y
 
-[generic]
-def is_nan(a: float4)
-  return is_nan(a.x) || is_nan(a.y) || is_nan(a.z) || is_nan(a.w)
 
 [generic]
 def is_nan(a: float3)
   return is_nan(a.x) || is_nan(a.y) || is_nan(a.z)
-
-[generic]
-def is_nan(a: float2)
-  return is_nan(a.x) || is_nan(a.y)
-
-
-[generic]
-def scale_tm(scale: float): float3x4
-  var scaleTm : float3x4
-  scaleTm[0] = float3(scale, 0.0, 0.0)
-  scaleTm[1] = float3(0.0, scale, 0.0)
-  scaleTm[2] = float3(0.0, 0.0, scale)
-  return <- scaleTm
-
-[generic]
-def scale_tm(tm: float3x4; scale: float): float3x4
-  return <- tm * scale_tm(scale)

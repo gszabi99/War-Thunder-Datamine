@@ -1482,15 +1482,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnWatchedHeroChanged = true
   }
 
-  WAIT_FOR_AIMING = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId = "hints/wait_for_aiming"
-    showEvent = "hint:wait_for_aiming"
-    lifeTime = 3.0
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = true
-  }
-
   EXTINGUISH_ASSIST = {
     hintType = ::g_hud_hint_types.REPAIR
     locId = "hints/extinguish_assist"
@@ -1539,13 +1530,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
       return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     }
   }
+  //
 
-  SUPPORT_PLANE_IN_DEAD_ZONE = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/support_plane_in_dead_zone"
-    showEvent = "hint:support_plane_in_dead_zone"
-    lifeTime = 3.0
-  }
+
+
+
+
+
 
 },
 function() {

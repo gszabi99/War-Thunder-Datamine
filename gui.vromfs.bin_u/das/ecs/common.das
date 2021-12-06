@@ -3,7 +3,7 @@ require ecs
 require DagorMathUtils
 require strings
 require daslib/strings_boost
-require daslib/instance_function
+require daslib/contracts
 
 
 [generic]
@@ -49,30 +49,11 @@ def find_index(arr: StringList; val: string) : int
       return i
   return -1
 
+def get_safe(val, idx, default_value)
+  return length(val) > idx ? val[idx] : default_value
 
-[generic, export]
-def list_safe_at(t: VecT implicit; idx: int): ChildT const?#
-  if uint(idx) < uint(length(t))
-    unsafe
-      return reinterpret<ChildT const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<ChildT const?#> null
-
-
-[instance_function(list_safe_at, VecT = IntList, ChildT = "int")]
-def operator ?[] (t: IntList implicit; idx: int): int const?#
-  unsafe
-    return reinterpret<int const?#> null
-
-[instance_function(list_safe_at, VecT = FloatList, ChildT = "float")]
-def operator ?[] (t: FloatList implicit; idx: int): float const?#
-  unsafe
-    return reinterpret<float const?#> null
-
-[instance_function(list_safe_at, VecT = BoolList, ChildT = "bool")]
-def operator ?[] (t: BoolList implicit; idx: int): bool const?#
-  unsafe
-    return reinterpret<bool const?#> null
+def get_or(val, idx, default_block)
+  return length(val) > idx ? val[idx] : invoke(default_block)
 
 [generic]
 def is_point_in_poly(pt : float2; points : ecs::Point2List)

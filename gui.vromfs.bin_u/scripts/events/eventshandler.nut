@@ -15,7 +15,6 @@ local { eachParam } = require("std/datablock.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
-local { GUI } = require("scripts/utils/configs.nut")
 
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
@@ -230,7 +229,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
         || !queueToShow)
       return
 
-    local eventRoomsListCfgBlk = GUI.get()?.eventRoomsList
+    local eventRoomsListCfgBlk = ::configs.GUI.get()?.eventRoomsList
 
     local delay = eventRoomsListCfgBlk?.timeToAskShowRoomsListSec ?? SHOW_RLIST_ASK_DELAY_DEFAULT
     if (queueToShow.getActiveTime() < delay)

@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 25.0
+    },
     "player": [
       {
         "army": 1
@@ -114,27 +118,23 @@
     "mission": {
       "level": "levels/wake_island.bin",
       "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "locName": "missions/_GS/ship;location/wake_island",
-      "locDesc": "missions/_GS/desc",
       "scoreLimit": 4200,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "japan",
       "country_allies": "usa",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "locName": "missions/_GS/ship;location/wake_island",
+      "locDesc": "missions/_GS/desc",
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
       }
-    },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 25.0
     },
     "spectator_points": [
       {
@@ -390,8 +390,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "offset": [0.0,0.0,0.0],
@@ -417,8 +415,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "resetStrictSpawnIndex": false,
             "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "offset": [0.0,0.0,0.0],
@@ -459,15 +455,11 @@
             "name_for_respawn_base": "",
             "timeMultiplier": 8.0,
             "disableZone": false,
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_area",
             "canCaptureOnGround": false,
             "canCaptureInAir": false,
             "canCaptureByGM": true,
-            "zoneType": "capture",
-            "zoneDefenders": []
+            "zoneType": "capture"
           }
         },
         {
@@ -625,8 +617,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_mothership_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_mothership_squad"
           }
         },
         {
@@ -637,8 +629,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_lcvp_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_lcvp_squad"
           }
         }
       ],
@@ -774,9 +766,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "t1_landing_start_area",
-          "object_var_value": 0
+          "target": "t1_landing_start_area"
         }
       },
       "actions": {
@@ -809,9 +801,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "t1_landing_area_01",
-          "object_var_value": 0
+          "target": "t1_landing_area_01"
         }
       },
       "actions": {
@@ -851,8 +843,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_tanks_squad"
           }
         },
         {
@@ -922,9 +914,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "t1_landing_area_02",
-          "object_var_value": 0
+          "target": "t1_landing_area_02"
         }
       },
       "actions": {
@@ -964,8 +956,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_tanks_squad"
           }
         },
         {
@@ -1035,9 +1027,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "t1_landing_area_03",
-          "object_var_value": 0
+          "target": "t1_landing_area_03"
         }
       },
       "actions": {
@@ -1077,8 +1069,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_tanks_squad"
           }
         },
         {
@@ -1148,9 +1140,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "t1_landing_area_04",
-          "object_var_value": 0
+          "target": "t1_landing_area_04"
         }
       },
       "actions": {
@@ -1190,8 +1182,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t1_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t1_tanks_squad"
           }
         },
         {
@@ -1308,8 +1300,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_mothership_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_mothership_squad"
           }
         },
         {
@@ -1320,8 +1312,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_lcvp_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_lcvp_squad"
           }
         }
       ],
@@ -1457,9 +1449,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_lcvp_squad",
-          "target": "t2_landing_start_area",
-          "object_var_value": 0
+          "target": "t2_landing_start_area"
         }
       },
       "actions": {
@@ -1492,9 +1484,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_lcvp_squad",
-          "target": "t2_landing_area_01",
-          "object_var_value": 0
+          "target": "t2_landing_area_01"
         }
       },
       "actions": {
@@ -1534,8 +1526,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_tanks_squad"
           }
         },
         {
@@ -1605,9 +1597,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_lcvp_squad",
-          "target": "t2_landing_area_02",
-          "object_var_value": 0
+          "target": "t2_landing_area_02"
         }
       },
       "actions": {
@@ -1647,8 +1639,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_tanks_squad"
           }
         },
         {
@@ -1718,9 +1710,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_lcvp_squad",
-          "target": "t2_landing_area_03",
-          "object_var_value": 0
+          "target": "t2_landing_area_03"
         }
       },
       "actions": {
@@ -1760,8 +1752,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_tanks_squad"
           }
         },
         {
@@ -1831,9 +1823,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_lcvp_squad",
-          "target": "t2_landing_area_04",
-          "object_var_value": 0
+          "target": "t2_landing_area_04"
         }
       },
       "actions": {
@@ -1873,8 +1865,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "t2_tanks_squad",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "t2_tanks_squad"
           }
         },
         {
@@ -1944,8 +1936,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "t1_land_squad",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": "t1_land_squad"
         }
       },
       "actions": {
@@ -1978,8 +1970,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "t2_land_squad",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": "t2_land_squad"
         }
       },
       "actions": {
@@ -2004,6 +1996,7 @@
         "timeLimit": 1800,
         "scoreConst": 100,
         "scoreTime": 400,
+        "dialogueAdd": "mission_start",
         "team": "A"
       },
       "onSuccess": [],
@@ -2018,6 +2011,7 @@
         "timeLimit": 1800,
         "scoreConst": 100,
         "scoreTime": 400,
+        "dialogueAdd": "mission_start",
         "team": "B"
       },
       "onSuccess": [],
@@ -2058,8 +2052,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2112,8 +2104,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,
@@ -2198,8 +2188,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,
@@ -2284,8 +2272,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,
@@ -2370,8 +2356,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,
@@ -2456,8 +2440,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2590,8 +2572,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2644,8 +2624,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2698,8 +2676,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2752,8 +2728,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2806,8 +2780,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2860,8 +2832,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2962,8 +2932,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3064,8 +3032,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3198,8 +3164,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3316,8 +3280,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3434,8 +3396,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3552,8 +3512,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3670,8 +3628,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3724,8 +3680,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3778,8 +3732,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3832,8 +3784,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3886,8 +3836,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3940,8 +3888,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3994,8 +3940,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4080,8 +4024,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4166,8 +4108,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4252,8 +4192,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4338,8 +4276,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4424,8 +4360,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4510,8 +4444,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4596,8 +4528,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4682,8 +4612,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -4768,8 +4696,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -4854,8 +4780,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -4940,8 +4864,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -5015,9 +4937,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t1_mothership_01"
           },
           {
@@ -5049,9 +4968,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t1_lcvp_swarm_01"
           },
           {
@@ -5076,9 +4992,6 @@
           [-11336.4,0.0,2339.2]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "t1_tank_01"
           },
@@ -5105,9 +5018,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t1_destroyers_squad"
           },
           {
@@ -5133,9 +5043,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t2_destroyers_squad"
           },
           {
@@ -5160,9 +5067,6 @@
           [12540.8,0.0,-7287.35]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "t2_mothership_01"
           },
@@ -5195,9 +5099,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t2_lcvp_swarm_01"
           },
           {
@@ -5223,9 +5124,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t2_tank_01"
           },
           {
@@ -5250,9 +5148,6 @@
           [-13082.5,0.0,529.4]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "t1_destroyer_01"
           },
@@ -5291,9 +5186,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t2_destroyer_01"
           },
           {
@@ -5331,9 +5223,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t1_destroyers_squad"
           },
           {
@@ -5359,9 +5248,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "t2_destroyers_squad"
           },
           {
@@ -5377,7 +5263,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_01",
         "tm": [
           [1.0,0.0,0.0],
@@ -5385,7 +5271,7 @@
           [0.0,0.0,1.0],
           [-914.6,27.45,1535.6]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5398,8 +5284,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -5431,7 +5315,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_02",
         "tm": [
           [1.0,0.0,0.0],
@@ -5439,7 +5323,7 @@
           [0.0,0.0,1.0],
           [-2743.35,27.45,-188.6]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5452,8 +5336,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -5501,7 +5383,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_04",
         "tm": [
           [1.0,0.0,0.0],
@@ -5509,7 +5391,7 @@
           [0.0,0.0,1.0],
           [1650.55,27.45,-1231.7]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5522,8 +5404,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -5555,7 +5435,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_01",
         "tm": [
           [1.0,0.0,0.0],
@@ -5563,7 +5443,7 @@
           [0.0,0.0,1.0],
           [-727.7,27.45,1536.15]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5576,8 +5456,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -5609,7 +5487,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_02",
         "tm": [
           [1.0,0.0,0.0],
@@ -5617,7 +5495,7 @@
           [0.0,0.0,1.0],
           [-2361.45,27.45,-500.05]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5630,8 +5508,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -5663,7 +5539,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_03",
         "tm": [
           [1.0,0.0,0.0],
@@ -5671,7 +5547,7 @@
           [0.0,0.0,1.0],
           [1397.6,27.45,-2560.35]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5684,8 +5560,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -5717,7 +5591,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t2_tank_04",
         "tm": [
           [1.0,0.0,0.0],
@@ -5725,7 +5599,7 @@
           [0.0,0.0,1.0],
           [2236.8,27.45,-1602.3]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5738,8 +5612,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -5771,7 +5643,7 @@
       }
     },
     {
-      "tankModels": {
+      "tracked_vehicles": {
         "name": "t1_tank_03",
         "tm": [
           [1.0,0.0,0.0],
@@ -5779,7 +5651,7 @@
           [0.0,0.0,1.0],
           [1138.4,27.45,-1843.3]
         ],
-        "unit_class": "jp_type_3_chi_nu",
+        "unit_class": "jpn_t97_ChiHa_Med",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5792,8 +5664,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -5846,8 +5716,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,

@@ -10,7 +10,7 @@ local fontsState = require("style/fontsState.nut")
 local hints = require("hints/hints.nut")
 local JB = require("reactiveGui/control/gui_buttons.nut")
 
-local scrollableData = require("components/scrollableData.nut")
+local scrollableData = require("daRg/components/scrollableData.nut")
 
 
 local function makeInputField(form_state, send_function) {
@@ -231,7 +231,12 @@ local bottomPanel = @() {
   onAttach = function (elem) {
     state.inputChatVisible(true)
     state.inputEnabled.subscribe(onInputToggle)
-    onInputToggle(true)
+    if (state.inputEnabled.value)
+      ::gui_scene.setInterval(0.1,
+        function() {
+          ::gui_scene.clearTimer(callee())
+          onInputToggle(true)
+        })
    }
    onDetach = function (elem) {
      state.inputChatVisible(false)

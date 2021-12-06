@@ -79,7 +79,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aam",
-      "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+      "shellAnimation": "video/shells_animations/sam.ivf",
       "bulletName": "80mm_type_91",
       "caliber": 0.08,
       "mass": 11.5,
@@ -359,7 +359,7 @@
           "rangeBand6": 1000.0,
           "rangeMax": 11000.0,
           "fov": 3.0,
-          "arretAngles": [0.0,-8.0],
+          "arretAngles": [0.0,0.0],
           "gateWidth": 0.5,
           "bandMaskToReject": 4,
           "minAngleToSun": 5.0,
@@ -367,6 +367,17 @@
           "angleMax": 40.0,
           "rateMax": 12.0,
           "prolongationTimeMax": 3.0
+        },
+        "orientationAutopilot": {
+          "timeOut": 0.0,
+          "controlTime": 0.2,
+          "elevationAdd": 8.0,
+          "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
+          "angleToAngularRate": 0.8,
+          "accelControlProp": 0.05,
+          "accelControlIntg": 0.002,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.02
         },
         "guidanceAutopilot": {
           "timeOut": 0.7,
@@ -438,7 +449,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "aam",
-        "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+        "shellAnimation": "video/shells_animations/sam.ivf",
         "bulletName": "80mm_type_91",
         "caliber": 0.08,
         "mass": 11.5,
@@ -718,7 +729,7 @@
             "rangeBand6": 1000.0,
             "rangeMax": 11000.0,
             "fov": 3.0,
-            "arretAngles": [0.0,-8.0],
+            "arretAngles": [0.0,0.0],
             "gateWidth": 0.5,
             "bandMaskToReject": 4,
             "minAngleToSun": 5.0,
@@ -726,6 +737,17 @@
             "angleMax": 40.0,
             "rateMax": 12.0,
             "prolongationTimeMax": 3.0
+          },
+          "orientationAutopilot": {
+            "timeOut": 0.0,
+            "controlTime": 0.2,
+            "elevationAdd": 8.0,
+            "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
+            "angleToAngularRate": 0.8,
+            "accelControlProp": 0.05,
+            "accelControlIntg": 0.002,
+            "accelControlIntgLim": 0.5,
+            "accelControlDiff": 0.02
           },
           "guidanceAutopilot": {
             "timeOut": 0.7,

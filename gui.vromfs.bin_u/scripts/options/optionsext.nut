@@ -29,7 +29,6 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
 local { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
   getCdBaseDifficulty } = ::require_native("guiOptions")
-local { GUI } = require("scripts/utils/configs.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -1815,14 +1814,6 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_AUTO_SQUAD:
       descr.id = "auto_squad"
-      descr.controlType = optionControlType.CHECKBOX
-      descr.controlName <- "switchbox"
-      defaultValue = true
-      break
-
-    case ::USEROPT_ORDER_AUTO_ACTIVATE:
-      descr.id = "order_auto_activate"
-      descr.hint = ::g_orders.autoActivateHint
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
@@ -5017,7 +5008,6 @@ local isWaitMeasureEvent = false
     case ::USEROPT_ALLOW_JIP:
     case ::USEROPT_QUEUE_JIP:
     case ::USEROPT_AUTO_SQUAD:
-    case ::USEROPT_ORDER_AUTO_ACTIVATE:
     case ::USEROPT_FRIENDS_ONLY:
     case ::USEROPT_VERSUS_NO_RESPAWN:
     case ::USEROPT_OFFLINE_MISSION:
@@ -5491,7 +5481,7 @@ local isWaitMeasureEvent = false
   if (!::units_img_preset)
   {
     ::units_img_preset = {}
-    local guiBlk = GUI.get()
+    local guiBlk = ::configs.GUI.get()
     local blk = guiBlk?.units_presets?[::get_country_flags_preset()]
     if (blk)
       for (local i = 0; i < blk.paramCount(); i++)

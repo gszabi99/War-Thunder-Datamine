@@ -126,7 +126,7 @@
         {
           "varSetInt": {
             "value": 1,
-            "var": "to_force_template_idx"
+            "var": "to_randomizer"
           }
         },
         {
@@ -295,7 +295,7 @@
           "var": "to_army"
         },
         "triggerEnable": {
-          "target": "to_template_skip_check_army"
+          "target": "to_template_choosing"
         }
       }
     },
@@ -366,59 +366,6 @@
         }
       }
     },
-    "to_template_skip_check_army": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
-            "value": "армия не совпала единожды запускаем проверки всех событий"
-          }
-        },
-        {
-          "comment": {
-            "value": "запоминаем последнюю армию"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем триггер активации следующего задания"
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "to_template_01_at_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "to_last_army",
-            "input_var": "to_army"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "to_template_choosing"
-          }
-        }
-      ],
-      "else_actions": []
-    },
     "01 - assaults": {
       "isCategory": true,
       "is_enabled": true,
@@ -446,7 +393,7 @@
           {
             "varCompareInt": {
               "var_value": "to_force_template_idx",
-              "value": 1,
+              "value": 0,
               "comparasion_func": "equal"
             }
           },

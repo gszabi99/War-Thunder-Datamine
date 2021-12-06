@@ -5,7 +5,6 @@ local psnUser = require("sony.user")
 local statsd = require("statsd")
 local { serviceLabel } = require("sonyLib/webApi.nut")
 local { subscribe } = require("eventbus")
-local { GUI } = require("scripts/utils/configs.nut")
 
 local IMAGE_TYPE = "TAM_JACKET"
 local BQ_DEFAULT_ACTION_ERROR = -1
@@ -102,7 +101,7 @@ local psnV2ShopPurchasableItem = class {
     if (imageIndex != null && imagesArray[imageIndex]?.url)
       imagePath = $"{imagesArray[imageIndex].url}?P1"
     else {
-      local psnShopBlk = GUI.get()?.ps4_ingame_shop
+      local psnShopBlk = ::configs.GUI.get()?.ps4_ingame_shop
       local ingameShopImages = psnShopBlk?.items
       if (ingameShopImages?[id] != null && psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
         imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"

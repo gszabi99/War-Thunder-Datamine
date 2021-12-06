@@ -44,7 +44,6 @@ class ::items_classes.Order extends ::BaseItem
   constructor(blk, invBlk = null, slotData = null)
   {
     base.constructor(blk, invBlk, slotData)
-    isActivateBeforeExpired = blk?.isActivateBeforeExpired ?? true
     initMissionOrderParams(blk?.missionOrderParams)
   }
 

@@ -66,5 +66,6 @@ textareaNoTab {
   position:t='relative';
   padding:t='0.01@shHud';
   killstreak:t='yes';
+  enabled:t='<<enabled>>';
   text:t='<<name>>';
 }
