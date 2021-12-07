@@ -157,6 +157,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     typeTransport     = "type_transport"
     typeStrikeFighter = "type_strike_fighter"
     typeDestroyer     = "type_destroyer"
+    typeTorpedoBoat   = "type_torpedo_boat"
   }
 
   minStatGroups = {
