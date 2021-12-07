@@ -23,7 +23,6 @@ local { boosterEffectType, getActiveBoostersArray,
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 local { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("scripts/debriefing/rewardSources.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { GUI } = require("scripts/utils/configs.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -1707,7 +1706,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (air.disableFlyout)
     addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/vehicleCanNotGoToBattle")))
   if (air.event) {
-    local eventLang = ::loc(GUI.get()?.eventLang[air.event] ?? $"event/{air.event}")
+    local eventLang = ::loc(::configs.GUI.get()?.eventLang[air.event] ?? $"event/{air.event}")
     addInfoTextsList.append(::colorize("chapterUnlockedColor",
       ::loc($"mainmenu/eventVehicle", { event = eventLang })))
   }
