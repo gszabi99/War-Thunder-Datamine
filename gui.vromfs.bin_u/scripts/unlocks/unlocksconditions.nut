@@ -56,16 +56,6 @@ local typesForMissionModes = {
     inSessionTrue = "usedInSessionUnit",
     inSessionFalse = "lastInSessionUnit"
   },
-  playerUnitClass = {
-    inSessionAnd = "crewsTag",
-    inSessionTrue = "usedInSessionClass",
-    inSessionFalse = "lastInSessionClass"
-  },
-  playerUnitFilter = {
-    inSessionAnd = "crewsTag",
-    inSessionTrue = "usedInSessionUnit",
-    inSessionFalse = "lastInSessionUnit"
-  },
   playerExpClass = {
     inSessionFalse = "lastInSessionClass"
   },
@@ -99,7 +89,8 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "gameModeInfoString", "modes", "events", "tournamentMode",
     "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag",
-    "offenderType", "targetUnit", "targetType", "targetExpClass", "targetUnitClass", "targetTag",
+    "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag",
+    "targetUnit", "targetType", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
     "activity", "minStat", "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
     "statKillsPlayerInSession", "statKillsAirInSession", "statKillsAirAiInSession",
@@ -114,14 +105,18 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "atLeastOneUnitsRankOnStartMission", "eliteUnitsOnly"
   ]
 
-  additionalTypes = ["critical", "lesserTeam", "teamLeader", "inTurret", "isBurning", "targetInCaptureZone"]
+  additionalTypes = ["critical", "lesserTeam", "inTurret", "isBurning", "targetInCaptureZone"]
 
   locGroupByType = {
+    offenderUnit           = "playerUnit"
     playerType             = "playerUnit"
     offenderType           = "playerUnit"
     playerTag              = "playerUnit"
+    offenderTag            = "playerUnit"
     playerUnitRank         = "playerUnit"
+    offenderUnitRank       = "playerUnit"
     playerUnitMRank        = "playerUnit"
+    offenderUnitMRank      = "playerUnit"
     usedInSessionType      = "usedPlayerUnit"
     usedInSessionUnit      = "usedPlayerUnit"
     usedInSessionClass     = "usedPlayerUnit"
@@ -137,7 +132,6 @@ local function getOverrideCondType(condBlk, unlockMode) {
     crewsTag               = "crewsUnit"
     offenderIsSupportGun   = "weaponType"
     bulletModName          = "weaponType"
-    targetUnitClass        = "targetExpClass"
   }
 
   mapConditionUnitType = {
@@ -212,6 +206,18 @@ local function getOverrideCondType(condBlk, unlockMode) {
   regExpNumericEnding = ::regexp2("\\d+$")
 
   nestedUnlockModes = ["unlockOpenCount", "unlockStageCount", "unlocks", "char_unlocks"]
+
+  getRankRangeText = @(range) getRangeTextByPoint2(range, {
+      rangeStr = ::loc("events/rank")
+      maxOnlyStr = ::loc("conditions/unitRank/format_max")
+      minOnlyStr = ::loc("conditions/unitRank/format_min")
+    }, true)
+
+  getMRankRangeText = @(range) getRangeTextByPoint2(range, {
+      rangeStr = ::loc("events/br")
+      maxOnlyStr = ::loc("conditions/unitRank/format_max")
+      minOnlyStr = ::loc("conditions/unitRank/format_min")
+    }, false)
 
   function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false)
   {
@@ -532,68 +538,51 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
       res.values.append(group)
     }
   }
-  else if (t == "playerUnit" || t == "targetUnit")
+  else if (t == "playerUnit" || t == "offenderUnit" || t == "targetUnit")
     res.values = (blk % "class")
   else if (t == "playerType" || t == "targetType" || t == "offenderType")
   {
     res.values = (blk % "unitType")
     res.values.extend(blk % "unitClass")
   }
-  else if (t == "playerExpClass" || t == "targetExpClass")
+  else if (t == "playerExpClass")
     res.values = (blk % "class")
-  else if (t == "targetUnitClass")
-    res.values = (blk % "unitClass")
-  else if (t == "playerTag" || t == "targetTag")
+  else if (t == "playerTag" || t == "offenderTag" || t == "targetTag")
     res.values = (blk % "tag")
   else if (t == "playerCountry")
     res.values = (blk % "country")
-  else if (t == "playerUnitRank")
+  else if (t == "playerUnitRank" || t == "offenderUnitRank")
   {
-    local range = blk?.minRank || blk?.maxRank ? ::Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0) : blk?.range
-    local v = getRangeTextByPoint2(range, {
-      rangeStr = ::loc("events/rank")
-      maxOnlyStr = ::loc("conditions/unitRank/format_max")
-      minOnlyStr = ::loc("conditions/unitRank/format_min")
-    }, true)
+    local range = ::Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0)
+    local rangeForEvent = ::Point2(blk?.minRankForEvent ?? range.x, blk?.maxRankForEvent ?? range.y)
+    local v = getRankRangeText(range)
+    if (!::u.isEqual(range, rangeForEvent)) {
+      local valForEvent = getRankRangeText(rangeForEvent)
+      v = "".concat(v, ::loc("ui/parentheses/space", { text = ::loc("conditions/forEventUnit", { condition = valForEvent }) }))
+    }
     res.values = v != "" ? v : null
     res.needToShowInHeader = true
   }
-  else if (t == "playerUnitMRank")
+  else if (t == "playerUnitMRank" || t == "offenderUnitMRank")
   {
-    local range = blk?.minMRank || blk?.maxMRank
-      ? ::Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
-      : blk?.range ?? ::Point2(0,0)
+    local range = ::Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
+    local rangeForEvent = ::Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
+    local hasForEventCond = !::u.isEqual(range, rangeForEvent)
     range = ::Point2(
-      range.x.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.x) : 0,
+      ::calc_battle_rating_from_rank(range.x),
       range.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.y) : 0
     )
-    local v = getRangeTextByPoint2(range, {
-      rangeStr = ::loc("events/br")
-      maxOnlyStr = ::loc("conditions/unitRank/format_max")
-      minOnlyStr = ::loc("conditions/unitRank/format_min")
-    })
+    local v = getMRankRangeText(range)
+    if (hasForEventCond) {
+      rangeForEvent = ::Point2(
+        ::calc_battle_rating_from_rank(rangeForEvent.x),
+        rangeForEvent.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(rangeForEvent.y) : 0
+      )
+      local valForEvent = getMRankRangeText(rangeForEvent)
+      v = "".concat(v, ::loc("ui/parentheses/space", { text = ::loc("conditions/forEventUnit", { condition = valForEvent }) }))
+    }
     res.values = v != "" ? v : null
     res.needToShowInHeader = true
-  }
-  else if (t == "playerUnitClass")
-  {
-    local unitClassList = (blk % "unitClass")
-    foreach (i, v in unitClassList)
-      if (v.len() > 4 && v.slice(0,4) == "exp_")
-        unitClassList[i] = "type_" + v.slice(4)
-
-    res.values = unitClassList
-  }
-  else if (t == "playerUnitFilter")
-  {
-    switch (blk?.paramName)
-    {
-      case "country":
-        res.values = blk % "value"
-        break
-      default:
-        return null
-    }
   }
   else if (t == "char_mission_completed")
     res.values = blk?.name ?? ""
@@ -1004,24 +993,24 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
 
   foreach (v in values)
   {
-    if (cType == "playerUnit" || cType=="targetUnit" || cType == "crewsUnit" || cType=="unitExists" ||
+    if (cType == "playerUnit" || cType == "offenderUnit" || cType == "targetUnit" || cType == "crewsUnit" || cType == "unitExists" ||
         cType == "usedInSessionUnit" || cType == "lastInSessionUnit")
       text = ::getUnitName(v)
     else if (cType == "playerType" || cType == "targetType" || cType == "usedInSessionType" || cType == "lastInSessionType" ||
              cType == "offenderType")
       text = ::loc("unlockTag/" + ::getTblValue(v, mapConditionUnitType, v))
-    else if (cType == "playerExpClass" || cType == "targetExpClass" || cType == "unitClass" || cType == "targetUnitClass" ||
+    else if (cType == "playerExpClass" || cType == "unitClass" ||
              cType == "usedInSessionClass" || cType == "lastInSessionClass")
       text = getRoleText(::g_string.cutPrefix(v, "exp_", v))
-    else if (cType == "playerTag" || cType == "crewsTag" || cType == "targetTag" || cType == "country" ||
-             cType == "playerCountry" || cType == "usedInSessionTag" || cType == "lastInSessionTag")
+    else if (cType == "playerTag" || cType == "offenderTag" || cType == "crewsTag" || cType == "targetTag" ||
+             cType == "country" || cType == "playerCountry" || cType == "usedInSessionTag" || cType == "lastInSessionTag")
       text = ::loc("unlockTag/" + v)
     else if (cType == "targetDistance")
       text = ::format( ::loc($"conditions/{(condition.gt ? "min" : "max")}_limit"), v.tostring())
     else if (::isInArray(cType, [ "ammoMass", "bulletCaliber" ]))
       text = ::format( ::loc(condition.notLess ? "conditions/min_limit" : "conditions/less"), v.tostring())
-    else if (::isInArray(cType, [ "activity", "playerUnitRank", "playerUnitMRank", "crewsUnitRank",
-      "crewsUnitMRank", "minStat", "higherBR" ])) {
+    else if (::isInArray(cType, [ "activity", "playerUnitRank", "offenderUnitRank", "playerUnitMRank", "offenderUnitMRank",
+      "crewsUnitRank", "crewsUnitMRank", "minStat", "higherBR" ])) {
       text = v.tostring()
     }
     else if (cType == "difficulty")

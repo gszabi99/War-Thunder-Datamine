@@ -8,8 +8,7 @@ local { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
 local { isVisibleDmgIndicator } = require("hudState.nut")
 local dmModule = require("dmModule.nut")
-local {damageModule, shipSteeringGauge} = require("style/colors.nut").hud
-local setHudBg = require("style/hudBackground.nut")
+local {damageModule, shipSteeringGauge, hudLogBgColor} = require("style/colors.nut").hud
 
 local {lerp, sin} = require("std/math.nut")
 
@@ -376,44 +375,35 @@ local shipStateDisplay = @() {
   ]
 }
 
-local updateFunc = null
 
 local xraydoll = {
   rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
   size = [1, 1]
 }
 
-return @() setHudBg({
+return @() {
+  watch = isVisibleDmgIndicator
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
+  rendObj = ROBJ_SOLID
+  color = hudLogBgColor
   padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
   gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
-  watch = isVisibleDmgIndicator
-  onAttach = function(elem) {
-    if (updateFunc)
-      ::gui_scene.clearTimer(updateFunc)
-    updateFunc = function() {
-      if(elem.getWidth() > 1 && elem.getHeight() > 1) {
-        ::gui_scene.clearTimer(callee())
-        ::cross_call.update_damage_panel_state({
-          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-          size = [elem.getWidth(), elem.getHeight()]
-          visible = true })
-      }
-    }
-    gui_scene.setInterval(0.1, updateFunc)
-  }
-  onDetach = function(elem) {
-    ::cross_call.update_damage_panel_state(null)
-    if (updateFunc) {
-      ::gui_scene.clearTimer(updateFunc)
-      updateFunc = null
+  behavior = Behaviors.RecalcHandler
+  function onRecalcLayout(initial, elem) {
+    if (elem.getWidth() > 1 && elem.getHeight() > 1) {
+      ::cross_call.update_damage_panel_state({
+        pos = [elem.getScreenPosX(), elem.getScreenPosY()]
+        size = [elem.getWidth(), elem.getHeight()]
+        visible = true
+      })
     }
   }
+
   children = isVisibleDmgIndicator.value
     ? [
         speedComp
         shipStateDisplay
       ]
     : xraydoll
-})
+}

@@ -12,6 +12,7 @@ local { getLastWeapon,
 local { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local MOD_TIERS_COUNT = 4
 
@@ -319,7 +320,7 @@ local Unit = class
     local releaseDate = ::get_unittags_blk()?[name]?.releaseDate
     if (releaseDate)
     {
-      local recentlyReleasedUnitsDays = ::configs.GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
+      local recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
       if (recentlyReleasedUnitsDays)
       {
         local releaseTime = time.getTimestampFromStringUtc(releaseDate)

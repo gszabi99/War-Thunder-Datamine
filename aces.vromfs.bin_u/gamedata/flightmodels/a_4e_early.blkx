@@ -2010,7 +2010,7 @@
     "Range": 1050.0
   },
   "Sound": {
-    "Engine": "engine05",
+    "Engine": "engine05_J52P_N1",
     "gun": "gun_default"
   },
   "cockpit": [
@@ -2618,7 +2618,7 @@
               "blk": "gameData/Weapons/rocketGuns/us_agm_12c_bullpup.blk"
             },
             {
-              "iconType": "missile_air_to_uni"
+              "iconType": "missile_air_to_uni_large"
             },
             {
               "tier": {
@@ -4427,18 +4427,24 @@
     "mk_12_mod3_stealth": [],
     "mk_12_mod3_belt_pack": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 2
+      "tier": 1
     },
     "mk_12_mod3_new_gun": {
       "reqModification": "mk_12_mod3_belt_pack",
-      "tier": 3
+      "tier": 2
     },
     "mk4_mod0_gunpod": {
       "prevModification": "mk_12_mod3_new_gun",
       "deactivationIsAllowed": false,
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
     },
+    "Mk11_belt_pack": {
+      "tier": 4,
+      "reqModification": "mk4_mod0_gunpod"
+    },
+    "Mk11_air_targets": [],
+    "Mk11_armor_targets": [],
     "us_250lb_mk81": {
       "modClass": "weapon",
       "tier": 1
@@ -4522,7 +4528,7 @@
     "emitterName": "emtr_chute",
     "chuteModel": "chute_f_100_char",
     "chuteAnimVarName": "chute_state_switch",
-    "chuteFlapVarName": "p_fire_chute",
+    "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
   },

@@ -109,6 +109,8 @@
   "rendinstPreloadDistance": 7000.0,
   "rendinstMaxLod0Dist": 1200.0,
   "rendinstTransparencyDelta": 350.0,
+  "rendinstDistMultMinForRTMult": 1.0,
+  "rendinstImpostorAlbedoRtSizeMult": 2,
   "rendinstStartTransK": 0.66,
   "rendinstMaxDestructibleSizeSum": 30.0,
   "frameTimeToReduceRendinst": -1.0,
@@ -208,6 +210,7 @@
   "opacityOfDeadIcon": 70,
   "timeIconForDeadOnMap": 12.0,
   "stabilizerMaxDeltaAngle": 10.0,
+  "rocketArcadeTimeLifeMult": 1.0,
   "maxFrictionIterationCountForTrackedVehicle": 2,
   "writeProjectileHitToReplay": true,
   "shipMaxSteamEmittersCount": 8.0,
@@ -220,6 +223,7 @@
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
   "allAircraftNodesAnimationHierarchy": true,
+  "aircraftAnimchar": true,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -250,6 +254,7 @@
   "gmKillFxName": "tank_fire_small",
   "battleTimeOffendingTimeout": 5.0,
   "battleTimeDamageTimeout": 5.0,
+  "simulateTrackElasticity": true,
   "rendinstRadiusMultForBlast": 4.0,
   "isBlastEffectActivated": true,
   "tracers": {
@@ -3998,13 +4003,15 @@
         "endlessSupportPlane": false,
         "supportSpawnCooldownTime": 40.0,
         "planeRearmTime": 90.0,
-        "rearmSupportPlaneOnField": false
+        "rearmSupportPlaneOnField": false,
+        "returnTimerAfterOwnerDead": 45.0
       },
       "on": {
         "endlessSupportPlane": false,
         "supportSpawnCooldownTime": 40.0,
         "planeRearmTime": 180.0,
-        "rearmSupportPlaneOnField": true
+        "rearmSupportPlaneOnField": true,
+        "returnTimerAfterOwnerDead": 60.0
       }
     }
   },
@@ -4253,7 +4260,7 @@
     "medium": {
       "cascadeWidth": 768,
       "splitsW": 2,
-      "splitsH": 1,
+      "splitsH": 2,
       "cascadeDepth24bit": false,
       "tpsShadowDist": 340.0,
       "tpsPowWeight": 0.92,
@@ -17348,7 +17355,7 @@
       "type": {
         "descr": "changing",
         "intense": 2.1,
-        "amount": 5.0,
+        "amount": 1.0,
         "color": [255.0,255.0,255.0,250.0]
       }
     },
@@ -17356,7 +17363,7 @@
       "type": {
         "descr": "repairing",
         "intense": 1.2,
-        "amount": 3.0,
+        "amount": 1.0,
         "color": [255.0,255.0,255.0,250.0]
       }
     },
@@ -17420,13 +17427,14 @@
   },
   "terraform": {
     "enabled": true,
-    "cellsPerMeter": 8,
     "width": 32768,
     "height": 32768,
     "minLevel": -4.1,
     "minDigLevel": -1.5,
     "maxLevel": 0.9,
     "maxPrimHeight": 0.4,
+    "consumeWeight": 1.0,
+    "heapAspect": 0.5,
     "maxDistDiggingAction": 0.0,
     "diffuseTex": "underground_soil_a_tex_d",
     "diffuseAboveTex": "",
@@ -17440,13 +17448,46 @@
     "textureBlendAbove": 1.0,
     "textureTile": [0.218,0.218],
     "heightMaskSize": [1024.0,1024.0],
-    "heightMaskWorldSize": [128.0,128.0],
     "maxPhysicsError": 0.2,
     "minPhysicsError": -0.2,
     "maxSpreadRadius": 1,
     "terraformEnableCheckIntegrity": true,
     "terraformCheckIntegrityCountPoints": 128,
     "terraformCheckIntegrityPointsInterval": 1,
+    "fx_materials": {
+      "sand": {
+        "digDustFx": "dust_tank_digging_shovel_sand",
+        "digDirtFx": "dust_tank_digging_ground_sand"
+      },
+      "duneSand": {
+        "digDustFx": "dust_tank_digging_shovel_sand",
+        "digDirtFx": "dust_tank_digging_ground_sand"
+      },
+      "roadSand": {
+        "digDustFx": "dust_tank_digging_shovel_sand",
+        "digDirtFx": "dust_tank_digging_ground_sand"
+      },
+      "quickSand": {
+        "digDustFx": "dust_tank_digging_shovel_sand",
+        "digDirtFx": "dust_tank_digging_ground_sand"
+      },
+      "snow": {
+        "digDustFx": "dust_tank_digging_shovel_snow",
+        "digDirtFx": "dust_tank_digging_ground_snow"
+      },
+      "snowLower": {
+        "digDustFx": "dust_tank_digging_shovel_snow",
+        "digDirtFx": "dust_tank_digging_ground_snow"
+      },
+      "ice": {
+        "digDustFx": "dust_tank_digging_shovel_snow",
+        "digDirtFx": "dust_tank_digging_ground_snow"
+      },
+      "roadSnow": {
+        "digDustFx": "dust_tank_digging_shovel_snow",
+        "digDirtFx": "dust_tank_digging_ground_snow"
+      }
+    },
     "materials": {
       "road": false,
       "ice": false,
@@ -17482,5 +17523,28 @@
     "minDistToPlayers": 50.0,
     "minDistToPOI": 0.0,
     "checkVisibility": false
+  },
+  "windEffects": {
+    "clusterWindGrids": {
+      "tank": {
+        "cascade0": {
+          "numBox": 256,
+          "size": 200.0,
+          "maxSpherePerBox": 4
+        },
+        "cascade1": {
+          "numBox": 256,
+          "size": 800.0,
+          "maxSpherePerBox": 2
+        }
+      },
+      "other": {
+        "cascade0": {
+          "numBox": 256,
+          "size": 200.0,
+          "maxSpherePerBox": 4
+        }
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)
@@ -213,7 +214,7 @@ local function fillMultipleHueOption(descr, id, currentHueIndex)
   descr.id = id
   descr.items = []
   descr.values = []
-  local alertHueBlock = ::configs.GUI.get()?.alertHue
+  local alertHueBlock = GUI.get()?.alertHue
   if (!::u.isDataBlock(alertHueBlock))
     return
   for (local i = 0; i < alertHueBlock.blockCount(); ++i)

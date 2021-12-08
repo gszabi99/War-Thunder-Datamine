@@ -74,6 +74,7 @@ class ::BaseItem
   uids = null //only for inventory items
   expiredTimeSec = 0 //to comapre with 0.001 * ::dagor.getCurTime()
   expiredTimeAfterActivationH = 0
+  isActivateBeforeExpired = false //Auto activate when time expired soon
   spentInSessionTimeMin = 0
   lastChangeTimestamp = 0
   tradeableTimestamp = 0

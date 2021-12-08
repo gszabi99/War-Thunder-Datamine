@@ -812,7 +812,8 @@
         "ex_armor_11_dm": [],
         "ex_armor_12_dm": [],
         "ex_armor_13_dm": [],
-        "ex_armor_14_dm": []
+        "ex_armor_14_dm": [],
+        "turret_04_top_dm": []
       },
       "tracks": {
         "armorClass": "tank_traks",
@@ -3078,7 +3079,16 @@
       },
       "tracks": {
         "animationMultiplier": 0.6,
-        "height": 0.045
+        "height": 0.05,
+        "width": 0.406,
+        "tracksTensionK": [11.0,10.0,5.0],
+        "trackMesh": "us_t72_phys_track_line",
+        "trackLen": 0.139,
+        "trackCount": 75,
+        "trackFadeTime": 1.1,
+        "trackStartOffset": 0.07,
+        "trackMaxHeight": 1.2,
+        "trackMaxSinking": 0.1
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3135,7 +3145,7 @@
         "defaultGearRadius": 0.324,
         "topGearRadius": 0.147,
         "defaultDampeningForce": [60000.0,60000.0],
-        "frontBackGearRadius": 0.265,
+        "frontBackGearRadius": 0.29,
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
@@ -3691,7 +3701,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

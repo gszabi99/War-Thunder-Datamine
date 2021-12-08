@@ -1,4 +1,5 @@
 local results = require("scripts/dmViewer/protectionAnalysisHintResults.nut")
+local { set_protection_analysis_editing } = require("hangarEventCommand")
 
 class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -95,8 +96,14 @@ class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandle
     update(params)
   }
 
-  function update(params)
-  {
+  function getCursorIsActive() {
+    return isValid() && scene.isHovered()
+  }
+
+  function update(params) {
+    local isCursorActive = getCursorIsActive()
+    set_protection_analysis_editing(!isCursorActive)
+
     if (::u.isEqual(params, lastHintParams))
       return
     lastHintParams = params
@@ -104,11 +111,13 @@ class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandle
     if (!::check_obj(cursorObj) || !::check_obj(hintObj))
       return
 
-    local isShow = !::u.isEmpty(params)
+    local isShow = isCursorActive && !::u.isEmpty(params)
     hintObj.show(isShow)
 
     local resultCfg = results.getResultTypeByParams(params)
-    cursorObj["background-color"] = ::get_main_gui_scene().getConstantValue(resultCfg.color)
+    cursorObj["background-color"] = isCursorActive
+      ? ::get_main_gui_scene().getConstantValue(resultCfg.color)
+      : "#00000000"
 
     if (!isShow)
       return

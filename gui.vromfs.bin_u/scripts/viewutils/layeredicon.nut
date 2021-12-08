@@ -1,3 +1,5 @@
+local { GUI } = require("scripts/utils/configs.nut")
+
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)
                         - get icon data for replace content
@@ -52,7 +54,7 @@ LayersIcon.initConfigOnce <- function initConfigOnce(blk = null)
     return
 
   if (!blk)
-    blk = ::configs.GUI.get()
+    blk = GUI.get()
   config = blk?.layered_icons ? ::buildTableFromBlk(blk.layered_icons) : {}
   if (!("styles" in config)) config.styles <- {}
   if (!("layers" in config)) config.layers <- {}

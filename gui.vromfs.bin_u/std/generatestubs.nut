@@ -1,6 +1,7 @@
 local io = require("io")
 local {file_exists} = require("dagor.fs")
 local {argv} = require("dagor.system")
+local {get_native_module_names} = require("modules")
 /*
   allow generate stubs for native modules
   TODO:
@@ -16,7 +17,6 @@ local function saveFile(file_path, data){
   return true
 }
 
-local {get_native_module_names} = require("modules")
 local params_names = ["a", "b", "c", "d", "e"].extend(array(10).map(@(_, i) $"var_{i+5}"))
 local function mkFunStubStr(func, name=null){
   local infos = func.getfuncinfos()

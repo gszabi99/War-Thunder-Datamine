@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local bhvAvatar = require("scripts/user/bhvAvatar.nut")
 local seenAvatars = require("scripts/seen/seenList.nut").get(SEEN.AVATARS)
+local { AVATARS } = require("scripts/utils/configs.nut")
 
 local DEFAULT_PILOT_ICON = "cardicon_default"
 
@@ -52,7 +53,7 @@ subscriptions.addListenersWithoutEnv({
 bhvAvatar.init({
   intIconToString = getIconById
   getIconPath = @(icon) "#ui/images/avatars/" + icon
-  getConfig = ::configs.AVATARS.get.bindenv(::configs.AVATARS)
+  getConfig = AVATARS.get.bindenv(AVATARS)
 })
 
 seenAvatars.setListGetter(getAllowedIcons)

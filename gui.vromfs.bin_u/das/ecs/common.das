@@ -3,7 +3,7 @@ require ecs
 require DagorMathUtils
 require strings
 require daslib/strings_boost
-require daslib/contracts
+require daslib/instance_function
 
 
 [generic]
@@ -14,7 +14,7 @@ def get_string(obj; name: string; name_hash: uint; orDefault : string)
 [generic]
 def get_string(obj; orDefault : string)
   let str = get_ecs_string(obj)
-  return str != null ? string(deref(str)) : orDefault
+  return str != null ? string(*str) : orDefault
 
 [generic]
 def find_index(arr : ecs::Array; eid : EntityId) : int
@@ -49,11 +49,30 @@ def find_index(arr: StringList; val: string) : int
       return i
   return -1
 
-def get_safe(val, idx, default_value)
-  return length(val) > idx ? val[idx] : default_value
 
-def get_or(val, idx, default_block)
-  return length(val) > idx ? val[idx] : invoke(default_block)
+[generic, export]
+def list_safe_at(t: VecT implicit; idx: int): ChildT const?#
+  if uint(idx) < uint(length(t))
+    unsafe
+      return reinterpret<ChildT const?#> addr(t.[idx])
+  unsafe
+    return reinterpret<ChildT const?#> null
+
+
+[instance_function(list_safe_at, VecT = IntList, ChildT = "int")]
+def operator ?[] (t: IntList implicit; idx: int): int const?#
+  unsafe
+    return reinterpret<int const?#> null
+
+[instance_function(list_safe_at, VecT = FloatList, ChildT = "float")]
+def operator ?[] (t: FloatList implicit; idx: int): float const?#
+  unsafe
+    return reinterpret<float const?#> null
+
+[instance_function(list_safe_at, VecT = BoolList, ChildT = "bool")]
+def operator ?[] (t: BoolList implicit; idx: int): bool const?#
+  unsafe
+    return reinterpret<bool const?#> null
 
 [generic]
 def is_point_in_poly(pt : float2; points : ecs::Point2List)
@@ -71,17 +90,6 @@ def eid_frnd(eid : EntityId)
   x *= 0xaf723597u
   x ^= x >> 15u
   return float(x & 16777215u) / 16777216.f // float values are int uniform only within low 24 bits
-
-[generic]
-def join_keys(obj : Object; sep = ", ")
-  return build_string() <| $(var str)
-    var first = true
-    for it in obj
-      if !first
-        str |> write(sep)
-      else
-        first = false
-      str |> write(it.key)
 
 
 def push_to_array(var ecs_array:Array; b:block<(var data: auto(Type)#):void>)

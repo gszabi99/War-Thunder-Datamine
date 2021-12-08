@@ -1482,6 +1482,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnWatchedHeroChanged = true
   }
 
+  WAIT_FOR_AIMING = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/wait_for_aiming"
+    showEvent = "hint:wait_for_aiming"
+    lifeTime = 3.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
   EXTINGUISH_ASSIST = {
     hintType = ::g_hud_hint_types.REPAIR
     locId = "hints/extinguish_assist"
@@ -1530,14 +1539,63 @@ enums.addTypesByGlobalName("g_hud_hints", {
       return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     }
   }
-  //
 
+  SUPPORT_PLANE_IN_DEAD_ZONE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/support_plane_in_dead_zone"
+    showEvent = "hint:support_plane_in_dead_zone"
+    lifeTime = 3.0
+  }
 
+  OWNED_UNIT_DEAD = {
 
+    locId = "hints/return_after_owned_unit_dead"
+    showEvent = "hint:owned_unit_dead:show"
 
+    selfRemove = true
+    buildText = function (data) {
+      local res = ::g_hud_hints._buildText.call(this, data)
+      res += " " + ::g_hint_tag.TIMER.makeFullTag()
+      return res
+    }
+  }
 
+  OWNER_IN_FIRE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/owner_in_fire"
+    showEvent = "hint:owner_in_fire:show"
+    lifeTime = 5.0
+  }
 
+  OWNER_CRIT_BUOYANCY = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/owner_critical_buoyancy"
+    showEvent = "hint:owner_crit_buoyancy:show"
+    lifeTime = 5.0
+  }
 
+  OWNER_TORPEDO_ALERT = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/owner_torpedo_alert"
+    showEvent = "hint:owner_torpedo_alert:show"
+    hideEvent = "hint:owner_torpedo_alert:hide"
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  CATAPULT_BROKEN = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "my_dmg_msg/catapult"
+    showEvent = "hint:catapult_is_broken:show"
+    lifeTime = 5.0
+  }
+
+  SUPPORT_PLANE_BROKEN = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "my_dmg_msg/aircraft"
+    showEvent = "hint:support_plane_is_broken:show"
+    lifeTime = 5.0
+  }
 },
 function() {
   name = "hint_" + typeName.tolower()

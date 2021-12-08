@@ -1789,6 +1789,10 @@
         "defaultDampeningForce": [117000.0,117000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.38,
+        "wheel_l_drive": 0.38,
+        "wheel_r_front": 0.37,
+        "wheel_l_front": 0.37,
         "offsets": {
           "wheel_l_01": [0.0,0.0,0.04],
           "wheel_r_01": [0.0,0.0,0.04],
@@ -1803,7 +1807,76 @@
       "tracks": {
         "animationMultiplier": -0.75,
         "width": 0.6,
-        "height": 0.09
+        "height": 0.12,
+        "tracksTensionK": [8.0,12.0,4.0],
+        "trackMesh": "uk_churchill_i_phys_track_line",
+        "trackLen": 0.211,
+        "trackCount": 70,
+        "trackFadeTime": 1.0,
+        "trackMaxSinking": 0.1,
+        "trackStartOffset": 0.03,
+        "trackFakeWheels": [
+          {
+            "wheel": {
+              "pos": [1.7,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.0,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [0.0,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-0.7,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.7,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.0,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [0.0,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-0.7,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.33,-0.858647],
+              "radius": 0.05
+            }
+          }
+        ]
       }
     }
   },
@@ -2324,7 +2397,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

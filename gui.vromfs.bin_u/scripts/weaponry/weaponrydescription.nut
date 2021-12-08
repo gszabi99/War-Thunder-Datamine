@@ -83,7 +83,8 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
     }
 
     local isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
-    local weapTypeCount = 0; //for shortDesc only
+    local weapTypeCount = 0 //for shortDesc only
+    local gunNames = {}     //for shortDesc only
     foreach (trigger in triggers)
     {
       local tText = ""
@@ -125,7 +126,10 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           else
           {
             if (isShortDesc)
-              weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger)? 0 : weapon.num
+            {
+              if(!(TRIGGER_TYPE.TURRETS in trigger) && gunNames?[weaponName] == null)
+                gunNames[weaponName] <- weapon.num
+            }
             else
             {
               tText += ::loc($"weapons/{weaponName}")
@@ -171,14 +175,27 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
       if (tText!="")
         text += ((text!="")? p.newLine : "") + tText
     }
-    if (weapTypeCount>0)
+    if (weapTypeCount == 0 && gunNames.len() == 0)
+      continue
+
+    text = text != "" ? "".concat(text, p.newLine) : ""
+    if (isShortDesc)
     {
-      if (text!="") text += p.newLine
-      if (isShortDesc)
-        text += ::loc("weapons_types/" + weaponType) + ::nbsp + ::format(::loc("weapons/counter/right/short"), weapTypeCount)
-      else
-        text += ::loc("weapons_types/" + weaponType) + ::format(::loc("weapons/counter"), weapTypeCount)
+      if (weapTypeCount > 0)//Turrets
+        text = "".concat(text, ::loc($"weapons_types/{weaponType}"), ::nbsp,
+          ::format(::loc("weapons/counter/right/short"), weapTypeCount))
+      if (gunNames.len() > 0)//Guns
+      {
+        local gunsTxt = []
+        foreach(name, count in gunNames)
+          gunsTxt.append("".concat(::loc($"weapons/{name}"), ::nbsp, count > 1
+            ? ::format(::loc("weapons/counter/right/short"), count) : ""))
+        text = $"{text} {(::loc("ui/comma")).join(gunsTxt)}"
+      }
     }
+    else
+      text = "".concat(text, ::loc($"weapons_types/{weaponType}"),
+        ::format(::loc("weapons/counter"), weapTypeCount))
   }
 
   if (text=="" && p.needTextWhenNoWeapons)

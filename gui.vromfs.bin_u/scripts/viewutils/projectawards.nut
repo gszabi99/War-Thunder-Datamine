@@ -1,9 +1,11 @@
+local { GUI } = require("scripts/utils/configs.nut")
+
 ::setProjectAwards <- function setProjectAwards(handler)
 {
   local guiScene = ::get_cur_gui_scene()
   local awardsObj = guiScene && guiScene["project-awards"]
   if (! ::checkObj(awardsObj)) return
-  local blk = ::configs.GUI.get()
+  local blk = GUI.get()
   if (!blk?.project_awards?.en) return
 
   local lang = ::loc("current_lang")

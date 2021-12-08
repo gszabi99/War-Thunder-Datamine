@@ -9,7 +9,7 @@ local aircraftParamsTablePos = Computed(@() [max(bw.value, sw(50) - hdpx(500)), 
 local aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftParamsTablePos,
-        hdpx(1), true, false, true, true)
+        hdpx(1), true, false, true)
 
 local function Root(width, height) {
   return {

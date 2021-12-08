@@ -685,6 +685,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_PLANE_SMOKE_SCREEN_GENERATOR"
+    checkGroup = ctrlGroups.AIR
+    checkAssign = false
+  }
+  {
     id = "wheelmenu_x"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X

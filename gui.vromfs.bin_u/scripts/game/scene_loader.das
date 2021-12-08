@@ -4,9 +4,9 @@ require Level
 
 [es (on_event=EventEntityCreated)]
 def scene_loader_es(evt : Event;
-                    level_dot_bin : string;
-                    level_dot_environment : string;
-                    level_dot_weather : string;
-                var level_dot_loaded : bool&)
-  load_scene(grnd(), level_dot_bin, level_dot_environment, level_dot_weather)
-  level_dot_loaded = true
+                    level__bin : string;
+                    level__environment : string;
+                    level__weather : string;
+                var level__loaded : bool&)
+  load_scene(grnd(), level__bin, level__environment, level__weather)
+  level__loaded = true

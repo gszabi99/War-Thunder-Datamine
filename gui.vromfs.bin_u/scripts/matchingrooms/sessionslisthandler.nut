@@ -5,6 +5,7 @@ local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFe
 local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 ::match_search_gm <- -1
 

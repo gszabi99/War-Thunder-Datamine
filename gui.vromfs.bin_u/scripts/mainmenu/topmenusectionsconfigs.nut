@@ -75,6 +75,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
         buttonsList.VIRAL_AQUISITION
         buttonsList.TSS
         buttonsList.STREAMS_AND_REPLAYS
+        buttonsList.REPORT_AN_ISSUE
       ]
     ]
   }

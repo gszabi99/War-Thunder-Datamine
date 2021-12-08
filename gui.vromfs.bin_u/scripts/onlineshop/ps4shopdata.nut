@@ -7,6 +7,7 @@ local storeData = require("sonyLib/storeData.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 local psnStoreItem = require("scripts/onlineShop/psnStoreItem.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local persistent = {
   categoriesData = datablock() // Collect one time in a session, reset on relogin
@@ -55,7 +56,7 @@ local onFinishCollectData = function(_categoriesData = null)
 
 local filterFunc = function(label) {
  //Check gui.blk for skippable items
-  local skipItemsList = ::configs.GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
+  local skipItemsList = GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
   return label in skipItemsList
 }
 

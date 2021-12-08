@@ -126,6 +126,33 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+
+  function getSuitableUnits(excludeTag, fmTags, weapTags)
+  {
+    local suitableUnits = []
+    foreach(unit in ::all_units)
+    {
+      if (isInArray(excludeTag, unit.tags))
+        continue
+      if (isInArray("aux", unit.tags))
+        continue
+      local tagsOk = true
+      for (local k = 0; k < fmTags.len(); k++)
+        if (!isInArray(fmTags[k], unit.tags))
+        {
+          tagsOk = false
+          break
+        }
+      if (!tagsOk)
+        continue
+      if (!hasWeaponsChoice(unit, weapTags))
+        continue
+      suitableUnits.append(unit.name)
+    }
+    return suitableUnits
+  }
+
+
   function createOptions()
   {
     listA = []
@@ -185,27 +212,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
       local fmTags = adesc % "needFmTag"
       local weapTags = adesc % "weaponOrTag"
 
-      local aircrafts = []
-
-      foreach(unit in ::all_units)
-      {
-        if (isInArray(excludeTag, unit.tags))
-          continue
-        if (isInArray("aux", unit.tags))
-          continue
-        local tagsOk = true
-        for (local k = 0; k < fmTags.len(); k++)
-          if (!isInArray(fmTags[k], unit.tags))
-          {
-            tagsOk = false
-            break
-          }
-        if (!tagsOk)
-          continue
-        if (!hasWeaponsChoice(unit, weapTags))
-          continue
-        aircrafts.append(unit.name)
-      }
+      local aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
       // make sure that aircraft exists in aircrafts array
       ::u.appendOnce(aircraft, aircrafts)
 

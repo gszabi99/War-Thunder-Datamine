@@ -2,6 +2,7 @@ local { clearBorderSymbolsMultiline } = require("std/string.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local changeStartMission = require("scripts/missions/changeStartMission.nut")
 local { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -64,7 +65,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     partsList = []
     if (briefing)
     {
-      local guiBlk = ::configs.GUI.get()
+      local guiBlk = GUI.get()
       local exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
       local excludeArray = exclBlock? (exclBlock % "name") : []
 

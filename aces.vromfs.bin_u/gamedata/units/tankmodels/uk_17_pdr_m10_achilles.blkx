@@ -616,6 +616,10 @@
         },
         "turret_front_dm": {
           "armorThickness": 100.0
+        },
+        "turret_06_side_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
         }
       },
       "optics": {
@@ -2941,8 +2945,17 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.045,
-        "width": 0.4
+        "height": 0.05,
+        "width": 0.4,
+        "tracksTensionK": [6.5,10.0,3.0],
+        "trackMesh": "us_sherman_vvss_t_51_phys_track_line",
+        "trackLen": 0.152,
+        "trackCount": 79,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackStartOffset": 0.13,
+        "trackMaxHeight": 1.08,
+        "trackEmitSparks": false
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2955,8 +2968,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 120000.0,
-        "driveGearRadius": 0.34,
-        "mainGearRatio": 4.81,
+        "driveGearRadius": 0.3,
+        "mainGearRatio": 4.244,
         "sideGearRatio": 2.56,
         "gearType": "differential",
         "gearRatios": [
@@ -3683,7 +3696,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

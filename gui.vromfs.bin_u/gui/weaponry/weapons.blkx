@@ -9,7 +9,6 @@
     },
     "frame": {
       "id": "mods_frame",
-      "width": "1@modWindowWidth",
       "pos": "50%pw-50%w, 1@topBarHeight +0.01@sf +50%(1@maxWeaponsWindowHeight - h)",
       "posWithoutSlotbar": "50%pw-50%w, 1@topBarHeight +0.01@sf +50%(1@maxWeaponsWindowHeightNoSlotbar - h)",
       "position": "absolute",
@@ -29,12 +28,11 @@
       },
       "fadedImageFrame": {
         "id": "researchMode_image_block",
-        "height": "2.5@modCellHeight",
         "width": "pw - 2@framePadding",
         "pos": "0, 1@frameTopPadding",
         "posWithoutHeader": "0, 0",
         "position": "absolute",
-        "margin": "1@framePadding, 1@framePadding",
+        "margin": "1@framePadding, 0",
         "img": {
           "size": "3ph,ph",
           "pos": "pw-2w, 50%ph-50%h",
@@ -54,7 +52,7 @@
         "modificationsBlock": {
           "id": "main_modifications",
           "position": "relative",
-          "pos": "pw-6@modCellWidth, 0",
+          "pos": "pw-w, 0",
           "behavior": "posNavigator",
           "navigatorShortcuts": "noSelect",
           "moveX": "closest",

@@ -242,6 +242,22 @@ local list = {
     isFeatured = @() true
     isHidden = @(...) !::has_feature("AllowExternalLink") || !::has_feature("Tournaments") || ::is_vendor_tencent() || ::is_me_newbie()
   }
+  REPORT_AN_ISSUE = {
+    text = @() ::loc("topmenu/reportAnIssue")
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+      ? openQrWindow({
+          headerText = ::loc("topmenu/reportAnIssue")
+          baseUrl = ::loc("url/reportAnIssue")
+          needUrlWithQrRedirect = true
+        })
+      : openUrlByObj(obj, true)
+    isDelayed = false
+    link = "#url/reportAnIssue"
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+       || ::is_vendor_tencent() || !::isInMenu()
+  }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
     onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")

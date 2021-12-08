@@ -50,6 +50,33 @@
   },
   {
     "Weapon": {
+      "trigger": "gunner25",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
+      "emitter": "bone_torpedo_06",
+      "bullets": 1,
+      "useEmitter": true,
+      "startSpeed": 20.0,
+      "startDir": [20.0,1.0,0.0],
+      "enableCourseCorrection": true,
+      "useStartSpeed": true,
+      "allowableDelta": 60.0,
+      "barrelDP": "tt_04_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_06_dm",
+      "turret": {
+        "head": "tt_head_04",
+        "gun": "bone_torpedo_06"
+      },
+      "limits": {
+        "yaw": [0.0,0.0],
+        "pitch": [0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
       "trigger": "gunner22",
       "triggerGroup": "torpedoes",
       "external": true,
@@ -72,37 +99,6 @@
         "head": "tt_head_01",
         "gun": "tt_01",
         "gunnerDm": "tt_01_dm"
-      },
-      "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
-      }
-    }
-  },
-  {
-    "Weapon": {
-      "trigger": "gunner23",
-      "triggerGroup": "torpedoes",
-      "external": true,
-      "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
-      "emitter": "bone_torpedo_03",
-      "bullets": 2,
-      "useEmitter": true,
-      "emitterGenRange": [3.0,4.0],
-      "emitterGenFmt": "bone_torpedo_%02d",
-      "ammoDpGenFmt": "torpedo_%02d_dm",
-      "enableCourseCorrection": false,
-      "startFx": "start_torpedo",
-      "startFxOffset": [4.0,0.0,0.0],
-      "startSpeed": 20.0,
-      "useStartSpeed": true,
-      "allowableDelta": 40.0,
-      "barrelDP": "tt_02_dm",
-      "brokenBarrelAllowShoot": false,
-      "turret": {
-        "head": "tt_head_02",
-        "gun": "tt_02",
-        "gunnerDm": "tt_02_dm"
       },
       "limits": {
         "yaw": [0.0,0.0],
@@ -139,24 +135,28 @@
   },
   {
     "Weapon": {
-      "trigger": "gunner25",
+      "trigger": "gunner23",
       "triggerGroup": "torpedoes",
       "external": true,
       "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
-      "emitter": "bone_torpedo_06",
-      "bullets": 1,
+      "emitter": "bone_torpedo_03",
+      "bullets": 2,
       "useEmitter": true,
+      "emitterGenRange": [3.0,4.0],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.0,0.0,0.0],
       "startSpeed": 20.0,
-      "startDir": [20.0,1.0,0.0],
-      "enableCourseCorrection": true,
       "useStartSpeed": true,
-      "allowableDelta": 60.0,
-      "barrelDP": "tt_04_dm",
+      "allowableDelta": 40.0,
+      "barrelDP": "tt_02_dm",
       "brokenBarrelAllowShoot": false,
-      "ammoDP": "torpedo_06_dm",
       "turret": {
-        "head": "tt_head_04",
-        "gun": "bone_torpedo_06"
+        "head": "tt_head_02",
+        "gun": "tt_02",
+        "gunnerDm": "tt_02_dm"
       },
       "limits": {
         "yaw": [0.0,0.0],

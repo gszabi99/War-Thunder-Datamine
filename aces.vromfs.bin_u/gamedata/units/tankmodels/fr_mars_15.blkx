@@ -2494,7 +2494,16 @@
       "tracks": {
         "animationMultiplier": -0.68,
         "height": 0.06,
-        "width": 0.35
+        "width": 0.35,
+        "tracksTensionK": [6.5,12.0,3.0],
+        "trackMesh": "fr_mars_15_phys_track_line",
+        "trackLen": 0.116,
+        "trackCount": 99,
+        "trackFadeTime": 0.5,
+        "trackMaxSinking": 0.08,
+        "trackMaxHeight": 1.13,
+        "trackStartOffset": 0.4,
+        "trackEmitSparks": true
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2542,12 +2551,14 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.12,-0.05,0.1],
-        "defaultGearRadius": 0.25,
-        "topGearRadius": 0.1,
-        "frontBackGearRadius": 0.22,
+        "defaultGearRadius": 0.29,
+        "topGearRadius": 0.13,
+        "frontBackGearRadius": 0.25,
         "defaultDampeningForce": [100000.0,100000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.31,
+        "wheel_l_drive": 0.31
       }
     }
   },
@@ -3101,7 +3112,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

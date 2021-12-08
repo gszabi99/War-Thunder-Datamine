@@ -81,7 +81,7 @@
     "hasExpl": false
   },
   {
-    "exhaustFx": "ps_exhaust_large"
+    "exhaustFx": "ship_exhaust_large"
   },
   {
     "explosionFx": "explosion_ship_small"
@@ -2987,6 +2987,10 @@
         "fire_control_room_01_dm": {
           "hp": 500.0
         }
+      },
+      "aircrafts": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0
       },
       "cover": {
         "armorClass": "ship_STS",
@@ -9481,6 +9485,60 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner23",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_01",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_01",
+            "gun": "aircraft_01"
+          },
+          "limits": {
+            "yaw": [-140.0,0.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [-20.0,0.0],
+            "pitch": [0.0,0.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner24",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_02",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_02",
+            "gun": "aircraft_02"
+          },
+          "limits": {
+            "yaw": [0.0,140.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [0.0,20.0],
+            "pitch": [0.0,0.0]
+          }
+        }
       }
     ]
   },
@@ -9591,7 +9649,8 @@
       },
       "ship_rangefinder": {
         "prevModification": "152mm_us_mk34_base_fuse_navy_he_ammo_pack"
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -11606,5 +11665,16 @@
         }
       }
     ]
+  },
+  {
+    "supportPlane": {
+      "supportPlaneClass": "arado-196a-3",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
   }
 ]

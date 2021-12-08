@@ -1,10 +1,10 @@
 // Put to global namespace for compatibility
-require("scripts/ui_globals.nut")
+require("globalScripts/ui_globals.nut")
 require("sqStdLibs/helpers/backCompatibility.nut")
 require("reactiveGui/compatibility.nut")
 require("reactiveGui/library.nut")
-require("scripts/sqModuleHelpers.nut")
-require("scripts/sharedEnums.nut")
+require("globalScripts/sqModuleHelpers.nut")
+require("globalScripts/sharedEnums.nut")
 local functools = require("%sqstd/functools.nut")
 local darg_library = require("%darg/darg_library.nut")
 local {Computed, Watched, set_nested_observable_debug} = require("frp")
@@ -31,6 +31,7 @@ local log = logLib(tostringfuncTbl)
 //darg helpers
 ::hdpx <- darg_library.hdpx
 ::wrap <- darg_library.wrap
+::shHud <- @(value) (darg_library.fsh(value)).tointeger()
 
 //function tools
 ::kwarg <- functools.kwarg

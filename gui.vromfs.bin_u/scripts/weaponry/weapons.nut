@@ -40,7 +40,7 @@ local { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips
 local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
-::header_len_per_cell <- 17
+::header_len_per_cell <- 16
 ::tooltip_display_delay <- 2
 ::max_spare_amount <- 100
 
@@ -81,12 +81,16 @@ local getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.
   ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name, params)
   : null
 
+local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
+
 class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   items = null
 
-  wndWidth = 6
+  wndWidth = 7
+  unitSlotCellHeight = 0
   mainModsObj = null
+  premiumModsHeight = 0
   modsBgObj = null
   curBundleTblObj = null
 
@@ -113,6 +117,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   shownTiers = []
 
+  premiumModsList     = null
+  bulletsByGroupIndex = null
+  expendablesArray    = null
+
   needCheckTutorial = false
   curEdiff = null
   purchasedModifications = null
@@ -125,9 +133,16 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("weaponry_close_btn", !researchMode)
 
+    unitSlotCellHeight = ::to_pixels("1@slot_height+2@slot_vert_pad")
+    premiumModsHeight = unitSlotCellHeight
+      + ::to_pixels($"{researchMode ? 2 : 1}@buttonHeight +1@modCellHeight")
+
     local imageBlock = scene.findObject("researchMode_image_block")
-    if (::checkObj(imageBlock))
+    if (imageBlock?.isValid())
+    {
+      imageBlock.height = $"{heightInModCell(premiumModsHeight)}@modCellHeight"
       imageBlock.show(researchMode)
+    }
 
     setDoubleTextToButton(scene, "btn_spendExcessExp",
         ::getRpPriceText(::loc("mainmenu/spendExcessExp") + " ", false),
@@ -169,7 +184,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     curEdiff = curEdiff == null ? -1 : curEdiff
     isOwn = air.isUsable()
     purchasedModifications = []
+    updateWeaponsAndBulletsLists()
+    updateWndWidth()
 
+    local frameObj =  scene.findObject("mods_frame")
+    if(frameObj?.isValid())
+      frameObj.width = ::to_pixels($"{wndWidth}@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw")
     local data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
     mainModsObj.setValue(-1)
     guiScene.replaceContentFromText(mainModsObj, data, data.len(), this)
@@ -185,6 +205,44 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     shownTiers = []
 
     updateWindowTitle()
+  }
+
+  function updateWeaponsAndBulletsLists()
+  {
+    premiumModsList = []
+    foreach(mod in air.modifications)
+      if ((!researchMode || canResearchMod(air, mod))
+          && (isModClassPremium(mod)
+              || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
+          ))
+            premiumModsList.append(mod)
+
+    lastBullets = []
+    bulletsByGroupIndex = {}
+    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
+    {
+      local bulletsList = getBulletsList(air.name, groupIndex, {
+        needCheckUnitPurchase = false, needOnlyAvailable = false
+      })
+      local curBulletsName = ::get_last_bullets(air.name, groupIndex)
+      if (groupIndex < air.unitType.bulletSetsQuantity)
+        lastBullets.append(curBulletsName)
+      if (!bulletsList.values.len() || bulletsList.duplicate)
+        continue
+      bulletsByGroupIndex[groupIndex] <- bulletsList
+    }
+    expendablesArray = getExpendableModificationsArray(air)
+  }
+
+  function updateWndWidth()
+  {
+    local weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
+      + (isUnitHaveSecondaryWeapons(air) ? 1 : 0)//Since we have secondary weapons own window
+      + bulletsByGroupIndex.len()
+      + expendablesArray.len()
+    local premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
+    wndWidth = ::clamp(
+      ::max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(air).guiPosX), 6, 7)
   }
 
   function onSlotbarSelect()
@@ -345,15 +403,9 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     guiScene.setUpdatesEnabled(false, false)
     createItem(wrapUnitToItem(air), weaponsItem.curUnit, mainModsObj, 0.0, 0.0)
-    fillModsTree(3.0)
-
-    if (researchMode)
-      fillPremiumMods(0.0, 1.6)
-    else
-    {
-      fillPremiumMods(1.0, 0.0)
-      fillWeaponsAndBullets(0, 1.5)
-    }
+    fillModsTree()
+    fillPremiumMods()
+    fillWeaponsAndBullets()
 
     updateAllItems()
     guiScene.setUpdatesEnabled(true, true)
@@ -748,17 +800,19 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       guiScene.appendWithBlk(obj, data, this)
   }
 
-  function fillModsTree(treeOffsetY)
+  function fillModsTree()
   {
+    local treeOffsetY = heightInModCell(::to_pixels("1@frameHeaderHeight") + premiumModsHeight)
     local tree = generateModsTree(air)
     if (!tree)
       return
 
     local treeSize = getModsTreeSize(air)
-    if (treeSize.guiPosX > 6)
+    if (treeSize.guiPosX > wndWidth)
       ::dagor.logerr($"Modifications: {air.name} too much modifications in a row")
 
-    mainModsObj.size = format("%.1f@modCellWidth, %.1f@modCellHeight", treeSize.guiPosX, treeSize.tier + treeOffsetY)
+    mainModsObj.size = format("%.1f@modCellWidth, %.1f@modCellHeight",
+      wndWidth, treeSize.tier + treeOffsetY)
     if (!(treeSize.tier > 0))
       return
 
@@ -840,20 +894,20 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     return tiersArray
   }
 
-  function fillPremiumMods(offsetX, offsetY)
+  function fillPremiumMods()
   {
     if (!::has_feature("SpendGold"))
       return
 
+    local offsetX = researchMode ? 0 : 1.0
+    local offsetY = researchMode
+      ? heightInModCell(premiumModsHeight - ::to_pixels("1@modCellHeight + 1@blockInterval"))
+      : 0
     local nextX = offsetX
     if (air.spare && !researchMode)
       createItem(air.spare, weaponsItem.spare, mainModsObj, nextX++, offsetY)
-    foreach(mod in air.modifications)
-      if ((!researchMode || canResearchMod(air, mod))
-          && (isModClassPremium(mod)
-              || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
-          ))
-        createItem(mod, weaponsItem.modification, mainModsObj, nextX++, offsetY)
+    foreach(mod in premiumModsList)
+      createItem(mod, weaponsItem.modification, mainModsObj, nextX++, offsetY)
 
     if (researchMode)
       return
@@ -878,13 +932,17 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     return ::u.filter(unit.modifications, isModClassExpendable)
   }
 
-  function fillWeaponsAndBullets(offsetX, offsetY)
+  function fillWeaponsAndBullets()
   {
+    if (researchMode)
+      return
+
+    local offsetX = 0
+    local offsetY = heightInModCell(::to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
     local columnsList = []
     //add primary weapons bundle
-    local primaryWeaponsNames = getPrimaryWeaponsList(air)
     local primaryWeaponsList = []
-    foreach(i, modName in primaryWeaponsNames)
+    foreach(i, modName in getPrimaryWeaponsList(air))
     {
       local mod = (modName=="")? null : getModificationByName(air, modName)
       local item = { name = modName, weaponMod = mod }
@@ -929,19 +987,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //add bullets bundle
-    lastBullets = []
-
-    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
+    foreach(groupIndex, bulletsList in bulletsByGroupIndex)
     {
-      local bulletsList = getBulletsList(air.name, groupIndex, {
-        needCheckUnitPurchase = false, needOnlyAvailable = false
-      })
-      local curBulletsName = ::get_last_bullets(air.name, groupIndex)
-      if (groupIndex < air.unitType.bulletSetsQuantity)
-        lastBullets.append(curBulletsName)
-      if (!bulletsList.values.len() || bulletsList.duplicate)
-        continue
-
       createBundle(getBulletsItemsList(air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, mainModsObj, offsetX, offsetY)
 
@@ -955,7 +1002,6 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //add expendables
-    local expendablesArray = getExpendableModificationsArray(air)
     if (expendablesArray.len())
     {
       columnsList.append(getWeaponsColumnData(::loc("modification/category/expendables")))

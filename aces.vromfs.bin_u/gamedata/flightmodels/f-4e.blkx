@@ -2877,7 +2877,7 @@
   },
   {
     "Sound": {
-      "Engine": "engine_f4ej",
+      "Engine": "engine05_04_J79GE_N1_WEP",
       "gun": "gun_default"
     }
   },
@@ -6242,6 +6242,187 @@
             ]
           }
         ]
+      },
+      {
+        "preset": {
+          "name": "f_4e_gbu_15",
+          "blk": "gameData/flightModels/weaponPresets/f_4e_gbu_15.blk",
+          "reqModification": "us_gbu_8_15",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "guided_bomb_yellow"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "guided_bomb_yellow"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_gbu_15_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_gbu_15_aim7e.blk"
+          },
+          {
+            "reqModification": "us_gbu_8_15"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "guided_bomb_yellow"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "guided_bomb_yellow"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_air_to_air_midrange"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_gbu_15_aim7e2"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_gbu_15_aim7e2.blk"
+          },
+          {
+            "reqModification": "us_gbu_8_15"
+          },
+          {
+            "reqModification": "us_aim_7e2"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "guided_bomb_yellow"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "guided_bomb_yellow"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -6410,6 +6591,60 @@
       "new_cover": {
         "tier": 4
       },
+      "us_aim_9e": {
+        "tier": 1,
+        "modClass": "weapon"
+      },
+      "us_aim_9j": {
+        "reqModification": "us_aim_9e",
+        "tier": 2,
+        "modClass": "weapon"
+      },
+      "us_aim_7e": {
+        "reqModification": "us_aim_9j",
+        "tier": 3,
+        "modClass": "weapon"
+      },
+      "us_aim_7e2": {
+        "reqModification": "us_aim_7e",
+        "tier": 4,
+        "modClass": "weapon"
+      },
+      "M60_air_targets": [],
+      "M60_armor_targets": [],
+      "M60_stealth": [],
+      "M60_belt_pack": {
+        "tier": 1
+      },
+      "M60_new_gun": {
+        "reqModification": "M60_belt_pack",
+        "tier": 2
+      },
+      "f4c_suu_23a": {
+        "prevModification": "M60_new_gun",
+        "deactivationIsAllowed": false,
+        "tier": 3,
+        "modClass": "weapon"
+      },
+      "us_750lb_m117a1": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "us_1000lb_mk83": {
+        "modClass": "weapon",
+        "tier": 2,
+        "reqModification": "us_750lb_m117a1"
+      },
+      "us_2000lb_mk84": {
+        "modClass": "weapon",
+        "tier": 3,
+        "reqModification": "us_1000lb_mk83"
+      },
+      "us_agm_62": {
+        "modClass": "weapon",
+        "tier": 4,
+        "reqModification": "us_2000lb_mk84"
+      },
       "countermeasures_launcher_chaff_only": [],
       "countermeasures_launcher_flare_only": [],
       "countermeasures_launcher_chaff_priority": [],
@@ -6514,61 +6749,11 @@
           ]
         }
       },
-      "us_aim_9e": {
-        "prevModification": "countermeasures_belt_pack",
-        "tier": 2,
-        "modClass": "weapon"
-      },
-      "us_aim_9j": {
-        "reqModification": "us_aim_9e",
-        "tier": 3,
-        "modClass": "weapon"
-      },
-      "us_aim_7e": {
-        "reqModification": "us_aim_9j",
-        "tier": 4,
-        "modClass": "weapon"
-      },
-      "M60_air_targets": [],
-      "M60_armor_targets": [],
-      "M60_stealth": [],
-      "M60_belt_pack": {
-        "tier": 1
-      },
-      "M60_new_gun": {
-        "reqModification": "M60_belt_pack",
-        "tier": 2
-      },
-      "f4c_suu_23a": {
-        "prevModification": "M60_new_gun",
-        "deactivationIsAllowed": false,
-        "tier": 3,
-        "modClass": "weapon"
-      },
-      "us_aim_7e2": {
-        "prevModification": "f4c_suu_23a",
-        "reqModification": "us_aim_7e",
-        "tier": 4,
-        "modClass": "weapon"
-      },
-      "us_750lb_m117a1": {
-        "modClass": "weapon",
-        "tier": 1
-      },
-      "us_1000lb_mk83": {
-        "modClass": "weapon",
-        "tier": 2,
-        "reqModification": "us_750lb_m117a1"
-      },
-      "us_2000lb_mk84": {
-        "modClass": "weapon",
-        "tier": 3,
-        "reqModification": "us_1000lb_mk83"
-      },
-      "us_agm_62": {
+      "us_gbu_8_15": {
         "modClass": "weapon",
         "tier": 4,
-        "reqModification": "us_2000lb_mk84"
+        "reqModification": "us_agm_62",
+        "prevModification": "countermeasures_belt_pack"
       },
       "fj_4b_agm_12c": {
         "tier": 1,

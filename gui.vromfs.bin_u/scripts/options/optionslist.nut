@@ -60,6 +60,7 @@ local getMainOptions = function()
       [::USEROPT_FPS_VR_CAMERA_PHYSICS, "slider", is_stereo_mode()],
       [::USEROPT_AUTO_SQUAD, "spinner"],
       [::USEROPT_QUEUE_JIP, "spinner"],
+      [::USEROPT_ORDER_AUTO_ACTIVATE, "spinner"],
       [::USEROPT_TANK_ALT_CROSSHAIR, "spinner", ::can_add_tank_alt_crosshair()
                                                 && (::has_feature("TankAltCrosshair")
                                                     || ::get_user_alt_crosshairs().len()

@@ -78,7 +78,7 @@
     "hasExpl": false
   },
   {
-    "exhaustFx": "ps_exhaust_blur"
+    "exhaustFx": "ship_exhaust_blur"
   },
   {
     "smokeScreenActivateTime": 10.0
@@ -4008,148 +4008,316 @@
         }
       },
       {
-        "Weapon": {
-          "trigger": "gunner5",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
-          "emitter": "emtr_gun_flame_08",
-          "flash": "emtr_gun_flame_08",
-          "useEmitter": true,
-          "isBulletBelt": true,
-          "barrelDP": "aa_gun_01_dm",
-          "breechDP": "aa_gun_01_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "speedYaw": 75.0,
-          "speedPitch": 65.0,
-          "bullets": 1800,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "aa_turret_01",
-            "gun": "aa_gun_01",
-            "gunnerDm": "aa_turret_01_dm",
-            "linkedAnimPart": {
-              "verNode": "bone_radius_foot_01",
-              "verLimits": [0.0,12.0],
-              "verOriginLimits": [-0.0,65.0]
+        "Weapon": [
+          {
+            "trigger": "gunner5"
+          },
+          {
+            "triggerGroup": "machinegun"
+          },
+          {
+            "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk"
+          },
+          {
+            "emitter": "emtr_gun_flame_08"
+          },
+          {
+            "flash": "emtr_gun_flame_08"
+          },
+          {
+            "useEmitter": true
+          },
+          {
+            "isBulletBelt": true
+          },
+          {
+            "barrelDP": "aa_gun_01_dm"
+          },
+          {
+            "breechDP": "aa_gun_01_dm"
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "allowableDelta": 2.0
+          },
+          {
+            "ChainfireTime": 60.0
+          },
+          {
+            "DelayAfterShoot": 0.0
+          },
+          {
+            "aimMinDist": 20.0
+          },
+          {
+            "aimMaxDist": 4500.0
+          },
+          {
+            "randomAngle": 0.0
+          },
+          {
+            "accuracyBotMultAir": 0.55
+          },
+          {
+            "accuracyAir": 1.0
+          },
+          {
+            "accuracyGnd": 0.8
+          },
+          {
+            "errMeasureVel": 0.0
+          },
+          {
+            "errTargettingOn100kmph": 0.0
+          },
+          {
+            "errMeasureVelFast": 100.0
+          },
+          {
+            "errMeasureVelFwdShift": 0.5
+          },
+          {
+            "errMeasureVelDir": 3.0
+          },
+          {
+            "errTargetting": 3.0
+          },
+          {
+            "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 75.0
+          },
+          {
+            "speedPitch": 65.0
+          },
+          {
+            "bullets": 1800
+          },
+          {
+            "useGunnerTargetingQuality": false
+          },
+          {
+            "turret": {
+              "head": "aa_turret_01",
+              "gun": "aa_gun_01",
+              "gunnerDm": "aa_turret_01_dm",
+              "linkedAnimPart": {
+                "verNode": "bone_radius_foot_01",
+                "verLimits": [0.0,12.0],
+                "verOriginLimits": [-0.0,65.0]
+              }
             }
           },
-          "limits": {
-            "yaw": [-90.0,130.0],
-            "pitch": [-5.0,65.0]
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [-5.0,65.0]
+            }
           },
-          "limitsTable": {
-            "lim1": [-90.0,-63.0,36.0,65.0],
-            "lim2": [-63.0,96.0,0.0,65.0],
-            "lim3": [96.0,112.0,7.0,65.0],
-            "lim4": [112.0,130.0,17.0,65.0]
+          {
+            "limitsTable": {
+              "lim1": [-180.0,-90.0,36.0,65.0],
+              "lim2": [-90.0,-63.0,36.0,65.0],
+              "lim3": [-63.0,96.0,0.0,65.0],
+              "lim4": [96.0,112.0,7.0,65.0],
+              "lim5": [112.0,130.0,17.0,65.0],
+              "lim6": [130.0,180.0,36.0,65.0]
+            }
           },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
+          {
+            "limitsDeadzone": {
+              "yaw": [-180.0,-90.0],
+              "pitch": [-5.0,65.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [130.0,180.0],
+              "pitch": [-5.0,65.0]
+            }
+          },
+          {
+            "gunStabilizer": {
+              "hasVerticalGunFreeMode": true,
+              "hasHorizontal": true,
+              "horizontalOmegaMult": 1.0,
+              "horizontalSpeedLimitKPH": 80.0,
+              "hasVertical": true,
+              "verticalOmegaMult": 1.0,
+              "verticalSpeedLimitKPH": 80.0,
+              "errorKPHToDegrees": [
+                {
+                  "row": [5.0,0.01]
+                },
+                {
+                  "row": [70.0,0.05]
+                }
+              ]
+            }
           }
-        }
+        ]
       },
       {
-        "Weapon": {
-          "trigger": "gunner6",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
-          "emitter": "emtr_gun_flame_09",
-          "flash": "emtr_gun_flame_09",
-          "useEmitter": true,
-          "isBulletBelt": true,
-          "barrelDP": "aa_gun_02_dm",
-          "breechDP": "aa_gun_02_dm",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "speedYaw": 75.0,
-          "speedPitch": 65.0,
-          "bullets": 1800,
-          "useGunnerTargetingQuality": false,
-          "turret": {
-            "head": "aa_turret_02",
-            "gun": "aa_gun_02",
-            "gunnerDm": "aa_turret_02_dm",
-            "linkedAnimPart": {
-              "verNode": "bone_radius_foot_02",
-              "verLimits": [0.0,8.0],
-              "verOriginLimits": [-0.0,65.0]
+        "Weapon": [
+          {
+            "trigger": "gunner6"
+          },
+          {
+            "triggerGroup": "machinegun"
+          },
+          {
+            "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk"
+          },
+          {
+            "emitter": "emtr_gun_flame_09"
+          },
+          {
+            "flash": "emtr_gun_flame_09"
+          },
+          {
+            "useEmitter": true
+          },
+          {
+            "isBulletBelt": true
+          },
+          {
+            "barrelDP": "aa_gun_02_dm"
+          },
+          {
+            "breechDP": "aa_gun_02_dm"
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "allowableDelta": 2.0
+          },
+          {
+            "ChainfireTime": 60.0
+          },
+          {
+            "DelayAfterShoot": 0.0
+          },
+          {
+            "aimMinDist": 20.0
+          },
+          {
+            "aimMaxDist": 4500.0
+          },
+          {
+            "randomAngle": 0.0
+          },
+          {
+            "accuracyBotMultAir": 0.55
+          },
+          {
+            "accuracyAir": 1.0
+          },
+          {
+            "accuracyGnd": 0.8
+          },
+          {
+            "errMeasureVel": 0.0
+          },
+          {
+            "errTargettingOn100kmph": 0.0
+          },
+          {
+            "errMeasureVelFast": 100.0
+          },
+          {
+            "errMeasureVelFwdShift": 0.5
+          },
+          {
+            "errMeasureVelDir": 3.0
+          },
+          {
+            "errTargetting": 3.0
+          },
+          {
+            "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 75.0
+          },
+          {
+            "speedPitch": 65.0
+          },
+          {
+            "bullets": 1800
+          },
+          {
+            "useGunnerTargetingQuality": false
+          },
+          {
+            "turret": {
+              "head": "aa_turret_02",
+              "gun": "aa_gun_02",
+              "gunnerDm": "aa_turret_02_dm",
+              "linkedAnimPart": {
+                "verNode": "bone_radius_foot_02",
+                "verLimits": [0.0,8.0],
+                "verOriginLimits": [-0.0,65.0]
+              }
             }
           },
-          "limits": {
-            "yaw": [-130.0,90.0],
-            "pitch": [-5.0,65.0]
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [-5.0,65.0]
+            }
           },
-          "limitsTable": {
-            "lim1": [-130.0,-112.0,17.0,65.0],
-            "lim2": [-112.0,-96.0,7.0,65.0],
-            "lim3": [-96.0,63.0,0.0,65.0],
-            "lim4": [63.0,90.0,36.0,65.0]
+          {
+            "limitsTable": {
+              "lim1": [-180.0,-130.0,36.0,65.0],
+              "lim2": [-130.0,-112.0,17.0,65.0],
+              "lim3": [-112.0,-96.0,7.0,65.0],
+              "lim4": [-96.0,63.0,0.0,65.0],
+              "lim5": [63.0,90.0,36.0,65.0],
+              "lim6": [90.0,180.0,36.0,65.0]
+            }
           },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
+          {
+            "limitsDeadzone": {
+              "yaw": [-180.0,-130.0],
+              "pitch": [-5.0,65.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [90.0,180.0],
+              "pitch": [-5.0,65.0]
+            }
+          },
+          {
+            "gunStabilizer": {
+              "hasVerticalGunFreeMode": true,
+              "hasHorizontal": true,
+              "horizontalOmegaMult": 1.0,
+              "horizontalSpeedLimitKPH": 80.0,
+              "hasVertical": true,
+              "verticalOmegaMult": 1.0,
+              "verticalSpeedLimitKPH": 80.0,
+              "errorKPHToDegrees": [
+                {
+                  "row": [5.0,0.01]
+                },
+                {
+                  "row": [70.0,0.05]
+                }
+              ]
+            }
           }
-        }
+        ]
       },
       {
         "Weapon": {
@@ -4343,14 +4511,17 @@
             }
           },
           "limits": {
-            "yaw": [-130.0,130.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-5.0,65.0]
           },
           "limitsTable": {
-            "lim1": [-130.0,-100.0,21.0,65.0],
-            "lim2": [-100.0,-79.0,7.0,65.0],
-            "lim3": [-79.0,84.0,-3.0,65.0],
-            "lim4": [84.0,130.0,41.0,65.0]
+            "lim1": [-180.0,-130.0,15.0,65.0],
+            "lim2": [-130.0,-100.0,21.0,65.0],
+            "lim3": [-100.0,-79.0,7.0,65.0],
+            "lim4": [-79.0,84.0,-3.0,65.0],
+            "lim5": [84.0,130.0,41.0,65.0],
+            "lim6": [130.0,150.0,-1.0,65.0],
+            "lim7": [150.0,180.0,30.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -4415,14 +4586,18 @@
             }
           },
           "limits": {
-            "yaw": [-130.0,130.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-5.0,65.0]
           },
           "limitsTable": {
-            "lim1": [-130.0,-84.0,41.0,65.0],
-            "lim2": [-84.0,79.0,-3.0,65.0],
-            "lim3": [79.0,100.0,7.0,65.0],
-            "lim4": [100.0,130.0,21.0,65.0]
+            "lim1": [-180.0,-150.0,30.0,65.0],
+            "lim2": [-150.0,-135.0,-1.0,65.0],
+            "lim3": [-135.0,-100.0,41.0,65.0],
+            "lim4": [-100.0,-79.0,21.0,65.0],
+            "lim5": [-79.0,84.0,-3.0,65.0],
+            "lim6": [84.0,130.0,41.0,65.0],
+            "lim7": [130.0,160.0,15.0,65.0],
+            "lim8": [160.0,180.0,30.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -4487,13 +4662,19 @@
             }
           },
           "limits": {
-            "yaw": [-50.0,120.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-5.0,65.0]
           },
           "limitsTable": {
-            "lim1": [-50.0,68.0,-4.0,65.0],
-            "lim2": [68.0,84.0,12.0,65.0],
-            "lim3": [84.0,120.0,23.0,65.0]
+            "lim1": [-180.0,-150.0,23.0,65.0],
+            "lim2": [-150.0,-140.0,-1.0,65.0],
+            "lim3": [-140.0,-90.0,15.0,65.0],
+            "lim4": [-90.0,-50.0,-1.0,65.0],
+            "lim5": [-50.0,68.0,-4.0,65.0],
+            "lim6": [68.0,84.0,12.0,65.0],
+            "lim7": [84.0,140.0,23.0,65.0],
+            "lim8": [140.0,160.0,-1.0,65.0],
+            "lim9": [160.0,180.0,23.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -4558,13 +4739,19 @@
             }
           },
           "limits": {
-            "yaw": [-120.0,50.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-5.0,65.0]
           },
           "limitsTable": {
-            "lim1": [-120.0,-84.0,23.0,65.0],
-            "lim2": [-84.0,-68.0,12.0,65.0],
-            "lim3": [-68.0,50.0,-4.0,65.0]
+            "lim1": [-180.0,-160.0,23.0,65.0],
+            "lim2": [-160.0,-140.0,-1.0,65.0],
+            "lim3": [-140.0,-84.0,23.0,65.0],
+            "lim4": [-84.0,-68.0,12.0,65.0],
+            "lim5": [-68.0,50.0,-4.0,65.0],
+            "lim6": [50.0,90.0,-1.0,65.0],
+            "lim7": [90.0,140.0,15.0,65.0],
+            "lim8": [140.0,150.0,-1.0,65.0],
+            "lim9": [150.0,180.0,23.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -4629,8 +4816,13 @@
             }
           },
           "limits": {
-            "yaw": [-130.0,130.0],
-            "pitch": [-2.0,65.0]
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,65.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-120.0,23.0,65.0],
+            "lim2": [-120.0,120.0,-3.0,65.0],
+            "lim3": [120.0,180.0,23.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,

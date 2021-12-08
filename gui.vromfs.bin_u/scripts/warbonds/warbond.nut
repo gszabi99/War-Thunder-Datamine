@@ -1,4 +1,6 @@
 local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { GUI, PRICE } = require("scripts/utils/configs.nut")
+
 class ::Warbond
 {
   id = ""
@@ -38,7 +40,7 @@ class ::Warbond
 
     fontIcon = ::g_warbonds.defaultWbFontIcon
 
-    local guiWarbondsBlock = ::configs.GUI.get()?.warbonds
+    local guiWarbondsBlock = GUI.get()?.warbonds
     medalIcon = ::getTblValue(listId, ::getTblValue("medalIcons", guiWarbondsBlock), medalIcon)
     levelIcon = ::getTblValue(listId, ::getTblValue("levelIcons", guiWarbondsBlock), levelIcon)
     medalForSpecialTasks = ::getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
@@ -141,7 +143,7 @@ class ::Warbond
     local res = isCurrent() ? getCanEarnTimeLeft() : getExpiredTimeLeft()
     if (res < 0) //invalid warbond - need price update
     {
-      ::configs.PRICE.update(null, null, false, !updateRequested) //forceUpdate request only once
+      PRICE.update(null, null, false, !updateRequested) //forceUpdate request only once
       updateRequested = true
     }
     return res

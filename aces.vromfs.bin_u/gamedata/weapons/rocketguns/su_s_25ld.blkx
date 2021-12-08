@@ -1,0 +1,145 @@
+{
+  "rocketGun": true,
+  "preset_cost": 25,
+  "mesh": "su_s_25l_rocket",
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "tags": [],
+  "rocket": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat_fs",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "heat_fs_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "fresnel": [0.23,0.1,2.0],
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "bulletName": "su_s_25ld_rocket",
+    "caliber": 0.34,
+    "mass": 410.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 20.0,
+    "maxDeltaAngle": 0.02,
+    "dragCx": 0.025,
+    "length": 4.038,
+    "distFromCmToStab": 0.1,
+    "wingAreaMult": 1.2,
+    "CxK": 1.25,
+    "WdK": [0.1,0.1,0.1],
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "force": 83000.0,
+    "timeFire": 2.35,
+    "massEnd": 320.0,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "explosionEffect": "explosion_midair_big",
+    "groundCollisionEffect": "bomb_expl_100kg",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_59_80mm_water",
+    "explosionPatchRadius": 5.0,
+    "maxDistance": 10000.0,
+    "minDistance": 2000.0,
+    "distanceFuse": false,
+    "guidanceType": "laser",
+    "isHasLaserChannel": true,
+    "rendinstDamageRadius": 15.0,
+    "hitPowerMult": 400.0,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "statType": "hydra",
+    "fireEffect": "rocket_fire_light_huge",
+    "smokeEffect": "rocket_fire_short_nofire",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.5,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 510.0,
+    "timeLife": 27.0,
+    "loadFactorMax": 2.0,
+    "rangeMax": 10000.0,
+    "price": 3000.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.5,0.0,0.0],
+    "amountPerTier": 1.0,
+    "iconType": "missile_air_to_uni",
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_small"
+      },
+      "armor": {
+        "fx": "explosion_midair_small"
+      },
+      "buildings": {
+        "fx": "explosion_midair_small"
+      },
+      "wood": {
+        "fx": "explosion_midair_small"
+      }
+    },
+    "guidance": {
+      "warmUpTime": 1.0,
+      "workTime": 3600.0,
+      "uncageBeforeLaunch": true,
+      "breakLockMaxTime": 2.0,
+      "laserSeeker": {
+        "range": 10000.0,
+        "rangeMax": 12000.0,
+        "fov": 30.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.8,
+        "baseIndSpeed": 1300.0,
+        "angleToAccelMult": 0.0,
+        "omegaToAccelMult": 8.0,
+        "elevationAdd": 1.0,
+        "reqAccelMax": 6.0,
+        "accelControlProp": 5.0,
+        "accelControlIntg": 0.7,
+        "accelControlIntgLim": 0.5,
+        "accelControlDiff": 0.5
+      }
+    },
+    "arcadeProp": {
+      "finsAoaHor": 0.18,
+      "finsAoaVer": 0.18,
+      "timeFire": 1.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "152mmRed",
+        "trail": "noTrail"
+      }
+    }
+  }
+}

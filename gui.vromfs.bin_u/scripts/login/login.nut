@@ -1,3 +1,5 @@
+local LoginProcess = require("loginProcess.nut")
+
 global enum LOGIN_STATE //bit mask
 {
   AUTHORIZED               = 0x0001 //succesfully connected to auth
@@ -18,6 +20,7 @@ global enum LOGIN_STATE //bit mask
 
   curState = LOGIN_STATE.NOT_LOGGED_IN
   curLoginProcess = null
+  loginProcessClass = LoginProcess //this is really bad class. It has a cyclic dependency with g_login and is hard to change the order in it for other project
 
   onAuthorizeChanged = function() {}
   onLoggedInChanged  = function() {}
@@ -76,7 +79,7 @@ g_login.startLoginProcess <- function startLoginProcess(shouldCheckScriptsReload
 {
   if (curLoginProcess && curLoginProcess.isValid())
     return
-  curLoginProcess = ::LoginProcess(shouldCheckScriptsReload)
+  curLoginProcess = loginProcessClass(shouldCheckScriptsReload)
 }
 
 g_login.setState <- function setState(newState)

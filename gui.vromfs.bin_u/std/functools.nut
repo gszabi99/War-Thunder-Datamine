@@ -144,6 +144,18 @@ local function compose(...){
   assert(numarg==1 || (numarg==0 && isvargved), "compose cannot be applied to multiargument function or function with no argument")
   return @(x) args.reduce(@(a,b) b(a), x)
 }
+/*
+  tryCatch(tryer function, catcher function) return function that will operate on input safely
+*/
+local function tryCatch(tryer, catcher){
+  return function(...) {
+    try{
+      return tryer.pacall([null].extend(vargv))
+    }
+    catch(e)
+      return catcher(e)
+   }
+}
 
 /*
  (un)curry:
@@ -337,4 +349,5 @@ return {
 //  reduce = breakable_reduce
 //  BreakValue
   combine
+  tryCatch
 }

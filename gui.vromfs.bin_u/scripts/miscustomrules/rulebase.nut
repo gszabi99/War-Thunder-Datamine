@@ -2,6 +2,7 @@ local { getAvailableRespawnBases } = require_native("guiRespawn")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
 local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 class ::mission_rules.Base
 {
@@ -426,13 +427,13 @@ class ::mission_rules.Base
   function getRandomUnitsGroupLocName(groupName)
   {
     return ::loc("icon/dice/transparent") +
-      ::loc(::configs.GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
+      ::loc(GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
       ?? "respawn/randomUnitsGroup/name")
   }
 
   function getRandomUnitsGroupIcon(groupName)
   {
-    return ::configs.GUI.get()?.randomSpawnUnitPresets?[groupName]?.icon
+    return GUI.get()?.randomSpawnUnitPresets?[groupName]?.icon
       ?? "!#ui/unitskin#random_unit"
   }
 

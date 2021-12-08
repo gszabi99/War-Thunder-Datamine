@@ -55,7 +55,7 @@ local function ilsHud(elemStyle, isBackground) {
     pos = [IlsPosSize[0], IlsPosSize[1]]
     children = IsIlsEnabled.value ?
     [
-      mfdPilotParamsTable(isBackground, false, ilsStyle)
+      mfdPilotParamsTable(isBackground, false, false, ilsStyle)
       vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), MfdColor.value, isBackground, ilsStyle)
       horSpeed(isBackground, MfdColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
       compassComponent(ilsStyle, [pilotSw(100), pilotSh(13)], [pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15)])

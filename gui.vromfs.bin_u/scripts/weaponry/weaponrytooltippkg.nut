@@ -40,7 +40,11 @@ local function updateSpareType(spare)
 
 local function getTierDescTbl(unit, weaponry, presetName, tierId)
 {
-  local amountPerTier = weaponry.tiers?[tierId.tostring()].amountPerTier ?? weaponry.amountPerTier ?? 0
+  local currTier = weaponry.tiers?[tierId.tostring()]
+  if (currTier?.tooltipLang)
+    return { desc = ::loc(currTier.tooltipLang) }
+
+  local amountPerTier = currTier?.amountPerTier ?? weaponry.amountPerTier ?? 0
   local isBlock = amountPerTier > 1
   local header = ::loc($"weapons/{weaponry.name}")
   local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,

@@ -81,7 +81,7 @@
     "hasExpl": false
   },
   {
-    "exhaustFx": "ps_exhaust_large"
+    "exhaustFx": "ship_exhaust_large"
   },
   {
     "explosionFx": "explosion_ship_small"
@@ -3953,6 +3953,10 @@
           "hp": 514.0
         }
       },
+      "aircrafts": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0
+      },
       "cover": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
@@ -6849,6 +6853,17 @@
         ]
       }
     ]
+  },
+  {
+    "supportPlane": {
+      "supportPlaneClass": "arado-196a-3",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
   },
   {
     "commonWeapons": [
@@ -10688,6 +10703,33 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner33",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_01",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_01",
+            "gun": "aircraft_01"
+          },
+          "limits": {
+            "yaw": [-90.0,90.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [-40.0,40.0],
+            "pitch": [-90.0,90.0]
+          }
+        }
       }
     ]
   },
@@ -10809,7 +10851,8 @@
           "distToLive": 8000.0,
           "maxSpeedInWater": -7.2
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -12597,17 +12640,6 @@
           "deviation": 0.6,
           "rotation": 2.1,
           "collisionNode": "main_caliber_turret_04_dm"
-        }
-      },
-      {
-        "part": {
-          "node": "ex_armor_04",
-          "idx": 5,
-          "mass": 1400.0,
-          "cutDamage": 350.0,
-          "deviation": 0.6,
-          "rotation": 2.1,
-          "collisionNode": "ex_armor_04_dm"
         }
       },
       {

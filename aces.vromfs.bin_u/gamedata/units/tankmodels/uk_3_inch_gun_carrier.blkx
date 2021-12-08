@@ -2335,8 +2335,78 @@
       },
       "tracks": {
         "animationMultiplier": 0.75,
-        "height": 0.055,
-        "width": 0.65
+        "width": 0.6,
+        "height": 0.09,
+        "tracksTensionK": [7.0,12.0,1.0],
+        "trackMesh": "uk_churchill_iii_phys_track_line",
+        "trackLen": 0.2,
+        "trackCount": 73,
+        "trackFadeTime": 1.0,
+        "trackMaxHeight": 1.5,
+        "trackMaxSinking": 0.1,
+        "trackStartOffset": 0.03,
+        "trackFakeWheels": [
+          {
+            "wheel": {
+              "pos": [1.7,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.0,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [0.0,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-0.7,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.33,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.7,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [1.0,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [0.0,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-0.7,1.33,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.33,-0.858647],
+              "radius": 0.05
+            }
+          }
+        ]
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
@@ -2384,6 +2454,8 @@
         "defaultDampeningForce": [117000.0,117000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.35,
+        "wheel_l_drive": 0.35,
         "offsets": {
           "wheel_l_01": [0.0,0.0,0.04],
           "wheel_r_01": [0.0,0.0,0.04],
@@ -2943,7 +3015,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

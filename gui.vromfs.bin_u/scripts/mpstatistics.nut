@@ -9,6 +9,7 @@ local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mo
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -927,11 +928,15 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
   function onOrderTimerUpdate(obj, dt)
   {
     ::g_orders.updateActiveOrder()
+    local isOrderCanBeActivated = ::g_orders.orderCanBeActivated()
     if (::checkObj(obj))
     {
       obj.text = ::g_orders.getActivateButtonLabel()
-      obj.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
+      obj.inactiveColor = !isOrderCanBeActivated ? "yes" : "no"
     }
+    if (isOrderCanBeActivated
+      && ::get_option_in_mode(::USEROPT_ORDER_AUTO_ACTIVATE, ::OPTIONS_MODE_GAMEPLAY).value)
+        ::g_orders.activateSoonExpiredOrder()
   }
 
   function setTeamInfoTeam(teamObj, team)

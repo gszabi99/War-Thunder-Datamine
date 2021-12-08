@@ -57,6 +57,7 @@ loading_bg
 */
 
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local createBgData = @() {
   list = {}
@@ -149,7 +150,7 @@ local function initOnce() {
   bgDataAfterLogin.list.clear()
   bgDataBeforeLogin.list.clear()
 
-  local blk = ::configs.GUI.get()
+  local blk = GUI.get()
   local bgBlk = blk?[LOADING_BG_PATH]
   if (!bgBlk)
     return

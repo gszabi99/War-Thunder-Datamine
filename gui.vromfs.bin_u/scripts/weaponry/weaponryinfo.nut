@@ -337,7 +337,11 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
           item.iconType <- wc?.iconType
           item.amountPerTier <- wc?.amountPerTier
           foreach (t in (wc % "tier"))
-            item.tiers[t.idx] <- {amountPerTier = t?.amountPerTier, iconType = t?.iconType}
+            item.tiers[t.idx] <- {
+              amountPerTier = t?.amountPerTier
+              iconType = t?.iconType
+              tooltipLang = t?.tooltipLang
+            }
           break
         }
 
@@ -368,9 +372,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
         if ((itemBlk?.guaranteedRange ?? 0) != 0)
           item.guaranteedRange <- itemBlk.guaranteedRange
 
-        if (currentTypeName == WEAPON_TYPE.AAM ||
-            currentTypeName == WEAPON_TYPE.AGM ||
-            currentTypeName == WEAPON_TYPE.GUIDED_BOMBS)
+        if (itemBlk?.guidance != null || itemBlk?.operated == true )
         {
           if (itemBlk?.operated == true)
           {

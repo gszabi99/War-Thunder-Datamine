@@ -3,7 +3,7 @@ local protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.
 local { hasFeature } = require("scripts/user/features.nut")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local controllerState = require("controllerState")
-local { hangar_protection_map_update,
+local { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")
 
 
@@ -119,6 +119,7 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
     ::hangar_focus_model(false)
     ::hangar_set_dm_viewer_mode(::DM_VIEWER_NONE)
     ::repairUnit()
+    set_protection_analysis_editing(false)
     base.goBack()
   }
 

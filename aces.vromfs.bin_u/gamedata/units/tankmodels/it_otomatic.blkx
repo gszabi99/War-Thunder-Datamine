@@ -2584,7 +2584,17 @@
       "tracks": {
         "animationMultiplier": -0.68,
         "width": 0.55,
-        "height": 0.05
+        "height": 0.08,
+        "tracksTensionK": [7.5,9.0,3.0],
+        "trackMesh": "ger_d139e2_phys_track_line",
+        "trackLen": 0.16,
+        "trackCount": 84,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.25,
+        "trackStartOffset": 0.21,
+        "trackMaxSinking": 0.17
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2641,7 +2651,9 @@
         "frontBackGearRadius": 0.315,
         "defaultDampeningForce": [180000.0,180000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.3,
+        "wheel_l_drive": 0.3
       }
     }
   },
@@ -3195,7 +3207,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

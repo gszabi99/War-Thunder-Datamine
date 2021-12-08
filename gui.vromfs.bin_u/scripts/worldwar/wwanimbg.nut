@@ -1,19 +1,22 @@
-local { eachParam } = require("std/datablock.nut")
 local { createBgData } = require("scripts/loading/loadingBgData.nut")
+local { GUI } = require("scripts/utils/configs.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
 
-local getBgFullPath = @(name) (name ?? "") != "" ? $"config/worldwar_bg/{name}.blk" : ""
+const WW_BG_PATH = "config/worldwar_bg/"
 
-local function loadBgData()
-{
-  local res = createBgData()
-  local blk = ::configs.GUI.get()?.worldwar_bg
-  if (blk)// Need to set random weight in config for random image getting when no active map
-    eachParam(blk, @(inst) res.list[getBgFullPath(inst)] <- ::math.rnd() % 10)
+local function wwAnimBgLoad(name) {
+  local wwBg = ::buildTableFromBlk(GUI.get()?.worldwar_bg)
+  local fullPath = (name ?? "") == ""
+    ? "" : wwBg?[name]
+    ? $"{WW_BG_PATH}{name}.blk" : ""
+  if (fullPath != "")
+    return animBgLoad(fullPath)
 
-  return res
+  local curBgData = createBgData()
+  foreach(n in wwBg)// Need to set random weight in config for random image getting when no active map
+    curBgData.list[$"{WW_BG_PATH}{n}.blk"] <- ::math.rnd() % 10
+  return animBgLoad("", null, curBgData)
 }
 
-return {
-  getBgFullPath
-  loadBgData
-}
+return wwAnimBgLoad
+

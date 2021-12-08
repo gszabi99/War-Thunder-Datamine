@@ -853,7 +853,7 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 
 local fuelKeyId = AirParamsSecondary.FUEL
 
-local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, style = styleText) {
+local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
   local function getChildren(isBackground, style, isBomberView = false, isTargetPod = false) {
     local children = []
 
@@ -892,7 +892,7 @@ local function generateParamsTable(mainMask, secondaryMask, width, height, posWa
     return children
   }
 
-  return function(isBackground, isTargetPod = false, style = styleText, isBomberView = false ) {
+  return function(isBackground, isTargetPod = false, isBomberView = false, style = styleText ) {
     return {
       children = @() style.__merge({
         watch = [mainMask, secondaryMask, posWatched]

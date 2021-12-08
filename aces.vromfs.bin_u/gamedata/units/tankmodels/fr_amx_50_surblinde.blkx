@@ -2702,6 +2702,14 @@
           "blk": "gameData/Weapons/groundModels_weapons/120mm_SA_46_Surbaisse_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "sleeveEmitter": "emtr_shell",
+          "sleeveMesh": "cartridge_case",
+          "hatchAnimVar": "hatch_toggle",
+          "openHatchTime": 1.3,
+          "sleevesLifeTime": 10.0,
+          "sleeveImpulse": [5.0,0.0,0.0],
+          "sleeveExtractSound": "shell_eject",
+          "linkSleeveToGun": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2922,11 +2930,50 @@
         "AdvancedMass": false,
         "trackMass": 3000.0
       },
-      "tracks": {
-        "animationMultiplier": -0.68,
-        "height": 0.045,
-        "width": 0.9
-      },
+      "tracks": [
+        {
+          "animationMultiplier": -0.68
+        },
+        {
+          "height": 0.085
+        },
+        {
+          "width": 0.9
+        },
+        {
+          "tracksTensionK": [6.0,8.0,2.0]
+        },
+        {
+          "trackMesh": "fr_amx_50_surblinde_phys_track_line"
+        },
+        {
+          "trackLen": 0.3
+        },
+        {
+          "trackCount": 50
+        },
+        {
+          "trackFadeTime": 0.5
+        },
+        {
+          "trackMaxSinking": 0.1
+        },
+        {
+          "trackStartOffset": 0.03
+        },
+        {
+          "trackConnector": true
+        },
+        {
+          "trackConnector": true
+        },
+        {
+          "trackMaxHeight": 1.28
+        },
+        {
+          "nonSymmetricMesh": true
+        }
+      ],
       "collisionProps": {
         "cls_turret": "convex_hull",
         "cls_body": "convex_hull"
@@ -2970,10 +3017,12 @@
         "suspensionOffsets": [-0.25,-0.24,0.13],
         "defaultGearRadius": 0.4,
         "topGearRadius": 0.11,
-        "frontBackGearRadius": 0.315,
+        "frontBackGearRadius": 0.35,
         "defaultDampeningForce": [180000.0,180000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.42,
+        "wheel_l_drive": 0.42
       }
     }
   },
@@ -3527,7 +3576,7 @@
           "lifetime": 10.0,
           "wreckages": {
             "count": 3,
-            "speed": 10.0,
+            "speed": 15.0,
             "angle": 80.0,
             "fxName": "fire_tank_explosion_trails"
           },

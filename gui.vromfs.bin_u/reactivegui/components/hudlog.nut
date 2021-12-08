@@ -23,7 +23,7 @@ local hudLog = function (params) {
 
   return @() {
     watch = cursorVisible
-    rendObj = ROBJ_9RECT
+    rendObj = ROBJ_SOLID
     size = [flex(), ::scrn_tgt(0.135)]
     clipChildren = true
     valign = ALIGN_BOTTOM

@@ -1,6 +1,7 @@
 local { calcPercent } = require("std/math.nut")
 local statsd = require("statsd")
 local { cutPrefix } = require("std/string.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
@@ -67,7 +68,7 @@ local XboxShopPurchasableItem = class
     if (isPurchasable)
       amount = getPriceText()
 
-    local xboxShopBlk = ::configs.GUI.get()?.xbox_ingame_shop
+    local xboxShopBlk = GUI.get()?.xbox_ingame_shop
     local ingameShopImages = xboxShopBlk?.items
     if (ingameShopImages?[id] && xboxShopBlk?.mainPart && xboxShopBlk?.fileExtension)
       imagePath = "!" + xboxShopBlk.mainPart + id + xboxShopBlk.fileExtension

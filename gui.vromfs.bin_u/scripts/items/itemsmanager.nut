@@ -7,6 +7,7 @@ local { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
 local { boosterEffectType }= require("scripts/items/boosterEffect.nut")
 local seenList = require("scripts/seen/seenList.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { PRICE } = require("scripts/utils/configs.nut")
 
 // Independent Modules
 require("scripts/items/roulette/bhvRoulette.nut")
@@ -256,7 +257,7 @@ foreach (fn in [
   if (!_reqUpdateList)
     return false
   _reqUpdateList = false
-  ::configs.PRICE.checkUpdate()
+  PRICE.checkUpdate()
   itemsListInternal.clear()
   dbgTrophiesListInternal.clear()
   dbgUpdateInternalItemsCount++

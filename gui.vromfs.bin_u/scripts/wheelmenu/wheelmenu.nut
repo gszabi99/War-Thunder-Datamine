@@ -1,10 +1,12 @@
-// TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7].map(@(v) { name = v.tostring() }), callbackFunc = dlog })
+// TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
 
 local { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
-::gui_start_wheelmenu <- function gui_start_wheelmenu(params)
+const ITEMS_PER_PAGE = 8
+
+::gui_start_wheelmenu <- function gui_start_wheelmenu(params, isUpdate = false)
 {
   local defaultParams = {
     menu = []
@@ -18,7 +20,9 @@ local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
   ::inherit_table(params, defaultParams)
   local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
-  if (handler)
+  if (handler && isUpdate)
+    handler.updateContent(params)
+  else if (handler)
     handler.reinitScreen(params)
   else
     handler = ::handlersManager.loadHandler(::gui_handlers.wheelMenuHandler, params)
@@ -90,6 +94,8 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   shouldShadeBackground = true
   contentTemplate = "gui/wheelMenu/textContent"
   contentPartails = {}
+  pageIdx = 0
+  pagesTotal = 1
 
   function initScreen()
   {
@@ -100,8 +106,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     guiScene = scene.getScene()
     showScene(true)
-    fill()
-    updateTitlePos()
+    fill(true)
     updateSelectShortcutImage()
     if (axisEnabled)
     {
@@ -131,11 +136,36 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     initScreen()
   }
 
-  function fill()
+  function updateContent(params = {})
   {
+    setParams(params)
+    if ((menu?.len() ?? 0) == 0 || !::check_obj(scene))
+      return close()
+
+    fill()
+  }
+
+  function fill(isInitial = false)
+  {
+    pagesTotal = ::max(1, (menu.len() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
+    pageIdx = isInitial ? 0 : ::min(pageIdx, pagesTotal - 1)
+
+    fillMenuItems()
+    updatePageInfo()
+    updateTitlePos()
+
+    if (!isInitial)
+      highlightItemBySide(joystickSelection, true)
+  }
+
+  function fillMenuItems()
+  {
+    local startIdx = pageIdx * ITEMS_PER_PAGE
+
+    local itemsCount = ::max(menu.len() - startIdx, ITEMS_PER_PAGE)
     btnSetIdx = btnSetsConfig.len() - 1
     for (local i = 0; i < btnSetsConfig.len(); i++)
-      if (btnSetsConfig[i].len() >= menu.len())
+      if (btnSetsConfig[i].len() >= itemsCount)
         {
           btnSetIdx = i
           break
@@ -144,15 +174,16 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (suffix in joystickSides)
     {
-      local index = ::find_in_array(btnSet, suffix, invalidIndex)
+      local btnIdx = btnSet.indexof(suffix)
+      local index = btnIdx != null ? (startIdx + btnIdx) : invalidIndex
       local item = menu?[index]
       local isShow = (item?.name ?? "") != ""
       local enabled = isShow && (item?.wheelmenuEnabled ?? true)
-      local bObj = showSceneBtn("wheelmenuItem" + suffix, isShow)
+      local bObj = showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
       if (::checkObj(bObj))
       {
-        local buttonType = ::getTblValue("buttonType", item, "")
+        local buttonType = item?.buttonType ?? ""
         if (buttonType != "")
           bObj.type = buttonType
 
@@ -170,11 +201,22 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function updatePageInfo()
+  {
+    local shouldShowPages = pagesTotal > 1
+    local objPageInfo = scene.findObject("wheel_menu_page")
+    objPageInfo.setValue(shouldShowPages
+      ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
+      : "")
+    showSceneBtn("btnSwitchPage", shouldShowPages)
+  }
+
   function updateTitlePos()
   {
-    local obj = scene.findObject("wheel_menu_category")
-    local hasTopItem = menu?[7] != null
-    obj.top = hasTopItem ? "-1.5h" : "-1.5h +1@wheelmenuBtnHeight"
+    local obj = scene.findObject("wheel_menu_title")
+    local startIdx = pageIdx * ITEMS_PER_PAGE
+    local hasTopItem = menu?[startIdx + 7] != null
+    obj.top = hasTopItem ? obj?.topWithTopMenuItem : obj?.topWithoutTopMenuItem
   }
 
   function updateSelectShortcutImage()
@@ -215,9 +257,9 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     highlightItemBySide(joystickSides?[side])
   }
 
-  function highlightItemBySide(selection)
+  function highlightItemBySide(selection, isForced = false)
   {
-    if (selection == joystickSelection)
+    if (selection == joystickSelection && !isForced)
       return
 
     local bObj = joystickSelection && scene.findObject("wheelmenuItem" + joystickSelection)
@@ -231,9 +273,9 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     joystickSelection = selection
   }
 
-  function highlightItemByIndex(index)
+  function highlightItemByBtnIdx(btnIdx)
   {
-    local selection = btnSetsConfig[btnSetIdx]?[index]
+    local selection = btnSetsConfig[btnSetIdx]?[btnIdx]
     highlightItemBySide(selection)
   }
 
@@ -256,14 +298,21 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     sendAnswerAndClose(invalidIndex)
   }
 
+  function onWheelmenuSwitchPage(obj)
+  {
+    pageIdx = (pageIdx + 1) % pagesTotal
+    fill()
+  }
+
   function onVoiceMessageSwitchChannel(obj) {}
 
-  function onShortcutSelectCallback(index, isDown)
+  function onShortcutSelectCallback(btnIdx, isDown)
   {
+    local index = (pageIdx * ITEMS_PER_PAGE) + btnIdx
     if (!isItemAvailable(index))
       return false
     isKbdShortcutDown = isDown
-    highlightItemByIndex(isDown ? index : -1)
+    highlightItemByBtnIdx(isDown ? btnIdx : -1)
     if (!isDown)
       sendAvailableAnswerDelayed(index)
     return true // processed
