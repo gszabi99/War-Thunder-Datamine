@@ -61,17 +61,17 @@ struct public Archive
 
 def public serialize_raw ( var arch:Archive; var value : auto(TT)& )
     if arch.reading
-        arch.stream->read(unsafe(addr(value)), typeinfo(sizeof type<TT-&>))
+        arch.stream->read(unsafe(addr(value)), typeinfo(sizeof value))
     else
-        arch.stream->write(unsafe(addr(value)), typeinfo(sizeof type<TT-&>))
+        arch.stream->write(unsafe(addr(value)), typeinfo(sizeof value))
 
 def public read_raw ( var arch:Archive; var value : auto(TT)& )
     assert(arch.reading)
-    arch.stream->read(unsafe(addr(value)), typeinfo(sizeof type<TT-&>))
+    arch.stream->read(unsafe(addr(value)), typeinfo(sizeof value))
 
 def public write_raw ( var arch:Archive; var value : auto(TT)& )
     assert(!arch.reading)
-    arch.stream->write(unsafe(addr(value)), typeinfo(sizeof type<TT-&>))
+    arch.stream->write(unsafe(addr(value)), typeinfo(sizeof value))
 
 [expect_any_enum(value), template(dummy=false)]
 def public serialize ( var arch:Archive; var value : auto(TT)&; dummy:TT-&?????? = null )
@@ -80,9 +80,9 @@ def public serialize ( var arch:Archive; var value : auto(TT)&; dummy:TT-&??????
 [expect_any_function(value), template(dummy=false)]
 def public serialize ( var arch:Archive; var value:auto(TT)&; dummy:TT-&????? = null )
     if arch.reading
-        var mnh : uint
+        var mnh : uint64
         arch |> read_raw(mnh)
-        if mnh != 0u
+        if mnh != 0ul
             unsafe
                 value = reinterpret<TT-#>(get_function_by_mangled_name_hash(mnh))
     else

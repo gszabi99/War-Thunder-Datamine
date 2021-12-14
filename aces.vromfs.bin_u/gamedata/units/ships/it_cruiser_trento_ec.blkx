@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -2250,7 +2250,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -2930,7 +2936,7 @@
           "hp": 2124.0
         },
         "elevator_02_dm": {
-          "hp": 2453.0
+          "hp": 2452.0
         },
         "elevator_03_dm": {
           "hp": 2168.0
@@ -4629,6 +4635,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "ro_43",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "weapon_presets": [
       {
         "preset": {
@@ -4745,7 +4763,8 @@
           "distToLive": 6000.0,
           "maxSpeedInWater": -5.15
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -6002,7 +6021,7 @@
       ],
       "ammo8": [
         {
-          "weaponTrigger": "gunner22"
+          "weaponTrigger": "gunner18"
         },
         {
           "replenishmentDelay": 6.0
@@ -6080,7 +6099,7 @@
       ],
       "ammo9": [
         {
-          "weaponTrigger": "gunner23"
+          "weaponTrigger": "gunner19"
         },
         {
           "replenishmentDelay": 6.0
@@ -6158,7 +6177,7 @@
       ],
       "ammo10": [
         {
-          "weaponTrigger": "gunner24"
+          "weaponTrigger": "gunner20"
         },
         {
           "replenishmentDelay": 6.0
@@ -6236,7 +6255,7 @@
       ],
       "ammo11": [
         {
-          "weaponTrigger": "gunner25"
+          "weaponTrigger": "gunner21"
         },
         {
           "replenishmentDelay": 6.0

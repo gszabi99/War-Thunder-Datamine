@@ -88,7 +88,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "unitExists", "additional", "unitClass",
     "gameModeInfoString", "modes", "events", "tournamentMode",
     "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
-    "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag",
+    "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag", "playerCountry",
     "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag",
     "targetUnit", "targetType", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
@@ -97,7 +97,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "statKillsGroundInSession", "statKillsGroundAiInSession",
     "statKillsNavalInSession", "statKillsNavalAiInSession",
     "statKillsSurfaceInSession", "statKillsSurfaceAiInSession",
-    "targetIsPlayer", "eliteUnitsOnly", "noPremiumVehicles", "era", "country", "playerCountry",
+    "targetIsPlayer", "eliteUnitsOnly", "noPremiumVehicles", "era", "country",
     "targets", "targetDistance", "higherBR"
   ]
 
@@ -117,6 +117,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     offenderUnitRank       = "playerUnit"
     playerUnitMRank        = "playerUnit"
     offenderUnitMRank      = "playerUnit"
+    playerCountry          = "playerUnit"
     usedInSessionType      = "usedPlayerUnit"
     usedInSessionUnit      = "usedPlayerUnit"
     usedInSessionClass     = "usedPlayerUnit"

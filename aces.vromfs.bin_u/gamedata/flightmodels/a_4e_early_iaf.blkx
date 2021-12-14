@@ -1,11 +1,13 @@
 {
   "model": "a_4e_early_iaf",
-  "fmFile": "fm/a_4e_early.blk",
+  "fmFile": "fm/a_4e_early_iaf.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "isBwOpticSight": true,
+  "ilsAVQ7": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -28,9 +30,6 @@
   "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3061,7 +3060,7 @@
           "weaponConfig": [
             {
               "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
                 "amountPerTier": 1.0,
                 "iconType": "bombs_large",
                 "tier": {
@@ -4279,6 +4278,75 @@
           ]
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "a_4e_late_iaf_bomb_guided_gbu8",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8.blk",
+        "reqModification": "us_gbu_8_15",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+            "iconType": "guided_bomb_yellow",
+            "tier": {
+              "idx": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_late_iaf_bomb_guided_gbu8_aim_9"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8_aim_9.blk"
+        },
+        {
+          "reqModification": "us_gbu_8_15"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+                "amountPerTier": 1.0,
+                "iconType": "guided_bomb_yellow",
+                "tier": {
+                  "idx": 6
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -4488,18 +4556,23 @@
       "reqModification": "is_500_50_gp"
     },
     "us_2_75_in_ffar_lau_3a": {
-      "tier": 2,
+      "tier": 1,
       "modClass": "weapon"
     },
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_agm_62": {
       "prevModification": "f4c_zuni",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
+    },
+    "us_gbu_8_15": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_agm_62"
     }
   },
   "user_skin": [

@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1807,7 +1807,19 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "catapult_mount_02_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_02_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -5126,6 +5138,34 @@
     ]
   },
   {
+    "supportPlane": [
+      {
+        "supportPlaneClass": "aichi_e13a"
+      },
+      {
+        "planeStartSpeed": 150.0
+      },
+      {
+        "count": 2
+      },
+      {
+        "startFx": "start_torpedo"
+      },
+      {
+        "catapult": {
+          "visualNode": "aircraft_01",
+          "head": "catapult_mount_01"
+        }
+      },
+      {
+        "catapult": {
+          "visualNode": "aircraft_02",
+          "head": "catapult_mount_02"
+        }
+      }
+    ]
+  },
+  {
     "commonWeapons": [
       {
         "animatedBones": [
@@ -7232,6 +7272,64 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner19",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_01",
+          "barrelDP": "aircraft_01_dm",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_01",
+            "gun": "aircraft_01",
+            "gunnerDm": "catapult_mount_01_dm"
+          },
+          "limits": {
+            "yaw": [0.0,90.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [0.0,60.0],
+            "pitch": [0.0,0.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner20",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_02",
+          "barrelDP": "aircraft_02_dm",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_02",
+            "gun": "aircraft_02",
+            "gunnerDm": "catapult_mount_02_dm"
+          },
+          "limits": {
+            "yaw": [-90.0,0.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [-60.0,0.0],
+            "pitch": [-90.0,90.0]
+          }
+        }
       }
     ]
   },
@@ -7346,7 +7444,8 @@
       },
       "ship_rangefinder": {
         "prevModification": "127mm_jp_type1_naval_aa_distant_fuse_he_ammo_pack"
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {

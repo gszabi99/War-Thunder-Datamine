@@ -11,4 +11,5 @@ return {
   selectRespawnBase = @(id) ::select_respawnbase?(id)
   highlightRespawnBase = @(id) null
   getRespawnBase = @(x, y) ::get_respawn_base?(x, y)
+  doRespawnPlayer = @() null
 }

@@ -20,9 +20,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "fighter",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "armor3_dm": {
@@ -2286,7 +2283,7 @@
   },
   "cockpit": {
     "headPos": [-0.96,0.754,-0.033],
-    "headPosOnShooting": [-0.89,0.788,-0.027],
+    "headPosOnShooting": [-0.96,0.754,-0.033],
     "headMoveLimitRight": 0.3,
     "headMoveLimitUp": 0.7,
     "lightPos": [-0.567458,0.554675,-0.266829],
@@ -2703,55 +2700,28 @@
                 "node": "mgun2"
               },
               {
-                "node": "flare5"
+                "node": "flare3"
               },
               {
-                "node": "flare6"
+                "node": "flare4"
               }
             ]
           },
           {
             "hideDmParts": [
               {
-                "node": "cover6_dm"
-              },
-              {
-                "node": "cover7_dm"
-              },
-              {
                 "node": "mgun3_dm"
               },
               {
                 "node": "mgun4_dm"
+              },
+              {
+                "node": "mgun1"
+              },
+              {
+                "node": "mgun2"
               }
             ]
-          },
-          {
-            "Weapon": {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG131.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "mgun1_dm",
-              "bullets": 250,
-              "spread": 1.0,
-              "counterIndex": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG131.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection2",
-              "dm": "mgun2_dm",
-              "bullets": 250,
-              "spread": 1.0,
-              "traceOffset": 1,
-              "counterIndex": 2
-            }
           },
           {
             "Weapon": {
@@ -2783,6 +2753,33 @@
               "traceOffset": 1,
               "counterIndex": 5,
               "external": true
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMG131.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 250,
+              "spread": 1.0,
+              "counterIndex": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMG131.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun2_dm",
+              "bullets": 250,
+              "spread": 1.0,
+              "traceOffset": 1,
+              "counterIndex": 2
             }
           }
         ]

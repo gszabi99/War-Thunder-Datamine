@@ -27,6 +27,15 @@ local { GUI } = require("scripts/utils/configs.nut")
 
 local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
 
+local compareWeaponFunc = @(w1, w2) ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
+  && ::u.isEqual(w1?.blk ?? "", w2?.blk ?? "")
+  && ::u.isEqual(w1?.bullets ?? "", w2?.bullets ?? "")
+  && ::u.isEqual(w1?.gunDm ?? "", w2?.gunDm ?? "")
+  && ::u.isEqual(w1?.barrelDP ?? "", w2?.barrelDP ?? "")
+  && ::u.isEqual(w1?.breechDP ?? "", w2?.breechDP ?? "")
+  && ::u.isEqual(w1?.ammoDP ?? "", w2?.ammoDP ?? "")
+  && ::u.isEqual(w1?.dm ?? "", w2?.dm ?? "")
+
 const AFTERBURNER_CHAMBER = 3
 
 ::on_check_protection <- function(params) { // called from client
@@ -224,18 +233,6 @@ const AFTERBURNER_CHAMBER = 3
     foreach(modName in primaryList)
     {
       local commonWeapons = getCommonWeaponsBlk(unitBlk, modName)
-      local compareWeaponFunc = function(w1, w2)
-      {
-        return ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
-            && ::u.isEqual(w1?.blk ?? "", w2?.blk ?? "")
-            && ::u.isEqual(w1?.bullets ?? "", w2?.bullets ?? "")
-            && ::u.isEqual(w1?.gunDm ?? "", w2?.gunDm ?? "")
-            && ::u.isEqual(w1?.barrelDP ?? "", w2?.barrelDP ?? "")
-            && ::u.isEqual(w1?.breechDP ?? "", w2?.breechDP ?? "")
-            && ::u.isEqual(w1?.ammoDP ?? "", w2?.ammoDP ?? "")
-            && ::u.isEqual(w1?.dm ?? "", w2?.dm ?? "")
-      }
-
       if(commonWeapons != null)
         foreach (weapon in (commonWeapons % "Weapon"))
           if (weapon?.blk && !weapon?.dummy)
@@ -254,7 +251,7 @@ const AFTERBURNER_CHAMBER = 3
       local presetBlk = blkFromPath(preset["blk"])
       foreach (weapon in (presetBlk % "Weapon"))  // preset can have many weapons in it or no one
         if (weapon?.blk && !weapon?.dummy)
-          ::u.appendOnce(::u.copy(weapon), unitWeaponBlkList, false, ::u.isEqual)
+          ::u.appendOnce(::u.copy(weapon), unitWeaponBlkList, false, compareWeaponFunc)
     }
   }
 
@@ -1778,7 +1775,7 @@ const AFTERBURNER_CHAMBER = 3
     local weaponList = getUnitWeaponList()
     foreach(weapon in weaponList)
     {
-      if (linkedPartName != null && weapon?.turret.barrel != null)
+      if (linkedPartName != null)
         foreach(partKey in turretLinkedParts)
           if(weapon.turret?[partKey] == linkedPartName)
             return weapon

@@ -4,6 +4,7 @@ local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
@@ -298,10 +299,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_modal_help(false, HELP_CONTENT_SET.MISSION)
   }
 
-  function onStats()
-  {
-    ::gui_start_mpstatscreen()
-  }
+  onStats = @() guiStartMPStatScreen()
 
   function onMenuBtnHover(obj)
   {

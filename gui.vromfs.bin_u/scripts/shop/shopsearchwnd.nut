@@ -163,12 +163,13 @@ return {
   {
     local units = shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
-      return
+      return false
     ::handlersManager.loadHandler(::gui_handlers.ShopSearchWnd, {
       searchString = searchString
       cbOwnerShowUnit = cbOwnerShowUnit
       getEdiffFunc = getEdiffFunc
       units = units
     })
+    return true
   }
 }

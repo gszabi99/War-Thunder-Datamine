@@ -6,6 +6,7 @@
   "gearSinkRangeC": 0.355,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "isBwOpticSight": true,
   "ilsAVQ7": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -26,12 +27,9 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "1100kph",
+  "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2025,6 +2023,15 @@
   },
   "cockpit": [
     {
+      "sightInFov": 5.5
+    },
+    {
+      "sightOutFov": 5.5
+    },
+    {
+      "sightFov": 2.0
+    },
+    {
       "headPos": [3.14,0.434,0.0]
     },
     {
@@ -2198,11 +2205,19 @@
     "angularLimits": [-30.0,30.0,-30.0,30.0],
     "opticType": "tv"
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apr_36.blk"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apg_53.blk",
+        "dmPart": "radar_dm"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_36.blk"
+      }
     }
-  },
+  ],
   "commonWeapons": [
     {
       "Weapon": {
@@ -3250,6 +3265,7 @@
       "preset": {
         "name": "a_4n_zuni_mk81",
         "blk": "gameData/FlightModels/weaponPresets/a_4n_zuni_mk81.blk",
+        "reqModification": "f4c_zuni",
         "weaponConfig": [
           {
             "Weapon": [
@@ -5149,6 +5165,11 @@
             },
             {
               "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "tier": {
                 "idx": 7
               }
             }
@@ -5209,6 +5230,11 @@
                 {
                   "tier": {
                     "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
                   }
                 },
                 {
@@ -5279,6 +5305,11 @@
                 },
                 {
                   "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
                     "idx": 7
                   }
                 }
@@ -5317,12 +5348,22 @@
                 },
                 {
                   "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
                     "idx": 4
                   }
                 },
                 {
                   "tier": {
                     "idx": 8
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
                   }
                 }
               ]
@@ -5341,6 +5382,11 @@
                 {
                   "tier": {
                     "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
                   }
                 },
                 {
@@ -5537,12 +5583,17 @@
                 },
                 {
                   "tier": {
-                    "idx": 4
+                    "idx": 5
                   }
                 },
                 {
                   "tier": {
-                    "idx": 8
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
                   }
                 }
               ]
@@ -5557,17 +5608,12 @@
                 },
                 {
                   "tier": {
-                    "idx": 5
+                    "idx": 4
                   }
                 },
                 {
                   "tier": {
-                    "idx": 6
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 7
+                    "idx": 8
                   }
                 }
               ]
@@ -5936,7 +5982,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk"
+                  "blk": "gameData/Weapons/rocketGuns/il_shafrir_2.blk"
                 },
                 {
                   "amountPerTier": 1.0
@@ -6164,7 +6210,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [272.0,316.0],
+    "engineExtinguishFireSpeed": [299.0,345.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
@@ -6295,31 +6341,11 @@
       "tier": 4,
       "reqModification": "us_agm_65a"
     },
-    "Radar_warning_receiver_system": {
-      "tier": 1,
-      "modClass": "weapon",
-      "effects": {
-        "sensors": [
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_nasarr.blk",
-              "dmPart": "radar_dm"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_25.blk"
-            }
-          }
-        ]
-      }
-    },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],
     "countermeasures_launcher_chaff_priority": [],
     "countermeasures_launcher_flare_priority": [],
     "countermeasures_belt_pack": {
-      "reqModification": "Radar_warning_receiver_system",
       "modClass": "weapon",
       "turn_it_off": false,
       "invertEnableLogic": false,

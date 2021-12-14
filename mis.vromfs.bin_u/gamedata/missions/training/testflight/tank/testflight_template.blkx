@@ -36,9 +36,13 @@
       },
       "conditions": [],
       "actions": {
+        "varSetString": {
+          "value": "target_tanks_squad",
+          "var": "target_tanks_squad"
+        },
         "unitPutToSleep": [
           {
-            "target": "target_tanks_squad"
+            "target": "@target_tanks_squad"
           },
           {
             "target": "flight_target01"
@@ -222,27 +226,49 @@
           "type": "unit"
         }
       },
-      "actions": {
-        "unitRespawn": {
-          "delay": 1.0,
-          "offset": [0.0,0.0,0.0],
-          "object": "@target_tank",
-          "target": "@tank_spawn_area"
+      "actions": [
+        {
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "@target_tank",
+            "target": "@tank_spawn_area"
+          }
         },
-        "unitSetVar": {
-          "object_var_name": "killed",
-          "object": "@target_tank",
-          "object_var_value": 0
+        {
+          "unitSetVar": {
+            "object_var_name": "killed",
+            "object": "@target_tank",
+            "object_var_value": 0
+          }
         },
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "tank_num"
+        {
+          "unitSetVar": {
+            "object_var_name": "self_name",
+            "object": "@target_tank",
+            "object_var_string": "@target_tank"
+          }
         },
-        "triggerEnable": {
-          "target": "name_assemble"
+        {
+          "unitSetVar": {
+            "object_var_name": "self_spawn_area",
+            "object": "@target_tank",
+            "object_var_string": "@tank_spawn_area"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "tank_num"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "name_assemble"
+          }
         }
-      },
+      ],
       "else_actions": [
         {
           "unitSetRoute": {
@@ -260,7 +286,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_tanks_squad",
+            "object": "@target_tanks_squad",
             "forceVisibleOnMap": true,
             "attack_type": "dont_aim",
             "speed": 25.0,
@@ -289,7 +315,7 @@
         },
         {
           "triggerEnable": {
-            "target": "iterate_tanks"
+            "target": "tick_killed"
           }
         }
       ]
@@ -508,7 +534,7 @@
       },
       "else_actions": []
     },
-    "iterate_tanks": {
+    "tick_killed": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -518,51 +544,37 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.12
+          "time": 1.0
         }
       },
       "conditions": {
-        "varCompareInt": {
-          "var_value": "tank_num",
-          "value": 0,
-          "comparasion_func": "less",
-          "var_value_other": "tanks_total"
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "@target_tanks_squad"
         }
       },
       "actions": {
-        "varModify": {
+        "unitModifyVar": {
+          "object_var_name": "killed",
           "operator": "add",
-          "value": 1.0,
-          "var": "tank_num"
-        },
-        "varSetString": {
-          "value": "target_tank",
-          "var": "target_tank"
-        },
-        "varAddString": {
-          "value": "",
-          "digits": 2,
-          "var": "target_tank",
-          "input_var": "tank_num"
+          "value": 1,
+          "object": "@target_tanks_squad",
+          "useForTriggerFiltered": true
         },
         "triggerEnable": {
-          "target": "tick_killed"
+          "target": "respawn_target"
         }
       },
-      "else_actions": {
-        "varSetInt": {
-          "value": 0,
-          "var": "tank_num"
-        },
-        "triggerActivate": {
-          "target": "iterate_tanks",
-          "activate_type": "checkConidtions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
-      }
+      "else_actions": []
     },
-    "tick_killed": {
+    "respawn_target": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -577,93 +589,66 @@
       },
       "conditions": {
         "unitWhenStatus": {
-          "object_type": "isKilled",
+          "object_type": "isUnitVar",
           "check_objects": "any",
           "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
+          "object_var_name": "killed",
+          "object_var_comp_op": "more",
           "object_var_value": 0,
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object": "@target_tank"
+          "object": "@target_tanks_squad",
+          "input_var": "target_respawn_time"
         }
       },
-      "actions": {
-        "unitGetVar": {
-          "object_var_name": "killed",
-          "object": "@target_tank",
-          "out_var": "unit_var"
+      "actions": [
+        {
+          "unitGetVar": {
+            "object_marking": 0,
+            "object": "@target_tanks_squad",
+            "object_var_name": "self_name",
+            "useForTriggerFiltered": true,
+            "out_var_string": "target_tank"
+          }
         },
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "unit_var"
+        {
+          "unitGetVar": {
+            "object_marking": 0,
+            "object": "@target_tank",
+            "object_var_name": "self_spawn_area",
+            "out_var_string": "tank_spawn_area"
+          }
         },
-        "unitSetVar": {
-          "object_var_name": "killed",
-          "object": "@target_tank",
-          "input_var": "unit_var"
+        {
+          "unitSetVar": {
+            "object_var_name": "killed",
+            "object": "@target_tank",
+            "object_var_value": 0
+          }
         },
-        "triggerEnable": {
-          "target": "tank_respawn_if_killed"
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "needStopOnRespawn": true,
+            "object": "@target_tank",
+            "target": "@tank_spawn_area"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "set_route"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tick_killed"
+          }
         }
-      },
+      ],
       "else_actions": {
         "triggerEnable": {
-          "target": "iterate_tanks"
-        }
-      }
-    },
-    "tank_respawn_if_killed": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "unit_var",
-          "value": 20,
-          "comparasion_func": "more"
-        }
-      },
-      "actions": {
-        "unitSetVar": {
-          "object_var_name": "killed",
-          "object": "@target_tank",
-          "object_var_value": 0
-        },
-        "varSetString": {
-          "value": "tank_spawn_area",
-          "var": "tank_spawn_area"
-        },
-        "varAddString": {
-          "value": "",
-          "digits": 2,
-          "var": "tank_spawn_area",
-          "input_var": "tank_num"
-        },
-        "unitRespawn": {
-          "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
-          "needStopOnRespawn": true,
-          "object": "@target_tank",
-          "target": "@tank_spawn_area"
-        },
-        "triggerEnable": {
-          "target": "set_route"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "iterate_tanks"
+          "target": "tick_killed"
         }
       }
     },
@@ -681,9 +666,9 @@
         }
       },
       "conditions": {
-        "varCompareInt": {
-          "var_value": "tank_num",
-          "value": 6,
+        "varCompareString": {
+          "var_value": "target_tank",
+          "value": "target_tank06",
           "comparasion_func": "equal"
         }
       },
@@ -696,17 +681,10 @@
           "object_var_comp_op": "equal",
           "route": "way_target_tank05",
           "teleportToStart": true,
-          "object": "target_tank06"
-        },
-        "triggerEnable": {
-          "target": "iterate_tanks"
+          "object": "@target_tank"
         }
       },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "iterate_tanks"
-        }
-      }
+      "else_actions": []
     },
     "respawn_plane": {
       "is_enabled": false,
@@ -796,7 +774,9 @@
     "tank_num": 1,
     "tank_spawn_area": "",
     "tanks_total": 0,
-    "unit_var": 0
+    "unit_var": 0,
+    "target_tanks_squad": "",
+    "target_respawn_time": 20
   },
   "dialogs": [],
   "airfields": [],

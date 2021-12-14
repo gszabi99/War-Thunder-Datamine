@@ -243,14 +243,18 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       continue
 
     foreach(p in ["mass", "speed", "fuseDelayDist", "explodeTreshold", "operatedDist", "machMax",
-      "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1"])
+      "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "bandMaskToReject"])
       param[p] <- bullet_params?[p] ?? 0
 
-    foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "weaponBlkPath"])
+    foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange",
+      "weaponBlkPath", "guidanceType", "visibilityType", "radarRange", "laserRange", "loadFactorMax"])
     {
       if(p in bullet_params)
         param[p] <- bullet_params[p]
     }
+
+    foreach(p in ["activeRadar", "dopplerSpeedGate", "distanceGate"])
+      param[p] <- bullet_params?[p] ?? false
 
     if(bulletsSet)
     {
@@ -298,6 +302,13 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       addProp(p, ::loc("rocket/maxSpeed"),
         ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
 
+    if (param?.bulletType == "aam" || param?.bulletType == "sam_tank")
+    {
+      if ("loadFactorMax" in param)
+        addProp(p, ::loc("missile/loadFactorMax"),
+          ::g_measure_type.GFORCE.getMeasureUnitsText(param.loadFactorMax))
+    }
+
     if ("autoAiming" in param)
     {
       local isBeamRider = param?.isBeamRider ?? false
@@ -309,6 +320,52 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       if ("irBeaconBand" in param)
         if (param.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
           addProp(p, ::loc("missile/eccm"), ::loc("options/yes"))
+    }
+
+    if ("guidanceType" in param)
+    {
+      if (param.guidanceType == "ir" || param.guidanceType == "optical" )
+      {
+        addProp(p, ::loc("missile/guidance"),
+          ::loc($"missile/guidance/{param?.visibilityType == "optic" ? "tv" : "ir"}"))
+        if (param?.bulletType == "aam" || param?.bulletType == "sam_tank")
+        {
+          if (param.bandMaskToReject != 0)
+            addProp(p, ::loc("missile/eccm"), ::loc("options/yes"))
+          addProp(p, ::loc("missile/aspect"), param.rangeBand1 > 0 ?
+            ::loc("missile/aspect/allAspect") : ::loc("missile/aspect/rearAspect"))
+          addProp(p, ::loc("missile/seekerRange/rearAspect"),
+            ::g_measure_type.DISTANCE.getMeasureUnitsText(param.rangeBand0))
+          if (param.rangeBand1 > 0)
+            addProp(p, ::loc("missile/seekerRange/allAspect"),
+              ::g_measure_type.DISTANCE.getMeasureUnitsText(param.rangeBand1))
+        }
+        else
+        {
+          if(param.rangeBand0 > 0 && param.rangeBand1 > 0)
+            addProp(p, ::loc("missile/seekerRange"),
+              ::g_measure_type.DISTANCE.getMeasureUnitsText(::min(param.rangeBand0, param.rangeBand1)))
+        }
+      }
+      else if (param.guidanceType == "radar")
+      {
+        addProp(p, ::loc("missile/guidance"),
+          ::loc($"missile/guidance/{param.activeRadar ? "ARH" : "SARH"}"))
+        if (param.distanceGate || param.dopplerSpeedGate)
+          addProp(p, ::loc("missile/radarSignal"),
+            ::loc($"missile/radarSignal/{param.dopplerSpeedGate ? (param.distanceGate ? "pulse_doppler" : "CW") : "pulse"}"))
+        if ("radarRange" in param)
+          addProp(p, ::loc("missile/seekerRange"),
+            ::g_measure_type.DISTANCE.getMeasureUnitsText(param.radarRange))
+      }
+      else
+      {
+        addProp(p, ::loc("missile/guidance"),
+          ::loc($"missile/guidance/{param.guidanceType}"))
+        if ("laserRange" in param)
+          addProp(p, ::loc("missile/seekerRange"),
+            ::g_measure_type.DISTANCE.getMeasureUnitsText(param.laserRange))
+      }
     }
 
     local operatedDist = param?.operatedDist ?? 0
@@ -351,14 +408,6 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
     if (explodeTreshold)
       addProp(p, ::loc("bullet_properties/explodeTreshold"),
                  explodeTreshold + " " + ::loc("measureUnits/mm"))
-    local rangeBand0 = param?.rangeBand0
-    if (rangeBand0)
-      addProp(p, ::loc("missile/seekerRange/rearAspect"),
-        ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeBand0))
-    local rangeBand1 = param?.rangeBand1
-    if (rangeBand1)
-      addProp(p, ::loc("missile/seekerRange/allAspect"),
-        ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeBand1))
 
     local proximityFuseArmDistance = stdMath.round(param?.proximityFuseArmDistance ?? 0)
     if (proximityFuseArmDistance)

@@ -108,15 +108,6 @@
     "type": "typeLightTank"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -206,6 +197,7 @@
         "createSecondaryShatters": false,
         "ex_decor_01_dm": [],
         "turret_01_bottom_dm": [],
+        "turret_04_top_dm": [],
         "turret_02_top_dm": [],
         "turret_02_front_dm": [],
         "turret_02_side_dm": [],
@@ -453,7 +445,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2338,7 +2329,7 @@
             "defaultPitch": 0.0
           },
           {
-            "barrelDP": "gun_barrel_01_dm"
+            "barrelDP": "gun_barrel_02_dm"
           },
           {
             "speedYaw": 5.5
@@ -2414,7 +2405,7 @@
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_02_dm",
+          "barrelDP": "gun_barrel_01_dm",
           "parkInDeadzone": false,
           "speedYaw": 90.0,
           "speedPitch": 90.0,
@@ -2480,7 +2471,7 @@
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 360.0,
+        "horsePowers": 405.0,
         "maxRPM": 2100.0,
         "minRPM": 600.0
       },
@@ -3104,10 +3095,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 10.21,
-      "zoomInFov": 9.21,
-      "sightFov": 5.0,
-      "sightName": "telescope_m97_periscope_m20",
+      "zoomOutFov": 24.7,
+      "zoomInFov": 7.37,
+      "sightFov": 12.0,
+      "sightName": "abrams_sight",
       "headPos": [0.0,3.5,-8.0],
       "headPosOnShooting": [-0.4,3.5,0.44],
       "detectionHeight": 2.5
@@ -3369,7 +3360,9 @@
       },
       "76mm_usa_M32_HE": [],
       "76mm_us_M361_Smoke": [],
-      "76mm_us_M361_Smoke_ammo_pack": [],
+      "76mm_us_M361_Smoke_ammo_pack": {
+        "tier": 1
+      },
       "76mm_us_M464_APFSDS": [],
       "76mm_us_M464_APFSDS_ammo_pack": [],
       "modern_tank_laser_rangefinder": [],
@@ -3445,7 +3438,7 @@
                   "defaultPitch": 0.0
                 },
                 {
-                  "barrelDP": "gun_barrel_01_dm"
+                  "barrelDP": "gun_barrel_02_dm"
                 },
                 {
                   "speedYaw": 5.5
@@ -3521,7 +3514,7 @@
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_02_dm",
+                "barrelDP": "gun_barrel_01_dm",
                 "parkInDeadzone": false,
                 "speedYaw": 90.0,
                 "speedPitch": 90.0,
@@ -3612,8 +3605,8 @@
         "effects": {
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [800.0,600.0],
-              "noiseFactor": 0.04
+              "resolution": [500.0,300.0],
+              "noiseFactor": 0.05
             },
             "driverIr": {
               "resolution": [800.0,600.0],

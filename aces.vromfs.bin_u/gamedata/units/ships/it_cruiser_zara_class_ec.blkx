@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -2203,7 +2203,7 @@
         "armorThrough": 35.0,
         "fireDamageMult": 1.5,
         "compartment_01_dm": {
-          "hp": 3000.0
+          "hp": 4000.0
         },
         "compartment_02_dm": {
           "hp": 4000.0
@@ -2252,7 +2252,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -3012,47 +3018,47 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 65
+        "crew": 83
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 87
+        "crew": 83
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 65
+        "crew": 63
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 65
+        "crew": 63
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 65
+        "crew": 63
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 65
+        "crew": 63
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 87
+        "crew": 83
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 87
+        "crew": 83
       },
       "sailor10": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 61
+        "crew": 63
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -4481,6 +4487,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "ro_43",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "weapon_presets": {
       "preset": {
         "name": "it_cruiser_zara_class_default",
@@ -4581,7 +4599,8 @@
       },
       "new_main_caliber_turrets": {
         "reqModification": "new_aux_caliber_turrets"
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {

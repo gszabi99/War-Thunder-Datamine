@@ -138,7 +138,7 @@
     "modelVerticalShift": 0.0
   },
   {
-    "hangarMission": "gameData/scenes/hangar_field_mission.blk"
+    "hangarMission": "gameData/scenes/hangar_field_mission_winter.blk"
   },
   {
     "hangarSoundEngineMult": 0.4
@@ -148,6 +148,9 @@
   },
   {
     "buoyUnitName": "anchor_buoy"
+  },
+  {
+    "hasInteractiveUnits": true
   },
   {
     "useHmapSubdiv": true
@@ -163,14 +166,14 @@
       "enabled": true,
       "top_height": 10.0,
       "top_color": [0.1,0.1,1.4],
-      "bottom_height": 5.0,
+      "bottom_height": 7.0,
       "bottom_color": [0.1,1.3,0.1],
-      "brightness": 1.74,
-      "speed": 0.02,
-      "luminance": 8.0,
-      "ripples_scale": 13.3,
-      "ripples_speed": 0.08,
-      "ripples_strength": 0.34
+      "brightness": 2.15,
+      "speed": 0.018,
+      "luminance": 22.0,
+      "ripples_scale": 8.6,
+      "ripples_speed": 0.04,
+      "ripples_strength": 0.83
     }
   },
   {
@@ -234,7 +237,7 @@
   },
   {
     "env": {
-      "env": "14.45",
+      "env": "11.15",
       "weight": 0.0,
       "compatibilityWeight": 1.0
     }
@@ -245,99 +248,6 @@
       "weight": 1.0,
       "compatibilityWeight": 0.0
     }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [415.0,28.0,601.0]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [419.6,28.0,580.0]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [338.4,28.0,626.0]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [20.4,43.0,-620.1]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [-6.7,44.0,-633.5]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [-2581.1,22.0,63.0]
-    }
-  },
-  {
-    "backgroundModel": {
-      "effectName": "fireworks_fountain",
-      "pos": [-2626.8,2.0,232.6]
-    }
-  },
-  {
-    "hangarEffects": [
-      {
-        "effect": "firework_large_single_sparks"
-      },
-      {
-        "areaMin": [-2040.0,250.0,1780.0]
-      },
-      {
-        "areaMax": [4200.0,600.0,200.0]
-      },
-      {
-        "delay": [5.0,25.0]
-      },
-      {
-        "checkHoliday": false
-      },
-      {
-        "hangarEffect": {
-          "effect": "firework_large_yellow_single_sparks",
-          "areaMin": [-2040.0,250.0,1780.0],
-          "areaMax": [4200.0,600.0,200.0],
-          "delay": [5.0,50.0]
-        }
-      },
-      {
-        "hangarEffect": {
-          "effect": "firework_large_red_single_sparks",
-          "areaMin": [-2040.0,250.0,1780.0],
-          "areaMax": [4200.0,600.0,200.0],
-          "delay": [5.0,40.0]
-        }
-      },
-      {
-        "hangarEffect": {
-          "effect": "firework_large_green_single_sparks",
-          "areaMin": [-2040.0,250.0,1780.0],
-          "areaMax": [4200.0,600.0,200.0],
-          "delay": [5.0,50.0]
-        }
-      },
-      {
-        "hangarEffect": {
-          "effect": "firework_large_blue_single_sparks",
-          "areaMin": [-2040.0,250.0,1780.0],
-          "areaMax": [4200.0,600.0,200.0],
-          "delay": [5.0,40.0]
-        }
-      }
-    ]
   },
   {
     "procCamera": {
@@ -656,7 +566,7 @@
       "type": "plane",
       "skin": "",
       "country": "country_usa",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -666,7 +576,7 @@
       "type": "plane",
       "skin": "",
       "country": "country_usa",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -676,7 +586,17 @@
       "type": "plane",
       "skin": "",
       "country": "country_usa",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "f-5c",
+      "weapon": "f_5c_rockets_lau18_m117_agm_12b",
+      "type": "plane",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -721,16 +641,6 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "fw-190d-13",
-      "weapon": "",
-      "type": "plane",
-      "skin": "",
-      "country": "country_germany",
-      "rank": [2.0,4.0]
-    }
-  },
-  {
-    "premiumVehicle": {
       "unitName": "fiat_g91_r4_german",
       "weapon": "fiat_g91_r4_2xas20",
       "type": "plane",
@@ -741,12 +651,12 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "sea_hawk_mk100",
-      "weapon": "sea_hawk_2x500lb_16x60lb_sap_rockets",
+      "unitName": "mig-21_sps_k",
+      "weapon": "mig-21_sps_k_2x_r3s_2x_r3r_sps_141",
       "type": "plane",
       "skin": "",
       "country": "country_germany",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -801,12 +711,42 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "tu-1",
+      "weapon": "tu-1_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [2.0,4.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "su-11",
+      "weapon": "su_11_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [3.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "mig-17_cuba",
       "weapon": "mig_17_2xr3s_rockets",
       "type": "plane",
       "skin": "",
       "country": "country_ussr",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "su-7bmk",
+      "weapon": "su_7bmk_6x_ub16",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -816,7 +756,17 @@
       "type": "plane",
       "skin": "",
       "country": "country_ussr",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "mig-21_s",
+      "weapon": "mig_21_s_4x_r3r",
+      "type": "plane",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -871,12 +821,22 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "hunter_f9_rhodesia",
-      "weapon": "hunter_f9_aim9_rockets",
+      "unitName": "dh_110_sea_vixen",
+      "weapon": "dh110_sea_vixen_default",
       "type": "plane",
       "skin": "",
       "country": "country_britain",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "attaker_fb2",
+      "weapon": "attaker_fb1_12rockets",
+      "type": "plane",
+      "skin": "",
+      "country": "country_britain",
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -886,7 +846,7 @@
       "type": "plane",
       "skin": "",
       "country": "country_britain",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -921,6 +881,16 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "p-51c-11-nt_japan",
+      "weapon": "p_51c_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_japan",
+      "rank": [1.0,3.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "j2m5_30mm",
       "weapon": "",
       "type": "plane",
@@ -946,7 +916,7 @@
       "type": "plane",
       "skin": "",
       "country": "country_japan",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -1001,6 +971,16 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "a_5c",
+      "weapon": "a_5c_4x500kg_bombs",
+      "type": "plane",
+      "skin": "",
+      "country": "country_china",
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "iar_81c",
       "weapon": "iar_81c_250kg_rockets",
       "type": "plane",
@@ -1036,17 +1016,7 @@
       "type": "plane",
       "skin": "",
       "country": "country_italy",
-      "rank": [4.0,6.0]
-    }
-  },
-  {
-    "premiumVehicle": {
-      "unitName": "a_129_a",
-      "weapon": "a_129a_gun_fn_m3p_hvar_rocket_hellfire",
-      "type": "plane",
-      "skin": "",
-      "country": "country_italy",
-      "rank": [5.0,7.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -1071,6 +1041,16 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "douglas_ad_4na_france",
+      "weapon": "douglas_ad_4na_1x2000lb_2x500lb_12hvar",
+      "type": "plane",
+      "skin": "",
+      "country": "country_france",
+      "rank": [2.0,4.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "so_8000_narval",
       "weapon": "so_8000_narval_rockets_150",
       "type": "plane",
@@ -1081,12 +1061,12 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "so_4050_vautour_2a_iaf",
-      "weapon": "so_4050_vautour_2a_shafrir1",
+      "unitName": "so_4050_vautour_2n",
+      "weapon": "so_4050_vautour_2n_fr_rockets_as_30",
       "type": "plane",
       "skin": "",
       "country": "country_france",
-      "rank": [4.0,6.0]
+      "rank": [4.0,7.0]
     }
   },
   {
@@ -1121,12 +1101,12 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "saab_j29d",
-      "weapon": "saab_j29_145mm_x14_rockets",
+      "unitName": "bf-109g-6_finland",
+      "weapon": "Bf-109G-6_default",
       "type": "plane",
       "skin": "",
       "country": "country_sweden",
-      "rank": [4.0,6.0]
+      "rank": [2.0,4.0]
     }
   },
   {
@@ -1137,6 +1117,36 @@
       "skin": "",
       "country": "country_sweden",
       "rank": [4.0,6.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "saab_j35a",
+      "weapon": "saab_j35a_rb24x4_missiles",
+      "type": "plane",
+      "skin": "",
+      "country": "country_sweden",
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "spitfire_lf_mk9e_weisman",
+      "weapon": "spitfireIX_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_israel",
+      "rank": [4.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "a_4e_late_iaf",
+      "weapon": "a_4e_late_iaf_agm_62_aim_9",
+      "type": "plane",
+      "skin": "",
+      "country": "country_israel",
+      "rank": [5.0,7.0]
     }
   },
   {
@@ -1332,6 +1342,16 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "germ_thyssen_henschel_tam_2ip",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "germ_leopard_a1a1_120",
       "weapon": "germ_leopard_a1a1_120_default",
       "type": "tank",
@@ -1492,6 +1512,26 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "cn_ztz_59a",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_china",
+      "rank": [3.0,6.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "cn_wma_301",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_china",
+      "rank": [4.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "cn_type_69_2g",
       "weapon": "",
       "type": "tank",
@@ -1642,12 +1682,62 @@
   },
   {
     "premiumVehicle": {
-      "unitName": "us_elco_80ft_pt_boat_thunderbolt",
+      "unitName": "il_m_51_w",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_israel",
+      "rank": [4.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "il_merkava_mk_2d",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_israel",
+      "rank": [5.0,7.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "us_pc_466_carmi",
+      "weapon": "us_pc_466_carmi_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [1.0,3.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "us_elco_80ft_pt174",
       "weapon": "torpedoes",
       "type": "ship",
       "skin": "",
       "country": "country_usa",
-      "rank": [1.0,2.0]
+      "rank": [1.0,3.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "us_destroyer_porter_1942",
+      "weapon": "us_destroyer_porter_1942_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [1.0,3.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "us_destroyer_mitscher_wilkinson",
+      "weapon": "us_destroyer_mitscher_wilkinson_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [1.0,3.0]
     }
   },
   {
@@ -1667,7 +1757,17 @@
       "type": "ship",
       "skin": "",
       "country": "country_germany",
-      "rank": [1.0,2.0]
+      "rank": [1.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "germ_cruiser_karlsruhe",
+      "weapon": "germ_cruiser_karlsruhe_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [3.0,5.0]
     }
   },
   {
@@ -1682,12 +1782,52 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "ussr_pr_1204",
+      "weapon": "ussr_pr_1204_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [1.0,2.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "ussr_mkl_186_mk85",
       "weapon": "ussr_mkl_186_mk85_default",
       "type": "ship",
       "skin": "",
       "country": "country_ussr",
+      "rank": [2.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "ussr_skr_pr50plo_rosomacha",
+      "weapon": "ussr_skr_pr50plo_rosomacha_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [3.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "ussr_destroyer_pr30bis_smelyi",
+      "weapon": "ussr_destroyer_pr30bis_smelyi_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_ussr",
       "rank": [1.0,2.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "ussr_cruiser_kerch",
+      "weapon": "ussr_cruiser_kerch_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [2.0,5.0]
     }
   },
   {
@@ -1712,6 +1852,26 @@
   },
   {
     "premiumVehicle": {
+      "unitName": "uk_corvette_orla",
+      "weapon": "uk_corvette_orla_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_britain",
+      "rank": [2.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "uk_destroyer_j_class",
+      "weapon": "uk_destroyer_j_class_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_britain",
+      "rank": [1.0,2.0]
+    }
+  },
+  {
+    "premiumVehicle": {
       "unitName": "uk_cruiser_belfast",
       "weapon": "uk_cruiser_belfast_default",
       "type": "ship",
@@ -1727,7 +1887,7 @@
       "type": "ship",
       "skin": "",
       "country": "country_japan",
-      "rank": [1.0,2.0]
+      "rank": [1.0,5.0]
     }
   },
   {
@@ -1737,7 +1897,27 @@
       "type": "ship",
       "skin": "",
       "country": "country_japan",
+      "rank": [1.0,5.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "jp_destroyer_harukaze",
+      "weapon": "jp_destroyer_harukaze_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_japan",
       "rank": [1.0,2.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "jp_cruiser_yubari",
+      "weapon": "jp_cruiser_yubari_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_japan",
+      "rank": [1.0,3.0]
     }
   },
   {
@@ -1757,13 +1937,23 @@
       "type": "ship",
       "skin": "",
       "country": "country_italy",
-      "rank": [1.0,2.0]
+      "rank": [1.0,5.0]
     }
   },
   {
     "premiumVehicle": {
-      "unitName": "it_destroyer_soldati_serie1_geniere",
-      "weapon": "bomb_mortar",
+      "unitName": "it_destroyer_leone_class_tigre",
+      "weapon": "it_destroyer_leone_class_tigre_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_italy",
+      "rank": [1.0,3.0]
+    }
+  },
+  {
+    "premiumVehicle": {
+      "unitName": "it_cruiser_zara_class_pola",
+      "weapon": "it_cruiser_zara_class_default",
       "type": "ship",
       "skin": "",
       "country": "country_italy",
@@ -1772,93 +1962,44 @@
   },
   {
     "shootingTanks": {
-      "country_usa": "us_m60a1",
-      "country_germany": "germ_leopard_I",
-      "country_ussr": "ussr_t_55a",
-      "country_britain": "uk_centurion_mk_10",
-      "country_japan": "jp_type_74",
-      "country_italy": "it_b1_centauro",
-      "country_france": "fr_amx_13_90",
-      "country_china": "cn_type_59",
-      "country_sweden": "sw_ikv_91"
+      "country_usa": "us_m60a3_tts",
+      "country_germany": "germ_leopard_1a5",
+      "country_ussr": "ussr_2s3m",
+      "country_britain": "uk_challenger_2_tes",
+      "country_japan": "jp_type_10",
+      "country_china": "cn_ptz_89",
+      "country_italy": "it_b1_centauro_romor",
+      "country_france": "fr_leclerc_sxxi",
+      "country_sweden": "sw_strv_121",
+      "country_israel": "il_merkava_mk_2d"
     }
   },
   {
     "movingTanks": {
-      "country_usa": "us_m3_bradley",
-      "country_germany": "germ_begleitpanzer_57",
-      "country_ussr": "ussr_bmp_1",
-      "country_britain": "uk_fv510_isv",
-      "country_japan": "jp_type_89",
-      "country_china": "cn_cm_25",
-      "country_italy": "it_m113a1_tow",
-      "country_france": "fr_amx_13_90",
-      "country_sweden": "sw_ikv_91"
+      "country_usa": "us_m3a3_bradley",
+      "country_germany": "germ_marder_df_105",
+      "country_ussr": "ussr_bmp_3",
+      "country_britain": "uk_ratel_20",
+      "country_japan": "jp_type_87_rcv",
+      "country_china": "cn_ztl_11",
+      "country_italy": "it_vcc_80_hitfist_60",
+      "country_france": "fr_mars_15",
+      "country_sweden": "sw_strf_90b",
+      "country_israel": "il_merkava_mk_2d"
     }
   },
   {
     "movingPlanes": {
       "country_usa": "f-86f-2",
       "country_germany": "me-262c-2b",
-      "country_ussr": "mig-15bis_ns23",
+      "country_ussr": "mig-17",
       "country_britain": "javelin_fmk9",
       "country_japan": "f-86f-40_japan",
       "country_italy": "fiat_g91_r1",
       "country_france": "md_450b_barougan",
-      "country_china": "mig-15bis_nr23_china",
-      "country_sweden": "saab_a32a"
-    }
-  },
-  {
-    "mechanics": {
-      "country_usa": [
-        {
-          "n": "unit_hangar_technic_idle_"
-        },
-        {
-          "n": "unit_hangar_technic_black_idle_"
-        },
-        {
-          "n": "unit_hangar_technic_asian_idle_"
-        }
-      ],
-      "country_germany": {
-        "n": "unit_hangar_technic_idle_"
-      },
-      "country_ussr": {
-        "n": "unit_hangar_technic_idle_"
-      },
-      "country_britain": [
-        {
-          "n": "unit_hangar_technic_idle_"
-        },
-        {
-          "n": "unit_hangar_technic_black_idle_"
-        }
-      ],
-      "country_japan": {
-        "n": "unit_hangar_technic_asian_idle_"
-      },
-      "country_italy": {
-        "n": "unit_hangar_technic_idle_"
-      },
-      "country_france": [
-        {
-          "n": "unit_hangar_technic_idle_"
-        },
-        {
-          "n": "unit_hangar_technic_black_idle_"
-        },
-        {
-          "n": "unit_hangar_technic_asian_idle_"
-        }
-      ],
-      "country_china": {
-        "n": "unit_hangar_technic_asian_idle_"
-      },
-      "country_sweden": {
-        "n": "unit_hangar_technic_idle_"
-      }
+      "country_china": "mig-17_china",
+      "country_sweden": "saab_a32a",
+      "country_israel": "a_4e_late_iaf"
     }
   }
 ]

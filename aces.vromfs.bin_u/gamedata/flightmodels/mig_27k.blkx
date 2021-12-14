@@ -34,13 +34,10 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "2400kph",
+  "fireParamsPreset": "2300kph",
   "fightAiBehaviour": "fighter",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "armor1_dm": {
@@ -74,11 +71,11 @@
       }
     },
     "c_dural3": {
-      "elevon_l_dm": {
+      "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
-      "elevon_r_dm": {
+      "elevator1_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -320,7 +317,7 @@
     {
       "part": [
         {
-          "name": "elevon_l_dm"
+          "name": "elevator0_dm"
         },
         {
           "onHit": {
@@ -377,7 +374,7 @@
     {
       "part": [
         {
-          "name": "elevon_r_dm"
+          "name": "elevator1_dm"
         },
         {
           "onHit": {
@@ -2072,7 +2069,7 @@
       "sightOutFov": 40.5
     },
     {
-      "sightFov": 1.0
+      "sightFov": 0.01
     },
     {
       "headPos": [3.3,0.55,0.0]
@@ -2287,7 +2284,7 @@
         {
           "display": {
             "textureArea": [0.0,0.0,1.0,1.0],
-            "monoDisplayColor": [0.95,0.9,0.4],
+            "monoDisplayColor": [0.95,0.9,0.7],
             "page": {
               "type": "target_tracking",
               "turretIdx": 0
@@ -2299,7 +2296,7 @@
             "textureArea": [0.0,0.0,1.0,1.0],
             "page": {
               "type": "plane_ils",
-              "ilsSize": [0.21,0.21],
+              "ilsSize": [0.25,0.25],
               "ilsOffsetForce": 0.0,
               "brightnessMult": 3.5,
               "ilsColor": "#0aff0a78",
@@ -2387,7 +2384,7 @@
           "mainTurret": true
         },
         "limits": {
-          "yaw": [-180.0,180.0],
+          "yaw": [-40.0,40.0],
           "pitch": [-90.0,90.0]
         }
       }
@@ -3793,7 +3790,7 @@
       "pos": [-0.4,-0.23,0.0],
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
-      "angularLimits": [-180.0,180.0,-160.0,0.0],
+      "angularLimits": [-35.0,35.0,-160.0,0.0],
       "opticType": "targeting",
       "turretNo": 0
     },
@@ -3815,7 +3812,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [634.0,678.0],
+    "engineExtinguishFireSpeed": [606.0,650.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
@@ -3994,7 +3991,7 @@
                 "mainTurret": true
               },
               "limits": {
-                "yaw": [-180.0,180.0],
+                "yaw": [-40.0,40.0],
                 "pitch": [-90.0,90.0]
               }
             }
@@ -4127,17 +4124,17 @@
     "chuteFallSpeed": 1.0
   },
   "cutting": {
-    "emtr_break_wing1_l_from": [-0.758564,0.56419,1.97129],
-    "emtr_break_wing1_l_to": [-0.758564,0.56419,2.34096],
+    "emtr_break_wing1_l_from": [-0.758564,0.56419,1.15065],
+    "emtr_break_wing1_l_to": [-0.758564,0.56419,2.25096],
     "emtr_break_wing2_l_from": [-0.758564,0.56419,3.48144],
-    "emtr_break_wing2_l_to": [-0.758564,0.56419,4.83606],
-    "emtr_break_wing1_r_from": [-0.758563,0.56419,-1.9713],
-    "emtr_break_wing1_r_to": [-0.758563,0.56419,-2.34096],
-    "emtr_break_wing2_r_from": [-0.758563,0.56419,-3.48144],
-    "emtr_break_wing2_r_to": [-0.758563,0.56419,-4.83606],
-    "emtr_break_wing_tail": [-3.71185,0.0,0.0],
+    "emtr_break_wing2_l_to": [-0.758564,0.56419,4.83605],
+    "emtr_break_wing1_r_from": [-0.758564,0.56419,-1.15065],
+    "emtr_break_wing1_r_to": [-0.758564,0.56419,-2.25096],
+    "emtr_break_wing2_r_from": [-0.758564,0.56419,-3.48144],
+    "emtr_break_wing2_r_to": [-0.758564,0.56419,-4.83606],
+    "emtr_break_wing_tail": [-4.56039,0.0,0.0],
     "finCut": true,
-    "emtr_break_tail_from": [-4.84632,-0.0279482,5.01188e-07],
-    "emtr_break_tail_to": [-7.24667,-0.0279482,5.01188e-07]
+    "emtr_break_tail_from": [-4.84632,-0.0279484,6.25265e-07],
+    "emtr_break_tail_to": [-7.24667,-0.0279484,6.25265e-07]
   }
 }

@@ -118,7 +118,12 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
       }
 
       if (launchWindow)
+      {
+        local shownIdx = ::shown_userlog_notifications.indexof(blk?.id)
+        if (shownIdx != null)
+          ::shown_userlog_notifications.remove(shownIdx)
         ::gui_start_show_login_award(blk)
+      }
       else
       {
         dlog("PRINT EVERY DAY LOGIN AWARD")

@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1213,7 +1213,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -1650,7 +1656,7 @@
           "hp": 1188.0
         },
         "ex_armor_05_dm": {
-          "hp": 1500.0
+          "hp": 1000.0
         },
         "ex_armor_l_01_dm": {
           "hp": 1000.0
@@ -4449,6 +4455,18 @@
     }
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "e7k2",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "commonWeapons": [
       {
         "animatedBones": [
@@ -5424,6 +5442,77 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": [
+          {
+            "dummy": true
+          },
+          {
+            "trigger": "gunner24"
+          },
+          {
+            "triggerGroup": "primary"
+          },
+          {
+            "blk": "gameData/Weapons/dummy_weapon.blk"
+          },
+          {
+            "emitter": "aircraft_01"
+          },
+          {
+            "barrelDP": "aircraft_01_dm"
+          },
+          {
+            "allowableDelta": 20.0
+          },
+          {
+            "parkInDeadzone": false
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "speedYaw": 25.0
+          },
+          {
+            "speedPitch": 0.0
+          },
+          {
+            "turret": {
+              "head": "catapult_mount_01",
+              "gun": "aircraft_01",
+              "gunnerDm": "catapult_mount_01_dm"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-60.0,60.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [120.0,180.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-180.0,-120.0],
+              "pitch": [0.0,0.0]
+            }
+          }
+        ]
       }
     ]
   },
@@ -5534,7 +5623,8 @@
           "distToLive": 10000.0,
           "maxSpeedInWater": -5.56
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -6233,7 +6323,7 @@
       ],
       "ammo8": [
         {
-          "weaponTrigger": "gunner19"
+          "weaponTrigger": "gunner12"
         },
         {
           "replenishmentDelay": 6.0
@@ -6285,7 +6375,7 @@
       ],
       "ammo9": [
         {
-          "weaponTrigger": "gunner20"
+          "weaponTrigger": "gunner13"
         },
         {
           "replenishmentDelay": 6.0
@@ -6337,7 +6427,7 @@
       ],
       "ammo10": [
         {
-          "weaponTrigger": "gunner21"
+          "weaponTrigger": "gunner14"
         },
         {
           "replenishmentDelay": 6.0
@@ -6389,7 +6479,7 @@
       ],
       "ammo11": [
         {
-          "weaponTrigger": "gunner22"
+          "weaponTrigger": "gunner15"
         },
         {
           "replenishmentDelay": 6.0
@@ -6441,7 +6531,7 @@
       ],
       "ammo12": [
         {
-          "weaponTrigger": "gunner23"
+          "weaponTrigger": "gunner16"
         },
         {
           "replenishmentDelay": 6.0
@@ -6493,7 +6583,7 @@
       ],
       "ammo13": [
         {
-          "weaponTrigger": "gunner24"
+          "weaponTrigger": "gunner17"
         },
         {
           "replenishmentDelay": 6.0
@@ -6545,7 +6635,7 @@
       ],
       "ammo14": [
         {
-          "weaponTrigger": "gunner25"
+          "weaponTrigger": "gunner18"
         },
         {
           "replenishmentDelay": 6.0
@@ -6597,7 +6687,7 @@
       ],
       "ammo15": [
         {
-          "weaponTrigger": "gunner26"
+          "weaponTrigger": "gunner19"
         },
         {
           "replenishmentDelay": 6.0
@@ -6649,7 +6739,7 @@
       ],
       "ammo16": [
         {
-          "weaponTrigger": "gunner27"
+          "weaponTrigger": "gunner20"
         },
         {
           "replenishmentDelay": 6.0
@@ -6701,7 +6791,7 @@
       ],
       "ammo17": [
         {
-          "weaponTrigger": "gunner28"
+          "weaponTrigger": "gunner21"
         },
         {
           "replenishmentDelay": 6.0
@@ -6753,7 +6843,7 @@
       ],
       "ammo18": [
         {
-          "weaponTrigger": "gunner29"
+          "weaponTrigger": "gunner22"
         },
         {
           "replenishmentDelay": 6.0
@@ -6805,7 +6895,7 @@
       ],
       "ammo19": [
         {
-          "weaponTrigger": "gunner30"
+          "weaponTrigger": "gunner23"
         },
         {
           "replenishmentDelay": 6.0
@@ -7092,17 +7182,6 @@
   },
   {
     "wreckedParts": [
-      {
-        "part": {
-          "node": "ex_decor_11",
-          "idx": 1,
-          "mass": 800.0,
-          "cutDamage": 350.0,
-          "deviation": 0.6,
-          "rotation": 2.1,
-          "collisionNode": "ex_decor_11_dm"
-        }
-      },
       {
         "part": {
           "node": "auxiliary_caliber_turret_04",

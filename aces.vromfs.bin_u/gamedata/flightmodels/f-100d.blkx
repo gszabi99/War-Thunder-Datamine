@@ -2384,12 +2384,19 @@
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apg_30.blk",
-      "dmPart": "radar_dm"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apg_30.blk",
+        "dmPart": "radar_dm"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_25.blk"
+      }
     }
-  },
+  ],
   "wiki": {
     "general": {
       "length": 11.42,
@@ -2577,31 +2584,11 @@
     "new_compressor_jet": {
       "tier": 1
     },
-    "Radar_warning_receiver_system": {
-      "tier": 1,
-      "modClass": "weapon",
-      "effects": {
-        "sensors": [
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apg_30.blk",
-              "dmPart": "radar_dm"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_25.blk"
-            }
-          }
-        ]
-      }
-    },
     "t_160_universal": [],
     "t_160_air_targets": [],
     "t_160_armor_targets": [],
     "t_160_stealth": [],
     "t_160_belt_pack": {
-      "prevModification": "Radar_warning_receiver_system",
       "tier": 2
     },
     "t_160_new_gun": {

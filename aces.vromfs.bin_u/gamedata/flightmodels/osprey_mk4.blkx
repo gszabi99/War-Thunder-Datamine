@@ -9,24 +9,23 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map_biplane.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_biplane.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_biplane.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "bomber",
   "smokeScreenActivateTime": 5.0,
-  "smokeScreenEffectTime": 7.0,
-  "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [-3.0,0.0,2.0],
-  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenEffectTime": 30.0,
+  "smokeScreenRad": 50.0,
+  "smokeScreenPlaneMinAlt": 1.0,
+  "smokeScreenPlaneMaxAlt": 50.0,
   "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenDmPart": "gear_l",
+  "smokeScreenOffset": [2.0,-50.0,-1.4],
   "hangar_undercarriage_model_name": "low_a6m2_n_undercarriage",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "gun1_dm": {
@@ -1917,7 +1916,7 @@
     "nonExtinguishFireTime": 5.0
   },
   "smokeScreenExhaustEmitters": {
-    "emitter": "gear_c"
+    "emitter": "gear_l"
   },
   "wiki": {
     "general": {

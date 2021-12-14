@@ -1662,50 +1662,6 @@ local isWaitMeasureEvent = false
         prevValue = ::SessionLobby.getMissionParam("keepDead", null)
       break
 
-    case ::USEROPT_BOTS_RANKS:
-      descr.id = "botsRank"
-      descr.items = []
-      descr.values = []
-      for(local i = 1; i <= ::max_country_rank; i++)
-      {
-        descr.items.append(::loc("shop/age/num", { num = ::get_roman_numeral(i) }))
-        descr.values.append({min = (i - 1) * 4, max = i * 4 - 1})
-      }
-
-      descr.getValueIdxByValue <- function (val)
-      {
-        for(local i = 0; i < values.len(); i++)
-          if(::u.isEqual(values[i], val))
-            return i
-        return -1
-      }
-
-      descr.getValueLocText = function(val) {
-        if(val == null)
-          return ""
-
-        if(::u.isDataBlock(val))
-          val = ::buildTableFromBlk(val)
-
-        foreach (key, value in val)
-          val[key] = ::to_integer_safe(value)
-
-        local valueIndex = descr.getValueIdxByValue(val)
-        local locKey = ::getTblValue(valueIndex, items, "")
-        if (::g_string.startsWith(locKey, "#"))
-          locKey = locKey.slice(1)
-        return ::loc(locKey)
-      }
-
-      if (::SessionLobby.isInRoom())
-      {
-        prevValue = ::SessionLobby.getMissionParam("ranks", null)
-        descr.value = descr.getValueIdxByValue(prevValue)
-      }
-      if(descr.value == null || descr.value == -1)
-        descr.value = ::get_gui_option(optionId)
-      break
-
     case ::USEROPT_AUTOBALANCE:
       descr.id = "autoBalance"
       descr.items = ["#options/no", "#options/yes"]
@@ -1796,6 +1752,15 @@ local isWaitMeasureEvent = false
       defaultValue = -1
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("maxRespawns", null)
+      break
+
+    case ::USEROPT_ALLOW_EMPTY_TEAMS:
+      descr.id = "allowEmptyTeams"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
+      if (::SessionLobby.isInRoom())
+        prevValue = ::SessionLobby.getMissionParam("allowEmptyTeams", null)
       break
 
     case ::USEROPT_ALLOW_JIP:
@@ -4979,7 +4944,6 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BIT_CHOOSE_UNITS_OTHER:
     case ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE:
     case ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST:
-    case ::USEROPT_BOTS_RANKS:
       ::set_gui_option(optionId, value)
       break
 
@@ -5063,6 +5027,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_USE_SHIP_BOTS:
     case ::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS:
     case ::USEROPT_DISABLE_AIRFIELDS:
+    case ::USEROPT_ALLOW_EMPTY_TEAMS:
     case ::USEROPT_KEEP_DEAD:
     case ::USEROPT_DEDICATED_REPLAY:
     case ::USEROPT_AUTOBALANCE:

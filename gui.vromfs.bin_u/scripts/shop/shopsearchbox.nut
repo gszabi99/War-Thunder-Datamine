@@ -65,7 +65,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
       : countLocal ? ::loc("shop/search/local/found", { count = countLocal })
       : ::loc("shop/search/local/notFound")
     //With IME window with all variants wil be open automatically
-    if (countGlobal > countLocal && !::show_console_buttons)
+    if (countGlobal > countLocal)
       hintText += "\n" + ::loc("shop/search/global/found", { count = countGlobal })
     local obj = scene.findObject("search_hint_text")
     if (::check_obj(obj))
@@ -117,7 +117,8 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
       return
     local searchStr = ::g_string.trim(obj.getValue())
     if (searchStr != "")
-      shopSearchWnd.open(searchStr, cbOwnerShowUnit, getEdiffFunc)
+      if (shopSearchWnd.open(searchStr, cbOwnerShowUnit, getEdiffFunc))
+        searchClear()
   }
 
   function onSearchButtonClick(obj)
@@ -133,11 +134,13 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
       return
     isActive = _isActive
 
-    if (!::show_console_buttons) {
-      local btnsObj = scene.findObject("search_buttons")
-      if (::check_obj(btnsObj))
-        btnsObj.show(isActive)
-    }
+    local obj = scene.findObject("search_buttons")
+    if (::check_obj(obj))
+      obj.show(isActive && !::show_console_buttons)
+
+    obj = scene.findObject("search_box_result")
+    if (::check_obj(obj))
+      obj.show(isActive)
 
     if (!isActive)
       searchCancel()

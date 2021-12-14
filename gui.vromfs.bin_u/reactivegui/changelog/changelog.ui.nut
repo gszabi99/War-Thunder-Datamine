@@ -45,7 +45,7 @@ local function getTabColorCtor(sf, style, isCurrent) {
 
 local function patchnote(v) {
   local stateFlags = Watched(0)
-  local isCurrent = @() curPatchnote.value.iVersion == v.iVersion
+  local isCurrent = @() curPatchnote.value.id == v.id
   return function() {
     local children = [{
       size = [flex(), ::ph(100)]

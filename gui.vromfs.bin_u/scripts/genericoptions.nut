@@ -630,7 +630,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local optList = find_options_in_containers([::USEROPT_USE_TANK_BOTS,
-      ::USEROPT_USE_SHIP_BOTS, ::USEROPT_BOTS_RANKS])
+      ::USEROPT_USE_SHIP_BOTS])
     foreach(option in optList)
       showOptionRow(option, isBotsAllowed)
   }

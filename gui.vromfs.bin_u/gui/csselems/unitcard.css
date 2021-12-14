@@ -49,10 +49,6 @@
 @const slotSquadronWaitingBorderColor :#ff374736;
 @const slotSquadronWaitingTopLineColor:#ff4c6045;
 
-@const slotSquadronLockedBgColor     :#b218231a; 
-@const slotSquadronLockedBorderColor :#ff374736;
-@const slotSquadronLockedTopLineColor:#ff4c6045;
-
 @const shopInServiceImgBgColor: #ff232C35;
 @const shopInServiceImgBorderColor: #ff3b4a51;
 
@@ -568,18 +564,6 @@ shopItem[shopStat=locked] > slotPlate > middleBg {
 }
 shopItem[shopStat=locked] > slotPlate > middleBg > groupFrame {
   background-color:@slotLockedBorderColor;
-}
-
-shopItem[shopStat=locked][unitRarity=squadron] > slotPlate > topLine,
-tooltipObj > div[shopStat=locked][unitRarity=squadron] > topLine {
-  background-color:@slotSquadronLockedTopLineColor;
-}
-shopItem[shopStat=locked][unitRarity=squadron] > slotPlate > middleBg {
-  background-color:@slotSquadronLockedBgColor;
-  border-color:@slotSquadronLockedBorderColor;
-}
-shopItem[shopStat=locked][unitRarity=squadron] > slotPlate > middleBg > groupFrame {
-  background-color:@slotSquadronLockedBorderColor;
 }
 
 slotPlate > middleBg > pattern {

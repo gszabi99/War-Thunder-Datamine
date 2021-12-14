@@ -1,6 +1,7 @@
 module color shared
 require DagorRandom
 require DagorMath
+require math
 
 [generic]
 def rnd_color(var seed : int&)
@@ -14,3 +15,6 @@ def rnd_color(var seed : int&)
 def rnd_color()
   var seed = grnd()
   return rnd_color(seed)
+
+def lerp_color(c1, c2: E3DCOLOR; t: float)
+  return E3DCOLOR(uint4(lerp(float4(uint4(c1)), float4(uint4(c2)), float4(t))))

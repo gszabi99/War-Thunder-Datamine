@@ -354,6 +354,52 @@ local function flatten(list, depth = -1, level=0){
   return res
 }
 
+
+/*
+ do_in_scope(object, function(on_enter_object_value))
+ * like python 'with' statement
+
+examples:
+```
+local {set_huge_alloc_threshold} = require("dagor.memtrace")
+local class ChangeAllocThres{
+  _prev_limit = null
+  _limit = null
+  constructor(new_limit){
+    this._limit = new_limit
+  }
+  __enter__ = @() this._prev_limit = set_huge_alloc_threshold(this._limit)
+  __exit__ = @() set_huge_alloc_threshold(this._prev_limit)
+}
+
+local a = do_in_scope(ChangeAllocThres(8<<10), @(...) array(10000000, {foo=10}))
+```
+*/
+
+local function do_in_scope(obj, doFn){
+  assert(
+    type(obj)=="instance" &&  "__enter__" in obj && "__exit__" in obj,
+    "to support 'do_in_scope' object passed as first argument should implement '__enter__' and '__exit__' methods"
+  )
+  assert(type(doFn) == "function", "function should be passed as second argument")
+
+  local on = obj.__enter__()
+  local err
+  local res
+  try{
+    res = doFn(on)
+  }
+  catch(e){
+    println($"Catch error while doing action {e}")
+    err = e
+  }
+  obj.__exit__()
+  if (err!=null)
+    throw(err)
+  return res
+}
+
+
 return {
   invert
   tablesCombine
@@ -365,6 +411,7 @@ return {
   range
   enumerate
   reversed_enumerate
+  do_in_scope
   unique
   arrayByRows
   chunk

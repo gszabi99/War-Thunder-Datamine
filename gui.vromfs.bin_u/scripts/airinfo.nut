@@ -1707,7 +1707,10 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (air.disableFlyout)
     addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/vehicleCanNotGoToBattle")))
   if (air.event) {
-    local eventLang = ::loc(GUI.get()?.eventLang[air.event] ?? $"event/{air.event}")
+    local eventLangBlk = GUI.get()?.eventLang
+    local eventLang = eventLangBlk?[air.event]
+      ? "".join(::g_localization.getLocIdsArray(eventLangBlk, air.event).map(@(id) ::loc(id)))
+      : ::loc($"event/{air.event}")
     addInfoTextsList.append(::colorize("chapterUnlockedColor",
       ::loc($"mainmenu/eventVehicle", { event = eventLang })))
   }

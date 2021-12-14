@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -2762,7 +2762,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -3108,9 +3114,6 @@
         },
         "ex_armor_10_dm": {
           "hp": 500.0
-        },
-        "ex_armor_11_dm": {
-          "hp": 1000.0
         },
         "turret_04_dm": {
           "hp": 500.0
@@ -4982,6 +4985,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "os2u_1",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "weapon_presets": [
       {
         "preset": {
@@ -5098,7 +5113,8 @@
           "distToLive": 7770.0,
           "maxSpeedInWater": -7.71
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -6774,17 +6790,6 @@
           "deviation": 0.6,
           "rotation": 2.1,
           "collisionNode": "fire_director_01_dm"
-        }
-      },
-      {
-        "part": {
-          "node": "ex_armor_11",
-          "idx": 7,
-          "mass": 1000.0,
-          "cutDamage": 350.0,
-          "deviation": 0.6,
-          "rotation": 2.1,
-          "collisionNode": "ex_armor_11_dm"
         }
       },
       {

@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -2187,7 +2187,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -5323,6 +5329,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "e7k2",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "commonWeapons": [
       {
         "animatedBones": [
@@ -6281,6 +6299,77 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": [
+          {
+            "dummy": true
+          },
+          {
+            "trigger": "gunner15"
+          },
+          {
+            "triggerGroup": "primary"
+          },
+          {
+            "blk": "gameData/Weapons/dummy_weapon.blk"
+          },
+          {
+            "emitter": "aircraft_01"
+          },
+          {
+            "barrelDP": "aircraft_01_dm"
+          },
+          {
+            "allowableDelta": 20.0
+          },
+          {
+            "parkInDeadzone": false
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "speedYaw": 25.0
+          },
+          {
+            "speedPitch": 0.0
+          },
+          {
+            "turret": {
+              "head": "catapult_mount_01",
+              "gun": "aircraft_01",
+              "gunnerDm": "catapult_mount_01_dm"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-45.0,45.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [110.0,180.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-180.0,-110.0],
+              "pitch": [0.0,0.0]
+            }
+          }
+        ]
       }
     ]
   },
@@ -6451,7 +6540,8 @@
       },
       "ship_mines": {
         "prevModification": "ship_rangefinder"
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {

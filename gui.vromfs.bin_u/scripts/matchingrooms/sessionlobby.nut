@@ -12,6 +12,7 @@ local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
 local { getCdBaseDifficulty } = ::require_native("guiOptions")
+local { updateIconPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
 
 /*
 SessionLobby API
@@ -103,6 +104,7 @@ local allowed_mission_settings = { //only this settings are allowed in room
      useKillStreaks = false
      disableAirfields = false
      spawnAiTankOnTankMaps = true
+     allowEmptyTeams = false
 
      isHelicoptersAllowed = false
      isAirplanesAllowed = false
@@ -575,7 +577,7 @@ SessionLobby.UpdatePlayersInfo <- function UpdatePlayersInfo()
       playersInfo[uid] <- pinfo
     }
   }
-  ::SquadIcon.updatePlayersInfo()
+  updateIconPlayersInfo()
 }
 
 SessionLobby.UpdateCrsSettings <- function UpdateCrsSettings()
@@ -1900,7 +1902,7 @@ SessionLobby.afterRoomJoining <- function afterRoomJoining(params)
   }
   else
     checkAutoStart()
-  ::SquadIcon.initListLabelsSquad()
+  initListLabelsSquad()
 
   last_round = ::getTblValue("last_round", public, true)
   setRoomInSession(isSessionStartedInRoom())
@@ -2279,7 +2281,8 @@ SessionLobby.getMembersReadyStatus <- function getMembersReadyStatus()
     res.statusText = ::loc("multiplayer/nonBalancedGame")
   }
 
-  if (!res.ableToStart || !haveBots)
+  local areAllowedEmptyTeams = getMissionParam("allowEmptyTeams", false)
+  if (!res.ableToStart || (!haveBots && !areAllowedEmptyTeams))
   {
     local minInTeam = 1
     local teamAEnough = (teamsCount[Team.A] + teamsCount[Team.Any]) >= minInTeam

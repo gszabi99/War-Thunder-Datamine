@@ -1391,11 +1391,6 @@
         "AdvancedMass": false,
         "trackMass": 3400.0
       },
-      "tracks": {
-        "animationMultiplier": 0.68,
-        "width": 0.65,
-        "height": 0.05
-      },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
         "cls_turret_02": "convex_hull",
@@ -1457,14 +1452,61 @@
           }
         ]
       },
-      "suspension": {
-        "maxDisplacementOffsets": [0.0,0.0],
-        "suspensionOffsets": [-0.2,-0.2,0.1],
-        "defaultGearRadius": 0.39,
-        "frontBackGearRadius": 0.34,
-        "defaultDampeningForce": [170000.0,170000.0],
-        "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+      "suspension": [
+        {
+          "maxDisplacementOffsets": [0.0,0.0]
+        },
+        {
+          "suspensionOffsets": [-0.2,-0.2,0.1]
+        },
+        {
+          "defaultGearRadius": 0.39
+        },
+        {
+          "frontBackGearRadius": 0.35
+        },
+        {
+          "defaultDampeningForce": [170000.0,170000.0]
+        },
+        {
+          "dampeningRelaxationRatio": 0.4
+        },
+        {
+          "dampeningCompressionRatio": 0.15
+        },
+        {
+          "wheel_r_drive": 0.41
+        },
+        {
+          "wheel_r_drive": 0.43
+        },
+        {
+          "wheel_l_drive": 0.41
+        },
+        {
+          "wheel_l_drive": 0.43
+        },
+        {
+          "wheel_r_back": 0.37
+        },
+        {
+          "wheel_l_back": 0.37
+        }
+      ],
+      "tracks": {
+        "animationMultiplier": 0.68,
+        "width": 0.65,
+        "height": 0.07,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_gg_26_800_300_phys_track_line",
+        "nonSymmetricMesh": true,
+        "trackLen": 0.295,
+        "trackCount": 47,
+        "trackFadeTime": 0.5,
+        "trackConnector": true,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.2,
+        "trackStartOffset": 0.14
       }
     }
   },
@@ -2198,8 +2240,7 @@
       "hp": 10000.0,
       "hull": {
         "body_front_dm": {
-          "armorThickness": 100.0,
-          "variableThickness": true
+          "armorThickness": 100.0
         },
         "body_side_dm": {
           "armorThickness": 80.0
@@ -2229,8 +2270,7 @@
           "armorThickness": 80.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 150.0,
-          "variableThickness": true
+          "armorThickness": 150.0
         },
         "turret_01_front_dm": {
           "armorThickness": 150.0,
@@ -2282,8 +2322,7 @@
           "armorThickness": 40.0
         },
         "turret_side_dm": {
-          "armorThickness": 80.0,
-          "variableThickness": true
+          "armorThickness": 80.0
         },
         "turret_01_back_dm": {
           "armorThickness": 80.0
@@ -2298,8 +2337,7 @@
           "armorThickness": 30.0
         },
         "turret_front_dm": {
-          "armorThickness": 185.0,
-          "variableThickness": true
+          "armorThickness": 185.0
         }
       },
       "mask": {
@@ -2581,7 +2619,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],

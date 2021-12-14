@@ -93,6 +93,9 @@
       "spawnExplosionWreckage": false
     },
     {
+      "selfDestructionFx": "explosion_air_selfexplosion_big"
+    },
+    {
       "explosionEffect": "explosion_midair_big"
     },
     {
@@ -432,6 +435,7 @@
     },
     {
       "guidance": {
+        "inertialNavigation": true,
         "warmUpTime": 1.0,
         "workTime": 100.0,
         "useTargetVel": true,
@@ -440,6 +444,9 @@
         "lockTimeOut": 0.75,
         "afterLaunchSpeedUp": 200.0,
         "breakLockMaxTime": 12.0,
+        "inertialGuidance": {
+          "inertialNavigationDriftSpeed": 5.0
+        },
         "radarSeeker": {
           "band": 8,
           "sideLobesAttenuation": -16.0,

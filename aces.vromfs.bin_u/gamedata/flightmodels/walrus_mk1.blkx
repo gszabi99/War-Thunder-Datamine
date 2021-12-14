@@ -63,28 +63,25 @@
     "smokeScreenActivateTime": 5.0
   },
   {
-    "smokeScreenEffectTime": 7.0
+    "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 12.0
+    "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenOffset": [-3.0,0.0,2.0]
+    "smokeScreenPlaneMinAlt": 1.0
   },
   {
-    "smokeScreenDmPart": "engine_dm"
+    "smokeScreenPlaneMaxAlt": 50.0
   },
   {
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
+    "smokeScreenDmPart": "gear_c"
   },
   {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
+    "smokeScreenOffset": [7.5,-50.0,0.0]
   },
   {
     "DamageParts": {
@@ -1959,63 +1956,6 @@
     }
   },
   {
-    "cockpit": {
-      "headPos": [-0.54,1.142,0.0],
-      "headPosOnShooting": [-0.54,1.142,0.0],
-      "openedCockpit": true,
-      "lightPos": [-0.345535,0.850866,-0.261571],
-      "lightColor": [0.62,0.3,0.21],
-      "lightAttenuation": 8.0,
-      "devices": {
-        "speed": [0.0,110.0],
-        "pedals": [-1.0,1.0],
-        "stick_ailerons": [-1.8,1.8],
-        "stick_elevator": [-1.8,1.8],
-        "throttle": [-1.0,1.8],
-        "weapon1": [0.0,1.0],
-        "weapon3": [0.0,1.0],
-        "vario": [-20.32,20.32],
-        "altitude_10k": [0.0,100000.0],
-        "altitude_hour": [0.0,10000.0],
-        "altitude_min": [0.0,1000.0],
-        "altitude_koef": 3.28,
-        "bank": [-8.0,8.0],
-        "turn": [-0.23562,0.23562],
-        "compass": [0.0,360.0],
-        "compass1": [0.0,360.0],
-        "clock_hour": [0.0,12.0],
-        "clock_min": [0.0,60.0],
-        "clock_sec": [0.0,60.0],
-        "manifold_pressure": [0.517367,2.72369],
-        "rpm": [0.0,3400.0],
-        "oil_temperature": [0.0,100.0],
-        "oil_pressure": [0.0,100.0],
-        "fuel1": [0.0,320.0],
-        "fuel_pressure": [0.0,10.0],
-        "aviahorizon_pitch": [-45.0,45.0],
-        "aviahorizon_roll": [-180.0,180.0],
-        "trimmer": [-1.0,1.0]
-      },
-      "parts_holes_dmg": {
-        "part": "fuse"
-      },
-      "parts_oil_dmg": [
-        {
-          "part": "engine1"
-        },
-        {
-          "part": "engine2"
-        },
-        {
-          "part": "engine3"
-        },
-        {
-          "part": "engine4"
-        }
-      ]
-    }
-  },
-  {
     "commonWeapons": [
       {
         "hideDmParts": {
@@ -2206,18 +2146,18 @@
   },
   {
     "cutting": {
-      "emtr_break_wing2_l_from": [0.0123769,1.11516,3.2372],
-      "emtr_break_wing2_l_to": [0.0123769,1.11516,4.734],
-      "emtr_break_wing2_r_from": [0.0123751,1.11516,-3.2372],
-      "emtr_break_wing2_r_to": [0.0123751,1.11516,-4.734],
+      "emtr_break_wing2_l_from": [0.0123769,1.11516,5.3372],
+      "emtr_break_wing2_l_to": [0.0123769,1.11516,5.334],
+      "emtr_break_wing2_r_from": [0.0123751,1.11516,-5.3372],
+      "emtr_break_wing2_r_to": [0.0123751,1.11516,-5.334],
       "emtr_break_wing_tail": [-2.98766,0.0,0.0],
       "finCut": false,
       "emtr_break_stab_l_from": [-5.05651,2.26789,0.531911],
       "emtr_break_stab_l_to": [-5.05651,2.26789,2.12765],
       "emtr_break_stab_r_from": [-5.05651,2.26789,-0.531911],
       "emtr_break_stab_r_to": [-5.05651,2.26789,-2.12764],
-      "emtr_break_fin_from": [-4.79366,1.33812,-2.6077e-07],
-      "emtr_break_fin_to": [-4.79366,2.38228,-2.6077e-07]
+      "emtr_break_fin_from": [-4.79366,1.08812,-2.6077e-07],
+      "emtr_break_fin_to": [-4.79366,2.08228,-2.6077e-07]
     }
   }
 ]

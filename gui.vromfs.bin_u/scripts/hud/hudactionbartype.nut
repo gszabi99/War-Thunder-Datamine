@@ -99,6 +99,8 @@ local getUnit = @() ::getAircraftByName(getActionBarUnitName())
       return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     if (unit?.isShipOrBoat())
       return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
+    if (unit?.isAir())
+      return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
     //
 
 
@@ -564,12 +566,19 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       unit?.isTank() ? "ID_START_SUPPORT_PLANE" : "ID_START_SUPPORT_PLANE_SHIP"
     getName = @(killStreakTag = null)
       getUnit()?.isTank() ? _name
+        : getUnit()?.isAir() ? "switch_to_ship"
         : "support_plane_ship"
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
       return unit?.isTank() ? "#ui/gameuiskin#scout_streak"
         : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls"
         : "#ui/gameuiskin#shipSupportPlane"
+    }
+    getTitle = function(killStreakTag = null) {
+      local unit = getUnit()
+      return unit?.isTank() ? _title
+        : unit?.isAir() ? ::loc("actionBarItem/switch_to_ship")
+        : ::loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
     }
   }
 

@@ -3102,7 +3102,10 @@
       {
         "preset": {
           "name": "f_4c_rockets_default_aim9b",
-          "blk": "gameData/flightModels/weaponPresets/f_4c_rockets_default_aim9b.blk"
+          "blk": "gameData/flightModels/weaponPresets/f_4c_rockets_default_aim9b.blk",
+          "weaponConfig": {
+            "presetType": "AIR_TO_AIR"
+          }
         }
       },
       {
@@ -4563,12 +4566,19 @@
     }
   },
   {
-    "sensors": {
-      "sensor": {
-        "blk": "gameData/sensors/us_an_apq_100.blk",
-        "dmPart": "radar_dm"
+    "sensors": [
+      {
+        "sensor": {
+          "blk": "gameData/sensors/us_an_apq_100.blk",
+          "dmPart": "radar_dm"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/us_an_apr_25.blk"
+        }
       }
-    }
+    ]
   },
   {
     "turbulence": {
@@ -4765,27 +4775,7 @@
         "tier": 4,
         "modClass": "weapon"
       },
-      "Radar_warning_receiver_system": {
-        "tier": 1,
-        "modClass": "weapon",
-        "effects": {
-          "sensors": [
-            {
-              "sensor": {
-                "blk": "gameData/sensors/us_an_apq_100.blk",
-                "dmPart": "radar_dm"
-              }
-            },
-            {
-              "sensor": {
-                "blk": "gameData/sensors/us_an_apr_25.blk"
-              }
-            }
-          ]
-        }
-      },
       "us_aim_9b": {
-        "prevModification": "Radar_warning_receiver_system",
         "tier": 2,
         "modClass": "weapon"
       },

@@ -339,7 +339,6 @@
   },
   "haze_jet": {
     "fx": "haze_jet_cmps_fx",
-    "lifeTime": 15.0,
     "numInstances": 70,
     "numReserved": 20,
     "sfxPath": "sounds/effects",
@@ -451,6 +450,22 @@
   },
   "smoke_exhaust_air": {
     "fx": "smoke_exhaust_air_cmps_fx",
+    "lifeTime": 5.0,
+    "onePointNumber": 4,
+    "numInstances": 20,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "smoke_wrecked_tail": {
+    "fx": "smoke_wrecked_tail_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "plane_pieces"
+  },
+  "smoke_exhaust_air_startingmode": {
+    "fx": "smoke_exhaust_air_startingmode_cmps_fx",
     "lifeTime": 5.0,
     "onePointNumber": 4,
     "numInstances": 20,
@@ -1929,7 +1944,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "track_move_dirt": {
-    "fx": "pv_move_dirt_fx",
+    "fx": "dust_tank_track_move_dirt_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 0,
@@ -1961,7 +1976,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "track_move_snow": {
-    "fx": "pv_move_snow_fx",
+    "fx": "dust_tank_track_move_snow_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 0,
@@ -1993,7 +2008,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "track_move_sand": {
-    "fx": "pv_move_sand_fx",
+    "fx": "dust_tank_track_move_sand_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 0,
@@ -2500,6 +2515,14 @@
   },
   "muzzle_ground_100mm_recoilless": {
     "fx": "muzzle_ground_100mm_recoilless_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4,
+    "soundEnableDistance": 100.0,
+    "farPlane": 6000.0
+  },
+  "muzzle_ground_100mm_recoilless_noflash": {
+    "fx": "muzzle_ground_100mm_recoilless_noflash_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 4,
@@ -4880,6 +4903,13 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "water_splash_rain": {
+    "fx": "water_splash_rain_cmps_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 25
+  },
   "water_splash_small_bow": {
     "fx": "water_splash_small_bow_cmps_fx",
     "lifeTime": 20.0,
@@ -5028,6 +5058,22 @@
     "onePointNumber": 32,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "misc_christmas_cracker": {
+    "fx": "misc_christmas_cracker_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 50,
+    "soundEnableDistance": 100.0
+  },
+  "misc_firework": {
+    "fx": "misc_firework_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework_misc"
   },
   "repair_ground": {
     "fx": "misc_repair_ground_cmps_fx",
@@ -5673,6 +5719,17 @@
     "softnessDepth": 1.0,
     "numInstances": 20,
     "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "location_factory_smoke_small_fx": {
+    "fx": "location_factory_smoke_big_cmps_fx",
+    "lifeTime": 2.0,
+    "numInstances": 200,
+    "numReserved": 50,
+    "softnessDepth": 0.5,
+    "onePointNumber": 20,
+    "granularity": 8,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },

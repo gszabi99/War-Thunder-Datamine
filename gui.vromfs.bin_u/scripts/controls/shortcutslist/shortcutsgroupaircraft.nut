@@ -690,6 +690,12 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+    checkGroup = ctrlGroups.AIR
+    checkAssign = false
+    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+  }
+  {
     id = "wheelmenu_x"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X

@@ -1772,7 +1772,7 @@
     "Range": 1200.0
   },
   "Sound": {
-    "Engine": "engine23_f104",
+    "Engine": "engine05_05_J79_N1",
     "gun": "gun_default"
   },
   "cockpit": [
@@ -1984,12 +1984,19 @@
       }
     ]
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/sw_ps-03.blk",
-      "dmPart": "radar_dm"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/sw_ps-03.blk",
+        "dmPart": "radar_dm"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_25.blk"
+      }
     }
-  },
+  ],
   "weapon_presets": [
     {
       "preset": {
@@ -2339,26 +2346,6 @@
     "M60_new_gun": {
       "reqModification": "M60_belt_pack",
       "tier": 3
-    },
-    "Radar_warning_receiver_system": {
-      "prevModification": "M60_new_gun",
-      "tier": 4,
-      "modClass": "weapon",
-      "effects": {
-        "sensors": [
-          {
-            "sensor": {
-              "blk": "gameData/sensors/sw_ps-03.blk",
-              "dmPart": "radar_dm"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_25.blk"
-            }
-          }
-        ]
-      }
     },
     "us_2_75_in_ffar_lau_32": {
       "tier": 2,

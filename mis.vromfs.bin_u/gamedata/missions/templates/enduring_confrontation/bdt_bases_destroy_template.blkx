@@ -24,6 +24,274 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "bdt_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "максимальное количество активных баз - ТРИ"
+          }
+        },
+        {
+          "comment": {
+            "value": "получаем балансный уровень миссии"
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_army_both_zero: -1 -всегда для обеих армий. 0 - для обеих армий но может меняться управляющим шаблоном, 1 и 2 - для армии А и Б"
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_t1_total_bases_max_count - максимальнео количество баз доступных для выбора."
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_t1_active_bases_max_count - максимальное количество одновременно активных баз"
+          }
+        },
+        {
+          "comment": {
+            "value": "назначаем свойства целям"
+          }
+        },
+        {
+          "comment": {
+            "value": "назначаем свойства зениткам"
+          }
+        },
+        {
+          "comment": {
+            "value": "putting targets to sleep"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем  шаблон"
+          }
+        },
+        {
+          "missionGetBalanceLevel": {
+            "input_var": "bdt_balance_level"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bomb_areas_0_3_check"
+            },
+            {
+              "target": "bomb_areas_4_7_check"
+            },
+            {
+              "target": "bomb_areas_8_11_check"
+            },
+            {
+              "target": "bomb_areas_12_16_check"
+            },
+            {
+              "target": "bomb_areas_17_20_check"
+            },
+            {
+              "target": "bomb_areas_21_50_check"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "bdt_start"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "bdt_t1_targets_squad"
+            },
+            {
+              "object": "bdt_t2_targets_squad"
+            },
+            {
+              "targetableByAi": false
+            },
+            {
+              "isImmortal": true
+            },
+            {
+              "stealthRadius": 0.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "bdt_t1_aaa_squad"
+            },
+            {
+              "object": "bdt_t2_aaa_squad"
+            },
+            {
+              "accuracy": 0.1
+            },
+            {
+              "effShootingRate": 0.1
+            },
+            {
+              "airEffShootingRate": 0.1
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "targetChangeInterval": 5.0
+            },
+            {
+              "targetChangeProb": 0.25
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "bdt_t1_targets_squad"
+            },
+            {
+              "target": "bdt_t2_targets_squad"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "bdt_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "bdt_is_template_active"
+          }
+        },
+        {
+          "comment": {
+            "value": "специально не delayed чтобы первая пачка целей появилась  сразу"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку уничтожения"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку восстановления"
+          }
+        },
+        {
+          "comment": {
+            "value": "capturing routine"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bdt_t1_spawn_start"
+            },
+            {
+              "target": "bdt_t2_spawn_start"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bdt_destroy_t1_start"
+            },
+            {
+              "target": "bdt_destroy_t2_start"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bdt_t1_restore_start"
+            },
+            {
+              "target": "bdt_t2_restore_start"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bdt_capture_t1_start"
+            },
+            {
+              "target": "bdt_capture_t2_start"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        }
+      ],
+      "else_actions": []
+    },
     "bdt_spawn_routine": {
       "isCategory": true,
       "is_enabled": true,
@@ -768,7 +1036,7 @@
           "unitDistanceBetween": {
             "value": 15000.0,
             "math": "notNear2D",
-            "object_type": "isActive",
+            "object_type": "any",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -779,8 +1047,7 @@
             "object": "@bdt_t1_cur_spawn_zone_name",
             "target": "bdt_t1_targets_squad",
             "var": "bdt_t1_min_zone_distance",
-            "compareCenters": false,
-            "check_all_units": true
+            "compareCenters": false
           }
         },
         "actions": {
@@ -1688,7 +1955,7 @@
           "unitDistanceBetween": {
             "value": 15000.0,
             "math": "notNear2D",
-            "object_type": "isActive",
+            "object_type": "any",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
@@ -1699,8 +1966,7 @@
             "object": "@bdt_t2_cur_spawn_zone_name",
             "target": "bdt_t2_targets_squad",
             "var": "bdt_t2_min_zone_distance",
-            "compareCenters": false,
-            "check_all_units": true
+            "compareCenters": false
           }
         },
         "actions": {
@@ -2940,264 +3206,6 @@
         ]
       }
     },
-    "bdt_init": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": []
-      },
-      "conditions": [],
-      "actions": [
-        {
-          "comment": {
-            "value": "максимальное количество активных баз - ТРИ"
-          }
-        },
-        {
-          "comment": {
-            "value": "получаем балансный уровень миссии"
-          }
-        },
-        {
-          "comment": {
-            "value": "bdt_army_both_zero: -1 -всегда для обеих армий. 0 - для обеих армий но может меняться управляющим шаблоном, 1 и 2 - для армии А и Б"
-          }
-        },
-        {
-          "comment": {
-            "value": "bdt_t1_total_bases_max_count - максимальнео количество баз доступных для выбора."
-          }
-        },
-        {
-          "comment": {
-            "value": "bdt_t1_active_bases_max_count - максимальное количество одновременно активных баз"
-          }
-        },
-        {
-          "comment": {
-            "value": "назначаем свойства целям"
-          }
-        },
-        {
-          "comment": {
-            "value": "назначаем свойства зениткам"
-          }
-        },
-        {
-          "comment": {
-            "value": "putting targets to sleep"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем  шаблон"
-          }
-        },
-        {
-          "missionGetBalanceLevel": {
-            "input_var": "bdt_balance_level"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bomb_areas_0_3_check"
-            },
-            {
-              "target": "bomb_areas_4_7_check"
-            },
-            {
-              "target": "bomb_areas_8_11_check"
-            },
-            {
-              "target": "bomb_areas_12_16_check"
-            },
-            {
-              "target": "bomb_areas_17_20_check"
-            },
-            {
-              "target": "bomb_areas_21_50_check"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
-            "target": "bdt_start"
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "bdt_t1_targets_squad"
-            },
-            {
-              "object": "bdt_t2_targets_squad"
-            },
-            {
-              "targetableByAi": false
-            },
-            {
-              "isImmortal": true
-            },
-            {
-              "stealthRadius": 0.0
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "bdt_t1_aaa_squad"
-            },
-            {
-              "object": "bdt_t2_aaa_squad"
-            },
-            {
-              "accuracy": 0.1
-            },
-            {
-              "effShootingRate": 0.1
-            },
-            {
-              "airEffShootingRate": 0.1
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "targetChangeInterval": 5.0
-            },
-            {
-              "targetChangeProb": 0.25
-            }
-          ]
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "bdt_t1_targets_squad"
-            },
-            {
-              "target": "bdt_t2_targets_squad"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
-    "bdt_start": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [],
-      "actions": [
-        {
-          "varSetBool": {
-            "value": true,
-            "var": "bdt_is_template_active"
-          }
-        },
-        {
-          "comment": {
-            "value": "специально не delayed чтобы первая пачка целей появилась  сразу"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем проверку уничтожения"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем проверку восстановления"
-          }
-        },
-        {
-          "comment": {
-            "value": "capturing routine"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bdt_t1_spawn_start"
-            },
-            {
-              "target": "bdt_t2_spawn_start"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bdt_destroy_t1_start"
-            },
-            {
-              "target": "bdt_destroy_t2_start"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bdt_t1_restore_start"
-            },
-            {
-              "target": "bdt_t2_restore_start"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bdt_capture_t1_start"
-            },
-            {
-              "target": "bdt_capture_t2_start"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
     "bdt_balance_routine": {
       "isCategory": true,
       "is_enabled": true,
@@ -3942,7 +3950,7 @@
           },
           {
             "varSetString": {
-              "value": "bdt_t1_bomb_object_",
+              "value": "bdt_t1_bomb_zone_",
               "var": "bdt_destroy_t1_bombing_zone_target_name"
             }
           },
@@ -4317,7 +4325,7 @@
           },
           {
             "varSetString": {
-              "value": "bdt_t2_bomb_object_",
+              "value": "bdt_t2_bomb_zone_",
               "var": "bdt_destroy_t2_bombing_zone_target_name"
             }
           },

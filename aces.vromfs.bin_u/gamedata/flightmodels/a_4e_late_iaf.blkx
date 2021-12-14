@@ -4288,6 +4288,75 @@
           ]
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "a_4e_late_iaf_bomb_guided_gbu8",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8.blk",
+        "reqModification": "us_gbu_8_15",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+            "iconType": "guided_bomb_yellow",
+            "tier": {
+              "idx": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4e_late_iaf_bomb_guided_gbu8_aim_9"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8_aim_9.blk"
+        },
+        {
+          "reqModification": "us_gbu_8_15"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+                "amountPerTier": 1.0,
+                "iconType": "guided_bomb_yellow",
+                "tier": {
+                  "idx": 6
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -4439,6 +4508,12 @@
       "prevModification": "f4c_zuni",
       "tier": 4,
       "modClass": "weapon"
+    },
+    "us_gbu_8_15": {
+      "prevModification": "us_aim_9b",
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_agm_62"
     },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],

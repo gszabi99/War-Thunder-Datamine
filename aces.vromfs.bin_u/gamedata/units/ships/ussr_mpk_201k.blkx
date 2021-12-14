@@ -105,15 +105,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -2545,7 +2536,10 @@
       },
       "45mm_ussr_sm20_zif_naval_universal": [],
       "ship_rangefinder": [],
-      "new_main_caliber_turrets": [],
+      "new_aux_caliber_turrets": [],
+      "new_main_caliber_turrets": {
+        "reqModification": "new_aux_caliber_turrets"
+      },
       "ship_mines": {
         "prevModification": "ship_rangefinder"
       },
@@ -3835,6 +3829,58 @@
           "deviation": 0.6,
           "rotation": 2.1,
           "collisionNode": "auxiliary_caliber_gun_04_dm"
+        }
+      }
+    ]
+  },
+  {
+    "user_skin": [
+      {
+        "name": "mpk_201k"
+      },
+      {
+        "replace_tex": {
+          "from": "camo_dark_wood*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_black*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_bluegray*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "rocket_launcher_rby1200_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_2m3_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_45mm_sm21_zif_single_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "mpk_201k_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "mpk_201m_c*",
+          "param": "camo_skin_tex"
         }
       }
     ]

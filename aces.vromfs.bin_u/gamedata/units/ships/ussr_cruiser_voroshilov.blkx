@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1500,6 +1500,17 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "kor_1",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "modifications": {
       "new_ship_hull": [],
       "new_ship_rudder": {
@@ -1601,7 +1612,8 @@
           "distToLive": 6000.0,
           "maxSpeedInWater": -8.74
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -5333,7 +5345,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 1000.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -5702,9 +5720,6 @@
         },
         "ex_armor_02_dm": {
           "hp": 644.0
-        },
-        "ex_armor_05_dm": {
-          "hp": 1000.0
         },
         "ex_armor_06_dm": {
           "hp": 500.0
@@ -9754,6 +9769,35 @@
                 "row": [70.0,0.05]
               }
             ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner36",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "aircraft_01",
+          "barrelDP": "aircraft_01_dm",
+          "allowableDelta": 20.0,
+          "parkInDeadzone": false,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 0.0,
+          "turret": {
+            "head": "catapult_mount_01",
+            "gun": "aircraft_01",
+            "gunnerDm": "catapult_mount_01_dm"
+          },
+          "limits": {
+            "yaw": [-120.0,120.0],
+            "pitch": [0.0,0.0]
+          },
+          "limitsDeadzone": {
+            "yaw": [-45.0,45.0],
+            "pitch": [-90.0,90.0]
           }
         }
       }

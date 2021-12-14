@@ -197,7 +197,8 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 5.0,
-          "createSecondaryShatters": false
+          "createSecondaryShatters": false,
+          "hidableInViewer": true
         },
         "turret_05_top_dm": {
           "armorThickness": 35.0,
@@ -210,7 +211,7 @@
           "armorThickness": 15.0
         },
         "turret_02_top_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 10.0
         },
         "turret_05_side_dm": {
           "armorThickness": 5.0
@@ -219,25 +220,34 @@
           "armorThickness": 5.0
         },
         "ex_armor_01_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
+        },
+        "turret_07_side_dm": {
           "armorThickness": 5.0
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 50.0,
           "armorClass": "CHA_tank_modern",
           "variableThickness": true,
-          "solidArmorTestDepth": 100.0
+          "solidArmorTestDepth": 100.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_hull_03_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_hull_04_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_hull_05_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_hull_06_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -297,28 +307,35 @@
           "variableThickness": true
         },
         "turret_07_back_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 30.0
         },
         "turret_07_bottom_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_07_front_dm": {
           "armorThickness": 5.0
         },
         "composite_armor_turret_03_dm": {
           "armorThickness": 530.0,
           "armorClass": "CHA_tank_modern",
           "variableThickness": true,
-          "solidArmorTestDepth": 600.0
+          "solidArmorTestDepth": 600.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_turret_04_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 20.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_turret_05_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 20.0,
+          "hidableInXrayViewer": true
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 150.0,
           "armorClass": "CHA_tank_modern",
           "variableThickness": true,
-          "solidArmorTestDepth": 300.0
+          "solidArmorTestDepth": 300.0,
+          "hidableInXrayViewer": true
         }
       },
       "hull_turret_spaced_armor": {
@@ -2831,12 +2848,13 @@
             "hasNightVision": false
           },
           "limits": {
-            "yaw": [-120.0,120.0],
-            "pitch": [-8.0,20.0]
+            "yaw": [-180.0,180.0],
+            "pitch": [-8.0,60.0]
           },
           "limitsTable": {
-            "lim1": [-120.0,70.0,-8.0,20.0],
-            "lim2": [70.0,120.0,-5.0,20.0]
+            "lim1": [-180.0,115.0,-8.0,60.0],
+            "lim2": [115.0,136.0,-3.0,60.0],
+            "lim3": [136.0,180.0,-8.0,60.0]
           }
         }
       },
@@ -2900,8 +2918,8 @@
     "VehiclePhys": {
       "Mass": {
         "Empty": 43000.0,
-        "Fuel": 1500.0,
-        "TakeOff": 44500.0,
+        "Fuel": 1400.0,
+        "TakeOff": 44400.0,
         "momentOfInertia": [4.0,5.0,6.0],
         "CenterOfGravity": [0.2,0.5,0.0],
         "AdvancedMass": false,
@@ -2928,60 +2946,66 @@
       },
       "engine": {
         "horsePowers": 1200.0,
-        "maxRPM": 2400.0,
-        "minRPM": 800.0
+        "maxRPM": 2300.0,
+        "minRPM": 600.0
       },
       "mechanics": {
         "maxBrakeForce": 225000.0,
         "driveGearRadius": 0.3,
-        "mainGearRatio": 0.909,
-        "sideGearRatio": 4.2,
-        "neutralGearRatio": 9.0,
+        "mainGearRatio": 2.92,
+        "sideGearRatio": 1.0,
+        "neutralGearRatio": 15.0,
         "gearRatios": [
           {
-            "ratio": -1.01
+            "ratio": -1.27
           },
           {
-            "ratio": -1.2
+            "ratio": -1.78
           },
           {
-            "ratio": -1.667
+            "ratio": -2.17
           },
           {
-            "ratio": -2.6
+            "ratio": -2.54
           },
           {
-            "ratio": -4.64
+            "ratio": -3.06
           },
           {
-            "ratio": -6.0
+            "ratio": -5.9
           },
           {
-            "ratio": -8.0
+            "ratio": -10.4
+          },
+          {
+            "ratio": -20.4
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 8.0
+            "ratio": 20.4
           },
           {
-            "ratio": 6.0
+            "ratio": 10.4
           },
           {
-            "ratio": 4.64
+            "ratio": 5.9
           },
           {
-            "ratio": 2.6
+            "ratio": 3.06
           },
           {
-            "ratio": 1.667
+            "ratio": 2.54
           },
           {
-            "ratio": 1.2
+            "ratio": 2.17
           },
           {
-            "ratio": 1.01
+            "ratio": 1.78
+          },
+          {
+            "ratio": 1.27
           }
         ]
       },
@@ -4034,12 +4058,13 @@
                   "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-120.0,120.0],
-                  "pitch": [-8.0,20.0]
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-8.0,60.0]
                 },
                 "limitsTable": {
-                  "lim1": [-120.0,70.0,-8.0,20.0],
-                  "lim2": [70.0,120.0,-5.0,20.0]
+                  "lim1": [-180.0,115.0,-8.0,60.0],
+                  "lim2": [115.0,136.0,-3.0,60.0],
+                  "lim3": [136.0,180.0,-8.0,60.0]
                 }
               }
             },
@@ -4210,15 +4235,13 @@
               "resolution": [1200.0,800.0],
               "noiseFactor": 0.04
             },
-            "commanderViewIr": {
-              "resolution": [1600.0,1200.0],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
+            "commanderViewThermal": {
+              "resolution": [1200.0,800.0],
+              "noiseFactor": 0.04
             },
             "driverIr": {
-              "resolution": [800.0,600.0],
-              "lightMult": 5.0,
+              "resolution": [1200.0,800.0],
+              "lightMult": 7.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }

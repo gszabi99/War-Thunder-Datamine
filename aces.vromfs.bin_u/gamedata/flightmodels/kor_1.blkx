@@ -9,23 +9,22 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map_biplane.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_biplane.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_biplane.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "bomber",
   "smokeScreenActivateTime": 5.0,
-  "smokeScreenEffectTime": 7.0,
-  "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [-3.0,0.0,2.0],
-  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenEffectTime": 30.0,
+  "smokeScreenRad": 50.0,
+  "smokeScreenPlaneMinAlt": 1.0,
+  "smokeScreenPlaneMaxAlt": 50.0,
   "smokeScreenFxType": "tank_smokescreen",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "smokeScreenDmPart": "gear_l",
+  "smokeScreenOffset": [2.5,-50.0,-1.6],
   "DamageParts": {
     "armor10": {
       "gun1_dm": {
@@ -2188,58 +2187,18 @@
       "pelvisNode": "Bip01 Pelvis"
     },
     {
-      "pelvisTargetNode": "Bip01 Pelvis02"
+      "pelvisTargetNode": "Bip01 Pelvis_"
     },
     {
-      "chestNodes": [
-        {
-          "leftShoulderNode": "Bip01 L UpperArm"
-        },
-        {
-          "rightShoulderNode": "Bip01 R UpperArm"
-        },
-        {
-          "neckNode": "Bip01 Neck"
-        },
-        {
-          "node": "Bip01 R Clavicle"
-        },
-        {
-          "node": "Bip01 L Clavicle"
-        },
-        {
-          "node": "Bip01 Spine 1"
-        },
-        {
-          "node": "Bip01 Head"
-        },
-        {
-          "node": "Bip01 HeadNub"
-        },
-        {
-          "node": "Bip01 L UpperArm"
-        },
-        {
-          "node": "Bip01 R UpperArm"
-        },
-        {
-          "node": "Bip01 Neck"
-        },
-        {
-          "leftHandTarget": "throttle_lhand_2"
-        },
-        {
-          "rightHandTarget": "stick_rhand_2"
-        }
-      ]
+      "suffix": "1"
     },
     {
       "ikNode": {
         "downNode": "Bip01 L Hand",
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
-        "targetNode": "throttle_lhand_2",
-        "flexionDir": [0.0,-0.9,0.3]
+        "targetNode": "throttle_lhand_",
+        "flexionDir": [0.0,-1.0,0.1]
       }
     },
     {
@@ -2247,8 +2206,8 @@
         "downNode": "Bip01 R Hand",
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
-        "targetNode": "stick_rhand_2",
-        "flexionDir": [0.0,-0.9,-0.3]
+        "targetNode": "stick_rhand_",
+        "flexionDir": [0.0,-1.0,-0.1]
       }
     },
     {
@@ -2256,7 +2215,7 @@
         "downNode": "Bip01 L Foot",
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_2",
+        "targetNode": "pedal_lfoot_",
         "flexionDir": [0.0,1.0,-0.2]
       }
     },
@@ -2265,7 +2224,7 @@
         "downNode": "Bip01 R Foot",
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_2",
+        "targetNode": "pedal_rfoot_",
         "flexionDir": [0.0,1.0,0.2]
       }
     }
@@ -2364,7 +2323,7 @@
     "nonExtinguishFireTime": 5.0
   },
   "smokeScreenExhaustEmitters": {
-    "emitter": "gear_c"
+    "emitter": "gear_l"
   },
   "wiki": {
     "general": {
@@ -2443,6 +2402,15 @@
     "shkas_new_gun": {
       "reqModification": "shkas_belt_pack",
       "tier": 3
+    },
+    "shkas_turret_ap": [],
+    "shkas_turret_apit": [],
+    "shkas_turret_belt_pack": {
+      "tier": 2
+    },
+    "shkas_turret_new_gun": {
+      "reqModification": "shkas_turret_belt_pack",
+      "tier": 4
     }
   },
   "cutting": {

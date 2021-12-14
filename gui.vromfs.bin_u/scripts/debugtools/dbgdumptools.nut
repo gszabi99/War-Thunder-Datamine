@@ -6,6 +6,8 @@ local g_path = require("std/path.nut")
 local dagor_fs = require("dagor.fs")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+local { getPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
+local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -63,7 +65,7 @@ local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/de
     { id = "_fake_battlelog", value = ::HudBattleLog.battleLog }
     { id = "_fake_userlogs", value = ::getTblValue("roomUserlogs", debriefingResult, []) }
     { id = "get_user_logs_count", value = ::getTblValue("roomUserlogs", debriefingResult, []).len() }
-    { id = "_fake_playersInfo", value = ::SquadIcon.playersInfo }
+    { id = "_fake_playersInfo", value = getPlayersInfo() }
   ]
 
   local units = []
@@ -151,7 +153,7 @@ local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/de
   ::SessionLobby.getUnitTypesMask = @() ::getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
   ::SessionLobby.lastEventName = ::getroottable()?._fake_sessionlobby_last_event_name ?? ""
   ::HudBattleLog.battleLog = ::_fake_battlelog
-  ::SquadIcon.initListLabelsSquad()
+  initListLabelsSquad()
 
   local _is_in_flight = ::is_in_flight
   ::is_in_flight = function() { return true }
@@ -234,7 +236,7 @@ local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/de
     }
   }, false)
   ::SessionLobby.playersInfo = ::getroottable()?._fake_playersInfo ?? {}
-  ::gui_start_mpstatscreen()
+  guiStartMPStatScreen()
   return "Loaded " + filename
 }
 
@@ -349,7 +351,7 @@ local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/de
   ::g_mis_custom_state.isCurRulesValid = false
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
-  ::SquadIcon.initListLabelsSquad()
+  initListLabelsSquad()
   require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")

@@ -19,5 +19,11 @@ def phys_apply_friction(cur_vel: float3; thres_spd, friction_k, dt: float) : flo
 def phys_apply_omni_friction(cur_vel: float3; thres_spd, friction_k, dt: float) : float3
   return cur_vel * phys_calc_friction_mult(length(cur_vel), thres_spd, friction_k, dt)
 
+def floor_physics_tick_number(time, fixed_dt: float)
+  return int(time / fixed_dt)
+
 def nearest_physics_tick_number(time, fixed_dt: float): int
   return int(time / fixed_dt + 0.5)
+
+def ceil_physics_tick_number(time, fixed_dt: float)
+  return floor_physics_tick_number(time, fixed_dt) + 1

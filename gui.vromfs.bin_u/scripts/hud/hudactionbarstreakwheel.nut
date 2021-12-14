@@ -74,11 +74,24 @@ local cfgMenuSubmarine = [
     null,
 ]
 
+local cfgMenuAircraft = [
+  // Page #1
+    EII_SUPPORT_PLANE,
+    EII_SMOKE_SCREEN,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+]
+
 /******************************** CONFIGS END *********************************/
 
 local function getCfgByUnit(unit) {
   return unit?.isTank()       ? cfgMenuTank
        : unit?.isShipOrBoat() ? cfgMenuShip
+       : unit?.isAir()        ? cfgMenuAircraft
        : unit?.isSubmarine()  ? cfgMenuSubmarine
        : []
 }

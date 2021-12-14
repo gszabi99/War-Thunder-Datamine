@@ -97,6 +97,8 @@ class CreateTemplateAnnotation : AstStructureAnnotation
     return true
 
   def override finish ( var st:StructurePtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
+    if !is_entity_mgr_exists()
+      return true
     if is_in_aot() || find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
       st.fields |> clear()
       return true

@@ -93,7 +93,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1430,7 +1430,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 979.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -1758,7 +1764,7 @@
           "hp": 1000.0
         },
         "ex_armor_06_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ex_armor_07_dm": {
           "hp": 500.0
@@ -3638,6 +3644,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "aichi_e13a",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "weapon_presets": [
       {
         "preset": {
@@ -3740,7 +3758,8 @@
       "new_main_caliber_turrets": {
         "reqModification": "new_aux_caliber_turrets"
       },
-      "ship_rangefinder": []
+      "ship_rangefinder": [],
+      "ship_supportPlane": []
     }
   },
   {

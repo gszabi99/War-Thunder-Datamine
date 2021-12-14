@@ -1,5 +1,5 @@
 {
-  "z_far": 85000.0,
+  "z_far": 100000.0,
   "mapCoord0": [-65536.0,-65536.0],
   "mapCoord1": [65536.0,65536.0],
   "minAreaSize": [12000.0,12000.0],
@@ -9,10 +9,9 @@
   "numBorderCellsXNeg": 16,
   "numBorderCellsZPos": 16,
   "numBorderCellsZNeg": 16,
-  "mirrorShrinkXPos": 16.0,
-  "mirrorShrinkXNeg": 16.0,
-  "mirrorShrinkZPos": 16.0,
-  "mirrorShrinkZNeg": 16.0,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "average_ground_level": 200.0,
@@ -22,18 +21,18 @@
   "land_translucency": "some",
   "layeredFogHeightOffset": -3.0,
   "water_level": 60.0,
-  "tag": "air_smolensk",
+  "tag": "air_israel",
   "earth": {
     "earthWorldEnabled": true,
     "earthWorldMin": [-65536.0,-65536.0],
     "earthWorldMax": [65536.0,65536.0]
   },
   "stars": {
-    "latitude": 34.0,
-    "longitude": 69.0,
-    "year": 1941,
-    "month": 6,
-    "day": 14
+    "latitude": 33.0,
+    "longitude": 35.0,
+    "year": 1973,
+    "month": 10,
+    "day": 6
   },
   "shader_vars": {
     "translucency_detection_hardness": 1.0,
@@ -167,22 +166,13 @@
       "helicopterFalloff": 0.001
     },
     {
-      "air_smolensk_fields_a": "air_smolensk_fields_a_tex_m"
+      "israel_bushes_a_tex_d": "israel_bushes_a_tex_m"
     },
     {
-      "air_smolensk_forest_a": "air_smolensk_forest_a_tex_m"
+      "israel_city_a_tex_d": "israel_city_a_tex_m"
     },
     {
-      "air_smolensk_meadows_a": "air_smolensk_meadows_a_tex_m"
-    },
-    {
-      "air_smolensk_meadows_b": "air_smolensk_meadows_b_tex_m"
-    },
-    {
-      "air_smolensk_town": "air_smolensk_town_tex_m"
-    },
-    {
-      "air_smolensk_village": "air_smolensk_village_tex_m"
+      "israel_fields_b_tex_d": "israel_fields_b_tex_m"
     },
     {
       "layer": {
@@ -204,7 +194,7 @@
     },
     {
       "layer": {
-        "maskChannel": [0.0,1.0,1.0,0.0],
+        "maskChannel": [0.0,1.0,0.0,0.0],
         "res": "grass_platanthera_a",
         "density": 0.2,
         "horScale": 1.5,
@@ -222,7 +212,7 @@
     },
     {
       "layer": {
-        "maskChannel": [1.0,1.0,1.0,0.0],
+        "maskChannel": [1.0,1.0,0.0,0.0],
         "res": "grass_wheat_a",
         "density": 5.0,
         "horScale": 1.5,

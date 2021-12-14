@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1516,7 +1516,13 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -3683,6 +3689,18 @@
     ]
   },
   {
+    "supportPlane": {
+      "supportPlaneClass": "osprey_mk4",
+      "planeStartSpeed": 150.0,
+      "count": 1,
+      "startFx": "start_torpedo",
+      "catapult": {
+        "visualNode": "aircraft_01",
+        "head": "catapult_mount_01"
+      }
+    }
+  },
+  {
     "commonWeapons": [
       {
         "animatedBones": [
@@ -5552,6 +5570,77 @@
             ]
           }
         }
+      },
+      {
+        "Weapon": [
+          {
+            "dummy": true
+          },
+          {
+            "trigger": "gunner18"
+          },
+          {
+            "triggerGroup": "primary"
+          },
+          {
+            "blk": "gameData/Weapons/dummy_weapon.blk"
+          },
+          {
+            "emitter": "aircraft_01"
+          },
+          {
+            "barrelDP": "aircraft_01_dm"
+          },
+          {
+            "allowableDelta": 20.0
+          },
+          {
+            "parkInDeadzone": false
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "speedYaw": 25.0
+          },
+          {
+            "speedPitch": 0.0
+          },
+          {
+            "turret": {
+              "head": "catapult_mount_01",
+              "gun": "aircraft_01",
+              "gunnerDm": "catapult_mount_01_dm"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [0.0,0.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-180.0,-120.0],
+              "pitch": [-90.0,90.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-60.0,60.0],
+              "pitch": [-90.0,90.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [120.0,180.0],
+              "pitch": [-90.0,90.0]
+            }
+          }
+        ]
       }
     ]
   },
@@ -5667,7 +5756,8 @@
           "distToLive": 7770.0,
           "maxSpeedInWater": -7.71
         }
-      }
+      },
+      "ship_supportPlane": []
     }
   },
   {
@@ -7199,17 +7289,6 @@
           "deviation": 0.6,
           "rotation": 2.1,
           "collisionNode": "fire_director_01_dm"
-        }
-      },
-      {
-        "part": {
-          "node": "ex_decor_05",
-          "idx": 3,
-          "mass": 1900.0,
-          "cutDamage": 350.0,
-          "deviation": 0.6,
-          "rotation": 2.1,
-          "collisionNode": "ex_decor_05_dm"
         }
       },
       {

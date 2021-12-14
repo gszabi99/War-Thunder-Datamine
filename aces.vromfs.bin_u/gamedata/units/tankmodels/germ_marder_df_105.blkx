@@ -2478,7 +2478,8 @@
             "head": "bone_turret",
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "gunner_dm",
+            "rotatedTurret": "bone_turret"
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -2582,6 +2583,31 @@
             }
           }
         ]
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "speedYaw": 0.0,
+          "speedPitch": 0.0,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "drive_turret_h_dm",
+            "rotatedTurret": "bone_turret"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-6.0,13.0]
+          }
+        }
       }
     ]
   },
@@ -3247,11 +3273,20 @@
     ]
   },
   {
+    "commanderView": {
+      "aimModeAvailable": true,
+      "optics": "commander_optics_square",
+      "zoomOutFov": 47.37,
+      "zoomInFov": 11.35,
+      "sightSize": [0.95,0.67]
+    }
+  },
+  {
     "cockpit": {
-      "zoomOutFov": 18.5,
-      "zoomInFov": 6.14,
-      "sightFov": 9.0,
-      "sightName": "begleitpanzer_57",
+      "zoomOutFov": 10.21,
+      "zoomInFov": 9.21,
+      "sightFov": 5.0,
+      "sightName": "merkava_sight",
       "headPos": [0.0,4.0,-8.5],
       "headPosOnShooting": [-0.76,3.2,-0.56],
       "detectionHeight": 2.51
@@ -3485,7 +3520,8 @@
                   "head": "bone_turret",
                   "gun": "bone_gun",
                   "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm"
+                  "gunnerDm": "gunner_dm",
+                  "rotatedTurret": "bone_turret"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3589,6 +3625,31 @@
                   }
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner2",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "speedYaw": 0.0,
+                "speedPitch": 0.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "drive_turret_h_dm",
+                  "rotatedTurret": "bone_turret"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-6.0,13.0]
+                }
+              }
             },
             {
               "Weapon": {

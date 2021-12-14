@@ -478,7 +478,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2573,8 +2572,18 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "width": 0.64,
-        "height": 0.03
+        "width": 0.65,
+        "height": 0.07,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_gg_26_800_300_phys_track_line",
+        "nonSymmetricMesh": true,
+        "trackLen": 0.295,
+        "trackCount": 48,
+        "trackFadeTime": 0.5,
+        "trackConnector": true,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.2,
+        "trackStartOffset": 0.2
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
@@ -2636,10 +2645,12 @@
       "suspension": {
         "suspensionOffsets": [-0.2,-0.2,0.1],
         "defaultGearRadius": 0.39,
-        "frontBackGearRadius": 0.34,
+        "frontBackGearRadius": 0.36,
         "defaultDampeningForce": [140000.0,1400000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.43,
+        "wheel_l_drive": 0.43
       }
     }
   },

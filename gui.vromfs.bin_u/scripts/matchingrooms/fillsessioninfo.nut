@@ -6,7 +6,7 @@ local function clearInfo(scene)
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
                     "session_environment", "session_difficulty", "session_timeLimit",
                     "session_limits", "session_respawn", "session_takeoff",
-                    "session_allowbots", "session_botsranks", "session_jip",
+                    "session_allowbots", "session_allow_empty_teams", "session_jip",
                     "limited_fuel", "limited_ammo", "session_teamLimit",
                     "session_battleRating", "session_cluster", "disable_airfields",
                     "session_laps", "session_winners", "session_can_shoot",
@@ -157,8 +157,8 @@ return function(scene, sessionInfo)
 
   setTextToObjByOption("session_allowbots", ::USEROPT_IS_BOTS_ALLOWED,
                (gt & ::GT_RACE)? null : ::getTblValue("isBotsAllowed", missionInfo))
-  setTextToObjByOption("session_botsranks", ::USEROPT_BOTS_RANKS,
-               (gt & ::GT_RACE)? null : ::getTblValue("ranks", missionInfo))
+
+  setTextToObjByOption("session_allow_empty_teams", ::USEROPT_ALLOW_EMPTY_TEAMS, missionInfo?.allowEmptyTeams)
 
   bObj = scene.findObject("session_jip")
   setTextToObj(bObj, ::loc("options/allow_jip") + ::loc("ui/colon"),

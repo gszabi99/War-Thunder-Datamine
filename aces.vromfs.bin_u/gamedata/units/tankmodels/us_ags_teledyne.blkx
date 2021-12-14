@@ -39,6 +39,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -179,6 +182,12 @@
         },
         "gun_mask_dm": {
           "armorThickness": 25.4
+        },
+        "turret_bottom_dm": {
+          "armorThickness": 25.4
+        },
+        "turret_side_dm": {
+          "armorThickness": 25.4
         }
       },
       "armor_steel": {
@@ -195,9 +204,20 @@
           "armorThickness": 5.0,
           "hidableInXrayViewer": true
         },
+        "composite_armor_hull_04_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
+        },
+        "composite_armor_hull_05_dm": {
+          "armorThickness": 5.0,
+          "hidableInXrayViewer": true
+        },
         "turret_01_front_dm": {
           "armorThickness": 12.7,
           "hidableInViewer": true
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -209,12 +229,6 @@
           "armorThickness": 10.0
         },
         "turret_front_dm": {
-          "armorThickness": 25.4
-        },
-        "turret_bottom_dm": {
-          "armorThickness": 25.4
-        },
-        "turret_side_dm": {
           "armorThickness": 25.4
         },
         "turret_commander_dm": {
@@ -229,6 +243,7 @@
         "genericArmorQuality": 0.25,
         "explosionArmorQuality": 0.15,
         "cumulativeArmorQuality": 1.9,
+        "variableThickness": true,
         "ex_armor_r_01_dm": [],
         "ex_armor_r_02_dm": {
           "armorThickness": 100.0
@@ -317,10 +332,7 @@
         "wheel_r_top_03_dm": [],
         "wheel_l_top_01_dm": [],
         "wheel_l_top_02_dm": [],
-        "wheel_l_top_03_dm": [],
-        "turret_01_bottom_dm": {
-          "armorThickness": 10.0
-        }
+        "wheel_l_top_03_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -507,7 +519,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -795,6 +806,15 @@
       "collision_add_dm": true,
       "fuel_tank_r_01_dm": true,
       "fuel_tank_l_01_dm": true
+    }
+  },
+  {
+    "gunConvergence": {
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {
@@ -2809,10 +2829,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 9.21,
-      "zoomInFov": 6.14,
-      "sightFov": 4.3,
-      "sightName": "telescope_m127",
+      "zoomOutFov": 10.21,
+      "zoomInFov": 9.21,
+      "sightFov": 5.0,
+      "sightName": "merkava_sight",
       "headPos": [0.0,3.5,-8.0],
       "headPosOnShooting": [-0.8,3.0,0.6],
       "detectionHeight": 2.54
@@ -2964,6 +2984,9 @@
       },
       "airstrike": [],
       "improved_optics": [],
+      "modern_tank_laser_rangefinder": {
+        "tier": 3
+      },
       "105mm_us_M416_Smoke": [],
       "105mm_usa_HESH": [],
       "105mm_usa_M735_APDS_FS": [],

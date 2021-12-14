@@ -7,6 +7,8 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
 local { getActionBarUnitName } = ::require_native("hudActionBar")
+local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+local { onSpectatorMode, switchSpectatorTargetById } = require_native("guiSpectator")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -347,7 +349,7 @@ enum SPECTATOR_CHAT_TAB {
       if (!getTargetPlayer())
       {
         spectatorModeInited = true
-        ::on_spectator_mode(true)
+        onSpectatorMode(true)
         catchingFirstTarget = isMultiplayer && gotRefereeRights
         dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
       }
@@ -675,7 +677,7 @@ enum SPECTATOR_CHAT_TAB {
   function switchTargetPlayer(id)
   {
     if (id >= 0)
-      ::switch_spectator_target_by_id(id)
+      switchSpectatorTargetById(id)
   }
 
   function saveLastTargetPlayerData(player)
@@ -759,7 +761,7 @@ enum SPECTATOR_CHAT_TAB {
   function onBtnMpStatScreen(obj)
   {
     if (isMultiplayer)
-      ::gui_start_mpstatscreen()
+      guiStartMPStatScreen()
     else
       ::gui_start_tactical_map()
   }

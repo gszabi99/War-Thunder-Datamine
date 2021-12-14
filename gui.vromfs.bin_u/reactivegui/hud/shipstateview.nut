@@ -1,4 +1,5 @@
 local {speed, portSideMachine, sideboardSideMachine, stopping } = require("reactiveGui/shipState.nut")
+local { isInitializedMeasureUnits } = require("reactiveGui/options/optionsMeasureUnits.nut")
 
 local machineDirectionLoc = [
   ::loc("HUD/ENGINE_REV_BACK_SHORT")
@@ -74,13 +75,16 @@ local function speedValue(params = {}) {
 
 local function speedUnits(params = {}) {
   local { fontSize = null, box = null, font = defFont } = params
-  local text = ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
-  return {
-    rendObj = ROBJ_DTEXT
-    font
-    fontSize = box ? fitTextToBox({text, box, fontSize, font}) : fontSize
-    text = ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
-    margin = [0,0,hdpx(1.5),sh(0.5)]
+  return function() {
+    local text = isInitializedMeasureUnits.value ? ::cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
+    return {
+      watch = isInitializedMeasureUnits
+      rendObj = ROBJ_DTEXT
+      font
+      fontSize = box ? fitTextToBox({text, box, fontSize, font}) : fontSize
+      text
+      margin = [0,0,hdpx(1.5),sh(0.5)]
+    }
   }
 }
 

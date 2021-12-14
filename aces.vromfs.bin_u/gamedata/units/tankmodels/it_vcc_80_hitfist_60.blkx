@@ -216,9 +216,6 @@
           "armorThickness": 25.0,
           "createSecondaryShatters": false
         },
-        "turret_04_side_dm": {
-          "armorThickness": 25.0
-        },
         "turret_04_bottom_dm": {
           "armorThickness": 40.0
         },
@@ -261,6 +258,9 @@
         },
         "turret_08_bottom_dm": {
           "armorThickness": 14.0
+        },
+        "turret_06_back_dm": {
+          "armorThickness": 40.0
         }
       },
       "rha_plate": {
@@ -282,29 +282,25 @@
         "turret_01_side_dm": {
           "armorThickness": 8.0
         },
+        "turret_04_side_dm": {
+          "armorThickness": 8.0
+        },
         "turret_06_side_dm": {
           "armorThickness": 14.0
-        },
-        "turret_06_back_dm": {
-          "armorThickness": 6.0,
-          "hidableInViewer": false
         },
         "turret_05_bottom_dm": {
           "armorThickness": 8.0
         },
         "turret_04_front_dm": {
-          "armorThickness": 22.0
+          "armorThickness": 8.0
         },
         "turret_03_top_dm": {
           "armorThickness": 22.0,
           "hidableInViewer": false
         },
         "turret_06_top_dm": {
-          "armorThickness": 25.0,
+          "armorThickness": 8.0,
           "hidableInViewer": false
-        },
-        "turret_05_front_dm": {
-          "armorThickness": 8.0
         },
         "turret_06_bottom_dm": {
           "armorThickness": 14.0
@@ -408,7 +404,6 @@
         "ex_decor_l_03_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_r_03_dm": [],
-        "ex_decor_01_dm": [],
         "ex_armor_05_dm": [],
         "ex_armor_06_dm": [],
         "ex_armor_01_dm": {
@@ -2713,9 +2708,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 23000.0,
+        "Empty": 24700.0,
         "Fuel": 500.0,
-        "TakeOff": 23500.0,
+        "TakeOff": 25200.0,
         "momentOfInertia": [2.0,2.0,5.0],
         "CenterOfGravity": [0.9,0.5,0.0],
         "CenterOfGravityClampY": [0.4,0.6],
@@ -3374,10 +3369,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 37.49,
-      "zoomInFov": 9.217,
-      "sightFov": 12.0,
-      "sightName": "type_89_sight",
+      "zoomOutFov": 9.217,
+      "zoomInFov": 6.141,
+      "sightFov": 4.5,
+      "sightName": "centauro",
       "headPos": [0.0,3.5,-7.5],
       "headPosOnShooting": [-0.1,3.0,-0.1],
       "detectionHeight": 2.5
@@ -3532,7 +3527,7 @@
       "tank_tool_kit": [],
       "art_support": [],
       "tank_new_gun": [],
-      "laser_rangefinder_lws": {
+      "modern_tank_laser_rangefinder": {
         "tier": 3
       },
       "tank_medical_kit": {
@@ -3894,6 +3889,12 @@
             "gunnerThermal": {
               "resolution": [500.0,300.0],
               "noiseFactor": 0.05
+            },
+            "commanderViewIr": {
+              "resolution": [1600.0,1200.0],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
+              "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800.0,600.0],

@@ -119,6 +119,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     altBtnBuyText             = ""
     itemTextColor             = ""
     isTooltipByHold           = params?.isTooltipByHold ?? ::show_console_buttons
+    actionHoldDummyCanShow    = "yes"
   }
 
   local isOwn = ::isUnitUsable(unit)
@@ -297,6 +298,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
+    res.actionHoldDummyCanShow = btnText == "" ? "yes" : "no"
     local altBtnText = ""
     local altBtnTooltip = ""
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
@@ -332,7 +334,7 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
   local id = itemObj?.id ?? ""
   local viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({showButtons = showButtons}))
-  local { isTooltipByHold, tooltipId, actionBtnCanShow } = viewParams
+  local { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
 
   itemObj.findObject("name").setValue(viewParams.nameText)
 
@@ -462,7 +464,7 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
   if (isTooltipByHold) {
     local dummyBtn = itemObj.findObject("actionHoldDummy")
     if (dummyBtn?.isValid())
-      dummyBtn.canShow = showButtons && actionBtnCanShow == "yes" ? "no" : "yes"
+      dummyBtn.canShow = actionHoldDummyCanShow
   }
 
   if (!showButtons)

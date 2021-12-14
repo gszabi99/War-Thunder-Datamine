@@ -986,17 +986,17 @@
   "f-4j": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "testFlight": "testFlight_wake_island_Jet",
+    "testFlight": "testFlight_wake_island_navy_Jet",
     "releaseDate": "2021-12-17 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "general_electric",
-        "model": "j79_ge_17",
+        "model": "j79_ge_10",
         "mass": 1750.0
       },
       "engine2_dm": {
         "manufacturer": "general_electric",
-        "model": "j79_ge_17",
+        "model": "j79_ge_10",
         "mass": 1750.0
       },
       "tanks_params": {
@@ -1008,6 +1008,8 @@
       "country_usa": true,
       "type_fighter": true,
       "type_jet_fighter": true,
+      "type_naval_aircraft": true,
+      "carrier_take_off": true,
       "pacific": true,
       "air": true
     },
@@ -1016,12 +1018,12 @@
       "maxSpeed": 594.44,
       "turnTime": 26.0,
       "airfieldLen": 850.0,
-      "climbTime": 145.0,
+      "climbTime": 155.0,
       "maxSpeedAlt": 12192.0,
       "climbAlt": 9144.0,
-      "climbSpeed": 190.0,
-      "wingLoading": 303.0,
-      "thrustToWeightRatio": 0.83,
+      "climbSpeed": 185.0,
+      "wingLoading": 313.0,
+      "thrustToWeightRatio": 0.81,
       "rollRate": 105.0
     }
   },
@@ -2078,17 +2080,17 @@
       "air": true
     },
     "Shop": {
-      "maxAltitude": 12500.0,
-      "maxSpeed": 300.4,
+      "maxAltitude": 12400.0,
+      "maxSpeed": 300.0,
       "turnTime": 37.0,
-      "airfieldLen": 900.0,
-      "climbTime": 296.0,
+      "airfieldLen": 1000.0,
+      "climbTime": 310.0,
       "maxSpeedAlt": 0.0,
-      "climbAlt": 9146.0,
-      "climbSpeed": 40.0,
-      "wingLoading": 326.0,
-      "thrustToWeightRatio": 0.4435,
-      "rollRate": 170.0
+      "climbAlt": 9144.0,
+      "climbSpeed": 47.0,
+      "wingLoading": 303.0,
+      "thrustToWeightRatio": 0.53,
+      "rollRate": 166.0
     }
   },
   "f-4e_iaf": {
@@ -20505,6 +20507,44 @@
       "rollRate": 95.0
     }
   },
+  "ro_43": {
+    "type": "aircraft",
+    "hangar_place": "hydroplane",
+    "testFlight": "testFlight_britain_hydroplane",
+    "operatorCountry": "country_italy_kingdom",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "shvetsov",
+        "model": "m-25a",
+        "mass": 330.0
+      },
+      "tanks_params": {
+        "protected": false
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_italy": true,
+      "type_bomber": true,
+      "type_light_bomber": true,
+      "type_hydroplane": true,
+      "not_in_dynamic_campaign": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 9200.0,
+      "maxSpeed": 114.4,
+      "turnTime": 17.0,
+      "airfieldLen": 300.0,
+      "climbTime": 410.0,
+      "maxSpeedAlt": 4000.0,
+      "climbAlt": 5000.0,
+      "climbSpeed": 13.6474,
+      "wingLoading": 84.0,
+      "powerToWeightRatio": 0.34,
+      "rollRate": 95.0
+    }
+  },
   "osprey_mk4": {
     "type": "aircraft",
     "hangar_place": "hydroplane",
@@ -23754,6 +23794,7 @@
       "type_light_bomber": true,
       "type_hydroplane": true,
       "western_front": true,
+      "bomberview": true,
       "air": true
     },
     "years_active": {
@@ -43609,7 +43650,7 @@
       "engine1_dm": {
         "manufacturer": "p&w",
         "model": "j75-p-19w",
-        "mass": 2340.0
+        "mass": 2703.0
       },
       "engine2_dm": {
         "alias": "engine1_dm"
@@ -52463,15 +52504,15 @@
       "air": true
     },
     "Shop": {
-      "maxAltitude": 16000.0,
-      "maxSpeed": 655.0,
-      "turnTime": 37.0,
+      "maxAltitude": 15000.0,
+      "maxSpeed": 611.0,
+      "turnTime": 36.0,
       "airfieldLen": 750.0,
       "climbTime": 180.0,
       "maxSpeedAlt": 13000.0,
       "climbAlt": 10000.0,
       "climbSpeed": 155.0,
-      "wingLoading": 434.0,
+      "wingLoading": 440.0,
       "thrustToWeightRatio": 0.75,
       "rollRate": 120.0
     }
@@ -52500,15 +52541,15 @@
       "air": true
     },
     "Shop": {
-      "maxAltitude": 16000.0,
-      "maxSpeed": 655.0,
-      "turnTime": 37.0,
+      "maxAltitude": 15000.0,
+      "maxSpeed": 611.0,
+      "turnTime": 36.0,
       "airfieldLen": 750.0,
       "climbTime": 180.0,
       "maxSpeedAlt": 13000.0,
       "climbAlt": 10000.0,
       "climbSpeed": 155.0,
-      "wingLoading": 434.0,
+      "wingLoading": 440.0,
       "thrustToWeightRatio": 0.75,
       "rollRate": 120.0
     }
@@ -52595,6 +52636,43 @@
     "hangar_place": "aircraft",
     "testFlight": "testFlight_krymsk_Jet",
     "releaseDate": "2020-12-17 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "tumansky",
+        "model": "r-11f2s-300",
+        "mass": 1120.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_ussr": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 16000.0,
+      "maxSpeed": 622.2,
+      "turnTime": 36.0,
+      "airfieldLen": 750.0,
+      "climbTime": 190.0,
+      "maxSpeedAlt": 13000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 145.0,
+      "wingLoading": 390.0,
+      "thrustToWeightRatio": 0.84,
+      "rollRate": 130.0
+    }
+  },
+  "mig-21_s": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_krymsk_Jet",
+    "releaseDate": "2021-12-17 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "tumansky",
@@ -74288,7 +74366,7 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "p&w",
-        "model": "j52-p-6a",
+        "model": "j52-p-8a",
         "mass": 900.0
       },
       "tanks_params": {
@@ -74316,16 +74394,16 @@
     },
     "Shop": {
       "maxAltitude": 12500.0,
-      "maxSpeed": 300.4,
-      "turnTime": 37.0,
-      "airfieldLen": 900.0,
-      "climbTime": 296.0,
+      "maxSpeed": 302.0,
+      "turnTime": 34.0,
+      "airfieldLen": 1000.0,
+      "climbTime": 253.0,
       "maxSpeedAlt": 0.0,
-      "climbAlt": 9146.0,
-      "climbSpeed": 40.0,
-      "wingLoading": 326.0,
-      "thrustToWeightRatio": 0.4435,
-      "rollRate": 170.0
+      "climbAlt": 9144.0,
+      "climbSpeed": 55.0,
+      "wingLoading": 305.0,
+      "thrustToWeightRatio": 0.57,
+      "rollRate": 166.0
     }
   },
   "a_4n": {
@@ -74336,7 +74414,7 @@
     "info": {
       "engine1_dm": {
         "manufacturer": "p&w",
-        "model": "j52-p-6a",
+        "model": "j52-p-408",
         "mass": 900.0
       },
       "tanks_params": {
@@ -74364,16 +74442,16 @@
     },
     "Shop": {
       "maxAltitude": 12500.0,
-      "maxSpeed": 300.4,
-      "turnTime": 37.0,
-      "airfieldLen": 900.0,
-      "climbTime": 296.0,
-      "maxSpeedAlt": 0.0,
-      "climbAlt": 9146.0,
-      "climbSpeed": 40.0,
-      "wingLoading": 326.0,
-      "thrustToWeightRatio": 0.4435,
-      "rollRate": 170.0
+      "maxSpeed": 307.0,
+      "turnTime": 32.0,
+      "airfieldLen": 1000.0,
+      "climbTime": 186.0,
+      "maxSpeedAlt": 1524.0,
+      "climbAlt": 9144.0,
+      "climbSpeed": 67.0,
+      "wingLoading": 318.0,
+      "thrustToWeightRatio": 0.66,
+      "rollRate": 173.0
     }
   },
   "spitfire_mk9c_iaf": {
@@ -74679,10 +74757,10 @@
     },
     "tags": {
       "ally": true,
-      "country_israel": true,
+      "country_france": true,
       "type_fighter": true,
       "type_jet_fighter": true,
-      "mediterranean": true,
+      "western_front": true,
       "air": true
     },
     "Shop": {
@@ -74706,8 +74784,8 @@
     "releaseDate": "2021-12-17 00:00:00",
     "info": {
       "engine1_dm": {
-        "manufacturer": "snecma",
-        "model": "atar_101g_2",
+        "manufacturer": "p&w",
+        "model": "j52-p-8a",
         "mass": 950.0
       },
       "tanks_params": {
@@ -74723,17 +74801,17 @@
       "air": true
     },
     "Shop": {
-      "maxAltitude": 17000.0,
-      "maxSpeed": 333.0,
-      "turnTime": 31.0,
-      "airfieldLen": 800.0,
-      "climbTime": 208.0,
+      "maxAltitude": 112500.0,
+      "maxSpeed": 319.0,
+      "turnTime": 36.0,
+      "airfieldLen": 1000.0,
+      "climbTime": 412.0,
       "maxSpeedAlt": 0.0,
-      "climbAlt": 10000.0,
-      "climbSpeed": 61.0,
-      "wingLoading": 281.0,
-      "powerToWeightRatio": 0.5,
-      "rollRate": 146.0
+      "climbAlt": 10668.0,
+      "climbSpeed": 41.0,
+      "wingLoading": 259.0,
+      "powerToWeightRatio": 0.466,
+      "rollRate": 162.0
     }
   },
   "cn_bt_5": {
@@ -78439,6 +78517,11 @@
       "type_light_cruiser": true,
       "ship": true
     },
-    "Shop": []
+    "Shop": {
+      "armorThicknessCitadel": [50.0,70.0,35.0],
+      "armorThicknessTurretMainCaliber": [90.0,30.0,30.0],
+      "maxSpeed": 19.21,
+      "displacement": 10672000.0
+    }
   }
 }

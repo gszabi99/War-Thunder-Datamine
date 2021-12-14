@@ -182,7 +182,7 @@
         "ex_decor_l_10_dm": [],
         "ex_decor_r_10_dm": [],
         "ex_decor_l_08_dm": [],
-        "ex_decor_14_dm": []
+        "ex_decor_l_07_dm": []
       },
       "turret": {
         "turret_top_dm": {
@@ -446,7 +446,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2490,8 +2489,16 @@
       },
       "tracks": {
         "animationMultiplier": 0.5,
-        "height": 0.015,
-        "width": 0.35
+        "height": 0.048,
+        "width": 0.38,
+        "tracksTensionK": [5.0,8.0,1.5],
+        "trackMesh": "ger_pzkpfw_III_ausf_b_phys_track_line",
+        "trackLen": 0.12,
+        "trackCount": 100,
+        "trackFadeTime": 0.5,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.2,
+        "trackStartOffset": 0.04
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2533,12 +2540,14 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.08,-0.05,0.06],
-        "defaultGearRadius": 0.245,
+        "defaultGearRadius": 0.2,
         "topGearRadius": 0.155,
-        "frontBackGearRadius": 0.4,
+        "frontBackGearRadius": 0.41,
         "defaultDampeningForce": [60000.0,60000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.38,
+        "wheel_l_drive": 0.38
       }
     }
   },

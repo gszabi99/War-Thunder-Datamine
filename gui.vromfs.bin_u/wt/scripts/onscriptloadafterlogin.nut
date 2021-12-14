@@ -247,7 +247,8 @@ foreach (fn in [
 
   "scripts/flightMenu/flightMenu.nut"
   "scripts/misCustomRules/missionCustomState.nut"
-  "scripts/mpStatistics.nut"
+  "scripts/statistics/mpStatistics.nut"
+  "scripts/statistics/mpStatisticsModal.nut"
   "scripts/respawn/misLoadingState.nut"
   "scripts/respawn/respawn.nut"
   "scripts/respawn/teamUnitsLeftView.nut"

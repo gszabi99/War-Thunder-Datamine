@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 20.0
-    },
     "player": [
       {
         "army": 1
@@ -118,15 +114,19 @@
     "mission": {
       "level": "levels/sicily.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "scoreLimit": 15000,
       "timeLimit": 360,
       "deathPenaltyMul": 0.0,
       "country_axis": "germany",
-      "country_allies": "britain"
+      "country_allies": "britain",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 20.0
     },
     "spectator_points": [],
     "briefing": {
@@ -213,7 +213,7 @@
           }
         },
         {
-          "missionSetTargetsIndicator": {
+          "__missionSetTargetsIndicator": {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -228,7 +228,7 @@
           }
         },
         {
-          "missionSetTargetsIndicator": {
+          "__missionSetTargetsIndicator": {
             "target_type": "isAlive",
             "target_marking": 0,
             "delta": 0,
@@ -368,7 +368,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 5000.0,
+          "value": 4500.0,
           "var": "team1_quest_score"
         }
       },
@@ -391,7 +391,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 5000.0,
+          "value": 4500.0,
           "var": "team2_quest_score"
         }
       },
@@ -414,7 +414,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 3000.0,
+          "value": 2500.0,
           "var": "team1_quest_score"
         }
       },
@@ -437,7 +437,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 3000.0,
+          "value": 2500.0,
           "var": "team2_quest_score"
         }
       },
@@ -460,7 +460,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 1500.0,
+          "value": 1000.0,
           "var": "team1_quest_score"
         }
       },
@@ -483,7 +483,7 @@
       "actions": {
         "varModify": {
           "operator": "add",
-          "value": 1500.0,
+          "value": 1000.0,
           "var": "team2_quest_score"
         }
       },

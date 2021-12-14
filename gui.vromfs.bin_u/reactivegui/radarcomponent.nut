@@ -1513,9 +1513,6 @@ local createTargetOnRadarCScopeSquare = @(index, radius, size, color) function()
       opacity = 0
   }
 
-  if (!target.isSelected && !target.isDetected && target.isEnemy)
-    return res
-
   local azimuthRel = HasAzimuthScale.value ? target.azimuthRel : 0.0
   local azimuthWidthRel = target.azimuthWidthRel
   local azimuthLeft = azimuthRel - azimuthWidthRel * 0.5

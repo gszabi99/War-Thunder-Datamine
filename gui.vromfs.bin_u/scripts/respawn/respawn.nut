@@ -1,12 +1,6 @@
-local { fetchChangeAircraftOnStart,
-        canRespawnCaNow,
-        canRequestAircraftNow,
-        setSelectedUnitInfo,
-        getAvailableRespawnBases,
-        getRespawnBaseTimeLeftById,
-        selectRespawnBase,
-        highlightRespawnBase,
-        getRespawnBase } = require_native("guiRespawn")
+local { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
+  setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
+  selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer } = require_native("guiRespawn")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local statsd = require("statsd")
 local time = require("scripts/time.nut")
@@ -34,6 +28,9 @@ local { getEventSlotbarHint } = require("scripts/events/eventInfo.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 local { showedUnit, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { guiStartMPStatScreenFromGame,
+  guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+local { onSpectatorMode, switchSpectatorTarget } = require_native("guiSpectator")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -237,7 +234,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     {
       local finished = ::race_finished_by_local_player()
       if (finished && ::need_race_finish_results)
-        ::gui_start_mpstatscreen_from_game()
+        guiStartMPStatScreenFromGame()
       ::need_race_finish_results = !finished
     }
 
@@ -1656,9 +1653,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function doRespawn()
   {
-    dagor.debug("do_respawn_player called")
+    dagor.debug("doRespawnPlayer called")
     ::before_first_flight_in_session = false
-    doRespawnCalled = ::do_respawn_player()
+    doRespawnCalled = doRespawnPlayer()
     if (!doRespawnCalled)
     {
       onApply()
@@ -1931,7 +1928,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     updateListsButtons()
 
-    ::on_spectator_mode(is_spectator)
+    onSpectatorMode(is_spectator)
 
     updateApplyText()
     updateControlsAllowMask()
@@ -2070,7 +2067,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return; //do nothing
     if (spectator_switch_timer <= 0)
     {
-      ::switch_spectator_target(spectator_switch_direction == ESwitchSpectatorTarget.E_NEXT);
+      switchSpectatorTarget(spectator_switch_direction == ESwitchSpectatorTarget.E_NEXT);
       updateSpectatorName();
 
       spectator_switch_direction = ESwitchSpectatorTarget.E_DO_NOTHING;
@@ -2144,7 +2141,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     guiScene.performDelayed(this, function() {
       ::disable_flight_menu(false)
-      ::gui_start_mpstatscreen()
+      guiStartMPStatScreen()
     })
   }
 

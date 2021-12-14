@@ -178,7 +178,7 @@ local unseenPatchnote = ::Computed(function() {
 local curPatchnote = ::Computed(@()
   chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])
 local curPatchnoteIdx = ::Computed(
-  @() versions.value.findindex(@(inst) inst.iVersion == curPatchnote.value.iVersion) ?? 0)
+  @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
 local haveUnseenVersions = ::Computed(@() unseenPatchnote.value != null)
 local needShowChangelog = @() !isInBattleState.value && ::has_feature("Changelog")
   && haveNewVersions.value && !::my_stats.isMeNewbie()

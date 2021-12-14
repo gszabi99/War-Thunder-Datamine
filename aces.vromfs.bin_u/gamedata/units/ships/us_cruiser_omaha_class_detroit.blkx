@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -1422,6 +1422,31 @@
     }
   },
   {
+    "supportPlane": [
+      {
+        "supportPlaneClass": "soc_1"
+      },
+      {
+        "planeStartSpeed": 150.0
+      },
+      {
+        "count": 2
+      },
+      {
+        "catapult": {
+          "visualNode": "aircraft_01",
+          "head": "catapult_mount_01"
+        }
+      },
+      {
+        "catapult": {
+          "visualNode": "aircraft_02",
+          "head": "catapult_mount_02"
+        }
+      }
+    ]
+  },
+  {
     "unitFx": [
       {
         "event": [
@@ -2538,17 +2563,6 @@
       "arcade": {
         "shipRudderAreaMult": 1.0,
         "tankRearmOnCaptureZone": true
-      }
-    }
-  },
-  {
-    "supportPlane": {
-      "supportPlaneClass": "arado-196a-3",
-      "planeStartSpeed": 150.0,
-      "count": 1,
-      "catapult": {
-        "visualNode": "aircraft_01",
-        "head": "catapult_mount_01"
       }
     }
   },
@@ -5206,7 +5220,19 @@
       },
       "aircrafts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "catapult_mount_01_dm": {
+          "hp": 750.0
+        },
+        "catapult_mount_02_dm": {
+          "hp": 750.0
+        },
+        "aircraft_01_dm": {
+          "hp": 750.0
+        },
+        "aircraft_02_dm": {
+          "hp": 750.0
+        }
       },
       "cover": {
         "armorClass": "ship_structural_steel",
@@ -5587,7 +5613,7 @@
           "hp": 831.0
         },
         "ex_armor_l_05_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ex_armor_r_02_dm": {
           "hp": 750.0
@@ -5599,7 +5625,7 @@
           "hp": 831.0
         },
         "ex_armor_r_05_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "turret_05_dm": {
           "hp": 500.0
@@ -8848,18 +8874,20 @@
           "triggerGroup": "primary",
           "blk": "gameData/Weapons/dummy_weapon.blk",
           "emitter": "aircraft_01",
+          "barrelDP": "aircraft_01_dm",
           "allowableDelta": 20.0,
           "parkInDeadzone": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 10.0,
+          "speedYaw": 25.0,
           "speedPitch": 0.0,
           "turret": {
             "head": "catapult_mount_01",
-            "gun": "aircraft_01"
+            "gun": "aircraft_01",
+            "gunnerDm": "catapult_mount_01_dm"
           },
           "limits": {
-            "yaw": [0.0,130.0],
+            "yaw": [0.0,120.0],
             "pitch": [0.0,0.0]
           },
           "limitsDeadzone": {
@@ -8875,18 +8903,20 @@
           "triggerGroup": "primary",
           "blk": "gameData/Weapons/dummy_weapon.blk",
           "emitter": "aircraft_02",
+          "barrelDP": "aircraft_02_dm",
           "allowableDelta": 20.0,
           "parkInDeadzone": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 10.0,
+          "speedYaw": 25.0,
           "speedPitch": 0.0,
           "turret": {
             "head": "catapult_mount_02",
-            "gun": "aircraft_02"
+            "gun": "aircraft_02",
+            "gunnerDm": "catapult_mount_02_dm"
           },
           "limits": {
-            "yaw": [-130.0,0.0],
+            "yaw": [-120.0,0.0],
             "pitch": [0.0,0.0]
           },
           "limitsDeadzone": {

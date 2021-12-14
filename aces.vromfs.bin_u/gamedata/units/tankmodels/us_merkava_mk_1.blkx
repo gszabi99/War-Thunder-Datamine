@@ -3141,9 +3141,17 @@
       },
       "tracks": {
         "animationMultiplier": 0.6,
-        "height": 0.06,
+        "height": 0.07,
         "width": 0.55,
-        "fricFrontal": [1.0,0.8]
+        "fricFrontal": [1.0,0.8],
+        "tracksTensionK": [6.5,10.0,2.0],
+        "trackMesh": "us_merkava_mk_1_phys_track_line",
+        "trackLen": 0.149,
+        "trackCount": 100,
+        "trackFadeTime": 0.5,
+        "trackMaxSinking": 0.17,
+        "trackMaxHeight": 1.4,
+        "trackStartOffset": 0.02
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3185,11 +3193,13 @@
       "suspension": {
         "suspensionOffsets": [-0.16,-0.12,0.1],
         "defaultGearRadius": 0.4,
-        "frontBackGearRadius": 0.35,
-        "topGearRadius": 0.13,
+        "frontBackGearRadius": 0.38,
+        "topGearRadius": 0.15,
         "defaultDampeningForce": [300000.0,300000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.31,
+        "wheel_l_drive": 0.31
       }
     }
   },

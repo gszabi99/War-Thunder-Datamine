@@ -255,7 +255,6 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
     if (canUseBots && isBotsAllowed == null)
     {
       optionItems.append([::USEROPT_IS_BOTS_ALLOWED, "spinner"])
-      optionItems.append([::USEROPT_BOTS_RANKS, "list"])
     }
     if (canUseBots && isBotsAllowed != false && ::has_feature("Tanks") &&
       ::is_mission_for_unittype(missionBlk, ::ES_UNIT_TYPE_TANK))
@@ -280,6 +279,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
         optionItems.append([::USEROPT_ALLOW_JIP, "spinner"])
     }
 
+    optionItems.append([::USEROPT_ALLOW_EMPTY_TEAMS, "spinner"])
   }
 
   if (gm == ::GM_SKIRMISH || (::g_squad_manager.isInSquad() && isGameModeCoop(gm)))
@@ -612,6 +612,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
         misBlk.setBool("useKillStreaks", value)
       }
     }
+    misBlk.allowEmptyTeams = getOptValue(::USEROPT_ALLOW_EMPTY_TEAMS, false)
 
     local isBotsAllowed = getOptValue(::USEROPT_IS_BOTS_ALLOWED, false)
     if (value == null)
@@ -632,12 +633,6 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
       misBlk.useShipBots = ::has_feature("Ships") && getOptValue(::USEROPT_USE_SHIP_BOTS, false)
 
     misBlk.keepDead = getOptValue(::USEROPT_KEEP_DEAD, true)
-    if (isBotsAllowed)
-    {
-      value = getOptValue(::USEROPT_BOTS_RANKS, false)
-      if (value != null)
-        misBlk.ranks = ::build_blk_from_container(value)
-    }
 
     if (gm == ::GM_SKIRMISH)
     {
@@ -736,6 +731,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
 
     local mrankMin = getOptValue(::USEROPT_BR_MIN, 0)
     local mrankMax = getOptValue(::USEROPT_BR_MAX, 0)
+    misBlk.ranks = ::build_blk_from_container({min = mrankMin, max = mrankMax})
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
     {
       ::mission_settings.mrankMin <- mrankMin

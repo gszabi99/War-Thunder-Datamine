@@ -2,7 +2,19 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-::g_qi_view_utils <- {}
+::g_qi_view_utils <- {
+  function getQueueInfo(queue, txt = null) {
+    if (!queue)
+      return ""
+    // Add new line of extended text about wait time if it is not default message text.
+    local addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
+    local msg = txt ? txt : ::loc("yn1/wait_for_session")
+    local waitTime = queue ? queue.getActiveTime().tointeger() : 0
+    if (waitTime > 0)
+      msg = "".concat(msg, addLine, ::loc("ui/colon"), time.secondsToString(waitTime, false))
+    return msg
+  }
+}
 
 g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event)
 {
@@ -111,19 +123,7 @@ g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, 
   SecondsUpdater(timerObj, (@(textObj, iconObj) function(obj, p) {
     local queue = ::queues.findQueue({}) //first active queue
     if (::check_obj(textObj))
-    {
-      local msg = ""
-      if (queue)
-      {
-        // Add new line of extended text about wait time if it is not default message text.
-        local addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
-        msg = txt ? txt : ::loc("yn1/wait_for_session")
-        local waitTime = queue ? queue.getActiveTime().tointeger() : 0
-        if (waitTime > 0)
-          msg = "".concat(msg, addLine, ::loc("ui/colon"), time.secondsToString(waitTime, false))
-      }
-      textObj.setValue(msg)
-    }
+      textObj.setValue(::g_qi_view_utils.getQueueInfo(queue, txt))
     if (::check_obj(iconObj))
       iconObj.show(!!queue)
     return !queue

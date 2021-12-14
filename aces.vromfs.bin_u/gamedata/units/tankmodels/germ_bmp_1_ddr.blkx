@@ -213,7 +213,8 @@
         },
         "composite_armor_hull_01_dm": {
           "armorThickness": 5.0,
-          "hidableInXrayViewer": true
+          "hidableInXrayViewer": true,
+          "armorClass": "aluminium"
         }
       },
       "turret": {
@@ -484,7 +485,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -736,11 +736,11 @@
     "xray_viewer_data": {
       "armorArrayHull": {
         "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
+        "titleLoc": "aluminium",
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
+            "xrayTextThickness": 2.0
           }
         }
       }
@@ -2717,7 +2717,15 @@
       "tracks": {
         "animationMultiplier": 0.6,
         "height": 0.05,
-        "width": 0.35
+        "width": 0.35,
+        "tracksTensionK": [9.0,10.0,6.0],
+        "trackMesh": "ussr_bmp_1_phys_track_line",
+        "trackLen": 0.14,
+        "trackCount": 86,
+        "trackFadeTime": 1.5,
+        "trackConnector": true,
+        "trackStartOffset": 0.09,
+        "trackMaxHeight": 1.3
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2760,11 +2768,13 @@
       "suspension": {
         "suspensionOffsets": [-0.115,-0.115,0.14],
         "defaultGearRadius": 0.3,
-        "frontBackGearRadius": 0.2,
+        "frontBackGearRadius": 0.3,
         "topGearRadius": 0.09,
         "defaultDampeningForce": [50000.0,50000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.31,
+        "wheel_l_drive": 0.31
       },
       "floats": [
         {

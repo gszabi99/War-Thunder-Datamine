@@ -2881,12 +2881,19 @@
     "maxPower": 6.0,
     "maxSegments": 50
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apq_50.blk",
-      "dmPart": "radar_dm"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apq_50.blk",
+        "dmPart": "radar_dm"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_27.blk"
+      }
     }
-  },
+  ],
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -3106,26 +3113,6 @@
               "bullets": 30,
               "external": true,
               "separate": false
-            }
-          }
-        ]
-      }
-    },
-    "Radar_warning_receiver_system": {
-      "tier": 2,
-      "modClass": "weapon",
-      "reqModification": "countermeasures_belt_pack",
-      "effects": {
-        "sensors": [
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apq_50.blk",
-              "dmPart": "radar_dm"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_27.blk"
             }
           }
         ]

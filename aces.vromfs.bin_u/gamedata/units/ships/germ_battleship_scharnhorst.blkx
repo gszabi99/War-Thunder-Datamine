@@ -96,7 +96,7 @@
     "smokeScreenRad": 50.0
   },
   {
-    "smokeScreenFx": "smoke_screen_effect"
+    "smokeScreenFx": "tank_smokescreen"
   },
   {
     "smokeScreenOffset": [-80.0,2.0,0.0]
@@ -5489,6 +5489,16 @@
           "armorThickness": 10.0,
           "hp": 10000.0
         },
+        "turret_30_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 15.0,
+          "hp": 10000.0
+        },
+        "turret_14_side_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 10.0,
+          "hp": 10000.0
+        },
         "turret_08_front_dm": {
           "armorClass": "ship_STS",
           "armorThickness": 12.0,
@@ -7268,6 +7278,7 @@
       "supportPlaneClass": "arado-196a-3",
       "planeStartSpeed": 150.0,
       "count": 1,
+      "startFx": "start_torpedo",
       "catapult": {
         "visualNode": "aircraft_01",
         "head": "catapult_mount_01"
@@ -13209,7 +13220,7 @@
           "parkInDeadzone": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 10.0,
+          "speedYaw": 25.0,
           "speedPitch": 0.0,
           "turret": {
             "head": "catapult_mount_01",
@@ -14243,7 +14254,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 1.0,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -14264,7 +14275,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.8,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -14861,7 +14872,7 @@
           "shells": {
             "damageEffect": "ammunition_storage_aux",
             "ammunition_storage_aux_05_dm": {
-              "count": 54400
+              "count": 54480
             }
           }
         }

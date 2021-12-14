@@ -21,14 +21,15 @@ local function loadModel(modelName) {
     return
   isLoading(true)
   ::hangar_load_model(modelName)
-  ::broadcastEvent("HangarModelLoading")
+  ::broadcastEvent("HangarModelLoading", { modelName })
 }
 
 local function onHangarModelLoaded() {
-  if (::hangar_get_loaded_unit_name() == ::hangar_get_current_unit_name()) {
+  local modelName = ::hangar_get_current_unit_name()
+  if (::hangar_get_loaded_unit_name() == modelName) {
     isLoading(false)
-    hangarUnitName(::hangar_get_current_unit_name())
-    ::broadcastEvent("HangarModelLoaded")
+    hangarUnitName(modelName)
+    ::broadcastEvent("HangarModelLoaded", { modelName })
   }
 }
 

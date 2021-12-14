@@ -465,7 +465,6 @@
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
         "armorThickness": 5.0,
-        "armorThrough": 150.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2368,11 +2367,37 @@
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "commander_dm"
+            "gunnerDm": "commander_dm",
+            "rotatedTurret": "bone_mg_aa_h_01"
           },
           "limits": {
-            "yaw": [-160.0,150.0],
+            "yaw": [-161.5,156.5],
             "pitch": [-6.0,15.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
+          "limits": {
+            "yaw": [-161.5,156.5],
+            "pitch": [-5.0,10.0]
+          },
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm",
+            "rotatedTurret": "bone_mg_aa_h_01"
           }
         }
       }
@@ -3036,6 +3061,19 @@
         }
       }
     ]
+  },
+  {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 15.0,
+      "zoomInFov": 14.7,
+      "sightSize": [0.29,0.2],
+      "ircmProjector": {
+        "node": "bone_commander_sight_v",
+        "beamRadius": [600.0,50.0],
+        "projectorPower": [0.02,0.04]
+      }
+    }
   },
   {
     "cockpit": {

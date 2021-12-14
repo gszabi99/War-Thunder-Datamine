@@ -382,6 +382,7 @@ weaponry_item {
       id:t='actionHoldDummy'
       behavior:t='accesskey'
       btnName:t='A'
+      canShow:t='<<actionHoldDummyCanShow>>'
       on_pushed:t='::gcb.delayedTooltipChildPush'
       on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
       on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'

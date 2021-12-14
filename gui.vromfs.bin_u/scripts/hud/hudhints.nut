@@ -1596,6 +1596,44 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:support_plane_is_broken:show"
     lifeTime = 5.0
   }
+
+  ALLOW_SUPPORT_PLANE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/allow_support_plane"
+    noKeyLocId = "hints/allow_support_plane_nokey"
+    showEvent = "hint:allow_support_plane:show"
+    shouldBlink = true
+    lifeTime = 30.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  ALLOW_SWITCH_SUPPORT_PLANE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/allow_switch_support_plane"
+    noKeyLocId = "hints/allow_switch_support_plane_nokey"
+    showEvent = "hint:allow_switch_support_plane:show"
+    lifeTime = 30.0
+    shouldBlink = true
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = false
+  }
+
+  ALLOW_SMOKE_SCREEN = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/allow_smoke_screen"
+    noKeyLocId = "hints/allow_smoke_screen_nokey"
+    showEvent = "hint:allow_smoke_screen:show"
+    shortcuts = "ID_PLANE_SMOKE_SCREEN_GENERATOR"
+    lifeTime = 30.0
+    shouldBlink = true
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = false
+    getLocParams = @(hintData) {
+      minAlt = hintData.minAlt
+      maxAlt = hintData.maxAlt
+    }
+  }
 },
 function() {
   name = "hint_" + typeName.tolower()

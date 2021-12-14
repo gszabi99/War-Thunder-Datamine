@@ -15,6 +15,8 @@ local {lerp, sin} = require("std/math.nut")
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
 
+local iconSize = hdpx(STATE_ICON_SIZE)
+
 local images = {
   engine = Picture("!ui/gameuiskin#engine_state_indicator")
   transmission = Picture("!ui/gameuiskin#ship_transmission_state_indicator")
@@ -43,32 +45,31 @@ local images = {
 
 local fontFxColor = Color(80, 80, 80)
 local fontFx = FFT_GLOW
+local maxFontBoxHeight = hdpx(18.5)
 
-local function speedComp() {
-  return {
-    size = [flex(), SIZE_TO_CONTENT]
-    flow = FLOW_HORIZONTAL
-    hplace = ALIGN_CENTER
-    halign = ALIGN_RIGHT
-    valign = ALIGN_CENTER
+local speedComp = {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  hplace = ALIGN_CENTER
+  halign = ALIGN_RIGHT
+  valign = ALIGN_CENTER
 
-    children = [
-      {
-        size = [flex(4), SIZE_TO_CONTENT]
-        children = machineSpeed({ box = [hdpx(200), hdpx(18.5)], fontSize = hdpx(18.5) })
-        halign = ALIGN_RIGHT
-      }
-      {
-        size = [flex(1.8), SIZE_TO_CONTENT]
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_BOTTOM
-        children = [
-          speedValue()
-          speedUnits({ box = [hdpx(50), hdpx(18.5)], fontSize = hdpx(13) })
-        ]
-      }
-    ]
-  }
+  children = [
+    {
+      size = [flex(4), SIZE_TO_CONTENT]
+      children = machineSpeed({ box = [hdpx(200), maxFontBoxHeight], fontSize = maxFontBoxHeight })
+      halign = ALIGN_RIGHT
+    }
+    {
+      size = [flex(1.8), SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_BOTTOM
+      children = [
+        speedValue()
+        speedUnits({ box = [hdpx(50), maxFontBoxHeight], fontSize = hdpx(13) })
+      ]
+    }
+  ]
 }
 
 
@@ -111,7 +112,7 @@ local steeringGears = dmModule({
 })
 
 
-local damageModules = @() {
+local damageModules = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   gap = sh(STATE_ICON_MARGIN)
@@ -141,13 +142,13 @@ local buoyancyIndicator = @() {
     {
       rendObj = ROBJ_IMAGE
       image = images.buoyancy
-      size = [hdpx(STATE_ICON_SIZE), hdpx(10)]
+      size = [iconSize, hdpx(10)]
     }
   ]
 }
 
-local picFire = ::Picture($"{images.fire}{hdpx(STATE_ICON_SIZE)}:{hdpx(STATE_ICON_SIZE)}:K")
-local stateBlock = @() {
+local picFire = ::Picture($"{images.fire}{iconSize}:{iconSize}:K")
+local stateBlock = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   children = [
@@ -156,7 +157,7 @@ local stateBlock = @() {
       color =  fire.value ? damageModule.alert : damageModule.inactive
       watch = fire
       image = picFire
-      size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
+      size = [iconSize, iconSize]
     }
     buoyancyIndicator
   ]
@@ -169,7 +170,7 @@ local playAiSwithAnimation = function (ne_value) {
 
 local aiGunners = @() {
   vplace = ALIGN_BOTTOM
-  size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
+  size = [iconSize, iconSize]
   marigin = [hdpx(STATE_ICON_MARGIN), 0]
 
   rendObj = ROBJ_IMAGE
@@ -221,14 +222,14 @@ local countCrewLeftPercent = Computed(@()
     0, 100)
 )
 
-local crewBlock = @() {
+local crewBlock = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
-  size = [hdpx(STATE_ICON_SIZE), SIZE_TO_CONTENT]
+  size = [iconSize, SIZE_TO_CONTENT]
 
   children = [
     @() {
-      size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
+      size = [iconSize, iconSize]
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.driver
@@ -236,7 +237,7 @@ local crewBlock = @() {
       watch = driverAlive
     }
     @() {
-      size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
+      size = [iconSize, iconSize]
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.shipCrew
@@ -296,54 +297,50 @@ local steeringComp = {
   ]
 }
 
+local dollSize = [sh(16), sh(32)]
+local fovSize = [sh(30), sh(30)]
+local fovTopOffset = sh(2)
+local fovPos = [0.5*dollSize[0] - 0.5*fovSize[0],
+  0.5*dollSize[1] - 0.5*fovSize[1] + fovTopOffset]
 
-local function mkFov(pivot) {
-  return @() {
-    watch = [
-      fwdAngle
-      sightAngle
-      fov
-    ]
-    pos = [pivot[0] - sh(15), pivot[1] - sh(15)]
-    size = [sh(30), sh(30)]
-    transform = {
-      pivot = [0.5, 0.5]
-      rotate = sightAngle.value - fwdAngle.value
-      scale = [sin(fov.value), 1.0]
-    }
-    children = [
-      {
-        size = [flex(),flex()]
-        rendObj = ROBJ_IMAGE
-        image = images.sightCone
-        color = Color(155, 255, 0, 120)
-      }
-      {
-        size = [flex(),flex()]
-        rendObj = ROBJ_IMAGE
-        image = images.sightCone
-        color = Color(155, 255, 0)
-      }
-    ]
+local dollFov = @() {
+  watch = [ fwdAngle, sightAngle, fov ]
+  pos = fovPos
+  size = fovSize
+  transform = {
+    pivot = [0.5, 0.5]
+    rotate = sightAngle.value - fwdAngle.value
+    scale = [sin(fov.value), 1.0]
   }
+  children = [
+    {
+      size = [flex(),flex()]
+      rendObj = ROBJ_IMAGE
+      image = images.sightCone
+      color = Color(155, 255, 0, 120)
+    }
+    {
+      size = [flex(),flex()]
+      rendObj = ROBJ_IMAGE
+      image = images.sightCone
+      color = Color(155, 255, 0)
+    }
+  ]
 }
 
-local function doll() {
-  local dollSize = [sh(16), sh(32)]
-  return {
-    color = Color(0, 255, 0)
-    size = dollSize
-    rendObj = ROBJ_XRAYDOLL
-    rotateWithCamera = false
-
-    children = mkFov([dollSize[0]/2, (dollSize[1] + sh(4))/2])
-  }
+local doll = {
+  color = Color(0, 255, 0)
+  size = dollSize
+  rendObj = ROBJ_XRAYDOLL
+  rotateWithCamera = false
+  children = dollFov
 }
 
 
 local leftBlock = damageModules
 
 local rightBlock = @() {
+  watch = hasAiGunners
   size = [SIZE_TO_CONTENT, flex()]
   flow = FLOW_VERTICAL
   children = [
@@ -352,11 +349,10 @@ local rightBlock = @() {
     hasAiGunners.value ? aiGunners : null
     crewBlock
   ]
-  watch = hasAiGunners
 }
 
 
-local shipStateDisplay = @() {
+local shipStateDisplay = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
