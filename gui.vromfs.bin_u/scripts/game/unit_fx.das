@@ -107,7 +107,8 @@ def unit_fx_stop_single_burn_es(evt: EventOnStopSingleBurn;
   if !active || unit == null || unit.isDelayed
     return
 
-  for i in range(length(fire_fx__paramsId))
+  var i = length(fire_fx__paramsId)
+  while --i >= 0
     if fire_fx__paramsId[i] == evt.fireId
       unit_fx |> stopFxEventByIndex(fire_fx__fxId[i], false)
       fire_fx__id |> erase(i)
