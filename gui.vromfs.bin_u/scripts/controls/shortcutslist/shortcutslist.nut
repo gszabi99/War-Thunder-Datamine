@@ -8,7 +8,13 @@ local shortcutsList = {
   addShortcuts = shortcutsEnumData.definitionFunc
 }
 
-foreach (list in shortcutsModulesList.value)
-  shortcutsList.addShortcuts(list, shortcutsList)
+local function updateShortcutsList(value) {
+  foreach (list in value)
+    shortcutsList.addShortcuts(list, shortcutsList)
+}
+
+updateShortcutsList(shortcutsModulesList.value)
+
+shortcutsModulesList.subscribe(@(v) updateShortcutsList(v))
 
 return shortcutsList
