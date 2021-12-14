@@ -1,6 +1,6 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local globalEnv = require("globalEnv")
-
+local { getShortcutById } = require("scripts/controls/shortcutsUtils.nut")
 
 local function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   local nullInput = ::Input.NullInput()
@@ -72,7 +72,7 @@ g_shortcut_type._getBitArrayAxisIdByShortcutId <- function _getBitArrayAxisIdByS
 {
   local joyParams = ::JoystickParams()
   joyParams.setFrom(::joystick_get_cur_settings())
-  local shortcutData = ::get_shortcut_by_id(shortcutId)
+  local shortcutData = getShortcutById(shortcutId)
   local axis = joyParams.getAxis(shortcutData?.axisIndex ?? -1)
 
   if (axis.axisId < 0)
@@ -96,7 +96,7 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
 
   local joyParams = ::JoystickParams()
   joyParams.setFrom(::joystick_get_cur_settings())
-  local axisIndex = ::getTblValue("axisIndex", ::get_shortcut_by_id(shortcutId), -1)
+  local axisIndex = getShortcutById(shortcutId)?.axisIndex ?? -1
   if (axisIndex < 0)
     return result
 
@@ -171,7 +171,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
   COMMON_SHORTCUT = {
     isMe = function (shortcutId)
     {
-      local shortcutConfig = ::get_shortcut_by_id(shortcutId)
+      local shortcutConfig = getShortcutById(shortcutId)
       if (!shortcutConfig)
         return ::g_shortcut_type.isAxisShortcut(shortcutId)
       return ::getTblValue("type", shortcutConfig) != CONTROL_TYPE.AXIS
@@ -212,7 +212,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
   AXIS = {
     isMe = function (shortcutId)
     {
-      local shortcutConfig = ::get_shortcut_by_id(shortcutId)
+      local shortcutConfig = getShortcutById(shortcutId)
       return ::getTblValue("type", shortcutConfig) == CONTROL_TYPE.AXIS
     }
 
@@ -336,7 +336,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
 
     getDirection = function(shortcutId)
     {
-      return ::get_shortcut_by_id(shortcutId)?.axisDirection
+      return getShortcutById(shortcutId)?.axisDirection
     }
 
     hasDirection = function(shortcutId)

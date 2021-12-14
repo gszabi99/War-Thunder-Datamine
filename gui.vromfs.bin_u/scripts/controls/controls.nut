@@ -21,6 +21,7 @@ local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+local { getShortcutById } = require("scripts/controls/shortcutsUtils.nut")
 
 local PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -66,11 +67,6 @@ local function resetDefaultControlSettings() {
 
   ::set_option_mouse_joystick_square(0); //mouseJoystickSquare
   ::set_option_gain(1); //::USEROPT_FORCE_GAIN
-}
-
-::get_shortcut_by_id <- function get_shortcut_by_id(shortcutId)
-{
-  return ::getTblValue(shortcutId, shortcutsListModule)
 }
 
 ::can_change_helpers_mode <- function can_change_helpers_mode()
@@ -1310,7 +1306,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     curJoyParams.applyParams(device)
     updateSceneOptions()
 
-    local axisItem = ::get_shortcut_by_id(axisName)
+    local axisItem = getShortcutById(axisName)
     ::broadcastEvent("ControlsChangedAxes", {changedAxes = [axisItem]})
   }
 

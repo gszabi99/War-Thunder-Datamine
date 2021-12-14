@@ -2522,28 +2522,56 @@
     {
       "preset": {
         "name": "so_4050_vautour_2a_default",
-        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs_250.blk"
+        "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs_250.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_small"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "so_4050_vautour_2a_bombs_500",
         "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs_500.blk",
-        "reqModification": "is_250_50_gp"
+        "reqModification": "is_250_50_gp",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_middle"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "so_4050_vautour_2a_bombs_750",
         "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs.blk",
-        "reqModification": "is_360_50_gp"
+        "reqModification": "is_360_50_gp",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_large"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "so_4050_vautour_2a_bombs_1000",
         "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs_1000.blk",
-        "reqModification": "is_500_50_gp"
+        "reqModification": "is_500_50_gp",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_special"
+          }
+        }
       }
     },
     {
@@ -3577,12 +3605,21 @@
           "reqModification": "fr_matra_sneb"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-              "amountPerTier": 19.0
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+                "amountPerTier": 19.0
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_special"
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -3606,6 +3643,15 @@
         },
         {
           "reqModification": "is_250_50_gp"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle"
+            }
+          }
         }
       ]
     },
@@ -3622,6 +3668,15 @@
         },
         {
           "reqModification": "is_500_50_gp"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_special"
+            }
+          }
         }
       ]
     },
@@ -3638,6 +3693,15 @@
         },
         {
           "reqModification": "is_360_50_gp"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/il_360_50_kg_gp.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large"
+            }
+          }
         }
       ]
     }

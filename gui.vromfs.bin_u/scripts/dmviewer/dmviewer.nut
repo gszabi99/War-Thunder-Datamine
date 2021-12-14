@@ -1775,7 +1775,7 @@ const AFTERBURNER_CHAMBER = 3
     local weaponList = getUnitWeaponList()
     foreach(weapon in weaponList)
     {
-      if (linkedPartName != null)
+      if (linkedPartName != null && weapon?.turret != null)
         foreach(partKey in turretLinkedParts)
           if(weapon.turret?[partKey] == linkedPartName)
             return weapon
