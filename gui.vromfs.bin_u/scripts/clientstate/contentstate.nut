@@ -14,7 +14,7 @@ local getClientDownloadProgressText = @() ""
 local isHistoricalCampaignDownloading = @() false
 if (platformModule.isPlatformPS4)
 {
-  isConsoleClientFullyDownloaded = @() ::ps4_is_chunk_available(PS4_CHUNK_FULL_CLIENT_DOWNLOADED)
+  isConsoleClientFullyDownloaded = @() ::ps4_is_chunk_available(PS4_CHUNK_FULL_CLIENT_DOWNLOADED) && ::ps4_is_chunk_available(PS4_CHUNK_HISTORICAL_CAMPAIGN)
   getClientDownloadProgressText = function() {
     local percent = ::ps4_get_chunk_progress_percent(PS4_CHUNK_FULL_CLIENT_DOWNLOADED)
     local text = ::loc("msgbox/downloadPercent", {percent = percent})

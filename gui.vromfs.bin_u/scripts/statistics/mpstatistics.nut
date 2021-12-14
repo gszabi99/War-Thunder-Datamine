@@ -342,7 +342,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       ::count_width_for_mptable(objTbl, markupData.columns)
 
       local teamNum = (team==2)? 2 : 1
-      local tableObj = scene.findObject("table_team_" + teamNum)
+      local tableObj = scene.findObject($"team_table_{teamNum}")
       if (team == 2)
         markupData.colorTeam = "red"
       if (::checkObj(tableObj))

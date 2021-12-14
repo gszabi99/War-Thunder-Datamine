@@ -49,17 +49,15 @@ local cfgMenuShip = [
     EII_REPAIR_BREACHES,
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
     EII_SPEED_BOOSTER,  // Event
-  //
-
-
-
-
-
-
-
-
-
-
+  // Page #2
+    EII_SUPPORT_PLANE,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
 ]
 
 local cfgMenuSubmarine = [
