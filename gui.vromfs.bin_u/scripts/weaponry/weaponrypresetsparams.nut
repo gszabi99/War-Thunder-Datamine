@@ -29,6 +29,22 @@ local GROUP_ORDER = [
   [TRIGGER_TYPE.AAM]
 ]
 
+local function getTierTooltipParams(weaponry, presetName, tierId)
+{
+  local tier = weaponry.tiers?[tierId.tostring()]
+  return {
+    presetName    = presetName
+    tooltipLang   = tier?.tooltipLang
+    amountPerTier = tier?.amountPerTier ?? weaponry.amountPerTier ?? 0
+    name          = weaponry.name
+    blk           = weaponry.blk
+    tType         = weaponry.tType
+    ammo          = weaponry.ammo
+    isGun         = weaponry.isGun
+    addWeaponry   = weaponry?.addWeaponry
+  }
+}
+
 local unAllocatedTiers = []
 
 local function getWeaponrySize(massKg)
@@ -129,7 +145,8 @@ local function createTier(weaponry, presetName, itemsNum = 0)
     tierId  = tierId
     weaponry = tierWeaponry
     img = getTierIcon(weaponry, itemsNum)
-    tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name, tierWeaponry, presetName, tierId)
+    tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name,
+      getTierTooltipParams(tierWeaponry, presetName, tierId))
   }
 }
 
@@ -254,7 +271,7 @@ local function getPredefinedTiers(preset)
                 currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
                   itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
                 currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name,
-                  currTier.weaponry, preset.id, tierId)
+                  getTierTooltipParams(currTier.weaponry, preset.id, tierId))
               }
 
               continue
@@ -433,10 +450,11 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 }
 
 return {
-  TIERS_NUMBER            = TIERS_NUMBER
-  CHAPTER_ORDER           = CHAPTER_ORDER
-  CHAPTER_FAVORITE_IDX    = CHAPTER_FAVORITE_IDX
-  getWeaponryByPresetInfo = getWeaponryByPresetInfo
-  setFavoritePresets      = setFavoritePresets
-  sortPresetLists         = sortPresetLists
+  TIERS_NUMBER
+  CHAPTER_ORDER
+  CHAPTER_FAVORITE_IDX
+  getWeaponryByPresetInfo
+  setFavoritePresets
+  sortPresetLists
+  getTierTooltipParams
 }

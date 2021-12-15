@@ -1,12 +1,8 @@
-local { TIERS_NUMBER,
-        CHAPTER_ORDER,
-        CHAPTER_FAVORITE_IDX,
-        sortPresetLists,
-        setFavoritePresets,
-        getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
-local { getLastWeapon,
-        setLastWeapon,
-        getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
+local { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX,
+  sortPresetLists, setFavoritePresets, getWeaponryByPresetInfo,
+  getTierTooltipParams } = require("scripts/weaponry/weaponryPresetsParams.nut")
+local { getLastWeapon, setLastWeapon,
+  getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
@@ -188,7 +184,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       local item = presetsList[curPresetIdx]
       local weaponry = item.tiers?[curTierIdx].weaponry
       data = weaponry ? ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
-        getTierDescTbl(unit, weaponry, item.name, curTierIdx)) : ""
+        getTierDescTbl(unit, getTierTooltipParams(weaponry, item.name, curTierIdx))) : ""
     }
     guiScene.replaceContentFromText(descObj, data, data.len())
   }

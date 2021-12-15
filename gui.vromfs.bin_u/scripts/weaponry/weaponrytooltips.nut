@@ -150,8 +150,8 @@ local tooltipTypes = {
   }
 
   WEAPON_PRESET_TIER = {
-    getTooltipId = @(unitName, weaponry, presetName, tierId)
-      _buildId(unitName, {weaponry = weaponry, presetName = presetName , tierId = tierId})
+    getTooltipId = @(unitName, params)
+      _buildId(unitName, params)
 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
@@ -163,7 +163,7 @@ local tooltipTypes = {
       if (!unit)
         return false
       local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
-        getTierDescTbl(unit, params.weaponry, params.presetName, params.tierId))
+        getTierDescTbl(unit, params))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
       return true

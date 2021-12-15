@@ -38,36 +38,36 @@ local function updateSpareType(spare)
     spare.type <- weaponsItem.spare
 }
 
-local function getTierDescTbl(unit, weaponry, presetName, tierId)
+local function getTierDescTbl(unit, params)
 {
-  local currTier = weaponry.tiers?[tierId.tostring()]
-  if (currTier?.tooltipLang)
-    return { desc = ::loc(currTier.tooltipLang) }
+  local {presetName, tooltipLang, amountPerTier, name,
+    blk, tType, ammo, isGun, addWeaponry} = params
+  if (tooltipLang != null)
+    return { desc = ::loc(tooltipLang) }
 
-  local amountPerTier = currTier?.amountPerTier ?? weaponry.amountPerTier ?? 0
   local isBlock = amountPerTier > 1
-  local header = ::loc($"weapons/{weaponry.name}")
+  local header = ::loc($"weapons/{name}")
   local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
-    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, blk) path == weaponry.blk) })
-  if (::isInArray(weaponry.tType, CONSUMABLE_TYPES))
+    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, blk) path == blk) })
+  if (::isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
       "".concat(header, ::format(::loc("weapons/counter"), amountPerTier)) : header
-  else if (weaponry.ammo > 0)
+  else if (ammo > 0)
     header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
-      isBlock && !weaponry.isGun ? amountPerTier : weaponry.ammo, ")")
+      isBlock && !isGun ? amountPerTier : ammo, ")")
 
   // Need to replace header with new one contains right weapons amount calculated per tier
   local descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
   descArr[0] = header
   local res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
-  if(::isInArray(weaponry.tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
+  if(::isInArray(tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
     buildPiercingData({
-      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, weaponry.blk, true, false),
+      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, blk, true, false),
       descTbl = res})
 
-  if (weaponry?.addWeaponry != null)
+  if (addWeaponry != null)
   {
-    local addDescBlock = getTierDescTbl(unit, weaponry.addWeaponry, presetName, tierId)
+    local addDescBlock = getTierDescTbl(unit, params)
     res.desc = $"{res.desc}\n{addDescBlock.desc}"
     if ("bulletParams" in addDescBlock)
     {

@@ -248,7 +248,6 @@ local cfg = {
       { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
       { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = hasSchraegeMusik }
       { section = "flares" }
-      null
     ]
   },
 
@@ -263,7 +262,6 @@ local cfg = {
       null
       { shortcut = [ "ID_IRCM_SWITCH_HELICOPTER" ], enable = hasCountermeasureSystemIRCM }
       { section = "flares" }
-      null
     ]
   },
 

@@ -96,6 +96,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   contentPartails = {}
   pageIdx = 0
   pagesTotal = 1
+  itemsTotal = 0
 
   function initScreen()
   {
@@ -147,7 +148,11 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fill(isInitial = false)
   {
-    pagesTotal = ::max(1, (menu.len() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
+    itemsTotal = 0
+    foreach (idx, v in menu)
+      if (v != null)
+        itemsTotal = idx + 1
+    pagesTotal = ::max(1, (itemsTotal + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
     pageIdx = isInitial ? 0 : ::min(pageIdx, pagesTotal - 1)
 
     fillMenuItems()
@@ -162,7 +167,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local startIdx = pageIdx * ITEMS_PER_PAGE
 
-    local itemsCount = ::max(menu.len() - startIdx, ITEMS_PER_PAGE)
+    local itemsCount = ::max(itemsTotal - startIdx, ITEMS_PER_PAGE)
     btnSetIdx = btnSetsConfig.len() - 1
     for (local i = 0; i < btnSetsConfig.len(); i++)
       if (btnSetsConfig[i].len() >= itemsCount)
