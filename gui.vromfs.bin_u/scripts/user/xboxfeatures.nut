@@ -25,13 +25,7 @@ local function checkMultiplayerPrivilege(showMarket = true, cb = null)
 }
 
 return isPlatformXboxOne? {
-  checkAndShowMultiplayerPrivilegeWarning = function() {
-    if (cachedMultiplayerPrivilege.value || !::g_login.isLoggedIn())
-      return true
-
-    checkMultiplayerPrivilege(true)
-    return false
-  }
+  checkAndShowMultiplayerPrivilegeWarning = @() true
   isMultiplayerPrivilegeAvailable = @() cachedMultiplayerPrivilege.value
   resetMultiplayerPrivilege = @() cachedMultiplayerPrivilege(true)
   updateMultiplayerPrivilege = function() {
