@@ -48,7 +48,7 @@ local function getTierDescTbl(unit, params)
   local isBlock = amountPerTier > 1
   local header = ::loc($"weapons/{name}")
   local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
-    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, blk) path == blk) })
+    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, value) path == blk) })
   if (::isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
       "".concat(header, ::format(::loc("weapons/counter"), amountPerTier)) : header
