@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
+local { hasFeature } = require("scripts/user/features.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -417,7 +418,7 @@ g_orders.updateHideOrderBlock <- function updateHideOrderBlock()
 // Activates order, which soon expire.
 g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
 {
-  if (isActivationProgress)
+  if (!hasFeature("OrderAutoActivate") || isActivationProgress)
     return
 
   // If some orders expired during other one active

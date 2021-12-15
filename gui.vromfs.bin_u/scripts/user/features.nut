@@ -277,6 +277,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   BuyAllPresets = false
   enableFollowBulletCamera = ::disable_network()
   ProtectionMap = false
+  OrderAutoActivate = false
 })
 
 local override = ::Watched({})
