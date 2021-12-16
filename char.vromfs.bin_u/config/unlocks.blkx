@@ -177282,6 +177282,21 @@
   },
   {
     "unlockable": {
+      "id": "slot10_israel_not_rewarded",
+      "type": "award",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": {
+          "type": "char_unlocked",
+          "unlock": "present_slot_10",
+          "positive": false
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "slot10_israel",
       "type": "slot",
       "country": "country_israel",
@@ -177294,7 +177309,7 @@
         {
           "condition": {
             "type": "char_unlocked",
-            "unlock": "slot10_not_rewarded",
+            "unlock": "slot10_israel_not_rewarded",
             "positive": false
           }
         },
