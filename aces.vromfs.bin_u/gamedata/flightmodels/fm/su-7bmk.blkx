@@ -116,7 +116,15 @@
       "Mode": "Separate",
       "AileronsMode": "Manual",
       "ElevatorMode": "Rate",
-      "RudderMode": "Manual",
+      "RudderMode": "Rate",
+      "ThrottleMode": "Manual",
+      "allowOverrideByForcedStabilization": true
+    },
+    "ModePreset2": {
+      "Mode": "Separate",
+      "AileronsMode": "Manual",
+      "ElevatorMode": "Angle",
+      "RudderMode": "Rate",
       "ThrottleMode": "Manual",
       "allowOverrideByForcedStabilization": true
     }
@@ -1229,7 +1237,7 @@
     "WaterRudderSpeedRange": [8.33333,13.8889],
     "StrutL": {
       "SpringHeight": 0.35,
-      "SpringCoeff": 170000.0,
+      "SpringCoeff": 120000.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": true,
@@ -1240,7 +1248,7 @@
     },
     "StrutR": {
       "SpringHeight": 0.35,
-      "SpringCoeff": 170000.0,
+      "SpringCoeff": 120000.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": false,
@@ -1463,8 +1471,8 @@
       }
     },
     "Pitch": {
-      "RateMax": [0.0,0.0],
-      "AngleMax": [0.0,0.0],
+      "RateMax": [-40.0,60.0],
+      "AngleMax": [-55.0,70.0],
       "VelMax": [0.0,0.0],
       "AngleLim": 190.0,
       "BalanceLoadFactor": true,
@@ -1476,7 +1484,7 @@
       "ClimbAngleMax": [0.0,0.0],
       "ClimbAngleToLoadFactor": 0.7,
       "RatePID": {
-        "Kp": 0.0,
+        "Kp": 1.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
@@ -1484,7 +1492,7 @@
         "Lim": [-2147440000.0,2147440000.0]
       },
       "AnglePID": {
-        "Kp": 0.0,
+        "Kp": 1.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
@@ -1525,7 +1533,7 @@
       }
     },
     "Yaw": {
-      "RateMax": [0.0,0.0],
+      "RateMax": [-50.0,50.0],
       "LateralLoadFactorTimeMult": 1.0,
       "AosTimeMult": 1.0,
       "Trim": {
@@ -1533,7 +1541,7 @@
         "PropTorqueAxis": [0.0,0.0,0.0]
       },
       "RatePID": {
-        "Kp": 0.0,
+        "Kp": 1.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
