@@ -38,10 +38,27 @@ local function updateSpareType(spare)
     spare.type <- weaponsItem.spare
 }
 
+local function getTierTooltipParams(weaponry, presetName, tierId)
+{
+  local tier = weaponry.tiers?[tierId.tostring()]
+  return {
+    presetName    = presetName
+    tooltipLang   = tier?.tooltipLang
+    amountPerTier = tier?.amountPerTier ?? weaponry.amountPerTier ?? 0
+    name          = weaponry.name
+    blk           = weaponry.blk
+    tType         = weaponry.tType
+    ammo          = weaponry.ammo
+    isGun         = weaponry.isGun
+    addWeaponry   = weaponry?.addWeaponry
+    tierId
+  }
+}
+
 local function getTierDescTbl(unit, params)
 {
   local {presetName, tooltipLang, amountPerTier, name,
-    blk, tType, ammo, isGun, addWeaponry} = params
+    blk, tType, ammo, isGun, addWeaponry, tierId } = params
   if (tooltipLang != null)
     return { desc = ::loc(tooltipLang) }
 
@@ -67,7 +84,7 @@ local function getTierDescTbl(unit, params)
 
   if (addWeaponry != null)
   {
-    local addDescBlock = getTierDescTbl(unit, params)
+    local addDescBlock = getTierDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
     res.desc = $"{res.desc}\n{addDescBlock.desc}"
     if ("bulletParams" in addDescBlock)
     {
@@ -326,6 +343,7 @@ updateWeaponTooltip = function(obj, unit, item, handler, params={}, effect=null)
 
 return {
   updateModType
+  getTierTooltipParams
   getTierDescTbl
   updateSpareType
   updateWeaponTooltip

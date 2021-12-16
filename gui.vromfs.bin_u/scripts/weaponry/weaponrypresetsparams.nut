@@ -6,6 +6,7 @@ local { TRIGGER_TYPE,
         isWeaponEnabled,
         isWeaponUnlocked } = require("scripts/weaponry/weaponryInfo.nut")
 local { WEAPON_PRESET_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
+local { getTierTooltipParams } = require("scripts/weaponry/weaponryTooltipPkg.nut")
 local { GUI } = require("scripts/utils/configs.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
@@ -28,22 +29,6 @@ local GROUP_ORDER = [
   [TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM],
   [TRIGGER_TYPE.AAM]
 ]
-
-local function getTierTooltipParams(weaponry, presetName, tierId)
-{
-  local tier = weaponry.tiers?[tierId.tostring()]
-  return {
-    presetName    = presetName
-    tooltipLang   = tier?.tooltipLang
-    amountPerTier = tier?.amountPerTier ?? weaponry.amountPerTier ?? 0
-    name          = weaponry.name
-    blk           = weaponry.blk
-    tType         = weaponry.tType
-    ammo          = weaponry.ammo
-    isGun         = weaponry.isGun
-    addWeaponry   = weaponry?.addWeaponry
-  }
-}
 
 local unAllocatedTiers = []
 

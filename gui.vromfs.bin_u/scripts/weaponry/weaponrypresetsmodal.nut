@@ -1,12 +1,13 @@
 local { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX,
-  sortPresetLists, setFavoritePresets, getWeaponryByPresetInfo,
-  getTierTooltipParams } = require("scripts/weaponry/weaponryPresetsParams.nut")
+  sortPresetLists, setFavoritePresets, getWeaponryByPresetInfo
+} = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon, setLastWeapon,
   getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
-local { getTierDescTbl, updateWeaponTooltip } = require("scripts/weaponry/weaponryTooltipPkg.nut")
+local { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
+} = require("scripts/weaponry/weaponryTooltipPkg.nut")
 local { weaponsPurchase, canBuyItem } = require("scripts/weaponry/weaponsPurchase.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
