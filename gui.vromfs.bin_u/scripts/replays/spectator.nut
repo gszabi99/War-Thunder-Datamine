@@ -415,21 +415,19 @@ enum SPECTATOR_CHAT_TAB {
     return player != null && player.team == ::get_player_army_for_hud()
   }
 
-  function getPlayerNick(player, colored = false, needClanTag = true)
+  function getPlayerNick(player, needColored = false, needClanTag = true)
   {
-    local name = player && needClanTag ? ::g_contacts.getPlayerFullName(player.name, player.clanTag)
-      : player ? player.name
-      : ""
-
-    local color = getPlayerColor(player, colored)
-    return ::colorize(color, getPlayerName(name))
+    if (player == null)
+      return  ""
+    local name = ::g_contacts.getPlayerFullName(
+      getPlayerName(player.name), // can add platform icon
+      needClanTag && !player.isBot ? player.clanTag : "")
+    return needColored ? ::colorize(getPlayerColor(player), name) : name
   }
 
-  function getPlayerColor(player, colored)
+  function getPlayerColor(player)
   {
-    return !colored ? ""
-    : !player ? "hudColorRed"
-    : player.isLocal ? "hudColorHero"
+    return player.isLocal ? "hudColorHero"
     : player.isInHeroSquad ? "hudColorSquad"
     : player.team == ::get_player_army_for_hud() ? "hudColorBlue"
     : "hudColorRed"

@@ -10,6 +10,7 @@ class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
   cancelFunc = null
   skipFunc = null
   isCanceled = true
+  isStarted = false
 
   message = ""
   list = ""
@@ -63,7 +64,7 @@ class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
   {
     isCanceled = false
     if (parentHandler && onStartPressed)
-      onStartPressed.call(parentHandler)
+      isStarted = true
 
     goBack()
   }
@@ -72,5 +73,7 @@ class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isCanceled)
       ::call_for_handler(parentHandler, cancelFunc)
+    if (isStarted)
+      ::call_for_handler(parentHandler, onStartPressed)
   }
 }

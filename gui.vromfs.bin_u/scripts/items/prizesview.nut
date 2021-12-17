@@ -977,6 +977,7 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
   if (!unit)
     return null
 
+  local { showTooltip = true } = params
   local icon = ""
   if (modName == "premExpMul") //talisman
     icon = "#ui/gameuiskin#item_type_talisman"
@@ -989,7 +990,7 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
     title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
       + ::colorize("userlogColoredText",
         getModificationName(unit, modName))
-    tooltipId = MODIFICATION.getTooltipId(unitName, modName)
+    tooltipId = showTooltip ? MODIFICATION.getTooltipId(unitName, modName) : null
   }
 }
 
@@ -1000,6 +1001,7 @@ PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params
   if (!spare)
     return null
 
+  local { showTooltip = true } = params
   local title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
               + ::colorize("userlogColoredText", ::loc("spare/spare"))
   if (count && count > 1)
@@ -1009,7 +1011,7 @@ PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params
     icon2 = ::get_unit_country_icon(unit)
     shopItemType = getUnitRole(unit)
     title = title
-    tooltipId = SPARE.getTooltipId(unitName)
+    tooltipId = showTooltip ? SPARE.getTooltipId(unitName) : null
   }
 }
 
@@ -1021,6 +1023,7 @@ PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize
   if (!unit)
     return null
 
+  local { showTooltip = true } = params
   local crew = ::get_crew_by_id(prize?.crew ?? 0)
   local title = ::colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + ::loc("ui/colon")
               + ::colorize("activeTextColor", ::getUnitName(unit))
@@ -1029,12 +1032,13 @@ PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize
     icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces" : "#ui/gameuiskin#item_type_crew_experts"
     icon2 = ::get_unit_country_icon(unit)
     title = title
-    tooltipId = ::g_tooltip.getIdUnit(unitName)
+    tooltipId = showTooltip ? ::g_tooltip.getIdUnit(unitName) : null
   }
 }
 
 PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params = null)
 {
+  local { showTooltip = true } = params
   local id = prize?.resource ?? ""
   local decoratorType = ::g_decorator_type.getTypeByResourceType(prize?.resourceType)
   local isHave = decoratorType.isPlayerHaveDecorator(id)
@@ -1045,7 +1049,7 @@ PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params =
   return {
     icon  = decoratorType.prizeTypeIcon
     title = getPrizeText(prize)
-    tooltipId = ::g_tooltip.getIdDecorator(id, decoratorType.unlockedItemType, params)
+    tooltipId = showTooltip ? ::g_tooltip.getIdDecorator(id, decoratorType.unlockedItemType, params) : null
     commentText = !isReceivedPrizes && isHave ?  ::colorize("badTextColor", ::loc(receiveOnce)) : null
     buttons = buttons
     buttonsCount = buttons.len()
@@ -1054,6 +1058,7 @@ PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params =
 
 PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params = null)
 {
+  local { showTooltip = true } = params
   local primaryIcon = prize?.primaryIcon
   local buttons = getPrizeActionButtonsView(prize, params)
   local item = ::ItemsManager.findItemById(prize?.item)
@@ -1066,7 +1071,7 @@ PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params 
     title = params?.needShowItemName ?? true
       ? getPrizeText(prize, !params?.isLocked, false, showCount, true)
       : prize?.commentText ?? ""
-    tooltipId = item && !item.shouldAutoConsume ? ::g_tooltip.getIdItem(prize?.item, params) : null
+    tooltipId = showTooltip && item && !item.shouldAutoConsume ? ::g_tooltip.getIdItem(prize?.item, params) : null
     buttons = buttons
     buttonsCount = buttons.len()
   }
@@ -1086,11 +1091,13 @@ PrizesView.getViewDataDefault <- function getViewDataDefault(prize, showCount, p
   //!!FIX ME: better to refactor this. it used only here, but each function try do detect prize type by self
   //much faster will be to get viewData array and gen desc by it than in each function detect prize type.
   //Now we have function getPrizeType() for prize type detection.
+  local { showTooltip = true } = params
   local title = getPrizeText(prize, true, false, showCount, true)
   local icon = getPrizeTypeIcon(prize)
-  local tooltipId = prize?.trophy ? ::g_tooltip.getIdSubtrophy(prize.trophy)
-                  : prize?.unlock ? ::g_tooltip.getIdUnlock(prize.unlock, params)
-                  : null
+  local tooltipId = !showTooltip ? null
+    : prize?.trophy ? ::g_tooltip.getIdSubtrophy(prize.trophy)
+    : prize?.unlock ? ::g_tooltip.getIdUnlock(prize.unlock, params)
+    : null
 
   local previewImage = null
   local commentText = null

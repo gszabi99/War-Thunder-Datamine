@@ -171,7 +171,7 @@ local exportTypes = addTooltipTypes({
       local preferMarkup = item.isPreferMarkupDescInTooltip
       obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
       fillItemDescr(item, obj, handler, false, preferMarkup,
-        params.__merge({ showOnlyCategoriesOfPrizes = true}))
+        params.__merge({ showOnlyCategoriesOfPrizes = true, showTooltip = false }))
       return true
     }
     onEventItemsShopUpdate = function(eventParams, obj, handler, id, params) {
