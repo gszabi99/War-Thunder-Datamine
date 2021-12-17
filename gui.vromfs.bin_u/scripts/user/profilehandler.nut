@@ -1645,17 +1645,17 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 }
 
 local openProfileSheetParamsFromPromo = {
-  UnlockAchievement = @(p1, p2) {
+  UnlockAchievement = @(p1, p2, ...) {
     uncollapsedChapterName = p2 != ""? p1 : null
     curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
   }
-  Medal = @(p1, p2) { filterCountryName = p1 }
+  Medal = @(p1, p2, ...) { filterCountryName = p1 }
   UnlockSkin = @(p1, p2, p3) {
     filterCountryName = p1
     filterUnitTag = p2
     initSkinId = p3
   }
-  UnlockDecal = @(p1, p2) { filterGroupName = p1 }
+  UnlockDecal = @(p1, p2, ...) { filterGroupName = p1 }
 }
 
 local function openProfileFromPromo(params, sheet = null) {

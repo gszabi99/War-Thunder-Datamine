@@ -276,6 +276,8 @@ foreach (fn in [
 
   function joinQueue(params)
   {
+    if (params == null)
+      return dagor.debug("Error: cancel join queue because params = null.")
     if (findQueue(params))
       return dagor.debug("Error: cancel join queue because already exist.")
 
