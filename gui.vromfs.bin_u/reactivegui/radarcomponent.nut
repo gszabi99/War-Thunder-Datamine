@@ -73,8 +73,17 @@ local function B_ScopeSquareBackground(size, color) {
   local scanAzimuthMaxRelW = Computed(@() ScanAzimuthMax.value * AzimuthRangeInv.value)
 
   local gridSecondaryCommandsW = Computed(function(){
-    local scanAzimuthMinRel = scanAzimuthMinRelW.value
-    local scanAzimuthMaxRel = scanAzimuthMaxRelW.value
+    local scanAzimuthMinRel
+    local scanAzimuthMaxRel
+    if (scanAzimuthMinRelW.value <= scanAzimuthMaxRelW.value) {
+      scanAzimuthMinRel = scanAzimuthMinRelW.value
+      scanAzimuthMaxRel = scanAzimuthMaxRelW.value
+    }
+    else {
+      scanAzimuthMinRel = -1.0
+      scanAzimuthMaxRel =  1.0
+    }
+
     local azimuthRangeInv = AzimuthRangeInv.value
 
     local gridSecondaryCommands = []
@@ -88,8 +97,9 @@ local function B_ScopeSquareBackground(size, color) {
 
     if (HasAzimuthScale.value) {
       local azimuthRelStep = PI / 12.0 * azimuthRangeInv
-      local azimuthRel = 0.0
-      while (azimuthRel > ScanAzimuthMin.value * azimuthRangeInv) {
+      local azimuthScanCenterRel = (scanAzimuthMinRel + scanAzimuthMaxRel) * 0.5
+      local azimuthRel = azimuthScanCenterRel
+      while (azimuthRel > scanAzimuthMinRel) {
         gridSecondaryCommands.append([
           VECTOR_LINE,
           50 + azimuthRel * 100, 0,
@@ -97,8 +107,8 @@ local function B_ScopeSquareBackground(size, color) {
         ])
         azimuthRel -= azimuthRelStep
       }
-      azimuthRel = 0.0
-      while (azimuthRel < ScanAzimuthMax.value * azimuthRangeInv) {
+      azimuthRel = azimuthScanCenterRel
+      while (azimuthRel < scanAzimuthMaxRel) {
         gridSecondaryCommands.append([
           VECTOR_LINE,
           50 + azimuthRel * 100, 0,
@@ -1104,18 +1114,18 @@ local function B_Scope(size, color) {
 }
 
 local function B_ScopeHalfBackground(size, color) {
-  local angleLimStartS = AzimuthMin.value - PI * 0.5
-  local angleLimFinishS = AzimuthMax.value - PI * 0.5
+  local angleLimStartS = Computed(@() AzimuthMin.value - PI * 0.5)
+  local angleLimFinishS = Computed(@() AzimuthMax.value - PI * 0.5)
 
   local function circle() {
-    local angleLimStart = angleLimStartS
-    local angleLimFinish = angleLimFinishS
+    local angleLimStart = angleLimStartS.value
+    local angleLimFinish = angleLimFinishS.value
     local angleLimStartDeg = angleLimStart * rad2deg
     local angleLimFinishDeg = angleLimFinish * rad2deg
     return {
       rendObj = ROBJ_VECTOR_CANVAS
       size = size
-      watch = [AzimuthMin, AzimuthMax]
+      watch = [angleLimStartS, angleLimFinishS]
       color
       fillColor = areaBackgroundColor
       lineWidth = hdpx(LINE_WIDTH)
@@ -1143,8 +1153,15 @@ local function B_ScopeHalfBackground(size, color) {
   local dashCount = 360.0 / angleGrad
   local defSecGrid = []
   local gridSecondaryCom = Computed(function(){
-    local scanAngleStart = scanAngleStartS.value
-    local scanAngleFinish = scanAngleFinishS.value
+    local scanAngleStart
+    local scanAngleFinish
+    if (scanAngleFinishS.value > scanAngleStartS.value) {
+      scanAngleStart = scanAngleStartS.value
+      scanAngleFinish = scanAngleFinishS.value
+    } else {
+      scanAngleStart = angleLimStartS.value
+      scanAngleFinish = angleLimFinishS.value
+    }
     local scanAngleStartDeg = scanAngleStart * rad2deg
     local scanAngleFinishDeg = scanAngleFinish * rad2deg
 
@@ -1185,7 +1202,7 @@ local function B_ScopeHalfBackground(size, color) {
     local scanAngleFinish = scanAngleFinishS.value
 
     return {
-      watch = [scanAngleStartS, scanAngleFinishS]
+      watch = [scanAngleStartS, scanAngleFinishS, angleLimStartS, angleLimFinishS]
       rendObj = ROBJ_VECTOR_CANVAS
       size
       color = isColorOrWhite(color)
