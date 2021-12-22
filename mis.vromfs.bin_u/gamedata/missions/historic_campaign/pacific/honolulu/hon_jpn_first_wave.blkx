@@ -276,6 +276,13 @@
         {
           "unitSetStealth": {
             "set": true,
+            "radius": 0.0,
+            "target": "wheeler_real_planes"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
             "radius": 5000.0,
             "target": "ijn_fleet_sq"
           }
@@ -1007,6 +1014,20 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "wheeler_real_planes",
+            "attack_type": "hold_fire",
+            "speed": 0.0,
+            "aiEnabled": false,
+            "enginesEnabled": false,
+            "stayOnGround": true
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "ijn_a6m2_aftertakeoff_scene"
@@ -1272,30 +1293,21 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": {
-            "object_type": "isKilledByPlayer",
-            "object_marking": 0,
-            "func": "more",
-            "value": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "wheeler_player_objects"
-          }
+      "conditions": {
+        "unitWhenKilled": {
+          "target": "wheeler_player_objects",
+          "offender": "player_d3a1"
         },
-        {
-          "unitWhenCountMatches": {
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "func": "less",
-            "value": 1,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "wheeler_player_objects"
-          }
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "wheeler_player_objects"
         }
-      ],
+      },
       "actions": [
         {
           "triggerDisable": {
@@ -2354,41 +2366,25 @@
           "time": 1.0
         }
       },
-      "conditions": [
-        {
-          "unitWhenCountMatches": {
-            "object_type": "isDamagedByPlayer",
-            "object_marking": 0,
-            "func": "more",
-            "value": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "uss_bb_squad"
-          }
+      "conditions": {
+        "unitWhenKilled": {
+          "target": "uss_bb_squad",
+          "offender": "player_d3a1"
         },
-        {
-          "unitWhenCountMatches": {
-            "object_type": "isKilledByPlayer",
-            "object_marking": 0,
-            "func": "more",
-            "value": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "uss_bb_squad"
-          }
+        "unitWhenHit": {
+          "target": "uss_bb_squad",
+          "offender": "player_d3a1"
         },
-        {
-          "unitWhenCountMatches": {
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "func": "less",
-            "value": 1,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "uss_bb_squad"
-          }
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "uss_bb_squad"
         }
-      ],
+      },
       "actions": [
         {
           "triggerDisable": {
@@ -6428,6 +6424,58 @@
       }
     },
     {
+      "squad": {
+        "name": "wheeler_real_planes",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6171.4,261.65,2408.05]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "plane_wheeler_p40_09"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_08"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_07"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_06"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_05"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_04"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_02"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_01"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_03"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_10"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_11"
+          },
+          {
+            "squad_members": "plane_wheeler_p40_12"
+          }
+        ]
+      }
+    },
+    {
       "armada": {
         "name": "player_d3a1",
         "tm": [
@@ -7193,6 +7241,582 @@
       }
     },
     {
+      "armada": {
+        "name": "plane_wheeler_p40_01",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6260.75,105.2,1883.52]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_02",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6286.24,105.2,1893.5]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_03",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6310.4,105.2,1902.9]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_04",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6339.0,105.2,1913.3]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_05",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6362.55,105.2,1923.15]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_06",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6389.05,105.2,1933.0]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_07",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6411.8,105.2,1941.6]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_08",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6436.25,105.2,1951.0]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_09",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6464.7,105.2,1961.25]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_10",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6491.2,105.2,1971.8]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_11",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6517.6,105.2,1980.75]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "plane_wheeler_p40_12",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [-6543.17,105.2,1990.3]
+        ],
+        "unit_class": "p-40e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "wheeled_vehicles": {
         "name": "wheeler_truck",
         "tm": [
@@ -7439,358 +8063,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_01",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6550.45,109.387,1999.65]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_02",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6538.05,109.387,1995.5]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_03",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6526.0,109.387,1991.0]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_04",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6513.2,109.387,1986.2]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_05",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6500.85,109.387,1981.05]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_06",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6487.3,109.387,1976.25]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_07",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6473.25,109.387,1971.3]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_08",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6459.2,109.387,1965.75]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_09",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6443.8,109.387,1957.85]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_10",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6428.6,109.387,1953.15]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_11",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6413.95,109.387,1947.1]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_12",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6402.6,109.387,1942.15]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_13",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6389.15,109.387,1937.2]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_14",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6375.5,109.387,1932.35]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_15",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6361.05,109.387,1928.0]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_16",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6346.1,109.387,1922.65]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_17",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6332.55,109.387,1915.2]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_18",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6316.6,109.387,1910.7]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_19",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6300.9,109.387,1903.9]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_20",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6285.65,109.387,1897.3]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_21",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6267.95,109.387,1890.35]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "obj_wheeler_p40_22",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-6250.05,109.387,1883.25]
-        ],
-        "unit_class": "p_40e",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "structures": {
         "name": "str_wheeler_hangar01",
         "tm": [
@@ -7813,6 +8085,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7849,6 +8122,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
