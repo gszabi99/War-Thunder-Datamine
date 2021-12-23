@@ -142,7 +142,8 @@
       },
       "turret_front_composite_armor": {
         "turret_04_front_dm": {
-          "armorThickness": 38.0
+          "armorThickness": 38.0,
+          "armorClass": "CHA_tank_modern"
         },
         "turret_01_front_dm": {
           "armorThickness": 50.0,
@@ -202,6 +203,10 @@
         "composite_armor_hull_05_dm": {
           "armorThickness": 25.0,
           "hidableInXrayViewer": true
+        },
+        "composite_armor_hull_09_dm": {
+          "armorThickness": 0.0,
+          "armorClass": "leopard_2a5_turret_nera"
         }
       },
       "hull_rha": {
@@ -237,8 +242,7 @@
           "armorClass": "tank_structural_steel"
         },
         "turret_09_top_dm": {
-          "armorThickness": 10.0,
-          "armorClass": "tank_structural_steel"
+          "armorThickness": 20.0
         },
         "composite_armor_hull_10_dm": {
           "armorThickness": 5.0,
@@ -280,14 +284,15 @@
           "armorThickness": 80.0
         },
         "turret_09_front_dm": {
-          "armorThickness": 6.35,
+          "armorThickness": 25.4,
           "armorClass": "tank_structural_steel"
         },
         "turret_10_front_dm": {
           "armorThickness": 80.0
         },
         "turret_07_back_dm": {
-          "armorThickness": 60.0
+          "armorThickness": 60.0,
+          "armorClass": "CHA_tank_modern"
         },
         "turret_06_top_dm": {
           "armorThickness": 50.0
@@ -310,7 +315,8 @@
           "armorThickness": 10.0
         },
         "turret_02_back_dm": {
-          "armorThickness": 44.0
+          "armorThickness": 44.0,
+          "armorClass": "CHA_tank_modern"
         },
         "turret_06_back_dm": {
           "armorThickness": 20.0
@@ -370,7 +376,8 @@
           "armorThickness": 38.0
         },
         "turret_02_top_dm": {
-          "armorThickness": 60.0
+          "armorThickness": 60.0,
+          "armorClass": "CHA_tank_modern"
         },
         "ex_armor_02_dm": {
           "armorThickness": 200.0,
@@ -422,9 +429,7 @@
           "genericArmorQuality": 0.3,
           "cumulativeArmorQuality": 2.0,
           "armorClass": "leopard_2a5_turret_nera",
-          "variableThickness": true,
-          "genericEffectiveThicknessMax": 50.0,
-          "cumulativeEffectiveThicknessMax": 450.0
+          "variableThickness": true
         },
         "ex_armor_l_02_dm": {
           "armorThickness": 6.35,
@@ -454,27 +459,41 @@
         "composite_armor_hull_07_dm": [],
         "composite_armor_hull_08_dm": []
       },
-      "composite_side_shields": {
+      "composite_upper_side_shields": {
         "armorClass": "hull_side_special_armor",
         "hp": 800.0,
         "armorThickness": 70.0,
         "stopChanceOnDeadPart": 0.0,
+        "cumulativeArmorQuality": 1.1,
+        "genericArmorQuality": 1.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
         "variableThickness": true,
-        "turret_05_bottom_dm": [],
-        "ex_armor_l_05_dm": {
-          "variableThickness": true
-        },
-        "ex_armor_r_05_dm": {
-          "variableThickness": true
+        "turret_05_bottom_dm": {
+          "armorThickness": 40.0,
+          "armorQuality": 0.635
         },
         "ex_armor_l_04_dm": {
-          "variableThickness": true
+          "armorThickness": 110.0,
+          "armorQuality": 0.23
         },
         "ex_armor_r_04_dm": {
-          "variableThickness": true
+          "armorThickness": 110.0,
+          "armorQuality": 0.23
         }
+      },
+      "composite_lower_side_shields": {
+        "armorClass": "hull_side_special_armor",
+        "hp": 800.0,
+        "armorThickness": 250.0,
+        "stopChanceOnDeadPart": 0.0,
+        "cumulativeArmorQuality": 0.95,
+        "genericArmorQuality": 0.235,
+        "createSecondaryShatters": false,
+        "hidableInViewer": true,
+        "variableThickness": true,
+        "ex_armor_l_05_dm": [],
+        "ex_armor_r_05_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -522,10 +541,10 @@
         "ex_decor_r_14_dm": [],
         "ex_decor_l_14_dm": []
       },
-      "nera_shields": {
+      "turret_side_screens": {
         "armorClass": "leopard_2a5_turret_nera",
         "hp": 800.0,
-        "armorThickness": 150.0,
+        "armorThickness": 160.0,
         "genericEffectiveThicknessMax": 30.0,
         "cumulativeEffectiveThicknessMax": 350.0,
         "genericArmorQuality": 0.1,
@@ -534,20 +553,30 @@
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
-        "variableThickness": true
+        "variableThickness": true,
+        "ex_era_hull_20_dm": [],
+        "ex_era_hull_21_dm": [],
+        "ex_era_hull_22_dm": [],
+        "ex_era_hull_23_dm": [],
+        "ex_era_hull_24_dm": [],
+        "ex_era_hull_25_dm": [],
+        "ex_era_hull_26_dm": [],
+        "ex_era_hull_27_dm": []
       },
-      "era_front_hull_shields": {
+      "era_hull_side": {
         "armorClass": "us_era_m_60",
         "hp": 250.0,
-        "armorThickness": 30.0,
-        "genericArmorQuality": 0.3,
-        "cumulativeArmorQuality": 4.8,
-        "genericEffectiveThicknessMax": 30.0,
-        "cumulativeEffectiveThicknessMax": 350.0,
+        "armorThickness": 310.0,
+        "armorQuality": 0.25,
+        "genericArmorQuality": 0.5,
+        "cumulativeArmorQuality": 6.5,
+        "explosionArmorQuality": 0.5,
+        "explosionDamageMult": 1.3,
         "genericDamageMult": 3.0,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
+        "variableThickness": true,
         "ex_era_hull_01_dm": [],
         "ex_era_hull_02_dm": [],
         "ex_era_hull_03_dm": [],
@@ -567,14 +596,6 @@
         "ex_era_hull_17_dm": [],
         "ex_era_hull_18_dm": [],
         "ex_era_hull_19_dm": [],
-        "ex_era_hull_20_dm": [],
-        "ex_era_hull_21_dm": [],
-        "ex_era_hull_22_dm": [],
-        "ex_era_hull_23_dm": [],
-        "ex_era_hull_24_dm": [],
-        "ex_era_hull_25_dm": [],
-        "ex_era_hull_26_dm": [],
-        "ex_era_hull_27_dm": [],
         "ex_era_hull_28_dm": [],
         "ex_era_hull_29_dm": [],
         "ex_era_hull_30_dm": [],
@@ -2655,7 +2676,7 @@
           "armorArrayText": [
             {
               "layer": {
-                "dmPart": "superstructure_front_dm"
+                "dmPart": "turret_07_front_dm"
               }
             },
             {
@@ -2666,7 +2687,7 @@
             },
             {
               "layer": {
-                "dmPart": "turret_05_back_dm"
+                "dmPart": "superstructure_bottom_dm"
               }
             }
           ]
@@ -2746,6 +2767,17 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "turret_06_back_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHullSideInner": {
+          "xrayDmPart": "composite_armor_hull_09_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_09_dm"
             }
           }
         }
