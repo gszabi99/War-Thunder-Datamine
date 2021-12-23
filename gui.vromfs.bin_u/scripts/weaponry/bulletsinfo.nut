@@ -525,7 +525,7 @@ local function getBulletsInfoForGun(unit, gunIdx)
 
 local function canBulletsBeDuplicate(unit)
 {
-  return unit.unitType.canUseSeveralBulletsForGun
+  return unit?.unitType.canUseSeveralBulletsForGun ?? false
 }
 
 local function getLastFakeBulletsIndex(unit)

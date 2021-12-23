@@ -240,6 +240,9 @@ options.addTypes({
       value = values.findvalue(@(v) v.name == preferredUnitId) ??
         values.findvalue(@(v) v.name == targetUnitId) ??
         values?[0]
+
+      if (value == null) // This combination of unitType/country/rank shouldn't be selectable
+        ::script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
     }
   }
   BULLET = {
@@ -349,7 +352,7 @@ options.addTypes({
 
       // Collecting special shells
       local specialBulletTypes = [ "rocket" ]
-      local unitBlk = ::get_full_unit_blk(unit.name)
+      local unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
       if (unitBlk?.weapon_presets != null)
       {
         local knownWeapBlkArray = []
