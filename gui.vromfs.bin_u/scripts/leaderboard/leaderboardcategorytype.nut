@@ -514,6 +514,7 @@ enums.addTypesByGlobalName("g_lb_category", {
       visualKey = "wp_total_gained"
       isSortDefaultFilter = true
       showFieldFilter = [GAME_EVENT_TYPE.TM_NONE]
+      showEventFilterFunc = @(event) !(event?.mission_decl.isScoreTournament ?? false)
     }
 
     EVENT_STAT_TOTALKILLS = {
@@ -563,6 +564,15 @@ enums.addTypesByGlobalName("g_lb_category", {
       headerImage = "total_score"
       headerTooltip = "football/assists"
       showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    }
+
+    EVENT_SCORE = {
+      field = "ext1"
+      visualKey = "total_score"
+      headerImage = "total_score"
+      headerTooltip = "score"
+      isSortDefaultFilter = true
+      showEventFilterFunc = @(event) (event?.mission_decl.isScoreTournament ?? false)
     }
 
     // for World War
