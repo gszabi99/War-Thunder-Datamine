@@ -1,11 +1,12 @@
 local {dgs_get_settings} = require("dagor.system")
 local platform = require("platform")
-local {get_platform_string_id, get_console_model} = platform
+local {get_platform_string_id, get_console_model, get_console_model_revision} = platform
 
 local platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
 local oneOf = @(...) vargv.contains(platformId)
 local consoleModel = get_console_model()
 local isModel = @(model) consoleModel == model
+local consoleRevision = get_console_model_revision(consoleModel)
 
 local is_pc = oneOf("win32", "win64", "macosx", "linux64")
 local is_sony = oneOf("ps4", "ps5")
@@ -44,6 +45,7 @@ enum SCE_REGION {
 
 return {
   platformId
+  consoleRevision
   platformAlias
   is_pc
   is_windows = oneOf("win32", "win64")

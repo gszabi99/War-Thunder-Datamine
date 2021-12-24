@@ -5,7 +5,9 @@ local {
   isPS4,
   isPS5,
   isSony,
-  isPC } = require("std/platform.nut")
+  isPC,
+  is_console,
+  consoleRevision } = require("std/platform.nut")
 
 local {
   isXBoxPlayerName,
@@ -69,12 +71,14 @@ local canInteractCrossConsole = function(name) {
 
 return {
   targetPlatform = platformId
+  consoleRevision
   isPlatformXboxOne = isXbox //TODO: rename isPlatformXboxOne to isXbox, as it is all xboxes
   isPlatformXboxScarlett = isXboxScarlett
   isPlatformPS4 = isPS4
   isPlatformPS5 = isPS5
   isPlatformSony = isSony
   isPlatformPC = isPC
+  is_console
 
   isXBoxPlayerName = isXBoxPlayerName
   isPS4PlayerName = isPS4PlayerName

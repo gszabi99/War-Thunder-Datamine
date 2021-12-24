@@ -3,16 +3,29 @@
   "name": "AN/APG-59",
   "showMissileLaunchZone": true,
   "transivers": {
-    "common": {
+    "pulse": {
       "sideLobesAttenuation": -20.0,
       "power": 400.0,
       "band": 8,
       "rcs": 5.0,
-      "range": 80000.0,
+      "range": 70000.0,
       "rangeMax": 150000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 3.5,
+        "angleHalfSens": 4.7,
+        "sideLobesSensitivity": -30.0
+      }
+    },
+    "pulseDoppler": {
+      "sideLobesAttenuation": -20.0,
+      "power": 400.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 90000.0,
+      "rangeMax": 150000.0,
+      "timeGainControl": false,
+      "antenna": {
+        "angleHalfSens": 4.7,
         "sideLobesSensitivity": -30.0
       }
     }
@@ -106,7 +119,7 @@
         "minValue": -150.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 30.0
+        "width": 90.0
       }
     },
     "pulseTrack": {
@@ -135,14 +148,13 @@
       "distanceAccuracy": 15.0,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
-      "distToDopplerSpeedMult": 0.005,
       "track": true,
       "dopplerSpeed": {
         "presents": true,
         "minValue": -150.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 30.0
+        "width": 90.0
       }
     }
   },
@@ -157,7 +169,7 @@
     }
   },
   "scopeRangeSets": {
-    "common": {
+    "pulse": {
       "range1": 18500.0,
       "range2": 46250.0,
       "range3": 92500.0,
@@ -165,8 +177,19 @@
       "range5": 370000.0,
       "range6": 9250.0
     },
-    "boresightLock": {
+    "pulseDoppler": {
+      "range1": 46250.0,
+      "range2": 92500.0,
+      "range3": 185000.0,
+      "range4": 370000.0,
+      "range5": 9250.0,
+      "range6": 18500.0
+    },
+    "pulseBoresightLock": {
       "range1": 18500.0
+    },
+    "pulseDopplerBoresightLock": {
+      "range1": 46250.0
     }
   },
   "fsms": {
@@ -178,7 +201,7 @@
             "value": false
           },
           "setTransiver": {
-            "transiver": "common"
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseSearch"
@@ -205,9 +228,6 @@
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
           }
@@ -217,8 +237,14 @@
           "setModeName": {
             "name": "standby"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerStandbyMode": {
@@ -226,8 +252,14 @@
           "setModeName": {
             "name": "PD VS standby"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         },
         "setSearchModeCommon": {
@@ -251,9 +283,6 @@
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "common"
-          },
           "setIllumination": {
             "illumination": false
           }
@@ -263,8 +292,14 @@
           "setModeName": {
             "name": "search"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerSearchMode": {
@@ -272,8 +307,14 @@
           "setModeName": {
             "name": "PD VS search"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseDopplerSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         },
         "resetSearchMode": {
@@ -320,8 +361,14 @@
           "setModeName": {
             "name": "acquisition"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerDesignationLockMode": {
@@ -329,8 +376,14 @@
           "setModeName": {
             "name": "PD VS acquisition"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseDopplerTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         },
         "setBoresightLockModeCommon": {
@@ -368,9 +421,6 @@
             "pos": 675.0,
             "width": 1350.0
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "boresightLock"
-          },
           "setIllumination": {
             "illumination": false
           }
@@ -380,8 +430,14 @@
           "setModeName": {
             "name": "ACM"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseBoresightLock"
           }
         },
         "setPulseDopplerBoresightLockMode": {
@@ -389,8 +445,14 @@
           "setModeName": {
             "name": "PD VS ACM"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseDopplerTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDopplerBoresightLock"
           }
         },
         "setTrackModeCommon": {
@@ -432,8 +494,14 @@
           "setModeName": {
             "name": "track"
           },
+          "setTransiver": {
+            "transiver": "pulse"
+          },
           "setSignal": {
             "signal": "pulseTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulse"
           }
         },
         "setPulseDopplerTrackMode": {
@@ -441,8 +509,14 @@
           "setModeName": {
             "name": "PD track"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseDopplerTrack"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseDoppler"
           }
         }
       },

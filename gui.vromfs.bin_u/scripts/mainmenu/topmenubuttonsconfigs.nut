@@ -10,6 +10,8 @@ local contentStateModule = require("scripts/clientState/contentState.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local { isPlatformSony,
         isPlatformPC,
+        is_console,
+        consoleRevision,
         targetPlatform } = require("scripts/clientState/platform.nut")
 local encyclopedia = require("scripts/encyclopedia.nut")
 local { openChangelog } = require("scripts/changelog/changeLogState.nut")
@@ -248,12 +250,12 @@ local list = {
     onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
       ? openQrWindow({
           headerText = ::loc("topmenu/reportAnIssue")
-          baseUrl = ::loc("url/reportAnIssue", {platform = targetPlatform, version = ::get_game_version_str()})
+          baseUrl = ::loc("url/reportAnIssue", {platform = is_console ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = ::loc("url/reportAnIssue", {platform = targetPlatform, version = ::get_game_version_str()})
+    link = ::loc("url/reportAnIssue", {platform = is_console ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
     isLink = @() !::has_feature("ShowUrlQrCode")
     isFeatured = @() !::has_feature("ShowUrlQrCode")
     isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
