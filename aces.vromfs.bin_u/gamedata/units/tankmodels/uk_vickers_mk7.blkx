@@ -2819,8 +2819,17 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.55,
-        "height": 0.1,
-        "fricFrontal": [1.0,1.0]
+        "height": 0.08,
+        "fricFrontal": [1.0,1.0],
+        "tracksTensionK": [5.0,10.0,6.0],
+        "trackMesh": "ger_leopard_2a5_phys_track_line",
+        "trackLen": 0.18,
+        "trackCount": 84,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackStartOffset": 0.08,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.3
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2883,12 +2892,14 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.2,-0.17,0.13],
-        "defaultGearRadius": 0.315,
+        "defaultGearRadius": 0.34,
         "topGearRadius": 0.11,
-        "frontBackGearRadius": 0.315,
+        "frontBackGearRadius": 0.28,
         "defaultDampeningForce": [300000.0,300000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.32,
+        "wheel_l_drive": 0.32
       }
     }
   },

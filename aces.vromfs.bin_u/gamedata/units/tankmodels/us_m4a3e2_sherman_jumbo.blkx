@@ -2585,7 +2585,45 @@
         "trackConnector": true,
         "trackStartOffset": 0.3,
         "trackMaxHeight": 1.18,
-        "nonSymmetricMesh": true
+        "nonSymmetricMesh": true,
+        "trackLimiters": [
+          {
+            "limiter": {
+              "p1": [-1.65,0.88,1.1],
+              "p2": [-1.15,0.88,1.1]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [0.35,0.88,1.1],
+              "p2": [-0.15,0.88,1.1]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [1.35,0.88,1.1],
+              "p2": [1.85,0.88,1.1]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [-1.65,0.88,-1.1],
+              "p2": [-1.15,0.88,-1.1]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [0.35,0.88,-1.1],
+              "p2": [-0.15,0.88,-1.1]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [1.35,0.88,-1.1],
+              "p2": [1.85,0.88,-1.1]
+            }
+          }
+        ]
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",

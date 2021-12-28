@@ -328,7 +328,10 @@
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 20.0,
-          "hidableInXrayViewer": true
+          "hidableInXrayViewer": true,
+          "hp": 150.0,
+          "ignoreDeadWithSplash": true,
+          "armorEffectiveThicknessMax": 50.0
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 150.0,
@@ -3675,6 +3678,8 @@
         {
           "shells": {
             "autoLoad": true,
+            "fireEvent": "ammo_fire",
+            "explosionEvent": "ammo_explosion",
             "ammo_turret_01_dm": {
               "count": 1
             },
