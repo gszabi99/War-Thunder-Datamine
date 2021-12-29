@@ -852,8 +852,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   function isEventAllowed(event)
   {
     return getEventDisplayType(event) != ::g_event_display_type.NONE
-           && checkEventFeature(event, true)
-           && isEventAllowedByComaptibilityMode(event)
+      && checkEventFeature(event, true)
+      && isEventAllowedByComaptibilityMode(event)
+      && (!eventRequiresTicket(event) || getEventActiveTicket(event) != null)
   }
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibiliyMode()
