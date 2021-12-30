@@ -24,14 +24,23 @@
   },
   "signals": {
     "ranging": {
-      "groundClutter": true,
+      "groundClutter": false,
       "anglesFinder": false,
       "rangeFinder": true,
       "distanceAccuracy": 15.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
         "maxValue": 10000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 40.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 5.0,
+        "width": 0.0
       }
     }
   },
