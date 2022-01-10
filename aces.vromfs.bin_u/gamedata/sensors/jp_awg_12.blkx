@@ -177,19 +177,11 @@
       "range5": 370000.0,
       "range6": 9250.0
     },
-    "pulseDoppler": {
-      "range1": 46250.0,
-      "range2": 92500.0,
-      "range3": 185000.0,
-      "range4": 370000.0,
-      "range5": 9250.0,
-      "range6": 18500.0
+    "pulseDopplerSearch": {
+      "range1": 92500.0
     },
     "pulseBoresightLock": {
       "range1": 18500.0
-    },
-    "pulseDopplerBoresightLock": {
-      "range1": 46250.0
     }
   },
   "fsms": {
@@ -259,7 +251,7 @@
             "signal": "pulseSearch"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDoppler"
+            "scopeRangeSet": "pulseDopplerSearch"
           }
         },
         "setSearchModeCommon": {
@@ -314,7 +306,7 @@
             "signal": "pulseDopplerSearch"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDoppler"
+            "scopeRangeSet": "pulseDopplerSearch"
           }
         },
         "resetSearchMode": {
@@ -380,10 +372,10 @@
             "transiver": "pulseDoppler"
           },
           "setSignal": {
-            "signal": "pulseDopplerTrack"
+            "signal": "pulseDopplerSearch"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDoppler"
+            "scopeRangeSet": "pulseDopplerSearch"
           }
         },
         "setBoresightLockModeCommon": {
@@ -419,7 +411,7 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 675.0,
-            "width": 1350.0
+            "width": 1950.0
           },
           "setIllumination": {
             "illumination": false
@@ -449,10 +441,10 @@
             "transiver": "pulseDoppler"
           },
           "setSignal": {
-            "signal": "pulseDopplerTrack"
+            "signal": "pulseDopplerSearch"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDopplerBoresightLock"
+            "scopeRangeSet": "pulseDopplerSearch"
           }
         },
         "setTrackModeCommon": {
@@ -516,7 +508,7 @@
             "signal": "pulseDopplerTrack"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDoppler"
+            "scopeRangeSet": "pulse"
           }
         }
       },
@@ -1051,7 +1043,7 @@
                 "fsm": "track",
                 "active": false
               },
-              "setPulseDopplerStandbyMode": []
+              "setPulseDopplerSearchMode": []
             }
           }
         },
