@@ -84,7 +84,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 ::isCountryHaveUnitType <- function isCountryHaveUnitType(country, unitType)
 {
   foreach(unit in ::all_units)
-    if (unit.shopCountry == country && ::get_es_unit_type(unit) == unitType)
+    if (unit.shopCountry == country && unit.esUnitType == unitType && unit.isVisibleInShop())
       return true
   return false
 }
