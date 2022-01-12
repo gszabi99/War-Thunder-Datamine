@@ -1491,28 +1491,39 @@
             },
             "varCompareInt": {
               "var_value": "lbt_battle_attacker_army_idx",
-              "value": 1,
+              "value": 2,
               "comparasion_func": "equal"
             }
           },
-          "actions": {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t1_art_name",
-              "object_type": "isInactive",
-              "target": "@lbt_battle_t1_spawn_name",
-              "isStealth": true,
-              "randomSpawn": true,
-              "resetFormation": true
+          "actions": [
+            {
+              "comment": {
+                "value": "spawn only for defending team"
+              }
             },
-            "comment": {
-              "value": ""
+            {
+              "comment": {
+                "value": ""
+              }
             },
-            "triggerEnable": {
-              "target": "lbt_battle_t1_spawn_end"
+            {
+              "unitRespawn": {
+                "delay": 0.0,
+                "offset": [0.0,0.0,0.0],
+                "object": "@lbt_battle_t1_art_name",
+                "object_type": "isInactive",
+                "target": "@lbt_battle_t1_spawn_name",
+                "isStealth": true,
+                "randomSpawn": true,
+                "resetFormation": true
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_battle_t1_spawn_end"
+              }
             }
-          },
+          ],
           "else_actions": {
             "comment": {
               "value": ""
@@ -1843,28 +1854,39 @@
             },
             "varCompareInt": {
               "var_value": "lbt_battle_attacker_army_idx",
-              "value": 2,
+              "value": 1,
               "comparasion_func": "equal"
             }
           },
-          "actions": {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t2_art_name",
-              "object_type": "isInactive",
-              "target": "@lbt_battle_t2_spawn_name",
-              "isStealth": true,
-              "randomSpawn": true,
-              "resetFormation": true
+          "actions": [
+            {
+              "comment": {
+                "value": "spawn only for defending team"
+              }
             },
-            "comment": {
-              "value": ""
+            {
+              "comment": {
+                "value": ""
+              }
             },
-            "triggerEnable": {
-              "target": "lbt_battle_t2_spawn_end"
+            {
+              "unitRespawn": {
+                "delay": 0.0,
+                "offset": [0.0,0.0,0.0],
+                "object": "@lbt_battle_t2_art_name",
+                "object_type": "isInactive",
+                "target": "@lbt_battle_t2_spawn_name",
+                "isStealth": true,
+                "randomSpawn": true,
+                "resetFormation": true
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_battle_t2_spawn_end"
+              }
             }
-          },
+          ],
           "else_actions": {
             "comment": {
               "value": ""

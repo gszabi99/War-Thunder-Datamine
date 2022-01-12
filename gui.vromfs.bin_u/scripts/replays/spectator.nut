@@ -743,19 +743,6 @@ enum SPECTATOR_CHAT_TAB {
     lastSelectedTableId = obj.id
   }
 
-  function onActivateSelectedControl(obj)
-  {
-    local val = obj.getValue()
-    if (val < 0 || val > obj.childrenCount() - 1)
-      return
-
-    local childObj = obj.getChild(val)
-    if (!::check_obj(childObj))
-      return
-
-    this[childObj["on_click"]](childObj)
-  }
-
   function onBtnMpStatScreen(obj)
   {
     if (isMultiplayer)

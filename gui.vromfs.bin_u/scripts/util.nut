@@ -1586,7 +1586,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
       unitName = ::loc("ui/parentheses", {text = unitNameLoc})
   }
 
-  local clanTag = withClanTag ? player.clanTag : ""
+  local clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
   local name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : getPlayerName(player.name),
                                               clanTag,
                                               unitName)

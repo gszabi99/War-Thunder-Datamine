@@ -5,7 +5,6 @@ local {mkVersionFromString, versionToInt} = require("std/version.nut")
 local { isInBattleState } = require("scripts/clientState/clientStates.nut")
 local eventbus = require("eventbus")
 local http = require("dagor.http")
-local json = require("json")
 local { send_counter } = require("statsd")
 local { get_time_msec } = require("dagor.time")
 
@@ -112,7 +111,7 @@ local function processPatchnotesList(response){
   }
   local result = []
   try {
-    result = response?.body ? json.parse(response.body.tostring())?.result ?? [] : []
+    result = response?.body ? ::parse_json(response.body.tostring())?.result ?? [] : []
   }
   catch(e) {
   }
@@ -207,7 +206,7 @@ local function cachePatchnote(response){
     })
     return
   }
-  local result = json.parse((response?.body ?? "").tostring())?.result
+  local result = ::parse_json((response?.body ?? "").tostring())?.result
   if (result==null) {
     logError("changelog_parse_errors",
       { reason = "Incorrect json in patchnotes response", stage = "get_patchnote" })

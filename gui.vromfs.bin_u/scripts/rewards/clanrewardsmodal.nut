@@ -55,7 +55,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     fillBestRewardsIds()
-    ::move_mouse_on_child_by_value(scene.findObject("rewards_list"))
+    ::move_mouse_on_child(scene.findObject("rewards_list"), 0)
   }
 
   function fillBestRewardsIds()

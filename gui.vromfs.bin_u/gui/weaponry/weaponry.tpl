@@ -8,7 +8,7 @@ modificationsBlock {
   position:t='absolute'
 
   behavior:t='posNavigator'
-  navigatorShortcuts:t='SpaceA'
+  navigatorShortcuts:t='yes'
   moveX:t='closest'
   moveY:t='linear'
 

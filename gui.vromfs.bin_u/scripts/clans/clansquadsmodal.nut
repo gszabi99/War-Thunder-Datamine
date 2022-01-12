@@ -313,9 +313,16 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
     ::g_chat.showPlayerRClickMenu(leaderName, null, contact, position)
   }
 
-  function getFocusedSquad()
+  function getSelectedSquadInHover()
   {
-    if (!squadsListObj.isFocused())
+    if (!squadsListObj.isHovered())
+      return null
+
+    if (selectedIndex < 0 || selectedIndex >= squadsListObj.childrenCount())
+      return null
+
+    local squadObj = squadsListObj.getChild(selectedIndex)
+    if (!squadObj.isHovered())
       return null
 
     return selectedSquad
@@ -328,7 +335,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
 
     local leaderUidStr = obj?.leaderUid ?? obj.getParent()?.leaderUid
     if (!leaderUidStr)
-      return getFocusedSquad()
+      return getSelectedSquadInHover()
 
     local leaderUid = ::to_integer_safe(leaderUidStr)
     foreach (squad in curList)
@@ -338,12 +345,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
     return null
   }
 
-  function onApplication(obj)
-  {
-    local actionSquad = getSquadByObj(obj)
-    if (!actionSquad)
-      return
-
+  function applicationToSquad(actionSquad) {
     local invite = getInvitationInSquad(actionSquad)
     if (invite)
     {
@@ -351,8 +353,18 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
       return
     }
 
-    local leaderUid = actionSquad?.leader
-    ::g_squad_manager.membershipAplication(leaderUid)
+    ::g_squad_manager.membershipAplication(actionSquad?.leader)
+  }
+
+  revokeApplication = @(actionSquad) ::g_squad_manager.revokeMembershipAplication(actionSquad?.leader)
+
+  function onApplication(obj)
+  {
+    local actionSquad = getSquadByObj(obj)
+    if (!actionSquad)
+      return
+
+    applicationToSquad(actionSquad)
   }
 
   function onRevokeApplication(obj)
@@ -361,8 +373,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
     if (!actionSquad)
       return
 
-    local leaderUid = actionSquad?.leader
-    ::g_squad_manager.revokeMembershipAplication(leaderUid)
+    revokeApplication(actionSquad)
   }
 
   function onSquadInfo(obj)
@@ -476,5 +487,17 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
       }
     }
     updateSquadDummyButtons()
+  }
+
+  function onSquadActivate() {
+    if (canApplyForMembership(selectedSquad)) {
+      applicationToSquad(selectedSquad)
+      return
+    }
+
+    if (canRevokeApplication(selectedSquad)) {
+      revokeApplication(selectedSquad)
+      return
+    }
   }
 }

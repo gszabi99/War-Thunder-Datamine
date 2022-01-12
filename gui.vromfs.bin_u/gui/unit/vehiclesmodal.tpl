@@ -38,7 +38,7 @@ root {
       behaviour:t='posNavigator'
       total-input-transparent:t='yes'
       alwaysShowBorder:t='yes'
-      navigatorShortcuts:t='noSelectSpaceA'
+      navigatorShortcuts:t='SpaceA'
       showButtonsForSelectedChild:t='yes'
       on_select:t='onUnitSelect'
       on_click:t='onUnitClick'

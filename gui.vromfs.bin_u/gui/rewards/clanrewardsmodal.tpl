@@ -28,8 +28,8 @@ root {
         flow:t = 'h-flow'
         <<#isEditable>>
         behaviour:t='posNavigator'
-        navigatorShortcuts:t='SpaceA'
-        on_activate:t = 'onActivate'
+        navigatorShortcuts:t='yes'
+        on_dbl_click:t = 'onActivate'
         <</isEditable>>
         <<#rewards>>
         frameBlock_dark{
@@ -37,6 +37,8 @@ root {
           margin:t='1@framePadding, 1@framePadding'
           padding:t='1@tooltipPadding'
           css-hier-invalidate:t='yes'
+          input-transparent:t='yes'
+          total-input-transparent:t='yes'
           div{
             size:t='@profileUnlockIconSize, @profileUnlockIconSize'
             layeredIconContainer {
@@ -73,14 +75,14 @@ root {
               text:t='#mainmenu/UnlockAchievementsToFavorite'
               smallFont:t='yes'
               value:t='<<isChecked>>'
+              btnName:t=''
+              skip-navigation:t='yes'
               on_change_value:t = 'onBestRewardSelect'
-              ButtonImg{
-                position:t='absolute'
-                pos:t='-@checkboxSize, 0.5ph-0.5h'
-                btnName:t='A'
-                showOnSelect:t='hover'
-              }
               CheckBoxImg{}
+              ButtonImg{
+                showOnSelect:t='hover'
+                btnName:t='A'
+              }
             }
             <</isEditable>>
           }

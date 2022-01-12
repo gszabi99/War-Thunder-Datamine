@@ -1606,6 +1606,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 30.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
+    getShortcuts = @(data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
   }
 
   ALLOW_SWITCH_SUPPORT_PLANE = {
@@ -1617,6 +1618,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shouldBlink = true
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = false
+    getShortcuts = @(data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
   }
 
   ALLOW_SMOKE_SCREEN = {

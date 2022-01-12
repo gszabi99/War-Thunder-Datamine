@@ -33,7 +33,7 @@ root {
         behaviour:t='posNavigator'
         moveX:t='linear'
         moveY:t='linear'
-        navigatorShortcuts:t='full'
+        navigatorShortcuts:t='yes'
         on_select:t='onAvatarSelect'
 
         <<#avatars>>

@@ -4,6 +4,7 @@ emptyButton {
   class:t='squadWidgetInvite'
   uid:t='<<id>>'
   title:t='$tooltipObj'
+  total-input-transparent:t='yes'
   on_click:t='onMemberClicked'
   on_r_click:t='onMemberClicked'
 

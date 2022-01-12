@@ -36,7 +36,7 @@ root {
         generalGameModes {
           id:t='general_game_modes';
           behavior:t='posNavigator';
-          navigatorShortcuts:t='active';
+          navigatorShortcuts:t='yes';
           clearOnFocusLost:t='no'
           moveX:t='linear';
           moveY:t='closest';

@@ -164,11 +164,12 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
   shortcutSelect: "Space | J:B | J:RT";
 }
 
-[navigatorShortcuts=noSelect], [navigatorShortcuts=cancelNoSelect], [navigatorShortcuts=noSelectSpaceA] {
+[navigatorShortcuts=noSelect], [navigatorShortcuts=cancelNoSelect] {
   shortcutSelect:"";
 }
 
-[navigatorShortcuts=SpaceA], [navigatorShortcuts=noSelectSpaceA] {
+[navigatorShortcuts=SpaceA] {
+  shortcutSelect:"";
   shortcutActivate:"Space | J:A | J:RT";
 }
 
@@ -176,21 +177,14 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
   shortcutActivate:"Space | J:B | J:RT";
 }
 
-[navigatorShortcuts=EnterA] {
-  shortcutActivate:"Enter | J:A | J:RT";
-}
-
-[swap_ab=yes] [navigatorShortcuts=EnterA] {
-  shortcutActivate:"Enter | J:B | J:RT";
-}
-
-[navigatorShortcuts=active], [navigatorShortcuts=full], [navigatorShortcuts=onlyActivate] {
+[navigatorShortcuts=active], [navigatorShortcuts=full] {
+  shortcutSelect:"";
   shortcutActivate:'J:A | J:RT | Enter | NumEnter | Space';
 }
-[swap_ab=yes] [navigatorShortcuts=active], [swap_ab=yes] [navigatorShortcuts=full], [swap_ab=yes] [navigatorShortcuts=onlyActivate] {
+[swap_ab=yes] [navigatorShortcuts=active], [swap_ab=yes] [navigatorShortcuts=full] {
   shortcutActivate:'J:B | J:RT | Enter | NumEnter | Space';
 }
-[navigatorShortcuts=onlyActivate],
+
 [navigatorShortcuts=onlySelect] {
   shortcutLeft:"";
   shortcutRight:"";

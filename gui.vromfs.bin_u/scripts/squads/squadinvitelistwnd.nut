@@ -1,5 +1,3 @@
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-
 class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
@@ -172,13 +170,6 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
   function checkActiveForDelayedAction()
   {
     return isSceneActive()
-  }
-
-  function onInviteMemberMenu(obj)
-  {
-    local selectedObj = getSelectedChild(obj)
-    if (selectedObj?.isValid())
-      ::g_squad_utils.showMemberMenu(selectedObj)
   }
 
   function onMemberClicked(obj)

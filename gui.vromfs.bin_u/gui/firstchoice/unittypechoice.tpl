@@ -7,7 +7,7 @@ div {
   total-input-transparent:t='yes'
 
   behaviour:t='posNavigator'
-  navigatorShortcuts:t='active'
+  navigatorShortcuts:t='yes'
   on_select:t='onSelectUnitType';
   _on_activate:t='onEnterChoice'
   _on_click:t='onEnterChoice'
