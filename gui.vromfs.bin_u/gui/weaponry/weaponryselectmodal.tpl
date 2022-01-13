@@ -27,7 +27,7 @@ popup_menu {
       position:t='absolute'
 
       behavior:t='posNavigator'
-      navigatorShortcuts:t='active'
+      navigatorShortcuts:t='yes'
       moveX:t='closest'
       moveY:t='linear'
 
