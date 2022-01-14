@@ -1603,7 +1603,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     noKeyLocId = "hints/allow_support_plane_nokey"
     showEvent = "hint:allow_support_plane:show"
     shouldBlink = true
-    lifeTime = 30.0
+    lifeTime = 10.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     getShortcuts = @(data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
@@ -1614,7 +1614,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     locId     = "hints/allow_switch_support_plane"
     noKeyLocId = "hints/allow_switch_support_plane_nokey"
     showEvent = "hint:allow_switch_support_plane:show"
-    lifeTime = 30.0
+    lifeTime = 10.0
     shouldBlink = true
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = false
@@ -1627,7 +1627,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     noKeyLocId = "hints/allow_smoke_screen_nokey"
     showEvent = "hint:allow_smoke_screen:show"
     shortcuts = "ID_PLANE_SMOKE_SCREEN_GENERATOR"
-    lifeTime = 30.0
+    lifeTime = 10.0
     shouldBlink = true
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = false

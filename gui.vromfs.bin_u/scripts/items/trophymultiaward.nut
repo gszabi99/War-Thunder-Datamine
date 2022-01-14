@@ -159,7 +159,14 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     _addCondCountries(awardBlk, condList)
     _addCondRanks(awardBlk, condList)
     _addCondUnitClass(awardBlk, condList)
+    _addCondExistingUnit(awardBlk, condList)
     return ::g_string.implode(condList, "; ")
+  }
+
+  function _addCondExistingUnit(awardBlk, condList)
+  {
+    if (awardBlk?.forExistingUnits)
+      condList.append(::loc("conditions/unitExists"))
   }
 
   function _addCondSpecialization(awardBlk, condList)
@@ -219,6 +226,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
                           function(val) {
                             local role = val.tolower()
                             role = ::g_string.cutPrefix(role, "exp_", role)
+                            if (role == "aircraft")
+                              return ::colorize(condColor, ::loc("unlockTag/unit_aircraft"))
                             return ::colorize(condColor, getRoleText(role))
                           }.bindenv(this))
 

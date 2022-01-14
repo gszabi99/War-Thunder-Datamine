@@ -185,8 +185,15 @@ shopSheets.addSheets({
     isAllowedForTab = isOnlyExtInventory
   }
   DECALS = {
+    locId = "unlocks/chapter/decals"
+    typeMask = itemType.DECAL
+    isMarketplace = true
+    sortId = sortId++
+    isAllowedForTab = isOnlyExtInventory
+  }
+  ATTACHABLE = {
     locId = "unlocks/chapter/attachable"
-    typeMask = itemType.DECAL | itemType.ATTACHABLE
+    typeMask = itemType.ATTACHABLE
     isMarketplace = true
     sortId = sortId++
     isAllowedForTab = isOnlyExtInventory
