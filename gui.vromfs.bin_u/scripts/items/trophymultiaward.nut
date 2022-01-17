@@ -96,7 +96,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       return header
 
     textList.insert(0, header + ::loc("ui/colon"))
-    return ::g_string.implode(textList, listDiv)
+    return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : listDiv)
   }
 
   function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false)
@@ -135,18 +135,22 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       return ::g_string.implode(uTypes, listDiv)
     }
 
-    local res = ::colorize(goodsColor, ::loc("multiAward/type/" + curAwardType))
+    local res = ""
     if (!skipUnconditional && haveCount())
     {
       local count = awardBlk?.count ?? 1
-      res += ::colorize(condColor, " x" + count)
+      res = "".concat(
+        ::colorize(goodsColor, ::loc("multiAward/type/" + curAwardType)),
+        ::colorize(condColor, " x" + count))
     }
 
     local conditions = getConditionsText(awardBlk)
     if (conditions == "")
       return skipUnconditional ? "" : res
 
-    conditions = " (" + conditions + ")"
+    if (!skipUnconditional)
+      conditions = " (" + conditions + ")"
+
     if (useBoldAsSmaller)
       conditions = "<b>" + conditions + "</b>"
     return res + conditions
