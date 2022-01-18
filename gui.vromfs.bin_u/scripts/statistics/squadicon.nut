@@ -1,14 +1,14 @@
 local listLabelsSquad = {}
 local nextLabel = { team1 = 1, team2 = 1}
 local topSquads = {}
-local playersInfo = {}
+local playersInfo = persist("playersInfo", @() Watched({}))
 
-local getPlayersInfo = @() playersInfo
+local getPlayersInfo = @() playersInfo.value
 local function updateIconPlayersInfo()
 {
   local sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
-  if (sessionPlayersInfo.len() > 0 && !::u.isEqual(playersInfo, sessionPlayersInfo))
-    playersInfo = clone sessionPlayersInfo
+  if (sessionPlayersInfo.len() > 0 && !::u.isEqual(playersInfo.value, sessionPlayersInfo))
+    playersInfo(clone sessionPlayersInfo)
 }
 
 local function initListLabelsSquad()
@@ -17,7 +17,7 @@ local function initListLabelsSquad()
   nextLabel.team1 = 1
   nextLabel.team2 = 1
   topSquads = {}
-  playersInfo = {}
+  playersInfo({})
   updateIconPlayersInfo()
 }
 
@@ -130,7 +130,7 @@ local function updateTopSquadScore(mplayers)
   topSquads[teamId] <- topSquadId
 }
 
-local getTopSquadId = @(teamId) topSquads?.teamId
+local getTopSquadId = @(teamId) topSquads?[teamId]
 
 return {
   getPlayersInfo

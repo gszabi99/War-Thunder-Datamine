@@ -1719,12 +1719,16 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
   function onManageBackup()
   {
+    if (!isValid()) //updateCurPresetForExport use scene objects, and no need open backup manager, if controls window is not valid
+      return
     updateCurPresetForExport()
     ::gui_handlers.ControlsBackupManager.open()
   }
 
   function onExportToFile()
   {
+    if (!isValid()) //updateCurPresetForExport use scene objects, and no need open export to file modal, if controls window is not valid
+      return
     updateCurPresetForExport()
 
     if (isScriptOpenFileDialogAllowed())
