@@ -522,8 +522,7 @@ g_squad_utils.showMemberMenu <- function showMemberMenu(obj)
 /*use by client .cpp code*/
 ::is_in_my_squad <- function is_in_my_squad(name, checkAutosquad = true)
 {
-  return (!::is_mode_with_teams() || ::g_team.isInMyTeam(name))
-    && ::g_squad_manager.isInMySquad(name, checkAutosquad)
+  return ::g_squad_manager.isInMySquad(name, checkAutosquad)
 }
 
 ::is_in_squad <- function is_in_squad(forChat = false)
