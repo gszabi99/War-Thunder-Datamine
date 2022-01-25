@@ -1,6 +1,6 @@
 local progressMsg = require("sqDagui/framework/progressMsg.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local popupFilter = require("scripts/popups/popupFilter.nut")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
 local { getMissionGroup, getMissionGroupName } = require("scripts/missions/missionsFilterData.nut")
 local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
@@ -1117,7 +1117,13 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
       v.group <- getMissionGroup(v.mission)
     }
 
-    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView(), "RB")
+    openPopupFilter({
+      scene = nestObj
+      onChangeFn = onFilterCbChange.bindenv(this)
+      filterTypes = getFiltersView()
+      isTop = false
+      btnName = "RB"
+    })
   }
 
   getAvailableMissionGroups = @() filterDataArray

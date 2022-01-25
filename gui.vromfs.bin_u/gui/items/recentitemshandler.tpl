@@ -50,3 +50,8 @@ baseToggleButton {
   type:t='right'
   directionImg {}
 }
+
+timer {
+  id:t='update_timer'
+  timer_handler_func:t='onTimer'
+}

@@ -8,7 +8,7 @@ local externalIDsService = require("scripts/user/externalIdsService.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
-local popupFilter = require("scripts/popups/popupFilter.nut")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
 local { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
@@ -626,7 +626,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillCountriesCheckBoxes(sObj)
 
     local nestObj = scene.findObject("filter_nest")
-    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView())
+    openPopupFilter({
+      scene = nestObj
+      onChangeFn = onFilterCbChange.bindenv(this)
+      filterTypes = getFiltersView()
+    })
 
     airStatsInited = true
     fillAirStats()

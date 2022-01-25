@@ -331,7 +331,6 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
-    showSceneBtn("nav_separator", !isNavCollapsed)
     listObj.width = contentWidth
     listObj.left = leftPos
     emptyListObj.width = contentWidth

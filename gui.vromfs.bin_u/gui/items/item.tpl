@@ -1,5 +1,8 @@
 <<#items>>
 itemDiv {
+  <<#itemIndex>>
+  id:t='shop_item_cont_<<itemIndex>>'
+  <</itemIndex>>
   smallFont:t='yes';
   class:t='smallFont'
   total-input-transparent:t='yes'
@@ -41,15 +44,16 @@ itemDiv {
     wink { pattern { type:t='bright_texture'; position:t='absolute' } }
   <</active>>
 
-  <<#rarityColor>>
   rarityBorder {
     size:t='pw-4@dp, ph-4@dp'
-    pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'
-    border:t='yes'
+    pos:t='pw/2-w/2, ph/2-h/2'
+    <<#rarityColor>>
     border-color:t='<<rarityColor>>'
-    input-transparent:t='yes'
+    <</rarityColor>>
+    <<^rarityColor>>
+    display:t='hide'
+    <</rarityColor>>
   }
-  <</rarityColor>>
 
   // Used in recent items handler.
   <<#onClick>>
@@ -207,6 +211,23 @@ itemDiv {
       <</isInTransfer>>
     }
     <</amount>>
+
+    img {
+      id:t='alarm_icon'
+      height:t='1@newWidgetIconHeight'
+      min-width:t='1@newWidgetIconHeight'
+      pos:t='pw-w, 0'
+      position:t='absolute'
+      padding-left:t='0.5h'
+      re-type:t='fgPict'
+      foreground-color:t='@white'
+      foreground-image:t='#ui/gameuiskin#alarmclock_icon'
+      foreground-repeat:t='aspect-ratio'
+      foreground-align:t='left'
+      <<^alarmIcon>>
+      display:t='hide'
+      <</alarmIcon>>
+    }
 
     <<^isAllBought>>
     <<#price>>

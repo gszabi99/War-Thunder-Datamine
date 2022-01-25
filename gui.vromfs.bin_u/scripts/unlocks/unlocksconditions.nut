@@ -83,10 +83,9 @@ local function getOverrideCondType(condBlk, unlockMode) {
   conditionsOrder = [
     "beginDate", "endDate",
     "missionsWon", "mission", "char_mission_completed",
-    "missionPostfixAllowed", "missionPostfixProhibited", "missionType",
-    "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
+    "missionType", "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
     "unitExists", "additional", "unitClass",
-    "gameModeInfoString", "modes", "events", "tournamentMode",
+    "gameModeInfoString", "missionPostfix", "modes", "events", "tournamentMode",
     "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag", "playerCountry",
     "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag",
@@ -105,7 +104,9 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "atLeastOneUnitsRankOnStartMission", "eliteUnitsOnly"
   ]
 
-  additionalTypes = ["critical", "lesserTeam", "inTurret", "isBurning", "targetInCaptureZone"]
+  additionalTypes = [
+    "critical", "lesserTeam", "inTurret", "isBurning", "targetInCaptureZone", "offenderIsPlayerControlled"
+  ]
 
   locGroupByType = {
     offenderUnit           = "playerUnit"
@@ -193,7 +194,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     unlockStageCount = "unlock"
   }
 
-  customLocTypes = ["gameModeInfoString"]
+  customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
   formatParamsDefault = {
     rangeStr = "%s"
@@ -624,6 +625,8 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     foreach(val in values)
       ::u.appendOnce(regExpNumericEnding.replace("", val), res.values)
     res.locGroup <- ::getTblValue("allowed", blk, true) ? "missionPostfixAllowed" : "missionPostfixProhibited"
+    if (blk?.locValuePrefix)
+      res.locValuePrefix <- blk.locValuePrefix
   }
   else if (t == "mission")
     res.values = (blk % "mission")
@@ -686,7 +689,8 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     res.values = (blk % "name")
   else if (t == "inCapturedZone") {
     res.type = "additional"
-    local zoneType = (blk?.enemy ?? false) ? "enemy" : "allied"
+    local zoneType = (blk?.any ?? false) ? "any"
+      : (blk?.enemy ?? false) ? "enemy" : "allied"
     res.values = $"{t}/{zoneType}Zone"
   }
 
@@ -1026,8 +1030,6 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
       text = ::get_roman_numeral(v)
     else if (cType == "events")
       text = ::events.getNameByEconomicName(v)
-    else if (cType == "missionPostfix")
-      text = ::loc("options/" + v)
     else if (cType == "offenderIsSupportGun")
       text = ::loc(v)
     else if (cType == "operationMap")
@@ -1064,6 +1066,12 @@ UnlockConditions._addCustomConditionsTextData <- function _addCustomConditionsTe
                                       : ::loc($"conditions/gameModeInfoString/{condition.name}")
 
       local locValuePrefix = condition?.locValuePrefix ?? "conditions/gameModeInfoString/"
+      desc.append(::loc($"{locValuePrefix}{v}"))
+    }
+    else if (cType == "missionPostfix" ) {
+      group = ::loc($"conditions/{condition.locGroup}")
+
+      local locValuePrefix = condition?.locValuePrefix ?? "options/"
       desc.append(::loc($"{locValuePrefix}{v}"))
     }
   }

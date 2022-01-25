@@ -719,3 +719,20 @@ prizeNest > chanceIconPlace > chanceIcon {
   size:1.2@fontHeightSmall, 1.2@fontHeightSmall;
   background-svg-size:1.2@fontHeightSmall, 1.2@fontHeightSmall;
 }
+
+rarityBorder {
+  id:rarity_border;
+  position:absolute;
+  border:yes;
+  input-transparent:yes;
+}
+
+rarityBorder[expired=soon] {
+  border-color:@itemSoonExpireColor;
+  display:show;
+}
+
+rarityBorder[expired=very_soon] {
+  border-color:@red;
+  display:show;
+}

@@ -23,7 +23,6 @@ foreach (fn in [
   "scripts/gamercard.nut"
   "scripts/popups/popups.nut"
   "scripts/popups/popup.nut"
-  "scripts/popups/popupFilter.nut"
 
   "scripts/wheelmenu/wheelmenu.nut"
   "scripts/guiLines.nut"

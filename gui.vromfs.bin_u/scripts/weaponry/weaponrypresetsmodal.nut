@@ -10,7 +10,11 @@ local { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
 } = require("scripts/weaponry/weaponryTooltipPkg.nut")
 local { weaponsPurchase, canBuyItem } = require("scripts/weaponry/weaponsPurchase.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
+local { appendOnce } = require("sqStdLibs/helpers/u.nut")
 
+const MY_FILTERS = "weaponry_presets/filters"
+local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
 class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -22,11 +26,11 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   curTierIdx           = -1
   presetsList          = null
   chooseMenuList       = null
-  weaponryByPresetInfo = null
+  presets              = null
+  presetsByRanks       = null
   lastWeapon           = null
   presetsMarkup        = null
   collapsedPresets     = []
-  chapterCount         = 0
   presetTextWidth      = 0
   onChangeValueCb      = null
   weaponItemParams     = null
@@ -34,13 +38,17 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   chapterPos           = 0
   wndWidth             = 0
   initLastWeapon       = null
-
   presetIdxToChildIdx  = null
-
   isAllBuyProcess      = false
   totalCost            = null
   multiPurchaseList    = null
   curEdiff             = null
+  weaponryByPresetInfo = null
+  filterStates         = null
+  filterTypes          = null
+  filterObj            = null
+  myFilters            = null
+  chosenPresetName     = null
 
   function getSceneTplView()
   {
@@ -54,12 +62,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     wndWidth = tiersAndDescWidth + presetTextWidth
     chapterPos = presetTextWidth + 0.5 * tiersWidth + iconWidth
     weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
+    presets = weaponryByPresetInfo.presets
     favoriteArr = weaponryByPresetInfo.favoriteArr
     presetsList = weaponryByPresetInfo.presetsList
     lastWeapon = initLastWeapon ?? getLastWeapon(unit.name)
-    local lw = lastWeapon
-    chosenPresetIdx = presetsList.findindex(@(w) w.name == lw) ?? 0
-    presetsMarkup = getPresetsMarkup()
+    chosenPresetName = lastWeapon
+    presetsMarkup = getPresetsMarkup(presets)
     return {
       headerText = "".concat(::loc("modification/category/secondaryWeapon"), " ",
         ::loc("ui/mdash"), " ", ::getUnitName(unit))
@@ -72,20 +80,42 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function initScreen()
   {
+    local chpn = chosenPresetName
+    chosenPresetIdx = presetsList.findindex(@(w) w.name == chpn) ?? 0
     selectPreset(chosenPresetIdx)
+    updatePresetsByRanks()
     updateMultiPurchaseList()
     ::move_mouse_on_obj(scene.findObject($"presetHeader_{chosenPresetIdx}"))
+
+    filterObj = scene.findObject("filter_nest")
+    myFilters = ::load_local_account_settings($"{MY_FILTERS}/{unit.name}", ::DataBlock())
+    fillFilterTypesList()
+    // No need to update items if no stored filters for current unit
+    if (myFilters != null)
+      updateAllByFilters()
+
+    openPopupFilter({
+      scene = filterObj
+      onChangeFn = onFilterCbChange.bindenv(this)
+      filterTypes = getFiltersView()
+      isTop = true
+    })
   }
 
-  function getPresetsMarkup()
-  {
+  function updatePresetsByRanks() {
+    presetsByRanks = {}
+    foreach(p in presets)
+      presetsByRanks[p.rank] <- (presetsByRanks?[p.rank] ?? []).append(p)
+  }
+
+  function getPresetsMarkup(pList) {
     presetIdxToChildIdx = {}
     local res = []
+    if (pList == null)
+      return res
     local curChapterOrd = 0
-    foreach (idx, preset in weaponryByPresetInfo.presets)
-    {
-      if (curChapterOrd != preset.chapterOrd)
-      {
+    foreach (preset in pList) {
+      if (curChapterOrd != preset.chapterOrd) {
         curChapterOrd = preset.chapterOrd
         res.append({
           isCollapsable = true
@@ -100,6 +130,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
           showButtons = true
           actionBtnText = onChangeValueCb != null ? ::loc("mainmenu/btnSelect") : null
         })
+      local idx = presets.findindex(@(p) p.id == preset.id)
       presetIdxToChildIdx[idx] <- res.len()
       res.append({
         presetId = idx
@@ -121,8 +152,8 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     return res
   }
 
-  function selectPreset(presetIdx) {
-    if (curPresetIdx == presetIdx)
+  function selectPreset(presetIdx, isForced = false) {
+    if (curPresetIdx == presetIdx && !isForced)
     {
       updateDesc()
       return
@@ -134,7 +165,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       nestObj.getChild(childIdx).selected = "no"
 
     local row = scene.findObject($"tiersNest_{curPresetIdx}")
-    if (::check_obj(row))
+    if (row?.isValid())
       row.setValue(-1)
 
     curPresetIdx = presetIdx
@@ -193,8 +224,8 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function onModItemDblClick(obj)
   {
     local idx = curPresetIdx
-    local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
-    if (itemParams?.weaponryItem.actionBtnCanShow != "no")
+    local params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
+    if (params?.weaponryItem.actionBtnCanShow != "no")
       onModActionBtn()
   }
 
@@ -202,7 +233,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   {
     if (curPresetIdx == null)
       return
-    chosenPresetIdx = curPresetIdx
+
     doItemAction(presetsList[curPresetIdx])
   }
 
@@ -315,52 +346,73 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       detail = INFO_DETAIL.FULL
     })
     local idx = curPresetIdx
-    local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
-    local btnText = itemParams?.weaponryItem.actionBtnText ?? ""
+    local params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
+    local btnText = params?.weaponryItem.actionBtnText ?? ""
     local canBuy = presetsList[idx].cost > 0
     local actionBtnObj = showSceneBtn("actionBtn", btnText != ""
       && (idx != chosenPresetIdx || canBuy))
-    if (btnText != "" && ::check_obj(actionBtnObj))
+    if (btnText != "" && actionBtnObj?.isValid())
       actionBtnObj.setValue(btnText)
-    local altBtnText = itemParams?.weaponryItem.altBtnBuyText ?? ""
+    local altBtnText = params?.weaponryItem.altBtnBuyText ?? ""
     local altActionBtnObj = showSceneBtn("altActionBtn", altBtnText != "")
-    if (altBtnText != "" && ::check_obj(altActionBtnObj))
+    if (altBtnText != "" && altActionBtnObj?.isValid())
     {
       altActionBtnObj.setValue(altBtnText)
-      altActionBtnObj.tooltip = itemParams?.weaponryItem.altBtnTooltip ?? ""
+      altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
     local favoriteBtnObj = showSceneBtn("favoriteBtn", true)
     favoriteBtnObj.setValue(::loc(presetsList[curPresetIdx].chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
 
-  function updateAllItems()
+  function updateAll(pList = null)
   {
     if (isAllBuyProcess)
       return
 
-    presetsMarkup = getPresetsMarkup()
-    local data = ::handyman.renderCached("gui/weaponry/weaponryPreset", {
-        wndWidth = wndWidth
-        chapterPos = chapterPos
-        presets = presetsMarkup
-        isShowConsoleBtn = ::show_console_buttons
-      })
     local presetObj = scene.findObject("presetNest")
-    if (!::check_obj(presetObj))
+    if (!presetObj?.isValid())
       return
+
+    presetsMarkup = getPresetsMarkup(pList ?? presets)
+    local data = ::handyman.renderCached("gui/weaponry/weaponryPreset", {
+      chapterPos = chapterPos
+      presets = presetsMarkup
+      isShowConsoleBtn = ::show_console_buttons
+    })
     guiScene.replaceContentFromText(presetObj, data, data.len(), this)
-    selectPreset(curPresetIdx)
+    // Select chosen or first preset
+    local firstIdx = null
+    foreach (idx, v in presetIdxToChildIdx){
+      firstIdx = idx
+      break
+    }
+    selectPreset(chosenPresetIdx in presetIdxToChildIdx ? chosenPresetIdx : firstIdx, true)
+
+    // Enable/disable filter options depends on whether filtering result exist.
+    local popupObj = filterObj.findObject("filter_popup")
+    if (!popupObj?.isValid())
+      return
+
+    local fObj = popupObj.findObject("f_Favorite")
+    local aObj = popupObj.findObject("f_Available")
+    if (fObj?.isValid()) {
+      fObj.setValue(isFavoritesExist() && filterStates.findindex(@(p) p == "f_Favorite") != null)
+      fObj.enable(isFavoritesExist())
+    }
+    if (aObj?.isValid()) {
+      aObj.setValue(isAvailablesExist() && filterStates.findindex(@(p) p == "f_Available") != null)
+      aObj.enable(isAvailablesExist())
+    }
   }
 
-  function onEventWeaponPurchased(params) { updateAllItems(); updateMultiPurchaseList() }
-  function onEventUnitWeaponChanged(params) { updateAllItems() }
+  function onEventWeaponPurchased(p) { updateAll(); updateMultiPurchaseList() }
 
   function onCollapse(obj)
   {
     local itemObj = obj?.collapse_header ? obj : obj.getParent()
-    local listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
-    if (!::check_obj(listObj) || !itemObj?.collapse_header)
+    local listObj = itemObj?.isValid() ? itemObj.getParent() : null
+    if (!listObj?.isValid() || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
@@ -429,9 +481,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function onChangeFavorite(obj)
   {
-    local preset = weaponryByPresetInfo.presets[curPresetIdx]
-    local isChosen = chosenPresetIdx == curPresetIdx
-    local chosenPresetName = presetsList[chosenPresetIdx].name
+    local preset = presets[curPresetIdx]
     local isFavorite = preset.chapterOrd == CHAPTER_FAVORITE_IDX
     local chapterOrd = isFavorite
       ? CHAPTER_ORDER.findindex(@(p) p == preset.purposeType) : CHAPTER_FAVORITE_IDX
@@ -446,14 +496,103 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     setFavoritePresets(unit.name, favoriteArr)
     preset.chapterOrd = chapterOrd
     presetsList[curPresetIdx].chapterOrd = chapterOrd
-    sortPresetLists([weaponryByPresetInfo.presets, presetsList])
-    chosenPresetIdx = presetsList.findindex(
-      @(w) w.name == (isChosen ? preset.id : chosenPresetName)) ?? 0
-    updateAllItems()
-    selectPreset(presetsList.findindex(@(w) w.name == preset.id) ?? 0)
+    sortPresetLists([presets, presetsList])
+    updateAllByFilters()
   }
 
-// DEVELOPERS OPTION ONLY
+  function getFiltersView() {
+    local view = { checkbox = []}
+    foreach(key, inst in filterTypes)
+      view.checkbox.append({
+        id = inst.id
+        idx = inst.idx
+        text = inst.text
+        isDisable = inst.isDisable
+        value = !inst.isDisable && filterStates.findindex(@(v) v == key) != null
+      })
+    view.checkbox.sort(@(a,b) a.idx <=> b.idx)
+    return [view]
+  }
+
+  isFavoritesExist = @() favoriteArr.len() > 0
+  isAvailablesExist = @() presets.filter(@(p) p.isEnabled).len() > 0
+
+  function fillFilterTypesList() {
+    filterStates = myFilters ? myFilters % "array" : []
+    filterTypes = {}
+    foreach(idx, key in FILTER_OPTIONS) {
+      local isRank = typeof(key) != "string"
+      if ((isRank && !presetsByRanks?[key]))
+        continue
+
+      local id = $"f_{key}"
+      filterTypes[id] <- {
+        id    = id
+        idx   = idx
+        isDisable = (key == FILTER_OPTIONS[0] && !isFavoritesExist())
+          || (key == FILTER_OPTIONS[1] && !isAvailablesExist())
+        text  = isRank ? $"{::loc("conditions/rank")} {::get_roman_numeral(key)}"
+          : ::loc($"mainmenu/only{key}")
+      }
+    }
+  }
+
+  function updateAllByFilters() {
+    local isFavorite = false
+    local isAvailable = false
+    local pList = []
+    // All presets have been filtered by rank an placed into presetsByRanks
+    // to avoid excess job by each checkbox choice.
+    foreach (inst in filterStates) {
+      if (inst != "f_Favorite" && inst != "f_Available") {
+        local p = presetsByRanks?[inst.split("f_")[1].tointeger()]
+        if (p != null)
+         pList.extend(p)
+      } else {
+        isFavorite = inst == "f_Favorite" || isFavorite
+        isAvailable = inst == "f_Available" || isAvailable
+      }
+    }
+
+    if (pList.len() == 0 || !isFavorite || !isAvailable) {
+      presets = weaponryByPresetInfo.presets
+      presetsList = weaponryByPresetInfo.presetsList
+      // Get all presets if no rank choosen
+      pList = pList.len() == 0 ? presets : pList
+    }
+    if (isFavorite || isAvailable) {
+      // Ignore filtering if stored filter has no result for current unit presets.
+      local isExistFavorites = isFavoritesExist()
+      local isExistAvailables = isAvailablesExist()
+      local filterFunc = @(p)
+        (!isFavorite || !isExistFavorites || p.chapterOrd == CHAPTER_FAVORITE_IDX)
+          && (!isAvailable || !isExistAvailables || p.isEnabled)
+      pList = pList.filter(filterFunc)
+      presets = presets.filter(filterFunc)
+      presetsList = presetsList.filter(filterFunc)
+    }
+
+    sortPresetLists([pList])
+    local chpn = chosenPresetName
+    chosenPresetIdx = presetsList.findindex(@(w) w.name == chpn)
+    updateAll(pList)
+  }
+
+  function onFilterCbChange(objId, tName, value) {
+    if (value)
+      appendOnce(objId, filterStates)
+    else {
+      local idx = filterStates.findindex(@(v) v == objId)
+      if (idx != null)
+        filterStates.remove(idx)
+    }
+
+    updateAllByFilters()
+    ::save_local_account_settings($"{MY_FILTERS}/{unit.name}",
+      ::build_blk_from_container(filterStates))
+  }
+
+  // DEVELOPERS OPTION ONLY
   function updateBuyAllBtn()
   {
     local isShow = multiPurchaseList.len() > 0
@@ -492,7 +631,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     {
       isAllBuyProcess = false
       ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
-      updateAllItems()
+      updateAll()
       updateMultiPurchaseList()
       return
     }

@@ -2,7 +2,6 @@ root {
   blur {}
   blur_foreground {}
   on_click:t='goBack'
-
   frame {
     size:t='<<wndWidth>>, 1@maxWindowHeight'
     class:t='wndNav'
@@ -13,7 +12,6 @@ root {
         caption:t='yes'
         text:t='<<headerText>>'
       }
-
       Button_close { id:t = 'btn_back' }
     }
     tdiv{
@@ -55,6 +53,13 @@ root {
     }
     navBar {
       navLeft {
+        width:t='pw'
+        popupFilter {
+          pos:t='1@blockInterval, 0'
+          position:t='relative'
+          margin-top:t="1@buttonMargin"
+          margin-bottom:t="1@buttonMargin"
+        }
         Button_text {
           id:t='btn_buyAll'
           btnName:t='L3'

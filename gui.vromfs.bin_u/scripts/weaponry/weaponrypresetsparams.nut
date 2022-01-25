@@ -366,9 +366,20 @@ local function updateUnitWeaponsByPreset(unit)
   }
 }
 
+local function getReqRankByMod(reqMod, modifications) {
+  local res = 1
+  if (!reqMod)
+    return res
+  foreach(mod in reqMod)
+    if (modifications?[mod] && modifications[mod].tier > res)
+      res = modifications[mod].tier
+  return res
+}
+
 local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
   // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
+  local modifications = ::get_wpcost_blk()?[unit.name].modifications
   updateUnitWeaponsByPreset(unit)
   local res = {presets = [],
     presetsList = deep_clone(getPresetsList(unit, chooseMenuList)),
@@ -400,6 +411,7 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
         chapterOrd       = preset.chapterOrd
         isDefault        = preset.isDefault
         isEnabled        = preset.isEnabled
+        rank             = getReqRankByMod(preset?.reqModification, modifications)
       })
     local p = presets[idx]
     foreach (weaponType, triggers in weaponry)

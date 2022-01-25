@@ -11,7 +11,7 @@ local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
 local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
+local { fillDescTextAboutDiv, updateExpireAlarmIcon } = require("scripts/items/itemVisual.nut")
 local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
@@ -370,7 +370,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
-    showSceneBtn("nav_separator", !isNavCollapsed)
     listObj.width = contentWidth
     listObj.left = leftPos
     emptyListObj.width = contentWidth
@@ -792,6 +791,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
         timeTxtObj = itemObj.findObject("craft_time")
         if (::check_obj(timeTxtObj))
           timeTxtObj.setValue(itemsList[i].getCraftTimeTextShort())
+
+        updateExpireAlarmIcon(itemsList[i], itemObj)
       }
     }
 

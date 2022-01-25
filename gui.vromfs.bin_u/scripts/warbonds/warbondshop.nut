@@ -118,7 +118,6 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
     local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
-    showSceneBtn("nav_separator", false)
     getItemsListObj().width = contentWidth
     scene.findObject("empty_items_list").width = contentWidth
     scene.findObject("item_info_nest").width = "fw"

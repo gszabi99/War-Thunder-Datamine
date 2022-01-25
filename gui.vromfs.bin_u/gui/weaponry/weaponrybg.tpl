@@ -49,8 +49,19 @@ modBlockHeaderRow {
         background-color:t='@modBgColor'
       }
       <</needDivLine>>
-      <<#isSmallFont>>smallFont:t='yes'<</isSmallFont>>
-      text:t='<<name>>'
+      tdiv {
+        size:t='pw, ph'
+        overflow:t='hidden'
+        textareaNoTab {
+          pos:t='0, 0.5ph-0.5h'
+          position:t='relative'
+          <<#isSmallFont>>
+          smallFont:t='yes'
+          auto-scroll:t='medium'
+          <</isSmallFont>>
+          text:t='<<name>>'
+        }
+      }
       <<#haveWarning>>
       warning_icon{
         id:t='<<warningId>>_warning'

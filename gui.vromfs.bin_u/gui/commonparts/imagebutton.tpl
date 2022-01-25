@@ -103,10 +103,8 @@ imgButton {
   <<#rarityColor>>
   rarityBorder {
     size:t='pw-4@dp, ph-4@dp'
-    pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'
-    border:t='yes'
+    pos:t='pw/2-w/2, ph/2-h/2'
     border-color:t='<<rarityColor>>'
-    input-transparent:t='yes'
   }
   <</rarityColor>>
 

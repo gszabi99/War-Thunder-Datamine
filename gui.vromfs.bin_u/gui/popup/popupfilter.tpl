@@ -19,6 +19,7 @@ tdiv {
 
 popup_menu {
   id:t='filter_popup'
+  top:t='<<^isTop>>1@blockInterval<</isTop>><<#isTop>>-h-1@buttonHeight-1@blockInterval<</isTop>>'
   position:t='relative'
   height:t='<<rowsCount>>@popupFilterRowHeight+4@blockInterval'
   display:t='hide'

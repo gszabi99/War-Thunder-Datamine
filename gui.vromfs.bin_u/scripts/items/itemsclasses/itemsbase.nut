@@ -45,6 +45,13 @@ local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 local lottie = require("scripts/utils/lottie.nut")
 local { checkLegalRestrictions } = require("scripts/items/itemRestrictions.nut")
 
+const ITEM_SOON_EXPIRE_SEC = 14400
+const ITEM_VERY_SOON_EXPIRE_SEC = 3600
+
+local expireTypes = {
+  SOON = {id = "soon", color = "@itemSoonExpireColor"}
+  VERY_SOON = {id = "very_soon", color = "@red"}
+}
 ::items_classes <- {}
 
 class ::BaseItem
@@ -392,6 +399,12 @@ class ::BaseItem
     if (isRare() && (params?.showRarity ?? true))
       res.rarityColor <- getRarityColor()
 
+    local expireType = getExpireType()
+    if (expireType) {
+      res.rarityColor <- expireType.color
+      res.alarmIcon <- true
+    }
+
     if (isActive())
       res.active <- true
 
@@ -578,11 +591,21 @@ class ::BaseItem
   getAltActionName   = @() ""
   doAltAction        = @(params = null) false
 
-  isExpired          = @() expiredTimeSec != 0 && (expiredTimeSec - ::dagor.getCurTime() * 0.001) < 0
+  getExpireDeltaSec  = @() (expiredTimeSec - ::dagor.getCurTime() * 0.001).tointeger()
+  isExpired          = @() expiredTimeSec != 0 && getExpireDeltaSec() < 0
   hasExpireTimer     = @() expiredTimeSec != 0
   hasTimer           = @() expiredTimeSec != 0
                            || (getCraftingItem()?.expiredTimeSec ?? 0) > 0
   getNoTradeableTimeLeft = @() ::max(0, tradeableTimestamp - ::get_charserver_time_sec())
+  function getExpireType()
+  {
+    if (!hasTimer())
+      return null
+    local deltaSeconds = getExpireDeltaSec()
+    return deltaSeconds > ITEM_SOON_EXPIRE_SEC ? null
+      : deltaSeconds < ITEM_VERY_SOON_EXPIRE_SEC ? expireTypes.VERY_SOON
+      : expireTypes.SOON
+  }
 
   function canPreview()
   {
@@ -614,16 +637,17 @@ class ::BaseItem
   {
     if (expiredTimeSec <= 0)
       return ""
-    local curSeconds = ::dagor.getCurTime() * 0.001
-    local deltaSeconds = (expiredTimeSec - curSeconds).tointeger()
+    local deltaSeconds = getExpireDeltaSec()
     if (deltaSeconds < 0)
     {
       if (isInventoryItem && amount > 0)
         onItemExpire()
       return ::loc(itemExpiredLocId)
     }
-    return ::loc("icon/hourglass") + ::nbsp +
+    local resStr = ::loc("icon/hourglass") + ::nbsp +
       ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp)
+    local expireTimeColor = getExpireType()?.color
+    return expireTimeColor ? ::colorize(expireTimeColor, resStr) : resStr
   }
 
   function getCurExpireTimeText()

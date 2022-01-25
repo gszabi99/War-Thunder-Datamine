@@ -1,16 +1,14 @@
 <<#arrows>>
 tdiv {
-  id:t='anim_arrow_block' // for easy use anim sizes
   size:t='1@tutorArrowSize, 3@tutorArrowSize'
   left:t='<<left>>'
   top:t='<<top>>'
   position:t='absolute'
 
-  tdiv { // arrow pos move block
+  tdiv {
     size:t='pw, ph-pw'
 
     tdiv {
-      id:t='anim_arrow'
       size:t='pw, pw'
       position:t='absolute'
 

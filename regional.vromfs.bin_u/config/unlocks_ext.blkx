@@ -17593,6 +17593,7 @@
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "memorable_date",
+      "hidden": true,
       "mode": [
         {
           "type": "killedPlayersScore"
@@ -71021,6 +71022,1868 @@
             "type": "timeRange",
             "beginDate": "2021-12-24 12:00:00",
             "endDate": "2022-01-03 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "title_150_level_attack_pilot",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "loading_screen_su_8",
+      "type": "award",
+      "hidden": false,
+      "isLoadingScreen": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_1",
+      "locDescId": "challenge_kill_players/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 125
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-01-26 12:00:00",
+            "endDate": "2022-02-16 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_2",
+      "locDescId": "challenge_win_mission/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "num": 50
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-02 12:00:00",
+            "endDate": "2022-02-23 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_3",
+      "locDescId": "challenge_kill_players_on_another_type_military_branches/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "typeLocID": "conditions/char_unlocks"
+        },
+        {
+          "num": 2
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_3_kill_tank_on_aircraft"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_3_kill_aircraft_on_tank"
+        },
+        {
+          "visualCondition": {
+            "type": "online"
+          }
+        },
+        {
+          "visualCondition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "visualCondition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": false
+          }
+        },
+        {
+          "visualCondition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-09 12:00:00",
+            "endDate": "2022-03-02 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_3_kill_tank_on_aircraft",
+      "type": "challenge",
+      "chapter": "battlepass_season6",
+      "group": "battlepass_season_6_challenge_3",
+      "hidden": false,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 15
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "targetType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-09 12:00:00",
+            "endDate": "2022-03-02 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_3_kill_aircraft_on_tank",
+      "type": "challenge",
+      "chapter": "battlepass_season6",
+      "group": "battlepass_season_6_challenge_3",
+      "hidden": false,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 15
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "targetType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-09 12:00:00",
+            "endDate": "2022-03-02 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_4",
+      "locDescId": "challenge_set_fire_players/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "burnedUnitsScore"
+        },
+        {
+          "num": 60
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "targetIsPlayer"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-16 12:00:00",
+            "endDate": "2022-03-09 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_5",
+      "locDescId": "challenge_play_missions_with_one_kill/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 75
+        },
+        {
+          "condition": {
+            "type": "minStat",
+            "value": [1.0,1.0,1.0],
+            "stat": "playerkills"
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-23 12:00:00",
+            "endDate": "2022-03-16 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_6",
+      "locDescId": "challenge_kill_players_with_bomb_and_rocket/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "typeLocID": "conditions/char_unlocks"
+        },
+        {
+          "num": 2
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_6_bomb"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_6_rocket"
+        },
+        {
+          "visualCondition": {
+            "type": "online"
+          }
+        },
+        {
+          "visualCondition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "visualCondition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "visualCondition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-02 12:00:00",
+            "endDate": "2022-03-23 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_6_bomb",
+      "type": "challenge",
+      "chapter": "battlepass_season6",
+      "group": "battlepass_season_6_challenge_6",
+      "locId": "weaponType/bomb",
+      "hidden": false,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 10
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "bomb"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-02 12:00:00",
+            "endDate": "2022-03-23 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_6_rocket",
+      "type": "challenge",
+      "chapter": "battlepass_season6",
+      "group": "battlepass_season_6_challenge_6",
+      "locId": "weaponType/rocketOrAgm",
+      "hidden": false,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 10
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "weaponType"
+            },
+            {
+              "weapon": "rocket"
+            },
+            {
+              "weapon": "agm"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-02 12:00:00",
+            "endDate": "2022-03-23 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_7",
+      "locDescId": "challenge_kill_players_on_light_tank/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 50
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "typeLightTank"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-09 12:00:00",
+            "endDate": "2022-03-30 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_8",
+      "locDescId": "challenge_play_missions_on_season_vehicles/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 20
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerUnit"
+            },
+            {
+              "class": "it_41m_turan_2"
+            },
+            {
+              "class": "uk_higgins_78ft_mtb422"
+            },
+            {
+              "class": "cn_type_64"
+            },
+            {
+              "class": "su-8"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-16 12:00:00",
+            "endDate": "2022-04-06 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        },
+        {
+          "visualCondition": {
+            "type": "online"
+          }
+        },
+        {
+          "visualCondition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_9",
+      "locDescId": "challenge_kill_players_with_35mm_air_cannon/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 15
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "weaponType",
+            "weapon": "generic"
+          }
+        },
+        {
+          "condition": {
+            "type": "bulletCaliber",
+            "caliber": 0.035
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-23 12:00:00",
+            "endDate": "2022-04-13 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_10",
+      "locDescId": "challenge_receive_streaks/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "unlockStageCount"
+        },
+        {
+          "num": 15
+        },
+        {
+          "unlock": "tank_help_with_repairing"
+        },
+        {
+          "unlock": "tank_help_with_extinguishing"
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-30 12:00:00",
+            "endDate": "2022-04-20 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_11",
+      "locDescId": "challenge_win_battles_in_top3/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "num": 10
+        },
+        {
+          "condition": {
+            "type": "minStat",
+            "value": [3.0,3.0,3.0],
+            "stat": "place"
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-04-06 12:00:00",
+            "endDate": "2022-04-27 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_12",
+      "locDescId": "challenge_kill_players_in_air_with_boat/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 10
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderType",
+            "unitType": "boat"
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderIsPlayerControlled"
+          }
+        },
+        {
+          "condition": {
+            "type": "targetType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassProgress",
+            "progress": 210
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_13",
+      "locDescId": "challenge_kill_players_while_an_point/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "inRow": false
+        },
+        {
+          "num": 25
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "missionPostfix",
+            "allowed": false,
+            "postfix": "_NConq",
+            "locValuePrefix": "missions/"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "inCapturedZone",
+            "any": true
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassProgress",
+            "progress": 400
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_14",
+      "locDescId": "challenge_receive_streaks/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "unlockStageCount"
+        },
+        {
+          "num": 7
+        },
+        {
+          "unlock": "heroic_fighter"
+        },
+        {
+          "unlock": "heroic_tankman"
+        },
+        {
+          "unlock": "heroic_ship"
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "air_arcade"
+            },
+            {
+              "value": "air_realistic"
+            },
+            {
+              "value": "tank_event_in_random_battles_arcade"
+            },
+            {
+              "value": "tank_event_in_random_battles_historical"
+            },
+            {
+              "value": "ship_event_in_random_battles_arcade"
+            },
+            {
+              "value": "ship_event_in_random_battles_realistic"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassProgress",
+            "progress": 600
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season_6_challenge_all",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 6,
+      "hidden": false,
+      "chapter": "battlepass_season6",
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "typeLocID": "conditions/battlepassChallenges"
+        },
+        {
+          "num": 14
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_1"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_2"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_3"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_4"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_5"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_6"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_7"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_8"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_9"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_10"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_11"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_12"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_13"
+        },
+        {
+          "unlock": "battlepass_season_6_challenge_14"
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 6
           }
         }
       ]

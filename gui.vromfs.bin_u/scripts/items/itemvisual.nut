@@ -251,9 +251,27 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
   return $"{description}{::g_string.implode(separateBoosters, "\n")}{::g_string.implode(detailedDescription, "\n\n")}"
 }
 
+local function updateExpireAlarmIcon(item, itemObj)
+{
+  if (!itemObj?.isValid())
+    return
+
+  local expireType = item.getExpireType()
+  if (!expireType)
+    return
+
+  ::showBtn("alarm_icon", true, itemObj)
+  local borderObj = itemObj.findObject("rarity_border")
+  if (!borderObj?.isValid())
+    return
+
+  borderObj.expired = expireType.id
+}
+
 return {
   fillItemDescr
   getDescTextAboutDiv
   fillDescTextAboutDiv
   getActiveBoostersDescription
+  updateExpireAlarmIcon
 }

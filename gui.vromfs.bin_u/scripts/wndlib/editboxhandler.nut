@@ -23,6 +23,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 
   title = ""
   label = ""
+  leftAlignedLabel = false
   editboxWarningTooltip = ""
   canCancel = true
   allowEmpty = true
@@ -36,10 +37,10 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   function initScreen()
   {
     scene.findObject("edit_box_window_header").setValue(title)
-    scene.findObject("editbox_label").setValue(label)
     checkWarningFunc = checkWarningFunc ?? @(...) true
 
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
+    showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
 
     local isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)

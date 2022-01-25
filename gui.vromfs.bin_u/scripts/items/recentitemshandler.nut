@@ -1,5 +1,6 @@
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { updateExpireAlarmIcon } = require("scripts/items/itemVisual.nut")
 
 class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -41,7 +42,11 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     return view
   }
-
+  function onTimer(obj, dt)
+  {
+    foreach (idx, item in recentItems)
+      updateExpireAlarmIcon(item, scene.findObject($"shop_item_cont_{idx}"))
+  }
   function updateHandler(checkDefShow = false)
   {
     recentItems = ::g_recent_items.getRecentItems()
@@ -70,6 +75,7 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     local blk = ::handyman.renderCached("gui/items/recentItemsHandler", view)
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
+    scene.findObject("update_timer").setUserData(this)
   }
 
   function onItemAction(obj)

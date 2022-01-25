@@ -65,14 +65,15 @@ class ::BaseGuiHandler
     if (!sceneTplName)
       return false
 
+    local obj = getSceneTplContainerObj()
+    if (!obj?.isValid())
+      return false
+
     local view = getSceneTplView()
     if (!view)
       return false
 
     local data = ::handyman.renderCached(sceneTplName, view)
-    local obj = getSceneTplContainerObj()
-    if (!::check_obj(obj))
-      return false
 
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     return true

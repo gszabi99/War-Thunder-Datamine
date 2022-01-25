@@ -112,6 +112,7 @@ local { addPromoAction } = require("scripts/promo/promoActions.nut")
   function launchXboxEmailRegistration()
   {
     ::gui_modal_editbox_wnd({
+      leftAlignedLabel = true
       title = ::loc("mainmenu/XboxOneEmailRegistration")
       label = ::loc("mainmenu/XboxOneEmailRegistration/desc")
       checkWarningFunc = ::g_string.validateEmail

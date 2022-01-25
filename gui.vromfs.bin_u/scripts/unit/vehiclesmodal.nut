@@ -1,4 +1,4 @@
-local popupFilter = require("scripts/popups/popupFilter.nut")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
 local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
@@ -45,7 +45,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     restoreLastUnitSelection(listObj)
 
     local nestObj = scene.findObject("filter_nest")
-    popupFilter.open(nestObj, onChangeFilterItem.bindenv(this), getFiltersView())
+    openPopupFilter({
+      scene = nestObj
+      onChangeFn = onChangeFilterItem.bindenv(this)
+      filterTypes = getFiltersView()
+    })
   }
 
   getWndTitle = @() ::loc(wndTitleLocId)

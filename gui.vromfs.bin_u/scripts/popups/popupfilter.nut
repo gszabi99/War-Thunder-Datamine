@@ -1,29 +1,36 @@
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 
-class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
-{
+const ALL_ITEMS  = "all_items"
+const MORE_ITEMS = "more"
+local moreTxt = $" {::loc("ui/ellipsis")} +"
+
+local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
   sceneTplName         = "gui/popup/popupFilter"
 
   stateList            = null
+  stateItems           = null
   isFilterVisible      = false
   iconNestObj          = null
+  maxWidth             = null
 
   //init params
   filterTypes          = null
   btnName              = null
   btnTitle             = null
   onChangeFn           = null
+  isTop                = false
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     local rowsCount = 0
     local maxTextWidth = 0
+    btnTitle = btnTitle ?? ::loc("stats_filter_show")
+    maxWidth = (scene.getParent().getSize()[0] ?? 0) - ::to_pixels("1@buttonWidth")
+      - getStringWidthPx($"{moreTxt}  ", "fontMedium")
 
-    foreach (fType in filterTypes)
-    {
+    foreach (fType in filterTypes) {
       rowsCount = ::max(rowsCount, fType.checkbox.len())
       foreach (cb in fType.checkbox)
         if (cb?.text)
@@ -41,7 +48,7 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
         typeName
         isLast = false
         checkbox = checkbox.map(function(cb) {
-          local isMultiple = cb.id == "all_items"
+          local isMultiple = cb.id == ALL_ITEMS
           return cb.__merge({
             isMultiple
             typeName
@@ -54,48 +61,47 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
     }).filter(@(inst) inst != null)
     columns[columns.len()-1].isLast = true
 
-    local imgItems = columns.reduce(@(res, inst)
-      res.extend(inst.checkbox.filter(@(cb) !cb.isMultiple)), [])
+    stateItems = columns.reduce(@(res, inst)
+      res.extend(inst.checkbox.filter(@(cb) !cb.isMultiple)), []).append({ id = MORE_ITEMS })
 
     stateList = {}
-    foreach( inst in imgItems)
-      stateList[inst.id] <- inst
+    foreach( inst in stateItems)
+      if (inst.id != MORE_ITEMS)
+        stateList[inst.id] <- inst
 
     return {
       rowsCount = rowsCount
       columns = columns
       btnName = btnName ?? "Y"
-      btnTitle = btnTitle ?? ::loc("stats_filter_show")
+      btnTitle = btnTitle
       underPopupClick    = "onShowFilterBtnClick"
       underPopupDblClick = "onShowFilterBtnClick"
-      items = imgItems
+      items = stateItems
+      isTop = isTop
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     iconNestObj = scene.findObject("icon_nest")
+    updateStates()
   }
 
-  function updateColumns(typeName)
-  {
+  function updateColumns(typeName) {
     local curList  = stateList.filter(@(inst) inst.typeName == typeName)
     local columnObj = scene.findObject($"{typeName}_column")
     if (!columnObj?.isValid())
       return
 
-    for (local i = 0; i < columnObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < columnObj.childrenCount(); i++) {
       local child = columnObj.getChild(i)
-      if (child.id == "all_items")
+      if (child.id == ALL_ITEMS)
         child.setValue(curList.findvalue(@(v) !v.value) == null)
       else
         child.setValue(curList[child.id].value)
     }
   }
 
-  function onSelectAllChange(obj)
-  {
+  function onSelectAllChange(obj) {
     if (!onChangeFn)
       return
 
@@ -105,17 +111,36 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     foreach (inst in curList)
-    {
-      ::showBtn(inst.id, value, iconNestObj)
-      inst.value = value
-    }
+      stateList[inst.id].value = value
 
+    updateStates()
     updateColumns(obj.typeName)
     onChangeFn(obj.id, obj.typeName, value)
   }
 
-  function  onCheckBoxChange(obj)
-  {
+  function updateStates() {
+    local isWidthExceed = false
+    local hiddenCount = 0
+    local totalWidth = 0
+    for (local i = 0; i < stateItems.len(); i++) {
+      //Use stateItems instead of stateList to get right items order
+      local id = stateItems[i].id
+      if (id == MORE_ITEMS)
+        continue
+      local inst = stateList[id]
+      local textWidth = !inst.value ? 0
+        : inst?.image ? ::to_pixels("1@checkboxSize + 2@blockInterval")
+        : getStringWidthPx($" {inst.text} |", "fontMedium")
+      totalWidth += textWidth
+      isWidthExceed = totalWidth > maxWidth
+      ::showBtn(id, isWidthExceed && inst.value ? false : inst.value, iconNestObj)
+      hiddenCount = isWidthExceed && inst.value ? ++hiddenCount : hiddenCount
+    }
+    local moreObj = ::showBtn(MORE_ITEMS, isWidthExceed, iconNestObj)
+    moreObj.setValue($"{moreTxt}{hiddenCount}")
+
+  }
+  function  onCheckBoxChange(obj) {
     if (!onChangeFn)
       return
 
@@ -126,28 +151,19 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
 
 
     curInst.value = value
-    ::showBtn(obj.id, value, iconNestObj)
-
+    updateStates()
     updateColumns(obj.typeName)
     onChangeFn(obj.id, obj.typeName, value)
   }
 
-  function onShowFilterBtnClick(obj)
-  {
+  function onShowFilterBtnClick(obj) {
     isFilterVisible = !isFilterVisible
     showSceneBtn("filter_popup", isFilterVisible)
   }
 }
 
+::gui_handlers.popupFilter <- popupFilter
+
 return {
-  open = function (scene, onChangeFn, filterTypes, btnName = null, btnTitle = null) {
-    ::handlersManager.loadHandler(::gui_handlers.popupFilter,
-      {
-        scene
-        onChangeFn
-        filterTypes
-        btnName
-        btnTitle
-      })
-  }
+  openPopupFilter = @(params = {}) ::handlersManager.loadHandler(popupFilter, params)
 }
