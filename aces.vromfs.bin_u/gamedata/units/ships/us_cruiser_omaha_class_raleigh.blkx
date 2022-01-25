@@ -4975,6 +4975,9 @@
             "dmPartMain": "fire_control_room_01_dm"
           },
           {
+            "dmPartMain": "fire_control_room_02_dm"
+          },
+          {
             "dmPart": "fire_director_01_dm"
           },
           {
@@ -5002,19 +5005,36 @@
         ]
       },
       {
-        "fireDirecting": {
-          "dmPartMain": "fire_control_room_01_dm",
-          "dmPart": "rangefinder_01_dm",
-          "measureAccuracy": 0.85,
-          "targetLockTime": 30.0,
-          "calcTime": 18.0,
-          "rotationSpeed": 20.0,
-          "triggerGroupUse": {
-            "primary": true,
-            "secondary": true,
-            "machinegun": false
+        "fireDirecting": [
+          {
+            "dmPartMain": "fire_control_room_01_dm"
+          },
+          {
+            "dmPartMain": "fire_control_room_02_dm"
+          },
+          {
+            "dmPart": "rangefinder_01_dm"
+          },
+          {
+            "measureAccuracy": 0.85
+          },
+          {
+            "targetLockTime": 30.0
+          },
+          {
+            "calcTime": 18.0
+          },
+          {
+            "rotationSpeed": 20.0
+          },
+          {
+            "triggerGroupUse": {
+              "primary": true,
+              "secondary": true,
+              "machinegun": false
+            }
           }
-        }
+        ]
       }
     ]
   },
