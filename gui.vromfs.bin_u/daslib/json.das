@@ -38,7 +38,7 @@ def JV ( v : double )
 def JV ( v : bool )
     return new [[JsonValue value <- [[JsValue _bool = v]]]]
 
-def JV ( v : void? )
+def JVNull
     return new [[JsonValue value <- [[JsValue _null = null]]]]
 
 def JV ( var v : table<string;JsonValue?> )
@@ -48,11 +48,11 @@ def JV ( var v : array<JsonValue?> )
     return new [[JsonValue value <- [[JsValue _array <- v]]]]
 
 def private lexer ( text : string )
-    var stext = clone_string(text)
+    let stext = clone_string(text)
     return <- _lexer(stext)
 
 def private lexer ( text : array<uint8> )
-    var stext = string(text)
+    let stext = string(text)
     return <- _lexer(stext)
 
 def private _lexer ( var stext : string implicit )
@@ -176,7 +176,7 @@ def private parse_value ( var itv : iterator<Token>; var error : string & ) : Js
         if sym == '['
             var arr : array<JsonValue?>
             while !empty(itv)
-                var value = parse_value(itv, error)
+                let value = parse_value(itv, error)
                 if value == null
                     if error=="unexpected ]" && length(arr)==0
                         error = ""
@@ -203,10 +203,10 @@ def private parse_value ( var itv : iterator<Token>; var error : string & ) : Js
                         error = ""
                         return JV(tab)
                     return null
-                var key = ahead as _string
+                let key = ahead as _string
                 if !expect_symbol(itv, ahead, ':', error)
                     return null
-                var value = parse_value(itv, error)
+                let value = parse_value(itv, error)
                 if value == null
                     return null
                 if key_exists(tab,key)
@@ -235,7 +235,7 @@ def private parse_value ( var itv : iterator<Token>; var error : string & ) : Js
     elif ahead is _bool
         return JV(ahead as _bool)
     elif ahead is _null
-        return JV(null)
+        return JVNull()
     else
         error = "{ahead}"
         return null

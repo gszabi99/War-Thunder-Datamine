@@ -81,7 +81,7 @@ def private join_path(a, path_b: string): string
         return fix_path(b)
     if length(b) == 0
         return fix_path(a)
-    var res = build_string() <| $(builder)
+    let res = build_string() <| $(builder)
         builder |> write(a)
         let ends = ends_with_separator(a)
         let starts = starts_with_separator(b)
@@ -657,7 +657,7 @@ class private DAgent: DapiDebugAgent
             server.agent = addr(self)
         server->make_server_adapter()
         if !server->init(port)
-            print("server failed to initialize\n")
+            to_log(LOG_ERROR, "debug server failed to initialize\n")
             unsafe
                 delete server
 
@@ -937,15 +937,15 @@ class private DAgent: DapiDebugAgent
                 string_heap_collect()
             alloc = string_heap_bytes_allocated()
             if logStrMemory
-                print("dap: {report}{bytes_hr(alloc)} limit : {bytes_hr(strLimit)}\n")
+                to_log(LOG_DEBUG, "dap: {report}{bytes_hr(alloc)} limit : {bytes_hr(strLimit)}\n")
             if alloc > strLimit
                 strLimit *= uint64(2)
                 if logStrMemory
-                    print("dap: UP string heap limit: {bytes_hr(strLimit)}\n")
+                    to_log(LOG_DEBUG, "dap: UP string heap limit: {bytes_hr(strLimit)}\n")
             elif strLimit > initialStrLimit && alloc < strLimit / uint64(2)
                 strLimit = strLimit / uint64(2)
                 if logStrMemory
-                    print("dap: DOWN string heap limit: {bytes_hr(strLimit)}\n")
+                    to_log(LOG_DEBUG, "dap: DOWN string heap limit: {bytes_hr(strLimit)}\n")
 
     def override onCreateContext(var ctx: Context): void
         // unsafe
@@ -973,7 +973,7 @@ class private DAgent: DapiDebugAgent
         return false
 
     def getContextIdx(var ctx: Context): int
-        var ctxAt = ctx_at(ctx)
+        let ctxAt = ctx_at(ctx)
         for idx in iter_range(contexts)
             if contexts[idx].at == ctxAt
                 return idx
@@ -1022,10 +1022,10 @@ class private DAServer: Server
         Server`Server(cast<Server> self)
 
     def override onError(msg:string; code:int)
-        print("[E] dap: server error:{code} - {msg}\n")
+        to_log(LOG_ERROR, "dap: server error:{code} - {msg}\n")
 
     def override onConnect()
-        print("dap: connected ::{port}\n")
+        to_log(LOG_INFO, "dap: connected ::{port}\n")
 
     def override onDisconnect()
         if length(current_string) > 0
@@ -1059,10 +1059,10 @@ class private DAServer: Server
                     continue
                 if ch != '\n'
                     continue
-                var str = string(current_string)
+                let str = string(current_string)
                 if str |> starts_with(prefix)
                     unsafe
-                        var lenStr = chop(str, 16, length(current_string) - length(prefix) - 2) // \r\n length
+                        let lenStr = chop(str, 16, length(current_string) - length(prefix) - 2) // \r\n length
                         toRead = to_int(lenStr)
                         clear(current_string)
                 continue
@@ -1242,7 +1242,7 @@ class private DAServer: Server
         agent->getContextData(ctxId) <| $(var ctxData: DAContext)
             let frameId = int(ini.frameId % double(MAX_STACK))
             if frameId >= 0 && frameId < length(ctxData.stack)
-                var spAddr = ctxData.stack[frameId].spAddr
+                let spAddr = ctxData.stack[frameId].spAddr
                 var globs = 0
                 var idx = frameId
                 var first = true
@@ -1438,7 +1438,7 @@ class private DAServer: Server
 
     // https://microsoft.github.io/language-server-protocol/specifications/specification-current/#responseMessage
     def sendRawData(var data : JsonValue?; logData: bool)
-        var msg = write_json(data)
+        let msg = write_json(data)
         var packStr = "Content-Length: {length(msg)}\r\n\r\n{msg}"
         if logData
             self->log("<------\n{packStr}")
@@ -1451,7 +1451,7 @@ class private DAServer: Server
     def sendStopped(ctx: DAContext; reason, text: string; brId: uint64)
         self->sendEvent("stopped", JV({{
             "reason"=>JV(reason);
-            "text"=>empty(text) ? JV(null) : JV(text);
+            "text"=>empty(text) ? JVNull() : JV(text);
             "threadId"=>JV(double(ctx.id));
             "allThreadsStopped"=>JV(false);
             "hitBreakpointIds"=>brId == -1ul ? null : JV([{auto[] JV(brId)}])
@@ -1560,7 +1560,7 @@ def compileAndRun ( text, self_text:string ) : tuple<ok:bool;result:string>
             fmap(fr) <| $(data)
                 access |> set_file_source("__current.das", string(data))
         else
-            print("failed to open `{self_text}`\n")
+            to_log(LOG_ERROR, "failed to open `{self_text}`\n")
     using <| $(var mg:ModuleGroup#)
         using <| $(var cop:CodeOfPolicies#)
             cop.allow_local_variable_shadowing = true
@@ -1647,9 +1647,9 @@ def private start_debug_agent(var ctx: Context)
 def private start_agent(force:bool = false): bool
     if force || !has_debug_agent_context("~debug")
         fork_debug_agent_context(@@start_debug_agent)
-        print(use_instruments() ? "dap: install debug agent (with instruments)\n" : "dap: install debug agent\n")
+        to_log(LOG_INFO, use_instruments() ? "dap: install debug agent (with instruments)\n" : "dap: install debug agent\n")
     else
-        print("dap: debug agent already exists\n")
+        to_log(LOG_WARNING, "dap: debug agent already exists\n")
     set_single_step(this_context(), !use_instruments() || wait_debugger())
     return true
 
