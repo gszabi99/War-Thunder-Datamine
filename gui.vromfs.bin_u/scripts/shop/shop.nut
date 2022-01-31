@@ -1360,6 +1360,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(grObj))
       return
 
+    skipOpenGroup = true
     //choose aircraft from group window
     local tdObj = grObj.getParent()
     local tdPos = tdObj.getPosRC()
@@ -1391,6 +1392,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     fillGroupObjAnimParams(tdSize, tdPos)
 
     updateGroupObjNavBar()
+    skipOpenGroup = false
   }
 
   function fillGroupObjAnimParams(tdSize, tdPos)
