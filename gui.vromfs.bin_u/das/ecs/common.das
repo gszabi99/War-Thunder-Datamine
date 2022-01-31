@@ -7,12 +7,12 @@ require daslib/instance_function
 
 
 [generic]
-def get_string(obj: ecs::ChildComponent const?; orDefault : string)
-  let str = get_ecs_string(obj)
+def get_string(obj; name: string; name_hash: uint; orDefault : string)
+  let str = get_ecs_string(obj, name, name_hash)
   return str != null ? string(*str) : orDefault
 
 [generic]
-def get_string(obj: ecs::ChildComponent; orDefault : string)
+def get_string(obj; orDefault : string)
   let str = get_ecs_string(obj)
   return str != null ? string(*str) : orDefault
 
