@@ -1,6 +1,173 @@
 [
   {
     "unlockable": {
+      "id": "test_missionsWonScore_2023",
+      "type": "challenge",
+      "chapter": "test",
+      "shouldMarkUnits": true,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 100
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 50
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_ussr"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "tank",
+            "controlled": true
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-12-20 11:00:00",
+            "endDate": "2022-01-31 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "test_killed_2021",
+      "type": "challenge",
+      "chapter": "test",
+      "shouldMarkUnits": true,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 100
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 1
+        },
+        {
+          "mulHardcore": 1
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerUnit"
+            },
+            {
+              "class": "ussr_bmp_2"
+            },
+            {
+              "class": "ussr_zprk_2s6"
+            },
+            {
+              "class": "ussr_isu_122s"
+            },
+            {
+              "class": "ussr_is_2_1944"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2021-01-02 11:00:00",
+            "endDate": "2021-01-05 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "test_killed_2023",
+      "type": "challenge",
+      "chapter": "test",
+      "shouldMarkUnits": true,
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 100
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 1
+        },
+        {
+          "mulHardcore": 1
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerUnit"
+            },
+            {
+              "class": "ussr_bmp_2"
+            },
+            {
+              "class": "ussr_zprk_2s6"
+            },
+            {
+              "class": "ussr_isu_122s"
+            },
+            {
+              "class": "ussr_is_2_1944"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-01-02 11:00:00",
+            "endDate": "2022-01-31 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "gift_special_offer_90_all_premium_20210701",
       "type": "inventory",
       "userLogId": "200248",

@@ -147,12 +147,14 @@ local unlockConditionUnitclasses = {
   if (maxVal == null)
     maxVal = data.maxVal
 
-  if ((data?.locDescId ?? "") != "") {
-    local descValue = isBitMode ? stdMath.number_of_set_bits(maxVal) : maxVal
-    descData.append(::loc(data.locDescId, { num = descValue }))
-  }
-  else if ((data?.desc ?? "") != "")
-    descData.append(data.desc)
+  local hasDescInConds = data?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
+  if (!hasDescInConds)
+    if ((data?.locDescId ?? "") != "") {
+      local descValue = isBitMode ? stdMath.number_of_set_bits(maxVal) : maxVal
+      descData.append(::loc(data.locDescId, { num = descValue }))
+    }
+    else if ((data?.desc ?? "") != "")
+      descData.append(data.desc)
 
   params.isExpired <- data.isExpired
   descData.append(::UnlockConditions.getConditionsText(data.conditions, curVal, maxVal, params))

@@ -14,6 +14,9 @@ expandable {
 
   fullSize:t='yes'
   selImg {
+    <<#isSmallText>>
+    smallFont:t='yes'
+    <</isSmallText>>
     header {
       width:t='pw'
 
@@ -132,7 +135,7 @@ expandable {
         left:t='pw-w'
         position:t='relative'
         flow:t='vertical'
-        textarea {
+        textareaNoTab {
           max-width:t='fw'
           removeParagraphIndent:t='yes';
           text:t='<<rewardText>>'

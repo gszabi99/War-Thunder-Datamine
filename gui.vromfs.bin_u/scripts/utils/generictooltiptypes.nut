@@ -466,7 +466,7 @@ local exportTypes = addTooltipTypes({
 
       local config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
       local view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true})
-      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view]})
+      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view], isSmallText = true})
 
       local guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
@@ -484,7 +484,7 @@ local exportTypes = addTooltipTypes({
 
       local unlockBlk = id && id != "" && ::g_unlocks.getUnlockById(id)
       local data = ::handyman.renderCached("gui/unlocks/battleTasksItem",
-        { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })]})
+        { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })], isSmallText = true})
 
       local guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"

@@ -245,7 +245,7 @@ local function isEqualSimple(list1, list2, compareFunc=null) {
     return true
   if (type(list1) != type(list2) || list1.len() != list2.len())
     return false
-  foreach (val, key in list1) {
+  foreach (key, val in list1) {
     if (key not in list2 || compareFunc(val, list2[key]))
       return false
   }
