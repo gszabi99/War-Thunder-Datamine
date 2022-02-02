@@ -93,7 +93,8 @@ local function updateCardStatus(obj, id, statusTbl) {
     discount            = 0,
     expMul              = 1.0,
     wpMul               = 1.0,
-    hasObjective        = false
+    hasObjective        = false,
+    markerHolderId      = ""
   } = statusTbl
   local isLongPriceText = ::is_unit_price_text_long(priceText)
 
@@ -119,7 +120,7 @@ local function updateCardStatus(obj, id, statusTbl) {
 
   local markerObj = showInObj(obj, "unlockMarker", hasObjective)
   if (hasObjective)
-    markerObj.holderId = unitName != "" ? unitName : primaryUnitId
+    markerObj.holderId = unitName != "" ? unitName : markerHolderId
 
   local nameObj = obj.findObject("nameText")
   nameObj.setValue(nameText)
@@ -230,8 +231,6 @@ local getUnitStatusTbl = function(unit, params) {
   local isUsable        = ::isUnitUsable(unit)
   local isSpecial       = ::isUnitSpecial(unit)
   local bitStatus       = unitStatus.getBitStatus(unit, params)
-  local isLocked        = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
-    && !::isUnitsEraUnlocked(unit)
 
   local res = {
     shopStatus          = getUnitItemStatusText(bitStatus, false)
@@ -239,7 +238,8 @@ local getUnitStatusTbl = function(unit, params) {
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = ::isUnitBroken(unit)
-    isLocked
+    isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
+      && !::isUnitsEraUnlocked(unit)
     needInService       = isUsable
     isMounted           = isUsable && ::isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
@@ -250,7 +250,8 @@ local getUnitStatusTbl = function(unit, params) {
     discount            = isOwn || ::isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
     expMul              = ::wp_shop_get_aircraft_xp_rate(unit.name)
     wpMul               = ::wp_shop_get_aircraft_wp_rate(unit.name)
-    hasObjective        = !isLocked && !shopResearchMode && hasMarkerByUnitName(unit.name, getEdiffFunc())
+    hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
+      && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
   if (forceNotInResearch || !::isUnitInResearch(unit) || ::has_feature("SpendGold")) //it not look like good idea to calc it here
     if (::show_console_buttons)
@@ -348,12 +349,12 @@ local function getGroupStatusTbl(group, params) {
   local researchingUnit    = null
   local rentedUnit         = null
   local hasObjective       = false
+  local markerHolderId     = ""
 
   foreach(unit in unitsList)
   {
     local isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
     local isUsable = ::isUnitUsable(unit)
-    local isSpecial = ::isUnitSpecial(unit)
 
     if (isInResearch || (::canResearchUnit(unit) && !researchingUnit))
     {
@@ -378,19 +379,23 @@ local function getGroupStatusTbl(group, params) {
         rentedUnit = unit
     }
 
-    bitStatus = bitStatus | unitStatus.getBitStatus(unit)
+    local curBitStatus = unitStatus.getBitStatus(unit)
+    bitStatus = bitStatus | curBitStatus
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()
     isElite = isElite && ::isUnitElite(unit)
-    local hasTalisman = isSpecial || ::shop_is_modification_enabled(unit.name, "premExpMul")
+    local hasTalisman = ::isUnitSpecial(unit) || ::shop_is_modification_enabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman
     expMul = ::max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
     wpMul = ::max(wpMul, ::wp_shop_get_aircraft_wp_rate(unit.name))
-    hasObjective = hasObjective || (!shopResearchMode && hasMarkerByUnitName(unit.name, getEdiffFunc())
-      && (isUsable || isSpecial || unit.isSquadronVehicle()
-        || ::canBuyUnitOnMarketplace(unit)
-        || ::isUnitsEraUnlocked(unit)))
+
+    if (!hasObjective && !shopResearchMode
+        && (bit_unit_status.locked & curBitStatus) == 0
+        && hasMarkerByUnitName(unit.name, getEdiffFunc())) {
+      hasObjective = true
+      markerHolderId = unit.name
+    }
   }
 
   if (shopResearchMode
@@ -444,6 +449,7 @@ local function getGroupStatusTbl(group, params) {
 
     discount            = firstUnboughtUnit ? ::g_discount.getGroupDiscount(unitsList) : 0,
     hasObjective,
+    markerHolderId,
     expMul,
     wpMul,
   }.__update(researchStatusTbl)

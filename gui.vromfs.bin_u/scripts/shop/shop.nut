@@ -16,6 +16,7 @@ local { hasMarkerByUnitName, getUnlockIdByUnitName
 } = require("scripts/unlocks/unlockMarkers.nut")
 local { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 } = require("scripts/shop/shopDifficulty.nut")
+local { getBitStatus } = require("scripts/unit/unitStatus.nut")
 
 local lastUnitType = null
 
@@ -1988,15 +1989,12 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       slotbar.updateDifficulty()
   }
 
-  function isUnitUnlocked(unit) {
-    return ::isUnitUsable(unit) || ::isUnitSpecial(unit)
-      || unit.isSquadronVehicle()
-      || ::canBuyUnitOnMarketplace(unit)
-      || ::isUnitsEraUnlocked(unit)
+  function isUnitUnlocked(unit, params = {}) {
+    return (bit_unit_status.locked & getBitStatus(unit, params)) == 0
   }
 
-  function isUnlockMarkerVisible(unit, diff) {
-    return isUnitUnlocked(unit) && hasMarkerByUnitName(unit.name, diff)
+  function isUnlockMarkerVisible(unit, diff, params = {}) {
+    return isUnitUnlocked(unit, params) && hasMarkerByUnitName(unit.name, diff)
   }
 
   function updateTreeDifficulty()
@@ -2016,9 +2014,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
 
           if (!shopResearchMode) {
-            local hasObjective = unit?.airsGroup != null
+            local hasObjective = ::isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(u) isUnlockMarkerVisible(u, curEdiff)).bindenv(this)) != null
-              : isUnlockMarkerVisible(unit, curEdiff)
+              : ::u.isUnit(unit) && isUnlockMarkerVisible(unit, curEdiff, getUnitItemParams(unit))
             show_obj(unitObj.findObject("unlockMarker"), hasObjective)
           }
         }
