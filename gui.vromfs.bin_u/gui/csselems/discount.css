@@ -1,3 +1,8 @@
+@const unlockMarkerWidth: 29@sf/@pf;
+@const unlockMarkerHeight: 35@sf/@pf;
+@const unlockMarkerColor: #FEAD4D;
+@const unlockMarkerColorLight: #FED5A5;
+
 discountIcon,
 discount {
   re-type:text;
@@ -52,6 +57,24 @@ discount_notification {
   textShade:yes;
 }
 
+unlockUnitCellMarker {
+  background-image:#ui/gameuiskin#unlock_marker.svg;
+  background-color:#FFFFFF;
+  size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
+  background-svg-size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
+  not-input-transparent:yes;
+  tooltip:#mainmenu/objectiveAvailable;
+}
+
+unlockUnitCellMarker:hover {
+  background-position:0, -2@dp, 0, 2@dp;
+}
+
+unlockUnitCellMarker:pushed {
+  background-position:0;
+}
+
+unlockMarker,
 squadronExpIcon {
   behavior:bhvUpdater;
   size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
@@ -61,35 +84,55 @@ squadronExpIcon {
   input-transparent:yes;
 }
 
+unlockMarker {
+  background-color:@unlockMarkerColor;
+  tooltip:#mainmenu/objectiveAvailable;
+}
+
+unlockMarker[type=inTab],
 squadronExpIcon[type=inTab] {
   position:relative;
   pos:0, 50%ph-50%h;
   margin-left: 1@blockInterval;
 }
 
+unlockMarker[type=slotbarCountry],
 squadronExpIcon[type=slotbarCountry] {
   position:absolute;
   pos:pw - w - 1@blockInterval + 3@sf/@pf, -h + 1@blockInterval + 3@sf/@pf;
 }
 
+unlockMarker[type=down],
 squadronExpIcon[type=down] {
   background-image:#ui/gameuiskin#discount_icon_down;
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  margin-right: 1@blockInterval;
+  not-input-transparent:yes;
 }
 
-:hover > squadronExpIcon[type=down],
+squadronExpIcon[type=down]:hover,
 :hover > additionalIconsDiv > squadronExpIcon[type=down],
 [show_console_buttons=yes] [selected=yes] > squadronExpIcon[type=down],
 [show_console_buttons=yes] [selected=yes] > additionalIconsDiv > squadronExpIcon[type=down] {
   background-color:@hoverSquadronExpIconColor;
 }
 
-:pushed > squadronExpIcon[type=down],
-:pushed > additionalIconsDiv > squadronExpIcon[type=down] {
-  background-color:@pushedSquadronExpIconColor;
+unlockMarker[type=down]:hover,
+:hover > additionalIconsDiv > unlockMarker[type=down],
+[show_console_buttons=yes] [selected=yes] > unlockMarker[type=down],
+[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > unlockMarker[type=down] {
+  background-color:@unlockMarkerColorLight;
 }
 
-:hover > discount_notification,
+:pushed > additionalIconsDiv > squadronExpIcon[type=down] {
+  background-color:@squadronExpIconColor;
+}
+
+:pushed > additionalIconsDiv > unlockMarker[type=down] {
+  background-color:@unlockMarkerColor;
+}
+
+discount_notification:hover,
 :hover > additionalIconsDiv > discount_notification,
 [show_console_buttons=yes] [selected=yes] > discount_notification,
 [show_console_buttons=yes] [selected=yes] > additionalIconsDiv > discount_notification {
@@ -111,6 +154,7 @@ discount_notification[type=down] {
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   tooltip:"#discount/notification";
   margin-right: 1@blockInterval;
+  not-input-transparent:yes;
 }
 
 discount_notification[type=up] {
@@ -189,6 +233,16 @@ discount_notification[type=box_down][noShift] {
 
 shopItem > discount_notification {
   pos:pw-w, -1@discountBoxUnitTop;
+}
+
+shopItem > markerContainer {
+  position:absolute;
+  pos:pw-w, -1@discountBoxUnitTop;
+}
+
+shopItem > markerContainer > discount_notification {
+  position:relative;
+  pos:0, 0;
 }
 
 discount_notification[type=box_up] {

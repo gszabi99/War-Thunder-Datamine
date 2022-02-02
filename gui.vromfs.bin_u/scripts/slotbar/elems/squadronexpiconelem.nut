@@ -2,14 +2,19 @@ local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
 local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
 local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 local { isAllVehiclesResearched } = require("scripts/unit/squadronUnitAction.nut")
+local { hasMarker } = require("scripts/unlocks/unlockMarkers.nut")
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 
 
 elemModelType.addTypes({
   SQUADRON_EXP_ICON = {
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
-    isVisible = @() ::has_feature("ClanVehicles") && ::clan_get_exp() > 0
-     && ::clan_get_researching_unit() != "" && !isAllVehiclesResearched()
+    isVisible = @() !hasMarker(getShopDiffCode())
+      && ::has_feature("ClanVehicles")
+      && ::clan_get_exp() > 0
+      && ::clan_get_researching_unit() != ""
+      && !isAllVehiclesResearched()
 
     getTooltip = @() ::format(::loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())
@@ -19,6 +24,9 @@ elemModelType.addTypes({
     onEventClanChanged = @(p) notify([])
     onEventUnitResearch = @(p) notify([])
     onEventSquadronExpChanged = @(p) notify([])
+    onEventUnlockMarkersCacheInvalidate = @(p) notify([])
+    onEventShopDiffCodeChanged = @(p) notify([])
+    onEventCurrentGameModeIdChanged = @(p) notify([])
   }
 })
 

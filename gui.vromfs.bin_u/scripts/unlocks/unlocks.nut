@@ -1656,15 +1656,23 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   getTotalFavoriteCount = @() ::g_unlocks.getFavoriteUnlocks().blockCount() + favoriteInvisibleUnlocks.blockCount()
   canAddFavorite = @() getTotalFavoriteCount() < favoriteUnlocksLimit
 
+  function getTimeCondition(unlockBlk) {
+    local conds = (unlockBlk?.mode ?? ::DataBlock()) % "condition"
+    return conds.findvalue(@(c) ::unlock_time_range_conditions.contains(c.type))
+  }
+
   function canDo(unlockBlk) {
     if (::is_unlocked_scripted(-1, unlockBlk?.id))
       return false
 
-    foreach (cond in (unlockBlk?.mode ?? ::DataBlock()) % "condition")
-      if (::isInArray(cond.type, ::unlock_time_range_conditions))
-        return isInTimerangeByUtcStrings(cond.beginDate, cond.endDate)
+    local timeCond = getTimeCondition(unlockBlk)
+    return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
+  }
 
-    return true
+  function isUnlockExpired(unlockBlk) {
+    local timeCond = getTimeCondition(unlockBlk)
+    return timeCond && !::u.isEmpty(timeCond.endDate)
+      && getTimestampFromStringUtc(timeCond.endDate) <= ::get_charserver_time_sec()
   }
 
   function getUnlockCost(unlockName) {

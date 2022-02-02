@@ -44,6 +44,9 @@ actionListItem {
         color-factor:t='0'
       }
     <</isLink>>
+    <<#isObjective>>
+      isObjective:t='yes'
+    <</isObjective>>
     color-factor:t='0'
   }
 

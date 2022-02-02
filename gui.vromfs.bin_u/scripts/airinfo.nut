@@ -174,9 +174,12 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return (0 != (status & ::ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
 }
 
+local isEventUnit = @(unit) unit.event != null
+
 ::canBuyUnitOnline <- function canBuyUnitOnline(unit)
 {
-  return !::isUnitBought(unit) && ::isUnitGift(unit) && unit.isVisibleInShop()
+  return !::isUnitBought(unit) && ::isUnitGift(unit) && !isEventUnit(unit)
+    && unit.isVisibleInShop()
     && !::canBuyUnitOnMarketplace(unit)
 }
 

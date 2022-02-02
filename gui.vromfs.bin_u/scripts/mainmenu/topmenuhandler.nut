@@ -4,6 +4,7 @@ local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuS
 local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 local { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+local { checkUnlockMarkers } = require("scripts/unlocks/unlockMarkers.nut")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -112,6 +113,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
     PRICE.checkUpdate()
     ENTITLEMENTS_PRICE.checkUpdate()
+
+    checkUnlockMarkers()
   }
 
   function checkAdvert()

@@ -12,6 +12,10 @@ local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
 local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 local getShopBlkData = require("scripts/shop/getShopBlkData.nut")
+local { hasMarkerByUnitName, getUnlockIdByUnitName
+} = require("scripts/unlocks/unlockMarkers.nut")
+local { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
+} = require("scripts/shop/shopDifficulty.nut")
 
 local lastUnitType = null
 
@@ -70,7 +74,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   _timer = 0.0
 
   shopData = null
-  slotbarActions = [ "research", "find_in_market", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
+  slotbarActions = [
+    "research", "find_in_market", "buy", "take", "sec_weapons", "weapons",
+    "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
+  ]
   needUpdateSlotbar = false
   needUpdateSquadInfo = false
   shopResearchMode = false
@@ -78,7 +85,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   lastPurchase = null
 
   showModeList = null
-  curDiffCode = -1
 
   navBarObj = null
   navBarGroupObj = null
@@ -231,6 +237,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     }
   }
 
+  function onUnitMarkerClick(obj) {
+    local unitName = obj.holderId
+    ::gui_start_profile({
+      initialSheet = "UnlockAchievement"
+      curUnlockId = getUnlockIdByUnitName(unitName, getCurrentEdiff())
+    })
+  }
+
   function updateUnitCell(cellObj, unit) {
     local params = getUnitItemParams(unit)
     updateCellStatus(cellObj, getStatusTbl(unit, params))
@@ -303,6 +317,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function onEventDiscountsDataUpdated(params = {})
   {
     updateDiscountIconsOnTabs()
+    updateCurUnitsList()
+  }
+
+  function onEventUnlockMarkersCacheInvalidate(params = {}) {
     updateCurUnitsList()
   }
 
@@ -1862,15 +1880,16 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     doWhenActiveOnce("fillPagesListBoxNoOpenGroup")
   }
 
+  hasModeList = @() (showModeList?.len() ?? 0) > 2
+
   function initShowMode(tgtNavBar)
   {
     local obj = tgtNavBar.findObject("show_mode")
     if (!::g_login.isProfileReceived() || !::checkObj(obj))
       return
 
-    local showModeRaw = ::load_local_account_settings("shopShowMode", -1)
-
-    curDiffCode = -1
+    local storedMode = getShopDiffMode()
+    local curMode = -1
     showModeList = []
     foreach(diff in ::g_difficulty.types)
       if (diff.diffCode == -1 || (!shopResearchMode && diff.isAvailable()))
@@ -1881,20 +1900,21 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
           enabled = true
           textStyle = "textStyle:t='textarea';"
         })
-        if (showModeRaw == diff.diffCode)
-          curDiffCode = showModeRaw
+        if (storedMode == diff.diffCode)
+          curMode = storedMode
       }
 
-    if (showModeList.len() <= 2)
-    {
-      curDiffCode = -1
+    if (!hasModeList()) {
       obj.show(false)
       obj.enable(false)
       return
     }
 
+    storeShopDiffMode(curMode)
+
     foreach (item in showModeList)
-      item.selected <- item.diffCode == curDiffCode
+      item.selected <- item.diffCode == curMode
+
     local view = {
       id = "show_mode"
       optionTag = "option"
@@ -1910,9 +1930,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (!::checkObj(obj))
       return
-    local isAuto = curDiffCode == -1
-    local adviceText = ::loc(isAuto ? "mainmenu/showModesInfo/advice" : "mainmenu/showModesInfo/warning", { automatic = ::loc("options/auto") })
-    adviceText = ::colorize(isAuto ? "goodTextColor" : "warningTextColor", adviceText)
+    local adviceText = ::loc(isAutoDiff() ? "mainmenu/showModesInfo/advice" : "mainmenu/showModesInfo/warning", { automatic = ::loc("options/auto") })
+    adviceText = ::colorize(isAutoDiff() ? "goodTextColor" : "warningTextColor", adviceText)
     obj["tooltip"] = ::loc("mainmenu/showModesInfo/tooltip") + "\n" + adviceText
   }
 
@@ -1931,8 +1950,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     _isShowModeInChange = true
     local prevEdiff = getCurrentEdiff()
-    curDiffCode = item.diffCode
-    ::save_local_account_settings("shopShowMode", curDiffCode)
+    storeShopDiffMode(item.diffCode)
 
     foreach(tgtNavBar in [navBarObj, navBarGroupObj])
     {
@@ -1959,7 +1977,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getCurrentEdiff()
   {
-    return curDiffCode == -1 ? ::get_current_ediff() : curDiffCode
+    return hasModeList() ? getShopDiffCode() : ::get_current_ediff()
   }
 
   function updateSlotbarDifficulty()
@@ -1968,6 +1986,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     local slotbar = topMenuHandler.value?.getSlotbar()
     if (slotbar)
       slotbar.updateDifficulty()
+  }
+
+  function isUnitUnlocked(unit) {
+    return ::isUnitUsable(unit) || ::isUnitSpecial(unit)
+      || unit.isSquadronVehicle()
+      || ::canBuyUnitOnMarketplace(unit)
+      || ::isUnitsEraUnlocked(unit)
+  }
+
+  function isUnlockMarkerVisible(unit, diff) {
+    return isUnitUnlocked(unit) && hasMarkerByUnitName(unit.name, diff)
   }
 
   function updateTreeDifficulty()
@@ -1985,6 +2014,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
           local obj = unitObj.findObject("rankText")
           if (::checkObj(obj))
             obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
+
+          if (!shopResearchMode) {
+            local hasObjective = unit?.airsGroup != null
+              ? unit.airsGroup.findindex((@(u) isUnlockMarkerVisible(u, curEdiff)).bindenv(this)) != null
+              : isUnlockMarkerVisible(unit, curEdiff)
+            show_obj(unitObj.findObject("unlockMarker"), hasObjective)
+          }
         }
       }
   }
@@ -2009,7 +2045,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventCurrentGameModeIdChanged(params)
   {
-    if (curDiffCode != -1)
+    if (!isAutoDiff())
       return
 
     doWhenActiveOnce("updateTreeDifficulty")

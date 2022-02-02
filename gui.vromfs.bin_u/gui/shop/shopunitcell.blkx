@@ -51,10 +51,21 @@
       "id": "talisman",
       "incomplete": "no"
     },
-    "discount_notification": {
-      "id": "unitDiscount",
-      "type": "box_down",
-      "text": ""
+    "markerContainer": {
+      "position": "relative",
+      "flow": "horizontal",
+      "unlockUnitCellMarker": {
+        "id": "unlockMarker",
+        "display": "hide",
+        "behaviour": "button",
+        "holderId": "",
+        "on_click": "onUnitMarkerClick"
+      },
+      "discount_notification": {
+        "id": "unitDiscount",
+        "type": "box_down",
+        "text": ""
+      }
     },
     "topline": {
       "shopItemText": {

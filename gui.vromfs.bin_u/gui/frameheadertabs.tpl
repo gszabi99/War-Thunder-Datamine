@@ -54,6 +54,12 @@ shopFilter {
     value:t='{"viewId": "SHOP_PAGES_SQUADRON_EXP_ICON"}'
     display:t='hide'
   }
+  unlockMarker {
+    id:t='<<squadronExpIconId>>'
+    type:t='inTab'
+    value:t='{"viewId": "SHOP_PAGES_UNLOCK_MARKER"}'
+    display:t='hide'
+  }
   <</squadronExpIconId>>
 
   <<#discount>>

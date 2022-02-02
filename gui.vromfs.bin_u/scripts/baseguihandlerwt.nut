@@ -11,7 +11,10 @@ local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 local stickedDropDown = null
-local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
+local defaultSlotbarActions = [
+  "autorefill", "aircraft", "sec_weapons", "weapons", "showroom",
+  "testflight", "crew", "goto_unlock", "info", "repair"
+]
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 local forceTimePID = ::dagui_propid.add_name_id("force-time")
 

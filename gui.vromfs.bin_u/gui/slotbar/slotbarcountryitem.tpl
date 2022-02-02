@@ -43,6 +43,12 @@ shopFilter {
     type:t='slotbarCountry'
     display:t='hide'
   }
+  unlockMarker {
+    countryId:t='<<country>>'
+    value:t='{"viewId": "COUNTRY_UNLOCK_MARKER"}'
+    type:t='slotbarCountry'
+    display:t='hide'
+  }
   discountIcon {
     countryId:t='<<country>>'
     value:t='{"viewId": "COUNTRY_DISCOUN_ICON"}'

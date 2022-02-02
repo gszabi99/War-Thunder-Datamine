@@ -80,6 +80,10 @@ popup_actions_list > itemsList > button > text {
   css-hier-invalidate: yes;
 }
 
+popup_actions_list > itemsList > actionListItem > text[isObjective="yes"] {
+  color: @warningTextColor;
+}
+
 popup_actions_list > itemsList > button > text[isLink="yes"] {
   color: @linkTextColor;
 }
@@ -120,6 +124,10 @@ popup_actions_list > itemsList > actionListItem:hover > text {
   color: @menuButtonTextColorHover;
 }
 
+popup_actions_list > itemsList > actionListItem:hover > text[isObjective="yes"] {
+  color: @warningTextColorHovered;
+}
+
 popup_actions_list > itemsList > button:hover > text[isLink="yes"] {
   color: @linkTextHoverColorLight;
 }
@@ -144,6 +152,10 @@ popup_actions_list > itemsList > actionListItem:pushed {
 
 popup_actions_list > itemsList > actionListItem:pushed > text {
   color: @menuButtonTextColorPushed;
+}
+
+popup_actions_list > itemsList > actionListItem:pushed > text[isObjective="yes"] {
+  color: @warningTextColorPushed;
 }
 
 popup_actions_list > itemsList > button:pushed {

@@ -17,6 +17,7 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -99,6 +100,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
   skinsCache = null
   uncollapsedChapterName = null
   curAchievementGroupName = ""
+  curUnlockId = ""
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
@@ -656,6 +658,9 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local unlocksObj = scene.findObject(containerObjId)
 
     local isAchievementPage = pageTypeId == ::UNLOCKABLE_ACHIEVEMENT
+    if (isAchievementPage && curAchievementGroupName == "" && curUnlockId != "")
+      curAchievementGroupName = findGroupNameByUnlockId(curUnlockId)
+
     local view = { items = [] }
     foreach (chapterName, chapterItem in unlocksTree)
     {
@@ -715,6 +720,18 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       })
     }
     return itemsView.sort(@(a, b) a.itemText <=> b.itemText)
+  }
+
+  function findGroupNameByUnlockId(unlockId) {
+    foreach (chapterName, chapter in unlocksTree) {
+      if (chapter.rootItems.contains(unlockId))
+        return chapterName
+
+      local groupId = chapter.groups.findindex(@(g) g.contains(unlockId))
+      if (groupId != null)
+        return groupId
+    }
+    return ""
   }
 
   function generateItems(pageTypeId)
@@ -1123,7 +1140,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       [
         ["ok", @() ::g_unlocks.buyUnlock(unlockId,
             ::Callback(@() updateUnlockBlock(unlockId), this),
-            ::Callback(@() onUnlockSelect(null), this))
+            ::Callback(@() onUnlockGroupSelect(null), this))
         ],
         ["cancel", @() null]
       ], "cancel")
@@ -1183,6 +1200,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     }
 
     local currentItemNum = 0
+    local selIdx = 0
     foreach(unlock in ::g_unlocks.getAllUnlocksWithBlkOrder())
     {
       if (unlock?.id == null) {
@@ -1196,12 +1214,18 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
       local unlockObj = unlocksListObj.getChild(currentItemNum)
       unlockObj.id = getUnlockBlockId(unlock.id)
+      unlockObj.holderId = unlock.id
       fillUnlockInfo(unlock, unlockObj)
+
+      if (curUnlockId == unlock.id)
+        selIdx = currentItemNum
+
       currentItemNum++
     }
 
     if (unlocksListObj.childrenCount() > 0)
-      unlocksListObj.setValue(0)
+      unlocksListObj.setValue(selIdx)
+
     guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -1266,6 +1290,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onUnlockSelect(obj)
   {
+    if (obj?.isValid())
+      curUnlockId = getSelectedChild(obj)?.holderId ?? ""
+  }
+
+  function onUnlockGroupSelect(obj) {
     local list = scene.findObject("unlocks_group_list")
     local index = list.getValue()
     local unlocksList = []

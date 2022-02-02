@@ -15,6 +15,7 @@ local { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getUnlockIdByUnitName, hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -40,6 +41,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
     local icon       = ""
     local isLink = false
     local iconRotation = 0
+    local isObjective = false
 
     if (action == "showroom")
     {
@@ -118,6 +120,19 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       actionFunc = @() weaponryPresetsModal.open({
         unit = unit
         curEdiff = curEdiff
+      })
+    }
+    else if (action == "goto_unlock") {
+      if (hasSlotbarByUnitsGroups || !hasMarkerByUnitName(unit.name, curEdiff))
+        continue
+
+      actionText = ::loc("sm_objective")
+      icon = "#ui/gameuiskin#sh_unlockachievement.svg"
+      showAction = inMenu
+      isObjective = true
+      actionFunc = @() ::gui_start_profile({
+        initialSheet = "UnlockAchievement"
+        curUnlockId = getUnlockIdByUnitName(unit.name, curEdiff)
       })
     }
     else if (action == "weapons")
@@ -315,15 +330,16 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 
     actions.append({
       actionName   = action
+      action       = actionFunc
       text         = actionText
       show         = showAction
-      disabled     = disabled
-      icon         = icon
-      action       = actionFunc
-      haveWarning  = haveWarning
-      haveDiscount = haveDiscount
-      isLink       = isLink
-      iconRotation = iconRotation
+      disabled
+      icon
+      haveWarning
+      haveDiscount
+      isLink
+      isObjective
+      iconRotation
     })
   }
 

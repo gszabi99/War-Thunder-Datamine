@@ -81,6 +81,10 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(bDiv))
       guiScene.destroyElement(bDiv)
 
+    local markerObj = tdClone.findObject("unlockMarker")
+    if (markerObj?.isValid())
+      guiScene.destroyElement(markerObj)
+
     local crew = ::get_crews_list_by_country(country)?[takeCrewIdInCountry]
     createSlotbar(
       {
@@ -407,6 +411,7 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitMainFunc(obj) {}
   function onUnitMainFuncBtnUnHover() {}
+  onUnitMarkerClick = @() null
 
   function isUnitInSlotbar()
   {

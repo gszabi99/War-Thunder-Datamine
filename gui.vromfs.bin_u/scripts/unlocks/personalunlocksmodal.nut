@@ -1,4 +1,4 @@
-local { getPersonalUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
+local { getBattleTaskUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
 local { eachParam } = require("std/datablock.nut")
 local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
@@ -37,7 +37,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updatePersonalUnlocks() {
-    unlocksArray = getPersonalUnlocks()
+    unlocksArray = getBattleTaskUnlocks()
     unlocksConfigByChapter = {}
     foreach (unlock in unlocksArray) {
       local chapter = unlock?.chapter

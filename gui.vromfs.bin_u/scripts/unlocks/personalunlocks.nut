@@ -1,43 +1,56 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-local unlocksArray = []
-local isArrayValid = false
-
-local function reset() {
-  unlocksArray.clear()
-}
+local battleTaskUnlocks = []
+local markerUnlocks = []
+local isCacheValid = false
 
 local function update() {
   if (!::g_login.isLoggedIn())
     return
 
-  reset()
+  foreach (unlockBlk in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    if (unlockBlk?.showAsBattleTask)
+      battleTaskUnlocks.append(unlockBlk)
 
-  foreach(unlockBlk in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    if (unlockBlk?.showAsBattleTask ?? false) {
-      unlocksArray.append(unlockBlk)
-    }
-  isArrayValid = true
+    if (unlockBlk?.shouldMarkUnits
+        && !::is_unlocked_scripted(-1, unlockBlk?.id)
+        && !::g_unlocks.isUnlockExpired(unlockBlk))
+      markerUnlocks.append(unlockBlk)
+  }
+
+  isCacheValid = true
 }
 
-local function getUnlocksArray() {
-  if(!isArrayValid)
+local function getBattleTaskUnlocks() {
+  if (!isCacheValid)
     update()
 
-  return unlocksArray
+  return battleTaskUnlocks
 }
 
-local function invalidateArray() {
-  isArrayValid = false
+local function getMarkerUnlocks() {
+  if (!isCacheValid)
+    update()
+
+  return markerUnlocks
 }
 
-subscriptions.addListenersWithoutEnv({
-  SignOut = @(p) invalidateArray()
-  LoginComplete = @(p) invalidateArray()
-  UnlocksCacheInvalidate = @(p) invalidateArray()
+local function invalidateCache() {
+  if (!isCacheValid)
+    return
+
+  battleTaskUnlocks.clear()
+  markerUnlocks.clear()
+  isCacheValid = false
+}
+
+addListenersWithoutEnv({
+  SignOut = @(p) invalidateCache()
+  LoginComplete = @(p) invalidateCache()
+  UnlocksCacheInvalidate = @(p) invalidateCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-
 return {
-  getPersonalUnlocks =  getUnlocksArray
+  getBattleTaskUnlocks
+  getMarkerUnlocks
 }
