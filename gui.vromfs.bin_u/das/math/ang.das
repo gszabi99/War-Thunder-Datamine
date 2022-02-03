@@ -4,12 +4,6 @@ require %dasGameLibs.math.base
 require DagorMath
 require DagorMathUtils
 
-[generic]
-def angles_to_dir(ang : float2) : float3
-  var xSine, xCos, ySine, yCos : float
-  sincos(-ang.x, xSine, xCos)
-  sincos(ang.y, ySine, yCos)
-  return float3(xCos * yCos, ySine, xSine * yCos)
 
 [generic]
 def safe_acos(x : float)
