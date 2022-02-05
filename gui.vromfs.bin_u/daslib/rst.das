@@ -706,9 +706,9 @@ struct DocGroup
     hidden : bool
 
 def debug_group(var group:DocGroup)
-    to_log(LOG_DEBUG, "Group {group.name}\n")
+    print("Group {group.name}\n")
     for func in group.func
-        to_log(LOG_DEBUG, "\t{describe_function_short(FunctionPtr(func))}\n")
+        print("\t{describe_function_short(FunctionPtr(func))}\n")
     return <- group
 
 def append_to_group_by_regex(var group:DocGroup; mod:Module?; var reg:Regex)
@@ -792,7 +792,7 @@ def private getDetailIncludePath ( fname, substname : string )
 
 def document(name:string;mod:Module?;fname,substname:string;groups:array<DocGroup>)
     static_if log_documentation
-        to_log(LOG_INFO, "Documenting {name} into {fname}\n")
+        print("Documenting {name} into {fname}\n")
     if mod==null
         panic("missing module {name}")
     var doc_file = fopen(fname,"wb")

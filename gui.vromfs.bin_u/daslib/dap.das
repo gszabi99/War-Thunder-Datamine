@@ -166,7 +166,7 @@ def JV(data: Variable)
         "name"=>JV(data.name);
         "value"=>JV(data.value);
         "variablesReference"=>JV(data.variablesReference);
-        "indexedVariables"=>data.indexedVariables > 0lf ? JV(data.indexedVariables) : JVNull();
+        "indexedVariables"=>data.indexedVariables > 0lf ? JV(data.indexedVariables) : JV(null);
         "type"=>JV(data._type)
     }})
 
@@ -236,7 +236,7 @@ def JV(data: EvaluateResponse)
     return JV({{
         "result"=>JV(data.result);
         "variablesReference"=>JV(data.variablesReference);
-        "indexedVariables"=>data.indexedVariables > 0lf ? JV(data.indexedVariables) : JVNull();
+        "indexedVariables"=>data.indexedVariables > 0lf ? JV(data.indexedVariables) : JV(null);
         "type"=>JV(data._type)
     }})
 
