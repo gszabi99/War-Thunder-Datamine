@@ -17,6 +17,10 @@ local { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime
 
 local timeOrder = ["year", "month", "day", "hour", "min", "sec"]
 
+local getCurrentYear = function() {
+  local date = unixtime_to_local_timetbl(get_local_unixtime())
+  return date.year
+}
 
 local charToLocalUtcDiff = function() {
   return get_local_unixtime() - ::get_charserver_time_sec()
@@ -261,6 +265,7 @@ return timeBase.__merge({
   isInTimerangeByUtcStrings = isInTimerangeByUtcStrings
   processTimeStamps = processTimeStamps
   getExpireText = getExpireText
+  getCurrentYear = getCurrentYear
 
   preciseSecondsToString = preciseSecondsToString
   getRaceTimeFromSeconds = getRaceTimeFromSeconds

@@ -484,6 +484,7 @@ foreach(bhvName, bhvClass in ::gui_bhv_deprecated)
   // Independent Modules (before login)
 require("sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
 require("scripts/clientState/elems/dlDataStatElem.nut")
+require("scripts/clientState/elems/copyrightText.nut")
 require("sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
   // end of Independent Modules
 
