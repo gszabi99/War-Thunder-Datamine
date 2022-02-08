@@ -42,8 +42,7 @@ elemViewType.addTypes({
     updateView = function(obj, params) {
       local objConfig = ::split(obj.id, ";")
       local isVisible = topMenuShopActive.value
-        && hasMarkerByCountry(objConfig?[0], getShopDiffCode())
-        && hasMarkerByArmyId(objConfig?[1], getShopDiffCode())
+        && hasMarkerByArmyId(objConfig?[0], objConfig?[1], getShopDiffCode())
 
       obj.show(isVisible)
     }

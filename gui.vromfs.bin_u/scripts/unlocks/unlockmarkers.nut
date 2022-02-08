@@ -85,16 +85,18 @@ local function cache(ediff) {
 
   local curCache = {
     unitNameToUnlockId = {}
-    countriesCache = {}
-    armyIdsCache = {}
+    countries = {}
   }
 
   local doableUnlocks = getDoableUnlocks()
   foreach (unlockBlk in doableUnlocks)
     foreach (unit in getUnitsByUnlock(unlockBlk, ediff)) {
       curCache.unitNameToUnlockId[unit.name] <- unlockBlk.id
-      curCache.countriesCache[unit.shopCountry] <- true
-      curCache.armyIdsCache[unit.unitType.armyId] <- true
+
+      if (unit.shopCountry not in curCache.countries)
+        curCache.countries[unit.shopCountry] <- {}
+
+      curCache.countries[unit.shopCountry][unit.unitType.armyId] <- true
     }
 
   curUnlockIds = doableUnlocks.map(@(u) u.id)
@@ -107,11 +109,11 @@ local function hasMarker(ediff) {
 }
 
 local function hasMarkerByCountry(country, ediff) {
-  return country in cache(ediff)?.countriesCache
+  return country in cache(ediff)?.countries
 }
 
-local function hasMarkerByArmyId(armyId, ediff) {
-  return armyId in cache(ediff)?.armyIdsCache
+local function hasMarkerByArmyId(country, armyId, ediff) {
+  return armyId in cache(ediff)?.countries[country]
 }
 
 local function hasMarkerByUnitName(unitName, ediff) {
