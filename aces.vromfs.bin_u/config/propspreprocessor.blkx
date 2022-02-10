@@ -1,0 +1,298 @@
+{
+  "damage": [
+    {
+      "extends": {
+        "source": "config/damageModel.blk:kineticEnergyToDamage",
+        "target": "damage/kinetic/energyToDamage"
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultKineticDamageProps",
+        "target": "damage/kinetic",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "cumulativeDamage",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "damage/cumulative",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultSplashDamageProps",
+        "target": "damage/splash",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultShatterDamageProps",
+        "target": "damage/shatter",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
+        "target": "damage/secondaryShatter",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "alias": {
+        "param": "hitPowerMult",
+        "alias": "damage/kinetic/damage"
+      }
+    },
+    {
+      "alias": {
+        "param": "onHitChanceMult",
+        "alias": "damage/kinetic/onHitChanceMult"
+      }
+    },
+    {
+      "alias": {
+        "param": "onHitChanceMultFire",
+        "alias": "damage/kinetic/onHitChanceMultFire"
+      }
+    },
+    {
+      "alias": {
+        "param": "onHitChanceMultExplFuel",
+        "alias": "damage/kinetic/onHitChanceMultExplFuel"
+      }
+    },
+    {
+      "alias": {
+        "param": "relativeVelArmorShift",
+        "alias": "damage/kinetic/correctionPenetrationByRelativeVelocity"
+      }
+    },
+    {
+      "alias": {
+        "param": "relativeVelHitShift",
+        "alias": "damage/kinetic/correctionDamageByRelativeVelocity"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/armorPower",
+        "alias": "damage/cumulative/penetration"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/damage",
+        "alias": "damage/cumulative/damage"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/distance",
+        "alias": "damage/cumulative/distance"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/onHitChanceMult",
+        "alias": "damage/cumulative/onHitChanceMult"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/onHitChanceMultFire",
+        "alias": "damage/cumulative/onHitChanceMultFire"
+      }
+    },
+    {
+      "alias": {
+        "param": "cumulativeDamage/onHitChanceMultExplFuel",
+        "alias": "damage/cumulative/onHitChanceMultExplFuel"
+      }
+    },
+    {
+      "alias": {
+        "param": "explodeRadius",
+        "alias": "damage/splash/radius"
+      }
+    },
+    {
+      "alias": {
+        "param": "explodeArmorPower",
+        "alias": "damage/splash/penetration"
+      }
+    },
+    {
+      "alias": {
+        "param": "explodeHitPower",
+        "alias": "damage/splash/damage"
+      }
+    },
+    {
+      "alias": {
+        "param": "explosiveMass",
+        "alias": "damage/splash/mass"
+      }
+    },
+    {
+      "alias": {
+        "param": "shutterDamageRadius",
+        "alias": "damage/shatter/radius"
+      }
+    },
+    {
+      "alias": {
+        "param": "shutterAmount",
+        "alias": "damage/shatter/count"
+      }
+    },
+    {
+      "alias": {
+        "param": "shutterArmorPower",
+        "alias": "damage/shatter/penetration"
+      }
+    },
+    {
+      "alias": {
+        "param": "shutterHit",
+        "alias": "damage/shatter/damage"
+      }
+    },
+    {
+      "alias": {
+        "param": "useEffectiveArmorThicknessForShatter",
+        "alias": "damage/shatter/useEffectiveArmorThickness"
+      }
+    },
+    {
+      "alias": {
+        "param": "explosiveMass",
+        "alias": "damage/shatter/mass"
+      }
+    },
+    {
+      "alias": {
+        "param": "explosiveType",
+        "alias": "damage/explosive/type"
+      }
+    },
+    {
+      "alias": {
+        "param": "explosiveMass",
+        "alias": "damage/explosive/mass"
+      }
+    },
+    {
+      "alias": {
+        "param": "fuseDelay",
+        "alias": "damage/explosive/fuseDelay"
+      }
+    },
+    {
+      "alias": {
+        "param": "fuseDelayDist",
+        "alias": "damage/explosive/fuseDelayDist"
+      }
+    },
+    {
+      "alias": {
+        "param": "explodeTreshold",
+        "alias": "damage/explosive/fuseArmorTreshold"
+      }
+    },
+    {
+      "preset": {
+        "param": "secondaryShattersPreset",
+        "presets": "config/damageModel.blk:secondaryShatters",
+        "target": "damage/secondaryShatter"
+      }
+    },
+    {
+      "preset": {
+        "param": "explosiveType",
+        "presets": "gamedata/damage_model/explosive.blk:explosiveTypes",
+        "target": "damage/explosive"
+      }
+    }
+  ],
+  "ballistics": [
+    {
+      "preset": {
+        "param": "slopeEffectPreset",
+        "presets": "gamedata/damage_model/slope_effect.blk",
+        "target": "ballistics/slopeEffect/table"
+      }
+    },
+    {
+      "preset": {
+        "param": "ricochetPreset",
+        "presets": "gamedata/damage_model/ricochet.blk",
+        "target": "ballistics/ricochet/table"
+      }
+    },
+    {
+      "alias": {
+        "block": "stabilityRicochetModifier",
+        "alias": "ballistics/stability/stabilityRicochetModifier"
+      }
+    },
+    {
+      "alias": {
+        "param": "stabilityThreshold",
+        "alias": "ballistics/stability/stabilityThreshold"
+      }
+    },
+    {
+      "alias": {
+        "param": "stabilityCaliberToArmorThreshold",
+        "alias": "ballistics/stability/stabilityCaliberToArmorThreshold"
+      }
+    },
+    {
+      "alias": {
+        "param": "stabilityReductionAfterRicochet",
+        "alias": "ballistics/stability/stabilityReductionAfterRicochet"
+      }
+    },
+    {
+      "alias": {
+        "param": "stabilityReductionAfterPenetration",
+        "alias": "ballistics/stability/stabilityReductionAfterPenetration"
+      }
+    },
+    {
+      "alias": {
+        "param": "breakingCriticalSpeed",
+        "alias": "ballistics/breaking/breakingCriticalSpeed"
+      }
+    },
+    {
+      "alias": {
+        "param": "breakingArmorThickness",
+        "alias": "ballistics/breaking/breakingArmorThickness"
+      }
+    },
+    {
+      "alias": {
+        "param": "breakingArmorThicknessEffective",
+        "alias": "ballistics/breaking/breakingArmorThicknessEffective"
+      }
+    },
+    {
+      "alias": {
+        "param": "breakingDistance",
+        "alias": "ballistics/breaking/breakingDistance"
+      }
+    }
+  ]
+}
