@@ -2006,8 +2006,8 @@
     },
     {
       "preset": {
-        "name": "f-104g_default_aim_9b",
-        "blk": "gameData/FlightModels/weaponPresets/f-104g_default_aim_9b.blk"
+        "name": "f-104g_default_aim_9j",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_default_aim_9j.blk"
       }
     },
     {
@@ -2098,6 +2098,31 @@
     {
       "preset": [
         {
+          "name": "f-104g_lau_32_aim-9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_lau_32_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_lau_32"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
+              "amountPerTier": 7.0,
+              "iconType": "nar_ap_small"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "f-104g_as_20_aim_9b"
         },
         {
@@ -2128,6 +2153,22 @@
       ]
     },
     {
+      "preset": [
+        {
+          "name": "f-104g_as_20_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_as_20_aim_9j.blk"
+        },
+        {
+          "reqModification": "nord_as_20"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
       "preset": {
         "name": "f-104g_bomb_matra_25e",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e.blk",
@@ -2154,22 +2195,6 @@
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk83.blk",
         "reqModification": "us_1000lb_mk83"
       }
-    },
-    {
-      "preset": [
-        {
-          "name": "f-104g_bomb_matra_25e_aim_9b"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e_aim_9b.blk"
-        },
-        {
-          "reqModification": "fr_250kg_type_25c"
-        },
-        {
-          "reqModification": "us_aim_9b"
-        }
-      ]
     },
     {
       "preset": [
@@ -2222,6 +2247,22 @@
     {
       "preset": [
         {
+          "name": "f-104g_bomb_matra_25e_aim_9b"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e_aim_9b.blk"
+        },
+        {
+          "reqModification": "fr_250kg_type_25c"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
           "name": "f-104g_bomb_matra_25e_aim_9b_fgw_2"
         },
         {
@@ -2232,6 +2273,22 @@
         },
         {
           "reqModification": "us_aim_9b_fgw_2"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_matra_25e_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e_aim_9j.blk"
+        },
+        {
+          "reqModification": "fr_250kg_type_25c"
+        },
+        {
+          "reqModification": "us_aim_9j"
         }
       ]
     },
@@ -2280,6 +2337,54 @@
         },
         {
           "reqModification": "us_aim_9b_fgw_2"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_mk82_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk82_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_500lb_mk82"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_m117_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_m117_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_mk83_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk83_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "us_aim_9j"
         }
       ]
     }
@@ -2504,9 +2609,14 @@
       "prevModification": "countermeasures_belt_pack"
     },
     "us_aim_9b_fgw_2": {
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon",
       "reqModification": "us_aim_9b"
+    },
+    "us_aim_9j": {
+      "reqModification": "us_aim_9b_fgw_2",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "default_skin_tomoe": [
