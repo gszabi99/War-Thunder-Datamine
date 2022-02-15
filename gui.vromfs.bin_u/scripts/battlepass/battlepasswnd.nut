@@ -1,5 +1,5 @@
 local { seasonLevel, season, seasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
-local { seasonStages, getStageViewData } = require("scripts/battlePass/seasonStages.nut")
+local { seasonStages, getStageViewData, doubleWidthStagesIcon } = require("scripts/battlePass/seasonStages.nut")
 local { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unlocks/userstatUnlocksState.nut")
 local { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
 } = require("scripts/battlePass/challenges.nut")
@@ -36,6 +36,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName     = "gui/battlePass/battlePassWnd.blk"
 
   stageIndexOffset = 0
+  stageIndexOffsetAddedByPages = null
   curPage = 0
   curPageStagesList = null
   stagesPerPage = 0
@@ -91,12 +92,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function calculateCurPage() {
+    stageIndexOffsetAddedByPages = {}
     local stagesList = seasonStages.value
     local curStageIdx = stagesList.findindex(@(stageData) stageData.prizeStatus == "available"
       || stageData.stage >= seasonLevel.value) ?? 0
     local middleIdx = ::ceil(stagesPerPage.tofloat()/2) - 1
+    local doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
     stageIndexOffset = curStageIdx <= middleIdx ? 0
-      : ((curStageIdx % stagesPerPage) - middleIdx)
+      : ((curStageIdx % stagesPerPage) - middleIdx + doubleStagesCount)
     local pageOffset = stageIndexOffset > 0 ? 0 : -1
     curPage = curStageIdx <= middleIdx ? 0
       : ::ceil((curStageIdx.tofloat() - stageIndexOffset)/ stagesPerPage).tointeger() + pageOffset
@@ -104,8 +107,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function goToPage(obj) {
     curPage = obj.to_page.tointeger()
-    if (curPage == 0)
+    if (curPage == 0) {
       stageIndexOffset = 0
+      stageIndexOffsetAddedByPages = {}
+    }
     fillStagePage()
   }
 
@@ -124,7 +129,26 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
     local curPageOffset = stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = ::max((curPage + curPageOffset) * stagesPerPage  + stageIndexOffset, 0)
+    local doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
+    pageStartIndex = ::max(pageStartIndex - doubleStagesCount, 0)
     local pageEndIndex = ::min(pageStartIndex + stagesPerPage, stagesList.len())
+    foreach (stage in doubleWidthStagesIcon.value) {
+      if (stage == pageEndIndex) {
+        pageStartIndex --
+        pageEndIndex--
+        if (curPage not in stageIndexOffsetAddedByPages) {
+          stageIndexOffsetAddedByPages[curPage] <- true
+          stageIndexOffset--
+        }
+        continue
+      }
+
+      if (stage <= pageStartIndex || stage > pageEndIndex)
+        continue
+
+      pageEndIndex--
+    }
+
     local isChangesRewards = false
     local idxOnPage = 0
     for(local i=pageStartIndex; i < pageEndIndex; i++) {
@@ -148,8 +172,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       }
     }
 
-    ::generatePaginator(scene.findObject("paginator_place"), this,
-      curPage, ::ceil(stagesList.len().tofloat() / stagesPerPage) - 1, null, true /*show last page*/)
+    ::generatePaginator(scene.findObject("paginator_place"), this, curPage,
+      ::ceil((stagesList.len().tofloat() + doubleWidthStagesIcon.value.len()) / stagesPerPage)
+      - 1, null, true /*show last page*/)
   }
 
   isEqualStageReward = @(curStage, newStage)

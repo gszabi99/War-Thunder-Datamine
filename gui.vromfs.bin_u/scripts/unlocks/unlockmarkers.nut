@@ -1,9 +1,14 @@
 local { getMarkerUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local { isEqualSimple } = require("%sqstd/underscore.nut")
+local { getBitStatus } = require("scripts/unit/unitStatus.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 
 local cacheByEdiff = {}
 local curUnlockIds = null // array of strings
+
+local isUnitUnlocked = @(u) (bit_unit_status.locked & getBitStatus(u)) == 0
 
 local function getUnitsByUnlock(unlockBlk, ediff) {
   local modeBlk = unlockBlk?.mode
@@ -13,7 +18,9 @@ local function getUnitsByUnlock(unlockBlk, ediff) {
   local conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
   local unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (unitCond)
-    return (unitCond % "class").map(@(n) ::getAircraftByName(n)).filter(@(u) u != null)
+    return (unitCond % "class")
+      .map(@(n) ::getAircraftByName(n))
+      .filter(@(u) u != null && isUnitUnlocked(u))
 
   local units = null
 
@@ -52,12 +59,16 @@ local function getUnitsByUnlock(unlockBlk, ediff) {
     })
   }
 
-  return units ?? []
+  return units?.filter(@(u) isUnitUnlocked(u)) ?? []
 }
 
 local function invalidateCache() {
+  if (!curUnlockIds)
+    return
+
   cacheByEdiff.clear()
   curUnlockIds = null
+  seenList.onListChanged()
   ::broadcastEvent("UnlockMarkersCacheInvalidate")
 }
 
@@ -84,36 +95,41 @@ local function cache(ediff) {
     return cacheByEdiff?[ediff]
 
   local curCache = {
+    unlockIds = []
     unitNameToUnlockId = {}
     countries = {}
   }
 
   local doableUnlocks = getDoableUnlocks()
-  foreach (unlockBlk in doableUnlocks)
-    foreach (unit in getUnitsByUnlock(unlockBlk, ediff)) {
+  foreach (unlockBlk in doableUnlocks) {
+    local units = getUnitsByUnlock(unlockBlk, ediff)
+    if (units.len() == 0)
+      continue
+
+    curCache.unlockIds.append(unlockBlk.id)
+
+    foreach (unit in units) {
       curCache.unitNameToUnlockId[unit.name] <- unlockBlk.id
 
       if (unit.shopCountry not in curCache.countries)
-        curCache.countries[unit.shopCountry] <- {}
+        curCache.countries[unit.shopCountry] <- { unlockIds = [] }
 
-      curCache.countries[unit.shopCountry][unit.unitType.armyId] <- true
+      local country = curCache.countries[unit.shopCountry]
+      if (!country.unlockIds.contains(unlockBlk.id))
+        country.unlockIds.append(unlockBlk.id)
+
+      if (unit.unitType.armyId not in country)
+        country[unit.unitType.armyId] <- []
+
+      local army = country[unit.unitType.armyId]
+      if (!army.contains(unlockBlk.id))
+        army.append(unlockBlk.id)
     }
+  }
 
   curUnlockIds = doableUnlocks.map(@(u) u.id)
   cacheByEdiff[ediff] <- curCache
   return curCache
-}
-
-local function hasMarker(ediff) {
-  return (cache(ediff)?.unitNameToUnlockId.len() ?? 0) > 0
-}
-
-local function hasMarkerByCountry(country, ediff) {
-  return country in cache(ediff)?.countries
-}
-
-local function hasMarkerByArmyId(country, armyId, ediff) {
-  return armyId in cache(ediff)?.countries[country]
 }
 
 local function hasMarkerByUnitName(unitName, ediff) {
@@ -124,18 +140,33 @@ local function getUnlockIdByUnitName(unitName, ediff) {
   return cache(ediff)?.unitNameToUnlockId[unitName]
 }
 
+local function getUnlockIds(ediff) {
+  return cache(ediff)?.unlockIds ?? []
+}
+
+local function getUnlockIdsByCountry(country, ediff) {
+  return cache(ediff)?.countries[country].unlockIds ?? []
+}
+
+local function getUnlockIdsByArmyId(country, armyId, ediff) {
+  return cache(ediff)?.countries[country][armyId] ?? []
+}
+
+seenList.setListGetter(@() getUnlockIds(getShopDiffCode()))
+
 addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(p) invalidateCache()
   SignOut = @(p) invalidateCache()
   LoginComplete = @(p) invalidateCache()
   InitConfigs = @(p) invalidateCache()
+  ShopDiffCodeChanged = @(p) seenList.onListChanged()
 })
 
 return {
-  hasMarker
-  hasMarkerByCountry
-  hasMarkerByArmyId
   hasMarkerByUnitName
   getUnlockIdByUnitName
   checkUnlockMarkers
+  getUnlockIds
+  getUnlockIdsByCountry
+  getUnlockIdsByArmyId
 }

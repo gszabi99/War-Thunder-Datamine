@@ -1,5 +1,8 @@
 <<#battlePassStage>>
 battlePassStage {
+  <<#doubleWidthStageIcon>>
+  doubleWidthStageIcon:t='yes'
+  <</doubleWidthStageIcon>>
   stageStatus:t='<<stageStatus>>'
   prizeStatus:t='<<prizeStatus>>'
   margin:t='1@battlePassStageMargin, 0'
@@ -28,14 +31,16 @@ battlePassStage {
     }
   }
 
-  tdiv {
-    size:t='1@itemWidth, 1@itemHeight'
+  stageContent  {
     pos:t='50%pw-50%w, 1@battlePassFlagSize + 1@blockInterval'
     position:t='absolute'
 
-    include "gui/items/item"
+    tdiv {
+      left:t='50%pw-50%w'
+      position:t='absolute'
+      include "gui/items/item"
+    }
 
-    <<^items>>
     <<#stageIcon>>
     img {
       size:t='pw - 2@itemPadding, ph - 2@itemPadding'
@@ -54,13 +59,24 @@ battlePassStage {
       on_tooltip_close:t='onTooltipObjClose'
     }
     <</stageTooltipId>>
-    <</items>>
 
     tdiv {
       position:t='absolute'
       pos:t='0, ph - h'
       <<@warbondShopLevelImage>>
     }
+
+    <<#previewButton>>
+    hoverButton {
+      position:t='absolute'
+      pos:t='pw-w-2@itemPadding, ph-h'
+      tooltip:t='<<tooltip>>'
+      on_click:t='<<funcName>>'
+      no_text:t='yes'
+      icon { background-image:t='<<image>>' }
+      <<@actionParamsMarkup>>
+    }
+    <</previewButton>>
   }
 
   bottomBar {

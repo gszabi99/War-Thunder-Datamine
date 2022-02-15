@@ -47,6 +47,14 @@ battlePassStage {
   total-input-transparent:yes;
 }
 
+battlePassStage[doubleWidthStageIcon=yes] {
+  size:2@battlePassStageWidth + 1@battlePassStageMargin, 1@battlePassStageHeight;
+}
+
+battlePassStage>stageContent {
+  size:pw, 1@itemHeight;
+}
+
 battlePassStage > border {
   position: absolute;
   size: pw, ph;

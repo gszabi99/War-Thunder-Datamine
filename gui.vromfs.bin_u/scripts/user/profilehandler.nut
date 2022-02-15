@@ -18,6 +18,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { getUnlockIds } = require("scripts/unlocks/unlockMarkers.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -268,6 +271,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
         id = sheet
         tabImage = tabImage
         tabName = tabText
+        unseenIcon = sheet == "UnlockAchievement" ? seenList.id : null
         navImagesText = ::get_navigation_images_text(idx, sheetsList.len())
         hidden = !isSheetVisible(sheet)
       })
@@ -661,17 +665,25 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (isAchievementPage && curAchievementGroupName == "" && curUnlockId != "")
       curAchievementGroupName = findGroupNameByUnlockId(curUnlockId)
 
+    local ediff = ::get_current_ediff()
+
     local view = { items = [] }
     foreach (chapterName, chapterItem in unlocksTree)
     {
       if (isAchievementPage && chapterName == curAchievementGroupName)
         curIndex = view.items.len()
 
+      local chapterSeenIds = getUnlockIds(ediff).filter(@(u) chapterItem.rootItems.contains(u)
+        || chapterItem.groups.findindex(@(g) g.contains(u)) != null)
+
       view.items.append({
         itemTag = "campaign_item"
         id = chapterName
         itemText = "#unlocks/chapter/" + chapterName
         isCollapsable = chapterItem.groups.len() > 0
+        unseenIcon = chapterSeenIds.len() > 0
+          ? bhvUnseen.makeConfigStr(seenList.id, chapterSeenIds)
+          : null
       })
 
       if (chapterItem.groups.len() > 0)
@@ -681,9 +693,14 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
           if (isAchievementPage && id == curAchievementGroupName)
             curIndex = view.items.len()
 
+          local groupSeenIds = getUnlockIds(ediff).filter(@(u) groupItem.contains(u))
+
           view.items.append({
             id = id
             itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
+            unseenIcon = groupSeenIds.len() > 0
+              ? bhvUnseen.makeConfigStr(seenList.id, groupSeenIds)
+              : null
           })
         }
     }
@@ -1227,6 +1244,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       unlocksListObj.setValue(selIdx)
 
     guiScene.setUpdatesEnabled(true, true)
+
+    seenList.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }
 
   function getUnlockBlockId(unlockId)

@@ -12,11 +12,12 @@ local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
 local { findChildIndex } = require("sqDagui/daguiUtil.nut")
 local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 local getShopBlkData = require("scripts/shop/getShopBlkData.nut")
-local { hasMarkerByUnitName, getUnlockIdByUnitName
-} = require("scripts/unlocks/unlockMarkers.nut")
+local { hasMarkerByUnitName, getUnlockIdByUnitName,
+  getUnlockIdsByArmyId } = require("scripts/unlocks/unlockMarkers.nut")
 local { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 } = require("scripts/shop/shopDifficulty.nut")
-local { getBitStatus } = require("scripts/unit/unitStatus.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
 local lastUnitType = null
 
@@ -1091,6 +1092,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     local countryData = ::u.search(shopData, (@(curCountry) function(country) { return country.name == curCountry})(curCountry))
     if (countryData)
     {
+      local ediff = getCurrentEdiff()
       local view = { tabs = [] }
       foreach(idx, page in countryData.pages)
       {
@@ -1102,6 +1104,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             discountId = getDiscountIconTabId(countryData.name, name)
           }
           squadronExpIconId = curCountry + ";" + name
+          seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
+            getUnlockIdsByArmyId(curCountry, name, ediff))
           navImagesText = ::get_navigation_images_text(idx, countryData.pages.len())
         })
 
@@ -1989,14 +1993,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       slotbar.updateDifficulty()
   }
 
-  function isUnitUnlocked(unit, params = {}) {
-    return (bit_unit_status.locked & getBitStatus(unit, params)) == 0
-  }
-
-  function isUnlockMarkerVisible(unit, diff, params = {}) {
-    return isUnitUnlocked(unit, params) && hasMarkerByUnitName(unit.name, diff)
-  }
-
   function updateTreeDifficulty()
   {
     if (!::has_feature("GlobalShowBattleRating"))
@@ -2015,8 +2011,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
           if (!shopResearchMode) {
             local hasObjective = ::isUnitGroup(unit)
-              ? unit.airsGroup.findindex((@(u) isUnlockMarkerVisible(u, curEdiff)).bindenv(this)) != null
-              : ::u.isUnit(unit) && isUnlockMarkerVisible(unit, curEdiff, getUnitItemParams(unit))
+              ? unit.airsGroup.findindex((@(u) hasMarkerByUnitName(u.name, curEdiff))) != null
+              : ::u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
             show_obj(unitObj.findObject("unlockMarker"), hasObjective)
           }
         }

@@ -1844,11 +1844,11 @@ local forestallRadius = hdpx(15)
 local targetOnScreenWidth = hdpx(50)
 
 local targetsOnScreenComponent = @(color) function() {
-
+  local res = { watch = [ ScreenTargetsTrigger, HasAzimuthScale ] }
   if (!HasAzimuthScale.value)
-    return null
+    return res
   else if (!screenTargets)
-    return null
+    return res
 
   local targetsRes = []
   foreach (id, target in screenTargets) {
@@ -1857,15 +1857,13 @@ local targetsOnScreenComponent = @(color) function() {
     targetsRes.append(createTargetOnScreen(id, targetOnScreenWidth, color))
   }
 
-  return {
+  return res.__update({
     size = [sw(100), sh(50)]
     children = targetsRes
-    watch = [ ScreenTargetsTrigger, HasAzimuthScale ]
-  }
+  })
 }
 
 local forestallVisible = @(color) function() {
-
   return styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color

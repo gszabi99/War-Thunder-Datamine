@@ -10,6 +10,10 @@ local { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
 local { setShowUnit, getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { getAvailableRespawnBases } = require_native("guiRespawn")
 local { getShopVisibleCountries } = require("scripts/shop/shopCountriesList.nut")
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+local { getUnlockIdsByCountry } = require("scripts/unlocks/unlockMarkers.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -446,6 +450,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     }
     local selCountryIdx = 0
     local selCountryId = null
+    local ediff = getShopDiffCode()
     foreach(idx, countryData in crewsConfig)
     {
       local country = countryData.country
@@ -471,6 +476,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
           customViewCountryData?[country].icon ?? country, false, !cUnlocked || !cEnabled)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked
+        seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
+          getUnlockIdsByCountry(country, ediff))
       })
     }
 

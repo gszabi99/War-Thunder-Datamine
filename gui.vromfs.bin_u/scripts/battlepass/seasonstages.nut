@@ -4,11 +4,13 @@ local { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
 } = require("scripts/battlePass/unlocksRewardsState.nut")
 local { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
 local { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
-local { BATTLE_PASS_CHALLENGE } = require("scripts/utils/genericTooltipTypes.nut")
+local { BATTLE_PASS_CHALLENGE, ITEM } = require("scripts/utils/genericTooltipTypes.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
 
 local overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
+local doubleWidthStagesIcon = ::Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])
 
 local getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
@@ -61,6 +63,19 @@ local seasonStages = ::Computed(function() {
   return res
 })
 
+local function getPreviewBtnView(item) {
+  if (!item?.canPreview())
+    return null
+
+  local gcb = globalCallbacks.ITEM_PREVIEW
+  return {
+    image = "#ui/gameuiskin#btn_preview.svg"
+    tooltip = "#mainmenu/btnPreview"
+    funcName = gcb.cbName
+    actionParamsMarkup = gcb.getParamsMarkup({ itemId = item.id })
+  }
+}
+
 local function getChallengeTooltipId(stage, stageChallenge) {
   if (stageChallenge == null)
     return null
@@ -76,6 +91,7 @@ local function getStageViewData(stageData, idxOnPage) {
   local { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
   local overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
   local itemId = rewards?.keys()[0]
+  local item = itemId != null ? ::ItemsManager.findItemById(itemId.tointeger()) : null
   local currentWarbond = ::g_warbonds.getCurrentWarbond()
   local isChallengeStage = stageChallenge != null
   return {
@@ -83,15 +99,16 @@ local function getStageViewData(stageData, idxOnPage) {
     rewardId = itemId
     stageStatus = stageStatus
     prizeStatus = prizeStatus
+    doubleWidthStageIcon = doubleWidthStagesIcon.value.findvalue(@(v) v == stage) != null
     stage = stage
+    previewButton = getPreviewBtnView(item)
     isFree = isFree
     isFirst = idxOnPage == 0
     warbondShopLevelImage = currentWarbond != null && warbondsShopLevel != null
       ? ::g_warbonds_view.getLevelItemMarkUp(currentWarbond, warbondsShopLevel, "0", {
         hasOverlayIcon = false })
       : ""
-    items = itemId != null ? [::ItemsManager.findItemById(itemId.tointeger())?.getViewData({
-        overrideLayeredImage = overrideStageIcon != null ? ::LayersIcon.getIconData(null, overrideStageIcon) : null
+    items = overrideStageIcon == null && itemId != null ? [item?.getViewData({
         enableBackground = false
         showAction = false
         showPrice = false
@@ -103,8 +120,8 @@ local function getStageViewData(stageData, idxOnPage) {
       })]
     : null
     stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge" : null)
-    stageTooltipId = isChallengeStage
-      ? getChallengeTooltipId(stage, stageChallenge)
+    stageTooltipId = isChallengeStage ? getChallengeTooltipId(stage, stageChallenge)
+      : itemId != null && overrideStageIcon != null ? ITEM.getTooltipId(itemId)
       : null
   }
 }
@@ -112,4 +129,5 @@ local function getStageViewData(stageData, idxOnPage) {
 return {
   seasonStages
   getStageViewData
+  doubleWidthStagesIcon
 }

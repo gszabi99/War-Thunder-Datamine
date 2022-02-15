@@ -43,12 +43,21 @@ shopFilter {
     type:t='slotbarCountry'
     display:t='hide'
   }
-  unlockMarker {
+  <<#seenIconCfg>>
+  tdiv {
+    behavior:t='bhvUpdater'
     countryId:t='<<country>>'
     value:t='{"viewId": "COUNTRY_UNLOCK_MARKER"}'
-    type:t='slotbarCountry'
     display:t='hide'
+    size:t='pw, ph'
+    position:t='absolute'
+
+    unlockMarker {
+      type:t='slotbarCountry'
+      value:t='<<seenIconCfg>>'
+    }
   }
+  <</seenIconCfg>>
   discountIcon {
     countryId:t='<<country>>'
     value:t='{"viewId": "COUNTRY_DISCOUN_ICON"}'

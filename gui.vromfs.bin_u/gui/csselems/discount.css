@@ -76,17 +76,26 @@ unlockUnitCellMarker:pushed {
 
 unlockMarker,
 squadronExpIcon {
-  behavior:bhvUpdater;
   size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
   background-image:#ui/gameuiskin#new_icon_not_colored;
-  background-color:@squadronExpIconColor;
   background-repeat:expand;
   input-transparent:yes;
 }
 
+squadronExpIcon {
+  behavior:bhvUpdater;
+  background-color:@squadronExpIconColor;
+}
+
 unlockMarker {
+  behaviour:bhvUnseen;
   background-color:@unlockMarkerColor;
   tooltip:#mainmenu/objectiveAvailable;
+  display:hide;
+}
+
+unlockMarker[isActive=yes] {
+  display:show;
 }
 
 unlockMarker[type=inTab],
