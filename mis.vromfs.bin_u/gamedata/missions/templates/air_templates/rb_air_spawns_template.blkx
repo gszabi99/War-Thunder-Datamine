@@ -3209,11 +3209,46 @@
           },
           {
             "triggerEnable": {
-              "target": "t1_airfields_spawn_default"
+              "target": "airfields_force_air_spawns_check"
             }
           }
         ],
         "else_actions": []
+      },
+      "airfields_force_air_spawns_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "force_air_spawn",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "there is force air spawns, check them first"
+          },
+          "triggerEnable": {
+            "target": "create_special_spawn_name"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "no force spawn. creating airfields"
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_default"
+          }
+        }
       },
       "t1_airfields_spawn_default": {
         "is_enabled": false,
@@ -3658,6 +3693,38 @@
         "events": {
           "initMission": []
         },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "t1_airfield_exist",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no mid airfield exist"
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_low_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_low"
+          }
+        }
+      },
+      "t1_airfields_spawn_low_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
         "conditions": [
           {
             "objectExists": {
@@ -3720,6 +3787,38 @@
         }
       },
       "t2_airfields_spawn_low": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "t2_airfield_exist",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no mid airfield exist"
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_low_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "start_special_spawns"
+          }
+        }
+      },
+      "t2_airfields_spawn_low_exist": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -3802,10 +3901,16 @@
         "events": {
           "initMission": []
         },
-        "conditions": [],
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "force_air_spawn",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
         "actions": {
           "comment": {
-            "value": "starting special spawns"
+            "value": "no force air spawns exist. starting special spawns"
           },
           "triggerEnable": {
             "target": "create_special_spawn_name"
@@ -4019,17 +4124,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t1_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t1_special_spawn_default_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_special_spawn_high"
+          }
+        }
+      },
+      "t1_special_spawn_default_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t1_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t1_special_spawn_default_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4059,6 +4204,9 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
         "else_actions": {
@@ -4072,17 +4220,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t2_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t2_special_spawn_default_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_special_spawn_high"
+          }
+        }
+      },
+      "t2_special_spawn_default_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t2_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t2_special_spawn_default_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4112,6 +4300,9 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
         "else_actions": {
@@ -4125,17 +4316,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t1_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t1_special_spawn_high_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_special_spawn_mid"
+          }
+        }
+      },
+      "t1_special_spawn_high_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t1_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t1_special_spawn_high_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4165,6 +4396,9 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
         "else_actions": {
@@ -4178,17 +4412,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t2_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t2_special_spawn_high_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_special_spawn_mid"
+          }
+        }
+      },
+      "t2_special_spawn_high_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t2_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t2_special_spawn_high_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4218,6 +4492,9 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
         "else_actions": {
@@ -4231,17 +4508,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t1_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t1_special_spawn_mid_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_special_spawn_low"
+          }
+        }
+      },
+      "t1_special_spawn_mid_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t1_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t1_special_spawn_mid_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4275,7 +4592,7 @@
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t1_special_spawn_low"
+            "target": "t1_special_spawn_high"
           }
         }
       },
@@ -4284,17 +4601,57 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t2_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t2_special_spawn_mid_exist"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_special_spawn_low"
+          }
+        }
+      },
+      "t2_special_spawn_mid_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t2_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t2_special_spawn_mid_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4324,6 +4681,9 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
         "else_actions": {
@@ -4337,17 +4697,53 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t1_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t1_special_spawn_low_exist"
+          }
+        },
+        "else_actions": []
+      },
+      "t1_special_spawn_low_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t1_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t1_special_spawn_low_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4377,26 +4773,69 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
           }
         },
-        "else_actions": []
+        "else_actions": {
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
+          }
+        }
       },
       "t2_special_spawn_low": {
         "is_enabled": false,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [
+          {
+            "varCompareBool": {
+              "var_value": "t2_airfield_exist",
+              "value": false,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "force_air_spawn",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "special spawns exists"
+          },
+          "triggerEnable": {
+            "target": "t2_special_spawn_low_exist"
+          }
+        },
+        "else_actions": []
+      },
+      "t2_special_spawn_low_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
           "initMission": []
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "t2_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
+          "objectExists": {
+            "target": "@t2_special_spawn_low_name",
+            "type": "area"
           }
         },
         "actions": {
@@ -4426,6 +4865,41 @@
             "tags": {
               "airfield_take_off_air_rb": true
             }
+          },
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "start_airfields_spawns"
+          }
+        }
+      },
+      "start_airfields_spawns": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "force_air_spawn",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "force air spawns, creating airfields lasts"
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_default"
           }
         },
         "else_actions": []

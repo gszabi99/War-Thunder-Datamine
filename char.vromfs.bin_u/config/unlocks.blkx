@@ -5351,9 +5351,7 @@
           "condition": {
             "type": "minStat",
             "stat": "place",
-            "value": [1.0,1.0,1.0],
-            "inSession": true,
-            "inSessionAnd": false
+            "value": [1.0,1.0,1.0]
           }
         },
         {
@@ -6048,9 +6046,7 @@
           "condition": {
             "type": "minStat",
             "stat": "place",
-            "value": [1.0,1.0,1.0],
-            "inSession": true,
-            "inSessionAnd": false
+            "value": [1.0,1.0,1.0]
           }
         },
         {
@@ -133271,11 +133267,17 @@
           ]
         },
         {
-          "condition": {
-            "type": "targetTag",
-            "tag": "country_germany",
-            "country": "country_italy"
-          }
+          "condition": [
+            {
+              "type": "targetTag"
+            },
+            {
+              "tag": "country_germany"
+            },
+            {
+              "tag": "country_italy"
+            }
+          ]
         },
         {
           "condition": {
@@ -137725,11 +137727,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetTag",
-            "country": "country_britain",
-            "tag": "country_ussr"
-          }
+          "condition": [
+            {
+              "type": "targetTag"
+            },
+            {
+              "tag": "country_britain"
+            },
+            {
+              "tag": "country_ussr"
+            }
+          ]
         },
         {
           "condition": {
@@ -140443,7 +140451,7 @@
         {
           "condition": {
             "type": "targetTag",
-            "country": "country_ussr"
+            "tag": "country_ussr"
           }
         }
       ]
@@ -144018,9 +144026,7 @@
           "condition": {
             "type": "minStat",
             "stat": "place",
-            "value": [1.0,1.0,1.0],
-            "inSession": true,
-            "inSessionAnd": false
+            "value": [1.0,1.0,1.0]
           }
         },
         {
@@ -174833,8 +174839,7 @@
         {
           "condition": {
             "type": "targetType",
-            "unitType": "aircraft",
-            "controlled": true
+            "unitType": "aircraft"
           }
         },
         {
@@ -183684,9 +183689,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -183946,8 +183948,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -184131,9 +184132,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -185161,9 +185159,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -185223,8 +185218,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -185483,8 +185477,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -185552,9 +185545,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -185917,8 +185907,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -186065,8 +186054,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -186121,9 +186109,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },

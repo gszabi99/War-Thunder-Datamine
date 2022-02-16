@@ -9768,8 +9768,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -9843,8 +9842,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -10988,8 +10986,7 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank",
-            "inSession": true,
-            "inSessionAnd": false
+            "inSession": true
           }
         },
         {
@@ -18173,6 +18170,66 @@
   },
   {
     "unlockable": {
+      "id": "2022_02_15_tsb_pretest_promo_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 1
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-15 12:00:00",
+            "endDate": "2022-02-17 11:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "gameModeInfoString"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "exactName": true
+            },
+            {
+              "value": "tank_random_battles_simulation"
+            },
+            {
+              "value": "tank_random_battles_simulation_1"
+            },
+            {
+              "locParamName": "conditions/missionType"
+            },
+            {
+              "locValuePrefix": "missions/short/"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "2022_02_11_valentines_day_22",
       "locDescId": "2022_02_11_valentines_day_22/desc",
       "userLogId": "2022_02_11_valentines_day_22_trophy",
@@ -18180,6 +18237,7 @@
       "amount_trophies": 1,
       "chapter": "14feb",
       "costGold": 199,
+      "hidden": true,
       "mode": [
         {
           "type": "missionsPlayedScore"
@@ -18226,6 +18284,7 @@
       "amount_trophies": 1,
       "chapter": "14feb",
       "costGold": 499,
+      "hidden": true,
       "mode": [
         {
           "type": "missionsWonScore"
@@ -18288,6 +18347,7 @@
       "amount_trophies": 1,
       "chapter": "japan_day",
       "costGold": 199,
+      "hidden": true,
       "mode": [
         {
           "type": "missionsPlayedScore"
@@ -35767,8 +35827,7 @@
         {
           "condition": {
             "type": "targetType",
-            "unitType": "tank",
-            "controlled": true
+            "unitType": "tank"
           }
         },
         {
@@ -35857,9 +35916,6 @@
             },
             {
               "unitType": "boat"
-            },
-            {
-              "controlled": true
             }
           ]
         },
@@ -35954,8 +36010,7 @@
         {
           "condition": {
             "type": "targetType",
-            "unitType": "aircraft",
-            "controlled": true
+            "unitType": "aircraft"
           }
         },
         {
@@ -40645,9 +40700,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -41633,9 +41685,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -42621,9 +42670,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -43609,9 +43655,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -44597,9 +44640,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -45585,9 +45625,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -46573,9 +46610,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -47561,9 +47595,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -48549,9 +48580,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -49537,9 +49565,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -50525,9 +50550,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -51513,9 +51535,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -59754,9 +59773,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -60748,9 +60764,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -61742,9 +61755,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -62736,9 +62746,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -63730,9 +63737,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -64724,9 +64728,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -65718,9 +65719,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -66712,9 +66710,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -67706,9 +67701,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -68700,9 +68692,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -69694,9 +69683,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
@@ -70688,9 +70674,6 @@
             },
             {
               "inSession": true
-            },
-            {
-              "inSessionAnd": false
             }
           ]
         },
