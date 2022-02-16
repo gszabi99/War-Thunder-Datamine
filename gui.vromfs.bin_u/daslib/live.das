@@ -6,6 +6,7 @@ options multiple_contexts
 
 module live shared public
 
+require strings
 require daslib/rtti
 require daslib/decs
 require daslib/static_let
@@ -31,15 +32,18 @@ def public get_live_context : smart_ptr<Context>
 
 [export]
 def saveLiveContext
+    to_log(LOG_TRACE, "LIVE: saveLiveContext\n");
     decsLiveData <- mem_archive_save(decsState)
 
 [export]
 def restoreLiveContext
+    to_log(LOG_TRACE, "LIVE: restoreLiveContext\n");
     if length(decsLiveData) > 0
         decsLiveData |> mem_archive_load(decsState)
 
 [finalize]
 def private go_offline
+    to_log(LOG_TRACE, "LIVE: go_offline\n");
     appPtr := null
 
 def public is_live
@@ -49,6 +53,7 @@ def public is_app_live
     return appPtr != null
 
 def public go_main
+    to_log(LOG_TRACE, "LIVE: go_main\n");
     delete decsLiveData
     appLive = false
     unsafe
@@ -56,6 +61,7 @@ def public go_main
         appPtr := ctx
 
 def public go_live ( appf, appd : string )
+    to_log(LOG_TRACE, "LIVE: go_life appFile={appf} appDir={appd}\n");
     appLive = true
     this_context().name := "Live context"
     appFile = appf
@@ -76,7 +82,7 @@ def public invoke_live ( fn:string )
             unsafe
                 invoke_in_context(appPtr, fn)
         recover
-            print("exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
+            to_log(LOG_ERROR, "exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
             appPtr := null
 
 def public invoke_live ( fn:string; a1 )
@@ -85,7 +91,7 @@ def public invoke_live ( fn:string; a1 )
             unsafe
                 invoke_in_context(appPtr, fn, a1)
         recover
-            print("exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
+            to_log(LOG_ERROR, "exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
             appPtr := null
 
 def public invoke_live ( fn:string; a1; a2 )
@@ -94,7 +100,7 @@ def public invoke_live ( fn:string; a1; a2 )
             unsafe
                 invoke_in_context(appPtr, fn, a1, a2)
         recover
-            print("exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
+            to_log(LOG_ERROR, "exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
             appPtr := null
 
 def public invoke_live ( fn:string; a1; a2; a3 )
@@ -103,7 +109,7 @@ def public invoke_live ( fn:string; a1; a2; a3 )
             unsafe
                 invoke_in_context(appPtr, fn, a1, a2, a3)
         recover
-            print("exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
+            to_log(LOG_ERROR, "exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
             appPtr := null
 
 def public invoke_live ( fn:string; a1; a2; a3; a4 )
@@ -112,7 +118,7 @@ def public invoke_live ( fn:string; a1; a2; a3; a4 )
             unsafe
                 invoke_in_context(appPtr, fn, a1, a2, a3, a4)
         recover
-            print("exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
+            to_log(LOG_ERROR, "exception during '{fn}'\n{appPtr.last_exception}\n{describe(appPtr.exceptionAt)}\n")
             appPtr := null
 
 def public watch_files
@@ -122,6 +128,8 @@ def public watch_files
     watchTime = clk
     var any = false
     dir(appDir) <| $ (fname)
+        if !(ends_with(fname, ".das") || ends_with(fname, ".das_project"))
+            return
         let fileName = "{appDir}\/{fname}"
         var st : FStat
         if stat(fileName,st)
@@ -133,7 +141,7 @@ def public watch_files
     return any
 
 def private set_new_context ( var ptr : smart_ptr<Context>; full_restart:bool = false )
-    // print("set new context {intptr(get_ptr(ptr))}\n")
+    to_log(LOG_TRACE, "LIVE: set new context {intptr(get_ptr(ptr))}\n")
     invoke_live("shutdown")
     if appPtr != null
         unsafe
@@ -175,6 +183,7 @@ def private set_new_context ( var ptr : smart_ptr<Context>; full_restart:bool = 
         invoke_live("initialize", full_restart)
 
 def public recompile(full_restart:bool=false)
+    to_log(LOG_TRACE, "LIVE: recompile full_restart={full_restart}\n")
     var access := make_file_access("")
     using <| $(var mg:ModuleGroup#)
         using <| $(var cop:CodeOfPolicies#)
@@ -183,12 +192,13 @@ def public recompile(full_restart:bool=false)
                     simulate(program) <| $ ( sok; context; serrors )
                         if sok
                             // TODO: beep print("reloaded...\n")
+                            to_log(LOG_TRACE, "LIVE: reloaded\n")
                             set_new_context(context,full_restart)
                         else
-                            print("{appFile} failed to simulate:\n{issues}\n")
+                            to_log(LOG_ERROR, "LIVE: {appFile} failed to simulate:\n{issues}\n")
                             set_new_context([[smart_ptr<Context>]],full_restart)
                 else
-                    print("{appFile} failed to compile:\n{issues}\n")
+                    to_log(LOG_ERROR, "LIVE: {appFile} failed to compile:\n{issues}\n")
                     set_new_context([[smart_ptr<Context>]],full_restart)
 
 def public live_keypressed ( keycode, scancode, action, mods : int )
