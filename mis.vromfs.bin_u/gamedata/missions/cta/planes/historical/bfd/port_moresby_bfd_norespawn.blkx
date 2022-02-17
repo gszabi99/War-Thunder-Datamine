@@ -433,78 +433,16 @@
         "initMission": []
       },
       "conditions": [],
-      "actions": [
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/air_spawn1",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "radius": -1.0,
-            "destructionAwardMultiplier": 1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "t1_common_fighters_spawn",
-            "team": "A",
-            "awardByBodyHp": false,
-            "tags": {
-              "type_assault": false,
-              "type_interceptor": false,
-              "type_aa_fighter": false,
-              "type_frontline_bomber": false,
-              "type_longrange_bomber": false,
-              "tank": false
-            }
-          }
+      "actions": {
+        "objectGroupSetAirfield": {
+          "army": 1,
+          "target": "t1_airfield"
         },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/air_spawn1",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "radius": -1.0,
-            "destructionAwardMultiplier": 1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "t2_common_fighters_spawn",
-            "team": "B",
-            "awardByBodyHp": false,
-            "tags": {
-              "type_assault": false,
-              "type_interceptor": false,
-              "type_aa_fighter": false,
-              "type_frontline_bomber": false,
-              "type_longrange_bomber": false,
-              "tank": false
-            }
-          }
-        },
-        {
-          "objectGroupSetAirfield": {
-            "army": 1,
-            "target": "t1_airfield"
-          }
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
         }
-      ],
+      },
       "else_actions": []
     },
     "start_mission": {
@@ -774,7 +712,7 @@
           ]
         },
         {
-          "missionMarkAsRespawnPoint": {
+          "__missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
             "isAirfield": true,
@@ -8531,7 +8469,7 @@
         [33.7357,0.0,-21.492],
         [0.0,40.0,0.0],
         [21.492,0.0,33.7357],
-        [-21973.5,25.8,-9357.5]
+        [-22028.5,25.8,-9317.86]
       ],
       "props": []
     },
@@ -8541,7 +8479,7 @@
         [33.7357,0.0,-21.492],
         [0.0,40.0,0.0],
         [21.492,0.0,33.7357],
-        [-20907.3,25.8,-10114.4]
+        [-20787.2,15.6096,-10198.5]
       ],
       "props": []
     },
@@ -8641,7 +8579,7 @@
       "objLayer": 0,
       "props": []
     },
-    "t2_common_fighter_spawn": {
+    "t2_common_fighters_spawn": {
       "type": "Sphere",
       "tm": [
         [126.785,0.0,271.892],
@@ -8717,26 +8655,6 @@
       "objLayer": 0,
       "props": []
     },
-    "t2_common_fighters_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [126.785,0.0,271.892],
-        [0.0,300.0,0.0],
-        [-271.892,0.0,126.785],
-        [-20516.1,500.0,-21818.2]
-      ],
-      "props": []
-    },
-    "t1_common_fighters_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [39.1577,0.0,-297.434],
-        [0.0,300.0,0.0],
-        [297.434,0.0,39.1577],
-        [-7391.38,500.0,15026.4]
-      ],
-      "props": []
-    },
     "briefing_t2_air_spawn": {
       "type": "Point",
       "tm": [
@@ -8746,6 +8664,16 @@
         [-19242.2,0.0,-18680.9]
       ],
       "objLayer": 0,
+      "props": []
+    },
+    "t1_common_fighters_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [65.1578,0.0,-292.839],
+        [0.0,300.0,0.0],
+        [292.839,0.0,65.1578],
+        [-7742.84,1000.0,17011.3]
+      ],
       "props": []
     }
   },
