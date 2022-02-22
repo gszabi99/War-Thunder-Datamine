@@ -138,7 +138,7 @@ root {
                   flow:t='horizontal'
 
                   behavior:t='posNavigator'
-                  navigatorShortcuts:t='active'
+                  navigatorShortcuts:t='yes'
                   on_select:t='onUnitClick'
                   move-only-hover:t='yes'
 

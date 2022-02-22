@@ -277,6 +277,11 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     updateOnShopWndAnim(topMenuShopActive.value)
   }
 
+  function onEventShowUnitInShop(params) {
+    openShop()
+    shopWeak?.showUnitInShop(params.unitName)
+  }
+
   function updateOnShopWndAnim(isVisible)
   {
     local isShow = topMenuShopActive.value

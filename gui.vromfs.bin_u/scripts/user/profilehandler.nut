@@ -19,8 +19,10 @@ local { canStartPreviewScene } = require("scripts/customization/contentPreview.n
 local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local { getUnlockIds } = require("scripts/unlocks/unlockMarkers.nut")
+local { getUnlockIds, getUnitListByUnlockId } = require("scripts/unlocks/unlockMarkers.nut")
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
+local shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -665,7 +667,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (isAchievementPage && curAchievementGroupName == "" && curUnlockId != "")
       curAchievementGroupName = findGroupNameByUnlockId(curUnlockId)
 
-    local ediff = ::get_current_ediff()
+    local ediff = getShopDiffCode()
 
     local view = { items = [] }
     foreach (chapterName, chapterItem in unlocksTree)
@@ -1174,6 +1176,25 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       fillUnlockInfo(unlock, unlockObj)
   }
 
+  function showUnlockUnits(obj) {
+    local unlockBlk = ::g_unlocks.getUnlockById(obj.unlockId)
+    local unlockCfg = ::build_conditions_config(unlockBlk)
+    shopSearchWnd.open(null, ::Callback(@(u) showUnitInShop(u), this), getShopDiffCode, {
+      units = getUnitListByUnlockId(obj.unlockId)
+      wndTitle = ::loc("mainmenu/showVehiclesTitle", {
+        taskName = ::g_unlock_view.getUnlockTitle(unlockCfg)
+      })
+    })
+  }
+
+  function showUnitInShop(unitName) {
+    if (!unitName)
+      return
+
+    ::broadcastEvent("ShowUnitInShop", { unitName })
+    goBack()
+  }
+
   function fillUnlockInfo(unlockBlk, unlockObj)
   {
     local itemData = build_conditions_config(unlockBlk)
@@ -1675,6 +1696,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
   function onEventUnlocksCacheInvalidate(p)
   {
     if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
+      fillUnlocksList()
+  }
+
+  function onEventUnlockMarkersCacheInvalidate(_) {
+    if (getCurSheet() == "UnlockAchievement")
       fillUnlocksList()
   }
 

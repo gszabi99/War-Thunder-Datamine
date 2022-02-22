@@ -132,6 +132,23 @@ local function cache(ediff) {
   return curCache
 }
 
+local function hasActiveUnlock(unlockId, ediff) {
+  return cache(ediff)?.unlockIds.contains(unlockId)
+}
+
+local function getUnitListByUnlockId(unlockId) {
+  local modeBlk = ::g_unlocks.getUnlockById(unlockId)?.mode
+  if (!modeBlk)
+    return []
+
+  local conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
+  local unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
+  if (!unitCond)
+    return []
+
+  return (unitCond % "class").map(@(n) ::getAircraftByName(n))
+}
+
 local function hasMarkerByUnitName(unitName, ediff) {
   return unitName in cache(ediff)?.unitNameToUnlockId
 }
@@ -163,6 +180,8 @@ addListenersWithoutEnv({
 })
 
 return {
+  hasActiveUnlock
+  getUnitListByUnlockId
   hasMarkerByUnitName
   getUnlockIdByUnitName
   checkUnlockMarkers

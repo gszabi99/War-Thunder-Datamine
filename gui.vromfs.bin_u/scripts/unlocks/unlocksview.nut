@@ -5,8 +5,20 @@ local { is_bit_set } = require("std/math.nut")
 local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("scripts/utils/genericTooltipTypes.nut")
 local { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
+local { hasActiveUnlock, getUnitListByUnlockId } = require("scripts/unlocks/unlockMarkers.nut")
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 
 ::g_unlock_view <- {
+  function getUnlockTitle(unlockConfig) {
+    local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
+      : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
+      : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
+    local stage = unlockConfig.curStage >= 0
+      ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
+      : 0
+    return $"{name} {::roman_numerals[stage]}"
+  }
+
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
     local isShowUnlock = unlockBlk != null && ::is_unlock_visible(unlockBlk)
     unlockObj.show(isShowUnlock)
@@ -279,7 +291,17 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
-  unlockObj.findObject("description").setValue(getUnlockDescription(unlockConfig))
+  unlockObj.findObject("description")
+    .setValue(::getUnlockDescription(unlockConfig, { showMult = false }))
+
+  local showUnitsBtnObj = unlockObj.findObject("show_units_btn")
+  showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())
+    && getUnitListByUnlockId(unlockConfig.id).len() > 0)
+  showUnitsBtnObj.unlockId = unlockConfig.id
+
+  local mainCond = ::UnlockConditions.getMainProgressCondition(unlockConfig.conditions)
+  local mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
+  unlockObj.findObject("mult_desc").setValue(mulText)
 }
 
 g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
@@ -352,13 +374,7 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
 
 g_unlock_view.fillUnlockTitle <- function fillUnlockTitle(unlockConfig, unlockObj)
 {
-  local name = ""
-  local isUnlocked = ::is_unlocked_scripted(-1, unlockConfig.id)
-  if (!unlockConfig.useSubUnlockName)
-    name = unlockConfig.locId != "" ? getUnlockLocName(unlockConfig) : ::get_unlock_name_text(unlockConfig.unlockType, unlockConfig.id)
-  else
-    name = getSubUnlockLocName(unlockConfig)
-  local title = name + " " + ::roman_numerals[(unlockConfig.curStage >= 0 ? unlockConfig.curStage + (isUnlocked ? 0 : 1) : 0)]
+  local title = getUnlockTitle(unlockConfig)
   unlockObj.findObject("achivment_title").setValue(title)
   return title
 }

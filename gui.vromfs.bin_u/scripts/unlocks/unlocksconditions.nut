@@ -794,11 +794,15 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
   if (inlineText && conditionsText != "")
     conditionsText = ::format("(%s)", conditionsText)
 
-  //add multipliers text
-  local mainCond = getMainProgressCondition(conditions)
-  local mulText = ::UnlockConditions.getMultipliersText(mainCond || {})
+  local pieces = [mainConditionText, conditionsText]
 
-  local pieces = [mainConditionText, conditionsText, mulText]
+  if (params?.showMult ?? true) {
+    //add multipliers text
+    local mainCond = getMainProgressCondition(conditions)
+    local mulText = ::UnlockConditions.getMultipliersText(mainCond ?? {})
+    pieces.append(mulText)
+  }
+
   return ::g_string.implode(pieces, separator)
 }
 

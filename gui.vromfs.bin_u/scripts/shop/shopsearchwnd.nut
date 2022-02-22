@@ -12,6 +12,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
   units = []
   cbOwnerShowUnit = null
   getEdiffFunc = null
+  wndTitle = null
 
   isUseUnitPlates = false
   unitToShowOnClose = null
@@ -22,7 +23,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
     local countriesView = getCountriesView(unitsData)
 
     return {
-      windowTitle = ::loc("shop/search/results") + ::loc("ui/colon") + searchString
+      windowTitle = wndTitle ?? (::loc("shop/search/results") + ::loc("ui/colon") + searchString)
       countriesCount = countriesView.len()
       countriesTotal = shopCountriesList.len()
       countries = countriesView
@@ -159,9 +160,9 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 }
 
 return {
-  open = function(searchString, cbOwnerShowUnit, getEdiffFunc)
+  open = function(searchString, cbOwnerShowUnit, getEdiffFunc, params = null)
   {
-    local units = shopSearchCore.findUnitsByLocName(searchString)
+    local units = params?.units ?? shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false
     ::handlersManager.loadHandler(::gui_handlers.ShopSearchWnd, {
@@ -169,6 +170,7 @@ return {
       cbOwnerShowUnit = cbOwnerShowUnit
       getEdiffFunc = getEdiffFunc
       units = units
+      wndTitle = params?.wndTitle
     })
     return true
   }
