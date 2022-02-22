@@ -246,7 +246,7 @@ local list = {
   }
   REPORT_AN_ISSUE = {
     text = @() ::loc("topmenu/reportAnIssue")
-    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+    onClickFunc = @(obj, handler) !isPlatformPC
       ? openQrWindow({
           headerText = ::loc("topmenu/reportAnIssue")
           baseUrl = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
@@ -255,10 +255,9 @@ local list = {
       : openUrlByObj(obj, true)
     isDelayed = false
     link = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
-    isLink = @() !::has_feature("ShowUrlQrCode")
-    isFeatured = @() !::has_feature("ShowUrlQrCode")
-    isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
-       || ::is_vendor_tencent() || !::isInMenu()
+    isLink = @() isPlatformPC
+    isFeatured = @() true
+    isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
