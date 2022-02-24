@@ -27,12 +27,14 @@ local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 
 local missionModesList = [
   "missionsWon",
   "missionsWonScore",
   "missionsPlayed",
-  "missionsPlayedScore"
+  "missionsPlayedScore",
+  "totalMissionScore"
 ]
 
 local typesForMissionModes = {
@@ -63,6 +65,10 @@ local typesForMissionModes = {
     inSessionFalse = "lastInSessionTag"
   }
 }
+
+local detailedMultiplierModesList = [
+  "totalMissionScore"
+]
 
 local function getOverrideCondType(condBlk, unlockMode) {
   local overrideCondType
@@ -920,6 +926,8 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
     textId = "conditions/char_resources_count/" + ::getTblValue("resourceType", condition, "")
   else if (modeType == "amountDamagesZone")
     textId = "debriefing/Damage"
+  else if (modeType == "totalMissionScore")
+    textId = "conditions/statScore"
 
   if ("locEnding" in params)
     res = ::loc(textId + params.locEnding, textParams)
@@ -1121,7 +1129,7 @@ UnlockConditions.addToText <- function addToText(text, name, valueText = "", col
 
 UnlockConditions.getMultipliersTable <- function getMultipliersTable(blk)
 {
-  local modeTable = {
+  local diffTable = {
     mulArcade = "ArcadeBattle"
     mulRealistic = "HistoricalBattle"
     mulHardcore = "FullRealBattles"
@@ -1129,32 +1137,45 @@ UnlockConditions.getMultipliersTable <- function getMultipliersTable(blk)
   }
 
   local mulTable = {}
-  foreach(paramName, mode in modeTable)
-    mulTable[mode] <- blk?[paramName] ?? 1
+  if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
+    local NUM_MISSION_TYPES = 9
+    for (local i = 0; i < NUM_MISSION_TYPES; i++)
+      mulTable[i] <- blk?[$"mulMode{i}"] ?? 1.0
+  }
+  else {
+    foreach(paramName, diff in diffTable)
+      mulTable[diff] <- blk?[paramName] ?? 1
+  }
 
   return mulTable
 }
 
 UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
 {
-  local multiplierTable = ::getTblValue("multiplier", condition, {})
+  local multiplierTable = condition?.multiplier ?? {}
   if (multiplierTable.len() == 0)
     return ""
 
   local mulText = ""
 
-  if (multiplierTable.WWBattleForOwnClan > 1)
+  if ((multiplierTable?.WWBattleForOwnClan ?? 1) > 1)
     return "{0}{1}{2}".subst(::loc("conditions/mulWWBattleForOwnClan"),
                              ::loc("ui/colon"),
                              ::colorize("unlockActiveColor", ::format("x%d", multiplierTable.WWBattleForOwnClan)))
 
-  foreach(difficulty, num in multiplierTable)
-  {
+  local isMultipliersByDiff = multiplierTable?.ArcadeBattle != null
+  foreach (param, num in multiplierTable) {
     if (num == 1)
       continue
 
-    mulText += mulText.len() > 0? ", " : ""
-    mulText += ::format("%s (x%d)", ::loc("clan/short" + difficulty), num)
+    if (!isMultipliersByDiff && ((param - getShopDiffCode()) % 3 != 0))
+      continue
+
+    mulText += mulText.len() > 0 ? ", " : ""
+    local mulLocParam = isMultipliersByDiff
+      ? ::loc($"clan/short{param}")
+      : ::loc($"missions/{::get_mode_localization_text(param)}_short")
+    mulText += $"{mulLocParam} (x{num})"
   }
 
   if (mulText == "")
