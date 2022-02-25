@@ -12650,10 +12650,24 @@
   },
   {
     "unlockable": {
-      "id": "free_pack_additional_store_gift",
-      "userLogId": "free_pack_additional_store_trophy_gift",
+      "id": "free_pack_additional_store_booster_trophy_gift",
+      "userLogId": "free_pack_additional_store_booster_trophy",
       "type": "trophy",
-      "amount_trophies": 1,
+      "amount_trophies": 2,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "free_pack_additional_store"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "free_pack_additional_store_ext_trophy_gift",
+      "userLogId": "free_pack_additional_store_ext_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
       "hidden": true,
       "mode": {
         "type": "char_unlocks",
@@ -18321,6 +18335,101 @@
             "type": "timeRange",
             "beginDate": "2022-02-18 11:00:00",
             "endDate": "2022-02-23 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_02_25_memorable_date_trophy_gift",
+      "locDescId": "common_weekend_event_trophy_gift/desc",
+      "userLogId": "2021_12_07_memorable_date_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "memorable_date",
+      "shouldMarkUnits": true,
+      "mode": [
+        {
+          "type": "totalMissionScore"
+        },
+        {
+          "score": 20000
+        },
+        {
+          "mulMode0": 1.0
+        },
+        {
+          "mulMode1": 1.4
+        },
+        {
+          "mulMode2": 3.0
+        },
+        {
+          "mulMode3": 0.93
+        },
+        {
+          "mulMode4": 1.33
+        },
+        {
+          "mulMode5": 1.8
+        },
+        {
+          "mulMode6": 1.9
+        },
+        {
+          "mulMode7": 2.2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerUnit"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            },
+            {
+              "class": "spitfire_ix_early"
+            },
+            {
+              "class": "spitfire_ix"
+            },
+            {
+              "class": "spitfire_ix_plagis"
+            },
+            {
+              "class": "spitfire_mk9c_4cannons"
+            },
+            {
+              "class": "spitfire_ix_usa"
+            },
+            {
+              "class": "spitfire_ix_ussr"
+            },
+            {
+              "class": "spitfire_lf_mk9e_weisman"
+            },
+            {
+              "class": "spitfire_mk9c_iaf"
+            },
+            {
+              "class": "spitfire_lf_mk9e_iaf"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-02-25 11:00:00",
+            "endDate": "2022-02-28 11:30:00"
           }
         }
       ]
