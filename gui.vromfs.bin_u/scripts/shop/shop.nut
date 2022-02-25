@@ -1758,6 +1758,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             if (groupItem.name == unitName)
             {
               local obj = getCellObjByValue(idx)
+              if (!obj?.isValid())
+                return false
+
               obj.scrollToView()
               tableObj.setValue(idx)
               obj.setMouseCursorOnObject()
@@ -1768,6 +1771,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
         }
         else if (item.name == unitName) {
           local obj = getCellObjByValue(idx)
+          if (!obj?.isValid())
+            return false
+
           obj.scrollToView()
           tableObj.setValue(idx)
           obj.setMouseCursorOnObject()
