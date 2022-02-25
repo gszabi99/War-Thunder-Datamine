@@ -336,7 +336,7 @@ local unlockConditionUnitclasses = {
     if (mainCond && mainCond.values && (mainCond.values.len() > 1 || config.hasCustomUnlockableList))
       config.names = mainCond.values //for easy support old values list
 
-    config.maxVal = ::getTblValue("num", mainCond)
+    config.maxVal = mainCond?.num ?? 1
     config.curVal = 0
 
     if (modeType=="rank")
