@@ -2629,7 +2629,31 @@
       "preset": {
         "name": "saab_aj37_rockets_rb_75",
         "blk": "gameData/FlightModels/weaponPresets/saab_aj37_rockets_rb_75.blk",
-        "reqModification": "swd_rb75"
+        "reqModification": "swd_rb75",
+        "weaponConfig": {
+          "presetType": "ARMORED",
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/swd_rb75.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "missile_air_to_uni_large"
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -2660,7 +2684,7 @@
                   "amountPerTier": 1.0
                 },
                 {
-                  "iconType": "missile_air_to_uni"
+                  "iconType": "missile_air_to_uni_large"
                 },
                 {
                   "tier": {
@@ -3020,15 +3044,19 @@
                 "blk": "gameData/Weapons/rocketGuns/swd_rb75.blk"
               },
               {
+                "amountPerTier": 1.0
+              },
+              {
+                "iconType": "missile_air_to_uni_large"
+              },
+              {
                 "tier": {
-                  "idx": 5,
-                  "iconType": "missile_air_to_uni"
+                  "idx": 5
                 }
               },
               {
                 "tier": {
-                  "idx": 7,
-                  "iconType": "missile_air_to_uni"
+                  "idx": 7
                 }
               }
             ]

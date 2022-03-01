@@ -114,6 +114,24 @@
     "canReloadNonGuns": true
   },
   {
+    "smokeScreenActivateTime": 5.0
+  },
+  {
+    "smokeScreenEffectTime": 7.0
+  },
+  {
+    "smokeScreenRad": 12.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "smokeScreenDmPart": "engine_dm"
+  },
+  {
+    "smokeScreenFxType": "tank_smokescreen"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -2766,7 +2784,8 @@
           "titleLoc": "RHA_tank_modern",
           "armorArrayText": {
             "layer": {
-              "dmPart": "turret_06_back_dm"
+              "dmPart": "turret_06_back_dm",
+              "xrayTextThickness": [20.0,50.0]
             }
           }
         }
@@ -2889,13 +2908,41 @@
       {
         "armorArrayERA": {
           "xrayDmPartFmt": "ex_era_hull_%02d_dm",
-          "xrayDmPartRange": [1.0,34.0],
+          "xrayDmPartRange": [1.0,19.0],
           "titleLoc": "us_era_m_60",
           "kineticProtectionEquivalent": 30.0,
           "cumulativeProtectionEquivalent": 400.0,
           "armorArrayText": {
             "layer": {
               "dmPart": "ex_era_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
+          "xrayDmPartRange": [28.0,34.0],
+          "titleLoc": "us_era_m_60",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
+          "xrayDmPartRange": [20.0,27.0],
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_20_dm"
             }
           }
         }
@@ -4659,5 +4706,15 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
+  },
+  {
+    "smokeScreenExhaustEmitters": [
+      {
+        "emitter": "emtr_exhaust_01"
+      },
+      {
+        "emitter": "emtr_exhaust_04"
+      }
+    ]
   }
 ]
