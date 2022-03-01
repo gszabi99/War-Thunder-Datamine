@@ -1,8 +1,10 @@
 local time = require("scripts/time.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local ent = require("scripts/onlineShop/entitlements.nut")
 local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+
+local { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
 local payMethodsCfg = [
   { id = ::YU2_PAY_QIWI,        name = "qiwi" }
@@ -61,6 +63,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     )
   }
 
+  function onEventBundlesUpdated(p) {
+    reinitScreen()
+  }
+
   function reinitScreen(params = {})
   {
     if (!::checkObj(scene))
@@ -100,6 +106,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       goods[name] <- {
         name = name
       }
+
       //load data from eBlk
       for (local j = 0; j < ib.paramCount(); j++)
       {
@@ -131,7 +138,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         groupCost[goods[name].group] <- getPricePerItem(goods[name])
 
       if (useRowVisual) {
-        rowsView.append(getRowView(name, goods[name], isGold, (idx%2 == 0) ? "yes" :"no"))
+        rowsView.append(getRowView(goods[name], isGold, (idx%2 == 0) ? "yes" :"no"))
         if (goods[name]?.chapterImage)
           chImages[goods[name].chapter] <- goods[name].chapterImage
       }
@@ -502,11 +509,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     )
   }
 
-  function onOnlinePurchase(purchaseTask)
+  function onOnlinePurchase(itemId)
   {
     local payMethods = yuplay2_get_payment_methods()
     if (!payMethods || ::steam_is_running() || !::has_feature("PaymentMethods"))
-      return ::OnlineShopModel.doBrowserPurchase(purchaseTask)
+      return ::OnlineShopModel.doBrowserPurchase(itemId)
 
     local items = []
     local selItem = null
@@ -518,7 +525,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         items.append({
           name = name
           icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
-          callback = ::Callback(@() onYuplayPurchase(purchaseTask, payMethodId, name), this)
+          callback = ::Callback(@() onYuplayPurchase(itemId, payMethodId, name), this)
         })
         selItem = selItem || name
       }
@@ -527,44 +534,43 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     items.append({
       name = name
       icon = ""
-      callback = ::Callback(@() ::OnlineShopModel.doBrowserPurchase(purchaseTask), this)
+      callback = ::Callback(@() ::OnlineShopModel.doBrowserPurchase(itemId), this)
     })
     selItem = selItem || name
 
     ::gui_modal_payment({items = items, owner = this, selItem = selItem, cancel_fn = function() {}})
   }
 
-  function onYuplayPurchase(purchaseTask, payMethod, nameLocId)
+  function onYuplayPurchase(itemId, payMethod, nameLocId)
   {
     local msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
-      purchase = ::colorize("activeTextColor", ent.getEntitlementName(goods[purchaseTask])),
+      purchase = ::colorize("activeTextColor", ent.getEntitlementName(goods[itemId])),
       paymentSystem = ::colorize("userlogColoredText", ::loc(nameLocId))
     })
     msgBox("yuplay_purchase_ask", msgText,
-      [ ["yes", @() doYuplayPurchase(purchaseTask, payMethod) ],
+      [ ["yes", @() doYuplayPurchase(itemId, payMethod) ],
         ["no", function(){}]
       ], "yes", { cancel_fn = function(){}})
   }
 
-  function doYuplayPurchase(purchaseTask, payMethod)
+  function doYuplayPurchase(itemId, payMethod)
   {
-    local guid = getBundleId(purchaseTask)
-    ::dagor.assertf(guid != "", "Error: not found guid for " + purchaseTask)
+    local guid = bundlesShopInfo.value?[name].guid ?? ""
+    ::dagor.assertf(guid != "", $"Error: not found guid for {itemId}")
 
     local response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
     if (response != ::YU2_OK)
     {
       local errorText = ::get_yu2_error_text(response)
       msgBox("errorMessageBox", errorText, [["ok", function(){}]], "ok")
-      dagor.debug("yuplay2_buy_entitlement have returned " + response + " with task = " +
-        purchaseTask + ", guid = " + guid + ", payMethod = " + payMethod)
+      ::dagor.debug($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return
     }
 
     ::update_entitlements()
 
     msgBox("purchase_done",
-      format(::loc("userlog/buy_entitlement"), ent.getEntitlementName(goods[purchaseTask])),
+      format(::loc("userlog/buy_entitlement"), ent.getEntitlementName(goods[itemId])),
       [["ok", @() null]], "ok", { cancel_fn = @() null})
   }
 
@@ -632,15 +638,18 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onFav() {}
   function onChapterSelect() {}
 
-  function getRowView(name, item, isGold, even) {
+  function getRowView(item, isGold, even) {
     local amount = ent.getEntitlementAmount(item)
     local additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
     local amountText = ""
     local savingText = ""
     local discount = ::g_discount.getEntitlementDiscount(item.name)
+    local productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
       savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
+    else if (productInfo?.discount_mul)
+      savingText = ::format(::loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
     else if (item?.group && item.group in groupCost) {
       local itemPrice = getPrice(item)
       local defItemPrice = groupCost[item.group]
@@ -674,11 +683,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     return {
       externalLink = isGold
-      rowName = name
+      rowName = item.name
       rowEven = even
       amount = amountText
       savingText = savingText
-      cost = getItemPriceText(name)
+      cost = getItemPriceText(item.name)
       discount = discount > 0 ? $"-{discount}%": null
     }
   }

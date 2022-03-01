@@ -1,3 +1,5 @@
+local { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+
 local function getEntitlementConfig(name)
 {
   if (!name || name == "")
@@ -90,25 +92,23 @@ local function getFirstPurchaseAdditionalAmount(item)
 
 local function getEntitlementPrice(item)
 {
-  if (("onlinePurchase" in item) && item.onlinePurchase)
-  {
-    local priceText = ""
-    if (::steam_is_running())
-      priceText = ::loc("price/steam/" + item.name, "")
+  if (item?.onlinePurchase ?? false) {
+    local info = bundlesShopInfo.value?[item.name]
+    if (info)
+      return ::loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
+
+    local priceText = ::loc("price/" + item.name, "")
     if (priceText == "")
-      priceText = ::loc("price/" + item.name, "")
+      return ""
 
-    if (priceText != "")
-    {
-      local markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
-      local totalPrice = priceText.tofloat() * markup
-      local discount = ::g_discount.getEntitlementDiscount(item.name)
-      if (discount)
-        totalPrice -= totalPrice * discount * 0.01
+    local markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
+    local totalPrice = priceText.tofloat() * markup
+    local discount = ::g_discount.getEntitlementDiscount(item.name)
+    if (discount)
+      totalPrice -= totalPrice * discount * 0.01
 
-      return format(::loc("price/common"),
-        item?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
-    }
+    return format(::loc("price/common"),
+      item?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
   }
   else if ("goldCost" in item)
     return ::Cost(0, ::get_entitlement_cost_gold(item.name)).tostring()

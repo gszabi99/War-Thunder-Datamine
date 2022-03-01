@@ -65,24 +65,13 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(p) clearCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-local getXboxBundle = @(name) getCachedBundleId("xbox", name)
-local getPsnBundle  = @(name) getCachedBundleId(ps4RegionName(), name)
-local getEpicBundle = @(name) getCachedBundleId("epic", name)
-local getGuidBundle = @(name) getCachedBundleId("guid", name)
-
-local getXboxEntitlement = @(name) getCachedEntitlementId("xbox", name)
-local getPsnEntitlement  = @(name) getCachedEntitlementId(ps4RegionName(), name)
-local getEpicEntitlement = @(name) getCachedEntitlementId("epic", name)
-local getGuidEntitlement = @(name) getCachedEntitlementId("guid", name)
+local getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
+  : isPlatformXboxOne ? "xbox"
+  : ::epic_is_running() ? "epic"
+  : "guid"
 
 return {
-  getBundleId = isPlatformSony ? getPsnBundle
-    : isPlatformXboxOne ? getXboxBundle
-    : ::epic_is_running() ? getEpicBundle
-    : getGuidBundle
-
-  getEntitlementId = isPlatformSony ? getPsnEntitlement
-    : isPlatformXboxOne ? getXboxEntitlement
-    : ::epic_is_running() ? getEpicEntitlement
-    : getGuidEntitlement
+  getBundlesBlockName
+  getBundleId = @(name) getCachedBundleId(getBundlesBlockName(), name)
+  getEntitlementId = @(name) getCachedEntitlementId(getBundlesBlockName(), name)
 }
