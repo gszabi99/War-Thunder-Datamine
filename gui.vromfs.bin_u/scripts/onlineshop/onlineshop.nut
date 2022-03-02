@@ -555,7 +555,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doYuplayPurchase(itemId, payMethod)
   {
-    local guid = bundlesShopInfo.value?[name].guid ?? ""
+    local guid = bundlesShopInfo.value?[itemId].guid ?? ""
     ::dagor.assertf(guid != "", $"Error: not found guid for {itemId}")
 
     local response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
