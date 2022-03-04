@@ -230,12 +230,12 @@ local bottomPanel = @() {
 
   onAttach = function (elem) {
     state.inputChatVisible(true)
-    state.inputEnabled.subscribe(onInputToggle)
+    state.canWriteToChat.subscribe(onInputToggle)
     onInputToggle(true)
    }
    onDetach = function (elem) {
      state.inputChatVisible(false)
-     state.inputEnabled.unsubscribe(onInputToggle)
+     state.canWriteToChat.unsubscribe(onInputToggle)
      ::set_kb_focus(null)
    }
 }
@@ -243,14 +243,14 @@ local bottomPanel = @() {
 
 return function () {
   local children = [ logBox ]
-  if (state.inputEnabled.value)
+  if (state.canWriteToChat.value)
     children.append(bottomPanel)
 
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = ::fpx(8)
-    watch = state.inputEnabled
+    watch = state.canWriteToChat
 
     children = children
   }

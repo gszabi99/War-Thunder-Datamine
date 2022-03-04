@@ -33,7 +33,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.ALL
     textColor = "@chatTextAllColor"
 
-    isEnabled = function() { return true }
+    isEnabled = @() ::has_feature("BattleChatModeAll")
   }
 
   TEAM = {
@@ -42,7 +42,8 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.TEAM
     textColor = "@chatTextTeamColor"
 
-    isEnabled = function() { return !::isPlayerDedicatedSpectator() && ::is_mode_with_teams() }
+    isEnabled = @() ::has_feature("BattleChatModeTeam") && !::isPlayerDedicatedSpectator()
+      && ::is_mode_with_teams()
   }
 
   SQUAD = {
@@ -51,7 +52,8 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
 
-    isEnabled = function() { return ::g_squad_manager.isInSquad(true) && !::isPlayerDedicatedSpectator() }
+    isEnabled = @() ::has_feature("BattleChatModeSquad") && ::g_squad_manager.isInSquad(true)
+      && !::isPlayerDedicatedSpectator()
   }
 
   PRIVATE = { //dosnt work atm, but still exist in enum
@@ -119,22 +121,24 @@ g_mp_chat_mode.getNextMode <- function getNextMode(modeId)
 
 g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
 {
-  return ::g_string.implode(
-    ::u.map(types.filter(@(mode) mode.isEnabled()),
-      @(mode) mode.getNameText()),
-    ::loc("ui/slash"))
+  local availableModes = types.filter(@(mode) mode.isEnabled())
+  if (availableModes.len() <= 1)
+    return ""
+  return ::loc("ui/slash").join(availableModes.map(@(mode) mode.getNameText()), true)
 }
 
 g_mp_chat_mode.getChatHint <- function getChatHint()
 {
   local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
-  return ::loc("chat/help/modeSwitch",
-    { modeSwitchShortcuts = "{{ID_TOGGLE_CHAT_MODE}}"
-      modeList = getTextAvailableMode()
-    })
-    + (hasIME ? ""
-      : ::loc("ui/comma")
-      + ::loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" }))
+  local chatHelpText = hasIME ? "" : ::loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
+  local availableModeText = getTextAvailableMode()
+  availableModeText = availableModeText != ""
+    ? ::loc("chat/help/modeSwitch", {
+        modeSwitchShortcuts = "{{ID_TOGGLE_CHAT_MODE}}"
+        modeList = availableModeText
+      })
+    : ""
+  return ::loc("ui/comma").join([availableModeText, chatHelpText], true)
 }
 
 ::cross_call_api.mp_chat_mode <- ::g_mp_chat_mode

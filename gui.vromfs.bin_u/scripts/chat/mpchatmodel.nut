@@ -100,7 +100,7 @@ local mpChatModel = {
       return
 
     mpChatState.currentModeId = modeId
-    ::call_darg("mpChatModeChange", modeId)
+    ::call_darg("hudChatModeIdUpdate", modeId)
     ::broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId})
   }
 

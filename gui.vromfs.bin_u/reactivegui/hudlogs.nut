@@ -3,7 +3,7 @@ local battleLog = require("hudBattleLog.nut")
 local tabs = require("components/tabs.nut")
 local frp = require("frp")
 local { cursorVisible } = require("reactiveGui/ctrlsState.nut")
-local { inputEnabled, log, lastInputTime } = require("hudChatState.nut")
+local { canWriteToChat, log, lastInputTime } = require("hudChatState.nut")
 local { isMultiplayer } = require("networkState.nut")
 local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
 
@@ -13,7 +13,7 @@ local tabsList = [
 ]
 
 local isEnabled = ::Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
-local isInteractive = ::Computed(@() inputEnabled.value || cursorVisible.value)
+local isInteractive = ::Computed(@() canWriteToChat.value || cursorVisible.value)
 local isNewMessage = ::Watched(false)
 local isFadingOut = ::Watched(false)
 local isInited = ::Watched(false)
@@ -25,7 +25,7 @@ local currentLog = ::Computed(function(prev) {
   if (cursorVisible.value || prev == frp.FRP_INITIAL)
     return currentTab.value
 
-  if (inputEnabled.value || isNewMessage.value)
+  if (canWriteToChat.value || isNewMessage.value)
     return tabsList[0]
 
   return prev
@@ -75,7 +75,7 @@ log.subscribe(function(_) {
     return
 
   isNewMessage(true)
-  if (inputEnabled.value)
+  if (canWriteToChat.value)
     return
 
   startAnim(showOutId)

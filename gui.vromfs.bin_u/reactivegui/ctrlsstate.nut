@@ -1,10 +1,10 @@
 local { isInFlight } = require("globalState.nut")
-local { inputEnabled, inputChatVisible } = require("hudChatState.nut")
+local { canWriteToChat, inputChatVisible } = require("hudChatState.nut")
 local extWatched = require("globals/extWatched.nut")
 local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
 
 local ctrlsState = keepref(::Computed(function() {
-  if (isInFlight.value && inputEnabled.value && inputChatVisible.value
+  if (isInFlight.value && canWriteToChat.value && inputChatVisible.value
       && isChatPlaceVisible.value)
     return CtrlsInGui.CTRL_IN_MP_CHAT
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE

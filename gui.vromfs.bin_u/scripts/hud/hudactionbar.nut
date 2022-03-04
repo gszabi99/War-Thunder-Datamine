@@ -427,7 +427,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     {
       if (killStreaksActions.len() == 1)
       {
-        activateStreak(0)
+        activateActionBarAction(killStreaksActions[0].shortcutIdx)
         ::close_cur_wheelmenu()
       }
       else

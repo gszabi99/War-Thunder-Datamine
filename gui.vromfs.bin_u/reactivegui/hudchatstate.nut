@@ -1,5 +1,7 @@
+local interopGet = require("interopGen.nut")
+
 local hudChatState = persist("hudChatState", @() {
-  inputEnabled = Watched(false)
+  inputEnable = Watched(false)
 
   //her for now, but it's more common state then chat
   mouseEnabled = Watched(false)
@@ -9,6 +11,7 @@ local hudChatState = persist("hudChatState", @() {
   lastInputTime = Watched(0)
   inputChatVisible = Watched(false)
   modeId = Watched(0)
+  hasEnableChatMode = Watched(false)
 
   pushSystemMessage = function (text) {
    log.value.append({
@@ -25,30 +28,28 @@ local hudChatState = persist("hudChatState", @() {
   }
 })
 
+local {inputEnable, hasEnableChatMode} = hudChatState
+local canWriteToChat = Computed(@() inputEnable.value && hasEnableChatMode.value)
+hudChatState.canWriteToChat <- canWriteToChat
+
 ::interop.mpChatPushMessage <- function (message) {
   hudChatState.log.value.append(message)
   hudChatState.log.trigger()
 }
 
-
 ::interop.mpChatClear <- function () {
   hudChatState.log([])
 }
-
-
-::interop.mpChatModeChange <- function (new_mode_id) {
-  hudChatState.modeId(new_mode_id)
-}
-
-
-::interop.hudChatInputEnableUpdate <- function (enable) {
-  hudChatState.inputEnabled(enable)
-}
-
 
 ::interop.mpChatInputChanged <- function (new_chat_input_text) {
   hudChatState.lastInputTime(::get_mission_time())
 }
 
+interopGet({
+  stateTable = hudChatState
+  prefix = "hudChat"
+  postfix = "Update"
+})
 
 return hudChatState
+

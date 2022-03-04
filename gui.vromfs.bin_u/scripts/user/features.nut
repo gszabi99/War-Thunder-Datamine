@@ -278,6 +278,9 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   enableFollowBulletCamera = ::disable_network()
   ProtectionMap = false
   OrderAutoActivate = false
+  BattleChatModeAll = true
+  BattleChatModeTeam = true
+  BattleChatModeSquad = true
 })
 
 local override = ::Watched({})

@@ -58,6 +58,7 @@ class ::ChatHandler
   visibleTime = 0
   chatInputText = ""
   modeInited = false
+  hasEnableChatMode = false
 
   constructor()
   {
@@ -99,10 +100,10 @@ class ::ChatHandler
     })
 
     local sceneObjIds = [
-    "chat_prompt_place",
-    "chat_input",
-    "chat_log",
-    "chat_tabs"
+      "chat_prompt_place",
+      "chat_input",
+      "chat_log",
+      "chat_tabs"
     ]
 
     local scene = sceneData.scene
@@ -128,6 +129,7 @@ class ::ChatHandler
     updatePrompt(sceneData)
     scenes.append(sceneData)
     validateCurMode()
+    ::call_darg("hudChatHasEnableChatModeUpdate", hasEnableChatMode)
     ::handlersManager.updateControlsAllowMask()
     return sceneData
   }
@@ -225,7 +227,7 @@ class ::ChatHandler
 
   function canEnableChatInput()
   {
-    if (!isChatEnabled())
+    if (!isChatEnabled() || !hasEnableChatMode)
       return false
     foreach(sceneData in scenes)
       if (!sceneData.hiddenInput && ::checkObj(sceneData.scene) && sceneData.scene.isVisible())
@@ -256,6 +258,7 @@ class ::ChatHandler
                  && !sceneData.hiddenInput
                  && isChatEnabled()
                  && getCurView(sceneData) == mpChatView.CHAT
+                 && hasEnableChatMode
     local scene = sceneData.scene
 
     ::showBtnTable(scene, {
@@ -266,6 +269,7 @@ class ::ChatHandler
     ::enableBtnTable(scene, {
         chat_input              = show
         btn_send                = show
+        chat_prompt             = show && ::g_mp_chat_mode.getNextMode(curMode.id) != null
         chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !::is_hud_visible)
     })
     if (show && sceneData.scene.isVisible())
@@ -504,17 +508,26 @@ class ::ChatHandler
     if (!modeInited)
     {
       modeInited = true
+      hasEnableChatMode = false
       // On mp session start mode is reset to TEAM
-      if (::g_mp_chat_mode.SQUAD.isEnabled())
+      if (::g_mp_chat_mode.SQUAD.isEnabled()) {
+        hasEnableChatMode = true
         setMode(::g_mp_chat_mode.SQUAD)
+        return
+      }
     }
 
-    if (curMode.isEnabled())
+    if (curMode.isEnabled()) {
+      hasEnableChatMode = true
       return
+    }
 
     foreach(mode in ::g_mp_chat_mode.types)
-      if (mode.isEnabled())
+      if (mode.isEnabled()) {
+        hasEnableChatMode = true
         setMode(mode)
+        return
+     }
   }
 
   function showPlayerRClickMenu(playerName)
@@ -792,6 +805,10 @@ class ::ChatHandler
     ::broadcastEvent("MpChatInputRequested")
 
   local handler = ::get_game_chat_handler()
+  if (value && !handler.hasEnableChatMode) {
+    chat_system_message(loc("chat/no_chat"))
+    return
+  }
   if (!value || handler.canEnableChatInput())
     handler.enableChatInput(value)
 }
