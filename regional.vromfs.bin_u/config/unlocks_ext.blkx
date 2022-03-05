@@ -11128,6 +11128,149 @@
   },
   {
     "unlockable": {
+      "id": "2022_03_check_2_era",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_player_era",
+        "era": 2,
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2022-03-01 00:00:00",
+          "endDate": "2022-07-01 00:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_check_XBOXAccount_linked",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "XBOXAccount_linked"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_check_PSNAccount_linked",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "PSNAccount_linked"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_check_STEAMAccount_need_to_link",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount_linked"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_check_STEAMAccount_with_link",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount_linked",
+            "invertResult": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "check_missionsPlayedScore_XBOX",
       "type": "challenge",
       "hidden": true,
@@ -17933,6 +18076,12 @@
             },
             {
               "class": "bf-109g-2_romania"
+            },
+            {
+              "class": "ju-87b-2"
+            },
+            {
+              "class": "ju-87d-3"
             }
           ]
         },
@@ -18591,6 +18740,95 @@
             "type": "timeRange",
             "beginDate": "2022-03-02 11:00:00",
             "endDate": "2022-03-05 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_06_memorable_date_trophy_gift",
+      "locDescId": "common_weekend_event_trophy_gift/desc",
+      "userLogId": "2022_03_06_memorable_date_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "memorable_date",
+      "shouldMarkUnits": true,
+      "mode": [
+        {
+          "type": "totalMissionScore"
+        },
+        {
+          "score": 20000
+        },
+        {
+          "mulMode0": 1.0
+        },
+        {
+          "mulMode1": 1.4
+        },
+        {
+          "mulMode2": 3.0
+        },
+        {
+          "mulMode3": 0.93
+        },
+        {
+          "mulMode4": 1.33
+        },
+        {
+          "mulMode5": 1.8
+        },
+        {
+          "mulMode6": 1.9
+        },
+        {
+          "mulMode7": 2.2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerUnit"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            },
+            {
+              "class": "germ_pzkpfw_V_ausf_d_panther"
+            },
+            {
+              "class": "germ_pzkpfw_V_ausf_a_panther"
+            },
+            {
+              "class": "germ_pzkpfw_V_ausf_f_panther"
+            },
+            {
+              "class": "germ_pzkpfw_V_ausf_g_panther"
+            },
+            {
+              "class": "us_m26_pershing"
+            },
+            {
+              "class": "us_m26_t99"
+            },
+            {
+              "class": "us_m26e1_pershing"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-03-06 11:00:00",
+            "endDate": "2022-03-09 11:30:00"
           }
         }
       ]
