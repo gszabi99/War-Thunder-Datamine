@@ -103,6 +103,9 @@
           "position": "relative"
         },
         {
+          "display": "hide"
+        },
+        {
           "cardImg": {
             "id": "aircraft-countryImg",
             "pos": "0, 33%ph-h/2",
@@ -165,6 +168,7 @@
         "id": "aircraft_price",
         "halign": "center",
         "width": "pw",
+        "display": "hide",
         "tdiv": {
           "id": "aircraft_price_text_block",
           "max-width": "0.5@sf"
@@ -194,7 +198,8 @@
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "margin": "0, 0.01@scrn_tgt",
-        "max-width": "0.5@sf"
+        "max-width": "0.5@sf",
+        "display": "hide"
       }
     },
     {
@@ -203,7 +208,8 @@
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "margin": "0, 0.01@scrn_tgt",
-        "max-width": "0.5@sf"
+        "max-width": "0.5@sf",
+        "display": "hide"
       }
     },
     {
@@ -213,7 +219,8 @@
         "position": "relative",
         "margin": "0, 0.01@scrn_tgt",
         "max-width": "0.5@sf",
-        "hideEmptyText": "yes"
+        "hideEmptyText": "yes",
+        "display": "hide"
       }
     },
     {
@@ -222,7 +229,8 @@
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "margin": "0, 0.01@scrn_tgt",
-        "max-width": "0.5@sf"
+        "max-width": "0.5@sf",
+        "display": "hide"
       }
     },
     {
@@ -250,14 +258,16 @@
       "rankUpList": {
         "id": "prev_unit_nest",
         "pos": "50%pw-50%w, -0.01@scrn_tgt",
-        "position": "relative"
+        "position": "relative",
+        "display": "hide"
       }
     },
     {
       "textareaNoTab": {
         "id": "weaponsInfo",
         "pos": "50%pw-50%w, 10@sf/@pf_outdated",
-        "position": "relative"
+        "position": "relative",
+        "display": "hide"
       }
     },
     {
@@ -282,11 +292,15 @@
         "pos": "pw/2-w/2, 8@sf/@pf_outdated",
         "position": "relative",
         "text-align": "center",
-        "overlayTextColor": "faded"
+        "overlayTextColor": "faded",
+        "display": "hide"
       }
     },
     {
       "airInfoInTooltip": [
+        {
+          "id": "aircraft-tooltip-info"
+        },
         {
           "pos": "50%pw-50%w, 10@sf/@pf_outdated"
         },
@@ -301,6 +315,9 @@
         },
         {
           "allAlignLeft": "yes"
+        },
+        {
+          "display": "hide"
         },
         {
           "tr": [

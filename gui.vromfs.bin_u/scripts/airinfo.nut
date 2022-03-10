@@ -1086,6 +1086,7 @@ local isEventUnit = @(unit) unit.event != null
   local isSquadronVehicle = air.isSquadronVehicle()
   local isInClan = ::is_in_clan()
   local expCur = ::getUnitExp(air)
+  local showShortestUnitInfo = air.showShortestUnitInfo
 
   local isSecondaryModsValid = ::check_unit_mods_update(air)
     && ::check_secondary_weapon_mods_recount(air)
@@ -1147,8 +1148,8 @@ local isEventUnit = @(unit) unit.event != null
     }
   }
 
-  obj = holderObj.findObject("aircraft-countryImg")
-  if (::checkObj(obj))
+  obj = ::showBtn("aircraft-countryImg", !showShortestUnitInfo, holderObj)
+  if (::checkObj(obj) && !showShortestUnitInfo)
   {
     obj["background-image"] = ::get_unit_country_icon(air, true)
     obj["tooltip"] = "".concat(::loc("shop/unitCountry/operator"), ::loc("ui/colon"), ::loc(air.getOperatorCountry()),
@@ -1161,6 +1162,12 @@ local isEventUnit = @(unit) unit.event != null
     if (::checkObj(obj))
       obj["background-image"] = getUnitTooltipImage(air)
   }
+
+  if (showShortestUnitInfo)
+    return
+
+  ::showBtn("aircraft-country_and_level-tr", true, holderObj)
+  ::showBtn("aircraft-tooltip-info", true, holderObj)
 
   local ageObj = holderObj.findObject("aircraft-age")
   if (::checkObj(ageObj))
@@ -1819,7 +1826,7 @@ local isEventUnit = @(unit) unit.event != null
     addInfoTextsList.append(::colorize("userlogColoredText", ::loc("mainmenu/canBuyThisVehicle", { price = priceText })))
   }
 
-  local infoObj = holderObj.findObject("aircraft-addInfo")
+  local infoObj = ::showBtn("aircraft-addInfo", !showShortestUnitInfo, holderObj)
   if (::checkObj(infoObj))
     infoObj.setValue(::g_string.implode(addInfoTextsList, "\n"))
 
@@ -1866,12 +1873,12 @@ local isEventUnit = @(unit) unit.event != null
   if (needShopInfo && !isRented)
   {
     local reason = ::getCantBuyUnitReason(air, true)
-    local addTextObj = holderObj.findObject("aircraft-cant_buy_info")
+    local addTextObj = ::showBtn("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
     if (::checkObj(addTextObj) && !::u.isEmpty(reason))
     {
       addTextObj.setValue(::colorize("redMenuButtonColor", reason))
 
-      local unitNest = holderObj.findObject("prev_unit_nest")
+      local unitNest = ::showBtn("prev_unit_nest", !showShortestUnitInfo, holderObj)
       if (::checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
         ::is_era_available(air.shopCountry, air?.rank ?? -1, unitType))
       {
@@ -1926,7 +1933,7 @@ local isEventUnit = @(unit) unit.event != null
 
   local weaponsInfoText = getWeaponInfoText(air,
     { weaponPreset = showLocalState ? -1 : 0, ediff = ediff, isLocalState = showLocalState })
-  obj = holderObj.findObject("weaponsInfo")
+  obj = ::showBtn("weaponsInfo", !showShortestUnitInfo, holderObj)
   if (obj) obj.setValue(weaponsInfoText)
 
   local lastPrimaryWeaponName = showLocalState ? getLastPrimaryWeapon(air) : ""
@@ -1980,7 +1987,7 @@ local isEventUnit = @(unit) unit.event != null
   if (::checkObj(obj))
     obj.setValue(wPresets.tostring())
 
-  obj = holderObj.findObject("current_game_mode_footnote_text")
+  obj = ::showBtn("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
   if (::checkObj(obj))
   {
     local battleType = ::get_battle_type_by_ediff(ediff)
