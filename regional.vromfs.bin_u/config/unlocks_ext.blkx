@@ -11272,6 +11272,80 @@
   },
   {
     "unlockable": {
+      "id": "2022_03_check_PSNAccount_with_link",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "PSNAccount"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "PSNAccount_linked",
+            "invertResult": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_03_check_XBOXAccount_with_link",
+      "type": "challenge",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_time_range"
+        },
+        {
+          "beginDate": "2022-03-01 00:00:00"
+        },
+        {
+          "endDate": "2022-07-01 00:00:00"
+        },
+        {
+          "condition": {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "XBOXAccount"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "XBOXAccount_linked",
+            "invertResult": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "check_missionsPlayedScore_XBOX",
       "type": "challenge",
       "hidden": true,
@@ -18900,6 +18974,9 @@
               "class": "ussr_t_34_85_d_5t"
             },
             {
+              "class": "ussr_m4a2_76w_sherman"
+            },
+            {
               "class": "ussr_is_1"
             },
             {
@@ -19067,6 +19144,7 @@
       "amount_trophies": 1,
       "chapter": "8march2017",
       "costGold": 199,
+      "hidden": true,
       "mode": [
         {
           "type": "missionsPlayedScore"
