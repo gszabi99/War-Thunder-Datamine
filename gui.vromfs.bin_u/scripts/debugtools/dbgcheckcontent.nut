@@ -1,9 +1,9 @@
 // warning disable: -file:forbidden-function
 
-let dagor_fs = require("dagor.fs")
-let stdpath = require("std/path.nut")
-let skinLocations = require("scripts/customization/skinLocations.nut")
-let unitInfoTexts = require("scripts/unit/unitInfoTexts.nut")
+local dagor_fs = require("dagor.fs")
+local stdpath = require("std/path.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
+local unitInfoTexts = require("scripts/unit/unitInfoTexts.nut")
 
 local skyquakePath = ::debug_get_skyquake_path()
 

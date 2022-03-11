@@ -1,24 +1,23 @@
-let eventbus = require("eventbus")
-let log = require("%sqstd/log.nut")()
-let {isEqual} = require("%sqstd/underscore.nut")
-let {Watched} = require("frp")
+local eventbus = require("eventbus")
+local log = require("%sqstd/log.nut")()
+local {isEqual} = require("%sqstd/underscore.nut")
+local {Watched} = require("frp")
 
-let sharedData = {} //id = { watch, lastReceived }
-let NOT_INITED = {}
+local sharedData = {}
+local NOT_INITED = {}
 
-let function make(name, ctor) {
+local function make(name, ctor) {
   if (name in sharedData) {
     assert(false, $"sharedWatched: duplicate name: {name}")
-    return sharedData[name].watch
+    return sharedData[name]
   }
 
-  let res = persist(name, @() Watched(NOT_INITED))
-  let data = { watch = res, lastReceived = NOT_INITED }
-  sharedData[name] <- data
+  local res = persist(name, @() Watched(NOT_INITED))
+  sharedData[name] <- res
   if (res.value == NOT_INITED) {
     res(ctor())
     try {
-      eventbus.send_foreign("sharedWatched.requestData", { name })
+      eventbus.send_foreign("sharedWatched.requestData", { name, value = res.value })
     } catch (err) {
       log("eventbus.send_foreign() failed")
       log(err)
@@ -27,9 +26,6 @@ let function make(name, ctor) {
   }
 
   res.subscribe(function(value) {
-    if (data.lastReceived == value)
-      return
-    data.lastReceived = NOT_INITED
     try {
       eventbus.send_foreign("sharedWatched.update", { name, value })
     } catch (err) {
@@ -43,24 +39,22 @@ let function make(name, ctor) {
 
 eventbus.subscribe("sharedWatched.update",
   function(msg) {
-    let data = sharedData?[msg.name]
-    if (!data || isEqual(data.watch.value, msg.value))
-      return
-    data.lastReceived = msg.value
-    data.watch(msg.value)
+    local w = sharedData?[msg.name]
+    if (w && !isEqual(w.value, msg.value))
+      sharedData[msg.name](msg.value)
   })
 
 eventbus.subscribe("sharedWatched.requestData",
   function(msg) {
-    let w = sharedData?[msg.name].watch
-    if (!w)
-      return
-    try {
-      eventbus.send_foreign("sharedWatched.update", { name = msg.name, value = w.value })
-    } catch (err) {
-      log("eventbus.send_foreign() failed")
-      log(err)
-      throw err?.errMsg ?? "Unknown error"
+    local w = sharedData?[msg.name]
+    if (w && !isEqual(w.value, msg.value)) {
+      try {
+        eventbus.send_foreign("sharedWatched.update", { name = msg.name, value = w.value })
+      } catch (err) {
+        log("eventbus.send_foreign() failed")
+        log(err)
+        throw err?.errMsg ?? "Unknown error"
+      }
     }
   })
 

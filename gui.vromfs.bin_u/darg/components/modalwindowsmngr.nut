@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let WND_PARAMS = {
+local WND_PARAMS = {
   key = null //generate automatically when not set
   children= null
   onClick = null //remove current modal window when not set
@@ -16,13 +16,13 @@ let WND_PARAMS = {
   ]
 }
 
-let function mkModalWindowsMngr(wndParams = null){
-  let modalWindows = []
-  let modalWindowsGeneration = Watched(0)
-  let hasModalWindows = Computed(@() modalWindowsGeneration.value >= 0 && modalWindows.len() > 0)
+local function mkModalWindowsMngr(wndParams = null){
+  local modalWindows = []
+  local modalWindowsGeneration = Watched(0)
+  local hasModalWindows = Computed(@() modalWindowsGeneration.value >= 0 && modalWindows.len() > 0)
   wndParams = WND_PARAMS.__merge(wndParams ?? {})
-  let function removeModalWindow(key) {
-    let idx = modalWindows.findindex(@(w) w.key == key)
+  local function removeModalWindow(key) {
+    local idx = modalWindows.findindex(@(w) w.key == key)
     if (idx == null)
       return false
     modalWindows.remove(idx)
@@ -31,7 +31,7 @@ let function mkModalWindowsMngr(wndParams = null){
   }
 
   local lastWndIdx = 0
-  let function addModalWindow(wnd = WND_PARAMS) {
+  local function addModalWindow(wnd = WND_PARAMS) {
     wnd = wndParams.__merge(wnd)
     if (wnd.key != null)
       removeModalWindow(wnd.key)
@@ -44,14 +44,14 @@ let function mkModalWindowsMngr(wndParams = null){
     modalWindowsGeneration(modalWindowsGeneration.value+1)
   }
 
-  let function hideAllModalWindows() {
+  local function hideAllModalWindows() {
     if (modalWindows.len() == 0)
       return
     modalWindows.clear()
     modalWindowsGeneration(modalWindowsGeneration.value+1)
   }
 
-  let modalWindowsComponent = @() {
+  local modalWindowsComponent = @() {
     watch = modalWindowsGeneration
     size = flex()
     children = modalWindows

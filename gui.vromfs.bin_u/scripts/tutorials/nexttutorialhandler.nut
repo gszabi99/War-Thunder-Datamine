@@ -1,11 +1,11 @@
-let stdMath = require("std/math.nut")
-let { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
+local stdMath = require("std/math.nut")
+local { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
   getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
 } = require("scripts/tutorials/tutorialsData.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -13,7 +13,7 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 
 local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/nextTutorial.blk"
+  sceneBlkName = "gui/nextTutorial.blk"
 
   tutorialMission = null
   rewardMarkup = ""
@@ -25,7 +25,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!tutorialMission)
       return goBack()
 
-    let msgText = ::g_string.implode([
+    local msgText = ::g_string.implode([
       ::loc("askPlayTutorial"),
       ::colorize("userlogColoredText", ::loc($"missions/{tutorialMission.name}")),
     ], "\n")
@@ -33,7 +33,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     scene.findObject("msgText").setValue(msgText)
 
     if (rewardMarkup != "") {
-      let rewardsObj = scene.findObject("rewards")
+      local rewardsObj = scene.findObject("rewards")
       guiScene.replaceContentFromText(rewardsObj, rewardMarkup, rewardMarkup.len(), this)
       rewardsObj.show(true)
     }
@@ -41,8 +41,8 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     canSkipTutorial = true
     if (checkIdx in checkTutorialsList)
     {
-      let tutorialBlock = checkTutorialsList[checkIdx]
-      let image = ::get_country_flag_img("tutorial_" + tutorialBlock.id)
+      local tutorialBlock = checkTutorialsList[checkIdx]
+      local image = ::get_country_flag_img("tutorial_" + tutorialBlock.id)
       if (image != "")
         scene.findObject("tutorial_image")["background-image"] = image
       if ("canSkipByFeature" in tutorialBlock)
@@ -52,16 +52,16 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
     foreach (name in ["skip_tutorial", "btn_close_tutorial"])
     {
-      let obj = scene.findObject(name)
+      local obj = scene.findObject(name)
       if (obj)
         obj.show(canSkipTutorial)
     }
     if (canSkipTutorial)
     {
-      let obj = scene.findObject("skip_tutorial")
+      local obj = scene.findObject("skip_tutorial")
       if (::checkObj(obj))
       {
-        let skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
+        local skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
         obj.setValue(stdMath.is_bit_set(skipTutorial, checkIdx))
       }
     }
@@ -95,7 +95,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   {
     if(::loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
       return
-    let info = {
+    local info = {
                   action = action,
                   reminder = stdMath.is_bit_set(::loadLocalByAccount(skipTutorialBitmaskId, 0), checkIdx) ? "off" : "on"
                   missionName = tutorialMission.name
@@ -118,8 +118,8 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getObjectUserInputType(obj)
   {
-    let VALID_INPUT_LIST = ["mouse", "keyboard", "gamepad"]
-    let userInputType = obj?.userInputType ?? ""
+    local VALID_INPUT_LIST = ["mouse", "keyboard", "gamepad"]
+    local userInputType = obj?.userInputType ?? ""
     if(::isInArray(userInputType, VALID_INPUT_LIST))
       return userInputType
     return "invalid"
@@ -130,7 +130,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
-let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
+local function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
   local idx = -1
   local mData = null
   foreach(i, item in checkTutorialsList)
@@ -155,7 +155,7 @@ let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
 
   if (checkSkip)
   {
-    let skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
+    local skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
     if (stdMath.is_bit_set(skipTutorial, idx))
       return false
   }
@@ -169,7 +169,7 @@ let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
   return true
 }
 
-let function onOpenTutorialFromPromo(owner, params = []) {
+local function onOpenTutorialFromPromo(owner, params = []) {
   local tutorialId = ""
   if (::u.isString(params))
     tutorialId = params
@@ -182,9 +182,9 @@ let function onOpenTutorialFromPromo(owner, params = []) {
   })
 }
 
-let function getTutorialData() {
-  let curUnit = getShowedUnit()
-  let {
+local function getTutorialData() {
+  local curUnit = getShowedUnit()
+  local {
     mission = null,
     id = ""
   } = getSuitableUncompletedTutorialData(curUnit, 0)
@@ -204,19 +204,19 @@ local function getTutorialButtonText(tutorialMission = null) {
 
 addPromoAction("tutorial", @(handler, params, obj) onOpenTutorialFromPromo(handler, params))
 
-let promoButtonId = "tutorial_mainmenu_button"
+local promoButtonId = "tutorial_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   getText = getTutorialButtonText
   collapsedIcon = ::loc("icon/tutorial")
   updateFunctionInHandler = function() {
-    let tutorialData = getTutorialData()
-    let tutorialMission = tutorialData?.tutorialMission
-    let tutorialId = ::getTblValue("tutorialId", tutorialData)
+    local tutorialData = getTutorialData()
+    local tutorialMission = tutorialData?.tutorialMission
+    local tutorialId = ::getTblValue("tutorialId", tutorialData)
 
-    let id = promoButtonId
-    let actionKey = ::g_promo.getActionParamsKey(id)
+    local id = promoButtonId
+    local actionKey = ::g_promo.getActionParamsKey(id)
     ::g_promo.setActionParamsData(actionKey, "tutorial", [tutorialId])
 
     local buttonObj = null

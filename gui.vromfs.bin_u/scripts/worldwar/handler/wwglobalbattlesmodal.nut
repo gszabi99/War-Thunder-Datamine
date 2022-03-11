@@ -1,13 +1,13 @@
-let globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
-let WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-let { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
+local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
+local { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
-::gui_handlers.WwGlobalBattlesModal <- class extends ::gui_handlers.WwBattleDescription
+class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescription
 {
   hasSquadsInviteButton = false
   hasBattleFilter = true
@@ -102,26 +102,26 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function updateSlotbar()
   {
-    let availableUnits = {}
-    let operationUnits = {}
+    local availableUnits = {}
+    local operationUnits = {}
     if (operationBattle.isValid())
       foreach (side in ::g_world_war.getSidesOrder(curBattleInList))
       {
-        let playerTeam = operationBattle.getTeamBySide(side)
+        local playerTeam = operationBattle.getTeamBySide(side)
         availableUnits.__update(operationBattle.getTeamRemainUnits(playerTeam))
         operationUnits.__update(::g_world_war.getAllOperationUnitsBySide(side))
       }
 
-    let map = getMap()
-    let unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
-    let prevSlotbarStatus = hasSlotbarByUnitsGroups
+    local map = getMap()
+    local unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
+    local prevSlotbarStatus = hasSlotbarByUnitsGroups
     hasSlotbarByUnitsGroups = unitsGroupsByCountry != null
     if (prevSlotbarStatus != hasSlotbarByUnitsGroups)
       destroySlotbar()
     if (hasSlotbarByUnitsGroups)
       slotbarPresets.setCurPreset(map.getId() ,unitsGroupsByCountry)
 
-    let assignCountry = ::get_profile_country_sq()
+    local assignCountry = ::get_profile_country_sq()
     createSlotbar(
       {
         singleCountry = assignCountry
@@ -138,14 +138,14 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
   function updateSelectedItem(isForceUpdate = false)
   {
     refreshSelBattle()
-    let cb = ::Callback(function() {
+    local cb = ::Callback(function() {
       local newOperationBattle = ::g_world_war.getBattleById(curBattleInList.id)
       if (!newOperationBattle.isValid() || newOperationBattle.isStale())
       {
         newOperationBattle = clone curBattleInList
         newOperationBattle.setStatus(::EBS_FINISHED)
       }
-      let isBattleEqual = operationBattle.isEqual(newOperationBattle)
+      local isBattleEqual = operationBattle.isEqual(newOperationBattle)
       operationBattle = newOperationBattle
 
       updateBattleSquadListData()
@@ -188,10 +188,10 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
       return getFilteredBattlesByMaxCountPerGroup()
     }
 
-    let battleListMap = clone curBattleListMap
+    local battleListMap = clone curBattleListMap
     foreach(idx, battle in battleListMap)
     {
-      let newBattle = getBattleById(battle.id, false)
+      local newBattle = getBattleById(battle.id, false)
       if (newBattle.isValid())
       {
         battleListMap[idx] = newBattle
@@ -220,7 +220,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function onOpenBattlesFilters(obj)
   {
-    let applyFilter = ::Callback(function()
+    local applyFilter = ::Callback(function()
       {
         reinitBattlesList(true)
         refreshList(true)
@@ -234,7 +234,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function setFilteredBattles()
   {
-    let assignCountry = ::get_profile_country_sq()
+    local assignCountry = ::get_profile_country_sq()
     battlesList = globalBattlesListData.getList().filter(@(battle)
       battle.hasSideCountry(assignCountry) && battle.isOperationMapAvaliable()
       && battle.hasAvailableUnits())
@@ -244,7 +244,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
     battlesList = battlesList.filter(
       function(battle) {
-        let side = getPlayerSide(battle)
+        local side = getPlayerSide(battle)
         local team = battle.getTeamBySide(side)
         return isMatchFilterMask(battle, assignCountry, team, side)
       }.bindenv(this))
@@ -280,11 +280,11 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function fillOperationInfoText()
   {
-    let operationInfoTextObj = scene.findObject("operation_info_text")
+    local operationInfoTextObj = scene.findObject("operation_info_text")
     if (!::check_obj(operationInfoTextObj))
       return
 
-    let operation = getOperationById(curBattleInList.getOperationId())
+    local operation = getOperationById(curBattleInList.getOperationId())
     if (!operation)
       return
 
@@ -300,14 +300,14 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     if (battlesList.len() == 0)
       return []
 
-    let maxVisibleBattlesPerGroup = ::g_world_war.getSetting("maxVisibleGlobalBattlesPerGroup",
+    local maxVisibleBattlesPerGroup = ::g_world_war.getSetting("maxVisibleGlobalBattlesPerGroup",
       MAX_VISIBLE_BATTLES_PER_GROUP)
 
-    let battlesByGroups = {}
-    let res = []
+    local battlesByGroups = {}
+    local res = []
     foreach (battleData in battlesList)
     {
-      let groupId = battleData.getGroupId()
+      local groupId = battleData.getGroupId()
       if (!(groupId in battlesByGroups))
         battlesByGroups[groupId] <- [battleData]
       else

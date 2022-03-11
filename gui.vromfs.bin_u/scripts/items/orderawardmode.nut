@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_order_award_mode <- {
   types = []
 }
@@ -16,7 +16,7 @@ g_order_award_mode._addMultTextPart <- function _addMultTextPart(currentText, aw
 
 g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem)
 {
-  let cost = ::Cost()
+  local cost = ::Cost()
   cost.wp = orderItem.awardWpByDifficulty[difficulty]
   cost.gold = orderItem.awardGoldByDifficulty[difficulty]
   cost.frp = orderItem.awardXpByDifficulty[difficulty]

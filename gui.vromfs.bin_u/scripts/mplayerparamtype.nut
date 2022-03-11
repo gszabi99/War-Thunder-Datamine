@@ -1,9 +1,9 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local time = require("scripts/time.nut")
+local stdMath = require("std/math.nut")
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
 
-let expEventLocIds = {
+local expEventLocIds = {
   [::EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
   [::EXP_EVENT_DESTROY_ZONE]       = "expEventScore/destroyZone",
   [::EXP_EVENT_KILL]               = "expEventScore/kill",
@@ -60,7 +60,7 @@ g_mplayer_param_type._newer <- function _newer(old, new) {
   updateSpecificMarkupParams = function(markupTbl) {}
   getMarkupData = function()
   {
-    let res = {
+    local res = {
       fontIcon = fontIcon
       tooltip = getName()
       pareText = pareText
@@ -130,12 +130,12 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     relWidth = 25
 
     getTooltip = function(val, player, defText) {
-      let res = []
+      local res = []
       for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
-        let rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
+        local rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
         if (rowVal <= 0)
           continue
-        let evLocId = expEventLocIds?[i] ?? ""
+        local evLocId = expEventLocIds?[i] ?? ""
         if (evLocId == "")
           continue
         res.append("".concat(::loc(evLocId), ::loc("ui/colon"), rowVal))
@@ -230,14 +230,14 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       if (!(player?.scoutKills ?? 0))
         return defText
 
-      let rows = [
+      local rows = [
         { id = "assists",    label = "multiplayer/assists" }
         { id = "scoutKills", label = "multiplayer/scout_kills" }
       ]
-      let res = []
+      local res = []
       foreach (row in rows)
       {
-        let rowVal = player?[row.id] ?? 0
+        local rowVal = player?[row.id] ?? 0
         if (rowVal)
           res.append(::loc(row.label) + ::loc("ui/colon") + rowVal)
       }
@@ -282,8 +282,8 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
     printFunc = function(val, player) {
-      let total = ::get_race_checkpioints_count()
-      let laps = ::get_race_laps_count()
+      local total = ::get_race_checkpioints_count()
+      local laps = ::get_race_laps_count()
       if (total && laps)
         val = (::max(val, 0) % (total / laps))
       return val.tostring()
@@ -332,7 +332,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     printFunc = function(val, player) {
       if (val < 0)
       {
-        let total = ::get_race_checkpioints_count()
+        local total = ::get_race_checkpioints_count()
         if (total)
           return (100 * ::getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
       }

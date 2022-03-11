@@ -1,19 +1,19 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
 
-let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
-let recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
-let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
-let recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
-let recentBRData = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
+local brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
+local recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
+local recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
+local recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
+local recentBRData = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
 recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
 
-let function calcSquadMrank(brData) {
+local function calcSquadMrank(brData) {
   if (!brData)
     return -1
 
@@ -22,21 +22,21 @@ let function calcSquadMrank(brData) {
   {
     if (name != "error" && brData[name].len() > 0)
     {
-      let val = brData[name][0].mrank
+      local val = brData[name][0].mrank
       maxBR = ::max(maxBR, val)
     }
   }
   return maxBR
 }
 
-let function calcSquadBattleRating(brData) {
-  let mrank = calcSquadMrank(brData)
+local function calcSquadBattleRating(brData) {
+  local mrank = calcSquadMrank(brData)
   // mrank < 0  means empty received data and no BR string needed in game mode header
   return mrank < 0 ? 0 : ::calc_battle_rating_from_rank(mrank)
 }
 
-let function getBRDataByMrankDiff(diff = 3) {
-  let squadMrank = calcSquadMrank(recentBRData.value)
+local function getBRDataByMrankDiff(diff = 3) {
+  local squadMrank = calcSquadMrank(recentBRData.value)
   if (squadMrank < 0)
     return []
 
@@ -45,26 +45,26 @@ let function getBRDataByMrankDiff(diff = 3) {
     .map(@(v) ::calc_battle_rating_from_rank(v[0].mrank))
 }
 
-let function calcBattleRating(brData) {
+local function calcBattleRating(brData) {
   if (::g_squad_manager.isInSquad())
     return calcSquadBattleRating(brData)
 
-  let name = ::my_user_name
-  let myData = brData?[name]
+  local name = ::my_user_name
+  local myData = brData?[name]
 
   return myData?[0] == null ? 0 : ::calc_battle_rating_from_rank(myData[0].mrank)
 }
 
-let function getCrafts(data, country = null) {
-  let crafts = []
-  let craftData = data?.crewAirs?[country ?? data?.country ?? ""]
+local function getCrafts(data, country = null) {
+  local crafts = []
+  local craftData = data?.crewAirs?[country ?? data?.country ?? ""]
   if (craftData == null)
     return crafts
 
-  let brokenAirs = data?.brokenAirs ?? []
+  local brokenAirs = data?.brokenAirs ?? []
   foreach (name in craftData)
   {
-     let craft = ::getAircraftByName(name)
+     local craft = ::getAircraftByName(name)
      if (craft == null || ::isInArray(name, brokenAirs))
        continue
 
@@ -79,54 +79,54 @@ let function getCrafts(data, country = null) {
   return crafts
 }
 
-let function isBRKnown(recentUserData) {
-  let id = recentUserData?.gameModeId
+local function isBRKnown(recentUserData) {
+  local id = recentUserData?.gameModeId
   return id in brInfoByGamemodeId.value
     && ::u.isEqual(recentUserData.players, brInfoByGamemodeId.value[id].players)
 }
 
-let function setBattleRating(recentUserData, brData) {
+local function setBattleRating(recentUserData, brData) {
   if (recentUserData == null)
     return
 
-  let { gameModeId, players } = recentUserData
+  local { gameModeId, players } = recentUserData
   if (brData) {
-    let br = calcBattleRating(brData)
+    local br = calcBattleRating(brData)
     brInfoByGamemodeId.mutate(@(v) v[gameModeId] <- { br, players, brData = clone brData })
   }
   else if (gameModeId in brInfoByGamemodeId.value)
     brInfoByGamemodeId.mutate(@(v) delete v[gameModeId])
 }
 
-let function getBestCountryData(event)
+local function getBestCountryData(event)
 {
   if (!event)
     return null
-  let teams = ::events.getAvailableTeams(event)
-  let membersTeams = ::events.getMembersTeamsData(event, null, teams)
+  local teams = ::events.getAvailableTeams(event)
+  local membersTeams = ::events.getMembersTeamsData(event, null, teams)
   if (!membersTeams)
     return null
 
   return ::events.getMembersInfo(teams, membersTeams.teamsData).data
 }
 
-let function getUserData() {
-  let gameModeId = recentBrSourceGameModeId.value
+local function getUserData() {
+  local gameModeId = recentBrSourceGameModeId.value
   if (gameModeId == null)
     return null
 
-  let players = []
+  local players = []
 
   if (::g_squad_manager.isSquadLeader())
   {
-    let countryData = getBestCountryData(::events.getEvent(recentBrGameModeId.value))
+    local countryData = getBestCountryData(::events.getEvent(recentBrGameModeId.value))
     foreach(member in ::g_squad_manager.getMembers())
     {
       if (!member.online || member.country == "")
         continue
 
-      let country = countryData?[member.uid]?.country
-      let crafts = getCrafts(member, country)
+      local country = countryData?[member.uid]?.country
+      local crafts = getCrafts(member, country)
       players.append({
         name = member.name
         country = country ?? member.country
@@ -137,11 +137,11 @@ let function getUserData() {
   }
   else
   {
-    let data = ::g_user_utils.getMyStateData()
+    local data = ::g_user_utils.getMyStateData()
     if(data.country == "")
       return null
 
-    let crafts = getCrafts(data)
+    local crafts = getCrafts(data)
     players.append({
       name = data.name
       country = data.country
@@ -156,10 +156,10 @@ let function getUserData() {
   }
 }
 
-let function requestBattleRating(cb, recentUserData) {
+local function requestBattleRating(cb, recentUserData) {
   isUpdating = true
   lastRequestTimeMsec  = ::dagor.getCurTime()
-  let errorCB = @(...) isUpdating = false
+  local errorCB = @(...) isUpdating = false
   ::request_matching("wtmm_static.calc_ranks", cb, errorCB, recentUserData, {
     showError = false
   })
@@ -172,7 +172,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
   gameMode = gameMode ?? ::game_mode_manager.getCurrentGameMode()
   recentBrGameModeId(gameMode?.id ?? "")
   recentBrSourceGameModeId(gameMode?.source.gameModeId)
-  let recentUserData = getUserData()
+  local recentUserData = getUserData()
   if (recentBrSourceGameModeId.value == null || !recentUserData) {
     brInfoByGamemodeId.mutate(@(v) v.clear())
     return
@@ -194,7 +194,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
   if (isBRKnown(recentUserData)) //!!FIX ME: this cache does not work, it always request again when switch between 2 units by single mouse click
     return
 
-  let callback = function(resp) {
+  local callback = function(resp) {
     isUpdating = false //FIX ME: it a bad idea to change this flag in very different places. Also it not switch off on error
     updateBattleRating(gameMode, resp)
   }
@@ -204,7 +204,7 @@ updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why ou
 }
 
 local isRequestDelayed = false
-let function updateBattleRatingDelayed() {
+local function updateBattleRatingDelayed() {
   if (isRequestDelayed || ::is_in_flight()) //do not recalc while in the battle
     return
   isRequestDelayed = true
@@ -214,7 +214,7 @@ let function updateBattleRatingDelayed() {
   })
 }
 
-let function updateLeaderRatingDelayed(p) {
+local function updateLeaderRatingDelayed(p) {
   if (::g_squad_manager.isSquadLeader())
     updateBattleRatingDelayed()
 }

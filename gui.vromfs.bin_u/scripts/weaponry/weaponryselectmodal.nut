@@ -21,9 +21,9 @@
     ]
   }
 */
-let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-let { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon,
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
+local { getLastWeapon,
         setLastWeapon,
         isWeaponVisible,
         isWeaponEnabled,
@@ -46,16 +46,16 @@ local CHOOSE_WEAPON_PARAMS = {
 {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
-  let curWeaponName = params.getLastWeapon(unit.name)
-  let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
-  let isForcedAvailable = params.isForcedAvailable
-  let onChangeValueCb = function(weapon) {
+  local curWeaponName = params.getLastWeapon(unit.name)
+  local hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  local isForcedAvailable = params.isForcedAvailable
+  local onChangeValueCb = function(weapon) {
     params.setLastWeapon(unit.name, weapon.name)
     cb?(unit.name, weapon.name)
   }
 
-  let list = []
-  foreach(weapon in unit.getWeapons())
+  local list = []
+  foreach(weapon in unit.weapons)
   {
     if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
       continue
@@ -86,10 +86,10 @@ local CHOOSE_WEAPON_PARAMS = {
     })
 }
 
-::gui_handlers.WeaponrySelectModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/weaponry/weaponrySelectModal"
+  sceneTplName = "gui/weaponry/weaponrySelectModal"
   needVoiceChat = false
 
   unit = null
@@ -111,15 +111,15 @@ local CHOOSE_WEAPON_PARAMS = {
     if (!unit || !list)
       return null
 
-    let cols = ::ceil(::sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
-    let rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
+    local cols = ::ceil(::sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
+    local rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
 
     wasSelIdx = -1
-    let params = { posX = 0, posY = 0 }
+    local params = { posX = 0, posY = 0 }
     local weaponryListMarkup = ""
     foreach(idx, config in list)
     {
-      let weaponryItem = ::getTblValue("weaponryItem", config)
+      local weaponryItem = ::getTblValue("weaponryItem", config)
       if (!weaponryItem)
       {
         ::script_net_assert_once("cant load weaponry",
@@ -137,7 +137,7 @@ local CHOOSE_WEAPON_PARAMS = {
     }
 
     selIdx = ::max(wasSelIdx, 0)
-    let res = {
+    local res = {
       weaponryList = weaponryListMarkup
       columns = cols
       rows = rows
@@ -159,13 +159,13 @@ local CHOOSE_WEAPON_PARAMS = {
 
   function updateItems()
   {
-    let listObj = scene.findObject("weapons_list")
-    let total = ::min(list.len(), listObj.childrenCount())
+    local listObj = scene.findObject("weapons_list")
+    local total = ::min(list.len(), listObj.childrenCount())
     for(local i = 0; i < total; i++)
     {
-      let config = list[i]
-      let itemObj = listObj.getChild(i)
-      let enabled = ::getTblValue("enabled", config, true)
+      local config = list[i]
+      local itemObj = listObj.getChild(i)
+      local enabled = ::getTblValue("enabled", config, true)
       itemObj.enable(enabled)
 
       weaponItemParams.visualDisabled <- !enabled || ::getTblValue("visualDisabled", config, false)
@@ -176,10 +176,10 @@ local CHOOSE_WEAPON_PARAMS = {
 
   function updateOpenAnimParams()
   {
-    let animObj = scene.findObject("anim_block")
+    local animObj = scene.findObject("anim_block")
     if (!animObj)
       return
-    let size = animObj.getSize()
+    local size = animObj.getSize()
     if (!size[0] || !size[1])
       return
 
@@ -204,7 +204,7 @@ local CHOOSE_WEAPON_PARAMS = {
 
   function onModItemClick(obj)
   {
-    let idx = ::to_integer_safe(obj?.holderId, -1)
+    local idx = ::to_integer_safe(obj?.holderId, -1)
     if (idx < 0)
       return
     selIdx = idx

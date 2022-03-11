@@ -1,14 +1,14 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-let getPurchaseLimitWb = @(warbond) ::warbonds_get_purchase_limit(warbond.id, warbond.listId)
+local getPurchaseLimitWb = @(warbond) ::warbonds_get_purchase_limit(warbond.id, warbond.listId)
 
-let leftSpecialTasksBoughtCount = ::Watched(-1)
+local leftSpecialTasksBoughtCount = ::Watched(-1)
 
-let updateLeftSpecialTasksBoughtCount = function() {
+local updateLeftSpecialTasksBoughtCount = function() {
   if (!::g_login.isLoggedIn())
     return
 
-  let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[::EWBAT_BATTLE_TASK])
+  local specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[::EWBAT_BATTLE_TASK])
   if (specialTaskAward == null) {
     leftSpecialTasksBoughtCount(-1)
     return

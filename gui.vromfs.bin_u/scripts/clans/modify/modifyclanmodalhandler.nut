@@ -1,12 +1,12 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+local { clearBorderSymbols } = require("std/string.nut")
+local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
-::gui_handlers.ModifyClanModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/clans/clanModifyWindow.blk"
+  sceneBlkName = "gui/clans/clanModifyWindow.blk"
 
   clanData = null
 
@@ -38,22 +38,22 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function initScreen()
   {
-    let view = createView()
-    let data = ::handyman.renderCached("%gui/clans/clanModifyWindowContent", view)
-    let contentObj = scene.findObject("content")
+    local view = createView()
+    local data = ::handyman.renderCached("gui/clans/clanModifyWindowContent", view)
+    local contentObj = scene.findObject("content")
     guiScene.replaceContentFromText(contentObj, data, data.len(), this)
 
-    let newClanTypeObj = scene.findObject("newclan_type")
+    local newClanTypeObj = scene.findObject("newclan_type")
     if (::checkObj(newClanTypeObj))
       newClanTypeObj.setValue(0)
 
     lastShownHintObj = scene.findObject("req_newclan_name")
 
-    let regionObj = scene.findObject("region_nest")
+    local regionObj = scene.findObject("region_nest")
     if (!::has_feature("ClanRegions") && ::checkObj(regionObj))
       regionObj.show(false)
 
-    let announcementNest = scene.findObject("announcement_nest")
+    local announcementNest = scene.findObject("announcement_nest")
     if (!::has_feature("ClanAnnouncements") && ::checkObj(announcementNest))
       announcementNest.show(false)
 
@@ -68,13 +68,13 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function getSelectedClanType()
   {
-    let newClanTypeObj = scene.findObject("newclan_type")
+    local newClanTypeObj = scene.findObject("newclan_type")
     if (!::checkObj(newClanTypeObj))
       return ::g_clan_type.UNKNOWN
-    let selectedIndex = newClanTypeObj.getValue()
+    local selectedIndex = newClanTypeObj.getValue()
     if (selectedIndex == -1)
       return ::g_clan_type.UNKNOWN
-    let typeName = newClanTypeObj.getChild(selectedIndex)["clanTypeName"]
+    local typeName = newClanTypeObj.getChild(selectedIndex)["clanTypeName"]
     return ::g_clan_type.getTypeByName(typeName)
   }
 
@@ -144,14 +144,14 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function resetTagDecorationObj(selectedTag = null)
   {
-    let tagDecorationObj = scene.findObject("newclan_tag_decoration")
+    local tagDecorationObj = scene.findObject("newclan_tag_decoration")
     if (!::checkObj(tagDecorationObj))
       return
-    let view = {
+    local view = {
       decoratorItems = []
     }
 
-    let decorators = getDecoratorsList()
+    local decorators = getDecoratorsList()
     foreach(index, decorator in decorators)
     {
       view.decoratorItems.append({
@@ -160,7 +160,7 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
         isDecoratorSelected = selectedTag != null && decorator.checkTagText(selectedTag)
       })
     }
-    let blk = ::handyman.renderCached("%gui/clans/clanTagDecoratorItem", view)
+    local blk = ::handyman.renderCached("gui/clans/clanTagDecoratorItem", view)
     guiScene.replaceContentFromText(tagDecorationObj, blk, blk.len(), this)
     updateDecoration(scene.findObject("newclan_tag"))
   }
@@ -168,8 +168,8 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
   // Called from within scene as well.
   function updateDecoration(obj)
   {
-    let decorators = getDecoratorsList()
-    let decorObj = scene.findObject("newclan_tag_decoration")
+    local decorators = getDecoratorsList()
+    local decorObj = scene.findObject("newclan_tag_decoration")
     if (decorObj.childrenCount() != decorators.len())
       return
 
@@ -184,34 +184,34 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function updateDescription()
   {
-    let descObj = scene.findObject("newclan_description")
+    local descObj = scene.findObject("newclan_description")
     if (::checkObj(descObj))
       descObj.show(newClanType.isDescriptionChangeAllowed())
-    let captionObj = scene.findObject("not_allowed_description_caption")
+    local captionObj = scene.findObject("not_allowed_description_caption")
     if (::checkObj(captionObj))
       captionObj.show(!newClanType.isDescriptionChangeAllowed())
   }
 
   function updateAnnouncement()
   {
-    let descObj = scene.findObject("newclan_announcement")
+    local descObj = scene.findObject("newclan_announcement")
     if (::checkObj(descObj))
       descObj.show(newClanType.isAnnouncementAllowed())
-    let captionObj = scene.findObject("not_allowed_announcement_caption")
+    local captionObj = scene.findObject("not_allowed_announcement_caption")
     if (::checkObj(captionObj))
       captionObj.show(!newClanType.isAnnouncementAllowed())
   }
 
   function prepareClanDataTextValue(valueName, objId)
   {
-    let obj = scene.findObject(objId)
+    local obj = scene.findObject(objId)
     if (::checkObj(obj))
       this[valueName] = obj.getValue()
   }
 
   function prepareClanData(edit = false, silent = false)
   {
-    let clanType       = getSelectedClanType()
+    local clanType       = getSelectedClanType()
     newClanType          = clanType != ::g_clan_type.UNKNOWN ? clanType : ::g_clan_type.NORMAL
 
     prepareClanDataTextValue("newClanName",           "newclan_name")
@@ -238,7 +238,7 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
     if(newClanTag.len() <= 0)
       err += ::loc("clan/error/empty_tag") + "\n"
 
-    let tagLengthLimit = newClanType.getTagLengthLimit()
+    local tagLengthLimit = newClanType.getTagLengthLimit()
     if (!edit && tagLengthLimit > 0 && ::utf8_strlen(newClanTag) > tagLengthLimit)
       err += ::loc("clan/error/tag_length", { maxLength = tagLengthLimit }) + "\n"
 
@@ -252,7 +252,7 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
       return false
     }
 
-    let tagDecorations = getDecoratorsList()
+    local tagDecorations = getDecoratorsList()
     if(tagDecorations.len() >= newClanTagDecoration + 1 && newClanTag.len() > 0)
       newClanTag = tagDecorations[newClanTagDecoration].start + newClanTag + tagDecorations[newClanTagDecoration].end
     return true
@@ -272,7 +272,7 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function updateHint(obj, isShow)
   {
-    let hintObj = obj?.id != null ? scene.findObject($"req_{obj.id}") : null
+    local hintObj = obj?.id != null ? scene.findObject($"req_{obj.id}") : null
     if (::check_obj(lastShownHintObj) && (hintObj == null || !lastShownHintObj.isEqual(hintObj)))
     {
       lastShownHintObj.show(false)
@@ -295,29 +295,29 @@ let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
   function updateReqs()
   {
-    let reqTextObj = scene.findObject("req_newclan_tag_text")
+    local reqTextObj = scene.findObject("req_newclan_tag_text")
     if (::checkObj(reqTextObj))
     {
-      let locId = ::format("clan/newclan_tag_req/%s", newClanType.getTypeName())
-      let locParams = {
+      local locId = ::format("clan/newclan_tag_req/%s", newClanType.getTypeName())
+      local locParams = {
         tagLengthLimit = newClanType.getTagLengthLimit()
       }
-      let text = ::loc(locId, locParams)
+      local text = ::loc(locId, locParams)
       reqTextObj.setValue(text)
     }
   }
 
   function updateTagMaxLength()
   {
-    let newClanTagObj = scene.findObject("newclan_tag")
+    local newClanTagObj = scene.findObject("newclan_tag")
     if (::checkObj(newClanTagObj))
     {
-      let tagLengthLimit = newClanType.getTagLengthLimit()
+      local tagLengthLimit = newClanType.getTagLengthLimit()
       newClanTagObj["max-len"] = tagLengthLimit.tostring()
-      let curText = newClanTagObj.getValue()
+      local curText = newClanTagObj.getValue()
       if (curText.len() > tagLengthLimit)
       {
-        let newText = ::g_string.slice(curText, 0, tagLengthLimit)
+        local newText = ::g_string.slice(curText, 0, tagLengthLimit)
         newClanTagObj.setValue(newText)
         newClanTag = newText
       }

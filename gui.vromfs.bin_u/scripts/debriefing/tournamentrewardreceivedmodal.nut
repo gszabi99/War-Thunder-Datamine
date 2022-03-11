@@ -1,6 +1,6 @@
-::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.TournamentRewardReceivedWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneBlkName = "gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
   /**
@@ -16,7 +16,7 @@
 
   static function open(config)
   {
-    let params = {
+    local params = {
       rewardBlk = config
       eventEconomicName = config.eventId
     }
@@ -25,15 +25,15 @@
 
   function initScreen()
   {
-    let event = ::events.getEventByEconomicName(eventEconomicName)
-    let nextReward = ::EventRewards.getNext(rewardBlk, event)
+    local event = ::events.getEventByEconomicName(eventEconomicName)
+    local nextReward = ::EventRewards.getNext(rewardBlk, event)
 
-    let rewardDescriptionData = {
+    local rewardDescriptionData = {
       tournamentName = ::colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
     }
 
-    let mainConditionId = ::EventRewards.getRewardConditionId(rewardBlk)
-    let view = {
+    local mainConditionId = ::EventRewards.getRewardConditionId(rewardBlk)
+    local view = {
       rewardDescription = ::loc("tournaments/reward/description", rewardDescriptionData)
       conditionText     = ::EventRewards.getConditionText(rewardBlk)
       conditionIcon     = ::EventRewards.getConditionIcon(::EventRewards.getCondition(mainConditionId))
@@ -48,7 +48,7 @@
         rewardIcon    = ::EventRewards.getRewardIcon(nextReward)
         rewardText    = ::EventRewards.getRewardDescText(nextReward)
       }
-    let blk = ::handyman.renderCached("%gui/tournamentRewardReceived", view)
+    local blk = ::handyman.renderCached("gui/tournamentRewardReceived", view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), blk, blk.len(), this)
 
     ::show_facebook_screenshot_button(scene)

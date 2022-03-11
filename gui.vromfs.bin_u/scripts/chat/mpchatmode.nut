@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 enum mpChatModeSort {
   TEAM
@@ -121,7 +121,7 @@ g_mp_chat_mode.getNextMode <- function getNextMode(modeId)
 
 g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
 {
-  let availableModes = types.filter(@(mode) mode.isEnabled())
+  local availableModes = types.filter(@(mode) mode.isEnabled())
   if (availableModes.len() <= 1)
     return ""
   return ::loc("ui/slash").join(availableModes.map(@(mode) mode.getNameText()), true)
@@ -129,8 +129,8 @@ g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
 
 g_mp_chat_mode.getChatHint <- function getChatHint()
 {
-  let hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
-  let chatHelpText = hasIME ? "" : ::loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
+  local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
+  local chatHelpText = hasIME ? "" : ::loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = getTextAvailableMode()
   availableModeText = availableModeText != ""
     ? ::loc("chat/help/modeSwitch", {

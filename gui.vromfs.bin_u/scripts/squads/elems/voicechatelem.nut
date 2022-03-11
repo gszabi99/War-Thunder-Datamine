@@ -1,6 +1,6 @@
-let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-let { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
+local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
+local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2
 
@@ -27,11 +27,11 @@ elemViewType.addTypes({
       if (!::g_login.isLoggedIn())
         return
 
-      let nestObj = obj.getParent().getParent()
+      local nestObj = obj.getParent().getParent()
       if (!check_obj(nestObj))
         return
 
-      let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
+      local isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
         (::get_option_voicechat()
          && chatStatesCanUseVoice()
          && !::g_squad_manager.isInSquad()
@@ -41,7 +41,7 @@ elemViewType.addTypes({
       if (!isWidgetVisible)
         return
 
-      let childRequired = ::g_squad_manager.isInSquad() ? ::g_squad_manager.MAX_SQUAD_SIZE
+      local childRequired = ::g_squad_manager.isInSquad() ? ::g_squad_manager.MAX_SQUAD_SIZE
         : ::my_clan_info ? ::my_clan_info.mlimit
         : 0
 
@@ -82,7 +82,7 @@ elemViewType.addTypes({
       if (::g_squad_manager.isInSquad())
       {
         memberIndex = 1
-        let leader = ::g_squad_manager.getSquadLeaderData()
+        local leader = ::g_squad_manager.getSquadLeaderData()
         foreach (uid, member in ::g_squad_manager.getMembers())
           updateMemberView(obj, member == leader ? 0 : memberIndex++, uid)
       }
@@ -93,19 +93,19 @@ elemViewType.addTypes({
       while (memberIndex < obj.childrenCount())
         updateMemberView(obj, memberIndex++, null)
 
-      let emptyVoiceObj = nestObj.findObject("voice_chat_no_activity")
+      local emptyVoiceObj = nestObj.findObject("voice_chat_no_activity")
       if (::check_obj(emptyVoiceObj))
         emptyVoiceObj.fade = !isAnybodyTalk() ? "in" : "out"
     }
 
     updateMemberView = function(obj, objIndex, uid)
     {
-      let memberObj = objIndex < obj.childrenCount() ? obj.getChild(objIndex) : null
+      local memberObj = objIndex < obj.childrenCount() ? obj.getChild(objIndex) : null
       if (!::check_obj(memberObj))
         return
 
-      let contact = ::getContact(uid)
-      let isTalking = contact?.voiceStatus == voiceChatStats.talking
+      local contact = ::getContact(uid)
+      local isTalking = contact?.voiceStatus == voiceChatStats.talking
       memberObj.fade = isTalking ? "in" : "out"
       if (isTalking)
         memberObj.findObject("users_name").setValue(contact?.getName() ?? "")
@@ -113,11 +113,11 @@ elemViewType.addTypes({
 
     fillContainer = function(obj, childRequired)
     {
-      let data = ::handyman.renderCached("%gui/chat/voiceChatElement",
+      local data = ::handyman.renderCached("gui/chat/voiceChatElement",
         { voiceChatElement = ::array(childRequired, {}) })
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 
-      let heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"
+      local heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"
         ? ::g_dagui_utils.toPixels(::get_cur_gui_scene(), "1@gamercardHeight") /
             MAX_VOICE_ELEMS_IN_GC
         : ::g_dagui_utils.toPixels(::get_cur_gui_scene(), "1@voiceChatBaseIconHeight") +

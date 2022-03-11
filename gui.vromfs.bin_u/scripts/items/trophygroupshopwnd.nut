@@ -1,6 +1,6 @@
-let stdMath = require("std/math.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+local stdMath = require("std/math.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
 ::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy)
 {
@@ -10,11 +10,11 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
   ::gui_start_modal_wnd(::gui_handlers.TrophyGroupShopWnd, {trophy = trophy})
 }
 
-::gui_handlers.TrophyGroupShopWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/items/trophyGroupShop"
+  sceneBlkName = "gui/modalSceneWithGamercard.blk"
+  sceneTplName = "gui/items/trophyGroupShop"
 
   trophy = null
   trophyInfo = null
@@ -47,7 +47,7 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
     for (local i = 0; i < trophy.numTotal; i++)
       if (!isTrophyPurchased(i))
       {
-        let listObj = getItemsListObj()
+        local listObj = getItemsListObj()
         listObj.setValue(i)
         ::move_mouse_on_child(listObj, i)
         return
@@ -71,23 +71,23 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
   function updateHeader()
   {
-    let headerObj = scene.findObject("group_trophy_header")
+    local headerObj = scene.findObject("group_trophy_header")
     if (!::checkObj(headerObj))
       return
 
-    let restText = ::getTblValue("openCount", trophyInfo, 0) + ::loc("ui/slash") + trophy.numTotal
+    local restText = ::getTblValue("openCount", trophyInfo, 0) + ::loc("ui/slash") + trophy.numTotal
     headerObj.setValue(::loc("mainmenu/itemReceived") + ::loc("ui/parentheses/space", {text = restText}))
   }
 
   function getMaxSizeInItems(reduceSize = false)
   {
-    let freeWidth = guiScene.calcString("1@trophiesGroupAvailableWidth", null)
-    let freeHeight = guiScene.calcString("1@requiredItemsInColumnInPixels", null)
+    local freeWidth = guiScene.calcString("1@trophiesGroupAvailableWidth", null)
+    local freeHeight = guiScene.calcString("1@requiredItemsInColumnInPixels", null)
 
-    let singleItemSizeTable = countSize({w = 1, h = 1}, reduceSize)
+    local singleItemSizeTable = countSize({w = 1, h = 1}, reduceSize)
 
-    let freeRow = freeWidth / singleItemSizeTable.width
-    let freeColumn = freeHeight / singleItemSizeTable.height
+    local freeRow = freeWidth / singleItemSizeTable.width
+    local freeColumn = freeHeight / singleItemSizeTable.height
 
     return {row = freeRow, column = freeColumn}
   }
@@ -95,7 +95,7 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
   function updateScreenSize()
   {
     local maxAvailRatio = getMaxSizeInItems()
-    let reduceSize = (maxAvailRatio.row * maxAvailRatio.column) < trophy.numTotal
+    local reduceSize = (maxAvailRatio.row * maxAvailRatio.column) < trophy.numTotal
     if (reduceSize)
       maxAvailRatio = getMaxSizeInItems(true)
 
@@ -103,7 +103,7 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
     local itemsInColumn = ::sqrt(trophy.numTotal).tointeger()
     for (local i = itemsInColumn; i > 0; i--)
     {
-      let columns = trophy.numTotal / i
+      local columns = trophy.numTotal / i
       if (columns > maxAvailRatio.column)
         break
 
@@ -125,22 +125,22 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
   function countSize(ratio, reduceSize = false)
   {
-    let mult = reduceSize? "0.5" : "1"
-    let height = ratio.h * guiScene.calcString(mult + "@itemHeight + 1@itemSpacing", null)
-    let width = ratio.w * guiScene.calcString(mult + "@itemWidth + 1@itemSpacing", null)
+    local mult = reduceSize? "0.5" : "1"
+    local height = ratio.h * guiScene.calcString(mult + "@itemHeight + 1@itemSpacing", null)
+    local width = ratio.w * guiScene.calcString(mult + "@itemWidth + 1@itemSpacing", null)
 
     return {width = width, height = height, smallItems = reduceSize? "yes" : "no"}
   }
 
   function fillTrophiesList()
   {
-    let view = updateScreenSize()
+    local view = updateScreenSize()
     view.trophyItems <- ""
 
     for (local i = 0; i < trophy.numTotal; i++)
     {
-      let isOpened = isTrophyPurchased(i)
-      view.trophyItems += ::handyman.renderCached(("%gui/items/item"), {
+      local isOpened = isTrophyPurchased(i)
+      view.trophyItems += ::handyman.renderCached(("gui/items/item"), {
         items = trophy.getViewData({
           showPrice = false,
           contentIcon = false,
@@ -153,7 +153,7 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
         })})
     }
 
-    let data = ::handyman.renderCached(sceneTplName, view)
+    local data = ::handyman.renderCached(sceneTplName, view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
     infoHandler = itemInfoHandler(scene.findObject("item_info_desc_place"))
   }
@@ -199,7 +199,7 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
   function updateButtonsBar()
   {
-    let isButtonsBarVisible = !::show_console_buttons || getItemsListObj().isHovered()
+    local isButtonsBarVisible = !::show_console_buttons || getItemsListObj().isHovered()
     showSceneBtn("item_actions_bar", isButtonsBarVisible)
   }
 
@@ -208,8 +208,8 @@ let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
     if (!::checkObj(obj))
       return
 
-    let isPurchased = isTrophyPurchased(obj.getValue())
-    let mainActionData = trophy.getMainActionData()
+    local isPurchased = isTrophyPurchased(obj.getValue())
+    local mainActionData = trophy.getMainActionData()
     showSceneBtn("btn_main_action", !isPurchased)
     setDoubleTextToButton(scene,
       "btn_main_action",

@@ -1,21 +1,21 @@
-let crossplayModule = require("scripts/social/crossplay.nut")
-let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { isPlatformSony, targetPlatform } = require("scripts/clientState/platform.nut")
-let { getMyCrewUnitsState } = require("scripts/slotbar/crewsListInfo.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local { isPlatformSony, targetPlatform } = require("scripts/clientState/platform.nut")
+local { getMyCrewUnitsState } = require("scripts/slotbar/crewsListInfo.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 ::g_user_utils <- {
   function getMyStateData()
   {
-    let profileInfo = ::get_profile_info()
-    let gameModeId = ::g_squad_manager.isSquadMember()
+    local profileInfo = ::get_profile_info()
+    local gameModeId = ::g_squad_manager.isSquadMember()
       ? ::g_squad_manager.getLeaderGameModeId()
       : ::game_mode_manager.getCurrentGameModeId()
-    let event = ::events.getEvent(gameModeId)
-    let prefParams = mapPreferencesParams.getParams(event)
-    let myData = {
+    local event = ::events.getEvent(gameModeId)
+    local prefParams = mapPreferencesParams.getParams(event)
+    local myData = {
       name = profileInfo.name,
       clanTag = profileInfo.clanTag,
       pilotIcon = profileInfo.icon,
@@ -32,17 +32,16 @@ let { addPromoAction } = require("scripts/promo/promoActions.nut")
       dislikedMissions = prefParams.dislikedMissions
       craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
       platform = targetPlatform
-      fakeName = ::get_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY).value != ""
     }
 
-    let airs = getMyCrewUnitsState(profileInfo.country)
+    local airs = getMyCrewUnitsState(profileInfo.country)
     myData.crewAirs = airs.crewAirs
     myData.brokenAirs = airs.brokenAirs
     if (airs.rank > myData.rank)
       myData.rank = airs.rank
 
-    let checkPacks = ["pkg_main"]
-    let missed = []
+    local checkPacks = ["pkg_main"]
+    local missed = []
     foreach(pack in checkPacks)
       if (!::have_package(pack))
         missed.append(pack)
@@ -76,7 +75,7 @@ let { addPromoAction } = require("scripts/promo/promoActions.nut")
 
   function launchSteamEmailRegistration()
   {
-    let token = ::get_steam_link_token()
+    local token = ::get_steam_link_token()
     if (token == "")
       return ::dagor.debug("Steam Email Registration: empty token")
 
@@ -137,13 +136,13 @@ let { addPromoAction } = require("scripts/promo/promoActions.nut")
   }
 }
 
-let function onLaunchEmailRegistration(params) {
-  let platformName = params?[0] ?? ""
+local function onLaunchEmailRegistration(params) {
+  local platformName = params?[0] ?? ""
   if (platformName == "")
     return
 
-  let launchFunctionName = ::format("launch%sEmailRegistration", platformName)
-  let launchFunction = ::g_user_utils?[launchFunctionName]
+  local launchFunctionName = ::format("launch%sEmailRegistration", platformName)
+  local launchFunction = ::g_user_utils?[launchFunctionName]
   if (launchFunction)
     launchFunction()
 }

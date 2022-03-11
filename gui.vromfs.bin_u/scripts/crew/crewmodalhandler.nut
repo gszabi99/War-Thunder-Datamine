@@ -1,11 +1,10 @@
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let stdMath = require("std/math.nut")
-let crewSkillsPageHandler = require("scripts/crew/crewSkillsPageHandler.nut")
-let { getSkillValue } = require("scripts/crew/crewSkills.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local stdMath = require("std/math.nut")
+local crewSkillsPageHandler = require("scripts/crew/crewSkillsPageHandler.nut")
+local { getSkillValue } = require("scripts/crew/crewSkills.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {})
 {
@@ -15,10 +14,10 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
 }
 
-::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/crew/crew.blk"
+  sceneBlkName = "gui/crew/crew.blk"
 
   slotbarActions = ["aircraft","sec_weapons", "weapons", "showroom", "repair" ]
 
@@ -58,7 +57,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (!crew)
       return goBack()
 
-    let country = ::g_crews_list.get()?[countryId].country
+    local country = ::g_crews_list.get()?[countryId].country
     if (country)
       ::switch_profile_country(country)
 
@@ -92,6 +91,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     {
       text = ::g_string.implode([
         ::loc("crew/currentAircraft") + ::loc("ui/colon")
+          + curUnit.expClass.getShortName() + " "
           + ::colorize("activeTextColor", ::getUnitName(curUnit))
         ::loc("crew/totalCrew") + ::loc("ui/colon")
           + ::colorize("activeTextColor", curUnit.getCrewTotalCount())
@@ -109,11 +109,15 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
       return
 
     curUnit = getCrewUnit(crew)
-    curCrewUnitType = reinitUnitType ? (curUnit?.getCrewUnitType?() ?? curCrewUnitType) : curCrewUnitType
+    local crewUnitType = reinitUnitType ? (curUnit?.getCrewUnitType?() ?? ::CUT_AIRCRAFT)
+                                        : curCrewUnitType
+
+    curCrewUnitType = crewUnitType
 
     ::update_gamercards()
     if (reloadSkills)
       ::load_crew_skills()
+    countSkills()
 
     scene.findObject("crew_name").setValue(::g_crew.getCrewName(crew))
 
@@ -129,8 +133,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     foreach(page in ::crew_skills)
       foreach(item in page.items)
       {
-        let value = getSkillValue(crew.id, curUnit, page.id, item.name)
-        let newValue = ::getTblValue("newValue", item, value)
+        local value = getSkillValue(crew.id, curUnit, page.id, item.name)
+        local newValue = ::getTblValue("newValue", item, value)
         if (newValue > value)
           curPoints -= ::g_crew.getSkillCost(item, newValue, value)
       }
@@ -143,9 +147,9 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function onSkillRowChange(item, newValue)
   {
-    let wasValue = ::g_crew.getSkillNewValue(item, crew, curUnit)
-    let changeCost = ::g_crew.getSkillCost(item, newValue, wasValue)
-    let crewLevelChange = ::g_crew.getSkillCrewLevel(item, newValue, wasValue)
+    local wasValue = ::g_crew.getSkillNewValue(item, crew, curUnit)
+    local changeCost = ::g_crew.getSkillCost(item, newValue, wasValue)
+    local crewLevelChange = ::g_crew.getSkillCrewLevel(item, newValue, wasValue)
     item.newValue <- newValue //!!FIX ME: this code must be in g_crew too
     curPoints -= changeCost
     updateSkillsHandlerPoints()
@@ -165,36 +169,31 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function updateUnitTypeRadioButtons()
   {
-    let rbObj = scene.findObject("rb_unit_type")
+    local rbObj = scene.findObject("rb_unit_type")
     if (!::checkObj(rbObj))
       return
 
     local data = ""
-    let crewUnitTypes = []
-    local isVisibleCurCrewTypeButton =false
+    local crewUnitTypes = []
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isVisibleInShop())
         continue
 
-      let crewUnitType = unitType.crewUnitType
+      local crewUnitType = unitType.crewUnitType
       if (::isInArray(crewUnitType,crewUnitTypes))
         continue
 
-      if (!isCountryHaveUnitType(getCurCountryName(), unitType.esUnitType))
+      if (!::isCountryHaveUnitType(getCurCountryName(), unitType.esUnitType))
         continue
 
       crewUnitTypes.append(crewUnitType)
-      let isCurrent = curCrewUnitType == crewUnitType
-      isVisibleCurCrewTypeButton = isVisibleCurCrewTypeButton || isCurrent
       data += ::format("RadioButton { id:t='%s'; text:t='%s'; %s RadioButtonImg{} }",
                      "unit_type_" + crewUnitType,
                      unitType.getCrewArmyLocName(),
-                     isCurrent ? "selected:t='yes';" : "")
+                     curCrewUnitType == crewUnitType ? "selected:t='yes';" : "")
     }
     guiScene.replaceContentFromText(rbObj, data, data.len(), this)
-    if (!isVisibleCurCrewTypeButton) //need switch unit type if cur type not visible
-      rbObj.setValue(0)
     updateUnitType()
   }
 
@@ -215,14 +214,14 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
         pages.append(page)
     pages.append({ id = "trained" })
 
-    let maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo, false)
-    let discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
-    let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo, false)
+    local maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo, false)
+    local discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
+    local discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo, false)
 
     curPage = 0
 
 
-    let view = {
+    local view = {
       tabs = []
     }
     foreach(index, page in pages)
@@ -230,7 +229,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
       if (page.id == curPageId)
         curPage = index
 
-      let tabData = {
+      local tabData = {
         id = page.id
         tabName = ::loc("crew/"+ page.id)
         navImagesText = ::get_navigation_images_text(index, pages.len())
@@ -249,9 +248,9 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
       view.tabs.append(tabData)
     }
-    let pagesObj = scene.findObject("crew_pages_list")
+    local pagesObj = scene.findObject("crew_pages_list")
     pagesObj.smallFont = needSmallerHeaderFont(pagesObj.getSize(), view.tabs) ? "yes" : "no"
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
 
     pagesObj.setValue(curPage)
@@ -281,7 +280,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
   {
     if (!obj)
       return
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (value in pages)
     {
       curPage = value
@@ -307,8 +306,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function updatePointsText()
   {
-    let isMaxLevel = ::g_crew.isCrewMaxLevel(crew, curUnit, getCurCountryName(), curCrewUnitType)
-    let curPointsText = ::get_crew_sp_text(curPoints)
+    local isMaxLevel = ::g_crew.isCrewMaxLevel(crew, curUnit, getCurCountryName(), curCrewUnitType)
+    local curPointsText = ::get_crew_sp_text(curPoints)
     scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
 
     local levelIncText = ""
@@ -330,12 +329,12 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function updatePointsAdvice()
   {
-    let page = pages[curPage]
-    let isSkills = isSkillsPage(page)
+    local page = pages[curPage]
+    local isSkills = isSkillsPage(page)
     scene.findObject("crew_points_advice_block").show(isSkills)
     if (!isSkills)
       return
-    let statusType = ::g_skills_page_status.getPageStatus(crew, curUnit, page, curCrewUnitType, curPoints)
+    local statusType = ::g_skills_page_status.getPageStatus(crew, curUnit, page, curCrewUnitType, curPoints)
     scene.findObject("crew_points_advice").show(statusType.show)
     scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
   }
@@ -345,9 +344,9 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (!::has_feature("CrewBuyAllSkills"))
       return
 
-    let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(crew, curUnit, curCrewUnitType)
+    local totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(crew, curUnit, curCrewUnitType)
     showSceneBtn("btn_buy_all", totalPointsToMax > 0 && crew.id != -1)
-    let text = ::loc("mainmenu/btnBuyAll") + ::loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
+    local text = ::loc("mainmenu/btnBuyAll") + ::loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
     setColoredDoubleTextToButton(scene, "btn_buy_all", text)
   }
 
@@ -367,16 +366,16 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
       return
 
     guiScene.setUpdatesEnabled(false, false)
-    let pagesObj = scene.findObject("crew_pages_list")
+    local pagesObj = scene.findObject("crew_pages_list")
     foreach(page in pages)
     {
       if (!isSkillsPage(page))
         continue
-      let obj = pagesObj.findObject(getCornerImgId(page))
+      local obj = pagesObj.findObject(getCornerImgId(page))
       if (!::checkObj(obj))
         continue
 
-      let statusType = ::g_skills_page_status.getPageStatus(
+      local statusType = ::g_skills_page_status.getPageStatus(
         crew, curUnit, page, curCrewUnitType, curPoints)
       obj["background-image"] = statusType.icon
       obj["background-color"] = guiScene.getConstantValue(statusType.color) || ""
@@ -391,8 +390,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     discountInfo = ::g_crew.getDiscountInfo(countryId, idInCountry)
     updateAirList()
 
-    let obj = scene.findObject("buyPoints_discount")
-    let buyPointsDiscount = ::getTblValue("buyPoints", discountInfo, 0)
+    local obj = scene.findObject("buyPoints_discount")
+    local buyPointsDiscount = ::getTblValue("buyPoints", discountInfo, 0)
     ::showCurBonus(obj, buyPointsDiscount, "buyPoints", true, true)
   }
 
@@ -402,11 +401,11 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (!("trainedSpec" in crew))
       return
 
-    let sortData = [] // { unit, locname }
+    local sortData = [] // { unit, locname }
     foreach(unit in ::all_units)
       if (unit.name in crew.trainedSpec && unit.getCrewUnitType() == curCrewUnitType)
       {
-        let isCurrent = ::getTblValue("aircraft", crew, "") == unit.name
+        local isCurrent = ::getTblValue("aircraft", crew, "") == unit.name
         if (isCurrent)
           airList.append(unit)
         else
@@ -429,10 +428,10 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function updatePage()
   {
-    let page = pages[curPage]
+    local page = pages[curPage]
     if (isSkillsPage(page))
     {
-      let skillsHandlerParams = {
+      local skillsHandlerParams = {
         scene = scene.findObject("skills_table")
         curPage = page
         crew = crew
@@ -498,23 +497,23 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (progressBox)
       return
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     foreach(page in ::crew_skills)
       if (isSkillsPage(page))
       {
-        let typeBlk = ::DataBlock()
+        local typeBlk = ::DataBlock()
         foreach(idx, item in page.items)
           if ("newValue" in item)
           {
-            let value = getSkillValue(crew.id, curUnit, page.id, item.name)
+            local value = getSkillValue(crew.id, curUnit, page.id, item.name)
             if (value<item.newValue)
               typeBlk[item.name] = item.newValue-value
           }
         blk[page.id] = typeBlk
       }
 
-    let curHandler = this //to prevent handler destroy even when invalid.
-    let isTaskCreated = ::g_tasker.addTask(
+    local curHandler = this //to prevent handler destroy even when invalid.
+    local isTaskCreated = ::g_tasker.addTask(
       ::shop_upgrade_crew(crew.id, blk),
       { showProgressBox = true },
       function()
@@ -542,11 +541,11 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true)
   {
-    let crewPoints = ::getTblValue("skillPoints", crew, 0)
+    local crewPoints = ::getTblValue("skillPoints", crew, 0)
     if (curPoints == crewPoints)
       return action()
 
-    let msgOptions = [
+    local msgOptions = [
       ["yes", function() {
         afterApplyAction = action
         updateAfterApplyAction = updateAfterApply
@@ -584,8 +583,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function openSelectedCrew()
   {
-    let newCrew = getCurCrew()
-    if (!newCrew)
+    local newCrew = getCurCrew()
+    if (!newCrew || !getCrewUnit(newCrew)) //do not open crew for crews without unit
       return
 
     crew = newCrew
@@ -596,7 +595,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function onUpgrCrewSkillsTutorial()
   {
-    let steps = [
+    local steps = [
       {
         obj = ["crew_cur_points_block"]
         text = ::loc("tutorials/upg_crew/total_skill_points")
@@ -653,10 +652,10 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (curUnit == null)
       return false
 
-    let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(upgCrew, curUnit)
-    let wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, curUnit)
-    let reqLevel = curSpecType.getUpgradeReqCrewLevel(curUnit)
-    let crewLevel = ::g_crew.getCrewLevel(upgCrew, curUnit, curUnit.getCrewUnitType())
+    local curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(upgCrew, curUnit)
+    local wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, curUnit)
+    local reqLevel = curSpecType.getUpgradeReqCrewLevel(curUnit)
+    local crewLevel = ::g_crew.getCrewLevel(upgCrew, curUnit, curUnit.getCrewUnitType())
 
     return ::get_cur_warpoints() >= wpSpecCost.wp &&
            curSpecType == ::g_crew_spec_type.BASIC &&
@@ -665,7 +664,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function onUpgrCrewSpec1Tutorial()
   {
-    let tblObj = scene.findObject("skills_table")
+    local tblObj = scene.findObject("skills_table")
     if (!::check_obj(tblObj))
       return
 
@@ -688,7 +687,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
     if (btnSpecObj == null)
       return
 
-    let steps = [
+    local steps = [
       {
         obj = [btnSpecObj, skillRowObj]
         text = ::loc("tutorials/upg_crew/spec1")
@@ -707,8 +706,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
     if (::scene_msg_boxes_list.len() == 0)
     {
-      let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, curUnit)
-      let message = ::format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
+      local curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, curUnit)
+      local message = ::format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
                                ::my_user_id_str,
                                crew.country,
@@ -720,8 +719,8 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
       return
     }
 
-    let specMsgBox = ::scene_msg_boxes_list.top()
-    let steps = [
+    local specMsgBox = ::scene_msg_boxes_list.top()
+    local steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
         text = ::loc("tutorials/upg_crew/confirm_spec1")
@@ -737,7 +736,7 @@ let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
   function onUpgrCrewTutorFinalStep()
   {
-    let steps = [
+    local steps = [
       {
         text = ::loc("tutorials/upg_crew/final_massage")
         nextActionShortcut = "help/NEXT_ACTION"

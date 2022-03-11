@@ -1,19 +1,19 @@
-let { ceil, floor} = require("std/math.nut")
-let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
+local { ceil, floor} = require("std/math.nut")
+local { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
   deathPenaltyMul, ctaDeathTicketPenalty } = require("reactiveGui/missionState.nut")
-let teamColors = require("reactiveGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("std/time.nut")
+local teamColors = require("reactiveGui/style/teamColors.nut")
+local { secondsToTimeSimpleString } = require("std/time.nut")
 
-let scoresForOneKill = ::Computed(@() deathPenaltyMul.value * ctaDeathTicketPenalty.value)
-let countKillsToWin = ::Computed(@() scoresForOneKill.value == 0
+local scoresForOneKill = ::Computed(@() deathPenaltyMul.value * ctaDeathTicketPenalty.value)
+local countKillsToWin = ::Computed(@() scoresForOneKill.value == 0
   ? 0
   : ceil(scoreLimit.value/scoresForOneKill.value).tointeger()
 )
 
-let localTeamTickets = ::Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
-let enemyTeamTickets = ::Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)
+local localTeamTickets = ::Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
+local enemyTeamTickets = ::Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)
 
-let function getKillsCount(oppositeTeamTickets) {
+local function getKillsCount(oppositeTeamTickets) {
   return ::Computed(function() {
     if (scoresForOneKill.value == 0)
       return 0
@@ -22,7 +22,7 @@ let function getKillsCount(oppositeTeamTickets) {
   })
 }
 
-let scoreParamsByTeam = {
+local scoreParamsByTeam = {
   localTeam =  {
     score = getKillsCount(enemyTeamTickets)
     fontColor = "teamBlueColor"
@@ -35,8 +35,8 @@ let scoreParamsByTeam = {
   }
 }
 
-let function getScoreObj(teamName) {
-  let scoreParams = scoreParamsByTeam[teamName]
+local function getScoreObj(teamName) {
+  local scoreParams = scoreParamsByTeam[teamName]
   return @() {
     watch = [scoreParams.score, teamColors]
     rendObj = ROBJ_DTEXT

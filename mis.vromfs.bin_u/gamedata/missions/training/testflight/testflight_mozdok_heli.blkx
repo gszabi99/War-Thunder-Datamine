@@ -37,7 +37,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "initMission": []
@@ -50,33 +50,7 @@
           "runwayWidth": 50.0,
           "army": 1,
           "spawnPoint": "spawnpoint"
-        },
-        "spawnOnAirfield": {
-          "runwayName": "airfield00",
-          "objects": "armada_01"
-        },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ai_squad",
-          "calmDetection": true,
-          "forceVisibleOnMap": true,
-          "attack_type": "dont_aim",
-          "accuracy": 0.01
-        },
-        "unitPutToSleep": [
-          {
-            "target": "ai_squad"
-          },
-          {
-            "target": "helipad_usa"
-          },
-          {
-            "target": "helipad_ussr"
-          }
-        ]
+        }
       },
       "else_actions": []
     },
@@ -171,61 +145,65 @@
               "country_italy": true
             }
           }
+        }
+      ],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_squad",
+            "calmDetection": true,
+            "forceVisibleOnMap": true,
+            "attack_type": "dont_aim",
+            "accuracy": 0.01
+          }
         },
         {
-          "unitCheckTag": {
-            "target": "armada_01",
-            "tags": {
-              "country_sweden": true
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_tank_04",
+            "attack_type": "hold_fire",
+            "useSearchRadar": true
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "us_truck_squad"
+            },
+            {
+              "target": "us_tank_squad"
+            },
+            {
+              "target": "helipad_ussr"
+            },
+            {
+              "target": "us_ai_plane"
             }
+          ]
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield00",
+            "objects": "armada_01"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "ussr_tank_05",
+            "target": "spawn_shtora_tank",
+            "randomObjectsCount": 1
           }
         }
       ],
-      "actions": {
-        "unitPutToSleep": {
-          "target": "helipad_ussr"
-        },
-        "unitWakeUp": [
-          {
-            "target": "ussr_tank_squad"
-          },
-          {
-            "target": "ussr_truck_squad"
-          },
-          {
-            "target": "helipad_usa"
-          },
-          {
-            "target": "ussr_ai_plane"
-          }
-        ],
-        "spawnOnAirfield": {
-          "runwayName": "airfield00",
-          "objects": "armada_01"
-        },
-        "triggerEnable": {
-          "target": "if_player_ussr"
-        },
-        "triggerDisable": {
-          "target": "if_player_us"
-        },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ussr_tank_04",
-          "attack_type": "hold_fire",
-          "useSearchRadar": true
-        },
-        "unitRespawn": {
-          "delay": 0.0,
-          "offset": [0.0,0.0,0.0],
-          "object": "ussr_tank_05",
-          "target": "spawn_shtora_tank",
-          "randomObjectsCount": 1
-        }
-      },
       "else_actions": []
     },
     "if_player_ussr": {
@@ -246,7 +224,14 @@
           "unitCheckTag": {
             "target": "armada_01",
             "tags": {
-              "country_ussr": true
+              "country_japan": false,
+              "country_germany": false,
+              "country_usa": false,
+              "country_britain": false,
+              "country_australia": false,
+              "country_ussr": true,
+              "country_france": false,
+              "country_italy": false
             }
           }
         },
@@ -254,49 +239,66 @@
           "unitCheckTag": {
             "target": "armada_01",
             "tags": {
+              "country_japan": false,
+              "country_germany": false,
+              "country_usa": false,
+              "country_britain": false,
+              "country_australia": false,
+              "country_france": false,
+              "country_italy": false,
               "country_china": true
             }
           }
         }
       ],
-      "actions": {
-        "unitPutToSleep": {
-          "target": "helipad_usa"
-        },
-        "unitWakeUp": [
-          {
-            "target": "us_truck_squad"
-          },
-          {
-            "target": "us_tank_squad"
-          },
-          {
-            "target": "helipad_ussr"
-          },
-          {
-            "target": "us_ai_plane"
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_squad",
+            "calmDetection": true,
+            "forceVisibleOnMap": true,
+            "attack_type": "dont_aim",
+            "accuracy": 0.01
           }
-        ],
-        "spawnOnAirfield": {
-          "runwayName": "airfield00",
-          "objects": "armada_01"
         },
-        "triggerEnable": {
-          "target": "if_player_us"
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "us_tank_04",
+            "attack_type": "hold_fire",
+            "useSearchRadar": true
+          }
         },
-        "triggerDisable": {
-          "target": "if_player_ussr"
+        {
+          "unitPutToSleep": [
+            {
+              "target": "ussr_tank_squad"
+            },
+            {
+              "target": "ussr_truck_squad"
+            },
+            {
+              "target": "helipad_usa"
+            },
+            {
+              "target": "ussr_ai_plane"
+            }
+          ]
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "us_tank_04",
-          "attack_type": "hold_fire",
-          "useSearchRadar": true
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield00",
+            "objects": "armada_01"
+          }
         }
-      },
+      ],
       "else_actions": []
     }
   },

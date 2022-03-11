@@ -2,7 +2,7 @@
 
 //  {id, text, buttons, defBtn}
 ::gui_scene_boxes <- []
-let g_string =  require("%sqstd/string.nut")
+local g_string =  require("std/string.nut")
 
 ::remove_scene_box <- function remove_scene_box(id)
 {
@@ -40,14 +40,14 @@ let g_string =  require("%sqstd/string.nut")
   local rootNode = options?.root ?? ""
   local needWaitAnim = options?.waitAnim ?? false
   local data_below_text = options?.data_below_text
-  let data_below_buttons = options?.data_below_buttons
-  let debug_string = options?.debug_string
-  let delayedButtons = options?.delayedButtons ?? 0
-  let baseHandler = options?.baseHandler
-  let needAnim = ::need_new_msg_box_anim()
+  local data_below_buttons = options?.data_below_buttons
+  local debug_string = options?.debug_string
+  local delayedButtons = options?.delayedButtons ?? 0
+  local baseHandler = options?.baseHandler
+  local needAnim = ::need_new_msg_box_anim()
 
   local cancel_fn = options?.cancel_fn
-  let needCancelFn = options?.need_cancel_fn
+  local needCancelFn = options?.need_cancel_fn
   if (!cancel_fn && buttons && buttons.len() == 1)
     cancel_fn = buttons[0].len() >= 2 ? buttons[0][1] : function(){}
 
@@ -56,7 +56,7 @@ let g_string =  require("%sqstd/string.nut")
         scene_msg_box(id, gui_scene, text, buttons, def_btn, options)
       })(id, gui_scene, text, buttons, def_btn, options)
 
-  let bottomLinks = get_text_urls_data(text)
+  local bottomLinks = get_text_urls_data(text)
   if (bottomLinks)
   {
     text = bottomLinks.text
@@ -72,14 +72,14 @@ let g_string =  require("%sqstd/string.nut")
     if (!::check_obj(gui_scene.getRoot()))
       return null
   }
-  let msgbox = gui_scene.loadModal(rootNode, "%gui/msgBox.blk", needAnim ? "massTransp" : "div", null)
+  local msgbox = gui_scene.loadModal(rootNode, "gui/msgBox.blk", needAnim ? "massTransp" : "div", null)
   if (!msgbox)
     return null
   msgbox.id = id
   ::dagor.debug("GuiManager: load msgbox = " + id)
 //  ::enableHangarControls(false, false) //to disable hangar controls need restore them on destroy msgBox
 
-  let textObj = msgbox.findObject("msgText")
+  local textObj = msgbox.findObject("msgText")
   if (options?.font == "fontNormal")
     textObj.mediumFont = "no"
   textObj.setValue(text)
@@ -87,7 +87,7 @@ let g_string =  require("%sqstd/string.nut")
   local handlerObj = null
   if (buttons)
   {
-    let handlerClass = class {
+    local handlerClass = class {
       function onButtonId(id)
       {
         if (startingDialogNow)
@@ -96,11 +96,11 @@ let g_string =  require("%sqstd/string.nut")
         if (showButtonsTimer>0)
           return
 
-        let srcHandlerObj = sourceHandlerObj
-        let bId = boxId
-        let bObj = boxObj
+        local srcHandlerObj = sourceHandlerObj
+        local bId = boxId
+        local bObj = boxObj
 
-        let delayedAction = function() {
+        local delayedAction = function() {
           if (::check_obj(boxObj))
             foreach (b in buttons)
             {
@@ -141,17 +141,17 @@ let g_string =  require("%sqstd/string.nut")
       {
         if (showButtonsTimer > 0)
           return
-        let btnObj = ::check_obj(boxObj) ? boxObj.findObject("buttons_holder") : null
+        local btnObj = ::check_obj(boxObj) ? boxObj.findObject("buttons_holder") : null
         if (!::check_obj(btnObj) || !btnObj.isVisible())
           return
-        let total = btnObj.childrenCount()
-        let value = btnObj.getValue()
+        local total = btnObj.childrenCount()
+        local value = btnObj.getValue()
         if (value < 0 || value >= total)
           return
         local button = btnObj.getChild(value)
         for (local i = 0; i < total; i++)
         {
-          let bObj = btnObj.getChild(i)
+          local bObj = btnObj.getChild(i)
           if (bObj?.isValid() && bObj.isHovered())
             button = bObj
         }
@@ -170,7 +170,7 @@ let g_string =  require("%sqstd/string.nut")
           {
             if (::check_obj(boxObj))
             {
-              let btnObj = boxObj.findObject("buttons_holder")
+              local btnObj = boxObj.findObject("buttons_holder")
               if (::check_obj(btnObj))
               {
                 btnObj.show(true)
@@ -225,12 +225,12 @@ let g_string =  require("%sqstd/string.nut")
 
       local defBtnIdx = 0
       local idx = -1
-      let animParams = needAnim ? "color-factor:t='0';" : ""
+      local animParams = needAnim ? "color-factor:t='0';" : ""
       foreach(btn in buttons)
       {
         if (btn[0]!="")
         {
-          let locTxtId = (btn[0].slice(0,1) == "#") ? btn[0] : "#msgbox/btn_" + btn[0]
+          local locTxtId = (btn[0].slice(0,1) == "#") ? btn[0] : "#msgbox/btn_" + btn[0]
           local btnText = "text:t='" + locTxtId + "'; id:t='" + btn[0] + "'; on_click:t='onButton';"
           if (buttons.len() == 1)
             btnText += "btnName:t='AB'; " //Enter and Esc for the single button
@@ -261,7 +261,7 @@ let g_string =  require("%sqstd/string.nut")
       handlerObj.boxObj = msgbox
       handlerObj.need_cancel_fn = needCancelFn
 
-      let holderObj = msgbox.findObject("buttons_holder")
+      local holderObj = msgbox.findObject("buttons_holder")
       if (holderObj != null) {
         gui_scene.appendWithBlk(holderObj, blkText, handlerObj)
 
@@ -274,7 +274,7 @@ let g_string =  require("%sqstd/string.nut")
           holderObj.setValue(defBtnIdx)
       }
 
-      let navObj = msgbox.findObject("msg-nav-bar")
+      local navObj = msgbox.findObject("msg-nav-bar")
       if (navObj != null)
         gui_scene.appendWithBlk(navObj, navText, handlerObj)
     }
@@ -284,14 +284,14 @@ let g_string =  require("%sqstd/string.nut")
 
   if (needWaitAnim)
   {
-    let waitObj = msgbox.findObject("msgWaitAnimation")
+    local waitObj = msgbox.findObject("msgWaitAnimation")
     if (waitObj)
       waitObj.show(true)
   }
 
   if (data_below_text)
   {
-    let containerObj = msgbox.findObject("msg_div_after_text")
+    local containerObj = msgbox.findObject("msg_div_after_text")
     if (containerObj)
     {
       gui_scene.replaceContentFromText(containerObj, data_below_text, data_below_text.len(), baseHandler || handlerObj)
@@ -300,7 +300,7 @@ let g_string =  require("%sqstd/string.nut")
   }
   if (data_below_buttons)
   {
-    let containerObj = msgbox.findObject("msg_bottom_div")
+    local containerObj = msgbox.findObject("msg_bottom_div")
     if (containerObj)
     {
       gui_scene.replaceContentFromText(containerObj, data_below_buttons, data_below_buttons.len(), baseHandler)
@@ -308,17 +308,17 @@ let g_string =  require("%sqstd/string.nut")
     }
   }
 
-  let containerObj = msgbox.findObject("msgTextRoot")
+  local containerObj = msgbox.findObject("msgTextRoot")
   if (::check_obj(containerObj))
   {
     gui_scene.applyPendingChanges(false)
-    let isNeedVCentering = containerObj.getSize()[1] < containerObj.getParent().getSize()[1]
+    local isNeedVCentering = containerObj.getSize()[1] < containerObj.getParent().getSize()[1]
     containerObj["pos"] = isNeedVCentering ? "0, ph/2-h/2" : "0, 0"
   }
 
   if (debug_string)
   {
-    let obj = msgbox.findObject("msg_debug_string")
+    local obj = msgbox.findObject("msg_debug_string")
     if (obj)
     {
       obj.setValue(debug_string)
@@ -355,10 +355,10 @@ let g_string =  require("%sqstd/string.nut")
 {
   for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
   {
-    let msgBoxObj = ::scene_msg_boxes_list[i]
+    local msgBoxObj = ::scene_msg_boxes_list[i]
     if (::check_obj(msgBoxObj))
     {
-      let objGuiScene = msgBoxObj.getScene()
+      local objGuiScene = msgBoxObj.getScene()
       if (guiScene && !guiScene.isEqual(objGuiScene))
         continue
 
@@ -378,7 +378,7 @@ let g_string =  require("%sqstd/string.nut")
 
 ::update_msg_boxes <- function update_msg_boxes()
 {
-  let guiScene = ::get_gui_scene()
+  local guiScene = ::get_gui_scene()
   if (guiScene == null)
     return
 
@@ -389,7 +389,7 @@ let g_string =  require("%sqstd/string.nut")
 
   for (local i = 0; i < ::gui_scene_boxes.len(); i++)
   {
-    let msg = ::gui_scene_boxes[i]
+    local msg = ::gui_scene_boxes[i]
     if (msg.id == "signin_change")
     {
       msgsToShow = []
@@ -402,8 +402,8 @@ let g_string =  require("%sqstd/string.nut")
 
   for (local i = 0; i < msgsToShow.len(); i++)
   {
-    let msg = ::gui_scene_boxes[msgsToShow[i]]
-    let options = msg?.options
+    local msg = ::gui_scene_boxes[msgsToShow[i]]
+    local options = msg?.options
     if (guiScene[msg.id] == null)
       scene_msg_box(msg.id, guiScene, msg.text, msg.buttons, msg.defBtn, options)
   }
@@ -414,19 +414,19 @@ let g_string =  require("%sqstd/string.nut")
   if (!text.len() || !::has_feature("AllowExternalLink"))
     return null
 
-  let urls = []
+  local urls = []
   local start = 0
-  let startText = "<url="
-  let urlEndText = ">"
-  let endText = "</url>"
+  local startText = "<url="
+  local urlEndText = ">"
+  local endText = "</url>"
   do {
     start = text.indexof(startText, start)
     if (start == null)
       break
-    let urlEnd = text.indexof(urlEndText, start + startText.len())
+    local urlEnd = text.indexof(urlEndText, start + startText.len())
     if (!urlEnd)
       break
-    let end = text.indexof(endText, urlEnd)
+    local end = text.indexof(endText, urlEnd)
     if (!end)
       break
 
@@ -453,7 +453,7 @@ let g_string =  require("%sqstd/string.nut")
     }
   }
 
-  let mb = {}
+  local mb = {}
   mb.id <- id
   mb.text <- text
   mb.buttons <- buttons

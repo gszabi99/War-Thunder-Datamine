@@ -1,17 +1,17 @@
-let { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
-let { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
-let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
+local { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
+local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::getReserveAircraftName <- function getReserveAircraftName(paramsTable)
 {
-  let preferredCrew = ::getTblValue("preferredCrew", paramsTable, null)
+  local preferredCrew = ::getTblValue("preferredCrew", paramsTable, null)
 
   // Trained level by unit name.
-  let trainedSpec = ::getTblValue("trainedSpec", preferredCrew, {})
+  local trainedSpec = ::getTblValue("trainedSpec", preferredCrew, {})
 
   foreach (unitName, unitSpec in trainedSpec)
   {
-    let unit = ::getAircraftByName(unitName)
+    local unit = ::getAircraftByName(unitName)
     if (unit != null && checkReserveUnit(unit, paramsTable))
       return unit.name
   }
@@ -25,10 +25,10 @@ let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::checkReserveUnit <- function checkReserveUnit(unit, paramsTable)
 {
-  let country = ::getTblValue("country", paramsTable, "")
-  let unitType = ::getTblValue("unitType", paramsTable, ::ES_UNIT_TYPE_AIRCRAFT)
-  let ignoreUnits = ::getTblValue("ignoreUnits", paramsTable, [])
-  let ignoreSlotbarCheck = ::getTblValue("ignoreSlotbarCheck", paramsTable, false)
+  local country = ::getTblValue("country", paramsTable, "")
+  local unitType = ::getTblValue("unitType", paramsTable, ::ES_UNIT_TYPE_AIRCRAFT)
+  local ignoreUnits = ::getTblValue("ignoreUnits", paramsTable, [])
+  local ignoreSlotbarCheck = ::getTblValue("ignoreSlotbarCheck", paramsTable, false)
 
   return (unit.shopCountry == country &&
          (::get_es_unit_type(unit) == unitType || unitType == ::ES_UNIT_TYPE_INVALID) &&
@@ -43,7 +43,7 @@ let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 {
   local tutorial = "fighter"
 
-  let curUnit = getShowedUnit()
+  local curUnit = getShowedUnit()
   if (curUnit?.isTank() && ::has_feature("Tanks"))
     tutorial = "lightTank"
   else if (curUnit?.isBoat() && ::has_feature("Ships"))
@@ -55,7 +55,7 @@ let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     foreach(t in checkTutorialsList)
     {
-      let func = ::getTblValue("isNeedAskInMainmenu", t)
+      local func = ::getTblValue("isNeedAskInMainmenu", t)
       if (!func || !func())
         continue
 

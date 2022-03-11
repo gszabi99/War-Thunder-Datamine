@@ -17,9 +17,9 @@
  *        Data in its original state.
  */
 
-let keyToStr = function(key)
+local keyToStr = function(key)
 {
-  let t = type(key)
+  local t = type(key)
   return t == "string" ? key
     : t == "integer"   ? "__int_"   + key
     : t == "float"     ? "__float_" + key
@@ -27,7 +27,7 @@ let keyToStr = function(key)
     : "__unsupported"
 }
 
-let strToKey = function(str)
+local strToKey = function(str)
 {
   return !::g_string.startsWith(str, "__")   ? str
     : ::g_string.startsWith(str, "__int_")   ? ::g_string.slice(str, 6).tointeger()
@@ -36,9 +36,9 @@ let strToKey = function(str)
     : "__unsupported"
 }
 
-let dataToBlk = function(data)
+local dataToBlk = function(data)
 {
-  let dataType = ::u.isDataBlock(data) ? "DataBlock" : type(data)
+  local dataType = ::u.isDataBlock(data) ? "DataBlock" : type(data)
   switch (dataType)
   {
     case "null":
@@ -50,15 +50,15 @@ let dataToBlk = function(data)
       return data
     case "array":
     case "table":
-      let blk = ::DataBlock()
-      let isArray = ::u.isArray(data)
+      local blk = ::DataBlock()
+      local isArray = ::u.isArray(data)
       if (isArray)
         blk.__array <- true
       foreach(key, value in data)
         blk[isArray ? ("array" + key) : keyToStr(key)] = dataToBlk(value)
       return blk
     case "DataBlock":
-      let blk = ::DataBlock()
+      local blk = ::DataBlock()
       blk.setFrom(data)
       blk.__datablock <- true
       return blk
@@ -67,7 +67,7 @@ let dataToBlk = function(data)
   }
 }
 
-let blkToData = function(blk)
+local blkToData = function(blk)
 {
   if (::u.isString(blk) && ::g_string.startsWith(blk, "__unsupported"))
   {
@@ -79,22 +79,22 @@ let blkToData = function(blk)
   }
   if (blk?.__datablock)
   {
-    let res = ::DataBlock()
+    local res = ::DataBlock()
     res.setFrom(blk)
     res.__datablock = null
     return res
   }
   if (blk?.__array)
   {
-    let res = []
+    local res = []
     for (local i = 0; i < blk.blockCount() + blk.paramCount() - 1; i++)
       res.append(blkToData(blk["array" + i]))
     return res
   }
-  let res = {}
+  local res = {}
   for (local b = 0; b < blk.blockCount(); b++)
   {
-    let block = blk.getBlock(b)
+    local block = blk.getBlock(b)
     res[strToKey(block.getBlockName())] <- blkToData(block)
   }
   for (local p = 0; p < blk.paramCount(); p++)

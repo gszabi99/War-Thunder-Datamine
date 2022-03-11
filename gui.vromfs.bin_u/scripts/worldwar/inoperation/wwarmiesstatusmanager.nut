@@ -17,7 +17,7 @@ g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesBySt
   if (!requestUpdated)
     return
 
-  let curTime = ::dagor.getCurTime()
+  local curTime = ::dagor.getCurTime()
   if (curTime - lastUpdateTime < UPDATE_REFRESH_DELAY)
     return
 
@@ -25,11 +25,11 @@ g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesBySt
 
   foreach(armyName in ::ww_get_armies_names())
   {
-    let army = ::g_world_war.getArmyByName(armyName)
+    local army = ::g_world_war.getArmyByName(armyName)
     if (!army.hasManageAccess())
       continue
 
-    let cacheByStatus = ::getTblValue(army.getActionStatus(), armiesStateCache, null)
+    local cacheByStatus = ::getTblValue(army.getActionStatus(), armiesStateCache, null)
     if (cacheByStatus == null)
       continue
 
@@ -59,7 +59,7 @@ g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(s
 g_ww_map_armies_status_manager._resetCache <- function _resetCache()
 {
   armiesStateCache = {}
-  let statusesByCaching = [
+  local statusesByCaching = [
       WW_ARMY_ACTION_STATUS.IDLE,
       WW_ARMY_ACTION_STATUS.IN_MOVE,
       WW_ARMY_ACTION_STATUS.ENTRENCHED,

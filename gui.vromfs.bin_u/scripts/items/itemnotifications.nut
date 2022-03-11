@@ -1,19 +1,19 @@
-let workshop = require("scripts/items/workshop/workshop.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
 
-let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
+local ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
-let addItemsInOfferBuyList = function() {
-  let itemsList = ::ItemsManager.getInventoryList(itemType.ALL,
+local addItemsInOfferBuyList = function() {
+  local itemsList = ::ItemsManager.getInventoryList(itemType.ALL,
     @(i) i.needOfferBuyAtExpiration() && i.getAmount() > 0)
 
   if (!itemsList.len())
     return
 
   local hasChanges = false
-  let needOfferBuyItemsList = ::load_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, ::DataBlock())
+  local needOfferBuyItemsList = ::load_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, ::DataBlock())
   foreach (item in itemsList)
   {
-    let idString = (item.id).tostring()
+    local idString = (item.id).tostring()
     if (needOfferBuyItemsList?[idString])
       continue
 
@@ -25,7 +25,7 @@ let addItemsInOfferBuyList = function() {
     ::save_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, needOfferBuyItemsList)
 }
 
-let checkOfferToBuyAtExpiration = function()
+local checkOfferToBuyAtExpiration = function()
 {
   if (!::isInMenu())
     return
@@ -39,9 +39,9 @@ let checkOfferToBuyAtExpiration = function()
   local hasChanges = false
   foreach(itemId, value in needOfferBuyItemsList)
   {
-    let id = ::to_integer_safe(itemId, itemId, false)
-    let inventoryItem = ::ItemsManager.getInventoryItemById(id)
-    let shopItem = ::ItemsManager.findItemById(id)
+    local id = ::to_integer_safe(itemId, itemId, false)
+    local inventoryItem = ::ItemsManager.getInventoryItemById(id)
+    local shopItem = ::ItemsManager.findItemById(id)
     if (inventoryItem && !inventoryItem.isExpired())
       continue
 
@@ -52,7 +52,7 @@ let checkOfferToBuyAtExpiration = function()
       continue
     }
 
-    let wSet = workshop.getSetByItemId(shopItem.id)
+    local wSet = workshop.getSetByItemId(shopItem.id)
     if (!wSet || !wSet.isVisible())
     {
       hasChanges = true

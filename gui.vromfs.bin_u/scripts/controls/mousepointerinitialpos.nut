@@ -9,7 +9,7 @@
  * GUI scene is opened from HUD, where mouse pointer was invisible.
  */
 
-let { isMouseCursorVisible } = require("scripts/controls/mousePointerVisibility.nut")
+local { isMouseCursorVisible } = require("scripts/controls/mousePointerVisibility.nut")
 
 const MOUSE_POINTER_SHOWN_RECENTLY_MS = 250
 
@@ -17,18 +17,18 @@ local lastMousePointerTimeShow = -1
 local lastMousePointerTimeHide = -1
 
 isMouseCursorVisible.subscribe(function(isVisible) {
-  let now = ::dagor.getCurTime()
+  local now = ::dagor.getCurTime()
   if (isVisible)
     lastMousePointerTimeShow = now
   else
     lastMousePointerTimeHide = now
 })
 
-let function setMousePointerInitialPos(obj)
+local function setMousePointerInitialPos(obj)
 {
-  let now = ::dagor.getCurTime()
-  let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
-  let isCursorVisible = ::is_cursor_visible_in_gui()
+  local now = ::dagor.getCurTime()
+  local isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+  local isCursorVisible = ::is_cursor_visible_in_gui()
 
   if (isMouseMode && isCursorVisible && now > lastMousePointerTimeShow + MOUSE_POINTER_SHOWN_RECENTLY_MS)
     return false
@@ -44,9 +44,9 @@ let function setMousePointerInitialPos(obj)
   return true
 }
 
-let function setMousePointerInitialPosOnChildByValue(obj)
+local function setMousePointerInitialPosOnChildByValue(obj)
 {
-  let idx = obj?.isValid() ? obj.getValue() : -1
+  local idx = obj?.isValid() ? obj.getValue() : -1
   if (idx < 0 || idx >= obj.childrenCount())
     return false
   return setMousePointerInitialPos(obj.getChild(idx))

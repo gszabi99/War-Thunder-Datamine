@@ -1,9 +1,9 @@
-let { search } = require("sqStdLibs/helpers/u.nut")
-let platform = require("scripts/clientState/platform.nut")
-let helpTypes = require("scripts/controls/help/controlsHelpTypes.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { search } = require("sqStdLibs/helpers/u.nut")
+local platform = require("scripts/clientState/platform.nut")
+local helpTypes = require("scripts/controls/help/controlsHelpTypes.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-let tabGroups = [
+local tabGroups = [
   {
     title = "#controls/help/aircraft_simpleControls"
     list = [
@@ -67,25 +67,25 @@ let tabGroups = [
   }
 ]
 
-let function getTabs(contentSet)
+local function getTabs(contentSet)
 {
-  let res = []
+  local res = []
   foreach (group in tabGroups)
   {
-    let filteredGroup = group.list.filter(@(t) t.needShow(contentSet))
+    local filteredGroup = group.list.filter(@(t) t.needShow(contentSet))
     if (filteredGroup.len() > 0)
       res.append(group.__merge({list = filteredGroup}))
   }
   return res
 }
 
-let function getPrefferableType(contentSet)
+local function getPrefferableType(contentSet)
 {
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 
-  let unit = getPlayerCurUnit()
-  let unitTag = unit?.isSubmarine() ? "submarine" : null
+  local unit = getPlayerCurUnit()
+  local unitTag = unit?.isSubmarine() ? "submarine" : null
 
   foreach (pattern in [
     CONTROL_HELP_PATTERN.HOTAS4,
@@ -96,7 +96,7 @@ let function getPrefferableType(contentSet)
     CONTROL_HELP_PATTERN.RADAR,
   ])
   {
-    let helpType = search(helpTypes.types, @(t) t.helpPattern == pattern
+    local helpType = search(helpTypes.types, @(t) t.helpPattern == pattern
       && t.needShow(contentSet)
       && t.showByUnit(unit, unitTag))
     if (helpType)

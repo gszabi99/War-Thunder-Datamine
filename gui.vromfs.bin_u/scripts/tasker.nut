@@ -1,4 +1,4 @@
-let subscriptions = require_optional("sqStdLibs/helpers/subscriptions.nut")
+local subscriptions = require_optional("sqStdLibs/helpers/subscriptions.nut")
 
 if ("g_script_reloader" in ::getroottable())
   ::g_script_reloader.loadIfExist("scripts/framework/msgBox.nut")
@@ -26,10 +26,10 @@ global enum TASK_CB_TYPE
       return false
     }
 
-    let showProgressBox = ::getTblValue("showProgressBox", taskOptions, false)
+    local showProgressBox = ::getTblValue("showProgressBox", taskOptions, false)
 
     // Same as progress box by default.
-    let showErrorMessageBox = ::getTblValue("showErrorMessageBox", taskOptions, showProgressBox)
+    local showErrorMessageBox = ::getTblValue("showErrorMessageBox", taskOptions, showProgressBox)
 
     addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox)
 
@@ -46,28 +46,28 @@ global enum TASK_CB_TYPE
 
   function charSimpleAction(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null)
   {
-    let taskId = ::char_send_simple_action(requestName, requestBlk)
+    local taskId = ::char_send_simple_action(requestName, requestBlk)
     addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.BASIC)
     return taskId
   }
 
   function charRequestJson(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null)
   {
-    let taskId = ::char_request_json_from_server(requestName, requestBlk)
+    local taskId = ::char_request_json_from_server(requestName, requestBlk)
     addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
     return taskId
   }
 
   function charRequestBlk(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null)
   {
-    let taskId = ::char_request_blk_from_server(requestName, requestBlk)
+    local taskId = ::char_request_blk_from_server(requestName, requestBlk)
     addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
     return taskId
   }
 
   function addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox)
   {
-    let taskData = {
+    local taskData = {
       taskId = taskId
       taskCbType = taskCbType
       showProgressBox = showProgressBox
@@ -101,7 +101,7 @@ global enum TASK_CB_TYPE
 
   function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data = null)
   {
-    let taskData = ::getTblValue(taskId, taskDataByTaskId, null)
+    local taskData = ::getTblValue(taskId, taskDataByTaskId, null)
     if (taskData == null)
       return
 
@@ -124,7 +124,7 @@ global enum TASK_CB_TYPE
 
     if (taskData.onError != null)
     {
-      let info = taskData.onError.getfuncinfos()
+      local info = taskData.onError.getfuncinfos()
       if (info.native || info.parameters.len() > 1)
         taskData.onError(taskResult)
       else
@@ -145,7 +145,7 @@ global enum TASK_CB_TYPE
     if (!isMsgBoxesAvailable() || ::checkObj(currentProgressBox))
       return
 
-    let guiScene = ::get_cur_gui_scene()
+    local guiScene = ::get_cur_gui_scene()
     if (guiScene == null)
       return
 
@@ -155,7 +155,7 @@ global enum TASK_CB_TYPE
         cancelFunc = function() {}
     if (delayedButtons < 0)
       delayedButtons = PROGRESS_BOX_BUTTONS_DELAY
-    let progressBoxOptions = {
+    local progressBoxOptions = {
       waitAnim = true
       delayedButtons = delayedButtons
     }
@@ -170,7 +170,7 @@ global enum TASK_CB_TYPE
     if (!isMsgBoxesAvailable() || !::checkObj(currentProgressBox))
       return
 
-    let guiScene = currentProgressBox.getScene()
+    local guiScene = currentProgressBox.getScene()
     guiScene.destroyElement(currentProgressBox)
     if ("broadcastEvent" in ::getroottable())
       ::broadcastEvent("ModalWndDestroy")
@@ -218,7 +218,7 @@ global enum TASK_CB_TYPE
       && ("get_char_extended_error" in getroottable())
       && result == ::EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
   {
-    let notAllowedChars = ::get_char_extended_error()
+    local notAllowedChars = ::get_char_extended_error()
     text = ::format(text, notAllowedChars)
   }
   return text

@@ -1,4 +1,4 @@
-::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base
+class ::queue_stats_versions.StatsVer2 extends ::queue_stats_versions.Base
 {
   neutralTeamId = ::get_team_name_by_mp_team(::MP_TEAM_NEUTRAL)
   static fullTeamNamesList = [
@@ -16,7 +16,7 @@
         || (isClanStats && !("byClans" in queueInfo)))
       return false
 
-    let cluster = queueInfo.cluster
+    local cluster = queueInfo.cluster
     if (!(cluster in source))
       source[cluster] <- {}
 
@@ -37,7 +37,7 @@
       gatherClusterData(cluster, statsByQueueId)
       if (cluster in teamsQueueTable)
       {
-        let playersCount = teamsQueueTable[cluster].playersCount
+        local playersCount = teamsQueueTable[cluster].playersCount
         if (playersCount > playersOnMaxCluster)
         {
           maxClusterName = cluster
@@ -51,15 +51,15 @@
   //return player count on cluster
   function gatherClusterData(cluster, statsByQueueId)
   {
-    let dataByTeams = {
+    local dataByTeams = {
       playersCount = 0
       isSymmetric = false
     }
-    let dataByCountries = {}
+    local dataByCountries = {}
 
     foreach(fullStats in statsByQueueId)
     {
-      let stats = ::getTblValue("byTeams", fullStats)
+      local stats = ::getTblValue("byTeams", fullStats)
       if (!stats)
         continue
 
@@ -73,10 +73,10 @@
 
   function mergeToDataByTeams(dataByTeams, stats)
   {
-    let neutralTeamStats = ::getTblValue(neutralTeamId, stats)
+    local neutralTeamStats = ::getTblValue(neutralTeamId, stats)
     if (neutralTeamStats)
     {
-      let playersCount = getCountByRank(neutralTeamStats, myRankInQueue)
+      local playersCount = getCountByRank(neutralTeamStats, myRankInQueue)
       if (playersCount <= dataByTeams.playersCount)
         return
 
@@ -87,9 +87,9 @@
       return
     }
 
-    let teamAStats = ::getTblValue("teamA", stats)
-    let teamBStats = ::getTblValue("teamB", stats)
-    let playersCount = getCountByRank(teamAStats, myRankInQueue)
+    local teamAStats = ::getTblValue("teamA", stats)
+    local teamBStats = ::getTblValue("teamB", stats)
+    local playersCount = getCountByRank(teamAStats, myRankInQueue)
                        + getCountByRank(teamBStats, myRankInQueue)
     if (playersCount <= dataByTeams.playersCount)
       return
@@ -106,7 +106,7 @@
     if (!::u.isTable(statsByCountries))
       return res
 
-    let key = rank.tostring()
+    local key = rank.tostring()
     foreach(countryTbl in statsByCountries)
       res += getCountFromStatTbl(::getTblValue(key, countryTbl))
     return res
@@ -119,7 +119,7 @@
 
   function gatherCountsTblByRanks(statsByCountries)
   {
-    let res = {}
+    local res = {}
     for(local i = 1; i <= ::max_country_rank; i++)
       res[i.tostring()] <- getCountByRank(statsByCountries, i)
     res.playersCount <- ::getTblValue(myRankInQueue.tostring(), res, 0)
@@ -151,7 +151,7 @@
 
   function remapCountries(statsByCountries)
   {
-    let res = {}
+    local res = {}
     foreach(country, data in statsByCountries)
       res["country_" + country] <- data
     return res
@@ -169,11 +169,11 @@
 
   function gatherClansData(stats)
   {
-    let statsByClans = ::getTblValue("byClans", stats)
+    local statsByClans = ::getTblValue("byClans", stats)
     if (::u.isEmpty(statsByClans))
       return false
 
-    let myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), statsByClans)
+    local myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), statsByClans)
     if (myClanInfo)
       myClanQueueTable = clone myClanInfo
 

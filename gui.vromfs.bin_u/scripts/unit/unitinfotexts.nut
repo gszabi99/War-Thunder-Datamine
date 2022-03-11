@@ -13,7 +13,7 @@ global enum bit_unit_status
   empty       = 1024
 }
 
-let basicUnitRoles = {
+local basicUnitRoles = {
   [::ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
   [::ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
     "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv"],
@@ -23,7 +23,7 @@ let basicUnitRoles = {
   [::ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
 }
 
-let unitRoleFontIcons = {
+local unitRoleFontIcons = {
   fighter                  = ::loc("icon/unitclass/fighter"),
   assault                  = ::loc("icon/unitclass/assault"),
   bomber                   = ::loc("icon/unitclass/bomber"),
@@ -51,7 +51,7 @@ let unitRoleFontIcons = {
   submarine                = ::loc("icon/unitclass/submarine")
 }
 
-let unitRoleByTag = {
+local unitRoleByTag = {
   type_light_fighter    = "light_fighter",
   type_medium_fighter   = "medium_fighter",
   type_heavy_fighter    = "heavy_fighter",
@@ -98,16 +98,16 @@ let unitRoleByTag = {
   type_bomber           = "medium_bomber"
 }
 
-let chancesText = [
+local chancesText = [
   { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
   { text = "chance_to_met/average", color = "@chanceAverageColor", brDiff = 0.34 }
   { text = "chance_to_met/low",     color = "@chanceLowColor",     brDiff = 0.71 }
   { text = "chance_to_met/never",   color = "@chanceNeverColor",   brDiff = 1.01 }
 ]
 
-let unitRoleByName = {}
+local unitRoleByName = {}
 
-let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+local function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
   local unit = unitData
   if (typeof(unitData) == "string")
     unit = ::getAircraftByName(unitData);
@@ -130,11 +130,11 @@ let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transp
   return role
 }
 
-let getRoleName = @(role) role.slice(5)
+local getRoleName = @(role) role.slice(5)
 
-let function getUnitBasicRole(unit) {
-  let unitType = ::get_es_unit_type(unit)
-  let basicRoles = basicUnitRoles?[unitType]
+local function getUnitBasicRole(unit) {
+  local unitType = ::get_es_unit_type(unit)
+  local basicRoles = basicUnitRoles?[unitType]
   if (!basicRoles || !basicRoles.len())
     return ""
 
@@ -144,20 +144,20 @@ let function getUnitBasicRole(unit) {
   return getRoleName(basicRoles[0])
 }
 
-let getRoleText = @(role) ::loc($"mainmenu/type_{role}")
-let getRoleTextByTag = @(tag) ::loc($"mainmenu/{tag}")
+local getRoleText = @(role) ::loc($"mainmenu/type_{role}")
+local getRoleTextByTag = @(tag) ::loc($"mainmenu/{tag}")
 
 /*
   typeof @source == Unit     -> @source is unit
   typeof @source == "string" -> @source is role id
 */
-let function getUnitRoleIcon(source) {
-  let role = ::u.isString(source) ? source
+local function getUnitRoleIcon(source) {
+  local role = ::u.isString(source) ? source
     : getUnitBasicRole(source)
   return unitRoleFontIcons?[role] ?? ""
 }
 
-let function getUnitTooltipImage(unit)
+local function getUnitTooltipImage(unit)
 {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
@@ -173,19 +173,19 @@ let function getUnitTooltipImage(unit)
   return ""
 }
 
-let function getFullUnitRoleText(unit)
+local function getFullUnitRoleText(unit)
 {
-  let tags = unit?.tags
+  local tags = unit?.tags
   if (tags == null)
     return ""
 
   if (unit?.isSubmarine())
     return getRoleText("submarine")
 
-  let needShowBaseTag = tags.indexof("visibleBaseTag") != null
-  let basicRoles = basicUnitRoles?[::get_es_unit_type(unit)] ?? []
+  local needShowBaseTag = tags.indexof("visibleBaseTag") != null
+  local basicRoles = basicUnitRoles?[::get_es_unit_type(unit)] ?? []
   local basicRole = ""
-  let textsList = []
+  local textsList = []
   foreach(tag in tags)
     if (tag.len()>5 && tag.slice(0, 5)=="type_")
     {
@@ -204,9 +204,9 @@ let function getFullUnitRoleText(unit)
   return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
-let function getChanceToMeetText(battleRating1, battleRating2)
+local function getChanceToMeetText(battleRating1, battleRating2)
 {
-  let brDiff = fabs(battleRating1.tofloat() - battleRating2.tofloat())
+  local brDiff = fabs(battleRating1.tofloat() - battleRating2.tofloat())
   local brData = null
   foreach(data in chancesText)
     if (!brData
@@ -215,15 +215,15 @@ let function getChanceToMeetText(battleRating1, battleRating2)
   return brData? ::colorize(brData.color, ::loc(brData.text)) : ""
 }
 
-let function getShipMaterialTexts(unitId)
+local function getShipMaterialTexts(unitId)
 {
-  let res = {}
-  let blk = ::get_wpcost_blk()?[unitId ?? ""]?.Shop
-  let parts = [ "hull", "superstructure" ]
+  local res = {}
+  local blk = ::get_wpcost_blk()?[unitId ?? ""]?.Shop
+  local parts = [ "hull", "superstructure" ]
   foreach (part in parts)
   {
-    let material  = blk?[part + "Material"]  ?? ""
-    let thickness = blk?[part + "Thickness"] ?? 0.0
+    local material  = blk?[part + "Material"]  ?? ""
+    local thickness = blk?[part + "Thickness"] ?? 0.0
     if (thickness && material)
     {
       res[part + "Label"] <- ::loc("info/ship/part/" + part)
@@ -241,7 +241,7 @@ let function getShipMaterialTexts(unitId)
   return res
 }
 
-let function getUnitItemStatusText(bitStatus, isGroup = false)
+local function getUnitItemStatusText(bitStatus, isGroup = false)
 {
   local statusText = ""
   if (bit_unit_status.locked & bitStatus)
@@ -271,7 +271,7 @@ let function getUnitItemStatusText(bitStatus, isGroup = false)
   return statusText
 }
 
-let function getUnitRarity(unit)
+local function getUnitRarity(unit)
 {
   if (::isUnitDefault(unit))
     return "reserve"
@@ -284,9 +284,9 @@ let function getUnitRarity(unit)
   return "common"
 }
 
-let function getUnitRequireUnlockText(unit) {
-  let unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
-  let conditions = ::build_conditions_config(unlockBlk)
+local function getUnitRequireUnlockText(unit) {
+  local unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  local conditions = ::build_conditions_config(unlockBlk)
 
   return "\n".concat(::loc("mainmenu/needUnlock"), ::build_unlock_desc(conditions,
     { showProgress = true
@@ -295,10 +295,10 @@ let function getUnitRequireUnlockText(unit) {
   )
 }
 
-let function getUnitRequireUnlockShortText(unit) {
-  let unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
-  let conditions = ::build_conditions_config(unlockBlk)
-  let mainCond = ::UnlockConditions.getMainProgressCondition(conditions.conditions)
+local function getUnitRequireUnlockShortText(unit) {
+  local unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  local conditions = ::build_conditions_config(unlockBlk)
+  local mainCond = ::UnlockConditions.getMainProgressCondition(conditions.conditions)
   return ::UnlockConditions._genMainConditionText(
     mainCond, conditions.curVal, conditions.maxVal, {isProgressTextOnly = true})
 }

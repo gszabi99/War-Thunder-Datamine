@@ -1,4 +1,4 @@
-let { isDataBlock } = require("std/underscore.nut")
+local { isDataBlock } = require("std/underscore.nut")
 
 //to use table by DataBlock api
 //Only get Data from table, not set.
@@ -64,11 +64,11 @@ let { isDataBlock } = require("std/underscore.nut")
 
   function _modulo(key)
   {
-    let res = []
+    local res = []
     if (!(key in ___originData___))
       return res
 
-    let valList = ___originData___[key]
+    local valList = ___originData___[key]
     if (typeof(valList) != "array")
     {
       res.append(___checkReturn___(valList, key))
@@ -84,7 +84,7 @@ let { isDataBlock } = require("std/underscore.nut")
   {
     if (!(key in ___originData___))
       return null
-    let realVal = ___checkReturn___(___originData___[key], key)
+    local realVal = ___checkReturn___(___originData___[key], key)
     if (!isDataBlock(realVal))
       return null
     return realVal
@@ -92,7 +92,7 @@ let { isDataBlock } = require("std/underscore.nut")
 
   function ___addToParamsList___(val, key)
   {
-    let realVal = ___checkReturn___(val, key)
+    local realVal = ___checkReturn___(val, key)
     if (realVal == null)
       return
 
@@ -157,7 +157,7 @@ let { isDataBlock } = require("std/underscore.nut")
 
   function addBlock(name)
   {
-    let val = ::DataBlockAdapter({}, name)
+    local val = ::DataBlockAdapter({}, name)
     ___initCountsOnce___()
     ___blocksList___.append(val)
     return val
@@ -165,7 +165,7 @@ let { isDataBlock } = require("std/underscore.nut")
 
   function formatAsString()
   {
-    let res = []
+    local res = []
     ::debugTableData(___originData___, {
       recursionLevel = 4,
       showBlockBrackets = true,

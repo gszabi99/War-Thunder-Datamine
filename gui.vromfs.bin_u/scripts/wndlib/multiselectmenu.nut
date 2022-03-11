@@ -20,17 +20,17 @@
     ]
   }
 */
-let stdMath = require("std/math.nut")
+local stdMath = require("std/math.nut")
 
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config)
 {
   ::handlersManager.loadHandler(::gui_handlers.MultiSelectMenu, config)
 }
 
-::gui_handlers.MultiSelectMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.MultiSelectMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/multiSelectMenu"
+  sceneTplName = "gui/multiSelectMenu"
   needVoiceChat = false
 
   list = null
@@ -87,7 +87,7 @@ let stdMath = require("std/math.nut")
 
   function getCurValuesArray()
   {
-    let selOptions = ::get_array_by_bit_value(currentBitMask, list)
+    local selOptions = ::get_array_by_bit_value(currentBitMask, list)
     return ::u.map(selOptions, function(o) { return ::getTblValue("value", o) })
   }
 

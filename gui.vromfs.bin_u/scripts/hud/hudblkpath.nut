@@ -1,4 +1,4 @@
-let mpTankHudBlkPath = ::Watched("%gui/hud/hudTank.blk")
+local mpTankHudBlkPath = ::Watched("gui/hud/hudTank.blk")
 
 return {
   mpTankHudBlkPath = mpTankHudBlkPath

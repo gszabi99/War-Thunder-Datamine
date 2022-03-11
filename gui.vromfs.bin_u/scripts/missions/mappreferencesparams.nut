@@ -1,17 +1,17 @@
-let mapPreferences = require("mapPreferences")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+local mapPreferences = require("mapPreferences")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
-let mapsListByEvent = {}
+local mapsListByEvent = {}
 
-let sortIdxByMissionType = {
+local sortIdxByMissionType = {
   ["Dom"]   = 0,
   ["Bttl"]  = 1,
   ["other"] = 2
 }
 
-let function getPrefTypes()
+local function getPrefTypes()
 {
   return {
     banned = {
@@ -35,12 +35,12 @@ let function getPrefTypes()
   }
 }
 
-let function hasPreferences(curEvent)
+local function hasPreferences(curEvent)
 {
   return (curEvent?.missionsBanMode ?? "none") != "none"
 }
 
-let function sortByLevel(list)
+local function sortByLevel(list)
 {
   list.sort(@(a,b) a.image <=> b.image)
   foreach(idx, map in list)
@@ -48,16 +48,16 @@ let function sortByLevel(list)
   return list
 }
 
-let function getCurBattleTypeName(curEvent)
+local function getCurBattleTypeName(curEvent)
 {
   return !hasPreferences(curEvent)
     ? "" : (curEvent?.statistic_group && curEvent?.difficulty)
       ? curEvent.statistic_group + "_" + curEvent.difficulty : curEvent.name
 }
 
-let function getProfileBanData(curEvent)
+local function getProfileBanData(curEvent)
 {
-  let curBattleTypeName = getCurBattleTypeName(curEvent)
+  local curBattleTypeName = getCurBattleTypeName(curEvent)
   return {
     disliked = mapPreferences.get(curBattleTypeName, mapPreferences.DISLIKE),
     banned = mapPreferences.get(curBattleTypeName, mapPreferences.BAN),
@@ -65,10 +65,10 @@ let function getProfileBanData(curEvent)
   }
 }
 
-let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName")
+local function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName")
 {
   local missionLocName = ::loc("missions/" + missionId)
-  let locNameValue = config?[locNameKey]
+  local locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
     missionLocName = isLevelBanMode ? ::loc(::split(locNameValue, "; ")?[1] ?? "") :
       getMissionLocName(config, locNameKey)
@@ -79,15 +79,15 @@ let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locN
     : missionLocName
 }
 
-let function getMapState(map)
+local function getMapState(map)
 {
   return map.liked ? "liked" : map.banned ? "banned" : map.disliked ? "disliked" : ""
 }
 
-let function getInactiveMaps(curEvent, mapsList)
+local function getInactiveMaps(curEvent, mapsList)
 {
-  let res = {}
-  let banData = getProfileBanData(curEvent)
+  local res = {}
+  local banData = getProfileBanData(curEvent)
   foreach(name, list in banData)
   {
     res[name] <- []
@@ -99,9 +99,9 @@ let function getInactiveMaps(curEvent, mapsList)
   return res
 }
 
-let function getMissionParams(name, missionInfo)
+local function getMissionParams(name, missionInfo)
 {
-  let mType = name.split("_").top().split("Conq").top()
+  local mType = name.split("_").top().split("Conq").top()
   return {
     id = name,
     title = getMissionLoc(name, missionInfo, false),
@@ -110,20 +110,20 @@ let function getMissionParams(name, missionInfo)
   }
 }
 
-let function getMapsListImpl(curEvent)
+local function getMapsListImpl(curEvent)
 {
   if(!hasPreferences(curEvent))
     return []
 
-  let isLevelBanMode = curEvent.missionsBanMode == "level"
-  let banData = getProfileBanData(curEvent)
-  let banList = banData.banned
-  let dislikeList = banData.disliked
-  let likeList = banData.liked
+  local isLevelBanMode = curEvent.missionsBanMode == "level"
+  local banData = getProfileBanData(curEvent)
+  local banList = banData.banned
+  local dislikeList = banData.disliked
+  local likeList = banData.liked
   local list = []
-  let hasTankOrShip =  (::events.getEventUnitTypesMask(curEvent)
+  local hasTankOrShip =  (::events.getEventUnitTypesMask(curEvent)
     & (unitTypes.TANK.bit | unitTypes.SHIP.bit)) != 0
-  let missionToLevelTable = {}
+  local missionToLevelTable = {}
   if (isLevelBanMode)
     foreach(inst in curEvent?.missions_info ?? {})
       if (inst?.name && inst?.level)
@@ -132,27 +132,27 @@ let function getMapsListImpl(curEvent)
           origMisName  = inst?.origMisName
         }
 
-  let missionList = {}
+  local missionList = {}
   foreach(gm in ::g_matching_game_modes.getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
     missionList.__update(gm?.mission_decl.missions_list ?? {})
 
-  let assertMisNames = []
+  local assertMisNames = []
   foreach(name, val in missionList)
   {
     if (isLevelBanMode && missionToLevelTable?[name].origMisName)
       continue
 
-    let missionInfo = ::get_mission_meta_info(missionToLevelTable?[name].origMisName ?? name)
+    local missionInfo = ::get_mission_meta_info(missionToLevelTable?[name].origMisName ?? name)
     if((missionInfo?.level ?? "") == "")
     {
       assertMisNames.append(name)
       continue
     }
-    let level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
-    let map = isLevelBanMode ? level : name
+    local level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
+    local map = isLevelBanMode ? level : name
     if (isLevelBanMode)
     {
-      let levelMap = ::u.search(list, @(inst) inst.map == map)
+      local levelMap = ::u.search(list, @(inst) inst.map == map)
       if (levelMap)
       {
         levelMap.missions.append(getMissionParams(name, missionInfo))
@@ -160,11 +160,11 @@ let function getMapsListImpl(curEvent)
       }
     }
 
-    let image = "{0}_thumb*".subst(
+    local image = "{0}_thumb*".subst(
       ::get_level_texture(missionInfo.level, hasTankOrShip && ::regexp2(@"^av(n|g)").match(level))
         .slice(0,-1))
 
-    let mapStateData = {
+    local mapStateData = {
       disliked = dislikeList.indexof(map) != null,
       banned = banList.indexof(map) != null,
       liked = likeList.indexof(map) != null
@@ -186,7 +186,7 @@ let function getMapsListImpl(curEvent)
 
   if(assertMisNames.len() > 0)
   {
-    let invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
+    local invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
     ::script_net_assert_once("MapPreferencesParams:", "Missions have no level")
   }
 
@@ -199,16 +199,16 @@ let function getMapsListImpl(curEvent)
   return list
 }
 
-let function getMapsList(curEvent)
+local function getMapsList(curEvent)
 {
   if (curEvent not in mapsListByEvent)
     mapsListByEvent[curEvent] <- getMapsListImpl(curEvent)
   return mapsListByEvent[curEvent]
 }
 
-let function getParams(curEvent)
+local function getParams(curEvent)
 {
-  let params = {bannedMissions = [], dislikedMissions = [], likedMissions = []}
+  local params = {bannedMissions = [], dislikedMissions = [], likedMissions = []}
   if(hasPreferences(curEvent))
     foreach(inst in getMapsList(curEvent))
     {
@@ -223,13 +223,13 @@ let function getParams(curEvent)
   return params
 }
 
-let function getCounters(curEvent)
+local function getCounters(curEvent)
 {
   if(!hasPreferences(curEvent))
     return {}
 
-  let banData = getProfileBanData(curEvent)
-  let hasPremium  = ::havePremium()
+  local banData = getProfileBanData(curEvent)
+  local hasPremium  = ::havePremium()
   return {
     banned = {
       maxCounter = hasPremium
@@ -255,10 +255,10 @@ let function getCounters(curEvent)
   }
 }
 
-let function resetProfilePreferences(curEvent, pref)
+local function resetProfilePreferences(curEvent, pref)
 {
-  let curBattleTypeName = getCurBattleTypeName(curEvent)
-  let params = getProfileBanData(curEvent)
+  local curBattleTypeName = getCurBattleTypeName(curEvent)
+  local params = getProfileBanData(curEvent)
   foreach(item in params[pref])
   {
     mapPreferences.remove(curBattleTypeName, getPrefTypes()[pref].sType, item)
@@ -266,7 +266,7 @@ let function resetProfilePreferences(curEvent, pref)
   }
 }
 
-let function getPrefTitle(curEvent)
+local function getPrefTitle(curEvent)
 {
   return ! hasPreferences(curEvent) ? ""
     : curEvent.missionsBanMode == "level" ? ::loc("mainmenu/mapPreferences")

@@ -1,4 +1,4 @@
-let { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode
+local { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode
 } = ::require_native("guiOptions")
 
 global enum optionControlType {
@@ -280,7 +280,6 @@ local user_option_names = [
     "USEROPT_AUTO_AIMLOCK_ON_SHOOT",
     "USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN",
     "USEROPT_USE_RECTANGULAR_RADAR_INDICATOR",
-    "USEROPT_RADAR_TARGET_CYCLING",
     "USEROPT_USE_RADAR_HUD_IN_COCKPIT",
     "USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN",
     "USEROPT_SAVE_AI_TARGET_TYPE",
@@ -400,7 +399,6 @@ local user_option_names = [
     "USEROPT_MISSION_NAME_POSTFIX",
     "USEROPT_SHOW_DESTROYED_PARTS",
     "USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN",
-    "USEROPT_GROUND_RADAR_TARGET_CYCLING",
     "USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN",
     "USEROPT_FPS_CAMERA_PHYSICS",
     "USEROPT_FPS_VR_CAMERA_PHYSICS",
@@ -440,7 +438,6 @@ local user_option_names = [
     "USEROPT_ALLOW_ADDED_TO_LEADERBOARDS",
 
     "USEROPT_ENABLE_SOUND_SPEED",
-    "USEROPT_SOUND_RESET_VOLUMES",
     "USEROPT_AIR_RADAR_SIZE",
     "USEROPT_ATGM_AIM_SENS_HELICOPTER",
     "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER",
@@ -459,16 +456,16 @@ local user_option_names = [
 
 foreach(idx, modeName in options_mode_names)
 {
-  let res = addOptionMode(modeName)
-  let realIdx = (res != null) ? res : idx
+  local res = addOptionMode(modeName)
+  local realIdx = (res != null) ? res : idx
   getroottable()[modeName] <- realIdx
 }
 options_mode_names = null // warning disable: -assigned-never-used
 
 foreach(idx, useropt in user_option_names)
 {
-  let res = addUserOption(useropt)
-  let realIdx = (res != null) ? res : idx
+  local res = addUserOption(useropt)
+  local realIdx = (res != null) ? res : idx
   getroottable()[useropt] <- realIdx
   user_option_name_by_idx[realIdx] <- useropt
 }
@@ -477,18 +474,18 @@ user_option_names = null // warning disable: -assigned-never-used
 
 ::get_option_in_mode <- function get_option_in_mode(optionId, mode)
 {
-  let mainOptionsMode = getGuiOptionsMode()
+  local mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(mode)
-  let res = get_option(optionId)
+  local res = get_option(optionId)
   setGuiOptionsMode(mainOptionsMode)
   return res
 }
 
 ::get_gui_option_in_mode <- function get_gui_option_in_mode(optionId, mode, defaultValue = null)
 {
-  let mainOptionsMode = getGuiOptionsMode()
+  local mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(mode)
-  let res = ::get_gui_option(optionId)
+  local res = ::get_gui_option(optionId)
   if (mainOptionsMode >= 0)
     setGuiOptionsMode(mainOptionsMode)
   if (defaultValue != null && res == null)
@@ -498,7 +495,7 @@ user_option_names = null // warning disable: -assigned-never-used
 
 ::set_gui_option_in_mode <- function set_gui_option_in_mode(optionId, value, mode)
 {
-  let mainOptionsMode = getGuiOptionsMode()
+  local mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(mode)
   ::set_gui_option(optionId, value)
   setGuiOptionsMode(mainOptionsMode)

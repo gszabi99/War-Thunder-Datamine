@@ -1,17 +1,17 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let guidParser = require("scripts/guidParser.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { showedUnit, getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local guidParser = require("scripts/guidParser.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { showedUnit, getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-let downloadTimeoutSec = 15
+local downloadTimeoutSec = 15
 local downloadProgressBox = null
 
 local onSkinReadyToShowCallback = null
 
 local waitingItemDefId = null
 
-let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false)
+local function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false)
 {
   if (!::g_login.isLoggedIn())
     return "not_logged_in"
@@ -23,15 +23,15 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       || ::SessionLobby.hasSessionInLobby())
     return "temporarily_forbidden"
-  let customizationScene = ::handlersManager.findHandlerClassInScene(::gui_handlers.DecalMenuHandler)
+  local customizationScene = ::handlersManager.findHandlerClassInScene(::gui_handlers.DecalMenuHandler)
   if (customizationScene && (!shouldAllowFromCustomizationScene || !customizationScene.canRestartSceneNow()))
     return "temporarily_forbidden"
   return  ""
 }
 
-let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false)
+local function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false)
 {
-  let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
+  local reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
   if (shouldShowFordiddenPopup && reason == "temporarily_forbidden")
     ::g_popups.add("", ::loc("mainmenu/itemPreviewForbidden"))
   return reason == ""
@@ -48,17 +48,17 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   if (!canStartPreviewScene(true, true))
     return
 
-  let unit = ::getAircraftByName(unitId)
+  local unit = ::getAircraftByName(unitId)
   if (!unit)
     return false
 
-  let unitPreviewSkin = unit.getPreviewSkinId()
+  local unitPreviewSkin = unit.getPreviewSkinId()
   skinId = skinId || unitPreviewSkin
-  let isUnitPreview = skinId == unitPreviewSkin
+  local isUnitPreview = skinId == unitPreviewSkin
 
   ::broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
-  let startFunc = function() {
+  local startFunc = function() {
     ::gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
       needForceShowUnitInfoPanel = isUnitPreview && ::isUnitSpecial(unit)
@@ -74,7 +74,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   return true
 }
 
-let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null)
+local function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null)
 {
   local unit = null
   if (forcedUnitId)
@@ -87,8 +87,8 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
   if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
     return unit
 
-  let countryId = ::get_profile_country_sq()
-  let crews = ::get_crews_list_by_country(countryId)
+  local countryId = ::get_profile_country_sq()
+  local crews = ::get_crews_list_by_country(countryId)
 
   foreach (crew in crews)
     if ((crew?.aircraft ?? "") != "")
@@ -139,28 +139,28 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
  * @param {string} resource - Resource.
  * @param {string} resourceType - Resource type.
  */
-let function showUnitDecorator(unitId, resource, resourceType)
+local function showUnitDecorator(unitId, resource, resourceType)
 {
   if (!canStartPreviewScene(true, true))
     return
 
-  let decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+  local decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
   if (decoratorType == ::g_decorator_type.UNKNOWN)
     return false
 
-  let decorator = ::g_decorator.getDecorator(resource, decoratorType)
+  local decorator = ::g_decorator.getDecorator(resource, decoratorType)
   if (!decorator)
     return false
 
-  let unit = getBestUnitForPreview(@(unitType) decorator.isAllowedByUnitTypes(unitType),
+  local unit = getBestUnitForPreview(@(unitType) decorator.isAllowedByUnitTypes(unitType),
     @(unit, checkUnitUsable = true) decoratorType.isAvailable(unit, checkUnitUsable), unitId)
   if (!unit)
     return false
 
-  let hangarUnit = getPlayerCurUnit()
+  local hangarUnit = getPlayerCurUnit()
   ::broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
-  let startFunc = function() {
+  local startFunc = function() {
     ::gui_start_decals({
       previewMode = PREVIEW_MODE.DECORATOR
       initialUnitId = hangarUnit?.name
@@ -184,7 +184,7 @@ let function showUnitDecorator(unitId, resource, resourceType)
  * @param {function} onSkinReadyToShowCb - Optional custom function to be called when
  *                   skin prepared to show. Function must take params: (unitId, skinId, result).
  */
-let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
+local function showResource(resource, resourceType, onSkinReadyToShowCb = null)
 {
   if (!canStartPreviewScene(true, true))
     return
@@ -203,8 +203,8 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
   {
     if (resourceType == "skin")
     {
-      let unitId = ::g_unlocks.getPlaneBySkinId(resource)
-      let skinId  = ::g_unlocks.getSkinNameBySkinId(resource)
+      local unitId = ::g_unlocks.getPlaneBySkinId(resource)
+      local skinId  = ::g_unlocks.getSkinNameBySkinId(resource)
       showUnitSkin(unitId, skinId)
     }
     else if (resourceType == "decal" || resourceType == "attachable")
@@ -214,23 +214,23 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
   }
 }
 
-let function liveSkinPreview(params)
+local function liveSkinPreview(params)
 {
   if (!::has_feature("EnableLiveSkins"))
     return "not_allowed"
-  let reason = getCantStartPreviewSceneReason(true)
+  local reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
     return reason
 
-  let blkHashName = params.hash
-  let name = params?.name ?? "testName"
-  let shouldPreviewForApprove = params?.previewForApprove ?? false
-  let res = shouldPreviewForApprove ? ::live_preview_resource_for_approve(blkHashName, "skin", name)
+  local blkHashName = params.hash
+  local name = params?.name ?? "testName"
+  local shouldPreviewForApprove = params?.previewForApprove ?? false
+  local res = shouldPreviewForApprove ? ::live_preview_resource_for_approve(blkHashName, "skin", name)
                                       : ::live_preview_resource(blkHashName, "skin", name)
   return res.result
 }
 
-let function onSkinDownloaded(unitId, skinId, result)
+local function onSkinDownloaded(unitId, skinId, result)
 {
   if (downloadProgressBox)
     ::destroyMsgBox(downloadProgressBox)
@@ -246,15 +246,15 @@ let function onSkinDownloaded(unitId, skinId, result)
     showUnitSkin(unitId, skinId)
 }
 
-let function marketViewItem(params)
+local function marketViewItem(params)
 {
   if (::to_integer_safe(params?.appId, 0, false) != ::WT_APPID)
     return
-  let assets = ::u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
+  local assets = ::u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
   if (!assets.len())
     return
-  let itemDefId = ::to_integer_safe(assets?[0]?.value)
-  let item = ::ItemsManager.findItemById(itemDefId)
+  local itemDefId = ::to_integer_safe(assets?[0]?.value)
+  local item = ::ItemsManager.findItemById(itemDefId)
   if (!item)
   {
     waitingItemDefId = itemDefId
@@ -265,12 +265,12 @@ let function marketViewItem(params)
     item.doPreview()
 }
 
-let function requestUnitPreview(params)
+local function requestUnitPreview(params)
 {
-  let reason = getCantStartPreviewSceneReason(true)
+  local reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
     return reason
-  let unit = ::getAircraftByName(params?.unitId)
+  local unit = ::getAircraftByName(params?.unitId)
   if (unit == null)
     return "unit_not_found"
   if (!unit.canPreview())
@@ -279,11 +279,11 @@ let function requestUnitPreview(params)
   return "success"
 }
 
-let function onEventItemsShopUpdate(params)
+local function onEventItemsShopUpdate(params)
 {
   if (waitingItemDefId == null)
     return
-  let item = ::ItemsManager.findItemById(waitingItemDefId)
+  local item = ::ItemsManager.findItemById(waitingItemDefId)
   if (!item)
     return
   waitingItemDefId = null
@@ -291,26 +291,26 @@ let function onEventItemsShopUpdate(params)
     item.doPreview()
 }
 
-let function getDecoratorDataToUse(resource, resourceType) {
-  let res = {
+local function getDecoratorDataToUse(resource, resourceType) {
+  local res = {
     decorator = null
     decoratorUnit = null
     decoratorSlot = null
   }
-  let decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
+  local decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
   if (decorator == null)
     return res
 
-  let decoratorType = decorator.decoratorType
-  let decoratorUnit = decoratorType == ::g_decorator_type.SKINS
+  local decoratorType = decorator.decoratorType
+  local decoratorUnit = decoratorType == ::g_decorator_type.SKINS
     ? ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
     : getPlayerCurUnit()
 
   if (decoratorUnit == null || !decoratorType.isAvailable(decoratorUnit) || !decorator.canUse(decoratorUnit))
     return res
 
-  let freeSlotIdx = decoratorType.getFreeSlotIdx(decoratorUnit)
-  let decoratorSlot = freeSlotIdx != -1 ? freeSlotIdx
+  local freeSlotIdx = decoratorType.getFreeSlotIdx(decoratorUnit)
+  local decoratorSlot = freeSlotIdx != -1 ? freeSlotIdx
     : (decoratorType.getAvailableSlots(decoratorUnit) - 1)
 
   return {
@@ -320,7 +320,7 @@ let function getDecoratorDataToUse(resource, resourceType) {
   }
 }
 
-let function useDecorator(decorator, decoratorUnit, decoratorSlot) {
+local function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   if (!decorator)
     return
   if (!canStartPreviewScene(true))
@@ -332,33 +332,33 @@ let function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   })
 }
 
-let doDelayed = @(action) get_gui_scene().performDelayed({}, action)
+local doDelayed = @(action) get_gui_scene().performDelayed({}, action)
 
 globalCallbacks.addTypes({
   ITEM_PREVIEW = {
     onCb = function(obj, params) {
-      let item = ::ItemsManager.findItemById(params?.itemId)
+      local item = ::ItemsManager.findItemById(params?.itemId)
       if (item && item.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() item.doPreview())
     }
   }
   ITEM_LINK = {
     onCb = function(obj, params) {
-      let item = ::ItemsManager.findItemById(params?.itemId)
+      local item = ::ItemsManager.findItemById(params?.itemId)
       if (item && item.hasLink())
         doDelayed(@() item.openLink())
     }
   }
   UNIT_PREVIEW = {
     onCb = function(obj, params) {
-      let unit = ::getAircraftByName(params?.unitId)
+      local unit = ::getAircraftByName(params?.unitId)
       if (unit && unit.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() unit.doPreview())
     }
   }
   DECORATOR_PREVIEW = {
     onCb = function(obj, params) {
-      let decorator = ::g_decorator.getDecoratorByResource(params?.resource, params?.resourceType)
+      local decorator = ::g_decorator.getDecoratorByResource(params?.resource, params?.resourceType)
       if (decorator && decorator.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() decorator.doPreview())
     }
@@ -369,7 +369,7 @@ globalCallbacks.addTypes({
 /**
  * Creates global funcs, which are called from client.
  */
-let rootTable = ::getroottable()
+local rootTable = ::getroottable()
 rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownloaded(unitId, skinGuid, result)
 rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
 web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))

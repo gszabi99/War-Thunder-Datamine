@@ -1,13 +1,13 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {
   if (::u.isString(isMissionLoading))
-    isMissionLoading = isMissionLoading != "%gui/loading.blk" //compatibility with 1.67.2.X
+    isMissionLoading = isMissionLoading != "gui/loading.blk" //compatibility with 1.67.2.X
 
-  let briefing = ::DataBlock()
+  local briefing = ::DataBlock()
   if (::g_login.isLoggedIn() && isMissionLoading
       && ::loading_get_briefing(briefing) && (briefing.blockCount() > 0))
   {
@@ -22,10 +22,10 @@ let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/object
   showTitleLogo()
 }
 
-::gui_handlers.LoadingHandler <- class extends ::BaseGuiHandler
+class ::gui_handlers.LoadingHandler extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/loading/loading.blk"
-  sceneNavBlkName = "%gui/loading/loadingNav.blk"
+  sceneBlkName = "gui/loading/loading.blk"
+  sceneNavBlkName = "gui/loading/loadingNav.blk"
 
   function initScreen()
   {
@@ -33,7 +33,7 @@ let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/object
     setVersionText()
     setHelpTextOnLoading(scene.findObject("help_text"))
 
-    let updObj = scene.findObject("cutscene_update")
+    local updObj = scene.findObject("cutscene_update")
     if (::checkObj(updObj))
       updObj.setUserData(this)
   }

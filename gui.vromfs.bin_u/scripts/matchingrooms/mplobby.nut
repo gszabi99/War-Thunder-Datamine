@@ -1,16 +1,16 @@
-let avatars = require("scripts/user/avatars.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { isChatEnabled } = require("scripts/chat/chatStates.nut")
-let fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
-let { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
-let { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { setGuiOptionsMode } = ::require_native("guiOptions")
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+local avatars = require("scripts/user/avatars.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { isChatEnabled } = require("scripts/chat/chatStates.nut")
+local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
+local { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -42,7 +42,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
     backFromLobby = ::gui_start_skirmish
   else
   {
-    let lastEvent = ::SessionLobby.getRoomEvent()
+    local lastEvent = ::SessionLobby.getRoomEvent()
     if (lastEvent && ::events.eventRequiresTicket(lastEvent) && ::events.getEventActiveTicket(lastEvent) == null)
     {
       ::gui_start_mainmenu()
@@ -54,7 +54,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
   ::handlersManager.loadHandler(::gui_handlers.MPLobby, { backSceneFunc = backFromLobby })
 }
 
-::gui_handlers.MPLobby <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = mpLobbyBlkPath.value
   shouldBlurSceneBgFn = needUseHangarDof
@@ -112,7 +112,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
     updateRoomInSession()
 
     initChat()
-    let sessionInfo = ::SessionLobby.getSessionInfo()
+    local sessionInfo = ::SessionLobby.getSessionInfo()
     ::update_vehicle_info_button(scene, sessionInfo)
   }
 
@@ -131,14 +131,14 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
     if (!isChatEnabled())
       return
 
-    let chatObj = scene.findObject("lobby_chat_place")
+    local chatObj = scene.findObject("lobby_chat_place")
     if (::checkObj(chatObj))
       ::joinCustomObjRoom(chatObj, ::SessionLobby.getChatRoomId(), ::SessionLobby.getChatRoomPassword(), this)
   }
 
   function updateSessionInfo()
   {
-    let mpMode = ::SessionLobby.getGameMode()
+    local mpMode = ::SessionLobby.getGameMode()
     if (curGMmode != mpMode)
     {
       curGMmode = mpMode
@@ -151,24 +151,24 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function updateTableHeader()
   {
-    let commonHeader = showSceneBtn("common_list_header", !isInfoByTeams)
-    let byTeamsHeader = showSceneBtn("list_by_teams_header", isInfoByTeams)
-    let teamsNest = isInfoByTeams ? byTeamsHeader : commonHeader.findObject("num_teams")
+    local commonHeader = showSceneBtn("common_list_header", !isInfoByTeams)
+    local byTeamsHeader = showSceneBtn("list_by_teams_header", isInfoByTeams)
+    local teamsNest = isInfoByTeams ? byTeamsHeader : commonHeader.findObject("num_teams")
 
-    let maxMembers = ::SessionLobby.getMaxMembersCount()
-    let countTbl = ::SessionLobby.getMembersCountByTeams()
-    let countTblReady = ::SessionLobby.getMembersCountByTeams(null, true)
+    local maxMembers = ::SessionLobby.getMaxMembersCount()
+    local countTbl = ::SessionLobby.getMembersCountByTeams()
+    local countTblReady = ::SessionLobby.getMembersCountByTeams(null, true)
     if (!isInfoByTeams)
     {
-      let totalNumPlayersTxt = ::loc("multiplayer/playerList")
+      local totalNumPlayersTxt = ::loc("multiplayer/playerList")
         + ::loc("ui/parentheses/space", { text = countTbl.total + "/" + maxMembers })
       commonHeader.findObject("num_players").setValue(totalNumPlayersTxt)
     }
 
-    let event = ::SessionLobby.getRoomEvent()
+    local event = ::SessionLobby.getRoomEvent()
     foreach(team in tableTeams)
     {
-      let teamObj = teamsNest.findObject("num_team" + team.id)
+      local teamObj = teamsNest.findObject("num_team" + team.id)
       if (!::check_obj(teamObj))
         continue
 
@@ -176,7 +176,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
       if (isInfoByTeams && event)
       {
         local locId = "multiplayer/teamPlayers"
-        let locParams = {
+        local locParams = {
           players = countTblReady[team.code]
           maxPlayers = ::events.getMaxTeamSize(event)
           unready = countTbl[team.code] - countTblReady[team.code]
@@ -247,30 +247,30 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function updatePlayerInfo(player)
   {
-    let mainObj = scene.findObject("player_info")
+    local mainObj = scene.findObject("player_info")
     if (!::checkObj(mainObj) || !player)
       return
 
-    let titleObj = mainObj.findObject("player_title")
+    local titleObj = mainObj.findObject("player_title")
     if (::checkObj(titleObj))
       titleObj.setValue((player.title != "") ? (::loc("title/title") + ::loc("ui/colon") + ::loc("title/" + player.title)) : "")
 
-    let spectatorObj = mainObj.findObject("player_spectator")
+    local spectatorObj = mainObj.findObject("player_spectator")
     if (::checkObj(spectatorObj))
     {
-      let desc = ::g_player_state.getStateByPlayerInfo(player).getText(player)
+      local desc = ::g_player_state.getStateByPlayerInfo(player).getText(player)
       spectatorObj.setValue((desc != "") ? (::loc("multiplayer/state") + ::loc("ui/colon") + desc) : "")
     }
 
-    let myTeam = (::SessionLobby.status == lobbyStates.IN_LOBBY)? ::SessionLobby.team : ::get_mp_local_team()
+    local myTeam = (::SessionLobby.status == lobbyStates.IN_LOBBY)? ::SessionLobby.team : ::get_mp_local_team()
     mainObj.playerTeam = myTeam==Team.A? "a" : (myTeam == Team.B? "b" : "")
 
-    let teamObj = mainObj.findObject("player_team")
+    local teamObj = mainObj.findObject("player_team")
     if (::checkObj(teamObj))
     {
       local teamTxt = ""
       local teamStyle = ""
-      let team = player? player.team : Team.Any
+      local team = player? player.team : Team.Any
       if (team == Team.A)
       {
         teamStyle = "a"
@@ -283,12 +283,12 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
       }
 
       teamObj.team = teamStyle
-      let teamIcoObj = teamObj.findObject("player_team_ico")
+      local teamIcoObj = teamObj.findObject("player_team_ico")
       teamIcoObj.show(teamTxt != "")
       teamIcoObj.tooltip = ::loc("multiplayer/team") + ::loc("ui/colon") + teamTxt
     }
 
-    let playerIcon = (!player || player.isBot)? "cardicon_bot" : avatars.getIconById(player.pilotId)
+    local playerIcon = (!player || player.isBot)? "cardicon_bot" : avatars.getIconById(player.pilotId)
     ::fill_gamer_card({
                       name = player.name
                       clanTag = player.clanTag
@@ -297,28 +297,28 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
                     },
                     "player_", mainObj)
 
-    let airObj = mainObj.findObject("curAircraft")
+    local airObj = mainObj.findObject("curAircraft")
     if (!::checkObj(airObj))
       return
 
-    let showAirItem = ::SessionLobby.getMissionParam("maxRespawns", -1) == 1 && player.country && player.selAirs.len() > 0
+    local showAirItem = ::SessionLobby.getMissionParam("maxRespawns", -1) == 1 && player.country && player.selAirs.len() > 0
     airObj.show(showAirItem)
 
     if (showAirItem)
     {
-      let airName = ::getTblValue(player.country, player.selAirs, "")
-      let air = getAircraftByName(airName)
+      local airName = ::getTblValue(player.country, player.selAirs, "")
+      local air = getAircraftByName(airName)
       if (!air)
       {
         airObj.show(false)
         return
       }
 
-      let existingAirObj = airObj.findObject("curAircraft_place")
+      local existingAirObj = airObj.findObject("curAircraft_place")
       if (::checkObj(existingAirObj))
         guiScene.destroyElement(existingAirObj)
 
-      let params = {
+      local params = {
         getEdiffFunc = ::Callback(getCurrentEdiff, this)
         status = getUnitItemStatusText(bit_unit_status.owned)
       }
@@ -331,30 +331,30 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function getMyTeamDisbalanceMsg(isFullText = false)
   {
-    let countTbl = ::SessionLobby.getMembersCountByTeams(null, true)
-    let maxDisbalance = ::SessionLobby.getMaxDisbalance()
-    let myTeam = ::SessionLobby.team
+    local countTbl = ::SessionLobby.getMembersCountByTeams(null, true)
+    local maxDisbalance = ::SessionLobby.getMaxDisbalance()
+    local myTeam = ::SessionLobby.team
     if (myTeam != Team.A && myTeam != Team.B)
       return ""
 
-    let otherTeam = ::g_team.getTeamByCode(myTeam).opponentTeamCode
+    local otherTeam = ::g_team.getTeamByCode(myTeam).opponentTeamCode
     if (countTbl[myTeam] - maxDisbalance < countTbl[otherTeam])
       return ""
 
-    let params = {
+    local params = {
       chosenTeam = ::colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
       otherTeam =  ::colorize("teamRedColor", ::g_team.getTeamByCode(otherTeam).getShortName())
       chosenTeamCount = countTbl[myTeam]
       otherTeamCount =  countTbl[otherTeam]
       reqOtherteamCount = countTbl[myTeam] - maxDisbalance + 1
     }
-    let locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
+    local locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
     return ::loc(locKey, params)
   }
 
   function getReadyData()
   {
-    let res = {
+    local res = {
       readyBtnText = ""
       readyBtnHint = ""
       isVisualDisabled = false
@@ -363,7 +363,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
     if (!::SessionLobby.isUserCanChangeReady() && !::SessionLobby.hasSessionInLobby())
       return res
 
-    let isReady = ::SessionLobby.hasSessionInLobby() ? ::SessionLobby.isInLobbySession : ::SessionLobby.isReady
+    local isReady = ::SessionLobby.hasSessionInLobby() ? ::SessionLobby.isInLobbySession : ::SessionLobby.isReady
     if (::SessionLobby.canStartSession() && isReady)
       res.readyBtnText = ::loc("multiplayer/btnStart")
     else if (::SessionLobby.isRoomInSession)
@@ -383,23 +383,23 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function updateButtons()
   {
-    let readyData = getReadyData()
-    let readyBtn = showSceneBtn("btn_ready", readyData.readyBtnText.len())
+    local readyData = getReadyData()
+    local readyBtn = showSceneBtn("btn_ready", readyData.readyBtnText.len())
     setDoubleTextToButton(scene, "btn_ready", readyData.readyBtnText)
     readyBtn.inactiveColor = readyData.isVisualDisabled ? "yes" : "no"
     scene.findObject("cant_ready_reason").setValue(readyData.readyBtnHint)
 
-    let spectatorBtnObj = scene.findObject("btn_spectator")
+    local spectatorBtnObj = scene.findObject("btn_spectator")
     if (::checkObj(spectatorBtnObj))
     {
-      let isSpectator = ::SessionLobby.spectator
-      let buttonText = ::loc("mainmenu/btnReferee")
+      local isSpectator = ::SessionLobby.spectator
+      local buttonText = ::loc("mainmenu/btnReferee")
         + (isSpectator ? (::loc("ui/colon") + ::loc("options/on")) : "")
       spectatorBtnObj.setValue(buttonText)
       spectatorBtnObj.active = isSpectator ? "yes" : "no"
     }
 
-    let isReady = ::SessionLobby.isReady
+    local isReady = ::SessionLobby.isReady
     showSceneBtn("btn_not_ready", ::SessionLobby.isUserCanChangeReady() && isReady)
     showSceneBtn("btn_ses_settings", ::SessionLobby.canChangeSettings())
     showSceneBtn("btn_team", !isReady && ::SessionLobby.canChangeTeam())
@@ -409,7 +409,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function getCurrentEdiff()
   {
-    let ediff = ::SessionLobby.getCurRoomEdiff()
+    local ediff = ::SessionLobby.getCurRoomEdiff()
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
@@ -429,31 +429,31 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function updateSessionStatus()
   {
-    let needSessionStatus = !isInfoByTeams && !::SessionLobby.isRoomInSession
-    let sessionStatusObj = showSceneBtn("session_status", needSessionStatus)
+    local needSessionStatus = !isInfoByTeams && !::SessionLobby.isRoomInSession
+    local sessionStatusObj = showSceneBtn("session_status", needSessionStatus)
     if (needSessionStatus)
       sessionStatusObj.setValue(::SessionLobby.getMembersReadyStatus().statusText)
 
-    let mGameMode = ::SessionLobby.getMGameMode()
-    let needTeamStatus = isInfoByTeams && !::SessionLobby.isRoomInSession && !!mGameMode
+    local mGameMode = ::SessionLobby.getMGameMode()
+    local needTeamStatus = isInfoByTeams && !::SessionLobby.isRoomInSession && !!mGameMode
     local countTbl = null
     if (needTeamStatus)
       countTbl = ::SessionLobby.getMembersCountByTeams()
     foreach(idx, team in tableTeams)
     {
-      let teamObj = showSceneBtn("team_status_" + team.id, needTeamStatus)
+      local teamObj = showSceneBtn("team_status_" + team.id, needTeamStatus)
       if (!teamObj || !needTeamStatus)
         continue
 
       local status = ""
-      let minSize = ::events.getMinTeamSize(mGameMode)
-      let teamSize = countTbl[team.code]
+      local minSize = ::events.getMinTeamSize(mGameMode)
+      local teamSize = countTbl[team.code]
       if (teamSize < minSize)
         status = ::loc("multiplayer/playersTeamLessThanMin", { minSize = minSize })
       else
       {
-        let maxDisbalance = ::SessionLobby.getMaxDisbalance()
-        let otherTeamSize = countTbl[team.opponentTeamCode]
+        local maxDisbalance = ::SessionLobby.getMaxDisbalance()
+        local otherTeamSize = countTbl[team.opponentTeamCode]
         if (teamSize - maxDisbalance > ::max(otherTeamSize, minSize))
           status = ::loc("multiplayer/playersTeamDisbalance", { maxDisbalance = maxDisbalance })
       }
@@ -463,13 +463,13 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function updateTimerInfo()
   {
-    let timers = ::SessionLobby.getRoomActiveTimers()
-    let isVisibleNow = timers.len() > 0 && !::SessionLobby.isRoomInSession
+    local timers = ::SessionLobby.getRoomActiveTimers()
+    local isVisibleNow = timers.len() > 0 && !::SessionLobby.isRoomInSession
     if (!isVisibleNow && !isTimerVisible)
       return
 
     isTimerVisible = isVisibleNow
-    let timerObj = showSceneBtn("battle_start_countdown", isTimerVisible)
+    local timerObj = showSceneBtn("battle_start_countdown", isTimerVisible)
     if (timerObj && isTimerVisible)
       timerObj.setValue(timers[0].text)
   }
@@ -481,13 +481,13 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function getChatLog()
   {
-    let chatRoom = ::g_chat.getRoomById(::SessionLobby.getChatRoomId())
+    local chatRoom = ::g_chat.getRoomById(::SessionLobby.getChatRoomId())
     return chatRoom!= null ? chatRoom.getLogForBanhammer() : null
   }
 
   function onComplain(obj)
   {
-    let player = getSelectedPlayer()
+    local player = getSelectedPlayer()
     if (player && !player.isBot && !player.isLocal)
       ::gui_modal_complain({uid = player.userId, name = player.name }, getChatLog())
   }
@@ -510,7 +510,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function onUserOption(obj)
   {
-    let pos = playersListWidgetWeak && playersListWidgetWeak.getSelectedRowPos()
+    local pos = playersListWidgetWeak && playersListWidgetWeak.getSelectedRowPos()
     session_player_rmenu(this, getSelectedPlayer(), getChatLog(), pos)
   }
 
@@ -545,7 +545,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function onTeam(obj)
   {
-    let isSymmetric = ::SessionLobby.getPublicParam("symmetricTeams", true)
+    local isSymmetric = ::SessionLobby.getPublicParam("symmetricTeams", true)
     ::SessionLobby.switchTeam(!isSymmetric)
   }
 
@@ -585,7 +585,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
   function onReady()
   {
-    let event = ::SessionLobby.getRoomEvent()
+    local event = ::SessionLobby.getRoomEvent()
     if (event != null && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
       return
@@ -596,7 +596,7 @@ let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
     if (!::SessionLobby.isRoomOwner || !::SessionLobby.isReady)
       return ::SessionLobby.setReady(true)
 
-    let status = ::SessionLobby.getMembersReadyStatus()
+    local status = ::SessionLobby.getMembersReadyStatus()
     if (status.readyToStart)
       return ::SessionLobby.startSession()
 

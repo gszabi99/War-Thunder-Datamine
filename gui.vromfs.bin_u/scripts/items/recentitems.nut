@@ -1,4 +1,4 @@
-let seenInventory = require("scripts/seen/seenList.nut").get(SEEN.INVENTORY)
+local seenInventory = require("scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 
 ::g_recent_items <- {
   MAX_RECENT_ITEMS = 4
@@ -7,11 +7,11 @@ let seenInventory = require("scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 
 g_recent_items.getRecentItems <- function getRecentItems()
 {
-  let items = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL, function (item) {
+  local items = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL, function (item) {
     return item.includeInRecentItems
   })
   items.sort(::ItemsManager.getItemsSortComparator(seenInventory))
-  let resultItems = []
+  local resultItems = []
   foreach (item in items)
   {
     if (item.isHiddenItem())
@@ -35,7 +35,7 @@ g_recent_items.createHandler <- function createHandler(owner, containerObj, defS
 
 g_recent_items.getNumOtherItems <- function getNumOtherItems()
 {
-  let inactiveItems = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL,
+  local inactiveItems = ::ItemsManager.getInventoryList(itemType.INVENTORY_ALL,
     @(item) !!item.getMainActionData())
   return inactiveItems.len()
 }

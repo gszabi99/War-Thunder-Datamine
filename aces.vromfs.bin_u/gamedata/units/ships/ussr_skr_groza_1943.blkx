@@ -1676,9 +1676,6 @@
         "compartment_03_dm": {
           "hp": 500.0
         },
-        "compartment_04_dm": {
-          "hp": 500.0
-        },
         "bridge_dm": {
           "armorThickness": 1.0,
           "hp": 250.0
@@ -2166,7 +2163,7 @@
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 7
+        "crew": 13
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
@@ -2174,9 +2171,9 @@
         "crew": 20
       },
       "sailor5": {
-        "dmPart": "compartment_04_dm",
+        "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 4
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -2184,66 +2181,61 @@
         "crew": 4
       },
       "sailor7": {
-        "dmPart": "main_caliber_turret_02_dm",
-        "role": "sailor",
-        "crew": 4
-      },
-      "sailor8": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor9": {
+      "sailor8": {
         "dmPart": "tt_01_dm",
         "role": "sailor",
         "crew": 4
       },
-      "sailor10": {
+      "sailor9": {
         "dmPart": "auxiliary_caliber_turret_01_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor11": {
+      "sailor10": {
         "dmPart": "auxiliary_caliber_turret_02_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor12": {
+      "sailor11": {
         "dmPart": "auxiliary_caliber_turret_03_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor13": {
+      "sailor12": {
         "dmPart": "ammunition_storage_shells_01_dm",
         "role": "sailor",
         "crew": 3
       },
-      "sailor14": {
+      "sailor13": {
         "dmPart": "ammunition_storage_shells_02_dm",
         "role": "sailor",
         "crew": 3
       },
-      "sailor15": {
+      "sailor14": {
         "dmPart": "engine_room_01_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor16": {
+      "sailor15": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor17": {
+      "sailor16": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor18": {
+      "sailor17": {
         "dmPart": "transmission_02_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor19": {
+      "sailor18": {
         "dmPart": "rangefinder_01_dm",
         "role": "sailor",
         "crew": 2
@@ -3783,8 +3775,7 @@
               "secondaryShatterDamageMult": 0.8,
               "compartment_01_dm": [],
               "compartment_02_dm": [],
-              "compartment_03_dm": [],
-              "compartment_04_dm": []
+              "compartment_03_dm": []
             }
           }
         }
@@ -3796,8 +3787,7 @@
               "fireDamageMult": 0.75,
               "compartment_01_dm": [],
               "compartment_02_dm": [],
-              "compartment_03_dm": [],
-              "compartment_04_dm": []
+              "compartment_03_dm": []
             }
           }
         }
@@ -5120,18 +5110,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -18000.0,
-      "waterMassMult": 50.0,
+      "waterMassVel": -50000.0,
+      "waterMassMult": 120.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 1300000.0,
-      "additionalWaterShouldDiePercent": 0.35,
+      "additionalWaterDeathThreshold": 2000000.0,
+      "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
-      "maxHeelingAngle": 37.0,
+      "maxHeelingAngle": 36.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.2
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -5139,18 +5129,18 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.3,
+          "weight": 0.51,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
-                "partNo": "ammunition_storage_shells_01_dm",
-                "critWaterLevel": 0.3
+                "partNo": "ammunition_storage_01_dm",
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
-                "partNo": "ammunition_storage_aux_01_dm",
+                "partNo": "ammunition_storage_02_dm",
                 "critWaterLevel": 0.5
               }
             }
@@ -5167,19 +5157,19 @@
       {
         "cover": {
           "part": "cover_03_dm",
-          "weight": 0.8,
+          "weight": 0.85,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.5
               }
             }
           ]
@@ -5188,19 +5178,19 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.7,
+          "weight": 0.78,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.5
               }
             }
           ]
@@ -5209,18 +5199,18 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.3,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
-                "partNo": "ammunition_storage_shells_02_dm",
+                "partNo": "ammunition_storage_03_dm",
                 "critWaterLevel": 0.75
               }
             },
             {
               "part": {
-                "partNo": "ammunition_storage_aux_02_dm",
+                "partNo": "ammunition_storage_04_dm",
                 "critWaterLevel": 0.75
               }
             }
@@ -5231,7 +5221,7 @@
   },
   {
     "winch": {
-      "length": 150.0
+      "length": 70.0
     }
   },
   {

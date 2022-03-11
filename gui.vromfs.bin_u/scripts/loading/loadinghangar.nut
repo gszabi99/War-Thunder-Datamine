@@ -1,10 +1,10 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-::gui_handlers.LoadingHangarHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.LoadingHangarHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/loading/loadingHangar.blk"
-  sceneNavBlkName = "%gui/loading/loadingNav.blk"
+  sceneBlkName = "gui/loading/loadingHangar.blk"
+  sceneNavBlkName = "gui/loading/loadingNav.blk"
 
   isEnteringMission = false // true on entering mission, false on quiting.
 
@@ -14,7 +14,7 @@ let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/object
     setVersionText()
     setHelpTextOnLoading(scene.findObject("help_text"))
 
-    let updObj = scene.findObject("cutscene_update")
+    local updObj = scene.findObject("cutscene_update")
     if (::checkObj(updObj))
       updObj.setUserData(this)
   }

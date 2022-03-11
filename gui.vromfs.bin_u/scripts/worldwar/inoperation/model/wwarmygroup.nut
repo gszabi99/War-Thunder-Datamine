@@ -1,6 +1,6 @@
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-::WwArmyGroup <- class
+class ::WwArmyGroup
 {
   clanId               = ""
   name                 = ""
@@ -120,7 +120,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function isBelongsToMyClan()
   {
-    let myClanId = ::clan_get_my_clan_id()
+    local myClanId = ::clan_get_my_clan_id()
     if (myClanId && myClanId == getClanId())
       return true
 
@@ -145,14 +145,14 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function hasManageAccess()
   {
-    let accessLevel = getAccessLevel()
+    local accessLevel = getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
   }
 
   function hasObserverAccess()
   {
-    let accessLevel = getAccessLevel()
+    local accessLevel = getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.OBSERVER ||
            accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
@@ -160,7 +160,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function getArmyManagers(blk)
   {
-    let managers = []
+    local managers = []
     if (!blk)
       return managers
 
@@ -178,7 +178,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function updateManagerStat(armyManagersNames)
   {
-    let total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
+    local total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
     foreach(armyManager in armyManagers) {
       armyManager.activity = total > 0
         ? ::round(100 * armyManager.actionsCount / total).tointeger()

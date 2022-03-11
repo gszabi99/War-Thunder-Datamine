@@ -1,22 +1,21 @@
-let optionsListModule = require("scripts/options/optionsList.nut")
-let { isCrossNetworkChatEnabled } = require("scripts/social/crossplay.nut")
-let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
+local optionsListModule = require("scripts/options/optionsList.nut")
+local { isCrossNetworkChatEnabled } = require("scripts/social/crossplay.nut")
+local { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
   } = require("scripts/options/systemOptions.nut")
-let fxOptions = require("scripts/options/fxOptions.nut")
-let { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
-let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
-let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
-let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
+local fxOptions = require("scripts/options/fxOptions.nut")
+local { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
+local preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
-::gui_handlers.Options <- class extends ::gui_handlers.GenericOptionsModal
+class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.BASE
-  sceneBlkName = "%gui/options/optionsWnd.blk"
-  sceneNavBlkName = "%gui/options/navOptions.blk"
+  sceneBlkName = "gui/options/optionsWnd.blk"
+  sceneNavBlkName = "gui/options/navOptions.blk"
 
   optGroups = null
   curGroup = -1
@@ -33,7 +32,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     base.initScreen()
     setBreadcrumbGoBackParams(this)
 
-    let view = { tabs = [] }
+    local view = { tabs = [] }
     local curOption = 0
     foreach(idx, gr in optGroups)
     {
@@ -48,14 +47,14 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
         curOption = idx
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let groupsObj = scene.findObject("groups_list")
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    local groupsObj = scene.findObject("groups_list")
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    let showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
+    local showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     showSceneBtn("web_ui_button", showWebUI)
   }
 
@@ -64,7 +63,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     if (!obj)
       return
 
-    let newGroup = obj.getValue()
+    local newGroup = obj.getValue()
     if (curGroup==newGroup && !(newGroup in optGroups))
       return
 
@@ -86,7 +85,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function fillOptions(group)
   {
-    let config = optGroups[group]
+    local config = optGroups[group]
 
     if ("fillFuncName" in config)
     {
@@ -103,17 +102,17 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function fillInternetRadioOptions(group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/internetRadioOptions.blk", this);
+    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/internetRadioOptions.blk", this);
     fillLocalInternetRadioOptions(group)
     updateInternerRadioButtons()
   }
 
   function fillSocialOptions(group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
+    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/socialOptions.blk", this)
 
-    let hasFacebook = ::has_feature("Facebook")
-    let fObj = showSceneBtn("facebook_frame", hasFacebook)
+    local hasFacebook = ::has_feature("Facebook")
+    local fObj = showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {
       fObj.findObject("facebook_like_btn").tooltip = ::loc("guiHints/facebookLike") + ::loc("ui/colon") + ::get_unlock_reward("facebook_like")
@@ -150,7 +149,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function applySearchFilter()
   {
-    let filterEditBox = scene.findObject("filter_edit_box")
+    local filterEditBox = scene.findObject("filter_edit_box")
     if (!::checkObj(filterEditBox))
       return
 
@@ -162,8 +161,8 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
       return
     }
 
-    let searchResultOptions = []
-    let visibleHeadersArray = {}
+    local searchResultOptions = []
+    local visibleHeadersArray = {}
     local needShowSearchNotify = false
     foreach(option in getCurrentOptionsList())
     {
@@ -183,7 +182,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
         continue
       }
 
-      let header = getOptionHeader(option)
+      local header = getOptionHeader(option)
       if (header == null || (visibleHeadersArray?[header.id] ?? false))
         continue
 
@@ -192,7 +191,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
       base.showOptionRow(header, true)
     }
 
-    let filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
+    local filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
     if (needShowSearchNotify && filterNotifyObj != null)
       filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
@@ -200,7 +199,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function resetSearch()
   {
-    let filterEditBox = scene.findObject("filter_edit_box")
+    local filterEditBox = scene.findObject("filter_edit_box")
     if ( ! ::checkObj(filterEditBox))
       return
 
@@ -248,19 +247,19 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     if (!::checkObj(scene))
       return
 
-    let fbObj = scene.findObject("facebook_frame")
+    local fbObj = scene.findObject("facebook_frame")
     if (!::checkObj(fbObj))
       return
 
-    let facebookLogged = ::facebook_is_logged_in();
+    local facebookLogged = ::facebook_is_logged_in();
     ::showBtn("facebook_login_btn", !facebookLogged, fbObj)
     fbObj.findObject("facebook_friends_btn").enable(facebookLogged)
 
-    let showLikeBtn = ::has_feature("FacebookWallPost")
-    let likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
+    local showLikeBtn = ::has_feature("FacebookWallPost")
+    local likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
     if (::checkObj(likeBtn) && showLikeBtn)
     {
-      let alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
+      local alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
       likeBtn.enable(facebookLogged && !alreadyLiked && !isPlatformSony)
       likeBtn.show(!isPlatformSony)
     }
@@ -268,7 +267,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function fillShortcutInfo(shortcut_id_name, shortcut_object_name)
   {
-    let shortcut = ::get_shortcuts([shortcut_id_name]);
+    local shortcut = ::get_shortcuts([shortcut_id_name]);
     local data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
     if (data == "")
       data = "---";
@@ -276,9 +275,9 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   }
   function bindShortcutButton(devs, btns, shortcut_id_name, shortcut_object_name)
   {
-    let shortcut = ::get_shortcuts([shortcut_id_name]);
+    local shortcut = ::get_shortcuts([shortcut_id_name]);
 
-    let event = shortcut[0];
+    local event = shortcut[0];
 
     event.append({dev = devs, btn = btns});
     if (event.len() > 1)
@@ -289,13 +288,13 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     ::set_shortcuts(shortcut, [shortcut_id_name]);
     save(false);
 
-    let data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
+    local data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
     scene.findObject(shortcut_object_name).setValue(data);
   }
 
   function onClearShortcutButton(shortcut_id_name, shortcut_object_name)
   {
-    let shortcut = ::get_shortcuts([shortcut_id_name]);
+    local shortcut = ::get_shortcuts([shortcut_id_name]);
 
     shortcut[0] = [];
 
@@ -309,7 +308,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function fillLocalInternetRadioOptions(group)
   {
-    let config = optGroups[group]
+    local config = optGroups[group]
 
     if ("options" in config)
       fillOptionsList(group, "internetRadioOptions")
@@ -358,11 +357,11 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function fillVoiceChatOptions(group)
   {
-    let config = optGroups[group]
+    local config = optGroups[group]
 
-    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
+    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/voicechatOptions.blk", this)
 
-    let needShowOptions = isCrossNetworkChatEnabled()
+    local needShowOptions = isCrossNetworkChatEnabled()
     showSceneBtn("voice_disable_warning", !needShowOptions)
 
     showSceneBtn("voice_options_block", needShowOptions)
@@ -372,7 +371,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     if ("options" in config)
       fillOptionsList(group, "voiceOptions")
 
-    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
     local data = ::get_shortcut_text({shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false});
     if (data == "")
       data = "---";
@@ -382,7 +381,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     scene.findObject("ptt_shortcut").setValue(data)
     ::showBtn("ptt_buttons_block", get_option(::USEROPT_PTT).value, scene)
 
-    let echoButton = scene.findObject("joinEchoButton");
+    local echoButton = scene.findObject("joinEchoButton");
     if (echoButton) echoButton.enable(true)
   }
 
@@ -393,9 +392,9 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function bindVoiceButton(devs, btns)
   {
-    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
 
-    let event = ptt_shortcut[0];
+    local event = ptt_shortcut[0];
 
     event.append({dev = devs, btn = btns});
     if (event.len() > 1)
@@ -413,7 +412,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function onClearVoiceButton()
   {
-    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
 
     ptt_shortcut[0] = [];
 
@@ -433,7 +432,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function onEchoTestButton()
   {
-    let echoButton = scene.findObject("joinEchoButton");
+    local echoButton = scene.findObject("joinEchoButton");
 
     joinEchoChannel(!echoTest);
     if(echoButton)
@@ -468,10 +467,10 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   {
     if (!::checkObj(obj))
       return
-    let objParent = obj.getParent()
+    local objParent = obj.getParent()
     if (!::checkObj(objParent))
       return
-    let val = obj.getValue()
+    local val = obj.getValue()
     if (objParent.getValue() != val)
       objParent.setValue(val)
   }
@@ -479,14 +478,14 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   function fillOptionsList(group, objName)
   {
     curGroup = group
-    let config = optGroups[group]
+    local config = optGroups[group]
 
     if( ! optionsConfig)
         optionsConfig = {}
     optionsConfig.onTblClick <- "onTblSelect"
 
     currentContainerName = "options_" + config.name
-    let container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
+    local container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
       true, optionsConfig)
     optionsContainers = [container.descr]
 
@@ -499,7 +498,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   }
 
   function showOptionsSelectedNavigation() {
-    let currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
+    local currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
     if (currentHeaderId == null)
       return
 
@@ -551,9 +550,9 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function doApply()
   {
-    let result = base.doApply();
+    local result = base.doApply();
 
-    let group = curGroup == -1 ? null : optGroups[curGroup];
+    local group = curGroup == -1 ? null : optGroups[curGroup];
     if (group && ("onApplyHandler" in group) && group.onApplyHandler)
       group.onApplyHandler();
 
@@ -567,7 +566,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function onDialogEditRadio()
   {
-    let radio = ::get_internet_radio_options()
+    local radio = ::get_internet_radio_options()
     if (!radio)
       return updateInternerRadioButtons()
 
@@ -576,10 +575,10 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function onRemoveRadio()
   {
-    let radio = ::get_internet_radio_options()
+    local radio = ::get_internet_radio_options()
     if (!radio)
       return updateInternerRadioButtons()
-    let nameRadio = radio?.station
+    local nameRadio = radio?.station
     if (!nameRadio)
       return
     msgBox("warning",
@@ -595,7 +594,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function onEventUpdateListRadio(params)
   {
-    let obj = scene.findObject("groups_list")
+    local obj = scene.findObject("groups_list")
     if (!obj)
       return
     fillOptionsList(obj.getValue(), "internetRadioOptions")
@@ -604,12 +603,12 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function updateInternerRadioButtons()
   {
-    let radio = ::get_internet_radio_options()
-    let isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
-    let btnEditRadio = scene.findObject("btn_edit_radio")
+    local radio = ::get_internet_radio_options()
+    local isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
+    local btnEditRadio = scene.findObject("btn_edit_radio")
     if (btnEditRadio)
       btnEditRadio.enable(isEnable)
-    let btnRemoveRadio = scene.findObject("btn_remove_radio")
+    local btnRemoveRadio = scene.findObject("btn_remove_radio")
     if (btnRemoveRadio)
       btnRemoveRadio.enable(isEnable)
   }
@@ -641,41 +640,35 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     // to be sure, that operation is done.
     ::g_popups.add("", ::loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
-
-  function resetVolumes()
-  {
-    reset_volumes()
-    fillOptionsList(curGroup, "optionslist")
-  }
 }
 
 return {
   openOptionsWnd = function(group = null)
   {
-    let isInFlight = ::is_in_flight()
+    local isInFlight = ::is_in_flight()
     if (isInFlight)
       ::init_options()
 
-    let options = optionsListModule.getOptionsList()
+    local options = optionsListModule.getOptionsList()
 
     if (group != null)
       foreach(o in options)
         if (o.name == group)
           o.selected <- true
 
-    let params = {
+    local params = {
       titleText = isInFlight ?
         ::is_multiplayer() ? null : ::loc("flightmenu/title")
         : ::loc("mainmenu/btnGameplay")
       optGroups = options
       wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
-      sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
+      sceneNavBlkName = "gui/options/navOptionsIngame.blk"
     }
     params.cancelFunc <- function()
     {
       ::set_option_gamma(::get_option_gamma(), false)
-      for (local i = 0; i < SND_NUM_TYPES; i++)
-        set_sound_volume(i, get_sound_volume(i), false)
+      for (local i = 0; i < ::SND_NUM_TYPES; i++)
+        ::set_sound_volume(i, ::get_sound_volume(i), false)
     }
 
     return ::handlersManager.loadHandler(::gui_handlers.Options, params)

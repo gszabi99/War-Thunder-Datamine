@@ -1,7 +1,7 @@
-let { getCollectionsList } = require("scripts/collections/collections.nut")
-let { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { askPurchaseDecorator, askConsumeDecoratorCoupon,
+local { getCollectionsList } = require("scripts/collections/collections.nut")
+local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("scripts/customization/decoratorAcquire.nut")
 
 const MAX_COLLECTION_ITEMS = 10
@@ -9,7 +9,7 @@ const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
 local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
-  sceneBlkName     = "%gui/collections/collectionsWnd.blk"
+  sceneBlkName     = "gui/collections/collectionsWnd.blk"
 
   collectionsList = null
   curPage = 0
@@ -37,13 +37,13 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (collectionsPerPage > 0)
       return
 
-    let wndCollectionsObj = scene.findObject("wnd_collections")
+    local wndCollectionsObj = scene.findObject("wnd_collections")
     countItemsInRow = ::to_pixels("1@collectionWidth-1@collectionPrizeWidth")
       / (::to_pixels("1@collectionItemSizeWithIndent"))
-    let countRowInCollection = ::ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
+    local countRowInCollection = ::ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
     collectionHeight = "".concat(countRowInCollection,
       "@collectionItemSizeWithIndent+1@buttonHeight-1@blockInterval")
-    let sizes = ::g_dagui_utils.adjustWindowSize(wndCollectionsObj, collectionsListObj,
+    local sizes = ::g_dagui_utils.adjustWindowSize(wndCollectionsObj, collectionsListObj,
       "@collectionWidth", collectionHeight, "@blockInterval", "@blockInterval", {windowSizeX = 0})
     collectionsPerPage = sizes.itemsCountY
   }
@@ -52,8 +52,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (selectedDecoratorId == null)
       return
 
-    let decoratorId = selectedDecoratorId
-    let collectionIdx = collectionsList.findindex(@(c) c.findDecoratorById(decoratorId).decorator != null)
+    local decoratorId = selectedDecoratorId
+    local collectionIdx = collectionsList.findindex(@(c) c.findDecoratorById(decoratorId).decorator != null)
     if (collectionIdx == null)
       return
 
@@ -73,24 +73,24 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function fillPage() {
-    let view = { collections = [] }
-    let pageStartIndex = curPage * collectionsPerPage
-    let pageEndIndex = min((curPage + 1) * collectionsPerPage, collectionsList.len())
+    local view = { collections = [] }
+    local pageStartIndex = curPage * collectionsPerPage
+    local pageEndIndex = min((curPage + 1) * collectionsPerPage, collectionsList.len())
     local idxOnPage = 0
     for(local i=pageStartIndex; i < pageEndIndex; i++) {
-      let collectionTopPos = $"{idxOnPage} * ({collectionHeight} + 1@blockInterval)"
+      local collectionTopPos = $"{idxOnPage} * ({collectionHeight} + 1@blockInterval)"
       view.collections.append(
         collectionsList[i].getView(countItemsInRow, collectionTopPos, collectionHeight, i))
       idxOnPage++
     }
     view.hasCollections <- view.collections.len() > 0
 
-    let data = ::handyman.renderCached("%gui/collections/collection", view)
+    local data = ::handyman.renderCached("gui/collections/collection", view)
     if (::check_obj(collectionsListObj))
       guiScene.replaceContentFromText(collectionsListObj, data, data.len(), this)
 
-    let prevValue = collectionsListObj.getValue()
-    let value = findLastValue(prevValue)
+    local prevValue = collectionsListObj.getValue()
+    local value = findLastValue(prevValue)
     if (value >= 0)
       collectionsListObj.setValue(value)
 
@@ -104,7 +104,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local enabledValue = null
     for(local i = 0; i < collectionsListObj.childrenCount(); i++)
     {
-      let childObj = collectionsListObj.getChild(i)
+      local childObj = collectionsListObj.getChild(i)
       if (!childObj.isEnabled())
         continue
       if (childObj?.id == lastSelectedDecoratorObjId)
@@ -116,7 +116,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getDecoratorConfig(id = null) {
-    let curDecoratorParams = (id ?? getCurDecoratorObj()?.id
+    local curDecoratorParams = (id ?? getCurDecoratorObj()?.id
       ?? lastSelectedDecoratorObjId ?? "").split(";")
     if (curDecoratorParams.len() < 2)
       return {
@@ -125,8 +125,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         isPrize = false
       }
 
-    let collectionIdx = ::to_integer_safe(curDecoratorParams[0])
-    let collectionDecorator = collectionsList?[collectionIdx].findDecoratorById(curDecoratorParams[1])
+    local collectionIdx = ::to_integer_safe(curDecoratorParams[0])
+    local collectionDecorator = collectionsList?[collectionIdx].findDecoratorById(curDecoratorParams[1])
     return {
       collectionIdx = collectionIdx
       decorator = collectionDecorator?.decorator
@@ -138,7 +138,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (::show_console_buttons && !collectionsListObj.isHovered())
       return null
 
-    let value = ::get_obj_valid_index(collectionsListObj)
+    local value = ::get_obj_valid_index(collectionsListObj)
     if (value < 0)
       return null
 
@@ -146,12 +146,12 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateDecoratorInfo() {
-    let decoratorConfig = getDecoratorConfig()
-    let decorator = decoratorConfig?.decorator
-    let hasInfo = decorator != null
-    let infoNestObj = showSceneBtn("decorator_info", hasInfo)
+    local decoratorConfig = getDecoratorConfig()
+    local decorator = decoratorConfig?.decorator
+    local hasInfo = decorator != null
+    local infoNestObj = showSceneBtn("decorator_info", hasInfo)
     if (hasInfo) {
-      let imgRatio = 1.0 / (decorator?.decoratorType.getRatio(decorator) ?? 1)
+      local imgRatio = 1.0 / (decorator?.decoratorType.getRatio(decorator) ?? 1)
       updateDecoratorDescription(infoNestObj, this, decorator?.decoratorType, decorator, {
         additionalDescriptionMarkup = decoratorConfig.isPrize
           ? collectionsList?[decoratorConfig?.collectionIdx ?? -1]?.getCollectionViewForPrize()
@@ -168,22 +168,22 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onSelectDecorator() {
-    let value = ::get_obj_valid_index(collectionsListObj)
+    local value = ::get_obj_valid_index(collectionsListObj)
     if (value >= 0)
       lastSelectedDecoratorObjId = collectionsListObj.getChild(value)?.id ?? ""
     updateDecoratorInfo()
   }
 
   function updateButtons(curDecoratorConfig) {
-    let decorator = curDecoratorConfig?.decorator
-    let canBuy = decorator?.canBuyUnlock(null) ?? false
-    let canConsumeCoupon = !canBuy && (decorator?.canGetFromCoupon(null) ?? false)
-    let canFindOnMarketplace = !canBuy && !canConsumeCoupon
+    local decorator = curDecoratorConfig?.decorator
+    local canBuy = decorator?.canBuyUnlock(null) ?? false
+    local canConsumeCoupon = !canBuy && (decorator?.canGetFromCoupon(null) ?? false)
+    local canFindOnMarketplace = !canBuy && !canConsumeCoupon
       && (decorator?.canBuyCouponOnMarketplace(null) ?? false)
-    let canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
+    local canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
       && ::ItemsManager.canGetDecoratorFromTrophy(decorator)
 
-    let bObj = showSceneBtn("btn_buy_decorator", canBuy)
+    local bObj = showSceneBtn("btn_buy_decorator", canBuy)
     if (canBuy && ::check_obj(bObj))
       placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decorator?.getCost())
 
@@ -221,7 +221,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getHandlerRestoreData() {
-    let data = {
+    local data = {
       openData = {
       }
       stateData = {
@@ -232,7 +232,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function restoreHandler(stateData) {
-    let collectionIdx = getDecoratorConfig(stateData.lastSelectedDecoratorObjId)?.collectionIdx
+    local collectionIdx = getDecoratorConfig(stateData.lastSelectedDecoratorObjId)?.collectionIdx
     if (collectionIdx == null)
       return
     curPage = ::ceil(collectionIdx / collectionsPerPage).tointeger()
@@ -245,25 +245,25 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onBuyDecorator() {
-    let decorator = getDecoratorConfig()?.decorator
+    local decorator = getDecoratorConfig()?.decorator
     askPurchaseDecorator(decorator, null)
   }
 
   function onBtnMarketplaceFindCoupon(obj)
   {
-    let decorator = getDecoratorConfig()?.decorator
+    local decorator = getDecoratorConfig()?.decorator
     findDecoratorCouponOnMarketplace(decorator)
   }
 
   function onBtnMarketplaceConsumeCoupon(obj)
   {
-    let decorator = getDecoratorConfig()?.decorator
+    local decorator = getDecoratorConfig()?.decorator
     askConsumeDecoratorCoupon(decorator, null)
   }
 
   function updateOnlyUncompletedCheckbox()
   {
-    let checkboxObj = scene.findObject("checkbox_only_uncompleted")
+    local checkboxObj = scene.findObject("checkbox_only_uncompleted")
     checkboxObj.setValue(isOnlyUncompleted)
   }
 

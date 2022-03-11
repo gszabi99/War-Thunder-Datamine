@@ -1,10 +1,10 @@
-let psn = require("sonyLib/webApi.nut")
-let { open_player_review, PlayerReviewMode } = require("sony.social")
-let { isPS4PlayerName } = require("scripts/clientState/platform.nut")
-let { getActivityByGameMode } = require("scripts/gameModes/psnActivities.nut")
-let { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
+local psn = require("sonyLib/webApi.nut")
+local { open_player_review, PlayerReviewMode } = require("sony.social")
+local { isPS4PlayerName } = require("scripts/clientState/platform.nut")
+local { getActivityByGameMode } = require("scripts/gameModes/psnActivities.nut")
+local { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
 
-let match = {
+local match = {
   id = null
   isOwner = false
   playerId = null
@@ -19,15 +19,15 @@ let match = {
   players = {}
 }
 
-let function processMemberList(members) {
-  let players = {}
+local function processMemberList(members) {
+  local players = {}
   local minMemberId = null
   foreach (m in members) {
-    let isMe = ::is_my_userid(m.userId)
+    local isMe = ::is_my_userid(m.userId)
     if (isPS4PlayerName(m.name)) {
-      let pinfo = ::SessionLobby.getMemberPlayerInfo(m.userId)
+      local pinfo = ::SessionLobby.getMemberPlayerInfo(m.userId)
       if (pinfo?.team != null) { // skip those, whose side is not yet known - can't send'em to PSN
-        let player = { // reflects PSN structure
+        local player = { // reflects PSN structure
           playerId = m.memberId
           teamId = pinfo.team
           accountId = isMe ? ::ps4_get_account_id() : null
@@ -42,34 +42,34 @@ let function processMemberList(members) {
     if (isMe)
       match.playerId = m.memberId
   }
-  let isOwner = (match.playerId <= minMemberId)
+  local isOwner = (match.playerId <= minMemberId)
   return { players, isOwner }
 }
 
-let function addPlayerToMatch(uid) {
-  let player = match.players[uid]
+local function addPlayerToMatch(uid) {
+  local player = match.players[uid]
   ::dagor.debug($"[PSMT] adding {uid}/{player.playerId} to {player.teamId} for {match.id}")
   psn.send(psn.matches.join(match.id, player))
 }
 
-let function onReceivedExternalIds(data) {
+local function onReceivedExternalIds(data) {
   if (match.id == null)
     return
 
-  let uid = data.request.uid
+  local uid = data.request.uid
   if (uid in match.players) {
     match.players[uid].accountId = data.externalIds.psnId
     addPlayerToMatch(uid)
   }
 }
 
-let function updateMatchData() {
-  let updated = processMemberList(::SessionLobby.members)
+local function updateMatchData() {
+  local updated = processMemberList(::SessionLobby.members)
   if (!updated.isOwner || match.id == null)
     return
 
-  let newPlayers = updated.players.filter(@(v, k) !(k in match.players))
-  let lostPlayers = match.players.filter(@(v, k) !(k in updated.players))
+  local newPlayers = updated.players.filter(@(v, k) !(k in match.players))
+  local lostPlayers = match.players.filter(@(v, k) !(k in updated.players))
   match.players = updated.players
 
   foreach (uid, player in newPlayers) {
@@ -86,12 +86,12 @@ let function updateMatchData() {
 }
 
 
-let function tryCreateMatch(info) {
+local function tryCreateMatch(info) {
   match.props.activityId = getActivityByGameMode(info?.public?.game_mode_name)
   if (match.props.activityId == null)
     return
 
-  let updated = processMemberList(info.members)
+  local updated = processMemberList(info.members)
   ::dagor.debug($"[PSMT] try create match for {match.props.activityId}/{info?.public?.game_mode_name} as {updated.isOwner}")
   if (updated.isOwner && match.id == null) {
     psn.send(psn.matches.create(match.props), function(r, e) {
@@ -102,18 +102,18 @@ let function tryCreateMatch(info) {
   }
 }
 
-let function markMatchCompleted() {
+local function markMatchCompleted() {
   match.lastId = match.id
   match.id = null
   match.teamId = null
   match.players = {}
 }
 
-let function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
+local function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
   if (match.id == null)
     return
 
-  let player = {
+  local player = {
     playerId = match.playerId,
     reason = reason // TODO: set proper reason. How to determine?
   }
@@ -122,7 +122,7 @@ let function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
   markMatchCompleted()
 }
 
-let function updateMatchStatus(eventData) {
+local function updateMatchStatus(eventData) {
   if (match.id == null)
     return
 
@@ -132,13 +132,13 @@ let function updateMatchStatus(eventData) {
   }
 }
 
-let function onBattleEnded(p) {
+local function onBattleEnded(p) {
   if (match.id == null || p?.battleResult == null)
     return
 
-  let isVictoryOurs = (p.battleResult == ::STATS_RESULT_SUCCESS)
-  let winnerTeamId = isVictoryOurs ? match.teamId : (3 - match.teamId) // only two teams
-  let teamResults = []
+  local isVictoryOurs = (p.battleResult == ::STATS_RESULT_SUCCESS)
+  local winnerTeamId = isVictoryOurs ? match.teamId : (3 - match.teamId) // only two teams
+  local teamResults = []
   foreach (team in match.props.inGameRoster.teams) {
     teamResults.append({
       teamId = $"{team.teamId}",
@@ -150,7 +150,7 @@ let function onBattleEnded(p) {
   markMatchCompleted()
 }
 
-let function enableMatchesReporting() {
+local function enableMatchesReporting() {
   ::dagor.debug("[PSMT] enabling matches reporting")
   ::add_event_listener("RoomJoined", tryCreateMatch)
   ::add_event_listener("LobbyMembersChanged", @(p) updateMatchData())
@@ -161,9 +161,9 @@ let function enableMatchesReporting() {
   ::add_event_listener("BattleEnded", onBattleEnded)
 }
 
-let function openPlayerReviewDialog() {
+local function openPlayerReviewDialog() {
   // Currently we only have Team matches set up
-  let id = match.lastId || match.id
+  local id = match.lastId || match.id
   if (id != null)
     open_player_review(id, PlayerReviewMode.TEAM_ONLY, "", {})
 }

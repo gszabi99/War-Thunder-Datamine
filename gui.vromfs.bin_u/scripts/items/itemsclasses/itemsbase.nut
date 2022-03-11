@@ -40,10 +40,10 @@
 */
 
 
-let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
-let { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
-let lottie = require("scripts/utils/lottie.nut")
-let { checkLegalRestrictions } = require("scripts/items/itemRestrictions.nut")
+local { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
+local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
+local lottie = require("scripts/utils/lottie.nut")
+local { checkLegalRestrictions } = require("scripts/items/itemRestrictions.nut")
 
 const ITEM_SOON_EXPIRE_SEC = 14400
 const ITEM_VERY_SOON_EXPIRE_SEC = 3600
@@ -54,7 +54,7 @@ local expireTypes = {
 }
 ::items_classes <- {}
 
-::BaseItem <- class
+class ::BaseItem
 {
   id = ""
   static iType = itemType.UNKNOWN
@@ -136,16 +136,16 @@ local expireTypes = {
     restrictedInCountries = blk?.restrictedInCountries
 
     shopFilterMask = iType
-    let types = blk % "additionalShopItemType"
+    local types = blk % "additionalShopItemType"
     foreach(t in types)
       shopFilterMask = shopFilterMask | ::ItemsManager.getInventoryItemType(t)
 
     expiredTimeAfterActivationH = blk?.expiredTimeHAfterActivation ?? 0
 
-    let expiredAt = blk?.expiredAt
+    local expiredAt = blk?.expiredAt
       ? getTimestampFromStringUtc(blk.expiredAt) - ::get_charserver_time_sec() : null
-    let invExpiredTime = invBlk?.expiredTime
-    let expiredTime = (expiredAt != null && invExpiredTime != null)
+    local invExpiredTime = invBlk?.expiredTime
+    local expiredTime = (expiredAt != null && invExpiredTime != null)
       ? ::min(invExpiredTime, expiredAt) : expiredAt != null
         ? expiredAt : invExpiredTime
 
@@ -168,7 +168,7 @@ local expireTypes = {
 
   function makeEmptyInventoryItem()
   {
-    let res = clone this
+    local res = clone this
     res.isInventoryItem = true
     res.uids = []
     res.amount = 0
@@ -200,7 +200,7 @@ local expireTypes = {
 
   function getDebugName()
   {
-    let myClass = getclass()
+    local myClass = getclass()
     foreach(name, iClass in ::items_classes)
       if (myClass == iClass)
         return name
@@ -256,14 +256,14 @@ local expireTypes = {
     if (!::checkObj(obj))
       return
 
-    let bigPicture = ::getTblValue("bigPicture", params, false)
+    local bigPicture = ::getTblValue("bigPicture", params, false)
 
-    let addItemName = ::getTblValue("addItemName", params, true)
-    let imageData = bigPicture? getBigIcon() : getIcon(addItemName)
+    local addItemName = ::getTblValue("addItemName", params, true)
+    local imageData = bigPicture? getBigIcon() : getIcon(addItemName)
     if (!imageData)
       return
 
-    let guiScene = obj.getScene()
+    local guiScene = obj.getScene()
     obj.doubleSize = bigPicture? "yes" : "no"
     obj.wideSize = params?.wideSize ? "yes" : "no"
     guiScene.replaceContentFromText(obj, imageData, imageData.len(), null)
@@ -293,7 +293,7 @@ local expireTypes = {
 
   function getNameMarkup(count = 0, showTitle = true, hasPadding = false)
   {
-    return ::handyman.renderCached("%gui/items/itemString", {
+    return ::handyman.renderCached("gui/items/itemString", {
       title = showTitle? colorize("activeTextColor",getName()) : null
       icon = getSmallIconName()
       tooltipId = ::g_tooltip.getIdItem(id, { isDisguised = isDisguised })
@@ -369,10 +369,10 @@ local expireTypes = {
 
   function getViewData(params = {})
   {
-    let openedPicture = ::getTblValue("openedPicture", params, false)
-    let bigPicture = ::getTblValue("bigPicture", params, false)
-    let addItemName = ::getTblValue("addItemName", params, true)
-    let res = {
+    local openedPicture = ::getTblValue("openedPicture", params, false)
+    local bigPicture = ::getTblValue("bigPicture", params, false)
+    local addItemName = ::getTblValue("addItemName", params, true)
+    local res = {
       layered_image = params?.overrideLayeredImage
         ?? (openedPicture? (bigPicture? getOpenedBigIcon() : getOpenedIcon()) : bigPicture? getBigIcon() : getIcon(addItemName))
       enableBackground = ::getTblValue("enableBackground", params, true)
@@ -389,7 +389,7 @@ local expireTypes = {
     foreach(paramName, value in params)
       res[paramName] <- value
 
-    let craftTimerText = params?.craftTimerText
+    local craftTimerText = params?.craftTimerText
     if ((hasCraftTimer() && (params?.hasCraftTimer ?? true)) || craftTimerText)
       res.craftTime <- craftTimerText ?? getCraftTimeTextShort()
 
@@ -399,7 +399,7 @@ local expireTypes = {
     if (isRare() && (params?.showRarity ?? true))
       res.rarityColor <- getRarityColor()
 
-    let expireType = getExpireType()
+    local expireType = getExpireType()
     if (expireType) {
       res.rarityColor <- expireType.color
       res.alarmIcon <- true
@@ -424,7 +424,7 @@ local expireTypes = {
   {
     if (::getTblValue("showAction", params, true))
     {
-      let mainActionData = params?.overrideMainActionData ?? getMainActionData(true, params)
+      local mainActionData = params?.overrideMainActionData ?? getMainActionData(true, params)
       res.isInactive <- (params?.showButtonInactiveIfNeed ?? false)
         && (mainActionData?.isInactive ?? false)
       if (mainActionData && getLimitsCheckData().result)
@@ -435,9 +435,9 @@ local expireTypes = {
       }
     }
 
-    let isSelfAmount = params?.count == null
-    let amountVal = params?.count || getAmount()
-    let additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
+    local isSelfAmount = params?.count == null
+    local amountVal = params?.count || getAmount()
+    local additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
       : getAdditionalTextInAmmount()
     if ((!shouldAutoConsume || canOpenForGold())
       && (!::u.isInteger(amountVal) || shouldShowAmount(amountVal)))
@@ -451,7 +451,7 @@ local expireTypes = {
     }
     if (::getTblValue("showSellAmount", params, false))
     {
-      let sellAmount = getSellAmount()
+      local sellAmount = getSellAmount()
       if (sellAmount > 1)
         res.amount <- sellAmount + additionalTextInAmmount
     }
@@ -459,7 +459,7 @@ local expireTypes = {
     if (!res?.isItemLocked)
       res.isItemLocked <- isInventoryItem && !amount
 
-    let boostEfficiency = getBoostEfficiency()
+    local boostEfficiency = getBoostEfficiency()
     if(params?.hasBoostEfficiency && boostEfficiency)
       res.boostEfficiency <- ::colorize(getAmount() > 0
         ? "activeTextColor"
@@ -487,14 +487,14 @@ local expireTypes = {
   {
     if (!hasLink())
       return
-    let validLink = validateLink(link)
+    local validLink = validateLink(link)
     if (validLink)
       openUrl(validLink, forceExternalBrowser, false, linkBigQueryKey)
   }
 
   function _requestBuy(params = {})
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk["name"] = id
     blk["count"] = ::getTblValue("count", params, getSellAmount())
     blk["cost"] = params.cost
@@ -508,8 +508,8 @@ local expireTypes = {
     if (!isCanBuy() || !check_balance_msgBox(getCost()))
       return false
 
-    let item = this
-    let onSuccessCb = (@(cb, item) function() {
+    local item = this
+    local onSuccessCb = (@(cb, item) function() {
       ::update_gamercards()
       item.forceRefreshLimits()
       if (cb) cb({
@@ -518,9 +518,9 @@ local expireTypes = {
       })
       ::broadcastEvent("ItemBought", { item = item })
     })(cb, item)
-    let onErrorCb = (@(item) function(res) { item.forceRefreshLimits() })(item)
+    local onErrorCb = (@(item) function(res) { item.forceRefreshLimits() })(item)
 
-    let taskId = _requestBuy(params)
+    local taskId = _requestBuy(params)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccessCb, onErrorCb)
     return taskId >= 0
   }
@@ -546,10 +546,10 @@ local expireTypes = {
     if (!handler?.isValid())
       handler = ::get_cur_base_gui_handler()
 
-    let name = getName()
-    let cost = getCost()
-    let price = cost.getTextAccordingToBalance()
-    let msgText = ::warningIfGold(
+    local name = getName()
+    local cost = getCost()
+    local price = cost.getTextAccordingToBalance()
+    local msgText = ::warningIfGold(
       ::loc("onlineShop/needMoneyQuestion",{purchase = name, cost = price }),
       cost)
     local item = this
@@ -562,12 +562,12 @@ local expireTypes = {
 
   function getBuyText(colored, short, locIdBuyText = "mainmenu/btnBuy", cost = null)
   {
-    let res = ::loc(locIdBuyText)
+    local res = ::loc(locIdBuyText)
     if (short)
       return res
 
     cost = cost ?? getCost()
-    let costText = colored? cost.getTextAccordingToBalance() : cost.getUncoloredText()
+    local costText = colored? cost.getTextAccordingToBalance() : cost.getUncoloredText()
     return res + ((costText == "")? "" : " (" + costText + ")")
   }
 
@@ -602,7 +602,7 @@ local expireTypes = {
   {
     if (!hasTimer())
       return null
-    let deltaSeconds = getExpireDeltaSec()
+    local deltaSeconds = getExpireDeltaSec()
     return deltaSeconds > ITEM_SOON_EXPIRE_SEC ? null
       : deltaSeconds < ITEM_VERY_SOON_EXPIRE_SEC ? expireTypes.VERY_SOON
       : expireTypes.SOON
@@ -638,30 +638,30 @@ local expireTypes = {
   {
     if (expiredTimeSec <= 0)
       return ""
-    let deltaSeconds = getExpireDeltaSec()
+    local deltaSeconds = getExpireDeltaSec()
     if (deltaSeconds < 0)
     {
       if (isInventoryItem && amount > 0)
         onItemExpire()
       return ::loc(itemExpiredLocId)
     }
-    let resStr = ::loc("icon/hourglass") + ::nbsp +
+    local resStr = ::loc("icon/hourglass") + ::nbsp +
       ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp)
-    let expireTimeColor = getExpireType()?.color
+    local expireTimeColor = getExpireType()?.color
     return expireTimeColor ? ::colorize(expireTimeColor, resStr) : resStr
   }
 
   function getCurExpireTimeText()
   {
     local res = ""
-    let active = isActive()
+    local active = isActive()
     if (!active)
       res += getExpireAfterActivationText()
 
-    let timeText = getExpireTimeTextShort()
+    local timeText = getExpireTimeTextShort()
     if (timeText != "")
     {
-      let labelLocId = active ? "items/expireTimeLeft" : "items/expireTimeBeforeActivation"
+      local labelLocId = active ? "items/expireTimeLeft" : "items/expireTimeBeforeActivation"
       res += ((res!="") ? "\n" : "") + ::loc(labelLocId) + ::loc("ui/colon") +
         ::colorize("activeTextColor", timeText)
     }
@@ -670,7 +670,7 @@ local expireTypes = {
 
   function getNoTradeableTimeTextShort()
   {
-    let seconds = getNoTradeableTimeLeft()
+    local seconds = getNoTradeableTimeLeft()
     if (seconds <= 0)
     {
       if (tradeableTimestamp > 0)
@@ -718,9 +718,9 @@ local expireTypes = {
     if (isInventoryItem || !hasLimits())
       return ""
 
-    let limitData = getLimitData()
+    local limitData = getLimitData()
     local locParams = null
-    let textParts = []
+    local textParts = []
     if (limitGlobal > 0)
     {
       locParams = {
@@ -743,20 +743,20 @@ local expireTypes = {
 
   function getLimitsCheckData()
   {
-    let data = {
+    local data = {
       result = true
       reason = ""
     }
     if (!hasLimits())
       return data
 
-    let limitData = getLimitData()
+    local limitData = getLimitData()
     foreach (name in ["Global", "PersonalTotal", "PersonalAtTime"])
     {
-      let limitName = ::format("limit%s", name)
-      let limitValue = ::getTblValue(limitName, this, 0)
-      let countName = ::format("count%s", name)
-      let countValue = ::getTblValue(countName, limitData, 0)
+      local limitName = ::format("limit%s", name)
+      local limitValue = ::getTblValue(limitName, this, 0)
+      local countName = ::format("count%s", name)
+      local countValue = ::getTblValue(countName, limitData, 0)
       if (0 < limitValue && limitValue <= countValue)
       {
         data.result = false
@@ -772,13 +772,13 @@ local expireTypes = {
     if (limitGlobal == 0)
       return ""
 
-    let limitData = getLimitData()
+    local limitData = getLimitData()
     if (limitData.countGlobal == -1)
       return ""
 
-    let leftCount = limitGlobal - limitData.countGlobal
-    let limitText = ::format("%s/%s", leftCount.tostring(), limitGlobal.tostring())
-    let locParams = {
+    local leftCount = limitGlobal - limitData.countGlobal
+    local limitText = ::format("%s/%s", leftCount.tostring(), limitGlobal.tostring())
+    local locParams = {
       ticketsLeft = ::colorize("activeTextColor", limitText)
     }
     return ::loc("items/limitDescription/globalLimitText", locParams)

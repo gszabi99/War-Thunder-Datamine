@@ -1,7 +1,7 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let seenListEvents = require("scripts/seen/seenListEvents.nut")
-let Callback = require("sqStdLibs/helpers/callback.nut").Callback
+local u = require("sqStdLibs/helpers/u.nut")
+local seenList = require("scripts/seen/seenList.nut")
+local seenListEvents = require("scripts/seen/seenListEvents.nut")
+local Callback = require("sqStdLibs/helpers/callback.nut").Callback
 
 /*
   behaviour config params:
@@ -12,7 +12,7 @@ let Callback = require("sqStdLibs/helpers/callback.nut").Callback
   when need only listId without entities, you can setValue(listId) without preprocessing
 */
 
-let BhvUnseen = class
+local BhvUnseen = class
 {
   eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
@@ -53,8 +53,8 @@ let BhvUnseen = class
     if (!valueTbl?.listId)
       return null
 
-    let entity = valueTbl?.entity
-    let list = u.isArray(entity) ? entity
+    local entity = valueTbl?.entity
+    local list = u.isArray(entity) ? entity
       : u.isString(entity) ? [entity]
       : null
 
@@ -101,13 +101,13 @@ let BhvUnseen = class
 
   function getOnSeenChangedCb(obj)
   {
-    let bhvClass = this
+    local bhvClass = this
     return @() ::check_obj(obj) && bhvClass.updateView(obj)
   }
 
   function updateView(obj)
   {
-    let config = obj.getUserData()
+    local config = obj.getUserData()
     local hasCounter = false
     local count = 0
 
@@ -124,7 +124,7 @@ let BhvUnseen = class
     if (!count || !obj.childrenCount())
       return
 
-    let textObj = obj.getChild(0)
+    local textObj = obj.getChild(0)
     textObj.isActive = hasCounter ? "yes" : "no"
 
     if (hasCounter)

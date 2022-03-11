@@ -1,21 +1,21 @@
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let itemTransfer = require("scripts/items/itemsTransfer.nut")
-let stdMath = require("std/math.nut")
-let { setShouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
-let { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
-let { boosterEffectType }= require("scripts/items/boosterEffect.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { PRICE } = require("scripts/utils/configs.nut")
+local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
+local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+local itemTransfer = require("scripts/items/itemsTransfer.nut")
+local stdMath = require("std/math.nut")
+local { setShouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
+local { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
+local { boosterEffectType }= require("scripts/items/boosterEffect.nut")
+local seenList = require("scripts/seen/seenList.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { PRICE } = require("scripts/utils/configs.nut")
 
 // Independent Modules
 require("scripts/items/roulette/bhvRoulette.nut")
 
-let seenInventory = seenList.get(SEEN.INVENTORY)
-let seenItems = seenList.get(SEEN.ITEMS_SHOP)
-let OUT_OF_DATE_DAYS_ITEMS_SHOP = 28
-let OUT_OF_DATE_DAYS_INVENTORY = 0
+local seenInventory = seenList.get(SEEN.INVENTORY)
+local seenItems = seenList.get(SEEN.ITEMS_SHOP)
+local OUT_OF_DATE_DAYS_ITEMS_SHOP = 28
+local OUT_OF_DATE_DAYS_INVENTORY = 0
 
 /*
   ::ItemsManager API:
@@ -32,8 +32,8 @@ let OUT_OF_DATE_DAYS_INVENTORY = 0
 //events from native code:
 ::on_items_loaded <- @() ::ItemsManager.onItemsLoaded()
 
-let itemsShopListVersion = ::Watched(0)
-let inventoryListVersion = ::Watched(0)
+local itemsShopListVersion = ::Watched(0)
+local inventoryListVersion = ::Watched(0)
 
 foreach (fn in [
                  "discountItemSortMethod.nut"
@@ -138,15 +138,15 @@ foreach (fn in [
   //!!!END added only for debug
 
   function getBestSpecialOfferItemByUnit(unit) {
-    let res = []
+    local res = []
     for (local i = 0; i < ::get_current_personal_discount_count(); i++) {
-      let uid = ::get_current_personal_discount_uid(i)
-      let item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
+      local uid = ::get_current_personal_discount_uid(i)
+      local item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
       if (item == null || !(item?.isSpecialOffer ?? false) || !item.isActive())
         continue
 
-      let locParams = item.getSpecialOfferLocParams()
-      let itemUnit = locParams?.unit
+      local locParams = item.getSpecialOfferLocParams()
+      local itemUnit = locParams?.unit
       if (itemUnit == unit)
         res.append({
           item = item
@@ -172,8 +172,8 @@ foreach (fn in [
   function canGetDecoratorFromTrophy(decorator) {
     if (!decorator || decorator.isUnlocked())
       return false
-    let visibleTypeMask = checkItemsMaskFeatures(itemType.TROPHY)
-    let filterFunc = @(item) !item.isDevItem && isItemVisible(item, itemsTab.SHOP)
+    local visibleTypeMask = checkItemsMaskFeatures(itemType.TROPHY)
+    local filterFunc = @(item) !item.isDevItem && isItemVisible(item, itemsTab.SHOP)
     return getShopList(visibleTypeMask, filterFunc)
       .findindex(@(item) item.getContent().findindex(@(prize) prize?.resource == decorator.id) != null) != null
   }
@@ -181,7 +181,7 @@ foreach (fn in [
 
 ::ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
 {
-  let curLevel = ::get_cyber_cafe_level()
+  local curLevel = ::get_cyber_cafe_level()
   if (curLevel == genericItemsForCyberCafeLevel)
     return
 
@@ -191,8 +191,8 @@ foreach (fn in [
 
   for (local i = 0; i <= ::cyber_cafe_max_level; i++)
   {
-    let level = i || curLevel //we do not need level0 booster, but need booster of current level.
-    let table = {
+    local level = i || curLevel //we do not need level0 booster, but need booster of current level.
+    local table = {
       type = itemType.FAKE_BOOSTER
       iconStyle = "cybercafebonus"
       locId = "item/FakeBoosterForNetCafeLevel"
@@ -206,7 +206,7 @@ foreach (fn in [
 
   for (local i = 2; i <= ::g_squad_manager.getMaxSquadSize(); i++)
   {
-    let table = {
+    local table = {
       type = itemType.FAKE_BOOSTER
       rateBoosterParams = {
         xpRate = ::floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.RP, i) + 0.5)
@@ -216,7 +216,7 @@ foreach (fn in [
     fakeItemsList["FakeBoosterForSquadFromSameCafe" + i] <- ::build_blk_from_container(table)
   }
 
-  let trophyFromInventory = {
+  local trophyFromInventory = {
     type = itemType.TROPHY
     locId = "inventory/consumeItem"
     iconStyle = "gold_iron_box"
@@ -236,7 +236,7 @@ foreach (fn in [
   if (!hasChanges)
     return
 
-  let duplicatesId = []
+  local duplicatesId = []
   shopItemById.clear()
   itemsList.clear()
   itemsList.extend(itemsListInternal)
@@ -262,30 +262,30 @@ foreach (fn in [
   dbgTrophiesListInternal.clear()
   dbgUpdateInternalItemsCount++
 
-  let pBlk = ::get_price_blk()
-  let trophyBlk = pBlk?.trophy
+  local pBlk = ::get_price_blk()
+  local trophyBlk = pBlk?.trophy
   if (trophyBlk)
     for (local i = 0; i < trophyBlk.blockCount(); i++)
     {
-      let blk = trophyBlk.getBlock(i)
-      let item = createItem(itemType.TROPHY, blk)
+      local blk = trophyBlk.getBlock(i)
+      local item = createItem(itemType.TROPHY, blk)
       itemsListInternal.append(item)
       dbgTrophiesListInternal.append(item)
     }
   dbgLoadedTrophiesCount = dbgTrophiesListInternal.len()
 
-  let itemsBlk = ::get_items_blk()
+  local itemsBlk = ::get_items_blk()
   ignoreItemLimits = !!itemsBlk?.ignoreItemLimits
   for(local i = 0; i < itemsBlk.blockCount(); i++)
   {
-    let blk = itemsBlk.getBlock(i)
-    let iType = getInventoryItemType(blk?.type)
+    local blk = itemsBlk.getBlock(i)
+    local iType = getInventoryItemType(blk?.type)
     if (iType == itemType.UNKNOWN)
     {
       ::dagor.debug("Error: unknown item type in items blk = " + (blk?.type ?? "NULL"))
       continue
     }
-    let item = createItem(iType, blk)
+    local item = createItem(iType, blk)
     itemsListInternal.append(item)
   }
 
@@ -293,8 +293,8 @@ foreach (fn in [
   if (fakeItemsList)
     for (local i = 0; i < fakeItemsList.blockCount(); i++)
     {
-      let blk = fakeItemsList.getBlock(i)
-      let item = createItem(blk?.type, blk)
+      local blk = fakeItemsList.getBlock(i)
+      local item = createItem(blk?.type, blk)
       itemsListInternal.append(item)
     }
 
@@ -318,7 +318,7 @@ foreach (fn in [
     local item = itemsByItemdefId?[itemDefDesc?.itemdefid]
     if (!item)
     {
-      let defType = itemDefDesc?.type
+      local defType = itemDefDesc?.type
 
       if (::isInArray(defType, [ "playtimegenerator", "generator", "bundle", "delayedexchange" ])
         || !::u.isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags?.hasAdditionalRecipes)
@@ -326,7 +326,7 @@ foreach (fn in [
 
       if (!::isInArray(defType, [ "item", "delayedexchange" ]))
         continue
-      let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
+      local iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
       if (iType == itemType.UNKNOWN)
         continue
 
@@ -342,7 +342,7 @@ foreach (fn in [
 
 ::ItemsManager.onEventEntitlementsUpdatedFromOnlineShop <- function onEventEntitlementsUpdatedFromOnlineShop(params)
 {
-  let curLevel = ::get_cyber_cafe_level()
+  local curLevel = ::get_cyber_cafe_level()
   if (genericItemsForCyberCafeLevel != curLevel)
   {
     markItemsListUpdate()
@@ -354,7 +354,7 @@ foreach (fn in [
 {
   foreach(name, itemClass in ::items_classes)
   {
-    let iType = itemClass.iType
+    local iType = itemClass.iType
     if (stdMath.number_of_set_bits(iType) != 1)
       ::dagor.assertf(false, "Incorrect item class iType " + iType + " must be a power of 2")
     if (iType in itemTypeClasses)
@@ -367,7 +367,7 @@ foreach (fn in [
 
 ::ItemsManager.createItem <- function createItem(itemType, blk, inventoryBlk = null, slotData = null)
 {
-  let iClass = (itemType in itemTypeClasses)? itemTypeClasses[itemType] : ::BaseItem
+  local iClass = (itemType in itemTypeClasses)? itemTypeClasses[itemType] : ::BaseItem
   return iClass(blk, inventoryBlk, slotData)
 }
 
@@ -407,7 +407,7 @@ foreach (fn in [
 ::ItemsManager.findItemById <- function findItemById(id, typeMask = itemType.ALL)
 {
   _checkUpdateList()
-  let item = shopItemById?[id] ?? itemsByItemdefId?[id]
+  local item = shopItemById?[id] ?? itemsByItemdefId?[id]
   if (!item && isItemdefId(id))
     requestItemsByItemdefIds([id])
   return item
@@ -429,7 +429,7 @@ foreach (fn in [
   if (item || !ItemGenerators.get(id))
     return item
 
-  let itemDefDesc = inventoryClient.getItemdefs()?[id]
+  local itemDefDesc = inventoryClient.getItemdefs()?[id]
   if (!itemDefDesc)
     return item
 
@@ -539,20 +539,20 @@ local lastItemDefsUpdatedelayedCall = 0
 
   inventory = []
 
-  let itemsBlk = ::get_items_blk()
+  local itemsBlk = ::get_items_blk()
 
-  let itemsCache = ::get_items_cache()
+  local itemsCache = ::get_items_cache()
   foreach(slot in itemsCache)
   {
     if (!slot.uids.len())
       continue
 
-    let invItemBlk = ::DataBlock()
+    local invItemBlk = ::DataBlock()
     ::get_item_data_by_uid(invItemBlk, slot.uids[0])
     if (::getTblValue("expiredTime", invItemBlk, 0) < 0)
       continue
 
-    let iType = getInventoryItemType(invItemBlk?.type)
+    local iType = getInventoryItemType(invItemBlk?.type)
     if (iType == itemType.UNKNOWN)
     {
       //debugTableData(invItemBlk)
@@ -560,7 +560,7 @@ local lastItemDefsUpdatedelayedCall = 0
       continue
     }
 
-    let blk = itemsBlk?[slot.id]
+    local blk = itemsBlk?[slot.id]
     if (!blk)
     {
       if (::is_dev_version)
@@ -568,7 +568,7 @@ local lastItemDefsUpdatedelayedCall = 0
       continue //skip removed items
     }
 
-    let item = createItem(iType, blk, invItemBlk, slot)
+    local item = createItem(iType, blk, invItemBlk, slot)
     inventory.append(item)
     if (item.shouldAutoConsume && !item.isActive())
       setShouldCheckAutoConsume(true)
@@ -577,27 +577,27 @@ local lastItemDefsUpdatedelayedCall = 0
   ::ItemsManager.fillFakeItemsList()
   if (fakeItemsList && ::get_cyber_cafe_level())
   {
-    let id = "FakeBoosterForNetCafeLevel"
-    let blk = fakeItemsList.getBlockByName(id)
+    local id = "FakeBoosterForNetCafeLevel"
+    local blk = fakeItemsList.getBlockByName(id)
     if (blk)
     {
-      let item = createItem(blk?.type, blk, ::DataBlock(), {uids = [::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID]})
+      local item = createItem(blk?.type, blk, ::DataBlock(), {uids = [::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID]})
       inventory.append(item)
     }
   }
 
   //gather transfer items list
-  let transferAmounts = {}
+  local transferAmounts = {}
   foreach(data in itemTransfer.getSendingList())
     transferAmounts[data.itemDefId] <- (transferAmounts?[data.itemDefId] ?? 0) + 1
 
   // Collecting external inventory items
   rawInventoryItemAmountsByItemdefId = {}
-  let extInventoryItems = []
+  local extInventoryItems = []
   foreach (itemDesc in inventoryClient.getItems())
   {
-    let itemDefDesc = itemDesc.itemdef
-    let itemDefId = itemDesc.itemdefid
+    local itemDefDesc = itemDesc.itemdef
+    local itemDefId = itemDesc.itemdefid
     if (itemDefId in rawInventoryItemAmountsByItemdefId)
       rawInventoryItemAmountsByItemdefId[itemDefId] += itemDesc.quantity
     else
@@ -605,7 +605,7 @@ local lastItemDefsUpdatedelayedCall = 0
 
     if (!itemDefDesc.len()) //item not full updated, or itemDesc no more exist.
       continue
-    let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
+    local iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
     if (iType == itemType.UNKNOWN)
     {
       ::dagor.logerr("Inventory: Unknown itemdef.tags.type in item " + (itemDefDesc?.itemdefid ?? "NULL"))
@@ -621,7 +621,7 @@ local lastItemDefsUpdatedelayedCall = 0
       }
     if (isCreate)
     {
-      let item = createItem(iType, itemDefDesc, itemDesc)
+      local item = createItem(iType, itemDefDesc, itemDesc)
       if (item.id in transferAmounts)
         item.transferAmount += delete transferAmounts[item.id]
       if (item.shouldAutoConsume)
@@ -631,23 +631,23 @@ local lastItemDefsUpdatedelayedCall = 0
   }
 
   //add items in transfer
-  let itemdefsToRequest = []
+  local itemdefsToRequest = []
   foreach(itemdefid, amount in transferAmounts)
   {
-    let itemdef = inventoryClient.getItemdefs()?[itemdefid]
+    local itemdef = inventoryClient.getItemdefs()?[itemdefid]
     if (!itemdef)
     {
       itemdefsToRequest.append(itemdefid)
       continue
     }
-    let iType = getInventoryItemType(itemdef?.tags?.type ?? "")
+    local iType = getInventoryItemType(itemdef?.tags?.type ?? "")
     if (iType == itemType.UNKNOWN)
     {
       if (::isInArray(itemdef?.type, [ "item", "delayedexchange" ]))
         ::dagor.logerr("Inventory: Transfer: Unknown itemdef.tags.type in item " + itemdefid)
       continue
     }
-    let item = createItem(iType, itemdef, {})
+    local item = createItem(iType, itemdef, {})
     item.transferAmount += amount
     extInventoryItems.append(item)
   }
@@ -677,7 +677,7 @@ local lastItemDefsUpdatedelayedCall = 0
 {
   if (!inventoryVisibleSeenIds)
   {
-    let itemsList = getInventoryListByShopMask(checkItemsMaskFeatures(itemType.INVENTORY_ALL))
+    local itemsList = getInventoryListByShopMask(checkItemsMaskFeatures(itemType.INVENTORY_ALL))
     inventoryVisibleSeenIds = itemsList.filter(
       @(it) ::ItemsManager.isItemVisible(it, itemsTab.INVENTORY)).map(@(it) it.getSeenId())
   }
@@ -760,7 +760,7 @@ local lastInventoryUpdateDelayedCall = 0
   if (typeMask == itemType.ALL && !filterFunc)
     return list
 
-  let res = []
+  local res = []
   foreach(item in list)
     if (((item?[itemMaskProperty] ?? item.iType) & typeMask)
         && (!filterFunc || filterFunc(item)))
@@ -774,11 +774,11 @@ local lastInventoryUpdateDelayedCall = 0
   if (!::is_in_flight())
     return
 
-  let curFlightTime = ::get_usefull_total_time()
+  local curFlightTime = ::get_usefull_total_time()
   local nextExpireTime = -1
   foreach(booster in boostersList)
   {
-    let expireTime = booster.getExpireFlightTime()
+    local expireTime = booster.getExpireFlightTime()
     if (expireTime <= curFlightTime)
       continue
     if (nextExpireTime < 0 || expireTime < nextExpireTime)
@@ -788,7 +788,7 @@ local lastInventoryUpdateDelayedCall = 0
   if (nextExpireTime < 0)
     return
 
-  let nextUpdateTime = nextExpireTime.tointeger() + 1
+  local nextUpdateTime = nextExpireTime.tointeger() + 1
   if (refreshBoostersTask >= 0 && nextUpdateTime >= boostersTaskUpdateFlightTime)
     return
 
@@ -839,8 +839,8 @@ local lastInventoryUpdateDelayedCall = 0
 
 ::ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL)
 {
-  let itemsArray = ::ItemsManager.getInventoryList(filterType)
-  let res = u.search(itemsArray, @(item) ::isInArray(uid, item.uids) )
+  local itemsArray = ::ItemsManager.getInventoryList(filterType)
+  local res = u.search(itemsArray, @(item) ::isInArray(uid, item.uids) )
   return res
 }
 
@@ -848,9 +848,9 @@ local lastInventoryUpdateDelayedCall = 0
 {
   for(local i = 0; i < ::get_user_logs_count(); i++)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
-    let itemDefId = blk?.body?.itemDefId
+    local itemDefId = blk?.body?.itemDefId
     if (itemDefId)
       ::ItemsManager.findItemById(itemDefId) // Requests itemdef, if it is not found.
   }
@@ -858,7 +858,7 @@ local lastInventoryUpdateDelayedCall = 0
 
 ::ItemsManager.isEnabled <- function isEnabled()
 {
-  let checkNewbie = !::my_stats.isMeNewbie()
+  local checkNewbie = !::my_stats.isMeNewbie()
     || seenInventory.hasSeen()
     || inventory.len() > 0
   return ::has_feature("Items") && checkNewbie
@@ -893,11 +893,11 @@ local lastInventoryUpdateDelayedCall = 0
 //-----------------------------  PROMO ACTIONS---------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-let function consumeItemFromPromo(handler, params) {
-  let itemId = params?[0]
+local function consumeItemFromPromo(handler, params) {
+  local itemId = params?[0]
   if (itemId == null)
     return
-  let item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+  local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
   if (!(item?.canConsume() ?? false))
     return
 
@@ -905,11 +905,11 @@ let function consumeItemFromPromo(handler, params) {
   handler.goBack()
 }
 
-let function canConsumeItemFromPromo(params) {
-  let itemId = params?[0]
+local function canConsumeItemFromPromo(params) {
+  local itemId = params?[0]
   if (itemId == null)
     return false
-  let item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+  local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
   return item?.canConsume() ?? false
 }
 
@@ -923,10 +923,10 @@ addPromoAction("consume_item", @(handler, params, obj) consumeItemFromPromo(hand
 seenItems.setListGetter(@() ::ItemsManager.getShopVisibleSeenIds())
 seenInventory.setListGetter(@() ::ItemsManager.getInventoryVisibleSeenIds())
 
-let makeSeenCompatibility = @(savePath) function()
+local makeSeenCompatibility = @(savePath) function()
   {
-    let res = {}
-    let blk = ::loadLocalByAccount(savePath)
+    local res = {}
+    local blk = ::loadLocalByAccount(savePath)
     if (!::u.isDataBlock(blk))
       return res
 

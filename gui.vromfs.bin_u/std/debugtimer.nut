@@ -1,23 +1,23 @@
-let { get_time_msec } = require("dagor.time")
-let { log } = require("log.nut")()
+local { get_time_msec } = require("dagor.time")
+local { log } = require("log.nut")()
 
-let timers = []
+local timers = []
 
-let start = @() timers.append(get_time_msec())
+local start = @() timers.append(get_time_msec())
 
-let show = @(msg = "show", printFunc = log) timers.len() > 0
+local show = @(msg = "show", printFunc = log) timers.len() > 0
   ? printFunc($"dbg_timer: {msg}: {get_time_msec() - timers.top()}")
   : printFunc($"dbg_timer: not found timer for {msg}")
 
-let function stop(msg = "stop", printFunc = log) {
+local function stop(msg = "stop", printFunc = log) {
   show(msg, printFunc)
   if (timers.len())
     timers.pop()
 }
 
-let timerFunc = @(func, msg = "func time", printFunc = log) function(...) {
+local timerFunc = @(func, msg = "func time", printFunc = log) function(...) {
   start()
-  let res = func.acall([this].extend(vargv))
+  local res = func.acall([this].extend(vargv))
   stop(msg, printFunc)
   return res
 }

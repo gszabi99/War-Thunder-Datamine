@@ -8,7 +8,7 @@
 
   function handle_web_rpc_unsafe(call)
   {
-    let func = call["func"]
+    local func = call["func"]
     if (!(func in handlers))
       return "RPC method not found"
 

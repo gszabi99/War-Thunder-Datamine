@@ -1,23 +1,23 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local cachedLoadedTransport = null
-let function getLoadedTransport() {
+local function getLoadedTransport() {
   if (cachedLoadedTransport != null)
     return cachedLoadedTransport?.loadedTransport ?? {}
 
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   ::ww_get_loaded_transport(blk)
   cachedLoadedTransport = blk
   return cachedLoadedTransport?.loadedTransport ?? {}
 }
 
-let clearCacheLoadedTransport = @() cachedLoadedTransport = null
+local clearCacheLoadedTransport = @() cachedLoadedTransport = null
 
-let function isEmptyTransport(armyName) {
+local function isEmptyTransport(armyName) {
   return !(armyName in getLoadedTransport())
 }
 
-let function isFullLoadedTransport(armyName) {
+local function isFullLoadedTransport(armyName) {
   return armyName in getLoadedTransport()
 }
 
@@ -25,27 +25,27 @@ subscriptions.addListenersWithoutEnv({
   WWLoadOperation = @(p) clearCacheLoadedTransport()
 })
 
-let function getTransportedArmiesData(formation)
+local function getTransportedArmiesData(formation)
 {
-  let armies = []
-  let loadedTransport = getLoadedTransport()
-  let transportedArmies = loadedTransport?[formation.name].armies ?? formation?.loadedArmies
+  local armies = []
+  local loadedTransport = getLoadedTransport()
+  local transportedArmies = loadedTransport?[formation.name].armies ?? formation?.loadedArmies
   local totalUnitsNum = 0
   if(transportedArmies != null)
     for(local i=0; i< transportedArmies.blockCount(); i++)
     {
-      let armyBlk = transportedArmies.getBlock(i)
-      let army  = ::WwArmy(armyBlk.getBlockName(), armyBlk)
+      local armyBlk = transportedArmies.getBlock(i)
+      local army  = ::WwArmy(armyBlk.getBlockName(), armyBlk)
       armies.append(army)
       totalUnitsNum += army.getUnits().len()
     }
 
-  return {armies, totalUnitsNum}
+  return {armies = armies, totalUnitsNum = totalUnitsNum}
 }
 
 return {
-  getLoadedTransport
-  getTransportedArmiesData
-  isEmptyTransport
-  isFullLoadedTransport
+  getLoadedTransport = getLoadedTransport
+  getTransportedArmiesData = getTransportedArmiesData
+  isEmptyTransport = isEmptyTransport
+  isFullLoadedTransport = isFullLoadedTransport
 }

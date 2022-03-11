@@ -1,12 +1,12 @@
-let { clearBorderSymbols } = require("std/string.nut")
+local { clearBorderSymbols } = require("std/string.nut")
 
 const PRESET_MIN_USAGE = 2
 
-::gui_handlers.DecorLayoutPresets <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.DecorLayoutPresets extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = null
-  sceneTplName = "%gui/customization/decorLayoutPresetsWnd"
+  sceneTplName = "gui/customization/decorLayoutPresetsWnd"
 
   unit = null
   masterSkinId = ""
@@ -21,7 +21,7 @@ const PRESET_MIN_USAGE = 2
 
   function getSceneTplView()
   {
-    let view = { list = [] }
+    local view = { list = [] }
     for (local i = 0; i < skinList.items.len(); i++)
       view.list.append({
         id   = skinList.values[i]
@@ -35,9 +35,9 @@ const PRESET_MIN_USAGE = 2
   {
     ::enableHangarControls(true)
 
-    let objCombobox = scene.findObject("master_skin")
-    let selIdx = getIndexBySkinId(masterSkinId)
-    let markup = ::create_option_combobox(null, skinList.items, selIdx, null, false)
+    local objCombobox = scene.findObject("master_skin")
+    local selIdx = getIndexBySkinId(masterSkinId)
+    local markup = ::create_option_combobox(null, skinList.items, selIdx, null, false)
     guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
     updateMasterPreset()
   }
@@ -70,7 +70,7 @@ const PRESET_MIN_USAGE = 2
 
   function updateLinkedSkins()
   {
-    let listObj = scene.findObject("destination_skins")
+    local listObj = scene.findObject("destination_skins")
     listObj.setValue(linkedSkinsCurrent)
     foreach (idx, skinId in skinList.values)
       listObj.findObject(skinId).enable(skinId != masterSkinId)
@@ -78,7 +78,7 @@ const PRESET_MIN_USAGE = 2
 
   function getIndexBySkinId(skinId)
   {
-    let selSkinId = skinId
+    local selSkinId = skinId
     return skinList.values.findindex(@(id) id == selSkinId) ?? -1
   }
 
@@ -116,8 +116,8 @@ const PRESET_MIN_USAGE = 2
   {
     if (!isPreset)
       return
-    let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
-    let oldName = masterPresetId
+    local validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
+    local oldName = masterPresetId
     ::gui_modal_editbox_wnd({
       title = ::loc("customization/decorLayout/layoutName")
       maxLen = 16
@@ -146,12 +146,12 @@ const PRESET_MIN_USAGE = 2
     if (linkedSkinsCurrent == linkedSkinsInitial)
       return
 
-    let listAttach = []
-    let listDetach = []
+    local listAttach = []
+    local listDetach = []
     for (local i = 0; i < skinList.values.len(); i++)
     {
-      let id = skinList.values[i]
-      let val = (linkedSkinsCurrent & (1 << i)) != 0
+      local id = skinList.values[i]
+      local val = (linkedSkinsCurrent & (1 << i)) != 0
       if ((isPreset && masterPresetId == presetBySkinIdx[i]) != val) // warning disable: -compared-with-bool
         if (val)
           listAttach.append(id)
@@ -177,7 +177,7 @@ const PRESET_MIN_USAGE = 2
     foreach (id in listDetach)
       ::hangar_customization_preset_unassign_from_skin(id)
 
-    let usedPresetsList = {}
+    local usedPresetsList = {}
     foreach (id in skinList.values)
       usedPresetsList[::hangar_customization_preset_get_name(id)] <- id
     foreach (pId, id in usedPresetsList)
@@ -195,7 +195,7 @@ return {
   {
     if (!::has_feature("CustomizationLayoutPresets"))
       return
-    let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
+    local skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
     if (!::isInArray(skinId, skinList.values))
       return
     ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {

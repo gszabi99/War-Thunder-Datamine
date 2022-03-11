@@ -427,7 +427,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 150.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -458,7 +458,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 50.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2469,22 +2469,22 @@
             "errMeasureVel": 0.0
           },
           {
-            "errMeasureVelFast": 40.0
+            "errMeasureVelFast": 0.0
           },
           {
-            "errMeasureVelFwdShift": 1.0
+            "errMeasureVelFwdShift": 0.0
           },
           {
-            "errMeasureVelDir": 5.0
+            "errMeasureVelDir": 0.0
           },
           {
-            "errTargettingOn100kmph": 5.0
+            "errTargettingOn100kmph": 0.0
           },
           {
-            "errTargetting": 15.0
+            "errTargetting": 3.0
           },
           {
-            "errExplTime": 0.02
+            "errExplTime": 0.0
           },
           {
             "turret": {
@@ -2529,12 +2529,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 40.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 5.0,
-          "errTargettingOn100kmph": 5.0,
-          "errTargetting": 15.0,
-          "errExplTime": 0.02,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
           "reuseYawTrigger": 10,
           "reusePitchTrigger": 10,
           "turret": {
@@ -2577,15 +2577,7 @@
       "tracks": {
         "animationMultiplier": -0.66,
         "height": 0.06,
-        "width": 0.53,
-        "tracksTensionK": [5.0,8.0,2.0],
-        "trackMesh": "cn_m_41d_phys_track_line",
-        "trackLen": 0.152,
-        "trackCount": 76,
-        "trackFadeTime": 1.1,
-        "trackStartOffset": 0.07,
-        "trackMaxHeight": 1.2,
-        "trackMaxSinking": 0.2
+        "width": 0.53
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2633,11 +2625,9 @@
         "defaultGearRadius": 0.29,
         "topGearRadius": 0.13,
         "defaultDampeningForce": [67000.0,67000.0],
-        "frontBackGearRadius": 0.28,
+        "frontBackGearRadius": 0.25,
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.29,
-        "wheel_l_drive": 0.29
+        "dampeningCompressionRatio": 0.15
       }
     }
   },

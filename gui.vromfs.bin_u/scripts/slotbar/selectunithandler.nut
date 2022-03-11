@@ -1,5 +1,5 @@
-let { canAssignInSlot, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
+local { canAssignInSlot, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW
@@ -7,7 +7,7 @@ global enum SEL_UNIT_BUTTON {
   SHOW_MORE
 }
 
-let defaultFilterOptions = [
+local defaultFilterOptions = [
   ::USEROPT_BIT_CHOOSE_UNITS_TYPE,
   ::USEROPT_BIT_CHOOSE_UNITS_RANK,
   ::USEROPT_BIT_CHOOSE_UNITS_OTHER,
@@ -15,7 +15,7 @@ let defaultFilterOptions = [
   ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 ]
 
-let getOptionsMaskForUnit = {
+local getOptionsMaskForUnit = {
   [::USEROPT_BIT_CHOOSE_UNITS_TYPE] = @(unit, crew, config) 1 << unit.esUnitType,
   [::USEROPT_BIT_CHOOSE_UNITS_RANK] = @(unit, crew, config) 1 << (unit.rank - 1),
   [::USEROPT_BIT_CHOOSE_UNITS_OTHER] =
@@ -28,34 +28,34 @@ let getOptionsMaskForUnit = {
 
 const MIN_NON_EMPTY_SLOTS_IN_COUNTRY = 1
 
-let function getParamsFromSlotbarConfig(crew, slotbar) {
+local function getParamsFromSlotbarConfig(crew, slotbar) {
   if (!::SessionLobby.canChangeCrewUnits())
     return null
   if (!::CrewTakeUnitProcess.safeInterrupt())
     return null
 
-  let slotbarObj = slotbar.scene
-  let slotObj = ::get_slot_obj(slotbarObj, crew.idCountry, crew.idInCountry)
+  local slotbarObj = slotbar.scene
+  local slotObj = ::get_slot_obj(slotbarObj, crew.idCountry, crew.idInCountry)
   if (!::check_obj(slotObj))
     return null
 
-  let isSelectByGroups = slotbar?.unitsGroupsByCountry != null
-  let country = crew.country
+  local isSelectByGroups = slotbar?.unitsGroupsByCountry != null
+  local country = crew.country
 
   local busyUnitsCount = 0
   local unitsArray = []
   if (!isSelectByGroups) {
-    let crewUnitId = ::g_crew.getCrewUnit(crew)?.name ?? ""
-    let busyUnits = ::get_crews_list_by_country(country)
+    local crewUnitId = ::g_crew.getCrewUnit(crew)?.name ?? ""
+    local busyUnits = ::get_crews_list_by_country(country)
       .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
     busyUnitsCount = busyUnits.len()
     unitsArray = ::all_units.filter(@(u) busyUnits.indexof(u.name) == null
       && u.canAssignToCrew(country)).values()
   }
   else {
-    let unitsGroups = slotbar.unitsGroupsByCountry?[country]
-    let crewUnit = slotbar?.countryPresets[country].units[crew.idInCountry]
-    let selectedGroupName = unitsGroups?.groupIdByUnitName[crewUnit?.name] ?? ""
+    local unitsGroups = slotbar.unitsGroupsByCountry?[country]
+    local crewUnit = slotbar?.countryPresets[country].units[crew.idInCountry]
+    local selectedGroupName = unitsGroups?.groupIdByUnitName[crewUnit?.name] ?? ""
     unitsArray = unitsGroups?.groups[selectedGroupName].units.values() ?? []
   }
   if (unitsArray.len() == 0)
@@ -77,7 +77,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
 local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/slotbar/slotbarChooseAircraft.blk"
+  sceneBlkName = "gui/slotbar/slotbarChooseAircraft.blk"
   slotbarWeak = null
 
   countryId = -1
@@ -122,12 +122,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     guiScene.applyPendingChanges(false) //to apply slotbar scroll before calculating positions
 
-    let tdObj = slotObj.getParent()
-    let tdPos = tdObj.getPosRC()
+    local tdObj = slotObj.getParent()
+    local tdPos = tdObj.getPosRC()
 
     ::gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
-    let tdClone = tdObj.getClone(scene, slotbarWeak)
+    local tdClone = tdObj.getClone(scene, slotbarWeak)
     tdClone.pos = tdPos[0] + ", " + tdPos[1]
     tdClone["class"] = "slotbarClone"
     curClonObj = tdClone
@@ -136,13 +136,13 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if ((tdClone?["color-factor"] ?? "255") != "255")
       ::gui_bhv_deprecated.massTransparency.setTranspRecursive(tdClone, 255)
 
-    let curUnitCloneObj = ::get_slot_obj(tdClone, countryId, idInCountry)
+    local curUnitCloneObj = ::get_slot_obj(tdClone, countryId, idInCountry)
     ::fill_unit_item_timers(curUnitCloneObj, getCrewUnit())
     ::gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
     scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
 
-    let needEmptyCrewButton = initAvailableUnitsArray()
+    local needEmptyCrewButton = initAvailableUnitsArray()
 
     curVisibleSlots = firstPageSlots
 
@@ -180,17 +180,17 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillLegend()
   {
-    let haveLegend = !isEmptyOptionsList && legendData.len() > 0
-    let legendNest = showSceneBtn("legend_nest", haveLegend)
+    local haveLegend = !isEmptyOptionsList && legendData.len() > 0
+    local legendNest = showSceneBtn("legend_nest", haveLegend)
     if (!haveLegend)
       return
 
-    let legendView = {
+    local legendView = {
       header = ::loc("mainmenu/legend")
       haveLegend = legendData.len() > 0,
       legendData = legendData
     }
-    let markup = ::handyman.renderCached("%gui/slotbar/legend_block", legendView)
+    local markup = ::handyman.renderCached("gui/slotbar/legend_block", legendView)
     guiScene.replaceContentFromText(legendNest, markup, markup.len(), this)
   }
 
@@ -201,7 +201,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     unitsList = []
     if (slotbarWeak?.ownerWeak?.canShowShop && slotbarWeak.ownerWeak.canShowShop())
       unitsList.append(SEL_UNIT_BUTTON.SHOP)
-    let needEmptyCrewButton = !isSelectByGroups && ((crew?.aircraft ?? "") != "")
+    local needEmptyCrewButton = !isSelectByGroups && ((crew?.aircraft ?? "") != "")
       && (!hasDefaultUnitsInCountry(country) || busyUnitsCount >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
     if (needEmptyCrewButton)
       unitsList.append(SEL_UNIT_BUTTON.EMPTY_CREW)
@@ -213,14 +213,14 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function sortUnitsList(units)
   {
-    let ediff = getCurrentEdiff()
-    let trained = ::getTblValue("trainedSpec", crew, {})
-    let getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
+    local ediff = getCurrentEdiff()
+    local trained = ::getTblValue("trainedSpec", crew, {})
+    local getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
                                           : unit.trainCost ? -1
                                           : 0
-    let selectedUnit = getCrewUnit()
-    let groupIdByUnitName = config?.unitsGroupsByCountry[country].groupIdByUnitName
-    let unitsSortArr = units.map(@(unit)
+    local selectedUnit = getCrewUnit()
+    local groupIdByUnitName = config?.unitsGroupsByCountry[country].groupIdByUnitName
+    local unitsSortArr = units.map(@(unit)
       {
         isCurrent = unit == selectedUnit
         groupId = groupIdByUnitName?[unit.name] ?? ""
@@ -259,7 +259,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function haveMoreQualifiedCrew(unit)
   {
-    let bestIdx = ::g_crew.getBestTrainedCrewIdxForUnit(unit, false, crew)
+    local bestIdx = ::g_crew.getBestTrainedCrewIdxForUnit(unit, false, crew)
     return bestIdx >= 0 && bestIdx != crew.idInCountry
   }
 
@@ -267,7 +267,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitsList()
   {
-    let markupArr = []
+    local markupArr = []
     foreach(idx, unit in unitsList)
     {
       local rowData = ""
@@ -282,8 +282,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
       markupArr.append(rowData)
     }
 
-    let markup = "\n".join(markupArr)
-    let tblObj = scene.findObject("airs_table")
+    local markup = "\n".join(markupArr)
+    local tblObj = scene.findObject("airs_table")
     tblObj.alwaysShowBorder = "yes"
     guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
 
@@ -297,11 +297,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDoneSlotChoose(obj)
   {
-    let row = obj.getValue()
+    local row = obj.getValue()
     if (row < 0)
       return
 
-    let unit = unitsList[row]
+    local unit = unitsList[row]
     if (unit == SEL_UNIT_BUTTON.SHOP)
       return goToShop()
     if (unit == SEL_UNIT_BUTTON.EMPTY_CREW)
@@ -337,14 +337,14 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
     if (slotbarWeak?.ownerWeak?.openShop)
     {
-      let unit = getCrewUnit()
+      local unit = getCrewUnit()
       slotbarWeak.ownerWeak.openShop(unit?.unitType)
     }
   }
 
   function trainSlotAircraft(unit)
   {
-    let onFinishCb = ::Callback(onTakeProcessFinish, this)
+    local onFinishCb = ::Callback(onTakeProcessFinish, this)
     if (isSelectByGroups)
       setUnit({
         crew = crew
@@ -367,11 +367,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(slot in unitsList)
     {
-      let unit = getSlotUnit(slot)
+      local unit = getSlotUnit(slot)
       if (!::u.isUnit(unit))
         continue
 
-      let masks = []
+      local masks = []
       foreach (userOpt in filterOptionsList)
         masks.append(getOptionsMaskForUnit[userOpt](unit, crew, config))
 
@@ -386,35 +386,35 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillChooseUnitsOptions()
   {
-    let locParams = {
+    local locParams = {
       gameModeName = ::colorize("hotkeyColor", getGameModeNameFromParams(config))
       customListName = ::colorize("hotkeyColor", getCustomListNameFromParams(config))
     }
 
-    let objOptionsNest = scene.findObject("choose_options_nest")
+    local objOptionsNest = scene.findObject("choose_options_nest")
     if ( !::checkObj(objOptionsNest) )
       return
 
     isEmptyOptionsList = true
-    let view = { rows = [] }
+    local view = { rows = [] }
     foreach (idx, userOpt in filterOptionsList)
     {
-      let maskOption = ::get_option(userOpt)
-      let singleOption = ::getTblValue("singleOption", maskOption, false)
+      local maskOption = ::get_option(userOpt)
+      local singleOption = ::getTblValue("singleOption", maskOption, false)
       if (singleOption)
       {
         // All bits but first are set to 1.
         maskOption.value = maskOption.value | ~1
         ::set_option(userOpt, maskOption.value)
       }
-      let maskStorage = getTblValue(idx, curOptionsMasks, 0)
+      local maskStorage = getTblValue(idx, curOptionsMasks, 0)
       if ((maskOption.value & maskStorage) == 0)
       {
         maskOption.value = maskStorage
         ::set_option(userOpt, maskOption.value)
       }
-      let hideTitle = ::getTblValue("hideTitle", maskOption, false)
-      let row = {
+      local hideTitle = ::getTblValue("hideTitle", maskOption, false)
+      local row = {
         option_title = hideTitle ? "" : ::loc( maskOption.hint )
         option_id = maskOption.id
         option_idx = idx
@@ -427,7 +427,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
       local countVisibleOptions = 0
       foreach (idxItem, text in maskOption.items)
       {
-        let optionVisible = ( (1 << idxItem) & maskStorage ) != 0
+        local optionVisible = ( (1 << idxItem) & maskStorage ) != 0
         if (optionVisible)
           countVisibleOptions++
         local name = text
@@ -445,20 +445,20 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         isEmptyOptionsList = false
     }
 
-    let markup = ::handyman.renderCached(("%gui/slotbar/choose_units_filter"), view)
+    local markup = ::handyman.renderCached(("gui/slotbar/choose_units_filter"), view)
     guiScene.replaceContentFromText(objOptionsNest, markup, markup.len(), this)
 
     objOptionsNest.show(!isEmptyOptionsList)
     showSceneBtn("choose_options_header", !isEmptyOptionsList)
     showSceneBtn("filtered_units_text", !isEmptyOptionsList)
-    let objChoosePopupMenu = scene.findObject("choose_popup_menu")
+    local objChoosePopupMenu = scene.findObject("choose_popup_menu")
     if ( !::checkObj(objChoosePopupMenu) )
       return
 
     guiScene.setUpdatesEnabled(true, true)
 
-    let sizeChoosePopupMenu = objChoosePopupMenu.getSize()
-    let scrWidth = ::g_dagui_utils.toPixels(guiScene, "@bw + @rw")
+    local sizeChoosePopupMenu = objChoosePopupMenu.getSize()
+    local scrWidth = ::g_dagui_utils.toPixels(guiScene, "@bw + @rw")
     objChoosePopupMenu.side = ((objChoosePopupMenu.getPosRC()[0] + sizeChoosePopupMenu[0]) > scrWidth) ? "left" : "right"
   }
 
@@ -505,12 +505,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkObj(obj) || !obj?.idx)
       return
 
-    let maskOptions = getTblValue(obj.idx.tointeger(), curOptionsMasks, null)
+    local maskOptions = getTblValue(obj.idx.tointeger(), curOptionsMasks, null)
     if (!maskOptions)
       return
 
-    let oldOption = ::get_option((obj.uid).tointeger())
-    let value = (oldOption.value.tointeger() & (~maskOptions)) | (obj.getValue() & maskOptions)
+    local oldOption = ::get_option((obj.uid).tointeger())
+    local value = (oldOption.value.tointeger() & (~maskOptions)) | (obj.getValue() & maskOptions)
     ::set_option((obj.uid).tointeger(), value)
     curVisibleSlots = firstPageSlots
     updateUnitsList()
@@ -518,18 +518,18 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateOptionShowUnsupportedForCustomList()
   {
-    let modeOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
-    let customOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
+    local modeOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
+    local customOption = ::get_option(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
 
-    let customOptionObj = scene.findObject(customOption.id)
+    local customOptionObj = scene.findObject(customOption.id)
     if (!::check_obj(customOptionObj))
       return
 
-    let isModeOptionChecked = modeOption.value & 1
+    local isModeOptionChecked = modeOption.value & 1
     if (!isModeOptionChecked)
     {
-      let idx = filterOptionsList.indexof(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
-      let maskOptions = curOptionsMasks?[idx]
+      local idx = filterOptionsList.indexof(::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
+      local maskOptions = curOptionsMasks?[idx]
       if (maskOptions)
         customOptionObj.setValue(modeOption.value - (modeOption.value & (~maskOptions)))
     }
@@ -543,12 +543,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isVisible || objSlot.childrenCount())
       return
 
-    let isTrained = (unit.name in crew?.trainedSpec) || unit.trainCost == 0
-    let isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
-    let canShowCrewSpec = ::has_feature("CrewInfo")
-    let isLockedUnit = isSelectByGroups && !canAssignInSlot(unit, config.unitsGroupsByCountry, country)
+    local isTrained = (unit.name in crew?.trainedSpec) || unit.trainCost == 0
+    local isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
+    local canShowCrewSpec = ::has_feature("CrewInfo")
+    local isLockedUnit = isSelectByGroups && !canAssignInSlot(unit, config.unitsGroupsByCountry, country)
 
-    let unitItemParams = {
+    local unitItemParams = {
       status = isLockedUnit ? "locked"
         : !isEnabled ? "disabled"
         : isTrained ? "mounted"
@@ -564,12 +564,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isTrained)
       unitItemParams.overlayPrice <- unit.trainCost
 
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+    local specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
     if (canShowCrewSpec && specType != ::g_crew_spec_type.UNKNOWN)
       unitItemParams.specType <- specType
 
-    let id = unit.name
-    let markup = ::build_aircraft_item(id, unit, unitItemParams)
+    local id = unit.name
+    local markup = ::build_aircraft_item(id, unit, unitItemParams)
     guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
     objSlot.tooltipId = ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams)
     ::fill_unit_item_timers(objSlot.findObject(id), unit, unitItemParams)
@@ -581,33 +581,33 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     guiScene.setUpdatesEnabled(false, false)
-    let optionMasks = []
+    local optionMasks = []
     foreach (userOpt in filterOptionsList)
       optionMasks.append(::get_option(userOpt).value)
 
-    let tblObj = scene.findObject("airs_table")
-    let total = tblObj.childrenCount()
-    let lenghtOptions = optionMasks.len()
+    local tblObj = scene.findObject("airs_table")
+    local total = tblObj.childrenCount()
+    local lenghtOptions = optionMasks.len()
     local selected = 0
-    let crewUnitId = ::getTblValue("aircraft", crew, "")
+    local crewUnitId = ::getTblValue("aircraft", crew, "")
 
     local visibleAmount = 0
-    let isFirstPage = curVisibleSlots == firstPageSlots
+    local isFirstPage = curVisibleSlots == firstPageSlots
     local firstHiddenUnit = null
     local firstHiddenUnitObj = null
     local needShowMoreButton = false
 
     for (local i = 0; i < total; i++)
     {
-      let objSlot = tblObj.getChild(i)
+      local objSlot = tblObj.getChild(i)
       if (!objSlot)
         continue
-      let slot = unitsList?[i]
-      let unit = getSlotUnit(slot)
+      local slot = unitsList?[i]
+      local unit = getSlotUnit(slot)
       if (!::u.isUnit(unit))
         continue
 
-      let masksUnit = optionsMaskByUnits?[unit.name]
+      local masksUnit = optionsMaskByUnits?[unit.name]
       local isVisible = true
       if (masksUnit)
         for (local j = 0; j < lenghtOptions; j++)
@@ -672,12 +672,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isSelectByGroups)
       return null
 
-    let unitsGroups = config.unitsGroupsByCountry?[country]
-    let selectedUnit = getCrewUnit()
+    local unitsGroups = config.unitsGroupsByCountry?[country]
+    local selectedUnit = getCrewUnit()
     if (unitsGroups == null || selectedUnit == null)
       return null
 
-    let selectedGroupName = unitsGroups.groupIdByUnitName?[selectedUnit.name] ?? ""
+    local selectedGroupName = unitsGroups.groupIdByUnitName?[selectedUnit.name] ?? ""
     return unitsGroups.groups?[selectedGroupName]
   }
 
@@ -688,12 +688,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUnitsGroupText(unit = null)
   {
-    let isVisibleGroupText = hasGroupText()
-    let unitsGroupTextObj = showSceneBtn("units_group_text", isVisibleGroupText)
+    local isVisibleGroupText = hasGroupText()
+    local unitsGroupTextObj = showSceneBtn("units_group_text", isVisibleGroupText)
     if (!isVisibleGroupText)
       return
 
-    let textArray = [::loc("mainmenu/onlyShownUnitsByGroup", {
+    local textArray = [::loc("mainmenu/onlyShownUnitsByGroup", {
       groupName = ::loc(getSelectedGroup()?.name ?? "")
     })]
     if (::u.isUnit(unit) && !canAssignInSlot(unit, config.unitsGroupsByCountry, country))
@@ -704,11 +704,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSlotSelect(obj)
   {
-    let row = obj.getValue()
+    local row = obj.getValue()
     if (row < 0)
       return
 
-    let unit = unitsList[row]
+    local unit = unitsList[row]
     updateUnitsGroupText(unit)
   }
 }
@@ -719,7 +719,7 @@ return {
   open = @(crew, slotbar) ::get_cur_gui_scene().performDelayed({},
     function() {
 
-      let params = getParamsFromSlotbarConfig(crew, slotbar)
+      local params = getParamsFromSlotbarConfig(crew, slotbar)
       if (params == null)
         return ::broadcastEvent("ModalWndDestroy")
 

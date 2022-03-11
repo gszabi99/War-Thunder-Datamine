@@ -1,9 +1,9 @@
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-::gui_handlers.changeAircraftForBuilder <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
+  sceneBlkName = "gui/shop/shopTakeAircraft.blk"
   shopAir = null
 
   function initScreen()
@@ -22,11 +22,11 @@ let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
        "take-aircraft-slotbar"
      )
 
-     let textObj = scene.findObject("take-aircraft-text")
+     local textObj = scene.findObject("take-aircraft-text")
      textObj.top = "1@titleLogoPlateHeight + 1@frameHeaderHeight"
      textObj.setValue(::loc("mainmenu/missionBuilderNotAvailable"))
 
-     let air = getCurSlotUnit()
+     local air = getCurSlotUnit()
      showedUnit(air)
      updateButtons()
   }

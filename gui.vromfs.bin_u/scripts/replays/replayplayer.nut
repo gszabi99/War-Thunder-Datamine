@@ -8,13 +8,13 @@
 
 ::replay_start <- function replay_start(params)
 {
-  let status = ::get_replay_status()
+  local status = ::get_replay_status()
   if (status != "ok")
     return replay_status(null)
 
-  let startPosition = ::getTblValue("position", params) || 0
-  let url = ::getTblValue("url", params)
-  let timeline = !!::getTblValue("timeline", params)
+  local startPosition = ::getTblValue("position", params) || 0
+  local url = ::getTblValue("url", params)
+  local timeline = !!::getTblValue("timeline", params)
 
   if (!url)
   {

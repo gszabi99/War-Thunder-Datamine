@@ -1,11 +1,11 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-::gui_handlers.WwQueueInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WwQueueInfo extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/worldWar/wwQueueInfo"
+  sceneTplName = "gui/worldWar/wwQueueInfo"
 
   static sidesList = [
     {id = "player_side_info"}
@@ -20,7 +20,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
   function initScreen()
   {
     scene.setUserData(this)
-    let timerObj = scene.findObject("ww_queue_update_timer")
+    local timerObj = scene.findObject("ww_queue_update_timer")
 
     if (::checkObj(timerObj))
       timerObj.setUserData(this)
@@ -28,7 +28,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function onTimerUpdate(obj, dt)
   {
-    let currentBattleQueue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    local currentBattleQueue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!currentBattleQueue)
       return
 
@@ -40,7 +40,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function onEventQueueInfoRecived(params)
   {
-    let queueInfo = params?.queue_info
+    local queueInfo = params?.queue_info
     if (!queueInfo || !::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return
 
@@ -48,10 +48,10 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
     {
       if (!("battleId" in battleInfo))
         continue
-      let wwBattle = ::g_world_war.getBattleById(battleInfo?.battleId)
+      local wwBattle = ::g_world_war.getBattleById(battleInfo?.battleId)
       foreach (idx, sideInfo in getSidesInfo(wwBattle))
       {
-        let sideObj = scene.findObject(getSidesObjName(idx))
+        local sideObj = scene.findObject(getSidesObjName(idx))
         if (!::check_obj(sideObj))
           continue
 
@@ -73,11 +73,11 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function getSidesInfo(battle)
   {
-    let playerCountry = ::get_profile_country_sq()
-    let sidesInfo = []
+    local playerCountry = ::get_profile_country_sq()
+    local sidesInfo = []
     foreach (team in battle.teams)
     {
-      let sideInfo = {
+      local sideInfo = {
         side = team.side
         country = team.country
         maxPlayers = team.maxPlayers
@@ -98,13 +98,13 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function fillBattleSideInfo(containerObj, sideInfo)
   {
-    let countryObj = containerObj.findObject("country")
+    local countryObj = containerObj.findObject("country")
     if (!::check_obj(countryObj))
       return
 
     countryObj["background-image"] = getCustomViewCountryData(sideInfo.country).icon
 
-    let maxPlayersTextObj = containerObj.findObject("max_players_text")
+    local maxPlayersTextObj = containerObj.findObject("max_players_text")
     if (!::check_obj(maxPlayersTextObj))
       return
 
@@ -113,13 +113,13 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
 
   function fillQueueSideInfo(containerObj, battleQueueInfo, battle, side)
   {
-    let teamName = "team" + battle.getTeamNameBySide(side)
+    local teamName = "team" + battle.getTeamNameBySide(side)
 
-    let sideInfoClanPlayers = containerObj.findObject("players_in_clans_count")
+    local sideInfoClanPlayers = containerObj.findObject("players_in_clans_count")
     sideInfoClanPlayers.setValue(
       getPlayersCountFromBattleQueueInfo(battleQueueInfo, teamName, "playersInClans"))
 
-    let sideInfoOtherPlayers = containerObj.findObject("other_players_count")
+    local sideInfoOtherPlayers = containerObj.findObject("other_players_count")
     sideInfoOtherPlayers.setValue(
       getPlayersCountFromBattleQueueInfo(battleQueueInfo, teamName, "playersOther"))
   }
@@ -129,11 +129,11 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
     if (!battleQueueInfo)
       return ::loc("ui/hyphen")
 
-    let teamData = ::getTblValue(teamName, battleQueueInfo, null)
+    local teamData = ::getTblValue(teamName, battleQueueInfo, null)
     if (field == "playersInClans")
     {
       local clanPlayerCount = 0
-      let clanPlayers = ::getTblValue(field, teamData, [])
+      local clanPlayers = ::getTblValue(field, teamData, [])
       foreach(clanPlayerData in clanPlayers)
         clanPlayerCount += ::getTblValue("count", clanPlayerData, 0)
 
@@ -141,7 +141,7 @@ let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpera
     }
     else if (field == "playersOther")
     {
-      let count = ::getTblValue(field, teamData, 0)
+      local count = ::getTblValue(field, teamData, 0)
       return count.tostring()
     }
 

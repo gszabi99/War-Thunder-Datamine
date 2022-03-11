@@ -1,6 +1,6 @@
-let { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+local { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
 
-::gui_handlers.VehiclesWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.VehiclesWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
 
@@ -10,24 +10,24 @@ let { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
 
   function initScreen()
   {
-    let view = {
+    local view = {
       headerText = ::loc("lobby/vehicles")
       showOkButton = true
     }
-    let data = ::handyman.renderCached("%gui/vehiclesWindow", view)
+    local data = ::handyman.renderCached("gui/vehiclesWindow", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
 
     foreach (team in ::events.getSidesList())
     {
-      let teamName = ::events.getTeamName(team)
-      let teamObj = scene.findObject(teamName)
+      local teamName = ::events.getTeamName(team)
+      local teamObj = scene.findObject(teamName)
       if(!::checkObj(teamObj))
         continue
-      let teamData = ::getTblValue(teamName, teamDataByTeamName, null)
+      local teamData = ::getTblValue(teamName, teamDataByTeamName, null)
       if (!::events.isTeamDataPlayable(teamData))
         continue
 
-      let unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
+      local unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
       ::events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
   }

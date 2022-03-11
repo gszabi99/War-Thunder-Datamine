@@ -1,9 +1,9 @@
 from "frp" import Watched, Computed
 
-let {tostring_r} = require("%sqstd/string.nut")
-let logLib = require("%sqstd/log.nut")
+local {tostring_r} = require("%sqstd/string.nut")
+local logLib = require("%sqstd/log.nut")
 
-let log = logLib([
+local log = logLib([
   {
     compare = @(val) val instanceof Watched
     tostring = @(val) "Watched: {0}".subst(tostring_r(val.value,{maxdeeplevel = 3, splitlines=false}))
@@ -18,7 +18,7 @@ let log = logLib([
   }
 ])
 
-let logs = {
+local logs = {
   dlog = log.dlog //warning disable: -dlog-warn
   log
   log_for_user = log.dlog //warning disable: -dlog-warn

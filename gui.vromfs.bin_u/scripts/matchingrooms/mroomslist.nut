@@ -1,6 +1,6 @@
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let u = require("std/underscore.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local u = require("std/underscore.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -32,7 +32,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     if ("eventEconomicName" in requestParams)
       roomsListId = "economicName:" + requestParams.eventEconomicName
 
-    let listById = ::MRoomsList.mRoomsListById
+    local listById = ::MRoomsList.mRoomsListById
     if (!(roomsListId in listById))
       listById[roomsListId] <- ::MRoomsList(roomsListId, requestParams)
     return listById[roomsListId]
@@ -78,8 +78,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function requestList(filter)
   {
-    let roomsFilter = getFetchRoomsParams(filter)
-    let curTime = ::dagor.getCurTime()
+    local roomsFilter = getFetchRoomsParams(filter)
+    local curTime = ::dagor.getCurTime()
     if (isUpdateTimedout(curTime))
       isInUpdate = false
 
@@ -98,8 +98,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     lastRequestTimeMsec = curTime
 
     curRoomsFilter = roomsFilter
-    let hideFullRooms = filter?.hideFullRooms ?? true
-    let roomsData = this
+    local hideFullRooms = filter?.hideFullRooms ?? true
+    local roomsData = this
     ::fetch_rooms_list(roomsFilter, @(p) roomsData.requestListCb(p, hideFullRooms))
     ::broadcastEvent("RoomsSearchStarted", { roomsList = this })
     return true
@@ -113,7 +113,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   {
     isInUpdate = false
 
-    let digest = ::checkMatchingError(p, false) ? ::getTblValue("digest", p) : null
+    local digest = ::checkMatchingError(p, false) ? ::getTblValue("digest", p) : null
     if (!digest)
       return
 
@@ -166,8 +166,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function getFetchRoomsParams(ui_filter)
   {
-    let filter = {}
-    let res = {
+    local filter = {}
+    local res = {
       group = "custom-lobby" // "xbox-lobby" for xbox
       filter = filter
 
@@ -176,14 +176,14 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       count = 100
     }
 
-    let diff = ui_filter?.diff
+    local diff = ui_filter?.diff
     if (diff != null && diff != -1) {
       filter["public/mission/difficulty"] <- {
         test = "eq"
         value = ::g_difficulty.getDifficultyByDiffCode(diff).name
       }
     }
-    let clusters = ui_filter?.clusters
+    local clusters = ui_filter?.clusters
     if (typeof(clusters) == "array" && clusters.len() > 0) {
       filter["public/cluster"] <- {
         test = "in"
@@ -192,8 +192,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     }
 
     if ("eventEconomicName" in requestParams) {
-      let economicName = requestParams.eventEconomicName
-      let modesList = ::g_matching_game_modes.getGameModeIdsByEconomicName(economicName)
+      local economicName = requestParams.eventEconomicName
+      local modesList = ::g_matching_game_modes.getGameModeIdsByEconomicName(economicName)
       res.group = "matching-lobby"
 
       if (modesList.len()) {
@@ -220,7 +220,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   {
     if (rooms.len() > MAX_SESSIONS_LIST_LEN)
     {
-      let message = ::format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
+      local message = ::format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
       ::script_net_assert_once("too long rooms list", message)
 
       rooms.resize(MAX_SESSIONS_LIST_LEN)
@@ -234,12 +234,12 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function isRoomVisible(room, hideFullRooms)
   {
-    let userUid = ::SessionLobby.getRoomCreatorUid(room)
+    local userUid = ::SessionLobby.getRoomCreatorUid(room)
     if (userUid && ::isPlayerInContacts(userUid, ::EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
-      let mission = room?.public.mission ?? {}
+      local mission = room?.public.mission ?? {}
       if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }

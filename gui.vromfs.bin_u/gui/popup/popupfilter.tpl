@@ -2,31 +2,26 @@ tdiv {
   flow:t='horizontal'
   Button_text {
     id:t='filter_button'
-    class:t='image'
     noMargin:t='yes'
-    width:t='<<btnWidth>>'
-    visualStyle:t='<<visualStyle>>'
+    text:t='<<btnTitle>>'
     on_click:t='onShowFilterBtnClick'
     btnName:t='<<btnName>>'
     ButtonImg{}
-    img {
-      background-image:t='#ui/gameuiskin#filter_icon.svg'
-    }
-    textarea {
-      id:t='filter_button_text'
-      pos:t='pw-w, 0.5ph-0.5h'
-      position:t='relative'
-    }
+  }
+  tdiv {
+    id:t='icon_nest'
+    flow:t='horizontal'
+    position:t='relative'
+    pos:t='0, 0.5ph-0.5h'
+    include "gui/commonParts/imgList"
   }
 }
 
 popup_menu {
   id:t='filter_popup'
   top:t='<<^isTop>>1@blockInterval<</isTop>><<#isTop>>-h-1@buttonHeight-1@blockInterval<</isTop>>'
-  <<#isRight>>
-  left:t='pw-w'
-  <</isRight>>
   position:t='relative'
+  height:t='<<rowsCount>>@popupFilterRowHeight+4@blockInterval'
   display:t='hide'
   enable:t='no'
   flow:t='horizontal'
@@ -43,34 +38,18 @@ popup_menu {
   tdiv {
     id:t='<<typeName>>_column'
     typeName:t='<<typeName>>'
-    pos:t='1@dp, 0'
     position:t='relative'
-    padding:t='1@blockInterval, 0'
     flow:t='vertical'
-    include "%gui/commonParts/checkbox"
-    Button_text {
-      id:t='reset_btn'
-      top:t='1@blockInterval'
-      position:t='relative'
-      typeName:t='<<typeName>>'
-      width:t='<<textWidth>>+1@cIco+1@checkboxSize'
-      visualStyle:t='borderNoBgr'
-      on_click:t='onResetFilters'
-      text:t='#mainmenu/btnReset'
-      <<^isResetShow>>
-      display:t='hide'
-      <</isResetShow>>
-    }
-
-    <<^isLast>>
-    tdiv {
-      id:t='separator'
-      size:t='1@dp, ph'
-      left:t='pw'
-      position:t='absolute'    
-      background-color:t='@separatorBlockColor'
-    }
-    <</isLast>>
+    include "gui/commonParts/checkbox"
   }
+
+  <<^isLast>>
+  tdiv {
+    size:t='1@dp, ph'
+    position:t='relative'
+    margin:t='1@blockInterval, 0'
+    background-color:t='@separatorBlockColor'
+  }
+  <</isLast>>
   <</columns>>
 }

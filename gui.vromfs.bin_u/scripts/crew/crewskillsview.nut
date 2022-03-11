@@ -1,18 +1,18 @@
-let { getSkillValue } = require("scripts/crew/crewSkills.nut")
-let { getSkillListParameterRowsView } = require("scripts/crew/crewSkillParameters.nut")
+local { getSkillValue } = require("scripts/crew/crewSkills.nut")
+local { getSkillListParameterRowsView } = require("scripts/crew/crewSkillParameters.nut")
 
-let function getSkillCategoryName(skillCategory) {
+local function getSkillCategoryName(skillCategory) {
   return ::loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
 }
 
-let function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
-  let difficulty = ::get_current_shop_difficulty()
+local function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
+  local difficulty = ::get_current_shop_difficulty()
   return getSkillListParameterRowsView(crew, difficulty, skillCategory.skillItems, crewUnitType, unit)
 }
 
-let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit) {
-  let headerLocId = "crewSkillCategoryTooltip/" + skillCategory.categoryName
-  let view = {
+local function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit) {
+  local headerLocId = "crewSkillCategoryTooltip/" + skillCategory.categoryName
+  local view = {
     tooltipText = ::loc(headerLocId, getSkillCategoryName(skillCategory) + ":")
     skillRows = []
     hasSkillRows = true
@@ -20,19 +20,19 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
     headerItems = null
   }
 
-  let crewSkillPoints = ::g_crew.getCrewSkillPoints(crewData)
+  local crewSkillPoints = ::g_crew.getCrewSkillPoints(crewData)
   foreach (categorySkill in skillCategory.skillItems)
   {
     if (categorySkill.isVisible(crewUnitType))
       continue
-    let skillItem = categorySkill.skillItem
+    local skillItem = categorySkill.skillItem
     if (!skillItem)
       continue
 
-    let memberName = ::loc("crew/" + categorySkill.memberName)
-    let skillName = ::loc("crew/" + categorySkill.skillName)
-    let skillValue = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
-    let availValue = ::g_crew.getMaxAvailbleStepValue(skillItem, skillValue, crewSkillPoints)
+    local memberName = ::loc("crew/" + categorySkill.memberName)
+    local skillName = ::loc("crew/" + categorySkill.skillName)
+    local skillValue = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
+    local availValue = ::g_crew.getMaxAvailbleStepValue(skillItem, skillValue, crewSkillPoints)
     view.skillRows.append({
       skillName = ::format("%s (%s)", skillName, memberName)
       totalSteps = ::g_crew.getTotalSteps(skillItem)
@@ -48,7 +48,7 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
   if (view.parameterRows.len())
     view.headerItems <- view.parameterRows[0].valueItems
 
-  return ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip", view)
+  return ::handyman.renderCached("gui/crew/crewSkillParametersTooltip", view)
 }
 
 return {

@@ -1,12 +1,12 @@
-let emptySceneWithDarg = require("scripts/wndLib/emptySceneWithDarg.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { targetPlatform } = require("scripts/clientState/platform.nut")
-let {mkVersionFromString, versionToInt} = require("std/version.nut")
-let { isInBattleState } = require("scripts/clientState/clientStates.nut")
-let eventbus = require("eventbus")
-let http = require("dagor.http")
-let { send_counter } = require("statsd")
-let { get_time_msec } = require("dagor.time")
+local emptySceneWithDarg = require("scripts/wndLib/emptySceneWithDarg.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { targetPlatform } = require("scripts/clientState/platform.nut")
+local {mkVersionFromString, versionToInt} = require("std/version.nut")
+local { isInBattleState } = require("scripts/clientState/clientStates.nut")
+local eventbus = require("eventbus")
+local http = require("dagor.http")
+local { send_counter } = require("statsd")
+local { get_time_msec } = require("dagor.time")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -16,22 +16,18 @@ const BASE_URL = "https://warthunder.com/"
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 
-let ERROR_PAGE = {
-  title = ::loc("matching/SERVER_ERROR_BAD_REQUEST")
-  content = {v = ::loc("matching/SERVER_ERROR_INTERNAL")}
-}
-let chosenPatchnote = ::Watched(null)
-let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()::Watched(false))
-let chosenPatchnoteContent = persist("chosenPatchnoteContent",
+local chosenPatchnote = ::Watched(null)
+local chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()::Watched(false))
+local chosenPatchnoteContent = persist("chosenPatchnoteContent",
   @()::Watched({title = "", text = ""}))
-let patchnotesReceived = persist("patchnotesReceived", @()::Watched(false))
-let patchnotesCache = persist("patchnotesCache", @() ::Watched({}))
-let versions = persist("versions", @() ::Watched([]))
-let requestMadeTime = persist("requestMadeTime", @() {value = null})
-let lastSeenVersionInfoNum = ::Watched(-1)
-let lastLoadedVersionInfoNum = ::Watched(-1)
+local patchnotesReceived = persist("patchnotesReceived", @()::Watched(false))
+local patchnotesCache = persist("patchnotesCache", @() ::Watched({}))
+local versions = persist("versions", @() ::Watched([]))
+local requestMadeTime = persist("requestMadeTime", @() {value = null})
+local lastSeenVersionInfoNum = ::Watched(-1)
+local lastLoadedVersionInfoNum = ::Watched(-1)
 
-let function loadSavedVersionInfoNum() {
+local function loadSavedVersionInfoNum() {
   if (!::g_login.isProfileReceived())
     return
 
@@ -39,12 +35,12 @@ let function loadSavedVersionInfoNum() {
   lastLoadedVersionInfoNum(::load_local_account_settings(SAVE_LOADED_ID, 0))
 }
 
-let platformMap = {
+local platformMap = {
   win32 = "pc"
   win64  ="pc"
 }
 
-let function logError(event, params = {}) {
+local function logError(event, params = {}) {
   local txt = $"{event}: "
   foreach (idx, p in params)
     if (typeof(p) == "string")
@@ -55,15 +51,15 @@ let function logError(event, params = {}) {
     language = ::g_language.getShortName()
   }.__update(params))
 }
-let remapPlatform = @(v) platformMap?[v] ?? v
+local remapPlatform = @(v) platformMap?[v] ?? v
 
-let getUrl = @(p)
+local getUrl = @(p)
   "".concat(BASE_URL, ::g_language.getShortName(), "/patchnotes/", p, "platform=",
     remapPlatform(targetPlatform), "&target=game")
 
-let function mkVersion(v){
+local function mkVersion(v){
   local tVersion = v?.version ?? ""
-  let versionl = tVersion.split(".").len()
+  local versionl = tVersion.split(".").len()
   local versionType = v?.type
   if (versionl!=4) {
     logError("changelog_versions_receive_errors",
@@ -76,17 +72,17 @@ let function mkVersion(v){
     else
       throw null
   }
-  let version = mkVersionFromString(tVersion)
-  let title = v?.title ?? tVersion
+  local version = mkVersionFromString(tVersion)
+  local title = v?.title ?? tVersion
   local titleshort = v?.titleshort ?? "undefined"
   if (titleshort=="undefined" || titleshort.len() > 50 )
     titleshort = null
-  let date = v?.date ?? ""
+  local date = v?.date ?? ""
   return {version, title, tVersion, versionType, titleshort, iVersion = versionToInt(version), id = v.id, date }
 }
 
-let function filterVersions(vers){
-  let res = []
+local function filterVersions(vers){
+  local res = []
   local foundMajor = false
   foreach (idx, version in vers){
     if (idx >= maxVersionsAmount && foundMajor)
@@ -102,9 +98,9 @@ let function filterVersions(vers){
   return res
 }
 
-let function processPatchnotesList(response){
-  let status = response?.status ?? -1
-  let http_code = response?.http_code ?? -1
+local function processPatchnotesList(response){
+  local status = response?.status ?? -1
+  local http_code = response?.http_code ?? -1
   if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_versions_receive_errors", {
       reason = "Error in version response"
@@ -115,7 +111,7 @@ let function processPatchnotesList(response){
   }
   local result = []
   try {
-    result = response?.body ? ::parse_json(response.body.as_string())?.result ?? [] : []
+    result = response?.body ? ::parse_json(response.body.tostring())?.result ?? [] : []
   }
   catch(e) {
   }
@@ -131,13 +127,13 @@ let function processPatchnotesList(response){
   patchnotesReceived(true)
 }
 
-let function requestAllPatchnotes() {
-  let currTimeMsec = get_time_msec()
+local function requestAllPatchnotes() {
+  local currTimeMsec = get_time_msec()
   if(requestMadeTime.value
     && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
     return
 
-  let request = {
+  local request = {
     method = "GET"
     url = getUrl("?page=1&")
   }
@@ -148,7 +144,7 @@ let function requestAllPatchnotes() {
   requestMadeTime.value = currTimeMsec
 }
 
-let function clearCache() {
+local function clearCache() {
   requestMadeTime.value = null
   patchnotesCache({})
 }
@@ -170,27 +166,27 @@ local function findBestVersionToshow(versionsList, lastSeenVersionNum) {
       break
   return res
 }
-let haveNewVersions = ::Computed(@() versions.value?[0].iVersion
+local haveNewVersions = ::Computed(@() versions.value?[0].iVersion
   ? lastLoadedVersionInfoNum.value < versions.value[0].iVersion : false)
-let unseenPatchnote = ::Computed(function() {
+local unseenPatchnote = ::Computed(function() {
   if (lastSeenVersionInfoNum.value == -1)
     return null
   return findBestVersionToshow(versions.value, lastSeenVersionInfoNum.value)
 })
 
-let curPatchnote = ::Computed(@()
+local curPatchnote = ::Computed(@()
   chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])
-let curPatchnoteIdx = ::Computed(
+local curPatchnoteIdx = ::Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
-let haveUnseenVersions = ::Computed(@() unseenPatchnote.value != null)
-let needShowChangelog = @() !isInBattleState.value && ::has_feature("Changelog")
+local haveUnseenVersions = ::Computed(@() unseenPatchnote.value != null)
+local needShowChangelog = @() !isInBattleState.value && ::has_feature("Changelog")
   && haveNewVersions.value && !::my_stats.isMeNewbie()
 
-let function afterGetRequestedPatchnote(result){
+local function afterGetRequestedPatchnote(result){
   chosenPatchnoteContent({title = result?.title ?? "", text = result?.content ?? []})
   chosenPatchnoteLoaded(true)
 
-  let v = curPatchnote.value
+  local v = curPatchnote.value
   if (v == null || v.iVersion <= lastSeenVersionInfoNum.value)
     return
 
@@ -198,9 +194,9 @@ let function afterGetRequestedPatchnote(result){
   lastSeenVersionInfoNum(v.iVersion)
 }
 
-let function cachePatchnote(response){
-  let status = response?.status ?? -1
-  let http_code = response?.http_code ?? -1
+local function cachePatchnote(response){
+  local status = response?.status ?? -1
+  local http_code = response?.http_code ?? -1
   if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_receive_errors", {
       reason = "Error in patchnotes response"
@@ -210,26 +206,26 @@ let function cachePatchnote(response){
     })
     return
   }
-  let result = ::parse_json((response?.body ?? "").as_string())?.result
-  afterGetRequestedPatchnote(result ?? ERROR_PAGE)
+  local result = ::parse_json((response?.body ?? "").tostring())?.result
   if (result==null) {
     logError("changelog_parse_errors",
       { reason = "Incorrect json in patchnotes response", stage = "get_patchnote" })
     return
   }
+  afterGetRequestedPatchnote(result)
   logError("changelog_success_patchnote", { reason = "Patchnotes received successfully" })
   if (result?.id)
     patchnotesCache.value[result.id] <- result
 }
 
-let function requestPatchnote(v = curPatchnote.value) {
+local function requestPatchnote(v = curPatchnote.value) {
   if (!v)
     return
 
   if (v.id in patchnotesCache.value) {
     return afterGetRequestedPatchnote(patchnotesCache.value[v.id])
   }
-  let request = {
+  local request = {
     method = "GET"
     url = getUrl($"patchnote/{v.id}?")
   }
@@ -238,27 +234,27 @@ let function requestPatchnote(v = curPatchnote.value) {
   http.request(request)
 }
 
-let function choosePatchnote(v) {
+local function choosePatchnote(v) {
   if (!v)
     return
   requestPatchnote(v)
   chosenPatchnote(v)
 }
 
-let function changePatchNote(delta=1) {
+local function changePatchNote(delta=1) {
   if (versions.value.len() == 0)
     return
-  let nextIdx = clamp(curPatchnoteIdx.value-delta, 0, versions.value.len()-1)
-  let patchnote = versions.value[nextIdx]
+  local nextIdx = clamp(curPatchnoteIdx.value-delta, 0, versions.value.len()-1)
+  local patchnote = versions.value[nextIdx]
   choosePatchnote(patchnote)
 }
 
-let function openChangelog() {
+local function openChangelog() {
   local curr = curPatchnote.value
   if(haveNewVersions.value)
   {
     curr = versions.value[0]
-    let loadedVersionInfoNum = versionToInt(curr.tVersion)
+    local loadedVersionInfoNum = versionToInt(curr.tVersion)
     ::save_local_account_settings(SAVE_LOADED_ID, loadedVersionInfoNum)
     lastLoadedVersionInfoNum(loadedVersionInfoNum)
   }

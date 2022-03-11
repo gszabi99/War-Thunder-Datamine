@@ -1,23 +1,23 @@
-let interopGen = require("interopGen.nut")
-let compass = require("compass.nut")
-let {PI, cos, sin, fabs, sqrt} = require("std/math.nut")
-let {CompassValue} = require("compassState.nut")
-let {greenColor, greenColorGrid} = require("style/airHudStyle.nut")
-let {fwdAngle, fov} = require("shipState.nut")
-let {IsRadarVisible} = require("radarState.nut")
+local interopGen = require("interopGen.nut")
+local compass = require("compass.nut")
+local {PI, cos, sin, fabs, sqrt} = require("std/math.nut")
+local {CompassValue} = require("compassState.nut")
+local {greenColor, greenColorGrid} = require("style/airHudStyle.nut")
+local {fwdAngle, fov} = require("shipState.nut")
+local {IsRadarVisible} = require("radarState.nut")
 
-let redColor = Color(255, 109, 108, 255)
-let greyColor = Color(45, 60, 60, 255)
-let highlightColor = Color(255, 255, 255, 255)
-let highlightScale = 1.5
-let compassSize = [hdpx(500), hdpx(32)]
-let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
-let fcsWidth = sh(28)
-let isExtraElementVisible = false
-let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
-let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
+local redColor = Color(255, 109, 108, 255)
+local greyColor = Color(45, 60, 60, 255)
+local highlightColor = Color(255, 255, 255, 255)
+local highlightScale = 1.5
+local compassSize = [hdpx(500), hdpx(32)]
+local compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
+local fcsWidth = sh(28)
+local isExtraElementVisible = false
+local rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
+local rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
 
-let fcsState = {
+local fcsState = {
   IsVisible = Watched(false)
   IsBinocular = Watched(false)
   OpticsWidth = Watched(0.0)
@@ -49,12 +49,12 @@ interopGen({
   postfix = "Update"
 })
 
-let compassComponent = {
+local compassComponent = {
   pos = compassPos
   children = compass(compassSize, greenColor)
 }
 
-let background = {
+local background = {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [fcsWidth, fcsWidth]
   color = greenColorGrid
@@ -65,21 +65,21 @@ let background = {
   ]
 }
 
-let function mkDashes(width, centerX, centerY, radius, angleStart, angleFinish, length, count) {
-  let dashCommands = []
+local function mkDashes(width, centerX, centerY, radius, angleStart, angleFinish, length, count) {
+  local dashCommands = []
 
-  let startRad = angleStart * PI / 180.0;
-  let finishRad = angleFinish * PI / 180.0;
-  let dAngle = (finishRad - startRad) / (count + 1)
+  local startRad = angleStart * PI / 180.0;
+  local finishRad = angleFinish * PI / 180.0;
+  local dAngle = (finishRad - startRad) / (count + 1)
 
   for (local i = 0; i < count; ++i) {
-    let angle = startRad + (i + 1) * dAngle
-    let cosA = cos(angle)
-    let sinA = sin(angle)
-    let dashStartX = centerX + (radius - length) * cosA
-    let dashStartY = centerY + (radius - length) * sinA
-    let dashFinishX = centerX + (radius) * cosA
-    let dashFinishY = centerY + (radius) * sinA
+    local angle = startRad + (i + 1) * dAngle
+    local cosA = cos(angle)
+    local sinA = sin(angle)
+    local dashStartX = centerX + (radius - length) * cosA
+    local dashStartY = centerY + (radius - length) * sinA
+    local dashFinishX = centerX + (radius) * cosA
+    local dashFinishY = centerY + (radius) * sinA
     dashCommands.append([VECTOR_LINE, dashStartX, dashStartY, dashFinishX, dashFinishY])
   }
 
@@ -92,20 +92,20 @@ let function mkDashes(width, centerX, centerY, radius, angleStart, angleFinish, 
   }
 }
 
-let centerX1 = 50
-let centerY1 = 80
-let centerX2 = 50
-let centerY2 = -3
-let radius1 = 25
-let radius2 = 60
-let angle1 = 140.0
-let angle2 = 250.0
-let angle3 = 290.0
-let angle4 = 400.0
-let angle5 = 38.0
-let angle6 = 142.0
+local centerX1 = 50
+local centerY1 = 80
+local centerX2 = 50
+local centerY2 = -3
+local radius1 = 25
+local radius2 = 60
+local angle1 = 140.0
+local angle2 = 250.0
+local angle3 = 290.0
+local angle4 = 400.0
+local angle5 = 38.0
+local angle6 = 142.0
 
-let fcsMarkers = {
+local fcsMarkers = {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [fcsWidth, fcsWidth]
   color = greenColorGrid
@@ -123,7 +123,7 @@ let fcsMarkers = {
   ]
 }
 
-let function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
+local function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     size = iconSize
@@ -144,7 +144,7 @@ let function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
   }
 }
 
-let targetSpeed = @() {
+local targetSpeed = @() {
   watch = fcsState.TargetSpeed
   rendObj = ROBJ_DTEXT
   text = ::cross_call.measureTypes.SPEED.getMeasureUnitsText(fcsState.TargetSpeed.value)
@@ -154,7 +154,7 @@ let targetSpeed = @() {
   margin = [0,0,0,sh(1)]
 }
 
-let progress = @() {
+local progress = @() {
   watch = [fcsState.CalcProgress, fcsState.IsTargetDataAvailable]
   rendObj = ROBJ_VECTOR_CANVAS
   size = [fcsWidth, fcsWidth]
@@ -166,7 +166,7 @@ let progress = @() {
   ]
 }
 
-let roundIndicator = @() {
+local roundIndicator = @() {
   pos = [sh(4), sh(18)]
   halign = ALIGN_CENTER
   watch = [fcsState.TargetAzimuth, fwdAngle, fcsState.IsTargetSelected, fcsState.IsTargetDataAvailable, fcsState.TargetFwdDir]
@@ -180,7 +180,7 @@ let roundIndicator = @() {
   ]
 }
 
-let progressBar = @() {
+local progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
   pos = [sw(50) + fcsState.OpticsWidth.value, fcsState.StaticFov.value > 6. ? sh(54.5) : sh(53)]
   children = {
@@ -224,8 +224,8 @@ let progressBar = @() {
   }
 }
 
-let function drawArrow(x, y, dirX, dirY, color, fill=false, scale=1) {
-  let arrowSize = sh(2)
+local function drawArrow(x, y, dirX, dirY, color, fill=false, scale=1) {
+  local arrowSize = sh(2)
   local arrowCommands = []
 
   if (fill) {
@@ -253,10 +253,10 @@ let function drawArrow(x, y, dirX, dirY, color, fill=false, scale=1) {
   }
 }
 
-let function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
+local function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
   local dirX = (toX - fromX)
   local dirY = (toY - fromY)
-  let len = sqrt(dirX * dirX + dirY * dirY)
+  local len = sqrt(dirX * dirX + dirY * dirY)
   if (len < radius / 2)
     return null
 
@@ -281,14 +281,14 @@ let function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
   }
 }
 
-let crosshairZeroMark = {
+local crosshairZeroMark = {
   children = [
     drawArrow(sw(50), sh(50), 0, 1, highlightColor, false, highlightScale)
     drawArrow(sw(50), sh(50), 0, 1, greyColor)
   ]
 }
 
-let function drawForestallIndicator(
+local function drawForestallIndicator(
   forestallX,
   forestallY,
   targetX,
@@ -300,16 +300,16 @@ let function drawForestallIndicator(
   showMarker,
   showCentral) {
 
-  let circleSize = sh(4)
-  let angleThreshold = 2
-  let verticalOffset = -sh(35.1)
+  local circleSize = sh(4)
+  local angleThreshold = 2
+  local verticalOffset = -sh(35.1)
 
-  let isPitchMatch = fabs(pitchDelta) < angleThreshold
-  let isYawMatch = fabs(yawDelta) < angleThreshold
-  let indicatorElements = [ ]
+  local isPitchMatch = fabs(pitchDelta) < angleThreshold
+  local isYawMatch = fabs(yawDelta) < angleThreshold
+  local indicatorElements = [ ]
 
   if (showCentral) {
-    let centralArrow = isYawMatch ? drawArrow(sw(50), sh(50), 0, 1, greenColorGrid) : crosshairZeroMark
+    local centralArrow = isYawMatch ? drawArrow(sw(50), sh(50), 0, 1, greenColorGrid) : crosshairZeroMark
     indicatorElements.append(centralArrow)
   }
   if (showMarker) {
@@ -344,7 +344,7 @@ let function drawForestallIndicator(
   return indicatorElements
 }
 
-let forestallIndicator = @() {
+local forestallIndicator = @() {
   watch = [
     fcsState.ForestallPosX,
     fcsState.ForestallPosY,
@@ -372,7 +372,7 @@ let forestallIndicator = @() {
     fcsState.IsBinocular.value)
 }
 
-let root = @() {
+local root = @() {
   watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected]
   children = [
     !IsRadarVisible.value ? compassComponent : null

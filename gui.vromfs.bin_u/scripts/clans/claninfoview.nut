@@ -1,23 +1,23 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-let function getClanRequirementsText(membershipRequirements)
+local function getClanRequirementsText(membershipRequirements)
 {
   if (!membershipRequirements)
     return ""
 
-  let rawRanksCond = membershipRequirements.getBlockByName("ranks") || ::DataBlock();
-  let ranksConditionTypeText = (rawRanksCond?.type == "or")
+  local rawRanksCond = membershipRequirements.getBlockByName("ranks") || ::DataBlock();
+  local ranksConditionTypeText = (rawRanksCond?.type == "or")
     ? ::loc("clan/rankReqInfoCondType_or")
     : ::loc("clan/rankReqInfoCondType_and")
 
-  let ranksReqTextArray = []
+  local ranksReqTextArray = []
   foreach (unitType in unitTypes.types)
   {
-    let req = rawRanksCond.getBlockByName("rank_" + unitType.name)
+    local req = rawRanksCond.getBlockByName("rank_" + unitType.name)
     if (req?.type != "rank" || req?.unitType != unitType.name)
       continue
 
-    let ranksRequired = req.getInt("rank", 0)
+    local ranksRequired = req.getInt("rank", 0)
     if (ranksRequired > 0)
       ranksReqTextArray.append(::loc("clan/rankReqInfoRank" + unitType.name) + " " +
         ::colorize("activeTextColor", ::get_roman_numeral(ranksRequired)))
@@ -35,11 +35,11 @@ let function getClanRequirementsText(membershipRequirements)
   foreach(diff in ::g_difficulty.types)
     if (diff.egdCode != ::EGD_NONE)
     {
-      let modeName = diff.getEgdName(false); // arcade, historical, simulation
-      let req = membershipRequirements.getBlockByName("battles_"+modeName);
+      local modeName = diff.getEgdName(false); // arcade, historical, simulation
+      local req = membershipRequirements.getBlockByName("battles_"+modeName);
       if (req?.type == "battles" && req?.difficulty == modeName)
       {
-        let battlesRequired = req.getInt("count", 0);
+        local battlesRequired = req.getInt("count", 0);
         if ( battlesRequired > 0 )
         {
           if ( !haveBattlesReq )

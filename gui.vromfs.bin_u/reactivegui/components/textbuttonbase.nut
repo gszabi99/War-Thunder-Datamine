@@ -1,10 +1,10 @@
-let fontsState = require("reactiveGui/style/fontsState.nut")
-let defStyle = require("textButton.style.nut")
-let hdpx = ::hdpx
-let pw = ::pw
+local fontsState = require("reactiveGui/style/fontsState.nut")
+local defStyle = require("textButton.style.nut")
+local hdpx = ::hdpx
+local pw = ::pw
 
-let function textColor(sf, style=null, isEnabled = true) {
-  let styling = defStyle.__merge(style ?? {})
+local function textColor(sf, style=null, isEnabled = true) {
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.TextDisabled
   if (sf & S_ACTIVE)    return styling.TextActive
   if (sf & S_HOVER)     return styling.TextHover
@@ -12,8 +12,8 @@ let function textColor(sf, style=null, isEnabled = true) {
   return styling.TextNormal
 }
 
-let function borderColor(sf, style=null, isEnabled = true) {
-  let styling = defStyle.__merge(style ?? {})
+local function borderColor(sf, style=null, isEnabled = true) {
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.BdDisabled
   if (sf & S_ACTIVE)    return styling.BdActive
   if (sf & S_HOVER)     return styling.BdHover
@@ -21,8 +21,8 @@ let function borderColor(sf, style=null, isEnabled = true) {
   return styling.BdNormal
 }
 
-let function fillColor(sf, style=null, isEnabled = true) {
-  let styling = defStyle.__merge(style ?? {})
+local function fillColor(sf, style=null, isEnabled = true) {
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.BgDisabled
   if (sf & S_ACTIVE)    return styling.BgActive
   if (sf & S_HOVER)     return styling.BgHover
@@ -30,27 +30,27 @@ let function fillColor(sf, style=null, isEnabled = true) {
   return styling.BgNormal
 }
 
-let function fillColorTransp(sf, style=null, isEnabled = true) {
-  let styling = defStyle.__merge(style ?? {})
+local function fillColorTransp(sf, style=null, isEnabled = true) {
+  local styling = defStyle.__merge(style ?? {})
   if (sf & S_ACTIVE)    return styling.BgActive
   if (sf & S_HOVER)     return styling.BgHover
   if (sf & S_KB_FOCUS)  return styling.BgFocused
   return 0
 }
 
-let defTextCtor = @(text, params, handler, group, sf) text
-let textButton = @(fill_color, border_width) function(text, handler, params={}) {
-  let isEnabled = params?.isEnabled ?? true
-  let group = ::ElemGroup()
-  let stateFlags = params?.stateFlags ?? ::Watched(0)
-  let style = params?.style ?? defStyle
-  let btnMargin =  params?.margin ?? defStyle.btnMargin
-  let textMargin = params?.textMargin ?? defStyle.textMargin
+local defTextCtor = @(text, params, handler, group, sf) text
+local textButton = @(fill_color, border_width) function(text, handler, params={}) {
+  local isEnabled = params?.isEnabled ?? true
+  local group = ::ElemGroup()
+  local stateFlags = params?.stateFlags ?? ::Watched(0)
+  local style = params?.style ?? defStyle
+  local btnMargin =  params?.margin ?? defStyle.btnMargin
+  local textMargin = params?.textMargin ?? defStyle.textMargin
 
-  let {halign = ALIGN_LEFT, valign = ALIGN_CENTER, font=fontsState.get("normal"), fontSize=null, size=SIZE_TO_CONTENT} = params
-  let sound = params?.style.sound
-  let textCtor = params?.textCtor ?? defTextCtor
-  let function builder(sf) {
+  local {halign = ALIGN_LEFT, valign = ALIGN_CENTER, font=fontsState.get("normal"), fontSize=null, size=SIZE_TO_CONTENT} = params
+  local sound = params?.style.sound
+  local textCtor = params?.textCtor ?? defTextCtor
+  local function builder(sf) {
     return {
       watch = stateFlags
       onElemState = @(v) stateFlags(v)
@@ -96,7 +96,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params={}) 
 }
 
 
-let export = class{
+local export = class{
   Bordered = textButton(fillColor, hdpx(1))
   Underline = textButton(fillColor, [0,0,hdpx(1),0])
   Flat = textButton(fillColor, 0)

@@ -1,16 +1,16 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
-let template = "%gui/items/trophyDesc"
-let singleItemIconLayer = "item_place_single"
-let itemContainerLayer = "trophy_reward_place"
+local template = "gui/items/trophyDesc"
+local singleItemIconLayer = "item_place_single"
+local itemContainerLayer = "trophy_reward_place"
 
 const MIN_ITEMS_OFFSET = 0.5
 const MAX_ITEMS_OFFSET = 1
 
-let function getIncomeView(gold, wp) {
-  let res = []
+local function getIncomeView(gold, wp) {
+  local res = []
   if (gold)
     res.append({
       icon = "#ui/gameuiskin#item_type_eagles"
@@ -26,8 +26,8 @@ let function getIncomeView(gold, wp) {
   return res
 }
 
-let getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? []).map(function(giftId) {
-  let config = getEntitlementConfig(giftId)
+local getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? []).map(function(giftId) {
+  local config = getEntitlementConfig(giftId)
   if (config)
     return {
       icon = "#ui/gameuiskin#item_type_premium"
@@ -37,10 +37,10 @@ let getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? [])
   return null
 })
 
-let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(unlockId) {
-  let unlockType = ::get_unlock_type_by_id(unlockId)
-  let typeValid = unlockType >= 0
-  let unlockTypeText = typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"
+local getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(unlockId) {
+  local unlockType = ::get_unlock_type_by_id(unlockId)
+  local typeValid = unlockType >= 0
+  local unlockTypeText = typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"
 
   local unlockTypeName = ::loc($"trophy/unlockables_names/{unlockTypeText}")
   unlockTypeName = ::colorize(typeValid ? "activeTextColor" : "red", unlockTypeName)
@@ -58,11 +58,11 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
   }
 })
 
-let function getDecoratorActionButtonsView(decorator, decoratorType) {
+local function getDecoratorActionButtonsView(decorator, decoratorType) {
   if (!(decorator?.canPreview() ?? false))
     return []
 
-  let gcb = globalCallbacks.DECORATOR_PREVIEW
+  local gcb = globalCallbacks.DECORATOR_PREVIEW
   return [{
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
@@ -74,12 +74,12 @@ let function getDecoratorActionButtonsView(decorator, decoratorType) {
   }]
 }
 
-let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? []).map(function(giftId) {
-  let locName = decoratorType.getLocName(giftId, true)
-  let decorator = ::g_decorator.getDecorator(giftId, decoratorType)
-  let nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
-  let isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(giftId)
-  let buttons = getDecoratorActionButtonsView(decorator, decoratorType)
+local getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? []).map(function(giftId) {
+  local locName = decoratorType.getLocName(giftId, true)
+  local decorator = ::g_decorator.getDecorator(giftId, decoratorType)
+  local nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
+  local isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(giftId)
+  local buttons = getDecoratorActionButtonsView(decorator, decoratorType)
 
   return {
     title = ::colorize(nameColor, locName)
@@ -91,11 +91,11 @@ let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? [])
   }
 })
 
-let function getUnitActionButtonsView(unit) {
+local function getUnitActionButtonsView(unit) {
   if ((unit.isInShop ?? false) == false)
     return []
 
-  let gcb = globalCallbacks.UNIT_PREVIEW
+  local gcb = globalCallbacks.UNIT_PREVIEW
   return [{
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
@@ -104,19 +104,19 @@ let function getUnitActionButtonsView(unit) {
   }]
 }
 
-let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).map(function(unitName) {
-  let unit = ::getAircraftByName(unitName)
+local getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).map(function(unitName) {
+  local unit = ::getAircraftByName(unitName)
   if (!unit)
     return null
 
-  let ignoreAvailability = params?.ignoreAvailability
-  let isBought = ignoreAvailability ? false : unit.isBought()
-  let classIco = ::getUnitClassIco(unit)
-  let shopItemType = getUnitRole(unit)
-  let buttons = getUnitActionButtonsView(unit)
-  let receiveOnce = "mainmenu/receiveOnlyOnce"
+  local ignoreAvailability = params?.ignoreAvailability
+  local isBought = ignoreAvailability ? false : unit.isBought()
+  local classIco = ::getUnitClassIco(unit)
+  local shopItemType = getUnitRole(unit)
+  local buttons = getUnitActionButtonsView(unit)
+  local receiveOnce = "mainmenu/receiveOnlyOnce"
 
-  let unitPlate = ::build_aircraft_item(unitName, unit, {
+  local unitPlate = ::build_aircraft_item(unitName, unit, {
     hasActions = true
     status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy"
     isLocalState = !ignoreAvailability
@@ -142,7 +142,7 @@ local function getEntitlementView(entitlement, params = {}) {
   if (!entitlement)
     return ""
 
-  let view = params
+  local view = params
   view.list <- []
   view.list.extend(getIncomeView(entitlement?.goldIncome, entitlement?.wpIncome))
   view.list.extend(getEntitlementGiftView(entitlement))
@@ -154,10 +154,10 @@ local function getEntitlementView(entitlement, params = {}) {
   return ::handyman.renderCached(template, view)
 }
 
-let generateLayers = function(layersArray) {
-  let offsetByItem = ::LayersIcon.getOffset(layersArray.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
-  let offsetAllItems = (layersArray.len()-1) / 2.0
-  let res = layersArray.map(function(imageLayer, idx) {
+local generateLayers = function(layersArray) {
+  local offsetByItem = ::LayersIcon.getOffset(layersArray.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
+  local offsetAllItems = (layersArray.len()-1) / 2.0
+  local res = layersArray.map(function(imageLayer, idx) {
     return ::LayersIcon.genDataFromLayer(
       { x = $"({offsetByItem} * {idx - offsetAllItems})@itemWidth", w = "1@itemWidth", h = "1@itemWidth" },
       ::LayersIcon.genDataFromLayer(
@@ -169,9 +169,9 @@ let generateLayers = function(layersArray) {
   return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg(itemContainerLayer), "".join(res))
 }
 
-let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
-  let decorator = ::g_decorator.getDecorator(giftId, decoratorType)
-  let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
+local getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
+  local decorator = ::g_decorator.getDecorator(giftId, decoratorType)
+  local cfg = clone ::LayersIcon.findLayerCfg("item_decal")
   cfg.img <- decoratorType.getImage(decorator)
 
   local image = ""
@@ -184,8 +184,8 @@ let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(
   return image
 })
 
-let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
-  let unitType = ::getUnitTypeTextByUnit(::getAircraftByName(unitId)).tolower()
+local getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
+  local unitType = ::getUnitTypeTextByUnit(::getAircraftByName(unitId)).tolower()
   return ::LayersIcon.getIconData($"reward_unit_{unitType}")
 })
 
@@ -196,7 +196,7 @@ local function getEntitlementLayerIcons(entitlement) {
   if (!entitlement)
     return ""
 
-  let layerStyles = []
+  local layerStyles = []
   if (entitlement?.goldIncome != null)
     layerStyles.append("reward_gold")
   if (entitlement?.wpIncome != null)
@@ -208,7 +208,7 @@ local function getEntitlementLayerIcons(entitlement) {
   )
   layerStyles.extend((entitlement?.unlockGift ?? []).map(@(unlockId) "reward_unlock"))
 
-  let layersArray = layerStyles.map(@(style) ::LayersIcon.getIconData(style))
+  local layersArray = layerStyles.map(@(style) ::LayersIcon.getIconData(style))
 
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, ::g_decorator_type.DECALS))
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES))

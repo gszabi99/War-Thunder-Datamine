@@ -1,7 +1,7 @@
-let enums = require("sqStdlibs/helpers/enums.nut")
-let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
+local elemEvents = require("sqDagui/elemUpdater/elemUpdaterEvents.nut")
 
-let modelType = {
+local modelType = {
   types = []
 }
 

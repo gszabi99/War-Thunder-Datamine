@@ -1,5 +1,5 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 
 ::WwBattleJoinProcess <- class
 {
@@ -75,7 +75,7 @@ let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return remove()
 
-    let availableUnitTypes = wwBattle.getAvailableUnitTypes()
+    local availableUnitTypes = wwBattle.getAvailableUnitTypes()
     if (availableUnitTypes.len() > 0)
     {
       foreach(idx, unitType in availableUnitTypes)
@@ -95,10 +95,10 @@ let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
     if (wwBattle.isBattleByUnitsGroup())
       return joinStep5_paramsForQueue()
 
-    let team = wwBattle.getTeamBySide(side)
-    let battleUnits = wwBattle.getTeamRemainUnits(team)
-    let requiredUnits = wwBattle.getUnitsRequiredForJoin(team, side)
-    let repairInfo = ::getBrokenAirsInfo([team.country], true,
+    local team = wwBattle.getTeamBySide(side)
+    local battleUnits = wwBattle.getTeamRemainUnits(team)
+    local requiredUnits = wwBattle.getUnitsRequiredForJoin(team, side)
+    local repairInfo = ::getBrokenAirsInfo([team.country], true,
       @(unit) unit.name in battleUnits || unit.name in requiredUnits)
 
     if (!requiredUnits)

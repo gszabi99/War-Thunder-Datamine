@@ -1,7 +1,7 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let { appendOnce } = require("sqStdLibs/helpers/u.nut")
+local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+local { appendOnce } = require("sqStdLibs/helpers/u.nut")
 
-let DEFAULT_BRANCH_CONFIG = {
+local DEFAULT_BRANCH_CONFIG = {
   locId = ""
   minPosX = 1
   itemsCountX = 1
@@ -14,16 +14,16 @@ let DEFAULT_BRANCH_CONFIG = {
   itemsIdList = {}
 }
 
-let function getHeaderItems(branchBlk)
+local function getHeaderItems(branchBlk)
 {
-  let headerItems = branchBlk?.headerItems
+  local headerItems = branchBlk?.headerItems
   return headerItems != null ? (headerItems % "headerItem") : []
 }
 
-let function getArrowConfigByItems(item, reqItem)
+local function getArrowConfigByItems(item, reqItem)
 {
-  let reqItemPos = reqItem.posXY
-  let itemPos = item.posXY
+  local reqItemPos = reqItem.posXY
+  local itemPos = item.posXY
   return {
     posX = reqItemPos.x
     posY = reqItemPos.y
@@ -36,9 +36,9 @@ let function getArrowConfigByItems(item, reqItem)
   }
 }
 
-let function addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig) {
+local function addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig) {
   if (arrowConfig.sizeY != 0) {//not horizontal arrow
-    let reqItemId = arrowConfig.reqItemId
+    local reqItemId = arrowConfig.reqItemId
     reqItemsWithDownOutArrows[reqItemId] <-
       (reqItemsWithDownOutArrows?[reqItemId] ?? []).append(arrowConfig.itemId)
   }
@@ -46,14 +46,14 @@ let function addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig) {
   return reqItemsWithDownOutArrows
 }
 
-let function getReqItemsArray(reqItems) {
-  let itemsIdArray = []
-  let fullItemsIdList = {}
+local function getReqItemsArray(reqItems) {
+  local itemsIdArray = []
+  local fullItemsIdList = {}
   foreach (reqItemsString in reqItems) {
-    let itemsTbl = {}
+    local itemsTbl = {}
     foreach (reqId in reqItemsString.split(",")) {
-      let needHave = !::g_string.startsWith(reqId, "!") // true = need to have, false = need to NOT have.
-      let itemId = reqId.slice(needHave ? 0 : 1).tointeger()
+      local needHave = !::g_string.startsWith(reqId, "!") // true = need to have, false = need to NOT have.
+      local itemId = reqId.slice(needHave ? 0 : 1).tointeger()
       itemsTbl[itemId] <- needHave
     }
     itemsIdArray.append(itemsTbl)
@@ -65,37 +65,37 @@ let function getReqItemsArray(reqItems) {
   }
 }
 
-let function addItemConfigToTree(treeRows, bodyIdx, posX, posY, itemConfig) {
+local function addItemConfigToTree(treeRows, bodyIdx, posX, posY, itemConfig) {
   if (treeRows[bodyIdx][posY][posX] == null)
     treeRows[bodyIdx][posY][posX] = []
   appendOnce(itemConfig, treeRows[bodyIdx][posY][posX], true, @(arrValue, value) arrValue.id == value.id)
 }
 
-let function generateRows(branchBlk, treeRows, treeBlk)
+local function generateRows(branchBlk, treeRows, treeBlk)
 {
-  let branchItems = {}
-  let textBlocks = []
-  let notFoundReqForItems = {}
+  local branchItems = {}
+  local textBlocks = []
+  local notFoundReqForItems = {}
   local minPosX = null
   local maxPosX = null
-  let resourcesInColumn = {}//!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
+  local resourcesInColumn = {}//!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
   local reqItemsWithDownOutArrows = {}
-  let bodyIdx = branchBlk?.bodyItemIdx ?? 0
-  let hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
-  let itemsIdList = {}
+  local bodyIdx = branchBlk?.bodyItemIdx ?? 0
+  local hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
+  local itemsIdList = {}
   if (treeRows.len() < bodyIdx + 1)
     treeRows.resize(bodyIdx + 1, array(0, null))
 
   for(local i = 0; i < branchBlk.blockCount(); i++)
   {
-    let iBlk = branchBlk.getBlock(i)
+    local iBlk = branchBlk.getBlock(i)
     local id = iBlk.getBlockName()
-    let shouldRemoveBlankRows = branchBlk?.shouldRemoveBlankRows ?? false
+    local shouldRemoveBlankRows = branchBlk?.shouldRemoveBlankRows ?? false
     if (id == "textArea") {
-      let posX = iBlk.posXYFrom.x.tointeger()
-      let posY = iBlk.posXYFrom.y.tointeger()
-      let endPosX = iBlk.posXYTo.x.tointeger()
-      let endPosY = iBlk.posXYTo.y.tointeger()
+      local posX = iBlk.posXYFrom.x.tointeger()
+      local posY = iBlk.posXYFrom.y.tointeger()
+      local endPosX = iBlk.posXYTo.x.tointeger()
+      local endPosY = iBlk.posXYTo.y.tointeger()
       minPosX = ::min(minPosX ?? posX, posX)
       maxPosX = ::max(maxPosX ?? endPosX, endPosX)
       textBlocks.append({
@@ -115,7 +115,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
     if (!::ItemsManager.isItemdefId(id))
       continue
 
-    let itemConfig = {
+    local itemConfig = {
       id = id
       bodyIdx = bodyIdx
       conectionInRowText = branchBlk?.conectionInRowText ?? "+"
@@ -134,13 +134,13 @@ let function generateRows(branchBlk, treeRows, treeBlk)
     foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying",
       "reqItemExistsForDisplaying", "reqItemForIdentification"])
     {
-      let reqItems = getReqItemsArray(iBlk % reqListId)
+      local reqItems = getReqItemsArray(iBlk % reqListId)
       itemsIdList.__update(reqItems.fullItemsIdList)
       itemConfig[reqListId] = reqItems.itemsIdArray
     }
 
-    let posX = itemConfig.posXY.x.tointeger()
-    let posY = itemConfig.posXY.y.tointeger()
+    local posX = itemConfig.posXY.x.tointeger()
+    local posY = itemConfig.posXY.y.tointeger()
     minPosX = ::min(minPosX ?? posX, posX)
     maxPosX = ::max(maxPosX ?? posX, posX)
     if (itemConfig.showResources && resourcesInColumn?[posX-1] == null)
@@ -148,7 +148,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
 
     foreach(reqItemId in itemConfig.reqItems) {
       if (branchItems?[reqItemId] != null) {
-        let arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
+        local arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
         reqItemsWithDownOutArrows = addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig)
         itemConfig.arrows.append(arrowConfig)
       }
@@ -167,13 +167,13 @@ let function generateRows(branchBlk, treeRows, treeBlk)
     addItemConfigToTree(treeRows, bodyIdx, posX-1, posY-1, itemConfig)
   }
 
-  let searchReqForItems = clone notFoundReqForItems
+  local searchReqForItems = clone notFoundReqForItems
   foreach(reqItemId, itemConfigs in searchReqForItems) {
     if (!(reqItemId in branchItems))
       continue
 
     foreach(itemConfig in itemConfigs) {
-      let arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
+      local arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
       reqItemsWithDownOutArrows = addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig)
       itemConfig.arrows.append(arrowConfig)
 
@@ -185,8 +185,8 @@ let function generateRows(branchBlk, treeRows, treeBlk)
   }
 
   if (notFoundReqForItems.len() > 0) {
-    let craftTreeName = branchBlk?.locId ?? ""  // warning disable: -declared-never-used
-    let reqItems = ::g_string.implode(notFoundReqForItems.keys(), "; ") // warning disable: -declared-never-used
+    local craftTreeName = branchBlk?.locId ?? ""  // warning disable: -declared-never-used
+    local reqItems = ::g_string.implode(notFoundReqForItems.keys(), "; ") // warning disable: -declared-never-used
     ::script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
   }
 
@@ -195,8 +195,8 @@ let function generateRows(branchBlk, treeRows, treeBlk)
       continue
 
     foreach (itemId in downOutArrowIds) {
-      let itemConfig = branchItems[itemId]
-      let arrowIdx = itemConfig.arrows.findindex(@(v) v.reqItemId == reqItemId)
+      local itemConfig = branchItems[itemId]
+      local arrowIdx = itemConfig.arrows.findindex(@(v) v.reqItemId == reqItemId)
       if (arrowIdx != null) {
         itemConfig.arrows[arrowIdx].isOutMultipleArrow = true
         branchItems[itemId] = itemConfig
@@ -208,7 +208,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
 
   minPosX = minPosX ?? 0
   maxPosX = maxPosX ?? 0
-  let headerItems = getHeaderItems(branchBlk)
+  local headerItems = getHeaderItems(branchBlk)
   headerItems.each(@(itemId) itemsIdList[itemId] <- true)
   return {
     treeRows = treeRows
@@ -228,38 +228,38 @@ let function generateRows(branchBlk, treeRows, treeBlk)
   }
 }
 
-let function getAllowableResources(resourcesBlk, resourcesName)
+local function getAllowableResources(resourcesBlk, resourcesName)
 {
   if (resourcesBlk == null)
     return null
 
-  let allowableResources = {}
+  local allowableResources = {}
   foreach(res in (resourcesBlk % resourcesName))
     allowableResources[::to_integer_safe(res, res, false)] <- true
 
   return allowableResources
 }
 
-let function getCraftResult(treeBlk)
+local function getCraftResult(treeBlk)
 {
-  let craftResult = treeBlk?.craftResult
+  local craftResult = treeBlk?.craftResult
   if (!craftResult || !craftResult?.item)
     return null
 
-  let reqItems = craftResult?.reqItems ?? ""
+  local reqItems = craftResult?.reqItems ?? ""
   return {
     id = craftResult.item
     reqItems = reqItems.split(",").map(@(item) item.tointeger())
   }
 }
 
-let function generateTreeConfig(blk)
+local function generateTreeConfig(blk)
 {
-  let branches = []
+  local branches = []
   local treeRowsByBodies = []
   foreach(branchBlk in blk % "treeBlock")
   {
-    let configByBranch = generateRows(branchBlk, treeRowsByBodies, blk)
+    local configByBranch = generateRows(branchBlk, treeRowsByBodies, blk)
     treeRowsByBodies = configByBranch.treeRows
     branches.append(DEFAULT_BRANCH_CONFIG.__merge(configByBranch.branch))
   }
@@ -267,22 +267,22 @@ let function generateTreeConfig(blk)
   branches.sort(@(a, b) a.bodyIdx <=> b.bodyIdx
     || a.minPosX <=> b.minPosX)
 
-  let craftResult = getCraftResult(blk)
-  let craftTreeItemsList = {}
+  local craftResult = getCraftResult(blk)
+  local craftTreeItemsList = {}
   if (craftResult != null)
     craftTreeItemsList[craftResult.id] <- true
 
-  let bodyItemsTitles = blk % "bodyItemsTitle"
-  let bodyTiledBackImage = blk % "bodyTiledBackImage"
-  let allowableResources = blk % "allowableResources"
+  local bodyItemsTitles = blk % "bodyItemsTitle"
+  local bodyTiledBackImage = blk % "bodyTiledBackImage"
+  local allowableResources = blk % "allowableResources"
   local hasHeaderItems = false
-  let bodiesConfig = []
+  local bodiesConfig = []
   foreach (idx, branch in branches) {
      craftTreeItemsList.__update(branch.itemsIdList)
      hasHeaderItems = hasHeaderItems || branch.headerItems.len() > 0
 
-     let bodyIdx = branch.bodyIdx
-     let bodyTitle = bodyItemsTitles?[bodyIdx] ?? ""
+     local bodyIdx = branch.bodyIdx
+     local bodyTitle = bodyItemsTitles?[bodyIdx] ?? ""
      if (!(bodyIdx in bodiesConfig))
        bodiesConfig.append({
          bodyIdx = bodyIdx
@@ -301,9 +301,9 @@ let function generateTreeConfig(blk)
          button = null
        })
 
-     let curBodyConfig = bodiesConfig[bodyIdx]
-     let hasBranchesTitlesInBody = curBodyConfig.hasBranchesTitles
-     let hasBranchTitle = branch?.locId != null
+     local curBodyConfig = bodiesConfig[bodyIdx]
+     local hasBranchesTitlesInBody = curBodyConfig.hasBranchesTitles
+     local hasBranchTitle = branch?.locId != null
      curBodyConfig.branchesCount++
      curBodyConfig.itemsCountX += branch.itemsCountX
      curBodyConfig.columnWithResourcesCount += branch.columnWithResourcesCount
@@ -316,7 +316,7 @@ let function generateTreeConfig(blk)
      curBodyConfig.button = branch.buttonConfig ?? curBodyConfig.button
   }
 
-  let craftTreeItemsIdArray = craftTreeItemsList.keys()
+  local craftTreeItemsIdArray = craftTreeItemsList.keys()
   if (craftTreeItemsIdArray.len() > 0)   //request items by itemDefId for craft tree
     inventoryClient.requestItemdefsByIds(craftTreeItemsIdArray)
 

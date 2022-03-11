@@ -26,12 +26,12 @@
       }
 
 */
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
-::gui_handlers.ActionsList <- class extends ::BaseGuiHandler
+class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
+  sceneBlkName = "gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"
 
   params    = null
@@ -39,7 +39,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
   closeOnUnhover = true
 
-  __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
+  __al_item_obj_tpl = "gui/actionsList/actionsListItem"
 
   static function open(_parentObj, _params)
   {
@@ -48,7 +48,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
       || ::gui_handlers.ActionsList.hasActionsListOnObject(_parentObj))
       return
 
-    let params = {
+    local params = {
       scene = _parentObj
       params = _params
     }
@@ -75,12 +75,12 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
     if (!("actions" in params) || params.actions.len() <= 0)
       return goBack()
 
-    let nest = scene.findObject("list_nest")
+    local nest = scene.findObject("list_nest")
 
     local isIconed = false
     foreach (idx, action in params.actions)
     {
-      let show = ::getTblValue("show", action, true)
+      local show = ::getTblValue("show", action, true)
       if (!("show" in action))
         action.show <- show
 
@@ -90,7 +90,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
     }
     scene.iconed = isIconed ? "yes" : "no"
 
-    let data = ::handyman.renderCached(__al_item_obj_tpl, params)
+    local data = ::handyman.renderCached(__al_item_obj_tpl, params)
     guiScene.replaceContentFromText(nest, data, data.len(), this)
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
@@ -104,7 +104,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
         if (!::checkObj(nest))
           return
 
-        let selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
+        local selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         guiScene.applyPendingChanges(false)
         ::move_mouse_on_child(nest, ::max(selIdx, 0))
       })
@@ -113,7 +113,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
   function updatePosition()
   {
     guiScene.applyPendingChanges(false)
-    let defaultAlign = params?.orientation ?? ALIGN.TOP
+    local defaultAlign = params?.orientation ?? ALIGN.TOP
     ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, defaultAlign, scene)
   }
 
@@ -126,7 +126,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
   function onAction(obj)
   {
     close()
-    let actionName = obj?.id ?? ""
+    local actionName = obj?.id ?? ""
     if (actionName == "")
       return
 
@@ -165,7 +165,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
       if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
         return
 
-      let currentObj = getSelectedChild(obj)
+      local currentObj = getSelectedChild(obj)
       if (!currentObj)
         return close()
 
@@ -189,7 +189,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
   static function removeActionsListFromObject(obj, fadeout = false)
   {
-    let alObj = obj.findObject("actions_list")
+    local alObj = obj.findObject("actions_list")
     if (!::checkObj(alObj))
       return
     if (fadeout)

@@ -204,7 +204,7 @@ foreach (fn in [
   "scripts/unlocks/unlocks.nut"
   "scripts/unlocks/unlocksView.nut"
   "scripts/unlocks/showUnlock.nut"
-  "scripts/promo/battleTasksPromoHandler.nut"
+  "scripts/promo/BattleTasksPromoHandler.nut"
   "scripts/unlocks/personalUnlocks.nut"
   "scripts/unlocks/battleTasksHandler.nut"
   "scripts/unlocks/battleTasksSelectNewTask.nut"
@@ -402,8 +402,6 @@ foreach (fn in [
 
 require("scripts/controls/controlsFootballNy2021Hack.nut")
 require("scripts/slotbar/elems/unlockMarkerElem.nut")
-require("scripts/items/trophyShowTime.nut")
-require("scripts/dlcontent/dlContent.nut")
 
 if (::g_login.isAuthorized() || ::disable_network()) //load scripts from packs only after login
   ::g_script_reloader.loadIfExist("scripts/worldWar/worldWar.nut")

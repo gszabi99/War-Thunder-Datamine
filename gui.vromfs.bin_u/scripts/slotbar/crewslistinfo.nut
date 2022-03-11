@@ -1,4 +1,4 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 local unitsStateCached = null
 
@@ -21,7 +21,7 @@ local function getMyCrewUnitsState(country = null) {
     unitsStateCached.crewAirs[c.country] <- []
     foreach(crew in c.crews)
       if (("aircraft" in crew) && crew.aircraft!="") {
-        let air = getAircraftByName(crew.aircraft)
+        local air = getAircraftByName(crew.aircraft)
         if (air) {
           unitsStateCached.crewAirs[c.country].append(crew.aircraft)
           if (c.country == country && unitsStateCached.rank < air.rank)

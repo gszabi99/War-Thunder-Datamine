@@ -1,11 +1,11 @@
-let squadsListData = require("scripts/squads/clanSquadsList.nut")
+local squadsListData = require("scripts/squads/clanSquadsList.nut")
 
-::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
-  sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
+  sceneBlkName   = "gui/clans/clanSquadInfo.blk"
   needVoiceChat = false
-  memberTplName = "%gui/squads/squadMembers"
+  memberTplName = "gui/squads/squadMembers"
   membersObj = null
   align = ALIGN.BOTTOM
 
@@ -20,7 +20,7 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
     if (!::checkObj(alignObj))
       return null
 
-    let params = {
+    local params = {
       alignObj = alignObj
       squad = squad
     }
@@ -31,7 +31,7 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
   function initScreen()
   {
     membersObj = scene.findObject("members")
-    let viewBlk = ::handyman.renderCached(memberTplName,
+    local viewBlk = ::handyman.renderCached(memberTplName,
       {members = array(squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null)})
     guiScene.replaceContentFromText(membersObj, viewBlk, viewBlk.len(), this)
     scene.findObject("squad_info_update").setUserData(this)
@@ -43,7 +43,7 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
 
   function refreshList()
   {
-    let leader = squad?.leader
+    local leader = squad?.leader
     local memberViewIndex = 0
     if (leader == selectedMember)
       selectedIndex = memberViewIndex
@@ -66,15 +66,15 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
 
   function updateMemberView(mebmerObjIndex, memberUid)
   {
-    let isVisible = memberUid != null
-    let memberObj = getSquadObj(mebmerObjIndex)
+    local isVisible = memberUid != null
+    local memberObj = getSquadObj(mebmerObjIndex)
     memberObj.show(isVisible)
     memberObj.enable(isVisible)
     if (!isVisible || !::checkObj(memberObj))
       return
 
-    let memeberUidStr = memberUid.tostring()
-    let contact = getContact(memeberUidStr)
+    local memeberUidStr = memberUid.tostring()
+    local contact = getContact(memeberUidStr)
     if (!contact)
       ::g_users_info_manager.requestInfo([memeberUidStr])
     memberObj["id"] = "member_" + memeberUidStr
@@ -83,10 +83,10 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
     memberObj.findObject("contactName").setValue(contact? contact.getName(): "")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
     memberObj.findObject("not_member_data").show(contact? false : true)
-    let statusObj = memberObj.findObject("statusImg")
+    local statusObj = memberObj.findObject("statusImg")
     if (::checkObj(statusObj))
     {
-      let presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
+      local presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
       statusObj["background-image"] = presence.getIcon()
       statusObj["background-color"] = presence.getIconColor()
       statusObj["tooltip"] = presence.getText()
@@ -120,18 +120,18 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
     if (!memberUid || !::checkObj(obj))
       return
 
-    let position = obj.getPosRC()
+    local position = obj.getPosRC()
     position[1] += obj.getSize()[1]
-    let contact = ::getContact(memberUid.tostring())
+    local contact = ::getContact(memberUid.tostring())
     if (!contact)
       return
-    let memberName = contact? contact.getName(): ""
+    local memberName = contact? contact.getName(): ""
     ::g_chat.showPlayerRClickMenu(memberName, null, contact, position)
   }
 
   function onItemSelect(obj)
   {
-    let countListItem = (squad?.members ?? []).len()
+    local countListItem = (squad?.members ?? []).len()
     if (countListItem <= 0)
       {
         selectedMember = null
@@ -139,15 +139,15 @@ let squadsListData = require("scripts/squads/clanSquadsList.nut")
         return
       }
 
-    let index = obj.getValue()
+    local index = obj.getValue()
     selectedMember = getMemberUidByObj(obj.getChild(index))
     selectedIndex = selectedMember ? index : -1
   }
 
   function onEventClanSquadsListChanged(params)
   {
-    let leader = squad.leader
-    let newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
+    local leader = squad.leader
+    local newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
     if (!newSquad)
     {
       goBack()

@@ -1,20 +1,20 @@
 // TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
 
-let { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 const ITEMS_PER_PAGE = 8
 
 ::gui_start_wheelmenu <- function gui_start_wheelmenu(params, isUpdate = false)
 {
-  let defaultParams = {
+  local defaultParams = {
     menu = []
     callbackFunc = null
     owner = null
     mouseEnabled    = false
     axisEnabled     = true
-    contentTemplate = "%gui/wheelMenu/textContent"
+    contentTemplate = "gui/wheelMenu/textContent"
     contentPartails = {}
   }
 
@@ -32,7 +32,7 @@ const ITEMS_PER_PAGE = 8
 
 ::close_cur_wheelmenu <- function close_cur_wheelmenu()
 {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
+  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }
@@ -58,10 +58,10 @@ const ITEMS_PER_PAGE = 8
 
 ::dagui_propid.add_name_id("index") // for navigation with mouse in wheelmenu
 
-::gui_handlers.wheelMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
+  sceneBlkName = "gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -92,7 +92,7 @@ const ITEMS_PER_PAGE = 8
   mouseEnabled = false
   axisEnabled = true
   shouldShadeBackground = true
-  contentTemplate = "%gui/wheelMenu/textContent"
+  contentTemplate = "gui/wheelMenu/textContent"
   contentPartails = {}
   pageIdx = 0
   pagesTotal = 1
@@ -119,7 +119,7 @@ const ITEMS_PER_PAGE = 8
       scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
       onWheelmenuAxisInputTimer()
     }
-    let wheelmenu = scene.findObject("wheelmenu")
+    local wheelmenu = scene.findObject("wheelmenu")
     wheelmenu["total-input-transparent"] = mouseEnabled ? "no" : "yes"
     showSceneBtn("fast_shortcuts_block", false)
     showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
@@ -165,9 +165,9 @@ const ITEMS_PER_PAGE = 8
 
   function fillMenuItems()
   {
-    let startIdx = pageIdx * ITEMS_PER_PAGE
+    local startIdx = pageIdx * ITEMS_PER_PAGE
 
-    let itemsCount = ::max(itemsTotal - startIdx, ITEMS_PER_PAGE)
+    local itemsCount = ::max(itemsTotal - startIdx, ITEMS_PER_PAGE)
     btnSetIdx = btnSetsConfig.len() - 1
     for (local i = 0; i < btnSetsConfig.len(); i++)
       if (btnSetsConfig[i].len() >= itemsCount)
@@ -175,27 +175,27 @@ const ITEMS_PER_PAGE = 8
           btnSetIdx = i
           break
         }
-    let btnSet = btnSetsConfig[btnSetIdx]
+    local btnSet = btnSetsConfig[btnSetIdx]
 
     foreach (suffix in joystickSides)
     {
-      let btnIdx = btnSet.indexof(suffix)
-      let index = btnIdx != null ? (startIdx + btnIdx) : invalidIndex
-      let item = menu?[index]
-      let isShow = (item?.name ?? "") != ""
-      let enabled = isShow && (item?.wheelmenuEnabled ?? true)
-      let bObj = showSceneBtn($"wheelmenuItem{suffix}", isShow)
+      local btnIdx = btnSet.indexof(suffix)
+      local index = btnIdx != null ? (startIdx + btnIdx) : invalidIndex
+      local item = menu?[index]
+      local isShow = (item?.name ?? "") != ""
+      local enabled = isShow && (item?.wheelmenuEnabled ?? true)
+      local bObj = showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
       if (::checkObj(bObj))
       {
-        let buttonType = item?.buttonType ?? ""
+        local buttonType = item?.buttonType ?? ""
         if (buttonType != "")
           bObj.type = buttonType
 
         if (isShow)
         {
-          let content = bObj.findObject("content")
-          let blk = ::handyman.renderCached(contentTemplate, item, contentPartails)
+          local content = bObj.findObject("content")
+          local blk = ::handyman.renderCached(contentTemplate, item, contentPartails)
           guiScene.replaceContentFromText(content, blk, blk.len(), this)
         }
 
@@ -208,8 +208,8 @@ const ITEMS_PER_PAGE = 8
 
   function updatePageInfo()
   {
-    let shouldShowPages = pagesTotal > 1
-    let objPageInfo = scene.findObject("wheel_menu_page")
+    local shouldShowPages = pagesTotal > 1
+    local objPageInfo = scene.findObject("wheel_menu_page")
     objPageInfo.setValue(shouldShowPages
       ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
       : "")
@@ -218,22 +218,22 @@ const ITEMS_PER_PAGE = 8
 
   function updateTitlePos()
   {
-    let obj = scene.findObject("wheel_menu_title")
-    let startIdx = pageIdx * ITEMS_PER_PAGE
-    let hasTopItem = menu?[startIdx + 7] != null
+    local obj = scene.findObject("wheel_menu_title")
+    local startIdx = pageIdx * ITEMS_PER_PAGE
+    local hasTopItem = menu?[startIdx + 7] != null
     obj.top = hasTopItem ? obj?.topWithTopMenuItem : obj?.topWithoutTopMenuItem
   }
 
   function updateSelectShortcutImage()
   {
-    let obj = scene.findObject("wheelmenu_select_shortcut")
+    local obj = scene.findObject("wheelmenu_select_shortcut")
     local isShow = ::show_console_buttons && axisEnabled
     if (isShow)
     {
-      let shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
-      let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
+      local shortcuts = getPlayerCurUnit()?.unitType.wheelmenuAxis ?? []
+      local shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
-      let axesId = shortcutType.getComplexAxesId(shortcuts)
+      local axesId = shortcutType.getComplexAxesId(shortcuts)
       obj["background-image"] = getGamepadAxisTexture(axesId)
     }
     obj.show(isShow)
@@ -244,7 +244,7 @@ const ITEMS_PER_PAGE = 8
     if (!obj || (!mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()) )
       return
 
-    let index = obj.index.tointeger()
+    local index = obj.index.tointeger()
     sendAvailableAnswerDelayed(index)
   }
 
@@ -253,12 +253,12 @@ const ITEMS_PER_PAGE = 8
     if (!axisEnabled || isKbdShortcutDown)
       return
 
-    let axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, joystickMinDeviation)
+    local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
+    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, joystickMinDeviation)
     if (joystickData == null || joystickData.normLength == 0)
       return
 
-    let side = ((joystickData.angle / PI + 2.125) * 4).tointeger() % 8
+    local side = ((joystickData.angle / PI + 2.125) * 4).tointeger() % 8
     highlightItemBySide(joystickSides?[side])
   }
 
@@ -280,7 +280,7 @@ const ITEMS_PER_PAGE = 8
 
   function highlightItemByBtnIdx(btnIdx)
   {
-    let selection = btnSetsConfig[btnSetIdx]?[btnIdx]
+    local selection = btnSetsConfig[btnSetIdx]?[btnIdx]
     highlightItemBySide(selection)
   }
 
@@ -288,8 +288,8 @@ const ITEMS_PER_PAGE = 8
   {
     if (! joystickSelection) return
 
-    let bObj = scene.findObject("wheelmenuItem" + joystickSelection)
-    let index = bObj && bObj.index.tointeger()
+    local bObj = scene.findObject("wheelmenuItem" + joystickSelection)
+    local index = bObj && bObj.index.tointeger()
     sendAvailableAnswerDelayed(index)
   }
 
@@ -313,7 +313,7 @@ const ITEMS_PER_PAGE = 8
 
   function onShortcutSelectCallback(btnIdx, isDown)
   {
-    let index = (pageIdx * ITEMS_PER_PAGE) + btnIdx
+    local index = (pageIdx * ITEMS_PER_PAGE) + btnIdx
     if (!isItemAvailable(index))
       return false
     isKbdShortcutDown = isDown

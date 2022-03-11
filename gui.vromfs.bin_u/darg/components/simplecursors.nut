@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let tooltipBox = @(content) {
+local tooltipBox = @(content) {
   rendObj = ROBJ_BOX
   fillColor = Color(30, 30, 30, 220)
   borderColor = Color(50, 50, 50, 20)
@@ -10,15 +10,15 @@ let tooltipBox = @(content) {
   children = content
 }
 
-let tooltipGen = Watched(0)
-let tooltipComp = {value = null}
-let function setTooltip(val){
+local tooltipGen = Watched(0)
+local tooltipComp = {value = null}
+local function setTooltip(val){
   tooltipComp.value = val
   tooltipGen(tooltipGen.value+1)
 }
-let getTooltip = @() tooltipComp.value
+local getTooltip = @() tooltipComp.value
 
-let tooltipCmp = @(){
+local tooltipCmp = @(){
   key = "tooltip"
   pos = [0, hdpx(38)]
   watch = tooltipGen
@@ -37,9 +37,9 @@ let tooltipCmp = @(){
 }
 
 
-let cursorC = Color(255,255,255,255)
+local cursorC = Color(255,255,255,255)
 
-let cursor = {
+local cursor = {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [sh(3), sh(3)]
   commands = [
@@ -54,7 +54,7 @@ let cursor = {
   }
 }
 
-let function mkCursor(...){
+local function mkCursor(...){
   return Cursor({
     size = [sh(2), sh(2)]
     hotspot = [0, 0]

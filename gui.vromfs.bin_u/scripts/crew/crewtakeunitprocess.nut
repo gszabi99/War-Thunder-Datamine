@@ -1,6 +1,6 @@
-let chard = require("chard")
-let { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
+local chard = require("chard")
+local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -30,7 +30,7 @@ enum CTU_PROGRESS {
     return false if process still exist.
 */
 
-::CrewTakeUnitProcess <- class
+class ::CrewTakeUnitProcess
 {
   crew = null
   country = null //used only when crew not unlocked
@@ -69,10 +69,10 @@ enum CTU_PROGRESS {
         return remove() //rent expired
 
       //we cant make slotbar invalid by add crew to new hired crew
-      let isInvalidCrewsAllowed = crew == null || ::SessionLobby.isInvalidCrewsAllowed()
-      let isCurUnitAllowed = unit && ::SessionLobby.isUnitAllowed(unit) && !::isUnitBroken(unit)
-      let needCheckAllowed = !isInvalidCrewsAllowed  && (!unit || !isCurUnitAllowed)
-      let needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
+      local isInvalidCrewsAllowed = crew == null || ::SessionLobby.isInvalidCrewsAllowed()
+      local isCurUnitAllowed = unit && ::SessionLobby.isUnitAllowed(unit) && !::isUnitBroken(unit)
+      local needCheckAllowed = !isInvalidCrewsAllowed  && (!unit || !isCurUnitAllowed)
+      local needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
         && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(unit))
 
       if (needCheckAllowed || needCheckRequired || (prevUnit && !unit))
@@ -80,17 +80,17 @@ enum CTU_PROGRESS {
         local hasUnit = !!unit
         local hasAllowedUnit = !needCheckAllowed
         local hasRequiredUnit = !needCheckRequired
-        let crews = ::g_crews_list.get()?[crew.idCountry]?.crews
+        local crews = ::g_crews_list.get()?[crew.idCountry]?.crews
         if (crews)
           foreach(c in crews)
           {
             if (crew.id == c.id)
               continue
-            let cUnit =::g_crew.getCrewUnit(c)
+            local cUnit =::g_crew.getCrewUnit(c)
             if (!cUnit)
               continue
             hasUnit = true
-            let isAllowed = ::SessionLobby.isUnitAllowed(cUnit) && !::isUnitBroken(cUnit)
+            local isAllowed = ::SessionLobby.isUnitAllowed(cUnit) && !::isUnitBroken(cUnit)
             hasAllowedUnit = hasAllowedUnit || isAllowed
             hasRequiredUnit = hasRequiredUnit || (isAllowed && ::SessionLobby.isUnitRequired(cUnit))
             if (hasRequiredUnit && hasAllowedUnit)
@@ -129,7 +129,7 @@ enum CTU_PROGRESS {
       if (!crew)
         locId = unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = ::warningIfGold(::format(::loc(locId), cost.getTextAccordingToBalance()), cost)
+      local msgText = ::warningIfGold(::format(::loc(locId), cost.getTextAccordingToBalance()), cost)
       ::scene_msg_box("need_money", null, msgText,
         [ ["ok", nextStepCb],
           ["cancel", removeCb ]
@@ -154,9 +154,9 @@ enum CTU_PROGRESS {
     {
       if (crew)
         return nextStep()
-      let purchaseCb = ::Callback(function()
+      local purchaseCb = ::Callback(function()
         {
-          let crews = ::get_crews_list_by_country(country)
+          local crews = ::get_crews_list_by_country(country)
           if (!crews.len())
             return remove()
 
@@ -173,8 +173,8 @@ enum CTU_PROGRESS {
       if (unit && !unit.isUsable())
         return remove()
 
-      let taskId = chard.trainCrewAircraft(crew.id, unit ? unit.name : "", false)
-      let taskOptions = {
+      local taskId = chard.trainCrewAircraft(crew.id, unit ? unit.name : "", false)
+      local taskOptions = {
         showProgressBox = true
         progressBoxDelayedButtons = PROCESS_TIME_OUT
       }
@@ -219,11 +219,11 @@ enum CTU_PROGRESS {
 
   static function getProcessCost(crew, unit, country = null)
   {
-    let resCost = ::g_crew.getCrewTrainCost(crew, unit)
+    local resCost = ::g_crew.getCrewTrainCost(crew, unit)
     if (crew || (!unit && !country))
       return resCost
 
-    let crewCostTbl = ::get_crew_slot_cost(country || ::getUnitCountry(unit))
+    local crewCostTbl = ::get_crew_slot_cost(country || ::getUnitCountry(unit))
     if (crewCostTbl)
     {
       resCost.wp += crewCostTbl.cost
@@ -280,7 +280,7 @@ enum CTU_PROGRESS {
     if (isEqual(activeProcesses[0]))
       return false
 
-    let msg = ::format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
+    local msg = ::format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
                          ::getEnumValName("CTU_PROGRESS", activeProcesses[0].curProgress))
     ::script_net_assert_once("can't start take crew", msg)
     return false
@@ -314,7 +314,7 @@ enum CTU_PROGRESS {
     curProgress++
     refreshTimer()
 
-    let curStepFunc = ::getTblValue(curProgress, stepsList)
+    local curStepFunc = ::getTblValue(curProgress, stepsList)
     if (!curStepFunc)
     {
       ::script_net_assert_once("missing take unit step", "Missing take unit step = " + curProgress)

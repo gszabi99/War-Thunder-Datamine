@@ -1,8 +1,8 @@
-let subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
-let checkUnitSpeechLangPackWatch = persist("checkUnitSpeechLangPackWatch", @() ::Watched(false))
+local checkUnitSpeechLangPackWatch = persist("checkUnitSpeechLangPackWatch", @() ::Watched(false))
 
-let function checkUnitSpeechLangPack(params) {
+local function checkUnitSpeechLangPack(params) {
   if (!checkUnitSpeechLangPackWatch.value)
     return
 

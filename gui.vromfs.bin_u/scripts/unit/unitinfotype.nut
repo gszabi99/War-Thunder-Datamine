@@ -1,17 +1,17 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
+local enums = require("sqStdLibs/helpers/enums.nut")
+local time = require("scripts/time.nut")
+local stdMath = require("std/math.nut")
+local { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
-let { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
-let { isWeaponAux,
+local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
+local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+local { isWeaponAux,
         getLastWeapon,
         getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-let UNIT_INFO_ARMY_TYPE  = {
+local UNIT_INFO_ARMY_TYPE  = {
   AIR        = unitTypes.AIRCRAFT.bit
   TANK       = unitTypes.TANK.bit
   SHIP       = unitTypes.SHIP.bit
@@ -103,8 +103,8 @@ const COMPARE_NO_COMPARE = "no"
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let mode = diff.getEgdName()
-        let currentParams = unit.modificators[diff.crewSkillName];
+        local mode = diff.getEgdName()
+        local currentParams = unit.modificators[diff.crewSkillName];
         addToExportTankDataBlockValues(blk, currentParams, mode)
       }
   }
@@ -113,16 +113,16 @@ const COMPARE_NO_COMPARE = "no"
 
   exportToDataBlock = function(unit)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     if (!(unit.unitType.bit & infoArmyType))
     {
         blk.hide = true
         return blk
     }
-    let value = getValue(unit)
+    local value = getValue(unit)
     if (value != null)
       blk.value = value
-    let valueText = getValueText(value, unit)
+    local valueText = getValueText(value, unit)
     if (valueText != null)
       blk.valueText = valueText
     addToExportDataBlock(blk, unit)
@@ -131,7 +131,7 @@ const COMPARE_NO_COMPARE = "no"
 
   exportCommonToDataBlock = function()
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
 
     if (headerLocId)
       blk.header = ::loc(headerLocId)
@@ -149,8 +149,8 @@ const COMPARE_NO_COMPARE = "no"
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let mode = diff.getEgdName()
-        let characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(value){return ""}, diff.crewSkillName, false)
+        local mode = diff.getEgdName()
+        local characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(value){return ""}, diff.crewSkillName, false)
         blk.value[mode] = characteristicArr[2]
         blk.valueText[mode] = item.prepareTextFunc(characteristicArr[2])
       }
@@ -163,7 +163,7 @@ const COMPARE_NO_COMPARE = "no"
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let mode = diff.getEgdName()
+        local mode = diff.getEgdName()
         blk.value[mode] = value
         blk.valueText[mode] = valueText
       }
@@ -231,7 +231,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
+          local mode = diff.getEgdName()
           blk.value[mode] = unit.getBattleRating(diff.getEdiff())
           blk.valueText[mode] = format("%.1f", blk.value[mode])
         }
@@ -242,7 +242,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "ugm/price"
     addToExportDataBlock = function(blk, unit)
     {
-      let valueText = ::getUnitCost(unit).getUncoloredText()
+      local valueText = ::getUnitCost(unit).getUncoloredText()
       if(valueText == "")
       {
           blk.hide = true
@@ -253,7 +253,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         if (diff.egdCode != ::EGD_NONE)
           blk.valueText[diff.getEgdName()] = valueText
 
-      let cost = ::getUnitCost(unit)
+      local cost = ::getUnitCost(unit)
       blk.wp = cost.wp
       blk.gold = cost.gold
     }
@@ -271,9 +271,9 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
-          let wpMuls = unit.getWpRewardMulList(diff)
-          let value = (wpMuls.wpMul * wpMuls.premMul * 100.0 + 0.5).tointeger()
+          local mode = diff.getEgdName()
+          local wpMuls = unit.getWpRewardMulList(diff)
+          local value = (wpMuls.wpMul * wpMuls.premMul * 100.0 + 0.5).tointeger()
           blk.value[mode] = value
           blk.valueText[mode] = ::format("%d%%", value)
         }
@@ -287,20 +287,20 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     }
     addToExportDataBlock = function(blk, unit)
     {
-      let talismanMul = isUnitSpecial(unit) ? (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
-      let value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
+      local talismanMul = isUnitSpecial(unit) ? (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
+      local value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
       if (value == 100)
       {
         blk.hide = true
         return
       }
-      let valueText = ::format("%d%%", value)
+      local valueText = ::format("%d%%", value)
       blk.value = ::DataBlock()
       blk.valueText = ::DataBlock()
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
+          local mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
         }
@@ -314,19 +314,19 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/crew_train_cost"
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.trainCost
+      local value = unit.trainCost
       if (value == 0)
       {
         blk.hide = true
         return
       }
-      let valueText = ::Cost(value).getUncoloredText()
+      local valueText = ::Cost(value).getUncoloredText()
       blk.value = ::DataBlock()
       blk.valueText = ::DataBlock()
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
+          local mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
         }
@@ -344,8 +344,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
-          let field = "repairCost" + mode
+          local mode = diff.getEgdName()
+          local field = "repairCost" + mode
           local value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0
           value =  value * (::get_warpoints_blk()?.avgRepairMul ?? 1.0) //avgRepairMul same as in tooltip
           blk.value[mode] = value
@@ -365,14 +365,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.hide = true
         return
       }
-      let value = ::getTblValue("freeRepairs", unit)
-      let valueText = ::toString(value)
+      local value = ::getTblValue("freeRepairs", unit)
+      local valueText = ::toString(value)
       blk.value = ::DataBlock()
       blk.valueText = ::DataBlock()
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
+          local mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
         }
@@ -390,9 +390,9 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
         {
-          let mode = diff.getEgdName()
-          let field = "repairTimeHrs" + mode
-          let value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0.0
+          local mode = diff.getEgdName()
+          local field = "repairTimeHrs" + mode
+          local value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0.0
           if(value == 0.0)
           {
             blk.hide = true
@@ -408,7 +408,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.WEAPON_INFO_TEXT
     getValueText = function(value, unit)
     {
-      let valueText = ::DataBlock()
+      local valueText = ::DataBlock()
       foreach(diff in ::g_difficulty.types)
         if (diff.egdCode != ::EGD_NONE)
           valueText[diff.getEgdName()] = getWeaponInfoText(unit.name)
@@ -423,7 +423,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)}
+      local item = {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -434,8 +434,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.maxSpeedAlt
-      let valueText = countMeasure(1, unit.shop.maxSpeedAlt)
+      local value = unit.shop.maxSpeedAlt
+      local valueText = countMeasure(1, unit.shop.maxSpeedAlt)
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -447,7 +447,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, ::loc("measureUnits/seconds"))}}
+      local item = {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, ::loc("measureUnits/seconds"))}}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -460,7 +460,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value)}
+      local item = {id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value)}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -473,8 +473,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.maxAltitude
-      let valueText = countMeasure(1, value)
+      local value = unit.shop.maxAltitude
+      local valueText = countMeasure(1, value)
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -487,8 +487,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.airfieldLen
-      let valueText = countMeasure(1, value)
+      local value = unit.shop.airfieldLen
+      local valueText = countMeasure(1, value)
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -501,8 +501,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.wingLoading
-      let valueText = value.tostring()
+      local value = unit.shop.wingLoading
+      local valueText = value.tostring()
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -517,8 +517,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if ("thrustToWeightRatio" in unit.shop)
       {
-        let value = unit.shop.thrustToWeightRatio
-        let valueText = value.tostring()
+        local value = unit.shop.thrustToWeightRatio
+        local valueText = value.tostring()
         addSingleValue(blk, unit, value, valueText)
       }
     }
@@ -534,8 +534,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if ("powerToWeightRatio" in unit.shop)
       {
-        let value = unit.shop.powerToWeightRatio
-        let valueText = value.tostring()
+        local value = unit.shop.powerToWeightRatio
+        local valueText = value.tostring()
         addSingleValue(blk, unit, value, valueText)
       }
     }
@@ -549,8 +549,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.climbAlt
-      let valueText = countMeasure(1, value)
+      local value = unit.shop.climbAlt
+      local valueText = countMeasure(1, value)
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -563,8 +563,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
     addToExportDataBlock = function(blk, unit)
     {
-      let value = unit.shop.climbTime
-      let valueText = ::format("%.1f %s", value, ::loc("measureUnits/seconds"))
+      local value = unit.shop.climbTime
+      local valueText = ::format("%.1f %s", value, ::loc("measureUnits/seconds"))
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -577,13 +577,16 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit)
     {
       local value = 0
-      foreach(idx, weapon in unit.getWeapons())
+      if (unit.weapons.len() > 0)
       {
-        if (isWeaponAux(weapon))
-          continue
-        value++
+        foreach(idx, weapon in unit.weapons)
+        {
+          if (isWeaponAux(weapon))
+            continue
+          value++
+        }
       }
-      let valueText = value.tostring()
+      local valueText = value.tostring()
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -595,17 +598,16 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
     addToExportDataBlock = function(blk, unit)
     {
-      let lastPrimaryWeaponName = getLastPrimaryWeapon(unit)
-      let lastPrimaryWeapon = getModificationByName(unit, lastPrimaryWeaponName)
+      local lastPrimaryWeaponName = getLastPrimaryWeapon(unit)
+      local lastPrimaryWeapon = getModificationByName(unit, lastPrimaryWeaponName)
       local massPerSecValue = ::getTblValue("mass_per_sec_diff", lastPrimaryWeapon, 0)
 
       local weaponIndex = -1
-      let weapons = unit.getWeapons()
-      if (weapons.len() > 0)
+      if (unit.weapons.len() > 0)
       {
-        let lastWeapon = getLastWeapon(unit.name)
+        local lastWeapon = getLastWeapon(unit.name)
         weaponIndex = 0
-        foreach(idx, weapon in weapons)
+        foreach(idx, weapon in unit.weapons)
         {
           if (isWeaponAux(weapon))
             continue
@@ -615,10 +617,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       }
       if (weaponIndex != -1)
       {
-        let weapon = weapons[weaponIndex]
+        local weapon = unit.weapons[weaponIndex]
         massPerSecValue += ::getTblValue("mass_per_sec", weapon, 0)
       }
-      let valueText = massPerSecValue == 0? "" : format("%.2f %s", massPerSecValue, ::loc("measureUnits/kgPerSec"))
+      local valueText = massPerSecValue == 0? "" : format("%.2f %s", massPerSecValue, ::loc("measureUnits/kgPerSec"))
       addSingleValue(blk, unit, massPerSecValue, valueText)
     }
   }
@@ -630,7 +632,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "mass", id2 = "mass", prepareTextFunc = function(value){return format("%.1f %s", (value / 1000.0), ::loc("measureUnits/ton"))}}
+      local item = {id = "mass", id2 = "mass", prepareTextFunc = function(value){return format("%.1f %s", (value / 1000.0), ::loc("measureUnits/ton"))}}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -642,8 +644,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-        let horsePowers = params.horsePowers;
-        let horsePowersRPM = params.maxHorsePowersRPM;
+        local horsePowers = params.horsePowers;
+        local horsePowersRPM = params.maxHorsePowersRPM;
 
         blk.value[mode] = horsePowers
         blk.valueText[mode] = ::format("%s %s %d %s",
@@ -664,7 +666,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-        let horsePowersRPM = params.maxHorsePowersRPM.tointeger()
+        local horsePowersRPM = params.maxHorsePowersRPM.tointeger()
 
         blk.value[mode] = horsePowersRPM
         blk.valueText[mode] = horsePowersRPM.tostring()
@@ -683,7 +685,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
+      local item = {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -695,7 +697,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "maxInclination", id2 = "maxInclination", prepareTextFunc = function(value){return format("%d%s", (value*180.0/PI).tointeger(), ::loc("measureUnits/deg"))}}
+      local item = {id = "maxInclination", id2 = "maxInclination", prepareTextFunc = function(value){return format("%d%s", (value*180.0/PI).tointeger(), ::loc("measureUnits/deg"))}}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -707,7 +709,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportDataBlock = function(blk, unit)
     {
-      let item = {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), ::loc("measureUnits/deg_per_sec"))}}
+      local item = {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), ::loc("measureUnits/deg_per_sec"))}}
       addToBlkFromParams(blk, unit, item)
     }
   }
@@ -719,7 +721,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let angles = params.angleVerticalGuidance;
+      local angles = params.angleVerticalGuidance;
       blk.value[mode] = angles[0].tointeger()
       blk.valueText[mode] = format("%d%s", angles[0].tointeger(), ::loc("measureUnits/deg"))
     }
@@ -736,7 +738,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let angles = params.angleVerticalGuidance;
+      local angles = params.angleVerticalGuidance;
       blk.value[mode] = angles[1].tointeger()
       blk.valueText[mode] = format("%d%s", angles[1].tointeger(), ::loc("measureUnits/deg"))
     }
@@ -753,7 +755,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessHull;
+      local thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[0].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[0].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -770,7 +772,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessHull;
+      local thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[1].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[1].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -787,7 +789,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessHull;
+      local thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[2].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[2].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -804,7 +806,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessTurret;
+      local thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[0].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[0].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -821,7 +823,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessTurret;
+      local thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[1].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[1].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -838,7 +840,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      let thickness = params.armorThicknessTurret;
+      local thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[2].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[2].tointeger(), ::loc("measureUnits/mm"))
     }
@@ -860,10 +862,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if(blk?.hide ?? false)
         return
-      let armorPiercing = params.armorPiercing;
+      local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
       {
-        let val = stdMath.round(armorPiercing[0]).tointeger()
+        local val = stdMath.round(armorPiercing[0]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, ::loc("measureUnits/mm"))
       }
@@ -890,10 +892,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if(blk?.hide ?? false)
         return
-      let armorPiercing = params.armorPiercing;
+      local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
       {
-        let val = stdMath.round(armorPiercing[1]).tointeger()
+        local val = stdMath.round(armorPiercing[1]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, ::loc("measureUnits/mm"))
       }
@@ -921,10 +923,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if(blk?.hide ?? false)
         return
-      let armorPiercing = params.armorPiercing;
+      local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
       {
-        let val = stdMath.round(armorPiercing[2]).tointeger()
+        local val = stdMath.round(armorPiercing[2]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, ::loc("measureUnits/mm"))
       }
@@ -948,10 +950,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if(blk?.hide ?? false)
         return
-      let shotFreq = params.shotFreq;
+      local shotFreq = params.shotFreq;
       if(shotFreq > 0)
       {
-        let perMinute = stdMath.roundToDigits(shotFreq * 60, 3)
+        local perMinute = stdMath.roundToDigits(shotFreq * 60, 3)
         blk.value[mode] = perMinute
         blk.valueText[mode] = format("%s %s", perMinute.tostring(), ::loc("measureUnits/shotPerMinute"))
       }
@@ -979,7 +981,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     {
       if(blk?.hide ?? false)
         return
-      let reloadTime = params.reloadTime;
+      local reloadTime = params.reloadTime;
       if(reloadTime > 0)
       {
         blk.value[mode] = reloadTime
@@ -1004,13 +1006,16 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit)
     {
       local value = 0
-      foreach(idx, weapon in unit.getWeapons())
+      if (unit.weapons.len() > 0)
       {
-        if (isWeaponAux(weapon))
-          continue
-        value++
+        foreach(idx, weapon in unit.weapons)
+        {
+          if (isWeaponAux(weapon))
+            continue
+          value++
+        }
       }
-      let valueText = value.tostring()
+      local valueText = value.tostring()
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -1030,7 +1035,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       }
       else
       {
-        let visibilityFactor = params.visibilityFactor
+        local visibilityFactor = params.visibilityFactor
         blk.value[mode] = visibilityFactor
         blk.valueText[mode] = format("%d %%", visibilityFactor)
       }
@@ -1049,7 +1054,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let value = ::get_full_unit_blk(unit.name)?.ShipPhys?.mass?.TakeOff
+      local value = ::get_full_unit_blk(unit.name)?.ShipPhys?.mass?.TakeOff
       local valueText = ""
       if (value != null)
       {
@@ -1071,10 +1076,10 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let value = ::get_unittags_blk()?[unit.name].Shop.maxSpeed ?? 0
+      local value = ::get_unittags_blk()?[unit.name].Shop.maxSpeed ?? 0
       if(value > 0)
       {
-        let valueText = ::g_measure_type.SPEED.getMeasureUnitsText(value)
+        local valueText = ::g_measure_type.SPEED.getMeasureUnitsText(value)
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1091,12 +1096,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if(armorThicknessCitadel != null)
       {
-        let value = stdMath.round(armorThicknessCitadel.x).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessCitadel.x).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1113,12 +1118,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if(armorThicknessCitadel != null)
       {
-        let value = stdMath.round(armorThicknessCitadel.y).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessCitadel.y).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1135,12 +1140,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if(armorThicknessCitadel != null)
       {
-        let value = stdMath.round(armorThicknessCitadel.z).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessCitadel.z).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1157,12 +1162,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if(armorThicknessMainFireTower != null)
       {
-        let value = stdMath.round(armorThicknessMainFireTower.x).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessMainFireTower.x).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1179,12 +1184,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if(armorThicknessMainFireTower != null)
       {
-        let value = stdMath.round(armorThicknessMainFireTower.y).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessMainFireTower.y).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1201,12 +1206,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if(armorThicknessMainFireTower != null)
       {
-        let value = stdMath.round(armorThicknessMainFireTower.z).tointeger()
-        let valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
+        local value = stdMath.round(armorThicknessMainFireTower.z).tointeger()
+        local valueText =  format("%d %s", value, ::loc("measureUnits/mm"))
         addSingleValue(blk, unit, value, valueText)
       }
       else
@@ -1223,8 +1228,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let value = (::get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
-      let valueText = getShipMaterialTexts(unit.name)?.hullValue ?? ""
+      local value = (::get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
+      local valueText = getShipMaterialTexts(unit.name)?.hullValue ?? ""
       if (valueText != "")
         addSingleValue(blk, unit, value, valueText)
       else
@@ -1239,8 +1244,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
-      let value = (::get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()
-      let valueText = getShipMaterialTexts(unit.name)?.superstructureValue ?? ""
+      local value = (::get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()
+      local valueText = getShipMaterialTexts(unit.name)?.superstructureValue ?? ""
       if (valueText != "")
         addSingleValue(blk, unit, value, valueText)
       else

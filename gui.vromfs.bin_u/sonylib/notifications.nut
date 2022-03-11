@@ -1,22 +1,22 @@
-let stubFunc = @(...) null
-let {
+local stubFunc = @(...) null
+local {
   createPushContext = stubFunc,
   deletePushContext = stubFunc,
   subscribeWithContext = stubFunc,
   unsubscribeFromContext = stubFunc,
   setNotificationDispatcher = stubFunc
 } = require_optional("sony.webapi")
-let {Watched} = require("frp")
-let activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
+local {Watched} = require("frp")
+local activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
 
 local wasDispatcherSet = false;
-let function dispatchPushNotification(notification) {
-  let pushContextId = notification?.key
+local function dispatchPushNotification(notification) {
+  local pushContextId = notification?.key
   if (pushContextId != null)
     activeSubscriptions.value?[pushContextId](notification)
 }
 
-let function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
+local function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
   if (!wasDispatcherSet) {
     setNotificationDispatcher(dispatchPushNotification)
     wasDispatcherSet = true
@@ -28,7 +28,7 @@ let function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
   activeSubscriptions.mutate(@(v) v[pushContextId] <- notify)
 }
 
-let function unsubscribe(pushContextId) {
+local function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
   activeSubscriptions.mutate(@(v) delete v[pushContextId])
 }

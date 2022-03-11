@@ -1,18 +1,18 @@
-let json = require("json")
-let http = require("dagor.http")
-let { getPlayerToken } = require("auth_wt")
+local json = require("json")
+local http = require("dagor.http")
+local { getPlayerToken } = ::require_native("auth_wt")
 
-let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
+local ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
 
-let function createGuidsRequestParams(guids) {
+local function createGuidsRequestParams(guids) {
   local res = guids.reduce(@(res, guid) $"{res}guids[]={guid}&", "")
-  let payment = ::steam_is_running() ? "&payment=steam" : ""
-  let token = getPlayerToken() != "" ? $"&token={getPlayerToken()}" : ""
+  local payment = ::steam_is_running() ? "&payment=steam" : ""
+  local token = getPlayerToken() != "" ? $"&token={getPlayerToken()}" : ""
   res = $"{res}special=1{payment}{token}"
   return res
 }
 
-let function requestMultipleItems(guids, onSuccess, onFailure = null) {
+local function requestMultipleItems(guids, onSuccess, onFailure = null) {
   http.request({
       method = "POST"
       url = ONLINE_STORE_API_URL
@@ -24,7 +24,7 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
         }
 
         try {
-          let body = response.body.as_string()
+          local body = response.body.tostring()
           ::dagor.debug($"shopItemInfo: requested [{",".join(guids)}], got\n{body}")
 
           if (body.len() > 6 && body.slice(0, 6) == "<html>") { //error 404 and other html pages
@@ -33,7 +33,7 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
             return
           }
 
-          let data = json.parse(body)
+          local data = json.parse(body)
           if (data?.status == "OK")
             onSuccess(data)
           else

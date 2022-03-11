@@ -1,34 +1,34 @@
-let fileCheck = require("scripts/clientState/fileCheck.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let { getCurLoadingBgData, removeLoadingBgFromLists } = require("scripts/loading/loadingBgData.nut")
-let { isLoadingScreenBanned } = require("scripts/options/preloaderOptions.nut")
+local fileCheck = require("scripts/clientState/fileCheck.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local { getCurLoadingBgData, removeLoadingBgFromLists } = require("scripts/loading/loadingBgData.nut")
+local { isLoadingScreenBanned } = require("scripts/options/preloaderOptions.nut")
 
 const MODIFY_UNKNOWN = -1
 const MODIFY_NO_FILE = -2
 
 local lastBg = ""
 
-let getFullFileName = @(name) name.split(".").len() > 1 ? name : $"config/loadingbg/{name}.blk"
-let getLastBgFileName = @() lastBg.len() ? getFullFileName(lastBg) : ""
+local getFullFileName = @(name) name.split(".").len() > 1 ? name : $"config/loadingbg/{name}.blk"
+local getLastBgFileName = @() lastBg.len() ? getFullFileName(lastBg) : ""
 
 local isDebugMode = false
 local debugLastModified = MODIFY_UNKNOWN
 local loadErrorText = null
 
-let function invalidateCache() {
+local function invalidateCache() {
   lastBg = ""
 }
 
-let function loadBgBlk(name) {
+local function loadBgBlk(name) {
   loadErrorText = null
   local res = ::DataBlock()
-  let fullName = getFullFileName(name)
-  let isLoaded = res.load(fullName)
+  local fullName = getFullFileName(name)
+  local isLoaded = res.load(fullName)
   if (isLoaded)
     return res
 
-  let errText = ::dd_file_exist(fullName) ? "errors in file" : "not found file"
+  local errText = ::dd_file_exist(fullName) ? "errors in file" : "not found file"
   loadErrorText = "Error: cant load login bg blk {0}: {1}".subst(::colorize("userlogColoredText", fullName), errText)
 
   if (isDebugMode)
@@ -59,7 +59,7 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
       if (::has_feature("LoadingBackgroundFilter")
         && ::g_login.isProfileReceived() && ::havePremium())
       {
-        let filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
+        local filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
         if (filteredCurBgList.len() > 0)
           curBgList = filteredCurBgList
       }
@@ -90,18 +90,18 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
     bgBlk = loadBgBlk(curBgData.reserveBg) || bgBlk
 
   if (isDebugMode && loadErrorText) {
-    let markup = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'; text:t='{0}' }".subst(loadErrorText)
+    local markup = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'; text:t='{0}' }".subst(loadErrorText)
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), this)
   } else
     obj.getScene().replaceContentFromDataBlock(obj, bgBlk, this)
   debugLastModified = MODIFY_UNKNOWN
 }
 
-let function enableDebugUpdate() {
+local function enableDebugUpdate() {
   SecondsUpdater(
     ::get_cur_gui_scene()["bg_picture_container"],
     function(tObj, params) {
-      let fileName = getLastBgFileName()
+      local fileName = getLastBgFileName()
       if (!fileName.len())
         return
 
@@ -120,7 +120,7 @@ let function enableDebugUpdate() {
 }
 
 //blkFilePath == null - swith debug mode off.
-let function debugLoad(blkFilePath = "") {
+local function debugLoad(blkFilePath = "") {
   isDebugMode = blkFilePath != null
   if (!isDebugMode)
     return

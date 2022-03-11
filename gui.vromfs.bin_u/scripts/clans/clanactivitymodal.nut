@@ -1,13 +1,13 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let platformModule = require("scripts/clientState/platform.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local time = require("scripts/time.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 
 ::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null)
 {
   if (!uid || !clanData)
     return
 
-  let memberData = u.search(clanData.members, @(member) member.uid == uid)
+  local memberData = u.search(clanData.members, @(member) member.uid == uid)
   if (!memberData)
     return
 
@@ -18,27 +18,27 @@ let platformModule = require("scripts/clientState/platform.nut")
   })
 }
 
-::gui_handlers.clanActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanActivityModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType           = handlerType.MODAL
-  sceneBlkName      = "%gui/clans/clanActivityModal.blk"
+  sceneBlkName      = "gui/clans/clanActivityModal.blk"
   clanData          = null
   memberData        = null
   hasClanExperience = null
 
   function initScreen()
   {
-    let maxActivityPerDay = clanData.rewardPeriodDays > 0
+    local maxActivityPerDay = clanData.rewardPeriodDays > 0
       ? ::round(1.0 * clanData.maxActivityPerPeriod / clanData.rewardPeriodDays)
       : 0
-    let isShowPeriodActivity = ::has_feature("ClanVehicles")
+    local isShowPeriodActivity = ::has_feature("ClanVehicles")
     hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == clanData.id
-    let history = isShowPeriodActivity ? memberData.expActivity : memberData.activityHistory
-    let headerTextObj = scene.findObject("clan_activity_header_text")
+    local history = isShowPeriodActivity ? memberData.expActivity : memberData.activityHistory
+    local headerTextObj = scene.findObject("clan_activity_header_text")
     headerTextObj.setValue(::format("%s - %s", ::loc("clan/activity"),
       platformModule.getPlayerName(memberData.nick)))
 
-    let maxActivityToday = [(isShowPeriodActivity ? memberData.curPeriodActivity : memberData.curActivity).tostring()]
+    local maxActivityToday = [(isShowPeriodActivity ? memberData.curPeriodActivity : memberData.curActivity).tostring()]
     if (maxActivityPerDay > 0)
       maxActivityToday.append((isShowPeriodActivity ? clanData.maxActivityPerPeriod : maxActivityPerDay).tostring())
     scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
@@ -50,7 +50,7 @@ let platformModule = require("scripts/clientState/platform.nut")
 
   function fillActivityHistory(history)
   {
-    let historyArr = []
+    local historyArr = []
     foreach (day, data in history)
     {
       historyArr.append({day = day.tointeger(), data = data})
@@ -60,10 +60,10 @@ let platformModule = require("scripts/clientState/platform.nut")
       return right.day - left.day
     })
 
-    let tableHeaderObj = scene.findObject("clan_member_activity_history_table_header");
+    local tableHeaderObj = scene.findObject("clan_member_activity_history_table_header");
     local rowIdx = 1
     local rowBlock = ""
-    let rowHeader = [
+    local rowHeader = [
       {
         id       = "clan_activity_history_col_day",
         text     = ::loc("clan/activity/day"),
@@ -90,26 +90,26 @@ let platformModule = require("scripts/clientState/platform.nut")
 
     guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
 
-    let tableObj = scene.findObject("clan_member_activity_history_table");
+    local tableObj = scene.findObject("clan_member_activity_history_table");
 
     rowBlock = ""
     /*body*/
     foreach(entry in historyArr)
     {
-      let rowParams = [
+      local rowParams = [
         { text = time.buildDateStr(time.daysToSeconds(entry.day)) },
         { text = (::u.isInteger(entry.data) ? entry.data : entry.data?.activity ?? 0).tostring() }
       ]
 
       if (hasClanExperience)
       {
-        let exp = entry.data?.exp ?? 0
+        local exp = entry.data?.exp ?? 0
         local expText = exp.tostring()
-        let boost = (entry.data?.expBoost ?? 0)/100.0
-        let hasBoost = boost > 0
+        local boost = (entry.data?.expBoost ?? 0)/100.0
+        local hasBoost = boost > 0
         if (hasBoost && exp > 0)
         {
-          let baseExp = entry.data?.expRewardBase ?? ::round(exp/(1 + boost))
+          local baseExp = entry.data?.expRewardBase ?? ::round(exp/(1 + boost))
           expText = ::colorize("activeTextColor",baseExp.tostring()
             + ::colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
         }

@@ -1,4 +1,4 @@
-let SquadApplicationsList = class
+local SquadApplicationsList = class
 {
   [PERSISTENT_DATA_PARAMS] = ["applicationsList"]
   popupTextColor = "@chatTextInviteColor"
@@ -18,7 +18,7 @@ let SquadApplicationsList = class
   {
     if (squadId in applicationsList)
       return
-    let squad = createApplication(squadId,leaderId)
+    local squad = createApplication(squadId,leaderId)
     applicationsList[squadId] <- squad
     updateApplication(applicationsList[squadId])
     if (isEventNeed)
@@ -38,7 +38,7 @@ let SquadApplicationsList = class
   function updateApplicationsList(applicationsArr)
   {
     local sid = null
-    let leadersArr = []
+    local leadersArr = []
     local isEventNeed = false
     foreach (squad in applicationsList)
     {
@@ -73,7 +73,7 @@ let SquadApplicationsList = class
 
     if (needPopup)
     {
-      let msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
+      local msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
       ::g_popups.add(null, msg)
     }
     deleteApplication(squadId)
@@ -84,7 +84,7 @@ let SquadApplicationsList = class
     if (applicationsList.len() <= 0)
       return
 
-    let leadersArr = []
+    local leadersArr = []
     foreach (squad in applicationsList)
     {
       leadersArr.append(squad.squadId)
@@ -115,9 +115,9 @@ let SquadApplicationsList = class
   {
     if (application.leaderName.len() == 0)
     {
-      let leaderId = application.leaderId
+      local leaderId = application.leaderId
 
-      let cb = ::Callback(function(r)
+      local cb = ::Callback(function(r)
                             {
                               application.leaderName <- getLeaderName(leaderId)
                             }, this)
@@ -127,7 +127,7 @@ let SquadApplicationsList = class
 
   function getLeaderName(leaderId)
   {
-    let leaderContact = ::getContact(leaderId.tostring())
+    local leaderContact = ::getContact(leaderId.tostring())
     if (!leaderContact)
       return ""
 

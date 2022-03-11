@@ -1,6 +1,6 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let stdMath = require("std/math.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local seenList = require("scripts/seen/seenList.nut")
+local stdMath = require("std/math.nut")
 
 /*
   config = {
@@ -19,10 +19,10 @@ let stdMath = require("std/math.nut")
                                 })
 }
 
-::gui_handlers.ChooseImage <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ChooseImage extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/chooseImage/chooseImage.blk"
+  sceneBlkName = "gui/chooseImage/chooseImage.blk"
 
   config = null
   options = null
@@ -47,10 +47,10 @@ let stdMath = require("std/math.nut")
       return goBack()
 
     options = []
-    let configValue = ("value" in config)? config.value : -1
+    local configValue = ("value" in config)? config.value : -1
     foreach(idx, option in config.options)
     {
-      let isVisible = ::getTblValue("show", option, true)
+      local isVisible = ::getTblValue("show", option, true)
       if (!isVisible)
         continue
 
@@ -73,13 +73,13 @@ let stdMath = require("std/math.nut")
   function initItemsPerPage()
   {
     guiScene.applyPendingChanges(false)
-    let listObj = scene.findObject("images_list")
-    let cfg = ::g_dagui_utils.countSizeInItems(listObj, imageButtonSize, imageButtonSize, imageButtonInterval, imageButtonInterval)
+    local listObj = scene.findObject("images_list")
+    local cfg = ::g_dagui_utils.countSizeInItems(listObj, imageButtonSize, imageButtonSize, imageButtonInterval, imageButtonInterval)
 
     //update size for single page
     if (cfg.itemsCountX * cfg.itemsCountY > options.len())
     {
-      let total = ::max(options.len(), minAmountButtons)
+      local total = ::max(options.len(), minAmountButtons)
       local columns = ::min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
       local rows = ::ceil(total.tofloat() / columns).tointeger()
       if (rows > cfg.itemsCountY)
@@ -97,19 +97,19 @@ let stdMath = require("std/math.nut")
 
   function fillPage()
   {
-    let view = {
+    local view = {
       avatars = []
     }
 
-    let haveCustomTooltip = getTooltipObjFunc() != null
-    let start = currentPage * itemsPerPage
-    let end = ::min((currentPage + 1) * itemsPerPage, options.len()) - 1
-    let selIdx = valueInited ? ::min(contentObj.getValue(), end - start)
+    local haveCustomTooltip = getTooltipObjFunc() != null
+    local start = currentPage * itemsPerPage
+    local end = ::min((currentPage + 1) * itemsPerPage, options.len()) - 1
+    local selIdx = valueInited ? ::min(contentObj.getValue(), end - start)
       : ::clamp(value - start, 0, end - start)
     for (local i = start; i <= end; i++)
     {
-      let item = options[i]
-      let avatar = {
+      local item = options[i]
+      local avatar = {
         id          = i
         avatarImage = item.image
         enabled     = item.enabled
@@ -121,7 +121,7 @@ let stdMath = require("std/math.nut")
     }
 
     isPageFill = true
-    let blk = ::handyman.renderCached("%gui/avatars", view)
+    local blk = ::handyman.renderCached("gui/avatars", view)
     guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
     updatePaginator()
 
@@ -134,12 +134,12 @@ let stdMath = require("std/math.nut")
 
   function updatePaginator()
   {
-    let paginatorObj = scene.findObject("paginator_place")
+    local paginatorObj = scene.findObject("paginator_place")
     ::generatePaginator(paginatorObj, this, currentPage, (options.len() - 1) / itemsPerPage)
 
-    let prevUnseen = currentPage ? getSeenConfig(0, currentPage * itemsPerPage - 1) : null
-    let nextFirstIdx = (currentPage + 1) * itemsPerPage
-    let nextUnseen = nextFirstIdx >= options.len() ? null
+    local prevUnseen = currentPage ? getSeenConfig(0, currentPage * itemsPerPage - 1) : null
+    local nextFirstIdx = (currentPage + 1) * itemsPerPage
+    local nextUnseen = nextFirstIdx >= options.len() ? null
       : getSeenConfig(nextFirstIdx, options.len() - 1)
     ::paginator_set_unseen(paginatorObj,
       prevUnseen && bhvUnseen.makeConfigStr(prevUnseen.listId, prevUnseen.entities),
@@ -171,14 +171,14 @@ let stdMath = require("std/math.nut")
       return
 
     updateButtons()
-    let item = options?[getSelIconIdx()]
+    local item = options?[getSelIconIdx()]
     if (item?.seenListId)
       seenList.get(item.seenListId).markSeen(item?.seenEntity)
   }
 
   function onChoose()
   {
-    let selIdx = getSelIconIdx()
+    local selIdx = getSelIconIdx()
     if (selIdx >= 0)
       chooseImage(getSelIconIdx())
   }
@@ -192,7 +192,7 @@ let stdMath = require("std/math.nut")
 
   function updateButtons()
   {
-    let option = ::getTblValue(getSelIconIdx(), options)
+    local option = ::getTblValue(getSelIconIdx(), options)
     showSceneBtn("btn_select", ::getTblValue("enabled", option, false))
   }
 
@@ -214,12 +214,12 @@ let stdMath = require("std/math.nut")
 
   function onImageTooltipOpen(obj)
   {
-    let id = getTooltipObjId(obj)
-    let func = getTooltipObjFunc()
+    local id = getTooltipObjId(obj)
+    local func = getTooltipObjFunc()
     if (!id || !func)
       return
 
-    let res = func(obj, id.tointeger())
+    local res = func(obj, id.tointeger())
     if (!res)
       obj["class"] = "empty"
   }
@@ -232,13 +232,13 @@ let stdMath = require("std/math.nut")
 
   function getSeenConfig(start, end)
   {
-    let res = {
+    local res = {
       listId = null
       entities = []
     }
     for(local i = end; i >= start; i--)
     {
-      let item = options[i]
+      local item = options[i]
       if (!item?.seenListId || !item?.seenEntity)
         continue
 
@@ -250,7 +250,7 @@ let stdMath = require("std/math.nut")
 
   function markCurPageSeen()
   {
-    let seenConfig = getSeenConfig(currentPage * itemsPerPage,
+    local seenConfig = getSeenConfig(currentPage * itemsPerPage,
       ::min((currentPage + 1) * itemsPerPage, options.len()) - 1)
     if (seenConfig)
       seenList.get(seenConfig.listId).markSeen(seenConfig.entities)

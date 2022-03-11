@@ -1,8 +1,8 @@
-let squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let time = require("scripts/time.nut")
+local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local time = require("scripts/time.nut")
 
-let PROGRESS_PARAMS = {
+local PROGRESS_PARAMS = {
   type = "old"
   rotation = 0
   markerPos = 100
@@ -13,7 +13,7 @@ let PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-::gui_handlers.clanAverageActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanAverageActivityModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   clanData = null
@@ -30,27 +30,27 @@ let PROGRESS_PARAMS = {
       clan_activity_header_text = ::loc("clan/activity")
       clan_activity_description = ::loc("clan/activity/progress/desc_no_progress")
     }
-    let maxMemberActivity = max(clanData.maxActivityPerPeriod, 1)
+    local maxMemberActivity = max(clanData.maxActivityPerPeriod, 1)
     if (clanData.maxClanActivity > 0)
     {
-      let maxActivity = maxMemberActivity * clanData.members.len()
-      let limitClanActivity = min(maxActivity, clanData.maxClanActivity)
-      let myActivity = ::u.search(clanData.members,
+      local maxActivity = maxMemberActivity * clanData.members.len()
+      local limitClanActivity = min(maxActivity, clanData.maxClanActivity)
+      local myActivity = ::u.search(clanData.members,
         @(member) member.uid == ::my_user_id_str)?.curPeriodActivity ?? 0
-      let clanActivity = getClanActivity()
+      local clanActivity = getClanActivity()
 
       if (clanActivity > 0)
       {
-        let percentMemberActivity = min(100.0 * myActivity / maxMemberActivity, 100)
-        let percentClanActivity = min(100.0 * clanActivity / maxActivity, 100)
-        let myExp = min(min(1, 1.0 * percentMemberActivity/percentClanActivity) * clanActivity,
+        local percentMemberActivity = min(100.0 * myActivity / maxMemberActivity, 100)
+        local percentClanActivity = min(100.0 * clanActivity / maxActivity, 100)
+        local myExp = min(min(1, 1.0 * percentMemberActivity/percentClanActivity) * clanActivity,
           clanData.maxClanActivity)
-        let roundMyExp = ::round(myExp)
-        let limit = min(100.0 * limitClanActivity / maxActivity, 100)
-        let isAllVehiclesResearched = squadronUnitAction.isAllVehiclesResearched()
-        let expBoost = ::clan_get_exp_boost()/100.0
-        let hasBoost = expBoost > 0
-        let descrArray = clanData.nextRewardDayId != null
+        local roundMyExp = ::round(myExp)
+        local limit = min(100.0 * limitClanActivity / maxActivity, 100)
+        local isAllVehiclesResearched = squadronUnitAction.isAllVehiclesResearched()
+        local expBoost = ::clan_get_exp_boost()/100.0
+        local hasBoost = expBoost > 0
+        local descrArray = clanData.nextRewardDayId != null
           ? [::loc("clan/activity_period_end", {date = ::colorize("activeTextColor",
               time.buildDateTimeStr(clanData.nextRewardDayId, false, false))}) + "\n"]
           : []
@@ -62,18 +62,18 @@ let PROGRESS_PARAMS = {
           ? ::loc("clan/activity/progress/desc_all_researched")
           : ::loc("clan/activity/progress/desc"))
 
-        let markerPosMyExp = min(100 * myExp / limitClanActivity, 100)
+        local markerPosMyExp = min(100 * myExp / limitClanActivity, 100)
 
-        let pxCountToEdgeWnd = ::to_pixels((1-markerPosMyExp/100.0)
+        local pxCountToEdgeWnd = ::to_pixels((1-markerPosMyExp/100.0)
           + "*0.4@scrn_tgt + 1@tablePad + 5@blockInterval")
-        let myExpTextSize = daguiFonts.getStringWidthPx(::getShortTextFromNum(roundMyExp)
+        local myExpTextSize = daguiFonts.getStringWidthPx(::getShortTextFromNum(roundMyExp)
             + (hasBoost ? (" + " + ::getShortTextFromNum((roundMyExp*expBoost).tointeger())) : ""),
           "fontNormal", guiScene)
-        let offsetMyExpText = ::min(pxCountToEdgeWnd - myExpTextSize/2, 0)
-        let myExpShortText= ::colorize("activeTextColor",
+        local offsetMyExpText = ::min(pxCountToEdgeWnd - myExpTextSize/2, 0)
+        local myExpShortText= ::colorize("activeTextColor",
           ::getShortTextFromNum(roundMyExp) + (hasBoost ? (" + " + ::colorize("goodTextColor",
           ::getShortTextFromNum((roundMyExp*expBoost).tointeger()))) : ""))
-        let myExpFullText= ::colorize("activeTextColor",
+        local myExpFullText= ::colorize("activeTextColor",
           roundMyExp + (hasBoost ? (" + " + ::colorize("goodTextColor",
             ::round((roundMyExp*expBoost).tointeger()))) : ""))
 
@@ -144,7 +144,7 @@ let PROGRESS_PARAMS = {
       }
     }
 
-    let data = ::handyman.renderCached("%gui/clans/clanAverageActivityModal", view)
+    local data = ::handyman.renderCached("gui/clans/clanAverageActivityModal", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
   }
 

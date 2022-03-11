@@ -1,16 +1,16 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let { getPlayerName,
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local time = require("scripts/time.nut")
+local { getPlayerName,
         isPlatformXboxOne,
         isPlatformSony } = require("scripts/clientState/platform.nut")
-let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
+local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {
-  let containerObj = parent_scene.findObject("item_desc")
+  local containerObj = parent_scene.findObject("item_desc")
   if (!::checkObj(containerObj))
     return null
-  let params = {
+  local params = {
     scene = containerObj
     selectedEvent = event
     needEventHeader = needEventHeader
@@ -19,10 +19,10 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
   return handler
 }
 
-::gui_handlers.EventDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "%gui/empty.blk"
+  sceneBlkName = "gui/empty.blk"
 
   selectedEvent = null
   room = null
@@ -37,7 +37,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
   function initScreen()
   {
     playersInTable = []
-    let blk = ::handyman.renderCached("%gui/events/eventDescription", {})
+    local blk = ::handyman.renderCached("gui/events/eventDescription", {})
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
     updateContent()
   }
@@ -78,80 +78,80 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (needEventHeader)
       updateContentHeader()
 
-    let roomMGM = ::events.getMGameMode(selectedEvent, room)
+    local roomMGM = ::events.getMGameMode(selectedEvent, room)
 
-    let eventDescTextObj = getObject("event_desc_text")
+    local eventDescTextObj = getObject("event_desc_text")
     if (eventDescTextObj != null)
       eventDescTextObj.setValue(::events.getEventDescriptionText(selectedEvent, room))
 
     // Event difficulty
-    let eventDifficultyObj = getObject("event_difficulty")
+    local eventDifficultyObj = getObject("event_difficulty")
     if (eventDifficultyObj != null)
     {
-      let difficultyText = ::events.isDifficultyCustom(selectedEvent)
+      local difficultyText = ::events.isDifficultyCustom(selectedEvent)
         ? ::loc("options/custom")
         : ::events.getDifficultyText(selectedEvent.name)
-      let respawnText = ::events.getRespawnsText(selectedEvent)
+      local respawnText = ::events.getRespawnsText(selectedEvent)
       eventDifficultyObj.text = ::format(" %s %s", difficultyText, respawnText)
     }
 
     // Event players range
-    let eventPlayersRangeObj = getObject("event_players_range")
+    local eventPlayersRangeObj = getObject("event_players_range")
     if (eventPlayersRangeObj != null)
     {
-      let rangeData = ::events.getPlayersRangeTextData(roomMGM)
+      local rangeData = ::events.getPlayersRangeTextData(roomMGM)
       eventPlayersRangeObj.show(rangeData.isValid)
       if (rangeData.isValid)
       {
-        let labelObj = getObject("event_players_range_label")
+        local labelObj = getObject("event_players_range_label")
         if (labelObj != null)
           labelObj.setValue(rangeData.label)
-        let valueObj = getObject("event_players_range_text")
+        local valueObj = getObject("event_players_range_text")
         if (valueObj != null)
           valueObj.setValue(rangeData.value)
       }
     }
 
     // Clan info
-    let clanOnlyInfoObj = getObject("clan_event")
+    local clanOnlyInfoObj = getObject("clan_event")
     if(clanOnlyInfoObj != null)
       clanOnlyInfoObj.show(::events.isEventForClan(selectedEvent))
 
     // Allow switch clan
-    let allowSwitchClanObj = getObject("allow_switch_clan")
+    local allowSwitchClanObj = getObject("allow_switch_clan")
     if (allowSwitchClanObj != null)
     {
-      let eventType = ::getTblValue("type", selectedEvent, 0)
-      let clanTournamentType = EVENT_TYPE.TOURNAMENT | EVENT_TYPE.CLAN
-      let showMessage = (eventType & clanTournamentType) == clanTournamentType
+      local eventType = ::getTblValue("type", selectedEvent, 0)
+      local clanTournamentType = EVENT_TYPE.TOURNAMENT | EVENT_TYPE.CLAN
+      local showMessage = (eventType & clanTournamentType) == clanTournamentType
       allowSwitchClanObj.show(showMessage)
       if (showMessage)
       {
-        let locId = "events/allowSwitchClan/" + ::events.isEventAllowSwitchClan(selectedEvent).tostring()
+        local locId = "events/allowSwitchClan/" + ::events.isEventAllowSwitchClan(selectedEvent).tostring()
         allowSwitchClanObj.text = ::loc(locId)
       }
     }
 
     // Timer
-    let timerObj = getObject("event_time")
+    local timerObj = getObject("event_time")
     if (timerObj != null)
     {
         SecondsUpdater(timerObj, ::Callback(function(obj, params)
         {
-          let text = getDescriptionTimeText()
+          local text = getDescriptionTimeText()
           obj.setValue(text)
           return text.len() == 0
         }, this))
     }
 
-    let timeLimitObj = showSceneBtn("event_time_limit", !!room)
+    local timeLimitObj = showSceneBtn("event_time_limit", !!room)
     if (timeLimitObj && room)
     {
-      let timeLimit = ::SessionLobby.getTimeLimit(room)
+      local timeLimit = ::SessionLobby.getTimeLimit(room)
       local timeText = ""
       if (timeLimit > 0)
       {
-        let option = ::get_option(::USEROPT_TIME_LIMIT)
+        local option = ::get_option(::USEROPT_TIME_LIMIT)
         timeText = option.getTitle() + ::loc("ui/colon") + option.getValueLocText(timeLimit)
       }
       timeLimitObj.setValue(timeText)
@@ -161,41 +161,41 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
     // Fill vehicle lists
     local teamObj = null
-    let sides = ::events.getSidesList(roomMGM)
+    local sides = ::events.getSidesList(roomMGM)
     foreach(team in ::events.getSidesList())
     {
-      let teamName = ::events.getTeamName(team)
+      local teamName = ::events.getTeamName(team)
       teamObj = getObject(teamName)
       if (teamObj == null)
         continue
 
-      let show = ::isInArray(team, sides)
+      local show = ::isInArray(team, sides)
       teamObj.show(show)
       if (!show)
         continue
 
-      let titleObj = teamObj.findObject("team_title")
+      local titleObj = teamObj.findObject("team_title")
       if(::checkObj(titleObj))
       {
-        let isEventFreeForAll = ::events.isEventFreeForAll(roomMGM)
+        local isEventFreeForAll = ::events.isEventFreeForAll(roomMGM)
         titleObj.show( ! ::events.isEventSymmetricTeams(roomMGM) || isEventFreeForAll)
         titleObj.setValue(isEventFreeForAll ? ::loc("events/ffa")
           : ::g_team.getTeamByCode(team).getName())
       }
 
-      let teamData = ::events.getTeamDataWithRoom(roomMGM, team, room)
-      let playersCountObj = getObject("players_count", teamObj)
+      local teamData = ::events.getTeamDataWithRoom(roomMGM, team, room)
+      local playersCountObj = getObject("players_count", teamObj)
       if (playersCountObj)
         playersCountObj.setValue(sides.len() > 1 ? getTeamPlayersCountText(team, teamData, roomMGM) : "")
 
       ::fillCountriesList(getObject("countries", teamObj), ::events.getCountries(teamData))
-      let unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
-      let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+      local unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
+      local roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
       ::events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
 
     // Team separator
-    let separatorObj = getObject("teams_separator")
+    local separatorObj = getObject("teams_separator")
     if (separatorObj != null)
       separatorObj.show(sides.len() > 1)
 
@@ -214,16 +214,16 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
       return ""
     }
 
-    let otherTeam = ::g_team.getTeamByCode(team).opponentTeamCode
-    let countTblReady = ::SessionLobby.getMembersCountByTeams(currentFullRoomData, true)
+    local otherTeam = ::g_team.getTeamByCode(team).opponentTeamCode
+    local countTblReady = ::SessionLobby.getMembersCountByTeams(currentFullRoomData, true)
     local countText = countTblReady[team]
     if (countTblReady[team] >= ::events.getTeamSize(teamData)
         || countTblReady[team] - ::events.getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
       countText = ::colorize("warningTextColor", countText)
 
-    let countTbl = currentFullRoomData && ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
+    local countTbl = currentFullRoomData && ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
     local locId = "multiplayer/teamPlayers"
-    let locParams = {
+    local locParams = {
       players = countText
       maxPlayers = ::events.getMaxTeamSize(roomMGM)
       unready = ::max(0, ::getTblValue(team, countTbl, 0) - countTblReady[team])
@@ -236,7 +236,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
   function updateContentHeader()
   {
     // Difficulty image
-    let difficultyImgObj = getObject("difficulty_img")
+    local difficultyImgObj = getObject("difficulty_img")
     if (difficultyImgObj)
     {
       difficultyImgObj["background-image"] = ::events.getDifficultyImg(selectedEvent.name)
@@ -244,7 +244,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     }
 
     // Event name
-    let eventNameObj = getObject("event_name")
+    local eventNameObj = getObject("event_name")
     if (eventNameObj)
       eventNameObj.setValue(getHeaderText())
   }
@@ -255,14 +255,14 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
       return ::events.getEventNameText(selectedEvent) + " " + ::events.getRespawnsText(selectedEvent)
 
     local res = ""
-    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
-    let tierText = ::events.getTierTextByRules(reqUnits)
+    local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+    local tierText = ::events.getTierTextByRules(reqUnits)
     if (tierText.len())
       res += tierText + " "
 
     res += ::SessionLobby.getMissionNameLoc(room)
 
-    let teamsCnt = ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
+    local teamsCnt = ::SessionLobby.getMembersCountByTeams(currentFullRoomData)
     local teamsCntText = ""
     if (::events.isEventSymmetricTeams(::events.getMGameMode(selectedEvent, room)))
       teamsCntText = ::loc("events/players_count") + ::loc("ui/colon") + (teamsCnt[Team.A] + teamsCnt[Team.B])
@@ -277,7 +277,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (selectedEvent == null)
       return
 
-    let costDescObj = getObject("cost_desc")
+    local costDescObj = getObject("cost_desc")
     if (costDescObj == null)
       return
 
@@ -285,16 +285,18 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     text += (text.len() ? "\n" : "") + ::events.getEventBattleCostText(selectedEvent, "activeTextColor")
     costDescObj.setValue(text)
 
-    let ticketBoughtImgObj = getObject("bought_ticket_img")
+    local ticketBoughtImgObj = getObject("bought_ticket_img")
     if (ticketBoughtImgObj != null)
     {
-      let showImg = ::events.hasEventTicket(selectedEvent)
+      local showImg = ::events.hasEventTicket(selectedEvent)
         && ::events.getEventActiveTicket(selectedEvent).getCost() > ::zero_money
       ticketBoughtImgObj.show(showImg)
     }
 
+    local hasAchievementGroup = (::events.getEventAchievementGroup(selectedEvent) != "")
     showSceneBtn("rewards_list_btn",
-      ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent))
+      ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent)
+        || hasAchievementGroup)
   }
 
   function loadMap()
@@ -311,10 +313,10 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     local hasMission = misName != ""
     if (hasMission)
     {
-      let misData = ::get_meta_mission_info_by_name(misName)
+      local misData = ::get_meta_mission_info_by_name(misName)
       if (misData)
       {
-        let m = ::DataBlock()
+        local m = ::DataBlock()
         m.load(misData.getStr("mis_file",""))
         ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), m)
       }
@@ -326,7 +328,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     }
     showSceneBtn("tactical_map_single", hasMission)
 
-    let multipleMapObj = showSceneBtn("multiple_mission", !hasMission)
+    local multipleMapObj = showSceneBtn("multiple_mission", !hasMission)
     if (!hasMission && multipleMapObj)
       multipleMapObj["background-image"] = "#ui/random_mission_map"
   }
@@ -336,11 +338,11 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (!room)
       return ::events.getEventTimeText(::events.getMGameMode(selectedEvent, room))
 
-    let startTime = ::SessionLobby.getRoomSessionStartTime(room)
+    local startTime = ::SessionLobby.getRoomSessionStartTime(room)
     if (startTime <= 0)
       return ""
 
-    let secToStart = startTime - ::get_matching_server_time()
+    local secToStart = startTime - ::get_matching_server_time()
     if (secToStart <= 0)
       return ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
     return ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
@@ -354,7 +356,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
   function fetchLbData()
   {
-    let isLbAvailable = isLeaderboardsAvailable()
+    local isLbAvailable = isLeaderboardsAvailable()
     hideEventLeaderboard(isLbAvailable)
     if (!isLbAvailable)
     {
@@ -380,18 +382,18 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (!::checkObj(scene))
       return
 
-    let lbWrapObj = getObject("lb_wrap")
-    let lbWaitBox = getObject("msgWaitAnimation")
+    local lbWrapObj = getObject("lb_wrap")
+    local lbWaitBox = getObject("msgWaitAnimation")
     if (lbWrapObj == null || lbWaitBox == null)
       return
 
-    let btnLb = getObject("leaderboards_btn", lbWrapObj)
-    let lbTable = getObject("lb_table", lbWrapObj)
+    local btnLb = getObject("leaderboards_btn", lbWrapObj)
+    local lbTable = getObject("lb_table", lbWrapObj)
     if (btnLb == null || lbTable == null)
       return
 
-    let isLbAvailable = isLeaderboardsAvailable()
-    let lbRows = lb_data?.rows ?? []
+    local isLbAvailable = isLeaderboardsAvailable()
+    local lbRows = lb_data?.rows ?? []
     playersInTable = []
     guiScene.replaceContentFromText(lbTable, "", 0, this)
     lbWaitBox.show(!lb_data && isLbAvailable)
@@ -399,10 +401,10 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (::events.isEventForClanGlobalLb(selectedEvent) || newSelfRowRequest == null)
       return
 
-    let field = newSelfRowRequest.lbField
-    let lbCategory = ::events.getLbCategoryByField(field)
-    let showTable = checkLbTableVisible(lbRows, lbCategory)
-    let showButton = lbRows.len() > 0 && isLbAvailable
+    local field = newSelfRowRequest.lbField
+    local lbCategory = ::events.getLbCategoryByField(field)
+    local showTable = checkLbTableVisible(lbRows, lbCategory)
+    local showButton = lbRows.len() > 0 && isLbAvailable
     lbTable.show(showTable)
     btnLb.show(showButton)
     if (!showTable)
@@ -428,11 +430,11 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (lbCategory == null)
       return false
 
-    let participants = lb_rows ? lb_rows.len() : 0
+    local participants = lb_rows ? lb_rows.len() : 0
     if (!participants || (::isProductionCircuit() && participants < EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW))
       return false
 
-    let lastValidatedRow = lb_rows[min(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, participants) - 1]
+    local lastValidatedRow = lb_rows[min(EVENTS_SHORT_LB_REQUIRED_PARTICIPANTS_TO_SHOW, participants) - 1]
     return ::getTblValue(lbCategory.field, lastValidatedRow, 0) > 0
   }
 
@@ -441,15 +443,15 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
     if (!newSelfRowRequest)
       return ""
 
-    let rowName = "row_" + rowIdx
-    let forClan = ::events.isClanLbRequest(newSelfRowRequest)
+    local rowName = "row_" + rowIdx
+    local forClan = ::events.isClanLbRequest(newSelfRowRequest)
 
-    let name = getPlayerName(row?.name ?? "")
+    local name = getPlayerName(row?.name ?? "")
     local text = name
     if (forClan)
       text = row?.tag ?? ""
 
-    let rowData = [
+    local rowData = [
       {
         text = (row.pos + 1).tostring()
         width = "0.01*@sf"
@@ -468,17 +470,17 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
     if (lbCategory)
     {
-      let td = lbCategory.getItemCell(::getTblValue(lbCategory.field, row, -1))
+      local td = lbCategory.getItemCell(::getTblValue(lbCategory.field, row, -1))
       td.tdalign <- "right"
       rowData.append(td)
     }
-    let data = ::buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
+    local data = ::buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
     return data
   }
 
   function setEventDescObjVisible(value)
   {
-    let eventDescObj = getObject("event_desc")
+    local eventDescObj = getObject("event_desc")
     if (eventDescObj != null)
       eventDescObj.show(value)
   }
@@ -487,7 +489,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
   {
     if (parentObject == null)
       parentObject = scene
-    let obj = parentObject.findObject(id)
+    local obj = parentObject.findObject(id)
     return ::checkObj(obj) ? obj : null
   }
 
@@ -504,7 +506,7 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
   function onEventItemBought(params)
   {
-    let item = ::getTblValue("item", params)
+    local item = ::getTblValue("item", params)
     if (item && item.isForEvent(::getTblValue("name", selectedEvent)))
       updateCostText()
   }
@@ -517,7 +519,15 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
   function onRewardsList()
   {
-    ::gui_handlers.EventRewardsWnd.open(selectedEvent)
+    local eventAchievementGroup = ::events.getEventAchievementGroup(selectedEvent)
+    if (eventAchievementGroup != "") {
+      ::gui_start_profile({
+        initialSheet = "UnlockAchievement"
+        curAchievementGroupName = eventAchievementGroup
+      })
+    }
+    else
+      ::gui_handlers.EventRewardsWnd.open(selectedEvent)
   }
 
   function onPlayersList()
@@ -527,16 +537,16 @@ let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.
 
   function hideEventLeaderboard(showWaitBox = true)
   {
-    let lbWrapObj = getObject("lb_wrap")
+    local lbWrapObj = getObject("lb_wrap")
     if (lbWrapObj == null)
       return
-    let btnLb = getObject("leaderboards_btn", lbWrapObj)
+    local btnLb = getObject("leaderboards_btn", lbWrapObj)
     if (btnLb != null)
       btnLb.show(false)
-    let lbTable = getObject("lb_table", lbWrapObj)
+    local lbTable = getObject("lb_table", lbWrapObj)
     if (lbTable != null)
       lbTable.show(false)
-    let lbWaitBox = getObject("msgWaitAnimation")
+    local lbWaitBox = getObject("msgWaitAnimation")
     if (lbWaitBox != null)
       lbWaitBox.show(showWaitBox)
   }

@@ -1,14 +1,14 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let progressMsg = require("sqDagui/framework/progressMsg.nut")
-let DataBlock = require("DataBlock")
+local u = require("sqStdLibs/helpers/u.nut")
+local time = require("scripts/time.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
+local DataBlock = require("DataBlock")
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
-::gui_handlers.SaveDataDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 {
   static wndType = handlerType.MODAL
-  static sceneBlkName = "%gui/fileDialog/saveDataDialog.blk"
+  static sceneBlkName = "gui/fileDialog/saveDataDialog.blk"
 
   curHoverObjId = null
 
@@ -97,17 +97,17 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
   function requestEntries()
   {
     showWaitAnimation(true)
-    let cb = ::Callback(onReceivedSaveDataListing, this)
+    local cb = ::Callback(onReceivedSaveDataListing, this)
     getSaveDataContents(@(blk) cb(blk))
   }
 
   function updateSortingList() {
-    let obj = scene.findObject("sorting_block_bg")
+    local obj = scene.findObject("sorting_block_bg")
     if (!::checkObj(obj))
       return
 
-    let curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    let view = {
+    local curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    local view = {
       id = "sort_params_list"
       btnName = "RB"
       funcName = "onChangeSortParam"
@@ -117,13 +117,13 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       })
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/comboBox", view)
+    local data = ::handyman.renderCached("gui/commonParts/comboBox", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     getSortListObj().setValue(curVal)
   }
 
   function onChangeSortParam(obj) {
-    let val = obj.getValue()
+    local val = obj.getValue()
     ::saveLocalByAccount(LOCAL_SORT_ENTITIES_ID, val)
 
     updateEntriesList()
@@ -131,15 +131,15 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function sortEntries()
   {
-    let val = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    let p = sortParams[val].param
-    let isAscending = sortParams[val].asc
+    local val = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    local p = sortParams[val].param
+    local isAscending = sortParams[val].asc
     entries.sort(@(a,b) (isAscending? 1 : -1)*(a[p] <=> b[p]))
   }
 
   function onHoverChange(obj)
   {
-    let id = obj.isHovered() ? obj.id : null
+    local id = obj.isHovered() ? obj.id : null
     if (curHoverObjId == id)
       return
 
@@ -154,10 +154,10 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!isValid())
       return
 
-    let isNewFileSelected  = curHoverObjId == "file_name"
-    let isFileTableFocused = curHoverObjId == "file_table"
-    let curEntry = getSelectedEntry()
-    let isLoadedEntry = isEntryLoaded(curEntry)
+    local isNewFileSelected  = curHoverObjId == "file_name"
+    local isFileTableFocused = curHoverObjId == "file_table"
+    local curEntry = getSelectedEntry()
+    local isLoadedEntry = isEntryLoaded(curEntry)
 
     ::showBtnTable(scene, {
       btn_delete = doDelete && isFileTableFocused && isLoadedEntry,
@@ -166,19 +166,19 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       btn_rewrite = isFileTableFocused
     })
 
-    let newFileName = getObj("file_name").getValue()
+    local newFileName = getObj("file_name").getValue()
     ::enableBtnTable(scene, {btn_save = newFileName != ""}, true)
   }
 
   function renderSaveDataContents()
   {
-    let fileTableObj = getTableListObj()
+    local fileTableObj = getTableListObj()
     if (!fileTableObj)
       return
 
-    let curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    let sortParam = sortParams[curSortIdx].param
-    let headerRow = []
+    local curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    local sortParam = sortParams[curSortIdx].param
+    local headerRow = []
     tableParams.each(function(p, idx) {
       headerRow.append({
         id = $"file_header_{p.id}"
@@ -195,12 +195,12 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
     tableEntries.clear()
 
-    let rowData = []
+    local rowData = []
     foreach (idx, e in entries)
     {
       rowData.clear()
 
-      let rowName = $"file_row_{idx}"
+      local rowName = $"file_row_{idx}"
       tableEntries[rowName] <- e
       tableParams.each(function(p) {
         rowData.append({
@@ -220,7 +220,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function updateSelectionAfterDataLoaded()
   {
-    let fileTableObj = getTableListObj()
+    local fileTableObj = getTableListObj()
     if (!fileTableObj)
       return
 
@@ -246,11 +246,11 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!tableEntries.len())
       return null
 
-    let tableObj = getTableListObj()
-    let selectedRowIdx = tableObj.getValue()
+    local tableObj = getTableListObj()
+    local selectedRowIdx = tableObj.getValue()
     if (selectedRowIdx >= 0 && selectedRowIdx < tableObj.childrenCount())
     {
-      let e = tableObj.getChild(selectedRowIdx)
+      local e = tableObj.getChild(selectedRowIdx)
       if (e.id in tableEntries)
         return tableEntries[e.id]
     }
@@ -286,7 +286,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onBtnDelete()
   {
-    let curEntry = getSelectedEntry()
+    local curEntry = getSelectedEntry()
     if (!curEntry)
       return
 
@@ -303,14 +303,14 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onBtnSave()
   {
-    let entryName = getObj("file_name").getValue()
+    local entryName = getObj("file_name").getValue()
     if (entryName == "")
     {
       ::showInfoMsgBox(::loc("save/saveNameMissing"))
       return
     }
 
-    let entry = getExistEntry(entryName) || createEntry(entryName)
+    local entry = getExistEntry(entryName) || createEntry(entryName)
     dagor.debug("SAVE DIALOG: onBtnSave for entry:")
     ::debugTableData(entry)
 
@@ -330,7 +330,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onBtnRewrite()
   {
-    let selectedEntry = getSelectedEntry()
+    local selectedEntry = getSelectedEntry()
     if (!selectedEntry)
       return
 
@@ -354,7 +354,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
   function onBtnLoad()
   {
-    let curEntry = getSelectedEntry()
+    local curEntry = getSelectedEntry()
     if (!curEntry)
       return
 

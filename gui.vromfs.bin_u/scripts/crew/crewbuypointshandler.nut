@@ -1,8 +1,8 @@
-::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.CrewBuyPointsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/emptyFrame.blk"
-  sceneTplName = "%gui/crew/crewBuyPoints"
+  sceneBlkName = "gui/emptyFrame.blk"
+  sceneTplName = "gui/crew/crewBuyPoints"
   buyPointsPacks = null
   crew = null
 
@@ -11,7 +11,7 @@
     buyPointsPacks = ::g_crew_points.getSkillPointsPacks(::g_crew.getCrewCountry(crew))
     scene.findObject("wnd_title").setValue(::loc("mainmenu/btnBuySkillPoints"))
 
-    let rootObj = scene.findObject("wnd_frame")
+    local rootObj = scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
     loadSceneTpl()
     ::move_mouse_on_child(scene.findObject("buy_table"), 0)
@@ -19,13 +19,13 @@
 
   function loadSceneTpl()
   {
-    let rows = []
-    let price = getBasePrice()
+    local rows = []
+    local price = getBasePrice()
     foreach(idx, pack in buyPointsPacks)
     {
-      let skills = pack.skills || 1
-      let bonusDiscount = price ? ::floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
-      let bonusText = bonusDiscount ? format(::loc("charServer/entitlement/discount"), bonusDiscount) : ""
+      local skills = pack.skills || 1
+      local bonusDiscount = price ? ::floor(100.5 - 100.0 * pack.cost.gold / skills / price) : 0
+      local bonusText = bonusDiscount ? format(::loc("charServer/entitlement/discount"), bonusDiscount) : ""
 
       rows.append({
         id = getRowId(idx)
@@ -37,8 +37,8 @@
       })
     }
 
-    let view = { rows = rows }
-    let data = ::handyman.renderCached(sceneTplName, view)
+    local view = { rows = rows }
+    local data = ::handyman.renderCached(sceneTplName, view)
     guiScene.replaceContentFromText(scene.findObject("wnd_content"), data, data.len(), this)
 
     updateRows()
@@ -46,7 +46,7 @@
 
   function updateRows()
   {
-    let tblObj = scene.findObject("buy_table")
+    local tblObj = scene.findObject("buy_table")
     foreach(idx, pack in buyPointsPacks)
       ::showDiscount(tblObj.findObject("buy_discount_" + idx),
                      "skills", ::g_crews_list.get()[crew.idCountry].country, pack.name)
@@ -69,13 +69,13 @@
   {
     if (!::check_obj(obj) || obj?.id != "buttonRowApply")
     {
-      let tblObj = scene.findObject("buy_table")
+      local tblObj = scene.findObject("buy_table")
       if (!tblObj?.isValid())
         return
-      let idx = tblObj.getValue()
+      local idx = tblObj.getValue()
       if (idx < 0 || idx >= tblObj.childrenCount())
         return
-      let rowObj = tblObj.getChild(idx)
+      local rowObj = tblObj.getChild(idx)
       if (rowObj?.isValid())
         obj = rowObj.findObject("buttonRowApply")
     }
@@ -86,7 +86,7 @@
 
   function doBuyPoints(obj)
   {
-    let row = ::g_crew.getButtonRow(obj, scene, scene.findObject("buy_table"))
+    local row = ::g_crew.getButtonRow(obj, scene, scene.findObject("buy_table"))
     if (!(row in buyPointsPacks))
       return
 

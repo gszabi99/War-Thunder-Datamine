@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { hasAllFeatures } = require("scripts/user/features.nut")
 
 global enum LB_MODE
 {
@@ -77,7 +77,7 @@ global enum WW_LB_MODE
   if (::u.isEmpty(name))  //if not mode name then it events leaderboard and WW_LB_MODE need all
     return WW_LB_MODE.ALL
 
-  let lbModeNames = isWwLeaderboard ? ::ww_lb_mode_name : ::lb_mode_name
+  local lbModeNames = isWwLeaderboard ? ::ww_lb_mode_name : ::lb_mode_name
   if (name in lbModeNames)
     return lbModeNames[name]
 
@@ -126,7 +126,7 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
     if (!additionalCategory.isVisibleByFeature())
       continue
 
-    let value = additionalCategory.lbDataType.getAdditionalTooltipPartValueText(
+    local value = additionalCategory.lbDataType.getAdditionalTooltipPartValueText(
                     row[additionalCategory.field],
                     additionalCategory.hideInAdditionalTooltipIfZero)
 
@@ -168,8 +168,8 @@ g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(ro
 
   getItemCell = function(value, row = null, allowNegative = false, forceDataType = null)
   {
-    let res = ::getLbItemCell(id, value, (forceDataType ? forceDataType : lbDataType), allowNegative)
-    let additionalTooltipPart = getAdditionalTooltipPart(row)
+    local res = ::getLbItemCell(id, value, (forceDataType ? forceDataType : lbDataType), allowNegative)
+    local additionalTooltipPart = getAdditionalTooltipPart(row)
     if (additionalTooltipPart != "")
       res.tooltip <- (("tooltip" in res) ? res.tooltip + "\n" : "") + additionalTooltipPart
 

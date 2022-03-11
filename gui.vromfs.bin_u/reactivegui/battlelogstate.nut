@@ -1,4 +1,4 @@
-let state = persist("battleLogState", @(){
+local state = persist("battleLogState", @(){
   log = Watched([])
 })
 

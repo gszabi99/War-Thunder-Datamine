@@ -3,8 +3,8 @@
 // func(0) = 0,  func(1) = 1
 
 ::defaultScreenSize <- [1280, 720]
-let sin = ::sin
-let cos = ::cos
+local sin = ::sin
+local cos = ::cos
 local fabs = ::fabs
 
 ::basicFunction <- function basicFunction(funcName, time) { //time >= -1, time <= 1
@@ -65,14 +65,14 @@ local fabs = ::fabs
   if ((blendTime <= 0) || (fabs(newX - curX) < 1))
     return newX
 
-  let blendK = 4.0 * dt / blendTime
+  local blendK = 4.0 * dt / blendTime
   local dX = (newX - curX) * blendK
   if (fabs(dX) < 1)
     dX = (dX < 0)? -1 : 1
   return (blendK > 1)? newX : curX + dX
 }
 
-::gui_bhv_deprecated.basicSize <- class
+class gui_bhv_deprecated.basicSize
 {
   timerName = "_size-timer"
   timerPID = ::dagui_propid.add_name_id("_size-timer")
@@ -93,7 +93,7 @@ local fabs = ::fabs
 
   function onTimer(obj, dt)
   {
-    let props = getProps(obj)
+    local props = getProps(obj)
     props.timer <- obj.getFloatProp(timerPID, 0)
     props.timerBefore <- props.timer
     props.blink <- obj.getFinalProp("_blink")
@@ -124,10 +124,10 @@ local fabs = ::fabs
   }
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
-    let curSize = obj.getSize()
+    local curSize = obj.getSize()
 //    local curSize = [null, null] //!!Temporary for testing
 
     if (p.size0[0] != null) {
@@ -155,7 +155,7 @@ local fabs = ::fabs
   }
 
   function getProps(obj) {
-    let props = {}
+    local props = {}
     //user params needed
     props.size0 <- [getFloatObjProp(obj, "width-base", null), getFloatObjProp(obj, "height-base", null)]
     props.size1 <- [getFloatObjProp(obj, "width-end"), getFloatObjProp(obj, "height-end")]
@@ -192,7 +192,7 @@ local fabs = ::fabs
   }
 
   function selfRemove(obj) {
-    let guiScene = obj.getScene()
+    local guiScene = obj.getScene()
     guiScene.performDelayed(this, (@(obj, guiScene) function() {
       if (obj && obj.isValid())
       {
@@ -203,7 +203,7 @@ local fabs = ::fabs
   }
 
   function getObjProp(obj, name, defaultRes = "") {
-    let prop = obj.getFinalProp(name)
+    local prop = obj.getFinalProp(name)
     return (prop)? prop : defaultRes
   }
 
@@ -252,7 +252,7 @@ local fabs = ::fabs
   }
 
   function getBoolObjProp(obj, name, defaultRes = false) {
-    let p = getObjProp(obj, name)
+    local p = getObjProp(obj, name)
     if ((p == "yes")||(p == "true")||(p == "1"))
       return true
     if ((p == "no")||(p == "false")||(p == "0"))
@@ -261,28 +261,28 @@ local fabs = ::fabs
   }
 
   function getScaleK(obj, name) {
-    let scaleType = getObjProp(obj, name).tolower()
+    local scaleType = getObjProp(obj, name).tolower()
 
     if (scaleType == "")
       return [1.0, 1.0]
 
     if ((scaleType == "p")||(scaleType == "parent")) {
-      let pSize = obj.getParent().getSize()
+      local pSize = obj.getParent().getSize()
       return [0.01 * pSize[0], 0.01 * pSize[1]]
     }
 
     if (scaleType == "self") {
-      let size = obj.getSize()
+      local size = obj.getSize()
       return [0.01 * size[0], 0.01 * size[1]]
     }
 
     if (scaleType == "selfsize") {
-      let size = obj.getSize()
+      local size = obj.getSize()
       return [0.01 * size[1], 0.01 * size[0]]
     }
 
-    let rootObj = obj.getScene().getRoot()
-    let rootSize = rootObj.getSize()
+    local rootObj = obj.getScene().getRoot()
+    local rootSize = rootObj.getSize()
 
     if ((scaleType == "sh")||(scaleType == "screenheight"))
       return [0.01 * rootSize[1], 0.01 * rootSize[1]]
@@ -296,24 +296,24 @@ local fabs = ::fabs
   eventMask = ::EV_TIMER
 }
 
-gui_bhv_deprecated.basicPos <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.basicPos extends gui_bhv_deprecated.basicSize
 {
   timerName = "_pos-timer"
   timerPID = ::dagui_propid.add_name_id("_pos-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let parentObj = obj.getParent()
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local parentObj = obj.getParent()
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
-    let objSize = obj.getSize()
-    let parentSize = parentObj.getSize()
-    let curPos = obj.getPos()
-    let parentPos = parentObj.getPos()
+    local objSize = obj.getSize()
+    local parentSize = parentObj.getSize()
+    local curPos = obj.getPos()
+    local parentPos = parentObj.getPos()
     curPos[0] = curPos[0] - parentPos[0]
     curPos[1] = curPos[1] - parentPos[1]
 
-    let newPos = [
+    local newPos = [
       countProp(p.pos0[0], p.pos1[0], p.func[wayIdx], p.timer * way, p.scaleK[0], obj),
       countProp(p.pos0[1], p.pos1[1], p.func[wayIdx], p.timer * way, p.scaleK[1], obj)
     ]
@@ -328,7 +328,7 @@ gui_bhv_deprecated.basicPos <- class extends gui_bhv_deprecated.basicSize
   }
 
   function getProps(obj) {
-    let props = {}
+    local props = {}
 
     local hStart = getFloatObjProp(obj, "left-base", null)
     local hEnd   = getFloatObjProp(obj, "left-end", null)
@@ -382,23 +382,23 @@ gui_bhv_deprecated.basicPos <- class extends gui_bhv_deprecated.basicSize
   }
 }
 
-gui_bhv_deprecated.basicTransparency <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.basicTransparency extends gui_bhv_deprecated.basicSize
 {
   timerName = "_transp-timer"
   timerPID = ::dagui_propid.add_name_id("_transp-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
-    let trNew = countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
+    local trNew = countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
 
     obj.set_prop_latent("color-factor", ::blendProp(p.trCur, trNew, p.blendTime, dt).tointeger().tostring())
     obj.updateRendElem();
   }
 
   function getProps(obj) {
-    let props = {}
+    local props = {}
     //user params needed
     props.trBase <- getIntObjProp(obj, "transp-base", 255)
     props.trEnd <- getIntObjProp(obj, "transp-end", 255)
@@ -420,7 +420,7 @@ gui_bhv_deprecated.basicTransparency <- class extends gui_bhv_deprecated.basicSi
 
 //Works just like gui_bhv_deprecated.basicTransparency.
 //But all objects with same periods will winkign synchronously.
-gui_bhv_deprecated.syncTransparency <- class extends gui_bhv_deprecated.basicTransparency
+class gui_bhv_deprecated.syncTransparency extends gui_bhv_deprecated.basicTransparency
 {
   function updateTimer(obj, dt, p) {  //p - properties config
     local timer = ((::dagor.getCurTime().tofloat() / 1000) % p.totalTime) / p.totalTime
@@ -441,7 +441,7 @@ gui_bhv_deprecated.syncTransparency <- class extends gui_bhv_deprecated.basicTra
 }
 
 //Applied to all childs too. e careful using it.
-gui_bhv_deprecated.massTransparency <- class extends gui_bhv_deprecated.basicTransparency
+class gui_bhv_deprecated.massTransparency extends gui_bhv_deprecated.basicTransparency
 {
   last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
 
@@ -454,12 +454,12 @@ gui_bhv_deprecated.massTransparency <- class extends gui_bhv_deprecated.basicTra
 
   function updateProps(obj, dt, p)
   {
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
     local transpNew = countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
     transpNew = clamp(transpNew, 0, 255)
-    let lastTransp = obj.getIntProp(last_transp_PID, -1)
+    local lastTransp = obj.getIntProp(last_transp_PID, -1)
     if (lastTransp >= 0) //do not blend on first update
       transpNew = ::blendProp(p.trCur, transpNew, p.blendTime, dt).tointeger()
 
@@ -475,7 +475,7 @@ gui_bhv_deprecated.massTransparency <- class extends gui_bhv_deprecated.basicTra
     obj.set_prop_latent("color-factor", value)
     obj.updateRendElem()
 
-    let totalObjs = obj.childrenCount()
+    local totalObjs = obj.childrenCount()
     for(local i = 0; i < totalObjs; i++)
       setTranspRecursive(obj.getChild(i), value)
   }
@@ -483,34 +483,34 @@ gui_bhv_deprecated.massTransparency <- class extends gui_bhv_deprecated.basicTra
 
 ::updateTransparencyRecursive <- function updateTransparencyRecursive(obj, transpNew)
 {
-  let last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
+  local last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
 
   obj.setIntProp(last_transp_PID, transpNew.tointeger())
   obj.set_prop_latent("color-factor", transpNew)
   obj.updateRendElem()
 
-  let totalObjs = obj.childrenCount()
+  local totalObjs = obj.childrenCount()
   for(local i = 0; i < totalObjs; i++)
     ::updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
 }
 
-gui_bhv_deprecated.basicRotation <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.basicRotation extends gui_bhv_deprecated.basicSize
 {
   timerName = "_rot-timer"
   timerPID = ::dagui_propid.add_name_id("_rot-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
-    let rotNew = countProp(p.rotBase, p.rotEnd, p.func[wayIdx], p.timer * way, 1.0, obj)
+    local rotNew = countProp(p.rotBase, p.rotEnd, p.func[wayIdx], p.timer * way, 1.0, obj)
 
     obj.set_prop_latent("rotation", ::blendProp(p.rotCur, rotNew, p.blendTime, dt).tointeger().tostring())
     obj.markObjChanged()
   }
 
   function getProps(obj) {
-    let props = {}
+    local props = {}
     //user params needed
     props.rotBase <- getIntObjProp(obj, "rot-base")
     props.rotEnd <- getIntObjProp(obj, "rot-end")
@@ -530,7 +530,7 @@ gui_bhv_deprecated.basicRotation <- class extends gui_bhv_deprecated.basicSize
   }
 }
 
-gui_bhv_deprecated.basicFontSize <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.basicFontSize extends gui_bhv_deprecated.basicSize
 {
   timerName = "_size-timer"
   timerPID = ::dagui_propid.add_name_id("_size-timer")
@@ -545,8 +545,8 @@ gui_bhv_deprecated.basicFontSize <- class extends gui_bhv_deprecated.basicSize
   function updateProps(obj, dt, p) {  //p - properties config
     base.updateProps(obj, dt, p)
 
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    local way = (p.totalTime >= 0)? 1.0 : -1.0
+    local wayIdx = (p.totalTime >= 0)? 0 : 1
 
     local fontHtNew = countProp(p.fontHtBase, p.fontHtEnd, p.func[wayIdx], p.timer * way, p.scaleK[1])
     fontHtNew = (::blendProp(p.fontHtCur, fontHtNew, p.blendTime, dt)).tointeger()
@@ -560,7 +560,7 @@ gui_bhv_deprecated.basicFontSize <- class extends gui_bhv_deprecated.basicSize
   }
 
   function getProps(obj) {
-    let props = base.getProps(obj)
+    local props = base.getProps(obj)
 
     props.fontHtBase <- getIntObjProp(obj, "font-ht-base", 10)
     props.fontHtEnd <- getIntObjProp(obj, "font-ht-end", props.fontHtBase)
@@ -570,7 +570,7 @@ gui_bhv_deprecated.basicFontSize <- class extends gui_bhv_deprecated.basicSize
   }
 }
 
-gui_bhv_deprecated.basicFontSizeTextArea <- class extends gui_bhv_deprecated.basicFontSize
+class gui_bhv_deprecated.basicFontSizeTextArea extends gui_bhv_deprecated.basicFontSize
 {
   function setFontHt(obj, fontHt)
   {
@@ -579,11 +579,11 @@ gui_bhv_deprecated.basicFontSizeTextArea <- class extends gui_bhv_deprecated.bas
   }
 }
 
-gui_bhv_deprecated.motionCursor <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.motionCursor extends gui_bhv_deprecated.basicSize
 {
   function updateProps(obj, dt, p) {
     base.updateProps(obj, dt, p)
-    let clicked = getBoolObjProp(obj, "clicked", false)
+    local clicked = getBoolObjProp(obj, "clicked", false)
 
     if ((!clicked)&&(p.timer >= 1.0)) {
       obj["clicked"] = "yes"
@@ -597,8 +597,8 @@ gui_bhv_deprecated.motionCursor <- class extends gui_bhv_deprecated.basicSize
   }
 
   function mouseClick(obj, state) {
-    let curPos = obj.getPos()
-    let parentPos = obj.getParent().getPos()
+    local curPos = obj.getPos()
+    local parentPos = obj.getParent().getPos()
     curPos[0] = curPos[0] - parentPos[0]
     curPos[1] = curPos[1] - parentPos[1]
     if (state)
@@ -608,15 +608,15 @@ gui_bhv_deprecated.motionCursor <- class extends gui_bhv_deprecated.basicSize
   }
 }
 
-gui_bhv_deprecated.motionCursorField <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.motionCursorField extends gui_bhv_deprecated.basicSize
 {
   function onMouseMove(obj, mx, my, bits) {
     if (obj.childrenCount() >= 1) {
-      let cursor = obj.getChild(0)
-      let clicked = getBoolObjProp(cursor, "clicked", false)
+      local cursor = obj.getChild(0)
+      local clicked = getBoolObjProp(cursor, "clicked", false)
       if (!clicked) {
-        let dev = [getFloatObjProp(cursor, "_last-x") - mx, getFloatObjProp(cursor, "_last-y") - my]
-        let rootHeight = obj.getScene().getRoot().getSize()[1]
+        local dev = [getFloatObjProp(cursor, "_last-x") - mx, getFloatObjProp(cursor, "_last-y") - my]
+        local rootHeight = obj.getScene().getRoot().getSize()[1]
         if ((dev[0]*dev[0] + dev[1]*dev[1]) > (maxDeviationSq * rootHeight*rootHeight)) {
           cursor.setFloatProp(timerPID, 0)
           cursor["_last-x"] = mx.tointeger().tostring()
@@ -636,29 +636,29 @@ gui_bhv_deprecated.motionCursorField <- class extends gui_bhv_deprecated.basicSi
   eventMask = ::EV_MOUSE_MOVE
 }
 
-gui_bhv_deprecated.shakePos <- class extends gui_bhv_deprecated.basicPos { //-similar-assigned-expr
+class gui_bhv_deprecated.shakePos extends gui_bhv_deprecated.basicPos {
   function countProp(propBase, propEnd, func, timer, scale, obj) {
     if ((timer==0)||(timer==1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
 
-    let deviation = getIntObjProp(obj, "deviation")
-    let value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
+    local deviation = getIntObjProp(obj, "deviation")
+    local value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
     return scale * (propBase + (propEnd - propBase) * value)
   }
 }
 
-gui_bhv_deprecated.shakeRotation <- class extends gui_bhv_deprecated.basicRotation { //-similar-assigned-expr
+class gui_bhv_deprecated.shakeRotation extends gui_bhv_deprecated.basicRotation {
   function countProp(propBase, propEnd, func, timer, scale, obj) {
     if ((timer==0)||(timer==1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
 
-    let deviation = getIntObjProp(obj, "deviation")
-    let value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
+    local deviation = getIntObjProp(obj, "deviation")
+    local value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
     return scale * (propBase + (propEnd - propBase) * value)
   }
 }
 
-gui_bhv_deprecated.multiLayerImage <- class extends gui_bhv_deprecated.basicSize
+class gui_bhv_deprecated.multiLayerImage extends gui_bhv_deprecated.basicSize
 {
   eventMask = ::EV_TIMER
   last_mx_PID = ::dagui_propid.add_name_id("last_mx")
@@ -675,7 +675,7 @@ gui_bhv_deprecated.multiLayerImage <- class extends gui_bhv_deprecated.basicSize
 
   function onTimer(obj, dt)
   {
-    let mx = ::get_dagui_mouse_cursor_pos_RC()[0]
+    local mx = ::get_dagui_mouse_cursor_pos_RC()[0]
     local objMx = obj.getIntProp(last_mx_PID, 0)
     if (objMx == mx)
       return ::RETCODE_NOTHING
@@ -689,16 +689,16 @@ gui_bhv_deprecated.multiLayerImage <- class extends gui_bhv_deprecated.basicSize
 
   function updateChilds(obj, mx, my)
   {
-    let rootSize = obj.getScene().getRoot().getSize()
+    local rootSize = obj.getScene().getRoot().getSize()
     if (mx < 0) mx = 0
     if (mx > rootSize[0]) mx = rootSize[0]
-    let deviation = mx.tofloat() - 0.5 * rootSize[0]
+    local deviation = mx.tofloat() - 0.5 * rootSize[0]
 
-    let totalObjs = obj.childrenCount()
+    local totalObjs = obj.childrenCount()
     for(local i = 0; i<totalObjs; i++)
     {
-      let layerObj = obj.getChild(i)
-      let sens = 0.01 * getFloatObjProp(layerObj, "layerSensitivity")
+      local layerObj = obj.getChild(i)
+      local sens = 0.01 * getFloatObjProp(layerObj, "layerSensitivity")
       if (sens != 0)
       {
         layerObj.set_prop_latent("left", (sens * deviation).tointeger().tostring())
@@ -707,7 +707,7 @@ gui_bhv_deprecated.multiLayerImage <- class extends gui_bhv_deprecated.basicSize
         layerObj.recalcPos()
       }
 
-      let rotSens = 0.01 * getFloatObjProp(layerObj, "rotation-sensitivity")
+      local rotSens = 0.01 * getFloatObjProp(layerObj, "rotation-sensitivity")
       if (rotSens != 0)
       {
         local rotBase = layerObj.getFloatProp(rotationBasePID)
@@ -716,7 +716,7 @@ gui_bhv_deprecated.multiLayerImage <- class extends gui_bhv_deprecated.basicSize
           rotBase = getFloatObjProp(layerObj, "rotation")
           layerObj.setFloatProp(rotationBasePID, rotBase)
         }
-        let rotation = (rotBase + rotSens * deviation) //.tointeger()
+        local rotation = (rotBase + rotSens * deviation) //.tointeger()
         layerObj.set_prop_latent("rotation", ::format("%.2f", rotation))
         layerObj.markObjChanged()
       }

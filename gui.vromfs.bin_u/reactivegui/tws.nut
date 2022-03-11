@@ -1,34 +1,34 @@
-let {rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime} = require("twsState.nut")
-let {MlwsLwsForMfd, RwrForMfd} = require("airState.nut");
-let {isColorOrWhite} = require("style/airHudStyle.nut")
+local {rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime} = require("twsState.nut")
+local {MlwsLwsForMfd, RwrForMfd} = require("airState.nut");
+local {isColorOrWhite} = require("style/airHudStyle.nut")
 
-let backgroundColor = Color(0, 0, 0, 50)
+local backgroundColor = Color(0, 0, 0, 50)
 
-let indicatorRadius = 70.0
-let trackRadarsRadius = 0.04
-let azimuthMarkLength = 50 * 3 * trackRadarsRadius
+local indicatorRadius = 70.0
+local trackRadarsRadius = 0.04
+local azimuthMarkLength = 50 * 3 * trackRadarsRadius
 
-let styleLineBackground = {
+local styleLineBackground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH + 1.5)
 }
 
-let centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = flex()) {
-  let tailW = 25
-  let tailH = 10
-  let tailOffset1 = 10
-  let tailOffset2 = 5
-  let tailOffset3 = 25
-  let fuselageWHalf = 10
-  let wingOffset1 = 45
-  let wingOffset2 = 30
-  let wingW = 32
-  let wingH = 18
-  let wingOffset3 = 30
-  let noseOffset = 5
+local centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = flex()) {
+  local tailW = 25
+  local tailH = 10
+  local tailOffset1 = 10
+  local tailOffset2 = 5
+  local tailOffset3 = 25
+  local fuselageWHalf = 10
+  local wingOffset1 = 45
+  local wingOffset2 = 30
+  local wingW = 32
+  local wingH = 18
+  local wingOffset3 = 30
+  local noseOffset = 5
 
 
-  let aircraftIcon = @() styleLineBackground.__merge({
+  local aircraftIcon = @() styleLineBackground.__merge({
     watch = colorWatched
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(2)
@@ -85,10 +85,10 @@ let centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = f
   }
 })
 
-let targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
-let targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
+local targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
+local targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
 
-let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false) function() {
+local createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false) function() {
 
   return styleLineBackground.__merge({
     watch = [targetsOpacity, colorWatched]
@@ -105,13 +105,13 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
   })
 }
 
-let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
+local function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
   const angleGrad = 30.0
-  let angle = math.PI * angleGrad / 180.0
-  let dashCount = 360.0 / angleGrad
-  let innerMarkRadius = indicatorRadius * scale - azimuthMarkLength
+  local angle = math.PI * angleGrad / 180.0
+  local dashCount = 360.0 / angleGrad
+  local innerMarkRadius = indicatorRadius * scale - azimuthMarkLength
 
-  let azimuthMarksCommands = array(dashCount).map(@(_, i) [
+  local azimuthMarksCommands = array(dashCount).map(@(_, i) [
     VECTOR_LINE,
     50 + math.cos(i * angle) * innerMarkRadius,
     50 + math.sin(i * angle) * innerMarkRadius,
@@ -131,9 +131,9 @@ let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
   })
 }
 
-let twsBackground = @(colorWatched, isForTank = false) function() {
+local twsBackground = @(colorWatched, isForTank = false) function() {
 
-  let res = { watch = [IsMlwsLwsHudVisible, MlwsLwsForMfd] }
+  local res = { watch = [IsMlwsLwsHudVisible, MlwsLwsForMfd] }
 
   if (!IsMlwsLwsHudVisible.value && !MlwsLwsForMfd.value)
     return res
@@ -147,9 +147,9 @@ let twsBackground = @(colorWatched, isForTank = false) function() {
   })
 }
 
-let rwrBackground = @(colorWatched, scale) function() {
+local rwrBackground = @(colorWatched, scale) function() {
 
-  let res = { watch = [IsRwrHudVisible, IsMlwsLwsHudVisible, RwrForMfd] }
+  local res = { watch = [IsRwrHudVisible, IsMlwsLwsHudVisible, RwrForMfd] }
 
   if (!IsRwrHudVisible.value && !RwrForMfd.value)
     return res
@@ -164,7 +164,7 @@ let rwrBackground = @(colorWatched, scale) function() {
   })
 }
 
-let rocketVector =
+local rocketVector =
   [
     //right stab
     [VECTOR_LINE, -15, -40, -15, -30],
@@ -194,10 +194,10 @@ let rocketVector =
     [VECTOR_LINE, 5, 30, 0, 40]
   ]
 
-let function createMlwsTarget(index, colorWatch) {
-  let target = mlwsTargets[index]
-  let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
-  let targetComponent = @() {
+local function createMlwsTarget(index, colorWatch) {
+  local target = mlwsTargets[index]
+  local targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
+  local targetComponent = @() {
     watch = [targetOpacity, colorWatch]
     color = isColorOrWhite(colorWatch.value)
     rendObj = ROBJ_VECTOR_CANVAS
@@ -236,10 +236,10 @@ let function createMlwsTarget(index, colorWatch) {
   }
 }
 
-let function createLwsTarget(index, colorWatched, isForTank = false) {
-  let target = lwsTargets[index]
-  let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
-  let targetComponent = @() {
+local function createLwsTarget(index, colorWatched, isForTank = false) {
+  local target = lwsTargets[index]
+  local targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
+  local targetComponent = @() {
     watch = [targetOpacity, colorWatched]
     color = isColorOrWhite(colorWatched.value)
     rendObj = ROBJ_VECTOR_CANVAS
@@ -294,9 +294,9 @@ let function createLwsTarget(index, colorWatched, isForTank = false) {
   }
 }
 
-let function createRwrTarget(index, colorWatched) {
-  let target = rwrTargets[index]
-  let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)))
+local function createRwrTarget(index, colorWatched) {
+  local target = rwrTargets[index]
+  local targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)))
 
   local trackLine = null
 
@@ -315,7 +315,7 @@ let function createRwrTarget(index, colorWatched) {
     }
   }
 
-  let targetComponent = @() {
+  local targetComponent = @() {
     watch = [targetOpacityRwr, colorWatched]
     color = isColorOrWhite(colorWatched.value)
     rendObj = ROBJ_VECTOR_CANVAS
@@ -360,7 +360,7 @@ let function createRwrTarget(index, colorWatched) {
   }
 }
 
-let function mlwsTargetsComponent(colorWatch) {
+local function mlwsTargetsComponent(colorWatch) {
 
   return @() {
     watch = mlwsTargetsTriggers
@@ -369,7 +369,7 @@ let function mlwsTargetsComponent(colorWatch) {
   }
 }
 
-let function lwsTargetsComponent(colorWatched, isForTank = false) {
+local function lwsTargetsComponent(colorWatched, isForTank = false) {
 
   return @() {
     watch = lwsTargetsTriggers
@@ -378,7 +378,7 @@ let function lwsTargetsComponent(colorWatched, isForTank = false) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched) {
+local rwrTargetsComponent = function(colorWatched) {
 
   return @() {
     watch = rwrTargetsTriggers
@@ -387,11 +387,11 @@ let rwrTargetsComponent = function(colorWatched) {
   }
 }
 
-let function displayAircraftIcon(colorWatched) {
+local function displayAircraftIcon(colorWatched) {
     return centeredAircraftIcon({colorWatched = colorWatched, pos = [0, 0], size = [pw(35), ph(35)] })
 }
 
-let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale){
+local function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale){
   return {
     size = flex()
     children = [
@@ -412,7 +412,7 @@ let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale
   }
 }
 
-let tws = ::kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
+local tws = ::kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value

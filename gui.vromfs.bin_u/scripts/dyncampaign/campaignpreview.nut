@@ -1,6 +1,6 @@
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {
@@ -12,10 +12,10 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
   ::handlersManager.loadHandler(::gui_handlers.CampaignPreview, { isFinal = true })
 }
 
-::gui_handlers.CampaignPreview <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/dynamicSummary.blk"
-  sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
+  sceneBlkName = "gui/dynamicSummary.blk"
+  sceneNavBlkName = "gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   wndGameMode = ::GM_DYNAMIC
@@ -51,8 +51,8 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
     info = DataBlock()
     ::g_map_preview.setSummaryPreview(scene.findObject("tactical-map"), info, "")
 
-    let l_file = info.getStr("layout","")
-    let dynLayouts = ::get_dynamic_layouts()
+    local l_file = info.getStr("layout","")
+    local dynLayouts = ::get_dynamic_layouts()
     for (local i = 0; i < dynLayouts.len(); i++)
       if (dynLayouts[i].mis_file == l_file)
       {
@@ -70,7 +70,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
      month = ::loc("sm_month_"+info.getInt("dataMM",0).tostring())
     })
 
-    let playerSide = info.getInt("playerSide", 1)
+    local playerSide = info.getInt("playerSide", 1)
     if (playerSide == 2)
     {
       guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon"
@@ -84,8 +84,8 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
 
 //    guiScene["scene-info"]["text"] = "one long line\none long line\none long line"
-    let stats = ["wins", "sectors", "bombers", "fighters", "infantry", "tanks", "artillery","ships"]
-    let sides = ["ally","enemy"]
+    local stats = ["wins", "sectors", "bombers", "fighters", "infantry", "tanks", "artillery","ships"]
+    local sides = ["ally","enemy"]
     for (local i = 0; i < stats.len(); i++)
     {
       for (local j = 0; j < sides.len(); j++)
@@ -102,7 +102,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
       if (info.getBlock(i).getBlockName() == "log")
         log.append(buildLogLine(info.getBlock(i)))
 
-    let country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
+    local country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
     //wtf??
     dagor.debug("2 country = " + country)
     if (country != "")
@@ -121,7 +121,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
   function buildLogLine(blk)
   {
-    let ret = {}
+    local ret = {}
 
     if (blk.getStr("sectorName", "").len() > 0)
     {
@@ -183,7 +183,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
         ret.enemy_loses += getLosesBlk(loses[i], blk.getInt("enemy_destroyed_"+loses[i], 0), i < (loses.len()-1))
     }
 
-    let misNum = blk.getInt("missionsPlayed", 0)
+    local misNum = blk.getInt("missionsPlayed", 0)
     if (misNum > logLastMission)
     {
       logLastMission = misNum
@@ -233,7 +233,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
   function showLog(id)
   {
-    let show = (id >= 0 && log.len() > id && log[id].showInSmallLog)
+    local show = (id >= 0 && log.len() > id && log[id].showInSmallLog)
     if (show)
       guiScene["scene-info"].setValue(log[id].main)
     guiScene["scene-info"].animShow = show? "show" : "hide"
@@ -241,14 +241,14 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
   function onSelect(obj)
   {
-    let gm = ::get_game_mode()
+    local gm = ::get_game_mode()
     if (gm == ::GM_DYNAMIC)
     {
       if (::is_dynamic_won_by_player())
       {
         local wonCampaign = ""
-        let l_file = info.getStr("layout","")
-        let dynLayouts = ::get_dynamic_layouts()
+        local l_file = info.getStr("layout","")
+        local dynLayouts = ::get_dynamic_layouts()
         for (local i = 0; i < dynLayouts.len(); i++)
           if (dynLayouts[i].mis_file == l_file)
           {
@@ -282,7 +282,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
       [
         ["yes", function()
         {
-          let gt = ::get_game_type()
+          local gt = ::get_game_type()
           if (gt & ::GT_COOPERATIVE)
             ::destroy_session_scripted()
           goForward(::gui_start_mainmenu)
@@ -302,12 +302,12 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
   function infoBox(data, title = "")
   {
-    let rootNode = ""
+    local rootNode = ""
 
-    let handlerClass = class {
+    local handlerClass = class {
       function goBack(obj)
       {
-        let delayedAction = (@(handler, guiScene, infoBoxObject) function() {
+        local delayedAction = (@(handler, guiScene, infoBoxObject) function() {
           guiScene.destroyElement(infoBoxObject)
           handler.isInInfo = false
           handler.showNav(true)
@@ -319,8 +319,8 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
       handler = null
     }
 
-    let handlerObj = handlerClass()
-    let infobox = guiScene.loadModal(rootNode, "%gui/optionInfoBox.blk", "InfoBox", handlerObj)
+    local handlerObj = handlerClass()
+    local infobox = guiScene.loadModal(rootNode, "gui/optionInfoBox.blk", "InfoBox", handlerObj)
     handlerObj.guiScene = guiScene
     handlerObj.infoBoxObject = infobox
     handlerObj.handler = this
@@ -335,7 +335,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
       return
 
     local data = ""
-    let logTextsToSet = {}
+    local logTextsToSet = {}
 
     for (local i = (log.len() - 1); i >= 0; i--)
     {
@@ -359,7 +359,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
         data += "tdiv { margin-bottom:t='0.03sh';} \n";
     }
 
-    let title = ::loc("mainmenu/btnBattlelog")
+    local title = ::loc("mainmenu/btnBattlelog")
 
     infoBox(data, title)
     isInInfo = true

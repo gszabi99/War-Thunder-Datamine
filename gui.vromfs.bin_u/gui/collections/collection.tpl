@@ -31,5 +31,5 @@ textareaNoTab {
 }
 <</title>>
 
-include "%gui/commonParts/imgFrame"
+include "gui/commonParts/imgFrame"
 <</collections>>

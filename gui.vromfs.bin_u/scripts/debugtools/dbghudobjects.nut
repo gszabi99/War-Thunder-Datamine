@@ -31,14 +31,14 @@ g_hud_debug_objects.createTimerObjOnce <- function createTimerObjOnce()
    if (::checkObj(curTimerObj))
      return
 
-  let hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  local hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
   if (!hudHandler)
   {
     dlog("Error: not found active hud")
     return
   }
 
-  let blkText = "timer { id:t = 'g_hud_debug_objects_timer'; timer_handler_func:t = 'onUpdate' }"
+  local blkText = "timer { id:t = 'g_hud_debug_objects_timer'; timer_handler_func:t = 'onUpdate' }"
   hudHandler.guiScene.appendWithBlk(hudHandler.scene, blkText, null)
   curTimerObj = hudHandler.scene.findObject("g_hud_debug_objects_timer")
   curTimerObj.setUserData(this)
@@ -46,7 +46,7 @@ g_hud_debug_objects.createTimerObjOnce <- function createTimerObjOnce()
 
 g_hud_debug_objects.getCurHudType <- function getCurHudType()
 {
-  let hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  local hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
   if (!hudHandler)
     return HUD_TYPE.NONE
   return hudHandler.hudType
@@ -54,7 +54,7 @@ g_hud_debug_objects.getCurHudType <- function getCurHudType()
 
 g_hud_debug_objects.updateActiveObjectsTypes <- function updateActiveObjectsTypes()
 {
-  let hudType = getCurHudType()
+  local hudType = getCurHudType()
   activeObjectTypes.clear()
   totalChance = 0.0
   foreach(oType in ::g_dbg_hud_object_type.types)

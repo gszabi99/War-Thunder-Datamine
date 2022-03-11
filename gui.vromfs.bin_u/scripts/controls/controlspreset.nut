@@ -1,7 +1,7 @@
 ::g_script_reloader.loadOnce("scripts/controls/controlsPresets.nut")
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { copyParamsToTable, eachBlock, eachParam } = require("std/datablock.nut")
-let controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { copyParamsToTable, eachBlock, eachParam } = require("std/datablock.nut")
+local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
@@ -86,7 +86,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!::u.isString(name)) // Workaround to fix SQ critical asserts
     {
-      let message = "Error: ControlsPreset.getAxis(name), name must be string"
+      local message = "Error: ControlsPreset.getAxis(name), name must be string"
       ::script_net_assert_once("ControlsPreset.getAxis() failed", message)
       return getDefaultAxis("")
     }
@@ -143,7 +143,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   static function getDefaultAxis(name = "")
   {
-    let axis = {
+    local axis = {
       axisId              = -1
       mouseAxisId         = -1
       innerDeadzone       = 0.05
@@ -158,7 +158,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       relative            = false
       keepDisabledValue   = false
     }
-    let axisWithZeroRangeMin = [
+    local axisWithZeroRangeMin = [
       "throttle",
       "helicopter_collective",
       "gm_sight_distance"
@@ -283,7 +283,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     }
 
     presetChain.append(presetPath)
-    let blk = blkFromPath(presetPath)
+    local blk = blkFromPath(presetPath)
     loadFromBlk(blk, presetChain)
     presetChain.pop()
   }
@@ -292,14 +292,14 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   function loadFromBlk(blk, presetChain = [])
   {
     local controlsBlk = blk?.controls
-    let version = controlsBlk != null ?
+    local version = controlsBlk != null ?
       ::getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :
       ::getTblValue("controlsVer", blk, PRESET_DEFAULT_VERSION)
 
-    let shouldBackupOldControls =
+    local shouldBackupOldControls =
       ::getTblValue("shouldBackupOldControls", blk, BACKUP_OLD_CONTROLS_DEFAULT)
 
-    let shouldForgetBasePresets =
+    local shouldForgetBasePresets =
       ::getTblValue("shouldForgetBasePresets", blk, false)
 
     if (version < PRESET_ACTUAL_VERSION && ::u.isString(blk?.hotkeysPreset) && blk?.hotkeysPreset != "")
@@ -308,7 +308,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       return
     }
 
-    let shouldLoadOldControls = (version < PRESET_ACTUAL_VERSION) || shouldBackupOldControls;
+    local shouldLoadOldControls = (version < PRESET_ACTUAL_VERSION) || shouldBackupOldControls;
     if (shouldLoadOldControls)
     {
       ::dagor.debug("ControlsPreset: BackupOldControls")
@@ -350,11 +350,11 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   function saveToBlk(blk)
   {
-    let controlsBlk = ::DataBlock()
+    local controlsBlk = ::DataBlock()
     controlsBlk["version"] = PRESET_ACTUAL_VERSION
 
     saveBasePresetPathsToBlk(controlsBlk)
-    let controlsDiff = ::ControlsPreset(this)
+    local controlsDiff = ::ControlsPreset(this)
     controlsDiff.diffBasePresets()
 
     ::dagor.debug("ControlsPreset: SaveControls")
@@ -393,7 +393,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     foreach (hotkeyName, otherHotkey in appliedPreset.hotkeys)
       setHotkey(hotkeyName, otherHotkey)
 
-    let usedAxesIds = []
+    local usedAxesIds = []
     foreach (axesName, otherAxis in appliedPreset.axes)
     {
       setAxis(axesName, otherAxis)
@@ -410,30 +410,30 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   function diffControls(basePreset)
   {
-    let hotkeyNames = ::u.keys(basePreset.hotkeys)
+    local hotkeyNames = ::u.keys(basePreset.hotkeys)
     foreach (hotkeyName, value in hotkeys)
       if (!(hotkeyName in basePreset.hotkeys))
         hotkeyNames.append(hotkeyName)
 
     foreach (hotkeyName in hotkeyNames)
     {
-      let hotkey = getHotkey(hotkeyName)
-      let otherHotkey = basePreset.getHotkey(hotkeyName)
+      local hotkey = getHotkey(hotkeyName)
+      local otherHotkey = basePreset.getHotkey(hotkeyName)
       if (::u.isEqual(hotkey, otherHotkey))
         delete hotkeys[hotkeyName]
     }
 
-    let axesNames = ::u.keys(basePreset.axes)
+    local axesNames = ::u.keys(basePreset.axes)
     foreach (axisName, value in axes)
       if (!(axisName in basePreset.axes))
         axesNames.append(axisName)
 
-    let usedAxesIds = []
+    local usedAxesIds = []
     foreach (axisName in axesNames)
     {
-      let axis = getAxis(axisName)
-      let otherAxis = basePreset.getAxis(axisName)
-      let axisAttributeNames = ::u.keys(axis)
+      local axis = getAxis(axisName)
+      local otherAxis = basePreset.getAxis(axisName)
+      local axisAttributeNames = ::u.keys(axis)
       foreach (attr in axisAttributeNames)
         if (attr in otherAxis && axis[attr] == otherAxis[attr])
           delete axis[attr]
@@ -455,7 +455,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     if (presetGroup != "default")
       return
 
-    let preset = ::ControlsPreset(presetPath, presetChain)
+    local preset = ::ControlsPreset(presetPath, presetChain)
     applyControls(preset)
 
     basePresetPaths[presetGroup] <- presetPath
@@ -470,7 +470,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       if (presetGroup != "default")
         return
 
-      let subPreset = ::ControlsPreset(presetPath)
+      local subPreset = ::ControlsPreset(presetPath)
       diffControls(subPreset)
     }
 
@@ -489,7 +489,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     {
       if (!("basePresetPaths" in blk))
         blk["basePresetPaths"] = ::DataBlock()
-      let blkBasePresetPaths = blk["basePresetPaths"]
+      local blkBasePresetPaths = blk["basePresetPaths"]
 
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0)
       {
@@ -498,7 +498,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       }
 
       eachParam(blkBasePresetPaths, function(presetPath, presetGroup) {
-        let actualPresetPath = compatibility.getActualBasePresetPaths(presetPath)
+        local actualPresetPath = compatibility.getActualBasePresetPaths(presetPath)
         if (actualPresetPath != presetPath) {
           presetPath = actualPresetPath
           blkBasePresetPaths[presetGroup] = presetPath
@@ -519,23 +519,23 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!::u.isDataBlock(blk?["hotkeys"]))
       return
-    let blkHotkeys = blk["hotkeys"]
+    local blkHotkeys = blk["hotkeys"]
 
     if (version >= PRESET_ACTUAL_VERSION)
     {
       // Load hotkeys saved after 1.63
-      let usedHotkeys = []
+      local usedHotkeys = []
       for (local j = 0; j < blkHotkeys.blockCount(); j++)
       {
-        let blkHotkey = blkHotkeys.getBlock(j)
-        let hotkeyName = blkHotkey.getBlockName()
-        let shortcut = []
+        local blkHotkey = blkHotkeys.getBlock(j)
+        local hotkeyName = blkHotkey.getBlockName()
+        local shortcut = []
 
         for (local k = 0; k < blkHotkey.paramCount(); k++)
         {
-          let deviveType = blkHotkey.getParamName(k)
-          let deviceId = ::getTblValue(deviveType, deviceIdByType, null)
-          let buttonId = blkHotkey.getParamValue(k)
+          local deviveType = blkHotkey.getParamName(k)
+          local deviceId = ::getTblValue(deviveType, deviceIdByType, null)
+          local buttonId = blkHotkey.getParamValue(k)
 
           if (deviceId == null || !::u.isInteger(buttonId) || buttonId == -1)
             continue
@@ -562,16 +562,16 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
         if (!::u.isString(blkEvent?["name"]))
           continue
 
-        let hotkeyName = blkEvent["name"]
+        local hotkeyName = blkEvent["name"]
         resetHotkey(hotkeyName)
 
-        let event = []
+        local event = []
         foreach (blkShortcut in blkEvent % "shortcut")
         {
           if (!::u.isDataBlock(blkShortcut))
             continue
 
-          let shortcut = []
+          local shortcut = []
           foreach (blkButton in blkShortcut % "button")
           {
             if (!::u.isInteger(blkButton?["deviceId"]) || !::u.isInteger(blkButton?["buttonId"]))
@@ -613,8 +613,8 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     // Load mouse axes saved before 1.63
     if (version < PRESET_ACTUAL_VERSION)
     {
-      let blkMouseAxes = blkAxes?["mouse"]
-      let mouseAxes = ::u.copy(compatibility.mouseAxesDefaults)
+      local blkMouseAxes = blkAxes?["mouse"]
+      local mouseAxes = ::u.copy(compatibility.mouseAxesDefaults)
 
       if (::u.isDataBlock(blkMouseAxes))
         foreach (idx, axisId in blkMouseAxes % "axis")
@@ -644,7 +644,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   function loadJoyMappingFromBlk(blk, version)
   {
-    let blkJoyMapping = blk?.deviceMapping
+    local blkJoyMapping = blk?.deviceMapping
     if (blkJoyMapping == null)
       return
 
@@ -674,7 +674,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!("basePresetPaths" in blk))
       blk["basePresetPaths"] = ::DataBlock()
-    let blkBasePresetPaths = blk["basePresetPaths"]
+    local blkBasePresetPaths = blk["basePresetPaths"]
 
     foreach (presetGroup, presetPath in basePresetPaths)
       blkBasePresetPaths[presetGroup] <- presetPath
@@ -684,22 +684,22 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!("hotkeys" in blk))
       blk["hotkeys"] = ::DataBlock()
-    let blkHotkeys = blk["hotkeys"]
+    local blkHotkeys = blk["hotkeys"]
 
-    let deviceTypeById = ::u.invert(deviceIdByType)
+    local deviceTypeById = ::u.invert(deviceIdByType)
 
-    let hotkeyNames = ::u.keys(hotkeys)
+    local hotkeyNames = ::u.keys(hotkeys)
     hotkeyNames.sort()
     foreach (eventName in hotkeyNames)
     {
-      let hotkeyData = hotkeys[eventName]
+      local hotkeyData = hotkeys[eventName]
 
       foreach (shortcut in hotkeyData)
       {
-        let blkShortcut = ::DataBlock()
+        local blkShortcut = ::DataBlock()
         foreach (button in shortcut)
         {
-          let deviceName = ::getTblValue(button.deviceId, deviceTypeById, null)
+          local deviceName = ::getTblValue(button.deviceId, deviceTypeById, null)
           if (deviceName != null)
             blkShortcut[deviceName] <- button.buttonId
         }
@@ -716,19 +716,19 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!("axes" in blk))
       blk["axes"] = ::DataBlock()
-    let blkAxes = blk["axes"]
+    local blkAxes = blk["axes"]
 
-    let compEnv = {sortList = dataArranging.axisAttrOrder}
-    let axisAttrComporator = dataArranging.comporator.bindenv(compEnv)
+    local compEnv = {sortList = dataArranging.axisAttrOrder}
+    local axisAttrComporator = dataArranging.comporator.bindenv(compEnv)
 
-    let axisNames = ::u.keys(axes)
+    local axisNames = ::u.keys(axes)
     axisNames.sort()
     foreach (axisName in axisNames)
     {
-      let axisData = axes[axisName]
-      let blkAxis = ::DataBlock()
+      local axisData = axes[axisName]
+      local blkAxis = ::DataBlock()
 
-      let attrNames = ::u.keys(axisData)
+      local attrNames = ::u.keys(axisData)
       attrNames.sort(axisAttrComporator)
       foreach (attr in attrNames)
         blkAxis[attr] = axisData[attr]
@@ -742,11 +742,11 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!("params" in blk))
       blk["params"] = ::DataBlock()
-    let blkParams = blk["params"]
+    local blkParams = blk["params"]
 
-    let compEnv = {sortList = dataArranging.paramsOrder}
-    let comporator = dataArranging.comporator.bindenv(compEnv)
-    let paramNames = ::u.keys(params)
+    local compEnv = {sortList = dataArranging.paramsOrder}
+    local comporator = dataArranging.comporator.bindenv(compEnv)
+    local paramNames = ::u.keys(params)
     paramNames.sort(comporator)
     foreach (name in paramNames)
       blkParams[name] <- params[name]
@@ -757,11 +757,11 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   {
     if (!("deviceMapping" in blk))
       blk["deviceMapping"] <- ::DataBlock()
-    let blkJoyMapping = blk["deviceMapping"]
+    local blkJoyMapping = blk["deviceMapping"]
 
     foreach (joystick in deviceMapping)
     {
-      let blkJoystick = ::DataBlock()
+      local blkJoystick = ::DataBlock()
       foreach (attr, value in joystick)
         blkJoystick[attr] = value
       blkJoyMapping["joystick"] <- blkJoystick
@@ -809,7 +809,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     if (deviceId != ::JOYSTICK_DEVICE_0_ID)
       return ::loc(::get_button_name(deviceId, buttonId)) // C++ function
 
-    let buttonLocalized = ::loc("composite/button")
+    local buttonLocalized = ::loc("composite/button")
 
     local name = null
     local connected = false
@@ -840,11 +840,11 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   function getAxisName(axisId)
   {
-    let axisLocalized = ::loc("composite/axis")
+    local axisLocalized = ::loc("composite/axis")
 
     local name = null
     local connected = false
-    let defaultJoystick = ::joystick_get_default() // C++ function
+    local defaultJoystick = ::joystick_get_default() // C++ function
     if (defaultJoystick)
       name = defaultJoystick.getAxisName(axisId)
 
@@ -873,8 +873,8 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
   static function isSameMapping(lhs, rhs)
   {
-    let noValue = {}
-    let deviceMapAttr = [
+    local noValue = {}
+    local deviceMapAttr = [
       "name",
       "devId",
       "buttonsOffset",
@@ -896,7 +896,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
   }
 
   function updateDeviceMapping(newDevices) {
-    let oldDevices = deviceMapping
+    local oldDevices = deviceMapping
     ::dagor.debug($"[CTRL] updating from {oldDevices.len()} to {newDevices.len()} devices")
     ::debugTableData(oldDevices)
     ::debugTableData(newDevices)
@@ -904,9 +904,9 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     if (isSameMapping(oldDevices, newDevices))
       return false // nothing to do
 
-    let totalBindings = { axes = 0, buttons = 0 }
-    let ranges = []
-    let lostDevicesIndexes = []
+    local totalBindings = { axes = 0, buttons = 0 }
+    local ranges = []
+    local lostDevicesIndexes = []
     foreach (oid, old in oldDevices) {
       local found = false
       foreach (idx, new in newDevices) {
@@ -935,7 +935,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     ::dagor.debug($"[CTRL] lost {lostDevicesIndexes.len()} devices")
 
     foreach (i in lostDevicesIndexes) {
-      let old = oldDevices[i.old]
+      local old = oldDevices[i.old]
       ranges.append({
           axes = { from = old.axesOffset, to = totalBindings.axes, count = old.axesCount }
           buttons = { from = old.buttonsOffset, to = totalBindings.buttons, count = old.buttonsCount }
@@ -950,7 +950,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     ::dagor.debug($"[CTRL] updated devices list ({newDevices.len()} devices)")
     ::dagor.debug($"[CTRL] remapping {ranges.len()} ranges")
 
-    let shouldRemap = @(id, m) id >= m.from && id < (m.from + m.count)
+    local shouldRemap = @(id, m) id >= m.from && id < (m.from + m.count)
     foreach (axis in axes) {
       foreach (remap in ranges) {
         if (shouldRemap(axis.axisId, remap.axes)) {
@@ -1006,7 +1006,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
     function getActualBasePresetPaths(presetPath)
     {
-      let indexConfigFolder = presetPath.indexof("config/hotkeys/hotkey")
+      local indexConfigFolder = presetPath.indexof("config/hotkeys/hotkey")
       if (indexConfigFolder == 0)
         presetPath = $"{controlsPresetConfigPath.value}{presetPath}"
 

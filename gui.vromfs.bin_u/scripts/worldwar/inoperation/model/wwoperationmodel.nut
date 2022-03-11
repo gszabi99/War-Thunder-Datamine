@@ -1,6 +1,6 @@
-let airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
-::WwOperationModel <- class
+class ::WwOperationModel
 {
   armies = null
   unitClassFlyoutRange = null

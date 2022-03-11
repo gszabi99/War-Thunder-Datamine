@@ -39,12 +39,12 @@
 
   static function createLayout(params = {})
   {
-    let view = {
+    local view = {
       needContainer = ::getTblValue("needContainer", params, true)
       icon = ::getTblValue("icon", params, ::NewIconWidget.defaultIcon)
       tooltip = ::getTblValue("tooltip", params, "")
     }
-    return ::handyman.renderCached("%gui/newIconWidget", view)
+    return ::handyman.renderCached("gui/newIconWidget", view)
   }
 
   function setContainer(containerObj)
@@ -76,8 +76,8 @@
     if (isValidContainerData())
       return
 
-    let needContainer = _containerObj?.tag != widgetContainerTag
-    let data = createLayout({
+    local needContainer = _containerObj?.tag != widgetContainerTag
+    local data = createLayout({
                                 needContainer = needContainer
                                 icon = icon || defaultIcon
                               })
@@ -114,7 +114,7 @@
 
     if (::check_obj(_textObj))
     {
-      let newText = (currentValue > 0) ? currentValue.tostring() : ""
+      local newText = (currentValue > 0) ? currentValue.tostring() : ""
       if (::check_obj(_containerObj))
       {
          _containerObj.widgetClass = (newText == "") ? "" : "text"
@@ -136,7 +136,7 @@
   {
     if (!::check_obj(_containerObj))
       return null
-    let obj = _containerObj.findObject("new_icon_widget_text")
+    local obj = _containerObj.findObject("new_icon_widget_text")
     if (!::check_obj(obj))
       return null
     return obj
@@ -146,7 +146,7 @@
   {
     if (!::check_obj(_containerObj))
       return null
-    let obj = _containerObj.findObject("new_icon_widget_icon")
+    local obj = _containerObj.findObject("new_icon_widget_icon")
     return ::check_obj(obj) ? obj : null
   }
 
@@ -154,7 +154,7 @@
   {
     if (!::check_obj(obj))
       return null
-    let widget = obj.getUserData()
+    local widget = obj.getUserData()
     if (widget == null)
       return null
     if (widget instanceof NewIconWidget)

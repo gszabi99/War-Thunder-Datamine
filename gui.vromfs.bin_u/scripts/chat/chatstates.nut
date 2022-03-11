@@ -1,9 +1,9 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local xboxChatEnabledCache = null
-let function getXboxChatEnableStatus(needOverlayMessage = false) {
+local function getXboxChatEnableStatus(needOverlayMessage = false) {
   if (!::is_platform_xbox || !::g_login.isLoggedIn())
     return XBOX_COMMUNICATIONS_ALLOWED
 
@@ -12,7 +12,7 @@ let function getXboxChatEnableStatus(needOverlayMessage = false) {
   return xboxChatEnabledCache
 }
 
-let function isChatEnabled(needOverlayMessage = false) {
+local function isChatEnabled(needOverlayMessage = false) {
   if (!::gchat_is_enabled())
     return false
 
@@ -24,12 +24,12 @@ let function isChatEnabled(needOverlayMessage = false) {
   return getXboxChatEnableStatus(needOverlayMessage) != XBOX_COMMUNICATIONS_BLOCKED
 }
 
-let function isCrossNetworkMessageAllowed(playerName) {
+local function isCrossNetworkMessageAllowed(playerName) {
   if (platformModule.isPlayerFromXboxOne(playerName)
       || platformModule.isPlayerFromPS4(playerName))
     return true
 
-  let crossnetStatus = crossplayModule.getCrossNetworkChatStatus()
+  local crossnetStatus = crossplayModule.getCrossNetworkChatStatus()
 
   if (crossnetStatus == XBOX_COMMUNICATIONS_ONLY_FRIENDS
     && (::isPlayerNickInContacts(playerName, ::EPL_FRIENDLIST)
@@ -40,8 +40,8 @@ let function isCrossNetworkMessageAllowed(playerName) {
   return crossnetStatus == XBOX_COMMUNICATIONS_ALLOWED
 }
 
-let function isChatEnableWithPlayer(playerName) { //when you have contact, you can use direct contact.canInteract
-  let contact = ::Contact.getByName(playerName)
+local function isChatEnableWithPlayer(playerName) { //when you have contact, you can use direct contact.canInteract
+  local contact = ::Contact.getByName(playerName)
   if (contact)
     return contact.canChat()
 
@@ -54,8 +54,8 @@ let function isChatEnableWithPlayer(playerName) { //when you have contact, you c
   return isChatEnabled()
 }
 
-let function attemptShowOverlayMessage(playerName, needCheckInvite = false) { //tries to display Xbox overlay message
-  let contact = ::Contact.getByName(playerName)
+local function attemptShowOverlayMessage(playerName, needCheckInvite = false) { //tries to display Xbox overlay message
+  local contact = ::Contact.getByName(playerName)
   if (contact)
   {
     if (needCheckInvite)
@@ -67,11 +67,11 @@ let function attemptShowOverlayMessage(playerName, needCheckInvite = false) { //
     getXboxChatEnableStatus(true)
 }
 
-let function invalidateCache() {
+local function invalidateCache() {
   xboxChatEnabledCache = null
 }
 
-let function canUseVoice() {
+local function canUseVoice() {
   return ::has_feature("Voice") && ::gchat_is_voice_enabled()
 }
 

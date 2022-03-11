@@ -1,16 +1,16 @@
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 
-let time = require("scripts/time.nut")
-let penalty = require("penalty")
-let { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
-let stdMath = require("std/math.nut")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+local time = require("scripts/time.nut")
+local penalty = require("penalty")
+local { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
+local stdMath = require("std/math.nut")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
+local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -69,8 +69,8 @@ foreach (i, v in ::cssColorsMapDark)
 ::getFromSettingsBlk <- function getFromSettingsBlk(path, defVal=null)
 {
   // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
-  let blk = ::get_settings_blk()
-  let val = get_blk_value_by_path(blk, path)
+  local blk = ::get_settings_blk()
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
@@ -109,8 +109,8 @@ foreach (i, v in ::cssColorsMapDark)
   if (!color.len() || text == "")
     return text
 
-  let firstSymbol = color.slice(0, 1)
-  let prefix = (firstSymbol == "@" || firstSymbol == "#") ? "" : "@"
+  local firstSymbol = color.slice(0, 1)
+  local prefix = (firstSymbol == "@" || firstSymbol == "#") ? "" : "@"
   return "".concat("<color=", prefix, color, ">", text, "</color>")
 }
 
@@ -135,16 +135,16 @@ foreach (i, v in ::cssColorsMapDark)
     ::reset_msg_box_check_anim_time()
   }
 
-  let guiScene = ::get_main_gui_scene()
+  local guiScene = ::get_main_gui_scene()
   if (guiScene == null)
     return dagor.debug("guiScene == null")
 
-  let needAnim = ::need_new_msg_box_anim()
-  ::current_wait_screen = guiScene.loadModal("", "%gui/waitBox.blk", needAnim ? "massTransp" : "div", null)
+  local needAnim = ::need_new_msg_box_anim()
+  ::current_wait_screen = guiScene.loadModal("", "gui/waitBox.blk", needAnim ? "massTransp" : "div", null)
   if (!::checkObj(::current_wait_screen))
     return dagor.debug("Error: failed to create wait screen")
 
-  let obj = ::current_wait_screen.findObject("wait_screen_msg")
+  local obj = ::current_wait_screen.findObject("wait_screen_msg")
   if (!::checkObj(obj))
     return dagor.debug("Error: failed to find wait_screen_msg")
 
@@ -159,7 +159,7 @@ foreach (i, v in ::cssColorsMapDark)
   if (!::checkObj(::current_wait_screen))
     return
 
-  let guiScene = ::current_wait_screen.getScene()
+  local guiScene = ::current_wait_screen.getScene()
   guiScene.destroyElement(::current_wait_screen)
   ::current_wait_screen = null
   ::reset_msg_box_check_anim_time()
@@ -179,8 +179,8 @@ foreach (i, v in ::cssColorsMapDark)
 ::on_lost_psn <- function on_lost_psn()
 {
   dagor.debug("on_lost_psn")
-  let guiScene = ::get_gui_scene()
-  let handler = ::current_base_gui_handler
+  local guiScene = ::get_gui_scene()
+  local handler = ::current_base_gui_handler
   if (handler == null)
     return
 
@@ -253,7 +253,7 @@ foreach (i, v in ::cssColorsMapDark)
   local result = ""
   foreach (idx, item in menu_items)
   {
-    let itemView = {}
+    local itemView = {}
     itemView.isFlightMenu <- is_flight_menu
     itemView.name <- ::u.isString(item) ? item : ::getTblValue("name", item, "")
     itemView.buttonId <- "btn_" + itemView.name.tolower()
@@ -272,7 +272,7 @@ foreach (i, v in ::cssColorsMapDark)
         itemView.onClick = "onInactiveItem"
     }
 
-    result += ::handyman.renderCached("%gui/flightMenu/menuButton", itemView)
+    result += ::handyman.renderCached("gui/flightMenu/menuButton", itemView)
   }
   return result
 }
@@ -294,7 +294,7 @@ foreach (i, v in ::cssColorsMapDark)
 {
   if (num < 0)
     num = ::g_squad_manager.getSameCyberCafeMembersNum()
-  let cyberCafeBonusesTable = ::calc_boost_for_squads_members_from_same_cyber_cafe(num)
+  local cyberCafeBonusesTable = ::calc_boost_for_squads_members_from_same_cyber_cafe(num)
   local value = ::getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
@@ -303,28 +303,28 @@ foreach (i, v in ::cssColorsMapDark)
 {
   if (cyberCafeLevel < 0)
     cyberCafeLevel = ::get_cyber_cafe_level()
-  let cyberCafeBonusesTable = ::calc_boost_for_cyber_cafe(cyberCafeLevel)
-  let value = ::getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
+  local cyberCafeBonusesTable = ::calc_boost_for_cyber_cafe(cyberCafeLevel)
+  local value = ::getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
 
 ::get_current_bonuses_text <- function get_current_bonuses_text(effectType)
 {
-  let havePremium = ::havePremium()
-  let tooltipText = []
+  local havePremium = ::havePremium()
+  local tooltipText = []
 
   if (havePremium)
   {
     local rate = ""
     if (effectType == boosterEffectType.WP)
     {
-      let blk = ::get_warpoints_blk()
+      local blk = ::get_warpoints_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
       rate = ::getWpPriceText(::colorize("activeTextColor", rate), true)
     }
     else if (effectType == boosterEffectType.RP)
     {
-      let blk = ::get_ranks_blk()
+      local blk = ::get_ranks_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
       rate = ::getRpPriceText(::colorize("activeTextColor", rate), true)
     }
@@ -347,8 +347,8 @@ foreach (i, v in ::cssColorsMapDark)
     tooltipText.append(::loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + ::loc("ui/colon") + value)
   }
 
-  let boostersArray = getActiveBoostersArray(effectType)
-  let boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
+  local boostersArray = getActiveBoostersArray(effectType)
+  local boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
   if (boostersDescription != "")
     tooltipText.append((havePremium? "\n" : "") + boostersDescription)
 
@@ -361,7 +361,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::add_bg_task_cb <- function add_bg_task_cb(taskId, actionFunc, handler = null)
 {
-  let taskCallback = ::Callback((@(actionFunc, handler) function(result = ::YU2_OK) {
+  local taskCallback = ::Callback((@(actionFunc, handler) function(result = ::YU2_OK) {
     ::call_for_handler(handler, actionFunc)
   })(actionFunc, handler), handler)
   ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
@@ -369,14 +369,14 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::havePremium <- function havePremium()
 {
-  let premAccName = ::shop_get_premium_account_ent_name()
+  local premAccName = ::shop_get_premium_account_ent_name()
   return ::entitlement_expires_in(premAccName) > 0
 }
 
 ::getCountryByAircraftName <- function getCountryByAircraftName(airName) //used in code
 {
-  let country = ::getShopCountry(airName)
-  let cPrefixLen = "country_".len()
+  local country = ::getShopCountry(airName)
+  local cPrefixLen = "country_".len()
   if (country.len() > cPrefixLen)
     return country.slice(cPrefixLen)
   return ""
@@ -384,7 +384,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getShopCountry <- function getShopCountry(airName)
 {
-  let air = ::getAircraftByName(airName)
+  local air = ::getAircraftByName(airName)
   return air?.shopCountry ?? ""
 }
 
@@ -401,7 +401,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::showBtn <- function showBtn(id, status, scene=null)
 {
-  let obj = ::checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
+  local obj = ::checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
   return ::show_obj(obj, status)
 }
 
@@ -412,7 +412,7 @@ foreach (i, v in ::cssColorsMapDark)
 
   foreach(id, status in table)
   {
-    let idObj = obj.findObject(id)
+    local idObj = obj.findObject(id)
     if (::checkObj(idObj))
     {
       if (setInactive)
@@ -442,7 +442,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::is_game_mode_with_spendable_weapons <- function is_game_mode_with_spendable_weapons()
 {
-  let mode = ::get_mp_mode();
+  local mode = ::get_mp_mode();
   return mode == ::GM_DOMINATION || mode == ::GM_TOURNAMENT;
 }
 
@@ -487,7 +487,7 @@ foreach (i, v in ::cssColorsMapDark)
   if (cost.isZero())
     return true
 
-  let balance = ::get_gui_balance()
+  local balance = ::get_gui_balance()
   local text = null
   local isGoldNotEnough = false
   if (cost.wp > 0 && balance.wp < cost.wp)
@@ -504,9 +504,9 @@ foreach (i, v in ::cssColorsMapDark)
   if (silent)
     return false
 
-  let cancelBtnText = ::isInMenu()? "cancel" : "ok"
+  local cancelBtnText = ::isInMenu()? "cancel" : "ok"
   local defButton = cancelBtnText
-  let buttons = [[cancelBtnText, (@(afterCheck) function() {if (afterCheck) afterCheck ();})(afterCheck) ]]
+  local buttons = [[cancelBtnText, (@(afterCheck) function() {if (afterCheck) afterCheck ();})(afterCheck) ]]
   local shopType = ""
   if (isGoldNotEnough && ::has_feature("EnableGoldPurchase"))
     shopType = "eagles"
@@ -515,7 +515,7 @@ foreach (i, v in ::cssColorsMapDark)
 
   if (::isInMenu() && shopType != "")
   {
-    let purchaseBtn = "#mainmenu/btnBuy"
+    local purchaseBtn = "#mainmenu/btnBuy"
     defButton = purchaseBtn
     buttons.insert(0, [purchaseBtn, @() ::OnlineShopModel.launchOnlineShop(null, shopType, afterCheck, "buy_gold_msg")])
   }
@@ -537,7 +537,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getPriceAccordingToPlayersCurrency <- function getPriceAccordingToPlayersCurrency(wpCurrency, eaglesCurrency, colored = true)
 {
-  let cost = ::Cost(wpCurrency, eaglesCurrency)
+  local cost = ::Cost(wpCurrency, eaglesCurrency)
   if (colored)
     return cost.getTextAccordingToBalance()
   return cost.getUncoloredText()
@@ -567,8 +567,8 @@ foreach (i, v in ::cssColorsMapDark)
 {
   if (exp_value == null || exp_value < 0)
     return ""
-  let rpPriceText = exp_value.tostring() + ::loc("currency/researchPoints/sign/colored")
-  let coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
+  local rpPriceText = exp_value.tostring() + ::loc("currency/researchPoints/sign/colored")
+  local coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
   return ::format(::loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
 }
 
@@ -602,7 +602,7 @@ foreach (i, v in ::cssColorsMapDark)
 ::getObjIdByPrefix <- function getObjIdByPrefix(obj, prefix, idProp = "id")
 {
   if (!obj) return null
-  let id = obj?[idProp]
+  local id = obj?[idProp]
   if (!id) return null
 
   return ::g_string.cutPrefix(id, prefix)
@@ -627,7 +627,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::array_to_blk <- function array_to_blk(arr, id)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   if (arr)
     foreach (v in arr)
       blk[id] <- v
@@ -638,13 +638,13 @@ foreach (i, v in ::cssColorsMapDark)
 {
   if (!blk)
     return {}
-  let res = {}
+  local res = {}
   for (local i = 0; i < blk.paramCount(); i++)
     ::buildTableFromBlk_AddElement(res, blk.getParamName(i) || "", blk.getParamValue(i))
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    let block = blk.getBlock(i)
-    let blockTable = ::buildTableFromBlk(block)
+    local block = blk.getBlock(i)
+    local blockTable = ::buildTableFromBlk(block)
     ::buildTableFromBlk_AddElement(res, block.getBlockName() || "", blockTable)
   }
   return res
@@ -652,8 +652,8 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::build_blk_from_container <- function build_blk_from_container(container, arrayKey = "array")
 {
-  let blk = ::DataBlock()
-  let isContainerArray = ::u.isArray(container)
+  local blk = ::DataBlock()
+  local isContainerArray = ::u.isArray(container)
 
   local addValue = ::assign_value_to_blk
   if (isContainerArray)
@@ -662,7 +662,7 @@ foreach (i, v in ::cssColorsMapDark)
   foreach(key, value in container)
   {
     local newValue = value
-    let index = isContainerArray? arrayKey : key.tostring()
+    local index = isContainerArray? arrayKey : key.tostring()
     if (::u.isTable(value) || ::u.isArray(value))
       newValue = ::build_blk_from_container(value, arrayKey)
 
@@ -703,7 +703,7 @@ foreach (i, v in ::cssColorsMapDark)
 ::buildTableRow <- function buildTableRow(rowName, rowData, even=null, trParams="", tablePad="@tblPad")
 {
   //tablePad not using, but passed through many calls of this function
-  let view = {
+  local view = {
     row_id = rowName
     even = even
     trParams = trParams
@@ -712,8 +712,8 @@ foreach (i, v in ::cssColorsMapDark)
 
   foreach(idx, cell in rowData)
   {
-    let haveParams = typeof cell == "table"
-    let config = (haveParams ? cell : {}).__merge({
+    local haveParams = typeof cell == "table"
+    local config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
       id = ::getTblValue("id", cell, "td_" + idx)
@@ -729,7 +729,7 @@ foreach (i, v in ::cssColorsMapDark)
     view.cell.append(config)
   }
 
-  return ::handyman.renderCached("%gui/commonParts/tableRow", view)
+  return ::handyman.renderCached("gui/commonParts/tableRow", view)
 }
 
 ::buildTableRowNoPad <- function buildTableRowNoPad(rowName, rowData, even=null, trParams="")
@@ -778,7 +778,7 @@ foreach (i, v in ::cssColorsMapDark)
     text = isDiscount? "-"+value+"%" : "x" + stdMath.roundToDigits(value, 2)
     if (!tooltip && tooltipLocName!="")
     {
-      let prefix = isDiscount? "discount/" : "bonus/"
+      local prefix = isDiscount? "discount/" : "bonus/"
       tooltip = format(::loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
     }
   }
@@ -811,9 +811,9 @@ foreach (i, v in ::cssColorsMapDark)
   } else
     foreach(a in airName)
     {
-      let aexp = showExp? ::wp_shop_get_aircraft_xp_rate(a) : 1.0
+      local aexp = showExp? ::wp_shop_get_aircraft_xp_rate(a) : 1.0
       if (aexp > exp) exp = aexp
-      let awp = showWp? ::wp_shop_get_aircraft_wp_rate(a) : 1.0
+      local awp = showWp? ::wp_shop_get_aircraft_wp_rate(a) : 1.0
       if (awp > wp) wp = awp
     }
 
@@ -834,11 +834,11 @@ foreach (i, v in ::cssColorsMapDark)
   exp = stdMath.roundToDigits(exp, 2)
   wp = stdMath.roundToDigits(wp, 2)
 
-  let multiplier = exp > wp?  exp : wp
-  let image = getBonusImage(imgType, multiplier, airName==""? "country": "air")
+  local multiplier = exp > wp?  exp : wp
+  local image = getBonusImage(imgType, multiplier, airName==""? "country": "air")
 
   local tooltipText = ""
-  let locEnd = (typeof(airName)=="string")? "/tooltip" : "/group/tooltip"
+  local locEnd = (typeof(airName)=="string")? "/tooltip" : "/group/tooltip"
   if(imgColor != "")
   {
     tooltipText += exp <= 1.0? "" : format(::loc("bonus/" + (imgColor=="wp_exp"? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
@@ -860,7 +860,7 @@ foreach (i, v in ::cssColorsMapDark)
   if ((bType != "item" && bType != "country") || multiplier == 1.0)
     return ""
 
-  let allowingMult = useBy=="country"? ::allowingMultCountry : ::allowingMultAircraft
+  local allowingMult = useBy=="country"? ::allowingMultCountry : ::allowingMultAircraft
 
   multiplier = ::find_max_lower_value(multiplier, allowingMult)
   if (multiplier == null)
@@ -946,7 +946,7 @@ foreach (i, v in ::cssColorsMapDark)
   local i = -1
   while (num > 0 && i++ < ::max_roman_digit)
   {
-    let digit = num % 10
+    local digit = num % 10
     num = num / 10
     roman = ::getTblValue(digit + (i * 10), ::get_roman_numeral_lookup, "") + roman
   }
@@ -963,7 +963,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years)
 {
-  let result = {}
+  local result = {}
   foreach (year in years)
   {
     result["year" + year] <- 0
@@ -982,7 +982,7 @@ foreach (i, v in ::cssColorsMapDark)
     local maxYear = 0
     foreach (year in years)
     {
-      let parameter = "year" + year;
+      local parameter = "year" + year;
       foreach(tag in air.tags)
         if (tag == parameter)
         {
@@ -1016,16 +1016,16 @@ foreach (i, v in ::cssColorsMapDark)
   if(!::checkObj(nest_obj))
     return
 
-  let guiScene = nest_obj.getScene()
-  let paginatorTpl = "%gui/paginator/paginator"
+  local guiScene = nest_obj.getScene()
+  local paginatorTpl = "gui/paginator/paginator"
   local buttonsMid = ""
-  let numButtonText = "button { to_page:t='%s'; text:t='%s'; %s on_click:t='goToPage'; underline{}}"
-  let numPageText = "activeText{ text:t='%s'; %s}"
+  local numButtonText = "button { to_page:t='%s'; text:t='%s'; %s on_click:t='goToPage'; underline{}}"
+  local numPageText = "activeText{ text:t='%s'; %s}"
   local paginatorObj = nest_obj.findObject("paginator_container")
 
   if(!::checkObj(paginatorObj))
   {
-    let paginatorMarkUpData = ::handyman.renderCached(paginatorTpl, {hasSimpleNavButtons = hasSimpleNavButtons})
+    local paginatorMarkUpData = ::handyman.renderCached(paginatorTpl, {hasSimpleNavButtons = hasSimpleNavButtons})
     paginatorObj = guiScene.createElement(nest_obj, "paginator", handler)
     guiScene.replaceContentFromText(paginatorObj, paginatorMarkUpData, paginatorMarkUpData.len(), handler)
   }
@@ -1036,7 +1036,7 @@ foreach (i, v in ::cssColorsMapDark)
   //number of last wisible page
   local lastShowPage = show_last_page ? last_page : min(max(cur_page + 1, 2), last_page)
 
-  let isSinglePage = last_page < 1
+  local isSinglePage = last_page < 1
   paginatorObj.show( ! isSinglePage)
   paginatorObj.enable( ! isSinglePage)
   if(isSinglePage)
@@ -1067,17 +1067,17 @@ foreach (i, v in ::cssColorsMapDark)
   }
 
   guiScene.replaceContentFromText(paginatorObj.findObject("paginator_page_holder"), buttonsMid, buttonsMid.len(), handler)
-  let nextObj = paginatorObj.findObject("pag_next_page")
+  local nextObj = paginatorObj.findObject("pag_next_page")
   nextObj.show(last_page > cur_page)
   nextObj.to_page = min(last_page, cur_page + 1).tostring()
-  let prevObj = paginatorObj.findObject("pag_prew_page")
+  local prevObj = paginatorObj.findObject("pag_prew_page")
   prevObj.show(cur_page > 0)
   prevObj.to_page = max(0, cur_page - 1).tostring()
 }
 
 ::hidePaginator <- function hidePaginator(nestObj)
 {
-  let paginatorObj = nestObj.findObject("paginator_container")
+  local paginatorObj = nestObj.findObject("paginator_container")
   if(!paginatorObj)
     return
   paginatorObj.show(false)
@@ -1086,14 +1086,14 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::paginator_set_unseen <- function paginator_set_unseen(nestObj, prevUnseen, nextUnseen)
 {
-  let paginatorObj = nestObj.findObject("paginator_container")
+  local paginatorObj = nestObj.findObject("paginator_container")
   if (!::check_obj(paginatorObj))
     return
 
-  let prevObj = paginatorObj.findObject("pag_prew_page_unseen")
+  local prevObj = paginatorObj.findObject("pag_prew_page_unseen")
   if (prevObj)
     prevObj.setValue(prevUnseen || "")
-  let nextObj = paginatorObj.findObject("pag_next_page_unseen")
+  local nextObj = paginatorObj.findObject("pag_next_page_unseen")
   if (nextObj)
     nextObj.setValue(nextUnseen || "")
 }
@@ -1105,7 +1105,7 @@ foreach (i, v in ::cssColorsMapDark)
 
   if (message == "sync_clan_vs_profile")
   {
-    let taskId = ::clan_request_sync_profile()
+    local taskId = ::clan_request_sync_profile()
     ::add_bg_task_cb(taskId, function(){
       ::requestMyClanData(true)
       update_gamercards()
@@ -1114,16 +1114,16 @@ foreach (i, v in ::cssColorsMapDark)
   else if (message == "clan_info_reload")
   {
     ::requestMyClanData(true)
-    let myClanId = ::clan_get_my_clan_id()
+    local myClanId = ::clan_get_my_clan_id()
     if(myClanId == "-1")
       ::sync_handler_simulate_request(message)
   }
   else if (message == "profile_reload")
   {
-    let oldPenaltyStatus = penalty.getPenaltyStatus()
-    let taskId = ::chard_request_profile()
+    local oldPenaltyStatus = penalty.getPenaltyStatus()
+    local taskId = ::chard_request_profile()
     ::add_bg_task_cb(taskId, (@(oldPenaltyStatus) function() {
-      let  newPenaltyStatus = penalty.getPenaltyStatus()
+      local  newPenaltyStatus = penalty.getPenaltyStatus()
       if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
         ::broadcastEvent("PlayerPenaltyStatusChanged", {status = newPenaltyStatus.status})
     })(oldPenaltyStatus))
@@ -1132,7 +1132,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getValueForMode <- function getValueForMode(optionsMode, oType)
 {
-  let mainOptionsMode = getGuiOptionsMode()
+  local mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(optionsMode)
   local value = get_option(oType)
   value = value.values[value.value]
@@ -1142,7 +1142,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::startCreateWndByGamemode <- function startCreateWndByGamemode(handler, obj)
 {
-  let gm = ::match_search_gm
+  local gm = ::match_search_gm
   if (gm == ::GM_EVENT)
     ::gui_start_briefing()
   else if (gm == ::GM_DYNAMIC)
@@ -1169,7 +1169,7 @@ foreach (i, v in ::cssColorsMapDark)
     ::gui_start_dynamic_layouts()
   }
   //may be not actual with current hndler managment system
-  //handler.guiScene.initCursor("%gui/cursor.blk", "normal")
+  //handler.guiScene.initCursor("gui/cursor.blk", "normal")
   ::update_gamercards()
 }
 
@@ -1179,7 +1179,7 @@ foreach (i, v in ::cssColorsMapDark)
     return
 
   handler.checkedNewFlight((@(handler, gm) function() {
-    let tbl = ::build_check_table(null, gm)
+    local tbl = ::build_check_table(null, gm)
     tbl.silent <- false
     if (::checkAllowed.bindenv(handler)(tbl))
     {
@@ -1203,7 +1203,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::flushExcessExpToUnit <- function flushExcessExpToUnit(unit)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.setStr("unit", unit)
 
   return ::char_send_blk("cln_move_exp_to_unit", blk)
@@ -1211,7 +1211,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::flushExcessExpToModule <- function flushExcessExpToModule(unit, module)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.setStr("unit", unit)
   blk.setStr("mod", module)
 
@@ -1229,18 +1229,18 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getSystemConfigOption <- function getSystemConfigOption(path, defVal=null)
 {
-  let filename = ::get_config_blk_paths().read
+  local filename = ::get_config_blk_paths().read
   if (!filename) return defVal
-  let blk = blkOptFromPath(filename)
-  let val = get_blk_value_by_path(blk, path)
+  local blk = blkOptFromPath(filename)
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
 ::setSystemConfigOption <- function setSystemConfigOption(path, val)
 {
-  let filename = ::get_config_blk_paths().write
+  local filename = ::get_config_blk_paths().write
   if (!filename) return
-  let blk = blkOptFromPath(filename)
+  local blk = blkOptFromPath(filename)
   if (set_blk_value_by_path(blk, path, val))
     blk.saveToTextFile(filename)
 }
@@ -1262,7 +1262,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::get_array_by_bit_value <- function get_array_by_bit_value(bitValue, values)
 {
-  let res = []
+  local res = []
   foreach(i, val in values)
     if (bitValue & (1 << i))
       res.append(val)
@@ -1290,7 +1290,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::is_chinese_version <- function is_chinese_version()
 {
-  let language = ::get_current_language()
+  local language = ::get_current_language()
   return language == "Chinese"
     || language == "TChinese"
     || language == "Korean"
@@ -1328,7 +1328,7 @@ foreach (i, v in ::cssColorsMapDark)
   local bestDist = fabs(arrayOfVal[0] - val);
   for (local i = 1; i < arrayOfVal.len(); i++)
   {
-    let dist = fabs(arrayOfVal[i] - val);
+    local dist = fabs(arrayOfVal[i] - val);
     if (dist < bestDist)
     {
       bestDist = dist;
@@ -1345,28 +1345,28 @@ foreach (i, v in ::cssColorsMapDark)
       !::has_feature("SpendGold"))
     return
 
-  let currDays = time.getUtcDays()
-  let premAccName = ::shop_get_premium_account_ent_name()
-  let expire = ::entitlement_expires_in(premAccName)
+  local currDays = time.getUtcDays()
+  local premAccName = ::shop_get_premium_account_ent_name()
+  local expire = ::entitlement_expires_in(premAccName)
   if (expire > 0)
     ::saveLocalByAccount("premium/lastDayHavePremium", currDays)
   if (expire >= NOTIFY_EXPIRE_PREMIUM_ACCOUNT)
     return
 
-  let lastDaysReminder = ::loadLocalByAccount("premium/lastDayBuyPremiumReminder", 0)
+  local lastDaysReminder = ::loadLocalByAccount("premium/lastDayBuyPremiumReminder", 0)
   if (lastDaysReminder == currDays)
     return
 
-  let lastDaysHavePremium = ::loadLocalByAccount("premium/lastDayHavePremium", 0)
+  local lastDaysHavePremium = ::loadLocalByAccount("premium/lastDayHavePremium", 0)
   local msgText = ""
   if (expire > 0)
     msgText = ::loc("msgbox/ending_premium_account")
   else if (lastDaysHavePremium != 0)
   {
-    let deltaDaysReminder = currDays - lastDaysReminder
-    let deltaDaysHavePremium = currDays - lastDaysHavePremium
-    let gmBlk = ::get_game_settings_blk()
-    let daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
+    local deltaDaysReminder = currDays - lastDaysReminder
+    local deltaDaysHavePremium = currDays - lastDaysHavePremium
+    local gmBlk = ::get_game_settings_blk()
+    local daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
     if (2 * deltaDaysReminder >= deltaDaysHavePremium || deltaDaysReminder >= daysCounter)
       msgText = ::loc("msgbox/ended_premium_account")
   }
@@ -1388,7 +1388,7 @@ foreach (i, v in ::cssColorsMapDark)
 {
   if (::informTexQualityRestrictedDone)
     return
-  let message = ::loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
+  local message = ::loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
     name =  ::colorize("userlogColoredText", ::loc("options/texQuality"))
     value = ::colorize("userlogColoredText", ::loc("options/quality_medium"))
   })
@@ -1403,7 +1403,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::unlockCrew <- function unlockCrew(crewId, byGold, cost)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk["crew"] = crewId
   blk["gold"] = byGold
   blk["cost"] = cost?.wp ?? 0
@@ -1452,7 +1452,7 @@ foreach (i, v in ::cssColorsMapDark)
   if (!::checkObj(scene))
     return false
 
-  let serverMessageObject = scene.findObject("server_message")
+  local serverMessageObject = scene.findObject("server_message")
   if (!::checkObj(serverMessageObject))
     return false
 
@@ -1472,9 +1472,9 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::getArrayFromInt <- function getArrayFromInt(intNum)
 {
-  let arr = []
+  local arr = []
   do {
-    let div = intNum % 10
+    local div = intNum % 10
     arr.append(div)
     intNum = ::floor(intNum/10).tointeger()
   } while(intNum != 0)
@@ -1518,7 +1518,7 @@ foreach (i, v in ::cssColorsMapDark)
     obj = scene.findObject(name)
   else
   {
-    let guiScene = ::get_cur_gui_scene()
+    local guiScene = ::get_cur_gui_scene()
     if (guiScene != null)
       obj = guiScene[name]
   }
@@ -1529,7 +1529,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 ::gen_rnd_password <- function gen_rnd_password(charsAmount)
 {
   local res = ""
-  let total = PASSWORD_SYMBOLS.len()
+  local total = PASSWORD_SYMBOLS.len()
   for(local i = 0; i < charsAmount; i++)
     res += PASSWORD_SYMBOLS[::math.rnd() % total].tochar()
   return res
@@ -1578,7 +1578,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   {
     if (unitNameLoc == "")
     {
-      let unitId = player.aircraftName
+      local unitId = player.aircraftName
       if (unitId != "")
         unitNameLoc = ::loc(unitId + "_1")
     }
@@ -1586,8 +1586,8 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
       unitName = ::loc("ui/parentheses", {text = unitNameLoc})
   }
 
-  let clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
-  let name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : getPlayerName(player.name),
+  local clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
+  local name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : getPlayerName(player.name),
                                               clanTag,
                                               unitName)
 
@@ -1607,8 +1607,8 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     return
   }
 
-  let title = ::loc("gblk/saveError/title")
-  let msg = ::loc(::format("gblk/saveError/text/%d", errCode), {path=path})
+  local title = ::loc("gblk/saveError/title")
+  local msg = ::loc(::format("gblk/saveError/text/%d", errCode), {path=path})
   ::g_popups.add(title, msg, null, [{id="copy_button",
                               text=::loc("gblk/saveError/copy"),
                               func=(@(msg) function() {::copy_to_clipboard(msg)})(msg)}])
@@ -1619,10 +1619,10 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   if (!::g_login.isLoggedIn())
     return
 
-  let total = ::delayed_gblk_error_popups.len()
+  local total = ::delayed_gblk_error_popups.len()
   for(local i = 0; i < total; i++)
   {
-    let data = ::delayed_gblk_error_popups[i]
+    local data = ::delayed_gblk_error_popups[i]
     ::show_gblk_error_popup(data.type, data.path)
   }
   ::delayed_gblk_error_popups.clear()
@@ -1633,7 +1633,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   if (!::checkObj(obj))
     return null
 
-  let size = obj.getSize()
+  local size = obj.getSize()
   if (size[0] < 0)
     return null  //not inited
   return {
@@ -1645,7 +1645,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::destroy_session_scripted <- function destroy_session_scripted()
 {
-  let needEvent = ::is_mplayer_peer()
+  local needEvent = ::is_mplayer_peer()
   ::destroy_session()
   if (needEvent)
     //need delay after destroy session before is_multiplayer become false

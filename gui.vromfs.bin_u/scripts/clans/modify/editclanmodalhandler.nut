@@ -1,7 +1,7 @@
-let time = require("scripts/time.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local time = require("scripts/time.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-::gui_handlers.EditClanModalhandler <- class extends ::gui_handlers.ModifyClanModalHandler
+class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModalHandler
 {
   owner = null
 
@@ -35,12 +35,12 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
     scene.findObject("newclan_description").setValue(clanData.desc)
     scene.findObject("newclan_announcement").setValue(clanData.announcement)
 
-    let regionEditBoxObj = scene.findObject("newclan_region")
+    local regionEditBoxObj = scene.findObject("newclan_region")
     regionEditBoxObj.setValue(clanData.region)
     if (!clanData.isRegionChangeAvailable())
     {
-      let regionChangeTime = clanData.getRegionChangeAvailableTime()
-      let regionChangeTimeText = ::loc(
+      local regionChangeTime = clanData.getRegionChangeAvailableTime()
+      local regionChangeTimeText = ::loc(
         "clan/clan_can_change_region_in",
         {time = time.buildDateTimeStr(regionChangeTime)}
       )
@@ -48,7 +48,7 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
       regionEditBoxObj.enable(false)
     }
 
-    let clanNameObj = scene.findObject("newclan_name")
+    local clanNameObj = scene.findObject("newclan_name")
     clanNameObj.setValue(clanData.name)
 
     ::select_editbox(clanNameObj)
@@ -61,7 +61,7 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
     if (isObsceneWord())
       return
 
-    let editParams = ::g_clans.prepareEditRequest(
+    local editParams = ::g_clans.prepareEditRequest(
       newClanType,
       newClanName != clanData.name ? newClanName : null,
       newClanTag != clanData.tag ? newClanTag : null,
@@ -70,7 +70,7 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
       newClanAnnouncement != clanData.announcement ? newClanAnnouncement : null,
       newClanRegion != clanData.region ? newClanRegion : null
     )
-    let clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
+    local clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
     ::g_clans.editClan(clanId, editParams, this)
   }
 
@@ -83,8 +83,8 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
 
   function isPrimaryInfoChangeFree()
   {
-    let decorators = getDecoratorsList()
-    let currentDecorator = decorators[newClanTagDecoration]
+    local decorators = getDecoratorsList()
+    local currentDecorator = decorators[newClanTagDecoration]
     if (newClanTag != clanData.lastPaidTag)
     {
       if (::g_clans.stripClanTagDecorators(newClanTag) != ::g_clans.stripClanTagDecorators(clanData.tag) || !currentDecorator.free)
@@ -129,9 +129,9 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
   // Override.
   function updateSubmitButtonText()
   {
-    let changedPrimary = hasChangedPrimaryInfo()
-    let changedSecondary = hasChangedSecondaryInfo()
-    let cost = getCost(changedPrimary, changedSecondary)
+    local changedPrimary = hasChangedPrimaryInfo()
+    local changedSecondary = hasChangedSecondaryInfo()
+    local cost = getCost(changedPrimary, changedSecondary)
     setSubmitButtonText(::loc("clan/btnSaveClanInfo"), cost)
   }
 
@@ -139,21 +139,21 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
   {
     if(!prepareClanData(true))
       return
-    let changedPrimary = hasChangedPrimaryInfo()
-    let changedSecondary = hasChangedSecondaryInfo()
+    local changedPrimary = hasChangedPrimaryInfo()
+    local changedSecondary = hasChangedSecondaryInfo()
     if (!changedPrimary && !changedSecondary)
       return goBack()
 
-    let cost = getCost( changedPrimary, changedSecondary )
+    local cost = getCost( changedPrimary, changedSecondary )
 
     if (cost <= ::zero_money)
       editClanInfo()
     else if (::check_balance_msgBox(cost))
     {
-      let text = changedPrimary && newClanType.getPrimaryInfoChangeCost() > ::zero_money
+      local text = changedPrimary && newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
-      let msgText = ::warningIfGold(::format(::loc(text), cost.getTextAccordingToBalance()), cost)
+      local msgText = ::warningIfGold(::format(::loc(text), cost.getTextAccordingToBalance()), cost)
       msgBox("need_money", msgText, [["ok", function() { editClanInfo() }],
         ["cancel"]], "ok")
     }
@@ -178,17 +178,17 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
 
   function updateButtons()
   {
-    let canUpgrade = clanData.clanType.canUpgradeMembers(clanData.mlimit)
-    let haveLeaderRight = isInArray("LEADER", myRights)
+    local canUpgrade = clanData.clanType.canUpgradeMembers(clanData.mlimit)
+    local haveLeaderRight = isInArray("LEADER", myRights)
 
-    let upgradeMembersButtonVisible = ::has_feature("ClanUpgradeMembers") &&
+    local upgradeMembersButtonVisible = ::has_feature("ClanUpgradeMembers") &&
                           ((isMyClan && haveLeaderRight) || adminMode) &&
                           canUpgrade
 
     if (upgradeMembersButtonVisible)
     {
-      let cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
-      let upgStep = clanData.clanType.getMembersUpgradeStep()
+      local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
+      local upgStep = clanData.clanType.getMembersUpgradeStep()
       placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
     }
 
@@ -199,11 +199,11 @@ let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut
   // Override
   function onUpgradeMembers()
   {
-    let cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
+    local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.clanType.getMembersUpgradeCost(clanData.mlimit)
     if (::check_balance_msgBox(cost))
     {
-      let step = clanData.clanType.getMembersUpgradeStep()
-      let msgText = ::warningIfGold(::loc("clan/needMoneyQuestion_upgradeMembers",
+      local step = clanData.clanType.getMembersUpgradeStep()
+      local msgText = ::warningIfGold(::loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
             cost = cost.getTextAccordingToBalance()
           }),

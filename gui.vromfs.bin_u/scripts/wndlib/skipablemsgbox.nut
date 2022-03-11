@@ -1,9 +1,9 @@
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/weaponry/skipableMsgBox.blk"
+  sceneBlkName = "gui/weaponry/skipableMsgBox.blk"
 
   parentHandler = null
   onStartPressed = null
@@ -21,19 +21,19 @@ let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut"
   {
     updateSkipCheckBox()
 
-    let msgTextObj = scene.findObject("msgText")
+    local msgTextObj = scene.findObject("msgText")
     if (::check_obj(msgTextObj))
       msgTextObj.setValue(message)
 
-    let listTextObj = scene.findObject("listText")
+    local listTextObj = scene.findObject("listText")
     if (::check_obj(listTextObj))
       listTextObj.setValue(list)
 
-    let btnSelectObj = scene.findObject("btn_select")
+    local btnSelectObj = scene.findObject("btn_select")
     if (::check_obj(btnSelectObj))
       btnSelectObj.show(ableToStartAndSkip)
 
-    let btnCancelObj = scene.findObject("btn_cancel")
+    local btnCancelObj = scene.findObject("btn_cancel")
     if(::check_obj(btnCancelObj))
       btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
@@ -43,7 +43,7 @@ let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut"
 
   function updateSkipCheckBox()
   {
-    let skipObj = scene.findObject("skip_this")
+    local skipObj = scene.findObject("skip_this")
     if (::check_obj(skipObj))
     {
       skipObj.show(ableToStartAndSkip && skipFunc)

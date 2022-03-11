@@ -1,18 +1,18 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 
-let aeroSmokesList    = persist("aeroSmokesList", @() ::Watched([]))
-let buyableSmokesList = persist("buyableSmokesList", @() ::Watched([]))
+local aeroSmokesList    = persist("aeroSmokesList", @() ::Watched([]))
+local buyableSmokesList = persist("buyableSmokesList", @() ::Watched([]))
 
-let function updateAeroSmokeList() {
-  let blk = ::DataBlock()
+local function updateAeroSmokeList() {
+  local blk = ::DataBlock()
   blk.setFrom(blkFromPath("config/fx.blk")?.aerobatics_smoke_fxs)
   if (!blk)
     return
 
-  let locations = ["tail", "leftwing", "rightwing"]
-  let smokeList = (blk % "smoke_fx").map(function(inst) {
-    let res = ::DataBlock()
+  local locations = ["tail", "leftwing", "rightwing"]
+  local smokeList = (blk % "smoke_fx").map(function(inst) {
+    local res = ::DataBlock()
     res.setFrom(inst)
     res.locOrd <- -1          // Sort order by location
     foreach (idx, p in locations)
@@ -21,7 +21,7 @@ let function updateAeroSmokeList() {
     return res
   })
 
-  let rarityTypes = {bronze = 0, silver = 1, gold = 2}
+  local rarityTypes = {bronze = 0, silver = 1, gold = 2}
   smokeList.sort(@(a, b)
       (rarityTypes?[a?.rarity] ?? -1) <=> (rarityTypes?[b?.rarity] ?? -1)
         || a.locOrd <=> b.locOrd)
@@ -29,8 +29,8 @@ let function updateAeroSmokeList() {
   aeroSmokesList(smokeList)
 }
 
-let function updateBuyableSmokesList() {
-  let res = []
+local function updateBuyableSmokesList() {
+  local res = []
   foreach(inst in aeroSmokesList.value)
   {
     if (!inst?.unlockId)

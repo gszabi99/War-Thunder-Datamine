@@ -1,24 +1,24 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
-let MIN_SAVE_TIMEOUT = 5000
-let MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
+local SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
+local MIN_SAVE_TIMEOUT = 5000
+local MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
 local nextAllowedSaveTime = 0
-let saveTask = persist("saveTask", @() { value = -1 })
+local saveTask = persist("saveTask", @() { value = -1 })
 local isSaveDelayed = false
 
-let log = @(txt) dagor.debug($"SAVE_PROFILE: {txt}")
+local log = @(txt) dagor.debug($"SAVE_PROFILE: {txt}")
 
-let function clearSaveTask() {
+local function clearSaveTask() {
   ::periodic_task_unregister(saveTask.value)
   saveTask.value = -1
 }
 if (saveTask.value != -1)
   clearSaveTask()
 
-let function startSaveTimer(timeout) {
-  let timeToUpdate = ::dagor.getCurTime() + timeout
+local function startSaveTimer(timeout) {
+  local timeToUpdate = ::dagor.getCurTime() + timeout
   if (saveTask.value >= 0) {
     if (nextAllowedSaveTime <= timeToUpdate)
       return
@@ -27,7 +27,7 @@ let function startSaveTimer(timeout) {
 
   log($"Schedule profile save after {timeout / 1000} sec")
   nextAllowedSaveTime = timeToUpdate
-  let isProfileReceived = ::g_login.isProfileReceived()
+  local isProfileReceived = ::g_login.isProfileReceived()
   saveTask.value = ::periodic_task_register({},
     function(_) {
       clearSaveTask()
@@ -50,11 +50,11 @@ let function startSaveTimer(timeout) {
     ::ceil(0.001 * timeout).tointeger())
 }
 
-let function forceSaveProfile() {
+local function forceSaveProfile() {
   startSaveTimer(::g_login.isProfileReceived() ? MIN_SAVE_TIMEOUT : MIN_SAVE_TIMEOUT_NOT_LOGGED)
 }
 
-let function saveProfile() {
+local function saveProfile() {
   startSaveTimer(SAVE_TIMEOUT)
 }
 

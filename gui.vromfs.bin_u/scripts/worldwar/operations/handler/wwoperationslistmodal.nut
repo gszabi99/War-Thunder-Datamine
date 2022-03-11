@@ -1,10 +1,10 @@
 local { getOperationById, getOperationGroupByMapId
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
+  sceneBlkName   = "gui/worldWar/wwOperationsListModal.blk"
 
   map = null
   isDescrOnly = false
@@ -31,7 +31,7 @@ local { getOperationById, getOperationGroupByMapId
 
   function getSortedOperationsData()
   {
-    let opDataList = ::u.map(getOpGroup().getOperationsList(),
+    local opDataList = ::u.map(getOpGroup().getOperationsList(),
                                function(o) { return { operation = o, priority = o.getPriority() } })
 
     opDataList.sort(
@@ -47,18 +47,18 @@ local { getOperationById, getOperationGroupByMapId
     if (isDescrOnly)
       return null
 
-    let sortedOperationsDataList = getSortedOperationsData()
+    local sortedOperationsDataList = getSortedOperationsData()
     if (!sortedOperationsDataList.len())
       return null
 
-    let view = { items = [] }
+    local view = { items = [] }
     local isActiveChapterAdded = false
     local isFinishedChapterAdded = false
     foreach (idx, opData in sortedOperationsDataList)
     {
-      let operation = opData.operation
-      let isAvailableToJoin = operation.isAvailableToJoin()
-      let itemColor = isAvailableToJoin ? "activeTextColor" : "commonTextColor"
+      local operation = opData.operation
+      local isAvailableToJoin = operation.isAvailableToJoin()
+      local itemColor = isAvailableToJoin ? "activeTextColor" : "commonTextColor"
       if (isAvailableToJoin)
       {
         if (!isActiveChapterAdded)
@@ -105,11 +105,11 @@ local { getOperationById, getOperationGroupByMapId
 
   function fillOperationList()
   {
-    let view = getOperationsListView()
-    let isOperationListVisible = view != null
+    local view = getOperationsListView()
+    local isOperationListVisible = view != null
     showSceneBtn("chapter_place", isOperationListVisible)
     showSceneBtn("separator_line", isOperationListVisible)
-    let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList", view)
+    local data = ::handyman.renderCached("gui/worldWar/wwOperationsMapsItemsList", view)
     guiScene.replaceContentFromText(opListObj, data, data.len(), this)
 
     selectFirstItem(opListObj)
@@ -119,7 +119,7 @@ local { getOperationById, getOperationGroupByMapId
   {
     for (local i = 0; i < containerObj.childrenCount(); i++)
     {
-      let itemObj = containerObj.getChild(i)
+      local itemObj = containerObj.getChild(i)
       if (!itemObj?.collapse_header && itemObj.isEnabled())
       {
         selOperation = null //force refresh description
@@ -132,18 +132,18 @@ local { getOperationById, getOperationGroupByMapId
 
   function refreshSelOperation()
   {
-    let idx = opListObj.getValue()
+    local idx = opListObj.getValue()
     if (idx < 0 || idx >= opListObj.childrenCount())
       return false
-    let opObj = opListObj.getChild(idx)
+    local opObj = opListObj.getChild(idx)
     if(!::checkObj(opObj))
       return false
 
-    let newOperation = opObj?.collapse_header ? null
+    local newOperation = opObj?.collapse_header ? null
       : getOperationById(::to_integer_safe(opObj?.id))
     if (newOperation == selOperation)
       return false
-    let isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)
+    local isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)
     selOperation = newOperation
     return isChanged
   }
@@ -153,35 +153,35 @@ local { getOperationById, getOperationGroupByMapId
     if (!::check_obj(obj))
       return
 
-    let headerObj = obj.getParent()
+    local headerObj = obj.getParent()
     if (::check_obj(headerObj))
       doCollapse(headerObj)
   }
 
   function onCollapsedChapter()
   {
-    let rowObj = opListObj.getChild(opListObj.getValue())
+    local rowObj = opListObj.getChild(opListObj.getValue())
     if (::check_obj(rowObj))
       doCollapse(rowObj)
   }
 
   function doCollapse(obj)
   {
-    let containerObj = obj.getParent()
+    local containerObj = obj.getParent()
     if (!::check_obj(containerObj))
       return
 
     obj.collapsing = "yes"
 
-    let containerLen = containerObj.childrenCount()
+    local containerLen = containerObj.childrenCount()
     local isHeaderFound = false
-    let isShow = obj?.collapsed == "yes"
-    let selectIdx = containerObj.getValue()
+    local isShow = obj?.collapsed == "yes"
+    local selectIdx = containerObj.getValue()
     local needReselect = false
 
     for (local i = 0; i < containerLen; i++)
     {
-      let itemObj = containerObj.getChild(i)
+      local itemObj = containerObj.getChild(i)
       if (!isHeaderFound)
       {
         if (itemObj?.collapsing == "yes")
@@ -202,7 +202,7 @@ local { getOperationById, getOperationGroupByMapId
       }
     }
 
-    let selectedObj = containerObj.getChild(containerObj.getValue())
+    local selectedObj = containerObj.getChild(containerObj.getValue())
     if (needReselect || (::check_obj(selectedObj) && !selectedObj.isVisible()))
       selectFirstItem(containerObj)
 
@@ -230,7 +230,7 @@ local { getOperationById, getOperationGroupByMapId
 
   function updateTitle()
   {
-    let titleObj = scene.findObject("wnd_title")
+    local titleObj = scene.findObject("wnd_title")
     if (!::check_obj(titleObj))
       return
 
@@ -243,7 +243,7 @@ local { getOperationById, getOperationGroupByMapId
     if (descHandlerWeak)
       return descHandlerWeak.setDescItem(selOperation)
 
-    let handler = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), selOperation, map)
+    local handler = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), selOperation, map)
     descHandlerWeak = handler.weakref()
     registerSubHandler(handler)
   }
@@ -254,18 +254,18 @@ local { getOperationById, getOperationGroupByMapId
 
     if (!selOperation)
     {
-      let isListEmpty = opListObj.getValue() < 0
-      let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
+      local isListEmpty = opListObj.getValue() < 0
+      local collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
       if (!isListEmpty && collapsedChapterBtnObj != null)
       {
-        let rowObj = opListObj.getChild(opListObj.getValue())
+        local rowObj = opListObj.getChild(opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
             ? ::loc("mainmenu/btnExpand")
             : ::loc("mainmenu/btnCollapse"))
       }
 
-      let operationDescText = scene.findObject("operation_short_info_text")
+      local operationDescText = scene.findObject("operation_short_info_text")
       operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
         ? ::loc("worldwar/msg/noActiveOperations")
         : "" )
@@ -274,18 +274,18 @@ local { getOperationById, getOperationGroupByMapId
 
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
-      let cantJoinReasonData = selOperation.getCantJoinReasonDataBySide(side)
+      local cantJoinReasonData = selOperation.getCantJoinReasonDataBySide(side)
 
-      let sideName = ::ww_side_val_to_name(side)
-      let joinBtn = scene.findObject("btn_join_" + sideName)
+      local sideName = ::ww_side_val_to_name(side)
+      local joinBtn = scene.findObject("btn_join_" + sideName)
       joinBtn.inactiveColor = cantJoinReasonData.canJoin ? "no" : "yes"
       joinBtn.findObject("is_clan_participate_img").show(selOperation.isMyClanSide(side))
 
-      let joinBtnFlagsObj = joinBtn.findObject("side_countries")
+      local joinBtnFlagsObj = joinBtn.findObject("side_countries")
       if (::checkObj(joinBtnFlagsObj))
       {
-        let wwMap = selOperation.getMap()
-        let markUpData = wwMap.getCountriesViewBySide(side, false)
+        local wwMap = selOperation.getMap()
+        local markUpData = wwMap.getCountriesViewBySide(side, false)
         guiScene.replaceContentFromText(joinBtnFlagsObj, markUpData, markUpData.len(), this)
       }
     }
@@ -314,7 +314,7 @@ local { getOperationById, getOperationGroupByMapId
     if (isOperationJoining)
       return
 
-    let reasonData = selOperation.getCantJoinReasonDataBySide(side)
+    local reasonData = selOperation.getCantJoinReasonDataBySide(side)
     if (reasonData.canJoin)
     {
       isOperationJoining = true

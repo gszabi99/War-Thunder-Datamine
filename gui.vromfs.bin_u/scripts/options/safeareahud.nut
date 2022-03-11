@@ -1,12 +1,12 @@
-let screenInfo = require("scripts/options/screenInfo.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let sony = require("sony")
-let { is_stereo_mode } = ::require_native("vr")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local sony = require("sony")
+local { is_stereo_mode } = ::require_native("vr")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
-let defValue  = 1.0
-let values    = [1.0, 0.95, 0.9, 0.85]
-let items     = ["100%", "95%", "90%", "85%"]
+local defValue  = 1.0
+local values    = [1.0, 0.95, 0.9, 0.85]
+local items     = ["100%", "95%", "90%", "85%"]
 if (::is_platform_xbox)
 {
   //::xbox_get_safe_area() returns max of it's size is 0.89
@@ -22,15 +22,15 @@ if (::is_platform_xbox)
 }
 
 
-let getFixedValue = @() //return -1 when not fixed
+local getFixedValue = @() //return -1 when not fixed
   is_stereo_mode() ? 1.0
   : isPlatformSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9
   : -1
 
-let getValue = function()
+local getValue = function()
 {
-  let value = getFixedValue()
+  local value = getFixedValue()
   if (value != -1)
     return value
 
@@ -50,7 +50,7 @@ local setValue = function(value)
   ::set_gui_option_in_mode(::USEROPT_HUD_SCREEN_SAFE_AREA, value, ::OPTIONS_MODE_GAMEPLAY)
 }
 
-let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getHudWidthLimit())
+local getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getHudWidthLimit())
 
 ::cross_call_api.getHudSafearea <- getSafearea
 

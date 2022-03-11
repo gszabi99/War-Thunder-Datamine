@@ -1,11 +1,11 @@
-let { getPlayerName } = require("scripts/clientState/platform.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
 {
   if (!::clan_get_admin_editor_mode())
   {
-    let myClanRights = ::g_clans.getMyClanRights()
-    let leadersCount = ::g_clans.getLeadersCount(clanData)
+    local myClanRights = ::g_clans.getMyClanRights()
+    local leadersCount = ::g_clans.getLeadersCount(clanData)
     if (contact.name == ::my_user_name
         && ::isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
@@ -26,10 +26,10 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
     })
 }
 
-::gui_handlers.clanChangeRoleModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanChangeRoleModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/clans/clanChangeRoleWindow.blk"
+  sceneBlkName = "gui/clans/clanChangeRoleWindow.blk"
   changeRolePlayer = null
   roles = []
   adminMode = false
@@ -40,20 +40,20 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
     roles = [];
     adminMode = ::clan_get_admin_editor_mode()
     local roleOptions = "";
-    let roleListObj = scene.findObject("change_role_list");
-    let titleObj = scene.findObject("title_text");
-    let myRole = adminMode? ::ECMR_CLANADMIN : ::clan_get_my_role()
-    let myRank = ::clan_get_role_rank(myRole)
+    local roleListObj = scene.findObject("change_role_list");
+    local titleObj = scene.findObject("title_text");
+    local myRole = adminMode? ::ECMR_CLANADMIN : ::clan_get_my_role()
+    local myRank = ::clan_get_role_rank(myRole)
 
     if (::check_obj(titleObj))
       titleObj.setValue("{0} {1}".subst(::loc("clan/changeRoleTitle"), getPlayerName(changeRolePlayer.name)))
 
     for (local role = 0; role<::ECMR_MAX_TOTAL; role++)
     {
-       let roleName = ::clan_get_role_name(role);
+       local roleName = ::clan_get_role_name(role);
        if (!roleName)
          continue;
-       let rank = ::clan_get_role_rank(role);
+       local rank = ::clan_get_role_rank(role);
        if (rank != 0 && (role != ::ECMR_LEADER || adminMode)
            && !::isInArray("HIDDEN", ::clan_get_role_rights(role))
            && clanType.isRoleAllowed(role))
@@ -82,7 +82,7 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
     guiScene.replaceContentFromText(roleListObj, roleOptions, roleOptions.len(), this)
     foreach(idx, role in roles)
     {
-      let option = scene.findObject("role_"+idx)
+      local option = scene.findObject("role_"+idx)
       option.findObject("text").setValue(::loc("clan/"+role.name))
       option.tooltip = (role.current? (::loc("clan/currentRole")+"\n\n") : "") + g_lb_data_type.ROLE.getPrimaryTooltipText(role.id)
     }
@@ -92,8 +92,8 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
 
   function sortRoles(role1, role2)
   {
-    let rank1 = ::getTblValue("rank", role1, -1)
-    let rank2 = ::getTblValue("rank", role2, -1)
+    local rank1 = ::getTblValue("rank", role1, -1)
+    local rank2 = ::getTblValue("rank", role2, -1)
     if (rank1 != rank2)
       return rank1 > rank2 ? 1 : -1
     return 0
@@ -101,8 +101,8 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
 
   function onApply()
   {
-    let roleListObj = scene.findObject("change_role_list");
-    let newRoleIdx = roleListObj.getValue();
+    local roleListObj = scene.findObject("change_role_list");
+    local newRoleIdx = roleListObj.getValue();
 
     if (!(newRoleIdx in roles))
       return;
@@ -113,13 +113,13 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
       return;
     }
 
-    let msg = ::loc("clan/roleChanged") + " " + ::loc("clan/"+roles[newRoleIdx].name)
-    let taskId = ::clan_request_change_member_role(changeRolePlayer.uid, roles[newRoleIdx].name)
+    local msg = ::loc("clan/roleChanged") + " " + ::loc("clan/"+roles[newRoleIdx].name)
+    local taskId = ::clan_request_change_member_role(changeRolePlayer.uid, roles[newRoleIdx].name)
 
     if (taskId >= 0 && !adminMode)
       ::sync_handler_simulate_signal("clan_info_reload")
 
-    let onTaskSuccess = function() {
+    local onTaskSuccess = function() {
       ::broadcastEvent("ClanMemberRoleChanged")
       ::g_popups.add(null, msg)
     }

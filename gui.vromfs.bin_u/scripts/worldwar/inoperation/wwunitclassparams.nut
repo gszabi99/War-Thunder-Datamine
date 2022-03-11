@@ -1,12 +1,12 @@
-let { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
+local { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
 
-let sortIdxByExpClass = {
+local sortIdxByExpClass = {
   fighter = 0
   assault = 1
   bomber  = 2
 }
 
-let wwUnitClassParams = {
+local wwUnitClassParams = {
   [WW_UNIT_CLASS.FIGHTER] = {
     name = "fighter"
     iconText = @() ::loc("worldWar/iconAirFighter")
@@ -29,10 +29,10 @@ let wwUnitClassParams = {
   }
 }
 
-let getSortIdx = @(expClass) sortIdxByExpClass?[expClass] ?? sortIdxByExpClass.len()
-let getText = @(unitClass) wwUnitClassParams?[unitClass].name ?? "unknown"
-let function getIconText(unitClass, needColorize = false) {
-  let params = wwUnitClassParams?[unitClass]
+local getSortIdx = @(expClass) sortIdxByExpClass?[expClass] ?? sortIdxByExpClass.len()
+local getText = @(unitClass) wwUnitClassParams?[unitClass].name ?? "unknown"
+local function getIconText(unitClass, needColorize = false) {
+  local params = wwUnitClassParams?[unitClass]
   if (params == null)
     return ""
 
@@ -43,14 +43,14 @@ let function getIconText(unitClass, needColorize = false) {
   return text
 }
 
-let unknownClassData = {
+local unknownClassData = {
   expClass = "unknown"
   unitClass = WW_UNIT_CLASS.UNKNOWN
   flyOutUnitClass = WW_UNIT_CLASS.UNKNOWN
   tooltipTextLocId = ""
 }
 
-let classDataByExpClass = {
+local classDataByExpClass = {
   fighter = {
     expClass = "fighter"
     unitClass = WW_UNIT_CLASS.FIGHTER
@@ -77,7 +77,7 @@ let classDataByExpClass = {
   }
 }
 
-let function getDefaultUnitClassData(unit)
+local function getDefaultUnitClassData(unit)
 {
   if (!unit.isAir())
     return unknownClassData
@@ -85,15 +85,15 @@ let function getDefaultUnitClassData(unit)
   return classDataByExpClass?[unit.expClass] ?? unknownClassData
 }
 
-let function getUnitClassData(unit, weapPreset = null)
+local function getUnitClassData(unit, weapPreset = null)
 {
-  let res = {}.__update(getDefaultUnitClassData(unit))
+  local res = {}.__update(getDefaultUnitClassData(unit))
 
   if (unit.expClass == "fighter" && weapPreset != null)
   {
-    let weaponmask = getWeaponByName(unit.unit, weapPreset)?.weaponmask ?? 0
-    let requiredWeaponmask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
-    let isFighter = !(weaponmask & requiredWeaponmask)
+    local weaponmask = getWeaponByName(unit.unit, weapPreset)?.weaponmask ?? 0
+    local requiredWeaponmask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
+    local isFighter = !(weaponmask & requiredWeaponmask)
     res.unitClass = isFighter ? WW_UNIT_CLASS.FIGHTER : WW_UNIT_CLASS.ASSAULT
     res.flyOutUnitClass = isFighter ? WW_UNIT_CLASS.FIGHTER : WW_UNIT_CLASS.BOMBER
     res.tooltipTextLocId = isFighter ? "mainmenu/type_fighter" : "mainmenu/type_assault_fighter"
@@ -102,15 +102,15 @@ let function getUnitClassData(unit, weapPreset = null)
   return res
 }
 
-let function getFighterToAssaultWeapon(unit)
+local function getFighterToAssaultWeapon(unit)
 {
-  let customClassWeaponMask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
-  return unit?.getWeapons().findvalue(@(w) (w?.weaponmask ?? 0) & customClassWeaponMask)
+  local customClassWeaponMask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
+  return ::u.search(unit?.weapons, @(w) (w?.weaponmask ?? 0) & customClassWeaponMask)
 }
 
-let function getAvailableClasses(unit)
+local function getAvailableClasses(unit)
 {
-  let res = [getDefaultUnitClassData(unit)]
+  local res = [getDefaultUnitClassData(unit)]
 
   if (unit.expClass == "fighter" && getFighterToAssaultWeapon(unit.unit) != null)
     res.append(classDataByExpClass.assault)
@@ -118,17 +118,17 @@ let function getAvailableClasses(unit)
   return res
 }
 
-let function getWeaponNameByExpClass(unit, expClass)
+local function getWeaponNameByExpClass(unit, expClass)
 {
   return expClass == "assault" ? getFighterToAssaultWeapon(unit)?.name ?? "" : ""
 }
 
 return {
-  getSortIdx
-  getText
-  getIconText
-  getUnitClassData
-  getAvailableClasses
-  getFighterToAssaultWeapon
-  getWeaponNameByExpClass
+  getSortIdx = getSortIdx
+  getText = getText
+  getIconText = getIconText
+  getUnitClassData = getUnitClassData
+  getAvailableClasses = getAvailableClasses
+  getFighterToAssaultWeapon = getFighterToAssaultWeapon
+  getWeaponNameByExpClass = getWeaponNameByExpClass
 }

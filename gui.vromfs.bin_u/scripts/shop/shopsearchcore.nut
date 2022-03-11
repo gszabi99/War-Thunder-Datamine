@@ -1,6 +1,6 @@
-let reUnitLocNameSeparators = ::regexp2(@"[ \-_/.()"+::nbsp+"]")
-let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
-let searchTokensCache = {}
+local reUnitLocNameSeparators = ::regexp2(@"[ \-_/.()"+::nbsp+"]")
+local translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
+local searchTokensCache = {}
 
 local function comparePrep(text)
 {
@@ -8,19 +8,19 @@ local function comparePrep(text)
   return reUnitLocNameSeparators.replace("", text)
 }
 
-let function cacheUnitSearchTokens(unit)
+local function cacheUnitSearchTokens(unit)
 {
-  let tokens = []
+  local tokens = []
   ::u.appendOnce(comparePrep(::getUnitName(unit.name, true)),  tokens)
   ::u.appendOnce(comparePrep(::getUnitName(unit.name, false)), tokens)
   searchTokensCache[unit] <- tokens
 }
 
-let function clearCache() {
+local function clearCache() {
   searchTokensCache.clear()
 }
 
-let function rebuildCache()
+local function rebuildCache()
 {
   if (!::g_login.isLoggedIn())
     return
@@ -30,7 +30,7 @@ let function rebuildCache()
     cacheUnitSearchTokens(unit)
 }
 
-let function tokensMatch(tokens, searchStr)
+local function tokensMatch(tokens, searchStr)
 {
   foreach (t in tokens)
     if (t.indexof(searchStr) != null)
@@ -38,12 +38,12 @@ let function tokensMatch(tokens, searchStr)
   return false
 }
 
-let function findUnitsByLocName(searchStrRaw, needIncludeHidden = false, needIncludeNotInShop = false)
+local function findUnitsByLocName(searchStrRaw, needIncludeHidden = false, needIncludeNotInShop = false)
 {
   if (!searchTokensCache.len())
     rebuildCache() // hack, restores cache after scripts reload.
 
-  let searchStr = comparePrep(searchStrRaw)
+  local searchStr = comparePrep(searchStrRaw)
   if (searchStr == "")
     return []
   return ::u.keys(searchTokensCache.filter(@(tokens, unit)

@@ -1,6 +1,6 @@
-let interopGet = require("interopGen.nut")
+local interopGet = require("interopGen.nut")
 
-let crewState = {
+local crewState = {
   totalCrewCount = Watched(0)
   aliveCrewMembersCount = Watched(0)
   minCrewMembersCount = Watched(1)

@@ -1,17 +1,17 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let string = require("std/string.nut")
-let guidParser = require("scripts/guidParser.nut")
-let stdMath = require("std/math.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local string = require("std/string.nut")
+local guidParser = require("scripts/guidParser.nut")
+local stdMath = require("std/math.nut")
 
 const MAX_LOCATION_TYPES = 64
 
-let locationTypeNameToId = {} //forest = 1, bitId to easy use in mask
-let skinsMask = {} //<skinName> = <locationTypeMask>
-let levelsMask = {} //<levelName> = <locationTypeMask>
+local locationTypeNameToId = {} //forest = 1, bitId to easy use in mask
+local skinsMask = {} //<skinName> = <locationTypeMask>
+local levelsMask = {} //<levelName> = <locationTypeMask>
 local camoTypesVisibleList = []
 local camoTypesIconPriority = []
 
-let function getLocationTypeId(typeName)
+local function getLocationTypeId(typeName)
 {
   if (typeName in locationTypeNameToId)
     return locationTypeNameToId[typeName]
@@ -23,14 +23,14 @@ let function getLocationTypeId(typeName)
     idx = MAX_LOCATION_TYPES
   }
 
-  let res = 1 << idx
+  local res = 1 << idx
   locationTypeNameToId[typeName] <- res
   return res
 }
 
-let function getLocationsLoc(mask)
+local function getLocationsLoc(mask)
 {
-  let list = []
+  local list = []
   if (!mask)
     return list
   foreach(name in camoTypesVisibleList)
@@ -39,16 +39,16 @@ let function getLocationsLoc(mask)
   return list
 }
 
-let function debugLocationMask(mask)
+local function debugLocationMask(mask)
 {
-  let list = []
+  local list = []
   foreach(name, bit in locationTypeNameToId)
     if (bit & mask)
       list.append(name)
   return mask + ": " + string.implode(list, ", ")
 }
 
-let function getLocationMaskByNamesArray(namesList)
+local function getLocationMaskByNamesArray(namesList)
 {
   local res = 0
   foreach(typeName in namesList)
@@ -57,18 +57,18 @@ let function getLocationMaskByNamesArray(namesList)
 }
 
 local isMasksLoaded = false
-let function loadSkinMasksOnce()
+local function loadSkinMasksOnce()
 {
   if (isMasksLoaded)
     return false
   isMasksLoaded = true
 
-  let skinsBlk = ::DataBlock()
+  local skinsBlk = ::DataBlock()
   skinsBlk.load("config/skinsLocations.blk")
 
   for(local i = 0; i < skinsBlk.blockCount(); i++)
   {
-    let blk = skinsBlk.getBlock(i)
+    local blk = skinsBlk.getBlock(i)
     skinsMask[blk.getBlockName()] <- getLocationMaskByNamesArray(blk % "camoType")
   }
   camoTypesVisibleList = []
@@ -81,10 +81,10 @@ let function loadSkinMasksOnce()
       camoTypesIconPriority.append(b.name)
 }
 
-let function getSkinLocationsMaskByDecoratorTags(id)
+local function getSkinLocationsMaskByDecoratorTags(id)
 {
   local res = 0
-  let decorator = ::g_decorator.getDecorator(id, ::g_decorator_type.SKINS)
+  local decorator = ::g_decorator.getDecorator(id, ::g_decorator_type.SKINS)
   if (!decorator || !decorator.tags)
     return res
   foreach (t in camoTypesVisibleList)
@@ -93,33 +93,33 @@ let function getSkinLocationsMaskByDecoratorTags(id)
   return res
 }
 
-let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty)
+local function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty)
 {
   if (!(id in skinsMask) && !(skinId in skinsMask) && guidParser.isGuid(skinId))
     skinsMask[id] <- getSkinLocationsMaskByDecoratorTags(id)
   return skinsMask?[id] || skinsMask?[skinId] || (canBeEmpty ? 0  : getLocationTypeId("forest"))
 }
 
-let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true)
+local function getSkinLocationsMask(skinId, unitId, canBeEmpty = true)
 {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId(unitId + "/" + skinId, skinId, canBeEmpty)
 }
 
-let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true)
+local function getSkinLocationsMaskBySkinId(id, canBeEmpty = true)
 {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId(id, ::g_unlocks.getSkinNameBySkinId(id), canBeEmpty)
 }
 
-let function getMaskByLevel(level)
+local function getMaskByLevel(level)
 {
   if (level in  levelsMask)
     return levelsMask[level]
 
   local res = 0
-  let levelBlk = blkFromPath($"{string.slice(level, 0, -3)}blk")
-  let vehiclesSkinsBlk = levelBlk?.technicsSkins
+  local levelBlk = blkFromPath($"{string.slice(level, 0, -3)}blk")
+  local vehiclesSkinsBlk = levelBlk?.technicsSkins
   if (::u.isDataBlock(vehiclesSkinsBlk))
     res = getLocationMaskByNamesArray(vehiclesSkinsBlk % "groundSkin")
 
@@ -127,14 +127,14 @@ let function getMaskByLevel(level)
   return res
 }
 
-let function getBestSkinsList(skinsList, unitName, level)
+local function getBestSkinsList(skinsList, unitName, level)
 {
-  let res = []
+  local res = []
   local bestMatch = 0
-  let locationMask = getMaskByLevel(level)
+  local locationMask = getMaskByLevel(level)
   foreach(skin in skinsList)
   {
-    let match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName))
+    local match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName))
     if (!match)
       continue
     if (match > bestMatch)
@@ -148,7 +148,7 @@ let function getBestSkinsList(skinsList, unitName, level)
   return res
 }
 
-let function getIconTypeByMask(mask)
+local function getIconTypeByMask(mask)
 {
   if (mask)
     foreach (name in camoTypesIconPriority)

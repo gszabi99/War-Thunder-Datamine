@@ -1,9 +1,9 @@
-let {isTable, isDataBlock, isInstance, isEqual} = require("u.nut")
+local {isTable, isDataBlock, isInstance, isEqual} = require("u.nut")
 local {  getBlkByPathArray,
   getBlkValueByPath,
   setFuncBlkByArrayPath
-} = require("%sqstd/datablock.nut")
-let { DataBlock } = require("datablockWrapper.nut")
+} = require("std/datablock.nut")
+local { DataBlock } = require("datablockWrapper.nut")
 
  //blk in path shoud exist and be correct
 local function blkFromPath(path){

@@ -35,7 +35,7 @@
 
   function getSaveBlk()
   {
-    let res = ::DataBlock()
+    local res = ::DataBlock()
     foreach(key in saveParamsList)
       res[key] = this[key]
     return res

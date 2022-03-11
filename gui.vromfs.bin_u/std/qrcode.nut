@@ -1,14 +1,14 @@
 
 const QR_RESERVE_ARRAY_SIZE = 16384;
 
-let  adelta = [
+local  adelta = [
   0, 11, 15, 19, 23, 27, 31,
   16, 18, 20, 22, 24, 26, 28, 20, 22, 24, 24, 26, 28, 28, 22, 24, 24,
   26, 26, 28, 28, 24, 24, 26, 26, 26, 28, 28, 24, 26, 26, 26, 28, 28
 ];
 
 // version block
-let  vpat = [
+local  vpat = [
   0xc94, 0x5bc, 0xa99, 0x4d3, 0xbf6, 0x762, 0x847, 0x60d,
   0x928, 0xb78, 0x45d, 0xa17, 0x532, 0x9a6, 0x683, 0x8c9,
   0x7ec, 0xec4, 0x1e1, 0xfab, 0x08e, 0xc1a, 0x33f, 0xd75,
@@ -17,7 +17,7 @@ let  vpat = [
 ];
 
 // final format bits with mask: level << 3 | mask
-let  fmtword = [
+local  fmtword = [
   0x77c4, 0x72f3, 0x7daa, 0x789d, 0x662f, 0x6318, 0x6c41, 0x6976,    //L
   0x5412, 0x5125, 0x5e7c, 0x5b4b, 0x45f9, 0x40ce, 0x4f97, 0x4aa0,    //M
   0x355f, 0x3068, 0x3f31, 0x3a06, 0x24b4, 0x2183, 0x2eda, 0x2bed,    //Q
@@ -25,7 +25,7 @@ let  fmtword = [
 ];
 
 // 4 per version: number of blocks 1,2; data width; ecc width
-let  eccblocks = [
+local  eccblocks = [
   1, 0, 19, 7, 1, 0, 16, 10, 1, 0, 13, 13, 1, 0, 9, 17,
   1, 0, 34, 10, 1, 0, 28, 16, 1, 0, 22, 22, 1, 0, 16, 28,
   1, 0, 55, 15, 1, 0, 44, 26, 2, 0, 17, 18, 2, 0, 13, 22,
@@ -69,7 +69,7 @@ let  eccblocks = [
 ];
 
 // Galois field log table
-let  glog = [
+local  glog = [
   0xff, 0x00, 0x01, 0x19, 0x02, 0x32, 0x1a, 0xc6, 0x03, 0xdf, 0x33, 0xee, 0x1b, 0x68, 0xc7, 0x4b,
   0x04, 0x64, 0xe0, 0x0e, 0x34, 0x8d, 0xef, 0x81, 0x1c, 0xc1, 0x69, 0xf8, 0xc8, 0x08, 0x4c, 0x71,
   0x05, 0x8a, 0x65, 0x2f, 0xe1, 0x24, 0x0f, 0x21, 0x35, 0x93, 0x8e, 0xda, 0xf0, 0x12, 0x82, 0x45,
@@ -89,7 +89,7 @@ let  glog = [
 ];
 
 // Galios field exponent table
-let  gexp = [
+local  gexp = [
   0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1d, 0x3a, 0x74, 0xe8, 0xcd, 0x87, 0x13, 0x26,
   0x4c, 0x98, 0x2d, 0x5a, 0xb4, 0x75, 0xea, 0xc9, 0x8f, 0x03, 0x06, 0x0c, 0x18, 0x30, 0x60, 0xc0,
   0x9d, 0x27, 0x4e, 0x9c, 0x25, 0x4a, 0x94, 0x35, 0x6a, 0xd4, 0xb5, 0x77, 0xee, 0xc1, 0x9f, 0x23,
@@ -113,7 +113,7 @@ let  gexp = [
 local  strinbuf = [], eccbuf = [], qrframe = [], framask = [], rlens = [];
 // Control values - width is based on version, last 4 are from table.
 local  version, width, neccblk1, neccblk2, datablkw, eccblkwid;
-let  ecclevel = 2;
+local  ecclevel = 2;
 
 // set bit to indicate cell in qrframe is immutable.  symmetric around diagonal
 local function setmask(x, y) {
@@ -133,7 +133,7 @@ local function setmask(x, y) {
 }
 
 // enter alignment pattern - black to qrframe, white to mask (later black frame merged to mask)
-let function putalign(x, y) {
+local function putalign(x, y) {
   local j;
 
   qrframe[x + width * y] = 1;
@@ -162,10 +162,10 @@ local function modnn(x) {
   return x;
 }
 
-let genpoly = [];
+local genpoly = [];
 
 // Calculate and append ECC data to data block.  Block is in strinbuf, indexes to buffers given.
-let function appendrs(data, dlen, ecbuf, eclen) {
+local function appendrs(data, dlen, ecbuf, eclen) {
   local i, j, fb;
 
   for (i = 0; i < eclen; i++)
@@ -203,7 +203,7 @@ local function ismasked(x, y) {
 
 //========================================================================
 //  Apply the selected mask out of the 8.
-let function applymask(m) {
+local function applymask(m) {
   local x, y, r3x, r3y;
 
   switch (m) {
@@ -318,14 +318,14 @@ let function applymask(m) {
 }
 
 // Badness coefficients.
-let N1 = 3
-let N2 = 3
-let N3 = 40
-let N4 = 10
+local N1 = 3
+local N2 = 3
+local N3 = 40
+local N4 = 10
 
 // Using the table of the length of each run, calculate the amount of bad image
 // - long runs or those that look like finders; called twice, once each for X and Y
-let function badruns(length) {
+local function badruns(length) {
   local i;
   local runsbad = 0;
   for (i = 0; i <= length; i++)
@@ -347,7 +347,7 @@ let function badruns(length) {
 }
 
 // Calculate how bad the masked image is - blocks, imbalance, runs, or finders.
-let function badcheck() {
+local function badcheck() {
   rlens.resize(QR_RESERVE_ARRAY_SIZE)
   local x, y, h, b, b1;
   local thisbad = 0;
@@ -411,7 +411,7 @@ let function badcheck() {
   return thisbad;
 }
 
-let function genframe(instring) {
+local function genframe(instring) {
   local x, y, k, t, v, i, j, m;
 
   // find the smallest version that fits the string
@@ -492,7 +492,7 @@ let function genframe(instring) {
         break;
       y -= t;
       putalign(6, y);
-      putalign(y, 6); //-param-pos
+      putalign(y, 6);
     }
   }
 
@@ -516,7 +516,7 @@ let function genframe(instring) {
     setmask(x, 8);
   for (x = 0; x < 8; x++) {
     setmask(x + width - 8, 8);
-    setmask(8, x); //-param-pos
+    setmask(8, x);
   }
   for (y = 0; y < 7; y++)
     setmask(8, y + width - 7);
@@ -754,9 +754,9 @@ let function genframe(instring) {
 }
 
 
-let function generateQrArray(data) {
-  let frame = genframe(data ? data : "")
-  let res = []
+local function generateQrArray(data) {
+  local frame = genframe(data ? data : "")
+  local res = []
   local i
   for (i = 0; i < width; i++)
     res.append(frame.slice(i * width, (i + 1) * width))
@@ -764,9 +764,9 @@ let function generateQrArray(data) {
   return res
 }
 
-let function generateQrBlocks(data) {
-  let codeArr = generateQrArray(data)
-  let list = []
+local function generateQrBlocks(data) {
+  local codeArr = generateQrArray(data)
+  local list = []
   foreach(rowIdx, row in codeArr) {
     local start = null
     foreach(idx, isFilled in row)

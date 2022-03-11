@@ -1,21 +1,21 @@
-let CONTACT_ADD_PARAM_NAME = "add"
-let CONTACT_REMOVE_PARAM_NAME = "remove"
+local CONTACT_ADD_PARAM_NAME = "add"
+local CONTACT_REMOVE_PARAM_NAME = "remove"
 
 return function(list, groupName, showNotification = false) {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.addBlock("body")
   blk.body.setBool("returnResultedChanges", true)
   blk.body.addBlock(groupName)
 
   foreach (isAdding, playersList in list)
   {
-    let opParamName = isAdding? CONTACT_ADD_PARAM_NAME : CONTACT_REMOVE_PARAM_NAME
+    local opParamName = isAdding? CONTACT_ADD_PARAM_NAME : CONTACT_REMOVE_PARAM_NAME
     foreach (player in playersList)
     {
       if (isAdding == ::isPlayerInContacts(player.uid, groupName))
         continue //no need to do something
 
-      if (isAdding && !::can_add_player_to_contacts_list(groupName, !showNotification))
+      if (isAdding && !::can_add_player_to_contacts_list(groupName, true))
         continue //Too many contacts
 
       blk.body[groupName].addInt(opParamName, player.uid.tointeger())
@@ -33,7 +33,7 @@ return function(list, groupName, showNotification = false) {
       //Result is always returns
       ::reload_contact_list()
 
-      let added = result?.added ?? -1
+      local added = result?.added ?? -1
       if (added > 0 && groupName == ::EPL_FRIENDLIST)
       {
         for (local i = 0; i < blk.body[groupName].paramCount(); i++)
@@ -49,11 +49,11 @@ return function(list, groupName, showNotification = false) {
           text = ::loc("msgbox/no_friends_added")
         else if (added == 1)
         {
-          let msg = ::loc("msg/added_to_" + groupName)
-          let contactsList = []
+          local msg = ::loc("msg/added_to_" + groupName)
+          local contactsList = []
           for (local i = 0; i < blk.body[groupName].paramCount(); i++)
           {
-            let uid = blk.body[groupName].getParamValue(i)
+            local uid = blk.body[groupName].getParamValue(i)
             contactsList.append(::getContact(uid.tostring()))
           }
           text = ::format(msg, ::g_string.implode(contactsList.map(@(c) c.getName()), ::loc("ui/comma") ))

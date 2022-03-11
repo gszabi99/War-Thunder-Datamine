@@ -1,24 +1,24 @@
 const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
 const VALID_INFO_TIME_OUT_MSEC = 1800000 //30min
 
-let cachedList = {}
+local cachedList = {}
 
-let canRequestByTime = @(clanData) !(clanData?.isInUpdate ?? false)
+local canRequestByTime = @(clanData) !(clanData?.isInUpdate ?? false)
   && (::dagor.getCurTime() - (clanData?.lastRequestTimeMsec ?? 0)) >= REQUEST_TIME_OUT_MSEC
 
-let hasValidInfo = @(clanData) ("info" in clanData)
+local hasValidInfo = @(clanData) ("info" in clanData)
   && (::dagor.getCurTime() - clanData.lastUpdateTimeMsec < VALID_INFO_TIME_OUT_MSEC)
 
-let function needRequest(clanId) {
-  let clanData = cachedList?[clanId] ?? {}
+local function needRequest(clanId) {
+  local clanData = cachedList?[clanId] ?? {}
   return !hasValidInfo(clanData) && canRequestByTime(clanData)
 }
 
-let function prepareListToRequest(clanIdsArray) {
-  let blk = ::DataBlock()
+local function prepareListToRequest(clanIdsArray) {
+  local blk = ::DataBlock()
   blk.addBlock("body")
   foreach (clanId in clanIdsArray) {
-    let clanIdStr = clanId.tostring()
+    local clanIdStr = clanId.tostring()
     if (clanIdStr == "" || !needRequest(clanIdStr))
       continue
 
@@ -31,10 +31,10 @@ let function prepareListToRequest(clanIdsArray) {
   return blk
 }
 
-let function updateClansInfoList(data) {
-  let clansInfoList = {}
+local function updateClansInfoList(data) {
+  local clansInfoList = {}
   foreach (info in data) {
-    let id = info?._id
+    local id = info?._id
     if (id == null)
       continue
     cachedList[id] <- {
@@ -46,31 +46,31 @@ let function updateClansInfoList(data) {
   return clansInfoList
 }
 
-let function requestListCb(data) {
-  let clansInfoList = updateClansInfoList(data)
+local function requestListCb(data) {
+  local clansInfoList = updateClansInfoList(data)
   ::broadcastEvent("UpdateClansInfoList", { clansInfoList = clansInfoList})
 }
 
-let function requestError(requestBlk) {
+local function requestError(requestBlk) {
   foreach (id in (requestBlk.body % "clanId"))
     cachedList[id].isInUpdate = false
 }
 
-let function requestList(clanIdsArray) {
-  let requestBlk = prepareListToRequest(clanIdsArray)
+local function requestList(clanIdsArray) {
+  local requestBlk = prepareListToRequest(clanIdsArray)
   if (!("clanId" in requestBlk.body))
     return
 
-  let errorCb = @(taskResult) requestError(requestBlk)
+  local errorCb = @(taskResult) requestError(requestBlk)
   ::g_tasker.charRequestBlk("cln_clans_list_get_short_info", requestBlk, null, requestListCb, errorCb)
   return
 }
 
-let function getClansInfoByClanIds(clanIdsArray) {
+local function getClansInfoByClanIds(clanIdsArray) {
   requestList(clanIdsArray)
-  let res = {}
+  local res = {}
   foreach (clanId in clanIdsArray) {
-    let info = cachedList?[clanId.tostring()].info
+    local info = cachedList?[clanId.tostring()].info
     if (info != null)
       res[clanId] <- info
   }

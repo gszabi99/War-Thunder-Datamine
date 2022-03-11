@@ -1,10 +1,10 @@
-let systemMsg = require("scripts/utils/systemMsg.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { recentBR, getBRDataByMrankDiff } = require("scripts/battleRating.nut")
+local systemMsg = require("scripts/utils/systemMsg.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { recentBR, getBRDataByMrankDiff } = require("scripts/battleRating.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -19,7 +19,7 @@ global enum memberStatus {
   EAC_NOT_INITED
 }
 
-let memberStatusLocId = {
+local memberStatusLocId = {
   [memberStatus.READY]                          = "status/squad_ready",
   [memberStatus.AIRS_NOT_AVAILABLE]             = "squadMember/airs_not_available",
   [memberStatus.ALL_AVAILABLE_AIRS_BROKEN]      = "squadMember/all_available_airs_broken",
@@ -30,7 +30,7 @@ let memberStatusLocId = {
   [memberStatus.EAC_NOT_INITED]                 = "squadMember/eac_not_inited",
 }
 
-let locTags = { [MEMBER_STATUS_LOC_TAG_PREFIX] = "unknown" }
+local locTags = { [MEMBER_STATUS_LOC_TAG_PREFIX] = "unknown" }
 foreach(status, locId in memberStatusLocId)
   locTags[MEMBER_STATUS_LOC_TAG_PREFIX + status] <- locId
 systemMsg.registerLocTags(locTags)
@@ -51,14 +51,14 @@ systemMsg.registerLocTags(locTags)
     if (!::g_squad_manager.isSquadLeader())
       return okFunc()
 
-    let brData = getBRDataByMrankDiff()
+    local brData = getBRDataByMrankDiff()
     if (brData.len() == 0)
       return okFunc()
 
     if (!canShowMembersBRDiffMsg())
       return okFunc()
 
-    let message = ::loc("multiplayer/squad/members_br_diff_warning", {
+    local message = ::loc("multiplayer/squad/members_br_diff_warning", {
       squadBR = format("%.1f", recentBR.value)
       players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
         "".concat(::colorize("userlogColoredText", getPlayerName(k)), ::loc("ui/colon"), format("%.1f", v))), []))
@@ -99,7 +99,7 @@ g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null
     return false
   }
 
-  let maxSize = ::getTblValue("maxSquadSize", options, 0)
+  local maxSize = ::getTblValue("maxSquadSize", options, 0)
   if (maxSize > 0 && ::g_squad_manager.getOnlineMembersCount() > maxSize)
   {
     ::showInfoMsgBox(::loc("gamemode/squad_is_too_big",
@@ -133,12 +133,12 @@ g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null
 
 g_squad_utils.checkCrossPlayCondition <- function checkCrossPlayCondition()
 {
-  let members = ::g_squad_manager.getDiffCrossPlayConditionMembers()
+  local members = ::g_squad_manager.getDiffCrossPlayConditionMembers()
   if (!members.len())
     return true
 
-  let locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay? "disabled" : "enabled")
-  let membersNamesArray = members.map(@(member) ::colorize("warningTextColor", getPlayerName(member.name)))
+  local locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay? "disabled" : "enabled")
+  local membersNamesArray = members.map(@(member) ::colorize("warningTextColor", getPlayerName(member.name)))
   ::showInfoMsgBox(
     ::loc(locId,
       { names = ::g_string.implode(membersNamesArray, ",")}
@@ -188,11 +188,11 @@ g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, ca
       (!::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady))
     return func()
 
-  let messageText = (::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady)
+  local messageText = (::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady)
     ? ::loc("msg/switch_off_crews_ready_flag")
     : ::loc("msg/switch_off_ready_flag")
 
-  let onOkFunc = function() {
+  local onOkFunc = function() {
     if (::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady)
       ::g_squad_manager.setCrewsReadyFlag(false)
     else
@@ -200,7 +200,7 @@ g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, ca
 
     func()
   }
-  let onCancelFunc = function() {
+  local onCancelFunc = function() {
     if (cancelFunc)
       cancelFunc()
   }
@@ -215,7 +215,7 @@ g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, ca
 
 g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true)
 {
-  let memberData = ::g_user_utils.getMyStateData()
+  local memberData = ::g_user_utils.getMyStateData()
   ::g_squad_manager.updateMyMemberData(memberData)
 
   //Update Skirmish Lobby info
@@ -230,7 +230,7 @@ g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSess
 
 g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, event, canChangeMemberCountry = true)
 {
-  let res = {
+  local res = {
     canFlyout = true,
     haveRestrictions = false
     members = []
@@ -240,10 +240,10 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
   if (!::g_squad_manager.isInSquad() || !teamData)
     return res
 
-  let ediff = ::events.getEDiffByEvent(event)
-  let respawn = ::events.isEventMultiSlotEnabled(event)
-  let shouldUseEac = antiCheat.shouldUseEac(event)
-  let squadMembers = ::g_squad_manager.getMembers()
+  local ediff = ::events.getEDiffByEvent(event)
+  local respawn = ::events.isEventMultiSlotEnabled(event)
+  local shouldUseEac = antiCheat.shouldUseEac(event)
+  local squadMembers = ::g_squad_manager.getMembers()
   foreach(uid, memberData in squadMembers)
   {
     if (!memberData.online || ::g_squad_manager.getPlayerStatusInMySquad(uid) == squadMemberState.SQUAD_LEADER)
@@ -252,7 +252,7 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
     if (memberData.country == "")
       continue
 
-    let mData = {
+    local mData = {
             uid = memberData.uid
             name = memberData.name
             status = memberStatus.READY
@@ -262,22 +262,21 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
             isSelfCountry = false
             dislikedMissions = memberData?.dislikedMissions ?? []
             bannedMissions = memberData?.bannedMissions ?? []
-            fakeName = memberData?.fakeName ?? false
           }
 
     local haveAvailCountries = false
     local isAnyRequiredAndAvailableFound = false
 
-    let checkOnlyMemberCountry = !canChangeMemberCountry
+    local checkOnlyMemberCountry = !canChangeMemberCountry
                                    || ::isInArray(memberData.country, teamData.countries)
     if (checkOnlyMemberCountry)
       mData.isSelfCountry = true
     else
       res.countriesChanged++
 
-    let brokenUnits = []
+    local brokenUnits = []
     local haveNotBroken = false
-    let needCheckRequired = ::events.getRequiredCrafts(teamData).len() > 0
+    local needCheckRequired = ::events.getRequiredCrafts(teamData).len() > 0
     foreach(country in teamData.countries)
     {
       if (checkOnlyMemberCountry && country != memberData.country)
@@ -288,12 +287,12 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
 
       if (!respawn)
       {
-        let unitName = memberData.selAirs?[country] ?? ""
+        local unitName = memberData.selAirs?[country] ?? ""
         if (unitName == "")
           continue
 
         haveAvailable = ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-        let isBroken = ::isInArray(unitName, memberData.brokenAirs)
+        local isBroken = ::isInArray(unitName, memberData.brokenAirs)
         if (isBroken)
           brokenUnits.append(unitName)
         haveNotBroken = haveAvailable && !isBroken
@@ -307,7 +306,7 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
         foreach(unitName in memberData.crewAirs[country])
         {
           haveAvailable = haveAvailable || ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-          let isBroken = ::isInArray(unitName, memberData.brokenAirs)
+          local isBroken = ::isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
           haveNotBroken = haveNotBroken || (haveAvailable && !isBroken)
@@ -342,7 +341,7 @@ g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, ev
 
 g_squad_utils.getMembersAvailableUnitsCheckingData <- function getMembersAvailableUnitsCheckingData(remainUnits, country)
 {
-  let res = []
+  local res = []
   foreach (uid, memberData in ::g_squad_manager.getMembers())
     res.append(getMemberAvailableUnitsCheckingData(memberData, remainUnits, country))
 
@@ -351,7 +350,7 @@ g_squad_utils.getMembersAvailableUnitsCheckingData <- function getMembersAvailab
 
 g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailableUnitsCheckingData(memberData, remainUnits, country)
 {
-  let memberCantJoinData = {
+  local memberCantJoinData = {
                                canFlyout = true
                                joinStatus = memberStatus.READY
                                unbrokenAvailableUnits = []
@@ -365,8 +364,8 @@ g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailable
     return memberCantJoinData
   }
 
-  let memberAvailableUnits = memberCantJoinData.unbrokenAvailableUnits
-  let brokenUnits = []
+  local memberAvailableUnits = memberCantJoinData.unbrokenAvailableUnits
+  local brokenUnits = []
   foreach (idx, name in memberData.crewAirs[country])
     if (name in remainUnits)
       if (::isInArray(name, memberData.brokenAirs))
@@ -389,7 +388,7 @@ g_squad_utils.checkAndShowHasOfflinePlayersPopup <- function checkAndShowHasOffl
   if (!::g_squad_manager.isSquadLeader())
     return
 
-  let offlineMembers = ::g_squad_manager.getOfflineMembers()
+  local offlineMembers = ::g_squad_manager.getOfflineMembers()
   if (offlineMembers.len() == 0)
     return
 
@@ -437,7 +436,7 @@ g_squad_utils.checkAvailableUnits <- function checkAvailableUnits(availableUnits
   if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
     return true
 
-  let units = availableUnitsArrays[availableUnitsArrayIndex]
+  local units = availableUnitsArrays[availableUnitsArrayIndex]
   foreach(idx, name in units)
   {
     if (controlUnits[name] <= 0)
@@ -458,13 +457,13 @@ g_squad_utils.canJoinByMySquad <- function canJoinByMySquad(operationId = null, 
   if (operationId == null)
     operationId = ::g_squad_manager.getWwOperationId()
 
-  let squadMembers = ::g_squad_manager.getMembers()
+  local squadMembers = ::g_squad_manager.getMembers()
   foreach(uid, member in squadMembers)
   {
     if (!member.online)
       continue
 
-    let memberCountry = member.getWwOperationCountryById(operationId)
+    local memberCountry = member.getWwOperationCountryById(operationId)
     if (!::u.isEmpty(memberCountry))
       if (controlCountry == "")
         controlCountry = memberCountry
@@ -480,20 +479,20 @@ g_squad_utils.isEventAllowedForAllMembers <- function isEventAllowedForAllMember
   if (!::g_squad_manager.isInSquad())
     return true
 
-  let notAvailableMemberNames= []
+  local notAvailableMemberNames= []
   foreach(member in ::g_squad_manager.getMembers())
     if (!member.isEventAllowed(eventEconomicName))
       notAvailableMemberNames.append(member.name)
 
-  let res = !notAvailableMemberNames.len()
+  local res = !notAvailableMemberNames.len()
   if (res || isSilent)
     return res
 
-  let mText = ::g_string.implode(
+  local mText = ::g_string.implode(
     ::u.map(notAvailableMemberNames, @(name) ::colorize("userlogColoredText", getPlayerName(name)))
     ", "
   )
-  let msg = ::loc("msg/members_no_access_to_mode", {  members = mText  })
+  local msg = ::loc("msg/members_no_access_to_mode", {  members = mText  })
   ::showInfoMsgBox(msg, "members_req_new_content")
   return res
 }
@@ -503,11 +502,11 @@ g_squad_utils.showMemberMenu <- function showMemberMenu(obj)
   if (!::checkObj(obj))
     return
 
-  let member = obj.getUserData()
+  local member = obj.getUserData()
   if (member == null)
       return
 
-  let position = obj.getPosRC()
+  local position = obj.getPosRC()
   playerContextMenu.showMenu(
     null,
     this,

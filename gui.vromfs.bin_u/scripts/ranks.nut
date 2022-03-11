@@ -1,8 +1,11 @@
 ::g_script_reloader.loadOnce("scripts/ranks_common_shared.nut")
 
-let avatars = require("scripts/user/avatars.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
+local avatars = require("scripts/user/avatars.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
+
+if (!("EUCT_TOTAL" in ::getroottable()))
+  ::EUCT_TOTAL <- 7 //temporary to work without new exe
 
 ::max_player_rank <- 100
 ::max_country_rank <- 7
@@ -43,8 +46,8 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 ::load_player_exp_table <- function load_player_exp_table()
 {
-  let ranks_blk = ::get_ranks_blk()
-  let efr = ranks_blk?.exp_for_playerRank
+  local ranks_blk = ::get_ranks_blk()
+  local efr = ranks_blk?.exp_for_playerRank
 
   ::exp_per_rank = []
 
@@ -57,8 +60,8 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 ::init_prestige_by_rank <- function init_prestige_by_rank()
 {
-  let blk = ::get_ranks_blk()
-  let prestigeByRank = blk?.prestige_by_rank
+  local blk = ::get_ranks_blk()
+  local prestigeByRank = blk?.prestige_by_rank
 
   ::prestige_by_rank = []
   if (!prestigeByRank)
@@ -73,16 +76,16 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
   local res = null //{ exp, rankExp }
   if (rank == null)
     rank = ::get_player_rank_by_country(country, profileData)
-  let maxRank = (country == "") ? ::max_player_rank : ::max_country_rank
+  local maxRank = (country == "") ? ::max_player_rank : ::max_country_rank
 
   if (rank < maxRank)
   {
-    let expTbl = ::exp_per_rank
+    local expTbl = ::exp_per_rank
     if (rank >= expTbl.len())
       return res
 
-    let prev = (rank > 0) ? expTbl[rank - 1] : 0
-    let next = expTbl[rank]
+    local prev = (rank > 0) ? expTbl[rank - 1] : 0
+    local next = expTbl[rank]
     local cur = (exp == null)
                 ? get_player_exp_by_country(country, profileData)
                 : exp
@@ -120,7 +123,7 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 ::get_rank_by_exp <- function get_rank_by_exp(exp)
 {
   local rank = 0
-  let rankTbl = ::exp_per_rank
+  local rankTbl = ::exp_per_rank
   for (local i = 0; i < rankTbl.len(); i++)
     if (exp >= rankTbl[i])
       rank++
@@ -130,7 +133,7 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 ::calc_rank_progress <- function calc_rank_progress(profileData = null)
 {
-  let rankTbl = ::get_cur_exp_table("", profileData)
+  local rankTbl = ::get_cur_exp_table("", profileData)
   if (rankTbl)
     return (1000.0 * rankTbl.exp.tofloat() / rankTbl.rankExp.tofloat()).tointeger()
   return -1
@@ -148,8 +151,8 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 {
   if (::is_multiplayer())
   {
-    let sessionInfo = ::get_mp_session_info()
-    let team = ::get_mp_local_team()
+    local sessionInfo = ::get_mp_session_info()
+    local team = ::get_mp_local_team()
     if (team==1)
       return sessionInfo.alliesCountry
     if (team==2)
@@ -160,7 +163,7 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 ::get_profile_info <- function get_profile_info()
 {
-  let info = ::get_cur_rank_info()
+  local info = ::get_cur_rank_info()
 
   ::current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
   if (::my_user_name!=info.name && info.name!="")
@@ -178,14 +181,14 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
   //Show the current country in the game when you select an outcast.
   if (::current_user_profile.country=="country_0")
   {
-    let country = ::get_cur_session_country()
+    local country = ::get_cur_session_country()
     if (country && country!="")
       ::current_user_profile.country = "country_" + country
   }
   if (::current_user_profile.country!="country_0")
     ::current_user_profile.countryRank <- ::get_player_rank_by_country(::current_user_profile.country)
 
-  let isInClan = ::clan_get_my_clan_id() != "-1"
+  local isInClan = ::clan_get_my_clan_id() != "-1"
   ::current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
   ::current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
   ::current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
@@ -202,14 +205,19 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
 
 ::get_balance <- function get_balance()
 {
-  let info = ::get_cur_rank_info()
+  local info = ::get_cur_rank_info()
   return { wp = info.wp, gold = info.gold }
 }
 
 ::get_gui_balance <- function get_gui_balance()
 {
-  let info = ::get_cur_rank_info()
+  local info = ::get_cur_rank_info()
   return ::Balance(info.wp, info.gold, ::shop_get_free_exp())
+}
+
+::get_player_rank <- function get_player_rank()
+{
+  return get_profile_info().rank;
 }
 
 ::on_mission_started_mp <- function on_mission_started_mp()
@@ -248,19 +256,19 @@ let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
   }
 }
 
-let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() ::Watched({ wp = 0, exp = 0 }))
+local minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() ::Watched({ wp = 0, exp = 0 }))
 
 //!!FIX ME: should to remove from this function all what not about unit.
 ::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0)
 {
-  let startTime = ::dagor.getCurTime()
-  let errorsTextArray = []
+  local startTime = ::dagor.getCurTime()
+  local errorsTextArray = []
   foreach (unit in ::all_units)
   {
     if (unit.isInited)
       continue
 
-    let errors = unit.initOnce()
+    local errors = unit.initOnce()
     if (errors)
       errorsTextArray.extend(errors)
 
@@ -272,7 +280,7 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
   }
 
   //update discounts info
-  let ws = ::get_warpoints_blk()
+  local ws = ::get_warpoints_blk()
   foreach(name, value in ::discounts)
     if (ws?[name+"DiscountMul"] != null)
       ::discounts[name] = (100.0*(1.0 - ws[name+"DiscountMul"])+0.5).tointeger()
@@ -296,7 +304,7 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
   if (::disable_network())
     return true
 
-  let silent = tbl?.silent ?? false
+  local silent = tbl?.silent ?? false
 
   if ("silentFeature" in tbl)
     if (!::has_feature(tbl.silentFeature))
@@ -316,7 +324,7 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
 
   if (("minRank" in tbl) && ("rankCountry" in tbl))
   {
-    let country = $"country_{tbl.rankCountry}"
+    local country = $"country_{tbl.rankCountry}"
     if (!::haveCountryRankAir(country, tbl.minRank))
     {
       if (!silent)
@@ -337,7 +345,7 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
     {
       if (!silent)
       {
-        let msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(tbl.unlock, 1)
+        local msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(tbl.unlock, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false
@@ -350,14 +358,14 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
       return true
     else if (!silent && (tbl.entitlement == ::shop_get_premium_account_ent_name()))
     {
-      let guiScene = ::get_gui_scene()
+      local guiScene = ::get_gui_scene()
       local handler = this
       if (!handler || handler == getroottable())
         handler = ::get_cur_base_gui_handler()
-      let askFunc = (@(guiScene, handler) function(locText, entitlement) {
+      local askFunc = (@(guiScene, handler) function(locText, entitlement) {
         if (::has_feature("EnablePremiumPurchase"))
         {
-          let text = ::loc("charServer/noEntitlement/"+locText)
+          local text = ::loc("charServer/noEntitlement/"+locText)
           handler.msgBox("no_entitlement", text,
           [
             ["yes", (@(guiScene, handler, entitlement) function() { guiScene.performDelayed(handler, (@(entitlement) function() {
@@ -385,7 +393,7 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
 
 ::haveCountryRankAir <- function haveCountryRankAir(country, rank)
 {
-  let crews = ::g_crews_list.get()
+  local crews = ::g_crews_list.get()
   foreach (c in crews)
     if (c.country == country)
       foreach(crew in c.crews)
@@ -394,13 +402,19 @@ let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() :
   return false
 }
 
-let playerRankByCountries = {}
-let function updatePlayerRankByCountries() {
+::getExpMulWithDiff <- function getExpMulWithDiff(diff)
+{
+  local blk = ::get_ranks_blk()
+  return blk.getReal("expMulWithDiff"+diff.tostring(), 1.0)
+}
+
+local playerRankByCountries = {}
+local function updatePlayerRankByCountries() {
   foreach(c in shopCountriesList)
     playerRankByCountries[c] <- ::get_player_rank_by_country(c)
 }
 
-let function updatePlayerRankByCountry(country, rank) {
+local function updatePlayerRankByCountry(country, rank) {
   playerRankByCountries[country] <- rank
 }
 

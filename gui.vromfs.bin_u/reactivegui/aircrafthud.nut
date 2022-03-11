@@ -1,46 +1,46 @@
-let { bw, bh, rw, rh } = require("style/screenState.nut")
-let opticAtgmSight = require("opticAtgmSight.nut")
-let laserAtgmSight = require("laserAtgmSight.nut")
-let targetingPodSight = require("targetingPodSight.nut")
-let {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("planeState/planeWeaponState.nut")
-let {
+local { bw, bh, rw, rh } = require("style/screenState.nut")
+local opticAtgmSight = require("opticAtgmSight.nut")
+local laserAtgmSight = require("laserAtgmSight.nut")
+local targetingPodSight = require("targetingPodSight.nut")
+local {OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("planeState.nut")
+local {
   IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
   HudColor, AlertColorHigh, IsBomberViewHudVisible} = require("airState.nut")
-let aamAim = require("rocketAamAim.nut")
-let agmAim = require("agmAim.nut")
-let {paramsTable, taTarget, compassElem, lockSight}  = require("airHudElems.nut")
+local aamAim = require("rocketAamAim.nut")
+local agmAim = require("agmAim.nut")
+local {paramsTable, taTarget, compassElem}  = require("airHudElems.nut")
 
-let {
+local {
   aircraftTurretsComponent,
   fixedGunsDirection,
   aircraftRocketSight,
   laserPointComponent,
   laserDesignatorStatusComponent } = require("airSight.nut")
 
-let {radarElement, twsElement} = require("airHudComponents.nut")
+local {radarElement, twsElement} = require("airHudComponents.nut")
 
-let compassSize = [hdpx(420), hdpx(40)]
+local compassSize = [hdpx(420), hdpx(40)]
 
-let paramsTableWidthAircraft = hdpx(330)
-let arbiterParamsTableWidthAircraft = hdpx(200)
-let paramsTableHeightAircraft = hdpx(22)
+local paramsTableWidthAircraft = hdpx(330)
+local arbiterParamsTableWidthAircraft = hdpx(200)
+local paramsTableHeightAircraft = hdpx(22)
 
-let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), sh(10) - hdpx(100)])
+local aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), sh(10) - hdpx(100)])
 
-let aircraftArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
+local aircraftArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
-let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
+local aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftParamsTablePos,
         hdpx(1), true, false, true)
 
-let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
+local aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
         arbiterParamsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftArbiterParamsTablePos,
         hdpx(1), true, false, true)
 
-let function aircraftMainHud(isBackground) {
+local function aircraftMainHud(isBackground) {
   return @(){
     watch = [IsMainHudVisible, IsBomberViewHudVisible]
     children =
@@ -63,7 +63,7 @@ let function aircraftMainHud(isBackground) {
 }
 
 
- let aircraftGunnerHud = @(isBackground)
+ local aircraftGunnerHud = @(isBackground)
   @() {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
@@ -74,7 +74,7 @@ let function aircraftMainHud(isBackground) {
       : null
   }
 
-let aircraftPilotHud = @(isBackground)
+local aircraftPilotHud = @(isBackground)
   @(){
     watch = IsPilotHudVisible
     children = IsPilotHudVisible.value
@@ -83,7 +83,7 @@ let aircraftPilotHud = @(isBackground)
   }
 
 
-let weaponHud = @(isBackground)
+local weaponHud = @(isBackground)
   @() {
     watch = IsWeaponHudVisible
     children = IsWeaponHudVisible.value
@@ -94,7 +94,7 @@ let weaponHud = @(isBackground)
       : null
   }
 
-let aircraftArbiterHud = @(isBackground)
+local aircraftArbiterHud = @(isBackground)
   @(){
     watch = IsArbiterHudVisible
     children = IsArbiterHudVisible.value
@@ -102,7 +102,7 @@ let aircraftArbiterHud = @(isBackground)
       : null
   }
 
-let agmAimIndicator = @(isBackground)
+local agmAimIndicator = @(isBackground)
   @(){
     watch = AtgmTrackerVisible
     size = flex()
@@ -110,16 +110,16 @@ let agmAimIndicator = @(isBackground)
   }
 
 
-let function aircraftHUDs(isBackground) {
+local function aircraftHUDs(isBackground) {
 
-  let radarSize = sh(28)
-  let radarPosComputed = Computed(@() [
+  local radarSize = sh(28)
+  local radarPosComputed = Computed(@() [
     bw.value + 0.99 * rw.value - radarSize,
     bh.value + 0.43 * rh.value
   ])
 
-  let twsSize = sh(20)
-  let twsPosWatched = Computed(@() [
+  local twsSize = sh(20)
+  local twsPosWatched = Computed(@() [
     bw.value + 0.01 * rw.value,
     bh.value + 0.37 * rh.value
   ])
@@ -141,14 +141,13 @@ let function aircraftHUDs(isBackground) {
       LaserAtgmSightVisible.value && !isBackground ? laserAtgmSight(sw(100), sh(100)) : null
       TargetingPodSightVisible.value && !isBackground ? targetingPodSight(sw(100), sh(100)) : null
       TargetingPodSightVisible.value && !isBackground ? laserDesignatorStatusComponent(isBackground) : null
-      TargetingPodSightVisible.value && !isBackground ? lockSight(HudColor, hdpx(150), hdpx(100), sw(50), sh(50), isBackground) : null
       !LaserAtgmSightVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
     ]
   }
 }
 
-let function aircraftRoot() {
-  let children = [aircraftHUDs(true), aircraftHUDs(false)]
+local function aircraftRoot() {
+  local children = [aircraftHUDs(true), aircraftHUDs(false)]
 
   return {
     halign = ALIGN_LEFT

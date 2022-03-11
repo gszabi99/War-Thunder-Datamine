@@ -1,4 +1,4 @@
-let BhvHelpFrame = class
+local BhvHelpFrame = class
 {
   isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
 
@@ -27,7 +27,7 @@ let BhvHelpFrame = class
 
     if (obj?.value)
     {
-      let markup = ::g_hints.buildHintMarkup(::loc(obj.value), {})
+      local markup = ::g_hints.buildHintMarkup(::loc(obj.value), {})
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
     }
 

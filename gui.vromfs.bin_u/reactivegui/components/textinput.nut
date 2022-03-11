@@ -1,9 +1,9 @@
-let textInput = require("%darg/components/textInput.nut")
-let colors = require("reactiveGui/style/colors.nut")
-let focusBorder = require("reactiveGui/components/focusBorder.nut")
+local textInput = require("%darg/components/textInput.nut")
+local colors = require("reactiveGui/style/colors.nut")
+local focusBorder = require("reactiveGui/components/focusBorder.nut")
 
 
-let hudFrame = @(inputObj, group, sf) {
+local hudFrame = @(inputObj, group, sf) {
   rendObj = ROBJ_BOX
   size = [flex(), ::fpx(30) + 2 * (::dp() + ::fpx(3))]
   fillColor = colors.menu.textInputBgColor
@@ -17,7 +17,7 @@ let hudFrame = @(inputObj, group, sf) {
 }
 
 
-let export = class {
+local export = class {
   hud = @(text_state, options={}) textInput(text_state, options, hudFrame)
   _call = @(self, text_state, options={}) textInput(text_state, options)
 }()

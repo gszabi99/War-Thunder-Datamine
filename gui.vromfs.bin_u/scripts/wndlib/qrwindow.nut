@@ -1,11 +1,11 @@
-let { generateQrBlocks } = require("std/qrCode.nut")
-let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("scripts/onlineShop/url.nut")
+local { generateQrBlocks } = require("std/qrCode.nut")
+local { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("scripts/onlineShop/url.nut")
 
-let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
+local mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
 local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/wndLib/qrWindow"
+  sceneTplName = "gui/wndLib/qrWindow"
 
   headerText = ""
   baseUrl = ""
@@ -33,15 +33,15 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getQrCodeView() {
-    let urlConfig = getAuthenticatedUrlConfig(baseUrl)
+    local urlConfig = getAuthenticatedUrlConfig(baseUrl)
     if (urlConfig == null)
       return null
 
     urlWithoutTags = urlConfig.urlWithoutTags
-    let urlForQr = needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
-    let list = generateQrBlocks(urlForQr)
-    let cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
-    let size = cellSize * (list.size + 8)
+    local urlForQr = needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
+    local list = generateQrBlocks(urlForQr)
+    local cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+    local size = cellSize * (list.size + 8)
     return {
       qrSize = size
       cellSize = cellSize
@@ -53,7 +53,7 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateQrCode() {
-    let data = ::handyman.renderCached("%gui/commonParts/qrCode", getQrCodeView())
+    local data = ::handyman.renderCached("gui/commonParts/qrCode", getQrCodeView())
     guiScene.replaceContentFromText(scene.findObject("wnd_content"), data, data.len(), this)
   }
 

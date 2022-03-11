@@ -1,24 +1,23 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let stdMath = require("std/math.nut")
-let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local stdMath = require("std/math.nut")
+local { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeaponsBlk,
   getLastPrimaryWeapon, getPrimaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
-let { AMMO, getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
-let { isModResearched, isModAvailableOrFree, getModificationByName,
+local { AMMO, getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+local { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("scripts/weaponry/modificationInfo.nut")
-let { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
-let { getGuiOptionsMode } = ::require_native("guiOptions")
-let { unique } = require("std/underscore.nut")
-let { getWeaponsByPresetName, getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
+local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local { getGuiOptionsMode } = ::require_native("guiOptions")
+local { unique } = require("std/underscore.nut")
 
-let BULLET_TYPE = {
+local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
   AAM            = "aam"
   TORPEDO        = "torpedo"
   ATGM_TANK      = "atgm_tank"
 }
 
-let DEFAULT_PRIMARY_BULLETS_INFO = {
+local DEFAULT_PRIMARY_BULLETS_INFO = {
   guns                      = 1
   total                     = 0 //catridges total
   catridge                  = 1
@@ -26,7 +25,7 @@ let DEFAULT_PRIMARY_BULLETS_INFO = {
   forcedMaxBulletsInRespawn = false
 }
 
-let BULLETS_LIST_PARAMS = {
+local BULLETS_LIST_PARAMS = {
   isOnlyBought          = false
   needCheckUnitPurchase = true
   needOnlyAvailable     = true
@@ -36,13 +35,13 @@ let BULLETS_LIST_PARAMS = {
 
 const BULLETS_CALIBER_QUANTITY = 4
 
-let function isBullets(item)
+local function isBullets(item)
 {
   return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
     || (item.type == weaponsItem.modification && getModificationBulletsGroup(item.name) != "")
 }
 
-let function isWeaponTierAvailable(unit, tierNum)
+local function isWeaponTierAvailable(unit, tierNum)
 {
   local isAvailable = ::is_tier_available(unit.name, tierNum)
 
@@ -62,15 +61,15 @@ let function isWeaponTierAvailable(unit, tierNum)
   return isAvailable
 }
 
-let function isFakeBullet(modName)
+local function isFakeBullet(modName)
 {
   return ::g_string.startsWith(modName, ::fakeBullets_prefix)
 }
 
-let function setUnitLastBullets(unit, groupIndex, value)
+local function setUnitLastBullets(unit, groupIndex, value)
 {
-  let saveValue = getModificationByName(unit, value)? value : "" //'' = default modification
-  let curBullets = ::get_last_bullets(unit.name, groupIndex)
+  local saveValue = getModificationByName(unit, value)? value : "" //'' = default modification
+  local curBullets = ::get_last_bullets(unit.name, groupIndex)
   if (curBullets != saveValue)
   {
     if (unit.unitType.canUseSeveralBulletsForGun)
@@ -83,10 +82,10 @@ let function setUnitLastBullets(unit, groupIndex, value)
   }
 }
 
-let function getBulletsItemsList(unit, bulletsList, groupIndex)
+local function getBulletsItemsList(unit, bulletsList, groupIndex)
 {
-  let itemsList = []
-  let curBulletsName = ::get_last_bullets(unit.name, groupIndex)
+  local itemsList = []
+  local curBulletsName = ::get_last_bullets(unit.name, groupIndex)
   local isCurBulletsValid = false
   foreach(i, value in bulletsList.values)
   {
@@ -103,14 +102,14 @@ let function getBulletsItemsList(unit, bulletsList, groupIndex)
   return itemsList
 }
 
-let function getBulletsSearchName(unit, modifName) //need for default bullets, which not exist as modifications
+local function getBulletsSearchName(unit, modifName) //need for default bullets, which not exist as modifications
 {
   if (!("modifications" in unit))
     return ""
   if (getModificationByName(unit, modifName))
     return modifName  //not default modification
 
-  let groupName = getModificationBulletsGroup(modifName)
+  local groupName = getModificationBulletsGroup(modifName)
   if (groupName!="")
     foreach(i, modif in unit.modifications)
       if (getModificationBulletsGroup(modif.name) == groupName)
@@ -118,15 +117,15 @@ let function getBulletsSearchName(unit, modifName) //need for default bullets, w
   return ""
 }
 
-let function getModificationBulletsEffect(modifName)
+local function getModificationBulletsEffect(modifName)
 {
-  let blk = ::get_modifications_blk()
-  let modification = blk?.modifications?[modifName]
+  local blk = ::get_modifications_blk()
+  local modification = blk?.modifications?[modifName]
   if (modification?.effects)
   {
     for (local i = 0; i < modification.effects.paramCount(); i++)
     {
-      let effectType = modification.effects.getParamName(i)
+      local effectType = modification.effects.getParamName(i)
       if (effectType == "additiveBulletMod")
         return modification.effects.additiveBulletMod
       if (effectType == "bulletMod")
@@ -136,7 +135,7 @@ let function getModificationBulletsEffect(modifName)
   return ""
 }
 
-let function getBulletsSetData(air, modifName, noModList = null)
+local function getBulletsSetData(air, modifName, noModList = null)
     //noModList!=null -> generate sets for fake bullets. return setsAmount
     //id of thoose sets = modifName + setNum + "_default"
 {
@@ -144,7 +143,7 @@ let function getBulletsSetData(air, modifName, noModList = null)
     return air.bulletsSets[modifName] //all sets saved for no need analyze blk everytime when it need.
 
   local res = null
-  let airBlk = ::get_full_unit_blk(air.name)
+  local airBlk = ::get_full_unit_blk(air.name)
   if (!airBlk?.modifications)
     return res
 
@@ -158,34 +157,47 @@ let function getBulletsSetData(air, modifName, noModList = null)
     mod = getModificationByName(air, modifName)
   }
 
-  let wpList = []
-  let triggerList = []
-  let primaryList = getPrimaryWeaponsList(air)
+  local wpList = []
+  local triggerList = []
+  local primaryList = getPrimaryWeaponsList(air)
   foreach(primaryMod in primaryList)
-    foreach (weapon in getCommonWeapons(airBlk, primaryMod))
-      if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList)) {
-        wpList.append(weapon.blk)
-        triggerList.append(weapon.trigger)
-      }
-
-  if (!noModList) //not for fake bullets
   {
-    let weapons = getUnitWeapons(airBlk)
-    foreach (weapon in weapons)
-      if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+    local primaryBlk = getCommonWeaponsBlk(airBlk, primaryMod)
+    if (primaryBlk)
+    {
+      foreach (weapon in (primaryBlk % "Weapon"))
       {
-        wpList.append(weapon.blk)
-        triggerList.append(weapon.trigger)
+        if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+        {
+          wpList.append(weapon.blk)
+          triggerList.append(weapon.trigger)
+        }
       }
+    }
   }
 
+  if (airBlk?.weapon_presets && !noModList) //not for fake bullets
+    foreach (preset in (airBlk.weapon_presets % "preset"))
+      if (preset?.blk)
+      {
+        local pBlk = blkFromPath(preset.blk)
+        if (::u.isEmpty(pBlk))
+          continue
+        foreach (weapon in (pBlk % "Weapon"))
+          if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+          {
+            wpList.append(weapon.blk)
+            triggerList.append(weapon.trigger)
+          }
+      }
+
   local bulSetForIconParam = null
-  let fakeBulletsSets = []
+  local fakeBulletsSets = []
   local index = -1
   foreach (wBlkName in wpList)
   {
     index++
-    let wBlk = blkFromPath(wBlkName)
+    local wBlk = blkFromPath(wBlkName)
     if (::u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
       continue
     if (noModList)
@@ -201,8 +213,8 @@ let function getBulletsSetData(air, modifName, noModList = null)
         continue
     }
 
-    let bulletsModBlk = wBlk?[getModificationBulletsEffect(modifName)]
-    let bulletsBlk = bulletsModBlk ? bulletsModBlk : wBlk
+    local bulletsModBlk = wBlk?[getModificationBulletsEffect(modifName)]
+    local bulletsBlk = bulletsModBlk ? bulletsModBlk : wBlk
     local bulletsList = bulletsBlk % "bullet"
     local weaponType = triggerList[index] == "countermeasures"
       ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
@@ -211,7 +223,7 @@ let function getBulletsSetData(air, modifName, noModList = null)
       bulletsList = bulletsBlk % "rocket"
       if (bulletsList.len())
       {
-        let rocket = bulletsList[0]
+        local rocket = bulletsList[0]
         if (rocket?.smokeShell == true)
           weaponType = WEAPON_TYPE.SMOKE
         else if ((rocket?.isFlare == true) || (rocket?.isChaff == true))
@@ -226,12 +238,12 @@ let function getBulletsSetData(air, modifName, noModList = null)
       }
     }
 
-    let isBulletBelt = (weaponType == WEAPON_TYPE.GUNS || weaponType == WEAPON_TYPE.COUNTERMEASURES)
+    local isBulletBelt = (weaponType == WEAPON_TYPE.GUNS || weaponType == WEAPON_TYPE.COUNTERMEASURES)
       && ((wBlk?.isBulletBelt != false || (wBlk?.bulletsCartridge ?? 0) > 1) && !wBlk?.useSingleIconForBullet)
 
     foreach (b in bulletsList)
     {
-      let paramsBlk = ::u.isDataBlock(b?.rocket) ? b.rocket : b
+      local paramsBlk = ::u.isDataBlock(b?.rocket) ? b.rocket : b
       if (!res)
         if (paramsBlk?.caliber)
         {
@@ -251,7 +263,7 @@ let function getBulletsSetData(air, modifName, noModList = null)
           continue
 
       local bulletType = b?.bulletType ?? b.getBlockName()
-      let _bulletType = bulletType
+      local _bulletType = bulletType
       if (paramsBlk?.selfDestructionInAir)
         bulletType += "@s_d"
       res.bullets.append(bulletType)
@@ -338,15 +350,15 @@ let function getBulletsSetData(air, modifName, noModList = null)
   return noModList? fakeBulletsSets.len() : res
 }
 
-let function getBulletsModListByGroups(air)
+local function getBulletsModListByGroups(air)
 {
-  let modList = []
-  let groups = []
+  local modList = []
+  local groups = []
 
   if ("modifications" in air)
     foreach(m in air.modifications)
     {
-      let groupName = getModificationBulletsGroup(m.name)
+      local groupName = getModificationBulletsGroup(m.name)
       if (groupName!="" && !::isInArray(groupName, groups))
       {
         groups.append(groupName)
@@ -356,17 +368,18 @@ let function getBulletsModListByGroups(air)
   return modList
 }
 
-let function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBulletMask)
+local function getActiveBulletsIntByWeaponsBlk(air, weaponsBlk, weaponToFakeBulletMask)
 {
   local res = 0
-  let wpList = []
-  foreach (weapon in weaponsArr)
-    if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
-      wpList.append(weapon.blk)
+  local wpList = []
+  if (weaponsBlk)
+    foreach (weapon in (weaponsBlk % "Weapon"))
+      if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+        wpList.append(weapon.blk)
 
   if (wpList.len())
   {
-    let modsList = getBulletsModListByGroups(air)
+    local modsList = getBulletsModListByGroups(air)
     foreach (wBlkName in wpList)
     {
       if (wBlkName in weaponToFakeBulletMask)
@@ -375,7 +388,7 @@ let function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBullet
         continue
       }
 
-      let wBlk = blkFromPath(wBlkName)
+      local wBlk = blkFromPath(wBlkName)
       if (::u.isEmpty(wBlk))
         continue
 
@@ -390,18 +403,18 @@ let function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBullet
   return res
 }
 
-let function getBulletsGroupCount(air, full = false)
+local function getBulletsGroupCount(air, full = false)
 {
   if (!air)
     return 0
   if (air.bulGroups < 0)
   {
-    let modList = []
-    let groups = []
+    local modList = []
+    local groups = []
 
     foreach(m in air.modifications)
     {
-      let groupName = getModificationBulletsGroup(m.name)
+      local groupName = getModificationBulletsGroup(m.name)
       if (groupName!="")
       {
         if (!::isInArray(groupName, groups))
@@ -412,30 +425,30 @@ let function getBulletsGroupCount(air, full = false)
     air.bulModsGroups = groups.len()
     air.bulGroups     = groups.len()
 
-    let bulletSetsQuantity = air.unitType.bulletSetsQuantity
+    local bulletSetsQuantity = air.unitType.bulletSetsQuantity
     if (air.bulGroups < bulletSetsQuantity)
     {
-      let add = getBulletsSetData(air, ::fakeBullets_prefix, modList) || 0
+      local add = getBulletsSetData(air, ::fakeBullets_prefix, modList) || 0
       air.bulGroups = ::min(air.bulGroups + add, bulletSetsQuantity)
     }
   }
   return full? air.bulGroups : air.bulModsGroups
 }
 
-let function getWeaponModIdx(weaponBlk, modsList) {
+local function getWeaponModIdx(weaponBlk, modsList) {
   return modsList.findindex(@(modName) weaponBlk?[getModificationBulletsEffect(modName)]) ?? -1
 }
 
-let function findIdenticalWeapon(weapon, weaponList, modsList) {
+local function findIdenticalWeapon(weapon, weaponList, modsList) {
   if (weapon in weaponList)
     return weapon
 
-  let weaponBlk = blkFromPath(weapon)
+  local weaponBlk = blkFromPath(weapon)
   if (::u.isEmpty(weaponBlk))
     return null
 
-  let cartridgeSize = weaponBlk?.bulletsCartridge || 1
-  let groupIdx = getWeaponModIdx(weaponBlk, modsList)
+  local cartridgeSize = weaponBlk?.bulletsCartridge || 1
+  local groupIdx = getWeaponModIdx(weaponBlk, modsList)
 
   foreach(blkName, info in weaponList) {
     if (info.groupIndex == groupIdx
@@ -446,29 +459,29 @@ let function findIdenticalWeapon(weapon, weaponList, modsList) {
   return null
 }
 
-let function getBulletsInfoForPrimaryGuns(air)
+local function getBulletsInfoForPrimaryGuns(air)
 {
   if (air.primaryBulletsInfo)
     return air.primaryBulletsInfo
 
-  let res = []
+  local res = []
   air.primaryBulletsInfo = res
   if (!air.unitType.canUseSeveralBulletsForGun)
     return res
 
-  let airBlk = ::get_full_unit_blk(air.name)
+  local airBlk = ::get_full_unit_blk(air.name)
   if (!airBlk)
     return res
 
-  let commonWeapons = getCommonWeapons(airBlk, "")
-  if (commonWeapons.len() == 0)
+  local commonWeaponBlk = getCommonWeaponsBlk(airBlk, "")
+  if (!commonWeaponBlk)
     return res
 
-  let modsList = getBulletsModListByGroups(air)
-  let wpList = {} // name = amount
-  foreach (weapon in commonWeapons)
+  local modsList = getBulletsModListByGroups(air)
+  local wpList = {} // name = amount
+  foreach (weapon in (commonWeaponBlk % "Weapon"))
     if (weapon?.blk && !weapon?.dummy) {
-      let weapName = findIdenticalWeapon(weapon.blk, wpList, modsList)
+      local weapName = findIdenticalWeapon(weapon.blk, wpList, modsList)
       if (weapName) {
         wpList[weapName].guns++
       } else {
@@ -477,7 +490,7 @@ let function getBulletsInfoForPrimaryGuns(air)
           continue
 
         wpList[weapon.blk].total = weapon?.bullets ?? 0
-        let wBlk = blkFromPath(weapon.blk)
+        local wBlk = blkFromPath(weapon.blk)
         if (::u.isEmpty(wBlk))
           continue
 
@@ -504,18 +517,18 @@ let function getBulletsInfoForPrimaryGuns(air)
   return res
 }
 
-let function getBulletsInfoForGun(unit, gunIdx)
+local function getBulletsInfoForGun(unit, gunIdx)
 {
-  let bulletsInfo = getBulletsInfoForPrimaryGuns(unit)
+  local bulletsInfo = getBulletsInfoForPrimaryGuns(unit)
   return ::getTblValue(gunIdx, bulletsInfo)
 }
 
-let function canBulletsBeDuplicate(unit)
+local function canBulletsBeDuplicate(unit)
 {
   return unit?.unitType.canUseSeveralBulletsForGun ?? false
 }
 
-let function getLastFakeBulletsIndex(unit)
+local function getLastFakeBulletsIndex(unit)
 {
   if (!canBulletsBeDuplicate(unit))
     return getBulletsGroupCount(unit, true)
@@ -523,12 +536,12 @@ let function getLastFakeBulletsIndex(unit)
     getBulletsGroupCount(unit, true)
 }
 
-let function getFakeBulletName(bulletIdx)
+local function getFakeBulletName(bulletIdx)
 {
   return ::fakeBullets_prefix + bulletIdx + "_default"
 }
 
-let function getBulletAnnotation(name, addName=null)
+local function getBulletAnnotation(name, addName=null)
 {
   local txt = ::loc(name + "/name/short")
   if (addName)
@@ -539,19 +552,19 @@ let function getBulletAnnotation(name, addName=null)
   return txt
 }
 
-let function getUniqModificationText(modifName, isShortDesc)
+local function getUniqModificationText(modifName, isShortDesc)
 {
   if (modifName == "premExpMul")
   {
-    let value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(
+    local value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(
       (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) - 1.0, false)
-    let ending = isShortDesc? "" : "/desc"
+    local ending = isShortDesc? "" : "/desc"
     return ::loc("modification/" + modifName + ending, "", { value = value })
   }
   return null
 }
 
-let function getNVDSightCrewText(sight)
+local function getNVDSightCrewText(sight)
 {
   if (sight.contains("commander"))
     return ::loc("crew/commander")
@@ -562,7 +575,7 @@ let function getNVDSightCrewText(sight)
   return ""
 }
 
-let function getNVDSightSystemText(sight)
+local function getNVDSightSystemText(sight)
 {
   if (sight.contains("Thermal"))
     return ::loc("modification/thermal_vision_system")
@@ -571,12 +584,12 @@ let function getNVDSightSystemText(sight)
   return ""
 }
 
-let function getNVDSightText(sight)
+local function getNVDSightText(sight)
 {
-  let crew = getNVDSightCrewText(sight)
+  local crew = getNVDSightCrewText(sight)
   if (crew == "")
     return ""
-  let system = getNVDSightSystemText(sight)
+  local system = getNVDSightSystemText(sight)
   if (system == "")
     return ""
   return ::colorize("goodTextColor", $"{crew}{::loc("ui/colon")} {system}")
@@ -586,13 +599,13 @@ let function getNVDSightText(sight)
 local function getModificationInfo(air, modifName, isShortDesc=false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null)
 {
-  let res = {desc = "", delayed = false}
+  local res = {desc = "", delayed = false}
   if (typeof(air) == "string")
     air = ::getAircraftByName(air)
   if (!air)
     return res
 
-  let uniqText = getUniqModificationText(modifName, isShortDesc)
+  local uniqText = getUniqModificationText(modifName, isShortDesc)
   if (uniqText)
   {
     res.desc = uniqText
@@ -612,7 +625,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
     }
   }
 
-  let groupName = getModificationBulletsGroup(modifName)
+  local groupName = getModificationBulletsGroup(modifName)
   if (groupName=="") //not bullets
   {
     if (!isShortDesc && itemDescrRewriteFunc)
@@ -620,7 +633,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
         itemDescrRewriteFunc, null) ?? true
 
     local locId = modifName
-    let ending = isShortDesc? (limitedName? "/short" : "") : "/desc"
+    local ending = isShortDesc? (limitedName? "/short" : "") : "/desc"
 
     res.desc = ::loc("modification/" + locId + ending, "")
     if (res.desc == "" && isShortDesc && limitedName)
@@ -628,7 +641,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
 
     if (!isShortDesc)
     {
-      let nvdDescs = air.getNVDSights(modifName).map(@(s) getNVDSightText(s)).filter(@(s) s != "")
+      local nvdDescs = air.getNVDSights(modifName).map(@(s) getNVDSightText(s)).filter(@(s) s != "")
       if (nvdDescs.len() > 0)
         res.desc = $"{res.desc}\n\n{"\n".join(unique(nvdDescs))}"
     }
@@ -658,7 +671,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
   }
 
   //bullets sets
-  let set = getBulletsSetData(air, modifName)
+  local set = getBulletsSetData(air, modifName)
 
   if (isShortDesc && !mod && set?.weaponType == WEAPON_TYPE.GUNS
     && !air.unitType.canUseSeveralBulletsForGun)
@@ -678,7 +691,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
   if (isShortDesc || ammo_pack_len) //bullets name
   {
     local locId = modifName
-    let caliber = limitedName? set.caliber.tointeger() : set.caliber
+    local caliber = limitedName? set.caliber.tointeger() : set.caliber
     foreach(n in ::bullets_locId_by_caliber)
       if (locId.len() > n.len() && locId.slice(locId.len()-n.len()) == n)
       {
@@ -720,13 +733,13 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
   }
 
   //bullets description
-  let separator = ::loc("bullet_type_separator/name")
-  let usedLocs = []
-  let annArr = []
-  let txtArr = []
+  local separator = ::loc("bullet_type_separator/name")
+  local usedLocs = []
+  local annArr = []
+  local txtArr = []
   foreach(b in set.bullets)
   {
-    let part = b.indexof("@")
+    local part = b.indexof("@")
     txtArr.append("".join(part == null ? [::loc($"{b}/name/short")]
       : [::loc($"{b.slice(0, part)}/name/short"), ::loc($"{b.slice(part+1)}/name/short")]))
     if (!::isInArray(b, usedLocs))
@@ -736,8 +749,8 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
       usedLocs.append(b)
     }
   }
-  let setText = separator.join(txtArr)
-  let annotation = "\n".join(annArr)
+  local setText = separator.join(txtArr)
+  local annotation = "\n".join(annArr)
 
   if (ammo_pack_len)
     res.desc = shortDescr + "\n"
@@ -749,14 +762,14 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
   return res
 }
 
-let function getModificationName(air, modifName, limitedName = false)
+local function getModificationName(air, modifName, limitedName = false)
 {
   return getModificationInfo(air, modifName, true, limitedName).desc
 }
 
-let function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true, saveValue = null)
+local function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true, saveValue = null)
 {
-  let item =  { enabled = enabled }
+  local item =  { enabled = enabled }
   descr.items.append(item)
   descr.values.append(modifName)
   descr.saveValues.append(saveValue ?? modifName)
@@ -771,7 +784,7 @@ let function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, e
 local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
 {
   params = BULLETS_LIST_PARAMS.__merge(params)
-  let descr = {
+  local descr = {
     values = []
     saveValues = []
     isTurretBelt = false
@@ -782,23 +795,23 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     //only when genText
     items = []
   }
-  let air = ::getAircraftByName(airName)
+  local air = ::getAircraftByName(airName)
   if (!air || !("modifications" in air))
     return descr
 
-  let canBeDuplicate = canBulletsBeDuplicate(air)
-  let groupCount = getBulletsGroupCount(air, true)
+  local canBeDuplicate = canBulletsBeDuplicate(air)
+  local groupCount = getBulletsGroupCount(air, true)
   if (groupCount <= groupIdx && !canBeDuplicate)
     return descr
 
-  let modTotal = getBulletsGroupCount(air, false)
-  let bulletSetsQuantity = air.unitType.bulletSetsQuantity
-  let firstFakeIdx = canBeDuplicate? bulletSetsQuantity : modTotal
+  local modTotal = getBulletsGroupCount(air, false)
+  local bulletSetsQuantity = air.unitType.bulletSetsQuantity
+  local firstFakeIdx = canBeDuplicate? bulletSetsQuantity : modTotal
   if (firstFakeIdx <= groupIdx)
   {
-    let fakeIdx = groupIdx - firstFakeIdx
-    let modifName = getFakeBulletName(fakeIdx)
-    let bData = getBulletsSetData(air, modifName)
+    local fakeIdx = groupIdx - firstFakeIdx
+    local modifName = getFakeBulletName(fakeIdx)
+    local bData = getBulletsSetData(air, modifName)
     if (bData)
     {
       descr.caliber = bData.caliber
@@ -809,17 +822,17 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     return descr
   }
 
-  let linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, canBeDuplicate)
+  local linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, canBeDuplicate)
   descr.duplicate = canBeDuplicate && groupIdx > 0 &&
     linked_index == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, canBeDuplicate)
 
-  let groups = []
+  local groups = []
   for (local modifNo = 0; modifNo < air.modifications.len(); modifNo++)
   {
-    let modif = air.modifications[modifNo]
-    let modifName = modif.name;
+    local modif = air.modifications[modifNo]
+    local modifName = modif.name;
 
-    let groupName = getModificationBulletsGroup(modifName)
+    local groupName = getModificationBulletsGroup(modifName)
     if (!groupName || groupName == "")
       continue;
 
@@ -835,7 +848,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
 
     if (descr.values.len()==0)
     {
-      let bData = getBulletsSetData(air, modifName)
+      local bData = getBulletsSetData(air, modifName)
       if (!bData || bData.useDefaultBullet)
         appendOneBulletsItem(descr, $"{groupName}_default", air, "", params.needTexts, true, "") //default bullets
       if ("isTurretBelt" in modif)
@@ -851,9 +864,9 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
         && !isModAvailableOrFree(airName, modifName))
       continue
 
-    let enabled = !params.isOnlyBought ||
+    local enabled = !params.isOnlyBought ||
       ::shop_is_modification_purchased(airName, modifName) != 0
-    let amountText = params.needCheckUnitPurchase && ::is_game_mode_with_spendable_weapons()
+    local amountText = params.needCheckUnitPurchase && ::is_game_mode_with_spendable_weapons()
       ? getAmmoAmountData(air, modifName, AMMO.MODIFICATION).text : ""
 
     appendOneBulletsItem(descr, modifName, air, amountText, params.needTexts, enabled)
@@ -861,22 +874,22 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
   return descr
 }
 
-let function getActiveBulletsGroupIntForDuplicates(unit, params)
+local function getActiveBulletsGroupIntForDuplicates(unit, params)
 {
   local res = 0
-  let groupsCount = getBulletsGroupCount(unit, false)
+  local groupsCount = getBulletsGroupCount(unit, false)
   local lastLinkedIdx = -1
   local duplicates = 0
   local lastIdxTotal = 0
   local maxCatridges = 0
-  let bulletSetsQuantity = unit.unitType.bulletSetsQuantity
+  local bulletSetsQuantity = unit.unitType.bulletSetsQuantity
   for (local i = 0; i < bulletSetsQuantity; i++) {
-    let linkedIdx = getLinkedGunIdx(i, groupsCount, bulletSetsQuantity)
+    local linkedIdx = getLinkedGunIdx(i, groupsCount, bulletSetsQuantity)
     if (linkedIdx == lastLinkedIdx) {
       duplicates++
     } else {
-      let checkPurchased = params?.checkPurchased ?? true
-      let bullets = getBulletsList(unit.name, i, {
+      local checkPurchased = params?.checkPurchased ?? true
+      local bullets = getBulletsList(unit.name, i, {
         isOnlyBought = checkPurchased,
         needCheckUnitPurchase = checkPurchased,
         isForcedAvailable = params?.isForcedAvailable ?? false
@@ -885,7 +898,7 @@ let function getActiveBulletsGroupIntForDuplicates(unit, params)
       lastLinkedIdx = linkedIdx
       duplicates = 0
 
-      let bInfo = getBulletsInfoForGun(unit, linkedIdx)
+      local bInfo = getBulletsInfoForGun(unit, linkedIdx)
       maxCatridges = ::getTblValue("total", bInfo, 0)
     }
 
@@ -895,20 +908,20 @@ let function getActiveBulletsGroupIntForDuplicates(unit, params)
   return res
 }
 
-let function getBulletGroupIndex(airName, bulletName)
+local function getBulletGroupIndex(airName, bulletName)
 {
   local group = -1
-  let groupName = getModificationBulletsGroup(bulletName)
+  local groupName = getModificationBulletsGroup(bulletName)
   if (!groupName || groupName == "")
     return -1
 
-  let unit = ::getAircraftByName(airName)
+  local unit = ::getAircraftByName(airName)
   if (unit == null)
     return -1
 
   for (local groupIndex = 0; groupIndex < unit.unitType.bulletSetsQuantity; groupIndex++)
   {
-    let bulletsList = getBulletsList(airName, groupIndex, {
+    local bulletsList = getBulletsList(airName, groupIndex, {
       needCheckUnitPurchase = false, needOnlyAvailable = false })
 
     if (::find_in_array(bulletsList.values, bulletName) >= 0)
@@ -921,20 +934,20 @@ let function getBulletGroupIndex(airName, bulletName)
   return group
 }
 
-let function getBulletSetNameByBulletName(unit, bulletName)
+local function getBulletSetNameByBulletName(unit, bulletName)
 {
-  let setName = unit.bulletsSets.findindex(@(s) s?.bulletNames.contains(bulletName))
+  local setName = unit.bulletsSets.findindex(@(s) s?.bulletNames.contains(bulletName))
   if (setName != null)
     return setName
 
-  let numGroups = getLastFakeBulletsIndex(unit)
+  local numGroups = getLastFakeBulletsIndex(unit)
   for (local groupIndex = 0; groupIndex < numGroups; groupIndex++)
   {
-    let bulletsList = getBulletsList(unit.name, groupIndex, {
+    local bulletsList = getBulletsList(unit.name, groupIndex, {
       needCheckUnitPurchase = false, needOnlyAvailable = false })
     foreach(value in bulletsList.values)
     {
-      let bulletSet = getBulletsSetData(unit, value)
+      local bulletSet = getBulletsSetData(unit, value)
       if (bulletSet?.bulletNames.contains(bulletName))
         return value
     }
@@ -942,19 +955,19 @@ let function getBulletSetNameByBulletName(unit, bulletName)
   return null
 }
 
-let function getActiveBulletsGroupInt(air, params = null)
+local function getActiveBulletsGroupInt(air, params = null)
 {
-  let primaryWeapon = getLastPrimaryWeapon(air)
-  let secondaryWeapon = getLastWeapon(air.name)
+  local primaryWeapon = getLastPrimaryWeapon(air)
+  local secondaryWeapon = getLastWeapon(air.name)
   if (!(primaryWeapon in air.primaryBullets) || !(secondaryWeapon in air.secondaryBullets))
   {
-    let weaponToFakeBulletMask = {}
-    let lastFakeIdx = getLastFakeBulletsIndex(air)
-    let total = getBulletsGroupCount(air, true) - getBulletsGroupCount(air, false)
-    let fakeBulletsOffset = lastFakeIdx - total
+    local weaponToFakeBulletMask = {}
+    local lastFakeIdx = getLastFakeBulletsIndex(air)
+    local total = getBulletsGroupCount(air, true) - getBulletsGroupCount(air, false)
+    local fakeBulletsOffset = lastFakeIdx - total
     for(local i = 0; i < total; i++)
     {
-      let bulSet = getBulletsSetData(air, getFakeBulletName(i))
+      local bulSet = getBulletsSetData(air, getFakeBulletName(i))
       if (bulSet)
         weaponToFakeBulletMask[bulSet.weaponBlkName] <- 1 << (fakeBulletsOffset + i)
     }
@@ -962,22 +975,31 @@ let function getActiveBulletsGroupInt(air, params = null)
     if (!(primaryWeapon in air.primaryBullets))
     {
       local primary = 0
-      let primaryList = getPrimaryWeaponsList(air)
-      if (primaryList.len() > 0) {
-        let airBlk = ::get_full_unit_blk(air.name)
+      local primaryList = getPrimaryWeaponsList(air)
+      if (primaryList.len() > 0)
+      {
+        local airBlk = ::get_full_unit_blk(air.name)
         if (airBlk)
-          primary = getActiveBulletsIntByWeaponsBlk(air,
-            getCommonWeapons(airBlk, primaryWeapon), weaponToFakeBulletMask)
+        {
+          local primaryBlk = getCommonWeaponsBlk(airBlk, primaryWeapon)
+          primary = getActiveBulletsIntByWeaponsBlk(air, primaryBlk, weaponToFakeBulletMask)
+        }
       }
       air.primaryBullets[primaryWeapon] <- primary
     }
 
-    if (!(secondaryWeapon in air.secondaryBullets)) {
+    if (!(secondaryWeapon in air.secondaryBullets))
+    {
       local secondary = 0
-      let airBlk = ::get_full_unit_blk(air.name)
-      secondary = getActiveBulletsIntByWeaponsBlk(air,
-        getWeaponsByPresetName(airBlk, secondaryWeapon), weaponToFakeBulletMask)
-
+      local airBlk = ::get_full_unit_blk(air.name)
+      if (airBlk?.weapon_presets)
+        foreach (wp in (airBlk.weapon_presets % "preset"))
+          if (wp.name == secondaryWeapon)
+          {
+            local wpBlk = blkFromPath(wp.blk)
+            if (!::u.isEmpty(wpBlk))
+              secondary = getActiveBulletsIntByWeaponsBlk(air, wpBlk, weaponToFakeBulletMask)
+          }
       air.secondaryBullets[secondaryWeapon] <- secondary
     }
   }
@@ -991,13 +1013,13 @@ let function getActiveBulletsGroupInt(air, params = null)
   return res
 }
 
-let function isBulletGroupActive(air, group)
+local function isBulletGroupActive(air, group)
 {
-  let groupsActive = getActiveBulletsGroupInt(air)
+  local groupsActive = getActiveBulletsGroupInt(air)
   return (groupsActive & (1 << group)) != 0
 }
 
-let function isBulletsGroupActiveByMod(air, mod)
+local function isBulletsGroupActiveByMod(air, mod)
 {
   local groupIdx = ::getTblValue("isDefaultForGroup", mod, -1)
   if (groupIdx < 0)
@@ -1006,17 +1028,17 @@ let function isBulletsGroupActiveByMod(air, mod)
 }
 
 //to get exact same bullets list as in standart options
-let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false)
+local function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false)
 {
-  let checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
-  let res = getBulletsList(air.name, groupIndex, {
+  local checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
+  local res = getBulletsList(air.name, groupIndex, {
     isOnlyBought = checkPurchased
     needCheckUnitPurchase = checkPurchased
     needTexts = needTexts
     isForcedAvailable = isForcedAvailable
   }) //only_bought=true
 
-  let curModif = air.unitType.canUseSeveralBulletsForGun ?
+  local curModif = air.unitType.canUseSeveralBulletsForGun ?
     ::get_unit_option(air.name, ::USEROPT_BULLETS0 + groupIndex) :
     ::get_last_bullets(air.name, groupIndex)
   local value = curModif? ::find_in_array(res.saveValues, curModif) : -1
@@ -1024,7 +1046,7 @@ let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedA
   if (value < 0 || !res.items[value].enabled)
   {
     value = 0
-    let canBeDuplicate = canBulletsBeDuplicate(air)
+    local canBeDuplicate = canBulletsBeDuplicate(air)
     local skipIndex = canBeDuplicate ? groupIndex : 0
     for(local i = 0; i < res.items.len(); i++)
       if (res.items[i].enabled)
@@ -1039,13 +1061,13 @@ let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedA
   return res
 }
 
-let function getFakeBulletsModByName(unit, modName)
+local function getFakeBulletsModByName(unit, modName)
 {
   if (isFakeBullet(modName))
   {
-    let groupIdxStr = ::g_string.slice(
+    local groupIdxStr = ::g_string.slice(
       modName, ::fakeBullets_prefix.len(), ::fakeBullets_prefix.len() + 1)
-    let groupIdx = ::to_integer_safe(groupIdxStr, -1)
+    local groupIdx = ::to_integer_safe(groupIdxStr, -1)
     if (groupIdx < 0)
       return null
     return {
@@ -1055,23 +1077,23 @@ let function getFakeBulletsModByName(unit, modName)
   }
 
   // Attempt to get modification from group index (e.g. default modification).
-  let groupIndex = getBulletGroupIndex(unit.name, modName)
+  local groupIndex = getBulletGroupIndex(unit.name, modName)
   if (groupIndex >= 0)
     return { name = modName, isDefaultForGroup = groupIndex }
 
   return null
 }
 
-let function getUnitLastBullets(unit)
+local function getUnitLastBullets(unit)
 {
-  let bulletsItemsList = []
+  local bulletsItemsList = []
   for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
     bulletsItemsList.append(::get_last_bullets(unit.name, groupIndex))
   }
   return bulletsItemsList
 }
 
-let function getModifIconItem(unit, item)
+local function getModifIconItem(unit, item)
 {
   if (item.type == weaponsItem.modification)
   {

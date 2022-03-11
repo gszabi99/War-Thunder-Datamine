@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("scripts/crew/crewSkills.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("scripts/crew/crewSkills.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -53,13 +53,13 @@ g_skill_parameters_column_type._createValueItem <- function _createValueItem(
   prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
 {
   local itemText = getDiffText(prevValue, curValue, sign, measureType, textColor)
-  let selectedDiffText = getDiffText(prevSelectedValue - prevValue,
+  local selectedDiffText = getDiffText(prevSelectedValue - prevValue,
     curSelectedValue - curValue, sign, measureType, "userlogColoredText", true)
   itemText += selectedDiffText
 
   if (addMeasureUnits)
     itemText += ::format(" %s", ::colorize(textColor, measureType.getMeasureUnitsName()))
-  let valueItem = {
+  local valueItem = {
     itemText = itemText
   }
   return valueItem
@@ -67,7 +67,7 @@ g_skill_parameters_column_type._createValueItem <- function _createValueItem(
 
 g_skill_parameters_column_type._getDiffText <- function _getDiffText(prevValue, curValue, sign, measureType, colorName, isAdditionalText = false)
 {
-  let diffAbsValue = ::fabs(curValue - prevValue)
+  local diffAbsValue = ::fabs(curValue - prevValue)
   if (isAdditionalText && !diffAbsValue)
     return ""
 
@@ -207,24 +207,24 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
 
     getHeaderText = function ()
     {
-      let unitName = ::getUnitName(::g_crew_short_cache.unit)
-      let pad = "    "
+      local unitName = ::getUnitName(::g_crew_short_cache.unit)
+      local pad = "    "
       return pad + ::loc("crew/forUnit", { unitName = unitName }) + pad
     }
 
     createValueItem = function (prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
     {
-      let crewId = ::g_crew_short_cache.cacheCrewid
-      let unit = ::g_crew_short_cache.unit
-      let isUnitCompatible = unit && unit.unitType.hasAiGunners &&
+      local crewId = ::g_crew_short_cache.cacheCrewid
+      local unit = ::g_crew_short_cache.unit
+      local isUnitCompatible = unit && unit.unitType.hasAiGunners &&
         checkCrewUnitType(unit.unitType.crewUnitType)
-      let unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
-      let crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
-      let curGunners = ::min(crewExpGunners, unitTotalGunners)
+      local unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
+      local crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
+      local curGunners = ::min(crewExpGunners, unitTotalGunners)
       local text = curGunners + ::loc("ui/slash") + unitTotalGunners
       if (isUnitCompatible)
       {
-        let color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
+        local color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
         text = ::colorize(color, text)
       }
       return {

@@ -1,6 +1,6 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 
-::items_classes.Discount <- class extends ::BaseItem
+class ::items_classes.Discount extends ::BaseItem
 {
   static iType = itemType.DISCOUNT
   static defaultLocId = "personalDiscount"
@@ -44,13 +44,13 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
       return
     purchasesMaxCount = ::getTblValue("purchasesMaxCount", blk, 0)
     discountDescriptionDataItems = ::parse_discount_description(blk?.discountsDesc)
-    let sortData = ::create_discount_description_sort_data(blk?.discountsDesc)
+    local sortData = ::create_discount_description_sort_data(blk?.discountsDesc)
     ::sort_discount_description_items(discountDescriptionDataItems, sortData)
   }
 
   /* override */ function doMainAction(cb, handler, params = null)
   {
-    let baseResult = base.doMainAction(cb, handler, params)
+    local baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return activateDiscount(cb, handler)
     return true
@@ -64,11 +64,11 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
     if (uids == null || uids.len() == 0)
       return false
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk.setStr("name", uids[0])
 
-    let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
-    let taskCallback = ::Callback((@(cb) function() {
+    local taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
+    local taskCallback = ::Callback((@(cb) function() {
       ::g_discount.updateDiscountData()
       cb({ success = true })
     })(cb), handler)
@@ -84,7 +84,7 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
     local item = discountDescriptionDataItems[0]
     if (item.type == "aircraft")
     {
-      let hasMultipleVehicles = (discountDescriptionDataItems.len() > 1 &&
+      local hasMultipleVehicles = (discountDescriptionDataItems.len() > 1 &&
         discountDescriptionDataItems[1].type == "aircraft" &&
         discountDescriptionDataItems[1].category == discountDescriptionDataItems[0].category)
       if (hasMultipleVehicles)
@@ -106,7 +106,7 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
 
   function getMainActionData(isShort = false, params = {})
   {
-    let res = base.getMainActionData(isShort, params)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive())
@@ -123,7 +123,7 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
       return false
     for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i)
     {
-      let currentDiscountUid = ::get_current_personal_discount_uid(i)
+      local currentDiscountUid = ::get_current_personal_discount_uid(i)
       if (::isInArray(currentDiscountUid, uids))
         return true
     }
@@ -135,14 +135,14 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
     local result = ""
     if (isActive() && purchasesMaxCount != 0)
     {
-      let locParams = {
+      local locParams = {
         purchasesCount = purchasesCount
         purchasesMaxCount = purchasesMaxCount
       }
       result += ::loc("items/discount/purchasesCounter", locParams) + "\n"
     }
 
-    let expireText = getCurExpireTimeText()
+    local expireText = getCurExpireTimeText()
     if (expireText != "")
       result += expireText + "\n"
 
@@ -157,12 +157,12 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
 
   function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" })
   {
-    let value = ::getTblValue("discountValue", dataItem, 0)
+    local value = ::getTblValue("discountValue", dataItem, 0)
     if (value)
       return toTextFunc(value)
 
-    let minValue = ::getTblValue("discountMin", dataItem, 0)
-    let maxValue = ::getTblValue("discountMax", dataItem, 0)
+    local minValue = ::getTblValue("discountMin", dataItem, 0)
+    local maxValue = ::getTblValue("discountMax", dataItem, 0)
     local res = toTextFunc(minValue)
     if (minValue != maxValue)
       res += " - " + toTextFunc(maxValue)
@@ -171,31 +171,31 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
 
   function getDataItemDescription(dataItem)
   {
-    let nameId = isSpecialOffer ? "specialOffer" : "discount"
+    local nameId = isSpecialOffer ? "specialOffer" : "discount"
     local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
       locId += "/" + dataItem.type
-    let locParams = getLocParamsDescription(dataItem)
+    local locParams = getLocParamsDescription(dataItem)
     return ::loc(locId, locParams)
   }
 
   function getLocParamsDescription(dataItem) {
-    let locParams = {
+    local locParams = {
       discount = _getDataItemDiscountText(dataItem)
       discountValue = dataItem?.discountValue ?? 0
       discountMax = dataItem?.discountMax ?? 0
       discountMin = dataItem?.discountMin ?? 0
     }
 
-    let countryName = dataItem?.countryName
+    local countryName = dataItem?.countryName
     if (countryName != null)
       locParams.countryNameOptional <- $" ({::loc(countryName)})"
     else
       locParams.countryNameOptional <- ""
 
-    let aircraftName = dataItem?.aircraftName
+    local aircraftName = dataItem?.aircraftName
     if (aircraftName != null) {
-      let unit = ::getAircraftByName(aircraftName)
+      local unit = ::getAircraftByName(aircraftName)
       if (unit != null) {
         locParams.aircraftName <- ::getUnitName(unit, true)
         locParams.unit <- unit
@@ -205,13 +205,13 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
       }
     }
 
-    let rank = dataItem?.rank
+    local rank = dataItem?.rank
     if (rank != null)
       locParams.rank <- ::get_roman_numeral(rank)
 
-    let entitlementName = dataItem?.entitlementName
+    local entitlementName = dataItem?.entitlementName
     if (entitlementName != null) {
-      let entitlementConfig = getEntitlementConfig(entitlementName)
+      local entitlementConfig = getEntitlementConfig(entitlementName)
       locParams.entitlementName <- getEntitlementName(entitlementConfig)
     }
     locParams.discount = ::colorize("activeTextColor", locParams.discount)
@@ -238,14 +238,14 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
 
   function canStack(item)
   {
-    let fixedType = isFixedType()
+    local fixedType = isFixedType()
     if (item.isFixedType() != fixedType)
       return false
     if (!fixedType)
       return true
 
-    let data1 = discountDescriptionDataItems[0]
-    let data2 = item.discountDescriptionDataItems[0]
+    local data1 = discountDescriptionDataItems[0]
+    local data2 = item.discountDescriptionDataItems[0]
     foreach(p in stackBases)
       if (::getTblValue(p, data1) != ::getTblValue(p, data2))
         return false
@@ -257,22 +257,22 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
     if (!isFixedType())
       return
 
-    let data = discountDescriptionDataItems[0]
+    local data = discountDescriptionDataItems[0]
     if (!stackParams.len()) //stack not inited
       foreach(p in stackBases)
         stackParams[p] <- ::getTblValue(p, data)
 
     foreach(p in stackVariables)
     {
-      let pValue = ::getTblValue(p, data)
-      let stackValue = ::getTblValue(p, stackParams, pValue)
+      local pValue = ::getTblValue(p, data)
+      local stackValue = ::getTblValue(p, stackParams, pValue)
       stackParams[p] <- (pValue == stackValue) ? pValue : null
     }
 
-    let value = data.discountValue
-    let minValue = ::getTblValue("discountMin", stackParams)
+    local value = data.discountValue
+    local minValue = ::getTblValue("discountMin", stackParams)
     stackParams.discountMin <- minValue ? ::min(minValue, value) : value
-    let maxValue = ::getTblValue("discountMax", stackParams)
+    local maxValue = ::getTblValue("discountMax", stackParams)
     stackParams.discountMax <- maxValue ? ::max(maxValue, value) : value
   }
 
@@ -281,14 +281,14 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
     if (discountDescriptionDataItems == null)
       return getName(colored)
 
-    let itemData = discountDescriptionDataItems[0]
+    local itemData = discountDescriptionDataItems[0]
     local discountType = $"item/discount/{itemData?.type ?? ""}"
     if (itemData?.aircraftName != null)
       discountType = $"{itemData.aircraftName}_shop"
     else if (itemData?.countryName != null)
       discountType = itemData.countryName
 
-    let discountValue = _getDataItemDiscountText(itemData)
+    local discountValue = _getDataItemDiscountText(itemData)
 
     return $"{::loc(discountType, "")}{::loc("ui/colon")}{discountValue}"
   }
@@ -310,7 +310,7 @@ let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/e
 
   function _getTextLayer()
   {
-    let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
+    local layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""
 

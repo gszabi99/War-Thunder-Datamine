@@ -1,19 +1,19 @@
-let { secondsToMilliseconds, minutesToSeconds } = require("scripts/time.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { secondsToMilliseconds, minutesToSeconds } = require("scripts/time.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-let hotasPS4DevId = "044F:B67B"
-let hotasXONEDevId = "044F:B68C"
+local hotasPS4DevId = "044F:B67B"
+local hotasXONEDevId = "044F:B68C"
 
-let function askHotasPresetChange()
+local function askHotasPresetChange()
 {
   if ((!isPlatformSony && !isPlatformXboxOne) || ::loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
-  let preset = ::g_controls_presets.getCurrentPresetInfo()
-  let is_ps4_non_gamepad_preset = isPlatformSony
+  local preset = ::g_controls_presets.getCurrentPresetInfo()
+  local is_ps4_non_gamepad_preset = isPlatformSony
     && preset.name.indexof("dualshock4") == null
     && preset.name.indexof("default") == null
-  let is_xboxone_non_gamepad_preset = isPlatformXboxOne
+  local is_xboxone_non_gamepad_preset = isPlatformXboxOne
     && preset.name.indexof("xboxone_ma") == null
     && preset.name.indexof("xboxone_simulator") == null
 
@@ -22,13 +22,13 @@ let function askHotasPresetChange()
   if (is_ps4_non_gamepad_preset && is_xboxone_non_gamepad_preset)
     return
 
-  let questionLocId =
+  local questionLocId =
     isPlatformSony ? "msgbox/controller_hotas4_found" :
     isPlatformXboxOne ? "msgbox/controller_hotas_one_found" :
     ::unreachable()
 
-  let mainAction = function() {
-    let presetName =
+  local mainAction = function() {
+    local presetName =
       isPlatformSony ? "thrustmaster_hotas4" :
       isPlatformXboxOne ? "xboxone_thrustmaster_hotas_one" :
       ::unreachable()
@@ -55,7 +55,7 @@ let function askHotasPresetChange()
 
 return {
   checkJoystickThustmasterHotas = function(changePreset = true) {
-    let deviceId =
+    local deviceId =
       isPlatformSony ? hotasPS4DevId :
       isPlatformXboxOne ? hotasXONEDevId :
       null

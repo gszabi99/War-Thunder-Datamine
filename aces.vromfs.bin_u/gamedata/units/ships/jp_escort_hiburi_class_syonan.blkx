@@ -1643,7 +1643,7 @@
           "hp": 1000.0
         },
         "cover_03_dm": {
-          "hp": 1027.0
+          "hp": 1039.0
         },
         "cover_04_dm": {
           "hp": 1000.0
@@ -3351,8 +3351,12 @@
           "useEmitter": true,
           "barrelDP": "main_caliber_gun_01_dm",
           "breechDP": "main_caliber_gun_01_dm",
+          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 6.5,
+          "bullets": 240,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3369,11 +3373,6 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "speedYaw": 10.0,
-          "speedPitch": 6.5,
-          "bullets": 250,
-          "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -3424,8 +3423,12 @@
           "useEmitter": true,
           "barrelDP": "main_caliber_gun_02_dm",
           "breechDP": "main_caliber_gun_02_dm",
+          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 6.5,
+          "bullets": 240,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3442,11 +3445,6 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "speedYaw": 10.0,
-          "speedPitch": 6.5,
-          "bullets": 250,
-          "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_02",
@@ -5631,7 +5629,7 @@
           "fatalExplosion": true,
           "damageEffect": "ammunition_storage_fixed",
           "ammunition_storage_01_dm": {
-            "count": 250
+            "count": 240
           }
         }
       },
@@ -5672,7 +5670,7 @@
           "fatalExplosion": true,
           "damageEffect": "ammunition_storage_fixed",
           "ammunition_storage_02_dm": {
-            "count": 250
+            "count": 240
           }
         }
       },
@@ -6145,19 +6143,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
-      "waterMassVel": -40000.0,
+      "repairSpeed": 21.0,
+      "waterMassVel": -50000.0,
       "waterMassMult": 120.0,
-      "sizeToRepair": [0.01,4.0,10.0,450.0],
-      "additionalWaterDeathThreshold": 3000000.0,
+      "sizeToRepair": [0.01,3.0,10.0,370.0],
+      "additionalWaterDeathThreshold": 3500000.0,
       "additionalWaterShouldDiePercent": 0.3,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 36.0,
-      "maxHeelingTime": 10.0,
+      "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 3.0,
+      "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.3
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -6165,14 +6163,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.3,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.5,
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -6192,25 +6190,25 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.9,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.4
               }
             },
             {
               "part": {
                 "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.4
               }
             },
             {
               "part": {
                 "partNo": "engine_room_03_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.4
               }
             }
           ]
@@ -6219,7 +6217,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.6,
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -6232,7 +6230,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.3,
+          "weight": 0.1,
           "maxWaterAlive": 1.0
         }
       }

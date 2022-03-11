@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
-let { refreshGlobalStatusData,
+local enums = require("sqStdLibs/helpers/enums.nut")
+local seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+local { refreshGlobalStatusData,
   getValidGlobalStatusListMask,
   setValidGlobalStatusListMask,
   getGlobalStatusData
@@ -30,7 +30,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   getList = function(filterFunc = null)
   {
     refreshGlobalStatusData()
-    let validListsMask = getValidGlobalStatusListMask()
+    local validListsMask = getValidGlobalStatusListMask()
     if (!cachedList || !(validListsMask & typeMask))
     {
       loadList()
@@ -53,7 +53,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   getShortStatusList = function(filterFunc = null)
   {
     refreshShortGlobalStatusData()
-    let validListsMask = getValidShortGlobalStatusListMask()
+    local validListsMask = getValidShortGlobalStatusListMask()
     if (!cachedShortStatusList || !(validListsMask & typeMask))
     {
       loadShortList()
@@ -83,11 +83,11 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       cachedList = {}
-      let data = getData()
+      local data = getData()
       if (!::u.isTable(data))
         return
 
-      let mapsList = ::g_ww_global_status_type.MAPS.getList()
+      local mapsList = ::g_ww_global_status_type.MAPS.getList()
       foreach(mapId, map in mapsList)
         cachedList[mapId] <-::WwQueue(map, ::getTblValue(mapId, data))
     }
@@ -100,12 +100,12 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       cachedList = []
-      let data = getData()
+      local data = getData()
       if (!::u.isArray(data))
         return
 
       foreach(opData in data) {
-        let operation = ::WwOperation(opData)
+        local operation = ::WwOperation(opData)
         if (operation.isValid())
           cachedList.append(operation)
       }
@@ -113,12 +113,12 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadShortList = function() {
       cachedShortStatusList = []
-      let data = getShortData()
+      local data = getShortData()
       if (!::u.isArray(data))
         return
 
       foreach(opData in data) {
-        let operation = ::WwOperation(opData, true)
+        local operation = ::WwOperation(opData, true)
         if (operation.isValid())
           cachedShortStatusList.append(operation)
       }
@@ -133,7 +133,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       cachedList = {}
-      let data = getData()
+      local data = getData()
       if (!::u.isTable(data) || (data.len() <= 0))
         return
 
@@ -143,14 +143,14 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadShortList = function() {
       cachedShortStatusList = {}
-      let data = getShortData()
+      local data = getShortData()
       if (!::u.isTable(data) || (data.len() <= 0))
         return
 
       foreach(name, mapData in data)
         cachedShortStatusList[name] <-::WwMap(name, mapData)
 
-      let guiScene = ::get_cur_gui_scene()
+      local guiScene = ::get_cur_gui_scene()
       if (guiScene) //need all other configs invalidate too before push event
         guiScene.performDelayed(this,
           function() {
@@ -165,7 +165,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
 
     loadList = function() {
-      let mapsList = ::g_ww_global_status_type.MAPS.getList()
+      local mapsList = ::g_ww_global_status_type.MAPS.getList()
       cachedList = ::u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
     }
   }

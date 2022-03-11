@@ -15,7 +15,7 @@ Promise = class {
   reject = null
 
   constructor(handler) {
-    let state = {
+    local state = {
       status = P_PENDING
       onFulfilledCallbacks = []
       onRejectedCallbacks = []
@@ -51,12 +51,12 @@ Promise = class {
   }
 
   function then(onFulfilled, onRejected=@(...) null) {
-      let state = _state
+      local state = _state
       return Promise(function(resolve, reject) { // -disable-warning: -ident-hides-ident
           if (state.status == P_PENDING) {
               state.onFulfilledCallbacks.append(function() {
                   try {
-                      let fulfilledFromLastPromise = onFulfilled(state.value)
+                      local fulfilledFromLastPromise = onFulfilled(state.value)
                       if (fulfilledFromLastPromise instanceof Promise) {
                           fulfilledFromLastPromise.then(resolve, reject)
                       } else {
@@ -68,7 +68,7 @@ Promise = class {
               })
               state.onRejectedCallbacks.append(function() {
                   try {
-                      let rejectedFromLastPromise = onRejected(state.value)
+                      local rejectedFromLastPromise = onRejected(state.value)
                       if (rejectedFromLastPromise instanceof Promise) {
                           rejectedFromLastPromise.then(resolve, reject)
                       } else {
@@ -82,7 +82,7 @@ Promise = class {
 
           if (state.status == P_FULFILLED) {
               try {
-                  let fulfilledFromLastPromise = onFulfilled(state.value)
+                  local fulfilledFromLastPromise = onFulfilled(state.value)
                   if (fulfilledFromLastPromise instanceof Promise) {
                       fulfilledFromLastPromise.then(resolve, reject)
                   } else {
@@ -96,7 +96,7 @@ Promise = class {
 
           if (state.status == P_REJECTED) {
               try {
-                  let rejectedFromLastPromise = onRejected(state.value)
+                  local rejectedFromLastPromise = onRejected(state.value)
                   if (rejectedFromLastPromise instanceof Promise) {
                       rejectedFromLastPromise.then(resolve, reject)
                   } else {

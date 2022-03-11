@@ -1,10 +1,10 @@
-let platformModule = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 
-::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/leaderboard/leaderboardTable"
+  sceneTplName = "gui/leaderboard/leaderboardTable"
 
   isLastPage = false
   lbParams   = null
@@ -53,7 +53,7 @@ let platformModule = require("scripts/clientState/platform.nut")
     local data = ""
     if (hasHeader)
     {
-      let headerRow = [
+      local headerRow = [
         { text = "#multiplayer/place", width = "0.1@sf" },
         { text = isClanLb ? "#clan/clan_name" : "#multiplayer/name",
           tdalign = "center", width = isClanLb ? 0 : "0.12@sf" }
@@ -63,7 +63,7 @@ let platformModule = require("scripts/clientState/platform.nut")
         if (!lbModel.checkLbRowVisibility(category, lbParams))
           continue
 
-        let block = {
+        local block = {
           id = category.id
           image = category.headerImage
           tooltip = category.headerTooltip
@@ -93,7 +93,7 @@ let platformModule = require("scripts/clientState/platform.nut")
       data += generateSelfRow(selfRow)
     }
 
-    let lbTable = scene.findObject("lb_table")
+    local lbTable = scene.findObject("lb_table")
     guiScene.replaceContentFromText(lbTable, data, data.len(), this)
 
     if (hasTable)
@@ -106,10 +106,10 @@ let platformModule = require("scripts/clientState/platform.nut")
 
   function getTableRowMarkup(row, rowIdx, selfPos)
   {
-    let needAddClanTag = row?.needAddClanTag ?? false
-    let clanTag = row?.clanTag ?? ""
-    let playerName = platformModule.getPlayerName(row?.name ?? "")
-    let rowData = [
+    local needAddClanTag = row?.needAddClanTag ?? false
+    local clanTag = row?.clanTag ?? ""
+    local playerName = platformModule.getPlayerName(row?.name ?? "")
+    local rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
       }
@@ -128,18 +128,18 @@ let platformModule = require("scripts/clientState/platform.nut")
 
       rowData.append(getItemCell(category, row))
     }
-    let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
-    let highlightRow = selfPos == row.pos && row.pos >= 0
-    let rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
-    let data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
+    local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
+    local highlightRow = selfPos == row.pos && row.pos >= 0
+    local rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
+    local data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
   }
 
   function getItemCell(curLbCategory, row)
   {
-    let value = curLbCategory.field in row ? row[curLbCategory.field] : 0
-    let res = curLbCategory.getItemCell(value, row)
+    local value = curLbCategory.field in row ? row[curLbCategory.field] : 0
+    local res = curLbCategory.getItemCell(value, row)
     res.active <- lbCategory == curLbCategory
 
     return res
@@ -150,7 +150,7 @@ let platformModule = require("scripts/clientState/platform.nut")
     if (!selfRow || selfRow.len() <= 0)
       return ""
 
-    let emptyRow = buildTableRow("row_"+rowsInPage, ["..."], null,
+    local emptyRow = buildTableRow("row_"+rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
     return emptyRow + generateRowTableData(selfRow[0], rowsInPage + 1, selfRow)
@@ -158,11 +158,11 @@ let platformModule = require("scripts/clientState/platform.nut")
 
   function generateRowTableData(row, rowIdx, selfRow)
   {
-    let rowName = "row_" + rowIdx
-    let needAddClanTag = row?.needAddClanTag ?? false
-    let clanTag = row?.clanTag ?? ""
-    let playerName = platformModule.getPlayerName(row?.name ?? "")
-    let rowData = [
+    local rowName = "row_" + rowIdx
+    local needAddClanTag = row?.needAddClanTag ?? false
+    local clanTag = row?.clanTag ?? ""
+    local playerName = platformModule.getPlayerName(row?.name ?? "")
+    local rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
       },
@@ -182,9 +182,9 @@ let platformModule = require("scripts/clientState/platform.nut")
       rowData.append(getItemCell(category, row))
     }
 
-    let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
-    let highlightRow = selfRow == row.pos && row.pos >= 0
-    let data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
+    local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
+    local highlightRow = selfRow == row.pos && row.pos >= 0
+    local data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
       $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
 
     return data
@@ -197,7 +197,7 @@ let platformModule = require("scripts/clientState/platform.nut")
     if (!::check_obj(obj))
       return
 
-    let dataIdx = obj.getValue() - 1 // skiping header row
+    local dataIdx = obj.getValue() - 1 // skiping header row
     onRowSelectCb?(dataIdx)
   }
 
@@ -208,8 +208,8 @@ let platformModule = require("scripts/clientState/platform.nut")
     if (!::check_obj(obj))
       return
 
-    let isHover = obj.isHovered()
-    let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    local isHover = obj.isHovered()
+    local dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
     if (isHover == (dataIdx == lastHoveredDataIdx))
      return
 

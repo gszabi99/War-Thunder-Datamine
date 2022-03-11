@@ -1,6 +1,6 @@
-let extWatched = require("reactiveGui/globals/extWatched.nut")
+local extWatched = require("reactiveGui/globals/extWatched.nut")
 
-let isInitializedMeasureUnits =
+local isInitializedMeasureUnits =
   extWatched("isInitializedMeasureUnits", @() ::cross_call.measureUnits.isInitialized())
 
 return {

@@ -1,4 +1,4 @@
-let sourcesConfig = {
+local sourcesConfig = {
   noBonus = {
     textColor = "@commonTextColor"
   }

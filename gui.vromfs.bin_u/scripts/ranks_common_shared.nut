@@ -1,5 +1,5 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let format = require("string").format
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local format = require("string").format
 
 ::DS_UT_AIRCRAFT <- "Air"
 ::DS_UT_TANK <- "Tank"
@@ -109,8 +109,8 @@ global const EDIFF_SHIFT = 3
 {
   if (::cur_mission_mode >= 0)
     return ::cur_mission_mode
-  let mission_name = ::get_selected_mission()
-  let mission_mode = (mission_name && ::get_mission_type(mission_name)) || 0
+  local mission_name = ::get_selected_mission()
+  local mission_mode = (mission_name && ::get_mission_type(mission_name)) || 0
   dagor.debug("get_mission_mode "+mission_name+" mission_mode "+mission_mode)
   ::cur_mission_mode = mission_mode
   return mission_mode
@@ -133,7 +133,7 @@ global const EDIFF_SHIFT = 3
 
 ::getWpcostUnitClass <- function getWpcostUnitClass(unitId)
 {
-  let cost = ::get_wpcost_blk()
+  local cost = ::get_wpcost_blk()
   return (unitId && unitId != "") ? (cost?[unitId]?.unitClass ?? "exp_zero") : "exp_zero"
 }
 
@@ -154,7 +154,7 @@ global const EDIFF_SHIFT = 3
 
 ::round <- function round(value, digits=0)
 {
-  let mul = ::pow(10, digits)
+  local mul = ::pow(10, digits)
   return ::floor(0.5 + value.tofloat()*mul) / mul
 }
 
@@ -170,7 +170,7 @@ global const EDIFF_SHIFT = 3
 
 ::get_unit_blk_economic_rank_by_mode <- function get_unit_blk_economic_rank_by_mode(unitBlk, ediff)
 {
-  let mode_name = ::get_econRank_emode_name(ediff)
+  local mode_name = ::get_econRank_emode_name(ediff)
   return unitBlk?["economicRank" + mode_name] ?? 0
 }
 
@@ -182,24 +182,24 @@ global const EDIFF_SHIFT = 3
 
 ::get_unit_exp_conversion_mul <- function get_unit_exp_conversion_mul(unitName, resUnitName)
 {
-  let wpcost = ::get_wpcost_blk()
+  local wpcost = ::get_wpcost_blk()
 
-  let unit = wpcost?[unitName]
-  let resUnit = wpcost?[resUnitName]
-  let prevUnit = resUnit?.reqAir ? wpcost?[resUnit.reqAir] : null
+  local unit = wpcost?[unitName]
+  local resUnit = wpcost?[resUnitName]
+  local prevUnit = resUnit?.reqAir ? wpcost?[resUnit.reqAir] : null
 
   if (!unit || !resUnit)
     return 1.0
 
-  let blk = ::get_ranks_blk()
-  let unit_type = ::get_unit_type_by_unit_name(unitName)
+  local blk = ::get_ranks_blk()
+  local unit_type = ::get_unit_type_by_unit_name(unitName)
   if (blk?[unit_type] == null)
   {
     dagor.debug("ERROR: ranks.blk is broken "+unit_type)
     return 0
   }
 
-  let diff = get_mission_mode()
+  local diff = get_mission_mode()
   local param_name = ""
   local expMul = 1.0
   if (prevUnit && resUnit.reqAir == unitName && unitName != null)
@@ -210,8 +210,8 @@ global const EDIFF_SHIFT = 3
   }
   else
   {
-    let unitEra = unit.rank
-    let resUnitEra = resUnit.rank
+    local unitEra = unit.rank
+    local resUnitEra = resUnit.rank
 
     local eraDiff = resUnitEra - unitEra
     param_name = "expMulWithTierDiff"
@@ -235,10 +235,10 @@ global const EDIFF_SHIFT = 3
 ::calc_public_boost <- function calc_public_boost(bostersArray)
 {
   local res = 0.0
-  let k = [1.0, 0.6, 0.4, 0.2, 0.1]
+  local k = [1.0, 0.6, 0.4, 0.2, 0.1]
 
-  let count = bostersArray.len()
-  let countOfK = k.len()
+  local count = bostersArray.len()
+  local countOfK = k.len()
   for (local i = 0; i < count; i++)
   {
     if (i < countOfK)
@@ -257,11 +257,11 @@ global const EDIFF_SHIFT = 3
 
 ::get_spawn_score_param <- function get_spawn_score_param(paramName, defaultNum)
 {
-  let ws = ::get_warpoints_blk()
-  let misBlk = ::get_current_mission_info_cached()
-  let sessionMRank = misBlk?.ranks?.max ?? 0
-  let modeName = get_emode_name(get_mission_mode())
-  let overrideBlock = ws?.respawn_points?[modeName]?["override_params_by_session_rank"]
+  local ws = ::get_warpoints_blk()
+  local misBlk = ::get_current_mission_info_cached()
+  local sessionMRank = misBlk?.ranks?.max ?? 0
+  local modeName = get_emode_name(get_mission_mode())
+  local overrideBlock = ws?.respawn_points?[modeName]?["override_params_by_session_rank"]
   local overrideBlockName = ""
   if (overrideBlock)
     foreach(name, block in overrideBlock)
@@ -282,8 +282,8 @@ global const EDIFF_SHIFT = 3
 
 ::get_unit_spawn_score_weapon_mul <- function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray)
 {
-  let wpcost = ::get_wpcost_blk()
-  let unitClass = wpcost?[unitname]?.unitClass
+  local wpcost = ::get_wpcost_blk()
+  local unitClass = wpcost?[unitname]?.unitClass
   if (unitClass == null)
     return 1.0
 
@@ -309,28 +309,28 @@ global const EDIFF_SHIFT = 3
 {
   ::validate_custom_mission_last_error = ""
 
-  let err = function(str)
+  local err = function(str)
   {
     if (::validate_custom_mission_last_error != "")
       ::validate_custom_mission_last_error += "\n"
     ::validate_custom_mission_last_error += str;
   }
 
-  let md = misblk?.mission_settings?.mission
+  local md = misblk?.mission_settings?.mission
   if (!dd_file_exist(md?.level ?? ""))
     err("Unknown location " + (md?.level ?? "null"))
-  let levelBlk = (md?.level ?? "").slice(0, -3) + "blk"
+  local levelBlk = (md?.level ?? "").slice(0, -3) + "blk"
   if (!dd_file_exist(levelBlk))
     err(levelBlk + " not found");
 
   //TODO: weather
   //TODO: timeofday
 
-  let units_include = misblk?.mission_settings?.units_include
+  local units_include = misblk?.mission_settings?.units_include
   if (units_include != null)
     for (local i = 0; i < units_include.blockCount(); i++)
     {
-      let inc = units_include.getBlock(i);
+      local inc = units_include.getBlock(i);
       if (inc.filename != null)
       {
         if ((inc.filename == "") || (!dd_file_exist(inc.filename)))
@@ -339,7 +339,7 @@ global const EDIFF_SHIFT = 3
     }
 
 
-  let typeToPath = {
+  local typeToPath = {
     armada = "gameData/flightModels",
     infantry = "gameData/units/infantry",
     tracked_vehicles = "gameData/units/tracked_vehicles",
@@ -354,28 +354,28 @@ global const EDIFF_SHIFT = 3
   if ("imports" in misblk && "import_record" in misblk.imports)
     err("import_record in imports not supported in user missions")
 
-  let units = misblk?.units ?? ::DataBlock()
+  local units = misblk?.units ?? ::DataBlock()
   for (local i = 0; i < units.blockCount(); i++)
   {
-    let unit = units.getBlock(i);
-    let unitType = unit.getBlockName();
-    let unitClass = unit?.unit_class
+    local unit = units.getBlock(i);
+    local unitType = unit.getBlockName();
+    local unitClass = unit?.unit_class
     if (unitType in typeToPath)
     {
-      let path = unitClass ? (typeToPath[unitType] + "/"+unitClass+".blk") : ""
+      local path = unitClass ? (typeToPath[unitType] + "/"+unitClass+".blk") : ""
       if (!dd_file_exist(path))
         err($"Unknown unit_class {unitClass} of unit {unit?.name}")
       else
       {
-        let preset = unit?.weapons
+        local preset = unit?.weapons
         if (preset != null && preset != "")
         {
-          let unitBlk = blkFromPath(path)
+          local unitBlk = blkFromPath(path)
           if (unitBlk?.weapon_presets == null)
             err($"No weapon presets in {path}")
           else
           {
-            let presets = unitBlk.weapon_presets % "preset"
+            local presets = unitBlk.weapon_presets % "preset"
             local found = false
             foreach (p in presets)
               if (p?.name == preset)
@@ -414,7 +414,7 @@ cyber_cafe_boost.loadTables <- function loadTables()
   if (isValid)
     return
 
-  let ws = ::get_warpoints_blk()
+  local ws = ::get_warpoints_blk()
 
   local idx = 0
   foreach(param in level)
@@ -460,14 +460,14 @@ cyber_cafe_boost.loadTables <- function loadTables()
 
 ::get_classiness_mark_name <- function get_classiness_mark_name(egd_diff, stat_group, rank, squad_size)
 {
-  let diffStr = ::get_name_by_gamemode(egd_diff, false)
+  local diffStr = ::get_name_by_gamemode(egd_diff, false)
   return format("%s_%d_%d_%d", diffStr, stat_group, rank, squad_size)
 }
 
 ::get_pve_trophy_name <- function get_pve_trophy_name(sessionTime, success)
 {
-  let mis = ::get_current_mission_info_cached()
-  let ws = ::get_warpoints_blk()
+  local mis = ::get_current_mission_info_cached()
+  local ws = ::get_warpoints_blk()
   local pveTrophyName = mis.pveTrophyName
 
   if (pveTrophyName == null || typeof(pveTrophyName) != "string")
@@ -482,7 +482,7 @@ cyber_cafe_boost.loadTables <- function loadTables()
   }
   else
   {
-    let maxTrophyStage = ws.getInt("pveTrophyMaxStage", 0)
+    local maxTrophyStage = ws.getInt("pveTrophyMaxStage", 0)
     local trophyStage = get_pve_time_award_stage(sessionTime)
     if (trophyStage > maxTrophyStage)
       trophyStage = maxTrophyStage
@@ -499,8 +499,8 @@ cyber_cafe_boost.loadTables <- function loadTables()
 
 ::get_pve_time_award_stage <- function get_pve_time_award_stage(sessionTime)
 {
-  let ws = ::get_warpoints_blk()
-  let timeAwardStep = ws.getInt("pveTimeAwardStep", 0)
+  local ws = ::get_warpoints_blk()
+  local timeAwardStep = ws.getInt("pveTimeAwardStep", 0)
   local timeAwardStage = 0
 
   if (timeAwardStep > 0)
@@ -512,7 +512,7 @@ cyber_cafe_boost.loadTables <- function loadTables()
 }
 
 local maxEconomicRank = null
-let function getMaxEconomicRank() {
+local function getMaxEconomicRank() {
   if (maxEconomicRank != null)
     return maxEconomicRank
 

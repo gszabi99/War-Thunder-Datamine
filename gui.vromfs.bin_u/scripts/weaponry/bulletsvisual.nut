@@ -1,24 +1,24 @@
-let stdMath = require("std/math.nut")
-let { copyParamsToTable } = require("std/datablock.nut")
-let { getBulletsSetData,
+local stdMath = require("std/math.nut")
+local { copyParamsToTable } = require("std/datablock.nut")
+local { getBulletsSetData,
         getBulletAnnotation,
         getBulletsSearchName,
         getModifIconItem,
         getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TYPE,
+local { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
-let { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+local { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let bulletIcons = {}
-let bulletAspectRatio = {}
+local bulletIcons = {}
+local bulletAspectRatio = {}
 
-let bulletsFeaturesImg = [
+local bulletsFeaturesImg = [
   { id = "damage", values = [] }
   { id = "armor",  values = [] }
 ]
 
-let getBulletsFeaturesImg = @() bulletsFeaturesImg
+local getBulletsFeaturesImg = @() bulletsFeaturesImg
 
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
@@ -34,37 +34,37 @@ local function initBulletIcons(blk = null)
   copyParamsToTable(blk?.bullet_icons, bulletIcons)
   copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)
 
-  let bf = blk?.bullets_features_icons
+  local bf = blk?.bullets_features_icons
   if (bf)
     foreach(item in bulletsFeaturesImg)
       item.values = bf % item.id
 }
 
-let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
+local function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
 {
   local imgId = bulletsSet.bullets[bulletIndex]
   if (bulletsSet?.customIconsMap[imgId] != null)
     imgId = bulletsSet.customIconsMap[imgId]
   if (imgId.indexof("@") != null)
     imgId = imgId.slice(0, imgId.indexof("@"))
-  let defaultImgId = isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
+  local defaultImgId = isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
     ? "default_shell" : "default_ball"
-  let textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
+  local textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
   return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
 }
 
-let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false)
+local function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false)
 {
-  let view = {}
+  local view = {}
   if (!bulletsSet || !("bullets" in bulletsSet))
     return view
 
   initBulletIcons()
   view.bullets <- (@(bulletsSet, tooltipId, tooltipDelayed) function () {
-      let res = []
+      local res = []
 
-      let length = bulletsSet.bullets.len()
-      let isBelt = bulletsSet?.isBulletBelt ?? true
+      local length = bulletsSet.bullets.len()
+      local isBelt = bulletsSet?.isBulletBelt ?? true
 
       local ratio = 1.0
       local count = 1
@@ -80,18 +80,18 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
         count = length * ::max(1, ::floor(maxAmountInView / length))
       }
 
-      let totalWidth = 100.0
-      let itemWidth = totalWidth * ratio
-      let itemHeight = totalWidth
-      let space = totalWidth - itemWidth * count
-      let separator = (space > 0)
+      local totalWidth = 100.0
+      local itemWidth = totalWidth * ratio
+      local itemHeight = totalWidth
+      local space = totalWidth - itemWidth * count
+      local separator = (space > 0)
         ? (space / (count + 1))
         : (count == 1 ? space : (space / (count - 1)))
-      let start = (space > 0) ? separator : 0.0
+      local start = (space > 0) ? separator : 0.0
 
       for (local i = 0; i < count; i++)
       {
-        let item = {
+        local item = {
           image           = getBulletImage(bulletsSet, i % length)
           posx            = (start + (itemWidth + separator) * i) + "%pw"
           sizex           = itemWidth + "%pw"
@@ -106,14 +106,14 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
       return res
     })(bulletsSet, tooltipId, tooltipDelayed)
 
-  let bIconParam = bulletsSet?.bIconParam
-  let isBelt = bulletsSet?.isBulletBelt ?? true
+  local bIconParam = bulletsSet?.bIconParam
+  local isBelt = bulletsSet?.isBulletBelt ?? true
   if (bIconParam && !isBelt)
   {
-    let addIco = []
+    local addIco = []
     foreach(item in getBulletsFeaturesImg())
     {
-      let idx = bIconParam?[item.id] ?? -1
+      local idx = bIconParam?[item.id] ?? -1
       if (idx in item.values)
         addIco.append({ img = item.values[idx] })
     }
@@ -123,14 +123,14 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
   return view
 }
 
-let function getBulletsIconData(bulletsSet)
+local function getBulletsIconData(bulletsSet)
 {
   if (!bulletsSet)
     return ""
-  return ::handyman.renderCached(("%gui/weaponry/bullets"), getBulletsIconView(bulletsSet))
+  return ::handyman.renderCached(("gui/weaponry/bullets"), getBulletsIconView(bulletsSet))
 }
 
-let function getArmorPiercingViewData(armorPiercing, dist)
+local function getArmorPiercingViewData(armorPiercing, dist)
 {
   local res = null
   if (armorPiercing.len() <= 0)
@@ -146,14 +146,14 @@ let function getArmorPiercingViewData(armorPiercing, dist)
       res = []
       angles = ::u.keys(armorTbl)
       angles.sort(@(a,b) a <=> b)
-      let headRow = {
+      local headRow = {
         text = ""
         values = ::u.map(angles, function(v) { return { value = v + ::loc("measureUnits/deg") } })
       }
       res.append(headRow)
     }
 
-    let row = {
+    local row = {
       text = dist[ind] + ::loc("measureUnits/meters_alt")
       values = []
     }
@@ -167,23 +167,23 @@ let function getArmorPiercingViewData(armorPiercing, dist)
 local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, descTbl,
   bulletsSet = null, needAdditionalInfo = false, weaponName = "")
 {
-  let param = { armorPiercing = array(0, null) , armorPiercingDist = array(0, null)}
-  let needAddParams = bullet_parameters.len() == 1
+  local param = { armorPiercing = array(0, null) , armorPiercingDist = array(0, null)}
+  local needAddParams = bullet_parameters.len() == 1
 
-  let isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUNS
+  local isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUNS
     && bulletsSet?.bullets?[0] == "smoke_tank"
-  let isSmokeGenerator = isSmokeShell || bulletsSet?.weaponType == WEAPON_TYPE.SMOKE
-  let isCountermeasure = isSmokeGenerator || bulletsSet?.weaponType == WEAPON_TYPE.FLARES
+  local isSmokeGenerator = isSmokeShell || bulletsSet?.weaponType == WEAPON_TYPE.SMOKE
+  local isCountermeasure = isSmokeGenerator || bulletsSet?.weaponType == WEAPON_TYPE.FLARES
 
   if (isCountermeasure)
   {
-    let whitelistParams = [ "bulletType" ]
+    local whitelistParams = [ "bulletType" ]
     if (isSmokeShell)
       whitelistParams.append("mass", "speed", "weaponBlkPath")
-    let filteredBulletParameters = []
+    local filteredBulletParameters = []
     foreach (_params in bullet_parameters)
     {
-      let params = _params ? {} : null
+      local params = _params ? {} : null
       if (_params)
       {
         foreach (key in whitelistParams)
@@ -215,7 +215,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
         for (local i = 0; i < bullet_params.armorPiercingDist.len(); i++)
         {
           local armor = null;
-          let idist = bullet_params.armorPiercingDist[i].tointeger()
+          local idist = bullet_params.armorPiercingDist[i].tointeger()
           if (typeof(bullet_params.armorPiercing[i]) != "table")
             continue
 
@@ -223,7 +223,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
             armor = ::u.map(bullet_params.armorPiercing[i], @(f) stdMath.round(f).tointeger())
           else if (d < idist && i)
           {
-            let prevDist = bullet_params.armorPiercingDist[i-1].tointeger()
+            local prevDist = bullet_params.armorPiercingDist[i-1].tointeger()
             if (d > prevDist)
               armor = ::u.tablesCombine(bullet_params.armorPiercing[i-1], bullet_params.armorPiercing[i],
                         (@(d, prevDist, idist) function(prev, next) {
@@ -274,8 +274,8 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
   }
 
   descTbl.bulletParams <- []
-  let p = []
-  let addProp = function(arr, text, value)
+  local p = []
+  local addProp = function(arr, text, value)
   {
     arr.append({
       text = text
@@ -294,7 +294,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       addProp(p, ::loc("bullet_properties/speed"),
         ::format("%.0f %s", param.speed, ::loc("measureUnits/metersPerSecond_climbSpeed")))
 
-    let maxSpeed = (param?.maxSpeed ?? 0) || (param?.endSpeed ?? 0)
+    local maxSpeed = (param?.maxSpeed ?? 0) || (param?.endSpeed ?? 0)
     if (param?.machMax)
       addProp(p, ::loc("rocket/maxSpeed"),
         ::format("%.1f %s", param.machMax, ::loc("measureUnits/machNumber")))
@@ -311,8 +311,8 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
 
     if ("autoAiming" in param)
     {
-      let isBeamRider = param?.isBeamRider ?? false
-      let aimingTypeLocId = "".concat("guidanceSystemType/",
+      local isBeamRider = param?.isBeamRider ?? false
+      local aimingTypeLocId = "".concat("guidanceSystemType/",
       !param.autoAiming ? "handAim"
       : isBeamRider ? "beamRider"
       : "semiAuto")
@@ -368,7 +368,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       }
     }
 
-    let operatedDist = param?.operatedDist ?? 0
+    local operatedDist = param?.operatedDist ?? 0
     if (operatedDist)
       addProp(p, ::loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
 
@@ -385,40 +385,40 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
           ::format("%.1f %s", param.timeLife, ::loc("measureUnits/seconds")))
     }
 
-    let explosiveType = param?.explosiveType
+    local explosiveType = param?.explosiveType
     if (explosiveType)
       addProp(p, ::loc("bullet_properties/explosiveType"), ::loc("explosiveType/" + explosiveType))
-    let explosiveMass = param?.explosiveMass
+    local explosiveMass = param?.explosiveMass
     if (explosiveMass)
       addProp(p, ::loc("bullet_properties/explosiveMass"),
         ::g_dmg_model.getMeasuredExplosionText(explosiveMass))
 
     if (explosiveType && explosiveMass)
     {
-      let tntEqText = ::g_dmg_model.getTntEquivalentText(explosiveType, explosiveMass)
+      local tntEqText = ::g_dmg_model.getTntEquivalentText(explosiveType, explosiveMass)
       if (tntEqText.len())
         addProp(p, ::loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
     }
 
-    let fuseDelayDist = stdMath.roundToDigits(param.fuseDelayDist, 2)
+    local fuseDelayDist = stdMath.roundToDigits(param.fuseDelayDist, 2)
     if (fuseDelayDist)
       addProp(p, ::loc("bullet_properties/fuseDelayDist"),
                  fuseDelayDist + " " + ::loc("measureUnits/meters_alt"))
-    let explodeTreshold = stdMath.roundToDigits(param.explodeTreshold, 2)
+    local explodeTreshold = stdMath.roundToDigits(param.explodeTreshold, 2)
     if (explodeTreshold)
       addProp(p, ::loc("bullet_properties/explodeTreshold"),
                  explodeTreshold + " " + ::loc("measureUnits/mm"))
 
-    let proximityFuseArmDistance = stdMath.round(param?.proximityFuseArmDistance ?? 0)
+    local proximityFuseArmDistance = stdMath.round(param?.proximityFuseArmDistance ?? 0)
     if (proximityFuseArmDistance)
       addProp(p, ::loc("torpedo/armingDistance"),
         proximityFuseArmDistance + " " + ::loc("measureUnits/meters_alt"))
-    let proximityFuseRadius = stdMath.round(param?.proximityFuseRadius ?? 0)
+    local proximityFuseRadius = stdMath.round(param?.proximityFuseRadius ?? 0)
     if (proximityFuseRadius)
       addProp(p, ::loc("bullet_properties/proximityFuze/triggerRadius"),
         proximityFuseRadius + " " + ::loc("measureUnits/meters_alt"))
 
-    let ricochetData = !isCountermeasure && ::g_dmg_model.getRicochetData(param?.ricochetPreset)
+    local ricochetData = !isCountermeasure && ::g_dmg_model.getRicochetData(param?.ricochetPreset)
     if (ricochetData)
       foreach(item in ricochetData.angleProbabilityMap)
         addProp(p, ::loc("bullet_properties/angleByProbability",
@@ -427,9 +427,9 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
 
     if ("reloadTimes" in param)
     {
-      let currentDiffficulty = ::is_in_flight() ? ::get_mission_difficulty_int()
+      local currentDiffficulty = ::is_in_flight() ? ::get_mission_difficulty_int()
         : ::get_current_shop_difficulty().diffCode
-      let reloadTime = param.reloadTimes[currentDiffficulty]
+      local reloadTime = param.reloadTimes[currentDiffficulty]
       if(reloadTime > 0)
         addProp(p, ::colorize("badTextColor", ::loc("bullet_properties/cooldown")),
           ::colorize("badTextColor", stdMath.roundToDigits(reloadTime, 2)
@@ -448,7 +448,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
       addProp(p, ::loc("bullet_properties/smokeTime"),
                  stdMath.roundToDigits(param.smokeTime, 2) + " " + ::loc("measureUnits/seconds"))
 
-    let bTypeDesc = ::loc(param.bulletType, "")
+    local bTypeDesc = ::loc(param.bulletType, "")
     if (bTypeDesc != "")
       descTbl.bulletsDesc <- bTypeDesc
   }
@@ -458,45 +458,45 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
   if("weaponBlkPath" in param)
     currWeaponName = getWeaponNameByBlkPath(param.weaponBlkPath)
 
-  let bulletName = currWeaponName != "" ? ::loc("weapons/{0}".subst(currWeaponName)) : ""
+  local bulletName = currWeaponName != "" ? ::loc("weapons/{0}".subst(currWeaponName)) : ""
   local apData = null
   if ((weaponName != "" ? weaponName : currWeaponName) == currWeaponName)
     apData = getArmorPiercingViewData(param.armorPiercing, param.armorPiercingDist)
 
   if (apData)
   {
-    let header = ::loc("bullet_properties/armorPiercing")
+    local header = ::loc("bullet_properties/armorPiercing")
       + (::u.isEmpty(bulletName) ? "" : ( ": " + bulletName))
       + "\n" + ::format("(%s / %s)", ::loc("distance"), ::loc("bullet_properties/hitAngle"))
     descTbl.bulletParams.append({ props = apData, header = header })
   }
 })
 
-let function addBulletsParamToDesc(descTbl, unit, item)
+local function addBulletsParamToDesc(descTbl, unit, item)
 {
   if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
     return
 
-  let modName = getModifIconItem(unit, item)?.name ?? item.name
+  local modName = getModifIconItem(unit, item)?.name ?? item.name
   if (!modName)
     return
 
-  let bulletsSet = getBulletsSetData(unit, modName)
+  local bulletsSet = getBulletsSetData(unit, modName)
   if (!bulletsSet)
     return
 
   if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
       && ::dd_file_exist(bulletsSet.bulletAnimation))
     descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
-  let bIconParam = bulletsSet?.bIconParam
-  let isBelt = bulletsSet?.isBulletBelt ?? true
+  local bIconParam = bulletsSet?.bIconParam
+  local isBelt = bulletsSet?.isBulletBelt ?? true
   if (bIconParam && !isBelt)
   {
     descTbl.bulletActions <- []
-    let setClone = clone bulletsSet
+    local setClone = clone bulletsSet
     foreach(p in ["armor", "damage"])
     {
-      let value = bIconParam?[p] ?? -1
+      local value = bIconParam?[p] ?? -1
       if (value < 0)
         continue
 
@@ -513,9 +513,9 @@ let function addBulletsParamToDesc(descTbl, unit, item)
   if (bulletsSet.weaponType == WEAPON_TYPE.COUNTERMEASURES)
     return
 
-  let searchName = getBulletsSearchName(unit, modName)
-  let useDefaultBullet = searchName != modName
-  let bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
+  local searchName = getBulletsSearchName(unit, modName)
+  local useDefaultBullet = searchName != modName
+  local bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
     useDefaultBullet && "weaponBlkName" in bulletsSet ?
       bulletsSet.weaponBlkName :
       getModificationBulletsEffect(searchName),
@@ -528,13 +528,13 @@ let function addBulletsParamToDesc(descTbl, unit, item)
     needAdditionalInfo = true})
 }
 
-let function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
+local function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
 {
-  let descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
+  local descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
   if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
     && ::dd_file_exist(bulletsSet.bulletAnimation))
       descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
-  let part = bulletName.indexof("@")
+  local part = bulletName.indexof("@")
     descTbl.desc = part == null ? getBulletAnnotation(bulletName)
       : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part+1))
 

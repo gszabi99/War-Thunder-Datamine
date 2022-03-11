@@ -3,11 +3,11 @@
   ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
 }
 
-let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
 
-::gui_handlers.CampaignResults <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.CampaignResults extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/debriefingCamp.blk"
+  sceneBlkName = "gui/debriefingCamp.blk"
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]
 
@@ -20,7 +20,7 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
         (getDynamicResult() == ::MISSION_STATUS_SUCCESS) ? ::loc("missions/dynamic_success") : ::loc("missions/dynamic_fail")
       );
 
-    let wpdata = ::get_session_warpoints()
+    local wpdata = ::get_session_warpoints()
 
     guiScene["info-dc-wins"].setValue(wpdata.dcWins.tostring())
     guiScene["info-dc-fails"].setValue(wpdata.dcFails.tostring())
@@ -32,10 +32,10 @@ let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
         {isWpAlwaysShown = true, isColored = false}))
     }
 
-    let info = DataBlock()
+    local info = DataBlock()
     ::dynamic_get_visual(info)
-    let stats = ["bombers", "fighters", "infantry", "tanks", "artillery","ships"]
-    let sides = ["ally","enemy"]
+    local stats = ["bombers", "fighters", "infantry", "tanks", "artillery","ships"]
+    local sides = ["ally","enemy"]
     for (local i = 0; i < stats.len(); i++)
     {
       for (local j = 0; j < sides.len(); j++)

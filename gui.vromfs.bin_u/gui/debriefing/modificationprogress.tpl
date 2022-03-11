@@ -82,7 +82,7 @@ tdiv {
           pattern {}
         }
 
-        include "%gui/weaponry/weaponIcon"
+        include "gui/weaponry/weaponIcon"
         itemWinkBlock { buttonWink { _transp-timer:t='0' } }
 
       }

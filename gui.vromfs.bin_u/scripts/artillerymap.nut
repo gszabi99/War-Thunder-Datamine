@@ -1,8 +1,8 @@
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-let { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-let { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
-let { getActionBarItems } = ::require_native("hudActionBar")
+local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
 local { EII_ARTILLERY_TARGET } = ::require_native("hudActionBarConst")
 
 enum POINTING_DEVICE
@@ -13,9 +13,9 @@ enum POINTING_DEVICE
   GAMEPAD
 }
 
-::gui_handlers.ArtilleryMap <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/artilleryMap.blk"
+  sceneBlkName = "gui/artilleryMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
@@ -53,7 +53,7 @@ enum POINTING_DEVICE
 
   function initScreen()
   {
-    let objMap = scene.findObject("tactical_map")
+    local objMap = scene.findObject("tactical_map")
     if (::checkObj(objMap))
     {
       mapPos  = objMap.getPos()
@@ -66,7 +66,7 @@ enum POINTING_DEVICE
       if (isSuperArtillery)
       {
         objTarget["background-image"] = iconSuperArtilleryZone
-        let objTargetCenter = scene.findObject("super_artillery_target_center")
+        local objTargetCenter = scene.findObject("super_artillery_target_center")
         objTargetCenter["background-image"] = iconSuperArtilleryTarget
       }
     }
@@ -91,7 +91,7 @@ enum POINTING_DEVICE
   {
     setParams(params)
 
-    let isStick = pointingDevice == POINTING_DEVICE.GAMEPAD || pointingDevice == POINTING_DEVICE.JOYSTICK
+    local isStick = pointingDevice == POINTING_DEVICE.GAMEPAD || pointingDevice == POINTING_DEVICE.JOYSTICK
     prevMousePos = isStick ? ::get_dagui_mouse_cursor_pos() : [-1, -1]
     mapCoords = isStick ? [0.5, 0.5] : null
     stuckAxis = ::joystickInterface.getAxisStuck(watchAxis)
@@ -108,13 +108,13 @@ enum POINTING_DEVICE
     if (!::checkObj(objTarget))
       return
 
-    let prevArtilleryReady = artilleryReady
+    local prevArtilleryReady = artilleryReady
     checkArtilleryEnabledByTimer(dt)
 
     local curPointingice = pointingDevice
-    let mousePos = ::get_dagui_mouse_cursor_pos()
-    let axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
+    local mousePos = ::get_dagui_mouse_cursor_pos()
+    local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
+    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
 
     if (mousePos[0] != prevMousePos[0] || mousePos[1] != prevMousePos[1])
     {
@@ -124,8 +124,8 @@ enum POINTING_DEVICE
     else if (!isGamepadMouse && (joystickData.x || joystickData.y))
     {
       curPointingice = ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
-      let displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
-      let prevMapCoords = mapCoords || [0.5, 0.5]
+      local displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
+      local prevMapCoords = mapCoords || [0.5, 0.5]
       mapCoords = [
         ::clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
         ::clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
@@ -136,25 +136,25 @@ enum POINTING_DEVICE
     if (curPointingice != pointingDevice || prevArtilleryReady != artilleryReady)
       pointingDevice = curPointingice
 
-    let show = mapCoords != null
-    let disp = mapCoords ? ::artillery_dispersion(mapCoords[0], mapCoords[1]) : -1
+    local show = mapCoords != null
+    local disp = mapCoords ? ::artillery_dispersion(mapCoords[0], mapCoords[1]) : -1
     local valid = show && disp >= 0 && artilleryEnabled
-    let dispersionRadius = valid ? (isSuperArtillery ? superStrikeRadius / mapSizeMeters : disp) : invalidTargetDispersionRadius
+    local dispersionRadius = valid ? (isSuperArtillery ? superStrikeRadius / mapSizeMeters : disp) : invalidTargetDispersionRadius
     valid = valid && artilleryReady
 
     objTarget.show(show)
     if (show)
     {
-      let sizePx = ::round(mapSize[0] * dispersionRadius) * 2
-      let posX = 1.0 * mapSize[0] * mapCoords[0]
-      let posY = 1.0 * mapSize[1] * mapCoords[1]
+      local sizePx = ::round(mapSize[0] * dispersionRadius) * 2
+      local posX = 1.0 * mapSize[0] * mapCoords[0]
+      local posY = 1.0 * mapSize[1] * mapCoords[1]
       objTarget.size = ::format("%d, %d", sizePx, sizePx)
       objTarget.pos = ::format("%d-w/2, %d-h/2", posX, posY)
       if (!isSuperArtillery)
         objTarget.enable(valid)
     }
 
-    let objHint = scene.findObject("txt_artillery_hint")
+    local objHint = scene.findObject("txt_artillery_hint")
     if (::checkObj(objHint))
     {
       objHint.setValue(::loc(valid ? "artillery_strike/allowed" :
@@ -164,7 +164,7 @@ enum POINTING_DEVICE
       objHint.overlayTextColor = valid ? "good" : "bad"
     }
 
-    let objBtnApply = scene.findObject("btn_apply")
+    local objBtnApply = scene.findObject("btn_apply")
     if (::check_obj(objBtnApply))
       objBtnApply.enable(valid)
 
@@ -175,9 +175,9 @@ enum POINTING_DEVICE
   {
     local avatarPos = ::get_map_relative_player_pos()
     avatarPos = avatarPos.len() == 2 ? avatarPos : [ 0.5, 0.5 ]
-    let diameter  = isSuperArtillery ? 3.0 : (::is_in_flight() ? ::artillery_range() * 2 : 1.0)
-    let rangeSize = [ round(mapSize[0] * diameter), round(mapSize[1] * diameter) ]
-    let rangePos  = [ round(mapSize[0] * avatarPos[0] - rangeSize[0] / 2), round(mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
+    local diameter  = isSuperArtillery ? 3.0 : (::is_in_flight() ? ::artillery_range() * 2 : 1.0)
+    local rangeSize = [ round(mapSize[0] * diameter), round(mapSize[1] * diameter) ]
+    local rangePos  = [ round(mapSize[0] * avatarPos[0] - rangeSize[0] / 2), round(mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
 
     if (rangePos[0] == prevShadeRangePos[0] && rangePos[1] == prevShadeRangePos[1])
       return
@@ -192,7 +192,7 @@ enum POINTING_DEVICE
     obj.size = ::format("%d, %d", rangeSize[0], rangeSize[1])
     obj.pos  = ::format("%d, %d", rangePos[0], rangePos[1])
 
-    let gap = {
+    local gap = {
       t = rangePos[1]
       r = mapSize[0] - rangePos[0] - rangeSize[0]
       b = mapSize[1] - rangePos[1] - rangeSize[1]
@@ -231,11 +231,11 @@ enum POINTING_DEVICE
 
   function updateShotcutImages()
   {
-    let placeObj = scene.findObject("shortcuts_block")
+    local placeObj = scene.findObject("shortcuts_block")
     if (!::checkObj(placeObj))
       return
 
-    let showShortcuts = [
+    local showShortcuts = [
       {
         title = "hotkeys/ID_SHOOT_ARTILLERY"
         shortcuts = ["ID_SHOOT_ARTILLERY"]
@@ -265,7 +265,7 @@ enum POINTING_DEVICE
     foreach(idx, info in showShortcuts)
       if (info?.show ?? true)
       {
-        let shortcuts = ::get_shortcuts(info.shortcuts)
+        local shortcuts = ::get_shortcuts(info.shortcuts)
         local pref = null
         local any = null
         foreach(i, actionShortcuts in shortcuts)
@@ -296,7 +296,7 @@ enum POINTING_DEVICE
           data.append(getShortcutFrameForHelp(info.primaryShortcut) +
             ::format("controlsHelpHint { text:t='#%s' }", info.title))
         else
-          data.append(::handyman.renderCached("%gui/commonParts/button", {
+          data.append(::handyman.renderCached("gui/commonParts/button", {
             id = info?.buttonId ?? ""
             text = "#" + info.title
             funcName = info.buttonCb
@@ -319,15 +319,15 @@ enum POINTING_DEVICE
     if (!shortcut)
       return "text { text-align:t='center'; text:t='---' }"
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
     for (local k = 0; k < shortcut.dev.len(); k++)
     {
-      let name = ::getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
+      local name = ::getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", ::g_string.stripTags(name), (name.len()>2)? "@fontTiny" : "@fontMedium");
 
       if (shortcut.dev[k] == ::STD_MOUSE_DEVICE_ID)
       {
-        let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
+        local mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
         if (shortcut.btn[k] == 0)
           buttonFrame = format(mouseBtnImg, "mouse_left");
         else if (shortcut.btn[k] == 1)
@@ -338,7 +338,7 @@ enum POINTING_DEVICE
 
       if (shortcut.dev[k] == ::JOYSTICK_DEVICE_0_ID)
       {
-        let btnId = shortcut.btn[k]
+        local btnId = shortcut.btn[k]
         if (gamepadIcons.hasTextureByButtonIdx(btnId))
           buttonFrame = format("controlsHelpJoystickBtn { background-image:t='%s' }",
             gamepadIcons.getTextureByButtonIdx(btnId))
@@ -356,7 +356,7 @@ enum POINTING_DEVICE
     if (artilleryEnabledCheckCooldown > 0)
       return
 
-    let { ready, enabled } = getArtilleryStatus()
+    local { ready, enabled } = getArtilleryStatus()
     artilleryEnabledCheckCooldown = 0.3
     artilleryEnabled = enabled
     artilleryReady = ready
@@ -366,7 +366,7 @@ enum POINTING_DEVICE
 
   function getArtilleryStatus()
   {
-    let { cooldown = 1 } = getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET)
+    local { cooldown = 1 } = getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET)
     return {
       enabled = cooldown != 1
       ready = cooldown == 0
@@ -377,7 +377,7 @@ enum POINTING_DEVICE
   {
     local res = ::is_xinput_device() && !isGamepadMouse ? mapCoords : null
 
-    let cursorPos = ::get_dagui_mouse_cursor_pos()
+    local cursorPos = ::get_dagui_mouse_cursor_pos()
     if (cursorPos[0] >= mapPos[0] && cursorPos[0] <= mapPos[0] + mapSize[0] && cursorPos[1] >= mapPos[1] && cursorPos[1] <= mapPos[1] + mapSize[1])
       res = [
         1.0 * (cursorPos[0] - mapPos[0]) / mapSize[0],
@@ -468,7 +468,7 @@ enum POINTING_DEVICE
 
 ::artillery_call_by_shortcut <- function artillery_call_by_shortcut() // called from client
 {
-  let handler = ::handlersManager.getActiveBaseHandler()
+  local handler = ::handlersManager.getActiveBaseHandler()
   if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))
     handler.onApplyByShortcut()
 }

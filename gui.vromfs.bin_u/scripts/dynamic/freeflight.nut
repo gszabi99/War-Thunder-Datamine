@@ -135,17 +135,17 @@ mgSetInt("mission_settings/mission/wpAward", 1000);
 missionGenFunctions.append( function (isFreeFlight) // isFreeFlight = Mission Editor
 {
   if (!isFreeFlight){return}
-  let playerSide = ::mgGetPlayerSide();
+  local playerSide = ::mgGetPlayerSide();
 
   ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/free_flight_preset02.blk");
   ::mgThisIsFreeFlight();
-  let startPos = ::mgCreateStartPoint(1500);
+  local startPos = ::mgCreateStartPoint(1500);
 
   ::mgSetDistToAction(1000);
   ::mgSetupAirfield(startPos, 0);
 
-  let startLookAt = ::mgCreateStartLookAt();
-  let playerAnyPlane = ::getAircraftDescription(playerSide, "any", [], ["frontGun", "cannon", "bomb", "rocket", "torpedo", "antiShip", "antiHeavyTanks"], true, 0, 99999999);
+  local startLookAt = ::mgCreateStartLookAt();
+  local playerAnyPlane = ::getAircraftDescription(playerSide, "any", [], ["frontGun", "cannon", "bomb", "rocket", "torpedo", "antiShip", "antiHeavyTanks"], true, 0, 99999999);
   ::mgSetupArmada("#player.any", startPos, Point3(0, 0, 0), startLookAt, "", 4, 4, playerAnyPlane);
 
   ::mgSetInt("mission_settings/mission/wpAward", 0);

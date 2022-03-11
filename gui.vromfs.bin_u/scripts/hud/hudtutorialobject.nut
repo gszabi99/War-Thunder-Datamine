@@ -70,7 +70,7 @@
     if (!aabbFromName || !isValid())
       return
 
-    let aabb = ::g_hud_tutorial_elements.getAABB(aabbFromName)
+    local aabb = ::g_hud_tutorial_elements.getAABB(aabbFromName)
     if (!aabb || aabb.size[0] <= 0)
       return
 

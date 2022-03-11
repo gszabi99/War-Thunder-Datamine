@@ -316,7 +316,7 @@
           "armorClass": "RHA_tank"
         },
         "turret_04_back_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 65.0
         },
         "turret_04_top_dm": {
           "armorThickness": 30.0
@@ -459,12 +459,12 @@
       },
       "turret_side_add_armor": {
         "armorClass": "hull_side_special_armor",
+        "hp": 500.0,
         "hidableInViewer": true,
-        "armorThickness": 60.0,
+        "armorThickness": 30.0,
+        "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "variableThickness": true,
-        "cumulativeArmorQuality": 0.5,
-        "genericArmorQuality": 0.15,
         "ex_armor_turret_r_01_dm": [],
         "ex_armor_turret_r_02_dm": [],
         "ex_armor_turret_r_03_dm": [],
@@ -650,10 +650,12 @@
         "wheel_r_top_03_dm": [],
         "wheel_r_top_04_dm": [],
         "wheel_r_top_05_dm": [],
-        "wheel_support_dm": [],
+        "wheel_support_dm": {
+          "armorThickness": 60.0
+        },
         "submodule": {
           "armorClass": "tank_traks",
-          "armorThickness": 20.0,
+          "armorThickness": 30.0,
           "hp": 400.0,
           "ex_armor_body_r_01_dm": [],
           "ex_armor_body_l_01_dm": [],
@@ -2986,12 +2988,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 40.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 5.0,
-          "errTargettingOn100kmph": 5.0,
-          "errTargetting": 15.0,
-          "errExplTime": 0.02,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
           "turret": {
             "head": "bone_mg_aa_h",
             "gun": "bone_mg_aa_v",
@@ -3026,12 +3028,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 40.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 5.0,
-          "errTargettingOn100kmph": 5.0,
-          "errTargetting": 15.0,
-          "errExplTime": 0.02,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
           "turret": {
             "head": "bone_mg_h_01",
             "gun": "bone_mg_v_01",
@@ -4205,10 +4207,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "art_support": [],
       "tank_engine_smoke_screen_system": {
@@ -4514,12 +4516,12 @@
                 "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 40.0,
-                "errMeasureVelFwdShift": 1.0,
-                "errMeasureVelDir": 5.0,
-                "errTargettingOn100kmph": 5.0,
-                "errTargetting": 15.0,
-                "errExplTime": 0.02,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
                 "turret": {
                   "head": "bone_mg_aa_h",
                   "gun": "bone_mg_aa_v",
@@ -4554,12 +4556,12 @@
                 "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 40.0,
-                "errMeasureVelFwdShift": 1.0,
-                "errMeasureVelDir": 5.0,
-                "errTargettingOn100kmph": 5.0,
-                "errTargetting": 15.0,
-                "errExplTime": 0.02,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
                 "turret": {
                   "head": "bone_mg_h_01",
                   "gun": "bone_mg_v_01",
@@ -4743,7 +4745,7 @@
       "descLocId": "skin/winter/desc",
       "replace_tex": {
         "from": "us_camo_olive*",
-        "to": "fr_camo_winter_green_white*"
+        "to": "us_camo_winter_olive*"
       }
     }
   },

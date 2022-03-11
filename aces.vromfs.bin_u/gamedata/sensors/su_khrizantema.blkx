@@ -141,7 +141,10 @@
             "value": true
           },
           "setCenterAzimuth": {
-            "source": "targetDesignation"
+            "source": "activeDetectedTarget"
+          },
+          "setCenterElevation": {
+            "source": "activeDetectedTarget"
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
@@ -283,11 +286,6 @@
           "actions": {
             "updateActiveDetectedTarget": [],
             "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            },
-            "designateTargetUnderCue": {
               "type": 0,
               "self": true,
               "sensorIndex": 0
@@ -522,18 +520,6 @@
           "actions": {
             "setNextDetectedTargetActive": []
           }
-        },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": []
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": []
-          }
         }
       }
     },
@@ -581,9 +567,6 @@
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setCueEnabled": {
-            "value": true
-          },
           "setTransiver": {
             "transiver": "search"
           },
@@ -599,9 +582,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         }
       },

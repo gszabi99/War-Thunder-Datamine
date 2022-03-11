@@ -74,33 +74,33 @@
  *      @return {anything} - The original global function or variable.
  */
 
-let datablockConverter = require("scripts/utils/datablockConverter.nut")
+local datablockConverter = require("scripts/utils/datablockConverter.nut")
 
-let persistent = {
+local persistent = {
   backup = null
 }
 ::g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
 
-let isLoaded = function()
+local isLoaded = function()
 {
   return persistent.backup != null
 }
 
-let getOriginal = function(id)
+local getOriginal = function(id)
 {
   if (persistent.backup && (id in persistent.backup))
     return (persistent.backup[id] != "__destroy") ? persistent.backup[id] : null
   return (id in ::getroottable()) ? ::getroottable()[id] : null
 }
 
-let getFuncResult = function(func, a = [])
+local getFuncResult = function(func, a = [])
 {
   return func.acall([null].extend(a))
 }
 
 local pathGet = function(env, path, defVal)
 {
-  let keys = ::split(path, ".")
+  local keys = ::split(path, ".")
   foreach(key in keys)
     if (key in env)
       env = env[key]
@@ -111,8 +111,8 @@ local pathGet = function(env, path, defVal)
 
 local pathSet = function(env, path, val)
 {
-  let keys = ::split(path, ".")
-  let lastIdx = keys.len() - 1
+  local keys = ::split(path, ".")
+  local lastIdx = keys.len() - 1
   foreach(idx, key in keys)
   {
     if (idx == lastIdx || !(key in env))
@@ -123,8 +123,8 @@ local pathSet = function(env, path, val)
 
 local pathDelete = function(env, path)
 {
-  let keys = ::split(path, ".")
-  let lastIdx = keys.len() - 1
+  local keys = ::split(path, ".")
+  local lastIdx = keys.len() - 1
   foreach(idx, key in keys)
   {
     if (!(key in env))
@@ -135,18 +135,18 @@ local pathDelete = function(env, path)
   }
 }
 
-let save = function(filename, list)
+local save = function(filename, list)
 {
-  let rootTable = ::getroottable()
-  let blk = ::DataBlock()
-  foreach (itemSrc in list)
+  local rootTable = ::getroottable()
+  local blk = ::DataBlock()
+  foreach (item in list)
   {
-    let item = ::u.isString(itemSrc) ? { id = itemSrc } : itemSrc
-    let id = item.id
-    let hasValue = ("value" in item)
-    let subject = pathGet(rootTable, id, null)
-    let isFunction = ::u.isFunction(subject)
-    let args = item?.args ?? []
+    item = ::u.isString(item) ? { id = item } : item
+    local id = item.id
+    local hasValue = ("value" in item)
+    local subject = pathGet(rootTable, id, null)
+    local isFunction = ::u.isFunction(subject)
+    local args = item?.args ?? []
     local value = (isFunction && !hasValue) ? getFuncResult(subject, args) :
       hasValue ? item.value :
       subject
@@ -154,7 +154,7 @@ let save = function(filename, list)
       value = value()
     if (isFunction)
     {
-      let caseBlk = datablockConverter.dataToBlk({ result = value })
+      local caseBlk = datablockConverter.dataToBlk({ result = value })
       if (args.len())
         caseBlk["args"] <- datablockConverter.dataToBlk(args)
       if (!blk?[id])
@@ -167,34 +167,34 @@ let save = function(filename, list)
   return blk.saveToTextFile(filename)
 }
 
-let load = function(filename, needUnloadPrev = true)
+local load = function(filename, needUnloadPrev = true)
 {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = ::getroottable()
-  let blk = ::DataBlock()
+  local rootTable = ::getroottable()
+  local blk = ::DataBlock()
   if (!blk.tryLoad(filename))
     return false
   for (local b = 0; b < blk.blockCount(); b++)
   {
-    let data = blk.getBlock(b)
-    let id = datablockConverter.strToKey(data.getBlockName())
+    local data = blk.getBlock(b)
+    local id = datablockConverter.strToKey(data.getBlockName())
     if (!(id in persistent.backup))
       persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     if (data?.__function)
     {
-      let cases = []
+      local cases = []
       foreach (c in (data % "case"))
         cases.append({
           args = datablockConverter.blkToData(c?.args ?? []),
           result = datablockConverter.blkToData(c.result)
         })
-      let origFunc = ::u.isFunction(persistent.backup[id]) ? persistent.backup[id] : null
+      local origFunc = ::u.isFunction(persistent.backup[id]) ? persistent.backup[id] : null
 
       pathSet(rootTable, id, function(...) {
-        let args = []
+        local args = []
         for (local i = 0; i < vargv.len(); i++)
           args.append(vargv[i])
         foreach (c in cases)
@@ -208,8 +208,8 @@ let load = function(filename, needUnloadPrev = true)
   }
   for (local p = 0; p < blk.paramCount(); p++)
   {
-    let data = blk.getParamValue(p)
-    let id = datablockConverter.strToKey(blk.getParamName(p))
+    local data = blk.getParamValue(p)
+    local id = datablockConverter.strToKey(blk.getParamName(p))
     if (!(id in persistent.backup))
       persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     pathSet(rootTable, id, datablockConverter.blkToData(data))
@@ -217,13 +217,13 @@ let load = function(filename, needUnloadPrev = true)
   return true
 }
 
-let loadFuncs = function(functions, needUnloadPrev = true)
+local loadFuncs = function(functions, needUnloadPrev = true)
 {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
 
-  let rootTable = ::getroottable()
+  local rootTable = ::getroottable()
   foreach (id, func in functions)
   {
     if (!(id in persistent.backup))
@@ -233,11 +233,11 @@ let loadFuncs = function(functions, needUnloadPrev = true)
   return true
 }
 
-let unload = function()
+local unload = function()
 {
   if (!isLoaded())
     return false
-  let rootTable = ::getroottable()
+  local rootTable = ::getroottable()
   foreach (id, v in persistent.backup)
   {
     if (v == "__destroy")

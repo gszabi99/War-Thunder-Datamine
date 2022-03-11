@@ -1,7 +1,7 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
 
-let function clearInfo(scene)
+local function clearInfo(scene)
 {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
                     "session_environment", "session_difficulty", "session_timeLimit",
@@ -12,14 +12,14 @@ let function clearInfo(scene)
                     "session_laps", "session_winners", "session_can_shoot",
                     "spawn_ai_tank_on_tank_maps", "content_allowed_preset"])
   {
-    let obj = scene.findObject(name)
+    local obj = scene.findObject(name)
     if (::check_obj(obj))
       obj.setValue("")
   }
 
   foreach (name in ["countries1", "vsText", "countries2"])
   {
-    let obj = scene.findObject(name)
+    local obj = scene.findObject(name)
     if (::check_obj(obj))
       obj.show(false)
   }
@@ -38,14 +38,14 @@ local setTextToObj = function(obj, coloredText, value)
     : "")
 }
 
-let setTextToObjByOption = function(objId, optionId, value)
+local setTextToObjByOption = function(objId, optionId, value)
 {
-  let obj = scene.findObject(objId)
+  local obj = scene.findObject(objId)
   if (!::check_obj(obj))
     return
 
-  let option = ::get_option(optionId)
-  let displayValue = option.getValueLocText(value)
+  local option = ::get_option(optionId)
+  local displayValue = option.getValueLocText(value)
   setTextToObj(obj, option.getTitle() + ::loc("ui/colon"), displayValue)
 }
 
@@ -57,18 +57,18 @@ return function(scene, sessionInfo)
   if (!sessionInfo)
     return clearInfo(scene)
 
-  let gt = ::SessionLobby.getGameType(sessionInfo)
-  let missionInfo = ("mission" in sessionInfo)? sessionInfo.mission : {}
-  let isEventRoom = ::SessionLobby.isInRoom() && ::SessionLobby.isEventRoom
+  local gt = ::SessionLobby.getGameType(sessionInfo)
+  local missionInfo = ("mission" in sessionInfo)? sessionInfo.mission : {}
+  local isEventRoom = ::SessionLobby.isInRoom() && ::SessionLobby.isEventRoom
 
-  let nameObj = scene.findObject("session_creator")
-  let creatorName = platformModule.getPlayerName(sessionInfo?.creator ?? "")
+  local nameObj = scene.findObject("session_creator")
+  local creatorName = platformModule.getPlayerName(sessionInfo?.creator ?? "")
   setTextToObj(nameObj, ::loc("multiplayer/game_host") + ::loc("ui/colon"), creatorName)
 
-  let teams = ::SessionLobby.getTeamsCountries(sessionInfo)
-  let isEqual = teams.len() == 1 || ::u.isEqual(teams[0], teams[1])
-  let cObj1 = scene.findObject("countries1")
-  let cObj2 = scene.findObject("countries2")
+  local teams = ::SessionLobby.getTeamsCountries(sessionInfo)
+  local isEqual = teams.len() == 1 || ::u.isEqual(teams[0], teams[1])
+  local cObj1 = scene.findObject("countries1")
+  local cObj2 = scene.findObject("countries2")
   if (::check_obj(cObj1))
   {
     cObj1.show(true)
@@ -77,56 +77,56 @@ return function(scene, sessionInfo)
     if (!isEqual)
       fillCountriesList(cObj2, teams[1])
   }
-  let vsObj = scene.findObject("vsText")
+  local vsObj = scene.findObject("vsText")
   if (::check_obj(vsObj))
     vsObj.show(!isEqual)
 
-  let mapNameObj = scene.findObject("session_mapName")
+  local mapNameObj = scene.findObject("session_mapName")
   if (::SessionLobby.isUserMission(sessionInfo))
     setTextToObj(mapNameObj, ::loc("options/mp_user_mission") + ::loc("ui/colon"), ::getTblValue("userMissionName", sessionInfo))
   else if (::SessionLobby.isUrlMission(sessionInfo))
   {
-    let url = ::getTblValue("missionURL", sessionInfo, "")
-    let urlMission =  ::g_url_missions.findMissionByUrl(url)
-    let missionName = urlMission ? urlMission.name : url
+    local url = ::getTblValue("missionURL", sessionInfo, "")
+    local urlMission =  ::g_url_missions.findMissionByUrl(url)
+    local missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, ::loc("urlMissions/sessionInfoHeader") + ::loc("ui/colon"), missionName)
   }
   else
   {
-    let missionName = ::SessionLobby.getMissionNameLoc(sessionInfo)
+    local missionName = ::SessionLobby.getMissionNameLoc(sessionInfo)
     setTextToObj(mapNameObj, "".concat(::loc("options/mp_mission"), ::loc("ui/colon")), missionName)
   }
 
-  let pasObj = scene.findObject("session_hasPassword")
+  local pasObj = scene.findObject("session_hasPassword")
   setTextToObj(pasObj, ::loc("options/session_password") + ::loc("ui/colon"),
                isEventRoom ? null : ::getTblValue("hasPassword", sessionInfo, false))
 
-  let tlObj = scene.findObject("session_teamLimit")
-  let rangeData = ::events.getPlayersRangeTextData(::SessionLobby.getMGameMode(sessionInfo))
+  local tlObj = scene.findObject("session_teamLimit")
+  local rangeData = ::events.getPlayersRangeTextData(::SessionLobby.getMGameMode(sessionInfo))
   setTextToObj(tlObj, rangeData.label,
                isEventRoom && rangeData.isValid ? rangeData.value : null)
 
-  let craftsObj = scene.findObject("session_battleRating")
-  let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
+  local craftsObj = scene.findObject("session_battleRating")
+  local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
   setTextToObj(craftsObj, ::loc("events/required_crafts"), ::events.getRulesText(reqUnits))
 
-  let envObj = scene.findObject("session_environment")
-  let envTexts = []
+  local envObj = scene.findObject("session_environment")
+  local envTexts = []
   if ("weather" in missionInfo)
     envTexts.append(::loc("options/weather" + missionInfo.weather))
   if ("environment" in missionInfo)
     envTexts.append(::get_mission_time_text(missionInfo.environment))
   setTextToObj(envObj, ::loc("sm_conditions") + ::loc("ui/colon"), ::g_string.implode(envTexts, ", "))
 
-  let difObj = scene.findObject("session_difficulty")
+  local difObj = scene.findObject("session_difficulty")
   if (::check_obj(difObj))
   {
-    let diff = ::getTblValue("difficulty", missionInfo)
+    local diff = ::getTblValue("difficulty", missionInfo)
     setTextToObj(difObj, ::loc("multiplayer/difficultyShort") + ::loc("ui/colon"), ::loc("options/" + diff))
     local diffTooltip = ""
     if (diff=="custom")
     {
-      let custDiff = ::getTblValue("custDifficulty", missionInfo, null)
+      local custDiff = ::getTblValue("custDifficulty", missionInfo, null)
       if (custDiff)
         diffTooltip = ::get_custom_difficulty_tooltip_text(custDiff)
     }
@@ -151,7 +151,7 @@ return function(scene, sessionInfo)
 
   setTextToObjByOption("session_respawn", ::USEROPT_VERSUS_RESPAWN, ::getTblValue("maxRespawns", missionInfo, -1))
 
-  let tObj = scene.findObject("session_takeoff")
+  local tObj = scene.findObject("session_takeoff")
   setTextToObj(tObj, ::loc("options/optional_takeoff") + ::loc("ui/colon"),
                ::getTblValue("optionalTakeOff", missionInfo, false))
 
@@ -172,7 +172,7 @@ return function(scene, sessionInfo)
 
   setTextToObjByOption("content_allowed_preset", ::USEROPT_CONTENT_ALLOWED_PRESET, missionInfo?.allowedTagsPreset)
 
-  let slObj = scene.findObject("slotbar_override")
+  local slObj = scene.findObject("slotbar_override")
   if (::check_obj(slObj))
   {
     local slotOverrideText = ""

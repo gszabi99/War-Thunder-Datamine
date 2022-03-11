@@ -1737,6 +1737,9 @@
         },
         "cover_07_dm": {
           "hp": 1000.0
+        },
+        "cover_08_dm": {
+          "hp": 1000.0
         }
       },
       "superstructures": {
@@ -1796,6 +1799,9 @@
           "hp": 7000.0
         },
         "bulkhead_07_dm": {
+          "hp": 7000.0
+        },
+        "bulkhead_08_dm": {
           "hp": 7000.0
         }
       },
@@ -2186,10 +2192,10 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 339.0
+          "hp": 271.0
         },
         "elevator_02_dm": {
-          "hp": 341.0
+          "hp": 271.0
         },
         "elevator_03_dm": {
           "hp": 312.0
@@ -5862,9 +5868,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
-      "waterMassVel": -60000.0,
-      "waterMassMult": 100.0,
+      "repairSpeed": 25.0,
+      "waterMassVel": -150000.0,
+      "waterMassMult": 160.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 8200000.0,
       "additionalWaterShouldDiePercent": 0.3,
@@ -5882,14 +5888,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.2,
+          "weight": 0.23,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.6,
+          "weight": 0.53,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -5917,19 +5923,19 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.8,
+          "weight": 0.67,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.55
               }
             },
             {
               "part": {
                 "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.55
               }
             }
           ]
@@ -5938,19 +5944,19 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.6,
+          "weight": 0.55,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.55
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.55
               }
             }
           ]
@@ -5959,14 +5965,14 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.3,
+          "weight": 0.32,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.2,
+          "weight": 0.41,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -6006,6 +6012,13 @@
               }
             }
           ]
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_08_dm",
+          "weight": 0.09,
+          "maxWaterAlive": 1.0
         }
       }
     ]

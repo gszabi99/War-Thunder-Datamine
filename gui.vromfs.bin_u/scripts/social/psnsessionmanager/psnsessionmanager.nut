@@ -1,11 +1,11 @@
-let psnsm = require("scripts/social/psnSessionManager/psnSessionManagerApi.nut")
-let psnNotify = require("sonyLib/notifications.nut")
+local psnsm = require("scripts/social/psnSessionManager/psnSessionManagerApi.nut")
+local psnNotify = require("sonyLib/notifications.nut")
 // local base64 = require("base64")
 
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
 
-let PSN_SESSION_TYPE = {
+local PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
   SQUAD = "squad"
 }
@@ -16,8 +16,8 @@ let PSN_SESSION_TYPE = {
   data = [getSessionData()]
 }
 */
-let createdSessionData = persist("createdSessionData", @() ::Watched({}))
-let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
+local createdSessionData = persist("createdSessionData", @() ::Watched({}))
+local dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
       sType = sType
       pushContextId = pushContextId
@@ -26,21 +26,21 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
 }
 
 // { [PSN_SESSION_TYPE] = data }
-let pendingSessions = persist("pendingSessions", @() ::Watched({}))
+local pendingSessions = persist("pendingSessions", @() ::Watched({}))
 
 //[sessionId] = {activityId, isSpectator}
-let postponedInvitations = persist("postponedInvitations", @() ::Watched([]))
+local postponedInvitations = persist("postponedInvitations", @() ::Watched([]))
 
-let getLocalizedTextInfo = function(locIdsArray) {
-  let textsData = ::g_localization.getFilledFeedTextByLang(locIdsArray)
-  let res = {}
+local getLocalizedTextInfo = function(locIdsArray) {
+  local textsData = ::g_localization.getFilledFeedTextByLang(locIdsArray)
+  local res = {}
   foreach (block in textsData)
     res[block.abbreviation] <- block.text
 
   return res
 }
 
-let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
+local getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
   ? [
       {roomId = ::SessionLobby.roomId}
       {inviterUid = ::my_user_id_str}
@@ -56,17 +56,17 @@ let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
 
 // TODO: replace with normal base64 encode/decode
 // Just in time of psn tests.
-let BASE64_SEPARATOR = "/"
-let BASE64_GARBAGE = "+"
-let encodeDataToBase64Like = function(data) {
-  let res = []
+local BASE64_SEPARATOR = "/"
+local BASE64_GARBAGE = "+"
+local encodeDataToBase64Like = function(data) {
+  local res = []
   foreach (block in data) {
     foreach (key, val in block)
       res.append(val)
   }
 
   local base64Str = BASE64_SEPARATOR.join(res)
-  let isEq4 = base64Str.len() % 4
+  local isEq4 = base64Str.len() % 4
 
   if (isEq4) {
     base64Str = "".concat(base64Str, BASE64_SEPARATOR)
@@ -80,15 +80,15 @@ let encodeDataToBase64Like = function(data) {
   return base64Str
 }
 
-let decodeBase64LikeToArray = function(str) {
-  let params = str.split(BASE64_SEPARATOR)
+local decodeBase64LikeToArray = function(str) {
+  local params = str.split(BASE64_SEPARATOR)
   if (params.top().indexof(BASE64_GARBAGE) != null || isEmpty(params.top()))
     params.remove(params.len() - 1)
 
-  let sType = params.top()
-  let typeData = getCustomDataByType(sType)
+  local sType = params.top()
+  local typeData = getCustomDataByType(sType)
 
-  let parsedData = {}
+  local parsedData = {}
   foreach (idx, block in typeData)
     foreach (key, val in block)
       parsedData[key] <- params[idx]
@@ -96,7 +96,7 @@ let decodeBase64LikeToArray = function(str) {
   return parsedData
 }
 
-let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
+local getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
   ? {
       playerSessions = [{
         supportedPlatforms = ["PS4", "PS5"]
@@ -163,7 +163,7 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
     }
   : {}
 
-let getSessionJoinData = @(pushContextId, isSpectator = false) {
+local getSessionJoinData = @(pushContextId, isSpectator = false) {
   [isSpectator? "spectators" : "players"] = [{
     accountId = "me"
     platform = "me"
@@ -171,15 +171,15 @@ let getSessionJoinData = @(pushContextId, isSpectator = false) {
   }]
 }
 
-let create = function(sType, saveSessionIdCb) {
-  let pushContextId = psnNotify.createPushContext()
-  let sessionData = getSessionData(sType, pushContextId)
+local create = function(sType, saveSessionIdCb) {
+  local pushContextId = psnNotify.createPushContext()
+  local sessionData = getSessionData(sType, pushContextId)
   pendingSessions.mutate(@(v) v[sType] <- copy(sessionData))
 
   psnsm.create(
     pendingSessions.value[sType],
     ::Callback(function(r, err) {
-      let sessionId = r?.playerSessions[0].sessionId
+      local sessionId = r?.playerSessions[0].sessionId
       saveSessionIdCb(sessionId, err)
 
       if (!err && !isEmpty(sessionId)) {
@@ -191,11 +191,11 @@ let create = function(sType, saveSessionIdCb) {
   )
 }
 
-let destroy = function(sType) {
+local destroy = function(sType) {
   //Delete all sessions for [sType], anyway, there must be only one
   foreach (sessionId, info in createdSessionData.value)
     if (!isEmpty(sessionId) && info.sType == sType) {
-      let sId = sessionId
+      local sId = sessionId
       psnsm.destroy(
         sId,
         ::Callback(function(r, err) {
@@ -205,9 +205,9 @@ let destroy = function(sType) {
     }
 }
 
-let update = function(sessionId, sType) {
-  let existSessionInfo = createdSessionData.value?[sessionId]
-  let sessionData = getSessionData(sType, existSessionInfo?.pushContextId)
+local update = function(sessionId, sType) {
+  local existSessionInfo = createdSessionData.value?[sessionId]
+  local sessionData = getSessionData(sType, existSessionInfo?.pushContextId)
   psnsm.updateInfo(
     sessionId,
     existSessionInfo?.data.playerSessions[0],
@@ -218,18 +218,18 @@ let update = function(sessionId, sType) {
   )
 }
 
-let join = function(sessionId, isSpectator, onFinishCb) {
-  let pushContextId = psnNotify.createPushContext()
-  let sessionData = getSessionJoinData(pushContextId, isSpectator)
+local join = function(sessionId, isSpectator, onFinishCb) {
+  local pushContextId = psnNotify.createPushContext()
+  local sessionData = getSessionJoinData(pushContextId, isSpectator)
   if (isSpectator)
     psnsm.joinAsSpectator(sessionId, sessionData, pushContextId, onFinishCb)
   else
     psnsm.joinAsPlayer(sessionId, sessionData, pushContextId, onFinishCb)
 }
 
-let postponeInvite = @(params) postponedInvitations.mutate(@(v) v.append(params))
+local postponeInvite = @(params) postponedInvitations.mutate(@(v) v.append(params))
 
-let afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
+local afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
   if (err) {
     ::dagor.debug($"[PSGI] accepted PSN invite, error {err}")
     return
@@ -240,14 +240,14 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
       if (sessionData.sessionId != sessionId)
         continue
 
-      let parsedData = decodeBase64LikeToArray(sessionData?.customData1 ?? "")
+      local parsedData = decodeBase64LikeToArray(sessionData?.customData1 ?? "")
       if (!parsedData.len())
         continue
 
       switch (parsedData.sType) {
         case PSN_SESSION_TYPE.SKIRMISH:
           dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          let contact = ::getContact(parsedData.inviterUid)
+          local contact = ::getContact(parsedData.inviterUid)
           ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
           break
         case PSN_SESSION_TYPE.SQUAD:
@@ -259,10 +259,10 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
   }))
 }
 
-let proceedInvite = function(p) {
-  let sessionId = p?.sessionId ?? ""
+local proceedInvite = function(p) {
+  local sessionId = p?.sessionId ?? ""
 
-  let isInPsnSession = sessionId in createdSessionData.value
+  local isInPsnSession = sessionId in createdSessionData.value
 
   if (u.isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
@@ -302,9 +302,9 @@ addListenersWithoutEnv({
         if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
           break
 
-        let sessionId = ::g_squad_manager.getPsnSessionId()
-        let isLeader = ::g_squad_manager.isSquadLeader()
-        let isInPsnSession = sessionId in createdSessionData.value
+        local sessionId = ::g_squad_manager.getPsnSessionId()
+        local isLeader = ::g_squad_manager.isSquadLeader()
+        local isInPsnSession = sessionId in createdSessionData.value
         ::dagor.debug($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
         ::dagor.debug($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
         ::dagor.debug($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
@@ -339,7 +339,7 @@ addListenersWithoutEnv({
     if (!::g_squad_manager.isSquadLeader())
       return
 
-    let sessionId = ::g_squad_manager.getPsnSessionId()
+    local sessionId = ::g_squad_manager.getPsnSessionId()
     if (!isEmpty(sessionId))
       update(sessionId, PSN_SESSION_TYPE.SQUAD)
   }
@@ -347,30 +347,30 @@ addListenersWithoutEnv({
     if (!::g_squad_manager.isSquadLeader())
       return
 
-    let newLeaderData = ::g_squad_manager.getMemberData(p?.uid)
+    local newLeaderData = ::g_squad_manager.getMemberData(p?.uid)
     if (!newLeaderData) {
       ::dagor.debug($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
       return
     }
 
-    let sessionId = ::g_squad_manager.getPsnSessionId()
-    let contact = ::getContact(p.uid)
+    local sessionId = ::g_squad_manager.getPsnSessionId()
+    local contact = ::getContact(p.uid)
     contact.updatePSNIdAndDo(function() {
       psnsm.changeLeadership(
       sessionId,
       contact.psnId,
       newLeaderData.platform.toupper(),
       ::Callback(function(r, err) {
-        let existSessionInfo = createdSessionData.value?[sessionId]
-        let pushContextId = existSessionInfo?.pushContextId
-        let sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
+        local existSessionInfo = createdSessionData.value?[sessionId]
+        local pushContextId = existSessionInfo?.pushContextId
+        local sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
         dumpSessionData(sessionId, PSN_SESSION_TYPE.SQUAD, pushContextId, sessionData)
       }, this)
     )})
   }
   GameIntentJoinSession = proceedInvite
   MainMenuReturn = function(p) {
-    let invites = copy(postponedInvitations.value)
+    local invites = copy(postponedInvitations.value)
     postponedInvitations([])
 
     invites.each(@(p) proceedInvite(p))

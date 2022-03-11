@@ -1,4 +1,4 @@
-let playerInfoUpdater = {
+local playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
 
   lastSendedData = {}
@@ -33,11 +33,11 @@ let playerInfoUpdater = {
     if (!::is_platform_xbox)
       return
 
-    let myStats = ::my_stats.getStats()
+    local myStats = ::my_stats.getStats()
 
     foreach (name, func in xboxUserInfoStats)
     {
-      let value = func(myStats)
+      local value = func(myStats)
       sendValue(name, value)
     }
   }

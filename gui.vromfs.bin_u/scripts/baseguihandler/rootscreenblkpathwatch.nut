@@ -1,3 +1,3 @@
-let rootScreenBlkPath = ::Watched("%gui/rootScreen.blk")
+local rootScreenBlkPath = ::Watched("gui/rootScreen.blk")
 
 return rootScreenBlkPath

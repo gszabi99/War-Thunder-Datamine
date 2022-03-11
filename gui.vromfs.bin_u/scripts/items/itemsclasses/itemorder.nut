@@ -1,7 +1,7 @@
-let time = require("scripts/time.nut")
+local time = require("scripts/time.nut")
 
 
-::items_classes.Order <- class extends ::BaseItem
+class ::items_classes.Order extends ::BaseItem
 {
   static iType = itemType.ORDER
   static defaultLocId = "order"
@@ -67,16 +67,16 @@ let time = require("scripts/time.nut")
 
   function getMainActionData(isShort = false, params = {})
   {
-    let res = base.getMainActionData(isShort, params)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (!isInventoryItem || !amount)
       return null
 
-    let currentEvent = ::SessionLobby.getRoomEvent()
-    let diffCode = ::events.getEventDiffCode(currentEvent)
-    let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-    let checkDifficulty = !::isInArray(diff, disabledDifficulties)
+    local currentEvent = ::SessionLobby.getRoomEvent()
+    local diffCode = ::events.getEventDiffCode(currentEvent)
+    local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    local checkDifficulty = !::isInArray(diff, disabledDifficulties)
     if (!isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
       return {
         btnName = ::loc("item/activate")
@@ -89,7 +89,7 @@ let time = require("scripts/time.nut")
 
   function doMainAction(cb, handler, params = null)
   {
-    let baseResult = base.doMainAction(cb, handler, params)
+    local baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !isInventoryItem)
       return true
     if (isActive() || !::g_orders.orderCanBeActivated())
@@ -129,7 +129,7 @@ let time = require("scripts/time.nut")
     {
       foreach (diffName in blk % "disabledDifficulty")
       {
-        let difficulty = ::g_difficulty.getDifficultyByName(diffName)
+        local difficulty = ::g_difficulty.getDifficultyByName(diffName)
         if (difficulty != ::g_difficulty.UNKNOWN)
           disabledDifficulties.append(difficulty)
       }
@@ -152,7 +152,7 @@ let time = require("scripts/time.nut")
    */
   function checkMission(missionName)
   {
-    let missionRestriction = ::getTblValue("missionRestriction", typeParams, null)
+    local missionRestriction = ::getTblValue("missionRestriction", typeParams, null)
     if (missionRestriction == null)
       return true // No restrictions at all.
     if (::u.isTable(missionRestriction))
@@ -173,10 +173,10 @@ let time = require("scripts/time.nut")
     switch (restrictionElement?.type)
     {
       case "missionPostfix":
-        let missionPostfix = ::getTblValue("postfix", restrictionElement, null)
+        local missionPostfix = ::getTblValue("postfix", restrictionElement, null)
         if (missionPostfix == null)
           return true
-        let stringIndex = missionName.len() - missionPostfix.len()
+        local stringIndex = missionName.len() - missionPostfix.len()
         return missionName.indexof(missionPostfix, stringIndex) != stringIndex
 
       // More restrictions types to come...
@@ -187,10 +187,10 @@ let time = require("scripts/time.nut")
   /** Description for tooltip. */
   function getDescription()
   {
-    let textParts = []
+    local textParts = []
     if (!::g_orders.checkCurrentMission(this))
     {
-      let warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
+      local warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{::colorize("redMenuButtonColor", warningText)}\n")
     }
     textParts.append(getLongDescription())
@@ -200,13 +200,13 @@ let time = require("scripts/time.nut")
   /** Description for shop. */
   function getLongDescription()
   {
-    let textParts = []
+    local textParts = []
 
-    let orderTypeDescription = orderType.getTypeDescription(colorScheme)
+    local orderTypeDescription = orderType.getTypeDescription(colorScheme)
     if (orderTypeDescription.len() > 0)
       textParts.append(orderTypeDescription)
 
-    let typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
+    local typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
     if (typeParamsDescription.len() > 0)
       textParts.append(typeParamsDescription)
 
@@ -214,25 +214,25 @@ let time = require("scripts/time.nut")
       textParts.append("".concat(::loc("items/order/timeTotal"), ::loc("ui/colon"),
         ::colorize("activeTextColor", time.secondsToString(timeTotal, true, true))))
 
-    let expireText = getCurExpireTimeText()
+    local expireText = getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
     if (textParts.len())
       textParts.append("")
 
-    let awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
+    local awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
     textParts.append(::loc($"items/order/awardMode/{awardMode.name}/header", awardModeLocParams))
     foreach (difficulty in ::g_difficulty.types)
     {
       if (::isInArray(difficulty, disabledDifficulties)
         || difficulty == ::g_difficulty.UNKNOWN)
         continue
-      let awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
+      local awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
       if (awardText.len() > 0)
         textParts.append("".concat(::loc($"options/{difficulty.name}"), ::loc("ui/colon"), awardText))
     }
-    let awardModeDescriptionFooter = ::loc("items/order/awardMode/"
+    local awardModeDescriptionFooter = ::loc("items/order/awardMode/"
       + awardMode.name + "/footer", "", awardModeLocParams)
     if (awardModeDescriptionFooter.len() > 0)
       textParts.append(awardModeDescriptionFooter)
@@ -249,7 +249,7 @@ let time = require("scripts/time.nut")
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    let disabledItems = u.map(disabledDifficulties, function (diff) {
+    local disabledItems = u.map(disabledDifficulties, function (diff) {
       return ::loc("options/" + diff.name)
     })
     disabledItems.append(::loc("mainmenu/events"))

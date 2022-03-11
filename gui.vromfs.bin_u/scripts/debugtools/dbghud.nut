@@ -1,5 +1,3 @@
-let { GO_WIN } = require_native("guiMission")
-
 ::dbg_msg_obj_counter <- 0
 ::hud_message_objective_debug <- function hud_message_objective_debug(show = true, alwaysShow = false, id = -1)
 {
@@ -97,17 +95,17 @@ let { GO_WIN } = require_native("guiMission")
 {
   if (!streakId)
   {
-    let list = ::u.filter(::g_unlocks.getAllUnlocks(),
+    local list = ::u.filter(::g_unlocks.getAllUnlocks(),
                    function(blk) { return blk?.type == "streak" &&  !blk?.hidden })
     streakId = list[::math.rnd() % list.len()].id
   }
 
-  let header = ::get_loc_for_streak(::SNT_MY_STREAK_HEADER, streakId, ::math.rnd() % 3)
-  let wp = ::math.rnd() % 5000
+  local header = ::get_loc_for_streak(::SNT_MY_STREAK_HEADER, streakId, ::math.rnd() % 3)
+  local wp = ::math.rnd() % 5000
   ::add_streak_message(header, wp, 0, streakId)
 }
 
-::hud_mission_result_debug <- function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLives = false)
+::hud_mission_result_debug <- function hud_mission_result_debug(result = ::GO_WIN, checkResending = false, noLives = false)
 {
   ::g_hud_event_manager.onHudEvent("MissionResult", {resultNum = result,
                                                      checkResending = checkResending,
@@ -116,7 +114,7 @@ let { GO_WIN } = require_native("guiMission")
 
 ::hud_show_in_battle_time_to_kick_timer <- function hud_show_in_battle_time_to_kick_timer()
 {
-  let time = ::get_mp_kick_countdown() + 5000
+  local time = ::get_mp_kick_countdown() + 5000
   ::get_mp_kick_countdown <- (@(time) function() { return time })(time)
   ::in_battle_time_to_kick_show_timer <- ::get_mp_kick_countdown()
 }
@@ -129,7 +127,7 @@ let { GO_WIN } = require_native("guiMission")
 
 ::hud_reset_in_battle_time_to_kick <- function hud_reset_in_battle_time_to_kick()
 {
-  let gmSettingsBlk = ::get_game_settings_blk()
+  local gmSettingsBlk = ::get_game_settings_blk()
   ::in_battle_time_to_kick_show_timer = gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150
   ::in_battle_time_to_kick_show_alert = gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50
 }

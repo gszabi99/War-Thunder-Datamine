@@ -1,4 +1,4 @@
-let avatars = require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 
 /**
   client api:
@@ -32,17 +32,17 @@ g_users_info_manager.requestInfo <- function requestInfo(users, successCb = null
   if (users.len() > MAX_REQUESTED_UID_NUM)
     return
 
-  let fastResponse = _getResponseWidthoutRequest(users)
+  local fastResponse = _getResponseWidthoutRequest(users)
   if (fastResponse != null && successCb != null)
     return successCb(fastResponse)
 
-  let usersList = ::g_string.implode(users, ";")
+  local usersList = ::g_string.implode(users, ";")
 
-  let requestBlk = DataBlock()
+  local requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)
 
-  let fullSuccessCb = (@(users, successCb) function(response) {
-    let parsedResponse = ::g_users_info_manager._convertServerResponse(response)
+  local fullSuccessCb = (@(users, successCb) function(response) {
+    local parsedResponse = ::g_users_info_manager._convertServerResponse(response)
     ::g_users_info_manager._requestDataCommonSuccessCallback(parsedResponse)
     if (successCb != null)
       successCb(parsedResponse)
@@ -54,10 +54,10 @@ g_users_info_manager.requestInfo <- function requestInfo(users, successCb = null
 g_users_info_manager._getResponseWidthoutRequest <- function _getResponseWidthoutRequest(users)
 {
   local fastResponse = {}
-  let currentTime = ::dagor.getCurTime()
+  local currentTime = ::dagor.getCurTime()
   foreach (uid, userId in users)
   {
-    let curUserInfo = ::getTblValue(userId, usersInfo, null)
+    local curUserInfo = ::getTblValue(userId, usersInfo, null)
     if (curUserInfo == null ||
         currentTime - curUserInfo.updatingLastTime > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC)
     {
@@ -103,11 +103,11 @@ g_users_info_manager._requestDataCommonSuccessCallback <- function _requestDataC
 
 g_users_info_manager._convertServerResponse <- function _convertServerResponse(response)
 {
-  let res = {}
+  local res = {}
   foreach(uid, userInfo in response)
   {
-    let pilotId = ::getTblValue("pilotId", userInfo, "")
-    let convertedData = {
+    local pilotId = ::getTblValue("pilotId", userInfo, "")
+    local convertedData = {
       uid = uid
       name = ::getTblValue("nick", userInfo, "")
       pilotIcon = avatars.getIconById(pilotId)

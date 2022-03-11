@@ -1,8 +1,8 @@
-let { isEqual } = require("sqStdLibs/helpers/u.nut")
-let psn = require("sonyLib/webApi.nut")
-let statsd = require("statsd")
+local { isEqual } = require("sqStdLibs/helpers/u.nut")
+local psn = require("sonyLib/webApi.nut")
+local statsd = require("statsd")
 
-let create = @(data, onFinishCb) psn.send(
+local create = @(data, onFinishCb) psn.send(
   psn.sessionManager.create(data),
   function(response, err) {
     ::dagor.debug($"[PSSM] Player Sessions: Create: Response: {::toString(response, 4)}")
@@ -18,7 +18,7 @@ let create = @(data, onFinishCb) psn.send(
   }
 )
 
-let updateInfo = function(sessionId, curData, newData, onFinishCb) {
+local updateInfo = function(sessionId, curData, newData, onFinishCb) {
   if (isEqual(curData, newData))
     return
 
@@ -26,7 +26,7 @@ let updateInfo = function(sessionId, curData, newData, onFinishCb) {
     if (curData != null && isEqual(val, newData[key]))
       continue
 
-    let pair = {[key] = newData[key]}
+    local pair = {[key] = newData[key]}
     psn.send(
       psn.sessionManager.update(
         sessionId,
@@ -47,7 +47,7 @@ let updateInfo = function(sessionId, curData, newData, onFinishCb) {
   }
 }
 
-let destroy = function(sessionId, onFinishCb = psn.noOpCb) {
+local destroy = function(sessionId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.sessionManager.leave(sessionId),
     function(response, err) {
@@ -64,7 +64,7 @@ let destroy = function(sessionId, onFinishCb = psn.noOpCb) {
   )
 }
 
-let joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
+local joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.sessionManager.joinAsPlayer(sessionId, sessionData),
     function(response, err) {
@@ -82,7 +82,7 @@ let joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb = 
   )
 }
 
-let joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
+local joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.sessionManager.joinAsSpectator(sessionId, sessionData),
     function(response, err) {
@@ -100,7 +100,7 @@ let joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb
   )
 }
 
-let invite = function(sessionId, accountId) {
+local invite = function(sessionId, accountId) {
   psn.send(
     psn.sessionManager.invite(sessionId, [accountId]),
     function(response, err) {
@@ -115,14 +115,14 @@ let invite = function(sessionId, accountId) {
   )
 }
 
-let list = function(sessionIds = [], onFinishCb = psn.noOpCb) {
+local list = function(sessionIds = [], onFinishCb = psn.noOpCb) {
   psn.send(
     psn.sessionManager.list(sessionIds),
     onFinishCb
   )
 }
 
-let changeLeadership = function(sessionId, accountId, platform, onFinishCb = psn.noOpCb) {
+local changeLeadership = function(sessionId, accountId, platform, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.sessionManager.changeLeader(sessionId, accountId, platform)
     function(response, err) {

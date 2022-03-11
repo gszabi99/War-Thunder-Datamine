@@ -1,7 +1,7 @@
-::gui_handlers.reminderGPModal <- class extends ::BaseGuiHandler
+class ::gui_handlers.reminderGPModal extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
-  sceneBlkName = "%gui/mainmenu/reminderGaijinPassModal.blk"
+  sceneBlkName = "gui/mainmenu/reminderGaijinPassModal.blk"
 
   function onDontShowChange(obj)
   {

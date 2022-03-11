@@ -1,6 +1,6 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -103,13 +103,13 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function getFullTagsString()
   {
-    let resArray = []
+    local resArray = []
     foreach(tagType in ::g_chat_thread_tag.types)
     {
       if (!tagType.isRegular)
         continue
 
-      let str = tagType.getTagString(this)
+      local str = tagType.getTagString(this)
       if (str.len())
         resArray.append(str)
     }
@@ -123,11 +123,11 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (langs.len() < 2)
       return
 
-    let unsortedLangs = clone langs
+    local unsortedLangs = clone langs
     langs.clear()
     foreach(langInfo in ::g_language.getGameLocalizationInfo())
     {
-      let idx = unsortedLangs.indexof(langInfo.chatId)
+      local idx = unsortedLangs.indexof(langInfo.chatId)
       if (idx != null)
         langs.append(unsortedLangs.remove(idx))
     }
@@ -176,7 +176,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function showOwnerMenu(position = null)
   {
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
+    local contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
     ::g_chat.showPlayerRClickMenu(ownerNick, roomId, contact, position)
   }
 
@@ -192,8 +192,8 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function showThreadMenu(position = null)
   {
-    let thread = this
-    let menu = [
+    local thread = this
+    local menu = [
       {
         text = getJoinText()
         action = (@(thread) function() {
@@ -202,7 +202,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
       }
     ]
 
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
+    local contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
     playerContextMenu.showMenu(contact, ::g_chat, {
       position = position
       roomId = roomId
@@ -218,7 +218,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function setObjValueById(objNest, id, value)
   {
-    let obj = objNest.findObject(id)
+    local obj = objNest.findObject(id)
     if (::checkObj(obj))
       obj.setValue(value)
   }
@@ -247,7 +247,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function getLangsList()
   {
-    let res = []
+    local res = []
     local langInfo = {}
     if (langs.len() > MAX_THREAD_LANG_VISIBLE)
     {
@@ -268,8 +268,8 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   function fillLangIconsRow(obj)
   {
-    let contentObject = obj.findObject("thread_lang")
-    let res = getLangsList()
+    local contentObject = obj.findObject("thread_lang")
+    local res = getLangsList()
     for(local i = 0; i < MAX_THREAD_LANG_VISIBLE; i++)
     {
       contentObject.getChild(i)["background-image"] = res[i].icon
@@ -281,7 +281,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (!isCrossNetworkMessageAllowed(ownerNick))
       return true
 
-    let contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
+    local contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
     if (contact)
       return contact.isBlockedMe || contact.isInBlockGroup()
 

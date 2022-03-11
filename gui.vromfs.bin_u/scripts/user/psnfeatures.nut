@@ -1,13 +1,13 @@
-let { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
-let { isPlatformPS5 } = require("scripts/clientState/platform.nut")
-let { suggest_psplus } = require("sony.store")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-let { subscribe } = require("eventbus")
+local { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
+local { isPlatformPS5 } = require("scripts/clientState/platform.nut")
+local { suggest_psplus } = require("sony.store")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+local { subscribe } = require("eventbus")
 
 
 subscribe("psPlusSuggested", @(r) requestPremiumStatusUpdate(@(r) null))
 
-let function suggestAndAllowPsnPremiumFeatures() {
+local function suggestAndAllowPsnPremiumFeatures() {
   if (isPlatformPS5 && !::ps4_is_production_env() && !hasPremium()) {
     suggest_psplus("psPlusSuggested", {})
     return false
@@ -15,7 +15,7 @@ let function suggestAndAllowPsnPremiumFeatures() {
   return true
 }
 
-let function startPremiumFeatureReporting() {
+local function startPremiumFeatureReporting() {
   if (hasPremium())
     ::periodic_task_register_ex(
       {},
@@ -29,7 +29,7 @@ let function startPremiumFeatureReporting() {
       true)
 }
 
-let function enablePremiumFeatureReporting() {
+local function enablePremiumFeatureReporting() {
   ::dagor.debug("[PLUS] enable multiplayer reporting")
   ::add_event_listener("LobbyStatusChange", function(p) {
       if (::SessionLobby.myState == ::PLAYER_IN_FLIGHT) {

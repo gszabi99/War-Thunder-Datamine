@@ -1,4 +1,4 @@
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -9,10 +9,10 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
   )
 }
 
-::gui_handlers.clanLogModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneBlkName = "%gui/clans/clanLogModal.blk"
+  sceneBlkName = "gui/clans/clanLogModal.blk"
 
   loadButtonId = "button_load_more"
 
@@ -60,14 +60,14 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
   function showLogs(logData)
   {
     for (local i = 0; i < logData.logEntries.len(); i++) {
-      let author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
+      local author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
       logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], author)
       if ("details" in logData.logEntries[i])
         logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, author)
     }
 
-    let blk = ::handyman.renderCached("%gui/logEntryList", logData, {
-      details = ::load_template_text("%gui/clans/clanLogDetails")
+    local blk = ::handyman.renderCached("gui/logEntryList", logData, {
+      details = ::load_template_text("gui/clans/clanLogDetails")
     })
     guiScene.appendWithBlk(logListObj, blk, this)
   }
@@ -85,7 +85,7 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
   }
 
   function onUserLinkRClick(obj, itype, link) {
-    let uid = ::g_string.cutPrefix(link, "uid_", null)
+    local uid = ::g_string.cutPrefix(link, "uid_", null)
 
     if (uid == null)
       return
@@ -95,7 +95,7 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
   function removeNextButton()
   {
-    let obj = logListObj.findObject(loadButtonId)
+    local obj = logListObj.findObject(loadButtonId)
     if (::checkObj(obj))
       guiScene.destroyElement(obj)
   }
@@ -105,12 +105,12 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
     local obj = logListObj.findObject(loadButtonId)
     if (!obj)
     {
-      let data = format("expandable { id:t='%s'}", loadButtonId)
+      local data = format("expandable { id:t='%s'}", loadButtonId)
       guiScene.appendWithBlk(logListObj, data, this)
       obj = logListObj.findObject(loadButtonId)
     }
 
-    let viewBlk = ::handyman.renderCached("%gui/userLog/userLogRow",
+    local viewBlk = ::handyman.renderCached("gui/userLog/userLogRow",
       {
         middle = ::loc("userlog/showMore")
         hasExpandImg = true
@@ -120,16 +120,16 @@ let playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
   function onItemSelect(obj)
   {
-    let listChildrenCount = logListObj.childrenCount()
+    local listChildrenCount = logListObj.childrenCount()
     if (listChildrenCount <= 0)
       return
 
-    let index = obj.getValue()
+    local index = obj.getValue()
     if (index == -1 || index > listChildrenCount - 1)
       return
 
     selectedIndex = index
-    let selectedObj = obj.getChild(index)
+    local selectedObj = obj.getChild(index)
     if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
   }

@@ -16,7 +16,7 @@
 
   function subscribe(event_name, callback_fn, context = null)
   {
-    let cb = Callback(callback_fn, context)
+    local cb = Callback(callback_fn, context)
     if (::u.isArray(event_name))
       foreach (evName in event_name)
         pushCallback(evName, cb)
@@ -39,12 +39,12 @@
 
     eventsStack.append(event_name)
 
-    let eventSubscribers = subscribers[event_name]
+    local eventSubscribers = subscribers[event_name]
     for (local i = eventSubscribers.len() - 1; i >= 0; i--)
       if (!eventSubscribers[i].isValid())
         eventSubscribers.remove(i)
 
-    let data = handleData(event_data)
+    local data = handleData(event_data)
     for (local i = 0; i < eventSubscribers.len(); i++)
       eventSubscribers[i](data)
 
@@ -56,7 +56,7 @@
     if (::u.isDataBlock(data))
       return ::buildTableFromBlk(data)
 
-    let res = {}
+    local res = {}
     foreach(paramName, param in data)
       res[paramName] <- param
     return res

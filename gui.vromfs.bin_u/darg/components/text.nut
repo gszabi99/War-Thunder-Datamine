@@ -1,7 +1,7 @@
 from "frp" import *
 from "daRg" import *
 
-let function dtext(val, params={}, addchildren = null) {
+local function dtext(val, params={}, addchildren = null) {
   if (val == null)
     return null
   if (type(val)=="table") {
@@ -18,7 +18,7 @@ let function dtext(val, params={}, addchildren = null) {
       children.append(addchildren)
   }
 
-  let watch = params?.watch
+  local watch = params?.watch
   local watchedtext = false
   local txt = ""
   if (type(val) == "string")  {
@@ -28,7 +28,7 @@ let function dtext(val, params={}, addchildren = null) {
     txt = val.value
     watchedtext = true
   }
-  let ret = {
+  local ret = {
     rendObj = ROBJ_DTEXT
     size = SIZE_TO_CONTENT
     halign = ALIGN_LEFT

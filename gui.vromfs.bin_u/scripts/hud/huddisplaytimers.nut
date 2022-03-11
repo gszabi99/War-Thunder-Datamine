@@ -1,7 +1,7 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local time = require("scripts/time.nut")
 
-let REPAIR_SHOW_TIME_THRESHOLD = 1.5
+local REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
 ::g_hud_display_timers <- {
   timersList = [
@@ -45,11 +45,6 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       id = "rearm_smoke_status"
       color = "@white"
       icon = "#ui/gameuiskin#icon_smoke_screen_in_progress.svg"
-    },
-    {
-      id = "rearm_aps_status"
-      color = "@white"
-      icon = "#ui/gameuiskin#icon_rocket_in_progress.svg"
     },
     {
       id = "driver_status"
@@ -152,7 +147,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     unitType = _unitType
     guiScene = scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/HudDisplayTimers", getViewData())
+    local blk = ::handyman.renderCached("gui/hud/HudDisplayTimers", getViewData())
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
 
     ::g_hud_event_manager.subscribe("TankDebuffs:Rearm", onRearm, this)
@@ -217,13 +212,13 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     foreach(timerData in timersList)
     {
-      let placeObj = scene.findObject(timerData.id)
+      local placeObj = scene.findObject(timerData.id)
       if (!::checkObj(placeObj))
         return
 
       placeObj.animation = "hide"
 
-      let iconObj = placeObj.findObject("icon")
+      local iconObj = placeObj.findObject("icon")
       if (::check_obj(iconObj))
         iconObj.wink = "no"
     }
@@ -251,16 +246,16 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     if (!("state" in newStateData))
       return
 
-    let placeObj = scene.findObject(memberId + "_status")
+    local placeObj = scene.findObject(memberId + "_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = newStateData.state == "takingPlace"
+    local showTimer = newStateData.state == "takingPlace"
     placeObj.animation = showTimer ? "show" : "hide"
     if (!showTimer)
       return
 
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
     ::g_time_bar.setPeriod(timebarObj, newStateData.totalTakePlaceTime)
     ::g_time_bar.setCurrentTime(timebarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
   }
@@ -268,16 +263,16 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onCrewState(newStateData)
   {
-    let placeObj = scene.findObject("healing_status")
+    local placeObj = scene.findObject("healing_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = newStateData.healing
+    local showTimer = newStateData.healing
     placeObj.animation = showTimer ? "show" : "hide"
     if (!showTimer)
       return
 
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
     ::g_time_bar.setPeriod(timebarObj, newStateData.totalHealingTime + 1)
     ::g_time_bar.setCurrentTime(timebarObj, newStateData.totalHealingTime - newStateData.timeToHeal)
   }
@@ -285,17 +280,17 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onRearm(debuffs_data)
   {
-    let placeObj = scene.findObject(debuffs_data.object_name)
+    local placeObj = scene.findObject(debuffs_data.object_name)
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data.state == "rearming"
+    local showTimer = debuffs_data.state == "rearming"
     placeObj.animation = showTimer ? "show" : "hide"
 
     if (!showTimer)
       return
 
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
     ::g_time_bar.setDirectionForward(timebarObj)
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.timeToLoadOne)
     ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.currentLoadTime)
@@ -304,14 +299,14 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onReplenish(debuffs_data)
   {
-    let placeObj = scene.findObject("replenish_status")
+    local placeObj = scene.findObject("replenish_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data?.isReplenishActive ?? false
+    local showTimer = debuffs_data?.isReplenishActive ?? false
     placeObj.animation = showTimer ? "show" : "hide"
 
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
 
     if (!showTimer)
     {
@@ -338,16 +333,16 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     if (debuffs_data.state == "notInRepair")
       return
 
-    let objId = debuffs_data.state == "repairingAuto" ? "repair_auto_status" : "repair_status"
-    let placeObj = scene.findObject(objId)
+    local objId = debuffs_data.state == "repairingAuto" ? "repair_auto_status" : "repair_status"
+    local placeObj = scene.findObject(objId)
     if (!::checkObj(placeObj))
       return
 
     placeObj.animation = "show"
 
-    let iconObj = placeObj.findObject("icon")
-    let timebarObj = placeObj.findObject("timer")
-    let timeTextObj = placeObj.findObject("time_text")
+    local iconObj = placeObj.findObject("icon")
+    local timebarObj = placeObj.findObject("timer")
+    local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue("")
 
     placeObj.show(true)
@@ -361,10 +356,10 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
-      let createTime = ::dagor.getCurTime()
+      local createTime = ::dagor.getCurTime()
       repairUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, p) {
-        let curTime = ::dagor.getCurTime()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        local curTime = ::dagor.getCurTime()
+        local timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -379,14 +374,14 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onMoveCooldown(debuffs_data)
   {
-    let placeObj = scene.findObject("move_cooldown_status")
+    local placeObj = scene.findObject("move_cooldown_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data.time >= 0
+    local showTimer = debuffs_data.time >= 0
     placeObj.animation = showTimer ? "show" : "hide"
 
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
 
     if (!showTimer)
     {
@@ -402,16 +397,16 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onBattery(debuffs_data)
   {
-    let placeObj = scene.findObject("battery_status")
+    local placeObj = scene.findObject("battery_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data.charge < 100
+    local showTimer = debuffs_data.charge < 100
     placeObj.animation = showTimer ? "show" : "hide"
 
-    let timeTextObj = placeObj.findObject("time_text")
+    local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue(debuffs_data.charge.tointeger().tostring());
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
 
     ::g_time_bar.setPeriod(timebarObj, 0)
     ::g_time_bar.setCurrentTime(timebarObj, 0)
@@ -419,7 +414,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function hideAnimTimer(objId)
   {
-    let placeObj = scene.findObject(objId)
+    local placeObj = scene.findObject(objId)
     if (!::checkObj(placeObj))
       return
     placeObj.animation = "hide"
@@ -431,10 +426,10 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     placeObj.animation = debuffs_data.time > 0 ? "show" : "hide"
     placeObj.show(true)
 
-    let timebarObj = placeObj.findObject("timer")
-    let iconObj = placeObj.findObject("icon")
+    local timebarObj = placeObj.findObject("timer")
+    local iconObj = placeObj.findObject("icon")
     iconObj.wink = "no"
-    let timeTextObj = placeObj.findObject("time_text")
+    local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.show(false)
 
     if (debuffs_data.time > 0)
@@ -454,8 +449,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
     }
 
-    let objId = debuffs_data.state == "unwatering" ? "unwatering_status" : "repair_breaches_status"
-    let placeObj = scene.findObject(objId)
+    local objId = debuffs_data.state == "unwatering" ? "unwatering_status" : "repair_breaches_status"
+    local placeObj = scene.findObject(objId)
     if (!::checkObj(placeObj))
       return
 
@@ -463,9 +458,9 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     placeObj.animation = "show"
 
     destoyRepairBreachesUpdater()
-    let iconObj = placeObj.findObject("icon")
-    let timebarObj = placeObj.findObject("timer")
-    let timeTextObj = placeObj.findObject("time_text")
+    local iconObj = placeObj.findObject("icon")
+    local timebarObj = placeObj.findObject("timer")
+    local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue("")
 
     placeObj.show(true)
@@ -474,10 +469,10 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
-      let createTime = ::dagor.getCurTime()
+      local createTime = ::dagor.getCurTime()
       repairBreachesUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, p) {
-        let curTime = ::dagor.getCurTime()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        local curTime = ::dagor.getCurTime()
+        local timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -492,7 +487,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onCancelRepairBreaches(debuffs_data)
   {
-    let placeObj = scene.findObject("cancel_repair_breaches_status")
+    local placeObj = scene.findObject("cancel_repair_breaches_status")
     if (!::checkObj(placeObj))
       return
 
@@ -501,7 +496,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onExtinguishAssist(debuffs_data)
   {
-    let placeObj = scene.findObject("extinguish_assist")
+    local placeObj = scene.findObject("extinguish_assist")
     if (!::checkObj(placeObj))
       return
 
@@ -510,15 +505,15 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onExtinguish(debuffs_data)
   {
-    let placeObj = scene.findObject("extinguish_status")
+    local placeObj = scene.findObject("extinguish_status")
     if (!::checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data.state != "notInExtinguish"
+    local showTimer = debuffs_data.state != "notInExtinguish"
     placeObj.animation = showTimer ? "show" : "hide"
 
     destoyExtinguishUpdater()
-    let iconObj = placeObj.findObject("icon")
+    local iconObj = placeObj.findObject("icon")
 
     if (!showTimer)
     {
@@ -526,8 +521,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
     }
 
-    let timebarObj = placeObj.findObject("timer")
-    let timeTextObj = placeObj.findObject("time_text")
+    local timebarObj = placeObj.findObject("timer")
+    local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue("")
 
     placeObj.show(true)
@@ -536,10 +531,10 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
-      let createTime = ::dagor.getCurTime()
+      local createTime = ::dagor.getCurTime()
       extinguishUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, p) {
-        let curTime = ::dagor.getCurTime()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        local curTime = ::dagor.getCurTime()
+        local timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -554,7 +549,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onCancelExtinguish(debuffs_data)
   {
-    let placeObj = scene.findObject("cancel_extinguish_status")
+    local placeObj = scene.findObject("cancel_extinguish_status")
     if (!::checkObj(placeObj))
       return
 
@@ -592,11 +587,11 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   {
     if (!eventData.isHeroAction && eventData.zoneName != curZoneCaptureName)
       return
-    let placeObj = scene.findObject("capture_progress")
+    local placeObj = scene.findObject("capture_progress")
     if (!::check_obj(placeObj))
       return
 
-    let isZoneCapturing = eventData.isHeroAction
+    local isZoneCapturing = eventData.isHeroAction
       && (eventData.eventId == ::MISSION_CAPTURE_ZONE_START || eventData.eventId == ::MISSION_CAPTURING_ZONE)
     placeObj.animation = isZoneCapturing ? "show" : "hide"
     curZoneCaptureName = isZoneCapturing ? eventData.zoneName : null
@@ -604,14 +599,14 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
 
     lastZoneCaptureUpdate = ::dagor.getCurTime()
-    let timebarObj = placeObj.findObject("timer")
+    local timebarObj = placeObj.findObject("timer")
     ::g_time_bar.setPeriod(timebarObj, 0)
     ::g_time_bar.setValue(timebarObj, fabs(eventData.captureProgress))
 
-    let color = isCapturingZoneMy(eventData) ? "hudColorBlue" : "hudColorRed"
+    local color = isCapturingZoneMy(eventData) ? "hudColorBlue" : "hudColorRed"
     timebarObj["background-color"] = guiScene.getConstantValue(color)
 
-    let timerObj = placeObj.findObject("time_text")
+    local timerObj = placeObj.findObject("time_text")
     timerObj.setValue(curZoneCaptureName)
 
     //hide timer when no progress too long.

@@ -1,12 +1,12 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
-let seenList = require("scripts/seen/seenList.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
+local seenList = require("scripts/seen/seenList.nut")
 
-let shopSheets = {
+local shopSheets = {
   types = []
 }
 
-let isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ExtInventory")
+local isOnlyExtInventory = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ExtInventory")
 
 shopSheets.template <- {
   id = "" //used from type name
@@ -34,8 +34,8 @@ shopSheets.template <- {
 
   getItemsList = function(shopTab, subsetId = null)
   {
-    let visibleTypeMask = ::ItemsManager.checkItemsMaskFeatures(typeMask)
-    let filterFunc = getItemFilterFunc(shopTab).bindenv(this)
+    local visibleTypeMask = ::ItemsManager.checkItemsMaskFeatures(typeMask)
+    local filterFunc = getItemFilterFunc(shopTab).bindenv(this)
     if (shopTab == itemsTab.INVENTORY)
       return ::ItemsManager.getInventoryListByShopMask(visibleTypeMask, filterFunc)
     if (shopTab == itemsTab.SHOP)
@@ -47,7 +47,7 @@ shopSheets.template <- {
   getSubsetSeenListId = @(subsetId) "{0}/{1}".subst(getSeenId(), subsetId)
 }
 
-let function getTabSeenId(tabIdx) //!!FIX ME: move tabs to separate enum
+local function getTabSeenId(tabIdx) //!!FIX ME: move tabs to separate enum
 {
   switch (tabIdx)
   {
@@ -57,7 +57,7 @@ let function getTabSeenId(tabIdx) //!!FIX ME: move tabs to separate enum
   }
   return null
 }
-let isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable() //!!FIX ME: move tabs to separate enum
+local isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable() //!!FIX ME: move tabs to separate enum
 
 shopSheets.addSheets <- function(sheetsTable)
 {
@@ -78,18 +78,18 @@ shopSheets.addSheets <- function(sheetsTable)
   for (local tab = 0; tab < itemsTab.TOTAL; tab++)
     if (isTabVisible(tab))
     {
-      let curTab = tab
-      let tabSeenList = seenList.get(getTabSeenId(tab))
+      local curTab = tab
+      local tabSeenList = seenList.get(getTabSeenId(tab))
       foreach (sh in types)
         if (sh.isAllowedForTab(tab))
         {
-          let curSheet = sh
-          let shSeenId = sh.getSeenId()
+          local curSheet = sh
+          local shSeenId = sh.getSeenId()
           tabSeenList.setSubListGetter(shSeenId, @() curSheet.getItemsList(curTab).map(@(it) it.getSeenId()))
 
           if (sh.hasSubLists())
           {
-            let subsetList = curSheet.getSet().getSubsetsList()
+            local subsetList = curSheet.getSet().getSubsetsList()
             subsetList.apply(@(subset) tabSeenList.setSubListGetter(curSheet.getSubsetSeenListId(subset.id),
               @() curSheet.getItemsList(curTab, subset.id).map(@(it) it.getSeenId())))
           }
@@ -236,12 +236,12 @@ shopSheets.addSheets({
 
 shopSheets.updateWorkshopSheets <- function()
 {
-  let sets = workshop.getSetsList()
-  let newSheets = {}
+  local sets = workshop.getSetsList()
+  local newSheets = {}
 
   foreach(idx, set in sets)
   {
-    let id = set.getShopTabId()
+    local id = set.getShopTabId()
     if (id in this)
       continue
 
@@ -260,7 +260,7 @@ shopSheets.updateWorkshopSheets <- function()
       hasSubLists = @() getSet().hasSubsets
 
       getItemFilterFunc = function(shopTab) {
-        let s = getSet()
+        local s = getSet()
         return s.isItemInSet.bindenv(s)
       }
 
@@ -268,7 +268,7 @@ shopSheets.updateWorkshopSheets <- function()
         ? getSet().getItemsList()
         : getSet().getItemsSubList(subsetId)
       getSubsetsListParameters = function() {
-        let curSet = getSet()
+        local curSet = getSet()
         return {
           subsetList = curSet.getSubsetsList()
           curSubsetId  = curSet.getCurSubsetId()
@@ -290,7 +290,7 @@ shopSheets.getSheetDataByItem <- function(item)
 
   updateWorkshopSheets()
 
-  let iType = item.iType
+  local iType = item.iType
   for (local tab = 0; tab < itemsTab.TOTAL; tab++)
     if (isTabVisible(tab))
       foreach (sh in types)

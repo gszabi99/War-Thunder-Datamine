@@ -1,17 +1,17 @@
-let listLabelsSquad = {}
-let nextLabel = { team1 = 1, team2 = 1}
+local listLabelsSquad = {}
+local nextLabel = { team1 = 1, team2 = 1}
 local topSquads = {}
-let playersInfo = persist("playersInfo", @() Watched({}))
+local playersInfo = persist("playersInfo", @() Watched({}))
 
-let getPlayersInfo = @() playersInfo.value
-let function updateIconPlayersInfo()
+local getPlayersInfo = @() playersInfo.value
+local function updateIconPlayersInfo()
 {
-  let sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
+  local sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
   if (sessionPlayersInfo.len() > 0 && !::u.isEqual(playersInfo.value, sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
 
-let function initListLabelsSquad()
+local function initListLabelsSquad()
 {
   listLabelsSquad.clear()
   nextLabel.team1 = 1
@@ -21,7 +21,7 @@ let function initListLabelsSquad()
   updateIconPlayersInfo()
 }
 
-let function updateListLabelsSquad()
+local function updateListLabelsSquad()
 {
   foreach(label in listLabelsSquad)
     label.count = 0;
@@ -32,7 +32,7 @@ let function updateListLabelsSquad()
     if (!(team in nextLabel))
       continue
 
-    let squadId = member.squad
+    local squadId = member.squad
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadId in listLabelsSquad)
@@ -58,11 +58,11 @@ let function updateListLabelsSquad()
   }
 }
 
-let function getSquadInfo(idSquad)
+local function getSquadInfo(idSquad)
 {
   if (idSquad == INVALID_SQUAD_ID)
     return null
-  let squad = (idSquad in listLabelsSquad) ? listLabelsSquad[idSquad] : null
+  local squad = (idSquad in listLabelsSquad) ? listLabelsSquad[idSquad] : null
   if (squad == null)
     return null
   else if (squad.count < 2)
@@ -70,7 +70,7 @@ let function getSquadInfo(idSquad)
   return squad
 }
 
-let function getSquadInfoByMemberName(name)
+local function getSquadInfoByMemberName(name)
 {
   if (name == "")
     return null
@@ -82,26 +82,26 @@ let function getSquadInfoByMemberName(name)
   return null
 }
 
-let isShowSquad = @() ::SessionLobby.getGameMode() != ::GM_SKIRMISH
-let function updateTopSquadScore(mplayers)
+local isShowSquad = @() ::SessionLobby.getGameMode() != ::GM_SKIRMISH
+local function updateTopSquadScore(mplayers)
 {
   if (!isShowSquad())
     return
-  let teamId = mplayers.len() ? ::getTblValue("team", mplayers[0], null) : null
+  local teamId = mplayers.len() ? ::getTblValue("team", mplayers[0], null) : null
   if (teamId == null)
     return
 
   local topSquadId = null
 
   local topSquadScore = 0
-  let squads = {}
+  local squads = {}
   foreach (player in mplayers)
   {
-    let squadScore = ::getTblValue("squadScore", player, 0)
+    local squadScore = ::getTblValue("squadScore", player, 0)
     if (!squadScore || squadScore < topSquadScore)
       continue
-    let name = ::getTblValue("name", player, "")
-    let squadId = ::getTblValue("squadId", getSquadInfoByMemberName(name), INVALID_SQUAD_ID)
+    local name = ::getTblValue("name", player, "")
+    local squadId = ::getTblValue("squadId", getSquadInfoByMemberName(name), INVALID_SQUAD_ID)
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadScore > topSquadScore)
@@ -109,7 +109,7 @@ let function updateTopSquadScore(mplayers)
       topSquadScore = squadScore
       squads.clear()
     }
-    let score = ::getTblValue("score", player, 0)
+    local score = ::getTblValue("score", player, 0)
     if (!(squadId in squads))
       squads[squadId] <- { playerScore = 0, members = 0 }
     squads[squadId].playerScore += score
@@ -119,7 +119,7 @@ let function updateTopSquadScore(mplayers)
   local topAvgPlayerScore = 0.0
   foreach (squadId, data in squads)
   {
-    let avg = data.playerScore * 1.0 / data.members
+    local avg = data.playerScore * 1.0 / data.members
     if (topSquadId == null || avg > topAvgPlayerScore)
     {
       topSquadId = squadId
@@ -130,7 +130,7 @@ let function updateTopSquadScore(mplayers)
   topSquads[teamId] <- topSquadId
 }
 
-let getTopSquadId = @(teamId) topSquads?[teamId]
+local getTopSquadId = @(teamId) topSquads?[teamId]
 
 return {
   getPlayersInfo

@@ -1,15 +1,15 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-let { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
-let { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
-let { checkUnlockMarkers } = require("scripts/unlocks/unlockMarkers.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local time = require("scripts/time.nut")
+local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
+local { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+local { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+local { checkUnlockMarkers } = require("scripts/unlocks/unlockMarkers.nut")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
   keepLoaded = true
-  sceneBlkName = "%gui/mainmenu/topMenuScene.blk"
+  sceneBlkName = "gui/mainmenu/topMenuScene.blk"
 
   leftSectionHandlerWeak = null
 
@@ -76,7 +76,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initTopMenuTimer()
   {
-    let obj = getObj("top_menu_scene_timer")
+    local obj = getObj("top_menu_scene_timer")
     if (::checkObj(obj))
       obj.setUserData(this)
   }
@@ -90,7 +90,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     checkAdvert()
 
-    let hasResearch = ::getTblValue("hasTopMenuResearch", handler, true)
+    local hasResearch = ::getTblValue("hasTopMenuResearch", handler, true)
     showSceneBtn("topmenu_btn_shop_wnd", hasResearch)
     if (!hasResearch)
       closeShop()
@@ -121,7 +121,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     if (!is_news_adver_actual())
     {
-      let t = req_news()
+      local t = req_news()
       if (t >= 0)
         return ::add_bg_task_cb(t, updateAdvert, this)
     }
@@ -130,18 +130,18 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateAdvert()
   {
-    let obj = scene.findObject("topmenu_advert")
+    local obj = scene.findObject("topmenu_advert")
     if (!::check_obj(obj))
       return
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_news_blk(blk)
-    let text = ::loc(blk?.advert ?? "", "")
+    local text = ::loc(blk?.advert ?? "", "")
     SecondsUpdater(obj, function(tObj, params)
     {
-      let stopUpdate = text.indexof("{time_countdown=") == null
-      let textResult = time.processTimeStamps(text)
-      let objText = tObj.findObject("topmenu_advert_text")
+      local stopUpdate = text.indexof("{time_countdown=") == null
+      local textResult = time.processTimeStamps(text)
+      local objText = tObj.findObject("topmenu_advert_text")
       objText.setValue(textResult)
       tObj.show(textResult != "")
       return stopUpdate
@@ -152,7 +152,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     isInQueue = inQueue
 
-    let slotbar = getSlotbar()
+    local slotbar = getSlotbar()
     if (slotbar)
       slotbar.shade(inQueue)
     updateSceneShade()
@@ -217,10 +217,10 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     topMenuShopActive(!topMenuShopActive.value)
-    let shopMove = getObj("shop_wnd_move")
+    local shopMove = getObj("shop_wnd_move")
     shopMove.moveOut = topMenuShopActive.value ? "yes" : "no"
-    let closeResearch = getObj("research_closeButton")
-    let showButton = shopMove.moveOut == "yes"
+    local closeResearch = getObj("research_closeButton")
+    local showButton = shopMove.moveOut == "yes"
 
     ::dmViewer.update()
 
@@ -246,11 +246,11 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   {
     if (topMenuShopActive.value)
     {
-      let shopMove = getObj("shop_wnd_move")
+      local shopMove = getObj("shop_wnd_move")
       if (!::checkObj(shopMove))
         return
 
-      let closeResearch = getObj("research_closeButton")
+      local closeResearch = getObj("research_closeButton")
       if(::checkObj(closeResearch))
         closeResearch.show(true)
 
@@ -284,7 +284,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateOnShopWndAnim(isVisible)
   {
-    let isShow = topMenuShopActive.value
+    local isShow = topMenuShopActive.value
     updateSceneShade()
     if (isVisible)
       ::broadcastEvent("ShopWndVisible", { isShopShow = isShow })
@@ -301,8 +301,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       //instanciate shop window
       if (!shopWeak)
       {
-        let wndObj = getObj("shop_wnd_frame")
-        let shopHandler = ::handlersManager.loadHandler(::gui_handlers.ShopMenuHandler,
+        local wndObj = getObj("shop_wnd_frame")
+        local shopHandler = ::handlersManager.loadHandler(::gui_handlers.ShopMenuHandler,
           {
             scene = wndObj
             closeShop = ::Callback(shopWndSwitch, this)
@@ -384,12 +384,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getWndHelpConfig()
   {
-    let res = {
-      textsBlk = "%gui/mainmenu/instantActionHelp.blk"
+    local res = {
+      textsBlk = "gui/mainmenu/instantActionHelp.blk"
       lineInterval = "0.6@helpLineInterval"
     }
 
-    let links = [
+    local links = [
       //Top left
       { obj = "topmenu_menu_panel"
         msgId = "hint_mainmenu"
@@ -453,7 +453,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     ]
 
     //Bottom bars
-    let slotbar = getSlotbar()
+    local slotbar = getSlotbar()
     if (slotbar)
     {
       if (::unlocked_countries.len() > 1)
@@ -467,9 +467,9 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
           msgId = "hint_my_crews"
         })
 
-      let presetsList = getSlotbarPresetsList()
-      let listObj = presetsList.getListObj()
-      let presetsObjList = ["btn_slotbar_presets"]
+      local presetsList = getSlotbarPresetsList()
+      local listObj = presetsList.getListObj()
+      local presetsObjList = ["btn_slotbar_presets"]
 
       if (listObj)
         for(local i = 0; i < presetsList.maxPresets; i++)

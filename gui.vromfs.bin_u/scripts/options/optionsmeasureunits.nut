@@ -1,10 +1,10 @@
-let persistent = {
+local persistent = {
   unitsCfg = null
 }
 ::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
-let optionsByIndex = [
+local optionsByIndex = [
   { useroptId = ::USEROPT_MEASUREUNITS_SPEED,                 optId = "speed" },
   { useroptId = ::USEROPT_MEASUREUNITS_ALT,                   optId = "alt" },
   { useroptId = ::USEROPT_MEASUREUNITS_DIST,                  optId = "dist" },
@@ -14,25 +14,25 @@ let optionsByIndex = [
   { useroptId = ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, optId = "power_to_weight_ratio" },
 ]
 
-let function isInitialized()
+local function isInitialized()
 {
   return (persistent.unitsCfg?.len() ?? 0) != 0
 }
 
-let function init()
+local function init()
 {
   persistent.unitsCfg = []
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.load("config/measureUnits.blk")
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    let blkUnits = blk.getBlock(i)
-    let units = []
+    local blkUnits = blk.getBlock(i)
+    local units = []
     for (local j = 0; j < blkUnits.blockCount(); j++)
     {
-      let blkUnit = blkUnits.getBlock(j)
-      let roundAfter = blkUnit.getPoint2("roundAfter", ::Point2(0, 0))
-      let unit = {
+      local blkUnit = blkUnits.getBlock(j)
+      local roundAfter = blkUnit.getPoint2("roundAfter", ::Point2(0, 0))
+      local unit = {
         name = blkUnit.getBlockName()
         round = blkUnit.getInt("round", 0)
         koef = blkUnit.getReal("koef", 1.0)
@@ -46,12 +46,12 @@ let function init()
   ::call_darg("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
 }
 
-let function getOption(useroptId)
+local function getOption(useroptId)
 {
-  let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
-  let option = optionsByIndex[unitNo]
-  let units = persistent.unitsCfg[unitNo]
-  let unitName = ::get_option_unit_type(unitNo)
+  local unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
+  local option = optionsByIndex[unitNo]
+  local units = persistent.unitsCfg[unitNo]
+  local unitName = ::get_option_unit_type(unitNo)
 
   return {
     id     = $"measure_units_{option.optId}"
@@ -61,15 +61,15 @@ let function getOption(useroptId)
   }
 }
 
-let function getMeasureCfg(unitNo)
+local function getMeasureCfg(unitNo)
 {
-  let unitName = ::get_option_unit_type(unitNo)
+  local unitName = ::get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
 local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
 {
-  let unit = getMeasureCfg(unitNo)
+  local unit = getMeasureCfg(unitNo)
   if (!unit)
     return ""
 
@@ -79,13 +79,13 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   foreach (val in value)
     if (maxValue == null || maxValue < val)
       maxValue = val
-  let shouldRoundValue = !forceMaxPrecise &&
+  local shouldRoundValue = !forceMaxPrecise &&
     (unit.roundAfterBy > 0 && (maxValue * unit.koef) > unit.roundAfterVal)
   local valuesList = value.map(function(val) {
     val = val * unit.koef
     if (shouldRoundValue && isPresize)
       return ::format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
-    let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
+    local roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
     return ::g_string.floatToStringRounded(val, roundPrecision)
   })
   local result = separator.join(valuesList)
@@ -94,9 +94,9 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   return result
 }
 
-let function isMetricSystem(unitNo)
+local function isMetricSystem(unitNo)
 {
-  let unitName = ::get_option_unit_type(unitNo)
+  local unitName = ::get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 

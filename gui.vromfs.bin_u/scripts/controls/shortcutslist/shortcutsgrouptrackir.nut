@@ -1,4 +1,4 @@
-let { is_stereo_mode } = ::require_native("vr")
+local { is_stereo_mode } = ::require_native("vr")
 
 return [
 //-------------------------------------------------------
@@ -48,7 +48,7 @@ return [
     showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrZoom
     setValue = function(joyParams, objValue) {
-      let prev = joyParams.trackIrZoom
+      local prev = joyParams.trackIrZoom
       joyParams.trackIrZoom = objValue
       if (prev != objValue)
         ::set_controls_preset("")
@@ -60,7 +60,7 @@ return [
     showFunc = @() !::is_platform_xbox
     value = @(joyParams) joyParams.trackIrForLateralMovement
     setValue = function(joyParams, objValue) {
-      let prev = joyParams.trackIrForLateralMovement
+      local prev = joyParams.trackIrForLateralMovement
       joyParams.trackIrForLateralMovement = objValue
       if (prev != objValue)
         ::set_controls_preset("")
@@ -72,7 +72,7 @@ return [
     showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrAsHeadInTPS
     setValue = function(joyParams, objValue) {
-      let prev = joyParams.trackIrAsHeadInTPS
+      local prev = joyParams.trackIrAsHeadInTPS
       joyParams.trackIrAsHeadInTPS = objValue
       if (joyParams.trackIrAsHeadInTPS != prev)
         ::set_controls_preset("")

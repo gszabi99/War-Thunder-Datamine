@@ -1,13 +1,13 @@
 const DEFAULT_MAX_SKILL_LEVEL = 50
 
-let skillCategories = []
-let skillCategoryByName = {}
+local skillCategories = []
+local skillCategoryByName = {}
 local skillsLoaded = false
-let maxSkillValueByMemberAndSkill = {}
-let skillParameterInfo = {} //skillName = { measureType = <string>, sortOrder = <int> }
+local maxSkillValueByMemberAndSkill = {}
+local skillParameterInfo = {} //skillName = { measureType = <string>, sortOrder = <int> }
 
-let function createCategory(categoryName) {
-  let category = {
+local function createCategory(categoryName) {
+  local category = {
     categoryName = categoryName
     skillItems = []
     crewUnitTypeMask = 0
@@ -17,13 +17,13 @@ let function createCategory(categoryName) {
   return category
 }
 
-let function loadSkills() {
+local function loadSkills() {
   ::load_crew_skills_once()
-  let skillsBlk = ::get_skills_blk()
+  local skillsBlk = ::get_skills_blk()
   skillCategories.clear()
   skillCategoryByName.clear()
   maxSkillValueByMemberAndSkill.clear()
-  let calcBlk = skillsBlk?.crew_skills_calc
+  local calcBlk = skillsBlk?.crew_skills_calc
   if (calcBlk == null)
     return
   foreach (memberName, memberBlk in calcBlk)
@@ -36,17 +36,17 @@ let function loadSkills() {
     {
       if (!::u.isDataBlock(skillBlk))
         continue // Not actually a skill blk.
-      let skillItem = ::g_crew.getSkillItem(memberName, skillName)
+      local skillItem = ::g_crew.getSkillItem(memberName, skillName)
       if (!skillItem)
         continue
 
       //!!FIX ME: need to full use the same skillItems as in g_crew instead of duplicate code
       // Max skill value
-      let maxSkillValue = skillBlk?.max_skill_level ?? DEFAULT_MAX_SKILL_LEVEL
+      local maxSkillValue = skillBlk?.max_skill_level ?? DEFAULT_MAX_SKILL_LEVEL
       maxSkillValueByMemberAndSkill[memberName][skillName] <- maxSkillValue
 
       // Skill category
-      let categoryName = skillBlk?.skill_category
+      local categoryName = skillBlk?.skill_category
       if (categoryName == null)
         continue
 
@@ -54,7 +54,7 @@ let function loadSkills() {
       if (skillCategory == null)
         skillCategory = createCategory(categoryName)
 
-      let categorySkill = {
+      local categorySkill = {
         memberName = memberName
         skillName = skillName
         skillItem = skillItem
@@ -66,7 +66,7 @@ let function loadSkills() {
   }
 
   skillParameterInfo.clear()
-  let typesBlk = skillsBlk?.measure_type_by_skill_parameter
+  local typesBlk = skillsBlk?.measure_type_by_skill_parameter
   if (typesBlk != null)
   {
     local sortOrder = 0
@@ -78,7 +78,7 @@ let function loadSkills() {
   }
 }
 
-let function updateSkills() {
+local function updateSkills() {
   if (!skillsLoaded)
   {
     skillsLoaded = true
@@ -86,48 +86,48 @@ let function updateSkills() {
   }
 }
 
-let function getSkillCategories() {
+local function getSkillCategories() {
   updateSkills()
   return skillCategories
 }
 
-let function getSkillCategoryByName(categoryName) {
+local function getSkillCategoryByName(categoryName) {
   updateSkills()
   return skillCategoryByName?[categoryName]
 }
 
-let function getSkillParameterInfo(parameterName) {
+local function getSkillParameterInfo(parameterName) {
   updateSkills()
   return skillParameterInfo?[parameterName]
 }
 
-let function getMeasureTypeBySkillParameterName(parameterName) {
+local function getMeasureTypeBySkillParameterName(parameterName) {
   return getSkillParameterInfo(parameterName)?.measureType ?? ::g_measure_type.UNKNOWN
 }
 
-let function getSortOrderBySkillParameterName(parameterName) {
+local function getSortOrderBySkillParameterName(parameterName) {
   return getSkillParameterInfo(parameterName)?.sortOrder ?? 0
 }
 
-let function getSkillValue(crewId, unit, memberName, skillName) {
-  let unitCrewData = ::g_unit_crew_cache.getUnitCrewDataById(crewId, unit)
+local function getSkillValue(crewId, unit, memberName, skillName) {
+  local unitCrewData = ::g_unit_crew_cache.getUnitCrewDataById(crewId, unit)
   return unitCrewData?[memberName][skillName] ?? 0
 }
 
-let function getSkillCategoryCrewLevel(crewData, unit, skillCategory, crewUnitType) {
+local function getSkillCategoryCrewLevel(crewData, unit, skillCategory, crewUnitType) {
   local res = 0
   foreach (categorySkill in skillCategory.skillItems)
   {
     if (!categorySkill.isVisible(crewUnitType))
       continue
 
-    let value = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
+    local value = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
     res += ::g_crew.getSkillCrewLevel(categorySkill.skillItem, value)
   }
   return res
 }
 
-let function getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType) {
+local function getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType) {
   local crewLevel = 0
   foreach (categorySkill in skillCategory.skillItems)
     if (categorySkill.isVisible(crewUnitType))
@@ -135,39 +135,39 @@ let function getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType) {
   return crewLevel
 }
 
-let function getMaxSkillValue(memberName, skillName) {
+local function getMaxSkillValue(memberName, skillName) {
   updateSkills()
   return maxSkillValueByMemberAndSkill?[memberName][skillName] ?? 0
 }
 
-let function categoryHasNonGunnerSkills(skillCategory) {
+local function categoryHasNonGunnerSkills(skillCategory) {
   foreach (skillItem in skillCategory.skillItems)
     if (skillItem.memberName != "gunner")
       return true
   return false
 }
 
-let function getCrewPoints(crewData) {
+local function getCrewPoints(crewData) {
   return crewData?.skillPoints ?? 0
 }
 
-let function isAffectedBySpecialization(memberName, skillName) {
-  let skillItem = ::g_crew.getSkillItem(memberName, skillName)
+local function isAffectedBySpecialization(memberName, skillName) {
+  local skillItem = ::g_crew.getSkillItem(memberName, skillName)
   return skillItem?.useSpecializations ?? false
 }
 
-let function isAffectedByLeadership(memberName, skillName) {
-  let skillItem = ::g_crew.getSkillItem(memberName, skillName)
+local function isAffectedByLeadership(memberName, skillName) {
+  local skillItem = ::g_crew.getSkillItem(memberName, skillName)
   return skillItem?.useLeadership ?? false
 }
 
-let function getMinSkillsUnitRepairRank(unitRank) {
-  let repairRanksBlk = ::get_skills_blk()?.repair_ranks
+local function getMinSkillsUnitRepairRank(unitRank) {
+  local repairRanksBlk = ::get_skills_blk()?.repair_ranks
   if (!repairRanksBlk)
     return -1
   for(local i = 1; ; i++)
   {
-    let rankValue = repairRanksBlk?["rank" + i]
+    local rankValue = repairRanksBlk?["rank" + i]
     if (!rankValue)
       break
     if (rankValue >= unitRank)

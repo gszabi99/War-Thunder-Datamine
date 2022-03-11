@@ -1,8 +1,8 @@
-let textButton = require("textButtonBase.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
-let textButtonTextCtor = require("textButtonTextCtor.nut")
+local textButton = require("textButtonBase.nut")
+local fontsState = require("reactiveGui/style/fontsState.nut")
+local textButtonTextCtor = require("textButtonTextCtor.nut")
 
-let commonButtonStyle = {
+local commonButtonStyle = {
   halign = ALIGN_CENTER
   font = fontsState.get("normal")
   borderWidth = ::dp(1)

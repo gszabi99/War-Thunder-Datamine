@@ -1,6 +1,6 @@
-let { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+local { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
-let mpChatState = {
+local mpChatState = {
   log = []
   currentModeId = null
   PERSISTENT_DATA_PARAMS = ["log"]
@@ -33,7 +33,7 @@ local mpChatModel = {
   }
 
   function getLogForBanhammer() {
-    let log = mpChatState.log.map(@(message) {
+    local log = mpChatState.log.map(@(message) {
       from = message.sender
       userColor = message.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(message.userColor, "@")) : ""
       fromUid = message.uid
@@ -59,9 +59,9 @@ local mpChatModel = {
       return false
     }
 
-    let player = u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == sender)
+    local player = u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == sender)
 
-    let message = {
+    local message = {
       userColor = ""
       msgColor = ""
       clanTag = ""
@@ -127,7 +127,7 @@ local mpChatModel = {
   }
 
   function onModeSwitched() {
-    let newModeId = ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
+    local newModeId = ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
     if (newModeId == null)
       return
 

@@ -1,6 +1,6 @@
-let controlsOperations = require("scripts/controls/controlsOperations.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -245,20 +245,6 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
     needShowInHelp = true
-  }
-  {
-    id = "gm_sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
-  }
-  {
-    id = "gm_sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ID_TANK_NIGHT_VISION"

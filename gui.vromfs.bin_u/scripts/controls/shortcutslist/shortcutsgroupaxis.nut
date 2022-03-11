@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+local stdMath = require("std/math.nut")
 
 return [
   {

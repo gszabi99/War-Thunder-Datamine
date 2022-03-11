@@ -1,8 +1,8 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let seenListEvents = require("scripts/seen/seenListEvents.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local time = require("scripts/time.nut")
+local seenListEvents = require("scripts/seen/seenListEvents.nut")
 
-let activeSeenLists = {}
+local activeSeenLists = {}
 
 local SeenList = class {
   id = "" //unique list id
@@ -123,7 +123,7 @@ local SeenList = class {
     isInited = true
 
     entitiesData.clear()
-    let blk = ::load_local_account_settings(getSaveId())
+    local blk = ::load_local_account_settings(getSaveId())
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         entitiesData[blk.getParamName(i)] <- blk.getParamValue(i)
@@ -143,8 +143,8 @@ local SeenList = class {
       return
 
     local hasChanges = false
-    let curDays = time.getUtcDays()
-    let entitiesList = listGetter()
+    local curDays = time.getUtcDays()
+    local entitiesList = listGetter()
 
     foreach(entity in entitiesList)
       if ((entity in entitiesData) && entitiesData[entity] != curDays)
@@ -153,7 +153,7 @@ local SeenList = class {
         hasChanges = true
       }
 
-    let removeList = []
+    local removeList = []
     foreach(entity, days in entitiesData)
       if (days + daysToUnseen < curDays)
         removeList.append(entity)
@@ -193,9 +193,9 @@ local SeenList = class {
       else
         return
 
-    let entityList = (u.isArray(entityOrList) || u.isTable(entityOrList)) ? entityOrList : [entityOrList]
-    let changedList = []
-    let curDays = time.getUtcDays()
+    local entityList = (u.isArray(entityOrList) || u.isTable(entityOrList)) ? entityOrList : [entityOrList]
+    local changedList = []
+    local curDays = time.getUtcDays()
     foreach(entity in entityList)
     {
       if (isSubList(entity))

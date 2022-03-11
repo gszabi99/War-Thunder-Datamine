@@ -1,16 +1,16 @@
 // warning disable: -file:forbidden-function
 
-let dagorDebug = require("dagor.debug")
-let string = require("string.nut")
-let tostring_r = string.tostring_r
-let join = string.join //like join, but skip emptylines
+local dagorDebug = require("dagor.debug")
+local string = require("string.nut")
+local tostring_r = string.tostring_r
+local join = string.join //like join, but skip emptylines
 
-let function print_(val, separator="\n"){
+local function print_(val, separator="\n"){
   print($"{val}{separator}")
 }
 const DEF_MAX_DEEPLEVEL = 4
-let function Log(tostringfunc=null) {
-  let function vlog(...){
+local function Log(tostringfunc=null) {
+  local function vlog(...){
     local out = ""
     if (vargv.len()==1)
       out = tostring_r(vargv[0],{splitlines=false, compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL, tostringfunc=tostringfunc})
@@ -19,51 +19,51 @@ let function Log(tostringfunc=null) {
     dagorDebug.screenlog(out.slice(0,min(out.len(),200)))
   }
 
-  let function log(...) {
+  local function log(...) {
     if (vargv.len()==1)
       print_(tostring_r(vargv[0],{compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc}))
     else
       print_(" ".join(vargv.map(@(v) tostring_r(v,{compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc}))))
   }
 
-  let function dlog(...) {
+  local function dlog(...) {
     vlog.acall([this].extend(vargv))
     log.acall([this].extend(vargv))
   }
 
-  let function dlogsplit(...) {
+  local function dlogsplit(...) {
     log.acall([this].extend(vargv))
     if (vargv.len()==1)
       vargv=vargv[0]
-    let out = tostring_r(vargv,{tostringfunc=tostringfunc})
-    let s = string.split(out,"\n")
+    local out = tostring_r(vargv,{tostringfunc=tostringfunc})
+    local s = string.split(out,"\n")
     for (local i=0; i < min(80,s.len()); i++) {
       dagorDebug.screenlog(s[i])
     }
   }
-  let function debugTableData(value, params={recursionLevel=3, addStr="", printFn=null, silentMode=true}){
-    let addStr = params?.addStr ?? ""
-    let silentMode = params?.silentMode ?? true
-    let recursionLevel = params?.recursionLevel ?? 3
-    let printFn = params?.printFn ?? print
-    let prefix = silentMode ? "" : "DD: "
+  local function debugTableData(value, params={recursionLevel=3, addStr="", printFn=null, silentMode=true}){
+    local addStr = params?.addStr ?? ""
+    local silentMode = params?.silentMode ?? true
+    local recursionLevel = params?.recursionLevel ?? 3
+    local printFn = params?.printFn ?? print
+    local prefix = silentMode ? "" : "DD: "
 
-    let newline = $"\n{prefix}{addStr}"
-    let maxdeeplevel = recursionLevel+1
+    local newline = $"\n{prefix}{addStr}"
+    local maxdeeplevel = recursionLevel+1
 
     if (addStr=="" && !silentMode)
       printFn("DD: START")
     printFn(tostring_r(value,{compact=false, maxdeeplevel=maxdeeplevel, newline=newline, showArrIdx=false, tostringfunc=tostringfunc}))
   }
 
-  let function console_print(...) {
+  local function console_print(...) {
     dagorDebug.console_print(" ".join(vargv.map(@(v) tostring_r(v, {maxdeeplevel=DEF_MAX_DEEPLEVEL, showArrIdx=false, tostringfunc=tostringfunc}))))
   }
 
-  let function with_prefix(prefix) {
+  local function with_prefix(prefix) {
     return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc})))))
   }
-  let function dlog_prefix(prefix) {
+  local function dlog_prefix(prefix) {
     return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn
   }
 

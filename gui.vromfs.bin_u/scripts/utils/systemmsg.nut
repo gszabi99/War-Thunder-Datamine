@@ -67,17 +67,17 @@ also you can find example function below - dbgExample
 
 
 
-let LOC_ID = "l"
-let VALUE_ID = "t"
-let COLOR_ID = "c"
+local LOC_ID = "l"
+local VALUE_ID = "t"
+local COLOR_ID = "c"
 
-let colors = {}
-let getColorByTag = @(tag) colors?[tag] ?? ""
+local colors = {}
+local getColorByTag = @(tag) colors?[tag] ?? ""
 
-let locTags = {}
-let getLocId = @(locTag) locTags?[locTag] ?? locTag
+local locTags = {}
+local getLocId = @(locTag) locTags?[locTag] ?? locTag
 
-let function registerColors(colorsTable) //tag = color
+local function registerColors(colorsTable) //tag = color
 {
   foreach(tag, color in colorsTable)
   {
@@ -86,7 +86,7 @@ let function registerColors(colorsTable) //tag = color
   }
 }
 
-let function registerLocTags(locTagsTable) //tag = locId
+local function registerLocTags(locTagsTable) //tag = locId
 {
   foreach(tag, locId in locTagsTable)
   {
@@ -95,7 +95,7 @@ let function registerLocTags(locTagsTable) //tag = locId
   }
 }
 
-let systemMsg = { //functons here need to be able recursive call self
+local systemMsg = { //functons here need to be able recursive call self
   function validateLangConfig(langConfig, valueValidateFunction)
   {
     return ::u.map(
@@ -115,7 +115,7 @@ let systemMsg = { //functons here need to be able recursive call self
     if (textValidateFunction)
       langConfig = validateLangConfig(langConfig, textValidateFunction)
 
-    let jsonString = ::save_to_json(langConfig)
+    local jsonString = ::save_to_json(langConfig)
     return jsonString
   }
 
@@ -125,7 +125,7 @@ let systemMsg = { //functons here need to be able recursive call self
       return convertTable(langConfig, paramValidateFunction)
     if (::u.isArray(langConfig))
     {
-      let resArray = ::u.map(langConfig,
+      local resArray = ::u.map(langConfig,
         (@(cfg) convertAny(cfg, paramValidateFunction) || "").bindenv(this))
       return ::g_string.implode(resArray, separator)
     }
@@ -137,10 +137,10 @@ let systemMsg = { //functons here need to be able recursive call self
   function convertTable(configTbl, paramValidateFunction = null)
   {
     local res = ""
-    let locId = configTbl?[LOC_ID]
+    local locId = configTbl?[LOC_ID]
     if (!::u.isString(locId)) //res by value
     {
-      let value = configTbl?[VALUE_ID]
+      local value = configTbl?[VALUE_ID]
       if (value == null)
         return res
 
@@ -150,34 +150,31 @@ let systemMsg = { //functons here need to be able recursive call self
     }
     else //res by locId with params
     {
-      let params = {}
+      local params = {}
       foreach(key, param in configTbl)
       {
-        let text = convertAny(param, paramValidateFunction, "", "")
+        local text = convertAny(param, paramValidateFunction, "", "")
         if (!::u.isEmpty(text))
         {
           params[key] <- text
           continue
         }
 
-        local paramOut
         if (paramValidateFunction && ::u.isString(param))
-          paramOut = paramValidateFunction(param)
-        else
-          paramOut = param
-        params[key] <- paramOut
+          param = paramValidateFunction(param)
+        params[key] <- param
       }
       res = ::loc(getLocId(locId), params)
     }
 
-    let colorName = getColorByTag(configTbl?[COLOR_ID])
+    local colorName = getColorByTag(configTbl?[COLOR_ID])
     res = ::colorize(colorName, res)
     return res
   }
 
   function jsonStringToLang(jsonString, paramValidateFunction = null, separator = "")
   {
-    let langConfig = ::parse_json(jsonString)
+    local langConfig = ::parse_json(jsonString)
     return convertAny(langConfig, paramValidateFunction, separator)
   }
 }

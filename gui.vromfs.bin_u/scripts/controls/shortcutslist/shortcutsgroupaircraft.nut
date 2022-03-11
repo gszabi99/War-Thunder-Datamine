@@ -1,11 +1,11 @@
-let globalEnv = require("globalEnv")
-let controlsOperations = require("scripts/controls/controlsOperations.nut")
-let { unitClassType } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local globalEnv = require("globalEnv")
+local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local { unitClassType } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-let isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
-let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
+local isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
+local needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
 
 return [
   {
@@ -84,6 +84,7 @@ return [
   }
   {
     id="ID_FBW_MODE"
+    showFunc = @() ::has_feature("AirplaneFbw"),
     filterShow = [globalEnv.EM_FULL_REAL]
   }
 //-------------------------------------------------------
@@ -117,7 +118,7 @@ return [
     value = @(joyParams) joyParams.holdThrottleForWEP
     setValue = function(joyParams, objValue)
     {
-      let old  = joyParams.holdThrottleForWEP
+      local old  = joyParams.holdThrottleForWEP
       joyParams.holdThrottleForWEP = objValue
       if (objValue != old)
         ::set_controls_preset("")
@@ -287,10 +288,12 @@ return [
   }
   {
     id = "ID_FIRE_PRIMARY"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_FIRE_SECONDARY"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
@@ -350,18 +353,22 @@ return [
   }
   {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_PRIMARY"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_RESIZE_SECONDARY_WEAPON_SERIES"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
@@ -426,18 +433,6 @@ return [
     needShowInHelp = true
   }
   {
-    id = "sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
-  }
-  {
-    id = "sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
-  }
-  {
     id = "ID_SCHRAEGE_MUSIK"
     checkAssign = false
     needShowInHelp = true
@@ -450,28 +445,34 @@ return [
   {
     id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER"
     checkAssign = false
+    //showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER"
     checkAssign = false
+    //showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_SWITCH_COCKPIT_SIGHT_MODE"
     checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
     checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_LOCK_TARGETING_AT_POINT"
     checkAssign = false
     needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
   }
   {
     id = "ID_UNLOCK_TARGETING_AT_POINT"
     checkAssign = false
     needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
   }
   {
     id = "ID_LOCK_TARGETING"
@@ -680,7 +681,7 @@ return [
   }
   {
     id = "ID_PLANE_NIGHT_VISION"
-    checkGroup = ctrlGroups.AIR
+    checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
   {

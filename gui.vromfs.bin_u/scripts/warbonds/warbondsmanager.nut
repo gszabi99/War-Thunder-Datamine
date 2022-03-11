@@ -1,8 +1,8 @@
-let seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
-let { PRICE } = require("scripts/utils/configs.nut")
+local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local { PRICE } = require("scripts/utils/configs.nut")
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
-let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
+local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 
 ::g_warbonds <- {
   FULL_ID_SEPARATOR = "."
@@ -47,18 +47,18 @@ g_warbonds.validateList <- function validateList()
 
   list.clear()
 
-  let wBlk = ::get_price_blk()?.warbonds
+  local wBlk = ::get_price_blk()?.warbonds
   if (!wBlk)
     return
 
   maxAllowedWarbondsBalance = wBlk?.maxAllowedWarbondsBalance ?? maxAllowedWarbondsBalance
   for(local i = 0; i < wBlk.blockCount(); i++)
   {
-    let warbondBlk = wBlk.getBlock(i)
+    local warbondBlk = wBlk.getBlock(i)
     for(local j = 0; j < warbondBlk.blockCount(); j++)
     {
-      let wbListBlk = warbondBlk.getBlock(j)
-      let wbClass = ::Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
+      local wbListBlk = warbondBlk.getBlock(j)
+      local wbClass = ::Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
       list.append(wbClass)
       seenWarbondsShop.setSubListGetter(wbClass.getSeenId(), @() wbClass.getUnseenAwardIds())
     }
@@ -77,7 +77,7 @@ g_warbonds.validateList <- function validateList()
 
 g_warbonds.getBalanceText <- function getBalanceText()
 {
-  let wbList = getVisibleList()
+  local wbList = getVisibleList()
   return wbList.len()? wbList[0].getBalanceText() : ""
 }
 
@@ -115,7 +115,7 @@ g_warbonds.getCurrentWarbond <- function getCurrentWarbond()
 
 g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId)
 {
-  let data = ::g_string.split(wbFullId, FULL_ID_SEPARATOR)
+  local data = ::g_string.split(wbFullId, FULL_ID_SEPARATOR)
   if (data.len() >= 2)
     return findWarbond(data[0], data[1])
   return null
@@ -123,11 +123,11 @@ g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId)
 
 g_warbonds.getWarbondAwardByFullId <- function getWarbondAwardByFullId(wbAwardFullId)
 {
-  let data = ::g_string.split(wbAwardFullId, FULL_ID_SEPARATOR)
+  local data = ::g_string.split(wbAwardFullId, FULL_ID_SEPARATOR)
   if (data.len() < 3)
     return null
 
-  let wb = findWarbond(data[0], data[1])
+  local wb = findWarbond(data[0], data[1])
   return wb && wb.getAwardByIdx(data[2])
 }
 
@@ -164,11 +164,11 @@ g_warbonds.getLimit <- function getLimit()
 
 g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, params, silent = false)
 {
-  let curWb = ::g_warbonds.getCurrentWarbond()
+  local curWb = ::g_warbonds.getCurrentWarbond()
   if (!curWb)
     return true
-  let limit = getLimit()
-  let newBalance = curWb.getBalance() + wbAmount
+  local limit = getLimit()
+  local newBalance = curWb.getBalance() + wbAmount
   if (newBalance <= limit)
     return true
 
@@ -203,15 +203,15 @@ g_warbonds.onEventInitConfigs <- function onEventInitConfigs(p)
 seenWarbondsShop.setListGetter(@() ::g_warbonds.getUnseenAwardIds())
 seenWarbondsShop.setCompatibilityLoadData(function()
  {
-   let res = {}
-   let savePath = "seen/warbond_shop_award"
-   let blk = ::loadLocalByAccount(savePath)
+   local res = {}
+   local savePath = "seen/warbond_shop_award"
+   local blk = ::loadLocalByAccount(savePath)
    if (!::u.isDataBlock(blk))
      return res
 
    for (local i = 0; i < blk.blockCount(); i++)
    {
-     let warbondBlk = blk.getBlock(i)
+     local warbondBlk = blk.getBlock(i)
      for (local j = 0; j < warbondBlk.paramCount(); j++)
        res[warbondBlk.getBlockName() + "_" + warbondBlk.getParamName(j)] <- warbondBlk.getParamValue(j)
    }

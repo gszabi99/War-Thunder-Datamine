@@ -2309,6 +2309,7 @@
         "sensor": {
           "blk": "gameData/sensors/naval/su_foot_n.blk",
           "designationFromBody": true,
+          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -4530,12 +4531,12 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
-      "waterMassVel": -35000.0,
-      "waterMassMult": 150.0,
+      "repairSpeed": 25.0,
+      "waterMassVel": -150000.0,
+      "waterMassMult": 160.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
-      "additionalWaterDeathThreshold": 3100000.0,
-      "additionalWaterShouldDiePercent": 0.3,
+      "additionalWaterDeathThreshold": 4200000.0,
+      "additionalWaterShouldDiePercent": 0.4,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
       "maxHeelingTime": 10.0,
@@ -4550,14 +4551,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.5,
+          "weight": 0.45,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.75,
+          "weight": 0.45,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4582,13 +4583,13 @@
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "engine_room_03_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.5
               }
             }
           ]
@@ -4597,7 +4598,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.8,
+          "weight": 0.75,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4610,7 +4611,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.5,
+          "weight": 0.52,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {

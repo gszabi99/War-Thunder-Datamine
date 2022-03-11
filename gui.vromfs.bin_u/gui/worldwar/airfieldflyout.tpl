@@ -67,7 +67,7 @@ frame {
             inactive:t='yes'
           <</disable>>
 
-          include "%gui/commonParts/progressBar"
+          include "gui/commonParts/progressBar"
         }
         rankUpList {
           holdTooltipChildren:t='yes'
@@ -89,7 +89,7 @@ frame {
             activeText {
               text:t='#mainmenu/unitRoleInArmy'
             }
-            include "%gui/commonParts/comboBox"
+            include "gui/commonParts/combobox"
           }
           <</unitClassesView>>
         }
@@ -149,7 +149,7 @@ frame {
     tdiv {
       width:t='pw'
       position:t='relative'
-      include "%gui/worldWar/airfieldFlyOutUnitTypeInfo"
+      include "gui/worldWar/airfieldFlyOutUnitTypeInfo"
     }
   }
 

@@ -1,4 +1,4 @@
-let { GUI } = require("scripts/utils/configs.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)
@@ -71,22 +71,22 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null
   initConfigOnce()
 
   local data = ""
-  let styleCfg = iconConfig ? iconConfig
+  local styleCfg = iconConfig ? iconConfig
     : iconStyle && (iconStyle in config.styles) && config.styles[iconStyle]
-  let defStyleCfg = defStyle && (defStyle in config.styles) && config.styles[defStyle]
+  local defStyleCfg = defStyle && (defStyle in config.styles) && config.styles[defStyle]
 
-  let usingStyle = styleCfg? styleCfg : defStyleCfg
+  local usingStyle = styleCfg? styleCfg : defStyleCfg
   if (usingStyle)
   {
-    let layers = split(usingStyle, "; ")
+    local layers = split(usingStyle, "; ")
     foreach (layerName in layers)
     {
       local layerCfg = findLayerCfg(layerName)
       if (!layerCfg)
         continue
 
-      let layerId = ::getTblValue("id", layerCfg, layerName)
-      let layerParams = ::getTblValue(layerId, iconParams)
+      local layerId = ::getTblValue("id", layerCfg, layerName)
+      local layerParams = ::getTblValue(layerId, iconParams)
       if (layerParams)
       {
         layerCfg = clone layerCfg
@@ -103,7 +103,7 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null
   else if (image && image != "")
   {
     ratio = (ratio && ratio > 0) ? ratio : 1.0
-    let size = (ratio == 1.0)? "ph, ph" : (ratio > 1.0)? format("ph, %.2fph", 1/ratio) : format("%.2fph, ph", ratio)
+    local size = (ratio == 1.0)? "ph, ph" : (ratio > 1.0)? format("ph, %.2fph", 1/ratio) : format("%.2fph, ph", ratio)
     data = iconLayer.subst({ id = "id:t='iconLayer0'", size, posX ="(pw-w)/2", posY = "(ph-h)/2",
       pos = "absolute", image, props = "" })
   }
@@ -130,12 +130,12 @@ LayersIcon.findStyleCfg <- function findStyleCfg(id)
 LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "")  //need to move it to handyman,
                                      //but before need to correct cashe it or it will decrease performance
 {
-  let getResultsTable = (@(layersCfgParams, layerCfg) function() {
-    let resultTable = {}
+  local getResultsTable = (@(layersCfgParams, layerCfg) function() {
+    local resultTable = {}
 
     foreach(paramName, table in layersCfgParams)
     {
-      let resultParamName = ::getTblValue("returnParamName", table)
+      local resultParamName = ::getTblValue("returnParamName", table)
       if (!resultParamName)
         continue
 
@@ -154,13 +154,13 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
     return resultTable
   })(layersCfgParams, layerCfg)
 
-  let baseParams = getResultsTable()
+  local baseParams = getResultsTable()
 
-  let offsetX = ::getTblValue("offsetX", layerCfg, "")
-  let offsetY = ::getTblValue("offsetY", layerCfg, "")
+  local offsetX = ::getTblValue("offsetX", layerCfg, "")
+  local offsetY = ::getTblValue("offsetY", layerCfg, "")
 
-  let id = ::getTblValue("id", layerCfg)? "id:t='" + layerCfg.id + "';" : ""
-  let img = ::getTblValue("img", layerCfg, "")
+  local id = ::getTblValue("id", layerCfg)? "id:t='" + layerCfg.id + "';" : ""
+  local img = ::getTblValue("img", layerCfg, "")
 
   local props = ""
   foreach(key in [ "background-svg-size" ])
@@ -193,8 +193,8 @@ LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image=null, r
   if (!::checkObj(iconObj))
     return
 
-  let guiScene = iconObj.getScene()
-  let data = getIconData(iconStyle, image, ratio, defStyle, iconParams, iconConfig)
+  local guiScene = iconObj.getScene()
+  local data = getIconData(iconStyle, image, ratio, defStyle, iconParams, iconConfig)
   guiScene.replaceContentFromText(iconObj, data, data.len(), null)
 }
 
@@ -206,11 +206,11 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
     if (id in layerCfg)
       props += ::format("%s:t='%s';", id, layerCfg[id])
 
-  let idTag = ("id" in layerCfg) ? ::format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
+  local idTag = ("id" in layerCfg) ? ::format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
 
-  let posX = ("x" in layerCfg)? layerCfg.x.tostring() : "(pw-w)/2"
-  let posY = ("y" in layerCfg)? layerCfg.y.tostring() : "(ph-h)/2"
-  let position = ::getTblValue("position", layerCfg, "absolute")
+  local posX = ("x" in layerCfg)? layerCfg.x.tostring() : "(pw-w)/2"
+  local posY = ("y" in layerCfg)? layerCfg.y.tostring() : "(ph-h)/2"
+  local position = ::getTblValue("position", layerCfg, "absolute")
 
   return ::format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
                       idTag,

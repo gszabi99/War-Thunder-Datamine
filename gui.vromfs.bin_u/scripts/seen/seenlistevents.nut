@@ -1,37 +1,37 @@
-let u = require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 const ANY_CHANGED_ID = "___ANY___"
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
 
-let subscriptions = {} //<listId> = { <entityId> = array of callbacks }
+local subscriptions = {} //<listId> = { <entityId> = array of callbacks }
 
-let function getListSubscriptions(listId)
+local function getListSubscriptions(listId)
 {
   if (!(listId in subscriptions))
     subscriptions[listId] <- {}
   return subscriptions[listId]
 }
 
-let function validateSubscriptionsArray(subArr)
+local function validateSubscriptionsArray(subArr)
 {
   for(local i = subArr.len() - 1; i >= 0; i--)
     if (!subArr[i].isValid())
       subArr.remove(i)
 }
 
-let function addSubscription(subList, entityName, cb)
+local function addSubscription(subList, entityName, cb)
 {
   if (!(entityName in subList))
     subList[entityName] <- []
-  let subArr = subList[entityName]
+  local subArr = subList[entityName]
   subArr.append(cb)
   if (subArr.len() % SUBSCRIPTIONS_TO_CHECK_CLEAR == 0)
     validateSubscriptionsArray(subArr)
 }
 
-let function subscribe(listId, entitiesList, cb)
+local function subscribe(listId, entitiesList, cb)
 {
-  let subList = getListSubscriptions(listId)
+  local subList = getListSubscriptions(listId)
   if (!entitiesList)
   {
     addSubscription(subList, ANY_CHANGED_ID, cb)
@@ -42,7 +42,7 @@ let function subscribe(listId, entitiesList, cb)
     addSubscription(subList, entityName, cb)
 }
 
-let function gatherCbFromList(subArr, resList)
+local function gatherCbFromList(subArr, resList)
 {
   if (!subArr)
     return
@@ -53,10 +53,10 @@ let function gatherCbFromList(subArr, resList)
       subArr.remove(i)
 }
 
-let function notifyChanged(listId, entitiesList)
+local function notifyChanged(listId, entitiesList)
 {
-  let subList = getListSubscriptions(listId)
-  let notifyList = []
+  local subList = getListSubscriptions(listId)
+  local notifyList = []
   if (entitiesList)
   {
     gatherCbFromList(subList?[ANY_CHANGED_ID], notifyList)

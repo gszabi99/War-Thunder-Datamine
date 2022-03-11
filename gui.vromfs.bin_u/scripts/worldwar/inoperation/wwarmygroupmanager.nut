@@ -1,33 +1,33 @@
-let { request_nick_by_uid_batch } = require("scripts/matching/requests.nut")
+local { request_nick_by_uid_batch } = require("scripts/matching/requests.nut")
 
 local armyManagersNames = {}
 local currentOperationID = 0
 
-let function updateArmyManagersNames(namesByUids) {
+local function updateArmyManagersNames(namesByUids) {
   foreach(uid, name in namesByUids)
     armyManagersNames[uid.tointeger()] <- { name = name }
 }
 
-let function updateArmyManagers(armyGroups) {
+local function updateArmyManagers(armyGroups) {
   foreach(group in armyGroups)
     group.updateManagerStat(armyManagersNames)
 }
 
-let function updateManagers() {
-  let operationID = ::ww_get_operation_id()
+function updateManagers() {
+  local operationID = ::ww_get_operation_id()
   if(operationID != currentOperationID) {
     currentOperationID = operationID
     armyManagersNames = {}
   }
 
-  let armyGroups = ::g_world_war.armyGroups
-  let reqUids = []
+  local armyGroups = ::g_world_war.armyGroups
+  local reqUids = []
   foreach(group in armyGroups)
     reqUids.extend(group.getUidsForNickRequest(armyManagersNames))
 
   if (reqUids.len() > 0)
     request_nick_by_uid_batch(reqUids, function(resp) {
-      let namesByUids = resp?.result
+      local namesByUids = resp?.result
       if (namesByUids == null)
         return
 
@@ -43,5 +43,5 @@ let function updateManagers() {
 }
 
 return {
-  updateManagers
+  updateManagers = updateManagers
 }

@@ -1,4 +1,4 @@
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 enum CREWS_READY_STATUS
 {
@@ -41,7 +41,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getOptionsList()
   {
-    let options = [
+    local options = [
       [::USEROPT_CLUSTER],
       [::USEROPT_RANK],
     ]
@@ -84,7 +84,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function createRoom()
   {
-    let reasonData = getCantCreateReasonData({ isFullText = true })
+    local reasonData = getCantCreateReasonData({ isFullText = true })
     if (!reasonData.checkStatus)
       return reasonData.actionFunc(reasonData)
 
@@ -96,11 +96,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (!::events.isUnitAllowedForEvent(mGameMode, unit))
       return false
 
-    let brRange = getCurBrRange()
+    local brRange = getCurBrRange()
     if (brRange)
     {
-      let ediff = ::events.getEDiffByEvent(mGameMode)
-      let unitMRank = unit.getEconomicRank(ediff)
+      local ediff = ::events.getEDiffByEvent(mGameMode)
+      local unitMRank = unit.getEconomicRank(ediff)
       if (unitMRank < ::getTblValue(0, brRange, 0) || ::getTblValue(1, brRange, ::max_country_rank) < unitMRank)
         return false
     }
@@ -119,21 +119,21 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function getCurCrewsReadyStatus()
   {
     local res = 0
-    let country = ::get_profile_country_sq()
-    let ediff = ::events.getEDiffByEvent(mGameMode)
+    local country = ::get_profile_country_sq()
+    local ediff = ::events.getEDiffByEvent(mGameMode)
     foreach (team in ::g_team.getTeams())
     {
       if (!::isInArray(country, getCurCountries(team)))
        continue
 
-      let teamData = ::events.getTeamData(mGameMode, team.code)
-      let requiredCrafts = ::events.getRequiredCrafts(teamData)
-      let crews = ::get_crews_list_by_country(country)
+      local teamData = ::events.getTeamData(mGameMode, team.code)
+      local requiredCrafts = ::events.getRequiredCrafts(teamData)
+      local crews = ::get_crews_list_by_country(country)
       foreach(crew in crews)
       {
         if (::is_crew_locked_by_prev_battle(crew))
           continue
-        let unit = ::g_crew.getCrewUnit(crew)
+        local unit = ::g_crew.getCrewUnit(crew)
         if (!unit)
           continue
 
@@ -156,7 +156,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   {
     params = params ? clone params : {}
     params.isCreationCheck <- true
-    let res = ::events.getCantJoinReasonData(mGameMode, null, params)
+    local res = ::events.getCantJoinReasonData(mGameMode, null, params)
     if (res.reasonText.len())
       return res
 
@@ -166,7 +166,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     }
     else
     {
-      let crewsStatus = getCurCrewsReadyStatus()
+      local crewsStatus = getCurCrewsReadyStatus()
       if (!(crewsStatus & CREWS_READY_STATUS.HAS_ALLOWED))
         res.reasonText = ::loc("events/no_allowed_crafts")
       else if (!(crewsStatus & CREWS_READY_STATUS.HAS_REQUIRED_AND_ALLOWED))
@@ -195,11 +195,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     chosenMissionsList = []
     fullMissionsList = []
 
-    let missionsTbl = mGameMode?.mission_decl.missions_list
+    local missionsTbl = mGameMode?.mission_decl.missions_list
     if (!missionsTbl)
       return
 
-    let missionsNames = ::u.keys(missionsTbl)
+    local missionsNames = ::u.keys(missionsTbl)
     fullMissionsList = misListType.getMissionsListByNames(missionsNames)
     fullMissionsList = misListType.sortMissionsByName(fullMissionsList)
     loadChosenMissions()
@@ -213,11 +213,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function loadChosenMissions()
   {
     chosenMissionsList.clear()
-    let blk = ::load_local_account_settings(getMissionsSaveId())
+    local blk = ::load_local_account_settings(getMissionsSaveId())
     if (!::u.isDataBlock(blk))
       return
 
-    let chosenNames = blk % CHOSEN_EVENT_MISSIONS_SAVE_KEY
+    local chosenNames = blk % CHOSEN_EVENT_MISSIONS_SAVE_KEY
     foreach(mission in fullMissionsList)
       if (::isInArray(mission.id, chosenNames))
         chosenMissionsList.append(mission)
@@ -225,7 +225,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function saveChosenMissions()
   {
-    let names = ::u.map(chosenMissionsList, @(m) m.id)
+    local names = ::u.map(chosenMissionsList, @(m) m.id)
     ::save_local_account_settings(getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
@@ -246,7 +246,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function setCurBrRange(rangeIdx)
   {
-    let brRanges = getOptionsConfig().brRanges
+    local brRanges = getOptionsConfig().brRanges
     if (rangeIdx in brRanges)
       curBrRange = brRanges[rangeIdx]
   }
@@ -275,7 +275,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function setCurCountriesArray(team, countriesSetIdx)
   {
-    let countriesSet = getOptionsConfig().countriesSetList?[countriesSetIdx].countries
+    local countriesSet = getOptionsConfig().countriesSetList?[countriesSetIdx].countries
     curCountries[team.id] <- countriesSet?[team.code-1] ?? (clone shopCountriesList)
   }
 
@@ -297,7 +297,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getRoomCreateParams()
   {
-    let res = {
+    local res = {
       ranks = [1, ::max_country_rank] //matching do nt allow to create session before ranks is set
     }
 
@@ -309,7 +309,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (getCurBrRange())
       res.mranks <- getCurBrRange()
 
-    let clusterOpt = ::get_option(::USEROPT_CLUSTER)
+    local clusterOpt = ::get_option(::USEROPT_CLUSTER)
     res.cluster <- ::getTblValue(clusterOpt.value, clusterOpt.values, "")
 
     if (!isAllMissionsSelected())

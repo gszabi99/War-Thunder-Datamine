@@ -1,7 +1,7 @@
-::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "%gui/wndWidgets/navigationPanel"
+  sceneTplName = "gui/wndWidgets/navigationPanel"
   sceneBlkName = null
 
   // ==== Handler params ====
@@ -65,12 +65,12 @@
 
   function setNavItems(navItems)
   {
-    let navListObj = scene.findObject(navListObjId)
+    local navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return
 
     itemList = navItems
-    let view = {items = itemList.map(@(navItem, idx)
+    local view = {items = itemList.map(@(navItem, idx)
       navItem.__merge({
         id = $"nav_{idx.tostring()}"
         isSelected = idx == 0
@@ -79,7 +79,7 @@
       })
     )}
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
+    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(navListObj, data, data.len(), this)
 
     updateVisibility()
@@ -92,7 +92,7 @@
 
   function setCurrentItem(item)
   {
-    let itemIdx = itemList.indexof(item)
+    local itemIdx = itemList.indexof(item)
     if (itemIdx != null)
       setCurrentItemIdx(itemIdx)
   }
@@ -106,11 +106,11 @@
 
   function doNavigate(itemIdx, isRelative = false)
   {
-    let navListObj = scene.findObject(navListObjId)
+    local navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
-    let itemsCount = itemList.len()
+    local itemsCount = itemList.len()
     if (itemsCount < 1)
       return
 
@@ -133,7 +133,7 @@
 
   function updateVisibility()
   {
-    let isNavRequired = itemList.len() > 1
+    local isNavRequired = itemList.len() > 1
     showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
     showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
     guiScene.performDelayed(this, function() {
@@ -144,18 +144,18 @@
 
   function onNavClick(obj = null)
   {
-    let navListObj = scene.findObject(navListObjId)
+    local navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
-    let itemIdx = navListObj.getValue()
+    local itemIdx = navListObj.getValue()
     if (shouldCallCallback && onClickCb && itemIdx in itemList)
       onClickCb(itemList[itemIdx])
   }
 
   function onNavSelect(obj = null)
   {
-    let navListObj = scene.findObject(navListObjId)
+    local navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
@@ -178,14 +178,14 @@
 
   function onCollapse(obj)
   {
-    let itemObj = obj?.collapse_header ? obj : obj.getParent()
-    let listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
+    local itemObj = obj?.collapse_header ? obj : obj.getParent()
+    local listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
     if (!::check_obj(listObj) || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
-    let isShow = itemObj?.collapsed == "yes"
-    let listLen = listObj.childrenCount()
+    local isShow = itemObj?.collapsed == "yes"
+    local listLen = listObj.childrenCount()
     local selIdx = listObj.getValue()
     local headerIdx = -1
     local needReselect = false
@@ -193,7 +193,7 @@
     local found = false
     for (local i = 0; i < listLen; i++)
     {
-      let child = listObj.getChild(i)
+      local child = listObj.getChild(i)
       if (!found)
       {
         if (child?.collapsing == "yes")
@@ -217,7 +217,7 @@
 
     if (needReselect)
     {
-      let indexes = []
+      local indexes = []
       for (local i = selIdx + 1; i < listLen; i++)
         indexes.append(i)
       for (local i = selIdx - 1; i >= 0; i--)
@@ -226,7 +226,7 @@
       local newIdx = -1
       foreach (idx in indexes)
       {
-        let child = listObj.getChild(idx)
+        local child = listObj.getChild(idx)
         if (!child?.collapse_header != "yes"  && child.isEnabled())
         {
           newIdx = idx
@@ -245,7 +245,7 @@
   }
 
   function getCurrentItem() {
-    let currentIdx = ::get_object_value(scene, navListObjId)
+    local currentIdx = ::get_object_value(scene, navListObjId)
     if (currentIdx == null)
       return null
 

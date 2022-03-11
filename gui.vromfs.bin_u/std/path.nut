@@ -1,4 +1,4 @@
-let {split, regexp} = require("string")
+local {split, regexp} = require("string")
 
 /**
  * Normalize file path slashes to be unix-like forward slashes.
@@ -18,8 +18,8 @@ let {split, regexp} = require("string")
  *   normalize("a/.b/./c")            > "a/.b/c"
  *   normalize("/a/b///c\\d")         > "/a/b/c/d"
  */
-let function normalize(path) {
-  let pathSegments = split(path, "\\/")
+local function normalize(path) {
+  local pathSegments = split(path, "\\/")
   local isAbsolutePath = false
 
   if (path.len() > 0 && (path[0] == '/' || path[0] == "\\"[0])) {
@@ -37,7 +37,7 @@ let function normalize(path) {
 
   local numRemoved = 0
   for (local j = pathSegments.len() - 1; j >= 0; j--) {
-    let segment = pathSegments[j]
+    local segment = pathSegments[j]
     if (segment == ".")
       numRemoved += 1
     else if (segment == "..")
@@ -59,7 +59,7 @@ let function normalize(path) {
 /**
  * Check is path already normalized
  */
-let function isNormalized(path) {
+local function isNormalized(path) {
   return path == normalize(path)
 }
 
@@ -67,7 +67,7 @@ let function isNormalized(path) {
 /**
  * Get last slash separator index in past string
  */
-let function getLastSeparatorIndex(path) {
+local function getLastSeparatorIndex(path) {
   for (local j = path.len() - 1; j >= 0; j--)
     if (path[j] == '/')
       return j
@@ -86,11 +86,11 @@ let function getLastSeparatorIndex(path) {
  *   parentPath("a")              > null
  *   parentPath("a/b")            > "a"
  */
-let function parentPath(path) {
+local function parentPath(path) {
   if (path == "/")
     return null
 
-  let separatorIdx = getLastSeparatorIndex(path)
+  local separatorIdx = getLastSeparatorIndex(path)
   if (separatorIdx > 0)
     return path.slice(0, separatorIdx)
   else if (separatorIdx == 0)
@@ -111,11 +111,11 @@ let function parentPath(path) {
  *   parentPath("a")              > "a"
  *   parentPath("a/b")            > "b"
  */
-let function fileName(path) {
+local function fileName(path) {
   if (path == "/")
     return "/"
 
-  let separatorIdx = getLastSeparatorIndex(path)
+  local separatorIdx = getLastSeparatorIndex(path)
   if (separatorIdx == -1)
     return path
   else
@@ -133,7 +133,7 @@ let function fileName(path) {
  *   join("a/b", "c/d")          > "a/b/c/d"
  *   join("/", "/")              > "/"
  */
-let function _join(basePath, other) {
+local function _join(basePath, other) {
   assert(type(basePath) == "string")
   assert(type(other) == "string")
   if (basePath == "")
@@ -158,11 +158,11 @@ let function _join(basePath, other) {
  *   joinArray([])                   > ""
  *   joinArray(["/"])                > "/"
  */
-let function joinArray(pathArray) {
+local function joinArray(pathArray) {
   return "/".join(pathArray)
 }
 
-let function join(...) {
+local function join(...) {
   local path = ""
   foreach (pathSegment in vargv) {
     if (type(pathSegment) == "array") {
@@ -185,11 +185,11 @@ let function join(...) {
  *   splitToArray("")           > []
  *   splitToArray("/")          > ["/"]
  */
-let function splitToArray(path) {
+local function splitToArray(path) {
   if (path == "")
     return []
   assert(type(path)=="string", @() $"path type is not string ({type(path)})")
-  let segments = split(path, "/")
+  local segments = split(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")
 

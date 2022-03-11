@@ -1,15 +1,15 @@
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
-let function getWorldWarPromoText(isWwEnabled = null) {
+local function getWorldWarPromoText(isWwEnabled = null) {
   local text = ::loc("mainmenu/btnWorldwar")
   if (!::is_worldwar_enabled())
     return text
 
   if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle()))
   {
-    let operationText = ::g_world_war.getPlayedOperationText(false)
+    local operationText = ::g_world_war.getPlayedOperationText(false)
     if (operationText !=null)
       text = operationText
   }
@@ -20,7 +20,7 @@ let function getWorldWarPromoText(isWwEnabled = null) {
 
 addPromoAction("world_war", @(handler, params, obj) ::g_world_war.openMainWnd(params?[0] == "openMainMenu"))
 
-let promoButtonId = "world_war_button"
+local promoButtonId = "world_war_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -28,12 +28,12 @@ addPromoButtonConfig({
   collapsedIcon = ::loc("icon/worldWar")
   needUpdateByTimer = true
   updateFunctionInHandler = function() {
-    let id = promoButtonId
-    let isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
-    let isVisible = ::g_promo.getShowAllPromoBlocks()
+    local id = promoButtonId
+    local isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
+    local isVisible = ::g_promo.getShowAllPromoBlocks()
       || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
 
-    let buttonObj = ::showBtn(id, isVisible, scene)
+    local buttonObj = ::showBtn(id, isVisible, scene)
     if (!isVisible || !::checkObj(buttonObj))
       return
 

@@ -42,14 +42,14 @@ g_voice_chat.runVoiceChatStep <- function runVoiceChatStep()
 
 g_voice_chat.immitateVoiceChat <- function immitateVoiceChat()
 {
-  let curStepTime = ::dagor.getCurTime()
-  let dt = curStepTime - lastStepTime
+  local curStepTime = ::dagor.getCurTime()
+  local dt = curStepTime - lastStepTime
   lastStepTime = curStepTime
 
   if (::math.frnd() * 1000 > dt * avgEventPerSec)
     return
 
-  let members = ::g_squad_manager.isInSquad() ? ::g_squad_manager.getOnlineMembers()
+  local members = ::g_squad_manager.isInSquad() ? ::g_squad_manager.getOnlineMembers()
     : ::my_clan_info ? ::my_clan_info.members
     : []
   if (members.len() <= 1)

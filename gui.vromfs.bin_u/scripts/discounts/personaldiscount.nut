@@ -1,6 +1,6 @@
 /** Main get personal discount method. */
 
-let getMethodByCategory = {
+local getMethodByCategory = {
   aircrafts = function (path)
   {
     if (path.len() == 2)
@@ -43,12 +43,12 @@ let getMethodByCategory = {
   }
 }
 
-let getDiscountByPath = function(path)
+local getDiscountByPath = function(path)
 {
   if (path.len() == 0)
     return 0
 
-  let method = getMethodByCategory?[path[0]]
+  local method = getMethodByCategory?[path[0]]
   if (typeof(method) == "function")
     return method(path)
   return 0

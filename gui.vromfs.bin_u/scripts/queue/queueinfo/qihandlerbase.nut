@@ -1,10 +1,10 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
 
-::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.QiHandlerBase extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName   = "%gui/events/eventQueue.blk"
+  sceneBlkName   = "gui/events/eventQueue.blk"
 
   queueTypeMask = QUEUE_TYPE_BIT.EVENT
   hasTimerText = true
@@ -30,7 +30,7 @@ let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
     if (!hasTimerText || !timerUpdateObjId)
       return
 
-    let timerObj = scene.findObject(timerUpdateObjId)
+    local timerObj = scene.findObject(timerUpdateObjId)
     timerObj.setUserData(this)
     timerObj.timer_handler_func = "onUpdate"
   }
@@ -53,7 +53,7 @@ let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
     if (needAutoDestroy && !q)
       return destroy()
 
-    let isQueueChanged = q != queue
+    local isQueueChanged = q != queue
     if (!isQueueChanged && !forceUpdate)
       return isQueueChanged
 
@@ -86,9 +86,9 @@ let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
   function updateTimer()
   {
-    let textObj = scene.findObject(timerTextObjId)
-    let timerObj = scene.findObject("wait_time_block")
-    let iconObj = scene.findObject("queue_wait_icon")
+    local textObj = scene.findObject(timerTextObjId)
+    local timerObj = scene.findObject("wait_time_block")
+    local iconObj = scene.findObject("queue_wait_icon")
     ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
       iconObj, ::loc("yn1/waiting_for_game_query"))
   }

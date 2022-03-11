@@ -1,14 +1,14 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let asyncActions = require("sqStdLibs/helpers/asyncActions.nut")
-let time = require("scripts/time.nut")
-let { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("scripts/items/workshop/workshop.nut")
-let startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
-let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
+local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local asyncActions = require("sqStdLibs/helpers/asyncActions.nut")
+local time = require("scripts/time.nut")
+local { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("scripts/items/workshop/workshop.nut")
+local startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
+local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
-let { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
-let { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
+local { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
+local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 
 global enum MARK_RECIPE {
   NONE
@@ -16,15 +16,15 @@ global enum MARK_RECIPE {
   USED
 }
 
-let markRecipeSaveId = "markRecipe/"
+local markRecipeSaveId = "markRecipe/"
 
-let recipeComponentHeaderParams = {
+local recipeComponentHeaderParams = {
   headerFont = "mediumFont"
   hasHeaderPadding = true
   isCentered = true
 }
 
-let defaultLocIdsList = {
+local defaultLocIdsList = {
   craftTime                 = "msgBox/assembleItem/time"
   rewardTitle               = "mainmenu/itemAssembled/title"
   headerRecipeMarkup        = "msgBox/items_will_be_spent"
@@ -36,8 +36,8 @@ let defaultLocIdsList = {
   actionButton              = null
 }
 
-let function showExchangeInventoryErrorMsg(errorId, componentItem) {
-  let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
+local function showExchangeInventoryErrorMsg(errorId, componentItem) {
+  local locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
   ::showInfoMsgBox(::loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
 }
@@ -82,7 +82,7 @@ local ExchangeRecipes = class {
     allowableComponents = params?.allowableComponents
     showRecipeAsProduct = params?.showRecipeAsProduct
 
-    let parsedRecipe = params.parsedRecipe
+    local parsedRecipe = params.parsedRecipe
     initedComponents = parsedRecipe.components
     reqItems = parsedRecipe.reqItems
     sortReqQuantityComponents = initedComponents.filter(isVisibleComponent.bindenv(this))
@@ -91,7 +91,7 @@ local ExchangeRecipes = class {
         .map(@(component) component.quantity).reduce(@(res, value) res + value, 0)
     requirement = parsedRecipe.requirement
 
-    let recipeStr = (requirement != null || reqItems.len() > 0) ? getRecipeStr() : parsedRecipe.recipeStr
+    local recipeStr = (requirement != null || reqItems.len() > 0) ? getRecipeStr() : parsedRecipe.recipeStr
     uid = $"{generatorId};{recipeStr}"
 
     updateComponents()
@@ -100,26 +100,26 @@ local ExchangeRecipes = class {
 
   function updateComponents()
   {
-    let componentsArray = (clone initedComponents).extend(reqItems)
-    let componentsCount = componentsArray.len()
+    local componentsArray = (clone initedComponents).extend(reqItems)
+    local componentsCount = componentsArray.len()
     isUsable = componentsCount > 0
     isMultipleItems = componentsCount > 1
 
     local extraItemsCount = 0
     components = []
     visibleComponents = []
-    let componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
-    let items = ::ItemsManager.getInventoryList(itemType.ALL,
+    local componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
+    local items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) ::isInArray(item.id, componentItemdefArray))
     hasChestInComponents = ::u.search(items, @(i) i.iType == itemType.CHEST) != null
     foreach (component in componentsArray)
     {
-      let curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
+      local curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
         @(res, item) res + item.amount, 0)
-      let reqQuantity = component.quantity
-      let isHave = curQuantity >= reqQuantity
+      local reqQuantity = component.quantity
+      local isHave = curQuantity >= reqQuantity
       isUsable = isUsable && isHave
-      let shopItem = ::ItemsManager.findItemById(component.itemdefid)
+      local shopItem = ::ItemsManager.findItemById(component.itemdefid)
       local cost = null
       if (shopItem?.isCanBuy() ?? false) {
         cost = shopItem.getCost()
@@ -137,7 +137,7 @@ local ExchangeRecipes = class {
         cost = cost
       })
 
-      let isVisible = isVisibleComponent(component)
+      local isVisible = isVisibleComponent(component)
       if (isVisible)
         visibleComponents.append(components.top())
 
@@ -167,7 +167,7 @@ local ExchangeRecipes = class {
 
   function getExchangeMarkup(componentItem, params)
   {
-    let list = []
+    local list = []
     foreach (component in visibleComponents)
     {
       if (component.itemdefId == componentItem.id)
@@ -184,8 +184,8 @@ local ExchangeRecipes = class {
   {
     if (params?.canOpenForGold ?? false)
       return [{ gold = getOpenCost(params?.componentToHide)?.gold ?? 0 }]
-    let res = []
-    let visibleResources = params?.visibleResources ?? allowableComponents
+    local res = []
+    local visibleResources = params?.visibleResources ?? allowableComponents
     foreach (component in components)
       if (component.itemdefId != params?.componentToHide?.id
        && (visibleResources == null || visibleResources?[component.itemdefId]))
@@ -202,14 +202,14 @@ local ExchangeRecipes = class {
       params = {}
     params = params.__merge({isLocked = isRecipeLocked()})
 
-    let list = getItemsListForPrizesView(params)
+    local list = getItemsListForPrizesView(params)
     return ::PrizesView.getPrizesListView(list, params, false)
   }
 
   function getText(params = null)
   {
-    let list = getItemsListForPrizesView(params)
-    let headerFunc = params?.header ? @(...) params.header : null
+    local list = getItemsListForPrizesView(params)
+    local headerFunc = params?.header ? @(...) params.header : null
     return ::PrizesView.getPrizesListText(list, headerFunc, false)
   }
 
@@ -240,9 +240,9 @@ local ExchangeRecipes = class {
 
   function getIconedMarkup()
   {
-    let itemsViewData = []
+    local itemsViewData = []
     if (showRecipeAsProduct != null) {
-      let item = ItemsManager.findItemById(showRecipeAsProduct.tointeger())
+      local item = ItemsManager.findItemById(showRecipeAsProduct.tointeger())
       if (item)
         itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
           count = -1
@@ -251,7 +251,7 @@ local ExchangeRecipes = class {
     } else
       foreach (component in visibleComponents)
       {
-        let item = ItemsManager.findItemById(component.itemdefId)
+        local item = ItemsManager.findItemById(component.itemdefId)
         if (item)
           itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
             count = getComponentQuantityText(component, { needColoredText = false })
@@ -259,7 +259,7 @@ local ExchangeRecipes = class {
             craftTimerText = item.getAdditionalTextInAmmount(false)
           })))
       }
-    return ::handyman.renderCached("%gui/items/item", { items = itemsViewData })
+    return ::handyman.renderCached("gui/items/item", { items = itemsViewData })
   }
 
   getVisibleMarkupComponents = @() showRecipeAsProduct != null ? 1 : visibleComponents.len()
@@ -269,7 +269,7 @@ local ExchangeRecipes = class {
     if (mark == MARK_RECIPE.NONE)
       return ""
 
-    let imgPrefix = "#ui/gameuiskin#"
+    local imgPrefix = "#ui/gameuiskin#"
     if (mark == MARK_RECIPE.USED)
       return imgPrefix + (isFake ? "icon_primary_fail.svg" : "icon_primary_ok")
 
@@ -298,18 +298,18 @@ local ExchangeRecipes = class {
 
   function getMarkDescMarkup()
   {
-    let title = getMarkText()
+    local title = getMarkText()
     if (title == "")
       return ""
 
-    let view = {
+    local view = {
       list = [{
         icon  = getMarkIcon()
         title = title
         tooltip = getMarkTooltip()
       }]
     }
-    return ::handyman.renderCached("%gui/items/trophyDesc", view)
+    return ::handyman.renderCached("gui/items/trophyDesc", view)
   }
 
   isRecipeLocked = @() mark == MARK_RECIPE.BY_USER || (mark == MARK_RECIPE.USED && isFake)
@@ -331,7 +331,7 @@ local ExchangeRecipes = class {
     components.each(function(component) {
       if (componentItem.id == component.itemdefId)
         return
-      let item = ::ItemsManager.findItemById(component.itemdefId)
+      local item = ::ItemsManager.findItemById(component.itemdefId)
       for (local i = 0; i < (component.reqQuantity - component.curQuantity); i++)
         item?._buy()
     })
@@ -349,8 +349,8 @@ local ExchangeRecipes = class {
 
   static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup)
   {
-    let showOnlyCraftTime = componentItem.showAllowableRecipesOnly()
-    let craftTimeText = getRecipesCraftTimeText(recipes)
+    local showOnlyCraftTime = componentItem.showAllowableRecipesOnly()
+    local craftTimeText = getRecipesCraftTimeText(recipes)
     if (showOnlyCraftTime) {
       if (shouldReturnMarkup)
         return ::PrizesView.getPrizesListView([], { header = craftTimeText })
@@ -358,12 +358,12 @@ local ExchangeRecipes = class {
         return ::PrizesView.getPrizesListText([], @(...) craftTimeText)
     }
 
-    let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
-    let isFullRecipesList = recipes.len() <= maxRecipes
+    local maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
+    local isFullRecipesList = recipes.len() <= maxRecipes
 
-    let isMultiRecipes = recipes.len() > 1
+    local isMultiRecipes = recipes.len() > 1
     local isMultiExtraItems = false
-    let hasFakeRecipesInList = hasFakeRecipes(recipes)
+    local hasFakeRecipesInList = hasFakeRecipes(recipes)
 
     local recipesToShow = recipes
     if (!hasFakeRecipesInList)
@@ -383,7 +383,7 @@ local ExchangeRecipes = class {
           }
     }
 
-    let needShowHeader = params?.needShowHeader ?? true
+    local needShowHeader = params?.needShowHeader ?? true
     local headerFirst = ""
     local headerNext = ""
     if (needShowHeader)
@@ -403,7 +403,7 @@ local ExchangeRecipes = class {
     params.showCurQuantities <- (params?.showCurQuantities ?? true) && componentItem.descReceipesListWithCurQuantities
     params.canOpenForGold <- componentItem.canOpenForGold()
 
-    let res = []
+    local res = []
     foreach (recipe in recipesToShow)
     {
       if (needShowHeader)
@@ -420,8 +420,8 @@ local ExchangeRecipes = class {
 
   static function getRecipesCraftTimeText(recipes)
   {
-    let minSeconds = ::max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
-    let maxSeconds = ::max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+    local minSeconds = ::max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+    local maxSeconds = ::max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
     if (minSeconds <= 0 && maxSeconds <= 0)
       return ""
 
@@ -455,8 +455,8 @@ local ExchangeRecipes = class {
       return component.reqQuantity > 1 ?
         (::nbsp + ::format(::loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
-    let locId = params?.needShowItemName ?? true ? "ui/parentheses/space" : "ui/parentheses"
-    let locText = ::loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
+    local locId = params?.needShowItemName ?? true ? "ui/parentheses/space" : "ui/parentheses"
+    local locText = ::loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
     if (params?.needColoredText ?? true)
       return ::colorize(getComponentQuantityColor(component, true), locText)
 
@@ -497,8 +497,8 @@ local ExchangeRecipes = class {
       return true
     }
 
-    let msgData = componentItem.getConfirmMessageData(recipe)
-    let msgboxParams = { cancel_fn = function() {} }
+    local msgData = componentItem.getConfirmMessageData(recipe)
+    local msgboxParams = { cancel_fn = function() {} }
 
     if (msgData?.needRecipeMarkup)
       msgboxParams.__update({
@@ -538,9 +538,9 @@ local ExchangeRecipes = class {
 
   static function showUseErrorMsg(recipes, componentItem)
   {
-    let locId = componentItem.getCantUseLocId()
-    let text = ::colorize("badTextColor", ::loc(locId))
-    let msgboxParams = {
+    local locId = componentItem.getCantUseLocId()
+    local text = ::colorize("badTextColor", ::loc(locId))
+    local msgboxParams = {
       data_below_text = getRequirementsMarkup(recipes, componentItem, {
         widthByParentParent = true
         headerParams = { hasHeaderPadding = true }
@@ -555,14 +555,14 @@ local ExchangeRecipes = class {
       foreach (c in recipes[0].components)
         if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity)
         {
-          let item = ::ItemsManager.findItemById(c.itemdefId)
+          local item = ::ItemsManager.findItemById(c.itemdefId)
           if (!item || !item.hasLink())
             continue
           requiredItem = item
           break
         }
 
-    let buttons = [ ["cancel"] ]
+    local buttons = [ ["cancel"] ]
     local defBtn = "cancel"
     if (requiredItem)
     {
@@ -578,21 +578,21 @@ local ExchangeRecipes = class {
 
   function getMaterialsListForExchange(usedUidsList)
   {
-    let res = []
+    local res = []
     components.each(function(component) {
       if (reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
         return
       local leftCount = component.reqQuantity
-      let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
+      local itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach(item in itemsList)
       {
         foreach(_uid in item.uids)
         {
-          let leftByUid = usedUidsList?[_uid] ?? item.amountByUids[_uid]
+          local leftByUid = usedUidsList?[_uid] ?? item.amountByUids[_uid]
           if (leftByUid <= 0)
             continue
 
-          let count = ::min(leftCount, leftByUid)
+          local count = ::min(leftCount, leftByUid)
           res.append([ _uid, count ])
           usedUidsList[_uid] <- leftByUid - count
           leftCount -= count
@@ -608,19 +608,19 @@ local ExchangeRecipes = class {
 
   function doExchange(componentItem, amount = 1, params = {})
   {
-    let resultItems = []
-    let usedUidsList = {}
-    let recipe = this //to not remove recipe until operation complete
+    local resultItems = []
+    local usedUidsList = {}
+    local recipe = this //to not remove recipe until operation complete
     params = params ?? {}
     params.rewardTitle <- getRewardTitleLocId(false)
     if (componentItem.canRecraftFromRewardWnd())
       params.reUseRecipeUid <- uid
 
     local leftAmount = amount
-    let errorCb = (componentItem?.shouldAutoConsume ?? true)
+    local errorCb = (componentItem?.shouldAutoConsume ?? true)
       ? null
       : @(errorId) showExchangeInventoryErrorMsg(errorId, componentItem)
-    let exchangeAction = (@(cb) inventoryClient.exchange(
+    local exchangeAction = (@(cb) inventoryClient.exchange(
       getMaterialsListForExchange(usedUidsList),
       generatorId,
       function(items) {
@@ -632,10 +632,10 @@ local ExchangeRecipes = class {
       requirement
     )).bindenv(recipe)
 
-    let exchangeActions = array(amount, exchangeAction)
+    local exchangeActions = array(amount, exchangeAction)
     exchangeActions.append(@(cb) recipe.onExchangeComplete(componentItem, resultItems, params))
 
-    let effectOnStartCraft = getEffectOnStartCraft()
+    local effectOnStartCraft = getEffectOnStartCraft()
     if (effectOnStartCraft?.showImage != null)
       startCraftWnd(effectOnStartCraft)
     if (effectOnStartCraft?.playSound != null)
@@ -650,31 +650,31 @@ local ExchangeRecipes = class {
     if (params?.cb)
       params.cb()
 
-    let resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
-    let parentGen = componentItem.getParentGen()
-    let isHasFakeRecipes = parentGen && hasFakeRecipes(parentGen.getRecipes())
-    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
+    local resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    local parentGen = componentItem.getParentGen()
+    local isHasFakeRecipes = parentGen && hasFakeRecipes(parentGen.getRecipes())
+    local parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
 
     if (resultItemsShowOpening.len() > 0) {
-      let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
-      let isUserstatRewards = userstatItemRewardData != null
-      let rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
+      local userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
+      local isUserstatRewards = userstatItemRewardData != null
+      local rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
         : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
         : (params?.rewardTitle ?? "")
-      let rewardListLocId = isUserstatRewards ? userstatItemsListLocId
+      local rewardListLocId = isUserstatRewards ? userstatItemsListLocId
         : params?.rewardListLocId ? params.rewardListLocId
         : parentRecipe ? componentItem.getItemsListLocId()
         : ""
 
-      let openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
+      local openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
         id = componentItem.id
         item = extItem?.itemdef?.itemdefid
         count = extItem?.quantity ?? 0
       })
 
-      let effectOnOpenChest = componentItem.getEffectOnOpenChest()
+      local effectOnOpenChest = componentItem.getEffectOnOpenChest()
       ::gui_start_open_trophy({ [componentItem.id] = openTrophyWndConfigs,
         rewardTitle = ::loc(rewardTitle),
         rewardListLocId = rewardListLocId
@@ -696,7 +696,7 @@ local ExchangeRecipes = class {
 
   function markRecipe(isUserMark = false, needSave = true)
   {
-    let marker = !isUserMark ? MARK_RECIPE.USED
+    local marker = !isUserMark ? MARK_RECIPE.USED
       : (isUserMark && mark == MARK_RECIPE.NONE) ? MARK_RECIPE.BY_USER
       : MARK_RECIPE.NONE
 

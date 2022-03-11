@@ -1,8 +1,8 @@
-::gui_bhv.Timer <- class
+class gui_bhv.Timer
 {
   function onTimer(obj, dt)
   {
-    let ud = obj.getUserData()
+    local ud = obj.getUserData()
     if (type(ud) == "instance" || type(ud) == "table")
       ud[obj?.timer_handler_func ?? "onTimer"](obj, dt)
   }

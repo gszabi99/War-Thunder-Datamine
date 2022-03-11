@@ -1,6 +1,6 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 
-let CouponBase = class extends ItemExternal
+local CouponBase = class extends ItemExternal
 {
   static defaultLocId = "coupon"
   static combinedNameLocId = "coupon/name"

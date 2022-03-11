@@ -1,23 +1,23 @@
-let { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
-let { findChild } = require("sqDagui/daguiUtil.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+local { findChild } = require("sqDagui/daguiUtil.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 
 ::dagui_propid.add_name_id("itemId")
 
-let branchIdPrefix = "branch_"
-let getBranchId = @(idx) "".concat(branchIdPrefix, idx)
-let posFormatString = "{0}, {1}"
+local branchIdPrefix = "branch_"
+local getBranchId = @(idx) "".concat(branchIdPrefix, idx)
+local posFormatString = "{0}, {1}"
 
-let sizeAndPosViewConfig = {
+local sizeAndPosViewConfig = {
   verticalArrow = ::kwarg(
     function verticalArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
-      let { arrowWidth, itemBlockHeight, itemBlockInterval, blockInterval,
+      local { arrowWidth, itemBlockHeight, itemBlockInterval, blockInterval,
         headerBlockInterval, itemHeight, itemsOffsetByBodies, paramsPosColumnsByBodies,
         itemInterval } = itemSizes
-      let h = (::abs(arrowSizeY) - 1)*(itemBlockHeight)
+      local h = (::abs(arrowSizeY) - 1)*(itemBlockHeight)
         + itemBlockInterval - 2*blockInterval
-      let isInUpArrow = arrowSizeY < 0
-      let posY = isInUpArrow ? arrowPosY + arrowSizeY : arrowPosY
+      local isInUpArrow = arrowSizeY < 0
+      local posY = isInUpArrow ? arrowPosY + arrowSizeY : arrowPosY
       return {
         arrowsParts = [{
           partTag = "shopArrow"
@@ -35,15 +35,15 @@ let sizeAndPosViewConfig = {
   })
   horizontalArrow = ::kwarg(
     function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
-      let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
+      local { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight } = itemSizes
-      let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
-      let cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
+      local columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
+      local cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
         - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
-      let w = cloumnsWidth - itemHeight - 2*blockInterval
-      let h = arrowWidth
-      let isInLeftArrow = arrowSizeX < 0
-      let posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
+      local w = cloumnsWidth - itemHeight - 2*blockInterval
+      local h = arrowWidth
+      local isInLeftArrow = arrowSizeX < 0
+      local posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
       return {
         arrowsParts = [{
           partTag = "shopArrow"
@@ -60,26 +60,26 @@ let sizeAndPosViewConfig = {
   })
   combineArrow = ::kwarg(
     function combineArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY, isInMultipleArrow, isOutMultipleArrow) {
-      let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
+      local { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight, itemBlockInterval } = itemSizes
-      let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
-      let isInLeftArrow = arrowSizeX < 0
-      let offsetIn = isInMultipleArrow ? 0.2 : 0
-      let arrowOffsetIn = isInLeftArrow ? offsetIn : -offsetIn
-      let offsetOut = isOutMultipleArrow ? 0.2 : 0
-      let arrowOffsetOut = isInLeftArrow ? -offsetOut : offsetOut
-      let posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
-      let cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
+      local columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
+      local isInLeftArrow = arrowSizeX < 0
+      local offsetIn = isInMultipleArrow ? 0.2 : 0
+      local arrowOffsetIn = isInLeftArrow ? offsetIn : -offsetIn
+      local offsetOut = isOutMultipleArrow ? 0.2 : 0
+      local arrowOffsetOut = isInLeftArrow ? -offsetOut : offsetOut
+      local posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
+      local cloumnsWidth = ::abs(columnConfig[arrowPosX -1].columnPos
         - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
 
-      let beginLineHeight = 0.5*((::abs(arrowSizeY) - 1) * itemBlockHeight
+      local beginLineHeight = 0.5*((::abs(arrowSizeY) - 1) * itemBlockHeight
         + itemBlockInterval - 2*blockInterval)
-      let absoluteArrowPosX = itemInterval
+      local absoluteArrowPosX = itemInterval
         + columnConfig[arrowPosX + arrowSizeX - 1].columnPos
         + 0.5*itemHeight - 0.5*arrowWidth + arrowOffsetIn*itemHeight
-      let absoluteArrowPosY = itemsOffsetByBodies[bodyIdx]
+      local absoluteArrowPosY = itemsOffsetByBodies[bodyIdx]
         + arrowPosY * itemBlockHeight - beginLineHeight + headerBlockInterval - blockInterval
-      let absoluteBeginLinePosY = itemsOffsetByBodies[bodyIdx]
+      local absoluteBeginLinePosY = itemsOffsetByBodies[bodyIdx]
         + (arrowPosY - 1)*(itemBlockHeight) + itemHeight + headerBlockInterval + blockInterval
 
       return {
@@ -126,9 +126,9 @@ let sizeAndPosViewConfig = {
       }
   })
   conectionInRow = ::kwarg(function conectionInRow(itemSizes, bodyIdx, itemPosX, itemPosY) {
-    let { itemInterval, itemBlockHeight, headerBlockInterval,
+    local { itemInterval, itemBlockHeight, headerBlockInterval,
       itemsOffsetByBodies, itemHeight } = itemSizes
-    let { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
+    local { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
     return {
       conectionWidth = itemInterval
       conectionPos = posFormatString.subst(columnPos,
@@ -137,18 +137,18 @@ let sizeAndPosViewConfig = {
     }
   })
   itemPos = ::kwarg(function itemPos(itemSizes, bodyIdx, itemPosX, itemPosY) {
-    let { itemInterval, itemBlockHeight, headerBlockInterval,
+    local { itemInterval, itemBlockHeight, headerBlockInterval,
       itemsOffsetByBodies } = itemSizes
-    let { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
+    local { columnPos } = itemSizes.paramsPosColumnsByBodies[bodyIdx][itemPosX]
     return posFormatString.subst(
       itemInterval + columnPos,
       itemsOffsetByBodies[bodyIdx] + itemPosY * itemBlockHeight + headerBlockInterval)
   })
   textBlock = ::kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, endPosY, sizeX, sizeY, texts) {
-    let { itemInterval, itemBlockHeight, itemBlockInterval,
+    local { itemInterval, itemBlockHeight, itemBlockInterval,
       headerBlockInterval, itemsOffsetByBodies, textInTextBlockSize, maxBodyWidth } = itemSizes
-    let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
-    let cloumnsWidth = (columnConfig?[endPosX+1].columnPos ?? maxBodyWidth)
+    local columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
+    local cloumnsWidth = (columnConfig?[endPosX+1].columnPos ?? maxBodyWidth)
       - columnConfig[posX].columnPos
     return {
       textBlockSize = posFormatString.subst(cloumnsWidth - 2*itemInterval, sizeY * itemBlockHeight - itemBlockInterval)
@@ -162,21 +162,21 @@ let sizeAndPosViewConfig = {
   })
 }
 
-let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
+local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
 {
-  let item = itemsList?[itemBlock?.id]
-  let hasComponent = itemBlock?.showResources
-  let itemId = item?.id ?? "-1"
-  let hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
-  let isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
-  let needReqItemForCraft = workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)
-  let altActionName = item?.getAltActionName() ?? ""
-  let hasMainAction = isCraftingOrHasCraftResult
+  local item = itemsList?[itemBlock?.id]
+  local hasComponent = itemBlock?.showResources
+  local itemId = item?.id ?? "-1"
+  local hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
+  local isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
+  local needReqItemForCraft = workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)
+  local altActionName = item?.getAltActionName() ?? ""
+  local hasMainAction = isCraftingOrHasCraftResult
     || (!needReqItemForCraft && !workshopSet.needReqItems(itemBlock, itemsList))
-  let hasAltAction = !isCraftingOrHasCraftResult && hasReachedMaxAmount && altActionName != ""
-  let isDisabledAction = !hasMainAction && !hasAltAction
-  let isDisguised = workshopSet.isDisquised(itemBlock, itemsList)
-  let hasItemInInventory = (item?.getAmount() ?? 0) != 0 || isCraftingOrHasCraftResult
+  local hasAltAction = !isCraftingOrHasCraftResult && hasReachedMaxAmount && altActionName != ""
+  local isDisabledAction = !hasMainAction && !hasAltAction
+  local isDisguised = workshopSet.isDisquised(itemBlock, itemsList)
+  local hasItemInInventory = (item?.getAmount() ?? 0) != 0 || isCraftingOrHasCraftResult
   return {
     item = item
     hasComponent = hasComponent
@@ -201,11 +201,11 @@ let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
   }
 }
 
-let getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipleArrow, isOutMultipleArrow) {
-  let arrowType = arrow.sizeX != 0 && arrow.sizeY != 0 ? "combineArrow"
+local getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipleArrow, isOutMultipleArrow) {
+  local arrowType = arrow.sizeX != 0 && arrow.sizeY != 0 ? "combineArrow"
     : arrow.sizeX == 0 ? "verticalArrow"
     : "horizontalArrow"
-  let arrowParam = {
+  local arrowParam = {
     itemSizes = itemSizes
     bodyIdx = arrow.bodyIdx
     arrowSizeX = arrow.sizeX
@@ -218,7 +218,7 @@ let getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipleA
   return sizeAndPosViewConfig[arrowType](arrowParam)
 })
 
-let viewItemsParams = {
+local viewItemsParams = {
   showAction = false,
   overrideMainActionData = null,
   showButtonInactiveIfNeed = true,
@@ -229,7 +229,7 @@ let viewItemsParams = {
   count = -1
 }
 
-let getItemBlockView = ::kwarg(
+local getItemBlockView = ::kwarg(
   function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources) {
     local item = itemConfig.item
     if (item == null)
@@ -240,8 +240,8 @@ let getItemBlockView = ::kwarg(
       item.setDisguise(true)
     }
 
-    let overridePos = itemBlock?.overridePos
-    let count = itemConfig.iconInsteadAmount
+    local overridePos = itemBlock?.overridePos
+    local count = itemConfig.iconInsteadAmount
       ?? (item.maxAmount == 1 ? item.getAdditionalTextInAmmount(true, true) : null)
     return {
       isDisabled = itemConfig.isDisabled
@@ -277,11 +277,11 @@ let getItemBlockView = ::kwarg(
     }
 })
 
-let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources, workshopSet) {
-  let shopArrows = []
-  let conectionsInRow = []
-  let itemBlocksArr = []
-  let lastFilled = {}
+local function getRowsElementsView(rows, itemSizes, itemsList, allowableResources, workshopSet) {
+  local shopArrows = []
+  local conectionsInRow = []
+  local itemBlocksArr = []
+  local lastFilled = {}
   foreach (row in rows)
   {
     local hasPrevItemInRow = false
@@ -291,16 +291,16 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
         continue
       foreach (idx, itemBlock in items)
       {
-        let itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
+        local itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
         if (itemConfig.isHidden)
           continue
 
-        let curColumnIdx = itemConfig.posXY.x.tointeger() - 1
+        local curColumnIdx = itemConfig.posXY.x.tointeger() - 1
         lastFilled[curColumnIdx] <- (lastFilled?[curColumnIdx] ?? 0)+1
         if(itemBlock?.shouldRemoveBlankRows ?? false)
           itemConfig.posXY.y = lastFilled[curColumnIdx]
 
-        let itemBlockView = getItemBlockView({
+        local itemBlockView = getItemBlockView({
           itemBlock = itemBlock,
           itemSizes = itemSizes,
           allowableResources = allowableResources,
@@ -309,8 +309,8 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
         if (itemBlockView != null)
           itemBlocksArr.append(itemBlockView)
 
-        let arrows = itemBlock?.arrows.filter(@(a) !itemsList?[a.reqItemId].isHiddenItem()) ?? []
-        let isInMultipleArrow = arrows.len() > 1
+        local arrows = itemBlock?.arrows.filter(@(a) !itemsList?[a.reqItemId].isHiddenItem()) ?? []
+        local isInMultipleArrow = arrows.len() > 1
         foreach (arrow in arrows)
           shopArrows.append({ isDisabled = itemConfig.isDisabled }.__update(
             getArrowView({
@@ -321,11 +321,11 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
             })
           ))
 
-        let hasCurItem = itemConfig.item != null
+        local hasCurItem = itemConfig.item != null
         if (hasPrevItemInRow && hasCurItem)
         {
-          let itemPosX = itemConfig.posXY.x - 1
-          let curBranchIdx = itemSizes.paramsPosColumnsByBodies[itemBlock.bodyIdx][itemPosX].columnBranchsCount
+          local itemPosX = itemConfig.posXY.x - 1
+          local curBranchIdx = itemSizes.paramsPosColumnsByBodies[itemBlock.bodyIdx][itemPosX].columnBranchsCount
           if (prevBranchIdx == curBranchIdx)
             conectionsInRow.append({ conectionInRowText = itemBlock.conectionInRowText }.__update(
               sizeAndPosViewConfig.conectionInRow({
@@ -348,7 +348,7 @@ let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources,
   }
 }
 
-let sizePrefixNames = {
+local sizePrefixNames = {
   normal = {
     name = ""
     itemPrefix = "i"
@@ -369,7 +369,7 @@ let sizePrefixNames = {
   }
 }
 
-let function getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix) {
+local function getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix) {
   return craftTreeWidthStringByBodies
     .map(@(v, idx) {
       maxBodyWidth = ::to_pixels(v.subst(prefix)),
@@ -378,22 +378,22 @@ let function getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix) {
     ?? { maxBodyWidth = null, maxBodyIdx = -1 }
 }
 
-let function getHeaderView (headerItems, localItemsList, baseEff)
+local function getHeaderView (headerItems, localItemsList, baseEff)
 {
-  let getItemEff = function(item)
+  local getItemEff = function(item)
   {
     return item?.getAmount() ? item.getBoostEfficiency() ?? 0 : 0
   }
-  let items = []
+  local items = []
   local totalEff = baseEff
-  let itemsEff = [baseEff]
+  local itemsEff = [baseEff]
   foreach(id in headerItems)
   {
-    let item = localItemsList?[id]
+    local item = localItemsList?[id]
     if(!item)
       continue
-    let eff = getItemEff(item)
-    let hasMaxAmountIcon = item.hasReachedMaxAmount()
+    local eff = getItemEff(item)
+    local hasMaxAmountIcon = item.hasReachedMaxAmount()
     items.append(item.getViewData(viewItemsParams.__merge({
       hasBoostEfficiency = true
       count = hasMaxAmountIcon
@@ -414,21 +414,21 @@ let function getHeaderView (headerItems, localItemsList, baseEff)
   }
 }
 
-let function getBranchSeparator(branch, itemSizes, branchHeight) {
-  let posX = branch.minPosX -1
+local function getBranchSeparator(branch, itemSizes, branchHeight) {
+  local posX = branch.minPosX -1
   if (posX == 0)
     return null
 
-  let rowOffset = itemSizes.itemsOffsetByBodies[branch.bodyIdx]
-  let { columnPos } =  itemSizes.paramsPosColumnsByBodies[branch.bodyIdx][posX]
+  local rowOffset = itemSizes.itemsOffsetByBodies[branch.bodyIdx]
+  local { columnPos } =  itemSizes.paramsPosColumnsByBodies[branch.bodyIdx][posX]
   return {
     separatorPos = posFormatString.subst(columnPos, $"3@dp + {rowOffset}")
     separatorSize = posFormatString.subst("1@dp", "{0} - 6@dp".subst(branchHeight))
   }
 }
 
-let function getBodyItemsTitles(titlesConfig, itemSizes) {
-  let titlesView = []
+local function getBodyItemsTitles(titlesConfig, itemSizes) {
+  local titlesView = []
   foreach (body in titlesConfig)
     if (body.title != "" && itemSizes.visibleItemsCountYByBodies[body.bodyIdx] > 0)
       titlesView.append({
@@ -440,10 +440,10 @@ let function getBodyItemsTitles(titlesConfig, itemSizes) {
   return titlesView
 }
 
-let getTextBlocksView = @(textBlocks, itemSizes)  textBlocks.map(
+local getTextBlocksView = @(textBlocks, itemSizes)  textBlocks.map(
   @(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
 
-let bodyButtonsConfig = {
+local bodyButtonsConfig = {
   marketplace = {
     id = "marketplace"
     text = "#mainmenu/marketplace"
@@ -454,34 +454,34 @@ let bodyButtonsConfig = {
     isHidden = @() !isMarketplaceEnabled()
   }
 }
-let buttonViewParams = {
+local buttonViewParams = {
   shortcut = ""
   btnName = "A"
   showOnSelect = "hover"
   actionParamsMarkup = ""
 }
-let function getButtonView(bodyConfig, itemSizes) {
-  let button = bodyConfig.button
+local function getButtonView(bodyConfig, itemSizes) {
+  local button = bodyConfig.button
   if (button == null)
     return null
 
-  let buttonConfig = bodyButtonsConfig?[button?.type ?? ""]
+  local buttonConfig = bodyButtonsConfig?[button?.type ?? ""]
   if (buttonConfig?.isHidden() ?? true)
     return null
 
-  let buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
-  let posY = itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
+  local buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
+  local posY = itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
     + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
     + itemSizes.headerBlockInterval
   buttonView.actionParamsMarkup = $"pos:t='0.5pw - 0.5w, {posY}'; position:t='absolute'; noMargin:t='yes'"
   return buttonView
 }
 
-let function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
-  let backgroundView = []
+local function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
+  local backgroundView = []
   foreach (body in bodiesConfig)
     if (body.bodyTiledBackImage != "") {
-      let posY = itemSizes.itemsOffsetByBodies[body.bodyIdx]
+      local posY = itemSizes.itemsOffsetByBodies[body.bodyIdx]
       backgroundView.append({
         bodyBackground = body.bodyTiledBackImage
         bodyBackgroundPos = posFormatString.subst(0, posY)
@@ -495,7 +495,7 @@ let function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType          = handlerType.MODAL
-  sceneTplName     = "%gui/items/craftTreeWnd"
+  sceneTplName     = "gui/items/craftTreeWnd"
   branches         = null
   workshopSet      = null
   craftTree        = null
@@ -537,10 +537,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function getItemSizes() {
-    let bodiesConfig = craftTree.bodiesConfig
-    let resourceWidth = ::to_pixels("1@craftTreeResourceWidth")
-    let maxAllowedCrafTreeWidth = ::to_pixels("1@maxWindowWidth - 2@frameHeaderPad + 1@scrollBarSize")
-    let craftTreeWidthStringByBodies = bodiesConfig.map(@(bodyConfig)
+    local bodiesConfig = craftTree.bodiesConfig
+    local resourceWidth = ::to_pixels("1@craftTreeResourceWidth")
+    local maxAllowedCrafTreeWidth = ::to_pixels("1@maxWindowWidth - 2@frameHeaderPad + 1@scrollBarSize")
+    local craftTreeWidthStringByBodies = bodiesConfig.map(@(bodyConfig)
       "".concat(
         "{itemsCountX}(1@{itemPrefix}temHeight + 1@{intervalPrefix}raftTreeItemInterval) + ".subst(bodyConfig),
         "({branchesCount}+1)@{intervalPrefix}raftTreeItemInterval + {allColumnResourceWidth}".subst({
@@ -549,34 +549,34 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         })
       )
     )
-    let sizes = sizePrefixNames.findvalue(@(prefix)
+    local sizes = sizePrefixNames.findvalue(@(prefix)
       getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix).maxBodyWidth <= maxAllowedCrafTreeWidth
     ) ?? sizePrefixNames.small
-    let itemInterval = ::to_pixels("1@{0}raftTreeItemInterval)".subst(sizes.intervalPrefix))
+    local itemInterval = ::to_pixels("1@{0}raftTreeItemInterval)".subst(sizes.intervalPrefix))
     local curBodiesOffset = 0
-    let itemsOffsetByBodies = []
-    let bodiesOffset = []
-    let visibleItemsCountYByBodies = []
-    let isShowHeaderPlace = craftTree.isShowHeaderPlace
-    let titleHeight = ::to_pixels("1@buttonHeight")
-    let itemHeight = ::to_pixels("1@{0}temHeight".subst(sizes.itemPrefix))
-    let itemBlockInterval = ::to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
-    let itemBlockHeight = itemHeight + itemBlockInterval
-    let headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
-    let buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
-    let titleMargin = ::to_pixels("1@dp")
+    local itemsOffsetByBodies = []
+    local bodiesOffset = []
+    local visibleItemsCountYByBodies = []
+    local isShowHeaderPlace = craftTree.isShowHeaderPlace
+    local titleHeight = ::to_pixels("1@buttonHeight")
+    local itemHeight = ::to_pixels("1@{0}temHeight".subst(sizes.itemPrefix))
+    local itemBlockInterval = ::to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
+    local itemBlockHeight = itemHeight + itemBlockInterval
+    local headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
+    local buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
+    local titleMargin = ::to_pixels("1@dp")
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       local visibleItemsCountY = null
-      let lastFilled = {}
+      local lastFilled = {}
       for (local i = rows.len() - 1; i >= 0; i--) {
         foreach (row in rows[i]) {
-          let findVisibleItemInColumn = {}
+          local findVisibleItemInColumn = {}
           foreach (itemBlock in (row ?? [])) {
-            let { id = "", shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
-            let item = itemsList?[id]
-            let hasItemInInventory = item != null
+            local { id = "", shouldRemoveBlankRows = false, posXY = ::Point2(0, 0) } = itemBlock
+            local item = itemsList?[id]
+            local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
-            let hasVisibleItem = !item?.isHiddenItem()
+            local hasVisibleItem = !item?.isHiddenItem()
               && (hasItemInInventory || !workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
             if (!hasVisibleItem) {
               if (shouldRemoveBlankRows)
@@ -602,7 +602,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         if (visibleItemsCountY != null)
           break
       }
-      let textBlocks = bodiesConfig[idx].textBlocks
+      local textBlocks = bodiesConfig[idx].textBlocks
       textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
       visibleItemsCountY = ::max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
@@ -611,7 +611,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
             + (!(bodyButtonsConfig?[bodiesConfig[idx-1].button?.type].isHidden() ?? true) ? buttonHeight : 0)
           )
-      let curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
+      local curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
       itemsOffsetByBodies.append(curBodiesOffset
         + ((isShowHeaderPlace || visibleItemsCountY == 0)
           ? 0
@@ -621,28 +621,28 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       visibleItemsCountYByBodies.append(visibleItemsCountY)
     }
 
-    let { maxBodyWidth, maxBodyIdx } = getMaxBodyWidthConfig(craftTreeWidthStringByBodies, sizes)
-    let maxBodyConfig = bodiesConfig[maxBodyIdx]
-    let maxBranchesCount = maxBodyConfig.branchesCount
-    let maxTreeColumnsCount = maxBodyConfig.treeColumnsCount
-    let maxAvailableBranchByColumns = maxBodyConfig.availableBranchByColumns
-    let paramsPosColumnsByBodies = bodiesConfig.map(function(bodyConfig) {
+    local { maxBodyWidth, maxBodyIdx } = getMaxBodyWidthConfig(craftTreeWidthStringByBodies, sizes)
+    local maxBodyConfig = bodiesConfig[maxBodyIdx]
+    local maxBranchesCount = maxBodyConfig.branchesCount
+    local maxTreeColumnsCount = maxBodyConfig.treeColumnsCount
+    local maxAvailableBranchByColumns = maxBodyConfig.availableBranchByColumns
+    local paramsPosColumnsByBodies = bodiesConfig.map(function(bodyConfig) {
       local { treeColumnsCount, availableBranchByColumns, branchesCount,
         columnWithResourcesCount, resourcesInColumn } = bodyConfig
-      let hasMaxTreeColumnsCount = treeColumnsCount == maxTreeColumnsCount
+      local hasMaxTreeColumnsCount = treeColumnsCount == maxTreeColumnsCount
       if (hasMaxTreeColumnsCount) {
         branchesCount = maxBranchesCount
         availableBranchByColumns = maxAvailableBranchByColumns
       }
-      let columnWidth =
+      local columnWidth =
         (maxBodyWidth - branchesCount * itemInterval - columnWithResourcesCount * resourceWidth)/(treeColumnsCount || 1)
-      let res = []
+      local res = []
       local columnBranchsCount = 0
       local columnsWidth = 0
       for(local i = 0; i < treeColumnsCount; i++) {
         columnBranchsCount += availableBranchByColumns?[i] != null && i > 0 ? 1 : 0
-        let isLastIdx = i == treeColumnsCount - 1
-        let curColumnWidth = columnWidth
+        local isLastIdx = i == treeColumnsCount - 1
+        local curColumnWidth = columnWidth
           + ((isLastIdx || availableBranchByColumns?[i+1] != null) ? itemInterval : 0)
           + (resourcesInColumn?[i] ?? 0) * resourceWidth
         res.append({
@@ -680,16 +680,16 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!craftTree.isShowHeaderPlace)
       return null
 
-    let lastBranchIdx = branches.len() - 1
-    let baseEff = craftTree.baseEfficiency
-    let headerItemsTitle = craftTree?.headerItemsTitle ? ::loc(craftTree.headerItemsTitle) : null
-    let bodyTitle = craftTree.bodiesConfig[0].title
-    let bodyItemsTitle = bodyTitle != "" ? ::loc(bodyTitle) : null
-    let headersView = branches.map((function(branch, idx) {
-      let posX = branch.minPosX -1
-      let paramsPosColumns = itemSizes.paramsPosColumnsByBodies[branch.bodyIdx]
-      let { columnPos } = paramsPosColumns[posX]
-      let nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? itemSizes.maxBodyWidth
+    local lastBranchIdx = branches.len() - 1
+    local baseEff = craftTree.baseEfficiency
+    local headerItemsTitle = craftTree?.headerItemsTitle ? ::loc(craftTree.headerItemsTitle) : null
+    local bodyTitle = craftTree.bodiesConfig[0].title
+    local bodyItemsTitle = bodyTitle != "" ? ::loc(bodyTitle) : null
+    local headersView = branches.map((function(branch, idx) {
+      local posX = branch.minPosX -1
+      local paramsPosColumns = itemSizes.paramsPosColumnsByBodies[branch.bodyIdx]
+      local { columnPos } = paramsPosColumns[posX]
+      local nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? itemSizes.maxBodyWidth
       return {
         branchHeader = branch?.locId != null ? ::loc(branch.locId) : null
         headerItemsTitle = idx == lastBranchIdx ? headerItemsTitle : ""
@@ -703,8 +703,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       }
     }).bindenv(this))
 
-    let totalWidth = headersView.map(@(branch) branch.branchWidth).reduce(@(res, value) res + value)
-    let positionsTitleXLastBranch = "{widthLastBranch} - 0.5*{totalWidth} - 0.5w".subst({
+    local totalWidth = headersView.map(@(branch) branch.branchWidth).reduce(@(res, value) res + value)
+    local positionsTitleXLastBranch = "{widthLastBranch} - 0.5*{totalWidth} - 0.5w".subst({
       totalWidth = totalWidth
       widthLastBranch = headersView[lastBranchIdx].branchWidth
     })
@@ -714,42 +714,42 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getBodyView()
   {
-    let { resourceWidth, itemBlockHeight, visibleItemsCountYByBodies,
+    local { resourceWidth, itemBlockHeight, visibleItemsCountYByBodies,
       headerBlockInterval, itemsOffsetByBodies, itemBlockInterval, titleMargin,
       bodiesOffset, titleHeight, maxBodyWidth, itemHeightFull, paramsPosColumnsByBodies } = itemSizes
-    let itemBlocksArr = []
-    let shopArrows = []
-    let conectionsInRow = []
-    let textBlocks = []
-    let buttons = []
-    let bodiesConfig = craftTree.bodiesConfig
+    local itemBlocksArr = []
+    local shopArrows = []
+    local conectionsInRow = []
+    local textBlocks = []
+    local buttons = []
+    local bodiesConfig = craftTree.bodiesConfig
     foreach (idx, rows in craftTree.treeRowsByBodies) {
-      let connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
+      local connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
         bodiesConfig[idx].allowableResources, workshopSet)
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
       textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes))
-      let buttonView = getButtonView(bodiesConfig[idx], itemSizes)
+      local buttonView = getButtonView(bodiesConfig[idx], itemSizes)
       if (buttonView != null)
         buttons.append(buttonView)
     }
 
-    let separators = []
-    let isShowHeaderPlace = craftTree.isShowHeaderPlace
-    let bodyTitles = isShowHeaderPlace ? [] : getBodyItemsTitles(bodiesConfig, itemSizes)
+    local separators = []
+    local isShowHeaderPlace = craftTree.isShowHeaderPlace
+    local bodyTitles = isShowHeaderPlace ? [] : getBodyItemsTitles(bodiesConfig, itemSizes)
     foreach (idx, branch in branches) {
-      let bodyConfig = bodiesConfig[branch.bodyIdx]
-      let itemsCountY = visibleItemsCountYByBodies[branch.bodyIdx]
+      local bodyConfig = bodiesConfig[branch.bodyIdx]
+      local itemsCountY = visibleItemsCountYByBodies[branch.bodyIdx]
       if (itemsCountY == 0)
         continue
       separators.append(getBranchSeparator(branch, itemSizes,
         itemsCountY * itemBlockHeight + headerBlockInterval))
       if (!isShowHeaderPlace && branch?.locId != null) {
-        let posX = branch.minPosX -1
-        let paramsPosColumns = paramsPosColumnsByBodies[branch.bodyIdx]
-        let { columnPos } = paramsPosColumns[posX]
-        let nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? maxBodyWidth
+        local posX = branch.minPosX -1
+        local paramsPosColumns = paramsPosColumnsByBodies[branch.bodyIdx]
+        local { columnPos } = paramsPosColumns[posX]
+        local nextBranchPos = paramsPosColumns?[posX + branch.itemsCountX].columnPos ?? maxBodyWidth
         bodyTitles.append({
           bodyTitleText = ::loc(branch.locId)
           titlePos = posFormatString.subst(columnPos,
@@ -761,13 +761,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    let fullBodyHeightWithoutResult = itemsOffsetByBodies.top()
+    local fullBodyHeightWithoutResult = itemsOffsetByBodies.top()
       + headerBlockInterval + visibleItemsCountYByBodies.top() * itemBlockHeight
-    let craftResult = craftTree?.craftResult
-    let hasCraftResult = craftResult != null
+    local craftResult = craftTree?.craftResult
+    local hasCraftResult = craftResult != null
     if (hasCraftResult)
     {
-      let itemBlock = craftResult.__merge({
+      local itemBlock = craftResult.__merge({
         showResources = true
         isFullSize = true
         overridePos = posFormatString.subst(0.5*maxBodyWidth - 0.5*(itemHeightFull + resourceWidth),
@@ -810,37 +810,37 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemAction(buttonObj)
   {
-    let id = buttonObj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
-    let itemObj = findItemObj(id)
+    local id = buttonObj?.holderId ?? "-1"
+    local item = itemsList?[id.tointeger()]
+    local itemObj = findItemObj(id)
     doMainAction(item, itemObj)
   }
 
   function onAltItemAction(buttonObj)
   {
-    let id = buttonObj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
-    let itemObj = findItemObj(id)
+    local id = buttonObj?.holderId ?? "-1"
+    local item = itemsList?[id.tointeger()]
+    local itemObj = findItemObj(id)
     doAltAction(item, itemObj)
   }
 
   function onItemHover(obj) {
-    let id = obj?.holderId ?? "-1"
-    let item = itemsList?[id.tointeger()]
+    local id = obj?.holderId ?? "-1"
+    local item = itemsList?[id.tointeger()]
     setFocusItem(item)
   }
 
   function onMainAction()
   {
-    let curItemParam = getCurItemParam()
-    let button = curItemParam.button
+    local curItemParam = getCurItemParam()
+    local button = curItemParam.button
     if (button?.onClick != null) {
       this[button.onClick]()
       return
     }
 
-    let item = curItemParam.item
-    let itemObj = curItemParam.obj
+    local item = curItemParam.item
+    local itemObj = curItemParam.obj
     if (item == null)
       return
 
@@ -865,14 +865,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function accentAssembleBtn()
   {
-    let item = tutorialItem
-    let {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
+    local item = tutorialItem
+    local {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
     itemsListObj.setValue(childIdx)
 
-    let actionBtnObj = childObj.findObject("actionBtn")
+    local actionBtnObj = childObj.findObject("actionBtn")
     actionBtnObj.scrollToView()
 
-    let steps = [{
+    local steps = [{
       obj = [actionBtnObj]
       text = ::loc("workshop/tutorial/pressButton", {
         button_name = item.getAssembleText()
@@ -886,14 +886,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function accentCraftTime()
   {
-    let item = tutorialItem
-    let {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
+    local item = tutorialItem
+    local {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
     itemsListObj.setValue(childIdx)
 
-    let timeObj = childObj.findObject("timePlace")
+    local timeObj = childObj.findObject("timePlace")
     timeObj.scrollToView()
 
-    let steps = [{
+    local steps = [{
       obj = [timeObj]
       text = ::loc("workshop/tutorial/wait")
       actionType = tutorAction.ANY_CLICK
@@ -916,7 +916,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurItemParam()
   {
-    let value = ::get_obj_valid_index(itemsListObj)
+    local value = ::get_obj_valid_index(itemsListObj)
     if (value < 0)
       return {
         obj = null
@@ -924,7 +924,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         button = null
       }
 
-    let itemObj = itemsListObj.getChild(value)
+    local itemObj = itemsListObj.getChild(value)
     return {
       obj = itemObj
       item = itemsList?[(itemObj?.itemId ?? "-1").tointeger()]
@@ -939,7 +939,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       if (!item.hasTimer())
         continue
 
-      let itemObj = findItemObj(item.id)
+      local itemObj = findItemObj(item.id)
       if (!::check_obj(itemObj))
         continue
       local timeTxtObj = itemObj.findObject("expire_time")
@@ -953,7 +953,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCraftTree()
   {
-    let curItemParam = getCurItemParam()
+    local curItemParam = getCurItemParam()
 
     craftTree = workshopSet.getCraftTree() ?? craftTree
     branches = craftTree.branches
@@ -965,12 +965,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       itemsSize = itemSizes.name
       headersView = getHeadersView()
     }
-    local data = ::handyman.renderCached("%gui/items/craftTreeHeader", view)
+    local data = ::handyman.renderCached("gui/items/craftTreeHeader", view)
     guiScene.replaceContentFromText(scene.findObject("craft_header"), data, data.len(), this)
 
     view = getBodyView()
     itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
-    data = ::handyman.renderCached("%gui/items/craftTreeBody", view)
+    data = ::handyman.renderCached("gui/items/craftTreeBody", view)
     guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     if (tutorialItem?.isCrafting() && tutorialItem.getCraftTimeLeft() > 0)
     {
@@ -984,11 +984,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function setFocusItem(curItem = null)
   {
-    let curItemId = curItem?.id.tostring() ?? ""
+    local curItemId = curItem?.id.tostring() ?? ""
     local enabledValue = null
     for(local i = 0; i < itemsListObj.childrenCount(); i++)
     {
-      let childObj = itemsListObj.getChild(i)
+      local childObj = itemsListObj.getChild(i)
       if (enabledValue == null && childObj.isEnabled())
         enabledValue = i
       if (childObj?.itemId != curItemId)
@@ -997,7 +997,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       itemsListObj.setValue(i)
       return
     }
-    let curIdx = ::get_obj_valid_index(itemsListObj)
+    local curIdx = ::get_obj_valid_index(itemsListObj)
     if (curIdx >= 0 && itemsListObj.getChild(curIdx).isEnabled())
       itemsListObj.setValue(curIdx)
     else if (enabledValue != null)

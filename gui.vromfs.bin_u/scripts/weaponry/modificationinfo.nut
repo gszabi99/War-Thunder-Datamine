@@ -1,51 +1,51 @@
-let { AMMO,
+local { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
 
-let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
+local isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !::shop_is_modification_purchased(unit.name, req)) == null
 
-let function canBuyMod(unit, mod)
+local function canBuyMod(unit, mod)
 {
   if (!isReqModificationsUnlocked(unit, mod))
     return false
 
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
+  local status = ::shop_get_module_research_status(unit.name, mod.name)
   if (status & ::ES_ITEM_STATUS_CAN_BUY)
     return true
 
   if (status & (::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_OWNED))
   {
-    let amount = getAmmoAmount(unit, mod.name, AMMO.MODIFICATION)
-    let maxAmount = getAmmoMaxAmount(unit, mod.name, AMMO.MODIFICATION)
+    local amount = getAmmoAmount(unit, mod.name, AMMO.MODIFICATION)
+    local maxAmount = getAmmoMaxAmount(unit, mod.name, AMMO.MODIFICATION)
     return amount < maxAmount
   }
 
   return false
 }
 
-let function isModResearched(unit, mod)
+local function isModResearched(unit, mod)
 {
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
+  local status = ::shop_get_module_research_status(unit.name, mod.name)
   if (status & (::ES_ITEM_STATUS_CAN_BUY | ::ES_ITEM_STATUS_OWNED | ::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_RESEARCHED))
     return true
 
   return false
 }
 
-let isModClassPremium = @(moduleData) (moduleData?.modClass ?? "") == "premium"
-let isModClassExpendable = @(moduleData) (moduleData?.modClass ?? "") == "expendable"
+local isModClassPremium = @(moduleData) (moduleData?.modClass ?? "") == "premium"
+local isModClassExpendable = @(moduleData) (moduleData?.modClass ?? "") == "expendable"
 
-let function canResearchMod(unit, mod, checkCurrent = false)
+local function canResearchMod(unit, mod, checkCurrent = false)
 {
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
-  let canResearch = checkCurrent ? status == ::ES_ITEM_STATUS_CAN_RESEARCH :
+  local status = ::shop_get_module_research_status(unit.name, mod.name)
+  local canResearch = checkCurrent ? status == ::ES_ITEM_STATUS_CAN_RESEARCH :
                         0 != (status & (::ES_ITEM_STATUS_CAN_RESEARCH | ::ES_ITEM_STATUS_IN_RESEARCH))
 
   return canResearch
 }
 
-let function findAnyNotResearchedMod(unit)
+local function findAnyNotResearchedMod(unit)
 {
   if (!("modifications" in unit))
     return null
@@ -57,27 +57,27 @@ let function findAnyNotResearchedMod(unit)
   return null
 }
 
-let function isModAvailableOrFree(unitName, modName)
+local function isModAvailableOrFree(unitName, modName)
 {
   return (::shop_is_modification_available(unitName, modName, true)
           || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
-let function getModBlock(modName, blockName, templateKey)
+local function getModBlock(modName, blockName, templateKey)
 {
-  let modsBlk = ::get_modifications_blk()
-  let modBlock = modsBlk?.modifications?[modName]
+  local modsBlk = ::get_modifications_blk()
+  local modBlock = modsBlk?.modifications?[modName]
   if (!modBlock || modBlock?[blockName])
     return modBlock?[blockName]
-  let tName = modBlock?[templateKey]
+  local tName = modBlock?[templateKey]
   return tName ? modsBlk?.templates?[tName]?[blockName] : null
 }
 
-let isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUpgradeType")
-let hasActiveOverdrive = @(unitName, modName) ::get_modifications_overdrive(unitName).len() > 0
+local isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUpgradeType")
+local hasActiveOverdrive = @(unitName, modName) ::get_modifications_overdrive(unitName).len() > 0
   && getModBlock(modName, "overdriveEffect", "modOverdriveType")
 
-let function getModificationByName(unit, modName)
+local function getModificationByName(unit, modName)
 {
   if (!("modifications" in unit))
     return null
@@ -89,10 +89,10 @@ let function getModificationByName(unit, modName)
   return null
 }
 
-let function getModificationBulletsGroup(modifName)
+local function getModificationBulletsGroup(modifName)
 {
-  let blk = ::get_modifications_blk()
-  let modification = blk?.modifications?[modifName]
+  local blk = ::get_modifications_blk()
+  local modification = blk?.modifications?[modifName]
   if (modification)
   {
     if (!modification?.group)
@@ -100,10 +100,10 @@ let function getModificationBulletsGroup(modifName)
     if (modification?.effects)
       for (local i = 0; i < modification.effects.paramCount(); i++)
       {
-        let effectType = modification.effects.getParamName(i)
+        local effectType = modification.effects.getParamName(i)
         if (effectType == "additiveBulletMod")
         {
-          let underscore = modification.group.indexof("_")
+          local underscore = modification.group.indexof("_")
           if (underscore)
             return modification.group.slice(0, underscore)
         }
@@ -117,18 +117,18 @@ let function getModificationBulletsGroup(modifName)
   return ""
 }
 
-let function updateRelationModificationList(unit, modifName)
+local function updateRelationModificationList(unit, modifName)
 {
-  let mod = getModificationByName(unit, modifName)
+  local mod = getModificationByName(unit, modifName)
   if (mod && !("relationModification" in mod))
   {
-    let blk = ::get_modifications_blk();
+    local blk = ::get_modifications_blk();
     mod.relationModification <- [];
     foreach(ind, m in unit.modifications)
     {
       if ("reqModification" in m && ::isInArray(modifName, m.reqModification))
       {
-        let modification = blk?.modifications?[m.name]
+        local modification = blk?.modifications?[m.name]
         if (modification?.effects)
           for (local i = 0; i < modification.effects.paramCount(); i++)
             if (modification.effects.getParamName(i) == "additiveBulletMod")

@@ -1,17 +1,17 @@
-let { getBundlesBlockName } = require("scripts/onlineShop/onlineBundles.nut")
-let { requestMultipleItems } = require("scripts/onlineShop/shopItemInfo.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getBundlesBlockName } = require("scripts/onlineShop/onlineBundles.nut")
+local { requestMultipleItems } = require("scripts/onlineShop/shopItemInfo.nut")
+local { GUI } = require("scripts/utils/configs.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-let bundlesShopInfo = Watched(null)
+local bundlesShopInfo = Watched(null)
 
-let function updateBundlesShopInfo() {
+local function updateBundlesShopInfo() {
   if (!::g_login.isLoggedIn() || bundlesShopInfo.value)
     return
 
-  let guidsList = []
+  local guidsList = []
 
-  let bundlesList = GUI.get()?.bundles?[getBundlesBlockName()] ?? {}
+  local bundlesList = GUI.get()?.bundles?[getBundlesBlockName()] ?? {}
   for (local i = 0; i < bundlesList.paramCount(); i++)
     guidsList.append(bundlesList.getParamValue(i))
 
@@ -20,7 +20,7 @@ let function updateBundlesShopInfo() {
       guidsList,
       function(res) {
         ::dagor.debug($"[ENTITLEMENTS INFO] Received success result, {res.status}")
-        let resList = {}
+        local resList = {}
         foreach (id, guid in bundlesList)
           if (guid in res.items)
             resList[id] <- res.items[guid].__merge({guid})
@@ -37,7 +37,7 @@ let function updateBundlesShopInfo() {
     bundlesShopInfo({})
 }
 
-let function resetCache() {
+local function resetCache() {
   bundlesShopInfo(null)
   updateBundlesShopInfo()
 }

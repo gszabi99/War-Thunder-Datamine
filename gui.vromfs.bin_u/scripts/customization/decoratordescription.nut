@@ -1,33 +1,33 @@
-let skinLocations = require("scripts/customization/skinLocations.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
 
-let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
+local function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
-  let unlockBlk = g_unlocks.getUnlockById(decorator?.unlockId)
+  local unlockBlk = g_unlocks.getUnlockById(decorator?.unlockId)
   if (unlockBlk)
   {
     config = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(config)
   }
 
-  let iObj = obj.findObject("image")
-  let img = params?.useBigImg ? decoratorType.getBigImage(decorator) : decoratorType.getImage(decorator)
+  local iObj = obj.findObject("image")
+  local img = params?.useBigImg ? decoratorType.getBigImage(decorator) : decoratorType.getImage(decorator)
 
   iObj["background-image"] = img
 
   if (img != "")
   {
-    let imgSize = params?.imgSize ?? {}
-    let imgRatio = decoratorType.getRatio(decorator)
-    let iDivObj = iObj.getParent()
+    local imgSize = params?.imgSize ?? {}
+    local imgRatio = decoratorType.getRatio(decorator)
+    local iDivObj = iObj.getParent()
     iDivObj.height = imgSize?[1] ?? ::format("%d*@decalIconHeight", ((imgRatio < 3) ? 2 : 1))
     iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
     iDivObj.show(true)
   }
 
-  let header = decorator.getName()
+  local header = decorator.getName()
   obj.findObject("header").setValue(header)
 
-  let desc = [decorator.getDesc()]
+  local desc = [decorator.getDesc()]
   if (config?.isRevenueShare ?? false)
     desc.append(::colorize("advertTextColor", ::loc("content/revenue_share")))
 
@@ -36,13 +36,13 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   desc.append(typeDesc, decorator.getVehicleDesc(),
     decorator.getLocParamsDesc(), decorator.getRestrictionsDesc())
 
-  let commaLoc = ::loc("ui/comma")
-  let colonLoc = ::loc("ui/colon")
-  let searchId = decorator.id
+  local commaLoc = ::loc("ui/comma")
+  local colonLoc = ::loc("ui/colon")
+  local searchId = decorator.id
   if (decoratorType.hasLocations(searchId))
   {
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
-    let locations = mask ? skinLocations.getLocationsLoc(mask) : []
+    local mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
+    local locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (locations.len())
       desc.append($"{::loc("camouflage/for_environment_conditions")}{colonLoc}{commaLoc.join(locations, true)}")
   }
@@ -55,27 +55,27 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   }
 
   local descText = "\n".join(desc, true)
-  let warbondId = ::getTblValue("wbId", params)
+  local warbondId = ::getTblValue("wbId", params)
   if (warbondId)
   {
-    let warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
-    let award = warbond? warbond.getAwardById(searchId) : null
+    local warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
+    local award = warbond? warbond.getAwardById(searchId) : null
     if (award)
       descText = award.addAmountTextToDesc(descText)
   }
   obj.findObject("description").setValue(descText)
 
-  let isDefaultSkin = ::g_unlocks.isDefaultSkin(searchId)
-  let isTrophyContent  = params?.showAsTrophyContent ?? false
-  let isReceivedPrizes = params?.receivedPrizes      ?? false
+  local isDefaultSkin = ::g_unlocks.isDefaultSkin(searchId)
+  local isTrophyContent  = params?.showAsTrophyContent ?? false
+  local isReceivedPrizes = params?.receivedPrizes      ?? false
 
   local canBuy = false
-  let isAllowed = decoratorType.isPlayerHaveDecorator(searchId)
+  local isAllowed = decoratorType.isPlayerHaveDecorator(searchId)
   if (!isAllowed)
   {
-    let cost = decorator.getCost()
-    let hasPrice = !isTrophyContent && !isReceivedPrizes && !cost.isZero()
-    let aObj = ::showBtn("price", hasPrice, obj)
+    local cost = decorator.getCost()
+    local hasPrice = !isTrophyContent && !isReceivedPrizes && !cost.isZero()
+    local aObj = ::showBtn("price", hasPrice, obj)
     if (hasPrice)
     {
       canBuy = true
@@ -89,21 +89,21 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   local canFindOnMarketplace = false
   if (!isAllowed && decorator.getCouponItemdefId() != null)
   {
-    let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    local inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false)
       canConsumeCoupon = true
     canFindOnMarketplace = !canConsumeCoupon
   }
 
   //fill unlock info
-  let cObj = obj.findObject("conditions")
+  local cObj = obj.findObject("conditions")
   cObj.show(true)
 
   local iconName = isDefaultSkin ? ""
     : isAllowed ? "favorite"
     : "locked"
 
-  let canShowProgress = !isTrophyContent && !isReceivedPrizes
+  local canShowProgress = !isTrophyContent && !isReceivedPrizes
   local conditionsText = canShowProgress && config ?
     ::UnlockConditions.getConditionsText(config.conditions, config.curVal, config.maxVal) : ""
 
@@ -136,9 +136,9 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   local canShowProgressBar = !isAllowed && canShowProgress && config
   if (canShowProgressBar)
   {
-    let progressData = config.getProgressBarData()
+    local progressData = config.getProgressBarData()
     canShowProgressBar = progressData.show
-    let pObj = ::showBtn("progress", canShowProgressBar, cObj)
+    local pObj = ::showBtn("progress", canShowProgressBar, cObj)
     if (canShowProgressBar)
       pObj.setValue(progressData.value)
   } else
@@ -148,7 +148,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     iconName = ::format("#ui/gameuiskin#%s", iconName)
   cObj.findObject("state")["background-image"] = iconName
 
-  let additionalDescriptionMarkup = params?.additionalDescriptionMarkup
+  local additionalDescriptionMarkup = params?.additionalDescriptionMarkup
   dObj = ::showBtn("additional_description", additionalDescriptionMarkup != null, obj)
   if (additionalDescriptionMarkup != null)
     dObj.getScene().replaceContentFromText(dObj, additionalDescriptionMarkup, additionalDescriptionMarkup.len(), handler)

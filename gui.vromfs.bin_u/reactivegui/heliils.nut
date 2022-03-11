@@ -1,9 +1,9 @@
-let {IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor} = require("airState.nut")
-let {paramsTable, horSpeed, vertSpeed, rocketAim, taTarget} = require("airHudElems.nut")
-let compass = require("compass.nut")
-let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+local {IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor} = require("airState.nut")
+local {paramsTable, horSpeed, vertSpeed, rocketAim, taTarget} = require("airHudElems.nut")
+local compass = require("compass.nut")
+local {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
-let styleLineBackground = {
+local styleLineBackground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = max( LINE_WIDTH + 1.5, hdpx(LINE_WIDTH + 1.5))
   font = Fonts.hud
@@ -14,7 +14,7 @@ let styleLineBackground = {
 }
 
 
-let styleLineForeground = {
+local styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
   font = Fonts.hud
@@ -24,20 +24,20 @@ let styleLineForeground = {
   fontSize = hudFontHgt*2
 }
 
-let pilotSh = @(h) h * IlsPosSize[3] / 100
+local pilotSh = @(h) h * IlsPosSize[3] / 100
 
-let pilotSw = @(w) w * IlsPosSize[2] / 100
+local pilotSw = @(w) w * IlsPosSize[2] / 100
 
-let pilotHdpx = @(px) px * IlsPosSize[3] / 1024
+local pilotHdpx = @(px) px * IlsPosSize[3] / 1024
 
-let mfdPilotParamsTablePos = Watched([0, 300])
+local mfdPilotParamsTablePos = Watched([0, 300])
 
-let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
+local mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
   800, 50,
   mfdPilotParamsTablePos,
   10,  false, true)
 
-let function compassComponent(style, size, pos) {
+local function compassComponent(style, size, pos) {
   return @() {
     pos
     watch = MfdColor
@@ -45,8 +45,8 @@ let function compassComponent(style, size, pos) {
   }
 }
 
-let function ilsHud(elemStyle, isBackground) {
-  let ilsStyle = elemStyle.__merge({
+local function ilsHud(elemStyle, isBackground) {
+  local ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
   })
@@ -64,8 +64,8 @@ let function ilsHud(elemStyle, isBackground) {
   }
 }
 
-let function ilsMovingMarks(style, isBackground) {
-  let ilsStyle = style.__merge({
+local function ilsMovingMarks(style, isBackground) {
+  local ilsStyle = style.__merge({
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
   })
@@ -80,15 +80,15 @@ let function ilsMovingMarks(style, isBackground) {
   }
 }
 
-let function ilsHUD(style, isBackground) {
+local function ilsHUD(style, isBackground) {
   return [
     ilsHud(style, isBackground)
     ilsMovingMarks(style, isBackground)
   ]
 }
 
-let function Root() {
-  let children = ilsHUD(styleLineBackground, true)
+local function Root() {
+  local children = ilsHUD(styleLineBackground, true)
   children.extend(ilsHUD(styleLineForeground, false))
 
   return {

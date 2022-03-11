@@ -1,11 +1,11 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
-::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/mainmenu/topmenu_menuPanel"
+  sceneTplName = "gui/mainmenu/topmenu_menuPanel"
 
   parentHandlerWeak = null
   sectionsStructure = null
@@ -26,7 +26,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
     if (!::check_obj(nestObj))
       return null
 
-    let handler = ::handlersManager.loadHandler(::gui_handlers.TopMenuButtonsHandler, {
+    local handler = ::handlersManager.loadHandler(::gui_handlers.TopMenuButtonsHandler, {
                                            scene = nestObj
                                            parentHandlerWeak = parentHandler,
                                            sectionsStructure = sectionsStructure,
@@ -62,8 +62,8 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
     if (!::check_obj(objForWidth))
       return 1
 
-    let freeWidth = objForWidth.getSize()[0]
-    let singleButtonMinWidth = guiScene.calcString("1@topMenuButtonWidth", null) || 1
+    local freeWidth = objForWidth.getSize()[0]
+    local singleButtonMinWidth = guiScene.calcString("1@topMenuButtonWidth", null) || 1
     return ::max(freeWidth / singleButtonMinWidth, 1)
   }
 
@@ -83,11 +83,11 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
     initSectionsOrder()
 
-    let sectionsView = []
+    local sectionsView = []
     foreach (topMenuButtonIndex, sectionData in sectionsOrder)
     {
-      let columnsCount = sectionData.buttons.len()
-      let columns = []
+      local columnsCount = sectionData.buttons.len()
+      local columns = []
 
       foreach (idx, column in sectionData.buttons)
       {
@@ -98,7 +98,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
         })
       }
 
-      let tmId = sectionData.getTopMenuButtonDivId()
+      local tmId = sectionData.getTopMenuButtonDivId()
       ::u.appendOnce(tmId, GCDropdownsList)
 
       sectionsView.append({
@@ -125,12 +125,12 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
   function getSectionUnseenIcon(columns)
   {
-    let unseenList = []
+    local unseenList = []
     foreach (column in columns)
       foreach (button in column.buttons)
       if (!button.isHidden() && !button.isVisualDisabled())
       {
-        let unseenIcon = button.unseenIcon?()
+        local unseenIcon = button.unseenIcon?()
         if (unseenIcon)
           unseenList.append(unseenIcon)
       }
@@ -143,9 +143,9 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
     if(obj?["class"] != "dropDown")
       obj = obj.getParent()
 
-    let hover = obj.findObject(obj.id+"_list_hover")
+    local hover = obj.findObject(obj.id+"_list_hover")
     if (::check_obj(hover)) {
-      let menu = obj.findObject(obj.id+"_focus")
+      local menu = obj.findObject(obj.id+"_focus")
       menu.getScene().applyPendingChanges(true)
       hover["height-end"] = menu.getSize()[1] + guiScene.calcString("@dropDownMenuBottomActivityGap", null)
     }
@@ -155,15 +155,15 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
   function updateButtonsStatus()
   {
-    let needHideVisDisabled = ::has_feature("HideDisabledTopMenuActions")
-    let isInQueue = ::checkIsInQueue()
-    let skipNavigation = parentHandlerWeak?.scene
+    local needHideVisDisabled = ::has_feature("HideDisabledTopMenuActions")
+    local isInQueue = ::checkIsInQueue()
+    local skipNavigation = parentHandlerWeak?.scene
       .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
 
     foreach (idx, section in sectionsOrder)
     {
-      let sectionId = section.getTopMenuButtonDivId()
-      let sectionObj = scene.findObject(sectionId)
+      local sectionId = section.getTopMenuButtonDivId()
+      local sectionObj = scene.findObject(sectionId)
       if (!::check_obj(sectionObj))
         continue
 
@@ -172,7 +172,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
       {
         foreach (button in column)
         {
-          let btnObj = sectionObj.findObject(button.id)
+          local btnObj = sectionObj.findObject(button.id)
           if (!::checkObj(btnObj))
             continue
 
@@ -207,7 +207,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
   function hideHoverMenu(name)
   {
-    let obj = getObj(name)
+    local obj = getObj(name)
     if (!::check_obj(obj))
       return
 
@@ -221,7 +221,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
     if (!::handlersManager.isHandlerValid(parentHandlerWeak))
       return
 
-    let btn = getButtonConfigById(obj.id)
+    local btn = getButtonConfigById(obj.id)
     if (btn.isDelayed)
       guiScene.performDelayed(this, function()
       {
@@ -234,13 +234,13 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
 
   function onChangeCheckboxValue(obj)
   {
-    let btn = getButtonConfigById(obj.id)
+    local btn = getButtonConfigById(obj.id)
     btn.onChangeValueFunc(obj.getValue())
   }
 
   function switchMenuFocus()
   {
-    let section = sectionsStructure.getSectionByName(ON_ESC_SECTION_OPEN)
+    local section = sectionsStructure.getSectionByName(ON_ESC_SECTION_OPEN)
     if (::u.isEmpty(section))
       return
 
@@ -250,21 +250,21 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
       return
     }
 
-    let buttonObj = scene.findObject(section.getTopMenuButtonDivId())
+    local buttonObj = scene.findObject(section.getTopMenuButtonDivId())
     if (::checkObj(buttonObj))
       this[section.onClick](buttonObj)
   }
 
   function topmenuMenuActivate(obj)
   {
-    let curVal = obj.getValue()
+    local curVal = obj.getValue()
     if (curVal < 0)
       return
 
-    let selObj = obj.getChild(curVal)
+    local selObj = obj.getChild(curVal)
     if (!::checkObj(selObj))
       return
-    let eventName = selObj?._on_click ?? selObj?.on_click ?? selObj?.on_change_value
+    local eventName = selObj?._on_click ?? selObj?.on_click ?? selObj?.on_change_value
     if (!eventName || !(eventName in this))
       return
 
@@ -294,7 +294,7 @@ let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
       return
     }
 
-    let panelObj = scene.findObject("top_menu_panel_place")
+    local panelObj = scene.findObject("top_menu_panel_place")
     onGCDropdown(panelObj.getChild(mergeIdx))
     panelObj.setValue(mergeIdx)
   }

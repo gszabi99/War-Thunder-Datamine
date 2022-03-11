@@ -1,9 +1,9 @@
-let function getMedalRibbonImg(unlockId) {
+local function getMedalRibbonImg(unlockId) {
   return $"!@ui/medals/{unlockId}_ribbon"
 }
 
-let function hasMedalRibbonImg(unlockId) {
-  let unlock = ::g_unlocks.getUnlockById(unlockId)
+local function hasMedalRibbonImg(unlockId) {
+  local unlock = ::g_unlocks.getUnlockById(unlockId)
   return unlock?.hasRibbonImg ?? (unlock?.type == "medal")
 }
 

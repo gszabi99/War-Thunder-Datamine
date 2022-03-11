@@ -1,12 +1,12 @@
-let {Altitude, Roll} = require("reactiveGui/planeState/planeFlyState.nut")
-let {DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
+local {Altitude, Roll} = require("reactiveGui/planeState.nut")
+local {DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
   HasDistanceScale, HasAzimuthScale, Distance} = require("reactiveGui/radarState.nut")
-let compass = require("reactiveGui/compass.nut")
+local compass = require("reactiveGui/compass.nut")
 
-let baseLineWidth = hdpx(2 * LINE_WIDTH)
+local baseLineWidth = hdpx(2 * LINE_WIDTH)
 
-let AltWatched = Computed(@() ((20.0 - Altitude.value * 0.001) * 5).tointeger())
-let altitude = @() {
+local AltWatched = Computed(@() ((20.0 - Altitude.value * 0.001) * 5).tointeger())
+local altitude = @() {
   size = [pw(10), ph(70)]
   pos = [pw(85), ph(15)]
   children = [
@@ -86,7 +86,7 @@ let altitude = @() {
   ]
 }
 
-let flyDirection = @(){
+local flyDirection = @(){
     size = [pw(10), ph(10)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -106,8 +106,8 @@ let flyDirection = @(){
     ]
 }
 
-let digitalAlt = Computed(@() string.format(Altitude.value < 1000 ? "%d0" : "%.1f", Altitude.value < 1000 ? Altitude.value / 10 : Altitude.value / 1000.0))
-let roll = @(){
+local digitalAlt = Computed(@() string.format(Altitude.value < 1000 ? "%d0" : "%.1f", Altitude.value < 1000 ? Altitude.value / 10 : Altitude.value / 1000.0))
+local roll = @(){
   size = flex()
   children = [
     {
@@ -146,7 +146,7 @@ let roll = @(){
   }
 }
 
-let distance = @() {
+local distance = @() {
   watch = DistanceMax
   size = [pw(10), ph(70)]
   pos = [pw(10), ph(15)]
@@ -194,7 +194,7 @@ let distance = @() {
   ]
 }
 
-let function compassElem(width, height) {
+local function compassElem(width, height) {
   return {
     size = flex()
     pos = [pw(15), ph(3)]
@@ -204,11 +204,11 @@ let function compassElem(width, height) {
   }
 }
 
-let createTarget = @(index) function(){
-  let target = targets[index]
-  let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
+local createTarget = @(index) function(){
+  local target = targets[index]
+  local distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
 
-  let angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
+  local angleRel = HasAzimuthScale.value ? target.azimuthRel : 0.5
 
   return {
     watch = [HasAzimuthScale, HasDistanceScale, Distance]
@@ -232,9 +232,9 @@ let createTarget = @(index) function(){
   }
 }
 
-let targetsComponent = function(createTargetDistFunc) {
-  let getTargets = function() {
-    let targetsRes = []
+local targetsComponent = function(createTargetDistFunc) {
+  local getTargets = function() {
+    local targetsRes = []
     for(local i = 0; i < targets.len(); ++i) {
       if (!targets[i])
         continue
@@ -250,7 +250,7 @@ let targetsComponent = function(createTargetDistFunc) {
   }
 }
 
-let function Root(width, height, posX = 0, posY = 0) {
+local function Root(width, height, posX = 0, posY = 0) {
   return {
     pos = [posX, posY]
     size = [width, height]

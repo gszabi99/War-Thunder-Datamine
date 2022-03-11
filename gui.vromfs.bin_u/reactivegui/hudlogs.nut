@@ -1,27 +1,27 @@
-let chat = require("hudChat.nut")
-let battleLog = require("hudBattleLog.nut")
-let tabs = require("components/tabs.nut")
-let frp = require("frp")
-let { cursorVisible } = require("reactiveGui/ctrlsState.nut")
-let { canWriteToChat, log, lastInputTime } = require("hudChatState.nut")
-let { isMultiplayer } = require("networkState.nut")
-let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
+local chat = require("hudChat.nut")
+local battleLog = require("hudBattleLog.nut")
+local tabs = require("components/tabs.nut")
+local frp = require("frp")
+local { cursorVisible } = require("reactiveGui/ctrlsState.nut")
+local { canWriteToChat, log, lastInputTime } = require("hudChatState.nut")
+local { isMultiplayer } = require("networkState.nut")
+local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
 
-let tabsList = [
+local tabsList = [
   { id = "Chat", text = ::loc("mainmenu/chat"), content = chat }
   { id = "BattleLog", text = ::loc("options/_Bttl"), content = battleLog }
 ]
 
-let isEnabled = ::Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
-let isInteractive = ::Computed(@() canWriteToChat.value || cursorVisible.value)
-let isNewMessage = ::Watched(false)
-let isFadingOut = ::Watched(false)
-let isInited = ::Watched(false)
-let isVisible = ::Computed(@() isEnabled.value && isInited.value
+local isEnabled = ::Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
+local isInteractive = ::Computed(@() canWriteToChat.value || cursorVisible.value)
+local isNewMessage = ::Watched(false)
+local isFadingOut = ::Watched(false)
+local isInited = ::Watched(false)
+local isVisible = ::Computed(@() isEnabled.value && isInited.value
   && (isInteractive.value || isFadingOut.value || isNewMessage.value))
 
-let currentTab = ::Watched(tabsList[0])
-let currentLog = ::Computed(function(prev) {
+local currentTab = ::Watched(tabsList[0])
+local currentLog = ::Computed(function(prev) {
   if (cursorVisible.value || prev == frp.FRP_INITIAL)
     return currentTab.value
 
@@ -31,14 +31,14 @@ let currentLog = ::Computed(function(prev) {
   return prev
 })
 
-let showOutId = {}
-let fastFadeOutId = {}
-let slowFadeOutId = {}
-let fastDuration = 0.2
-let slowDuration = 5
-let opacityAnim = { prop = AnimProp.opacity, easing = OutCubic }
+local showOutId = {}
+local fastFadeOutId = {}
+local slowFadeOutId = {}
+local fastDuration = 0.2
+local slowDuration = 5
+local opacityAnim = { prop = AnimProp.opacity, easing = OutCubic }
 
-let logsContainerAnims = [
+local logsContainerAnims = [
   opacityAnim.__merge({ trigger = showOutId,     from = 0.2, to = 1, duration = fastDuration, play = true })
   opacityAnim.__merge({ trigger = fastFadeOutId, from = 1,   to = 0, duration = fastDuration,
     onEnter = @() isFadingOut(true), onFinish = @() isFadingOut(false), onAbort = @() isFadingOut(false) })
@@ -48,13 +48,13 @@ let logsContainerAnims = [
   opacityAnim.__merge({ trigger = slowFadeOutId, from = 0,   to = 0, duration = 1, delay = slowDuration })
 ]
 
-let function startAnim(animId) {
+local function startAnim(animId) {
   [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) ::anim_skip(id))
   ::anim_start(animId)
 }
 
-let hideNewMessageDelay = 5
-let function hideNewMessage() {
+local hideNewMessageDelay = 5
+local function hideNewMessage() {
   isNewMessage(false)
   if (!isInteractive.value)
     startAnim(slowFadeOutId)
@@ -96,7 +96,7 @@ isInteractive.subscribe(function(value) {
     startAnim(fastFadeOutId)
 })
 
-let logsHeader = @() {
+local logsHeader = @() {
   size = [flex(), SIZE_TO_CONTENT]
   watch = [cursorVisible, currentTab]
   opacity = cursorVisible.value ? 1 : 0
@@ -110,14 +110,14 @@ let logsHeader = @() {
   transitions = [{ prop = AnimProp.opacity, duration = fastDuration, easing = OutCubic }]
 }
 
-let logsContainer = @() {
+local logsContainer = @() {
   watch = currentLog
   size = [flex(), SIZE_TO_CONTENT]
   children = currentLog.value.content
   animations = logsContainerAnims
 }
 
-let function init() {
+local function init() {
   isInited(true)
 }
 

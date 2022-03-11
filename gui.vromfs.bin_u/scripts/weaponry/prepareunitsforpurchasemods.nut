@@ -1,12 +1,12 @@
-let { getAllModsCost } = require("scripts/weaponry/itemInfo.nut")
-let { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
+local { getAllModsCost } = require("scripts/weaponry/itemInfo.nut")
+local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local unitsTable = {} //unitName - unitBlock
 
-let function clear() { unitsTable = {} }
-let function haveUnits() { return unitsTable.len() > 0 }
+local function clear() { unitsTable = {} }
+local function haveUnits() { return unitsTable.len() > 0 }
 
-let function addUnit(unit)
+local function addUnit(unit)
 {
   if (!unit)
     return
@@ -24,7 +24,7 @@ purchaseModifications = function(unitsArray)
     return
   }
 
-  let curUnit = unitsArray.remove(0)
+  local curUnit = unitsArray.remove(0)
   weaponsPurchase(
     curUnit,
     {
@@ -41,12 +41,12 @@ checkUnboughtMods = function(silent = false)
     return
 
   local cost = ::Cost()
-  let unitsWithNBMods = []
-  let stringOfUnits = []
+  local unitsWithNBMods = []
+  local stringOfUnits = []
 
   foreach(unitName, unit in unitsTable)
   {
-    let modsCost = getAllModsCost(unit)
+    local modsCost = getAllModsCost(unit)
     if (modsCost.isZero())
       continue
 

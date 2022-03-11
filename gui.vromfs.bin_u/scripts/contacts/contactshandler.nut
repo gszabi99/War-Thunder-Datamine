@@ -1,15 +1,16 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled } = require("scripts/chat/chatStates.nut")
-let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+local { clearBorderSymbols } = require("std/string.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
+local { isChatEnabled } = require("scripts/chat/chatStates.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
 
-::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   searchText = ""
@@ -35,7 +36,6 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   searchShowNotFound = false
   searchShowDefaultOnReset = false
   searchGroupLastShowState = false
-
 
   constructor(gui_scene, params = {})
   {
@@ -114,9 +114,9 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     for(local i=::contacts_prev_scenes.len()-1; i>=0; i--)
     {
-      let prevScene = ::contacts_prev_scenes[i].scene
+      local prevScene = ::contacts_prev_scenes[i].scene
       if (::checkObj(prevScene)) {
-        let handler = ::contacts_prev_scenes[i].owner
+        local handler = ::contacts_prev_scenes[i].owner
         if (!handler.isSceneActiveNoModals() || !prevScene.isVisible())
           continue
         scene = ::contacts_prev_scenes[i].scene
@@ -137,7 +137,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene())
       return
 
-    let wasVisible = scene.isVisible()
+    local wasVisible = scene.isVisible()
     if (show==null)
       show = !wasVisible
     if (!show)
@@ -155,7 +155,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
         fillContactsList()
         closeSearchGroup()
       }
-      let cgObj = scene.findObject("contacts_groups")
+      local cgObj = scene.findObject("contacts_groups")
       ::move_mouse_on_child(cgObj, cgObj.getValue())
     }
 
@@ -167,7 +167,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (isContactsWindowActive())
     {
       ::contacts_sizes = {}
-      let obj = scene.findObject("contacts_wnd")
+      local obj = scene.findObject("contacts_wnd")
       ::contacts_sizes.pos <- obj.getPosRC()
       ::contacts_sizes.size <- obj.getSize()
 
@@ -179,7 +179,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     if (!::contacts_sizes)
     {
-      let data = loadLocalByScreenSize("contacts_sizes")
+      local data = loadLocalByScreenSize("contacts_sizes")
       if (data)
       {
         ::contacts_sizes = ::parse_json(data)
@@ -197,10 +197,10 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     if (isContactsWindowActive() && ::contacts_sizes)
     {
-      let obj = scene.findObject("contacts_wnd")
+      local obj = scene.findObject("contacts_wnd")
       if (!obj) return
 
-      let rootSize = guiScene.getRoot().getSize()
+      local rootSize = guiScene.getRoot().getSize()
       for(local i=0; i<=1; i++) //pos chat in screen
         if (::contacts_sizes.pos[i] < topMenuBorders[i][0]*rootSize[i])
           ::contacts_sizes.pos[i] = (topMenuBorders[i][0]*rootSize[i]).tointeger()
@@ -222,7 +222,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     {
       sceneChanged = true
       guiScene = scene.getScene()
-      guiScene.replaceContent(scene, "%gui/contacts/contacts.blk", this)
+      guiScene.replaceContent(scene, "gui/contacts/contacts.blk", this)
       setSavedSizes()
       scene.findObject("contacts_update").setUserData(this)
       fillContactsList()
@@ -248,7 +248,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     if (gName == ::EPLX_SEARCH)
       return true //this group often refilled by other objects
-    let count = ::contacts[gName].len() + ::getTblValue(gName, listNotPlayerChildsByGroup, -100000)
+    local count = ::contacts[gName].len() + ::getTblValue(gName, listNotPlayerChildsByGroup, -100000)
     return listObj.childrenCount() != count
   }
 
@@ -256,20 +256,14 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function buildPlayersList(gName, showOffline=true)
   {
-    let playerListView = {
+    local playerListView = {
       playerListItem = []
       playerButton = []
+      searchAdvice = gName != searchGroup
+      searchAdviceID = "group_" + gName + "_search_advice"
       needHoverButtons = needShowContactHoverButtons()
     }
-    listNotPlayerChildsByGroup[gName] <- 0
-    if (gName != searchGroup) {
-      playerListView.searchAdviceID <- $"group_{gName}_search_advice"
-      playerListView.totalContacts <- ::loc("contacts/total", {
-        contactsCount = ::contacts[gName].len(),
-        contactsCountMax = ::EPL_MAX_PLAYERS_IN_LIST
-      })
-      listNotPlayerChildsByGroup[gName] = 2
-    }
+
     foreach(idx, contactData in ::contacts[gName])
     {
       playerListView.playerListItem.append({
@@ -278,6 +272,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
         pilotIcon = contactData.pilotIcon
       })
     }
+
     if (gName == ::EPL_FRIENDLIST && ::isInMenu())
     {
       if (::has_feature("Invites"))
@@ -286,8 +281,11 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
         playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add", "onFacebookFriendsAdd"))
     }
 
-    listNotPlayerChildsByGroup[gName] = listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
-    return ::handyman.renderCached(("%gui/contacts/playerList"), playerListView)
+    listNotPlayerChildsByGroup[gName] <- playerListView.playerButton.len()
+    if (playerListView.searchAdvice)
+      listNotPlayerChildsByGroup[gName]++
+
+    return ::handyman.renderCached(("gui/contacts/playerList"), playerListView)
   }
 
   function createPlayerButtonView(gId, gIcon, callback)
@@ -295,7 +293,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!gId || gId == "")
       return {}
 
-    let shortName = ::loc("mainmenu/" + gId + "Short", "")
+    local shortName = ::loc("mainmenu/" + gId + "Short", "")
     return {
       name = shortName == "" ? "#mainmenu/" + gId : shortName
       tooltip = "#mainmenu/" + gId
@@ -307,19 +305,19 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   function updatePlayersList(gName)
   {
     local sel = -1
-    let selUid = (curPlayer && curGroup==gName)? curPlayer.uid : ""
+    local selUid = (curPlayer && curGroup==gName)? curPlayer.uid : ""
 
-    let gObj = scene.findObject("contacts_groups")
+    local gObj = scene.findObject("contacts_groups")
     foreach(fIdx, f in ::contacts[gName])
     {
-      let obj = gObj.findObject("player_" + gName + "_" + fIdx)
+      local obj = gObj.findObject("player_" + gName + "_" + fIdx)
       if (!::check_obj(obj))
         continue
 
-      let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
-      let contactNameObj = obj.findObject("contactName")
+      local fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
+      local contactNameObj = obj.findObject("contactName")
       contactNameObj.setValue(fullName)
-      let contactPresenceObj = obj.findObject("contactPresence")
+      local contactPresenceObj = obj.findObject("contactPresence")
       if (::checkObj(contactPresenceObj))
       {
         contactPresenceObj.setValue(f.getPresenceText())
@@ -329,7 +327,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
       if (selUid == f.uid)
         sel = fIdx
 
-      let imgObj = obj.findObject("statusImg")
+      local imgObj = obj.findObject("statusImg")
       imgObj["background-image"] = f.presence.getIcon()
       imgObj["background-color"] = f.presence.getIconColor()
 
@@ -340,13 +338,13 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function fillPlayersList(gName)
   {
-    let listObj = scene.findObject("contacts_groups").findObject("group_" + gName)
+    local listObj = scene.findObject("contacts_groups").findObject("group_" + gName)
     if (!listObj)
       return
 
     if (needRebuildPlayersList(gName, listObj))
     {
-      let data = buildPlayersList(gName)
+      local data = buildPlayersList(gName)
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
     }
     updateContactButtonsForGroup(gName)
@@ -358,10 +356,10 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     foreach (idx, contact in ::contacts[gName])
     {
-      let contactObject = scene.findObject(::format("player_%s_%s", gName.tostring(), idx.tostring()))
+      local contactObject = scene.findObject(::format("player_%s_%s", gName.tostring(), idx.tostring()))
       contactObject.contact_buttons_contact_uid = contact.uid
 
-      let contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
+      local contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
       if (!::check_obj(contactButtonsHolder))
         continue
 
@@ -374,17 +372,17 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene())
       return
 
-    let isFriend = contact? contact.isInFriendGroup() : false
-    let isBlock = contact? contact.isInBlockGroup() : false
-    let isMe = contact? contact.isMe() : false
-    let contactName = contact?.name ?? ""
+    local isFriend = contact? contact.isInFriendGroup() : false
+    local isBlock = contact? contact.isInBlockGroup() : false
+    local isMe = contact? contact.isMe() : false
+    local contactName = contact?.name ?? ""
 
-    let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
-    let canBlock = !isPlayerFromXboxOne
-    let canChat = contact? contact.canChat() : true
-    let canInvite = contact? contact.canInvite() : true
-    let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
-    let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
+    local isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
+    local canBlock = !isPlayerFromXboxOne
+    local canChat = contact? contact.canChat() : true
+    local canInvite = contact? contact.canInvite() : true
+    local canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
+    local canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
@@ -397,7 +395,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
 
-    let showSquadInvite = ::has_feature("SquadInviteIngame")
+    local showSquadInvite = ::has_feature("SquadInviteIngame")
       && !isMe
       && !isBlock
       && canInteractCrossConsole
@@ -408,7 +406,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
       && canInvite
       && ::g_squad_utils.canSquad()
 
-    let btnObj = showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
+    local btnObj = showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
     if (btnObj && showSquadInvite && contact?.uidInt64)
       updateButtonInviteText(btnObj, contact.uidInt64)
 
@@ -445,11 +443,11 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function getIndexOfGroup(group_name)
   {
-    let contactsGroups = scene.findObject("contacts_groups")
+    local contactsGroups = scene.findObject("contacts_groups")
     for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx)
     {
-      let childObject = contactsGroups.getChild(idx)
-      let groupListObject = childObject.getChild(childObject.childrenCount() - 1)
+      local childObject = contactsGroups.getChild(idx)
+      local groupListObject = childObject.getChild(childObject.childrenCount() - 1)
       if (groupListObject?.id == "group_" + group_name)
       {
         return idx
@@ -460,10 +458,10 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function getGroupByName(group_name)
   {
-    let contactsGroups = scene.findObject("contacts_groups")
+    local contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
-      let groupListObject = contactsGroups.findObject("group_" + group_name)
+      local groupListObject = contactsGroups.findObject("group_" + group_name)
       return groupListObject.getParent()
     }
     return null
@@ -494,10 +492,10 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (txt == "")
       return
 
-    let contactsGroups = scene.findObject("contacts_groups")
+    local contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
-      let searchGroupIndex = getIndexOfGroup(searchGroup)
+      local searchGroupIndex = getIndexOfGroup(searchGroup)
       if (searchGroupIndex != -1)
       {
         setSearchGroupVisibility(true)
@@ -529,12 +527,12 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function onContactsFocus(obj)
   {
-    let isValidCurScene = ::check_obj(scene)
+    local isValidCurScene = ::check_obj(scene)
     if (!isValidCurScene) {
       curHoverObjId = null
       return
     }
-    let newObjId = obj.isHovered() ? obj.id : null
+    local newObjId = obj.isHovered() ? obj.id : null
     if (curHoverObjId == newObjId)
       return
     curHoverObjId = newObjId
@@ -548,7 +546,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     searchText = ::g_string.utf8ToLower(search_text)
     if (set_in_edit_box)
     {
-      let searchEditBox = scene.findObject("search_edit_box")
+      local searchEditBox = scene.findObject("search_edit_box")
       if (::checkObj(searchEditBox))
       {
         searchEditBox.setValue(search_text)
@@ -565,14 +563,14 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     foreach (idx, contact_data in ::contacts[curGroup])
     {
-      let contactObjectName = "player_" + curGroup + "_" + idx
-      let contactObject = scene.findObject(contactObjectName)
+      local contactObjectName = "player_" + curGroup + "_" + idx
+      local contactObject = scene.findObject(contactObjectName)
       if (!::checkObj(contactObject))
         continue
 
       local contactName = ::g_string.utf8ToLower(contact_data.name)
       contactName = platformModule.getPlayerName(contactName)
-      let searchResult = searchText == "" || contactName.indexof(searchText) != null
+      local searchResult = searchText == "" || contactName.indexof(searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)
     }
@@ -583,19 +581,19 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene())
       return
 
-    let gObj = scene.findObject("contacts_groups")
+    local gObj = scene.findObject("contacts_groups")
     if (!gObj) return
     guiScene.setUpdatesEnabled(false, false)
 
     local data = ""
-    let groups_array = getContactsGroups()
+    local groups_array = getContactsGroups()
     foreach(gIdx, gName in groups_array)
     {
       ::contacts[gName].sort(::sortContacts)
       local activateEvent = "onPlayerMsg"
       if (::show_console_buttons || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      let gData = buildPlayersList(gName)
+      local gData = buildPlayersList(gName)
       data += format(groupFormat, "#contacts/" + gName,
         gName == searchGroup ? searchGroupActiveTextInclude : "",
         "group_" + gName, gData, activateEvent)
@@ -610,7 +608,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     applyContactFilter()
 
-    let selected = [-1, -1]
+    local selected = [-1, -1]
     foreach(gIdx, gName in groups_array)
     {
       if (gName == searchGroup && !searchGroupLastShowState)
@@ -622,7 +620,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
       if (curGroup == gName)
         selected[0] = gIdx
 
-      let sel = updatePlayersList(gName)
+      local sel = updatePlayersList(gName)
       if (sel > 0)
         selected[1] = sel
     }
@@ -664,15 +662,15 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
         if (group in ::contacts)
         {
           ::contacts[group].sort(::sortContacts)
-          let selected = fillPlayersList(group)
+          local selected = fillPlayersList(group)
           if (group == curGroup)
             sel = selected
         }
 
     if (curGroup && (!groupName || curGroup == groupName))
     {
-      let gObj = scene.findObject("contacts_groups")
-      let listObj = gObj.findObject("group_" + curGroup)
+      local gObj = scene.findObject("contacts_groups")
+      local listObj = gObj.findObject("group_" + curGroup)
       if (listObj)
       {
         if (::contacts[curGroup].len() > 0)
@@ -695,8 +693,8 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   function selectCurContactGroup() {
     if (!checkScene())
       return
-    let groupsObj = scene.findObject("contacts_groups")
-    let value = groupsObj.getValue()
+    local groupsObj = scene.findObject("contacts_groups")
+    local value = groupsObj.getValue()
     if (value >= 0 && value < groupsObj.childrenCount())
       ::move_mouse_on_child(groupsObj.getChild(value), 0) //header
   }
@@ -719,10 +717,10 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   }
 
   function selectHoveredGroup() {
-    let listObj = scene.findObject("contacts_groups")
-    let total = listObj.childrenCount()
+    local listObj = scene.findObject("contacts_groups")
+    local total = listObj.childrenCount()
     for(local i = 0; i < total; i++) {
-      let child = listObj.getChild(i)
+      local child = listObj.getChild(i)
       if (!child.isValid() || !child.isHovered())
         continue
       listObj.setValue(i)
@@ -760,7 +758,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
       doSearch()
     else
     {
-      let groupObj = scene.findObject("group_" + curGroup)
+      local groupObj = scene.findObject("group_" + curGroup)
       if (groupObj?.isValid())
         onPlayerMenu(groupObj)
     }
@@ -768,14 +766,14 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function selectItemInGroup(obj, switchFocus = false)
   {
-    let groups = getContactsGroups()
-    let value = obj.getValue()
+    local groups = getContactsGroups()
+    local value = obj.getValue()
     if (!(value in groups))
       return
 
     curGroup = groups[value]
 
-    let listObj = obj.findObject("group_" + curGroup)
+    local listObj = obj.findObject("group_" + curGroup)
     if (!::checkObj(listObj))
       return
 
@@ -796,7 +794,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     if (!obj) return
 
-    let value = obj.getValue()
+    local value = obj.getValue()
     if ((curGroup in ::contacts) && (value in ::contacts[curGroup]))
       curPlayer = ::contacts[curGroup][value]
     else
@@ -805,11 +803,11 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function onPlayerMenu(obj)
   {
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 
-    let childObj = obj.getChild(value)
+    local childObj = obj.getChild(value)
     if (!::check_obj(childObj))
       return
 
@@ -821,7 +819,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function sendClickButton(obj)
   {
-    let clickName = obj?.on_click
+    local clickName = obj?.on_click
     if (!clickName || !(clickName in this))
       return
 
@@ -833,15 +831,15 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene() || !::check_obj(obj))
       return
 
-    let id = obj.id
-    let prefix = "player_" + curGroup + "_"
+    local id = obj.id
+    local prefix = "player_" + curGroup + "_"
     if (id.len() <= prefix.len() || id.slice(0, prefix.len()) != prefix)
       return
 
-    let idx = id.slice(prefix.len()).tointeger()
+    local idx = id.slice(prefix.len()).tointeger()
     if ((curGroup in ::contacts) && (idx in ::contacts[curGroup]))
     {
-      let listObj = scene.findObject("group_" + curGroup)
+      local listObj = scene.findObject("group_" + curGroup)
       if (!listObj)
         return
 
@@ -860,15 +858,15 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene())
       return
 
-    let contactsGroups = scene.findObject("contacts_groups")
+    local contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
       setSearchGroupVisibility(false)
-      let searchGroupIndex = getIndexOfGroup(searchGroup)
+      local searchGroupIndex = getIndexOfGroup(searchGroup)
       if (contactsGroups.getValue() == searchGroupIndex)
       {
         setSearchText("")
-        let friendsGroupIndex = getIndexOfGroup(::EPL_FRIENDLIST)
+        local friendsGroupIndex = getIndexOfGroup(::EPL_FRIENDLIST)
         contactsGroups.setValue(friendsGroupIndex)
       }
     }
@@ -879,8 +877,8 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     foreach (idx, groupName in getContactsGroups())
     {
-      let searchAdviceID = "group_" + groupName + "_search_advice"
-      let searchAdviceObject = scene.findObject(searchAdviceID)
+      local searchAdviceID = "group_" + groupName + "_search_advice"
+      local searchAdviceObject = scene.findObject(searchAdviceID)
       if (::checkObj(searchAdviceObject))
       {
         searchAdviceObject.show(value)
@@ -923,8 +921,8 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!::show_console_buttons)
       return
 
-    let showSelectButton = curHoverObjId != null
-    let btn = showSceneBtn("btn_contactsSelect", showSelectButton)
+    local showSelectButton = curHoverObjId != null
+    local btn = showSceneBtn("btn_contactsSelect", showSelectButton)
     if (showSelectButton)
       btn.setValue(::loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
         : curHoverObjId == "search_edit_box" ? "contacts/search"
@@ -947,20 +945,20 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!::checkObj(button_object))
       return
 
-    let contactButtonsObject = button_object.getParent().getParent()
-    let contactUID = contactButtonsObject?.contact_buttons_contact_uid
+    local contactButtonsObject = button_object.getParent().getParent()
+    local contactUID = contactButtonsObject?.contact_buttons_contact_uid
     if (!contactUID)
       return
 
-    let contact = ::getContact(contactUID)
+    local contact = ::getContact(contactUID)
     curPlayer = contact
 
-    let idx = ::contacts[curGroup].indexof(contact)
+    local idx = ::contacts[curGroup].indexof(contact)
     if (!checkScene() || idx == null)
       return
 
-    let groupObject = scene.findObject("contacts_groups")
-    let listObject = groupObject.findObject("group_" + curGroup)
+    local groupObject = scene.findObject("contacts_groups")
+    local listObject = groupObject.findObject("group_" + curGroup)
     listObject.setValue(idx)
   }
 
@@ -997,14 +995,17 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     updateCurPlayer(obj)
 
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
+
     if (curPlayer == null)
       return ::g_popups.add("", ::loc("msgbox/noChosenPlayer"))
 
-    let uid = curPlayer.uid
+    local uid = curPlayer.uid
     if (!::g_squad_manager.canInviteMember(uid))
       return
 
-    let name = curPlayer.name
+    local name = curPlayer.name
     if (::g_squad_manager.hasApplicationInMySquad(uid.tointeger(), name))
       ::g_squad_manager.acceptMembershipAplication(uid.tointeger())
     else
@@ -1022,7 +1023,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
   {
     if (!obj) return
 
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (!value || value=="")
     {
       if (::show_console_buttons)
@@ -1048,7 +1049,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
   function onSearch(obj)
   {
-    let sObj = getSearchObj()
+    local sObj = getSearchObj()
     if (!sObj || searchInProgress) return
     local value = sObj.getValue()
     if (!value || value == "*")
@@ -1065,11 +1066,11 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     value = clearBorderSymbols(value)
 
-    let searchGroupActiveTextObject = scene.findObject("search_group_active_text")
-    let searchGroupText = ::loc($"contacts/{searchGroup}")
+    local searchGroupActiveTextObject = scene.findObject("search_group_active_text")
+    local searchGroupText = ::loc($"contacts/{searchGroup}")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
-    let taskId = ::find_nicks_by_prefix(value, maxSearchPlayers, true)
+    local taskId = ::find_nicks_by_prefix(value, maxSearchPlayers, true)
     if (taskId >= 0)
     {
       searchInProgress = true
@@ -1090,7 +1091,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     local brokenData = false
     for (local i = 0; i < searchRes.paramCount(); i++)
     {
-      let contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
+      local contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
       if (contact)
       {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
@@ -1102,7 +1103,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
     if (brokenData)
     {
-      let errText = "broken result on find_nicks_by_prefix cb: \n" + ::toString(searchRes)
+      local errText = "broken result on find_nicks_by_prefix cb: \n" + ::toString(searchRes)
       ::script_net_assert_once("broken searchCb data", errText)
     }
 
@@ -1116,8 +1117,8 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (!checkScene())
       return
 
-    let gObj = scene.findObject("contacts_groups")
-    let listObj = gObj.findObject("group_" + searchGroup)
+    local gObj = scene.findObject("contacts_groups")
+    local listObj = gObj.findObject("group_" + searchGroup)
     if (!listObj)
       return
 
@@ -1196,7 +1197,7 @@ let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
     if (owner.isSceneActiveNoModals() || scene?.isVisible())
       return
 
-    let curScene = scene
+    local curScene = scene
     if (::contacts_prev_scenes.findvalue(@(v) curScene.isEqual(v.scene)) == null)
       ::contacts_prev_scenes.append({ scene = scene, show = ::last_contacts_scene_show, owner = owner })
     scene = null

@@ -1,6 +1,6 @@
-let globalEnv = require("globalEnv")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local globalEnv = require("globalEnv")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -23,8 +23,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       defValue = 1,
       onButton = function(value)
       {
-        let cType = ::recomended_control_presets[value]
-        let preset = ::get_controls_preset_by_selected_type(cType)
+        local cType = ::recomended_control_presets[value]
+        local preset = ::get_controls_preset_by_selected_type(cType)
         applyPreset(preset.fileName)
       }
     }
@@ -64,9 +64,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
             curJoyParams.holdThrottleForWEP = false
             skipList.append("msg/holdThrottleForWEP")
           }
-          let axis = curJoyParams.getAxis(::get_axis_index("throttle"))
+          local axis = curJoyParams.getAxis(::get_axis_index("throttle"))
           axis.relative = !isAxis
-          let device = ::joystick_get_default()
+          local device = ::joystick_get_default()
           curJoyParams.applyParams(device)
         }
       skip = ["msg/holdThrottleForWEP"] //dont work in axis, but need to correct prevItem work, when skipList used in onAxisDone
@@ -136,11 +136,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       {
         foreach(a in ["camx", "camy", "turret_x", "turret_y"])
         {
-          let axis = curJoyParams.getAxis(::get_axis_index(a))
+          local axis = curJoyParams.getAxis(::get_axis_index(a))
           axis.relative = value !=0
           axis.innerDeadzone = (value!=0)? 0.25 : 0.05
         }
-        let device = ::joystick_get_default()
+        local device = ::joystick_get_default()
         curJoyParams.applyParams(device)
       }
     }
@@ -308,10 +308,10 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
 }
 
-::gui_handlers.controlsWizardModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/controlsWizard.blk"
+  sceneBlkName = "gui/controlsWizard.blk"
   sceneNavBlkName = null
 
   unitType = ::ES_UNIT_TYPE_AIRCRAFT
@@ -401,7 +401,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     for(local i=0; i < controls_wizard_config.len(); i++)
     {
-      let item = controls_wizard_config[i]
+      local item = controls_wizard_config[i]
 
       if (item.type == CONTROL_TYPE.SHORTCUT)
       {
@@ -499,7 +499,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       {
         if ("optionType" in curItem)
         {
-          let config = ::get_option(curItem.optionType)
+          local config = ::get_option(curItem.optionType)
           filter = config.values[config.value]
         } else
           ::dagor.assertf(false, "Error: not found optionType in wizard filterObj.")
@@ -600,7 +600,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       prevItems.remove(prevItems.len()-1)
       curIdx = lastIdx-1
 
-      let lastItem = controls_wizard_config[lastIdx]
+      local lastItem = controls_wizard_config[lastIdx]
       if ("skip" in lastItem)
         for(local i=skipList.len()-1; i>=0; i--)
           if (::isInArrayRecursive(skipList[i], lastItem.skip))
@@ -619,7 +619,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     foreach(name in ["msgBox-wnd", "shortcut-wnd", "listbox-wnd", "options-wnd", "msg-wnd"])
     {
-      let divObj = scene.findObject(name)
+      local divObj = scene.findObject(name)
       if (!::checkObj(divObj))
         continue
 
@@ -634,7 +634,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function enableListenerObj(isEnable)
   {
-    let obj = showSceneBtn("input-listener", isEnable)
+    local obj = showSceneBtn("input-listener", isEnable)
     if (isEnable)
       obj.select()
   }
@@ -646,7 +646,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     axisMaxChoosen = false
     scene.findObject("shortcut_text").setValue(::loc(getItemText(curItem)))
-    let textObj = scene.findObject("hold_axis")
+    local textObj = scene.findObject("hold_axis")
     if (::checkObj(textObj))
     {
       textObj.setValue(::loc("hotkeys/msg/press_a_key"))
@@ -692,8 +692,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     if (curItem.type == CONTROL_TYPE.AXIS)
     {
-      let axis = curJoyParams.getAxis(curItem.axisIndex[0])
-      let curPreset = ::g_controls_manager.getCurPreset()
+      local axis = curJoyParams.getAxis(curItem.axisIndex[0])
+      local curPreset = ::g_controls_manager.getCurPreset()
       if (axis.axisId >= 0)
         axisAssignText = ::addHotkeyTxt(::remapAxisName(curPreset, axis.axisId))
       if (isButtonsListenInCurBox)
@@ -735,7 +735,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     if ("msgType" in curItem)
       msgLocId += curItem.msgType
 
-    let textObj = scene.findObject("hold_axis")
+    local textObj = scene.findObject("hold_axis")
     if (::checkObj(textObj))
     {
       textObj.setValue(::loc(msgLocId))
@@ -765,7 +765,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
   function switchListenButton(value)
   {
     isListenButton = value
-    let obj = scene.findObject("shortcut_current_button")
+    local obj = scene.findObject("shortcut_current_button")
     if (::checkObj(obj))
     {
       obj.show(value)
@@ -796,16 +796,16 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function updateSwitchModesButton()
   {
-    let isShow = curDivName == "shortcut-wnd" && selectedAxisNum < 0 && !axisMaxChoosen
+    local isShow = curDivName == "shortcut-wnd" && selectedAxisNum < 0 && !axisMaxChoosen
     showSceneBtn("btn_switchAllModes", isShow)
 
     if (!isShow)
       return
 
-    let isEnabled = isListenAxis || isListenButton
-    let sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
-    let coloredText = ::format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
-    let NotColoredText = ::format(sampleText, "", "")
+    local isEnabled = isListenAxis || isListenButton
+    local sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
+    local coloredText = ::format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
+    local NotColoredText = ::format(sampleText, "", "")
 
     setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
   }
@@ -813,7 +813,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
   function switchAllListenModes(obj)
   {
     axisCurTime = 0.0
-    let btnObj = scene.findObject("btn_switchAllModes")
+    local btnObj = scene.findObject("btn_switchAllModes")
     if (!btnObj.isEnabled())
       onResetAxisInput()
     else
@@ -828,7 +828,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
   {
     if (curDivName != "shortcut-wnd")
       return
-    let enable = !(isListenAxis || isListenButton)
+    local enable = !(isListenAxis || isListenButton)
     enableListenerObj(enable)
     scene.findObject("hold_axis").show(enable)
     if (isAxisListenInCurBox)
@@ -839,14 +839,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function updateButtons()
   {
-    let isInListenWnd = curDivName == "shortcut-wnd"
-    let isListening   = isInListenWnd && (isListenAxis || isListenButton)
+    local isInListenWnd = curDivName == "shortcut-wnd"
+    local isListening   = isInListenWnd && (isListenAxis || isListenButton)
 
     if (::show_console_buttons)
     {
       foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
       {
-        let btnObj = scene.findObject(name)
+        local btnObj = scene.findObject(name)
         if (::checkObj(btnObj))
         {
           btnObj.hideConsoleImage = isListening ? "yes" : "no"
@@ -872,11 +872,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
         return
       } else
       {
-        let axis = curJoyParams.getAxis(curItem.axisIndex[0])
+        local axis = curJoyParams.getAxis(curItem.axisIndex[0])
         axis.relative = ("buttonRelative" in curItem)? curItem.buttonRelative : false
         axis.relSens = ("relSens" in curItem)? curItem.relSens : 1.0
         axis.relStep = ("relStep" in curItem)? curItem.relStep : 0
-        let device = ::joystick_get_default()
+        local device = ::joystick_get_default()
         curJoyParams.applyParams(device)
       }
 
@@ -891,7 +891,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       return
 
     switchListenButton(false)
-    let sc = readShortcutInfo(obj)
+    local sc = readShortcutInfo(obj)
     if (sc.dev.len() > 0 && sc.dev.len() == sc.btn.len())
       if (bindShortcut(sc.dev, sc.btn))
         return
@@ -921,7 +921,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     } else
     if (typeof(shortcutId)=="integer" && devs.len() > 0)
     {
-      let isKbd = isKbdOrMouse(devs)
+      local isKbd = isKbdOrMouse(devs)
       if (isKbd==null)
         shortcuts[shortcutId] = [{dev = devs, btn = btns}]
       else
@@ -942,7 +942,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     if (curItem.type == CONTROL_TYPE.AXIS)
       shortcutId = curItem.modifiersId[axisMaxChoosen? "rangeMin" : "rangeMax"]
 
-    let curBinding = findButtons(devs, btns, shortcutId)
+    local curBinding = findButtons(devs, btns, shortcutId)
     if (!curBinding || curBinding.len() == 0)
     {
       doBind(devs, btns, shortcutId)
@@ -952,7 +952,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     local actionText = ""
     foreach(binding in curBinding)
       actionText += ((actionText=="")? "":", ") + ::loc("hotkeys/"+shortcutNames[binding[0]])
-    let msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
+    local msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
     msgBox("controls_wizard_bind_existing_shortcut", msg, [
       ["add", (@(curBinding, devs, btns, shortcutId) function() {
         doBind(devs, btns, shortcutId)
@@ -962,7 +962,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
         foreach(binding in curBinding)
         {
           shortcuts[binding[0]].remove(binding[1])
-          let item = shortcutItems[binding[0]]
+          local item = shortcutItems[binding[0]]
           if (!isInArray(item, repeatItemsList))
             repeatItemsList.append(item)
         }
@@ -977,24 +977,24 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function findButtons(devs, btns, shortcutId)
   {
-    let firstSc = (typeof(shortcutId)=="integer")? shortcutId : shortcutId[0]
-    let scItem = shortcutItems[firstSc]
+    local firstSc = (typeof(shortcutId)=="integer")? shortcutId : shortcutId[0]
+    local scItem = shortcutItems[firstSc]
     if (firstSc>maxCheckSc)
       maxCheckSc = firstSc
-    let res = []
-    let foundedItems = []
+    local res = []
+    local foundedItems = []
 
     for(local i = 0; i<maxCheckSc; i++)
     {
       if (firstSc==i || ((typeof(shortcutId)=="array") && isInArray(i, shortcutId)))
         continue
-      let item = shortcutItems[i]
+      local item = shortcutItems[i]
       if (item==scItem && (item.type!= CONTROL_TYPE.AXIS || i==scItem.modifiersId[axisMaxChoosen? "rangeMin" : "rangeMax"]))
         continue
       if (isInArray(item, repeatItemsList) || isInArray(item, foundedItems))
         continue
 
-      let event = shortcuts[i]
+      local event = shortcuts[i]
       foreach (btnIdx, button in event)
       {
         if (!button || button.dev.len() != devs.len())
@@ -1034,7 +1034,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     if (!isButtonsListenInCurBox && !isListenButton)
       return
 
-    let sc = readShortcutInfo(obj)
+    local sc = readShortcutInfo(obj)
     curBtnText = getShortcutText(sc) + ((lastNumButtons>=3)? "" : (lastNumButtons>0)? " + ?" : "?")
     scene.findObject("shortcut_current_button").setValue(curBtnText)
   }
@@ -1042,7 +1042,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
   function getShortcutText(sc)
   {
     local text = ""
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
     for (local i = 0; i < sc.dev.len(); i++)
       text += ((i != 0)? " + ":"") + ::getLocalizedControlName(curPreset, sc.dev[i], sc.btn[i])
     return text
@@ -1050,15 +1050,15 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function readShortcutInfo(obj)
   {
-    let res = { dev = [], btn = [] }
+    local res = { dev = [], btn = [] }
     lastNumButtons = 0
 
     for (local i = 0; i < 3; i++)
     {
       if (obj["device" + i]!="" && obj["button" + i]!="")
       {
-        let devId = obj["device" + i].tointeger()
-        let btnId = obj["button" + i].tointeger()
+        local devId = obj["device" + i].tointeger()
+        local btnId = obj["button" + i].tointeger()
         res.dev.append(devId)
         res.btn.append(btnId)
         lastNumButtons++
@@ -1070,7 +1070,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function clearShortcutInfo()
   {
-    let obj = scene.findObject("input-listener")
+    local obj = scene.findObject("input-listener")
     for (local i = 0; i < 3; i++)
     {
       obj["device" + i] = ""
@@ -1090,7 +1090,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset", "btn-reset-axis-input"])
       showSceneBtn(name, false)
 
-    let config = presetupAxisRawValues[selectedAxisNum]
+    local config = presetupAxisRawValues[selectedAxisNum]
 
     axisApplyParams = {}
     axisApplyParams.invert <- false
@@ -1105,7 +1105,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     if (!axisApplyParams.isSlider)
     {
-      let minDev = min(::abs(config.max), ::abs(config.min))
+      local minDev = min(::abs(config.max), ::abs(config.min))
       if (minDev>=3200) //10%
         axisApplyParams.kMul = 0.1*::floor(320000.0/minDev)
       else
@@ -1118,7 +1118,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       axisApplyParams.kAdd = -0.5*(config.min+config.max) / 32000 * axisApplyParams.kMul
     }
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
     curBtnText = ::remapAxisName(curPreset, selectedAxisNum)
     showMsg(::loc("hotkeys/msg/axis_choosen") + "\n" + curBtnText, config)
   }
@@ -1129,9 +1129,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     foreach(idx, aName in curItem.axesList)
     {
-      let axisIndex = curItem.axisIndex[idx]
+      local axisIndex = curItem.axisIndex[idx]
       curJoyParams.bindAxis(axisIndex, selectedAxisNum)
-      let axis = curJoyParams.getAxis(axisIndex)
+      local axis = curJoyParams.getAxis(axisIndex)
       axis.inverse = axisApplyParams.invert
       axis.innerDeadzone = axisApplyParams.isSlider? 0 : 0.02
       axis.nonlinearity = axisApplyParams.isSlider? 0 : 1
@@ -1142,7 +1142,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       axis.kMul = axisApplyParams.kMul
     }
 
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
 
     //clear hotkey min|max when use axis
@@ -1160,7 +1160,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function onAxisApply()
   {
-    let curBinding = findAxis(selectedAxisNum)
+    local curBinding = findAxis(selectedAxisNum)
     if (curBinding.len() == 0)
     {
       bindAxis()
@@ -1170,7 +1170,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     local actionText = ""
     foreach(binding in curBinding)
       actionText += ((actionText=="")? "":", ") + ::loc(getItemName(binding))
-    let msg = ::loc("hotkeys/msg/unbind_axis_question", {
+    local msg = ::loc("hotkeys/msg/unbind_axis_question", {
       button=curBtnText, action=actionText
     })
     msgBox("controls_wizard_bind_existing_axis", msg, [
@@ -1186,14 +1186,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function findAxis(curAxisId)
   {
-    let res = []
+    local res = []
     for(local i = 0; i<=curIdx; i++)
     {
-      let item = controls_wizard_config[i]
+      local item = controls_wizard_config[i]
       if (item.type!= CONTROL_TYPE.AXIS || item==curItem)
         continue
 
-      let axis = curJoyParams.getAxis(item.axisIndex[0])
+      local axis = curJoyParams.getAxis(item.axisIndex[0])
       if (curAxisId == axis.axisId && !isInArray(item, repeatItemsList) && !isInArray(item, res))
         res.append(item)
     }
@@ -1202,34 +1202,34 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function updateAxisName()
   {
-    let obj = scene.findObject("bind-axis-name")
+    local obj = scene.findObject("bind-axis-name")
     if (!::checkObj(obj))
       return
 
     obj.show(isAxisListenInCurBox)
 
-    let device = ::joystick_get_default()
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let axisName = device ? ::remapAxisName(curPreset, bindAxisNum) : ""
+    local device = ::joystick_get_default()
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local axisName = device ? ::remapAxisName(curPreset, bindAxisNum) : ""
     obj.setValue(axisName)
 
-    let changeColor = (selectedAxisNum>=0 && selectedAxisNum==bindAxisNum)? "fixedAxis" : ""
+    local changeColor = (selectedAxisNum>=0 && selectedAxisNum==bindAxisNum)? "fixedAxis" : ""
     obj.changeColor = changeColor
   }
 
   function getCurAxisNum(dt, checkLastTryAxis = true)
   {
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     local foundAxis = -1
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let numAxes = curPreset.getNumAxes()
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local numAxes = curPreset.getNumAxes()
     if (numAxes > presetupAxisRawValues.len())
       initAxisPresetup(false) //add new founded axes
 
     local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
     for (local i = 0; i < numAxes; i++)
     {
-      let rawPos = device.getAxisPosRaw(i)
+      local rawPos = device.getAxisPosRaw(i)
       if (rawPos!=0 && !presetupAxisRawValues[i].inited)
       {
         //Some joysticks return zero at first and only then init the current value
@@ -1245,7 +1245,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
           presetupAxisRawValues[i].min = rawPos
       }
 
-      let dPos = fabs(rawPos - presetupAxisRawValues[i].def)
+      local dPos = fabs(rawPos - presetupAxisRawValues[i].def)
       if (dPos > deviation)
       {
         foundAxis = i
@@ -1286,11 +1286,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     if (!isListenAxis || !is_app_active() || steam_is_overlay_active())
       return
 
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     if (device == null)
       return
 
-    let foundAxis = getCurAxisNum(dt)
+    local foundAxis = getCurAxisNum(dt)
     if (selectedAxisNum<0)
     {
       if (foundAxis != bindAxisNum)
@@ -1320,7 +1320,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
     axisCurTime+=dt
 
-    let val = device.getAxisPosRaw(bindAxisNum)
+    local val = device.getAxisPosRaw(bindAxisNum)
     local checkTime = true
     if (val != bindAxisCurVal)
     {
@@ -1379,15 +1379,15 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       presetupAxisRawValues = []
       lastTryAxisNum = -1
     }
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     if (device == null)
       return
 
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let start = presetupAxisRawValues.len()
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local start = presetupAxisRawValues.len()
     for (local i = start; i < curPreset.getNumAxes(); i++)
     {
-      let rawPos = device.getAxisPosRaw(i)
+      local rawPos = device.getAxisPosRaw(i)
       presetupAxisRawValues.append({
                                      def=rawPos,
                                      min=rawPos,
@@ -1401,13 +1401,13 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function showMsgBox(isListbox=false)
   {
-    let msgText = getItemText(curItem)
+    local msgText = getItemText(curItem)
     local defValue = 0
     msgButtons = []
 
     if ("optionType" in curItem)
     {
-      let config = ::get_option(curItem.optionType)
+      local config = ::get_option(curItem.optionType)
       msgButtons = config.items
       defValue = config.value
     } else if ("options" in curItem)
@@ -1425,11 +1425,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
       local data = ""
       foreach(idx, btn in msgButtons)
       {
-        let text = (btn.len()>0 && btn.slice(0, 1)!="#") ? "#"+btn : btn
+        local text = (btn.len()>0 && btn.slice(0, 1)!="#") ? "#"+btn : btn
         data += format("Button_text { id:t='%d'; text:t='%s'; on_click:t='onMsgButton'; }",
                   idx, text)
       }
-      let btnsHolder = scene.findObject("msgBox_buttons")
+      local btnsHolder = scene.findObject("msgBox_buttons")
       guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
       ::move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
     }
@@ -1437,7 +1437,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     {
       scene.findObject("listbox_text").setValue(::loc(msgText))
 
-      let view = { items = [] }
+      local view = { items = [] }
       foreach(idx, btn in msgButtons)
       {
         local text = ::getTblValue("text", btn, "")
@@ -1454,8 +1454,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
         })
       }
 
-      let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-      let listObj = scene.findObject("listbox")
+      local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+      local listObj = scene.findObject("listbox")
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
       if (defValue in msgButtons)
         listObj.setValue(defValue)
@@ -1475,7 +1475,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function onMsgButton(obj)
   {
-    let value = obj.id.tointeger()
+    local value = obj.id.tointeger()
     if (value==null || !(value in msgButtons) || !waitMsgButton)
       return
 
@@ -1486,7 +1486,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
         optionsToSave.append({type = curItem.optionType, value = value})
         if ("isFilterObj" in curItem && curItem.isFilterObj)
         {
-          let config = ::get_option(curItem.optionType)
+          local config = ::get_option(curItem.optionType)
           filter = config.values[value]
         }
       }
@@ -1505,8 +1505,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function getCurListboxObj()
   {
-    let listObj = scene.findObject("listbox")
-    let value = listObj.getValue()
+    local listObj = scene.findObject("listbox")
+    local value = listObj.getValue()
     if (value>=0 && value<listObj.childrenCount())
       return listObj.getChild(value)
     return null
@@ -1514,14 +1514,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function onListboxDblClick(obj)
   {
-    let curObj = getCurListboxObj()
+    local curObj = getCurListboxObj()
     if (curObj)
       onMsgButton(curObj)
   }
 
   function onListboxSelect(obj)
   {
-    let curObj = getCurListboxObj()
+    local curObj = getCurListboxObj()
     if (!curObj) return
     scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
   }
@@ -1531,16 +1531,16 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     curIdx = -1
 
     switchToDiv("options-wnd")
-    let optObj = scene.findObject("optionlist")
+    local optObj = scene.findObject("optionlist")
     if (!::checkObj(optObj))
       return
 
     showSceneBtn("btn_prevItem", false)
 
-    let optionItems = [
+    local optionItems = [
       [::USEROPT_CONTROLS_PRESET, "spinner"],
     ]
-    let container = ::create_options_container("preset_options", optionItems, false)
+    local container = ::create_options_container("preset_options", optionItems, false)
     guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
     processPresetValue(getOptionPresetValue())
     ::move_mouse_on_obj(scene.findObject("controls_preset"))
@@ -1558,7 +1558,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
 
   function processPresetValue(presetValue)
   {
-    let opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
+    local opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
     if (presetValue in opdata.values)
     {
       presetSelected = opdata.values[presetValue]
@@ -1621,7 +1621,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     foreach(option in optionsToSave)
       ::set_option(option.type, option.value)
 
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     ::joystick_set_cur_settings(curJoyParams)
     save(false)
@@ -1669,7 +1669,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platfor
     local showAxis = false
     if (config && ("min" in config) && ("max" in config))
     {
-      let name = isAxisVertical? "msg-real-box-vert" : "msg-real-box"
+      local name = isAxisVertical? "msg-real-box-vert" : "msg-real-box"
       moveTestItem(config.min, scene.findObject(name+"1"))
       moveTestItem(config.max, scene.findObject(name+"2"))
       showAxis = true

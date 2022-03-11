@@ -1,6 +1,6 @@
-let unitActions = require("scripts/unit/unitActions.nut")
-let { getModItemName } = require("scripts/weaponry/weaponryDescription.nut")
-let { getItemCost,
+local unitActions = require("scripts/unit/unitActions.nut")
+local { getModItemName } = require("scripts/weaponry/weaponryDescription.nut")
+local { getItemCost,
         getAllModsCost,
         getItemStatusTbl,
         getItemUnlockCost } = require("scripts/weaponry/itemInfo.nut")
@@ -8,7 +8,7 @@ let { getItemCost,
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
 
-let function canBuyForEagles(cost, unit)
+local function canBuyForEagles(cost, unit)
 {
   if (cost.isZero())
     return false
@@ -25,7 +25,7 @@ let function canBuyForEagles(cost, unit)
   return true
 }
 
-let function canBuyItem(cost, unit, afterRefillFunc = null)
+local function canBuyItem(cost, unit, afterRefillFunc = null)
 {
   if (cost.isZero())
     return false
@@ -91,7 +91,7 @@ local class WeaponsPurchaseProcess
     local canBuyAmount = 1
     if (!::u.isEmpty(modItem) && modType != weaponsItem.primaryWeapon)
     {
-      let statusTbl = getItemStatusTbl(unit, modItem)
+      local statusTbl = getItemStatusTbl(unit, modItem)
       if (!statusTbl.canBuyMore)
       {
         if (statusTbl.showPrice)
@@ -105,7 +105,7 @@ local class WeaponsPurchaseProcess
     if (canBuyAmount == 1 || (::has_feature("BuyAllPresets") && isAllPresetPurchase))
       return execute(canBuyAmount)
 
-    let params = {
+    local params = {
       item = modItem
       unit = unit
       buyFunc = ::Callback(function(amount) { execute(amount, false) }, this)
@@ -135,11 +135,11 @@ local class WeaponsPurchaseProcess
       return
     }
 
-    let repairCost = checkRepair? unit.getRepairCost() : ::Cost()
-    let price = cost + repairCost
+    local repairCost = checkRepair? unit.getRepairCost() : ::Cost()
+    local price = cost + repairCost
     msgLocParams.cost <- price.getTextAccordingToBalance()
 
-    let performAction = (@(repairCost, mainFunc, amount, completeOnCancel) function() {
+    local performAction = (@(repairCost, mainFunc, amount, completeOnCancel) function() {
       if (repairCost.isZero())
         mainFunc(amount)
       else
@@ -150,17 +150,17 @@ local class WeaponsPurchaseProcess
     if (silent)
       return performAction()
 
-    let cancelAction = (@(completeOnCancel) function() {
+    local cancelAction = (@(completeOnCancel) function() {
       if (completeOnCancel)
         complete()
     })(completeOnCancel)
 
-    let text = ::warningIfGold(
+    local text = ::warningIfGold(
         ::loc(repairCost.isZero() ? msgLocId : repairMsgLocId,
         msgLocParams
       ), price)
-    let defButton = "yes"
-    let buttons = [
+    local defButton = "yes"
+    local buttons = [
       ["yes", performAction ],
       ["no", cancelAction ]
     ]
@@ -170,7 +170,7 @@ local class WeaponsPurchaseProcess
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null)
   {
-    let repairCost = unit.getRepairCost()
+    local repairCost = unit.getRepairCost()
     if (!canBuyItem(repairCost, unit, afterBalanceRefillFunc))
       complete()
     else
@@ -208,7 +208,7 @@ local class WeaponsPurchaseProcess
 
   function getAllModificationsPrice()
   {
-    let modsCost = getAllModsCost(unit, open)
+    local modsCost = getAllModsCost(unit, open)
     return ::Cost(modsCost.wp, open? modsCost.gold : 0)
   }
 
@@ -227,15 +227,15 @@ local class WeaponsPurchaseProcess
 
   function sendPurchaseAllModsRequest(amount = 1)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk["unit"] = unit.name
     blk["forceOpen"] = open
     blk["cost"] = cost.wp
     blk["costGold"] = cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_all_modification", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
+    local taskId = ::char_send_blk("cln_buy_all_modification", blk)
+    local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    local afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::broadcastEvent("ModificationPurchased", {unit = unit})
       ::updateAirAfterSwitchMod(unit, "")
@@ -262,15 +262,15 @@ local class WeaponsPurchaseProcess
 
   function sendPurchaseSpareRequest(amount = 1)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk["aircraft"] =  unit.name
     blk["count"] = amount
     blk["cost"] = cost.wp
     blk["costGold"] = cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
+    local taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
+    local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    local afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::broadcastEvent("SparePurchased", {unit = unit})
       afterSuccessfullPurchaseCb?()
@@ -297,16 +297,16 @@ local class WeaponsPurchaseProcess
 
   function sendPurchaseWeaponRequest(amount = 1)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk["aircraft"] = unit.name
     blk["weapon"] = modName
     blk["count"] = amount
     blk["cost"] = cost.wp
     blk["costGold"] = cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_weapon", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() {
+    local taskId = ::char_send_blk("cln_buy_weapon", blk)
+    local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    local afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit)
       ::broadcastEvent("WeaponPurchased", {unit = unit, weaponName = modName})
@@ -335,7 +335,7 @@ local class WeaponsPurchaseProcess
 
   function sendPurchaseModificationRequest(amount = 1)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk["aircraft"] = unit.name
     blk["modification"] = modName
     blk["open"] = open
@@ -343,14 +343,14 @@ local class WeaponsPurchaseProcess
     blk["cost"] = cost.wp
     blk["costGold"] = cost.gold
 
-    let hadUnitModResearch = ::shop_get_researchable_module_name(unit.name)
-    let taskId = ::char_send_blk("cln_buy_modification", blk)
-    let taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, modName, hadUnitModResearch, afterSuccessfullPurchaseCb) function() {
+    local hadUnitModResearch = ::shop_get_researchable_module_name(unit.name)
+    local taskId = ::char_send_blk("cln_buy_modification", blk)
+    local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
+    local afterOpFunc = (@(unit, modName, hadUnitModResearch, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit, modName)
 
-      let newResearch = ::shop_get_researchable_module_name(unit.name)
+      local newResearch = ::shop_get_researchable_module_name(unit.name)
       if (::u.isEmpty(newResearch) && !::u.isEmpty(hadUnitModResearch))
         ::broadcastEvent("AllModificationsPurchased", {unit = unit})
 

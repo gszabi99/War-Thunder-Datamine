@@ -1,6 +1,6 @@
-let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
-::queue_classes.Event <- class extends ::queue_classes.Base
+class ::queue_classes.Event extends ::queue_classes.Base
 {
   shouldQueueCustomMode = false
 
@@ -25,7 +25,7 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
     if (!("cluster" in qParams))
       return false
 
-    let cluster = qParams.cluster
+    local cluster = qParams.cluster
     local isClusterAdded = false
     if (!::isInArray(cluster, params.clusters))
     {
@@ -39,7 +39,7 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
   function removeQueueByParams(leaveData)
   {
-    let queueUid = ::getTblValue("queueId", leaveData)
+    local queueUid = ::getTblValue("queueId", leaveData)
     if (queueUid == null || (queueUid in queueUidsList && queueUidsList.len() == 1)) //leave all queues
     {
       clearAllQueues()
@@ -55,10 +55,10 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
   function removeQueueByUid(queueUid)
   {
-    let cluster = queueUidsList[queueUid].cluster
+    local cluster = queueUidsList[queueUid].cluster
     if (::u.filter(queueUidsList, @(q) q.cluster == cluster).len() <= 1)
     {
-      let idx = params.clusters.indexof(cluster)
+      local idx = params.clusters.indexof(cluster)
       if (idx != null)
         params.clusters.remove(idx)
     }
@@ -167,7 +167,7 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
   function getQueryParams(isForJoining, customMgm = null)
   {
-    let qp = {}
+    local qp = {}
     if (customMgm)
       qp.game_mode_id <- customMgm.gameModeId
     else
@@ -180,17 +180,16 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
     qp.clusters <- params.clusters
 
-    let prefParams =  mapPreferencesParams.getParams(::events.getEvent(name))
+    local prefParams =  mapPreferencesParams.getParams(::events.getEvent(name))
     qp.players <- {
       [::my_user_id_str] = {
         country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
-        fakeName = ::get_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY).value != ""
       }
     }
-    let members = ::getTblValue("members", params)
+    local members = ::getTblValue("members", params)
     if (members)
       foreach(uid, m in members)
       {
@@ -198,7 +197,6 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
           country = ("country" in m)? m.country : ::queues.getQueueCountry(this)
           dislikedMissions = m?.dislikedMissions ?? []
           bannedMissions = m?.bannedMissions ?? []
-          fakeName = m?.fakeName ?? false
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
@@ -224,7 +222,7 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
   function getBattleName()
   {
-    let event = ::events.getEvent(name)
+    local event = ::events.getEvent(name)
     if (!event)
       return ""
 
@@ -238,7 +236,7 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 
   function isCustomModeQUeued()
   {
-    let customMgm = getCustomMgm(name)
+    local customMgm = getCustomMgm(name)
     if (!customMgm)
       return false
     return !!::u.search(queueUidsList, @(q) q.gameModeId == customMgm.gameModeId )
@@ -261,8 +259,8 @@ let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
     if (isCustomModeInTransition)
       return
 
-    let queue = this
-    let cb = function(res)
+    local queue = this
+    local cb = function(res)
     {
       queue.isCustomModeInTransition = false
       queue.afterCustomModeQueueChanged(shouldQueue)

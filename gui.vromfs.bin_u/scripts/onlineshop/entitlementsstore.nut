@@ -1,9 +1,9 @@
-let { isPlatformSony,
+local { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC,
         canSpendRealMoney } = require("scripts/clientState/platform.nut")
 
-let {
+local {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
   getEntStoreIcon = @() "#ui/gameuiskin#store_icon.svg",
   isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !::has_feature("SpendGold") || !::isInMenu() || !canSpendRealMoney(),

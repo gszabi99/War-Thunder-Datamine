@@ -1,4 +1,4 @@
-let function canRestart()
+local function canRestart()
 {
   return !::is_multiplayer()
     && ![ ::GM_DYNAMIC, ::GM_BENCHMARK ].contains(::get_game_mode())
@@ -6,9 +6,9 @@ let function canRestart()
     && ::get_mission_status() != ::MISSION_STATUS_SUCCESS
 }
 
-let function canBailout()
+local function canBailout()
 {
-  let gm = ::get_game_mode()
+  local gm = ::get_game_mode()
   return (::get_mission_restore_type() != ::ERT_MANUAL || gm == ::GM_TEST_FLIGHT)
     && gm != ::GM_BENCHMARK
     && !::is_camera_not_flight()

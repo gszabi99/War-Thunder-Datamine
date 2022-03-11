@@ -23,7 +23,7 @@ root {
         left:t='0.5pw-0.5w'
         position:t='relative'
         <<#qrCode>>
-        include "%gui/commonParts/qrCode"
+        include "gui/commonParts/qrCode"
         <</qrCode>>
       }
 
@@ -67,7 +67,7 @@ root {
   }
 
   gamercard_div {
-    include "%gui/gamercardTopPanel.blk"
-    include "%gui/gamercardBottomPanel.blk"
+    include "gui/gamercardTopPanel.blk"
+    include "gui/gamercardBottomPanel.blk"
   }
 }

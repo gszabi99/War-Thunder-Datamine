@@ -1,7 +1,7 @@
-let { getHasCompassObservable } = require("hudCompassState")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { getHasCompassObservable } = require("hudCompassState")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
-::gui_handlers.BaseUnitHud <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.BaseUnitHud extends ::gui_handlers.BaseGuiHandlerWT
 {
   scene = null
   wndType = handlerType.CUSTOM
@@ -15,7 +15,7 @@ let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
   }
 
   function updatePosHudMultiplayerScore() {
-    let multiplayerScoreObj = scene.findObject("hud_multiplayer_score")
+    local multiplayerScoreObj = scene.findObject("hud_multiplayer_score")
     if (::check_obj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()

@@ -1,25 +1,25 @@
-let { round_by_value } = require("std/math.nut")
-let { secondsToString } = require("scripts/time.nut")
-let { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
-  getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon,
+local { round_by_value } = require("std/math.nut")
+local { secondsToString } = require("scripts/time.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
+local { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
+  getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeaponsBlk, getLastPrimaryWeapon,
   getWeaponExtendedInfo
 } = require("scripts/weaponry/weaponryInfo.nut")
-let { getBulletsSetData, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
-let { reloadCooldownTimeByCaliber } = require("scripts/weaponry/weaponsParams.nut")
-let { getWeaponsByPresetName } = require("scripts/weaponry/weaponryPresets.nut")
+local { getBulletsSetData, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
+local { reloadCooldownTimeByCaliber } = require("scripts/weaponry/weaponsParams.nut")
 
 
-let function getReloadTimeByCaliber(caliber, ediff = null)
+local function getReloadTimeByCaliber(caliber, ediff = null)
 {
-  let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
+  local diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
   if (diff != ::g_difficulty.ARCADE)
     return null
   return reloadCooldownTimeByCaliber.value?[caliber]
 }
 
-let getTextNoWeapons = @(unit, isPrimary) isPrimary ? ::loc("weapon/noPrimaryWeapon")
+local getTextNoWeapons = @(unit, isPrimary) isPrimary ? ::loc("weapon/noPrimaryWeapon")
   : (unit.isAir() || unit.isHelicopter()) ? ::loc("weapon/noSecondaryWeapon")
   : ::loc("weapon/noAdditionalWeapon")
 
@@ -30,21 +30,21 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   if (!unit)
     return text
 
-  let weapons = getUnitWeaponry(unit, p)
+  local weapons = getUnitWeaponry(unit, p)
   if (weapons == null)
     return text
 
   p = WEAPON_TEXT_PARAMS.__merge(p)
-  let unitType = ::get_es_unit_type(unit)
+  local unitType = ::get_es_unit_type(unit)
   if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text += getTextNoWeapons(unit, p.isPrimary)
-  let stackableWeapons = [WEAPON_TYPE.TURRETS]
+  local stackableWeapons = [WEAPON_TYPE.TURRETS]
   foreach (index, weaponType in WEAPON_TYPE)
   {
     if (!(weaponType in weapons))
       continue
 
-    let triggers = weapons[weaponType]
+    local triggers = weapons[weaponType]
     triggers.sort(@(a, b) b.caliber <=> a.caliber)
 
     if (::isInArray(weaponType, stackableWeapons))
@@ -82,9 +82,9 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
       }
     }
 
-    let isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
+    local isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
     local weapTypeCount = 0 //for shortDesc only
-    let gunNames = {}     //for shortDesc only
+    local gunNames = {}     //for shortDesc only
     foreach (trigger in triggers)
     {
       local tText = ""
@@ -110,8 +110,8 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
               {
                 if (weapon.dropSpeedRange)
                 {
-                  let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                  let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+                  local speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+                  local speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
                   tText += "\n"+::format( ::loc("weapons/drop_speed_range"),
                     "{0} {1}".subst(speedKmph, ::loc("ui/parentheses", { text = speedMps })) )
                 }
@@ -146,9 +146,9 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
                 {
                   if (p.isLocalState)
                   {
-                    let difficulty = ::get_difficulty_by_ediff(p.ediff ?? ::get_current_ediff())
-                    let key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
-                    let speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
+                    local difficulty = ::get_difficulty_by_ediff(p.ediff ?? ::get_current_ediff())
+                    local key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
+                    local speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
                     if (speedK)
                       rTime = round_by_value(rTime / speedK, 1.0).tointeger()
                   }
@@ -186,7 +186,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           ::format(::loc("weapons/counter/right/short"), weapTypeCount))
       if (gunNames.len() > 0)//Guns
       {
-        let gunsTxt = []
+        local gunsTxt = []
         foreach(name, count in gunNames)
           gunsTxt.append("".concat(::loc($"weapons/{name}"), ::nbsp, count > 1
             ? ::format(::loc("weapons/counter/right/short"), count) : ""))
@@ -204,18 +204,18 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   return text
 }
 
-let function getWeaponNameText(unit, isPrimary = null, weaponPreset=-1, newLine=", ")
+local function getWeaponNameText(unit, isPrimary = null, weaponPreset=-1, newLine=", ")
 {
   return getWeaponInfoText(unit,
     { isPrimary = isPrimary, weaponPreset = weaponPreset, newLine = newLine, detail = INFO_DETAIL.SHORT })
 }
 
 
-let function getWeaponXrayDescText(weaponBlk, unit, ediff)
+local function getWeaponXrayDescText(weaponBlk, unit, ediff)
 {
-  let weaponsArr = []
-  ::u.appendOnce((::u.copy(weaponBlk)), weaponsArr)
-  let weaponTypes = addWeaponsFromBlk({}, weaponsArr, unit)
+  local weaponsBlk = ::DataBlock()
+  weaponsBlk["Weapon"] = weaponBlk
+  local weaponTypes = addWeaponsFromBlk({}, weaponsBlk, unit)
   foreach (weaponType, weaponTypeList in weaponTypes)
     foreach (weapons in weaponTypeList)
       foreach (weapon in weapons)
@@ -225,15 +225,24 @@ let function getWeaponXrayDescText(weaponBlk, unit, ediff)
 }
 
 
-let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
+local function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 {
-  let unitBlk = ::get_full_unit_blk(unit.name)
-  let primaryWeapon = getLastPrimaryWeapon(unit)
-  let secondaryWeapon = getLastWeapon(unit.name)
+  local unitBlk = ::get_full_unit_blk(unit.name)
+  local primaryWeapon = getLastPrimaryWeapon(unit)
+  local secondaryWeapon = getLastWeapon(unit.name)
 
+  local primaryBlk = getCommonWeaponsBlk(unitBlk, primaryWeapon)
   local weaponTypes = {}
-  weaponTypes = addWeaponsFromBlk(weaponTypes, getCommonWeapons(unitBlk, primaryWeapon), unit)
-  weaponTypes = addWeaponsFromBlk(weaponTypes, getWeaponsByPresetName(unitBlk, secondaryWeapon), unit)
+  if (primaryBlk)
+    weaponTypes = addWeaponsFromBlk(weaponTypes, primaryBlk, unit)
+  if (unitBlk?.weapon_presets)
+    foreach (wp in (unitBlk.weapon_presets % "preset"))
+      if (wp.name == secondaryWeapon)
+      {
+        local wpBlk = blkFromPath(wp.blk)
+        weaponTypes = addWeaponsFromBlk(weaponTypes, wpBlk, unit)
+        break
+      }
 
   if (weaponTypes?[triggerGroup])
     foreach (weapons in weaponTypes[triggerGroup])
@@ -248,18 +257,24 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 }
 
 // return short desc of unit.weapons[weaponPresetNo], like M\C\B\T
-local function getWeaponShortType(unit, weapon)
+local function getWeaponShortType(unit, weaponPresetNo=0)
 {
-  let textArr = []
-  if (weapon.frontGun)
+  if (typeof(unit) == "string")
+    unit = ::getAircraftByName(unit)
+
+  if (!unit)
+    return ""
+
+  local textArr = []
+  if (unit.weapons[weaponPresetNo].frontGun)
     textArr.append(::loc("weapons_types/short/guns"))
-  if (weapon.cannon)
+  if (unit.weapons[weaponPresetNo].cannon)
     textArr.append(::loc("weapons_types/short/cannons"))
-  if (weapon.bomb)
+  if (unit.weapons[weaponPresetNo].bomb)
     textArr.append(::loc("weapons_types/short/bombs"))
-  if (weapon.rocket)
+  if (unit.weapons[weaponPresetNo].rocket)
     textArr.append(::loc("weapons_types/short/rockets"))
-  if (weapon.torpedo)
+  if (unit.weapons[weaponPresetNo].torpedo)
     textArr.append(::loc("weapons_types/short/torpedoes"))
 
   return ::loc("weapons_types/short/separator").join(textArr)
@@ -276,31 +291,31 @@ local function getWeaponShortTypeFromWpName(wpName, unit = null)
   if (!unit)
     return ""
 
-  foreach (weapon in unit.getWeapons())
+  for (local i = 0; i < unit.weapons.len(); ++i)
   {
-    if (wpName == weapon.name)
-      return getWeaponShortType(unit, weapon)
+    if (wpName == unit.weapons[i].name)
+      return getWeaponShortType(unit, i)
   }
 
   return ""
 }
 
-let function getDefaultBulletName(unit)
+local function getDefaultBulletName(unit)
 {
   if (!("modifications" in unit))
     return ""
 
-  let ignoreGroups = [null, ""]
+  local ignoreGroups = [null, ""]
   for (local modifNo = 0; modifNo < unit.modifications.len(); modifNo++)
   {
-    let modif = unit.modifications[modifNo]
-    let modifName = modif.name;
+    local modif = unit.modifications[modifNo]
+    local modifName = modif.name;
 
-    let groupName = getModificationBulletsGroup(modifName);
+    local groupName = getModificationBulletsGroup(modifName);
     if (::isInArray(groupName, ignoreGroups))
       continue
 
-    let bData = getBulletsSetData(unit, modifName)
+    local bData = getBulletsSetData(unit, modifName)
     if (!bData || bData?.useDefaultBullet)
       return groupName + "_default"
 
@@ -309,12 +324,12 @@ let function getDefaultBulletName(unit)
   return ""
 }
 
-let function getModItemName(unit, item, limitedName = true)
+local function getModItemName(unit, item, limitedName = true)
 {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
 }
 
-let function getReqModsText(unit, item)
+local function getReqModsText(unit, item)
 {
   local reqText = ""
   foreach(rp in ["reqWeapon", "reqModification"])
@@ -329,7 +344,7 @@ let function getReqModsText(unit, item)
   return reqText
 }
 
-let function getBulletsListHeader(unit, bulletsList)
+local function getBulletsListHeader(unit, bulletsList)
 {
   local locId = ""
   if (bulletsList.weaponType == WEAPON_TYPE.ROCKETS)
@@ -353,18 +368,18 @@ let function getBulletsListHeader(unit, bulletsList)
 }
 
 //include spawn score cost
-let function getFullItemCostText(unit, item, spawnScoreOnly = false)
+local function getFullItemCostText(unit, item, spawnScoreOnly = false)
 {
   local res = ""
-  let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  local wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
+  local misRules = ::g_mis_custom_state.getCurMissionRules()
 
   if ((!::is_in_flight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()
 
   if (::is_in_flight() && misRules.isScoreRespawnEnabled)
   {
-    let scoreCostText = wType.getScoreCostText(unit, item)
+    local scoreCostText = wType.getScoreCostText(unit, item)
     if (scoreCostText.len())
       res += (res.len() ? ", " : "") + scoreCostText
   }
@@ -376,6 +391,7 @@ return {
   getWeaponNameText
   getWeaponXrayDescText
   getWeaponDescTextByTriggerGroup
+  getWeaponShortType
   getWeaponShortTypeFromWpName
   getDefaultBulletName
   getModItemName

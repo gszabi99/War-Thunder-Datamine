@@ -1,18 +1,18 @@
-let time = require("scripts/time.nut")
-let sheets = require("scripts/items/itemsShopSheets.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-let { findGenByReceptUid } = require("scripts/items/itemsClasses/itemGenerators.nut")
-let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
-let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
+local time = require("scripts/time.nut")
+local sheets = require("scripts/items/itemsShopSheets.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
+local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+local { findGenByReceptUid } = require("scripts/items/itemsClasses/itemGenerators.nut")
+local { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
+local preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
 
 ::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {})
 {
   if (configsTable.len() == 0)
     return
 
-  let params = {}
+  local params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
     "rewardImageShowTimeSec", "reUseRecipeUid" ])
@@ -31,27 +31,27 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     break
   }
 
-  let configsArray = configsTable.rawdelete(tKey)
+  local configsArray = configsTable.rawdelete(tKey)
   configsArray.sort(::trophyReward.rewardsSortComparator)
 
-  let itemId = configsArray?[0]?.itemDefId
+  local itemId = configsArray?[0]?.itemDefId
     ?? configsArray?[0]?.trophyItemDefId
     ?? configsArray?[0]?.id
     ?? ""
 
-  let trophyItem = ::ItemsManager.findItemById(itemId)
+  local trophyItem = ::ItemsManager.findItemById(itemId)
   if (!trophyItem)
   {
-    let configsArrayString = ::toString(configsArray, 2) // warning disable: -declared-never-used
-    let isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
-    let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
+    local configsArrayString = ::toString(configsArray, 2) // warning disable: -declared-never-used
+    local isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
+    local { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
       dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
     } = ::ItemsManager.getInternalItemsDebugInfo()  // warning disable: -declared-never-used
-    let trophiesBlk = ::get_price_blk()?.trophy
-    let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
-    let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
-    let trophiesListInternalString = ::toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
-    let trophiesBlkString = ::toString(trophiesBlk)  // warning disable: -declared-never-used
+    local trophiesBlk = ::get_price_blk()?.trophy
+    local currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
+    local currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
+    local trophiesListInternalString = ::toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
+    local trophiesBlkString = ::toString(trophiesBlk)  // warning disable: -declared-never-used
     local trophyBlkString = ::toString(trophiesBlk?[itemId]) // warning disable: -declared-never-used
 
     ::script_net_assert_once("not found trophyItem", "Trophy Reward: Not found item. Don't show reward.")
@@ -65,10 +65,10 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardWnd, params)
 }
 
-::gui_handlers.trophyRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/items/trophyReward.blk"
+  sceneBlkName = "gui/items/trophyReward.blk"
 
   configsArray = null
   afterFunc = null
@@ -138,9 +138,9 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
 
   function setTitle()
   {
-    let title = getTitle()
+    local title = getTitle()
 
-    let titleObj = scene.findObject("reward_title")
+    local titleObj = scene.findObject("reward_title")
     titleObj.setValue(title)
     if (daguiFonts.getStringWidthPx(title, "fontMedium", guiScene) >
       ::to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
@@ -169,15 +169,15 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
       useSingleAnimation = false
 
     ::showBtn(useSingleAnimation? "reward_roullete" : "open_chest_animation", false, scene) //hide not used animation
-    let animId = useSingleAnimation? "open_chest_animation" : "reward_roullete"
-    let animObj = scene.findObject(animId)
+    local animId = useSingleAnimation? "open_chest_animation" : "reward_roullete"
+    local animObj = scene.findObject(animId)
     if (::checkObj(animObj))
     {
       animObj.animation = "show"
       if (useSingleAnimation)
       {
         guiScene.playSound(singleAnimationGuiSound ?? "chest_open")
-        let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
+        local delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, openChest, this)
         ::Timer(animObj, 1.0, onOpenAnimFinish, this) //!!FIX ME: Some times animation finish not apply css, and we miss onOpenAnimFinish
       }
@@ -190,7 +190,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
   {
     if (opened)
       return false
-    let obj = scene.findObject("rewards_list")
+    local obj = scene.findObject("rewards_list")
     ItemsRoulette.skipAnimation(obj)
     opened = true
     updateWnd()
@@ -225,11 +225,11 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
   }
 
   function updateTrophyImage() {
-    let imageObjPlace = scene.findObject("reward_image_place")
+    local imageObjPlace = scene.findObject("reward_image_place")
     if (!::check_obj(imageObjPlace))
       return
 
-    let layersData = getIconData()
+    local layersData = getIconData()
     guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
 
@@ -240,7 +240,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
       return
     }
 
-    let imageObj = showSceneBtn("reward_image", true)
+    local imageObj = showSceneBtn("reward_image", true)
     imageObj["background-image"] = rewardImage
     imageObj.width = $"{rewardImageRatio}@chestRewardHeight"
     if (rewardImageShowTimeSec > 0)
@@ -258,12 +258,12 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     if (!opened || !useSingleAnimation)
       return
 
-    let countNotVisibleItems = shrinkedConfigsArray.len() - ::trophyReward.maxRewardsShow
+    local countNotVisibleItems = shrinkedConfigsArray.len() - ::trophyReward.maxRewardsShow
 
     if (countNotVisibleItems < 1)
       return
 
-    let obj = scene.findObject("reward_postscript")
+    local obj = scene.findObject("reward_postscript")
     if (!::check_obj(obj))
       return
 
@@ -275,11 +275,11 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     if (!opened)
       return
 
-    let obj = scene.findObject("prize_desc_div")
+    local obj = scene.findObject("prize_desc_div")
     if (!::checkObj(obj))
       return
 
-    let data = ::trophyReward.getRewardsListViewData(shrinkedConfigsArray,
+    local data = ::trophyReward.getRewardsListViewData(shrinkedConfigsArray,
                    { multiAwardHeader = true
                      widthByParentParent = true
                      header = ::loc("mainmenu/you_received")
@@ -287,16 +287,16 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
 
     if (unit && unit.isRented())
     {
-      let descTextArray = []
-      let totalRentTime = unit.getRentTimeleft()
+      local descTextArray = []
+      local totalRentTime = unit.getRentTimeleft()
       local rentText = "mainmenu/rent/rent_unit"
       if (totalRentTime > time.hoursToSeconds(rentTimeHours))
         rentText = "mainmenu/rent/rent_unit_extended"
 
       descTextArray.append(::colorize("activeTextColor",::loc(rentText)))
-      let timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
+      local timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
       descTextArray.append(::colorize("activeTextColor",::loc("mainmenu/rent/rentTimeSec", {time = timeText})))
-      let descText = "\n".join(descTextArray, true)
+      local descText = "\n".join(descTextArray, true)
       if (descText != "")
         scene.findObject("prize_desc_text").setValue(descText)
     }
@@ -316,7 +316,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
   {
     foreach(reward in configsArray)
     {
-      let rewardType = ::trophyReward.getType(reward)
+      local rewardType = ::trophyReward.getType(reward)
       haveItems = haveItems || ::trophyReward.isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit")
@@ -333,14 +333,14 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
   }
 
   function updateResourceData(resource, resourceType) {
-    let decorData = getDecoratorDataToUse(resource, resourceType)
+    local decorData = getDecoratorDataToUse(resource, resourceType)
     if (decorData.decorator == null)
       return
 
     decorator = decorData.decorator
     decoratorUnit = decorData.decoratorUnit
     decoratorSlot = decorData.decoratorSlot
-    let obj = scene.findObject("btn_use_decorator")
+    local obj = scene.findObject("btn_use_decorator")
     if (obj?.isValid())
       obj.setValue(::loc($"decorator/use/{decorator.decoratorType.resourceType}"))
   }
@@ -350,7 +350,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     local layersData = ""
     for (local i = 0; i < ::trophyReward.maxRewardsShow; i++)
     {
-      let config = shrinkedConfigsArray?[i]
+      local config = shrinkedConfigsArray?[i]
       if (config)
         layersData += ::trophyReward.getImageByConfig(config, false)
     }
@@ -358,7 +358,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     if (layersData == "")
       return ""
 
-    let layerId = "item_place_container"
+    local layerId = "item_place_container"
     local layerCfg = ::LayersIcon.findLayerCfg(trophyStyle + "_" + layerId)
     if (!layerCfg)
       layerCfg = ::LayersIcon.findLayerCfg(layerId)
@@ -381,7 +381,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
       return
 
     ::show_facebook_screenshot_button(scene, opened)
-    let isShowRewardListBtn = opened && (configsArray.len() > 1 || haveItems)
+    local isShowRewardListBtn = opened && (configsArray.len() > 1 || haveItems)
     local btnObj = showSceneBtn("btn_rewards_list", isShowRewardListBtn)
     if (isShowRewardListBtn)
       btnObj.setValue(::loc(getRewardsListLocId()))
@@ -389,7 +389,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     showSceneBtn("btn_ok", animFinished)
     showSceneBtn("btn_back", animFinished || (trophyItem?.isAllowSkipOpeningAnim() ?? false))
 
-    let prizeActionBtnId = isHidePrizeActionBtn || !animFinished ? ""
+    local prizeActionBtnId = isHidePrizeActionBtn || !animFinished ? ""
       : unit && unit.isUsable() && !::isUnitInSlotbar(unit) ? "btn_take_air"
       : rewardItem?.canRunCustomMission() ? "btn_run_custom_mission"
       : canGoToItem() ? "btn_go_to_item"
@@ -397,7 +397,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
       : isLoadingBgUnlock(trophyItem?.getUnlockId()) ? "btn_preloader_settings"
       : ""
 
-    let btnIds = [
+    local btnIds = [
       "btn_take_air",
       "btn_go_to_item",
       "btn_use_decorator",
@@ -411,7 +411,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     if (prizeActionBtnId == "btn_run_custom_mission")
       scene.findObject(prizeActionBtnId).setValue(rewardItem?.getCustomMissionButtonText())
 
-    let canReUseItem = animFinished && reUseRecipe != null
+    local canReUseItem = animFinished && reUseRecipe != null
     btnObj = showSceneBtn("btn_re_use_item", canReUseItem)
     if (canReUseItem) {
       btnObj.inactiveColor = reUseRecipe.isUsable ? "no" : "yes"
@@ -450,7 +450,7 @@ let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsMo
     if (!trophyItem?.isAllowSkipOpeningAnim())
       return false
 
-    let animObj = scene.findObject("open_chest_animation")
+    local animObj = scene.findObject("open_chest_animation")
     if (::checkObj(animObj))
       animObj.animation = "hide"
     animFinished = true

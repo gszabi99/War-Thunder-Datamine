@@ -1,8 +1,8 @@
-let contentPreset = require("scripts/customization/contentPreset.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
-let { setGuiOptionsMode } = ::require_native("guiOptions")
+local contentPreset = require("scripts/customization/contentPreset.nut")
+local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
@@ -55,7 +55,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
      )
     ::back_from_briefing = ::handlersManager.getLastBaseHandlerStartFunc()
 
-  let params = {
+  local params = {
     backSceneFunc = ::back_from_briefing
     isRestart = false
   }
@@ -72,22 +72,22 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 ::gui_start_briefing_restart <- function gui_start_briefing_restart()
 {
   dagor.debug("gui_start_briefing_restart")
-  let missionName = ::current_campaign_mission
+  local missionName = ::current_campaign_mission
   if (missionName != null)
   {
-    let missionBlk = ::DataBlock()
+    local missionBlk = ::DataBlock()
     missionBlk.setFrom(::get_meta_mission_info_by_name(::current_campaign_mission))
-    let briefingOptions = get_briefing_options(::get_game_mode(), ::get_game_type(), missionBlk)
+    local briefingOptions = get_briefing_options(::get_game_mode(), ::get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
       return ::restart_current_mission()
   }
 
-  let params = {
+  local params = {
     isRestart = true
     backSceneFunc = ::gui_start_flight_menu
   }
 
-  let finalApplyFunc = function()
+  local finalApplyFunc = function()
   {
     ::set_context_to_player("difficulty", ::get_mission_difficulty())
     ::restart_current_mission()
@@ -105,8 +105,8 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::briefing_options_apply <- function briefing_options_apply()
 {
-  let gt = ::get_game_type()
-  let gm = ::get_game_mode()
+  local gt = ::get_game_type()
+  local gm = ::get_game_mode()
   if (gm == ::GM_SINGLE_MISSION || gm == ::GM_DYNAMIC)
   {
     if (::SessionLobby.isInRoom())
@@ -160,7 +160,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk)
 {
-  let optionItems = []
+  local optionItems = []
   if (gm == ::GM_BENCHMARK || ::custom_miss_flight)
     return optionItems
 
@@ -250,8 +250,8 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
       optionItems.append([::USEROPT_BR_MAX, "spinner"])
     }
 
-    let canUseBots = !(gt & ::GT_RACE)
-    let isBotsAllowed = missionBlk?.isBotsAllowed
+    local canUseBots = !(gt & ::GT_RACE)
+    local isBotsAllowed = missionBlk?.isBotsAllowed
     if (canUseBots && isBotsAllowed == null)
     {
       optionItems.append([::USEROPT_IS_BOTS_ALLOWED, "spinner"])
@@ -287,7 +287,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
   if ((gt & ::GT_SP_USE_SKIN) && !(gt & ::GT_VERSUS))
   {
-    let aircraft = missionBlk.getStr("player_class", "")
+    local aircraft = missionBlk.getStr("player_class", "")
     ::aircraft_for_weapons = aircraft
     optionItems.append([::USEROPT_SKIN, "spinner"])
   }
@@ -303,13 +303,13 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::if_any_mission_completed_in <- function if_any_mission_completed_in(gm)
 {
-  let mi = ::get_meta_missions_info(gm)
+  local mi = ::get_meta_missions_info(gm)
   for (local i = 0; i < mi.len(); ++i)
   {
-    let missionBlk = mi[i]
+    local missionBlk = mi[i]
 
-    let chapterName = missionBlk.getStr("chapter","")
-    let name = missionBlk.getStr("name","")
+    local chapterName = missionBlk.getStr("chapter","")
+    local name = missionBlk.getStr("name","")
 
     if (::get_mission_progress(chapterName + "/" + name) < 3) // completed
       return true;
@@ -325,8 +325,8 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::get_mission_types_from_meta_mission_info <- function get_mission_types_from_meta_mission_info(metaInfo)
 {
-  let types = [];
-  let missionTypes = metaInfo.getBlockByName("missionType")
+  local types = [];
+  local missionTypes = metaInfo.getBlockByName("missionType")
   if (missionTypes)
   {
     foreach (key, val in missionTypes)
@@ -336,27 +336,27 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   return types
 }
 
-let function get_mission_desc_text(missionBlk)
+local function get_mission_desc_text(missionBlk)
 {
   local descrAdd = ""
 
-  let sm_location = missionBlk.getStr("locationName",
+  local sm_location = missionBlk.getStr("locationName",
                             ::map_to_location(missionBlk.getStr("level", "")))
   if (sm_location != "")
     descrAdd += (::loc("options/location") + ::loc("ui/colon") + ::loc("location/" + sm_location))
 
-  let sm_time = missionBlk.getStr("time", missionBlk.getStr("environment", ""))
+  local sm_time = missionBlk.getStr("time", missionBlk.getStr("environment", ""))
   if (sm_time != "")
     descrAdd += (descrAdd != "" ? "; " : "") + ::get_mission_time_text(sm_time)
 
-  let sm_weather = missionBlk.getStr("weather", "")
+  local sm_weather = missionBlk.getStr("weather", "")
   if (sm_weather != "")
     descrAdd += (descrAdd != "" ? "; " : "") + ::loc("options/weather" + sm_weather)
 
-  let aircraft = missionBlk.getStr("player_class", "")
+  local aircraft = missionBlk.getStr("player_class", "")
   if (aircraft != "")
   {
-    let sm_aircraft = ::loc("options/aircraft") + ::loc("ui/colon") +
+    local sm_aircraft = ::loc("options/aircraft") + ::loc("ui/colon") +
       getUnitName(aircraft) + "; " +
       getWeaponNameText(aircraft, null, missionBlk.getStr("player_weapons", ""), ", ")
 
@@ -369,19 +369,19 @@ let function get_mission_desc_text(missionBlk)
   return descrAdd
 }
 
-::gui_handlers.Briefing <- class extends ::gui_handlers.GenericOptions
+class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
 {
-  sceneBlkName = "%gui/briefing.blk"
-  sceneNavBlkName = "%gui/navBriefing.blk"
+  sceneBlkName = "gui/briefing.blk"
+  sceneNavBlkName = "gui/navBriefing.blk"
 
   function initScreen()
   {
     ::select_controller(true, true)
     base.initScreen()
-    let gm = ::get_game_mode()
+    local gm = ::get_game_mode()
     setGuiOptionsMode(::get_options_mode(gm))
 
-    let campaignName = ::current_campaign_id
+    local campaignName = ::current_campaign_id
     missionName = ::current_campaign_mission
 
     if (campaignName == null || missionName == null)
@@ -415,18 +415,18 @@ let function get_mission_desc_text(missionBlk)
 
     ::select_mission(missionBlk, false);
 
-    let gt = ::get_game_type(); //we know it after select_mission()
+    local gt = ::get_game_type(); //we know it after select_mission()
 
     dagor.debug(::format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, missionName))
 
-    let title = ::loc_current_mission_name()
+    local title = ::loc_current_mission_name()
     local desc = ::loc_current_mission_desc()
     picture = missionBlk.getStr("backgroundImage", "")
     restoreType = ::string_to_restore_type(missionBlk.getStr("restoreType", "attempts"))
     isTakeOff = missionBlk.getBool("optionalTakeOff", false)
     isOnline = missionBlk.getBool("isOnline", false)
 
-    let aircraft = missionBlk.getStr("player_class", "")
+    local aircraft = missionBlk.getStr("player_class", "")
     ::aircraft_for_weapons = aircraft
 
     ::mission_settings.name = missionName
@@ -435,7 +435,7 @@ let function get_mission_desc_text(missionBlk)
     ::mission_settings.weapon = missionBlk.getStr("player_weapons", "")
     ::mission_settings.players = 4;
 
-    let descrAdd = get_mission_desc_text(missionBlk)
+    local descrAdd = get_mission_desc_text(missionBlk)
     if (descrAdd != "")
       desc += (desc.len() ? "\n\n" : "") + descrAdd
 
@@ -444,12 +444,12 @@ let function get_mission_desc_text(missionBlk)
 
     optionsContainers = []
 
-    let optionItems = get_briefing_options(gm, gt, missionBlk)
-    let container = create_options_container("briefing_options", optionItems, true)
+    local optionItems = get_briefing_options(gm, gt, missionBlk)
+    local container = create_options_container("briefing_options", optionItems, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     if (optionItems.len()>0)
     {
-      let listObj = showSceneBtn("optionslist", true)
+      local listObj = showSceneBtn("optionslist", true)
       listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct
     }
     optionsContainers.append(container.descr)
@@ -475,8 +475,8 @@ let function get_mission_desc_text(missionBlk)
     if (!isValid())
       return
 
-    let gm = ::get_game_mode()
-    let gt = ::get_game_type()
+    local gm = ::get_game_mode()
+    local gt = ::get_game_type()
     local value = ""
 
     if (!misBlk)
@@ -543,7 +543,7 @@ let function get_mission_desc_text(missionBlk)
     value = getOptValue(::USEROPT_SKIN, false)
     if (value!=null && (gt & ::GT_DYNAMIC))
     {
-      let ar = ::mission_settings.missionFull.units % "armada";
+      local ar = ::mission_settings.missionFull.units % "armada";
       for (local i = 0; i < ar.len(); i++)
       {
         if (ar[i].name.indexof("#player.") != null)
@@ -718,19 +718,19 @@ let function get_mission_desc_text(missionBlk)
 
     foreach(opt in [::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
     {
-      let option = ::get_option(opt)
-      let obj = scene.findObject(option.id)
+      local option = ::get_option(opt)
+      local obj = scene.findObject(option.id)
       if (obj)
         ::mission_settings[option.sideTag + "_bitmask"] <- obj.getValue()
     }
 
     value = getOptValue(::USEROPT_BIT_UNIT_TYPES, false)
-    let option = ::get_option(::USEROPT_BIT_UNIT_TYPES)
+    local option = ::get_option(::USEROPT_BIT_UNIT_TYPES)
     if (value != null && value != option.availableUnitTypesMask)
       ::mission_settings.userAllowedUnitTypesMask <- value
 
-    let mrankMin = getOptValue(::USEROPT_BR_MIN, 0)
-    let mrankMax = getOptValue(::USEROPT_BR_MAX, 0)
+    local mrankMin = getOptValue(::USEROPT_BR_MIN, 0)
+    local mrankMax = getOptValue(::USEROPT_BR_MAX, 0)
     misBlk.ranks = ::build_blk_from_container({min = mrankMin, max = mrankMax})
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
     {
@@ -772,7 +772,7 @@ let function get_mission_desc_text(missionBlk)
     {
       ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
 
-      let mode = ::mission_settings.takeoffMode;
+      local mode = ::mission_settings.takeoffMode;
       ::dynamic_set_takeoff_mode(::mission_settings.missionFull, mode, mode);
     }
 
@@ -796,7 +796,7 @@ let function get_mission_desc_text(missionBlk)
     {
       ::show_gui(false);
 
-      let guihandler = this
+      local guihandler = this
       local nextFunc = (@(guihandler) function() {
           ::get_gui_scene().performDelayed(guihandler, function()
           {

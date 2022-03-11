@@ -1,4 +1,4 @@
-let u = require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 /**
  * Input combination.
@@ -6,7 +6,7 @@ let u = require("sqStdLibs/helpers/u.nut")
  * It may be a key combination (Ctrl + A) or
  * combinations of several axes (left gamebad trigger + right gamepad trigger.
  */
-::Input.Combination <- class extends ::Input.InputBase
+class ::Input.Combination extends ::Input.InputBase
 {
   elements = null
 
@@ -18,14 +18,14 @@ let u = require("sqStdLibs/helpers/u.nut")
 
   function getMarkup()
   {
-    let data = getMarkupData()
+    local data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
-    let data = {
-      template = "%gui/combination"
+    local data = {
+      template = "gui/combination"
       view = { elements = u.map(elements, @(element) { element = element.getMarkup()}) }
     }
 
@@ -35,7 +35,7 @@ let u = require("sqStdLibs/helpers/u.nut")
 
   function getText()
   {
-    let text = []
+    local text = []
     foreach (element in elements)
       text.append(element.getText())
 

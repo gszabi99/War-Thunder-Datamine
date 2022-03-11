@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_top_menu_sections <- {
   template = {
     name = "unknown"
@@ -27,13 +27,13 @@ g_top_menu_sections.isSeparateTab <- function isSeparateTab(section, totalSectio
 
 g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStructure, maxSectionsCount)
 {
-  let sections = []
+  local sections = []
   foreach (idx, section in sectionsStructure.types)
   {
     if (!isSeparateTab(section, maxSectionsCount))
       continue
 
-    let result = clone section
+    local result = clone section
     result.buttons = _proceedButtonsArray(section.buttons, maxSectionsCount, sectionsStructure)
     sections.append(result)
   }
@@ -46,7 +46,7 @@ g_top_menu_sections.getSectionsOrder <- function getSectionsOrder(sectionsStruct
 
 g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsArray, maxSectionsCount, sectionsStructure)
 {
-  let result = []
+  local result = []
   foreach (idx, column in itemsArray)
   {
     result.append([])
@@ -58,11 +58,11 @@ g_top_menu_sections._proceedButtonsArray <- function _proceedButtonsArray(itemsA
         continue
       }
 
-      let newSection = sectionsStructure.getSectionByName(item)
+      local newSection = sectionsStructure.getSectionByName(item)
       if (isSeparateTab(newSection, maxSectionsCount))
         continue
 
-      let newSectionResult = _proceedButtonsArray(newSection.buttons, maxSectionsCount, sectionsStructure)
+      local newSectionResult = _proceedButtonsArray(newSection.buttons, maxSectionsCount, sectionsStructure)
       foreach (columnEx in newSectionResult)
         if (columnEx)
           result[result.len() - 1].extend(columnEx)

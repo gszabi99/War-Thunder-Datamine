@@ -1,11 +1,11 @@
-let { getRoleText, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-let { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getRoleText, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
+local { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::g_unit_limit_classes <- {
 }
 
-::g_unit_limit_classes.LimitBase <- class
+class ::g_unit_limit_classes.LimitBase
 {
   name = ""
   respawnsLeft = 0
@@ -38,13 +38,13 @@ let unitTypes = require("scripts/unit/unitTypesList.nut")
   }
 }
 
-::g_unit_limit_classes.LimitByUnitName <- class extends ::g_unit_limit_classes.LimitBase
+class ::g_unit_limit_classes.LimitByUnitName extends ::g_unit_limit_classes.LimitBase
 {
   function getText()
   {
-    let unitName = nameLocId != null ? ::loc(nameLocId) : ::getUnitName(name)
+    local unitName = nameLocId != null ? ::loc(nameLocId) : ::getUnitName(name)
     local res = unitName + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
-    let weaponPresetIconsText = ::get_weapon_icons_text(
+    local weaponPresetIconsText = ::get_weapon_icons_text(
       name, ::getTblValue("weaponPresetId", presetInfo)
     )
 
@@ -67,49 +67,49 @@ let unitTypes = require("scripts/unit/unitTypesList.nut")
   }
 }
 
-::g_unit_limit_classes.LimitByUnitRole <- class extends ::g_unit_limit_classes.LimitBase
+class ::g_unit_limit_classes.LimitByUnitRole extends ::g_unit_limit_classes.LimitBase
 {
   function getText()
   {
-    let fontIcon = ::colorize("activeTextColor", getUnitRoleIcon(name))
+    local fontIcon = ::colorize("activeTextColor", getUnitRoleIcon(name))
     return fontIcon + getRoleText(name) + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }
 
-::g_unit_limit_classes.LimitByUnitExpClass <- class extends ::g_unit_limit_classes.LimitBase
+class ::g_unit_limit_classes.LimitByUnitExpClass extends ::g_unit_limit_classes.LimitBase
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(name)
-    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
+    local expClassType = getUnitClassTypeByExpClass(name)
+    local fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
     return fontIcon + expClassType.getName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }
 
-::g_unit_limit_classes.ActiveLimitByUnitExpClass <- class extends ::g_unit_limit_classes.LimitBase
+class ::g_unit_limit_classes.ActiveLimitByUnitExpClass extends ::g_unit_limit_classes.LimitBase
 {
   function getText()
   {
-    let expClassType = getUnitClassTypeByExpClass(name)
-    let fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
+    local expClassType = getUnitClassTypeByExpClass(name)
+    local fontIcon = ::colorize("activeTextColor", expClassType.getFontIcon())
     local amountText = ""
     if (distributed == ::RESPAWNS_UNLIMITED || respawnsLeft == ::RESPAWNS_UNLIMITED)
       amountText = ::colorize("activeTextColor", getRespawnsLeftText())
     else
     {
-      let color = (distributed < respawnsLeft) ? "userlogColoredText" : "activeTextColor"
+      local color = (distributed < respawnsLeft) ? "userlogColoredText" : "activeTextColor"
       amountText = ::colorize(color, distributed) + "/" + getRespawnsLeftText()
     }
     return ::loc("multiplayer/active_at_once", { nameOrIcon = fontIcon }) + ::loc("ui/colon") + amountText
   }
 }
 
-::g_unit_limit_classes.LimitByUnitType <- class extends ::g_unit_limit_classes.LimitBase
+class ::g_unit_limit_classes.LimitByUnitType extends ::g_unit_limit_classes.LimitBase
 {
   function getText()
   {
-    let unitType = unitTypes[name]
-    let fontIcon = ::colorize("activeTextColor", unitType.fontIcon)
+    local unitType = unitTypes[name]
+    local fontIcon = ::colorize("activeTextColor", unitType.fontIcon)
     return fontIcon + unitType.getArmyLocName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }
 }

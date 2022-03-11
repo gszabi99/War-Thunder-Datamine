@@ -1,7 +1,7 @@
-::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.LoadingUrlMissionModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/msgBox.blk"
+  sceneBlkName = "gui/msgBox.blk"
   timeToShowCancel = 3
   timer = -1
 
@@ -37,8 +37,8 @@
 
   function createButton(btnId, text, callbackName)
   {
-    let data = format("Button_text { id:t='%s'; btnName:t='AB'; text:t='%s'; on_click:t='%s' }", btnId, text, callbackName)
-    let holderObj = scene.findObject("buttons_holder")
+    local data = format("Button_text { id:t='%s'; btnName:t='AB'; text:t='%s'; on_click:t='%s' }", btnId, text, callbackName)
+    local holderObj = scene.findObject("buttons_holder")
     if (!holderObj)
       return
 
@@ -48,11 +48,11 @@
 
   function loadUrlMission()
   {
-    let requestCallback = ::Callback(function(success, blk) {
+    local requestCallback = ::Callback(function(success, blk) {
                                           onLoadingEnded(success, blk)
                                         }, this)
 
-    let progressCallback = ::Callback(function(dltotal, dlnow) {
+    local progressCallback = ::Callback(function(dltotal, dlnow) {
                                           onProgress(dltotal, dlnow)
                                         }, this)
 

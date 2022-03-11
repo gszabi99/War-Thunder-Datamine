@@ -1,26 +1,26 @@
-let weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
-let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
+local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
+local { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("scripts/weaponry/itemInfo.nut")
-let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
+local { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
   getModificationInfo, getModificationName
 } = require("scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildPiercingData } = require("scripts/weaponry/bulletsVisual.nut")
-let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
+local { addBulletsParamToDesc, buildPiercingData } = require("scripts/weaponry/bulletsVisual.nut")
+local { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
 } = require("scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
-let { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
-let { getActionItemAmountText, getActionItemModificationName } = require("scripts/hud/hudActionBarInfo.nut")
-let { getActionBarItems } = ::require_native("hudActionBar")
+local { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
+local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
+local { getActionItemAmountText, getActionItemModificationName } = require("scripts/hud/hudActionBarInfo.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
 
 
-let function updateModType(unit, mod)
+local function updateModType(unit, mod)
 {
   if ("type" in mod)
     return
 
-  let { name } = mod
-  let primaryWeaponsNames = getPrimaryWeaponsList(unit)
+  local { name } = mod
+  local primaryWeaponsNames = getPrimaryWeaponsList(unit)
   foreach(modName in primaryWeaponsNames)
     if (modName == name)
     {
@@ -32,15 +32,15 @@ let function updateModType(unit, mod)
   return
 }
 
-let function updateSpareType(spare)
+local function updateSpareType(spare)
 {
   if (!("type" in spare))
     spare.type <- weaponsItem.spare
 }
 
-let function getTierTooltipParams(weaponry, presetName, tierId)
+local function getTierTooltipParams(weaponry, presetName, tierId)
 {
-  let tier = weaponry.tiers?[tierId]
+  local tier = weaponry.tiers?[tierId.tostring()]
   return {
     presetName    = presetName
     tooltipLang   = tier?.tooltipLang
@@ -55,16 +55,16 @@ let function getTierTooltipParams(weaponry, presetName, tierId)
   }
 }
 
-let function getTierDescTbl(unit, params)
+local function getTierDescTbl(unit, params)
 {
-  let {presetName, tooltipLang, amountPerTier, name,
+  local {presetName, tooltipLang, amountPerTier, name,
     blk, tType, ammo, isGun, addWeaponry, tierId } = params
   if (tooltipLang != null)
     return { desc = ::loc(tooltipLang) }
 
-  let isBlock = amountPerTier > 1
+  local isBlock = amountPerTier > 1
   local header = ::loc($"weapons/{name}")
-  let desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
+  local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
     detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, value) path == blk) })
   if (::isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
@@ -74,9 +74,9 @@ let function getTierDescTbl(unit, params)
       isBlock && !isGun ? amountPerTier : ammo, ")")
 
   // Need to replace header with new one contains right weapons amount calculated per tier
-  let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
+  local descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
   descArr[0] = header
-  let res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
+  local res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
   if(::isInArray(tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
     buildPiercingData({
       bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, blk, true, false),
@@ -84,7 +84,7 @@ let function getTierDescTbl(unit, params)
 
   if (addWeaponry != null)
   {
-    let addDescBlock = getTierDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
+    local addDescBlock = getTierDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
     res.desc = $"{res.desc}\n{addDescBlock.desc}"
     if ("bulletParams" in addDescBlock)
     {
@@ -96,15 +96,15 @@ let function getTierDescTbl(unit, params)
   return res
 }
 
-let function getReqTextWorldWarArmy(unit, item)
+local function getReqTextWorldWarArmy(unit, item)
 {
   local text = ""
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  local misRules = ::g_mis_custom_state.getCurMissionRules()
   if (!misRules.needCheckWeaponsAllowed(unit))
     return text
 
-  let isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
-  let isEnabledForUnit = isWeaponEnabled(unit, item)
+  local isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
+  local isEnabledForUnit = isWeaponEnabled(unit, item)
   if (!isEnabledByMission)
     text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
   else if (isEnabledByMission && !isEnabledForUnit)
@@ -115,33 +115,33 @@ let function getReqTextWorldWarArmy(unit, item)
   return text
 }
 
-let function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null)
+local function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null){return null}
+getItemDescTbl = function(unit, item, params = null, effect = null, updateEffectFunc = null)
 {
-  let res = { name = "", desc = "", delayed = false }
-  let needShowWWSecondaryWeapons = item.type==weaponsItem.weapon && ::is_in_flight() &&
+  local res = { name = "", desc = "", delayed = false }
+  local needShowWWSecondaryWeapons = item.type==weaponsItem.weapon && ::is_in_flight() &&
     ::g_mis_custom_state.getCurMissionRules().isWorldWar
 
-  let self = callee()
   if (item.type==weaponsItem.bundle)
     return getByCurBundle(unit, item,
       function(unit, item) {
-        return self(unit, item, params, effect, updateEffectFunc)
+        return getItemDescTbl(unit, item, params, effect, updateEffectFunc)
       }, res)
 
   local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
   local desc = ""
   local addDesc = ""
   local reqText = ""
-  let curTier = "tier" in item? item.tier : 1
-  let statusTbl = getItemStatusTbl(unit, item)
+  local curTier = "tier" in item? item.tier : 1
+  local statusTbl = getItemStatusTbl(unit, item)
   local currentPrice = statusTbl.showPrice ? getFullItemCostText(unit, item) : ""
 
-  let hasPlayerInfo = params?.hasPlayerInfo ?? true
+  local hasPlayerInfo = params?.hasPlayerInfo ?? true
   if (hasPlayerInfo
     && !isWeaponTierAvailable(unit, curTier) && curTier > 1
     && !needShowWWSecondaryWeapons)
   {
-    let reqMods = ::getNextTierModsCount(unit, curTier - 1)
+    local reqMods = ::getNextTierModsCount(unit, curTier - 1)
     if(reqMods > 0)
       reqText = ::loc("weaponry/unlockModTierReq",
                       { tier = ::roman_numerals[curTier], amount = reqMods.tostring() })
@@ -182,10 +182,10 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     name = ""
     desc = getWeaponInfoText(unit, { isPrimary = true, weaponPreset = item.name,
       detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
-    let upgradesList = getItemUpgradesList(item)
+    local upgradesList = getItemUpgradesList(item)
     if(upgradesList)
     {
-      let upgradesCount = countWeaponsUpgrade(unit, item)
+      local upgradesCount = countWeaponsUpgrade(unit, item)
       if (upgradesCount?[1])
         addDesc = "\n" + ::loc("weaponry/weaponsUpgradeInstalled",
                                { current = upgradesCount[0], total = upgradesCount[1] })
@@ -210,7 +210,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     }
     else
     {
-      let info = getModificationInfo(unit, item.name, false, false, this, updateEffectFunc)
+      local info = getModificationInfo(unit, item.name, false, false, this, updateEffectFunc)
       desc = info.desc
       res.delayed = info.delayed
     }
@@ -222,15 +222,15 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
 
   if (hasPlayerInfo && statusTbl.unlocked && currentPrice != "")
   {
-    let amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
+    local amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
     if (amountText != "")
     {
-      let color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
+      local color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
       res.amountText <- ::colorize(color, ::loc("options/count") + ::loc("ui/colon") + amountText)
 
       if (::is_in_flight() && item.type==weaponsItem.weapon)
       {
-        let respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
+        local respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
           res.amountText += ::loc("ui/colon") + ::loc("respawn/leftRespawns", { num = respLeft })
       }
@@ -240,35 +240,35 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   }
   else if (params?.isInHudActionBar)
   {
-    let modData = ::u.search(getActionBarItems(),
+    local modData = ::u.search(getActionBarItems(),
       @(itemData) getActionItemModificationName(itemData, unit) == item.name)
     if (modData)
       res.amountText <- getActionItemAmountText(modData, true)
   }
 
-  let isScoreCost = ::is_in_flight()
+  local isScoreCost = ::is_in_flight()
     && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
   if (statusTbl.discountType != "" && !isScoreCost)
   {
-    let discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
+    local discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
     if (discount > 0 && statusTbl.showPrice && currentPrice != "")
     {
-      let cost = "cost" in item? item.cost : 0
-      let costGold = "costGold" in item? item.costGold : 0
-      let priceText = ::Cost(cost, costGold).getUncoloredText()
+      local cost = "cost" in item? item.cost : 0
+      local costGold = "costGold" in item? item.costGold : 0
+      local priceText = ::Cost(cost, costGold).getUncoloredText()
       if (priceText != "")
         res.noDiscountPrice <- "<color=@oldPrice>" + priceText + "</color>"
       currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
     }
   }
 
-  let repairCostCoef = getRepairCostCoef(item)
+  local repairCostCoef = getRepairCostCoef(item)
   if (repairCostCoef)
   {
-    let avgRepairMul = ::get_warpoints_blk()?.avgRepairMul ?? 1.0
-    let egdCode = ::get_current_shop_difficulty().egdCode
-    let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
-    let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
+    local avgRepairMul = ::get_warpoints_blk()?.avgRepairMul ?? 1.0
+    local egdCode = ::get_current_shop_difficulty().egdCode
+    local rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
+    local avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
       addDesc += "\n" + ::loc("shop/avg_repair_cost") + ::nbsp
         + (avgCost > 0? "+" : "")
@@ -279,7 +279,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   {
     if (!statusTbl.amount && !needShowWWSecondaryWeapons)
     {
-      let reqMods = getReqModsText(unit, item)
+      local reqMods = getReqModsText(unit, item)
       if(reqMods != "")
         reqText += (reqText==""? "" : "\n") + reqMods
     }
@@ -300,19 +300,19 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   return res
 }
 
-let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=null)
+local function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=null){}
+updateWeaponTooltip = function(obj, unit, item, handler, params={}, effect=null)
 {
-  let self = callee()
-  let descTbl = getItemDescTbl(unit, item, params, effect,
+  local descTbl = getItemDescTbl(unit, item, params, effect,
     function(effect, ...) {
       if (::checkObj(obj) && obj.isVisible())
-        self(obj, unit, item, handler, params, effect)
+        updateWeaponTooltip(obj, unit, item, handler, params, effect)
     })
 
-  let curExp = ::shop_get_module_exp(unit.name, item.name)
-  let is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
-  let is_researching = isModInResearch(unit, item)
-  let is_paused = canBeResearched(unit, item, true) && curExp > 0
+  local curExp = ::shop_get_module_exp(unit.name, item.name)
+  local is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
+  local is_researching = isModInResearch(unit, item)
+  local is_paused = canBeResearched(unit, item, true) && curExp > 0
 
   if (is_researching || is_paused || !is_researched)
   {
@@ -328,7 +328,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=nul
         expText = ::loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
           ::Cost().setRp(item.reqExp).tostring() + "</color>"
 
-      let diffExp = ::Cost().setRp(::getTblValue("diffExp", params, 0)).tostring()
+      local diffExp = ::Cost().setRp(::getTblValue("diffExp", params, 0)).tostring()
       if (diffExp.len())
         expText += " (+" + diffExp + ")"
       descTbl.expText <- expText
@@ -337,7 +337,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=nul
   else if (params?.hasPlayerInfo ?? true)
     descTbl.showPrice <- ("currentPrice" in descTbl) || ("noDiscountPrice" in descTbl)
 
-  let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"), descTbl)
+  local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"), descTbl)
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
 

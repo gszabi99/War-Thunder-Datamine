@@ -1,12 +1,12 @@
-let time = require("scripts/time.nut")
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-let ent = require("scripts/onlineShop/entitlements.nut")
-let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+local time = require("scripts/time.nut")
+local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+local ent = require("scripts/onlineShop/entitlements.nut")
+local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
-let { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+local { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
-let payMethodsCfg = [
+local payMethodsCfg = [
   { id = ::YU2_PAY_QIWI,        name = "qiwi" }
   { id = ::YU2_PAY_YANDEX,      name = "yandex" }
   { id = ::YU2_PAY_PAYPAL,      name = "paypal" }
@@ -19,11 +19,11 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
 local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
 
-::gui_handlers.OnlineShopHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/chapterModal.blk"
-  sceneNavBlkName = "%gui/navOnlineShop.blk"
+  sceneBlkName = "gui/chapterModal.blk"
+  sceneNavBlkName = "gui/navOnlineShop.blk"
   useRowVisual = false
 
   owner = null
@@ -74,7 +74,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
     setParams(params)
 
-    let blockObj = scene.findObject("chapter_include_block")
+    local blockObj = scene.findObject("chapter_include_block")
     if (::checkObj(blockObj))
       blockObj.show(true)
 
@@ -84,18 +84,18 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     groupCost = {}
 
     local data = ""
-    let rowsView = []
+    local rowsView = []
     local idx = 0
-    let isGold = chapter == "eagles"
+    local isGold = chapter == "eagles"
     local curChapter = ""
-    let eblk = ::OnlineShopModel.getPriceBlk()
+    local eblk = ::OnlineShopModel.getPriceBlk()
 
     local first = true
-    let numBlocks = eblk.blockCount()
+    local numBlocks = eblk.blockCount()
     for (local i = 0; i < numBlocks; i++)
     {
-      let ib = eblk.getBlock(i)
-      let name = ib.getBlockName()
+      local ib = eblk.getBlock(i)
+      local name = ib.getBlockName()
       if (chapter == null && ::isInArray(ib?.chapter, skipChapters))
         continue
       if (chapter != null && ib?.chapter != chapter)
@@ -110,7 +110,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       //load data from eBlk
       for (local j = 0; j < ib.paramCount(); j++)
       {
-        let paramName = ib.getParamName(j)
+        local paramName = ib.getParamName(j)
         if (!(paramName in goods[name]))
           goods[name][paramName] <- ib.getParamValue(j)
       }
@@ -120,8 +120,8 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
       foreach(param in ["entitlementGift", "aircraftGift", "showEntAsGift"])
       {
-        let arr = []
-        let list = ib % param
+        local arr = []
+        local list = ib % param
         foreach(l in list)
           if (!::isInArray(l, arr))
             arr.append(l)
@@ -149,25 +149,25 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
           if (goods[name].chapter != curChapter)
           {
             curChapter = goods[name].chapter
-            let view = {
+            local view = {
               itemTag = "chapter_item_unlocked"
               id = curChapter
               itemText = "#charServer/chapter/" + curChapter
             }
-            data += ::handyman.renderCached("%gui/missions/missionBoxItem", view)
+            data += ::handyman.renderCached("gui/missions/missionBoxItem", view)
           }
           if (goods[name]?.chapterImage)
             chImages[goods[name].chapter] <- goods[name].chapterImage
         }
 
-        let discount = ::g_discount.getEntitlementDiscount(name)
-        let view = {
+        local discount = ::g_discount.getEntitlementDiscount(name)
+        local view = {
           itemIcon = getItemIcon(name)
           id = name
           isSelected = first
           discountText = discount > 0? ("-" + discount + "%") : null
         }
-        data += ::handyman.renderCached("%gui/missions/missionBoxItem", view)
+        data += ::handyman.renderCached("gui/missions/missionBoxItem", view)
       }
       first = false
       idx++
@@ -181,19 +181,19 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       scene.findObject("wnd_update").setUserData(this)
       scene.findObject("wnd_title").setValue(::loc("charServer/chapter/" + chapter))
 
-      let rootObj = scene.findObject("wnd_frame")
+      local rootObj = scene.findObject("wnd_frame")
       rootObj["class"] = "wnd"
       rootObj.width = "@onlineShopWidth + 2@blockInterval"
       rootObj.padByLine = "yes"
-      let contentObj = scene.findObject("wnd_content")
+      local contentObj = scene.findObject("wnd_content")
       contentObj.flow = "vertical"
 
-      data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow"), {
+      data = ::handyman.renderCached(("gui/onlineShop/onlineShopWithVisualRow"), {
         chImages = (chapter in chImages) ? $"#ui/onlineShop/{chImages[chapter]}" : null
         rows = rowsView
       })
       guiScene.replaceContentFromText(contentObj, data, data.len(), this)
-      let tblObj = scene.findObject("items_list")
+      local tblObj = scene.findObject("items_list")
 
       guiScene.setUpdatesEnabled(true, true)
       guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
@@ -203,16 +203,16 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       scene.findObject("chapter_update").setUserData(this)
       scene.findObject("chapter_name").setValue(::loc("mainmenu/btnOnlineShop"))
 
-      let listObj = scene.findObject("items_list")
+      local listObj = scene.findObject("items_list")
       guiScene.replaceContentFromText(scene.findObject("items_list"), data, data.len(), this)
 
       foreach(name, item in goods)
       {
-        let obj = listObj.findObject("txt_" + name)
+        local obj = listObj.findObject("txt_" + name)
         if (obj)
         {
           local text = ent.getEntitlementName(item)
-          let priceText = getItemPriceText(name)
+          local priceText = getItemPriceText(name)
           if (priceText!="")
             text = ::format("(%s) %s", priceText, text)
           obj.setValue(text)
@@ -222,8 +222,8 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       }
     }
 
-    let rBlk = ::get_ranks_blk()
-    let wBlk = ::get_warpoints_blk()
+    local rBlk = ::get_ranks_blk()
+    local wBlk = ::get_warpoints_blk()
     premiumRpMult = rBlk?.xpMultiplier || 1.0
     premiumWpMult = wBlk?.wpMultiplier || 1.0
     premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
@@ -273,11 +273,11 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function getPricePerItem(item)
   {
-    let value = ent.getEntitlementAmount(item)
+    local value = ent.getEntitlementAmount(item)
     if (value <= 0)
       return 0
 
-    let cost = getPrice(item)
+    local cost = getPrice(item)
     return cost.tofloat() / value
   }
 
@@ -307,7 +307,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
           return false
       return true
     }
-    let realname = item?.alias ?? item.name
+    local realname = item?.alias ?? item.name
     return (isBuyOnce(item) && ::has_entitlement(realname))
   }
 
@@ -322,8 +322,8 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     if (product == null)
       return ""
 
-    let resArr = []
-    let paramTbl = {
+    local resArr = []
+    local paramTbl = {
       bonusRpPercent           = bonusPercentText(premiumRpMult)
       bonusWpPercent           = bonusPercentText(premiumWpMult)
       bonusBattleTimeWpPercent = bonusPercentText(premiumBattleTimeWpMult)
@@ -332,12 +332,12 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     if (product?.useGroupAmount && ("group" in product))
       paramTbl.amount <- ent.getEntitlementAmount(product).tointeger()
 
-    let locId = "charServer/entitlement/{0}/desc".subst(ent.getEntitlementLocId(product))
+    local locId = "charServer/entitlement/{0}/desc".subst(ent.getEntitlementLocId(product))
     resArr.append(::loc(locId, paramTbl))
 
     foreach(giftName in product.entitlementGift)
     {
-      let config = ent.getEntitlementConfig(giftName)
+      local config = ent.getEntitlementConfig(giftName)
       resArr.append(format(::loc("charServer/gift/entitlement"), ent.getEntitlementName(config)))
     }
     foreach(airName in product.aircraftGift)
@@ -351,11 +351,11 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
     if (("ttl" in product) || ("httl" in product))
     {
-      let renewText = ent.getEntitlementTimeText(product)
+      local renewText = ent.getEntitlementTimeText(product)
       if (renewText!="")
       {
-        let realname = ("alias" in product) ? product.alias : productId
-        let expire = entitlement_expires_in(realname == "PremiumAccount"
+        local realname = ("alias" in product) ? product.alias : productId
+        local expire = entitlement_expires_in(realname == "PremiumAccount"
           ? ::shop_get_premium_account_ent_name()
           : realname)
         if (expire>0)
@@ -366,31 +366,31 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       }
     }
 
-    let priceText = ent.getEntitlementPrice(product)
+    local priceText = ent.getEntitlementPrice(product)
     if (!useRowVisual && priceText!="")
     {
       local priceInfo = ""
       if (("group" in product) && (product.group in groupCost))
       {
-        let itemPrice = getPricePerItem(product)
-        let defItemPrice = groupCost[product.group]
+        local itemPrice = getPricePerItem(product)
+        local defItemPrice = groupCost[product.group]
         if (itemPrice && defItemPrice)
         {
-          let discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
+          local discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
           if (discount != 0)
             priceInfo = format(::loc("charServer/entitlement/discount"), discount)
         }
       } else
         if (productId in bundles)
         {
-          let itemPrice = getPrice(product)
+          local itemPrice = getPrice(product)
           local bundlePrice = 0
           foreach(name in bundles[productId])
             if (name in goods)
               bundlePrice += getPrice(goods[name])
           if (bundlePrice>0)
           {
-            let discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
+            local discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
             priceInfo = format(::loc("charServer/entitlement/discount"), discount)
           }
         }
@@ -402,7 +402,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
     if (product?.chapter == "warpoints")
     {
-      let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
+      local days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
       if (days > 0)
         resArr.append(::colorize("warningTextColor",
           ::loc("charServer/chapter/warpoints/expireWarning", { days = days })))
@@ -425,7 +425,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     scene.findObject("btn_buy_online").setValue(::loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
 
     local discountText = ""
-    let discount = ::g_discount.getEntitlementDiscount(product.name)
+    local discount = ::g_discount.getEntitlementDiscount(product.name)
     if (product != null && discount > 0)
       discountText = "-" + discount + "%"
     scene.findObject("buy_online-discount").setValue(discountText)
@@ -433,14 +433,14 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function onItemSelect()
   {
-    let listObj = scene.findObject("items_list")
-    let value = listObj.getValue()
+    local listObj = scene.findObject("items_list")
+    local value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return
 
-    let obj = listObj.getChild(value)
+    local obj = listObj.getChild(value)
     task = obj.id
-    let product = goods?[task]
+    local product = goods?[task]
     updateProductInfo(product, task)
   }
 
@@ -471,11 +471,11 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function goForwardIfPurchase()
   {
-    let taskId = ::purchase_entitlement(task)
-    let taskOptions = {
+    local taskId = ::purchase_entitlement(task)
+    local taskOptions = {
       showProgressBox = true
     }
-    let taskSuccessCallback = ::Callback(function ()
+    local taskSuccessCallback = ::Callback(function ()
       {
         goForward(startFunc)
       }, this)
@@ -484,20 +484,20 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function onStart()  //onBuy
   {
-    let product = goods?[task]
+    local product = goods?[task]
     if (product == null || isBought(product))
       return
     if (product?.onlinePurchase ?? false)
       return onOnlinePurchase(task)
 
-    let costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
-    let price = ::Cost(0, costGold)
-    let msgText = ::warningIfGold(
+    local costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
+    local price = ::Cost(0, costGold)
+    local msgText = ::warningIfGold(
       ::loc("onlineShop/needMoneyQuestion",
         {purchase = ent.getEntitlementName(product), cost = price.getTextAccordingToBalance()}),
       price)
-    let curIdx = scene.findObject("items_list").getValue()
-    let onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curIdx)
+    local curIdx = scene.findObject("items_list").getValue()
+    local onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curIdx)
     msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
@@ -511,17 +511,17 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function onOnlinePurchase(itemId)
   {
-    let payMethods = yuplay2_get_payment_methods()
+    local payMethods = yuplay2_get_payment_methods()
     if (!payMethods || ::steam_is_running() || !::has_feature("PaymentMethods"))
       return ::OnlineShopModel.doBrowserPurchase(itemId)
 
-    let items = []
+    local items = []
     local selItem = null
     foreach(method in payMethodsCfg)
       if (payMethods & method.id)
       {
-        let payMethodId = method.id
-        let name = "yuNetwork/payMethod/" + method.name
+        local payMethodId = method.id
+        local name = "yuNetwork/payMethod/" + method.name
         items.append({
           name = name
           icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
@@ -530,7 +530,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
         selItem = selItem || name
       }
 
-    let name = "yuNetwork/payMethod/other"
+    local name = "yuNetwork/payMethod/other"
     items.append({
       name = name
       icon = ""
@@ -543,7 +543,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function onYuplayPurchase(itemId, payMethod, nameLocId)
   {
-    let msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
+    local msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
       purchase = ::colorize("activeTextColor", ent.getEntitlementName(goods[itemId])),
       paymentSystem = ::colorize("userlogColoredText", ::loc(nameLocId))
     })
@@ -555,13 +555,13 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function doYuplayPurchase(itemId, payMethod)
   {
-    let guid = bundlesShopInfo.value?[itemId].guid ?? ""
+    local guid = bundlesShopInfo.value?[itemId].guid ?? ""
     ::dagor.assertf(guid != "", $"Error: not found guid for {itemId}")
 
-    let response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
+    local response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
     if (response != ::YU2_OK)
     {
-      let errorText = ::get_yu2_error_text(response)
+      local errorText = ::get_yu2_error_text(response)
       msgBox("errorMessageBox", errorText, [["ok", function(){}]], "ok")
       ::dagor.debug($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return
@@ -584,12 +584,12 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     if (!obj)
       return
 
-    let pObj = obj.getParent()
+    local pObj = obj.getParent()
     if (!pObj || !(pObj?.id in goods))
       return
-    let id = pObj.id
+    local id = pObj.id
 
-    let listObj = scene.findObject("items_list")
+    local listObj = scene.findObject("items_list")
     if (!listObj)
       return
     for (local idx = 0; idx < listObj.childrenCount(); idx++)
@@ -608,11 +608,11 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     if (useRowVisual)
       return
 
-    let obj = scene.findObject("items_list").findObject(name)
-    let curIcon = getItemIcon(name)
+    local obj = scene.findObject("items_list").findObject(name)
+    local curIcon = getItemIcon(name)
     if (curIcon && obj)
     {
-      let medalObj = obj.findObject("medal_icon")
+      local medalObj = obj.findObject("medal_icon")
       if (medalObj)
         medalObj["background-image"] = curIcon
     }
@@ -640,21 +640,21 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
 
   function getRowView(item, isGold, even) {
     local amount = ent.getEntitlementAmount(item)
-    let additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
+    local additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
     local amountText = ""
     local savingText = ""
-    let discount = ::g_discount.getEntitlementDiscount(item.name)
-    let productInfo = bundlesShopInfo.value?[item.name]
+    local discount = ::g_discount.getEntitlementDiscount(item.name)
+    local productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
       savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
     else if (productInfo?.discount_mul)
       savingText = ::format(::loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
     else if (item?.group && item.group in groupCost) {
-      let itemPrice = getPrice(item)
-      let defItemPrice = groupCost[item.group]
+      local itemPrice = getPrice(item)
+      local defItemPrice = groupCost[item.group]
       if (itemPrice && defItemPrice && (!isGold || !::steam_is_running())) {
-        let calcAmount = amount + additionalAmount
+        local calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
         if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
@@ -662,7 +662,7 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
       }
     }
 
-    let isTimeAmount = item?.httl || item?.ttl
+    local isTimeAmount = item?.httl || item?.ttl
     if (isTimeAmount)
       amount *= 24
 
@@ -671,10 +671,10 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
     else {
       amount = amount.tointeger()
 
-      let originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
+      local originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
       local addString = ""
       if (additionalAmount > 0) {
-        let addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
+        local addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
         addString = ::loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
       }
 
@@ -693,10 +693,10 @@ local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMea
   }
 }
 
-::gui_handlers.OnlineShopRowHandler <- class extends ::gui_handlers.OnlineShopHandler
+class ::gui_handlers.OnlineShopRowHandler extends ::gui_handlers.OnlineShopHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/emptyFrame.blk"
+  sceneBlkName = "gui/emptyFrame.blk"
   sceneNavBlkName = null
   useRowVisual = true
 

@@ -16,7 +16,7 @@ foreach (fn in [
                  "baseGuiHandlerManager.nut"
                  "framedMessageBox.nut"
                ])
-  ::g_script_reloader.loadOnce("%sqDagui/framework/" + fn)
+  ::g_script_reloader.loadOnce("sqDagui/framework/" + fn)
 
 
 ::open_url_by_obj <- function open_url_by_obj(obj)
@@ -26,6 +26,6 @@ foreach (fn in [
   if (!("open_url" in getroottable()))
     return
 
-  let link = (obj.link.slice(0, 1) == "#") ? ::loc(obj.link.slice(1)) : obj.link
+  local link = (obj.link.slice(0, 1) == "#") ? ::loc(obj.link.slice(1)) : obj.link
   ::open_url(link, false, false, obj?.bqKey ?? obj?.id)
 }

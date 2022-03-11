@@ -1,17 +1,17 @@
-let getGamepadHotkeys = require("getGamepadHotkeys.nut")
-let { mkImageCompByDargKey } = require("gamepadImgByKey.nut")
-let { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
-let focusBorder = require("reactiveGui/components/focusBorder.nut")
+local getGamepadHotkeys = require("getGamepadHotkeys.nut")
+local { mkImageCompByDargKey } = require("gamepadImgByKey.nut")
+local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
+local focusBorder = require("reactiveGui/components/focusBorder.nut")
 
-let gap = ::scrn_tgt(0.005)
+local gap = ::scrn_tgt(0.005)
 return function(textComp, params, handler, group, sf){
-  let gamepadHotkey = getGamepadHotkeys(params?.hotkeys)
+  local gamepadHotkey = getGamepadHotkeys(params?.hotkeys)
   if (gamepadHotkey == "")
     return textComp
-  let gamepadBtn = mkImageCompByDargKey(gamepadHotkey, sf)
+  local gamepadBtn = mkImageCompByDargKey(gamepadHotkey, sf)
   return [
     function() {
-      let ac = showConsoleButtons.value
+      local ac = showConsoleButtons.value
       return ac ? {
         size = SIZE_TO_CONTENT
         minWidth = ::scrn_tgt(0.16)

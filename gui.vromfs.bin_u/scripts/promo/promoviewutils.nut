@@ -28,25 +28,25 @@
 */
 g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(scene, blockId, text)
 {
-  let animSizeObj = getCollapsedAnimSizeObj(scene, blockId)
+  local animSizeObj = getCollapsedAnimSizeObj(scene, blockId)
   if (!::checkObj(animSizeObj))
   {
     ::dagor.assertf(false, "g_promo_view_utils: try to anim update text for not existing block: " + blockId)
     return
   }
 
-  let prevShowIdx = animSizeObj.getIntProp(collapsedTextIdxPID, -1)
-  let isInited = prevShowIdx >= 0
-  let setIdx = isInited ? (prevShowIdx + 1) % collapsedTextBlocksAnim.len() : 0
+  local prevShowIdx = animSizeObj.getIntProp(collapsedTextIdxPID, -1)
+  local isInited = prevShowIdx >= 0
+  local setIdx = isInited ? (prevShowIdx + 1) % collapsedTextBlocksAnim.len() : 0
   animSizeObj.setIntProp(collapsedTextIdxPID, setIdx)
 
   foreach(idx, animData in collapsedTextBlocksAnim)
   {
-    let textObj = scene.findObject(blockId + animData.blockEnding)
+    local textObj = scene.findObject(blockId + animData.blockEnding)
     if (!::checkObj(textObj))
       continue
 
-    let isCurrent = idx == setIdx
+    local isCurrent = idx == setIdx
     textObj.animation = isCurrent ? "show" : "hide"
 
     if (!isCurrent)
@@ -55,7 +55,7 @@ g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(s
     textObj.setValue(text)
     textObj.getScene().applyPendingChanges(false)
 
-    let width = textObj.getSize()[0]
+    local width = textObj.getSize()[0]
     animSizeObj[animData.animSizeParamId] = width.tostring()
     animSizeObj.animation = animData.sizeObjAnim
 
@@ -67,7 +67,7 @@ g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(s
 g_promo_view_utils.getVisibleCollapsedTextObj <- function getVisibleCollapsedTextObj(scene, blockId)
 {
   local idx = 0
-  let sizeObj = getCollapsedAnimSizeObj(scene, blockId)
+  local sizeObj = getCollapsedAnimSizeObj(scene, blockId)
   if (::checkObj(sizeObj))
      idx = sizeObj.getIntProp(collapsedTextIdxPID, 0) % collapsedTextBlocksAnim.len()
   return scene.findObject(blockId + collapsedTextBlocksAnim[idx].blockEnding)

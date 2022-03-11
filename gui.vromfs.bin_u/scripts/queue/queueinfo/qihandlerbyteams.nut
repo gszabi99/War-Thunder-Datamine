@@ -1,4 +1,4 @@
-::gui_handlers.QiHandlerByTeams <- class extends ::gui_handlers.QiHandlerBase
+class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
 {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
@@ -8,7 +8,7 @@
     local myTeamNum = ::queues.getQueueTeam(queue)
     if (myTeamNum == Team.Any)
     {
-      let teams = ::events.getAvailableTeams(event)
+      local teams = ::events.getAvailableTeams(event)
       if (teams.len() == 1)
         myTeamNum = teams[0]
     }
@@ -19,17 +19,17 @@
 
   function updateQueueStats(clusters, queueStats, myTeamNum)
   {
-    let teams = ::events.getSidesList(event)
+    local teams = ::events.getSidesList(event)
     foreach(team in ::events.getSidesList())
     {
-      let show = ::isInArray(team, teams)
+      local show = ::isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
-      let blockObj = showSceneBtn(team + "_block", show)
+      local blockObj = showSceneBtn(team + "_block", show)
       if (!show)
         continue
 
-      let teamName = ::events.getTeamName(team)
-      let teamData = ::events.getTeamData(event, team)
+      local teamName = ::events.getTeamName(team)
+      local teamData = ::events.getTeamData(event, team)
 
       local tableMarkup = ""
       local playersCountText = ""
@@ -46,8 +46,8 @@
 
       if (!queueStats.isClanStats)
       {
-        let clusterName = queueStats.getMaxClusterName()
-        let players = queueStats.getPlayersCountByTeam(teamName, clusterName)
+        local clusterName = queueStats.getMaxClusterName()
+        local players = queueStats.getPlayersCountByTeam(teamName, clusterName)
         if (clusterName == "")
           playersCountText = ::loc("events/players_count")
         else
@@ -82,7 +82,7 @@
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
-    let queueTableObj = teamObj.findObject("table_queue_stat")
+    local queueTableObj = teamObj.findObject("table_queue_stat")
     if (!::checkObj(queueTableObj))
       return
     guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
@@ -91,21 +91,21 @@
   function getQueueTableMarkup(queueStats, teamName, clusters)
   {
     local res = buildQueueStatsHeader()
-    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    local rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     if (queueStats.isMultiCluster)
     {
-      let maxCluster = queueStats.getMaxClusterName()
-      let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
-      let rowData = buildQueueStatsRowData(teamStats)
+      local maxCluster = queueStats.getMaxClusterName()
+      local teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
+      local rowData = buildQueueStatsRowData(teamStats)
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
       return res
     }
 
     foreach (clusterName in clusters)
     {
-      let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
-      let rowData = buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
+      local teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
+      local rowData = buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
     }
     return res
@@ -113,40 +113,40 @@
 
   function getClanQueueTableMarkup(queueStats)
   {
-    let totalClans = queueStats.getClansCount()
+    local totalClans = queueStats.getClansCount()
     if (!totalClans)
       return ""
 
     local res = buildQueueStatsHeader()
-    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    local rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
-    let myClanQueueTable = queueStats.getMyClanQueueTable()
+    local myClanQueueTable = queueStats.getMyClanQueueTable()
     if (myClanQueueTable)
     {
-      let headerData = [{
+      local headerData = [{
         text = ::loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
       }]
       res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-      let rowData = buildQueueStatsRowData(myClanQueueTable)
+      local rowData = buildQueueStatsRowData(myClanQueueTable)
       res += ::buildTableRow("", rowData, null, rowParams, "0")
     }
 
-    let headerData = [{
+    local headerData = [{
       text = ::loc("multiplayer/clansInQueue")
       width = "0.1@sf"
     }]
     res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-    let rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
+    local rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
     res += ::buildTableRow("", rowData, null, rowParams, "0")
     return res
   }
 
   function buildQueueStatsRowData(queueStatData, clusterNameLoc = "")
   {
-    let params = []
+    local params = []
     params.append({
                     text = clusterNameLoc
                     tdalign = "center"
@@ -165,7 +165,7 @@
 
   function buildQueueStatsHeader()
   {
-    let headerData = []
+    local headerData = []
     for(local i = 0; i <= ::max_country_rank; i++)
     {
       headerData.append({

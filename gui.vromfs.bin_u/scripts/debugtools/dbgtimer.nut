@@ -1,4 +1,4 @@
-let { DBGLEVEL } = require("dagor.system")
+local { DBGLEVEL } = require("dagor.system")
 
 // warning disable: -file:forbidden-function
 

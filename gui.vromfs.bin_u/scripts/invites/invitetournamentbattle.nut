@@ -1,9 +1,11 @@
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { getTextWithCrossplayIcon,
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
-::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
+class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   battleId = ""
@@ -66,10 +68,10 @@ let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
   {
     local needSave = false
 
-    let total = ::get_user_logs_count()
+    local total = ::get_user_logs_count()
     for (local i = total-1; i >= 0; i--)
     {
-      let blk = ::DataBlock()
+      local blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
 
       if ( (blk.type == ::EULT_INVITE_TO_TOURNAMENT) &&
@@ -82,7 +84,7 @@ let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
   function remove()
   {
-    let needSave = disableCurInviteUserlog()
+    local needSave = disableCurInviteUserlog()
 
     base.remove()
 
@@ -95,7 +97,7 @@ let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
   function haveRestrictions()
   {
-    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated()
+    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated() || !isMultiplayerPrivilegeAvailable()
   }
 
   function getRestrictionText()
@@ -105,6 +107,8 @@ let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
     if (isOutdated())
       return ::loc("multiplayer/invite_is_overtimed")
+    if (!isMultiplayerPrivilegeAvailable())
+      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
 
@@ -120,6 +124,9 @@ let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+      return
+
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     if (!isAvailableByCrossPlay())

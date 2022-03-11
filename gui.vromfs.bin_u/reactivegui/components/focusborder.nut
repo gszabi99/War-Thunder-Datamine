@@ -1,6 +1,6 @@
-let { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
+local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
 
-let focusBorder = @(override = {})
+local focusBorder = @(override = {})
   @() {
     size = flex()
     watch = showConsoleButtons

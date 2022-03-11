@@ -2,7 +2,7 @@ local onSetTarget = null    //onSetTarget(oDaguiObject)
 local onUnsetTarget = null  //onUnsetTarget(DaguiObject)
 local shouldHideImage = false
 
-let bhvFocusFrameTarget = class
+local bhvFocusFrameTarget = class
 {
   function onAttach(obj)
   {
@@ -27,7 +27,7 @@ let bhvFocusFrameTarget = class
 
   static function hideImage(obj)
   {
-    let focusImageSource = obj.getFinalProp("focusImageSource")
+    local focusImageSource = obj.getFinalProp("focusImageSource")
     if (focusImageSource == null)
       return
 

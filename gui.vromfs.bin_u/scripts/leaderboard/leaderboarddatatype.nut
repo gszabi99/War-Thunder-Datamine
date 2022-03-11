@@ -1,7 +1,7 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local time = require("scripts/time.nut")
+local stdMath = require("std/math.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 ::g_lb_data_type <- {
   types = []
@@ -13,7 +13,7 @@ let { getPlayerName } = require("scripts/clientState/platform.nut")
 
 g_lb_data_type._getStandartTooltip <- function _getStandartTooltip(lbDataType, value)
 {
-  let shortText = lbDataType.getShortTextByValue(value)
+  local shortText = lbDataType.getShortTextByValue(value)
   local fullText = lbDataType.getFullTextByValue(value)
   return fullText != shortText ? (::loc("leaderboards/exactValue") + ::loc("ui/colon") + fullText) : ""
 }
@@ -168,7 +168,7 @@ enums.addTypesByGlobalName("g_lb_data_type", {
 
     getPrimaryTooltipText = function (value, allowNegative =false) {
       local res = ::loc("clan/roleRights")+" \n"
-      let rights = ::clan_get_role_rights(value)
+      local rights = ::clan_get_role_rights(value)
 
       if (rights.len() > 0)
         foreach(right in rights)

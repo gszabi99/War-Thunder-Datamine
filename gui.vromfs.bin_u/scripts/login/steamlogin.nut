@@ -1,12 +1,12 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { setGuiOptionsMode } = ::require_native("guiOptions")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
 
-::gui_handlers.LoginWndHandlerSteam <- class extends ::gui_handlers.LoginWndHandler
+class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
 {
-  sceneBlkName = "%gui/loginBoxSimple.blk"
+  sceneBlkName = "gui/loginBoxSimple.blk"
 
   function initScreen()
   {
@@ -16,7 +16,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
     showTitleLogo(scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    let lp = ::get_login_pass()
+    local lp = ::get_login_pass()
     defaultSaveLoginFlagVal = lp.login != ""
     defaultSavePasswordFlagVal = lp.password != ""
     defaultSaveAutologinFlagVal = ::is_autologin_enabled()
@@ -26,7 +26,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
     if (::g_login.isAuthorized())
       return
 
-    let useSteamLoginAuto = ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID)
+    local useSteamLoginAuto = ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID)
     if (!::has_feature("AllowSteamAccountLinking"))
     {
       if (!useSteamLoginAuto) //can be null or false

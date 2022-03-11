@@ -1,27 +1,27 @@
 from "functools.nut" import *
 
-let {Task} = require("monads.nut")
-let http = require("dagor.http")
+local {Task} = require("monads.nut")
+local http = require("dagor.http")
 //local dlog = require("log.nut")().dlog
 /*
   todo:
     ? handle http code different from 200..300 as error
 */
 
-let statusText = {
+local statusText = {
   [http.SUCCESS] = "SUCCESS",
   [http.FAILED] = "FAILED",
   [http.ABORTED] = "ABORTED",
 }
 
-let function httpGet(url, callback){
+local function httpGet(url, callback){
   http.request({
     url
     method = "GET"
     callback
   })
 }
-let function TaskHttpGet(url) {
+local function TaskHttpGet(url) {
   return Task(function(rejectFn, resolveFn) {
     println($"http 'get' requested for '{url}'")
     http.request({
@@ -29,8 +29,8 @@ let function TaskHttpGet(url) {
       method = "GET"
       callback = tryCatch(
         function(response){
-          let status = response.status
-          let sttxt = statusText?[status]
+          local status = response.status
+          local sttxt = statusText?[status]
           println($"http status for '{url}' = {sttxt}")
           if (status != http.SUCCESS) {
             throw($"http error status = {sttxt}")
@@ -43,21 +43,21 @@ let function TaskHttpGet(url) {
   })
 }
 
-let UNRESOLVED = persist("UNRESOLVED", @() {})
-let RESOLVED = persist("UNRESOLVED", @() {})
-let REJECTED = persist("REJECTED", @() {})
+local UNRESOLVED = persist("UNRESOLVED", @() {})
+local RESOLVED = persist("UNRESOLVED", @() {})
+local REJECTED = persist("REJECTED", @() {})
 
-let function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {
+local function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {
   assert(typeof urls == "array", @() $"expected urls as 'array' got '{typeof urls}'")
   assert(typeof rejectOne == "function" && typeof resolveOne == "function", "incorrect type of arguments")
   return Task(function(rejectFn, resolveFn) {
-    let total = urls.len()
-    let res = array(total)
-    let statuses = array(total, UNRESOLVED)
+    local total = urls.len()
+    local res = array(total)
+    local statuses = array(total, UNRESOLVED)
     local executed = false
-    let function checkStatus(){
-      let rejected = statuses.findindex(@(v) v==REJECTED) != null
-      let resolved = !rejected && statuses.filter(@(v) v==RESOLVED).len() == total
+    local function checkStatus(){
+      local rejected = statuses.findindex(@(v) v==REJECTED) != null
+      local resolved = !rejected && statuses.filter(@(v) v==RESOLVED).len() == total
       if (resolved && !executed){
         executed = true
         resolveFn(res)
@@ -68,16 +68,16 @@ let function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {
       }
     }
     foreach (i, u in urls) {
-      let id = i
-      let url = u
+      local id = i
+      local url = u
       println($"http requested get for '{url}'")
       http.request({
         url
         method = "GET"
         callback = tryCatch(
           function(response){
-            let status = response.status
-            let sttxt = statusText?[status]
+            local status = response.status
+            local sttxt = statusText?[status]
             println($"http status for '{url}' = {sttxt}")
             if (status != http.SUCCESS) {
               throw($"http error status = {sttxt}")

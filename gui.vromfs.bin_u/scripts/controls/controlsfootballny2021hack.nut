@@ -6,30 +6,30 @@
  * and restores the original controls after the mission or on login.
  */
 
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
-let function shouldManageControls() {
+local function shouldManageControls() {
   return (::is_xinput_device() || ::have_xinput_device()) && ::g_login.isProfileReceived()
 }
 
-let function removeSingleGamepadBtnId(hc, btnId) {
+local function removeSingleGamepadBtnId(hc, btnId) {
   return hc.filter(@(sc) sc.len() != 1 || sc[0]?.deviceId != ::JOYSTICK_DEVICE_0_ID || sc[0]?.buttonId != btnId)
 }
 
-let function addSingleGamepadBtnId(hc, btnId) {
+local function addSingleGamepadBtnId(hc, btnId) {
   return removeSingleGamepadBtnId(hc, btnId).append([ { deviceId = ::JOYSTICK_DEVICE_0_ID, buttonId = btnId } ])
 }
 
-let function isHotkeyEmpty(hc) {
+local function isHotkeyEmpty(hc) {
   return hc.len() == 0 || (hc.len() == 1 && hc[0].len() == 0)
 }
 
 //==============================================================================
 
-let function tryControlsOverride()
+local function tryControlsOverride()
 {
   if (!shouldManageControls())
     return false
@@ -38,9 +38,9 @@ let function tryControlsOverride()
   if (::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
     return false
 
-  let preset = ::g_controls_manager.getCurPreset()
-  let hcPrimaryGun = preset.getHotkey("ID_FIRE_GM")
-  let hcMachineGun = preset.getHotkey("ID_FIRE_GM_MACHINE_GUN")
+  local preset = ::g_controls_manager.getCurPreset()
+  local hcPrimaryGun = preset.getHotkey("ID_FIRE_GM")
+  local hcMachineGun = preset.getHotkey("ID_FIRE_GM_MACHINE_GUN")
 
   // Searching for a PrimaryGun/MachineGun shared shortcut (like RT by default).
 
@@ -63,7 +63,7 @@ let function tryControlsOverride()
 
   // Searching for a btn where ID_FIRE_GM_MACHINE_GUN can be moved.
 
-  let preserveHotkeys = [
+  local preserveHotkeys = [
     "ID_FLIGHTMENU_SETUP" // Absolutely must have
     "ID_FIRE_GM" // Used to hit the ball
     "ID_FIRE_GM_MACHINE_GUN" // Used to jump
@@ -77,7 +77,7 @@ let function tryControlsOverride()
     "ID_TOGGLE_CHAT_MODE"
   ]
 
-  let tryBtnIdOrder = [
+  local tryBtnIdOrder = [
     ::SHORTCUT.GAMEPAD_L2 // LT
     ::SHORTCUT.GAMEPAD_L1 // LB // This one will be chosen for our uncustomized presets.
     ::SHORTCUT.GAMEPAD_R1 // RB
@@ -94,11 +94,11 @@ let function tryControlsOverride()
 
   foreach (hotkeyId in preserveHotkeys)
   {
-    let hc = preset.getHotkey(hotkeyId)
+    local hc = preset.getHotkey(hotkeyId)
     foreach (sc in hc)
       if (sc.len() == 1 && sc[0]?.deviceId == ::JOYSTICK_DEVICE_0_ID)
       {
-        let delIdx = tryBtnIdOrder.indexof(sc[0]?.buttonId)
+        local delIdx = tryBtnIdOrder.indexof(sc[0]?.buttonId)
         if (delIdx != null)
           tryBtnIdOrder.remove(delIdx)
       }
@@ -106,14 +106,14 @@ let function tryControlsOverride()
   if (tryBtnIdOrder.len() == 0)
     return false // Nothing to choose (extremely bad configured preset).
 
-  let destinationBtnId = tryBtnIdOrder[0]
+  local destinationBtnId = tryBtnIdOrder[0]
 
   ::dagor.debug($"FoolballNy2021Hack: ID_FIRE_GM_MACHINE_GUN will be moved from buttonId {sourceBtnId} to {destinationBtnId}")
 
   // Collecting the conflicting shortcuts to wipe.
 
-  let original = {}
-  let modified = {}
+  local original = {}
+  local modified = {}
 
   foreach (hotkeyId, hc in preset.hotkeys)
   {
@@ -168,30 +168,30 @@ let function tryControlsOverride()
 
 //==============================================================================
 
-let function tryControlsRestore()
+local function tryControlsRestore()
 {
   if (!shouldManageControls())
     return false
 
-  let blk = ::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID)
+  local blk = ::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID)
   if (blk == null)
     return false // Nothing to restore.
 
-  let preset = ::g_controls_manager.getCurPreset()
-  let data = ::buildTableFromBlk(blk)
+  local preset = ::g_controls_manager.getCurPreset()
+  local data = ::buildTableFromBlk(blk)
 
   ::dagor.debug($"FoolballNy2021Hack: Restoring hotkeys from backup:")
   ::debugTableData(data, 10)
 
-  let original = data?.original.map(@(s) ::parse_json(s)) ?? {}
-  let modified = data?.modified.map(@(s) ::parse_json(s)) ?? {}
+  local original = data?.original.map(@(s) ::parse_json(s)) ?? {}
+  local modified = data?.modified.map(@(s) ::parse_json(s)) ?? {}
 
   if (original.len() == modified.len())
   {
     foreach (hotkeyId, hc in original)
     {
-      let curHc = preset.getHotkey(hotkeyId)
-      let expectedHc = modified?[hotkeyId] ?? []
+      local curHc = preset.getHotkey(hotkeyId)
+      local expectedHc = modified?[hotkeyId] ?? []
       if (::u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc)))
       {
         preset.setHotkey(hotkeyId, hc)

@@ -1,5 +1,5 @@
-let WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-let { secondsToMilliseconds } = require("scripts/time.nut")
+local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
+local { secondsToMilliseconds } = require("scripts/time.nut")
 
 local refreshMinTimeSec = 3 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
@@ -25,8 +25,8 @@ local GlobalBattlesList = class
 
   function canRequestByTime()
   {
-    let refreshMinTime = getRefreshMinTimeMsec()
-    let checkTime = isInUpdate
+    local refreshMinTime = getRefreshMinTimeMsec()
+    local checkTime = isInUpdate
       ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
       : refreshMinTime
     return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
@@ -64,8 +64,8 @@ local GlobalBattlesList = class
     isInUpdate = true
     lastRequestTimeMsec = ::dagor.getCurTime()
 
-    let cb = ::Callback(requestListCb, this)
-    let errorCb = ::Callback(requestError, this)
+    local cb = ::Callback(requestListCb, this)
+    local errorCb = ::Callback(requestError, this)
 
     ::g_tasker.charRequestJson("cln_ww_get_active_battles", ::DataBlock(), null, cb, errorCb)
     return true
@@ -94,7 +94,7 @@ local GlobalBattlesList = class
     list.clear()
     foreach (operationId, operation in data)
     {
-      let countries = {}
+      local countries = {}
       if ("countries" in operation)
         foreach (countryData in operation.countries)
           if ("side" in countryData && "country" in countryData)
@@ -103,7 +103,7 @@ local GlobalBattlesList = class
       if ("battles" in operation)
         foreach (battle in operation.battles)
         {
-          let wwBattle = WwGlobalBattle(::DataBlockAdapter(battle), {countries = countries})
+          local wwBattle = WwGlobalBattle(::DataBlockAdapter(battle), {countries = countries})
           wwBattle.setOperationId(operationId.tointeger())
           list.append(wwBattle)
         }

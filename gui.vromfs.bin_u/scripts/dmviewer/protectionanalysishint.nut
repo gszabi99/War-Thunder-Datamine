@@ -1,10 +1,10 @@
-let results = require("scripts/dmViewer/protectionAnalysisHintResults.nut")
-let { set_protection_analysis_editing } = require("hangarEventCommand")
+local results = require("scripts/dmViewer/protectionAnalysisHintResults.nut")
+local { set_protection_analysis_editing } = require("hangarEventCommand")
 
-::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "%gui/dmViewer/protectionAnalysisHint.blk"
+  sceneBlkName = "gui/dmViewer/protectionAnalysisHint.blk"
 
   cursorObj = null
   hintObj   = null
@@ -31,7 +31,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
       return res
     }
     parts = function(params, id, resultCfg) {
-      let res = {}
+      local res = {}
       foreach (src in resultCfg.infoSrc)
         foreach (partId, isShow in (params?[src]?[id] ?? {}))
           res[partId] <- isShow
@@ -61,8 +61,8 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     parts = function(val) {
       if (::u.isEmpty(val))
         return ""
-      let prefix = ::loc("ui/bullet") + " "
-      let partNames = [ ::loc("protection_analysis/hint/parts/list") + ::loc("ui/colon") ]
+      local prefix = ::loc("ui/bullet") + " "
+      local partNames = [ ::loc("protection_analysis/hint/parts/list") + ::loc("ui/colon") ]
       foreach (partId, isShow in val)
         if (isShow)
           partNames.append(prefix + ::loc("dmg_msg_short/" + partId))
@@ -101,7 +101,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
   }
 
   function update(params) {
-    let isCursorActive = getCursorIsActive()
+    local isCursorActive = getCursorIsActive()
     set_protection_analysis_editing(!isCursorActive)
 
     if (::u.isEqual(params, lastHintParams))
@@ -111,10 +111,10 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     if (!::check_obj(cursorObj) || !::check_obj(hintObj))
       return
 
-    let isShow = isCursorActive && !::u.isEmpty(params)
+    local isShow = isCursorActive && !::u.isEmpty(params)
     hintObj.show(isShow)
 
-    let resultCfg = results.getResultTypeByParams(params)
+    local resultCfg = results.getResultTypeByParams(params)
     cursorObj["background-color"] = isCursorActive
       ? ::get_main_gui_scene().getConstantValue(resultCfg.color)
       : "#00000000"
@@ -122,13 +122,13 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     if (!isShow)
       return
 
-    let getValue = getValueByResultCfg
-    let printValue = printValueByParam
-    let title = ::colorize(resultCfg.color, ::loc(resultCfg.loc))
+    local getValue = getValueByResultCfg
+    local printValue = printValueByParam
+    local title = ::colorize(resultCfg.color, ::loc(resultCfg.loc))
     local desc = ::u.map(resultCfg.params, function(id) {
-      let gFunc = getValue?[id]
-      let val = gFunc ? gFunc(params, id, resultCfg) : 0
-      let pFunc = printValue?[id]
+      local gFunc = getValue?[id]
+      local val = gFunc ? gFunc(params, id, resultCfg) : 0
+      local pFunc = printValue?[id]
       return pFunc ? pFunc(val) : ""
     })
     desc = ::g_string.implode(desc, "\n")
@@ -141,7 +141,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
   {
     if(!::check_obj(obj))
       return
-    let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     obj.left = cursorPos[0] - cursorRadius
     obj.top  = cursorPos[1] - cursorRadius
   }

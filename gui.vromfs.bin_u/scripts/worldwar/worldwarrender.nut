@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+local stdMath = require("std/math.nut")
 
 const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 
@@ -34,7 +34,7 @@ g_world_war_render.setPreviewCategories <- function setPreviewCategories()
 {
   for (local cat = ::ERC_ARMY_RADIUSES; cat < ::ERC_TOTAL; ++cat)
   {
-    let previewCatEnabled = stdMath.is_bit_set(DEFAULT_PREVIEW_FLAGS, cat)
+    local previewCatEnabled = stdMath.is_bit_set(DEFAULT_PREVIEW_FLAGS, cat)
     ::ww_enable_render_map_category_for_preveiw(cat, previewCatEnabled)
   }
 }

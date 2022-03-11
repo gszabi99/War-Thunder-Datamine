@@ -4,7 +4,7 @@
 
 ::load_controls <- function load_controls(blkOrPresetPath)
 {
-  let otherPreset = ::ControlsPreset(blkOrPresetPath)
+  local otherPreset = ::ControlsPreset(blkOrPresetPath)
   if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0)
   {
     ::g_controls_manager.setCurPreset(otherPreset)

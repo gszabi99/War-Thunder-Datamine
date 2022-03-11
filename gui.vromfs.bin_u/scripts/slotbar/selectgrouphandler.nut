@@ -1,18 +1,18 @@
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
-let { getParamsFromSlotbarConfig } = require("scripts/slotbar/selectUnitHandler.nut")
+local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
+local { getParamsFromSlotbarConfig } = require("scripts/slotbar/selectUnitHandler.nut")
 
-let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
+local class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
 {
   function getSortedGroupsArray()
   {
-    let selectedGroup = getSelectedGroup()
+    local selectedGroup = getSelectedGroup()
     local groupsArray = config.unitsGroupsByCountry?[country].groups.values() ?? []
 
-    let curPreset = slotbarPresets.getCurPreset()
-    let curCountryPreset = curPreset.countryPresets?[country]
-    let countryGroupsList = curPreset.groupsList?[country]
-    let groupIdByUnitName = countryGroupsList?.groupIdByUnitName
+    local curPreset = slotbarPresets.getCurPreset()
+    local curCountryPreset = curPreset.countryPresets?[country]
+    local countryGroupsList = curPreset.groupsList?[country]
+    local groupIdByUnitName = countryGroupsList?.groupIdByUnitName
 
     groupsArray = groupsArray.map(function(group) {
       group.isCurrent <- selectedGroup?.id == group.id
@@ -47,10 +47,10 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
     if (!isVisible || objSlot.childrenCount())
       return
 
-    let countryGroupsList = slotbarPresets.getCurPreset().groupsList?[country]
-    let unit = getSlotUnit(group)
-    let isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
-    let unitItemParams = {
+    local countryGroupsList = slotbarPresets.getCurPreset().groupsList?[country]
+    local unit = getSlotUnit(group)
+    local isEnabled = ::is_unit_enabled_for_slotbar(unit, config)
+    local unitItemParams = {
       status = !isEnabled ? "disabled" : "mounted"
       fullBlock = false
       nameLoc = ::getUnitName(unit.name)
@@ -58,7 +58,7 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
         slotbarPresets.getVehiclesGroupByUnit(unit, countryGroupsList)?.name ?? "")
     }
 
-    let markup = getGroupUnitMarkUp(unit.name, unit, group, unitItemParams)
+    local markup = getGroupUnitMarkUp(unit.name, unit, group, unitItemParams)
     guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
   }
 
@@ -76,7 +76,7 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
 
 return {
   open = function(crew, slotbar) {
-    let params = getParamsFromSlotbarConfig(crew, slotbar)
+    local params = getParamsFromSlotbarConfig(crew, slotbar)
     if (params == null)
       return ::broadcastEvent("ModalWndDestroy")
 

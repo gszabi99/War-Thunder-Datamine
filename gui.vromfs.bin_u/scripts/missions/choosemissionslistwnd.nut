@@ -9,10 +9,10 @@
                      called only if list was changed
 */
 
-::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
+  sceneBlkName   = "gui/missions/chooseMissionsListWnd.blk"
 
   headerText = ""
   missionsList = null
@@ -28,7 +28,7 @@
 
   static function open(config)
   {
-    let misList = ::getTblValue("missionsList", config)
+    local misList = ::getTblValue("missionsList", config)
     if (!::u.isArray(misList) || !misList.len())
     {
       ::script_net_assert_once(" bad_missions_list",
@@ -53,14 +53,14 @@
 
   function initDescHandler()
   {
-    let descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
+    local descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
     registerSubHandler(descHandler)
     missionDescWeak = descHandler.weakref()
   }
 
   function selMissionsToMap(fullList, selList)
   {
-    let res = {}
+    local res = {}
     foreach(mission in fullList)
       res[mission.id] <- false
     foreach(mission in selList)
@@ -70,7 +70,7 @@
 
   function mapToSelectedMissions(fullList, misMap)
   {
-    let res = []
+    local res = []
     foreach(mission in fullList)
       if (::getTblValue(mission.id, misMap, false))
         res.append(mission)
@@ -92,7 +92,7 @@
 
   function fillMissionsList()
   {
-    let view = { items = [] }
+    local view = { items = [] }
     foreach(mission in missionsList)
       view.items.append({
         id = mission.id
@@ -101,18 +101,18 @@
         isChosen = isMissionSelected(mission) ? "yes" : "no"
       })
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
+    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(misListObj, data, data.len(), this)
     misListObj.setValue(0)
   }
 
   function updateButtons()
   {
-    let chooseBtn = showSceneBtn("btn_choose", !!curMission)
+    local chooseBtn = showSceneBtn("btn_choose", !!curMission)
     if (curMission)
       chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
 
-    let chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
+    local chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
     scene.findObject("btn_choose_all").setValue(chooseAllText)
   }
 
@@ -122,14 +122,14 @@
       return
 
     selMissionsMap[mission.id] <- isSelected
-    let checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
+    local checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
     if (::check_obj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
       checkBoxObj.setValue(isSelected)
   }
 
   function onMissionSelect(obj)
   {
-    let mission = ::getTblValue(obj.getValue(), missionsList)
+    local mission = ::getTblValue(obj.getValue(), missionsList)
     if (mission == curMission)
       return
 
@@ -150,7 +150,7 @@
 
   function onChooseAll()
   {
-    let needSelect = !isAllMissionsSelected()
+    local needSelect = !isAllMissionsSelected()
     foreach(mission in missionsList)
       markSelected(mission, needSelect)
     updateButtons()
@@ -158,20 +158,20 @@
 
   function onMissionCheckBox(obj)
   {
-    let id = ::getObjIdByPrefix(obj, "checkbox_")
+    local id = ::getObjIdByPrefix(obj, "checkbox_")
     if (!id)
       return
 
     if (!curMission || curMission.id != id)
     {
-      let idx = missionsList.findindex(@(m) m.id == id)
+      local idx = missionsList.findindex(@(m) m.id == id)
       if (idx == null)
         return
 
       misListObj.setValue(idx)
     }
 
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (isMissionSelected(curMission) != obj.getValue())
     {
       markSelected(curMission, value)

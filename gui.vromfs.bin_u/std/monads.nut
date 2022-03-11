@@ -13,15 +13,15 @@ local Foo = class {get = @(v) null}
 checkInterface(Foo, [{name = "get", params = ["v"]}])
 
 */
-let function checkInterface(klass, methods){
-  let failedMethods = []
+local function checkInterface(klass, methods){
+  local failedMethods = []
   foreach (method in methods){
     if (type(method) == "string") {
       if (method not in klass)
         failedMethods.append([method, "not presented"])
     }
     else {
-      let {name, isVargved=false, params = null} = method
+      local {name, isVargved=false, params = null} = method
       if (name not in klass) {
         failedMethods.append([name, "not presented"])
         continue
@@ -38,7 +38,7 @@ let function checkInterface(klass, methods){
         continue
       }
       foreach(i, p in params) {
-        let pp = parameters?[i]
+        local pp = parameters?[i]
         if (pp != p)
           failedMethods.append([name, $"incorrect argument in method: got '{p}' expected '{pp}'"])
       }
@@ -55,7 +55,7 @@ let function checkInterface(klass, methods){
   monad has interface with
   of, flatMap, map
 */
-let class Monad {
+local class Monad {
   //of, pure :: a -> M a
   static function of(x){
     throw("pure method needs to be implemented")
@@ -67,14 +67,14 @@ let class Monad {
   isMonad = @() true
   //map :: # M a -> (a -> b) -> M b
   function map(f){
-    let next = this.flatMap(@(x) this.of(f(x)))
+    local next = this.flatMap(@(x) this.of(f(x)))
     assert(next?.isMonad(), ASSERT_MSG)
     return next
   }
   function pipe(...){
     local next = this
     foreach (f in vargv){
-      let fn = f
+      local fn = f
       next = this.flatMap(@(x) this.of(fn(x)))
       assert(next?.isMonad(), ASSERT_MSG)
     }
@@ -114,13 +114,13 @@ _Maybe = class extends Monad {
   function flatMap(fn){
     if (this.isNone())
       return none
-    let next = fn(this._value)
+    local next = fn(this._value)
     assert(next instanceof Monad || next?.isMonad(), ASSERT_MSG)
     return next
   }
   static isMaybe = @() true
   function cata(onNoneFn, onSomeFn){
-    let next = this.isNone() ? onNoneFn(null) : onSomeFn(this._value)
+    local next = this.isNone() ? onNoneFn(null) : onSomeFn(this._value)
     assert (next instanceof Monad || next?.isMonad(), ASSERT_MSG)
     return next
   }
@@ -170,8 +170,8 @@ Some = class extends _Maybe {
 }
 
 none = _None()
-let None = @() none
-let function Maybe(a){
+local None = @() none
+local function Maybe(a){
   if (a==null)
     return none
   else
@@ -197,7 +197,7 @@ Either = class extends Monad{
     if (this.isLeft())
       return this
     else {
-      let next = f(this._value)
+      local next = f(this._value)
       assert(next instanceof Monad || next?.isMonad(), ASSERT_MSG)
       return next
     }
@@ -207,7 +207,7 @@ Either = class extends Monad{
       if (this.isLeft())
         return this
       else {
-        let next = f(this._value)
+        local next = f(this._value)
         assert(next instanceof Monad || next?.isMonad(), ASSERT_MSG)
         return next
       }
@@ -225,7 +225,7 @@ Either = class extends Monad{
   function map(fn){
     if (this.isLeft())
       return this
-    let next = fn(this._value)
+    local next = fn(this._value)
     return next instanceof Either  || next?.isMonad() ? next : Either.of(next)
   }
    // the same as map, but if fn throw returns Left with error
@@ -233,7 +233,7 @@ Either = class extends Monad{
    try{
      if (this.isLeft())
        return this
-     let next = fn(this._value)
+     local next = fn(this._value)
      return next instanceof Either  || next?.isMonad() ? next : Either.of(next)
    }
    catch(e)
@@ -253,7 +253,7 @@ Either = class extends Monad{
   getOrElse = @(other) this.isLeft() ? other : this._value
   function orElse(fn) {
     if (this.isLeft()) {
-      let next = fn(this._value)
+      local next = fn(this._value)
       assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
     }
     return this
@@ -261,7 +261,7 @@ Either = class extends Monad{
   function tryOrElse(fn) {
     try{
       if (this.isLeft()) {
-        let next = fn(this._value)
+        local next = fn(this._value)
         assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
       }
       return this
@@ -286,7 +286,7 @@ Either = class extends Monad{
     onRight(this._value)
   }
   function cata(onLeft, onRight) {
-    let next = this.isLeft() ? onLeft(this._value) : onRight(this._value)
+    local next = this.isLeft() ? onLeft(this._value) : onRight(this._value)
     assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
     return next
   }
@@ -299,7 +299,7 @@ Either = class extends Monad{
   }
   function tryCata(onLeft, onRight) {
     try{
-      let next = this.isLeft() ? onLeft(this._value) : onRight(this._value)
+      local next = this.isLeft() ? onLeft(this._value) : onRight(this._value)
       assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
       return next
     }
@@ -325,7 +325,7 @@ Right = class extends Either{
     this._value = v
   }
   function flatMap(f) {
-    let next = f(this.value)
+    local next = f(this.value)
     assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
     return next
   }
@@ -341,7 +341,7 @@ Identity = class extends Monad {
   map = @(fn) Identity.of(fn(this._value))
 
   function flatMap(fn){
-    let next = fn(this._value)
+    local next = fn(this._value)
     assert(next instanceof Monad || next?.isMonad(), ASSERT_MSG)
     return next
   }
@@ -385,13 +385,13 @@ Task = class extends Monad {
     this.exec = fn
   }
   function map(fn) {
-    let f = this.exec
+    local f = this.exec
     return Task(@(errFn, okFn)
       f(errFn, @(x) okFn(fn(x)))
     )
   }
   function flatMap(fn){
-    let f = this.exec
+    local f = this.exec
     return Task(@(errFn, okFn) f(errFn, @(x) fn(x).exec(errFn, okFn)))
   }
   isTask = @() true
@@ -402,7 +402,7 @@ Task = class extends Monad {
 
 if (__name__ == "__main__"){
   println("testing Maybe Monad")
-  let foo = Maybe(2)
+  local foo = Maybe(2)
     .map(@(v) null).orSome(10).orElse(2).map(@(...) null).orElse(Some(-2))
     .flatMap(@(v) Some(v+1)).get()
   if (foo!=-1){

@@ -1,6 +1,6 @@
-let { getRespawnBaseNameById, isDefaultRespawnBase } = require_native("guiRespawn")
+local { getRespawnBaseNameById, isDefaultRespawnBase } = require_native("guiRespawn")
 
-let MAP_SELECT_NOTHING = -1
+local MAP_SELECT_NOTHING = -1
 
 local RespawnBase = class
 {

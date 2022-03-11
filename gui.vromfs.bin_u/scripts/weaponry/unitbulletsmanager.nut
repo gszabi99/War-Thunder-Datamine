@@ -1,7 +1,7 @@
-let stdMath = require("std/math.nut")
-let { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-let { getLinkedGunIdx, getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
-let { getBulletsSetData,
+local stdMath = require("std/math.nut")
+local { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
+local { getLinkedGunIdx, getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
+local { getBulletsSetData,
         getOptionsBulletsList,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
@@ -86,12 +86,12 @@ global enum bulletsAmountState {
   //return isChanged
   function changeBulletsCount(bulGroup, newCount)
   {
-    let count = bulGroup.bulletsCount
+    local count = bulGroup.bulletsCount
     if (count == newCount)
       return false
 
-    let unallocated = getUnallocatedBulletCount(bulGroup)
-    let maxCount = ::min(unallocated + count, bulGroup.maxBulletsCount)
+    local unallocated = getUnallocatedBulletCount(bulGroup)
+    local maxCount = ::min(unallocated + count, bulGroup.maxBulletsCount)
     newCount = ::clamp(newCount, 0, maxCount)
 
     if (count == newCount)
@@ -127,8 +127,8 @@ global enum bulletsAmountState {
     }
     _bulletsSetValueRecursion = true
 
-    let changedGroups = [bulGroup]
-    let gunIdx = bulGroup.getGunIdx()
+    local changedGroups = [bulGroup]
+    local gunIdx = bulGroup.getGunIdx()
     foreach(gIdx, group in bulGroups)
     {
       if (!group.active
@@ -137,7 +137,7 @@ global enum bulletsAmountState {
           || group.selectedName != bulletName)
         continue
 
-      let prevBullet = bulGroup.selectedName
+      local prevBullet = bulGroup.selectedName
       group.setBullet(prevBullet)
       changedGroups.append(group)
       break
@@ -152,7 +152,7 @@ global enum bulletsAmountState {
 
   function checkBulletsCountReady()
   {
-    let res = {
+    local res = {
       status = bulletsAmountState.READY
       unallocated = 0
       required = 0
@@ -162,15 +162,15 @@ global enum bulletsAmountState {
 
     foreach(gInfo in gunsInfo)
     {
-      let unallocated = gInfo.unallocated
+      local unallocated = gInfo.unallocated
       if (unallocated <= 0)
         continue
       if (gInfo?.forcedMaxBulletsInRespawn ?? false) // Player can't change counts.
         continue
 
       local status = bulletsAmountState.READY
-      let totalBullets = gInfo.total
-      let minBullets = ::clamp((0.2 * totalBullets).tointeger(), 1, getAmmoWarningMinimum(AMMO.MODIFICATION, unit, totalBullets))
+      local totalBullets = gInfo.total
+      local minBullets = ::clamp((0.2 * totalBullets).tointeger(), 1, getAmmoWarningMinimum(AMMO.MODIFICATION, unit, totalBullets))
       if (totalBullets - unallocated >= minBullets)
         status = bulletsAmountState.HAS_UNALLOCATED
       else
@@ -191,7 +191,7 @@ global enum bulletsAmountState {
   {
     if (getOverrideBullets(unit))
       return true
-    let readyCounts = checkBulletsCountReady()
+    local readyCounts = checkBulletsCountReady()
     if (readyCounts.status == bulletsAmountState.READY
         || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED
           && (!needWarnUnallocated || ::get_gui_option(::USEROPT_SKIP_LEFT_BULLETS_WARNING))))
@@ -235,15 +235,15 @@ global enum bulletsAmountState {
 
   function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom")
   {
-    let bulGroup = ::getTblValue(groupIdx, getBulletsGroups())
+    local bulGroup = ::getTblValue(groupIdx, getBulletsGroups())
     if (!unit || !bulGroup)
       return
 
-    let list = []
-    let modsList = bulGroup.getBulletsModsList()
-    let curName = bulGroup.selectedName
+    local list = []
+    local modsList = bulGroup.getBulletsModsList()
+    local curName = bulGroup.selectedName
 
-    let otherSelList = []
+    local otherSelList = []
     foreach(gIdx, group in getBulletsGroups())
       if (group.active && gIdx != groupIdx && group.gunInfo == bulGroup.gunInfo)
         otherSelList.append(group.selectedName)
@@ -324,21 +324,21 @@ global enum bulletsAmountState {
       return
 
     // Preparatory work of Bullet Groups creation
-    let bulletDataByGroup = {}
-    let bullGroupsCountersByGun = {}
-    let bulletsTotal = unit.unitType.canUseSeveralBulletsForGun
+    local bulletDataByGroup = {}
+    local bullGroupsCountersByGun = {}
+    local bulletsTotal = unit.unitType.canUseSeveralBulletsForGun
       ? unit.unitType.bulletSetsQuantity : getBulletsGroupCount(unit)
 
     for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++)
     {
-      let linkedIdx = getLinkedGunIdx(groupIndex, getGunTypesCount(),
+      local linkedIdx = getLinkedGunIdx(groupIndex, getGunTypesCount(),
         unit.unitType.bulletSetsQuantity)
-      let bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
-      let selectedName = bullets.values?[bullets.value] ?? ""
-      let bulletsSet = getBulletsSetData(unit, selectedName)
-      let maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+      local bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
+      local selectedName = bullets.values?[bullets.value] ?? ""
+      local bulletsSet = getBulletsSetData(unit, selectedName)
+      local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
       //!!FIX ME: Needs to have a bit more reliable way to determine bullets type like by TRIGGER_TYPE for example
-      let currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
+      local currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
       bulletDataByGroup[groupIndex] <- {
         linkedIdx = linkedIdx
         maxToRespawn = maxToRespawn
@@ -353,7 +353,7 @@ global enum bulletsAmountState {
           bulletType = currBulletType// Helper value to define isUniform
         }
 
-      let currCounters = bullGroupsCountersByGun[linkedIdx]
+      local currCounters = bullGroupsCountersByGun[linkedIdx]
       currCounters.limitedGroupCount += maxToRespawn > 0 ? 1 : 0
       currCounters.beltsCount += bulletsSet?.isBulletBelt ? 1 : 0
       currCounters.groupCount++
@@ -368,8 +368,8 @@ global enum bulletsAmountState {
     // that actually is true for belts only.
     foreach (groupIndex, data in bulletDataByGroup)
     {
-      let currCounters = bullGroupsCountersByGun[data.linkedIdx]
-      let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
+      local currCounters = bullGroupsCountersByGun[data.linkedIdx]
+      local isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
       bulGroups.append(::BulletGroup(unit, groupIndex,
         getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn), {
@@ -386,11 +386,11 @@ global enum bulletsAmountState {
     if (!gunsInfo.len())
       return
 
-    let forceBulletGroupByGun = {}
+    local forceBulletGroupByGun = {}
     foreach(bulGroup in bulGroups)
       if (bulGroup.active && bulGroup.gunInfo.forcedMaxBulletsInRespawn)
       {
-        let gIdx = bulGroup.getGunIdx()
+        local gIdx = bulGroup.getGunIdx()
         if (!forceBulletGroupByGun?[gIdx])
           forceBulletGroupByGun[gIdx] <- []
 
@@ -399,7 +399,7 @@ global enum bulletsAmountState {
 
     foreach(idx, gunBullets in forceBulletGroupByGun)
     {
-      let countBullet = gunBullets.len()
+      local countBullet = gunBullets.len()
 
       foreach(bulGroup in gunBullets)
         bulGroup.setBulletsCount(bulGroup.gunInfo.total / countBullet)
@@ -411,13 +411,13 @@ global enum bulletsAmountState {
     if (!gunsInfo.len())
       return
 
-    let selectedList = gunsInfo.map(@(v) [])
+    local selectedList = gunsInfo.map(@(v) [])
 
     foreach(gIdx, bulGroup in bulGroups)
     {
       if (!bulGroup.active)
         continue
-      let list = ::getTblValue(bulGroup.getGunIdx(), selectedList)
+      local list = ::getTblValue(bulGroup.getGunIdx(), selectedList)
       if (!list)
         continue
 
@@ -429,7 +429,7 @@ global enum bulletsAmountState {
         continue
       }
 
-      let curBulletName = bulGroup.selectedName
+      local curBulletName = bulGroup.selectedName
       list.append(curBulletName)
     }
   }
@@ -449,7 +449,7 @@ global enum bulletsAmountState {
     local haveNotInited = false
     foreach(gIdx, bulGroup in bulGroups)
     {
-      let gInfo = bulGroup.gunInfo
+      local gInfo = bulGroup.gunInfo
       if (!bulGroup.active || !gInfo)
         continue
 
@@ -476,7 +476,7 @@ global enum bulletsAmountState {
     {
       if (!bulGroup.active || bulGroup.bulletsCount >= 0)
         continue
-      let gInfo = bulGroup.gunInfo
+      local gInfo = bulGroup.gunInfo
       if (!gInfo || !gInfo.notInitedCount)
       {
         ::dagor.assertf(false, "UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit " + unit.name)
@@ -484,7 +484,7 @@ global enum bulletsAmountState {
       }
 
       //no point to check unallocated amount left after init. this will happen only once, and all bullets atthat moment will be filled up.
-      let newCount = ::min(gInfo.unallocated / gInfo.notInitedCount, bulGroup.maxBulletsCount)
+      local newCount = ::min(gInfo.unallocated / gInfo.notInitedCount, bulGroup.maxBulletsCount)
       bulGroup.setBulletsCount(newCount)
       gInfo.unallocated -= newCount
       gInfo.notInitedCount--

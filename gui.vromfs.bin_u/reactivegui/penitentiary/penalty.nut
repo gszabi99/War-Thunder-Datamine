@@ -1,21 +1,21 @@
-let penalty = require("penalty")
-let stdStr = require("string")
-let time = require("std/time.nut")
-let timeLocTable = require("reactiveGui/timeLocTable.nut")
+local penalty = require("penalty")
+local stdStr = require("string")
+local time = require("std/time.nut")
+local timeLocTable = require("reactiveGui/timeLocTable.nut")
 
-let currentPenaltyDesc = Watched({})
+local currentPenaltyDesc = Watched({})
 
 
-let function isDevoiced() {
+local function isDevoiced() {
   currentPenaltyDesc.update(penalty.getPenaltyStatus())
   //currentPenaltyDesc.update({ status = penalty.DEVOICE, duration = 360091, category="FOUL", comment="test ban", seconds_left=2012})
-  let penaltyStatus = currentPenaltyDesc.value?.status
+  local penaltyStatus = currentPenaltyDesc.value?.status
   return penaltyStatus == penalty.DEVOICE || penaltyStatus == penalty.SILENT_DEVOICE
 }
 
 
-let function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
-  let txts = []
+local function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
+  local txts = []
   if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
     txts.append(::loc("charServer/mute/permanent"),"\n")
   }
@@ -27,7 +27,7 @@ let function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
     txts.append(stdStr.format(::loc("charServer/mute/timed"), timeText))
 
     if ((currentPenaltyDesc.value?.seconds_left ?? 0) > 0) {
-      let leftTime = time.roundTime(currentPenaltyDesc.value.seconds_left)
+      local leftTime = time.roundTime(currentPenaltyDesc.value.seconds_left)
       timeText = stdStr.format("<color=%d>%s</color>",
         highlightColor, time.secondsToTimeFormatString(leftTime).subst(timeLocTable)
       )

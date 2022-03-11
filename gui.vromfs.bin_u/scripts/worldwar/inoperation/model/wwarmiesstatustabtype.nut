@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_ww_map_armies_status_tab_type <- {
   types = []
   cache = {
@@ -23,7 +23,7 @@ let enums = require("sqStdLibs/helpers/enums.nut")
   }
 
   getArmiesCountText = function() {
-    let armies = ::g_operations.getArmiesByStatus(status)
+    local armies = ::g_operations.getArmiesByStatus(status)
 
     local countText = armies.common.len()
     if (armies.surrounded.len() > 0)
@@ -42,10 +42,10 @@ let enums = require("sqStdLibs/helpers/enums.nut")
   }
 
   getContentViewData = function(itemsPerPage, currentPage) {
-    let armies = ::g_operations.getArmiesByStatus(status)
+    local armies = ::g_operations.getArmiesByStatus(status)
 
     local firstItemIndex = currentPage*itemsPerPage
-    let viewsArray = []
+    local viewsArray = []
     for(local i = firstItemIndex; i < armies.surrounded.len() && viewsArray.len() < itemsPerPage; i++)
       viewsArray.append(armies.surrounded[i].getView())
 
@@ -53,14 +53,14 @@ let enums = require("sqStdLibs/helpers/enums.nut")
     for(local i = firstItemIndex; i < armies.common.len() && viewsArray.len() < itemsPerPage; i++)
       viewsArray.append(armies.common[i].getView())
 
-    let viewData = getEmptyContentViewData()
+    local viewData = getEmptyContentViewData()
     viewData.army = viewsArray
 
     return viewData
   }
 
   getTotalPageCount = function(itemsPerPage) {
-    let armies = ::g_operations.getArmiesByStatus(status)
+    local armies = ::g_operations.getArmiesByStatus(status)
     return ::ceil((armies.surrounded.len() + armies.common.len())/itemsPerPage.tofloat())
   }
 }

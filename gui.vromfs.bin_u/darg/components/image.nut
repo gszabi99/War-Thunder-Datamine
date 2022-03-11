@@ -1,6 +1,6 @@
 from "daRg" import *
 
-let function image(val, params={}, addchildren = null) {
+local function image(val, params={}, addchildren = null) {
 
   local children = params?.children
   if (children && type(children) !="array")

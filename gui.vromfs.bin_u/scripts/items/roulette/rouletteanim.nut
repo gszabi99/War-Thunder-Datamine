@@ -1,14 +1,14 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local stdMath = require("std/math.nut")
 
-let CHANCE_TO_STOP_ON_BORDER = 0.5
+local CHANCE_TO_STOP_ON_BORDER = 0.5
 
 enum ANIM_ACTION {
   START
   SKIP
 }
 
-let rouletteAnim = {
+local rouletteAnim = {
   types = []
 }
 
@@ -32,12 +32,12 @@ rouletteAnim.template <- {
 
   calcAnimConfig = function(obj, params)
   {
-    let targetIdx = params.targetIdx
+    local targetIdx = params.targetIdx
     if (targetIdx < 0 || targetIdx >= obj.childrenCount())
       return null
-    let itemWidth = ::to_pixels("@itemWidth")
-    let targetWidth = obj.getChild(targetIdx).getSize()[0]
-    let targetPos = (- obj.getChild(targetIdx).getPos()[0] - 0.5 * targetWidth
+    local itemWidth = ::to_pixels("@itemWidth")
+    local targetWidth = obj.getChild(targetIdx).getSize()[0]
+    local targetPos = (- obj.getChild(targetIdx).getPos()[0] - 0.5 * targetWidth
       + obj.getPos()[0] + 0.5 * obj.getParent().getSize()[0] / 2).tofloat()
     return calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
   }
@@ -52,15 +52,15 @@ rouletteAnim.template <- {
     if (curConfig.time >= curConfig.totalTime)
       return null //do nothing
 
-    let pos1 = curConfig.animFunc(curConfig.time)
-    let pos2 = curConfig.animFunc(curConfig.totalTime)
+    local pos1 = curConfig.animFunc(curConfig.time)
+    local pos2 = curConfig.animFunc(curConfig.totalTime)
     if (fabs(pos2 - pos1) < 1)
       return null
 
-    let time = skipAnimTime
-    let a = (pos1 - pos2) / (2 * time * time)
-    let b = - 2 * a * time
-    let c = pos1
+    local time = skipAnimTime
+    local a = (pos1 - pos2) / (2 * time * time)
+    local b = - 2 * a * time
+    local c = pos1
     return makeBhvAnimConfig().__update({
       isJustStarted = false
       timeToStopSound = 0.01
@@ -73,11 +73,11 @@ rouletteAnim.template <- {
   //with a higher chance to be closer to the border
   getRandomEndDisplacement = function()
   {
-    let sign = ::math.frnd() > 0.5 ? 1.0 : -1.0
+    local sign = ::math.frnd() > 0.5 ? 1.0 : -1.0
     if (::math.frnd() <= CHANCE_TO_STOP_ON_BORDER)
       return sign
 
-    let mean = ::math.frnd()
+    local mean = ::math.frnd()
     // Chance of further displacement is higher.
     return sign * (1.0 - mean * mean)
   }
@@ -92,12 +92,12 @@ enums.addTypes(rouletteAnim,
 
     function calcAnimConfigImpl(targetPos, targetWidth, itemWidth)
     {
-      let time1 = stdMath.lerp(0.0, 1.0, MIN_TIME, MAX_TIME, ::math.frnd())
-      let time2 = time1 + FINAL_ANIM_TIME
-      let pos1 = targetPos + getRandomEndDisplacement() * 0.5 * targetWidth
-      let pos2 = targetPos
+      local time1 = stdMath.lerp(0.0, 1.0, MIN_TIME, MAX_TIME, ::math.frnd())
+      local time2 = time1 + FINAL_ANIM_TIME
+      local pos1 = targetPos + getRandomEndDisplacement() * 0.5 * targetWidth
+      local pos2 = targetPos
 
-      let animFunc = (@(t) (t < time1) ? pos1 * ::cubic_bezier_solver.solve(t / time1, 0.16, 0, 0.0, 1.0)
+      local animFunc = (@(t) (t < time1) ? pos1 * ::cubic_bezier_solver.solve(t / time1, 0.16, 0, 0.0, 1.0)
         : (t < time2) ? pos1 + (pos2 - pos1) * ::cubic_bezier_solver.solve((t - time1) / FINAL_ANIM_TIME, 0.55,0,0.32,1.42)
         : targetPos
       ).bindenv(this)
@@ -129,17 +129,17 @@ enums.addTypes(rouletteAnim,
       //from t3 to t4: s = a4 * t * t + b4 * t + c4   //fallback to current item center
 
       //initialize known constants
-      let v2 = - SLOW_SPEED.tofloat() * itemWidth
-      let t1 = TIME_TO_MAX_SPEED.tofloat()
-      let t2 = TIME_TO_SLOW_SPEED.tofloat()
+      local v2 = - SLOW_SPEED.tofloat() * itemWidth
+      local t1 = TIME_TO_MAX_SPEED.tofloat()
+      local t2 = TIME_TO_SLOW_SPEED.tofloat()
 
       //calc distances (except first one which depend on many params
       //all distances are negative
-      let s4 = targetPos
-      let displacement = getRandomEndDisplacement()
-      let s3 = s4 + displacement * 0.5 * targetWidth
-      let slowSpeedItems = getItemsAmountWithSlowSpeed()
-      let s2 = s3 + itemWidth * slowSpeedItems
+      local s4 = targetPos
+      local displacement = getRandomEndDisplacement()
+      local s3 = s4 + displacement * 0.5 * targetWidth
+      local slowSpeedItems = getItemsAmountWithSlowSpeed()
+      local s2 = s3 + itemWidth * slowSpeedItems
       if (s4 >= 0 || s2 >= 0)
       {
         ::script_net_assert_once("failed to calc position", "rouletteAnim: Failed to get target pos")
@@ -147,28 +147,28 @@ enums.addTypes(rouletteAnim,
       }
 
       //calc 2nd part params
-      let b2 = (2.0 * s2 - v2 * t2) / (t2 - t1)
-      let a2 = (v2 - b2) / (2 * t2)
-      let c2 = s2 - a2 * t2 * t2 - b2 * t2
+      local b2 = (2.0 * s2 - v2 * t2) / (t2 - t1)
+      local a2 = (v2 - b2) / (2 * t2)
+      local c2 = s2 - a2 * t2 * t2 - b2 * t2
 
       //calc 1stpart params
-      let v1 = t1 * v2 / t2 + b2 * (1 - t1 / t2)
-      let a1 = v1 / (2 * t1)
+      local v1 = t1 * v2 / t2 + b2 * (1 - t1 / t2)
+      local a1 = v1 / (2 * t1)
 
       //calc 3rd part params
-      let slowTime = getTimeAtSlowSpeed(slowSpeedItems)
-      let t3 = t2 + slowTime
-      let a3 = (s2 - s3) / (slowTime * slowTime)
-      let b3 = - 2 * a3 * t3
-      let c3 = s2 - a3 * t2 * t2 - b3 * t2
+      local slowTime = getTimeAtSlowSpeed(slowSpeedItems)
+      local t3 = t2 + slowTime
+      local a3 = (s2 - s3) / (slowTime * slowTime)
+      local b3 = - 2 * a3 * t3
+      local c3 = s2 - a3 * t2 * t2 - b3 * t2
 
       //calc 4th part params
-      let t4 = t3 + TIME_TO_FINALIZE
-      let a4 = (s3 - s4) / (TIME_TO_FINALIZE * TIME_TO_FINALIZE)
-      let b4 = - 2 * a4 * t4
-      let c4 = s4 - a4 * t4 * t4 - b4 * t4
+      local t4 = t3 + TIME_TO_FINALIZE
+      local a4 = (s3 - s4) / (TIME_TO_FINALIZE * TIME_TO_FINALIZE)
+      local b4 = - 2 * a4 * t4
+      local c4 = s4 - a4 * t4 * t4 - b4 * t4
 
-      let animFunc = @(t) (t < t1) ? a1 * t * t
+      local animFunc = @(t) (t < t1) ? a1 * t * t
         : (t < t2) ? a2 * t * t + b2 * t + c2
         : (t < t3) ? a3 * t * t + b3 * t + c3
         : (t < t4) ? a4 * t * t + b4 * t + c4
@@ -190,14 +190,14 @@ null, "id")
 
 rouletteAnim.calcAnimConfig <- function(obj, value, curConfig)
 {
-  let params = ::parse_json(value)
+  local params = ::parse_json(value)
   if (params?.action == null)
     return null
   if (params.action == ANIM_ACTION.SKIP)
     return curConfig ? curConfig.anim.calcSkipAnimConfig(curConfig) : null
   if (params.action == ANIM_ACTION.START)
   {
-    let anim = this?[params.animId] ?? DEFAULT
+    local anim = this?[params.animId] ?? DEFAULT
     return anim.calcAnimConfig(obj, params)
   }
   return null
@@ -205,7 +205,7 @@ rouletteAnim.calcAnimConfig <- function(obj, value, curConfig)
 
 rouletteAnim.getTimeLeft <- function(obj) //return time to finalize animation
 {
-  let config = obj.getUserData()
+  local config = obj.getUserData()
   return config ? config.totalTime - config.time : 0
 }
 

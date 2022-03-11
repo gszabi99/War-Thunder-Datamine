@@ -1444,519 +1444,359 @@
     "turretTurnSfxPathStudio": "aircraft/effects",
     "turretTurnSfxName": "turret_turn_servo"
   },
-  "cockpit": [
-    {
-      "headPos": [2.57,0.463,0.381]
+  "cockpit": {
+    "textToShowInCockpit": "msg/textToShowInCockpit",
+    "headPos": [2.47,0.487,0.382],
+    "headPosOnShooting": [2.4,0.487,0.382],
+    "lightPos": [3.191985,0.061043,0.469077],
+    "lightColor": [0.01,0.6,0.1],
+    "lightRadius": 0.3,
+    "lightPos1": [3.201561,0.072741,-0.049673],
+    "lightColor1": [0.01,0.6,0.1],
+    "lightRadius1": 0.3,
+    "lightPos2": [3.186026,0.067484,-0.40658],
+    "lightColor2": [0.01,0.6,0.1],
+    "lightRadius2": 0.3,
+    "zoomOutFov": 22.46,
+    "zoomInFov": 7.37,
+    "sightInFov": 1.2,
+    "sightOutFov": -1.0,
+    "sightFov": 0.001,
+    "devices": {
+      "stick_ailerons": [-1.0,1.0],
+      "stick_elevator": [-1.0,1.0],
+      "weapon1": [0.0,1.0],
+      "weapon2": [0.0,1.0],
+      "weapon3": [0.0,1.0],
+      "weapon4": [0.0,1.0],
+      "throttle": [0.0,1.0],
+      "pedals": [-1.0,1.0],
+      "pedals1": [-1.0,1.0],
+      "pedals2": [-1.0,1.0],
+      "pedals3": [-1.0,1.0],
+      "pedals4": [-1.0,1.0],
+      "pedals5": [-1.0,1.0],
+      "pedals6": [-1.0,1.0],
+      "pedals7": [-1.0,1.0],
+      "aviahorizon_pitch": [-90.0,90.0],
+      "aviahorizon_roll": [-45.0,45.0],
+      "aviahorizon_pitch1": [-90.0,90.0],
+      "aviahorizon_roll1": [-45.0,45.0],
+      "bank": [-1.0,1.0],
+      "bank1": [-1.0,1.0],
+      "turn": [-45.0,45.0],
+      "g_meter": [-2.0,4.0],
+      "g_meter_min": [-2.0,4.0],
+      "g_meter_max": [-2.0,4.0],
+      "clock_hour": [0.0,12.0],
+      "clock_min": [0.0,60.0],
+      "clock_sec": [0.0,60.0],
+      "compass": [0.0,360.0],
+      "compass1": [0.0,360.0],
+      "vario": [-30.0,30.0],
+      "speed": [0.0,125.0],
+      "altitude_hour": [0.0,10000.0],
+      "altitude_min": [0.0,1000.0],
+      "altitude_min1": [0.0,800.0],
+      "altitude_koef": 1.0,
+      "head_temperature": [0.0,1200.0],
+      "head_temperature1": [0.0,1200.0],
+      "water_temperature": [0.0,1000.0],
+      "water_temperature1": [0.0,1000.0],
+      "oil_pressure": [0.0,8.0],
+      "oil_pressure1": [0.0,8.0],
+      "oil_temperature": [-50.0,150.0],
+      "oil_temperature1": [-50.0,150.0],
+      "fuel1": [0.0,2500.0],
+      "rpm": [0.0,15400.0],
+      "rpm1": [0.0,15400.0],
+      "gears_lamp": [0.0,0.0]
     },
-    {
-      "headPosOnShooting": [2.57,0.463,0.381]
-    },
-    {
-      "mirror": true
-    },
-    {
-      "mirrorPos": [2.839,0.362,0.0]
-    },
-    {
-      "mirrorNorm": [-1.0,0.0,0.0]
-    },
-    {
-      "mirrorNode": "blister11"
-    },
-    {
-      "mirrorNode": "blister12"
-    },
-    {
-      "lightPos": [3.153,-0.04,0.611]
-    },
-    {
-      "lightColor": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius": 0.3
-    },
-    {
-      "lightPos1": [3.155,0.036,0.048]
-    },
-    {
-      "lightColor1": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius1": 0.3
-    },
-    {
-      "lightPos2": [3.171,0.097,-0.37]
-    },
-    {
-      "lightColor2": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius2": 0.3
-    },
-    {
-      "lightPos3": [2.95,-0.149,0.0]
-    },
-    {
-      "lightColor3": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius3": 0.2
-    },
-    {
-      "zoomOutFov": 22.46
-    },
-    {
-      "zoomInFov": 7.37
-    },
-    {
-      "sightInFov": 1.2
-    },
-    {
-      "sightOutFov": -1.0
-    },
-    {
-      "sightFov": 0.001
-    },
-    {
-      "devices": [
-        {
-          "stick_ailerons": [-1.0,1.0]
-        },
-        {
-          "stick_elevator": [-1.0,1.0]
-        },
-        {
-          "stick_ailerons1": [-1.0,1.0]
-        },
-        {
-          "pedals": [-1.0,1.0]
-        },
-        {
-          "pedals1": [-1.0,1.0]
-        },
-        {
-          "pedals2": [-1.0,1.0]
-        },
-        {
-          "pedals3": [-1.0,1.0]
-        },
-        {
-          "pedals4": [-1.0,1.0]
-        },
-        {
-          "pedals5": [-1.0,1.0]
-        },
-        {
-          "pedals6": [-1.0,1.0]
-        },
-        {
-          "pedals7": [-1.0,1.0]
-        },
-        {
-          "throttle": [0.0,1.0]
-        },
-        {
-          "weapon2": [0.0,1.0]
-        },
-        {
-          "weapon3": [0.0,1.0]
-        },
-        {
-          "gears": [0.0,1.0]
-        },
-        {
-          "gears_lamp": [0.0,0.0]
-        },
-        {
-          "gears_lamp": [0.0,0.0]
-        },
-        {
-          "speed": [0.0,97.22]
-        },
-        {
-          "compass": [0.0,360.0]
-        },
-        {
-          "compass1": [0.0,360.0]
-        },
-        {
-          "vario": [-30.0,30.0]
-        },
-        {
-          "g_meter": [-2.0,4.0]
-        },
-        {
-          "g_meter_min": [-2.0,4.0]
-        },
-        {
-          "g_meter_max": [-2.0,4.0]
-        },
-        {
-          "altitude_hour": [0.0,30000.0]
-        },
-        {
-          "altitude_min": [0.0,1000.0]
-        },
-        {
-          "radio_altitude": [0.0,300.0]
-        },
-        {
-          "altitude_koef": 1.0
-        },
-        {
-          "bank": [-8.0,8.0]
-        },
-        {
-          "aviahorizon_pitch": [-90.0,90.0]
-        },
-        {
-          "aviahorizon_roll": [-60.0,60.0]
-        },
-        {
-          "clock_hour": [0.0,12.0]
-        },
-        {
-          "clock_min": [0.0,60.0]
-        },
-        {
-          "clock_sec": [0.0,60.0]
-        },
-        {
-          "rpm": [0.0,16300.0]
-        },
-        {
-          "rpm1": [0.0,16300.0]
-        },
-        {
-          "prop_pitch": [0.0,1.0]
-        },
-        {
-          "oil_temperature": [0.0,150.0]
-        },
-        {
-          "oil_temperature1": [0.0,150.0]
-        },
-        {
-          "water_temperature": [0.0,1200.0]
-        },
-        {
-          "water_temperature1": [0.0,1200.0]
-        },
-        {
-          "fuel": [0.0,800.0]
-        },
-        {
-          "fuel1": [0.0,800.0]
-        }
-      ]
-    },
-    {
-      "multifunctionDisplays": [
-        {
-          "display": [
-            {
-              "textureArea": [0.0,0.5,0.25,1.0]
-            },
-            {
-              "page": {
-                "type": "radar",
-                "radarScale": 0.85
-              }
-            },
-            {
-              "page": {
-                "type": "map"
-              }
-            },
-            {
-              "page": {
-                "type": "devices",
-                "speed": {
-                  "texture": "su_mfd_speed",
-                  "position": [60.0,110.0],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "backgroundTexCoord": [0.0,0.0,0.91,0.89],
-                  "size": [96.0,192.0],
-                  "color": "#ffff00ff",
-                  "valueTextSize": 30.0,
-                  "ranges": [
-                    {
-                      "limits": [0.0,50.0,-0.5,-0.46]
-                    },
-                    {
-                      "limits": [50.0,100.0,-0.46,-0.26]
-                    },
-                    {
-                      "limits": [100.0,150.0,-0.26,0.0]
-                    },
-                    {
-                      "limits": [150.0,250.0,0.0,0.5]
-                    },
-                    {
-                      "limits": [250.0,450.0,0.5,1.38]
-                    }
-                  ]
-                },
-                "vario": {
-                  "texture": "su_mfd_vario",
-                  "position": [276.0,110.0],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "size": [96.0,192.0],
-                  "color": "#1e1effff",
-                  "valueTextSize": 30.0,
-                  "ranges": [
-                    {
-                      "limits": [-20.0,-10.0,0.25,0.5]
-                    },
-                    {
-                      "limits": [-10.0,10.0,0.5,1.5]
-                    },
-                    {
-                      "limits": [10.0,20.0,1.5,1.75]
-                    }
-                  ]
-                },
-                "altitude_hour": {
-                  "texture": "su_mfd_altitude",
-                  "position": [276.0,402.0],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.47,0.92,0.86,1.0],
-                  "size": [96.0,192.0],
-                  "ranges": {
-                    "limits": [0.0,10.0,-0.5,1.5]
+    "multifunctionDisplays": [
+      {
+        "display": [
+          {
+            "textureArea": [0.0,0.5,0.25,1.0]
+          },
+          {
+            "page": {
+              "type": "radar",
+              "radarScale": 0.85
+            }
+          },
+          {
+            "page": {
+              "type": "map"
+            }
+          },
+          {
+            "page": {
+              "type": "devices",
+              "speed": {
+                "texture": "su_mfd_speed",
+                "position": [60.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
+                "size": [96.0,192.0],
+                "color": "#ffff00ff",
+                "valueTextSize": 30.0,
+                "ranges": [
+                  {
+                    "limits": [0.0,50.0,-0.5,-0.46]
+                  },
+                  {
+                    "limits": [50.0,100.0,-0.46,-0.26]
+                  },
+                  {
+                    "limits": [100.0,150.0,-0.26,0.0]
+                  },
+                  {
+                    "limits": [150.0,250.0,0.0,0.5]
+                  },
+                  {
+                    "limits": [250.0,450.0,0.5,1.38]
                   }
-                },
-                "altitude_min": {
-                  "texture": "su_mfd_altitude",
-                  "position": [276.0,402.0],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "size": [96.0,192.0],
-                  "color": "#1e1effff",
-                  "valueTextSize": 30.0,
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [0.0,1000.0,-0.5,1.5]
+                ]
+              },
+              "vario": {
+                "texture": "su_mfd_vario",
+                "position": [276.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "size": [96.0,192.0],
+                "color": "#1e1effff",
+                "valueTextSize": 30.0,
+                "ranges": [
+                  {
+                    "limits": [-20.0,-10.0,0.25,0.5]
+                  },
+                  {
+                    "limits": [-10.0,10.0,0.5,1.5]
+                  },
+                  {
+                    "limits": [10.0,20.0,1.5,1.75]
                   }
-                },
-                "aviahorizon_pitch": {
-                  "texture": "su_mfd_ahorizon",
-                  "arrowTex": "su_mfd_ahorizon_scale",
-                  "position": [170.0,256.0],
-                  "backgroundTexCoord": [0.11,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.0,0.4,1.0,0.6],
-                  "size": [90.0,180.0],
-                  "ranges": {
-                    "limits": [-90.0,90.0,0.35,-0.35]
-                  }
-                },
-                "aviahorizon_roll": {
-                  "texture": "su_mfd_ahorizon",
-                  "position": [170.0,256.0],
-                  "arrowTexCoord": [0.2,0.9,0.8,1.0],
-                  "size": [90.0,180.0],
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [-180.0,180.0,-1.0,1.0]
-                  }
+                ]
+              },
+              "altitude_hour": {
+                "texture": "su_mfd_altitude",
+                "position": [276.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.47,0.92,0.86,1.0],
+                "size": [96.0,192.0],
+                "ranges": {
+                  "limits": [0.0,10.0,-0.5,1.5]
+                }
+              },
+              "altitude_min": {
+                "texture": "su_mfd_altitude",
+                "position": [276.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "size": [96.0,192.0],
+                "color": "#1e1effff",
+                "valueTextSize": 30.0,
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [0.0,1000.0,-0.5,1.5]
+                }
+              },
+              "aviahorizon_pitch": {
+                "texture": "su_mfd_ahorizon",
+                "arrowTex": "su_mfd_ahorizon_scale",
+                "position": [170.0,256.0],
+                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.4,1.0,0.6],
+                "size": [90.0,180.0],
+                "ranges": {
+                  "limits": [-90.0,90.0,0.35,-0.35]
+                }
+              },
+              "aviahorizon_roll": {
+                "texture": "su_mfd_ahorizon",
+                "position": [170.0,256.0],
+                "arrowTexCoord": [0.2,0.9,0.8,1.0],
+                "size": [90.0,180.0],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [-180.0,180.0,-1.0,1.0]
                 }
               }
             }
-          ]
-        },
-        {
-          "display": [
-            {
-              "textureArea": [0.25,0.5,0.5,1.0]
-            },
-            {
-              "page": {
-                "type": "target_tracking",
-                "turretIdx": 0
-              }
-            },
-            {
-              "page": {
-                "type": "thermal",
-                "turretIdx": 0
-              }
-            },
-            {
-              "page": {
-                "type": "devices",
-                "speed": {
-                  "texture": "su_mfd_speed",
-                  "position": [60.0,110.0],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "backgroundTexCoord": [0.0,0.0,0.91,0.89],
-                  "size": [96.0,192.0],
-                  "color": "#ffff00ff",
-                  "valueTextSize": 30.0,
-                  "ranges": [
-                    {
-                      "limits": [0.0,50.0,-0.5,-0.46]
-                    },
-                    {
-                      "limits": [50.0,100.0,-0.46,-0.26]
-                    },
-                    {
-                      "limits": [100.0,150.0,-0.26,0.0]
-                    },
-                    {
-                      "limits": [150.0,250.0,0.0,0.5]
-                    },
-                    {
-                      "limits": [250.0,450.0,0.5,1.38]
-                    }
-                  ]
-                },
-                "vario": {
-                  "texture": "su_mfd_vario",
-                  "position": [276.0,110.0],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "size": [96.0,192.0],
-                  "color": "#1e1effff",
-                  "valueTextSize": 30.0,
-                  "ranges": [
-                    {
-                      "limits": [-20.0,-10.0,0.25,0.5]
-                    },
-                    {
-                      "limits": [-10.0,10.0,0.5,1.5]
-                    },
-                    {
-                      "limits": [10.0,20.0,1.5,1.75]
-                    }
-                  ]
-                },
-                "altitude_hour": {
-                  "texture": "su_mfd_altitude",
-                  "position": [276.0,402.0],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.47,0.92,0.86,1.0],
-                  "size": [96.0,192.0],
-                  "ranges": {
-                    "limits": [0.0,10.0,-0.5,1.5]
+          }
+        ]
+      },
+      {
+        "display": [
+          {
+            "textureArea": [0.25,0.5,0.5,1.0]
+          },
+          {
+            "page": {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          },
+          {
+            "page": {
+              "type": "thermal",
+              "turretIdx": 0
+            }
+          },
+          {
+            "page": {
+              "type": "devices",
+              "speed": {
+                "texture": "su_mfd_speed",
+                "position": [60.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
+                "size": [96.0,192.0],
+                "color": "#ffff00ff",
+                "valueTextSize": 30.0,
+                "ranges": [
+                  {
+                    "limits": [0.0,50.0,-0.5,-0.46]
+                  },
+                  {
+                    "limits": [50.0,100.0,-0.46,-0.26]
+                  },
+                  {
+                    "limits": [100.0,150.0,-0.26,0.0]
+                  },
+                  {
+                    "limits": [150.0,250.0,0.0,0.5]
+                  },
+                  {
+                    "limits": [250.0,450.0,0.5,1.38]
                   }
-                },
-                "altitude_min": {
-                  "texture": "su_mfd_altitude",
-                  "position": [276.0,402.0],
-                  "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                  "size": [96.0,192.0],
-                  "color": "#1e1effff",
-                  "valueTextSize": 30.0,
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [0.0,1000.0,-0.5,1.5]
+                ]
+              },
+              "vario": {
+                "texture": "su_mfd_vario",
+                "position": [276.0,110.0],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "size": [96.0,192.0],
+                "color": "#1e1effff",
+                "valueTextSize": 30.0,
+                "ranges": [
+                  {
+                    "limits": [-20.0,-10.0,0.25,0.5]
+                  },
+                  {
+                    "limits": [-10.0,10.0,0.5,1.5]
+                  },
+                  {
+                    "limits": [10.0,20.0,1.5,1.75]
                   }
-                },
-                "aviahorizon_pitch": {
-                  "texture": "su_mfd_ahorizon",
-                  "arrowTex": "su_mfd_ahorizon_scale",
-                  "position": [170.0,256.0],
-                  "backgroundTexCoord": [0.11,0.0,0.89,0.89],
-                  "arrowTexCoord": [0.0,0.4,1.0,0.6],
-                  "size": [90.0,180.0],
-                  "ranges": {
-                    "limits": [-90.0,90.0,0.35,-0.35]
-                  }
-                },
-                "aviahorizon_roll": {
-                  "texture": "su_mfd_ahorizon",
-                  "position": [170.0,256.0],
-                  "arrowTexCoord": [0.2,0.9,0.8,1.0],
-                  "size": [90.0,180.0],
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [-180.0,180.0,-1.0,1.0]
-                  }
+                ]
+              },
+              "altitude_hour": {
+                "texture": "su_mfd_altitude",
+                "position": [276.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.47,0.92,0.86,1.0],
+                "size": [96.0,192.0],
+                "ranges": {
+                  "limits": [0.0,10.0,-0.5,1.5]
+                }
+              },
+              "altitude_min": {
+                "texture": "su_mfd_altitude",
+                "position": [276.0,402.0],
+                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.93,0.4,0.97],
+                "size": [96.0,192.0],
+                "color": "#1e1effff",
+                "valueTextSize": 30.0,
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [0.0,1000.0,-0.5,1.5]
+                }
+              },
+              "aviahorizon_pitch": {
+                "texture": "su_mfd_ahorizon",
+                "arrowTex": "su_mfd_ahorizon_scale",
+                "position": [170.0,256.0],
+                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
+                "arrowTexCoord": [0.0,0.4,1.0,0.6],
+                "size": [90.0,180.0],
+                "ranges": {
+                  "limits": [-90.0,90.0,0.35,-0.35]
+                }
+              },
+              "aviahorizon_roll": {
+                "texture": "su_mfd_ahorizon",
+                "position": [170.0,256.0],
+                "arrowTexCoord": [0.2,0.9,0.8,1.0],
+                "size": [90.0,180.0],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [-180.0,180.0,-1.0,1.0]
                 }
               }
             }
-          ]
-        },
-        {
-          "display": [
-            {
-              "textureArea": [0.5,0.5,0.75,1.0]
-            },
-            {
-              "page": {
-                "type": "rwr"
-              }
-            },
-            {
-              "page": {
-                "type": "map"
-              }
+          }
+        ]
+      },
+      {
+        "display": [
+          {
+            "textureArea": [0.5,0.5,0.75,1.0]
+          },
+          {
+            "page": {
+              "type": "rwr"
             }
-          ]
-        },
-        {
-          "display": {
-            "textureArea": [0.75,0.5,1.0,1.0],
+          },
+          {
             "page": {
               "type": "map"
             }
           }
-        },
-        {
-          "display": {
-            "textureArea": [0.0,0.5,0.25,1.0],
-            "page": {
-              "type": "rwr"
-            }
-          }
-        },
-        {
-          "display": {
-            "textureArea": [0.0,0.5,0.25,1.0],
-            "page": {
-              "type": "rwr"
-            }
-          }
-        },
-        {
-          "display": {
-            "textureArea": [0.0,0.0,0.8,0.8],
-            "page": {
-              "type": "pilot_hud",
-              "ilsNode": "ils",
-              "ilsSize": [0.28,0.28],
-              "ilsProjSize": [0.184,0.176,0.02],
-              "ilsOffsetForce": 0.2,
-              "brightnessMult": 3.5
-            }
+        ]
+      },
+      {
+        "display": {
+          "textureArea": [0.75,0.5,1.0,1.0],
+          "page": {
+            "type": "map"
           }
         }
-      ]
-    },
-    {
-      "parts_holes_dmg": {
-        "part": "fuse"
+      },
+      {
+        "display": {
+          "textureArea": [0.0,0.0,0.8,0.8],
+          "page": {
+            "type": "pilot_hud",
+            "ilsNode": "ils",
+            "ilsSize": [0.28,0.28],
+            "ilsProjSize": [0.184,0.176,0.02],
+            "ilsOffsetForce": 0.2,
+            "brightnessMult": 3.5
+          }
+        }
       }
+    ],
+    "parts_holes_dmg": {
+      "part": "fuse"
     },
-    {
-      "parts_oil_dmg": [
-        {
-          "part": "engine1"
-        },
-        {
-          "part": "engine2"
-        },
-        {
-          "part": "engine3"
-        },
-        {
-          "part": "engine4"
-        }
-      ]
-    }
-  ],
+    "parts_oil_dmg": [
+      {
+        "part": "engine1"
+      },
+      {
+        "part": "engine2"
+      },
+      {
+        "part": "engine3"
+      },
+      {
+        "part": "engine4"
+      }
+    ]
+  },
   "helicopter": {
     "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
     "propellerStrainCoeff": 0.01

@@ -1,19 +1,19 @@
-let colorCorrector = ::require_native("colorCorrector")
-let fonts = require("fonts")
-let { is_stereo_mode } = ::require_native("vr")
-let screenInfo = require("scripts/options/screenInfo.nut")
-let safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
-let safeAreaHud = require("scripts/options/safeAreaHud.nut")
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-let focusFrame = require("scripts/viewUtils/focusFrameWT.nut")
-let { setSceneActive } = require("reactiveGuiCommand")
-let rootScreenBlkPathWatch = require("scripts/baseGuiHandler/rootScreenBlkPathWatch.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { isPlatformSony,
+local colorCorrector = ::require_native("colorCorrector")
+local fonts = require("fonts")
+local { is_stereo_mode } = ::require_native("vr")
+local screenInfo = require("scripts/options/screenInfo.nut")
+local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
+local safeAreaHud = require("scripts/options/safeAreaHud.nut")
+local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+local focusFrame = require("scripts/viewUtils/focusFrameWT.nut")
+local { setSceneActive } = require("reactiveGuiCommand")
+local rootScreenBlkPathWatch = require("scripts/baseGuiHandler/rootScreenBlkPathWatch.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { isPlatformSony,
         isPlatformXboxOne,
         targetPlatform } = require("scripts/clientState/platform.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::dagui_propid.add_name_id("has_ime")
 ::dagui_propid.add_name_id("target_platform")
@@ -43,7 +43,7 @@ handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSce
 
 handlersManager.beforeClearScene <- function beforeClearScene(guiScene)
 {
-  let sh = screenInfo.getScreenHeightForFonts(::screen_width(), ::screen_height())
+  local sh = screenInfo.getScreenHeightForFonts(::screen_width(), ::screen_height())
   if (lastScreenHeightForFont && lastScreenHeightForFont != sh)
     shouldResetFontsCache = true
   lastScreenHeightForFont = sh
@@ -107,7 +107,7 @@ handlersManager.onSwitchBaseHandler <- function onSwitchBaseHandler()
 {
   if (!::g_login.isLoggedIn())
     return
-  let curHandler = getActiveBaseHandler()
+  local curHandler = getActiveBaseHandler()
   if (curHandler)
     ::set_last_gc_scene_if_exist(curHandler.scene)
 }
@@ -121,7 +121,7 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
 {
   local haveChanges = false
 
-  let font = ::g_font.getCurrent()
+  local font = ::g_font.getCurrent()
   if (currentFont != font)
   {
     shouldResetFontsCache = true
@@ -133,10 +133,10 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
   }
   currentFont = font
 
-  let cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
+  local cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
   if (::get_dagui_pre_include_css_str() != cssStringPre)
   {
-    let safearea = safeAreaHud.getSafearea()
+    local safearea = safeAreaHud.getSafearea()
     ::set_dagui_pre_include_css_str(cssStringPre)
     ::set_hud_width_limit(safearea[0])
     ::call_darg("updateExtWatched", {
@@ -149,11 +149,11 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
 
   ::set_dagui_pre_include_css("")
 
-  let cssStringPost = generatePostLoadCssString()
+  local cssStringPost = generatePostLoadCssString()
   if (::get_dagui_post_include_css_str() != cssStringPost)
   {
     ::set_dagui_post_include_css_str(cssStringPost)
-    let forcedColors = ::g_login.isLoggedIn() ? ::get_team_colors() : {}
+    local forcedColors = ::g_login.isLoggedIn() ? ::get_team_colors() : {}
     ::call_darg("recalculateTeamColors", forcedColors)
     haveChanges = true
   }
@@ -166,11 +166,11 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
 
 handlersManager.generatePreLoadCssString <- function generatePreLoadCssString()
 {
-  let countriesCount = shopCountriesList.len()
-  let hudSafearea = safeAreaHud.getSafearea()
-  let menuSafearea = safeAreaMenu.getSafearea()
+  local countriesCount = shopCountriesList.len()
+  local hudSafearea = safeAreaHud.getSafearea()
+  local menuSafearea = safeAreaMenu.getSafearea()
 
-  let config = [
+  local config = [
     { name = "target_pc",         value = (isPlatformSony || isPlatformXboxOne) ? "no" : "yes" }
     { name = "swMain",            value = screenInfo.getMainScreenSizePx()[0].tostring() }
     { name = "_safearea_menu_w",  value = ::format("%.2f", menuSafearea[0]) }
@@ -190,9 +190,9 @@ handlersManager.generateColorConstantsConfig <- function generateColorConstantsC
   if (!::g_login.isAuthorized())
     return []
 
-  let cssConfig = []
-  let standardColors = !::g_login.isLoggedIn() || !::isPlayerDedicatedSpectator()
-  let forcedColors = ::get_team_colors()
+  local cssConfig = []
+  local standardColors = !::g_login.isLoggedIn() || !::isPlayerDedicatedSpectator()
+  local forcedColors = ::get_team_colors()
   local allyTeam, allyTeamColor, enemyTeamColor
   if (forcedColors)
   {
@@ -215,13 +215,13 @@ handlersManager.generateColorConstantsConfig <- function generateColorConstantsC
     )
   }
 
-  let theme = {
+  local theme = {
     squad = standardColors ? colorCorrector.TARGET_HUE_SQUAD : colorCorrector.TARGET_HUE_SPECTATOR_ALLY
     ally  = standardColors ? colorCorrector.TARGET_HUE_ALLY  : colorCorrector.TARGET_HUE_SPECTATOR_ALLY
     enemy = standardColors ? colorCorrector.TARGET_HUE_ENEMY : colorCorrector.TARGET_HUE_SPECTATOR_ENEMY
   }
 
-  let config = [
+  local config = [
     { style = "squad", baseColor = "3E9E2F", names = [ "mySquadColor", "hudColorSquad", "chatSenderMySquadColor", "chatTextSquadVoiceColor" ] }
     { style = "squad", baseColor = "65FF4D", names = [ "chatTextSquadColor" ] }
     { style = "squad", baseColor = "A5FF97", names = [ "mySquadLightColor" ] }
@@ -238,7 +238,7 @@ handlersManager.generateColorConstantsConfig <- function generateColorConstantsC
 
   foreach (cfg in config)
   {
-    let color = forcedColors ? (cfg.style == "enemy" ? enemyTeamColor : allyTeamColor)
+    local color = forcedColors ? (cfg.style == "enemy" ? enemyTeamColor : allyTeamColor)
       : colorCorrector.correctHueTarget(cfg.baseColor, theme[cfg.style])
 
     foreach (name in cfg.names)
@@ -254,8 +254,8 @@ handlersManager.generateColorConstantsConfig <- function generateColorConstantsC
 
 handlersManager.generatePostLoadCssString <- function generatePostLoadCssString()
 {
-  let controlCursorWithStick = ::g_gamepad_cursor_controls.getValue()
-  let config = [
+  local controlCursorWithStick = ::g_gamepad_cursor_controls.getValue()
+  local config = [
     {
       name = "shortcutUpGamepad"
       value = controlCursorWithStick ? "@shortcutUpDp" : "@shortcutUpDpAndStick"
@@ -289,10 +289,10 @@ handlersManager.generateCssString <- function generateCssString(config)
 }
 
 handlersManager.updateCssParams <- function(guiScene) {
-  let rootObj = guiScene.getRoot()
+  local rootObj = guiScene.getRoot()
 
   //Check for special hints, because IME is called with special action, and need to show text about it
-  let hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
+  local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
   rootObj["has_ime"] = hasIME? "yes" : "no"
   rootObj["target_platform"] = targetPlatform
 }
@@ -319,14 +319,14 @@ handlersManager.calcCurrentControlsAllowMask <- function calcCurrentControlsAllo
     foreach(h in group)
       if (isHandlerValid(h, true) && h.isSceneActive())
       {
-        let mask = getHandlerControlsAllowMask(h)
+        local mask = getHandlerControlsAllowMask(h)
         res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
       }
 
   foreach(name in ["menu_chat_handler", "contacts_handler", "game_chat_handler"])
     if (name in ::getroottable() && ::getroottable()[name])
     {
-      let mask = ::getroottable()[name].getControlsAllowMask()
+      local mask = ::getroottable()[name].getControlsAllowMask()
       res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
     }
 
@@ -341,7 +341,7 @@ handlersManager.updateControlsAllowMask <- function updateControlsAllowMask()
 
 handlersManager._updateControlsAllowMask <- function _updateControlsAllowMask()
 {
-  let newMask = calcCurrentControlsAllowMask()
+  local newMask = calcCurrentControlsAllowMask()
   if (newMask == curControlsAllowMask)
     return
 
@@ -352,13 +352,13 @@ handlersManager._updateControlsAllowMask <- function _updateControlsAllowMask()
 
 handlersManager._updateWidgets <- function _updateWidgets()
 {
-  let widgetsList = []
+  local widgetsList = []
   local hasActiveDargScene = false
   foreach(group in handlers)
     foreach(h in group)
       if (isHandlerValid(h, true) && h.isSceneActive() && h?.getWidgetsList)
       {
-        let wList = h.getWidgetsList()
+        local wList = h.getWidgetsList()
         widgetsList.extend(wList)
         if (wList.len() > 0 && h.isSceneActiveNoModals())
           hasActiveDargScene = true
@@ -372,7 +372,7 @@ handlersManager.calcCurrentSceneBgBlur <- function calcCurrentSceneBgBlur()
 {
   foreach(wndType, group in handlers)
   {
-    let defValue = sceneBgBlurDefaults?[wndType]() ?? false
+    local defValue = sceneBgBlurDefaults?[wndType]() ?? false
     foreach(h in group)
       if (isHandlerValid(h, true) && h.isSceneActive())
         if (h?.shouldBlurSceneBgFn() ?? h?.shouldBlurSceneBg ?? defValue)
@@ -390,7 +390,7 @@ handlersManager.updateSceneBgBlur <- function updateSceneBgBlur(forced = false)
 
 handlersManager._updateSceneBgBlur <- function _updateSceneBgBlur(forced = false)
 {
-  let isBlur = calcCurrentSceneBgBlur()
+  local isBlur = calcCurrentSceneBgBlur()
   if (!forced && isBlur == isCurSceneBgBlurred)
     return
 
@@ -446,7 +446,7 @@ handlersManager.beforeInitHandler <- function beforeInitHandler(handler)
     return
 
   if (focusFrame.isEnabled)
-    handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
+    handler.guiScene.createElementByObject(handler.scene, "gui/focusFrameAnim.blk", "tdiv", null)
 
   if (!::g_login.isLoggedIn() || handler instanceof ::gui_handlers.BaseGuiHandlerWT)
     return
@@ -460,7 +460,7 @@ handlersManager.initVoiceChatWidget <- function initVoiceChatWidget(handler)
     return
 
   if (::g_login.isLoggedIn() && (handler?.needVoiceChat ?? true))
-    handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
+    handler.guiScene.createElementByObject(handler.scene, "gui/chat/voiceChatWidget.blk", "widgets", null)
 }
 
 handlersManager.validateHandlersAfterLoading <- function validateHandlersAfterLoading()
@@ -476,7 +476,7 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
 
 ::get_cur_base_gui_handler <- function get_cur_base_gui_handler() //!!FIX ME: better to not use it at all. really no need to create instance of base handler without scene.
 {
-  let handler = ::handlersManager.getActiveBaseHandler()
+  local handler = ::handlersManager.getActiveBaseHandler()
   if (handler)
     return handler
   return ::gui_handlers.BaseGuiHandlerWT(::get_cur_gui_scene())
@@ -485,7 +485,7 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
 ::gui_start_empty_screen <- function gui_start_empty_screen()
 {
   ::handlersManager.emptyScreen()
-  let guiScene = ::get_cur_gui_scene()
+  local guiScene = ::get_cur_gui_scene()
   if (guiScene)
     guiScene.clearDelayed() //delayed actions doesn't work in empty screen.
 }
@@ -513,7 +513,7 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
 ::move_mouse_on_child <- function move_mouse_on_child(obj, idx = 0) { //it used in a lot of places, so leave it global
   if (::is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
     return
-  let child = obj.getChild(idx)
+  local child = obj.getChild(idx)
   if (!child.isValid())
     return
   child.scrollToView()
@@ -534,7 +534,7 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
     obj.setMouseCursorOnObject()
 }
 
-let needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
+local needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
 ::get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 handlersManager.init()

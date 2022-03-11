@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let tooltipBox = @(content) {
+local tooltipBox = @(content) {
   rendObj = ROBJ_BOX
   fillColor = Color(30, 30, 30, 160)
   borderColor = Color(50, 50, 50, 20)
@@ -10,17 +10,17 @@ let tooltipBox = @(content) {
   children = content
 }
 
-let tooltipGen = Watched(0)
-let tooltipComp = {value = null}
-let function setTooltip(val){
+local tooltipGen = Watched(0)
+local tooltipComp = {value = null}
+local function setTooltip(val){
   tooltipComp.value = val
   tooltipGen(tooltipGen.value+1)
 }
-let getTooltip = @() tooltipComp.value
+local getTooltip = @() tooltipComp.value
 
-let colorBack = Color(0,0,0,120)
+local colorBack = Color(0,0,0,120)
 
-let tooltipCmp = @(){
+local tooltipCmp = @(){
   key = "tooltip"
   pos = [0, hdpx(38)]
   watch = tooltipGen
@@ -37,11 +37,11 @@ let tooltipCmp = @(){
   : getTooltip()
 }
 
-let cursors = {getTooltip, setTooltip, tooltipCmp, tooltip = {}}
+local cursors = {getTooltip, setTooltip, tooltipCmp, tooltip = {}}
 
-let cursorC = Color(255,255,255,255)
+local cursorC = Color(255,255,255,255)
 
-let cursorPc = {
+local cursorPc = {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [fsh(2), fsh(2)]
   commands = [
@@ -55,7 +55,7 @@ let cursorPc = {
       rotate = 29
     }
 }
-let function mkPcCursor(children){
+local function mkPcCursor(children){
   return {
     size = [fsh(2), fsh(2)]
     hotspot = [0, 0]
@@ -68,7 +68,7 @@ let function mkPcCursor(children){
 
 cursors.normal <- Cursor(@() mkPcCursor([tooltipCmp]))
 
-let helpSign = {
+local helpSign = {
   rendObj = ROBJ_STEXT
   text = "?"
   fontSize = hdpx(20)
@@ -86,10 +86,10 @@ cursors.help <- Cursor(function(){
   ])
 })
 
-let getEvenIntegerHdpx = @(px) hdpx(0.5 * px).tointeger() * 2
-let cursorSzResizeDiag = getEvenIntegerHdpx(18)
+local getEvenIntegerHdpx = @(px) hdpx(0.5 * px).tointeger() * 2
+local cursorSzResizeDiag = getEvenIntegerHdpx(18)
 
-let function mkResizeC(commands, angle=0){
+local function mkResizeC(commands, angle=0){
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     size = [cursorSzResizeDiag, cursorSzResizeDiag]
@@ -103,7 +103,7 @@ let function mkResizeC(commands, angle=0){
     transform = {rotate=angle}
   }
 }
-let horArrow = [0,3, 2,0, 2,2, 5,2, 5,0, 7,3, 5,6, 5,4, 2,4, 2,6]
+local horArrow = [0,3, 2,0, 2,2, 5,2, 5,0, 7,3, 5,6, 5,4, 2,4, 2,6]
 cursors.sizeH <- Cursor(mkResizeC(horArrow))
 cursors.sizeV <- Cursor(mkResizeC(horArrow, 90))
 cursors.sizeDiagLtRb <- Cursor(mkResizeC(horArrow, 45))

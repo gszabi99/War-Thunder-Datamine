@@ -1,6 +1,6 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 
-::items_classes.CraftPart <- class extends ItemExternal {
+class ::items_classes.CraftPart extends ItemExternal {
   static iType = itemType.CRAFT_PART
   static defaultLocId = "craft_part"
   static typeIcon = "#ui/gameuiskin#item_type_craftpart"

@@ -1,31 +1,31 @@
-let datablockConverter = require("scripts/utils/datablockConverter.nut")
+local datablockConverter = require("scripts/utils/datablockConverter.nut")
 
-let buildReplayMpTable = function(replayPath)
+local buildReplayMpTable = function(replayPath)
 {
-  let res = []
+  local res = []
 
-  let replayInfo = ::get_replay_info(replayPath)
-  let commentsBlk = replayInfo?.comments
+  local replayInfo = ::get_replay_info(replayPath)
+  local commentsBlk = replayInfo?.comments
   if (!commentsBlk)
     return res
-  let playersBlkList = commentsBlk % "player"
+  local playersBlkList = commentsBlk % "player"
   if (!playersBlkList.len())
     return res
 
-  let gameType = replayInfo?.gameType ?? 0
-  let authorUserId = ::to_integer_safe(commentsBlk?.authorUserId ?? "", -1000, false)
-  let authorBlk = ::u.search(playersBlkList, @(v) ::to_integer_safe(v?.userId ?? "", 0, false) == authorUserId)
-  let authorSquadId = authorBlk?.squadId ?? INVALID_SQUAD_ID
+  local gameType = replayInfo?.gameType ?? 0
+  local authorUserId = ::to_integer_safe(commentsBlk?.authorUserId ?? "", -1000, false)
+  local authorBlk = ::u.search(playersBlkList, @(v) ::to_integer_safe(v?.userId ?? "", 0, false) == authorUserId)
+  local authorSquadId = authorBlk?.squadId ?? INVALID_SQUAD_ID
 
   foreach (b in playersBlkList)
   {
-    let userId = ::to_integer_safe(b?.userId ?? "", 0, false)
+    local userId = ::to_integer_safe(b?.userId ?? "", 0, false)
     if (userId == 0)
       continue
     if ((b?.name ?? "") == "" && (b?.nick ?? "") == "")
       continue
 
-    let mplayer = {
+    local mplayer = {
       userId = userId
       name = b?.name ?? ""
       clanTag = b?.clanTag ?? ""
@@ -41,8 +41,8 @@ let buildReplayMpTable = function(replayPath)
 
     if (mplayer.name == "")
     {
-      let parts = ::split(b?.nick ?? "", " ")
-      let hasClanTag = parts.len() == 2
+      local parts = ::split(b?.nick ?? "", " ")
+      local hasClanTag = parts.len() == 2
       mplayer.clanTag = hasClanTag ? parts[0] : ""
       mplayer.name    = hasClanTag ? parts[1] : parts[0]
     }
@@ -61,22 +61,22 @@ let buildReplayMpTable = function(replayPath)
   return res
 }
 
-let saveReplayScriptCommentsBlk = function(blk)
+local saveReplayScriptCommentsBlk = function(blk)
 {
   blk.uiScriptsData = ::DataBlock()
   blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(::SessionLobby.playersInfo)
 }
 
-let restoreReplayScriptCommentsBlk = function(replayPath)
+local restoreReplayScriptCommentsBlk = function(replayPath)
 {
   // Works for Local replays
-  let commentsBlk = ::get_replay_info(replayPath)?.comments
-  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
+  local commentsBlk = ::get_replay_info(replayPath)?.comments
+  local playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
 
   // Works for Server replays
   if (!playersInfo.len())
   {
-    let mplayersList = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
+    local mplayersList = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
     foreach (mplayer in mplayersList)
     {
       if (mplayer?.isBot || mplayer?.userId == null)

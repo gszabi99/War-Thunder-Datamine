@@ -1,15 +1,15 @@
-let {TrackerSize, TrackerX, TrackerY, GuidanceLockState, TrackerVisible} = require("agmAimState.nut")
-let {backgroundColor} = require("style/airHudStyle.nut")
+local {TrackerSize, TrackerX, TrackerY, GuidanceLockState, TrackerVisible} = require("agmAimState.nut")
+local {backgroundColor} = require("style/airHudStyle.nut")
 
 enum GuidanceLockResult {
   RESULT_TRACKING = 3
 }
 
-let agmAimTracker = @(is_background, color_watched) function() {
+local agmAimTracker = @(is_background, color_watched) function() {
 
-  let tSize = TrackerSize.value
+  local tSize = TrackerSize.value
 
-  let circleTracking =
+  local circleTracking =
     [
       [VECTOR_RECTANGLE, -tSize, -tSize, 2.0 * tSize, 2.0 * tSize],
       [VECTOR_LINE, 0, -0.33 * tSize, 0, -tSize],
@@ -18,7 +18,7 @@ let agmAimTracker = @(is_background, color_watched) function() {
       [VECTOR_LINE,  0.33 * tSize, 0,  tSize, 0]
     ]
 
-  let circle =
+  local circle =
     [
       [VECTOR_RECTANGLE, -tSize, -tSize,
         2.0 * tSize, 2.0 * tSize]

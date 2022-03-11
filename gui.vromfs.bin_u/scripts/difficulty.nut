@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_difficulty <- {
   types = []
 }
@@ -35,7 +35,7 @@ let enums = require("sqStdLibs/helpers/enums.nut")
   }
   getEdiffByUnitMask = function(unitTypesMask = 0)
   {
-    let isAvailableTanks = (unitTypesMask & (1 << ::ES_UNIT_TYPE_TANK)) != 0
+    local isAvailableTanks = (unitTypesMask & (1 << ::ES_UNIT_TYPE_TANK)) != 0
     return diffCode == -1 ? -1 :
       diffCode + (isAvailableTanks ? EDIFF_SHIFT : 0)
   }
@@ -186,7 +186,7 @@ g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(sea
 
 ::get_current_ediff <- function get_current_ediff()
 {
-  let gameMode = ::game_mode_manager.getCurrentGameMode()
+  local gameMode = ::game_mode_manager.getCurrentGameMode()
   return gameMode && gameMode.ediff != -1 ? gameMode.ediff : EDifficulties.ARCADE
 }
 
@@ -197,7 +197,7 @@ g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(sea
 
 ::get_difficulty_by_ediff <- function get_difficulty_by_ediff(ediff)
 {
-  let diffCode = ediff % EDIFF_SHIFT
+  local diffCode = ediff % EDIFF_SHIFT
   foreach(difficulty in ::g_difficulty.types)
     if (difficulty.diffCode == diffCode)
       return difficulty
@@ -206,7 +206,7 @@ g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(sea
 
 ::get_current_shop_difficulty <- function get_current_shop_difficulty()
 {
-  let gameMode = ::game_mode_manager.getCurrentGameMode()
+  local gameMode = ::game_mode_manager.getCurrentGameMode()
   if (gameMode)
     return ::g_difficulty.getDifficultyByDiffCode(gameMode.diffCode)
   return ::g_difficulty.ARCADE

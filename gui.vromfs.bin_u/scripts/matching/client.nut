@@ -1,4 +1,4 @@
-let exitGame = require("scripts/utils/exitGame.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
 ::on_online_unavailable <- function on_online_unavailable()
 {
@@ -14,13 +14,13 @@ let exitGame = require("scripts/utils/exitGame.nut")
 
 ::logout_with_msgbox <- function logout_with_msgbox(params)
 {
-  let message = "message" in params ? params["message"] : null
+  local message = "message" in params ? params["message"] : null
   ::g_matching_connect.logoutWithMsgBox(params.reason, message, params.reasonDomain)
 }
 
 ::exit_with_msgbox <- function exit_with_msgbox(params)
 {
-  let message = "message" in params ? params["message"] : null
+  local message = "message" in params ? params["message"] : null
   ::g_matching_connect.exitWithMsgBox(params.reason, message, params.reasonDomain)
 }
 
@@ -34,9 +34,9 @@ let exitGame = require("scripts/utils/exitGame.nut")
 ::punish_close_client <- function punish_close_client(params)
 {
   dagor.debug("punish_close_client")
-  let message = ("reason" in params) ? ::g_language.addLineBreaks(params.reason) : ::loc("matching/hacker_kicked_notice")
+  local message = ("reason" in params) ? ::g_language.addLineBreaks(params.reason) : ::loc("matching/hacker_kicked_notice")
 
-  let needFlightMenu = ::is_in_flight() && !::get_is_in_flight_menu() && !::is_flight_menu_disabled()
+  local needFlightMenu = ::is_in_flight() && !::get_is_in_flight_menu() && !::is_flight_menu_disabled()
   if (needFlightMenu)
     ::gui_start_flight_menu()
 
@@ -53,9 +53,9 @@ requestOptions:
 **/
 ::request_matching <- function request_matching(functionName, onSuccess = null, onError = null, params = null, requestOptions = null)
 {
-  let showError = ::getTblValue("showError", requestOptions, true)
+  local showError = ::getTblValue("showError", requestOptions, true)
 
-  let callback = (@(onSuccess, onError, showError) function(response) {
+  local callback = (@(onSuccess, onError, showError) function(response) {
                      if (!::checkMatchingError(response, showError))
                      {
                        if (onError != null)
@@ -76,14 +76,14 @@ requestOptions:
   if (!showError || ::disable_network())
     return false
 
-  let errorId = ::getTblValue("error_id", params) || ::matching.error_string(params.error)
+  local errorId = ::getTblValue("error_id", params) || ::matching.error_string(params.error)
   local text = ::loc("matching/" + g_string.replace(errorId, ".", "_"))
   if ("error_message" in params)
     text = text + "\n<B>"+params.error_message+"</B>"
 
-  let id = "sessionLobby_error"
+  local id = "sessionLobby_error"
 
-  let options = { saved = true, checkDuplicateId = true, cancel_fn = function() {}}
+  local options = { saved = true, checkDuplicateId = true, cancel_fn = function() {}}
   if ("LAST_SESSION_DEBUG_INFO" in getroottable())
     options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
 

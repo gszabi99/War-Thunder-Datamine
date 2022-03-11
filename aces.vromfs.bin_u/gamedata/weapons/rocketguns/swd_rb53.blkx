@@ -5,7 +5,7 @@
   "mesh_deployed": "rb_53_rocket_deployed",
   "helicopterGroup": 2,
   "shotFreq": 20.0,
-  "sound": "atgm",
+  "sound": "weapon.rocketgun_132",
   "rocket": {
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
@@ -19,46 +19,37 @@
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
     "shellAnimation": "video/shells_animations/atgm.ivf",
-    "caliber": 0.11,
-    "length": 0.848,
-    "explosiveType": "comp_b",
-    "explosiveMass": 1.14,
+    "caliber": 0.125,
+    "length": 1.005,
+    "explosiveType": "hta",
+    "explosiveMass": 3.6,
     "distFromCmToStab": 0.01,
     "distanceFuse": false,
     "operated": true,
-    "operatedDist": 2000.0,
+    "operatedDist": 3000.0,
     "autoAiming": true,
     "autoLeveling": true,
     "aimSensitivity": 20.0,
-    "autoAimTrackingSensitivity": 0.1,
+    "autoAimTrackingSensitivity": 0.5,
     "WdK": [0.1,0.1,0.1],
-    "maxAxisValues": 0.25,
-    "maxLateralAcceleration": 3.0,
-    "aimCorrectionVelMin": 150.0,
-    "wingAreaMult": 2.8,
-    "CyK": 6.0,
-    "CyMaxAoA": 1.75,
+    "maxAxisValues": 0.2,
     "explosionEffect": "explosion_midair_medium",
     "groundCollisionEffect": "explosion_midair_small",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_short",
-    "smokeEffect": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 0.02,
-    "maxDistance": 2000.0,
-    "minDistance": 230.0,
-    "mass": 7.6,
-    "massEnd": 7.25,
-    "massEnd1": 6.74,
-    "force": 1100.0,
-    "timeFire": 0.5,
-    "force1": 42.5,
-    "timeFire1": 24.0,
+    "maxDistance": 3000.0,
+    "minDistance": 30.0,
+    "maxLaunchAngle": 20.0,
+    "mass": 13.5,
+    "massEnd": 10.6,
+    "massEnd1": 9.6,
+    "force": 1600.0,
+    "timeFire": 1.0,
+    "force1": 50.0,
+    "timeFire1": 27.0,
+    "timeLife": 35.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -72,23 +63,24 @@
     "explodeTreshold": 0.0,
     "rendinstDamageRadius": 2.0,
     "statType": "hydra",
+    "fireEffect": "rocket_fire_short_doubleside",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
-    "dragCx": 0.0035,
-    "CxK": 3.25,
+    "dragCx": 0.0032,
+    "CxK": 1.65,
     "useStartSpeed": true,
-    "startSpeed": 15.0,
+    "startSpeed": 10.0,
     "endSpeed": 0.0,
-    "maxSpeed": 85.0,
-    "timeLife": 25.0,
+    "maxSpeed": 140.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
     "hasTracerTrail": true,
     "tracerTrailEmitter": [-0.5,0.0,0.0],
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
       "mod2": [15.0,0.7],
@@ -215,88 +207,6 @@
         "fx": "explosion_midair_small"
       }
     },
-    "shatterCollisions": {
-      "groundCollisionEffect": "hit_12_18mm_dirt_ap",
-      "waterCollisionEffect": "hit_8_11mm_water",
-      "default": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "horLandMesh": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "soil": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "dirt": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "road": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "bricks_red": {
-        "fx": "hit_12_18mm_red_brick_ap"
-      },
-      "roadSoil": {
-        "fx": "hit_12_18mm_dirt_ap"
-      },
-      "sand": {
-        "fx": "hit_12_18mm_sand_ap"
-      },
-      "duneSand": {
-        "fx": "hit_12_18mm_sand_ap"
-      },
-      "roadSand": {
-        "fx": "hit_12_18mm_sand_ap"
-      },
-      "quickSand": {
-        "fx": "hit_12_18mm_sand_ap"
-      },
-      "snow": {
-        "fx": "hit_12_18mm_snow_ap"
-      },
-      "ice": {
-        "fx": "hit_12_18mm_snow_ap"
-      },
-      "roadSnow": {
-        "fx": "hit_12_18mm_snow_ap"
-      },
-      "snowLower": {
-        "fx": "hit_12_18mm_snow_ap"
-      },
-      "glass": {
-        "fx": "hit_12_18mm_metal_ap"
-      },
-      "wood": {
-        "fx": "hit_12_18mm_wood_ap"
-      },
-      "steel": {
-        "fx": "hit_12_18mm_metal_ap"
-      },
-      "metal": {
-        "fx": "hit_12_18mm_metal_ap"
-      },
-      "buildings": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "verLandMesh": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "concrete": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "rocks": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "rocksSlippery": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "fabric": {
-        "fx": "hit_12_18mm_stone_ap"
-      },
-      "stone_snow": {
-        "fx": "hit_12_18mm_snow_ap"
-      }
-    },
     "DamageParts": {
       "body": {
         "hp": 5.0,
@@ -304,19 +214,11 @@
         "armorThickness": 1.0
       }
     },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "expl": 1.0
-        }
-      }
-    },
     "cumulativeDamage": {
-      "armorPower": 500.0,
-      "distance": 5.5,
-      "damage": 500.0,
-      "onHitChanceMultFire": 25.0
+      "armorPower": 650.0,
+      "distance": 5.0,
+      "damage": 900.0,
+      "onHitChanceMultFire": 15.0
     },
     "tracerTrail": {
       "smokeEffect": "",

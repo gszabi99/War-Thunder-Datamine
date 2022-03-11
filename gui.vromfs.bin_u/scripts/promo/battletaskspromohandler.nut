@@ -1,19 +1,19 @@
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-let { easyDailyTaskProgressWatchObj,
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+local { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { copyParamsToTable } = require("std/datablock.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { copyParamsToTable } = require("std/datablock.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
 
-::gui_handlers.BattleTasksPromoHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
 
-  sceneBlkName = "%gui/empty.blk"
+  sceneBlkName = "gui/empty.blk"
   savePathBattleTasksDiff = "promo/battleTasksDiff"
 
   static function open(params)
@@ -29,26 +29,26 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
   function updateHandler()
   {
-    let id = scene.id
+    local id = scene.id
     local difficultyGroupArray = []
 
     // 0) Prepare: Filter tasks array by available difficulties list
-    let tasksArray = ::g_battle_tasks.getTasksArrayByIncreasingDifficulty()
+    local tasksArray = ::g_battle_tasks.getTasksArrayByIncreasingDifficulty()
 
     // 1) Search for task with available reward
     local reqTask = ::g_battle_tasks.getTaskWithAvailableAward(tasksArray)
 
     // No need to show some additional info on button
     // when battle task is complete and need to receive a reward
-    let isTaskWithReward = reqTask != null
+    local isTaskWithReward = reqTask != null
 
-    let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
+    local currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId)
     {
       local curDifficultyGroup = ::load_local_account_settings(savePathBattleTasksDiff,
         ::g_battle_task_difficulty.getDefaultDifficultyGroup())
-      let activeTasks = ::u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
+      local activeTasks = ::u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
         @(task) !::g_battle_tasks.isTaskDone(task)
           && ::g_battle_tasks.isTaskActive(task)
           && (::g_battle_tasks.canGetReward(task) || !::g_battle_tasks.isTaskTimeExpired(task)))
@@ -65,15 +65,15 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
     local showProgressBar = false
     local currentWarbond = null
-    let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
+    local promoView = copyParamsToTable(::g_promo.getConfig()?[id])
     local view = {}
 
     if (reqTask)
     {
-      let config = ::build_conditions_config(reqTask)
+      local config = ::build_conditions_config(reqTask)
       ::build_unlock_desc(config)
 
-      let itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
+      local itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
       itemView.canReroll = false
       view = ::u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null? val1 : val2 })
       view.collapsedText <- ::g_promo.getCollapsedText(view, id)
@@ -115,20 +115,20 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
     if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
     {
-      let progressValueText = ::loc("ui/parentheses/space",
+      local progressValueText = ::loc("ui/parentheses/space",
         {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
       view.collapsedText = $"{view.collapsedText}{progressValueText}"
     }
-    let maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
+    local maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
       view.taskStatus != null ? "-1@modStatusHeight" : "",
       view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
     view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
-    let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
+    local iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
     if (getStringWidthPx(view.collapsedText, "fontNormal", guiScene) > maxTextWidth - iconSize)
       view.shortInfoBlockWidth <- ::to_pixels("1@arrowButtonWidth-1@blockInterval")
     view.hasMarginCollapsedIcon <- view.collapsedText != "" && view.taskDifficultyImage != ""
     view.hasCollapsedText <- view.collapsedText != ""
-    let taskHeaderCondition = view?.taskHeaderCondition ?? ""
+    local taskHeaderCondition = view?.taskHeaderCondition ?? ""
     if (taskHeaderCondition != "")
       view.title = $"{view.title} {taskHeaderCondition}"
     if (getStringWidthPx(view.title, "fontNormal", guiScene) > maxTextWidth)
@@ -141,7 +141,7 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
     view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
     view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
-    let isEmptyTask = view.taskId == null
+    local isEmptyTask = view.taskId == null
     if (isEmptyTask) {
       view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
       view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
@@ -151,7 +151,7 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
       }
     }
 
-    let data = ::handyman.renderCached("%gui/promo/promoBattleTasks",
+    local data = ::handyman.renderCached("gui/promo/promoBattleTasks",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME})
     guiScene.replaceContentFromText(scene, data, data.len(), this)
 
@@ -172,11 +172,11 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
   function onSelectDifficultyBattleTasks(obj)
   {
-    let index = obj.getValue()
+    local index = obj.getValue()
     if (index < 0 || index >= obj.childrenCount())
       return
 
-    let difficultyGroup = obj.getChild(index)?.difficultyGroup
+    local difficultyGroup = obj.getChild(index)?.difficultyGroup
 
     if (!difficultyGroup)
       return
@@ -191,11 +191,11 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
   function getDifficultyRadioButtonsListByTasks(tasksArray, difficultyTypeArray, curDifficultyGroup)
   {
-    let result = []
+    local result = []
     foreach(btDiffType in difficultyTypeArray)
     {
-      let difficultyGroup = btDiffType.getDifficultyGroup()
-      let tasksByDiff = ::u.search(tasksArray,
+      local difficultyGroup = btDiffType.getDifficultyGroup()
+      local tasksByDiff = ::u.search(tasksArray,
           @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task) == btDiffType))
 
       if (!tasksByDiff)
@@ -212,7 +212,7 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
   function performAction(obj) { ::g_promo.performAction(this, obj) }
   function performActionCollapsed(obj)
   {
-    let buttonObj = obj.getParent()
+    local buttonObj = obj.getParent()
     performAction(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)))
   }
   function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
@@ -225,7 +225,7 @@ let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
 }
 
-let promoButtonId = "current_battle_tasks_mainmenu_button"
+local promoButtonId = "current_battle_tasks_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -233,10 +233,10 @@ addPromoButtonConfig({
   collapsedIcon = ::loc("icon/battleTasks")
   collapsedText = "title"
   updateFunctionInHandler = function() {
-    let id = promoButtonId
-    let show = ::g_battle_tasks.isAvailableForUser()
+    local id = promoButtonId
+    local show = ::g_battle_tasks.isAvailableForUser()
       && ::g_promo.getVisibilityById(id)
-    let buttonObj = ::showBtn(id, show, scene)
+    local buttonObj = ::showBtn(id, show, scene)
     if (!show || !::checkObj(buttonObj))
       return
 

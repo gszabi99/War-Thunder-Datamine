@@ -1,7 +1,7 @@
-let { doesLocTextExist, loc } = require("dagor.localize")
+local { doesLocTextExist, loc } = require("dagor.localize")
 
 {
-  let class BhvHint
+  class BhvHint
   {
     eventMask    = ::EV_ON_CMD
     valuePID               = ::dagui_propid.add_name_id("value")
@@ -35,13 +35,13 @@ let { doesLocTextExist, loc } = require("dagor.localize")
 
       obj.setIntProp(isUpdateInProgressPID, 1)
 
-      let params = {
+      local params = {
         isWrapInRowAllowed = obj.getFinalProp("isWrapInRowAllowed") == "yes"
         flowAlign = obj.getFinalProp("flow-align") ?? "center"
         showShortcutsNameIfNotAssign = true
       }
-      let value = obj?.value ?? ""
-      let markup = ::g_hints.buildHintMarkup(doesLocTextExist(value) ? loc(value) : value, params)
+      local value = obj?.value ?? ""
+      local markup = ::g_hints.buildHintMarkup(doesLocTextExist(value) ? loc(value) : value, params)
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
 
       obj.setIntProp(isUpdateInProgressPID, 0)

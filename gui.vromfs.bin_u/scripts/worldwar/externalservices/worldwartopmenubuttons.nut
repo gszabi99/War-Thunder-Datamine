@@ -1,8 +1,8 @@
-let { addButtonConfig } = require("scripts/mainmenu/topMenuButtonsConfigs.nut")
-let { getOperationById,
+local { addButtonConfig } = require("scripts/mainmenu/topMenuButtonsConfigs.nut")
+local { getOperationById,
         getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-let template = {
+local template = {
   category = -1
   value = @() ::g_world_war_render.isCategoryEnabled(category)
   onChangeValueFunc = @(value) ::g_world_war_render.setCategory(category, value)
@@ -10,7 +10,7 @@ let template = {
   elementType = TOP_MENU_ELEMENT_TYPE.CHECKBOX
 }
 
-let list = {
+local list = {
   WW_MAIN_MENU = {
     text = "#worldWar/menu/mainMenu"
     onClickFunc = @(obj, handler) ::g_world_war.openOperationsOrQueues()
@@ -20,7 +20,7 @@ let list = {
     text = "#worldWar/menu/selectOperation"
     onClickFunc = function(obj, handler)
     {
-      let curOperation = getOperationById(::ww_get_operation_id())
+      local curOperation = getOperationById(::ww_get_operation_id())
       if (!curOperation)
         return ::g_world_war.openOperationsOrQueues()
 

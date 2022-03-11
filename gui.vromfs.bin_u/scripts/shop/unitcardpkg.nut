@@ -1,4 +1,4 @@
-let getUnitShopPriceText = @(unit)
+local getUnitShopPriceText = @(unit)
   ::canBuyUnitOnMarketplace(unit) ? ::loc("currency/gc/sign/colored", "")
   : ::isUnitUsable(unit) ? ""
   : ::isUnitGift(unit) ? ::g_string.stripTags(::loc($"shop/giftAir/{unit.gift}", "shop/giftAir/alpha"))

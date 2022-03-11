@@ -1,4 +1,4 @@
-let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console()
 {
@@ -8,10 +8,10 @@ let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
   ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
 }
 
-::gui_handlers.ControlsConsole <- class extends ::gui_handlers.GenericOptionsModal
+class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.BASE
-  sceneBlkName = "%gui/controlsConsole.blk"
+  sceneBlkName = "gui/controlsConsole.blk"
   sceneNavBlkName = null
 
   changeControlsMode = false
@@ -34,8 +34,8 @@ let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
       [::USEROPT_HEADTRACK_SCALE_Y, "slider", ::ps4_headtrack_is_attached()]
     ]
 
-    let guiScene = ::get_gui_scene()
-    let container = create_options_container("controls", options, true)
+    local guiScene = ::get_gui_scene()
+    local container = create_options_container("controls", options, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     optionsContainers = [container.descr]
 
@@ -62,7 +62,7 @@ let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
   function onHeadtrackEnableChange(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    local option = get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
@@ -71,7 +71,7 @@ let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
   function checkHeadtrackRows()
   {
-    let show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
+    local show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
     foreach(o in [::USEROPT_HEADTRACK_SCALE_X, ::USEROPT_HEADTRACK_SCALE_Y])
       showOptionRow(get_option(o), show)
     showSceneBtn("btn_calibrate", show)
@@ -90,7 +90,7 @@ let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
     showSceneBtn("btn_switchMode", true)
     showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
     showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
-    let btnObj = scene.findObject("btn_calibrate")
+    local btnObj = scene.findObject("btn_calibrate")
     if (::checkObj(btnObj))
       btnObj.inactiveColor = ::ps4_headtrack_is_active()? "no" : "yes"
   }

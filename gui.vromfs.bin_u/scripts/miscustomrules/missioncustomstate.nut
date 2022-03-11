@@ -31,11 +31,11 @@ g_mis_custom_state.getCurMissionRules <- function getCurMissionRules()
 
   local rulesClass = ::mission_rules.Empty
 
-  let rulesName = getCurMissionRulesName()
+  local rulesName = getCurMissionRulesName()
   if (::u.isString(rulesName))
     rulesClass = findRulesClassByName(rulesName)
 
-  let chosenRulesName = (rulesClass == ::mission_rules.Empty) ? "empty" : rulesName
+  local chosenRulesName = (rulesClass == ::mission_rules.Empty) ? "empty" : rulesName
   dagor.debug("Set mission custom rules to " + chosenRulesName + ". In mission info was " + rulesName)
 
   curRules = rulesClass()
@@ -46,7 +46,7 @@ g_mis_custom_state.getCurMissionRules <- function getCurMissionRules()
 
 g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName()
 {
-  let mis = ::is_in_flight() ? ::get_current_mission_info_cached() : null
+  local mis = ::is_in_flight() ? ::get_current_mission_info_cached() : null
   return mis?.customRules.guiName ?? mis?.customRules.name
 }
 

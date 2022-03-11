@@ -1,5 +1,5 @@
-let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {
@@ -9,10 +9,10 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
   )
 }
 
-::gui_handlers.clanSeasonInfoModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
+  sceneBlkName = "gui/clans/clanSeasonInfoModal.blk"
 
   difficulty = null
 
@@ -35,19 +35,19 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
   function fillRewardsList()
   {
-    let view = getRewardsView(difficulty)
-    let markup = ::handyman.renderCached("%gui/clans/clanSeasonInfoListItem", view)
+    local view = getRewardsView(difficulty)
+    local markup = ::handyman.renderCached("gui/clans/clanSeasonInfoListItem", view)
     guiScene.appendWithBlk(rewardsListObj, markup, this)
   }
 
   function getRewardsView(diff)
   {
-    let view = { rewardsList = [] }
-    let rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
+    local view = { rewardsList = [] }
+    local rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
     if (::u.isEmpty(rewards))
       return view
 
-    let seasonName = ::g_clan_seasons.getSeasonName()
+    local seasonName = ::g_clan_seasons.getSeasonName()
     foreach(reward in rewards)
     {
       local title = ""
@@ -67,7 +67,7 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
           medal = reward.rating + "rating"
           break
       }
-      let medalIconMarkup = ::LayersIcon.getIconData(::format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
+      local medalIconMarkup = ::LayersIcon.getIconData(::format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
 
       local condition = ""
@@ -81,26 +81,26 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
       local gold = ""
       if (reward.gold)
       {
-        let value = reward.goldMin ?
+        local value = reward.goldMin ?
           (::Cost(0, reward.goldMin).tostring() + ::loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
           ::Cost(0, reward.gold).tostring()
         gold = ::loc("charServer/chapter/eagles") + ::loc("ui/colon") + value
       }
 
-      let prizesList = {}
-      let prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
-      let limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
+      local prizesList = {}
+      local prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
+      local limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
       foreach (prize in prizes)
       {
-        let prizeType = prize.type
-        let collection = []
+        local prizeType = prize.type
+        local collection = []
 
         if (prizeType == "clanTag")
         {
-          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
-          let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? ::loc("clan/clan_tag/short") : myClanTagUndecorated
-          let tooltipBase = ::loc("clan/clan_tag_decoration") + ::loc("ui/colon")
-          let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
+          local myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
+          local tagTxt = ::u.isEmpty(myClanTagUndecorated) ? ::loc("clan/clan_tag/short") : myClanTagUndecorated
+          local tooltipBase = ::loc("clan/clan_tag_decoration") + ::loc("ui/colon")
+          local tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
           foreach (decorator in tagDecorators)
             collection.append({
               start = decorator.start
@@ -111,10 +111,10 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
         }
         else if (prizeType == "decal")
         {
-          let decorType = ::g_decorator_type.DECALS
+          local decorType = ::g_decorator_type.DECALS
           foreach (decalId in prize.list)
           {
-            let decal = ::g_decorator.getDecorator(decalId, decorType)
+            local decal = ::g_decorator.getDecorator(decalId, decorType)
             collection.append({
               id = decalId
               image = decorType.getImage(decal)
@@ -124,8 +124,8 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
           }
         }
 
-        let uniqueCount = ::getTblValue(prizeType, limits, 0) || collection.len()
-        let splitList = {
+        local uniqueCount = ::getTblValue(prizeType, limits, 0) || collection.len()
+        local splitList = {
           unique = []
           bonus  = []
         }
@@ -134,10 +134,10 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
         prizesList[prizeType] <- splitList
       }
 
-      let uniqueClantags = prizesList?.clanTag.unique ?? []
-      let uniqueDecals   = prizesList?.decal.unique ?? []
-      let bonusClantags  = prizesList?.clanTag.bonus ?? []
-      let bonusDecals    = prizesList?.decal.bonus ?? []
+      local uniqueClantags = prizesList?.clanTag.unique ?? []
+      local uniqueDecals   = prizesList?.decal.unique ?? []
+      local bonusClantags  = prizesList?.clanTag.bonus ?? []
+      local bonusDecals    = prizesList?.decal.bonus ?? []
 
       view.rewardsList.append({
         title      = title
@@ -163,10 +163,10 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
   function onShowBonuses(obj)
   {
-    let bonusesObj = ::checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
+    local bonusesObj = ::checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
     if (!::checkObj(bonusesObj))
       return
-    let isShow = bonusesObj["toggled"] != "yes"
+    local isShow = bonusesObj["toggled"] != "yes"
     bonusesObj["toggled"] = isShow ? "yes" : "no"
     bonusesObj.show(isShow)
 
@@ -188,14 +188,14 @@ let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
   function onItemSelect(obj)
   {
-    let listChildrenCount = rewardsListObj.childrenCount()
-    let index = obj.getValue()
+    local listChildrenCount = rewardsListObj.childrenCount()
+    local index = obj.getValue()
     selectedIndex = (index >= 0 && index < listChildrenCount) ? index : 0
   }
 
   function showBonusesByActivateItem(obj)
   {
-    let btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
+    local btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
     if (btnObj?.isValid())
       onShowBonuses(btnObj)
   }

@@ -1,4 +1,4 @@
-::g_invites_classes.Friend <- class extends ::BaseInvite
+class ::g_invites_classes.Friend extends ::BaseInvite
 {
   static function getUidByParams(params)
   {

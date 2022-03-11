@@ -1,12 +1,12 @@
 // warning disable: -file:forbidden-function
 
-let fonts = require("fonts")
-let { reloadDargUiScript } = require("reactiveGuiCommand")
+local fonts = require("fonts")
+local { reloadDargUiScript } = require("reactiveGuiCommand")
 
 ::debug_change_font_size <- function debug_change_font_size(shouldIncrease = true)
 {
-  let availableFonts = ::g_font.getAvailableFonts()
-  let curFont = ::g_font.getCurrent()
+  local availableFonts = ::g_font.getAvailableFonts()
+  local curFont = ::g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = ::clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
   if (::g_font.setCurrent(availableFonts[idx])) {
@@ -19,9 +19,9 @@ let { reloadDargUiScript } = require("reactiveGuiCommand")
 local fontsAdditionalText = ""
 ::debug_fonts_list <- function debug_fonts_list(isActiveColor = true, needBorder = true)
 {
-  let getColor = @() isActiveColor ? "activeTextColor" : "commonTextColor"
+  local getColor = @() isActiveColor ? "activeTextColor" : "commonTextColor"
 
-  let view = {
+  local view = {
     color = "@" + getColor()
     isActiveColor = isActiveColor
     needBorder = needBorder
@@ -50,7 +50,7 @@ local fontsAdditionalText = ""
       guiScene.setUpdatesEnabled(false, false)
       foreach(id in fonts.getFontsList())
       {
-        let obj = scene.findObject(id)
+        local obj = scene.findObject(id)
         if (::check_obj(obj))
           func(obj)
       }
@@ -60,24 +60,24 @@ local fontsAdditionalText = ""
     function onColorChange(obj)
     {
       isActiveColor = obj.getValue()
-      let color = guiScene.getConstantValue(getColor())
+      local color = guiScene.getConstantValue(getColor())
       updateAllObjs(function(obj) { obj.color = color })
     }
 
     function onBorderChange(obj)
     {
       needBorder = obj.getValue()
-      let borderText = needBorder ? "yes" : "no"
+      local borderText = needBorder ? "yes" : "no"
       updateAllObjs(function(obj) { obj.border = borderText })
     }
 
     function onTextChange(obj)
     {
-      let text = obj.getValue()
+      local text = obj.getValue()
       fontsAdditionalText = text.len() ? "\n" + text : ""
       updateAllObjs(function(obj) { obj.setValue(obj.id + fontsAdditionalText) })
     }
   }
 
-  debug_wnd("%gui/debugTools/fontsList.tpl", view, handler)
+  debug_wnd("gui/debugTools/fontsList.tpl", view, handler)
 }

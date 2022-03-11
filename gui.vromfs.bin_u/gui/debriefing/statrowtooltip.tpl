@@ -57,7 +57,7 @@ tdiv {
           position:t='relative'
           width:t='0.07@sf'
 
-          include "%gui/debriefing/rewardSources"
+          include "gui/debriefing/rewardSources"
         }
       }
     }

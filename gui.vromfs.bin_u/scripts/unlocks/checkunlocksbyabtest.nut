@@ -1,7 +1,7 @@
-let function giveUnlocksAbTestOnce(abTestBlk)
+local function giveUnlocksAbTestOnce(abTestBlk)
 {
-  let unlocksList = abTestBlk.unlocks
-  let unlockId = unlocksList?[(::my_user_id_int64 % abTestBlk.divider).tostring()]
+  local unlocksList = abTestBlk.unlocks
+  local unlockId = unlocksList?[(::my_user_id_int64 % abTestBlk.divider).tostring()]
   if (!unlockId || ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, unlockId))
     return
 
@@ -12,9 +12,9 @@ let function giveUnlocksAbTestOnce(abTestBlk)
   ::req_unlock_by_client(unlockId, false)
 }
 
-let function checkUnlocksByAbTestList()
+local function checkUnlocksByAbTestList()
 {
-  let abTestUnlocksListByUsersGroups = ::get_gui_regional_blk()?.abTestUnlocksListByUsersGroups
+  local abTestUnlocksListByUsersGroups = ::get_gui_regional_blk()?.abTestUnlocksListByUsersGroups
   if (!abTestUnlocksListByUsersGroups)
     return
 
