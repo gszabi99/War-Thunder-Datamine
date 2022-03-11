@@ -1681,6 +1681,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return "endTime" in event
   }
 
+  function getEventAchievementGroup(event)
+  {
+    return event?.achievementGroup ?? ""
+  }
+
   function onEventSignOut(p)
   {
     __game_events.clear()

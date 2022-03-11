@@ -293,8 +293,10 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
       ticketBoughtImgObj.show(showImg)
     }
 
+    local hasAchievementGroup = (::events.getEventAchievementGroup(selectedEvent) != "")
     showSceneBtn("rewards_list_btn",
-      ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent))
+      ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent)
+        || hasAchievementGroup)
   }
 
   function loadMap()
@@ -517,7 +519,15 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function onRewardsList()
   {
-    ::gui_handlers.EventRewardsWnd.open(selectedEvent)
+    local eventAchievementGroup = ::events.getEventAchievementGroup(selectedEvent)
+    if (eventAchievementGroup != "") {
+      ::gui_start_profile({
+        initialSheet = "UnlockAchievement"
+        curAchievementGroupName = eventAchievementGroup
+      })
+    }
+    else
+      ::gui_handlers.EventRewardsWnd.open(selectedEvent)
   }
 
   function onPlayersList()
