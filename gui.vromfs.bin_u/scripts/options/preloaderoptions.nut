@@ -1,19 +1,19 @@
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { getCurLoadingBgData } = require("scripts/loading/loadingBgData.nut")
+let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { getCurLoadingBgData } = require("scripts/loading/loadingBgData.nut")
 
 const BANNED_SCREENS_SAVE_ID = "preloaderOptions/bannedScreens"
 
 local bannedScreens = {}
 local isInited = false
 
-local function initOnce()
+let function initOnce()
 {
   if (isInited || !::g_login.isProfileReceived())
     return
 
   isInited = true
 
-  local blk = ::load_local_account_settings(BANNED_SCREENS_SAVE_ID, null)
+  let blk = ::load_local_account_settings(BANNED_SCREENS_SAVE_ID, null)
   if (!blk)
     return
 
@@ -28,13 +28,13 @@ local function initOnce()
   ::save_local_account_settings(BANNED_SCREENS_SAVE_ID, bannedScreens)
 }
 
-local function invalidateCache()
+let function invalidateCache()
 {
   bannedScreens.clear()
   isInited = false
 }
 
-local function toggleLoadingScreenBan(screenId)
+let function toggleLoadingScreenBan(screenId)
 {
   initOnce()
   if (!isInited)
@@ -48,7 +48,7 @@ local function toggleLoadingScreenBan(screenId)
   ::save_local_account_settings(BANNED_SCREENS_SAVE_ID, bannedScreens)
 }
 
-local function isLoadingScreenBanned(screenId)
+let function isLoadingScreenBanned(screenId)
 {
   initOnce()
   return screenId in bannedScreens

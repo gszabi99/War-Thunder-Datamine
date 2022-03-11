@@ -1,10 +1,10 @@
-local needLogoutAfterSession = persist("needLogoutAfterSession", @() ::Watched(false))
+let needLogoutAfterSession = persist("needLogoutAfterSession", @() ::Watched(false))
 
-local function canLogout() {
+let function canLogout() {
   return !::disable_network() && !::is_vendor_tencent()
 }
 
-local function startLogout() {
+let function startLogout() {
   if (!canLogout())
     return ::exit_game()
 

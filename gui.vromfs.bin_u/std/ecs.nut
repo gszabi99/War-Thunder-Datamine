@@ -5,22 +5,22 @@
 //    [ecs.EventEntityCreated] = @(evt, eid, comp) {}
 //    [ecs.EventComponentChanged] = @(evt, eid, comp) {}
 // }
-local { logerr } = require("dagor.debug")
-local { kwarg } = require("%sqstd/functools.nut")
+let { logerr } = require("dagor.debug")
+let { kwarg } = require("%sqstd/functools.nut")
 
-local ecs = require("ecs")
+let ecs = require("ecs")
 
 
 global const INVALID_ENTITY_ID = 0//ecs.INVALID_ENTITY_ID
-local unicastSqEvents = {}
+let unicastSqEvents = {}
 //local broadcastNativeEvents = ["onUpdate", ecs.EventComponentChanged, ecs.EventComponentsAppear, ecs.EventComponentsDisappear, ecs.EventEntityCreated, ecs.EventEntityDestroyed]
 
-local sqEvents = {}
-local event = {}
+let sqEvents = {}
+let event = {}
 const VERBOSE_PRINT = false //getroottable()?.__is_stub__
-local verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(val) null
+let verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(val) null
 
-local function register_event(name, eventType, structure=null){
+let function register_event(name, eventType, structure=null){
 
   assert(ecs.EVCAST_UNICAST == eventType || ecs.EVCAST_BROADCAST == eventType,
             "eventType should be ecs.EVCAST_UNICAST || ecs.EVCAST_BROADCAST")
@@ -28,7 +28,7 @@ local function register_event(name, eventType, structure=null){
   assert (type(name) =="string", "event name should be string")
   assert(!(name in sqEvents), @() $"event: '{name}' already registered!")
   sqEvents[name] <- name
-  local eventRegisteredName = ecs.register_sq_event(name, structure!=null, eventType)
+  let eventRegisteredName = ecs.register_sq_event(name, structure!=null, eventType)
   event[name] <- function(payload=null){
 //  todo - add type checking
     if (structure == null) {
@@ -40,11 +40,11 @@ local function register_event(name, eventType, structure=null){
   }
 }
 
-local function mkEsFuncNamed(esname, func) {
+let function mkEsFuncNamed(esname, func) {
   assert(["function", "instance", "table"].indexof(type(func)) != null, $"esHandler can be only function or callable, for ES '{esname}', got type: {type(func)}")
-  local infos = func?.getfuncinfos?()
+  let infos = func?.getfuncinfos?()
   assert(infos!=null, "esHandler can be only function or callable, ES:{0}".subst(esname))
-  local len = infos.parameters.len()
+  let len = infos.parameters.len()
   assert (len < 5 && len > 2,
     $"ES function should have at least 2 params - eid, comp, or 3 - evt, eid, comp. function name:{infos?.name}, argnum:{" ".join(infos?.parameters ?? [])}, arguments:{len}, es name:{esname}")
   if (len==4)
@@ -53,8 +53,8 @@ local function mkEsFuncNamed(esname, func) {
     return function(evt, eid, comp) {func(eid, comp)}
 }
 
-local function gatherComponentNames(component_list){
-  local res = []
+let function gatherComponentNames(component_list){
+  let res = []
   foreach (component in component_list){
     if (type(component) =="string")
       res.append(component)
@@ -70,38 +70,18 @@ if (INTERNAL_REGISTER_ECS not in ecs) {
   ecs.register_entity_system = @(name, events, comps, params) assert(false, "register_entity_system considered unsafe. use ecs.register_es instead")
 }
 
-local ecs_register_entity_system = ecs[INTERNAL_REGISTER_ECS]
+let ecs_register_entity_system = ecs[INTERNAL_REGISTER_ECS]
 
 local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
+  const DOTS_ERROR = "dots in ES components"
   try{
     foreach (k, v in compsDesc)
       assert(["comps_ro","comps_rw","comps_rq","comps_no","comps_track"].indexof(k) != null, $"incorrect comps description, incorrect key: {k}, es name:{name}")
+    local comps = compsDesc
 
-    local compsDescRemapped = {}
-    local typo_dot = "__"
-    foreach (k, v in compsDesc) {
-      if (type(v)=="string")
-        compsDescRemapped[k] <- v.replace(".", typo_dot)
-      else if (type(v)=="array") {
-        local v2 = array(v.len())
-        foreach (idx, compD in v) {
-          if (type(compD)=="string")
-            v2[idx] = compD.replace(".", typo_dot)
-          else if (type(compD)=="array")
-            v2[idx] = [compD[0].replace(".", typo_dot)].extend(compD.slice(1))
-          else
-            v2[idx] = compD
-        }
-        compsDescRemapped[k] <- v2
-      }
-      else
-        compsDescRemapped[k] <- v
-    }
-    local comps = compsDescRemapped
-
-    local remappedEvents = {}
-    local mkEsFunc = @(func) mkEsFuncNamed(name, func)
-    local remap = {
+    let remappedEvents = {}
+    let mkEsFunc = @(func) mkEsFuncNamed(name, func)
+    let remap = {
       onInit = [ecs.EventEntityCreated, ecs.EventScriptReloaded, ecs.EventComponentsAppear],
       onChange = [ecs.EventComponentChanged],
       onDestroy = [ecs.EventEntityDestroyed, ecs.EventComponentsDisappear]
@@ -129,10 +109,10 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     foreach (k, v in remappedEvents) {
       assert(k in ecs.sqEvents || ["Timer","onUpdate"].indexof(k) != null || (type(k) == "class") || (type(k) == "integer"), $"unknown event {k}. Script events should be registered via ecs.register_event()")
     }
-    local isChangedTracked = ecs.EventComponentChanged in remappedEvents
-    local comps_track = comps?.comps_track ?? []
+    let isChangedTracked = ecs.EventComponentChanged in remappedEvents
+    let comps_track = comps?.comps_track ?? []
     assert((!isChangedTracked && comps_track.len()==0) || (isChangedTracked && comps_track.len()>0) || ((params?.track?.len() ?? 0) >0), "ecs registered for EventComponentChanged should have comps_track in components or CSV 'track' in params!")
-    local comps_ro = [].extend(comps?.comps_ro ?? []).extend(comps_track)
+    let comps_ro = [].extend(comps?.comps_ro ?? []).extend(comps_track)
     comps = clone comps
     if (comps_ro.len() > 0)
       comps.comps_ro <- comps_ro
@@ -153,15 +133,15 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     comps_len += comps?.comps_rw?.len != null ? comps.comps_rw.len() : 0
     comps_len += comps?.comps_rq?.len != null ? comps.comps_rq.len() : 0
     if (comps_len == 0) {
-      local unicastEvents = remappedEvents.filter(@(v, k) k in unicastSqEvents ) //do not enumerate native events
+      let unicastEvents = remappedEvents.filter(@(v, k) k in unicastSqEvents ) //do not enumerate native events
       assert(unicastEvents.len() == 0, $"es {name} registered for unicast events without any components!")
       verbose_print($"ecs: '{name}' is registered for performing queries, as it has zero required components; ")
     }
     if ("onUpdate" in remappedEvents) {
       assert("before" in params || "after" in params, @() $"{name} need syncpoints ('before' and/or 'after' in params)")
     }
-    local comps_ro_optional_num = comps_ro.filter(@(v) type(v)=="array" && v.len() > 2).len()
-    local comps_rw = comps?.comps_rw ?? []
+    let comps_ro_optional_num = comps_ro.filter(@(v) type(v)=="array" && v.len() > 2).len()
+    let comps_rw = comps?.comps_rw ?? []
     assert(
       comps_len == 0 || !(comps_ro_optional_num == comps_ro.len() && ((comps_rw.len() ?? 0) + (comps?.comps_rq.len() ?? 0))==0),
       @() $"es {name} registered with all optional components"
@@ -180,16 +160,31 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     assert(
       comps?.comps_no.indexof("eid")==null, "eid can't be set as 'no' component"
     )
+    if (params?.track.contains(".") ) {
+      println($"dots in es '{name}': {params?.track}")
+      throw(DOTS_ERROR)
+    }
+    foreach (_, compslist in comps){
+      foreach (comp in compslist){
+        local compName = comp
+        if (typeof compName == "array")
+          compName = comp[0]
+        if (compName?.contains(".")) {
+          println($"dots in component {comp?[0]} es {name}")
+          throw(DOTS_ERROR)
+        }
+      }
+    }
   }
   catch (e){
     logerr(": ".concat($"error in '{name}'", e))
   }
 }
 
-local function makeTemplate(params={}){
-  local addTemplates = params?.addTemplates ?? []
-  local removeTemplates = [].extend(params?.removeTemplates ?? []).extend(addTemplates)
-  local baseTemplates = params?.baseTemplate.split("+") ?? []
+let function makeTemplate(params={}){
+  let addTemplates = params?.addTemplates ?? []
+  let removeTemplates = [].extend(params?.removeTemplates ?? []).extend(addTemplates)
+  let baseTemplates = params?.baseTemplate.split("+") ?? []
   return "+".join(
             baseTemplates
             .filter(@(v) removeTemplates.indexof(v) == null)
@@ -197,24 +192,24 @@ local function makeTemplate(params={}){
           )
 }
 
-local recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTemplates=[], addTemplates=[], comps={}, callback=null){
+let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTemplates=[], addTemplates=[], comps={}, callback=null){
   removeTemplates = [].extend(removeTemplates).extend(addTemplates)
   if (eid == INVALID_ENTITY_ID || !ecs.g_entity_mgr.doesEntityExist(eid))
     return
-  local curTemplate = ecs.g_entity_mgr.getEntityFutureTemplateName(eid)
+  let curTemplate = ecs.g_entity_mgr.getEntityFutureTemplateName(eid)
   // curTemplate is null when destroyEntity() is called right before recreateEntityWithTemplates
   // In such case doesEntityExist() still true
   if (curTemplate == null)
     return
-  local newTemplatesName = makeTemplate({baseTemplate=curTemplate, addTemplates=addTemplates, removeTemplates = removeTemplates})
+  let newTemplatesName = makeTemplate({baseTemplate=curTemplate, addTemplates=addTemplates, removeTemplates = removeTemplates})
   if (newTemplatesName != curTemplate)
     ecs.g_entity_mgr.reCreateEntityFrom(eid, newTemplatesName, comps, callback)
 })
 
-local function query_map(query, func, filter_str = null){
+let function query_map(query, func, filter_str = null){
   assert(query instanceof ecs.SqQuery, "need SqQuery instance as first argument")
   assert(filter_str == null  || type(filter_str) == "string", "filter string should be string or null")
-  local res = []
+  let res = []
   if (filter_str != null)
     query.perform(function(eid, comp) {res.append(func(eid, comp))}, filter_str)
   else
@@ -222,34 +217,34 @@ local function query_map(query, func, filter_str = null){
   return res
 }
 
-local function list2array(list){
-  local res = []
+let function list2array(list){
+  let res = []
   foreach (v in list){
     res.append(v)
   }
   return res
 }
 
-local function set_array2list(_array, list){
+let function set_array2list(_array, list){
   list.clear()
   foreach (v in _array)
     list.append(v)
   return list
 }
 
-local mkRegisterEventByType = @(eventType) function(payload, eventName){
+let mkRegisterEventByType = @(eventType) function(payload, eventName){
   if (payload == null)
     register_event(eventName, eventType)
   else
     register_event(eventName, eventType, payload)
 }
-local _registerUnicastEvent = mkRegisterEventByType(ecs.EVCAST_UNICAST)
+let _registerUnicastEvent = mkRegisterEventByType(ecs.EVCAST_UNICAST)
 unicastSqEvents.clear()
-local function registerUnicastEvent(payload, eventName){
+let function registerUnicastEvent(payload, eventName){
   unicastSqEvents[eventName] <- payload
   _registerUnicastEvent(payload, eventName)
 }
-local registerBroadcastEvent = mkRegisterEventByType(ecs.EVCAST_BROADCAST)
+let registerBroadcastEvent = mkRegisterEventByType(ecs.EVCAST_BROADCAST)
 //this is done here only to have all events in all VMs
 //broadcastSqEvents.__update(events.broadcastEvents)//for type check in register es
 

@@ -1,9 +1,9 @@
-class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "gui/worldWar/worldWarMapArmiesList"
+  sceneTplName = "%gui/worldWar/worldWarMapArmiesList"
   sceneBlkName = null
-  contentBlockTplName = "gui/worldWar/worldWarMapArmyItemEmpty"
+  contentBlockTplName = "%gui/worldWar/worldWarMapArmyItemEmpty"
 
   tabOrder = [
     ::g_ww_map_armies_status_tab_type.IDLE,
@@ -25,7 +25,7 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
     itemsPerPageWithPaginator = getArmiesPerPage()
     itemsPerPageWithoutPaginator = getArmiesPerPage(true)
 
-    local tabListObj = scene.findObject("armies_by_status_list")
+    let tabListObj = scene.findObject("armies_by_status_list")
     fillContent()
     if (::check_obj(tabListObj))
       tabListObj.setValue(0)
@@ -33,30 +33,30 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillContent()
   {
-    local contentObj = scene.findObject("armies_tab_content")
+    let contentObj = scene.findObject("armies_tab_content")
     if (!::check_obj(contentObj))
       return
 
-    local emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
+    let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
     for(local i = 0; i < itemsPerPageWithoutPaginator; i++)
       emptyViewData.army.append({})
 
-    local markUpData = ::handyman.renderCached(contentBlockTplName, emptyViewData)
+    let markUpData = ::handyman.renderCached(contentBlockTplName, emptyViewData)
     guiScene.replaceContentFromText(contentObj, markUpData, markUpData.len(), this)
   }
 
   function getArmiesPerPage(withoutPaginator = false)
   {
-    local contentObj = scene.findObject("armies_tab_content")
+    let contentObj = scene.findObject("armies_tab_content")
     if (!::check_obj(contentObj))
       return 0
 
-    local armiesContentSize = contentObj.getSize()
-    local armyIconSize = guiScene.calcString("1@wwArmyIco", contentObj)
+    let armiesContentSize = contentObj.getSize()
+    let armyIconSize = guiScene.calcString("1@wwArmyIco", contentObj)
     local contentHeight = armiesContentSize[1]
     if (withoutPaginator)
     {
-      local paginatorNestObj = scene.findObject("paginator_nest_obj")
+      let paginatorNestObj = scene.findObject("paginator_nest_obj")
       contentHeight += paginatorNestObj.getSize()[1]
     }
     return (armiesContentSize[0] / armyIconSize).tointeger()
@@ -105,7 +105,7 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(tab in tabOrder)
     {
-      local tabCountObj = scene.findObject("army_by_state_title_count_" + tab.status)
+      let tabCountObj = scene.findObject("army_by_state_title_count_" + tab.status)
       if (::check_obj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }
@@ -116,11 +116,11 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
     updateCurItemsPerPage()
     updatePaginator()
 
-    local contentObj = scene.findObject("armies_tab_content")
+    let contentObj = scene.findObject("armies_tab_content")
     if (!::check_obj(contentObj))
       return
 
-    local contentViewData = lastTabSelected.getContentViewData(curItemsPerPage, currentPage)
+    let contentViewData = lastTabSelected.getContentViewData(curItemsPerPage, currentPage)
     if (!isHasChanges(contentViewData.army, updatedArmyNames))
       return
 
@@ -153,11 +153,11 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateScene(contentObj, viewData, index)
   {
-    local viewObj = contentObj.getChild(index)
+    let viewObj = contentObj.getChild(index)
     if (!::check_obj(viewObj))
       return
 
-    local isShow = viewData != null
+    let isShow = viewData != null
     viewObj.show(isShow)
     viewObj.enable(isShow)
     if (!isShow)
@@ -169,14 +169,14 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
     viewObj["clanId"] = viewData.clanId()
     viewObj["selected"] = viewData.name == selectedArmyName ? "yes" : "no"
 
-    local armyIconObj = viewObj.findObject("armyIcon")
+    let armyIconObj = viewObj.findObject("armyIcon")
     if (::check_obj(armyIconObj))
     {
       armyIconObj["team"] = viewData.getTeamColor()
       armyIconObj["isBelongsToMyClan"] = viewData.isBelongsToMyClan() ? "yes" : "no"
       armyIconObj.findObject("entrenchIcon").show(viewData.isEntrenched())
 
-      local armyUnitTypeObj = armyIconObj.findObject("armyUnitType")
+      let armyUnitTypeObj = armyIconObj.findObject("armyUnitType")
       if (::check_obj(armyUnitTypeObj))
         armyUnitTypeObj.setValue(viewData.getUnitTypeCustomText())
     }
@@ -184,15 +184,15 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCurItemsPerPage()
   {
-    local totalPages = lastTabSelected.getTotalPageCount(itemsPerPageWithoutPaginator)
+    let totalPages = lastTabSelected.getTotalPageCount(itemsPerPageWithoutPaginator)
     curItemsPerPage = totalPages > 1 ? itemsPerPageWithPaginator : itemsPerPageWithoutPaginator
   }
 
   function updatePaginator()
   {
-    local pagesCount = lastTabSelected.getTotalPageCount(curItemsPerPage)
-    local hasPaginator = pagesCount > 1
-    local paginatorPlaceObj = showSceneBtn("paginator_place", hasPaginator)
+    let pagesCount = lastTabSelected.getTotalPageCount(curItemsPerPage)
+    let hasPaginator = pagesCount > 1
+    let paginatorPlaceObj = showSceneBtn("paginator_place", hasPaginator)
     showSceneBtn("paginator_nest_obj", hasPaginator)
     if (hasPaginator)
       ::generatePaginator(paginatorPlaceObj, this, currentPage, pagesCount - 1, null, true, true)
@@ -220,13 +220,13 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     setArmyViewSelection(obj.armyName, true)
-    local wwArmy = ::g_world_war.getArmyByName(obj.armyName)
+    let wwArmy = ::g_world_war.getArmyByName(obj.armyName)
     if (!wwArmy)
       return
 
     ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
 
-    local mapObj = guiScene["worldwar_map"]
+    let mapObj = guiScene["worldwar_map"]
     ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, obj.armyName)
     guiScene.playSound("ww_unit_select")
   }
@@ -236,11 +236,11 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
     if (armyName == selectedArmyName && isSelected)
       return
 
-    local contentObj = scene.findObject("armies_tab_content")
+    let contentObj = scene.findObject("armies_tab_content")
     if (::check_obj(contentObj))
       for(local i = 0; i < itemsPerPageWithoutPaginator; i++)
       {
-        local viewObj = contentObj.getChild(i)
+        let viewObj = contentObj.getChild(i)
         if (!::check_obj(viewObj))
           break
 
@@ -258,13 +258,13 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
     if (!isSceneActiveNoModals())
       return doWhenActiveOnce("fullViewUpdate")
 
-    local armies = ::getTblValue("armies", params)
+    let armies = ::getTblValue("armies", params)
     if (::u.isEmpty(armies))
       return
 
     updateTabs()
 
-    local curTabArmies = ::u.filter(
+    let curTabArmies = ::u.filter(
       armies,
       (@(lastTabSelected) function(army) {
         return army.getActionStatus() == lastTabSelected.status
@@ -279,11 +279,11 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWMapArmySelected(params)
   {
-    local selectedArmyNames = ::ww_get_selected_armies_names()
+    let selectedArmyNames = ::ww_get_selected_armies_names()
     if (::u.isEmpty(selectedArmyNames))
       return
 
-    local armyName = selectedArmyNames[0]
+    let armyName = selectedArmyNames[0]
     if (::u.isEmpty(armyName))
       return
 

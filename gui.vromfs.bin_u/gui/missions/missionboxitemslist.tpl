@@ -1,3 +1,3 @@
 <<#items>>
-include "gui/missions/missionBoxItem"
+include "%gui/missions/missionBoxItem"
 <</items>>

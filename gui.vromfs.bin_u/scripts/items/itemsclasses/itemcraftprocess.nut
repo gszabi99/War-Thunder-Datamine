@@ -1,7 +1,7 @@
-local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+let inventoryClient = require("scripts/inventory/inventoryClient.nut")
 
-class ::items_classes.CraftProcess extends ItemExternal {
+::items_classes.CraftProcess <- class extends ItemExternal {
   static iType = itemType.CRAFT_PROCESS
   static defaultLocId = "craft_part"
   static typeIcon = "#ui/gameuiskin#item_type_craftpart"
@@ -28,9 +28,9 @@ class ::items_classes.CraftProcess extends ItemExternal {
   {
     if (uids.len() > 0)
     {
-      local parentItem = params?.parentItem
-      local item = this
-      local text = ::loc(getLocIdsList().msgBoxConfirm,
+      let parentItem = params?.parentItem
+      let item = this
+      let text = ::loc(getLocIdsList().msgBoxConfirm,
         { itemName = ::colorize("activeTextColor", parentItem ? parentItem.getName() : getName()) })
       ::scene_msg_box("craft_canceled", null, text, [
         [ "yes", @() inventoryClient.cancelDelayedExchange(item.uids[0],
@@ -55,11 +55,11 @@ class ::items_classes.CraftProcess extends ItemExternal {
   {
     ::ItemsManager.markInventoryUpdateDelayed()
 
-    local resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
-    local trophyId = id
+    let resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    let trophyId = id
     if (resultItemsShowOpening.len())
     {
-      local openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
+      let openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
         id = trophyId
         item = extItem?.itemdef?.itemdefid
         count = extItem?.quantity ?? 0

@@ -3,10 +3,10 @@
   ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc})
 }
 
-class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/controlsInput.blk"
+  sceneBlkName = "%gui/controlsInput.blk"
 
   owner = null
   onButtonEnteredFunc = null
@@ -33,8 +33,8 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
     {
       if (obj["device" + i]!="" && obj["button" + i]!="")
       {
-        local devId = obj["device" + i].tointeger();
-        local btnId = obj["button" + i].tointeger();
+        let devId = obj["device" + i].tointeger();
+        let btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
         if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
@@ -57,7 +57,7 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
   {
     local curBtnText = ""
     local numButtons = 0
-    local curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = ::g_controls_manager.getCurPreset()
     for (local i = 0; i < 4; i++)
     {
       local devId = obj["device" + i]

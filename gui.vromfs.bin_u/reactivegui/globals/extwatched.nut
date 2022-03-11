@@ -1,8 +1,8 @@
-local extData = {}
+let extData = {}
 
-local function update(config) {
+let function update(config) {
   foreach (name, value in config) {
-    local watch = extData?[name]
+    let watch = extData?[name]
     if (watch == null)
       continue
 
@@ -10,13 +10,13 @@ local function update(config) {
   }
 }
 
-local function make(name, ctor) {
+let function make(name, ctor) {
   if (name in extData) {
     ::assert(false, $"extWatched: duplicate name: {name}")
     return extData[name]
   }
 
-  local res = Watched(ctor())
+  let res = Watched(ctor())
   extData[name] <- res
   res.whiteListMutatorClosure(update)
   return res

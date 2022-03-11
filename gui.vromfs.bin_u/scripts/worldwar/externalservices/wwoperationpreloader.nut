@@ -30,9 +30,9 @@ local WwOperationPreloader = class
 
     ::ww_stop_preview()
 
-    local operationId = curTask.operationId
-    local taskId = ::ww_preview_operation(operationId)
-    local accessCb = ::Callback(
+    let operationId = curTask.operationId
+    let taskId = ::ww_preview_operation(operationId)
+    let accessCb = ::Callback(
       function() {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)
@@ -48,7 +48,7 @@ local WwOperationPreloader = class
       },
       this)
 
-    local errorCb = ::Callback(
+    let errorCb = ::Callback(
       function(res) {
         isRequestInProgress = false
         if (operationId != curTask?.operationId)
@@ -58,7 +58,7 @@ local WwOperationPreloader = class
       },
       this)
 
-    local param = {
+    let param = {
       showProgressBox = curTask.hasProgressBox
     }
 

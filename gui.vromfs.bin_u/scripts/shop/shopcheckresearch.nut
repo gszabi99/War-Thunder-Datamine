@@ -1,15 +1,15 @@
-local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
-local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+let unitActions = require("scripts/unit/unitActions.nut")
+let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
-class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
+::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/shop/shopCheckResearch"
-  sceneNavBlkName = "gui/shop/shopNav.blk"
+  sceneTplName = "%gui/shop/shopCheckResearch"
+  sceneNavBlkName = "%gui/shop/shopNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   canQuitByGoBack = false
 
@@ -31,7 +31,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function initScreen()
   {
-    local unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
+    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
     curAirName = unitName
     researchedUnit = ::getAircraftByName(unitName)
     unitCountry = researchBlock.country
@@ -83,23 +83,23 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
     showRankLockedMsgBoxOnce = true
 
-    local rank = getMaxEraAvailableByCountry()
-    local nextRank = rank + 1
+    let rank = getMaxEraAvailableByCountry()
+    let nextRank = rank + 1
 
     if (nextRank > ::max_country_rank)
       return
 
-    local unitLockedByFeature = getNotResearchedUnitByFeature()
+    let unitLockedByFeature = getNotResearchedUnitByFeature()
     if (unitLockedByFeature && !::checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
       return
 
-    local ranksBlk = ::get_ranks_blk()
-    local unitsCount = boughtVehiclesCount[rank]
-    local unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(unitCountry, unitType, rank, ranksBlk)
-    local reqUnits = max(0, unitsNeed - unitsCount)
+    let ranksBlk = ::get_ranks_blk()
+    let unitsCount = boughtVehiclesCount[rank]
+    let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(unitCountry, unitType, rank, ranksBlk)
+    let reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0)
     {
-      local text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
+      let text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
                     + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
       msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
     }
@@ -107,11 +107,11 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function updateHeaderText()
   {
-    local headerObj = scene.findObject("shop_header")
+    let headerObj = scene.findObject("shop_header")
     if (!::checkObj(headerObj))
       return
 
-    local expText = ::get_flush_exp_text(availableFlushExp)
+    let expText = ::get_flush_exp_text(availableFlushExp)
     local headerText = ::loc("mainmenu/nextResearch/title")
     if (expText != "")
       headerText += ::loc("ui/parentheses/space", {text = expText})
@@ -126,7 +126,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function updateCurResearchingUnit()
   {
-    local curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
+    let curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
     if (curUnitName == ::getTblValue("name", curResearchingUnit, ""))
       return
 
@@ -184,7 +184,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     }
     else if (!curResearchingUnit || ::isUnitResearched(curResearchingUnit))
     {
-      local nextResearchingUnit = getMaxRankResearchingUnitByCountry()
+      let nextResearchingUnit = getMaxRankResearchingUnitByCountry()
       if (nextResearchingUnit)
         unit = nextResearchingUnit
       else
@@ -222,12 +222,12 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
     tutorialModule.saveShowedTutorial("researchUnit")
 
-    local visibleObj = scene.findObject("shop_items_visible_div")
+    let visibleObj = scene.findObject("shop_items_visible_div")
     if (!visibleObj)
       return
 
-    local visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
-    local unitsObj = []
+    let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
+    let unitsObj = []
     foreach (newUnit in ::all_units)
       if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
         && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
@@ -238,17 +238,17 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
         else
           newUnitName = newUnit.name
 
-        local unitObj = scene.findObject(newUnitName)
+        let unitObj = scene.findObject(newUnitName)
         if (unitObj)
         {
-          local unitBox = ::GuiBox().setFromDaguiObj(unitObj)
+          let unitBox = ::GuiBox().setFromDaguiObj(unitObj)
           if (unitBox.isInside(visibleBox))
             unitsObj.append(unitObj)
         }
       }
     unitsObj.append("btn_spend_exp")
 
-    local steps = [
+    let steps = [
       {
         obj = unitsObj
         text = ::loc("tutorials/research_next_aircraft")
@@ -267,7 +267,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    local unitsList = ::getTblValue("airsGroup", unitGroup)
+    let unitsList = ::getTblValue("airsGroup", unitGroup)
     if (!unitsList)
       return null
 
@@ -292,21 +292,21 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     updateRepairAllButton()
     showSceneBtn("btn_back", curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
 
-    local unit = getCurAircraft(true, true)
+    let unit = getCurAircraft(true, true)
     if (!unit)
       return
 
     updateSpendExpBtn(unit)
 
-    local isFakeUnit = unit?.isFakeUnit ?? false
-    local canBuyIngame = !isFakeUnit && ::canBuyUnit(unit)
-    local canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
-    local showBuyUnit = canBuyIngame || canBuyOnline
+    let isFakeUnit = unit?.isFakeUnit ?? false
+    let canBuyIngame = !isFakeUnit && ::canBuyUnit(unit)
+    let canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
+    let showBuyUnit = canBuyIngame || canBuyOnline
     showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit)
     {
-      local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
-      local unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
+      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
       placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
       placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
@@ -314,15 +314,15 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function updateSpendExpBtn(unit)
   {
-    local showSpendBtn = !::isUnitGroup(unit) && !unit?.isFakeUnit
+    let showSpendBtn = !::isUnitGroup(unit) && !unit?.isFakeUnit
                          && ::canResearchUnit(unit) && !unit.isSquadronVehicle()
     local coloredText = ""
     if (showSpendBtn)
     {
-      local reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
-      local flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
-      local textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
-      local textValue = flushExp ? ::loc("ui/parentheses/space",
+      let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+      let flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
+      let textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
+      let textValue = flushExp ? ::loc("ui/parentheses/space",
         {text = ::Cost().setRp(flushExp).tostring()}) : ""
       coloredText = ::format(textSample, textValue)
     }
@@ -331,7 +331,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     {
       if (!::checkObj(navBar))
         continue
-      local spendExpBtn = navBar.findObject("btn_spend_exp")
+      let spendExpBtn = navBar.findObject("btn_spend_exp")
       if (!::checkObj(spendExpBtn))
         continue
 
@@ -354,7 +354,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
       return
 
     hasSpendExpProcess = true
-    local unit = getCurAircraft(true, true)
+    let unit = getCurAircraft(true, true)
     flushItemExp(unit, @() setUnitOnResearch(unit, function() {
       hasSpendExpProcess = false
       ::add_big_query_record("choosed_new_research_unit", unit.name)
@@ -388,7 +388,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function setUnitOnResearch(unit = null, afterDoneFunc = null)
   {
-    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
@@ -411,7 +411,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function flushItemExp(unitOnResearch, afterDoneFunc = null)
   {
-    local executeAfterDoneFunc = (@(unitOnResearch, afterDoneFunc) function() {
+    let executeAfterDoneFunc = (@(unitOnResearch, afterDoneFunc) function() {
         if (!isValid())
           return
 
@@ -446,7 +446,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
   function onCloseShop()
   {
     destroyGroupChoose()
-    local curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
+    let curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
     if (::getTblValue("name", lastResearchUnit, "") != curResName)
       setUnitOnResearch(::getAircraftByName(curResName))
 
@@ -455,7 +455,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
   function onEventModalWndDestroy(params)
   {
-    local closedHandler = ::getTblValue("handler", params, null)
+    let closedHandler = ::getTblValue("handler", params, null)
     if (!closedHandler)
       return
 
@@ -482,11 +482,11 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
 ::getSteamMarkUp <- function getSteamMarkUp()
 {
-  local blk = ::get_discounts_blk()
+  let blk = ::get_discounts_blk()
 
-  local blocksCount = blk.blockCount()
+  let blocksCount = blk.blockCount()
   for (local i = 0; i < blocksCount; i++) {
-    local block = blk.getBlock(i)
+    let block = blk.getBlock(i)
     if(block.getBlockName() == "steam_markup")
       return block.all
   }
@@ -497,27 +497,27 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 ::checkShopBlk <- function checkShopBlk()
 {
   local resText = ""
-  local shopBlk = ::get_shop_blk()
+  let shopBlk = ::get_shop_blk()
   for (local tree = 0; tree < shopBlk.blockCount(); tree++)
   {
-    local tblk = shopBlk.getBlock(tree)
-    local country = tblk.getBlockName()
+    let tblk = shopBlk.getBlock(tree)
+    let country = tblk.getBlockName()
 
     for (local page = 0; page < tblk.blockCount(); page++)
     {
-      local pblk = tblk.getBlock(page)
-      local groups = []
+      let pblk = tblk.getBlock(page)
+      let groups = []
       for (local range = 0; range < pblk.blockCount(); range++)
       {
-        local rblk = pblk.getBlock(range)
+        let rblk = pblk.getBlock(range)
         for (local a = 0; a < rblk.blockCount(); a++)
         {
-          local airBlk = rblk.getBlock(a)
-          local airName = airBlk.getBlockName()
+          let airBlk = rblk.getBlock(a)
+          let airName = airBlk.getBlockName()
           local air = getAircraftByName(airName)
           if (!air)
           {
-            local groupTotal = airBlk.blockCount()
+            let groupTotal = airBlk.blockCount()
             if (groupTotal == 0)
             {
               resText += ((resText!="")? "\n":"") + "Not found aircraft " + airName + " in " + country
@@ -526,7 +526,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
             groups.append(airName)
             for(local ga=0; ga<groupTotal; ga++)
             {
-              local gAirBlk = airBlk.getBlock(ga)
+              let gAirBlk = airBlk.getBlock(ga)
               air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 resText += ((resText!="")? "\n":"") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
@@ -534,7 +534,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
           } else
             if ((airBlk?.reqAir ?? "") != "")
             {
-              local reqAir = getAircraftByName(airBlk.reqAir)
+              let reqAir = getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
                 resText += ((resText!="")? "\n":"") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
             }

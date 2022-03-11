@@ -1,21 +1,21 @@
-local protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
-local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-local { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
+let protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
+let { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+let { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 
-local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
+let slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/slotInfoPanel/slotInfoPanelActions.blk"
+  sceneBlkName = "%gui/slotInfoPanel/slotInfoPanelActions.blk"
 
   function initScreen()
   {
     ::dmViewer.init(this)
 
     //Must be before replace fill tabs
-    local buttonsPlace = scene.findObject("buttons_place")
+    let buttonsPlace = scene.findObject("buttons_place")
     if (::check_obj(buttonsPlace))
     {
-      local data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("gui/commonParts/button", view)))
+      let data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("%gui/commonParts/button", view)))
       guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
 
@@ -35,7 +35,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitInfoTestDrive()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
@@ -44,7 +44,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAirInfoWeapons()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
@@ -53,7 +53,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onProtectionAnalysis()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
@@ -85,7 +85,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return null
 
@@ -116,7 +116,7 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTestDriveButtonText(unit)
   {
-    local obj = scene.findObject("btnTestdrive")
+    let obj = scene.findObject("btnTestdrive")
     if (!::check_obj(obj))
       return
 
@@ -125,8 +125,8 @@ local slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWeaponryDiscounts(unit)
   {
-    local discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
-    local discountObj = scene.findObject("btnAirInfoWeaponry_discount")
+    let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
+    let discountObj = scene.findObject("btnAirInfoWeaponry_discount")
     ::showCurBonus(discountObj, discount, "mods", true, true)
     if (::check_obj(discountObj))
       discountObj.show(discount > 0)
@@ -139,7 +139,7 @@ return {
   open = function(parentScene) {
     if (!::check_obj(parentScene))
       return null
-    local containerObj = parentScene.findObject("slot_info")
+    let containerObj = parentScene.findObject("slot_info")
     if (!::check_obj(containerObj))
       return null
 

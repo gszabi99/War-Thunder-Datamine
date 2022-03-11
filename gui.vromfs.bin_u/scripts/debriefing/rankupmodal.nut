@@ -1,11 +1,11 @@
-local { updatePlayerRankByCountry } = require("scripts/ranks.nut")
+let { updatePlayerRankByCountry } = require("scripts/ranks.nut")
 
-local delayedRankUpWnd = []
+let delayedRankUpWnd = []
 
-class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.RankUpModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/rankUpWindow.blk";
+  sceneBlkName = "%gui/rankUpWindow.blk";
 
   country = "country_0";
   ranks = [];
@@ -13,39 +13,39 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local aircraftTableObj = scene.findObject("rankup_aircraft_table");
-    local showAsUnlock = ::isInArray(0, ranks)
+    let aircraftTableObj = scene.findObject("rankup_aircraft_table");
+    let showAsUnlock = ::isInArray(0, ranks)
     local topRank = 0;
     local airRow = "";
-    local unitItems = []
+    let unitItems = []
     ::show_facebook_screenshot_button(scene)
 
     guiScene.playSound("new_rank")
 
     if (country.len() > 0 && (country.slice(0, 8) == "country_"))
     {
-      local bgImage = scene.findObject("background_country");
+      let bgImage = scene.findObject("background_country");
       if(bgImage) bgImage["background-image"] = "#ui/images/new_rank_" + country.slice(8) + ".jpg?P1"
       scene.findObject("country_icon")["background-image"] = ::get_country_icon(country)
     }
 
-    local blk = ::get_shop_blk();
+    let blk = ::get_shop_blk();
 
     for(local shopCountry=0; shopCountry<blk.blockCount(); shopCountry++)  //country
     {
-      local cblk = blk.getBlock(shopCountry);
+      let cblk = blk.getBlock(shopCountry);
       if (cblk.getBlockName() != country)
         continue;
 
       for(local page=0; page<cblk.blockCount(); page++) //pages
       {
-        local pblk = cblk.getBlock(page)
+        let pblk = cblk.getBlock(page)
         for(local range=0; range<pblk.blockCount(); range++)  //ranges
         {
-          local rblk = pblk.getBlock(range)
+          let rblk = pblk.getBlock(range)
           for(local aircraft=0; aircraft<rblk.blockCount(); aircraft++) //aircrafts
           {
-            local airBlk = rblk.getBlock(aircraft);
+            let airBlk = rblk.getBlock(aircraft);
             local air = getAircraftByName(airBlk.getBlockName());
             if (air)
             {
@@ -58,7 +58,7 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
             else
               for(local group=0; group<airBlk.blockCount(); group++) //airgroup
               {
-                local gAirBlk = airBlk.getBlock(group);
+                let gAirBlk = airBlk.getBlock(group);
                 air = getAircraftByName(gAirBlk.getBlockName());
                 if (isShowUnit(air, showAsUnlock))
                 {
@@ -75,12 +75,12 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
       if (topRank < r)
         topRank = r;
 
-    local topRankStr = ::get_roman_numeral(topRank)
+    let topRankStr = ::get_roman_numeral(topRank)
     local headerText = format(::loc("userlog/new_rank/country"), topRankStr)
     local rankText = ::loc("shop/age") + ::colorize("userlogColoredText", topRankStr)
     if (showAsUnlock)
     {
-      local cText = ::loc(country)
+      let cText = ::loc(country)
       headerText = ::loc("unlocks/country") + ::loc("ui/colon") + "<color=@userlogColoredText>" + cText + "</color>"
       rankText = cText + ((topRank>0)? ", " + rankText : "")
     }
@@ -112,16 +112,16 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateNextAwardInfo()
   {
-    local checkUnlockId = ::getTblValue("miscParam", unlockData)
+    let checkUnlockId = ::getTblValue("miscParam", unlockData)
     if (!checkUnlockId)
       return
 
-    local text = ::get_next_award_text(checkUnlockId)
+    let text = ::get_next_award_text(checkUnlockId)
     if (text == "")
       return
 
-    local airsObj = scene.findObject("rankup_aircraft_holder")
-    local newMaxheight = airsObj?["decreased-height"]
+    let airsObj = scene.findObject("rankup_aircraft_holder")
+    let newMaxheight = airsObj?["decreased-height"]
     if (newMaxheight)
       airsObj["max-height"] = newMaxheight
 
@@ -139,16 +139,16 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-local function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
+let function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
   if (country == "country_0" || country == "")
     return false
   if (new_rank <= old_rank)
     return false
 
-  local gained_ranks = [];
+  let gained_ranks = [];
   for (local i = old_rank+1; i<=new_rank; i++)
     gained_ranks.append(i);
-  local config = { country = country, ranks = gained_ranks, unlockData = unlockData }
+  let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
   if (::isHandlerInScene(::gui_handlers.RankUpModal))
     delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
   else

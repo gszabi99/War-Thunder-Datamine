@@ -1,7 +1,7 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
-local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
+let enums = require("sqStdlibs/helpers/enums.nut")
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 
-local viewType = {
+let viewType = {
   types = []
 }
 
@@ -41,7 +41,7 @@ viewType.buildBhvConfig <- function(params) {
     return null
 
   vt = get(tbl.viewId)
-  local res = tbl
+  let res = tbl
   res.viewType <- vt
   if (!res?.subscriptions)
     res.subscriptions <- []

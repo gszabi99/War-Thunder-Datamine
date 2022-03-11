@@ -1,17 +1,17 @@
-local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
+let onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
 
-local time = require("scripts/time.nut")
-local penalties = require("scripts/penitentiary/penalties.nut")
-local itemNotifications = require("scripts/items/itemNotifications.nut")
-local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
-local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+let time = require("scripts/time.nut")
+let penalties = require("scripts/penitentiary/penalties.nut")
+let itemNotifications = require("scripts/items/itemNotifications.nut")
+let { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
+let { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
+let { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
-local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
-local { checkShowRateWnd } = require("scripts/user/suggestionRateGame.nut")
+let { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+let { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
+let { checkShowRateWnd } = require("scripts/user/suggestionRateGame.nut")
 
 //called after all first mainmenu actions
 local function onMainMenuReturn(handler, isAfterLogin) {
@@ -122,7 +122,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   handler.doWhenActive(::pop_gblk_error_popups)
 
-  guiScene.initCursor("gui/cursor.blk", "normal")
+  guiScene.initCursor("%gui/cursor.blk", "normal")
 
   ::broadcastEvent("MainMenuReturn")
 }

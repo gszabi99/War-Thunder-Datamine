@@ -1,18 +1,18 @@
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
-local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-local guidParser = require("scripts/guidParser.nut")
-local itemRarity = require("scripts/items/itemRarity.nut")
-local time = require("scripts/time.nut")
-local chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
-local recipesListWnd = require("scripts/items/listPopupWnd/recipesListWnd.nut")
-local itemTransfer = require("scripts/items/itemsTransfer.nut")
-local { getMarkingPresetsById, getCustomLocalizationPresets,
+let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
+let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+let guidParser = require("scripts/guidParser.nut")
+let itemRarity = require("scripts/items/itemRarity.nut")
+let time = require("scripts/time.nut")
+let chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
+let recipesListWnd = require("scripts/items/listPopupWnd/recipesListWnd.nut")
+let itemTransfer = require("scripts/items/itemsTransfer.nut")
+let { getMarkingPresetsById, getCustomLocalizationPresets,
   getEffectOnOpenChestPresetById } = require("scripts/items/workshop/workshop.nut")
 
-local emptyBlk = ::DataBlock()
+let emptyBlk = ::DataBlock()
 
-local defaultLocIdsList = {
+let defaultLocIdsList = {
   assemble                              = "item/assemble"
   disassemble                           = "item/disassemble"
   recipes                               = "item/recipes"
@@ -83,10 +83,10 @@ local ItemExternal = class extends ::BaseItem
     updateSubstitutionItemDataOnce()
 
     aditionalConfirmationMsg = {}
-    local confirmationActions = itemDefDesc?.tags ? (itemDefDesc.tags % "confirmationAction") : []
+    let confirmationActions = itemDefDesc?.tags ? (itemDefDesc.tags % "confirmationAction") : []
     if (confirmationActions.len())
     {
-       local confirmationMsg = itemDefDesc.tags % "confirmationMsg"
+       let confirmationMsg = itemDefDesc.tags % "confirmationMsg"
        foreach (idx, action in confirmationActions)
          aditionalConfirmationMsg[action] <- confirmationMsg?[idx] ?? ""
     }
@@ -112,7 +112,7 @@ local ItemExternal = class extends ::BaseItem
     if (expireTimestamp != -1)
       expiredTimeSec = (::dagor.getCurTime() * 0.001) + (expireTimestamp - ::get_charserver_time_sec())
 
-    local meta = getTblValue("meta", itemDef)
+    let meta = getTblValue("meta", itemDef)
     if (meta && meta.len()) {
       metaBlk = ::DataBlock()
       if (!metaBlk.loadFromText(meta, meta.len())) {
@@ -131,7 +131,7 @@ local ItemExternal = class extends ::BaseItem
   {
     if (!::has_feature("Marketplace"))
       return 0
-    local res = ::to_integer_safe(itemDesc?.tradable_after_timestamp || 0)
+    let res = ::to_integer_safe(itemDesc?.tradable_after_timestamp || 0)
     return res > ::get_charserver_time_sec() ? res : 0
   }
 
@@ -173,8 +173,8 @@ local ItemExternal = class extends ::BaseItem
 
   function getExpireTimestamp(itemDefDesc, itemDesc)
   {
-    local tShop = getTimestampfromString(itemDefDesc?.expireAt ?? "")
-    local tInv  = getTimestampfromString(itemDesc?.expireAt ?? "")
+    let tShop = getTimestampfromString(itemDefDesc?.expireAt ?? "")
+    let tInv  = getTimestampfromString(itemDesc?.expireAt ?? "")
     return (tShop != -1 && (tInv == -1 || tShop < tInv)) ? tShop : tInv
   }
 
@@ -184,7 +184,7 @@ local ItemExternal = class extends ::BaseItem
 
   function getName(colored = true)
   {
-    local item = getSubstitutionItem()
+    let item = getSubstitutionItem()
     if(item != null)
       return item.getName(colored)
 
@@ -204,7 +204,7 @@ local ItemExternal = class extends ::BaseItem
     if (isDisguised)
       return ""
 
-    local desc = [
+    let desc = [
       getResourceDesc()
     ]
 
@@ -232,7 +232,7 @@ local ItemExternal = class extends ::BaseItem
     if (isDisguised)
       return ::LayersIcon.getIconData("disguised_item")
 
-    local image = getLottieImage("1@itemIconBlockWidth")
+    let image = getLottieImage("1@itemIconBlockWidth")
       ?? (!::u.isEmpty(itemDef.icon_url_large) ? itemDef.icon_url_large : itemDef.icon_url)
     return ::LayersIcon.getIconData(null, image)
   }
@@ -291,7 +291,7 @@ local ItemExternal = class extends ::BaseItem
       return getDescRecipesMarkup(params)
 
     local content = []
-    local headers = [
+    let headers = [
       { header = getTransferText() }
       { header = getMarketablePropDesc(), timerId = "marketable_timer" }
     ]
@@ -316,7 +316,7 @@ local ItemExternal = class extends ::BaseItem
     local resultContent = []
     if (needShowAsDisassemble() || (hasReachedMaxAmount() && isAltActionDisassemble()))
     {
-      local recipe = getDisassembleRecipe()
+      let recipe = getDisassembleRecipe()
       if (recipe)
       {
         recipes.append(recipe)
@@ -342,12 +342,12 @@ local ItemExternal = class extends ::BaseItem
     if (!::has_feature("Marketplace") || shouldAutoConsume || (itemDef?.tags.hideMarketablePropDesc ?? false))
       return ""
 
-    local canSell = itemDef?.marketable
-    local noTradeableSec = getNoTradeableTimeLeft()
-    local locEnding = !canSell ? "no"
+    let canSell = itemDef?.marketable
+    let noTradeableSec = getNoTradeableTimeLeft()
+    let locEnding = !canSell ? "no"
       : noTradeableSec > 0 ? "afterTime"
       : "yes"
-    local text = ::loc("item/marketable/" + locEnding,
+    let text = ::loc("item/marketable/" + locEnding,
       { name = getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? ::colorize("badTextColor",
@@ -362,8 +362,8 @@ local ItemExternal = class extends ::BaseItem
   {
     if (!metaBlk || !metaBlk?.resource || !metaBlk?.resourceType)
       return ""
-    local decoratorType = ::g_decorator_type.getTypeByResourceType(metaBlk.resourceType)
-    local decorator = ::g_decorator.getDecorator(metaBlk.resource, decoratorType)
+    let decoratorType = ::g_decorator_type.getTypeByResourceType(metaBlk.resourceType)
+    let decorator = ::g_decorator.getDecorator(metaBlk.resource, decoratorType)
     if (!decorator)
       return ""
     return "\n".join([
@@ -384,8 +384,8 @@ local ItemExternal = class extends ::BaseItem
           createTime = timeText.len() ? "\n" + timeText + "\n" : ""
         })
 
-    local isMultipleRecipes = showAmount > 1
-    local headerSuffix = isMultipleRecipes && isMultipleExtraItems  ? "any_of_item_sets"
+    let isMultipleRecipes = showAmount > 1
+    let headerSuffix = isMultipleRecipes && isMultipleExtraItems  ? "any_of_item_sets"
       : !isMultipleRecipes && isMultipleExtraItems ? "items_set"
       : isMultipleRecipes && !isMultipleExtraItems ? "any_of_items"
       : "item"
@@ -413,7 +413,7 @@ local ItemExternal = class extends ::BaseItem
 
   function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (amount && canConsume() && (params?.canConsume ?? true))
@@ -482,9 +482,9 @@ local ItemExternal = class extends ::BaseItem
       return true
     }
 
-    local text = ::loc("recentItems/useItem", { itemName = ::colorize("activeTextColor", getName()) })
+    let text = ::loc("recentItems/useItem", { itemName = ::colorize("activeTextColor", getName()) })
       + "\n" + ::loc("msgBox/coupon_exchange")
-    local msgboxParams = {
+    let msgboxParams = {
       cancel_fn = @() null
       baseHandler = ::get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
       data_below_text = ::PrizesView.getPrizesListView([ metaBlk ],
@@ -493,7 +493,7 @@ local ItemExternal = class extends ::BaseItem
         ? ::format("textarea{overlayTextColor:t='warning'; text:t='%s'}", ::g_string.stripTags(::loc("msgBox/coupon_will_be_spent")))
         : null
     }
-    local item = this //we need direct link, to not lose action on items list refresh.
+    let item = this //we need direct link, to not lose action on items list refresh.
     ::scene_msg_box("coupon_exchange", null, text, [
       [ "yes", @() item.consumeImpl(cb, params) ],
       [ "no" ]
@@ -503,16 +503,16 @@ local ItemExternal = class extends ::BaseItem
 
   function consumeImpl(cb = null, params = null)
   {
-    local uid = uids?[0]
+    let uid = uids?[0]
     if (!uid)
       return
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.setInt("itemId", uid.tointeger())
 
-    local itemAmountByUid = amountByUids[uid] //to not remove item while in progress
-    local taskCallback = function() {
-      local item = ::ItemsManager.findItemByUid(uid)
+    let itemAmountByUid = amountByUids[uid] //to not remove item while in progress
+    let taskCallback = function() {
+      let item = ::ItemsManager.findItemByUid(uid)
       //items list refreshed, but ext inventory only requested.
       //so update item amount to avoid repeated request before real update
       if (item && item.amountByUids[uid] == itemAmountByUid)
@@ -529,8 +529,8 @@ local ItemExternal = class extends ::BaseItem
       if (cb)
         cb({ success = true })
     }
-    local itemId = id
-    local taskId = ::char_send_blk("cln_consume_inventory_item", blk)
+    let itemId = id
+    let taskId = ::char_send_blk("cln_consume_inventory_item", blk)
     ::g_tasker.addTask(taskId, { showProgressBox = !shouldAutoConsume }, taskCallback,
       @() cb?({ success = false, itemId = itemId }))
   }
@@ -552,14 +552,14 @@ local ItemExternal = class extends ::BaseItem
     if (!canAssemble())
       return false
 
-    local recipesList = params?.recipes ?? getVisibleRecipes()
+    let recipesList = params?.recipes ?? getVisibleRecipes()
     if (recipesList.len() == 1)
     {
       ExchangeRecipes.tryUse(recipesList, this, params)
       return true
     }
 
-    local item = this
+    let item = this
     recipesListWnd.open({
       recipesList = recipesList
       headerText = getAssembleHeader()
@@ -577,11 +577,11 @@ local ItemExternal = class extends ::BaseItem
 
   function getWarbondExchangeAmountText()
   {
-    local recipe = getWarbondRecipe()
+    let recipe = getWarbondRecipe()
     if (amount <= 0 || !recipe)
       return ""
-    local warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
-    local warbond = warbondItem?.getWarbond()
+    let warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
+    let warbond = warbondItem?.getWarbond()
     return $"{warbondItem?.getWarbondsAmount() ?? ""}{::loc(warbond?.fontIcon ?? "currency/warbond/green")}"
   }
 
@@ -591,11 +591,11 @@ local ItemExternal = class extends ::BaseItem
     if (!canDisassemble() || amount <= 0 || isCrafting() || hasCraftResult())
       return false
 
-    local recipe = getDisassembleRecipe()
+    let recipe = getDisassembleRecipe()
     if (amount <= 0 || !recipe)
       return false
 
-    local content = getDisassembleResultContent(recipe)
+    let content = getDisassembleResultContent(recipe)
     ExchangeRecipes.tryUse([ recipe ], this,
       { rewardListLocId = getItemsListLocId()
         bundleContent = content
@@ -609,7 +609,7 @@ local ItemExternal = class extends ::BaseItem
     if (!canBeModified() || amount <= 0)
       return false
 
-    local recipe = getModifiedRecipe()
+    let recipe = getModifiedRecipe()
     if (recipe == null)
       return false
 
@@ -619,8 +619,8 @@ local ItemExternal = class extends ::BaseItem
 
   getDisassembleResultContent = function(recipe)
   {
-    local gen = ItemGenerators.get(recipe.generatorId)
-    local content = gen?.isPack ? gen.getContent() : []
+    let gen = ItemGenerators.get(recipe.generatorId)
+    let content = gen?.isPack ? gen.getContent() : []
     return gen?.isDelayedxchange?() && content.len() > 0
       ? ::ItemsManager.findItemById(content[0].item)?.getContent?() ?? []
       : content
@@ -630,18 +630,18 @@ local ItemExternal = class extends ::BaseItem
   {
     if (!canConvertToWarbonds())
       return false
-    local recipe = getWarbondRecipe()
+    let recipe = getWarbondRecipe()
     if (amount <= 0 || !recipe)
       return false
 
-    local warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
-    local warbond = warbondItem && warbondItem.getWarbond()
+    let warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
+    let warbond = warbondItem && warbondItem.getWarbond()
     if (!warbond) {
       ::showInfoMsgBox(::loc("mainmenu/warbondsShop/notAvailable"))
       return true
     }
 
-    local leftWbAmount = ::g_warbonds.getLimit() - warbond.getBalance()
+    let leftWbAmount = ::g_warbonds.getLimit() - warbond.getBalance()
     if (leftWbAmount <= 0)
     {
       ::showInfoMsgBox(::loc("items/cantExchangeToWarbondsMessage"))
@@ -656,8 +656,8 @@ local ItemExternal = class extends ::BaseItem
       return true
     }
 
-    local item = this
-    local icon = ::loc(warbond.fontIcon)
+    let item = this
+    let icon = ::loc(warbond.fontIcon)
     chooseAmountWnd.open({
       parentObj = params?.obj
       align = params?.align ?? "bottom"
@@ -679,7 +679,7 @@ local ItemExternal = class extends ::BaseItem
 
   function convertToWarbondsImpl(recipe, warbondItem, convertAmount)
   {
-    local msg = ::loc("items/exchangeMessage", {
+    let msg = ::loc("items/exchangeMessage", {
       amount = convertAmount
       item = getName()
       currency = convertAmount * warbondItem.getWarbondsAmount() + ::loc(warbondItem.getWarbond()?.fontIcon)
@@ -706,7 +706,7 @@ local ItemExternal = class extends ::BaseItem
   {
     if (!metaBlk?.resource || !metaBlk?.resourceType || !itemDef)
       return
-    local resource = metaBlk.resource
+    let resource = metaBlk.resource
     if (!guidParser.isGuid(resource))
       return
 
@@ -715,10 +715,10 @@ local ItemExternal = class extends ::BaseItem
 
   function getRelatedRecipes()
   {
-    local res = []
+    let res = []
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
-      local gen = ItemGenerators.get(genItemdefId)
+      let gen = ItemGenerators.get(genItemdefId)
       if (gen == null || ::ItemsManager.findItemById(gen.id)?.iType == itemType.WARBONDS)
         continue
       res.extend(gen.getRecipesWithComponent(id))
@@ -730,13 +730,13 @@ local ItemExternal = class extends ::BaseItem
   {
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
-      local item = ::ItemsManager.findItemById(genItemdefId)
+      let item = ::ItemsManager.findItemById(genItemdefId)
       if (item?.iType != itemType.WARBONDS)
         continue
-      local gen = ItemGenerators.get(genItemdefId)
+      let gen = ItemGenerators.get(genItemdefId)
       if (!gen)
         continue
-      local recipes = gen.getRecipesWithComponent(id)
+      let recipes = gen.getRecipesWithComponent(id)
       if (recipes.len())
         return recipes[0]
     }
@@ -747,10 +747,10 @@ local ItemExternal = class extends ::BaseItem
   {
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
-      local gen = ItemGenerators.get(genItemdefId)
+      let gen = ItemGenerators.get(genItemdefId)
       if (!gen || !gen?.tags?.isDisassemble)
         continue
-      local recipes = gen.getRecipesWithComponent(id)
+      let recipes = gen.getRecipesWithComponent(id)
       if (recipes.len())
         return recipes[0]
     }
@@ -761,10 +761,10 @@ local ItemExternal = class extends ::BaseItem
   {
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
-      local gen = ItemGenerators.get(genItemdefId)
+      let gen = ItemGenerators.get(genItemdefId)
       if (!gen?.tags.isModification)
         continue
-      local recipes = gen.getRecipesWithComponent(id)
+      let recipes = gen.getRecipesWithComponent(id)
       if (recipes.len() > 0)
         return recipes[0]
     }
@@ -774,7 +774,7 @@ local ItemExternal = class extends ::BaseItem
   getMyRecipes = @() ItemGenerators.get(id)?.getRecipes() ?? []
 
   function getVisibleRecipes() {
-    local gen = ItemGenerators.get(id)
+    let gen = ItemGenerators.get(id)
     if (showAllowableRecipesOnly())
       return gen?.getUsableRecipes() ?? []
     return gen?.getRecipes() ?? []
@@ -828,18 +828,19 @@ local ItemExternal = class extends ::BaseItem
       return true
     }
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.key = ::inventory_generate_key()
     blk.itemDefId = id
     blk.goldCost = getCost().gold
+    // other fields of blk: wpCost, amount
 
-    local onSuccess = function() {
+    let onSuccess = function() {
       if (cb)
         cb({ success = true })
     }
-    local onError = @(errCode) cb ? cb({ success = false }) : null
+    let onError = @(errCode) cb ? cb({ success = false }) : null
 
-    local taskId = ::char_send_blk("cln_inventory_purchase_item", blk)
+    let taskId = ::char_send_blk("cln_inventory_purchase_item", blk)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess, onError)
     return true
   }
@@ -850,19 +851,19 @@ local ItemExternal = class extends ::BaseItem
     local recipes = []
     if (needShowAsDisassemble())
     {
-      local recipe = getDisassembleRecipe()
+      let recipe = getDisassembleRecipe()
       if (recipe)
         recipes.append(recipe)
     }
     else
     {
-      local gen = ItemGenerators.get(id)
+      let gen = ItemGenerators.get(id)
       recipes = gen ? gen.getRecipes() : []
     }
 
     foreach (recipe in recipes)
     {
-      local item = ::ItemsManager.getInventoryItemById(recipe.generatorId)
+      let item = ::ItemsManager.getInventoryItemById(recipe.generatorId)
       if (item)
         return item?.itemDef?.type == "delayedexchange" ? item : null
     }
@@ -872,19 +873,19 @@ local ItemExternal = class extends ::BaseItem
 
   function getCraftTimeLeft()
   {
-    local craftingItem = getCraftingItem()
-    local craftTimeSec = craftingItem?.expiredTimeSec ?? 0
+    let craftingItem = getCraftingItem()
+    let craftTimeSec = craftingItem?.expiredTimeSec ?? 0
     if (craftTimeSec <= 0)
       return -1
 
-    local curSeconds = ::dagor.getCurTime() * 0.001
-    local deltaSeconds = (craftTimeSec - curSeconds).tointeger()
+    let curSeconds = ::dagor.getCurTime() * 0.001
+    let deltaSeconds = (craftTimeSec - curSeconds).tointeger()
     return ::max(0, deltaSeconds)
   }
 
   function getCraftTimeTextShort()
   {
-    local deltaSeconds = getCraftTimeLeft()
+    let deltaSeconds = getCraftTimeLeft()
     if (deltaSeconds == -1)
       return ""
 
@@ -900,8 +901,8 @@ local ItemExternal = class extends ::BaseItem
 
   function getCraftTimeText()
   {
-    local craftingItem = getCraftingItem()
-    local craftTime = craftingItem?.expireTimestamp ?? -1
+    let craftingItem = getCraftingItem()
+    let craftTime = craftingItem?.expireTimestamp ?? -1
     if (craftTime == -1)
       return ""
 
@@ -919,19 +920,19 @@ local ItemExternal = class extends ::BaseItem
     local recipes = []
     if (needShowAsDisassemble())
     {
-      local recipe = getDisassembleRecipe()
+      let recipe = getDisassembleRecipe()
       if (recipe)
         recipes.append(recipe)
     }
     else
     {
-      local gen = ItemGenerators.get(id)
+      let gen = ItemGenerators.get(id)
       recipes = gen ? gen.getRecipes() : []
     }
 
     foreach (recipe in recipes)
     {
-      local item = ::ItemsManager.getInventoryItemByCraftedFrom(recipe.uid)
+      let item = ::ItemsManager.getInventoryItemByCraftedFrom(recipe.uid)
       if (item)
         return item
     }
@@ -941,7 +942,7 @@ local ItemExternal = class extends ::BaseItem
 
   function seeCraftResult(cb, handler, params = {})
   {
-    local craftResult = getCraftResultItem()
+    let craftResult = getCraftResultItem()
     if (!craftResult)
       return false
 
@@ -952,8 +953,8 @@ local ItemExternal = class extends ::BaseItem
 
   function getAdditionalTextInAmmount(needColorize = true, needOnlyIcon = false)
   {
-    local locIds = getLocIdsList()
-    local textIcon = isCrafting()
+    let locIds = getLocIdsList()
+    let textIcon = isCrafting()
       ? locIds.craftingIconInAmmount
       : hasCraftResult()
         ? locIds.craftResultIconInAmmount
@@ -970,7 +971,7 @@ local ItemExternal = class extends ::BaseItem
 
   function cancelCrafting(cb = null, params = {})
   {
-    local craftingItem = getCraftingItem()
+    let craftingItem = getCraftingItem()
 
     if (!craftingItem || craftingItem?.itemDef?.type != "delayedexchange")
       return false
@@ -993,7 +994,7 @@ local ItemExternal = class extends ::BaseItem
   isEnabled = @() requirement == null || ::has_feature(requirement)
   function getAdditionalConfirmMessage(actionName, delimiter = "\n")
   {
-     local locKey = aditionalConfirmationMsg?[actionName]
+     let locKey = aditionalConfirmationMsg?[actionName]
      if (!locKey)
        return ""
 
@@ -1001,11 +1002,11 @@ local ItemExternal = class extends ::BaseItem
   }
 
   getCustomMissionBlk = function() {
-    local misName = itemDef?.tags?.canRunCustomMission
+    let misName = itemDef?.tags?.canRunCustomMission
     if (!misName)
       return null
 
-    local misBlk = ::get_mission_meta_info(misName)
+    let misBlk = ::get_mission_meta_info(misName)
     if (!misBlk || (("reqFeature" in misBlk) && !::has_feature(misBlk.reqFeature)))
       return null
 
@@ -1021,7 +1022,7 @@ local ItemExternal = class extends ::BaseItem
     if (!canRunCustomMission())
         return false
 
-    local misBlk = ::get_mission_meta_info(itemDef.tags.canRunCustomMission)
+    let misBlk = ::get_mission_meta_info(itemDef.tags.canRunCustomMission)
     if (misBlk?.requiredPackage != null && !check_package_and_ask_download(misBlk.requiredPackage))
       return true
 
@@ -1034,18 +1035,18 @@ local ItemExternal = class extends ::BaseItem
 
   function getViewData(params = {})
   {
-    local item = getSubstitutionItem()
+    let item = getSubstitutionItem()
     if(item != null)
       return getSubstitutionViewData(item.getViewData(params), params)
 
-    local res = base.getViewData(params)
+    let res = base.getViewData(params)
     if(res.layered_image == "")
       res.nameText <- getName()
-    local markPresetName = itemDef?.tags?.markingPreset
+    let markPresetName = itemDef?.tags?.markingPreset
     if (!markPresetName)
       return res
 
-    local data = getMarkingPresetsById(markPresetName)
+    let data = getMarkingPresetsById(markPresetName)
     if(!data)
       return res
 
@@ -1058,15 +1059,15 @@ local ItemExternal = class extends ::BaseItem
 
   function updateSubstitutionItemDataOnce()
   {
-    local tag = itemDef.tags?.showAsAnotherItem
+    let tag = itemDef.tags?.showAsAnotherItem
     if(tag == null)
       return
 
     substitutionItemData = []
-    local tagData = split(tag, "_")
+    let tagData = split(tag, "_")
     for (local i = tagData.len() - 1; i >= 0 ; i--)
     {
-      local ids = split(tagData[i], "-")
+      let ids = split(tagData[i], "-")
       if (ids.len() < 2)
         continue
       substitutionItemData.append(ids)
@@ -1087,11 +1088,11 @@ local ItemExternal = class extends ::BaseItem
 
   function getDescriptionUnderTitle()
   {
-    local markPresetName = itemDef?.tags?.markingPreset
+    let markPresetName = itemDef?.tags?.markingPreset
     if (!markPresetName || isDisguised)
       return ""
 
-    local data = getMarkingPresetsById(markPresetName)
+    let data = getMarkingPresetsById(markPresetName)
     if (!data)
       return ""
 
@@ -1103,7 +1104,7 @@ local ItemExternal = class extends ::BaseItem
       return locIdsList
 
     locIdsList = getLocIdsListImpl()
-    local localizationPreset = itemDef?.tags?.customLocalizationPreset
+    let localizationPreset = itemDef?.tags?.customLocalizationPreset
     if (localizationPreset)
       locIdsList.__update(getCustomLocalizationPresets(localizationPreset))
 
@@ -1135,7 +1136,7 @@ local ItemExternal = class extends ::BaseItem
   getIconName = @() isDisguised ? getSmallIconName() : itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function ()
   {
-    local recipes = getVisibleRecipes()
+    let recipes = getVisibleRecipes()
     if (recipes.len() == 0)
       return true
 
@@ -1144,7 +1145,7 @@ local ItemExternal = class extends ::BaseItem
 
   function getBoostEfficiency()
   {
-    local substitutionItem = getSubstitutionItem()
+    let substitutionItem = getSubstitutionItem()
     return substitutionItem != null
       ? substitutionItem.getBoostEfficiency()
       : itemDef?.tags?.boostEfficiency.tointeger()

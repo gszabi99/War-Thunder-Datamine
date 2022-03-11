@@ -1,13 +1,13 @@
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local stdMath = require("std/math.nut")
-local { UNLOCK } = require("scripts/utils/genericTooltipTypes.nut")
+let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
+let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+let stdMath = require("std/math.nut")
+let { UNLOCK } = require("scripts/utils/genericTooltipTypes.nut")
 
-class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/profile/chooseTitle"
+  sceneTplName = "%gui/profile/chooseTitle"
 
   align = "bottom"
   alignObj = null
@@ -29,10 +29,10 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
     titlesList = clone ::my_stats.getTitles()
     curTitle = ::my_stats.getStats().title
 
-    local hasUnseen = seenTitles.getNewCount() > 0
+    let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = titlesList.map(function(name)
     {
-      local locText = ::loc("title/" + name)
+      let locText = ::loc("title/" + name)
       return {
         name = name
         text = locText
@@ -47,16 +47,16 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
     if (hasUnseen)
       titleWidth += ::to_pixels("1@newWidgetIconHeight + 1@blockInterval")
     titleWidth = ::max(titleWidth + 2 * ::to_pixels("@buttonTextPadding"), ::to_pixels("1@buttonWidth"))
-    local titleHeight = ::to_pixels("1@buttonHeight")
-    local gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
+    let titleHeight = ::to_pixels("1@buttonHeight")
+    let gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
       titleWidth / (titleHeight || 1))
-    local maxColumns = (::to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
-    local columns = ::clamp(gRatioColumns, ::min(3, maxColumns), maxColumns)
+    let maxColumns = (::to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
+    let columns = ::clamp(gRatioColumns, ::min(3, maxColumns), maxColumns)
 
     //sort alphabetically, and by columns
     titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)
-    local orderedData = []
-    local rows = ::ceil(titlesData.len().tofloat() / columns).tointeger()
+    let orderedData = []
+    let rows = ::ceil(titlesData.len().tofloat() / columns).tointeger()
     for(local i = 0; i < rows; i++)
       for(local j = i; j < titlesData.len(); j += rows)
         orderedData.append(titlesData[j])
@@ -85,7 +85,7 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
 
   function onTitleSelect(obj)
   {
-    local title = titlesList?[obj.getValue()]
+    let title = titlesList?[obj.getValue()]
     if (title)
       seenTitles.markSeen(title)
   }

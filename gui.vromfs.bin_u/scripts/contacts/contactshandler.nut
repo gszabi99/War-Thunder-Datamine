@@ -1,16 +1,15 @@
-local { clearBorderSymbols } = require("std/string.nut")
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
-local platformModule = require("scripts/clientState/platform.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
-local { isChatEnabled } = require("scripts/chat/chatStates.nut")
-local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
-local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+let { clearBorderSymbols } = require("std/string.nut")
+let playerContextMenu = require("scripts/user/playerContextMenu.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
+let { isChatEnabled } = require("scripts/chat/chatStates.nut")
+let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
 
-class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
+::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   searchText = ""
@@ -36,6 +35,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   searchShowNotFound = false
   searchShowDefaultOnReset = false
   searchGroupLastShowState = false
+
 
   constructor(gui_scene, params = {})
   {
@@ -114,9 +114,9 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     for(local i=::contacts_prev_scenes.len()-1; i>=0; i--)
     {
-      local prevScene = ::contacts_prev_scenes[i].scene
+      let prevScene = ::contacts_prev_scenes[i].scene
       if (::checkObj(prevScene)) {
-        local handler = ::contacts_prev_scenes[i].owner
+        let handler = ::contacts_prev_scenes[i].owner
         if (!handler.isSceneActiveNoModals() || !prevScene.isVisible())
           continue
         scene = ::contacts_prev_scenes[i].scene
@@ -137,7 +137,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local wasVisible = scene.isVisible()
+    let wasVisible = scene.isVisible()
     if (show==null)
       show = !wasVisible
     if (!show)
@@ -155,7 +155,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         fillContactsList()
         closeSearchGroup()
       }
-      local cgObj = scene.findObject("contacts_groups")
+      let cgObj = scene.findObject("contacts_groups")
       ::move_mouse_on_child(cgObj, cgObj.getValue())
     }
 
@@ -167,7 +167,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isContactsWindowActive())
     {
       ::contacts_sizes = {}
-      local obj = scene.findObject("contacts_wnd")
+      let obj = scene.findObject("contacts_wnd")
       ::contacts_sizes.pos <- obj.getPosRC()
       ::contacts_sizes.size <- obj.getSize()
 
@@ -179,7 +179,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::contacts_sizes)
     {
-      local data = loadLocalByScreenSize("contacts_sizes")
+      let data = loadLocalByScreenSize("contacts_sizes")
       if (data)
       {
         ::contacts_sizes = ::parse_json(data)
@@ -197,10 +197,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (isContactsWindowActive() && ::contacts_sizes)
     {
-      local obj = scene.findObject("contacts_wnd")
+      let obj = scene.findObject("contacts_wnd")
       if (!obj) return
 
-      local rootSize = guiScene.getRoot().getSize()
+      let rootSize = guiScene.getRoot().getSize()
       for(local i=0; i<=1; i++) //pos chat in screen
         if (::contacts_sizes.pos[i] < topMenuBorders[i][0]*rootSize[i])
           ::contacts_sizes.pos[i] = (topMenuBorders[i][0]*rootSize[i]).tointeger()
@@ -222,7 +222,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       sceneChanged = true
       guiScene = scene.getScene()
-      guiScene.replaceContent(scene, "gui/contacts/contacts.blk", this)
+      guiScene.replaceContent(scene, "%gui/contacts/contacts.blk", this)
       setSavedSizes()
       scene.findObject("contacts_update").setUserData(this)
       fillContactsList()
@@ -248,7 +248,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (gName == ::EPLX_SEARCH)
       return true //this group often refilled by other objects
-    local count = ::contacts[gName].len() + ::getTblValue(gName, listNotPlayerChildsByGroup, -100000)
+    let count = ::contacts[gName].len() + ::getTblValue(gName, listNotPlayerChildsByGroup, -100000)
     return listObj.childrenCount() != count
   }
 
@@ -256,14 +256,20 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildPlayersList(gName, showOffline=true)
   {
-    local playerListView = {
+    let playerListView = {
       playerListItem = []
       playerButton = []
-      searchAdvice = gName != searchGroup
-      searchAdviceID = "group_" + gName + "_search_advice"
       needHoverButtons = needShowContactHoverButtons()
     }
-
+    listNotPlayerChildsByGroup[gName] <- 0
+    if (gName != searchGroup) {
+      playerListView.searchAdviceID <- $"group_{gName}_search_advice"
+      playerListView.totalContacts <- ::loc("contacts/total", {
+        contactsCount = ::contacts[gName].len(),
+        contactsCountMax = ::EPL_MAX_PLAYERS_IN_LIST
+      })
+      listNotPlayerChildsByGroup[gName] = 2
+    }
     foreach(idx, contactData in ::contacts[gName])
     {
       playerListView.playerListItem.append({
@@ -272,7 +278,6 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         pilotIcon = contactData.pilotIcon
       })
     }
-
     if (gName == ::EPL_FRIENDLIST && ::isInMenu())
     {
       if (::has_feature("Invites"))
@@ -281,11 +286,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add", "onFacebookFriendsAdd"))
     }
 
-    listNotPlayerChildsByGroup[gName] <- playerListView.playerButton.len()
-    if (playerListView.searchAdvice)
-      listNotPlayerChildsByGroup[gName]++
-
-    return ::handyman.renderCached(("gui/contacts/playerList"), playerListView)
+    listNotPlayerChildsByGroup[gName] = listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
+    return ::handyman.renderCached(("%gui/contacts/playerList"), playerListView)
   }
 
   function createPlayerButtonView(gId, gIcon, callback)
@@ -293,7 +295,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!gId || gId == "")
       return {}
 
-    local shortName = ::loc("mainmenu/" + gId + "Short", "")
+    let shortName = ::loc("mainmenu/" + gId + "Short", "")
     return {
       name = shortName == "" ? "#mainmenu/" + gId : shortName
       tooltip = "#mainmenu/" + gId
@@ -305,19 +307,19 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updatePlayersList(gName)
   {
     local sel = -1
-    local selUid = (curPlayer && curGroup==gName)? curPlayer.uid : ""
+    let selUid = (curPlayer && curGroup==gName)? curPlayer.uid : ""
 
-    local gObj = scene.findObject("contacts_groups")
+    let gObj = scene.findObject("contacts_groups")
     foreach(fIdx, f in ::contacts[gName])
     {
-      local obj = gObj.findObject("player_" + gName + "_" + fIdx)
+      let obj = gObj.findObject("player_" + gName + "_" + fIdx)
       if (!::check_obj(obj))
         continue
 
-      local fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
-      local contactNameObj = obj.findObject("contactName")
+      let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
+      let contactNameObj = obj.findObject("contactName")
       contactNameObj.setValue(fullName)
-      local contactPresenceObj = obj.findObject("contactPresence")
+      let contactPresenceObj = obj.findObject("contactPresence")
       if (::checkObj(contactPresenceObj))
       {
         contactPresenceObj.setValue(f.getPresenceText())
@@ -327,7 +329,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (selUid == f.uid)
         sel = fIdx
 
-      local imgObj = obj.findObject("statusImg")
+      let imgObj = obj.findObject("statusImg")
       imgObj["background-image"] = f.presence.getIcon()
       imgObj["background-color"] = f.presence.getIconColor()
 
@@ -338,13 +340,13 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillPlayersList(gName)
   {
-    local listObj = scene.findObject("contacts_groups").findObject("group_" + gName)
+    let listObj = scene.findObject("contacts_groups").findObject("group_" + gName)
     if (!listObj)
       return
 
     if (needRebuildPlayersList(gName, listObj))
     {
-      local data = buildPlayersList(gName)
+      let data = buildPlayersList(gName)
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
     }
     updateContactButtonsForGroup(gName)
@@ -356,10 +358,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach (idx, contact in ::contacts[gName])
     {
-      local contactObject = scene.findObject(::format("player_%s_%s", gName.tostring(), idx.tostring()))
+      let contactObject = scene.findObject(::format("player_%s_%s", gName.tostring(), idx.tostring()))
       contactObject.contact_buttons_contact_uid = contact.uid
 
-      local contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
+      let contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
       if (!::check_obj(contactButtonsHolder))
         continue
 
@@ -372,17 +374,17 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local isFriend = contact? contact.isInFriendGroup() : false
-    local isBlock = contact? contact.isInBlockGroup() : false
-    local isMe = contact? contact.isMe() : false
-    local contactName = contact?.name ?? ""
+    let isFriend = contact? contact.isInFriendGroup() : false
+    let isBlock = contact? contact.isInBlockGroup() : false
+    let isMe = contact? contact.isMe() : false
+    let contactName = contact?.name ?? ""
 
-    local isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
-    local canBlock = !isPlayerFromXboxOne
-    local canChat = contact? contact.canChat() : true
-    local canInvite = contact? contact.canInvite() : true
-    local canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
-    local canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
+    let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
+    let canBlock = !isPlayerFromXboxOne
+    let canChat = contact? contact.canChat() : true
+    let canInvite = contact? contact.canInvite() : true
+    let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
+    let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
@@ -395,7 +397,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
 
-    local showSquadInvite = ::has_feature("SquadInviteIngame")
+    let showSquadInvite = ::has_feature("SquadInviteIngame")
       && !isMe
       && !isBlock
       && canInteractCrossConsole
@@ -406,7 +408,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       && canInvite
       && ::g_squad_utils.canSquad()
 
-    local btnObj = showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
+    let btnObj = showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
     if (btnObj && showSquadInvite && contact?.uidInt64)
       updateButtonInviteText(btnObj, contact.uidInt64)
 
@@ -443,11 +445,11 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getIndexOfGroup(group_name)
   {
-    local contactsGroups = scene.findObject("contacts_groups")
+    let contactsGroups = scene.findObject("contacts_groups")
     for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx)
     {
-      local childObject = contactsGroups.getChild(idx)
-      local groupListObject = childObject.getChild(childObject.childrenCount() - 1)
+      let childObject = contactsGroups.getChild(idx)
+      let groupListObject = childObject.getChild(childObject.childrenCount() - 1)
       if (groupListObject?.id == "group_" + group_name)
       {
         return idx
@@ -458,10 +460,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getGroupByName(group_name)
   {
-    local contactsGroups = scene.findObject("contacts_groups")
+    let contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
-      local groupListObject = contactsGroups.findObject("group_" + group_name)
+      let groupListObject = contactsGroups.findObject("group_" + group_name)
       return groupListObject.getParent()
     }
     return null
@@ -492,10 +494,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (txt == "")
       return
 
-    local contactsGroups = scene.findObject("contacts_groups")
+    let contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
-      local searchGroupIndex = getIndexOfGroup(searchGroup)
+      let searchGroupIndex = getIndexOfGroup(searchGroup)
       if (searchGroupIndex != -1)
       {
         setSearchGroupVisibility(true)
@@ -527,12 +529,12 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onContactsFocus(obj)
   {
-    local isValidCurScene = ::check_obj(scene)
+    let isValidCurScene = ::check_obj(scene)
     if (!isValidCurScene) {
       curHoverObjId = null
       return
     }
-    local newObjId = obj.isHovered() ? obj.id : null
+    let newObjId = obj.isHovered() ? obj.id : null
     if (curHoverObjId == newObjId)
       return
     curHoverObjId = newObjId
@@ -546,7 +548,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     searchText = ::g_string.utf8ToLower(search_text)
     if (set_in_edit_box)
     {
-      local searchEditBox = scene.findObject("search_edit_box")
+      let searchEditBox = scene.findObject("search_edit_box")
       if (::checkObj(searchEditBox))
       {
         searchEditBox.setValue(search_text)
@@ -563,14 +565,14 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (idx, contact_data in ::contacts[curGroup])
     {
-      local contactObjectName = "player_" + curGroup + "_" + idx
-      local contactObject = scene.findObject(contactObjectName)
+      let contactObjectName = "player_" + curGroup + "_" + idx
+      let contactObject = scene.findObject(contactObjectName)
       if (!::checkObj(contactObject))
         continue
 
       local contactName = ::g_string.utf8ToLower(contact_data.name)
       contactName = platformModule.getPlayerName(contactName)
-      local searchResult = searchText == "" || contactName.indexof(searchText) != null
+      let searchResult = searchText == "" || contactName.indexof(searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)
     }
@@ -581,19 +583,19 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local gObj = scene.findObject("contacts_groups")
+    let gObj = scene.findObject("contacts_groups")
     if (!gObj) return
     guiScene.setUpdatesEnabled(false, false)
 
     local data = ""
-    local groups_array = getContactsGroups()
+    let groups_array = getContactsGroups()
     foreach(gIdx, gName in groups_array)
     {
       ::contacts[gName].sort(::sortContacts)
       local activateEvent = "onPlayerMsg"
       if (::show_console_buttons || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      local gData = buildPlayersList(gName)
+      let gData = buildPlayersList(gName)
       data += format(groupFormat, "#contacts/" + gName,
         gName == searchGroup ? searchGroupActiveTextInclude : "",
         "group_" + gName, gData, activateEvent)
@@ -608,7 +610,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     applyContactFilter()
 
-    local selected = [-1, -1]
+    let selected = [-1, -1]
     foreach(gIdx, gName in groups_array)
     {
       if (gName == searchGroup && !searchGroupLastShowState)
@@ -620,7 +622,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (curGroup == gName)
         selected[0] = gIdx
 
-      local sel = updatePlayersList(gName)
+      let sel = updatePlayersList(gName)
       if (sel > 0)
         selected[1] = sel
     }
@@ -662,15 +664,15 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (group in ::contacts)
         {
           ::contacts[group].sort(::sortContacts)
-          local selected = fillPlayersList(group)
+          let selected = fillPlayersList(group)
           if (group == curGroup)
             sel = selected
         }
 
     if (curGroup && (!groupName || curGroup == groupName))
     {
-      local gObj = scene.findObject("contacts_groups")
-      local listObj = gObj.findObject("group_" + curGroup)
+      let gObj = scene.findObject("contacts_groups")
+      let listObj = gObj.findObject("group_" + curGroup)
       if (listObj)
       {
         if (::contacts[curGroup].len() > 0)
@@ -693,8 +695,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function selectCurContactGroup() {
     if (!checkScene())
       return
-    local groupsObj = scene.findObject("contacts_groups")
-    local value = groupsObj.getValue()
+    let groupsObj = scene.findObject("contacts_groups")
+    let value = groupsObj.getValue()
     if (value >= 0 && value < groupsObj.childrenCount())
       ::move_mouse_on_child(groupsObj.getChild(value), 0) //header
   }
@@ -717,10 +719,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function selectHoveredGroup() {
-    local listObj = scene.findObject("contacts_groups")
-    local total = listObj.childrenCount()
+    let listObj = scene.findObject("contacts_groups")
+    let total = listObj.childrenCount()
     for(local i = 0; i < total; i++) {
-      local child = listObj.getChild(i)
+      let child = listObj.getChild(i)
       if (!child.isValid() || !child.isHovered())
         continue
       listObj.setValue(i)
@@ -758,7 +760,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       doSearch()
     else
     {
-      local groupObj = scene.findObject("group_" + curGroup)
+      let groupObj = scene.findObject("group_" + curGroup)
       if (groupObj?.isValid())
         onPlayerMenu(groupObj)
     }
@@ -766,14 +768,14 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function selectItemInGroup(obj, switchFocus = false)
   {
-    local groups = getContactsGroups()
-    local value = obj.getValue()
+    let groups = getContactsGroups()
+    let value = obj.getValue()
     if (!(value in groups))
       return
 
     curGroup = groups[value]
 
-    local listObj = obj.findObject("group_" + curGroup)
+    let listObj = obj.findObject("group_" + curGroup)
     if (!::checkObj(listObj))
       return
 
@@ -794,7 +796,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!obj) return
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if ((curGroup in ::contacts) && (value in ::contacts[curGroup]))
       curPlayer = ::contacts[curGroup][value]
     else
@@ -803,11 +805,11 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onPlayerMenu(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 
-    local childObj = obj.getChild(value)
+    let childObj = obj.getChild(value)
     if (!::check_obj(childObj))
       return
 
@@ -819,7 +821,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function sendClickButton(obj)
   {
-    local clickName = obj?.on_click
+    let clickName = obj?.on_click
     if (!clickName || !(clickName in this))
       return
 
@@ -831,15 +833,15 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene() || !::check_obj(obj))
       return
 
-    local id = obj.id
-    local prefix = "player_" + curGroup + "_"
+    let id = obj.id
+    let prefix = "player_" + curGroup + "_"
     if (id.len() <= prefix.len() || id.slice(0, prefix.len()) != prefix)
       return
 
-    local idx = id.slice(prefix.len()).tointeger()
+    let idx = id.slice(prefix.len()).tointeger()
     if ((curGroup in ::contacts) && (idx in ::contacts[curGroup]))
     {
-      local listObj = scene.findObject("group_" + curGroup)
+      let listObj = scene.findObject("group_" + curGroup)
       if (!listObj)
         return
 
@@ -858,15 +860,15 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local contactsGroups = scene.findObject("contacts_groups")
+    let contactsGroups = scene.findObject("contacts_groups")
     if (::checkObj(contactsGroups))
     {
       setSearchGroupVisibility(false)
-      local searchGroupIndex = getIndexOfGroup(searchGroup)
+      let searchGroupIndex = getIndexOfGroup(searchGroup)
       if (contactsGroups.getValue() == searchGroupIndex)
       {
         setSearchText("")
-        local friendsGroupIndex = getIndexOfGroup(::EPL_FRIENDLIST)
+        let friendsGroupIndex = getIndexOfGroup(::EPL_FRIENDLIST)
         contactsGroups.setValue(friendsGroupIndex)
       }
     }
@@ -877,8 +879,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach (idx, groupName in getContactsGroups())
     {
-      local searchAdviceID = "group_" + groupName + "_search_advice"
-      local searchAdviceObject = scene.findObject(searchAdviceID)
+      let searchAdviceID = "group_" + groupName + "_search_advice"
+      let searchAdviceObject = scene.findObject(searchAdviceID)
       if (::checkObj(searchAdviceObject))
       {
         searchAdviceObject.show(value)
@@ -921,8 +923,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::show_console_buttons)
       return
 
-    local showSelectButton = curHoverObjId != null
-    local btn = showSceneBtn("btn_contactsSelect", showSelectButton)
+    let showSelectButton = curHoverObjId != null
+    let btn = showSceneBtn("btn_contactsSelect", showSelectButton)
     if (showSelectButton)
       btn.setValue(::loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
         : curHoverObjId == "search_edit_box" ? "contacts/search"
@@ -945,20 +947,20 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(button_object))
       return
 
-    local contactButtonsObject = button_object.getParent().getParent()
-    local contactUID = contactButtonsObject?.contact_buttons_contact_uid
+    let contactButtonsObject = button_object.getParent().getParent()
+    let contactUID = contactButtonsObject?.contact_buttons_contact_uid
     if (!contactUID)
       return
 
-    local contact = ::getContact(contactUID)
+    let contact = ::getContact(contactUID)
     curPlayer = contact
 
-    local idx = ::contacts[curGroup].indexof(contact)
+    let idx = ::contacts[curGroup].indexof(contact)
     if (!checkScene() || idx == null)
       return
 
-    local groupObject = scene.findObject("contacts_groups")
-    local listObject = groupObject.findObject("group_" + curGroup)
+    let groupObject = scene.findObject("contacts_groups")
+    let listObject = groupObject.findObject("group_" + curGroup)
     listObject.setValue(idx)
   }
 
@@ -995,17 +997,14 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateCurPlayer(obj)
 
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
-
     if (curPlayer == null)
       return ::g_popups.add("", ::loc("msgbox/noChosenPlayer"))
 
-    local uid = curPlayer.uid
+    let uid = curPlayer.uid
     if (!::g_squad_manager.canInviteMember(uid))
       return
 
-    local name = curPlayer.name
+    let name = curPlayer.name
     if (::g_squad_manager.hasApplicationInMySquad(uid.tointeger(), name))
       ::g_squad_manager.acceptMembershipAplication(uid.tointeger())
     else
@@ -1023,7 +1022,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!obj) return
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (!value || value=="")
     {
       if (::show_console_buttons)
@@ -1049,7 +1048,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSearch(obj)
   {
-    local sObj = getSearchObj()
+    let sObj = getSearchObj()
     if (!sObj || searchInProgress) return
     local value = sObj.getValue()
     if (!value || value == "*")
@@ -1066,11 +1065,11 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     value = clearBorderSymbols(value)
 
-    local searchGroupActiveTextObject = scene.findObject("search_group_active_text")
-    local searchGroupText = ::loc($"contacts/{searchGroup}")
+    let searchGroupActiveTextObject = scene.findObject("search_group_active_text")
+    let searchGroupText = ::loc($"contacts/{searchGroup}")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
-    local taskId = ::find_nicks_by_prefix(value, maxSearchPlayers, true)
+    let taskId = ::find_nicks_by_prefix(value, maxSearchPlayers, true)
     if (taskId >= 0)
     {
       searchInProgress = true
@@ -1091,7 +1090,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local brokenData = false
     for (local i = 0; i < searchRes.paramCount(); i++)
     {
-      local contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
+      let contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
       if (contact)
       {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
@@ -1103,7 +1102,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (brokenData)
     {
-      local errText = "broken result on find_nicks_by_prefix cb: \n" + ::toString(searchRes)
+      let errText = "broken result on find_nicks_by_prefix cb: \n" + ::toString(searchRes)
       ::script_net_assert_once("broken searchCb data", errText)
     }
 
@@ -1117,8 +1116,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local gObj = scene.findObject("contacts_groups")
-    local listObj = gObj.findObject("group_" + searchGroup)
+    let gObj = scene.findObject("contacts_groups")
+    let listObj = gObj.findObject("group_" + searchGroup)
     if (!listObj)
       return
 
@@ -1197,7 +1196,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (owner.isSceneActiveNoModals() || scene?.isVisible())
       return
 
-    local curScene = scene
+    let curScene = scene
     if (::contacts_prev_scenes.findvalue(@(v) curScene.isEqual(v.scene)) == null)
       ::contacts_prev_scenes.append({ scene = scene, show = ::last_contacts_scene_show, owner = owner })
     scene = null

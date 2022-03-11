@@ -3515,14 +3515,10 @@
           "emitter": "emtr_gun_flame_05",
           "flash": "emtr_gun_flame_05",
           "useEmitter": true,
-          "useGunnerTargetingQuality": false,
           "barrelDP": "auxiliary_caliber_gun_01_dm",
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 25.0,
-          "speedPitch": 25.0,
-          "bullets": 500,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3539,11 +3535,25 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 10.0,
+          "speedPitch": 15.0,
+          "bullets": 350,
+          "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
             "barrel": "gun_barrel_05",
             "gunnerDm": "auxiliary_caliber_turret_01_dm"
+          },
+          "limits": {
+            "yaw": [-137.0,137.0],
+            "pitch": [-7.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-137.0,-40.0,-10.0,70.0],
+            "lim2": [-40.0,40.0,-5.0,70.0],
+            "lim3": [40.0,137.0,-10.0,16.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -3561,15 +3571,6 @@
                 "row": [70.0,0.05]
               }
             ]
-          },
-          "limits": {
-            "yaw": [-137.0,137.0],
-            "pitch": [-7.0,70.0]
-          },
-          "limitsTable": {
-            "lim1": [-137.0,-40.0,-10.0,70.0],
-            "lim2": [-40.0,40.0,-5.0,70.0],
-            "lim3": [40.0,137.0,-10.0,16.0]
           }
         }
       }
@@ -4522,9 +4523,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -60000.0,
+      "waterMassMult": 100.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 8200000.0,
       "additionalWaterShouldDiePercent": 0.3,
@@ -4542,14 +4543,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.17,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.4,
+          "weight": 0.5,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4609,7 +4610,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.36,
+          "weight": 0.9,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4622,7 +4623,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.4,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4635,7 +4636,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.27,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4656,7 +4657,7 @@
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.09,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       }
@@ -4919,7 +4920,7 @@
         "shells": {
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_01_dm": {
-            "count": 500
+            "count": 350
           }
         }
       },

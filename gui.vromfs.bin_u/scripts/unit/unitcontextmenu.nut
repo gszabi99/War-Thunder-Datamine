@@ -1,33 +1,33 @@
-local { getShopItem,
+let { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
-local selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
-local selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
-local crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroups.nut")
-local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local { checkUnitWeapons, checkUnitSecondaryWeapons,
+let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let unitActions = require("scripts/unit/unitActions.nut")
+let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
+let selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
+let selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
+let crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroups.nut")
+let { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
+let { openUrl } = require("scripts/onlineShop/url.nut")
+let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+let { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-local { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { getUnlockIdByUnitName, hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
+let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
   isSquadronResearchMode = false, hasSlotbarByUnitsGroups = false, shopResearchMode = false,
   shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
 ) {
-  local actions = []
+  let actions = []
   if (!unit || ("airsGroup" in unit) || actionsNames.len()==0 || ::is_in_loading_screen())
     return actions
 
-  local inMenu = ::isInMenu()
-  local isUsable  = unit.isUsable()
+  let inMenu = ::isInMenu()
+  let isUsable  = unit.isUsable()
   crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : ::getCrewByAir(unit))
 
   foreach(action in actionsNames)
@@ -85,14 +85,14 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       if (crew == null)
         continue
 
-      local discountInfo = ::g_crew.getDiscountInfo(crew.idCountry, crew.idInCountry)
+      let discountInfo = ::g_crew.getDiscountInfo(crew.idCountry, crew.idInCountry)
 
       actionText = ::loc("mainmenu/btnCrew")
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = ::isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
       haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
       showAction = inMenu && ::has_feature("CrewInfo")
-      local params = {
+      let params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
         curEdiff = curEdiff
@@ -162,7 +162,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
     }
     else if (action == "repair")
     {
-      local repairCost = ::wp_get_repair_cost(unit.name)
+      let repairCost = ::wp_get_repair_cost(unit.name)
       actionText = ::loc("mainmenu/btnRepair")+": "+::Cost(repairCost).getTextAccordingToBalance()
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
@@ -171,19 +171,19 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
     }
     else if (action == "buy")
     {
-      local isSpecial   = ::isUnitSpecial(unit)
-      local isGift   = ::isUnitGift(unit)
+      let isSpecial   = ::isUnitSpecial(unit)
+      let isGift   = ::isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
-      local canBuyNotResearchedUnit = canBuyNotResearched(unit)
-      local canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
+      let canBuyNotResearchedUnit = canBuyNotResearched(unit)
+      let canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
         && (isSpecial || ::isUnitResearched(unit))
-      local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
+      let canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
       local priceText = ""
 
       if (canBuyIngame)
       {
-        local price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
+        let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
         priceText = price.getTextAccordingToBalance()
         if (priceText.len())
           priceText = ::loc("ui/colon") + priceText
@@ -229,20 +229,20 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       if (::isUnitResearched(unit))
         continue
 
-      local isInResearch = ::isUnitInResearch(unit)
-      local isSquadronVehicle = unit.isSquadronVehicle()
-      local isInClan = ::is_in_clan()
-      local reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
-      local squadronExp = min(::clan_get_exp(), reqExp)
-      local canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
+      let isInResearch = ::isUnitInResearch(unit)
+      let isSquadronVehicle = unit.isSquadronVehicle()
+      let isInClan = ::is_in_clan()
+      let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+      let squadronExp = min(::clan_get_exp(), reqExp)
+      let canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
         && squadronExp > 0
       if (isSquadronVehicle && isInClan && isInResearch && !canFlushSquadronExp && !needChosenResearchOfSquadron)
         continue
 
-      local countryExp = ::shop_get_country_excess_exp(::getUnitCountry(unit), ::get_es_unit_type(unit))
-      local getReqExp = reqExp < countryExp ? reqExp : countryExp
-      local needToFlushExp = !isSquadronVehicle && shopResearchMode && countryExp > 0
-      local squadronExpText = ::Cost().setSap(squadronExp).tostring()
+      let countryExp = ::shop_get_country_excess_exp(::getUnitCountry(unit), ::get_es_unit_type(unit))
+      let getReqExp = reqExp < countryExp ? reqExp : countryExp
+      let needToFlushExp = !isSquadronVehicle && shopResearchMode && countryExp > 0
+      let squadronExpText = ::Cost().setSap(squadronExp).tostring()
 
       actionText = needToFlushExp || (isSquadronResearchMode && needChosenResearchOfSquadron)
         ? ::format(::loc("mainmenu/btnResearch")
@@ -277,7 +277,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
     }
     else if (action == "testflight" || action == "testflightforced")
     {
-      local shouldSkipUnitCheck = action == "testflightforced"
+      let shouldSkipUnitCheck = action == "testflightforced"
 
       actionText = unit.unitType.getTestFlightText()
       icon       = unit.unitType.testFlightIcon
@@ -307,7 +307,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       showAction = canBuyUnitOnMarketplace(unit)
       isLink     = true
       actionFunc = function(){
-        local item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
+        let item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
         if (item && item.hasLink())
           item.openLink()
       }
@@ -346,13 +346,13 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
   return actions
 })
 
-local showMenu = function showMenu(params) {
+let showMenu = function showMenu(params) {
   if (params == null) {
     ::handlersManager.findHandlerClassInScene(::gui_handlers.ActionsList)?.close()
     return
   }
 
-  local actions = getActions(params)
+  let actions = getActions(params)
   if (actions.len() == 0)
     return
 

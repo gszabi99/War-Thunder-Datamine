@@ -1,4 +1,4 @@
-local state = persist("orderState", @() {
+let state = persist("orderState", @() {
   statusText = Watched("")
   statusTextBottom = Watched("")
   showOrder = Watched(false)

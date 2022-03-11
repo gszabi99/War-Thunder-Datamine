@@ -1,9 +1,9 @@
-local mpChatModel = require("scripts/chat/mpChatModel.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("scripts/debriefing/rewardSources.nut")
-local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
-local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-local { money_type } = require("scripts/money.nut")
+let mpChatModel = require("scripts/chat/mpChatModel.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("scripts/debriefing/rewardSources.nut")
+let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+let { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+let { money_type } = require("scripts/money.nut")
 
 global enum debrState {
   init
@@ -17,21 +17,21 @@ global enum debrState {
 local debriefingResult = null
 local dynamicResult = -1
 
-local function countWholeRewardInTable(table, currency, specParam = null) {
+let function countWholeRewardInTable(table, currency, specParam = null) {
   if (!table || table.len() == 0)
     return 0
 
   local reward = 0
-  local upCur = ::g_string.toUpper(currency, 1)
-  local searchArray = specParam || ["noBonus", "premMod", "premAcc", "booster"]
+  let upCur = ::g_string.toUpper(currency, 1)
+  let searchArray = specParam || ["noBonus", "premMod", "premAcc", "booster"]
   foreach(cur in searchArray)
     reward += ::getTblValue(cur + upCur, table, 0)
   return reward
 }
 
-local getTableNameById = @(row) $"tbl{row.getRewardId()}"
+let getTableNameById = @(row) $"tbl{row.getRewardId()}"
 
-local debriefingRowDefault = {
+let debriefingRowDefault = {
   id = ""
   rewardId = null
   showEvenEmpty = false //show row even there only 0
@@ -201,7 +201,7 @@ debriefingRows = [
       if (!debriefingResult || !("exp" in debriefingResult))
         return ::loc("debriefing/Mission")
 
-      local checkVal = countWholeRewardInTable(debriefingResult.exp?[getTableNameById(this)],
+      let checkVal = countWholeRewardInTable(debriefingResult.exp?[getTableNameById(this)],
         rowType, ["premMod", "premAcc"])
       if (checkVal < 0)
         return ::loc("debriefing/MissionNegative")
@@ -248,8 +248,8 @@ debriefingRows = [
     text = "debriefing/firstWinInDay"
     icon = ""
     tooltipComment = function() {
-      local firstWinMulRp = (debriefingResult?.xpFirstWinInDayMul ?? 1.0).tointeger()
-      local firstWinMulWp = (debriefingResult?.wpFirstWinInDayMul ?? 1.0).tointeger()
+      let firstWinMulRp = (debriefingResult?.xpFirstWinInDayMul ?? 1.0).tointeger()
+      let firstWinMulWp = (debriefingResult?.wpFirstWinInDayMul ?? 1.0).tointeger()
       return ::loc("reward") + ::loc("ui/colon") + ::g_string.implode([
         firstWinMulRp > 1 ? ::getRpPriceText("x" + firstWinMulRp, true) : "",
         firstWinMulWp > 1 ? ::getWpPriceText("x" + firstWinMulWp, true) : "",
@@ -268,23 +268,23 @@ debriefingRows = [
     showOnlyWhenFullResult = true
     isOverall = true
     tooltipExtraRows = function() {
-      local res = []
+      let res = []
       foreach (row in debriefingRows)
         if (!row.isCountedInUnits)
           res.append(row.id)
       return res
     }
     tooltipComment = function() {
-      local texts = []
-      local tournamentWp   = ::getTblValue("wpTournamentBaseReward",   debriefingResult.exp, 0)
-      local tournamentGold = ::getTblValue("goldTournamentBaseReward", debriefingResult.exp, 0)
-      local goldTotal = ::getTblValue("goldTotal",   debriefingResult.exp, 0)
+      let texts = []
+      let tournamentWp   = ::getTblValue("wpTournamentBaseReward",   debriefingResult.exp, 0)
+      let tournamentGold = ::getTblValue("goldTournamentBaseReward", debriefingResult.exp, 0)
+      let goldTotal = ::getTblValue("goldTotal",   debriefingResult.exp, 0)
       if (tournamentWp || tournamentGold)
         texts.append(::loc("debriefing/tournamentBaseReward") + ::loc("ui/colon") + ::Cost(tournamentWp, tournamentGold))
       else if (goldTotal)
         texts.append(::loc("chapters/training") + ::loc("ui/colon") + ::Cost(0, goldTotal))
-      local raceWp = ::getTblValue("wpRace",  debriefingResult.exp, 0)
-      local raceRp = ::getTblValue("expRace", debriefingResult.exp, 0)
+      let raceWp = ::getTblValue("wpRace",  debriefingResult.exp, 0)
+      let raceRp = ::getTblValue("expRace", debriefingResult.exp, 0)
       if (raceWp || raceRp)
         texts.append(::loc("events/chapter/race") + ::loc("ui/colon") + ::Cost(raceWp, 0, 0, raceRp))
       return texts.len() ? ::colorize("commonTextColor", ::g_string.implode(texts, "\n")) : null
@@ -310,18 +310,18 @@ debriefingRows = [
     isOverall = true
     tooltipComment = function() { return ::loc("debriefing/EfficiencyReason") }
     tooltipRowBonuses = function(unitId, unitData) {
-      local unitTypeName = ::getAircraftByName(unitId)?.unitType?.name ?? ""
-      local investUnit = ::getAircraftByName(debriefingResult?.exp?["investUnitName" + unitTypeName])
-      local prevUnit = ::getPrevUnit(investUnit)
+      let unitTypeName = ::getAircraftByName(unitId)?.unitType?.name ?? ""
+      let investUnit = ::getAircraftByName(debriefingResult?.exp?["investUnitName" + unitTypeName])
+      let prevUnit = ::getPrevUnit(investUnit)
       if (unitId != prevUnit?.name)
         return null
 
-      local noBonus = unitData?.expTotal ?? 0
-      local bonus = (unitData?.expInvestUnit ?? 0) - noBonus
+      let noBonus = unitData?.expTotal ?? 0
+      let bonus = (unitData?.expInvestUnit ?? 0) - noBonus
       if (noBonus <= 0 || bonus <= 0)
         return null
 
-      local comment = ::colorize("fadedTextColor", ::loc("debriefing/bonusToNextUnit",
+      let comment = ::colorize("fadedTextColor", ::loc("debriefing/bonusToNextUnit",
         { unitName = ::colorize("userlogColoredText", ::getUnitName(investUnit)) }))
 
       return {
@@ -339,7 +339,7 @@ debriefingRows = [
     rowProps = { totalColor="yes", totalRowStyle="last" }
     tooltipComment = function() {return ::loc("debriefing/ecSpawnScore")}
     getValueFunc = function() {
-                              local logs = ::getUserLogsList({
+                              let logs = ::getUserLogsList({
                                 show = [
                                   ::EULT_SESSION_RESULT
                                   ::EULT_EARLY_SESSION_LEAVE
@@ -365,7 +365,7 @@ debriefingRows = [
     rowProps = { totalColor="yes", totalRowStyle="last" }
     tooltipComment = function() {return ::loc("debriefing/wwSpawnScore")}
     getValueFunc = function() {
-                              local logs = ::getUserLogsList({
+                              let logs = ::getUserLogsList({
                                 show = [
                                   ::EULT_SESSION_RESULT
                                   ::EULT_EARLY_SESSION_LEAVE
@@ -418,7 +418,7 @@ foreach(idx, row in debriefingRows)
       debriefingRows[idx][param] <- value
 }
 
-local isDebriefingResultFull = @() (debriefingResult != null
+let isDebriefingResultFull = @() (debriefingResult != null
   && (!debriefingResult.isMp
     || !debriefingResult.useFinalResults
     || debriefingResult.exp.result == ::STATS_RESULT_SUCCESS
@@ -430,16 +430,16 @@ local isDebriefingResultFull = @() (debriefingResult != null
   )
 )
 
-local function updateDebriefingExpInvestmentData() {
+let function updateDebriefingExpInvestmentData() {
   local gatheredTotalModsExp = 0
   local gatheredTotalUnitExp = 0
   foreach(airName, airData in debriefingResult.exp.aircrafts)
   {
-    local expModuleTotal = ::getTblValue("expInvestModuleTotal", airData, 0)
+    let expModuleTotal = ::getTblValue("expInvestModuleTotal", airData, 0)
     airData.expModsTotal <- expModuleTotal
     gatheredTotalModsExp += expModuleTotal
 
-    local expUnitTotal = ::getTblValue("expInvestUnitTotal", airData, 0)
+    let expUnitTotal = ::getTblValue("expInvestUnitTotal", airData, 0)
     airData.expUnitTotal <- expUnitTotal
     gatheredTotalUnitExp += expUnitTotal
 
@@ -447,33 +447,33 @@ local function updateDebriefingExpInvestmentData() {
         //we cant correct recount bonus multiply on not total exp when they equal
   }
 
-  local expTotal = ::getTblValue("expTotal", debriefingResult.exp, 0)
+  let expTotal = ::getTblValue("expTotal", debriefingResult.exp, 0)
   debriefingResult.exp.pctUnitTotal <- expTotal > 0 ? gatheredTotalUnitExp.tofloat() / expTotal : 0.0
 
   debriefingResult.exp.expModsTotal <- gatheredTotalModsExp
   debriefingResult.exp.expUnitTotal <- gatheredTotalUnitExp
 }
 
-local function getStatReward(row, currency, keysArray = []) {
+let function getStatReward(row, currency, keysArray = []) {
   if (!keysArray.len()) // empty means pre-calculated final value
   {
-    local finalId = currency + row.getRewardId()
+    let finalId = currency + row.getRewardId()
     return ::getTblValue(finalId, debriefingResult.exp, 0)
   }
 
   local result = 0
-  local tableId = getTableNameById(row)
-  local currencyName = ::g_string.toUpper(currency, 1)
+  let tableId = getTableNameById(row)
+  let currencyName = ::g_string.toUpper(currency, 1)
   foreach(key in keysArray)
     result += debriefingResult.exp?[tableId][key + currencyName] ?? 0
   return result
 }
 
-local getCountedResultId = @(row, state, currency)
+let getCountedResultId = @(row, state, currency)
   $"{getTableNameById(row)}_debrState{state}_{currency}"
 
-local function calculateDebriefingTabularData(addVirtPremAcc = false) {
-  local countTable = !addVirtPremAcc ?
+let function calculateDebriefingTabularData(addVirtPremAcc = false) {
+  let countTable = !addVirtPremAcc ?
   {
     [debrState.showMyStats] = ["noBonus"],
     [debrState.showBonuses] = [],
@@ -495,16 +495,16 @@ local function calculateDebriefingTabularData(addVirtPremAcc = false) {
     foreach(currency in [ "wp", "exp" ])
       foreach(state, statsArray in countTable)
       {
-        local key = getCountedResultId(row, state, currency)
-        local reward = getStatReward(row, currency, statsArray)
+        let key = getCountedResultId(row, state, currency)
+        let reward = getStatReward(row, currency, statsArray)
         debriefingResult.counted_result_by_debrState[key] <- reward
       }
   }
 }
 
-local function recountDebriefingResult() {
-  local gm = ::get_game_mode()
-  local gt = ::get_game_type()
+let function recountDebriefingResult() {
+  let gm = ::get_game_mode()
+  let gt = ::get_game_type()
 
   foreach(row in debriefingRows)
   {
@@ -516,8 +516,8 @@ local function recountDebriefingResult() {
     local isRowEmpty = true
     foreach(currency in ["wp", "exp", "gold"])
     {
-      local id = currency + row.getRewardId()
-      local result = ::getTblValue(id, debriefingResult.exp, 0)
+      let id = currency + row.getRewardId()
+      let result = ::getTblValue(id, debriefingResult.exp, 0)
       row[currency] <- result
       isRowEmpty = isRowEmpty && !result
     }
@@ -530,7 +530,7 @@ local function recountDebriefingResult() {
       row.value = ::getTblValue(row.rowType + row.getRewardId(), debriefingResult.exp, 0)
     isRowEmpty = isRowEmpty && !row.value
 
-    local isHide = (row.showByValue && !row.showByValue(row.value))
+    let isHide = (row.showByValue && !row.showByValue(row.value))
       || (isRowEmpty && !row.isVisibleWhenEmpty())
 
     if (isHide)
@@ -553,8 +553,8 @@ local function recountDebriefingResult() {
 /**
  * Returns proper "haveTeamkills" value from related userlogs.
  */
-local function debriefingResultHaveTeamkills() {
-  local logs = getUserLogsList({
+let function debriefingResultHaveTeamkills() {
+  let logs = getUserLogsList({
     show = [
       ::EULT_EARLY_SESSION_LEAVE
       ::EULT_SESSION_RESULT
@@ -568,8 +568,8 @@ local function debriefingResultHaveTeamkills() {
   return result
 }
 
-local function getDebriefingBaseTournamentReward() {
-  local result = ::Cost()
+let function getDebriefingBaseTournamentReward() {
+  let result = ::Cost()
 
   local logs = getUserLogsList({
     show = [
@@ -600,8 +600,8 @@ local function getDebriefingBaseTournamentReward() {
   return result
 }
 
-local function getDebriefingActiveBoosters() {
-  local logs = getUserLogsList({
+let function getDebriefingActiveBoosters() {
+  let logs = getUserLogsList({
     show = [
       ::EULT_EARLY_SESSION_LEAVE
       ::EULT_SESSION_RESULT
@@ -628,7 +628,7 @@ local function getDebriefingActiveBoosters() {
  *   wagerResult = ... (null - if result is unknown)
  * }
  */
-local function getDebriefingActiveWager() {
+let function getDebriefingActiveWager() {
   // First, we see is there's any active wager at all.
   local logs = getUserLogsList({
     show = [
@@ -648,7 +648,7 @@ local function getDebriefingActiveWager() {
   if (wagerIds == null || (typeof(wagerIds) == "array" && wagerIds.len() == 0)) // Nothing found.
     return null
 
-  local data = {
+  let data = {
     wagerInventoryId = null
     wagerShopId = typeof(wagerIds) == "array" ? wagerIds[0] : wagerIds // See buildTableFromBlk.
     wagerResult = null
@@ -668,10 +668,10 @@ local function getDebriefingActiveWager() {
   })
   foreach (log in logs)
   {
-    local wagerShopId = ::getTblValue("id", log)
+    let wagerShopId = ::getTblValue("id", log)
     if (wagerShopId != data.wagerShopId)
       continue
-    local rewardType = ::getTblValue("rewardType", log)
+    let rewardType = ::getTblValue("rewardType", log)
     if (rewardType == null)
       continue
     data.wagerResult = rewardType
@@ -685,9 +685,9 @@ local function getDebriefingActiveWager() {
 
   if (data.wagerWpEarned != 0 || data.wagerGoldEarned != 0)
   {
-    local money = ::Money(money_type.cost, data.wagerWpEarned, data.wagerGoldEarned)
-    local rewardText = money.tostring()
-    local locParams = {
+    let money = ::Money(money_type.cost, data.wagerWpEarned, data.wagerGoldEarned)
+    let rewardText = money.tostring()
+    let locParams = {
       wagerRewardText = rewardText
     }
     data.wagerText += "\n" + ::loc("item/wager/endedWager/rewardPart", locParams)
@@ -696,8 +696,8 @@ local function getDebriefingActiveWager() {
   return data
 }
 
-local function getDebriefingEventId() {
-  local logs = ::getUserLogsList({
+let function getDebriefingEventId() {
+  let logs = ::getUserLogsList({
     show = [::EULT_SESSION_RESULT]
     currentRoomOnly = true
   })
@@ -708,8 +708,8 @@ local function getDebriefingEventId() {
 /**
  * Joins multiple rows rewards into new single row.
  */
-local function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
-  local tables = [ exp ]
+let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
+  let tables = [ exp ]
   if (exp?.aircrafts)
     foreach (unitId, tbl in exp.aircrafts)
       tables.append(tbl)
@@ -717,16 +717,16 @@ local function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
   foreach (tbl in tables)
     foreach (prefix in [ "tbl", "wp", "exp", "num" ])
     {
-      local keyTo = prefix + destRowId
+      let keyTo = prefix + destRowId
       if (keyTo in tbl)
         continue
       foreach (srcRowId in srcRowIdsArray)
       {
-        local keyFrom = prefix + srcRowId
+        let keyFrom = prefix + srcRowId
         if (!(keyFrom in tbl))
           continue
-        local val = tbl[keyFrom]
-        local isTable = ::u.isTable(val)
+        let val = tbl[keyFrom]
+        let isTable = ::u.isTable(val)
         if (!(keyTo in tbl))
           tbl[keyTo] <- isTable ? (clone val) : val
         else
@@ -747,30 +747,30 @@ local function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
  * free exp, units and mods research (but not to expTotal in aircrafts).
  * Adds FirstWinInDay as a separate bonus row.
  */
-local function debriefingApplyFirstWinInDayMul(exp, debrResult)
+let function debriefingApplyFirstWinInDayMul(exp, debrResult)
 {
-  local logs = ::getUserLogsList({ show = [::EULT_SESSION_RESULT], currentRoomOnly = true })
+  let logs = ::getUserLogsList({ show = [::EULT_SESSION_RESULT], currentRoomOnly = true })
   if (!logs.len())
     return
 
-  local xpFirstWinInDayMul = logs[0]?.xpFirstWinInDayMul ?? 1.0
-  local wpFirstWinInDayMul = logs[0]?.wpFirstWinInDayMul ?? 1.0
+  let xpFirstWinInDayMul = logs[0]?.xpFirstWinInDayMul ?? 1.0
+  let wpFirstWinInDayMul = logs[0]?.wpFirstWinInDayMul ?? 1.0
   if (xpFirstWinInDayMul == 1 && wpFirstWinInDayMul == 1)
     return
 
-  local xpTotalDebr = exp?.expTotal ?? 0
-  local xpTotalUserlog = logs[0]?.xpEarned ?? 0
-  local xpCheck = xpTotalDebr * xpFirstWinInDayMul
-  local isNeedMulXp = (xpCheck > xpTotalDebr && ::fabs(xpCheck - xpTotalDebr) > ::fabs(xpCheck - xpTotalUserlog))
+  let xpTotalDebr = exp?.expTotal ?? 0
+  let xpTotalUserlog = logs[0]?.xpEarned ?? 0
+  let xpCheck = xpTotalDebr * xpFirstWinInDayMul
+  let isNeedMulXp = (xpCheck > xpTotalDebr && ::fabs(xpCheck - xpTotalDebr) > ::fabs(xpCheck - xpTotalUserlog))
 
-  local wpTotalDebr = exp?.wpTotal  ?? 0
-  local wpTotalUserlog = logs[0]?.wpEarned ?? 0
-  local wpCheck = wpTotalDebr * wpFirstWinInDayMul
-  local isNeedMulWp = (wpCheck > wpTotalDebr && ::fabs(wpCheck - wpTotalDebr) > ::fabs(wpCheck - wpTotalUserlog))
+  let wpTotalDebr = exp?.wpTotal  ?? 0
+  let wpTotalUserlog = logs[0]?.wpEarned ?? 0
+  let wpCheck = wpTotalDebr * wpFirstWinInDayMul
+  let isNeedMulWp = (wpCheck > wpTotalDebr && ::fabs(wpCheck - wpTotalDebr) > ::fabs(wpCheck - wpTotalUserlog))
 
   if (isNeedMulXp)
   {
-    local keys = [ "expTotal", "expFree", "expInvestUnit", "expInvestUnitTotal" ]
+    let keys = [ "expTotal", "expFree", "expInvestUnit", "expInvestUnitTotal" ]
     foreach (ut in unitTypes.types)
       keys.append(
         "expInvestUnit" + ut.name,
@@ -799,34 +799,34 @@ local function debriefingApplyFirstWinInDayMul(exp, debrResult)
   }
 }
 
-local function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
-  local pveTrophyName = ::getTblValue("pveTrophyName", ::get_current_mission_info_cached())
+let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
+  let pveTrophyName = ::getTblValue("pveTrophyName", ::get_current_mission_info_cached())
   if (::u.isEmpty(pveTrophyName))
     return null
 
-  local warpoints = ::get_warpoints_blk()
+  let warpoints = ::get_warpoints_blk()
 
-  local isEnoughActivity = sessionActivity >= ::getTblValue("pveTrophyMinActivity", warpoints, 1)
-  local reachedTrophyName = isEnoughActivity ? ::get_pve_trophy_name(sessionTime, isSuccess) : null
+  let isEnoughActivity = sessionActivity >= ::getTblValue("pveTrophyMinActivity", warpoints, 1)
+  let reachedTrophyName = isEnoughActivity ? ::get_pve_trophy_name(sessionTime, isSuccess) : null
   local receivedTrophyName = null
 
   if (reachedTrophyName)
   {
-    local logs = ::getUserLogsList({
+    let logs = ::getUserLogsList({
       show = [
         ::EULT_SESSION_RESULT
       ]
       currentRoomOnly = true
     })
-    local trophyRewardsList = logs?[0].container.trophies ?? {}
+    let trophyRewardsList = logs?[0].container.trophies ?? {}
     receivedTrophyName = (reachedTrophyName in trophyRewardsList) ? reachedTrophyName : null
   }
 
-  local victoryStageTime = ::getTblValue("pveTimeAwardWinVisual", warpoints, 1)
-  local stagesTime = []
+  let victoryStageTime = ::getTblValue("pveTimeAwardWinVisual", warpoints, 1)
+  let stagesTime = []
   for (local i = 0; i <= ::getTblValue("pveTrophyMaxStage", warpoints, -1); i++)
   {
-    local time = ::getTblValue("pveTimeAwardStage" + i, warpoints, -1)
+    let time = ::getTblValue("pveTimeAwardStage" + i, warpoints, -1)
     if (time > 0 && time < victoryStageTime)
       stagesTime.append(time)
   }
@@ -835,8 +835,8 @@ local function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   local visSessionTime = isSuccess ? victoryStageTime : sessionTime.tointeger()
   if (!isSuccess)
   {
-    local preVictoryStageTime = stagesTime.len() > 1 ? stagesTime[stagesTime.len() - 2] : 0
-    local maxTime = preVictoryStageTime + (victoryStageTime - preVictoryStageTime) / 2
+    let preVictoryStageTime = stagesTime.len() > 1 ? stagesTime[stagesTime.len() - 2] : 0
+    let maxTime = preVictoryStageTime + (victoryStageTime - preVictoryStageTime) / 2
     visSessionTime = ::min(visSessionTime, maxTime)
   }
 
@@ -852,8 +852,8 @@ local function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   }
 }
 
-local function getDebriefingGiftItemsInfo(skipItemId = null) {
-  local res = []
+let function getDebriefingGiftItemsInfo(skipItemId = null) {
+  let res = []
 
   // Collecting Marketplace items
   local logs = ::getUserLogsList({
@@ -880,7 +880,7 @@ local function getDebriefingGiftItemsInfo(skipItemId = null) {
   })
   foreach (rewardType in [ "trophies", "items" ])
   {
-    local rewards = logs?[0]?.container?[rewardType] ?? {}
+    let rewards = logs?[0]?.container?[rewardType] ?? {}
     foreach (id, count in rewards)
       if (id != skipItemId)
         res.append({item=id, count=count, needOpen=rewardType == "trophies", enableBackground=true})
@@ -889,8 +889,8 @@ local function getDebriefingGiftItemsInfo(skipItemId = null) {
   return res.len() ? res : null
 }
 
-local function gatherDebriefingResult() {
-  local gm = ::get_game_mode()
+let function gatherDebriefingResult() {
+  let gm = ::get_game_mode()
   if (gm==::GM_DYNAMIC)
     dynamicResult = ::dynamic_apply_status();
 
@@ -902,7 +902,7 @@ local function gatherDebriefingResult() {
   debriefingResult.gameType <- ::get_game_type()
   debriefingResult.isTeamplay <- ::is_mode_with_teams(debriefingResult.gameType)
 
-  local isInRoom = ::SessionLobby.isInRoom()
+  let isInRoom = ::SessionLobby.isInRoom()
   debriefingResult.isInRoom <- isInRoom
   debriefingResult.mGameMode <- isInRoom ? ::SessionLobby.getMGameMode() : null
   debriefingResult.isSpectator <- isInRoom && ::SessionLobby.spectator
@@ -926,7 +926,7 @@ local function gatherDebriefingResult() {
   debriefingResult.mplayers_list <- ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
 
   //Fill Exp and WP table in correct format
-  local exp = ::stat_get_exp() || {}
+  let exp = ::stat_get_exp() || {}
 
   debriefingResult.expDump <- ::u.copy(exp) // Untouched copy for debug
 
@@ -935,7 +935,7 @@ local function gatherDebriefingResult() {
   // Temporary compatibility fix for 1.85.0.X
   if (exp?.numAwardDamage && exp?.expAwardDamage)
   {
-    local tables = [ exp ]
+    let tables = [ exp ]
     foreach (a in exp?.aircrafts ?? {})
       tables.append(a)
     foreach (t in tables)
@@ -974,7 +974,7 @@ local function gatherDebriefingResult() {
   for (local i = ::get_user_logs_count() - 1; i >= 0; i--)
     if (::is_user_log_for_current_room(i))
     {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
       debriefingResult.roomUserlogs.append(blk)
     }
@@ -985,7 +985,7 @@ local function gatherDebriefingResult() {
   // Deleting killstreak flyout units (has zero sessionTime), because it has some stats,
   // (kills, etc) which are calculated TWICE (in both player's unit, and in killstreak unit).
   // So deleting info about killstreak units is very important.
-  local aircraftsForDelete = []
+  let aircraftsForDelete = []
   foreach(airName, airData in debriefingResult.exp.aircrafts)
     if (airData.sessionTime == 0 || !::getAircraftByName(airName))
       aircraftsForDelete.append(airName)
@@ -1002,7 +1002,7 @@ local function gatherDebriefingResult() {
     debriefingResult.exp.ptmLapTimesArray <- ::get_race_lap_times()
   }
 
-  local sessionTime = ::getTblValue("sessionTime", debriefingResult.exp, 0)
+  let sessionTime = ::getTblValue("sessionTime", debriefingResult.exp, 0)
   local score = 0.0
   local timePlayed = 0.0
   foreach(airName, airData in debriefingResult.exp.aircrafts)
@@ -1013,26 +1013,26 @@ local function gatherDebriefingResult() {
     airData.pctActivity <- 0
   }
   debriefingResult.exp.timePlayed <- timePlayed
-  local sessionActivity = debriefingResult.exp?.activity ?? 0
+  let sessionActivity = debriefingResult.exp?.activity ?? 0
 
-  local pveRewardInfo = getPveRewardTrophyInfo(sessionTime, sessionActivity, debriefingResult.isSucceed)
+  let pveRewardInfo = getPveRewardTrophyInfo(sessionTime, sessionActivity, debriefingResult.isSucceed)
   if (pveRewardInfo)
     debriefingResult.pveRewardInfo <- pveRewardInfo
-  local giftItemsInfo = getDebriefingGiftItemsInfo(pveRewardInfo?.receivedTrophyName)
+  let giftItemsInfo = getDebriefingGiftItemsInfo(pveRewardInfo?.receivedTrophyName)
   if (giftItemsInfo)
     debriefingResult.giftItemsInfo <- giftItemsInfo
 
-  local trournamentBaseReward = getDebriefingBaseTournamentReward()
+  let trournamentBaseReward = getDebriefingBaseTournamentReward()
   debriefingResult.exp.wpTournamentBaseReward <- trournamentBaseReward.wp
   debriefingResult.exp.goldTournamentBaseReward <- trournamentBaseReward.gold
-  local wpTotal = ::getTblValue("wpTotal", debriefingResult.exp, 0)
+  let wpTotal = ::getTblValue("wpTotal", debriefingResult.exp, 0)
   if (wpTotal >= 0)
     debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp
 
   debriefingResult.exp.expMission <- ::getTblValue("expMission", exp, 0) + ::getTblValue("expRace", exp, 0)
   debriefingResult.exp.wpMission <- ::getTblValue("wpMission", exp, 0) + ::getTblValue("wpRace", exp, 0)
 
-  local missionRules = ::g_mis_custom_state.getCurMissionRules()
+  let missionRules = ::g_mis_custom_state.getCurMissionRules()
   debriefingResult.overrideCountryIconByTeam <- {
     [::g_team.A.code] = missionRules.getOverrideCountryIconByTeam(::g_team.A.code),
     [::g_team.B.code] = missionRules.getOverrideCountryIconByTeam(::g_team.B.code)
@@ -1045,11 +1045,11 @@ local function gatherDebriefingResult() {
     ::destroy_session_scripted()
 }
 
-local function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
-  local totalVirtPremAccExp = data?.tblTotal.virtPremAccExp ?? 0
+let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
+  let totalVirtPremAccExp = data?.tblTotal.virtPremAccExp ?? 0
   if (totalVirtPremAccExp > 0)
   {
-    local list = isRoot ? [ "expFree" ] : [ "expInvestModuleTotal", "expInvestUnitTotal", "expModsTotal", "expUnitTotal" ]
+    let list = isRoot ? [ "expFree" ] : [ "expInvestModuleTotal", "expInvestUnitTotal", "expModsTotal", "expUnitTotal" ]
     if (isRoot)
       foreach (ut in unitTypes.types)
         list.append([ "expInvestUnitTotal" + ut.name])
@@ -1061,11 +1061,11 @@ local function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
   if (isRoot)
     foreach (ut in unitTypes.types)
     {
-      local typeName = ut.name
-      local unitId = ::getTblValue("investUnitName" + typeName, data, "")
+      let typeName = ut.name
+      let unitId = ::getTblValue("investUnitName" + typeName, data, "")
       if (::u.isEmpty(unitId))
         continue
-      local unitVirtPremAccExp = data?.aircrafts[unitId].tblTotal.virtPremAccExp ?? 0
+      let unitVirtPremAccExp = data?.aircrafts[unitId].tblTotal.virtPremAccExp ?? 0
       if (unitVirtPremAccExp > 0 && ::getTblValue("expInvestUnit" + typeName, data, 0) > 0)
         data["expInvestUnit" + typeName] += unitVirtPremAccExp
     }
@@ -1074,18 +1074,18 @@ local function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
   {
     if (!row.isUsedInRecount)
       continue
-    local rowTbl = data?[getTableNameById(row)]
+    let rowTbl = data?[getTableNameById(row)]
     if (::u.isEmpty(rowTbl))
       continue
     foreach(suffix in [ "Exp", "Wp" ])
     {
-      local virtPremAcc = ::getTblValue("virtPremAcc" + suffix, rowTbl, 0)
+      let virtPremAcc = ::getTblValue("virtPremAcc" + suffix, rowTbl, 0)
       if (virtPremAcc <= 0)
         continue
       rowTbl["premAcc" + suffix] <- virtPremAcc
 
-      local precalcResultId = suffix.tolower() + row.getRewardId()
-      local origFinal = ::getTblValue(precalcResultId, data, 0)
+      let precalcResultId = suffix.tolower() + row.getRewardId()
+      let origFinal = ::getTblValue(precalcResultId, data, 0)
       if (origFinal >= 0)
       {
         data["noPremAcc" + suffix] <- origFinal
@@ -1098,7 +1098,7 @@ local function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
 /**
  * Emulates last mission rewards gain (by adding virtPremAccWp/virtPremAccExp) on byuing Premium Account from Debriefing window.
  */
-local function debriefingAddVirtualPremAcc() {
+let function debriefingAddVirtualPremAcc() {
   if (!::havePremium())
     return
 
@@ -1112,13 +1112,13 @@ local function debriefingAddVirtualPremAcc() {
   recountDebriefingResult()
 }
 
-local function getMoneyFromDebriefingResult() {
-  local res = ::Cost()
+let function getMoneyFromDebriefingResult() {
+  let res = ::Cost()
   gatherDebriefingResult()
   if (debriefingResult == null)
     return res
 
-  local exp = debriefingResult.exp
+  let exp = debriefingResult.exp
   res.wp    = exp?.wpMission ?? 0
   res.gold  = exp?.goldMission ?? 0
   res.frp   = exp?.expMission ?? 0

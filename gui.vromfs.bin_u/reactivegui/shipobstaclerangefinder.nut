@@ -1,10 +1,10 @@
-local {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
-local {alert} = require("style/colors.nut").hud.damageModule
-local {abs} = require("std/math.nut")
+let {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
+let {alert} = require("style/colors.nut").hud.damageModule
+let {abs} = require("std/math.nut")
 
-local showCollideWarning = Computed(@() distanceToObstacle.value < 0)
+let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
 
-local textToShow = Computed(@() ::str(showCollideWarning.value ? ::loc("hud_ship_collide_warning") :
+let textToShow = Computed(@() ::str(showCollideWarning.value ? ::loc("hud_ship_collide_warning") :
        ::loc("hud_ship_depth_on_course_warning"), ::loc("ui/colon"))
 )
 return @(){

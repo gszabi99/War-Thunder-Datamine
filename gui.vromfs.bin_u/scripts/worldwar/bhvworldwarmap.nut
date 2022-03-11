@@ -1,6 +1,6 @@
-local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+let actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
 
-class ::ww_gui_bhv.worldWarMapControls
+::ww_gui_bhv.worldWarMapControls <- class
 {
   eventMask = ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_WHEEL | ::EV_PROCESS_SHORTCUTS | ::EV_TIMER | ::EV_MOUSE_MOVE
 
@@ -16,9 +16,9 @@ class ::ww_gui_bhv.worldWarMapControls
 
     ::ww_event("ClearSelectFromLogArmy")
     ::ww_clear_outlined_zones()
-    local mapPos = ::Point2(mx, my)
+    let mapPos = ::Point2(mx, my)
 
-    local curActionMode = actionModesManager.getCurActionMode()
+    let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode != null)
     {
       curActionMode.useAction(mapPos)
@@ -101,14 +101,14 @@ class ::ww_gui_bhv.worldWarMapControls
     if (append && !::ww_can_append_path_point_for_selected_armies())
       return
 
-    local currentSelectedObject = getSelectedObject(obj)
-    local armyTargetName = findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
+    let currentSelectedObject = getSelectedObject(obj)
+    let armyTargetName = findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
 
     if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
-      local airfieldIdx = ::ww_get_selected_airfield();
-      local checkFlewOutArmy = (@(obj, airfieldIdx) function() {
-          local army = ::ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
+      let airfieldIdx = ::ww_get_selected_airfield();
+      let checkFlewOutArmy = (@(obj, airfieldIdx) function() {
+          let army = ::ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
           if ( army && army != "" )
           {
             selectArmy(obj, army, true)
@@ -116,7 +116,7 @@ class ::ww_gui_bhv.worldWarMapControls
           }
         })(obj, airfieldIdx)
 
-      local mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
+      let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
       if (::ww_is_cell_generally_passable(mapCell))
         ::gui_handlers.WwAirfieldFlyOut.open(
           airfieldIdx, clickPos, armyTargetName, ::Callback(checkFlewOutArmy, this))
@@ -136,7 +136,7 @@ class ::ww_gui_bhv.worldWarMapControls
     if (btn_id != 2)  //right mouse button
       return ::RETCODE_NOTHING
 
-    local curActionMode = actionModesManager.getCurActionMode()
+    let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode != null)
     {
       actionModesManager.setActionMode()
@@ -148,11 +148,11 @@ class ::ww_gui_bhv.worldWarMapControls
       return ::RETCODE_NOTHING
 
     ::ww_clear_outlined_zones()
-    local mapPos = ::Point2(mx, my)
+    let mapPos = ::Point2(mx, my)
 
     sendMapEvent("RequestReinforcement", {cellIdx = ::ww_get_map_cell_by_coords(mapPos.x, mapPos.y)})
 
-    local currentSelectedObject = getSelectedObject(obj)
+    let currentSelectedObject = getSelectedObject(obj)
     if (currentSelectedObject != mapObjectSelect.NONE)
       onMoveCommand(obj, mapPos, false)
 
@@ -161,8 +161,8 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function onTimer(obj, dt)
   {
-    local params = obj.getUserData() || {}
-    local isMapObjHovered = obj.isHovered()
+    let params = obj.getUserData() || {}
+    let isMapObjHovered = obj.isHovered()
     if (!("isMapHovered" in params))
       params.isMapHovered <- isMapObjHovered
 
@@ -179,19 +179,19 @@ class ::ww_gui_bhv.worldWarMapControls
     }
     params.isMapHovered = true
 
-    local mousePos = ::get_dagui_mouse_cursor_pos_RC()
+    let mousePos = ::get_dagui_mouse_cursor_pos_RC()
     local hoverChanged = false
 
-    local hoverEnabled = isObjectsHoverEnabled(obj)
+    let hoverEnabled = isObjectsHoverEnabled(obj)
 
     if (hoverEnabled)
     {
       local hoverBattleId = null
-      local hoverBattle = findHoverBattle(mousePos[0], mousePos[1])
+      let hoverBattle = findHoverBattle(mousePos[0], mousePos[1])
       if (hoverBattle)
         hoverBattleId = hoverBattle.id
 
-      local lastSavedBattleName = ::getTblValue("battleName", params)
+      let lastSavedBattleName = ::getTblValue("battleName", params)
       if (hoverBattleId != lastSavedBattleName)
       {
         if (!hoverBattleId)
@@ -202,8 +202,8 @@ class ::ww_gui_bhv.worldWarMapControls
         hoverChanged = true
       }
 
-      local armyName = ::ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
-      local lastSavedArmyName = ::getTblValue("armyName", params)
+      let armyName = ::ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
+      let lastSavedArmyName = ::getTblValue("armyName", params)
       if (armyName != lastSavedArmyName)
       {
         if (!armyName)
@@ -214,8 +214,8 @@ class ::ww_gui_bhv.worldWarMapControls
         hoverChanged = true
       }
 
-      local airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
-      local lastAirfieldIndex = ::getTblValue("airfieldIndex", params)
+      let airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
+      let lastAirfieldIndex = ::getTblValue("airfieldIndex", params)
       if (airfieldIndex != lastAirfieldIndex)
       {
         if (airfieldIndex < 0)
@@ -227,8 +227,8 @@ class ::ww_gui_bhv.worldWarMapControls
       }
     }
 
-    local zoneIndex = ::ww_get_zone_idx(mousePos[0], mousePos[1])
-    local lastZoneIndex = ::getTblValue("zoneIndex", params)
+    let zoneIndex = ::ww_get_zone_idx(mousePos[0], mousePos[1])
+    let lastZoneIndex = ::getTblValue("zoneIndex", params)
     if (zoneIndex != lastZoneIndex)
     {
       if (zoneIndex < 0)
@@ -255,7 +255,7 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function onMapUnhover(obj)
   {
-    local params = {isMapHovered = false}
+    let params = {isMapHovered = false}
     updateHoveredObjects(params)
     sendMapEvent("UpdateCursorByTimer", params)
     obj.setUserData(params)
@@ -264,7 +264,7 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function onMouseWheel(obj, mx, my, is_up, buttons)
   {
-    local curActionMode = actionModesManager.getCurActionMode()
+    let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode?.onMouseWheel != null)
     {
       curActionMode.onMouseWheel(is_up)
@@ -277,25 +277,25 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function checkArmy(obj, mapPos)
   {
-    local armyList = ::ww_find_army_names_in_point(mapPos.x, mapPos.y)
+    let armyList = ::ww_find_army_names_in_point(mapPos.x, mapPos.y)
     if (!armyList.len())
       return false
 
     local lastClickedArmyName = ""
-    local selectedArmies = getSelectedArmiesOnMap(obj)
+    let selectedArmies = getSelectedArmiesOnMap(obj)
     if (selectedArmies.len())
       lastClickedArmyName = selectedArmies.top()
 
-    local armyIdx  = armyList.findindex(@(name) name == lastClickedArmyName) ?? -1
-    local nextArmyIdx = armyIdx + 1
-    local nextArmyName = nextArmyIdx in armyList? armyList[nextArmyIdx] : armyList[0]
+    let armyIdx  = armyList.findindex(@(name) name == lastClickedArmyName) ?? -1
+    let nextArmyIdx = armyIdx + 1
+    let nextArmyName = nextArmyIdx in armyList? armyList[nextArmyIdx] : armyList[0]
 
     return nextArmyName ? selectArmy(obj, nextArmyName) : false
   }
 
   function getSelectedArmiesOnMap(obj)
   {
-    local selectedArmies = ::getTblValue(selectedArmiesID, obj.getUserData(), "")
+    let selectedArmies = ::getTblValue(selectedArmiesID, obj.getUserData(), "")
     return ::split(selectedArmies, ",")
   }
 
@@ -306,14 +306,14 @@ class ::ww_gui_bhv.worldWarMapControls
 
     ::ww_event("SelectLogArmyByName", {name = armyName})
 
-    local selectedArmies = getSelectedArmiesOnMap(obj)
+    let selectedArmies = getSelectedArmiesOnMap(obj)
     if (::isInArray(armyName, selectedArmies))
     {
       sendMapEvent("ArmySelected", { armyName = armyName, armyType = armyType })
       return true
     }
 
-    local addToSelection = (!forceReplace) && ::ww_is_add_selected_army_mode_active()
+    let addToSelection = (!forceReplace) && ::ww_is_add_selected_army_mode_active()
     if (!addToSelection)
     {
       selectedArmies.clear()
@@ -333,16 +333,16 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function setSelectedArmies(obj, selectedArmies)
   {
-    local params = obj.getUserData() || {}
+    let params = obj.getUserData() || {}
     params[selectedArmiesID] <- ::g_string.implode(selectedArmies, ",")
     obj.setUserData(params)
-    local selectedArmiesInfo = []
+    let selectedArmiesInfo = []
     foreach (armyName in selectedArmies)
     {
-      local army = ::g_world_war.getArmyByName(armyName)
+      let army = ::g_world_war.getArmyByName(armyName)
       if (army != null)
       {
-        local info = {name = armyName, hasAccess=army.hasManageAccess()}
+        let info = {name = armyName, hasAccess=army.hasManageAccess()}
         selectedArmiesInfo.append(info)
       }
     }
@@ -379,7 +379,7 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function checkAirfield(obj, mapPos)
   {
-    local airfieldIndex = ::ww_find_airfield_by_coordinates(mapPos.x, mapPos.y)
+    let airfieldIndex = ::ww_find_airfield_by_coordinates(mapPos.x, mapPos.y)
     if (airfieldIndex < 0)
       return false
 
@@ -388,7 +388,7 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function checkBattle(obj, screenPos)
   {
-    local battle = findHoverBattle(screenPos.x, screenPos.y)
+    let battle = findHoverBattle(screenPos.x, screenPos.y)
     if (!battle)
       return false
 
@@ -400,7 +400,7 @@ class ::ww_gui_bhv.worldWarMapControls
 
   function checkRearZone(obj, mapPos)
   {
-    local zoneName = ::ww_get_zone_name(::ww_get_zone_idx(mapPos.x, mapPos.y))
+    let zoneName = ::ww_get_zone_name(::ww_get_zone_idx(mapPos.x, mapPos.y))
     foreach (side in ::g_world_war.getCommonSidesOrder())
       if (::isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side)))
       {
@@ -462,24 +462,24 @@ class ::ww_gui_bhv.worldWarMapControls
     if (!::ww_get_battles_names().len())
       return false
 
-    local mapPos = ::ww_convert_map_to_world_position(screenPosX, screenPosY)
-    local battleIconRadSquare = getBattleIconRadius() * getBattleIconRadius()
-    local filterFunc = (@(mapPos, battleIconRadSquare) function(battle) {
-      local diff = battle.pos - mapPos
+    let mapPos = ::ww_convert_map_to_world_position(screenPosX, screenPosY)
+    let battleIconRadSquare = getBattleIconRadius() * getBattleIconRadius()
+    let filterFunc = (@(mapPos, battleIconRadSquare) function(battle) {
+      let diff = battle.pos - mapPos
       return diff.lengthSq() <= battleIconRadSquare && !battle.isFinished()
     })(mapPos, battleIconRadSquare)
-    local battles = ::g_world_war.getBattles(filterFunc)
-    local haveAnyBattles = battles.len() > 0
+    let battles = ::g_world_war.getBattles(filterFunc)
+    let haveAnyBattles = battles.len() > 0
 
     if (!haveAnyBattles)
       return false
 
-    local sortFunc = (@(mapPos) function(battle1, battle2) {
-      local diff1 = battle1.pos - mapPos
-      local diff2 = battle2.pos - mapPos
+    let sortFunc = (@(mapPos) function(battle1, battle2) {
+      let diff1 = battle1.pos - mapPos
+      let diff2 = battle2.pos - mapPos
 
-      local l1 = diff1.lengthSq()
-      local l2 = diff2.lengthSq()
+      let l1 = diff1.lengthSq()
+      let l2 = diff2.lengthSq()
 
       if (l1 != l2)
         return l1 > l2 ? 1 : -1

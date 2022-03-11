@@ -28,7 +28,7 @@ modIcon{
     css-hier-invalidate:t="yes"
     _iconBulletName:t='<<iconBulletName>>'
     <<#bulletImg>>
-    include "gui/weaponry/bullets"
+    include "%gui/weaponry/bullets"
     <</bulletImg>>
   }
   warningIcon {

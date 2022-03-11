@@ -1,12 +1,12 @@
-local fontsState = require("reactiveGui/style/fontsState.nut")
-local colors = require("reactiveGui/style/colors.nut")
-local {toIntegerSafe} = require("std/string.nut")
+let fontsState = require("reactiveGui/style/fontsState.nut")
+let colors = require("reactiveGui/style/colors.nut")
+let {toIntegerSafe} = require("std/string.nut")
 
-local blockInterval = ::fpx(6)
-local headerMargin = 2*blockInterval
-local borderWidth = ::dp(1)
+let blockInterval = ::fpx(6)
+let headerMargin = 2*blockInterval
+let borderWidth = ::dp(1)
 
-local defStyle = {
+let defStyle = {
   defTextColor = colors.menu.commonTextColor
   ulSpacing = ::fpx(15)
   ulGap = blockInterval
@@ -27,9 +27,9 @@ local defStyle = {
   padding = blockInterval
 }
 
-local noTextFormatFunc = @(object, style=defStyle) object
+let noTextFormatFunc = @(object, style=defStyle) object
 
-local function textArea(params, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function textArea(params, formatTextFunc=noTextFormatFunc, style=defStyle){
   return {
     rendObj = ROBJ_TEXTAREA
     text = params?.v
@@ -40,13 +40,13 @@ local function textArea(params, formatTextFunc=noTextFormatFunc, style=defStyle)
   }.__update(params)
 }
 
-local function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
+let function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
   if (data?.url==null)
     return textArea(data, fmtFunc, style)
-  local stateFlags = Watched(0)
-  local onClick = @() ::cross_call.openUrl(data.url)
+  let stateFlags = Watched(0)
+  let onClick = @() ::cross_call.openUrl(data.url)
   return function() {
-    local color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
+    let color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
     return {
       rendObj = ROBJ_DTEXT
       text = data?.v ?? data.url
@@ -63,7 +63,7 @@ local function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
   }
 }
 
-local function mkUlElement(bullet){
+let function mkUlElement(bullet){
   return function (elem, formatTextFunc=noTextFormatFunc, style=defStyle) {
     local res = formatTextFunc(elem)
     if (res==null)
@@ -77,7 +77,7 @@ local function mkUlElement(bullet){
     }
   }
 }
-local function mkList(elemFunc){
+let function mkList(elemFunc){
   return function(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
     return obj.__merge({
       flow = FLOW_VERTICAL
@@ -86,7 +86,7 @@ local function mkList(elemFunc){
     })
   }
 }
-local function horizontal(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function horizontal(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_HORIZONTAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -94,7 +94,7 @@ local function horizontal(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   })
 }
 
-local function accent(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function accent(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_HORIZONTAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -104,7 +104,7 @@ local function accent(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   })
 }
 
-local function vertical(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function vertical(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_VERTICAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -112,19 +112,19 @@ local function vertical(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   })
 }
 
-local hangingIndent = calc_comp_size(defStyle.ulNoBullet)[0]
+let hangingIndent = calc_comp_size(defStyle.ulNoBullet)[0]
 
-local bullets = mkList(mkUlElement(defStyle.ulBullet))
-local indent = mkList(mkUlElement(defStyle.ulNoBullet))
-local separatorCmp = {rendObj = ROBJ_FRAME borderWidth = [0,0,borderWidth, 0] size = [flex(),blockInterval], opacity=0.2, margin=[blockInterval, blockInterval, ::fpx(20), 0]}
+let bullets = mkList(mkUlElement(defStyle.ulBullet))
+let indent = mkList(mkUlElement(defStyle.ulNoBullet))
+let separatorCmp = {rendObj = ROBJ_FRAME borderWidth = [0,0,borderWidth, 0] size = [flex(),blockInterval], opacity=0.2, margin=[blockInterval, blockInterval, ::fpx(20), 0]}
 
-local function textParsed(params, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function textParsed(params, formatTextFunc=noTextFormatFunc, style=defStyle){
   if (params?.v == "----")
     return separatorCmp
   return textArea(params, formatTextFunc, style)
 }
 
-local function column(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function column(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return {
     flow = FLOW_VERTICAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -132,9 +132,9 @@ local function column(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   }
 }
 
-local getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx+1], 100, false)
+let getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx+1], 100, false)
 
-local function columns(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
+let function columns(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   local preset = obj?.preset ?? "single"
   preset = preset.split("_")
   local cols = obj.v.filter(@(v) v?.t=="column")
@@ -153,10 +153,10 @@ local function columns(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   }
 }
 
-local function video(obj, formatTextFunc, style=defStyle) {
-  local stateFlags = Watched(0)
-  local width = ::fpx(obj?.imageWidth ?? 300)
-  local height = ::fpx(obj?.imageHeight ?? 80)
+let function video(obj, formatTextFunc, style=defStyle) {
+  let stateFlags = Watched(0)
+  let width = ::fpx(obj?.imageWidth ?? 300)
+  let height = ::fpx(obj?.imageHeight ?? 80)
   return @() {
     borderColor = stateFlags.value & S_HOVER ? style.urlHoverColor : Color(25,25,25)
     borderWidth = ::fpx(1)
@@ -186,7 +186,7 @@ local function video(obj, formatTextFunc, style=defStyle) {
   }.__update(obj)
 }
 
-local function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
+let function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
   return {
     rendObj = ROBJ_IMAGE
     image=::Picture(obj.v)
@@ -205,7 +205,7 @@ local function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
   }.__update(obj)
 }
 
-local formatters = {
+let formatters = {
   defStyle//for modification, fixme, make instances
   def=textArea
   string=@(string, fmtFunc, style=defStyle) textParsed({v=string}, fmtFunc, style),

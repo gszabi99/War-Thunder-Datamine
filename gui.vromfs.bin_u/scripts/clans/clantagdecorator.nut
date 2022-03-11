@@ -3,7 +3,7 @@
 
   function getDecorators(args)
   {
-    local decoratorsList = []
+    let decoratorsList = []
 
     if ("clanType" in args)
       decoratorsList.extend(getDecoratorsForClanType(args.clanType))
@@ -17,8 +17,8 @@
 
   function getDecoratorsForClanType(clanType)
   {
-    local blk = ::get_warpoints_blk()
-    local block = blk?[::clan_get_decorators_block_name(clanType.code)]
+    let blk = ::get_warpoints_blk()
+    let block = blk?[::clan_get_decorators_block_name(clanType.code)]
 
     return getDecoratorsInternal(block)
   }
@@ -27,14 +27,14 @@
   function getDecoratorsForClanDuelRewards(rewardsList)
   {
     local blk = ::get_warpoints_blk()
-    local result = []
+    let result = []
 
     if (!blk?.regaliaTagDecorators)
       return result
 
     blk = blk.regaliaTagDecorators
 
-    local decoratorLists = []
+    let decoratorLists = []
     foreach (reward in rewardsList)
       decoratorLists.append(getDecoratorsInternal(blk?[reward], true))
     decoratorLists.sort(@(a, b) b.len() <=> a.len())
@@ -59,7 +59,7 @@
    */
   function getDecoratorsInternal(decoratorsBlk, free = false)
   {
-    local decorators = []
+    let decorators = []
 
     if (decoratorsBlk != null)
       foreach (decoratorString in decoratorsBlk % "decor")
@@ -79,7 +79,7 @@
 
   constructor(decoratorString, freeChange)
   {
-    local halfLength = (0.5 * decoratorString.len()).tointeger()
+    let halfLength = (0.5 * decoratorString.len()).tointeger()
     id = decoratorString
     start = decoratorString.slice(0, halfLength)
     end = decoratorString.slice(halfLength)

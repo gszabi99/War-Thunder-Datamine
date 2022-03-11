@@ -1,4 +1,4 @@
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
 //-------------------------------------------------------

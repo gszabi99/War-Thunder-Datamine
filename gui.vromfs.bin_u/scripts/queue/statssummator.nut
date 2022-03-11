@@ -26,14 +26,14 @@
 
   function sumArrays(q1, q2)
   {
-    local res = []
+    let res = []
     for(local i = 0; i < (::max(q1.len(), q2.len())); i++)
     {
-      local val1 = q1.len() >= i ? q1[i] : null
-      local val2 = q2.len() >= i ? q2[i] : null
+      let val1 = q1.len() >= i ? q1[i] : null
+      let val2 = q2.len() >= i ? q2[i] : null
       local _sum = null
-      local isStructs = ::isInArray(typeof val1, structTypes) || ::isInArray(typeof val2, structTypes)
-      local summable = !isStructs && (::isInArray(typeof val1, summableTypes) || ::isInArray(typeof val2, summableTypes))
+      let isStructs = ::isInArray(typeof val1, structTypes) || ::isInArray(typeof val2, structTypes)
+      let summable = !isStructs && (::isInArray(typeof val1, summableTypes) || ::isInArray(typeof val2, summableTypes))
 
       if (isStructs)
         _sum = sum(val1 ? val1 : null, val2 ? val2 : null)
@@ -54,7 +54,7 @@
 
   function sumTables(q1, q2)
   {
-    local res = {}
+    let res = {}
     foreach(key, val in q1)
     {
       if (::isInArray(typeof val, structTypes))

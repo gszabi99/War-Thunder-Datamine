@@ -1,3 +1,3 @@
-local params = ::Watched(null)
+let params = ::Watched(null)
 
 return params

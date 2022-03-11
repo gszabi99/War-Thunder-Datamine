@@ -1,4 +1,4 @@
-local statsd = require("statsd")
+let statsd = require("statsd")
 
 ::MissionStats <- {
   [PERSISTENT_DATA_PARAMS] = ["sendDelaySec", "_spawnTime"]

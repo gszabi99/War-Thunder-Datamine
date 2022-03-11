@@ -1,17 +1,18 @@
-local { ActiveProtectionSystemModulesCount, activeProtectionSystemModules } = require("tankState.nut")
-local colors = require("reactiveGui/style/colors.nut")
-local { PI, cos, sin } = require("std/math.nut")
+let { ActiveProtectionSystemModulesCount, activeProtectionSystemModules } = require("tankState.nut")
+let colors = require("reactiveGui/style/colors.nut")
+let { PI, cos, sin } = require("std/math.nut")
 
-local greenColor = Color(10, 202, 10, 250)
+let greenColor = Color(10, 202, 10, 250)
 
-local function createModule(module) {
-  local { horAnglesX, horAnglesY, shotCountRemain, timeToReady } = module
+let function createModule(module) {
+  let { horAnglesX, horAnglesY, shotCountRemain, timeToReady } = module
   return function() {
-    local color = shotCountRemain.value == 0 ? colors.hud.damageModule.alert
+    let color = shotCountRemain.value == 0 ? colors.hud.damageModule.alert
       : timeToReady.value > 0 ? colors.menu.commonTextColor
       : greenColor
-    local angelOffset = horAnglesY.value < 0 && horAnglesX.value > 0 ? 90 : -90
-    local angel = (horAnglesX.value + angelOffset + (horAnglesY.value - horAnglesX.value)*0.5) * PI / 180.0
+    let denormDiff = (horAnglesY.value - horAnglesX.value - 180.0) % 360.0 + 180.0
+    let sectorSize = denormDiff < 0.0 ? 360.0 + denormDiff : denormDiff
+    let angel = (horAnglesX.value - 90.0 + sectorSize * 0.5) * PI / 180.0
     return {
       rendObj = ROBJ_VECTOR_CANVAS
       watch = [horAnglesX, horAnglesX, shotCountRemain]
@@ -36,7 +37,7 @@ local function createModule(module) {
   }
 }
 
-local activeProtection = @() {
+let activeProtection = @() {
   size = [pw(110), ph(110)]
   watch = [ActiveProtectionSystemModulesCount]
   children = ActiveProtectionSystemModulesCount.value == 0 ? null

@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local compassState = {
+let compassState = {
   HasCompass = Watched(true)
   CompassValue = Watched(0)
 }

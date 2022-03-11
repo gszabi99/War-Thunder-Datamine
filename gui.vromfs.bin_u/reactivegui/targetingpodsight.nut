@@ -1,17 +1,17 @@
-local { bw } = require("style/screenState.nut")
-local { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("airHudElems.nut")
-local { TargetPodMask, EmptyMask, TargetPodHudColor  } = require("airState.nut")
+let { bw } = require("style/screenState.nut")
+let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("airHudElems.nut")
+let { TargetPodMask, EmptyMask, TargetPodHudColor  } = require("airState.nut")
 
-local paramsTableWidthAircraft = hdpx(330)
-local paramsTableHeightAircraft = hdpx(22)
-local aircraftParamsTablePos = Computed(@() [max(bw.value, sw(50) - hdpx(500)), sh(50) - hdpx(100)])
+let paramsTableWidthAircraft = hdpx(330)
+let paramsTableHeightAircraft = hdpx(22)
+let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(50) - hdpx(500)), sh(50) - hdpx(100)])
 
-local aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask,
+let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftParamsTablePos,
         hdpx(1), true, false, true)
 
-local function Root(width, height) {
+let function Root(width, height) {
   return {
     size = [width, height]
     children = [

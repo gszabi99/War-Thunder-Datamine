@@ -3,10 +3,10 @@
   ::handlersManager.loadHandler(::gui_handlers.ShowImage, { showObj = obj })
 }
 
-class ::gui_handlers.ShowImage extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ShowImage <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/showImage.blk"
+  sceneBlkName = "%gui/showImage.blk"
 
   showObj = null
   baseSize = null
@@ -26,7 +26,7 @@ class ::gui_handlers.ShowImage extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(showObj))
       return goBack()
 
-    local image = showObj?["background-image"]
+    let image = showObj?["background-image"]
     maxSize = [
       ::g_dagui_utils.toPixels(guiScene, showObj?["max-width"]  ?? "@rw", showObj),
       ::g_dagui_utils.toPixels(guiScene, showObj?["max-height"] ?? "@rh", showObj)
@@ -39,7 +39,7 @@ class ::gui_handlers.ShowImage extends ::gui_handlers.BaseGuiHandlerWT
 
     baseSize = showObj.getSize()
     basePos = showObj.getPosRC()
-    local rootSize = guiScene.getRoot().getSize()
+    let rootSize = guiScene.getRoot().getSize()
     basePos = [basePos[0] + baseSize[0]/2, basePos[1] + baseSize[1]/2]
     lastPos = [rootSize[0]/2, rootSize[1]/2]
 
@@ -48,7 +48,7 @@ class ::gui_handlers.ShowImage extends ::gui_handlers.BaseGuiHandlerWT
       sizeKoef = 0.9*rootSize[0] / maxSize[0]
     if (maxSize[1] > 0.9*rootSize[1])
     {
-      local koef2 = 0.9*rootSize[1] / maxSize[1]
+      let koef2 = 0.9*rootSize[1] / maxSize[1]
       if (koef2 < sizeKoef)
         sizeKoef = koef2
     }
@@ -128,10 +128,10 @@ class ::gui_handlers.ShowImage extends ::gui_handlers.BaseGuiHandlerWT
   ::handlersManager.loadHandler(::gui_handlers.ShowImageSimple, { image = image, ratio = ratio, maxSize = maxSize })
 }
 
-class ::gui_handlers.ShowImageSimple extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ShowImageSimple <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/showImage.blk"
+  sceneBlkName = "%gui/showImage.blk"
 
   image = null
   ratio = 1
@@ -139,16 +139,16 @@ class ::gui_handlers.ShowImageSimple extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local rootObj = scene.findObject("root-box")
+    let rootObj = scene.findObject("root-box")
     if (!::checkObj(rootObj))
       return goBack()
 
     rootObj["transparent"] = "100"
 
-    local frameObj = rootObj.findObject("imgFrame")
+    let frameObj = rootObj.findObject("imgFrame")
     frameObj.pos = "50%pw-50%w, 45%ph-50%h"
 
-    local imgObj = frameObj.findObject("image")
+    let imgObj = frameObj.findObject("image")
     if (!::checkObj(imgObj))
       return goBack()
 
@@ -157,12 +157,12 @@ class ::gui_handlers.ShowImageSimple extends ::gui_handlers.BaseGuiHandlerWT
     else if (::u.isInteger(maxSize))
       maxSize = [ maxSize, maxSize ]
 
-    local height = ::screen_height() / 1.5
+    let height = ::screen_height() / 1.5
     local size = [ ratio * height, height ]
 
     if (size[0] > maxSize[0] || size[1] > maxSize[1])
     {
-      local maxSizeRatio = maxSize[0] * 1.0 / maxSize[1]
+      let maxSizeRatio = maxSize[0] * 1.0 / maxSize[1]
       if (maxSizeRatio > ratio)
         size = [ ratio * maxSize[1], maxSize[1] ]
       else

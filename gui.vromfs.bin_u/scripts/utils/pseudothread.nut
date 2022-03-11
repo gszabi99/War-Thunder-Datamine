@@ -1,13 +1,13 @@
 //!!FIX ME: replace by real threads after fix crash of datablock in sq thread
-local PT_STEP_STATUS = {
+let PT_STEP_STATUS = {
   NEXT_STEP = 0  //default status
   SKIP_DELAY = 1 //for steps which do nothing no need to delay
   SUSPEND = 2
 }
 
-local function startPseudoThread(actionsList, onCrash = null, step = 0)
+let function startPseudoThread(actionsList, onCrash = null, step = 0)
 {
-  local self = callee()
+  let self = callee()
   ::handlersManager.doDelayed(function() {
     local curStep = step
     while(curStep in actionsList)

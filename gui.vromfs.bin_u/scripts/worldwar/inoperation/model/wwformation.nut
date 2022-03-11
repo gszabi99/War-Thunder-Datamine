@@ -1,4 +1,4 @@
-class ::WwFormation
+::WwFormation <- class
 {
   name = ""
   owner = null
@@ -66,19 +66,19 @@ class ::WwFormation
 
   function getClanId()
   {
-    local group = getArmyGroup()
+    let group = getArmyGroup()
     return group ? group.getClanId() : ""
   }
 
   function getClanTag()
   {
-    local group = getArmyGroup()
+    let group = getArmyGroup()
     return group ? group.getClanTag() : ""
   }
 
   function isBelongsToMyClan()
   {
-    local group = getArmyGroup()
+    let group = getArmyGroup()
     return group ? group.isBelongsToMyClan() : false
   }
 
@@ -104,7 +104,7 @@ class ::WwFormation
 
   function getUnitsNameArray()
   {
-    local res = []
+    let res = []
     foreach (unit in units)
       res.append(unit.getFullName())
 
@@ -113,13 +113,13 @@ class ::WwFormation
 
   function hasManageAccess()
   {
-    local group = getArmyGroup()
+    let group = getArmyGroup()
     return group ? group.hasManageAccess() : false
   }
 
   function hasObserverAccess()
   {
-    local group = getArmyGroup()
+    let group = getArmyGroup()
     return group ? group.hasObserverAccess() : false
   }
 

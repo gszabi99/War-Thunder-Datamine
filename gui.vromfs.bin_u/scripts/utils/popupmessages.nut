@@ -1,7 +1,7 @@
-local time = require("scripts/time.nut")
-local platformModule = require("scripts/clientState/platform.nut")
-local promoConditions = require("scripts/promo/promoConditions.nut")
-local { isPollVoted } = require("scripts/web/webpoll.nut")
+let time = require("scripts/time.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let promoConditions = require("scripts/promo/promoConditions.nut")
+let { isPollVoted } = require("scripts/web/webpoll.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -19,7 +19,7 @@ enum POPUP_VIEW_TYPES {
 
 ::getTimeIntByString <- function getTimeIntByString(stringDate, defaultValue = 0)
 {
-  local t = stringDate ? time.getTimestampFromStringUtc(stringDate) : -1
+  let t = stringDate ? time.getTimestampFromStringUtc(stringDate) : -1
   return t >= 0 ? t : defaultValue
 }
 
@@ -29,8 +29,8 @@ g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk)
   if (blk?.ps4ActivityFeedType != "update")
     return null
 
-  local ver = split(::get_game_version_str(), ".")
-  local feed = {
+  let ver = split(::get_game_version_str(), ".")
+  let feed = {
     config = {
       locId = "major_update"
       subType = ps4_activity_feed.MAJOR_UPDATE
@@ -48,7 +48,7 @@ g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk)
   {
     if (::g_string.startsWith(name, "name_"))
     {
-      local lang = name.slice(5)
+      let lang = name.slice(5)
       feed.params.captions[lang] <- val
       feed.params.condensedCaptions[lang] <- val
     }
@@ -59,7 +59,7 @@ g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk)
 
 g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needDisplayCheck = true)
 {
-  local popupId = blk.getBlockName()
+  let popupId = blk.getBlockName()
 
   if (needDisplayCheck)
   {
@@ -90,9 +90,9 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     if (!::g_promo.isVisibleByAction(blk))
       return null
 
-    local viewType = blk?.viewType ?? POPUP_VIEW_TYPES.NEVER
-    local viewDay = ::loadLocalByAccount("popup/" + (blk?.saveId ?? popupId), 0)
-    local canShow = (viewType == POPUP_VIEW_TYPES.EVERY_SESSION)
+    let viewType = blk?.viewType ?? POPUP_VIEW_TYPES.NEVER
+    let viewDay = ::loadLocalByAccount("popup/" + (blk?.saveId ?? popupId), 0)
+    let canShow = (viewType == POPUP_VIEW_TYPES.EVERY_SESSION)
                     || (viewType == POPUP_VIEW_TYPES.ONCE && !viewDay)
                     || (viewType == POPUP_VIEW_TYPES.EVERY_DAY && viewDay < days)
     if (!canShow || !promoConditions.isVisibleByConditions(blk))
@@ -101,7 +101,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
       return null
     }
 
-    local secs = ::get_charserver_time_sec()
+    let secs = ::get_charserver_time_sec()
     if (getTimeIntByString(blk?.startTime, 0) > secs)
       return null
 
@@ -112,8 +112,8 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     }
   }
 
-  local localizedTbl = {name = platformModule.getPlayerName(::my_user_name), uid = ::my_user_id_str}
-  local popupTable = {
+  let localizedTbl = {name = platformModule.getPlayerName(::my_user_name), uid = ::my_user_id_str}
+  let popupTable = {
     name = ""
     popupImage = ""
     ratioHeight = null
@@ -123,7 +123,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
 
   foreach (key in ["name", "desc", "link", "linkText", "actionText"])
   {
-    local text = ::g_language.getLocTextFromConfig(blk, key, "")
+    let text = ::g_language.getLocTextFromConfig(blk, key, "")
     if (text != "")
       popupTable[key] <- text.subst(localizedTbl)
   }
@@ -135,7 +135,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
   if (blk?.pollId != null)
     popupTable.pollId <- blk.pollId
 
-  local ps4ActivityFeedData = ps4ActivityFeedFromPopup(blk)
+  let ps4ActivityFeedData = ps4ActivityFeedFromPopup(blk)
   if (ps4ActivityFeedData)
     popupTable.ps4ActivityFeedData <- ps4ActivityFeedData
 
@@ -148,16 +148,16 @@ g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject)
   if (!::get_gui_regional_blk())
     return false
 
-  local popupsBlk = ::get_gui_regional_blk()?.popupItems
+  let popupsBlk = ::get_gui_regional_blk()?.popupItems
   if (!::u.isDataBlock(popupsBlk))
     return false
 
   local result = false
   for(local i = 0; i < popupsBlk.blockCount(); i++)
   {
-    local popupBlk = popupsBlk.getBlock(i)
-    local popupId = popupBlk.getBlockName()
-    local popupConfig = verifyPopupBlk(popupBlk, hasModalObject)
+    let popupBlk = popupsBlk.getBlock(i)
+    let popupId = popupBlk.getBlockName()
+    let popupConfig = verifyPopupBlk(popupBlk, hasModalObject)
     if (popupConfig)
     {
       passedPopups[popupId] <- true
@@ -172,8 +172,8 @@ g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject)
 
 g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId)
 {
-  local debugLog = ::dlog // warning disable: -forbidden-function
-  local popupsBlk = ::get_gui_regional_blk()?.popupItems
+  let debugLog = ::dlog // warning disable: -forbidden-function
+  let popupsBlk = ::get_gui_regional_blk()?.popupItems
   if (!::u.isDataBlock(popupsBlk))
   {
     debugLog("POPUP ERROR: No popupItems in gui_regional.blk")
@@ -182,12 +182,12 @@ g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId)
 
   for (local i = 0; i < popupsBlk.blockCount(); i++)
   {
-    local popupBlk = popupsBlk.getBlock(i)
-    local popupId = popupBlk.getBlockName()
+    let popupBlk = popupsBlk.getBlock(i)
+    let popupId = popupBlk.getBlockName()
     if (popupId != dbgId)
       continue
 
-    local popupConfig = verifyPopupBlk(popupBlk, false, false)
+    let popupConfig = verifyPopupBlk(popupBlk, false, false)
     ::showUnlockWnd(popupConfig)
     return true
   }

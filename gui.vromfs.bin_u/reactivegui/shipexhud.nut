@@ -1,21 +1,21 @@
-local {floor} = require("math")
-local activeOrder = require("activeOrder.nut")
-local shipStateModule = require("shipStateModule.nut")
-local hudLogs = require("hudLogs.nut")
-local {depthLevel, waterDist, wishDist, buoyancyEx} = require("shipState.nut")
-local {isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
+let {floor} = require("math")
+let activeOrder = require("activeOrder.nut")
+let shipStateModule = require("shipStateModule.nut")
+let hudLogs = require("hudLogs.nut")
+let {depthLevel, waterDist, wishDist, buoyancyEx} = require("shipState.nut")
+let {isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
   IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible} = require("shellState.nut")
-local voiceChat = require("chat/voiceChat.nut")
-local {safeAreaSizeHud} = require("style/screenState.nut")
+let voiceChat = require("chat/voiceChat.nut")
+let {safeAreaSizeHud} = require("style/screenState.nut")
 
-local styleLine = {
+let styleLine = {
   color = Color(255, 255, 255, 255)
   fillColor = Color(0, 0, 0, 0)
   opacity = 0.5
   lineWidth = hdpx(LINE_WIDTH)
 }
-local styleShipHudText = {
+let styleShipHudText = {
   rendObj = ROBJ_DTEXT
   color = Color(255, 255, 255, 255)
   font = Fonts.medium_text_hud
@@ -24,17 +24,17 @@ local styleShipHudText = {
   fontFx = FFT_GLOW
 }
 
-local function getDepthColor(depth){
-  local green = depth < 2 ? 255 : 0
-  local blue =  depth < 1 ? 255 : 0
+let function getDepthColor(depth){
+  let green = depth < 2 ? 255 : 0
+  let blue =  depth < 1 ? 255 : 0
   return Color(255, green, blue, 255)
 }
 
 
-local shVertSpeedScaleWidth = sh(1)
-local shVertSpeedHeight = sh(20)
+let shVertSpeedScaleWidth = sh(1)
+let shVertSpeedHeight = sh(20)
 
-local function depthLevelCmp(){
+let function depthLevelCmp(){
   return styleShipHudText.__merge({
     color = getDepthColor(depthLevel.value)
     watch = [depthLevel, waterDist]
@@ -42,7 +42,7 @@ local function depthLevelCmp(){
     text = floor(waterDist.value).tostring()
   })
 }
-local function wishDistCmp(){
+let function wishDistCmp(){
   return styleShipHudText.__merge({
     watch = [depthLevel, wishDist]
     color = getDepthColor(depthLevel.value)
@@ -51,8 +51,8 @@ local function wishDistCmp(){
   })
 }
 
-local function buoyancyExCmp(){
-  local height = sh(1.)
+let function buoyancyExCmp(){
+  let height = sh(1.)
   return styleLine.__merge({
     pos = [-shVertSpeedScaleWidth, -height*0.5]
     transform = {
@@ -67,7 +67,7 @@ local function buoyancyExCmp(){
     ]
   })
 }
-local function depthLevelLineCmp(){
+let function depthLevelLineCmp(){
   return styleLine.__merge({
     watch = depthLevel
     size = [shVertSpeedScaleWidth, shVertSpeedHeight]
@@ -87,14 +87,14 @@ local function depthLevelLineCmp(){
     ]
   })
 }
-local childrenShVerSpeed = [
+let childrenShVerSpeed = [
   depthLevelCmp
   { size = [shVertSpeedScaleWidth*3, shVertSpeedScaleWidth] }
   { children = [depthLevelLineCmp, buoyancyExCmp] }
   wishDistCmp
 ]
 
-local function ShipVertSpeed() {
+let function ShipVertSpeed() {
   return {
     watch = isAimCamera
     valign = ALIGN_CENTER
@@ -104,8 +104,8 @@ local function ShipVertSpeed() {
   }
 }
 
-local shellAimGimbal = function(line_style, color_func) {
-  local circle = @() line_style.__merge({
+let shellAimGimbal = function(line_style, color_func) {
+  let circle = @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(14.0), sh(14.0)]
     color = color_func()
@@ -127,8 +127,8 @@ local shellAimGimbal = function(line_style, color_func) {
   }
 }
 
-local shellAimTracker = function(line_style, color_func) {
-  local circle = @() line_style.__merge({
+let shellAimTracker = function(line_style, color_func) {
+  let circle = @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(14.0), sh(14.0)]
     color = color_func()
@@ -149,14 +149,14 @@ local shellAimTracker = function(line_style, color_func) {
     children = IsTrackerVisible.value ? [circle] : null
   }
 }
-local function mkShellComp(watches, textCtor){
+let function mkShellComp(watches, textCtor){
   return @() styleShipHudText.__merge({
     watch = watches
     text = textCtor()
   })
 }
 
-local shellAltitude = {
+let shellAltitude = {
   flow = FLOW_HORIZONTAL
   children = [
     styleShipHudText.__merge({text = $"{::loc("hud/depth")} "})
@@ -165,7 +165,7 @@ local shellAltitude = {
   ]
 }
 
-local shellChildren = [
+let shellChildren = [
   shellAltitude
   mkShellComp(remainingDist, @() remainingDist.value <= 0.0 ? "" :
           ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.value))
@@ -180,7 +180,7 @@ local shellChildren = [
               ::loc("hud/wireIsLost"))
 ]
 
-local function ShipShellState() {
+let function ShipShellState() {
   return {
     watch = isAimCamera
     flow = FLOW_VERTICAL
@@ -188,28 +188,28 @@ local function ShipShellState() {
   }
 }
 
-local shellAimColor = Color(255, 255, 255, 250)
-local getColor = @() shellAimColor
+let shellAimColor = Color(255, 255, 255, 250)
+let getColor = @() shellAimColor
 
-local styleShellAim = {
+let styleShellAim = {
   color = shellAimColor
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(1) * 2.0
 }
 
-local shellAimChildren = [
+let shellAimChildren = [
   shellAimGimbal(styleShellAim, getColor)
   shellAimTracker(styleShellAim, getColor)
 ]
 
-local function ShipShellAimState() {
+let function ShipShellAimState() {
   return {
     watch = isAimCamera
     children = isAimCamera.value ? shellAimChildren : null
   }
 }
 
-local shipHud = @(){
+let shipHud = @(){
   watch = safeAreaSizeHud
   size = [SIZE_TO_CONTENT, flex()]
   margin = safeAreaSizeHud.value.borders
@@ -226,7 +226,7 @@ local shipHud = @(){
   ]
 }
 
-local sensorsHud = {
+let sensorsHud = {
   pos = [sw(60), 0]
   size = flex()
   valign = ALIGN_CENTER
@@ -236,7 +236,7 @@ local sensorsHud = {
   ]
 }
 
-local aimHud = {
+let aimHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]

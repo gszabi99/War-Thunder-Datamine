@@ -1,13 +1,13 @@
-local updateExternalIDsTable = function(request)
+let updateExternalIDsTable = function(request)
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::get_player_external_ids(blk)
 
-  local eIDtable = blk?.externalIds
+  let eIDtable = blk?.externalIds
   if (!eIDtable)
     return
 
-  local table = {}
+  let table = {}
 //STEAM
   if (eIDtable?[::EPL_STEAM]?.id && ::steam_is_running())
     table.steamName <- ::steam_get_name_by_id(blk.externalIds[::EPL_STEAM].id)
@@ -15,7 +15,7 @@ local updateExternalIDsTable = function(request)
 //FACEBOOK
   if (eIDtable?[::EPL_FACEBOOK]?.id && ::facebook_is_logged_in() && ::no_dump_facebook_friends)
   {
-    local fId = eIDtable[::EPL_FACEBOOK].id
+    let fId = eIDtable[::EPL_FACEBOOK].id
     if (fId in ::no_dump_facebook_friends)
       table.facebookName <- ::no_dump_facebook_friends[fId]
   }
@@ -31,47 +31,47 @@ local updateExternalIDsTable = function(request)
   ::broadcastEvent("UpdateExternalsIDs", {externalIds = table, request = request})
 }
 
-local requestExternalIDsFromServer = function(taskId, request, taskOptions)
+let requestExternalIDsFromServer = function(taskId, request, taskOptions)
 {
   ::g_tasker.addTask(taskId, taskOptions, @() updateExternalIDsTable(request))
 }
 
-local function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null)
+let function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null)
 {
-  local taskId = ::req_player_external_ids_by_player_id(playerId)
+  let taskId = ::req_player_external_ids_by_player_id(playerId)
   requestExternalIDsFromServer(taskId, {playerId = playerId, afterSuccessUpdateFunc = afterSuccessUpdateFunc}, taskOptions)
 }
 
-local function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null)
+let function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null)
 {
-  local taskId = ::req_player_external_ids(uid)
+  let taskId = ::req_player_external_ids(uid)
   requestExternalIDsFromServer(taskId, {uid = uid, afterSuccessUpdateFunc = afterSuccessUpdateFunc}, taskOptions)
 }
 
-local function getSelfExternalIds()
+let function getSelfExternalIds()
 {
-  local table = {}
+  let table = {}
 
 //STEAM
-  local steamId = ::get_my_external_id(::EPL_STEAM)
+  let steamId = ::get_my_external_id(::EPL_STEAM)
   if (steamId != null)
     table.steamName <- ::steam_get_name_by_id(steamId)
 
 //FACEBOOK
   if (::facebook_is_logged_in() && ::no_dump_facebook_friends)
   {
-    local fId = ::get_my_external_id(::EPL_FACEBOOK)
+    let fId = ::get_my_external_id(::EPL_FACEBOOK)
     if (fId in ::no_dump_facebook_friends)
       table.facebookName <- ::no_dump_facebook_friends[fId]
   }
 
 //PLAYSTATION NETWORK
-  local psnId = ::get_my_external_id(::EPL_PSN)
+  let psnId = ::get_my_external_id(::EPL_PSN)
   if (psnId != null)
     table.psnId <- psnId
 
 //XBOX ONE
-  local xboxId = ::get_my_external_id(::EPL_XBOXONE)
+  let xboxId = ::get_my_external_id(::EPL_XBOXONE)
   if (xboxId != null)
     table.xboxId <- xboxId
 

@@ -1,18 +1,19 @@
-local sheets = require("scripts/items/itemsShopSheets.nut")
-local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local seenList = require("scripts/seen/seenList.nut")
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
-local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
-local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
-local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
-local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { fillDescTextAboutDiv, updateExpireAlarmIcon } = require("scripts/items/itemVisual.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let sheets = require("scripts/items/itemsShopSheets.nut")
+let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+let workshop = require("scripts/items/workshop/workshop.nut")
+let seenList = require("scripts/seen/seenList.nut")
+let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+let workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
+let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
+let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
+let { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+let { addPromoAction } = require("scripts/promo/promoActions.nut")
+let { fillDescTextAboutDiv, updateExpireAlarmIcon,
+  fillItemDescUnderTable } = require("scripts/items/itemVisual.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -36,10 +37,10 @@ local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
     @() ::handlersManager.loadHandler(::gui_handlers.ItemsList, handlerParams))
 }
 
-class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ItemsList <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.BASE
-  sceneBlkName = "gui/items/itemsShop.blk"
+  sceneBlkName = "%gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   curTab = 0 //first itemsTab
@@ -85,7 +86,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     sheets.updateWorkshopSheets()
     initSheetsOnce()
 
-    local sheetData = curTab < 0 && curItem ? sheets.getSheetDataByItem(curItem) : null
+    let sheetData = curTab < 0 && curItem ? sheets.getSheetDataByItem(curItem) : null
     if (sheetData)
     {
       curTab = sheetData.tab
@@ -105,8 +106,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
     // If items shop was opened not in menu - player should not
     // be able to navigate through sheets and tabs.
-    local checkIsInMenu = ::isInMenu() || ::has_feature("devItemShop")
-    local checkEnableShop = checkIsInMenu && ::has_feature("ItemsShop")
+    let checkIsInMenu = ::isInMenu() || ::has_feature("devItemShop")
+    let checkEnableShop = checkIsInMenu && ::has_feature("ItemsShop")
     if (!checkEnableShop)
       scene.findObject("wnd_title").setValue(::loc(getTabName(itemsTab.INVENTORY)))
 
@@ -131,7 +132,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (navigationHandlerWeak)
       return
 
-    local handler = ::handlersManager.loadHandler(
+    let handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene                  = scene.findObject("control_navigation")
         onSelectCb             = ::Callback(doNavigateToSection, this)
@@ -151,7 +152,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
     markCurrentPageSeen()
 
-    local newSheet = sheetsArray?[obj.shIdx]
+    let newSheet = sheetsArray?[obj.shIdx]
     if (!newSheet)
       return
 
@@ -177,8 +178,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj?.isCollapsable || !navigationHandlerWeak)
       return
 
-    local collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
-    local subsetId = curSubsetId
+    let collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
+    let subsetId = curSubsetId
     navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
       getSheetsListObj().setValue(//set selection on chapter item if not found item with subsetId just in case to avoid crash
@@ -217,7 +218,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       if (isTabVisible(i))
         visibleTabs.append(i)
 
-    local view = {
+    let view = {
       tabs = []
     }
     local selIdx = -1
@@ -237,8 +238,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       curTab = visibleTabs[selIdx]
     }
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
-    local tabsObj = getTabsListObj()
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    let tabsObj = getTabsListObj()
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(selIdx)
   }
@@ -247,7 +248,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   {
     markCurrentPageSeen()
 
-    local value = getTabsListObj().getValue()
+    let value = getTabsListObj().getValue()
     curTab = visibleTabs?[value] ?? curTab
 
     itemsListValid = false
@@ -269,8 +270,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     navItems = []
     foreach(idx, sh in sheetsArray)
     {
-      local isCollapsable = sh.hasSubLists()
-      local item = {
+      let isCollapsable = sh.hasSubLists()
+      let item = {
         shIdx = idx
         unseenIcon = SEEN.ITEMS_SHOP
         unseenIconId = "unseen_icon"
@@ -294,19 +295,19 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       navigationHandlerWeak.setNavItems(navItems)
   }
 
-  function updateSheets()
+  function updateSheets(resetPage = true)
   {
     isSheetsInUpdate = true //there can be multiple sheets changed on switch tab, so no need to update items several times.
     guiScene.setUpdatesEnabled(false, false)
     initSheetsOnce()
 
-    local typesObj = getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
-    local seenListId = getTabSeenId(curTab)
+    let typesObj = getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
+    let seenListId = getTabSeenId(curTab)
     local curValue = -1
-    local childsTotal = typesObj.childrenCount()
+    let childsTotal = typesObj.childrenCount()
 
     if (childsTotal < navItems.len()) {
-      local navItemsTotal = navItems.len() // warning disable: -declared-never-used
+      let navItemsTotal = navItems.len() // warning disable: -declared-never-used
       ::script_net_assert_once("Bad count on update unseen tabs",
         "ItemsShop: Not all sheets exist on update sheets list unseen icon")
     }
@@ -315,9 +316,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       if (idx >= childsTotal)
         break
 
-      local sh = sheetsArray[item.shIdx]
-      local isEnabled = sh.isEnabled(curTab)
-      local child = typesObj.getChild(idx)
+      let sh = sheetsArray[item.shIdx]
+      let isEnabled = sh.isEnabled(curTab)
+      let child = typesObj.getChild(idx)
       child.show(isEnabled)
       child.enable(isEnabled)
 
@@ -337,7 +338,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(true, true)
     isSheetsInUpdate = false
 
-    applyFilters()
+    applyFilters(resetPage)
   }
 
   function onEventWorkshopAvailableChanged(p)
@@ -354,20 +355,20 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function initItemsListSizeOnce()
   {
-    local listObj = getItemsListObj()
-    local emptyListObj = scene.findObject("empty_items_list")
-    local infoObj = scene.findObject("item_info_nest")
-    local collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
-    local leftPos = isNavCollapsed ? collapseBtnWidth : "0"
-    local nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
-    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
-    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    local mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
-    local itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+    let listObj = getItemsListObj()
+    let emptyListObj = scene.findObject("empty_items_list")
+    let infoObj = scene.findObject("item_info_nest")
+    let collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
+    let leftPos = isNavCollapsed ? collapseBtnWidth : "0"
+    let nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
+    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
+    let itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    local itemsCountY = ::max(::to_pixels(mainBlockHeight)
+    let itemsCountY = ::max(::to_pixels(mainBlockHeight)
       / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
-    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
     listObj.width = contentWidth
@@ -396,7 +397,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     else
     {
       shouldSetPageByItem = false
-      local lastIdx = getLastSelItemIdx()
+      let lastIdx = getLastSelItemIdx()
       if (lastIdx >= 0)
         curPage = (lastIdx / itemsPerPage).tointeger()
       else if (curPage * itemsPerPage > itemsList.len())
@@ -408,14 +409,14 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillPage()
   {
-    local view = { items = [] }
-    local pageStartIndex = curPage * itemsPerPage
-    local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
-    local seenListId = getTabSeenId(curTab)
-    local craftTree = curSheet?.getSet().getCraftTree()
+    let view = { items = [] }
+    let pageStartIndex = curPage * itemsPerPage
+    let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+    let seenListId = getTabSeenId(curTab)
+    let craftTree = curSheet?.getSet().getCraftTree()
     for(local i=pageStartIndex; i < pageEndIndex; i++)
     {
-      local item = itemsList[i]
+      let item = itemsList[i]
       if (item.hasLimits())
         ::g_item_limits.enqueueItem(item.id)
 
@@ -438,9 +439,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     }
     ::g_item_limits.requestLimits()
 
-    local listObj = getItemsListObj()
-    local prevValue = listObj.getValue()
-    local data = ::handyman.renderCached(("gui/items/item"), view)
+    let listObj = getItemsListObj()
+    let prevValue = listObj.getValue()
+    let data = ::handyman.renderCached(("%gui/items/item"), view)
     if (::checkObj(listObj))
     {
       listObj.show(data != "")
@@ -448,18 +449,18 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
     }
 
-    local emptyListObj = scene.findObject("empty_items_list")
+    let emptyListObj = scene.findObject("empty_items_list")
     if (::checkObj(emptyListObj))
     {
-      local adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && isMarketplaceEnabled()
-      local itemsInShop = curTab == itemsTab.SHOP? itemsList : curSheet.getItemsList(itemsTab.SHOP, curSubsetId)
-      local adviseShop = ::has_feature("ItemsShop") && curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
+      let adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && isMarketplaceEnabled()
+      let itemsInShop = curTab == itemsTab.SHOP? itemsList : curSheet.getItemsList(itemsTab.SHOP, curSubsetId)
+      let adviseShop = ::has_feature("ItemsShop") && curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
 
       emptyListObj.show(data.len() == 0)
       emptyListObj.enable(data.len() == 0)
       showSceneBtn("items_shop_to_marketplace_button", adviseMarketplace)
       showSceneBtn("items_shop_to_shop_button", adviseShop)
-      local emptyListTextObj = scene.findObject("empty_items_list_text")
+      let emptyListTextObj = scene.findObject("empty_items_list_text")
       if (::checkObj(emptyListTextObj))
       {
         local caption = ::loc(curSheet.emptyTabLocId, "")
@@ -467,7 +468,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
           caption = ::loc("items/shop/emptyTab/default")
         if (caption.len() > 0)
         {
-          local noItemsAdviceLocId =
+          let noItemsAdviceLocId =
               adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
             : adviseShop        ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
             :                     "items/shop/emptyTab/noItemsAdvice/shopDisabled"
@@ -477,7 +478,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local value = findLastValue(prevValue)
+    let value = findLastValue(prevValue)
     if (value >= 0)
       listObj.setValue(value)
 
@@ -509,8 +510,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function findLastValue(prevValue)
   {
-    local offset = curPage * itemsPerPage
-    local total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
+    let offset = curPage * itemsPerPage
+    let total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
     if (!total)
       return -1
 
@@ -518,7 +519,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (curItem)
       for(local i = 0; i < total; i++)
       {
-        local item = itemsList[offset + i]
+        let item = itemsList[offset + i]
         if (curItem.id != item.id)
           continue
         res = i
@@ -563,7 +564,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurItem()
   {
-    local obj = getItemsListObj()
+    let obj = getItemsListObj()
     if (!::check_obj(obj))
       return null
 
@@ -572,8 +573,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurItemObj()
   {
-    local itemListObj = getItemsListObj()
-    local value = ::get_obj_valid_index(itemListObj)
+    let itemListObj = getItemsListObj()
+    let value = ::get_obj_valid_index(itemListObj)
     if (value < 0)
       return null
 
@@ -595,7 +596,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItemInfo()
   {
-    local item = getCurItem()
+    let item = getCurItem()
     markItemSeen(item)
     infoHandler?.updateHandlerData(item, true, true)
     showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
@@ -613,38 +614,38 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!itemsList)
       return
 
-    local pageStartIndex = curPage * itemsPerPage
-    local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
-    local list = []
+    let pageStartIndex = curPage * itemsPerPage
+    let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+    let list = []
     for(local i = pageStartIndex; i < pageEndIndex; ++i)
       list.append(itemsList[i].getSeenId())
     getTabSeenList(curTab).markSeen(list)
   }
 
   function updateButtonsBar() {
-    local obj = getItemsListObj()
-    local isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
+    let obj = getItemsListObj()
+    let isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
 
   function updateButtons()
   {
-    local item = getCurItem()
-    local mainActionData = item?.getMainActionData()
-    local limitsCheckData = item?.getLimitsCheckData()
-    local limitsCheckResult = limitsCheckData?.result ?? true
-    local showMainAction = mainActionData && limitsCheckResult
-    local curSet = curSheet?.getSet()
-    local craftTree = curSet?.getCraftTree()
-    local needShowCraftTree = craftTree != null
-    local openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
+    let item = getCurItem()
+    let mainActionData = item?.getMainActionData()
+    let limitsCheckData = item?.getLimitsCheckData()
+    let limitsCheckResult = limitsCheckData?.result ?? true
+    let showMainAction = mainActionData && limitsCheckResult
+    let curSet = curSheet?.getSet()
+    let craftTree = curSet?.getCraftTree()
+    let needShowCraftTree = craftTree != null
+    let openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
 
-    local craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
+    let craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
     if (curSet != null && needShowCraftTree)
     {
       craftTreeBtnObj.setValue(openCraftTreeBtnText)
-      local tutorialItem = curSet.findTutorialItem()
+      let tutorialItem = curSet.findTutorialItem()
       if (tutorialItem)
         startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj)
     }
@@ -652,24 +653,24 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
 
-    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
-    local canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
+    let buttonObj = showSceneBtn("btn_main_action", showMainAction)
+    let canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction)
     {
       buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
       buttonObj.inactiveColor = mainActionData?.isInactive && !canCraftOnlyInCraftTree ? "yes" : "no"
-      local btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
-      local btnColoredText = canCraftOnlyInCraftTree
+      let btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
+      let btnColoredText = canCraftOnlyInCraftTree
         ? openCraftTreeBtnText
         : mainActionData?.btnColoredName ?? mainActionData.btnName
       setDoubleTextToButton(scene, "btn_main_action", btnText, btnColoredText)
     }
 
-    local activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
+    let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
     scene.findObject("activate_info_text").setValue(activateText)
     showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
 
-    local altActionText = item ? item.getAltActionName() : ""
+    let altActionText = item ? item.getAltActionName() : ""
     showSceneBtn("btn_alt_action", altActionText != "")
     setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
@@ -678,11 +679,11 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       warningText = limitsCheckData.reason
     setWarningText(warningText)
 
-    local showLinkAction = item && item.hasLink()
-    local linkObj = showSceneBtn("btn_link_action", showLinkAction)
+    let showLinkAction = item && item.hasLink()
+    let linkObj = showSceneBtn("btn_link_action", showLinkAction)
     if (showLinkAction)
     {
-      local linkActionText = ::loc(item.linkActionLocId)
+      let linkActionText = ::loc(item.linkActionLocId)
       setDoubleTextToButton(scene, "btn_link_action", linkActionText, linkActionText)
       if (item.linkActionIcon != "")
       {
@@ -694,7 +695,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onLinkAction(obj)
   {
-    local item = getCurItem()
+    let item = getCurItem()
     if (item)
       item.openLink()
   }
@@ -704,21 +705,21 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!isValid())
       return
 
-    local item = getCurItem()
+    let item = getCurItem()
     if (item && canStartPreviewScene(true, true))
       item.doPreview()
   }
 
   function onItemAction(buttonObj)
   {
-    local id = ::to_integer_safe(buttonObj?.holderId, -1)
-    local item = itemsList?[id]
-    local obj = scene.findObject("shop_item_" + id)
+    let id = ::to_integer_safe(buttonObj?.holderId, -1)
+    let item = itemsList?[id]
+    let obj = scene.findObject("shop_item_" + id)
 
     // Need to change list object current index because of
     // we can click on action button in non selected item
     // and wrong item will be updated after main action
-    local listObj = getItemsListObj()
+    let listObj = getItemsListObj()
     if (listObj.getValue() != id && id >= 0 && id < listObj.childrenCount())
       listObj.setValue(id)
 
@@ -741,7 +742,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       openCraftTree(item)
     else
     {
-      local updateFn = item?.needUpdateListAfterAction ? updateItemsList : updateItemInfo
+      let updateFn = item?.needUpdateListAfterAction ? updateItemsList : updateItemInfo
       item.doMainAction(
         ::Callback(@(result) updateFn(), this),
         this,
@@ -753,7 +754,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAltAction(obj)
   {
-    local item = getCurItem()
+    let item = getCurItem()
     if (item)
       item.doAltAction({ obj = obj, align = "top" })
   }
@@ -762,7 +763,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local containerObj = scene.findObject("item_info")
+    let containerObj = scene.findObject("item_info")
     if (::check_obj(containerObj) && containerObj.isHovered())
       ::move_mouse_on_obj(getCurItemObj())
     else
@@ -774,32 +775,40 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!itemsListValid)
       return
 
-    local listObj = getItemsListObj()
-    local startIdx = curPage * itemsPerPage
-    local lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
+    let listObj = getItemsListObj()
+    let startIdx = curPage * itemsPerPage
+    let lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
-      if (!itemsList[i].hasTimer())
+      let item = itemsList[i]
+      if (!item.hasTimer() && !item?.hasLifetimeTimer())
         continue
 
-      local itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
-      if (::check_obj(itemObj))
-      {
-        local timeTxtObj = itemObj.findObject("expire_time")
-        if (::check_obj(timeTxtObj))
-          timeTxtObj.setValue(itemsList[i].getTimeLeftText())
-        timeTxtObj = itemObj.findObject("craft_time")
-        if (::check_obj(timeTxtObj))
-          timeTxtObj.setValue(itemsList[i].getCraftTimeTextShort())
+      let itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
+      if (!::check_obj(itemObj))
+        continue
 
-        updateExpireAlarmIcon(itemsList[i], itemObj)
-      }
+      local timeTxtObj = itemObj.findObject("expire_time")
+      if (::check_obj(timeTxtObj))
+        timeTxtObj.setValue(item.getTimeLeftText())
+
+      timeTxtObj = itemObj.findObject("craft_time")
+      if (::check_obj(timeTxtObj))
+        timeTxtObj.setValue(item.getCraftTimeTextShort())
+
+      timeTxtObj = itemObj.findObject("remaining_lifetime")
+      if (timeTxtObj?.isValid())
+        timeTxtObj.setValue(item.getRemainingLifetimeText())
+
+      updateExpireAlarmIcon(item, itemObj)
     }
 
-    local selItem = getCurItem()
+    let selItem = getCurItem()
     if (selItem?.hasTimer())
       fillDescTextAboutDiv(selItem, infoHandler.scene)
 
+    if (selItem?.hasLifetimeTimer())
+      fillItemDescUnderTable(selItem, infoHandler.scene)
   }
 
   function onToShopButton(obj)
@@ -840,7 +849,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
    */
   function getHandlerRestoreData()
   {
-    local data = {
+    let data = {
       openData = {
         curTab = curTab
         curSheet = curSheet
@@ -867,7 +876,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function restoreHandler(stateData)
   {
-    local itemIndex = getItemIndexById(stateData.currentItemId)
+    let itemIndex = getItemIndexById(stateData.currentItemId)
     if (itemIndex == -1)
       return
     curPage = ::ceil(itemIndex / itemsPerPage).tointeger()
@@ -890,9 +899,17 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     updateItemInfo()
   }
 
+  function onEventUpdateTrophiesVisibility(_) {
+    if (curTab != itemsTab.SHOP)
+      return
+
+    itemsListValid = false
+    updateSheets(false)
+  }
+
   function setWarningText(text)
   {
-    local warningTextObj = scene.findObject("warning_text")
+    let warningTextObj = scene.findObject("warning_text")
     if (::checkObj(warningTextObj))
       warningTextObj.setValue(::colorize("redMenuButtonColor", text))
   }
@@ -907,7 +924,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!::has_feature("Warbonds"))
       return
 
-    local warbondsObj = scene.findObject("balance_text")
+    let warbondsObj = scene.findObject("balance_text")
     warbondsObj.setValue(::g_warbonds.getBalanceText())
     warbondsObj.tooltip = ::loc("warbonds/maxAmount", {warbonds = ::g_warbonds.getLimit()})
   }
@@ -947,7 +964,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function openCraftTree(showItem = null, tutorialItem = null)
   {
-    local curSet = curSheet?.getSet()
+    let curSet = curSheet?.getSet()
     if (curSet?.getCraftTree() == null)
       return
 
@@ -962,7 +979,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj) {
     curSet.saveTutorialWasShown()
-    local steps = [{
+    let steps = [{
       obj = [craftTreeBtnObj]
       text = ::loc("workshop/accentCraftTreeButton", {
         buttonName = ::loc(curSet.getCraftTree()?.openButtonLocId ?? "")
@@ -977,7 +994,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   function onItemHover(obj) {
     if (!::show_console_buttons)
       return
-    local wasMouseMode = isMouseMode
+    let wasMouseMode = isMouseMode
     updateMouseMode()
     if (wasMouseMode != isMouseMode)
       updateShowItemButton()
@@ -986,9 +1003,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (obj.holderId == getCurItemObj()?.holderId)
       return
     hoverHoldAction(obj, function(focusObj) {
-      local idx = focusObj.holderId.tointeger()
-      local value = idx - curPage * itemsPerPage
-      local listObj = getItemsListObj()
+      let idx = focusObj.holderId.tointeger()
+      let value = idx - curPage * itemsPerPage
+      let listObj = getItemsListObj()
       if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
         listObj.setValue(value)
     }.bindenv(this))
@@ -996,18 +1013,18 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
-    local listObj = getItemsListObj()
+    let listObj = getItemsListObj()
     if (listObj?.isValid())
       listObj.showItemButton = isMouseMode ? "yes" : "no"
   }
 }
 
-local function openItemsWndFromPromo(owner, params = []) {
+let function openItemsWndFromPromo(owner, params = []) {
   local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
 
   local curSheet = null
-  local sheetSearchId = params?[0]
-  local initSubsetId = params?[2]
+  let sheetSearchId = params?[0]
+  let initSubsetId = params?[2]
   if (sheetSearchId)
     curSheet = {searchId = sheetSearchId}
 

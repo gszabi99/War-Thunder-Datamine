@@ -56,38 +56,38 @@ loading_bg
 }
 */
 
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
-local createBgData = @() {
+let createBgData = @() {
   list = {}
   reserveBg = ""
 }
 
-local bgDataBeforeLogin = createBgData()
-local bgDataAfterLogin = createBgData()
+let bgDataBeforeLogin = createBgData()
+let bgDataAfterLogin = createBgData()
 
 local inited = false
 local bgUnlocks = null
 
-local RESERVE_BG_KEY = "reserveBg"
-local DEFAULT_VALUE_KEY = "default_chance"
-local BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
+let RESERVE_BG_KEY = "reserveBg"
+let DEFAULT_VALUE_KEY = "default_chance"
+let BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
 local LOADING_BG_PATH = "loading_bg"
 
-local function applyBlkToBgData(bgData, blk) {
-  local list = bgData.list
-  local defValue = blk?[DEFAULT_VALUE_KEY]
+let function applyBlkToBgData(bgData, blk) {
+  let list = bgData.list
+  let defValue = blk?[DEFAULT_VALUE_KEY]
   if (defValue != null)
     foreach (key, value in list)
       list[key] = defValue
 
-  local reserveBg = blk?[RESERVE_BG_KEY]
+  let reserveBg = blk?[RESERVE_BG_KEY]
   if (::u.isString(reserveBg))
     bgData.reserveBg = reserveBg
 
   for (local i = 0; i < blk.paramCount(); i++) {
-    local value = blk.getParamValue(i)
+    let value = blk.getParamValue(i)
     if (::is_numeric(value))
       list[blk.getParamName(i)] <- value
   }
@@ -97,17 +97,17 @@ local function applyBlkToBgData(bgData, blk) {
     delete list[DEFAULT_VALUE_KEY]
 }
 
-local function applyBlkToAllBgData(blk) {
+let function applyBlkToAllBgData(blk) {
   applyBlkToBgData(bgDataAfterLogin, blk)
   applyBlkToBgData(bgDataBeforeLogin, blk)
-  local beforeLoginBlk = blk?[BLOCK_BEFORE_LOGIN_KEY]
+  let beforeLoginBlk = blk?[BLOCK_BEFORE_LOGIN_KEY]
   if (::u.isDataBlock(beforeLoginBlk))
     applyBlkToBgData(bgDataBeforeLogin, beforeLoginBlk)
 }
 
-local function applyBlkByLang(langBlk, curLang) {
-  local langsInclude = langBlk?.langsInclude
-  local langsExclude = langBlk?.langsExclude
+let function applyBlkByLang(langBlk, curLang) {
+  let langsInclude = langBlk?.langsInclude
+  let langsExclude = langBlk?.langsExclude
   if (::u.isDataBlock(langsInclude)
       && !::isInArray(curLang, langsInclude % "lang"))
     return
@@ -115,8 +115,8 @@ local function applyBlkByLang(langBlk, curLang) {
       && ::isInArray(curLang, langsExclude % "lang"))
     return
 
-  local platformInclude = langBlk?.platformInclude
-  local platformExclude = langBlk?.platformExclude
+  let platformInclude = langBlk?.platformInclude
+  let platformExclude = langBlk?.platformExclude
   if (::u.isDataBlock(platformInclude)
       && !::isInArray(::target_platform, platformInclude % "platform"))
     return
@@ -130,11 +130,11 @@ local function applyBlkByLang(langBlk, curLang) {
   applyBlkToAllBgData(langBlk)
 }
 
-local function validateBgData(bgData) {
-  local list = bgData.list
-  local keys = ::u.keys(list)
+let function validateBgData(bgData) {
+  let list = bgData.list
+  let keys = ::u.keys(list)
   foreach (key in keys) {
-    local validValue = ::to_float_safe(list[key], 0)
+    let validValue = ::to_float_safe(list[key], 0)
     if (validValue > 0.0001)
       list[key] = validValue
     else
@@ -142,7 +142,7 @@ local function validateBgData(bgData) {
   }
 }
 
-local function initOnce() {
+let function initOnce() {
   if (inited)
     return
   inited = true
@@ -150,19 +150,19 @@ local function initOnce() {
   bgDataAfterLogin.list.clear()
   bgDataBeforeLogin.list.clear()
 
-  local blk = GUI.get()
-  local bgBlk = blk?[LOADING_BG_PATH]
+  let blk = GUI.get()
+  let bgBlk = blk?[LOADING_BG_PATH]
   if (!bgBlk)
     return
 
   applyBlkToAllBgData(bgBlk)
 
-  local curLang = ::g_language.getLanguageName()
+  let curLang = ::g_language.getLanguageName()
   foreach (langBlk in bgBlk % "language")
     if (::u.isDataBlock(langBlk))
       applyBlkByLang(langBlk, curLang)
 
-  local presetBlk = bgBlk?[::get_country_flags_preset()]
+  let presetBlk = bgBlk?[::get_country_flags_preset()]
   if (::u.isDataBlock(presetBlk))
     applyBlkToAllBgData(presetBlk)
 
@@ -173,7 +173,7 @@ local function initOnce() {
     bgUnlocks = ::buildTableFromBlk(bgBlk?.unlocks)
 }
 
-local function removeLoadingBgFromLists(name) {
+let function removeLoadingBgFromLists(name) {
   foreach (data in [bgDataAfterLogin, bgDataBeforeLogin]) {
     if (name in data.list)
       delete data.list[name]
@@ -182,8 +182,8 @@ local function removeLoadingBgFromLists(name) {
   }
 }
 
-local isBgUnlockable = @(id) id in bgUnlocks
-local isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
+let isBgUnlockable = @(id) id in bgUnlocks
+let isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
 
 local function filterLoadingBgData(bgData) {
   bgData = clone bgData
@@ -193,22 +193,22 @@ local function filterLoadingBgData(bgData) {
   return bgData
 }
 
-local function getCurLoadingBgData() {
+let function getCurLoadingBgData() {
   initOnce()
   return filterLoadingBgData(::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin)
 }
 
-local function getLoadingBgIdByUnlockId(unlockId) {
+let function getLoadingBgIdByUnlockId(unlockId) {
   initOnce()
   return bgUnlocks.findindex(@(v) unlockId == v)
 }
 
-local isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
-local getLoadingBgName = @(id) ::loc($"loading_bg/{id}")
-local getLoadingBgTooltip = @(id) ::loc($"loading_bg/{id}/desc", "")
+let isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
+let getLoadingBgName = @(id) ::loc($"loading_bg/{id}")
+let getLoadingBgTooltip = @(id) ::loc($"loading_bg/{id}/desc", "")
 
-local reset = @() inited = false
-local setLoadingBgPath = @(path) LOADING_BG_PATH = path
+let reset = @() inited = false
+let setLoadingBgPath = @(path) LOADING_BG_PATH = path
 
 subscriptions.addListenersWithoutEnv({
   GameLocalizationChanged = @(p) reset()

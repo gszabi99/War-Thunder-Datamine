@@ -50,8 +50,16 @@
         "hp": 40.0
       }
     },
+    "armor2": {
+      "armor2_dm": {
+        "hp": 35.0
+      }
+    },
     "armor4": {
       "armor3_dm": {
+        "hp": 35.0
+      },
+      "armor6_dm": {
         "hp": 35.0
       }
     },
@@ -69,20 +77,12 @@
     "armor6": {
       "armor1_dm": {
         "hp": 35.0
-      },
-      "armor2_dm": {
-        "hp": 35.0
-      }
-    },
-    "armor8_5": {
-      "armor6_dm": {
-        "hp": 40.0
       }
     },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 22.0
+        "hp": 30.5
       }
     },
     "c_dural10": {
@@ -105,14 +105,6 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 60.5
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 60.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 60.5
       }
     },
     "c_dural5": {
@@ -124,17 +116,13 @@
         "genericDamageMult": 0.3,
         "hp": 24.5
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 43.4
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 43.4
+        "hp": 24.5
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 43.4
+        "hp": 24.5
       },
       "fin_dm": {
         "hp": 24.5
@@ -153,13 +141,23 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.7
+        "hp": 26.9
       },
       "stab1_dm": {
         "hp": 24.5
       },
       "stab2_dm": {
         "hp": 24.5
+      }
+    },
+    "c_dural7": {
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
       }
     },
     "dural": {
@@ -193,13 +191,17 @@
         "hp": 67.7
       }
     },
-    "glass64": {
-      "armor4_dm": {
-        "hp": 100.0
-      },
+    "glass50": {
       "armor5_dm": {
         "hp": 100.0
-      },
+      }
+    },
+    "glass55": {
+      "armor4_dm": {
+        "hp": 100.0
+      }
+    },
+    "glass60": {
       "armor9_dm": {
         "hp": 100.0
       }
@@ -452,63 +454,6 @@
       "part": {
         "name": "cover3_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [

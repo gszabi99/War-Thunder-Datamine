@@ -1,21 +1,20 @@
-local seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local { getTextWithCrossplayIcon,
+let seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
+let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+let { getTextWithCrossplayIcon,
         isCrossPlayEnabled,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-local clustersModule = require("scripts/clusterSelect.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { resetSlotbarOverrided, updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
-local { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/events/eventInfo.nut")
-local { eachParam } = require("std/datablock.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
-local { GUI } = require("scripts/utils/configs.nut")
+let clustersModule = require("scripts/clusterSelect.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+let { resetSlotbarOverrided, updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
+let { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/events/eventInfo.nut")
+let { eachParam } = require("std/datablock.nut")
+let { addPromoAction } = require("scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { GUI } = require("scripts/utils/configs.nut")
 
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
@@ -35,18 +34,15 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   if (!suggestAndAllowPsnPremiumFeatures())
     return
 
-  if (!checkAndShowMultiplayerPrivilegeWarning())
-    return
-
   local eventId = null
   local chapterId = ::getTblValue ("chapter", options, null)
 
   if (chapterId)
   {
-    local chapter = ::events.chapters.getChapter(chapterId)
+    let chapter = ::events.chapters.getChapter(chapterId)
     if (chapter && !chapter.isEmpty())
     {
-      local chapterEvents = chapter.getEvents()
+      let chapterEvents = chapter.getEvents()
       eventId = chapterEvents[0]
     }
   }
@@ -66,10 +62,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   })
 }
 
-class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.EventsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "gui/events/eventsModal.blk"
+  sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null
   curEventId     = ""
   curChapterId = ""
@@ -122,13 +118,13 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelectAction(onlyChanged = true)
   {
-    local curEventIdx = eventsListObj.getValue()
-    local rowId = listMap?[curEventIdx]
+    let curEventIdx = eventsListObj.getValue()
+    let rowId = listMap?[curEventIdx]
     if (rowId == null)
       return
-    local newEvent = ::events.getEvent(rowId)
-    local newEventId = newEvent?.name ?? ""
-    local newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
+    let newEvent = ::events.getEvent(rowId)
+    let newEventId = newEvent?.name ?? ""
+    let newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
 
     if(onlyChanged && newChapterId == curChapterId && curEventId == newEventId)
       return
@@ -147,8 +143,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWindow()
   {
-    local event = ::events.getEvent(curEventId)
-    local showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(curEventId))
+    let event = ::events.getEvent(curEventId)
+    let showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(curEventId))
     if (showOverrideSlotbar)
       updateOverrideSlotbar(::events.getEventMission(curEventId))
     else
@@ -192,17 +188,15 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function joinEvent(isFromDebriefing = false)
   {
-    local event = ::events.getEvent(curEventId)
+    let event = ::events.getEvent(curEventId)
     if (!event)
       return
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
 
     isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
-    local configForStatistic = {
+    let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
       economicName = ::events.getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
@@ -230,21 +224,21 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
         || !queueToShow)
       return
 
-    local eventRoomsListCfgBlk = GUI.get()?.eventRoomsList
+    let eventRoomsListCfgBlk = GUI.get()?.eventRoomsList
 
-    local delay = eventRoomsListCfgBlk?.timeToAskShowRoomsListSec ?? SHOW_RLIST_ASK_DELAY_DEFAULT
+    let delay = eventRoomsListCfgBlk?.timeToAskShowRoomsListSec ?? SHOW_RLIST_ASK_DELAY_DEFAULT
     if (queueToShow.getActiveTime() < delay)
       return
 
-    local maxCount = eventRoomsListCfgBlk?.askBeforeOpenCount ?? SHOW_RLIST_BEFORE_OPEN_DEFAULT
+    let maxCount = eventRoomsListCfgBlk?.askBeforeOpenCount ?? SHOW_RLIST_BEFORE_OPEN_DEFAULT
     if (maxCount < ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0))
     {
       canAskAboutRoomsList = false
       return
     }
 
-    local economicName = ::events.getEventEconomicName(::events.getEvent(curEventId))
-    local roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
+    let economicName = ::events.getEventEconomicName(::events.getEvent(curEventId))
+    let roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
     if (!roomsListData.getList().len())
       return
 
@@ -276,7 +270,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurEventQueue()
   {
-    local q = ::queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
+    let q = ::queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
     return (q && ::queues.isQueueActive(q)) ? q : null
   }
 
@@ -287,7 +281,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onLeaveEventActions()
   {
-    local q = getCurEventQueue()
+    let q = getCurEventQueue()
     if (!q)
       return
 
@@ -383,8 +377,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local isHover = obj.isHovered()
-    local idx = obj.getIntProp(listIdxPID, -1)
+    let isHover = obj.isHovered()
+    let idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredIdx == idx))
       return
     hoveredIdx = isHover ? idx : -1
@@ -446,11 +440,11 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onQueueOptions(obj)
   {
-    local optionsData = ::queue_classes.Event.getOptions(curEventId)
+    let optionsData = ::queue_classes.Event.getOptions(curEventId)
     if (!optionsData)
       return
 
-    local params = {
+    let params = {
       options = optionsData.options
       optionsConfig = optionsData.context
       wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
@@ -470,7 +464,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   //----VIEW----//
   function showEventDescription(eventId)
   {
-    local event = ::events.getEvent(eventId)
+    let event = ::events.getEvent(eventId)
     eventDescription.selectEvent(event)
     if (event != null)
       seenEvents.markSeen(event.name)
@@ -478,7 +472,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventItemBought(params)
   {
-    local item = ::getTblValue("item", params)
+    let item = ::getTblValue("item", params)
     if (item && item.isForEvent(curEventId))
       updateButtons()
   }
@@ -488,10 +482,10 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!queueToShow || ::handlersManager.isHandlerValid(queueInfoHandlerWeak))
       return
 
-    local queueObj = showSceneBtn("div_before_chapters_list", true)
+    let queueObj = showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
-    local queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
-    local queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
+    let queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
+    let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = ::Callback(onLeaveEvent, this)
     })
@@ -506,28 +500,28 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     checkQueueInfoBox()
     restoreQueueParams()
     scene.findObject("chapters_list_place").show(!isInEventQueue())
-    local slotbar = getSlotbar()
+    let slotbar = getSlotbar()
     if (slotbar)
       slotbar.shade(isInEventQueue())
   }
 
   function updateButtons()
   {
-    local event = ::events.getEvent(curEventId)
-    local isEvent = event != null
-    local isHeader = curChapterId != "" && curEventId == ""
-    local isInQueue = isInEventQueue()
+    let event = ::events.getEvent(curEventId)
+    let isEvent = event != null
+    let isHeader = curChapterId != "" && curEventId == ""
+    let isInQueue = isInEventQueue()
 
-    local isCurItemInFocus = (isEvent || isHeader) && (isMouseMode || hoveredIdx == selectedIdx || isInQueue)
+    let isCurItemInFocus = (isEvent || isHeader) && (isMouseMode || hoveredIdx == selectedIdx || isInQueue)
 
-    local reasonData = ::events.getCantJoinReasonData(isCurItemInFocus ? event : null)
-    local isReady = ::g_squad_manager.isMeReady()
-    local isSquadMember = ::g_squad_manager.isSquadMember()
+    let reasonData = ::events.getCantJoinReasonData(isCurItemInFocus ? event : null)
+    let isReady = ::g_squad_manager.isMeReady()
+    let isSquadMember = ::g_squad_manager.isSquadMember()
 
     showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
 
-    local showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))
-    local joinButtonObj = scene.findObject("btn_join_event")
+    let showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))
+    let joinButtonObj = scene.findObject("btn_join_event")
     joinButtonObj.show(showJoinBtn)
     joinButtonObj.enable(showJoinBtn)
     joinButtonObj.inactiveColor = (reasonData.activeJoinButton && !isInQueue)
@@ -542,7 +536,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     // Used for proper button width calculation.
     local uncoloredStartText = startText
 
-    local battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
+    let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0)
     {
       startText += ::format(" (%s)", battlePriceText)
@@ -551,29 +545,29 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     setDoubleTextToButton(scene, "btn_join_event", uncoloredStartText, startText)
-    local leaveButtonObj = scene.findObject("btn_leave_event")
+    let leaveButtonObj = scene.findObject("btn_leave_event")
     leaveButtonObj.show(isInQueue)
     leaveButtonObj.enable(isInQueue)
 
-    local isShowCollapseBtn = isCurItemInFocus && isHeader
-    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
+    let isShowCollapseBtn = isCurItemInFocus && isHeader
+    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
     if (isShowCollapseBtn)
     {
-      local isCollapsedChapter = getCollapsedChapters()?[curChapterId]
+      let isCollapsedChapter = getCollapsedChapters()?[curChapterId]
       startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
 
-    local reasonTextObj = scene.findObject("cant_join_reason")
+    let reasonTextObj = scene.findObject("cant_join_reason")
     reasonTextObj.setValue(reasonData.reasonText)
     reasonTextObj.show(reasonData.reasonText.len() > 0 && !isInQueue)
 
     showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent
       && ::events.isEventWithLobby(event))
 
-    local pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
-    local needDownloadPack = pack != null && !::have_package(pack)
-    local packBtn = showSceneBtn("btn_download_pack", needDownloadPack)
+    let pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
+    let needDownloadPack = pack != null && !::have_package(pack)
+    let packBtn = showSceneBtn("btn_download_pack", needDownloadPack)
     if (needDownloadPack && packBtn)
     {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
@@ -586,16 +580,16 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillEventsList()
   {
-    local chapters = ::events.getChapters()
-    local needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
+    let chapters = ::events.getChapters()
+    let needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
 
-    local view = { items = [] }
+    let view = { items = [] }
     foreach (chapter in chapters)
     {
-      local eventItems = []
+      let eventItems = []
       foreach (eventName in chapter.getEvents())
       {
-        local event = ::events.getEvent(eventName)
+        let event = ::events.getEvent(eventName)
         if (needSkipCrossplayEvent && !::events.isEventPlatformOnlyAllowed(event))
           continue
 
@@ -620,12 +614,12 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
       view.items.extend(eventItems)
     }
 
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(eventsListObj, data, data.len(), this)
     for (local i = 0; i < eventsListObj.childrenCount(); i++)
       eventsListObj.getChild(i).setIntProp(listIdxPID, i)
 
-    local cId = curEventId
+    let cId = curEventId
     listMap = view.items.map(@(v) v.id)
     selectedIdx = listMap.findindex(@(rowId) rowId == cId ) ?? 0
 
@@ -647,7 +641,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local text = ::events.getEventNameText(event)
     if (needShowCrossPlayInfo())
     {
-      local isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
+      let isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
       text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
       if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
         text = ::colorize("warningTextColor", text)
@@ -661,8 +655,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentEdiff()
   {
-    local event = ::events.getEvent(curEventId)
-    local ediff = event ? ::events.getEDiffByEvent(event) : -1
+    let event = ::events.getEvent(curEventId)
+    let ediff = event ? ::events.getEDiffByEvent(event) : -1
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
@@ -687,16 +681,16 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function collapseChapter(chapterId)
   {
-    local chapterObj = eventsListObj.findObject(chapterId)
+    let chapterObj = eventsListObj.findObject(chapterId)
     if ( ! chapterObj)
       return
-    local collapsed = chapterObj.collapsed == "yes" ? true : false
-    local curChapter = ::events.chapters.getChapter(chapterId)
+    let collapsed = chapterObj.collapsed == "yes" ? true : false
+    let curChapter = ::events.chapters.getChapter(chapterId)
     if( ! curChapter)
       return
     foreach (eventName in curChapter.getEvents())
     {
-      local eventObj = eventsListObj.findObject(eventName)
+      let eventObj = eventsListObj.findObject(eventName)
       if( ! ::checkObj(eventObj))
         continue
       eventObj.show(collapsed)
@@ -705,7 +699,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (chapterId == curChapterId)
     {
-      local chapters = ::events.getChapters()
+      let chapters = ::events.getChapters()
       local totalRows = -1
       foreach(chapter in chapters)
         if (chapter.getEvents().len() > 0)
@@ -746,19 +740,19 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   return handler
 }
 
-local function openEventsWndFromPromo(owner, params = []) {
-  local eventId = params.len() > 0? params[0] : null
+let function openEventsWndFromPromo(owner, params = []) {
+  let eventId = params.len() > 0? params[0] : null
   owner.checkedForward(@() goForwardIfOnline(
     @() ::gui_start_modal_events({event = eventId}), false, true))
 }
 
-local getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
+let getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
   ? ::loc("mainmenu/events/eventlist_btn_no_active_events")
   : ::loc("mainmenu/btnTournamentsAndEvents")
 
 addPromoAction("events", @(handler, params, obj) openEventsWndFromPromo(handler, params))
 
-local promoButtonId = "events_mainmenu_button"
+let promoButtonId = "events_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -766,7 +760,7 @@ addPromoButtonConfig({
   collapsedIcon = ::loc("icon/events")
   getCustomSeenId = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
   updateFunctionInHandler = function() {
-    local id = promoButtonId
+    let id = promoButtonId
     local buttonObj = null
     local show = isShowAllCheckBoxEnabled()
     if (show)
@@ -775,7 +769,6 @@ addPromoButtonConfig({
     {
       show = ::has_feature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
-        && isMultiplayerPrivilegeAvailable()
         && ::g_promo.getVisibilityById(id)
       buttonObj = ::showBtn(id, show, scene)
     }

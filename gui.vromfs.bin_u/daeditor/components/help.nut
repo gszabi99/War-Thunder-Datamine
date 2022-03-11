@@ -1,15 +1,16 @@
 from "%darg/ui_imports.nut" import *
-local {colors} = require("style.nut")
-local scrollbar = require("%darg/components/scrollbar.nut")
-local textButton = require("textButton.nut")
+let {colors} = require("style.nut")
+let scrollbar = require("%darg/components/scrollbar.nut")
+let textButton = require("textButton.nut")
 
 
-local helpText = @"
+let helpText = @"
 Q - Selection mode
 W - Movement mode
 E - Rotation mode
 R - Scaling mode
-P - Toggle property pane;
+T - Create entity mode
+P - Toggle property pane
 Z - Zoom-and-center for selection
 X - Toggle local/world gizmo behaviour
 Del - Delete selected object(s)
@@ -22,6 +23,7 @@ Ctrl-Y - Redo
 Ctrl-Alt-D - Drop objects
 Ctrl-Alt-E - Drop objects on normal
 Ctrl-Alt-W - Surf mode
+Ctrl-Alt-R - Reset scale
 
 Camera:
 Space - Toggle free camera
@@ -31,12 +33,12 @@ Alt + Middle mouse button + Move - Camera rotation
 Mouse wheel - Move forward/backward (Ctrl=turbo, Alt=finer)
 
 F1 - this help
-Alt+H - Select by name
+Tab or Alt+H - Select by name
 "
 
 
-local help = @(showHelp) function help(){
-  local btnClose = {
+let help = @(showHelp) function help(){
+  let btnClose = {
     hplace = ALIGN_RIGHT
     size = SIZE_TO_CONTENT
     children = textButton("X", function() {
@@ -44,7 +46,7 @@ local help = @(showHelp) function help(){
     }, {hotkeys = [["Esc"]]})
   }
 
-  local caption = {
+  let caption = {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_SOLID
     color = Color(50, 50, 50, 50)
@@ -59,7 +61,7 @@ local help = @(showHelp) function help(){
     ]
   }
 
-  local textContent = {
+  let textContent = {
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     text = helpText

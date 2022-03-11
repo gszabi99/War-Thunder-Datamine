@@ -1,6 +1,8 @@
-local { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
+let { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
+let { hoursToString, secondsToHours, getTimestampFromStringUtc,
+  TIME_DAY_IN_SECONDS } = require("scripts/time.nut")
 
-class ::items_classes.Trophy extends ::BaseItem
+::items_classes.Trophy <- class extends ::BaseItem
 {
   static iType = itemType.TROPHY
   static defaultLocId = "trophy"
@@ -32,6 +34,9 @@ class ::items_classes.Trophy extends ::BaseItem
   showTillValue = false
   showNameAsSingleAward = false
 
+  beginDate = null
+  endDate = null
+
   constructor(blk, invBlk = null, slotData = null)
   {
     base.constructor(blk, invBlk, slotData)
@@ -49,20 +54,25 @@ class ::items_classes.Trophy extends ::BaseItem
     showTillValue = blk?.showTillValue ?? false
     showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
 
-    local blksArray = [blk]
+    if (blk?.beginDate && blk?.endDate) {
+      beginDate = getTimestampFromStringUtc(blk.beginDate)
+      endDate = getTimestampFromStringUtc(blk.endDate)
+    }
+
+    let blksArray = [blk]
     if (::u.isDataBlock(blk?.prizes))
       blksArray.insert(0, blk.prizes) //if prizes block exist, it's content must be shown in the first place
 
     contentRaw = []
     foreach (datablock in blksArray)
     {
-      local content = datablock % "i"
+      let content = datablock % "i"
       foreach (_prize in content)
       {
-        local prize = ::DataBlock()
+        let prize = ::DataBlock()
         prize.setFrom(_prize)
 
-        local needMultiAwardInfo = _prize?.ranksRange != null && _prize?.resourceType != null && _prize.blockCount() == 0
+        let needMultiAwardInfo = _prize?.ranksRange != null && _prize?.resourceType != null && _prize.blockCount() == 0
         if (needMultiAwardInfo)
         {
           prize["multiAwardsOnWorthGold"] = 0
@@ -72,6 +82,54 @@ class ::items_classes.Trophy extends ::BaseItem
         contentRaw.append(prize)
       }
     }
+  }
+
+  hasLifetime = @() beginDate != null
+  hasLifetimeTimer = @() getRemainingLifetime() > 0
+
+  function isEnabled() {
+    if (!base.isEnabled())
+      return false
+
+    if (!hasLifetime())
+      return true
+
+    let curTime = ::get_charserver_time_sec()
+    return beginDate <= curTime && curTime < endDate
+  }
+
+  function getRemainingLifetime() {
+    if (!hasLifetime())
+      return -1
+
+    let curTime = ::get_charserver_time_sec()
+    return curTime < beginDate || curTime >= endDate
+      ? 0
+      : endDate - curTime
+  }
+
+  function getRemainingLifetimeText() {
+    let t = getRemainingLifetime()
+    if (t == -1)
+      return ""
+
+    if (t == 0)
+      return ::loc(itemExpiredLocId)
+
+    let res = "".concat(
+      ::loc("icon/hourglass"),
+      ::nbsp,
+      ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", ::nbsp))
+
+    return t < TIME_DAY_IN_SECONDS     ? ::colorize("@red", res)
+         : t < TIME_DAY_IN_SECONDS * 7 ? ::colorize("@itemSoonExpireColor", res)
+         : res
+  }
+
+  function getViewData(params = {}) {
+    let res = base.getViewData(params)
+    res.remainingLifetime <- getRemainingLifetimeText()
+    return res
   }
 
   function _unpackContent(recursionUsedIds, useRecursion = true)
@@ -86,7 +144,7 @@ class ::items_classes.Trophy extends ::BaseItem
     }
 
     recursionUsedIds.append(id)
-    local content = []
+    let content = []
     foreach (i in contentRaw)
     {
       if (!i?.trophy || i?.showAsPack)
@@ -95,18 +153,18 @@ class ::items_classes.Trophy extends ::BaseItem
         continue
       }
 
-      local subTrophy = ::ItemsManager.findItemById(i?.trophy)
-      local countMul = i?.count ?? 1
+      let subTrophy = ::ItemsManager.findItemById(i?.trophy)
+      let countMul = i?.count ?? 1
       if (subTrophy)
       {
         if (::getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
           content.append(i)
         else
         {
-          local subContent = subTrophy.getContent(recursionUsedIds)
+          let subContent = subTrophy.getContent(recursionUsedIds)
           foreach (_si in subContent)
           {
-            local si = ::DataBlock()
+            let si = ::DataBlock()
             si.setFrom(_si)
 
             if (countMul != 1)
@@ -153,7 +211,7 @@ class ::items_classes.Trophy extends ::BaseItem
 
       if (prize?.trophy)
       {
-        local subTrophy = ::ItemsManager.findItemById(prize.trophy)
+        let subTrophy = ::ItemsManager.findItemById(prize.trophy)
         topPrizeBlk = subTrophy ? subTrophy.getTopPrize(_recursionUsedIds) : null
       }
       else {
@@ -186,7 +244,7 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function getTrophyImage(id)
   {
-    local layerStyle = ::LayersIcon.findLayerCfg(id)
+    let layerStyle = ::LayersIcon.findLayerCfg(id)
     if (layerStyle)
       return ::LayersIcon.genDataFromLayer(layerStyle)
 
@@ -222,21 +280,21 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function getName(colored = true)
   {
-    local content = getContent()
+    let content = getContent()
     if (showNameAsSingleAward && content.len() == 1) {
-      local awardCount = content[0]?.count ?? 1
-      local awardType = ::PrizesView.getPrizeTypeName(content[0], false)
+      let awardCount = content[0]?.count ?? 1
+      let awardType = ::PrizesView.getPrizeTypeName(content[0], false)
       return (awardCount > 1)
         ? ::loc("multiAward/name/count/singleType", { awardType, awardCount })
         : ::loc(awardType)
     }
 
     local name = ::loc(locId || ("item/" + id), "")
-    local hasCustomName = name != ""
+    let hasCustomName = name != ""
     if (!hasCustomName)
       name = ::loc("item/" + defaultLocId)
 
-    local showType = showTypeInName != null ? showTypeInName : !hasCustomName
+    let showType = showTypeInName != null ? showTypeInName : !hasCustomName
     if (showType)
     {
       local prizeTypeName = ""
@@ -259,7 +317,7 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function _getDescHeader(fixedAmount = 1)
   {
-    local locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
+    let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
     local headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
     return ::colorize("grayOptionColor", headerText)
   }
@@ -293,8 +351,8 @@ class ::items_classes.Trophy extends ::BaseItem
       }
 
     local res = null
-    local prize = getTopPrize()
-    local icon = ::PrizesView.getPrizeTypeIcon(prize, true)
+    let prize = getTopPrize()
+    let icon = ::PrizesView.getPrizeTypeIcon(prize, true)
     if (icon == "")
       return res
 
@@ -306,7 +364,7 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function _requestBuy(params = {})
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk["name"] = id
     blk["index"] = ::getTblValue("index", params, -1)
     blk["cost"] = params.cost
@@ -358,7 +416,7 @@ class ::items_classes.Trophy extends ::BaseItem
     if (!needShowDropChance())
       return null
 
-    local markup = getPrizeChanceLegendMarkup()
+    let markup = getPrizeChanceLegendMarkup()
     if (markup == "")
       return null
 
@@ -370,6 +428,17 @@ class ::items_classes.Trophy extends ::BaseItem
       return ""
 
     return ::PrizesView.getTrophyOpenCountTillPrize(getContent(), ::get_trophy_info(id))
+  }
+
+  function getDescriptionUnderTable() {
+    let timeText = getRemainingLifetimeText()
+    if (timeText == "")
+      return timeText
+
+    return "".concat(
+      ::loc("items/expireTimeBeforeActivation"),
+      ::loc("ui/colon"),
+      ::colorize("activeTextColor", timeText))
   }
 
   canBuyTrophyByLimit = @() numTotal == 0 || numTotal > (::get_trophy_info(id)?.openCount ?? 0)

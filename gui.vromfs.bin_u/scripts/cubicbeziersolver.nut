@@ -9,13 +9,13 @@
   {
     // Pre-calculate the polynomial coefficients.
     // First and last control points are implied to be (0,0) and (1.0, 1.0).
-    local cx = 3.0 * p1x
-    local bx = 3.0 * (p2x - p1x) - cx
-    local ax = 1.0 - cx -bx
+    let cx = 3.0 * p1x
+    let bx = 3.0 * (p2x - p1x) - cx
+    let ax = 1.0 - cx -bx
 
-    local cy = 3.0 * p1y
-    local by = 3.0 * (p2y - p1y) - cy
-    local ay = 1.0 - cy - by
+    let cy = 3.0 * p1y
+    let by = 3.0 * (p2y - p1y) - cy
+    let ay = 1.0 - cy - by
 
     return sampleCurveY(solveCurveX(t, epsilon, ax, bx, cx), ay, by, cy)
   }

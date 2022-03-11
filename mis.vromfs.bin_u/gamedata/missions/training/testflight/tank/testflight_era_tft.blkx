@@ -681,6 +681,44 @@
       ]
     },
     {
+      "tankModels": {
+        "name": "target_tank08",
+        "tm": [
+          [-0.731747,0.0,0.681577],
+          [0.0,1.0,0.0],
+          [-0.681577,0.0,-0.731747],
+          [2416.75,276.3,2205.5]
+        ],
+        "unit_class": "us_m901_itv",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "target_tanks_squad",
         "tm": [
@@ -713,6 +751,34 @@
           },
           {
             "squad_members": "target_tank07"
+          },
+          {
+            "squad_members": "target_tank08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "atgm_objgrp_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1746.7,218.0,1744.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "atgm_circle"
+          },
+          {
+            "squad_members": "atgm_circle_pillar_01"
+          },
+          {
+            "squad_members": "atgm_circle_pillar_02"
           }
         ]
       }
@@ -828,6 +894,57 @@
           [1790.3,218.0,1819.55]
         ],
         "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "atgm_circle",
+        "tm": [
+          [0.4,0.0,0.0],
+          [0.0,0.4,0.0],
+          [0.0,0.0,0.4],
+          [1751.0,218.0,1748.3]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "atgm_circle_pillar_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1760.2,218.0,1752.85]
+        ],
+        "unit_class": "checkpoint_pillar",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "atgm_circle_pillar_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1755.6,218.0,1739.4]
+        ],
+        "unit_class": "checkpoint_pillar",
         "objLayer": 2,
         "props": {
           "army": 0,
@@ -987,6 +1104,28 @@
         [0.0,20.0,0.0],
         [0.0,0.0,25.0],
         [1790.28,217.081,1819.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tank_spawn_area08": {
+      "type": "Sphere",
+      "tm": [
+        [-0.914559,0.0,0.404455],
+        [0.0,1.0,0.0],
+        [-0.404455,0.0,-0.914559],
+        [2013.1,228.8,1657.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "atgm_vs_player_area": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [1751.35,217.3,1748.3]
       ],
       "objLayer": 0,
       "props": []

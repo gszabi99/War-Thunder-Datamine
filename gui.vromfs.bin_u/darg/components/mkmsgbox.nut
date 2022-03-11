@@ -1,38 +1,39 @@
 from "%darg/ui_imports.nut" import *
+from "dagor.workcycle" import defer
 
-local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
-  local widgets = persist($"{id}_widgets", @() [])
-  local msgboxGeneration = persist($"{id}_msgboxGeneration", @() Watched(0))
-  local hasMsgBoxes = Computed(@() msgboxGeneration.value >= 0 && widgets.len() > 0)
+let function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
+  let widgets = persist($"{id}_widgets", @() [])
+  let msgboxGeneration = persist($"{id}_msgboxGeneration", @() Watched(0))
+  let hasMsgBoxes = Computed(@() msgboxGeneration.value >= 0 && widgets.len() > 0)
 
-  local function getCurMsgbox(){
+  let function getCurMsgbox(){
     if (widgets.len()==0)
       return null
     return widgets.top()
   }
 
-  //local log = getroottable()?.log ?? @(...) print(" ".join(vargv))
+  //let log = getroottable()?.log ?? @(...) print(" ".join(vargv))
 
-  local function addWidget(w) {
+  let function addWidget(w) {
     widgets.append(w)
-    msgboxGeneration(msgboxGeneration.value+1)
+    defer(@() msgboxGeneration(msgboxGeneration.value+1))
   }
 
-  local function removeWidget(w, uid=null) {
-    local idx = widgets.indexof(w) ?? (uid!=null ? widgets.findindex(@(v) v?.uid == uid) : null)
+  let function removeWidget(w, uid=null) {
+    let idx = widgets.indexof(w) ?? (uid!=null ? widgets.findindex(@(v) v?.uid == uid) : null)
     if (idx == null)
       return
     widgets.remove(idx)
     msgboxGeneration(msgboxGeneration.value+1)
   }
 
-  local function removeAllMsgboxes() {
+  let function removeAllMsgboxes() {
     widgets.clear()
     msgboxGeneration(msgboxGeneration.value+1)
   }
 
-  local function updateWidget(w, uid){
-    local idx = widgets.findindex(@(w) w.uid == uid)
+  let function updateWidget(w, uid){
+    let idx = widgets.findindex(@(w) w.uid == uid)
     if (idx == null)
       addWidget(w)
     else {
@@ -41,8 +42,8 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
     }
   }
 
-  local function removeMsgboxByUid(uid) {
-    local idx = widgets.findindex(@(w) w.uid == uid)
+  let function removeMsgboxByUid(uid) {
+    let idx = widgets.findindex(@(w) w.uid == uid)
     if (idx == null)
       return false
     widgets.remove(idx)
@@ -50,7 +51,7 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
     return true
   }
 
-  local function isMsgboxInList(uid) {
+  let function isMsgboxInList(uid) {
     return widgets.findindex(@(w) w.uid == uid) != null
   }
 
@@ -69,17 +70,17 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
   ///   ]
   ///
 
-  local skip = {skip=true}
-  local skpdescr = {description = skip}
-  local defaultButtons = [{text="OK" customStyle={hotkeys=[["^Esc | Enter", skpdescr]]}}]
+  let skip = {skip=true}
+  let skpdescr = {description = skip}
+  let defaultButtons = [{text="OK" customStyle={hotkeys=[["^Esc | Enter", skpdescr]]}}]
 
 
-  local function show(params, styling=defStyling) {
+  let function show(params, styling=defStyling) {
     log($"[MSGBOX] show: text = '{params?.text}'")
-    local self = {v = null}
-    local uid = params?.uid ?? {}
+    let self = {v = null}
+    let uid = params?.uid ?? {}
 
-    local function doClose() {
+    let function doClose() {
       removeWidget(self.v, uid)
       if ("onClose" in params && params.onClose)
         params.onClose()
@@ -87,7 +88,7 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
       log($"[MSGBOX] closed: text = '{params?.text}'")
     }
 
-    local function handleButton(button_action) {
+    let function handleButton(button_action) {
       if (button_action) {
         if (button_action?.getfuncinfos?().parameters.len()==2) {
           // handler performs closing itself
@@ -115,20 +116,20 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
         defCancel = bd
     }
 
-    local curBtnIdx = Watched(initialBtnIdx)
+    let curBtnIdx = Watched(initialBtnIdx)
 
-    local function moveBtnFocus(dir) {
+    let function moveBtnFocus(dir) {
       curBtnIdx.update((curBtnIdx.value + dir + btnsDesc.value.len()) % btnsDesc.value.len())
     }
 
-    local function activateCurBtn() {
+    let function activateCurBtn() {
       log($"[MSGBOX] handling active '{btnsDesc.value[curBtnIdx.value]?.text}' button: text = '{params?.text}'")
       handleButton(btnsDesc.value[curBtnIdx.value]?.action)
     }
 
-    local buttonsBlockKey = {}
+    let buttonsBlockKey = {}
 
-    local function buttonsBlock() {
+    let function buttonsBlock() {
       return @() {
         watch = [curBtnIdx, btnsDesc]
         key = buttonsBlockKey
@@ -137,12 +138,12 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
         gap = hdpx(40)
 
         children = btnsDesc.value.map(function(desc, idx) {
-          local conHover = desc?.onHover
-          local function onHover(on){
+          let conHover = desc?.onHover
+          let function onHover(on){
             curBtnIdx.update(idx)
             conHover?()
           }
-          local onRecalcLayout = (initialBtnIdx==idx)
+          let onRecalcLayout = (initialBtnIdx==idx)
             ? function(initial, elem) {
                 if (initial && styling?.moveMouseCursor.value)
                   move_mouse_cursor(elem)
@@ -151,12 +152,12 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
           local behaviors = desc?.customStyle?.behavior ?? desc?.customStyle?.behavior
           behaviors = type(behaviors) == "array" ? behaviors : [behaviors]
           behaviors.append(Behaviors.RecalcHandler, Behaviors.Button)
-          local customStyle = (desc?.customStyle ?? {}).__merge({
+          let customStyle = (desc?.customStyle ?? {}).__merge({
             onHover = onHover
             behavior = behaviors
             onRecalcLayout = onRecalcLayout
           })
-          local function onClick() {
+          let function onClick() {
             log($"[MSGBOX] clicked '{desc?.text}' button: text = '{params?.text}'")
             handleButton(desc?.action)
           }
@@ -173,7 +174,7 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
       }
     }
 
-    local root = styling.Root.__merge({
+    let root = styling.Root.__merge({
       key = uid
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
@@ -194,7 +195,7 @@ local function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
 
     return self
   }
-  local msgboxComponent = @(){watch=msgboxGeneration children = getCurMsgbox()}
+  let msgboxComponent = @(){watch=msgboxGeneration children = getCurMsgbox()}
 
   return {
     show

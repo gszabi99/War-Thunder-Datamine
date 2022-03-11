@@ -2431,7 +2431,7 @@
       "condition": ""
     },
     "Chat": {
-      "condition": "role_DEVELOPER"
+      "condition": ""
     },
     "ChatThreadLang": [
       {
@@ -2729,6 +2729,17 @@
         "condition": "role_GAIJIN"
       }
     ],
+    "IsraelTanksInFirstCountryChoice": [
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_GAIJIN"
+      }
+    ],
     "Helicopters": [
       {
         "condition": "role_GAIJIN"
@@ -2902,18 +2913,6 @@
       "condition": ""
     },
     "DecoratorPreview": {
-      "condition": ""
-    },
-    "LwsLdsEnabled": {
-      "condition": ""
-    },
-    "WeaponCycleTrigger": {
-      "condition": ""
-    },
-    "ConstantlyComputedWeaponSight": {
-      "condition": ""
-    },
-    "PointOfInterestDesignator": {
       "condition": ""
     },
     "AircraftExtinguisher": [
@@ -3161,22 +3160,23 @@
       "condition": ""
     },
     "AdaptiveStickPusher": [],
-    "AdvancedMouseAim": {
-      "condition": ""
-    },
-    "OptimizedMouseAim": [],
     "ActiveScouting": {
       "condition": ""
     },
-    "Missiles": {
-      "condition": ""
-    },
-    "Sensors": {
-      "condition": ""
-    },
-    "AirplaneFbw": {
-      "condition": ""
-    },
+    "RadarTargetCue": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_ALPHA_TESTER"
+      }
+    ],
     "ReportAnIssue": {
       "condition": ""
     },
@@ -3205,12 +3205,6 @@
         "condition": "role_ALPHA_TESTER"
       }
     ],
-    "AdvancedInstructor": {
-      "condition": ""
-    },
-    "AdvancedStickPusher": {
-      "condition": ""
-    },
     "EnableGoldPurchase": [
       {
         "condition": ""
@@ -3618,7 +3612,10 @@
     "ItalyShipsUnlocked": {
       "condition": ""
     },
-    "IsraelAircraftUnlocked": [
+    "IsraelAircraftUnlocked": {
+      "condition": ""
+    },
+    "IsraelTankUnlocked": [
       {
         "condition": "role_GAIJIN"
       },
@@ -3632,7 +3629,7 @@
         "condition": "role_ALPHA_TESTER"
       },
       {
-        "condition": "wt_access_israel_aircrafts_unlocks"
+        "condition": "wt_access_israel_tanks_unlocks"
       }
     ],
     "MissionsChapterHidden": [
@@ -3756,6 +3753,17 @@
     "SCEJAccount": {
       "condition": "scej_account"
     },
+    "TencentAccount": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "newFontsSizes": {
       "condition": ""
     },
@@ -3810,6 +3818,9 @@
     },
     "ShowUrlQrCode": {
       "condition": "xboxOneAccess"
+    },
+    "ShowUrlQrCodeReportAnIssue": {
+      "condition": "xboxOneAccess;PS4Access"
     },
     "TankAltCrosshair": {
       "condition": "",
@@ -4093,6 +4104,17 @@
     "ProtectionMap": {
       "condition": ""
     },
+    "ClusterWind": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "BattleChatModeAll": [],
     "BattleChatModeTeam": [],
     "BattleChatModeSquad": {

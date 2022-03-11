@@ -5,9 +5,9 @@ local goToBattleAction = function() {
       return
     }
 
-    local lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
-    local eventDisplayType = ::events.getEventDisplayType(lastEvent)
-    local handlerClass = eventDisplayType.showInGamercardDrawer ? ::gui_handlers.MainMenu
+    let lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
+    let eventDisplayType = ::events.getEventDisplayType(lastEvent)
+    let handlerClass = eventDisplayType.showInGamercardDrawer ? ::gui_handlers.MainMenu
       : eventDisplayType.showInEventsWindow ? ::gui_handlers.EventsHandler
       : null
     if (!handlerClass)

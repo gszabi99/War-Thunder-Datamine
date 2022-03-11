@@ -1,8 +1,8 @@
-local time = require("scripts/time.nut")
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
-local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
-local { hasAllFeatures } = require("scripts/user/features.nut")
-local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
+let time = require("scripts/time.nut")
+let playerContextMenu = require("scripts/user/playerContextMenu.nut")
+let clanContextMenu = require("scripts/clans/clanContextMenu.nut")
+let { hasAllFeatures } = require("scripts/user/features.nut")
+let { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -189,7 +189,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     canRequestLb = false
 
-    local db = ::DataBlock()
+    let db = ::DataBlock()
     db.setStr("category", requestData.lbField)
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", requestData.rowsInPage)
@@ -198,7 +198,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
     db.setInt("start", requestData.pos)
 
-    local taskId = ::request_leaderboard_blk(db)
+    let taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
@@ -209,7 +209,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
       return
     canRequestLb = false
 
-    local db = ::DataBlock()
+    let db = ::DataBlock()
     db.setStr("category", requestData.lbField)
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", 0)
@@ -217,13 +217,13 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     db.setStr("platformFilter", requestData.platformFilter)
     db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
 
-    local taskId = ::request_leaderboard_blk(db)
+    let taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
   function handleLbRequest(requestData)
   {
-    local LbBlk = ::get_leaderboard_blk()
+    let LbBlk = ::get_leaderboard_blk()
     leaderboardData = {}
     leaderboardData["rows"] <- lbBlkToArray(LbBlk, requestData)
     canRequestLb = true
@@ -243,7 +243,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function handleSelfRowLbRequest(requestData)
   {
-    local sefRowblk = ::get_leaderboard_blk()
+    let sefRowblk = ::get_leaderboard_blk()
     selfRowData = lbBlkToArray(sefRowblk, requestData)
     canRequestLb = true
     if (!compareRequests(lastRequestSRData, requestData))
@@ -260,17 +260,17 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function lbBlkToArray(blk, requestData)
   {
-    local res = []
-    local valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
+    let res = []
+    let valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
     for (local i = 0; i < blk.blockCount(); i++)
     {
-      local table = {}
-      local row = blk.getBlock(i)
+      let table = {}
+      let row = blk.getBlock(i)
       table.name <- row.getBlockName()
       table.pos <- row.idx != null ? row.idx : -1
       for(local j = 0; j < row.blockCount(); j++)
       {
-        local param = row.getBlock(j)
+        let param = row.getBlock(j)
         if(param.paramCount() <= 0 || param[valueKey] == null)
           continue
         table[param.getBlockName()] <- param[valueKey]
@@ -313,7 +313,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
       return false
 
     // check modesMask
-    local lbMode = ::getTblValue("lbMode", params)
+    let lbMode = ::getTblValue("lbMode", params)
     if (!row.isVisibleByLbModeName(lbMode))
       return false
 
@@ -336,14 +336,14 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
    */
   function getLbDiff(a, b)
   {
-    local res = {}
+    let res = {}
     foreach (fieldId, fieldValue in a)
     {
       if (fieldId == "_id")
         continue
       if (typeof fieldValue == "string")
         continue
-      local compareToValue = ::getTblValue(fieldId, b, 0)
+      let compareToValue = ::getTblValue(fieldId, b, 0)
       if (fieldValue != compareToValue)
         res[fieldId] <- fieldValue - compareToValue
     }
@@ -364,7 +364,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
  */
 ::getLeaderboardItemView <- function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, params = null)
 {
-  local view = lbCategory.getItemCell(lb_value)
+  let view = lbCategory.getItemCell(lb_value)
   view.name <- lbCategory.headerTooltip
   view.icon <- lbCategory.headerImage
 
@@ -390,13 +390,13 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
  */
 ::getLeaderboardItemWidgets <- function getLeaderboardItemWidgets(view)
 {
-  return ::handyman.renderCached("gui/leaderboard/leaderboardItemWidget", view)
+  return ::handyman.renderCached("%gui/leaderboard/leaderboardItemWidget", view)
 }
 
-class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.LeaderboardWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/leaderboard/leaderboard.blk"
+  sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
   lbType        = ::ETTI_VALUE_INHISORY
   curLbCategory = null
@@ -482,7 +482,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (rowsInPage == 0)
       return  // do not divide by zero
 
-    local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
+    let selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
     pos = selfPagePos / rowsInPage < maxRows ? selfPagePos : 0
   }
 
@@ -504,7 +504,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene) || !pageData)
       return null
 
-    local row = getLbRows()?[curDataRowIdx]
+    let row = getLbRows()?[curDataRowIdx]
     if (row)
       return row
 
@@ -522,10 +522,10 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local rowData = getSelectedRowData()
-    local isCountriesLb = isCountriesLeaderboard()
-    local showPlayer = rowData != null && !forClans && !isCountriesLb
-    local showClan = rowData != null && forClans
+    let rowData = getSelectedRowData()
+    let isCountriesLb = isCountriesLeaderboard()
+    let showPlayer = rowData != null && !forClans && !isCountriesLb
+    let showClan = rowData != null && forClans
 
     ::showBtnTable(scene, {
       btn_usercard = showPlayer && ::has_feature("UserCards")
@@ -551,13 +551,13 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserCard()
   {
-    local rowData = getSelectedRowData()
+    let rowData = getSelectedRowData()
     if (!rowData)
       return
 
     //not event leaderboards dont have player uids, so if no uid, we will search player by name
-    local params = { name = getLbPlayerName(rowData) }
-    local uid = getLbPlayerUid(rowData)
+    let params = { name = getLbPlayerName(rowData) }
+    let uid = getLbPlayerUid(rowData)
     if (uid)
       params.uid <- uid
     ::gui_modal_userCard(params)
@@ -576,13 +576,13 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (isCountriesLeaderboard())
       return
 
-    local rowData = getSelectedRowData()
+    let rowData = getSelectedRowData()
     if (!rowData)
       return
 
     if (forClans)
     {
-      local clanUid = getLbClanUid(rowData)
+      let clanUid = getLbClanUid(rowData)
       if (clanUid)
         ::gui_right_click_menu(clanContextMenu.getClanActions(clanUid), this)
       return
@@ -601,14 +601,14 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function onClanInfo()
   {
-    local rowData = getSelectedRowData()
+    let rowData = getSelectedRowData()
     if (rowData)
       ::showClanPage(getLbClanUid(rowData), "", "")
   }
 
   function onMembershipReq()
   {
-    local rowData = getSelectedRowData()
+    let rowData = getSelectedRowData()
     if (rowData)
       ::g_clans.requestMembership(getLbClanUid(rowData))
   }
@@ -623,7 +623,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj) || lbModesList == null)
       return
 
-    local val = obj.getValue()
+    let val = obj.getValue()
 
     if (val >= 0 && val < lbModesList.len() && lbMode != lbModesList[val])
     {
@@ -645,7 +645,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function prepareRequest()
   {
-    local newRequest = {}
+    let newRequest = {}
     foreach(fieldName, field in request)
       newRequest[fieldName] <- (fieldName in this) ? this[fieldName] : field
     foreach (tableConfigRow in lb_presets)
@@ -670,8 +670,8 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (rowsInPage != 0)  // do not divide by zero
       {
-        local selfPos = getSelfPos()
-        local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
+        let selfPos = getSelfPos()
+        let selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
         if (pos != selfPagePos)
           requestSelfPage(selfPos)
         else
@@ -720,10 +720,10 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(idx, mode in ::leaderboard_modes)
     {
-      local diffCode = ::getTblValue("diffCode", mode)
+      let diffCode = ::getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
         continue
-      local reqFeature = ::getTblValue("reqFeature", mode)
+      let reqFeature = ::getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -731,7 +731,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    local modesObj = showSceneBtn("modes_list", true)
+    let modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -750,12 +750,12 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function initTopItems()
   {
-    local holder = scene.findObject("top_holder")
+    let holder = scene.findObject("top_holder")
     if (!::checkObj(holder))
       return
 
-    local tplView = getTopItemsTplView()
-    local data = ::handyman.renderCached("gui/leaderboard/leaderboardTopItem", tplView)
+    let tplView = getTopItemsTplView()
+    let data = ::handyman.renderCached("%gui/leaderboard/leaderboardTopItem", tplView)
 
     guiScene.replaceContentFromText(holder, data, data.len(), this)
   }
@@ -798,9 +798,9 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local lbRows = getLbRows()
-    local showHeader = pgData != null
-    local showTable = (pos > 0 || lbRows.len() > 0) && selfRowData != null
+    let lbRows = getLbRows()
+    let showHeader = pgData != null
+    let showTable = (pos > 0 || lbRows.len() > 0) && selfRowData != null
 
     if (tableWeak)
     {
@@ -828,14 +828,14 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (rowsInPage == 0)
       return  // do not divide by zero
 
-    local nestObj = scene.findObject("paginator_place")
-    local curPage = (pos / rowsInPage).tointeger()
+    let nestObj = scene.findObject("paginator_place")
+    let curPage = (pos / rowsInPage).tointeger()
     if (tableWeak.isLastPage && (curPage == 0))
       ::hidePaginator(nestObj)
     else
     {
-      local lastPageNumber = curPage + (tableWeak.isLastPage ? 0 : 1)
-      local myPlace = getSelfPos()
+      let lastPageNumber = curPage + (tableWeak.isLastPage ? 0 : 1)
+      let myPlace = getSelfPos()
       local myPage = myPlace >= 0 ? ::floor(myPlace / rowsInPage) : null
       ::generatePaginator(nestObj, this, curPage, lastPageNumber, myPage)
     }
@@ -843,7 +843,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   //----END_VIEW----//
 }
 
-class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardWindow
+::gui_handlers.EventsLeaderboardWindow <- class extends ::gui_handlers.LeaderboardWindow
 {
   eventId  = null
   inverse  = false
@@ -852,7 +852,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
 
   function initScreen()
   {
-    local eventData = ::events.getEvent(eventId)
+    let eventData = ::events.getEvent(eventId)
     if (!eventData)
       return goBack()
 
@@ -864,7 +864,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
     if (lb_presets == null)
       lb_presets = ::events.eventsTableConfig
 
-    local sortLeaderboard = ::getTblValue("sort_leaderboard", eventData, null)
+    let sortLeaderboard = ::getTblValue("sort_leaderboard", eventData, null)
     curLbCategory = (sortLeaderboard != null)
       ? ::g_lb_category.getTypeByField(sortLeaderboard)
       : ::events.getTableConfigShortRowByEvent(eventData)
@@ -874,7 +874,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
     initTopItems()
     fetchLbData()
 
-    local headerName = scene.findObject("lb_name")
+    let headerName = scene.findObject("lb_name")
     headerName.setValue(::events.getEventNameText(eventData))
 
     updateButtons()
@@ -882,7 +882,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
 
   function getTopItemsTplView()
   {
-    local res = {
+    let res = {
       updateTime = [{}]
     }
     return res
@@ -891,14 +891,14 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
 
   function fillAdditionalLeaderboardInfo(pageData)
   {
-    local updateTime = ::getTblValue("updateTime", pageData, 0)
-    local timeStr = updateTime > 0
+    let updateTime = ::getTblValue("updateTime", pageData, 0)
+    let timeStr = updateTime > 0
                     ? ::format("%s %s %s",
                                ::loc("mainmenu/lbUpdateTime"),
                                time.buildDateStr(updateTime),
                                time.buildTimeStr(updateTime, false, false))
                     : ""
-    local lbUpdateTime = scene.findObject("lb_update_time")
+    let lbUpdateTime = scene.findObject("lb_update_time")
     if (!::checkObj(lbUpdateTime))
       return
     lbUpdateTime.setValue(timeStr)
@@ -907,12 +907,12 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
 
 ::getLbItemCell <- function getLbItemCell(id, value, dataType, allowNegative = false)
 {
-  local res = {
+  let res = {
     id   = id
     text = dataType.getShortTextByValue(value, allowNegative)
   }
 
-  local tooltipText =  dataType.getPrimaryTooltipText(value, allowNegative)
+  let tooltipText =  dataType.getPrimaryTooltipText(value, allowNegative)
   if (tooltipText != "")
     res.tooltip <- tooltipText
 

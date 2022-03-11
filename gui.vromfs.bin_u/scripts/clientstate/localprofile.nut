@@ -1,6 +1,6 @@
-local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-local penalties = require("scripts/penitentiary/penalties.nut")
-local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+let { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let penalties = require("scripts/penitentiary/penalties.nut")
+let { saveProfile } = require("scripts/clientState/saveProfile.nut")
 
 ::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) //code callback on profile update
 {
@@ -25,7 +25,7 @@ local { saveProfile } = require("scripts/clientState/saveProfile.nut")
     return
   }
 
-  local cdb = ::get_local_custom_settings_blk()
+  let cdb = ::get_local_custom_settings_blk()
   if (set_blk_value_by_path(cdb, path, value))
     saveProfile()
 }
@@ -39,33 +39,33 @@ local { saveProfile } = require("scripts/clientState/saveProfile.nut")
     return defValue
   }
 
-  local cdb = ::get_local_custom_settings_blk()
+  let cdb = ::get_local_custom_settings_blk()
   return get_blk_value_by_path(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 ::save_local_shared_settings <- function save_local_shared_settings(path, value)
 {
-  local blk = ::get_common_local_settings_blk()
+  let blk = ::get_common_local_settings_blk()
   if (set_blk_value_by_path(blk, path, value))
     saveProfile()
 }
 
 ::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null)
 {
-  local blk = ::get_common_local_settings_blk()
+  let blk = ::get_common_local_settings_blk()
   return get_blk_value_by_path(blk, path, defValue)
 }
 
-local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
+let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 
 //save/load settings by account and by screenSize
 ::loadLocalByScreenSize <- function loadLocalByScreenSize(name, defValue=null)
 {
   if (!::g_login.isProfileReceived())
     return defValue
-  local rootName = getRootSizeText()
-  local cdb = ::get_local_custom_settings_blk()
+  let rootName = getRootSizeText()
+  let cdb = ::get_local_custom_settings_blk()
   if (cdb?[rootName][name])
     return cdb[rootName][name]
   return defValue
@@ -75,8 +75,8 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::g_login.isProfileReceived())
     return
-  local rootName = getRootSizeText()
-  local cdb = ::get_local_custom_settings_blk()
+  let rootName = getRootSizeText()
+  let cdb = ::get_local_custom_settings_blk()
   if (cdb?[rootName] != null && typeof(cdb[rootName]) != "instance")
     cdb[rootName] = null
   if (cdb?[rootName] == null)
@@ -97,11 +97,11 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 {
   if (!::g_login.isProfileReceived())
     return
-  local cdb = ::get_local_custom_settings_blk()
+  let cdb = ::get_local_custom_settings_blk()
   local hasChanges = false
   for(local idx = cdb.blockCount() - 1; idx >= 0; idx--)
   {
-    local blk = cdb.getBlock(idx)
+    let blk = cdb.getBlock(idx)
     if (!(name in blk))
       continue
 
@@ -128,19 +128,19 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
     return defValue
   }
 
-  local cdb = ::get_local_custom_settings_blk()
-  local id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
+  let cdb = ::get_local_custom_settings_blk()
+  let id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
   local profileBlk = cdb?.accounts?[id]
   if (profileBlk)
   {
-    local value = get_blk_value_by_path(profileBlk, path)
+    let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
   profileBlk = cdb?.accounts?[::my_user_id_str]
   if (profileBlk)
   {
-    local value = get_blk_value_by_path(profileBlk, path)
+    let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
@@ -157,8 +157,8 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
     return
   }
 
-  local cdb = ::get_local_custom_settings_blk()
-  local id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
+  let cdb = ::get_local_custom_settings_blk()
+  let id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
   if (set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value))
     saveFunc()
 }

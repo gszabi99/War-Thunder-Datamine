@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 ::g_skills_page_status <-
 {
   types = []
@@ -56,26 +56,26 @@ enums.addTypesByGlobalName("g_skills_page_status", {
 g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints)
 {
   local res = ::g_skills_page_status.NONE
-  local items = ::getTblValue("items", page)
+  let items = ::getTblValue("items", page)
   if (!items || !items.len())
     return res
 
-  local total = items.len()
+  let total = items.len()
   local allowedMax = 0  //amount of skills not maxed but allowed to max
-  local allowedAmount = [] //only for not maxed
+  let allowedAmount = [] //only for not maxed
   foreach(item in items)
   {
     if (!item.isVisible(crewUnitType))
       continue
 
-    local totalSteps = ::g_crew.getTotalSteps(item)
-    local value = ::g_crew.getSkillNewValue(item, crew, unit)
-    local curStep = ::g_crew.skillValueToStep(item, value)
+    let totalSteps = ::g_crew.getTotalSteps(item)
+    let value = ::g_crew.getSkillNewValue(item, crew, unit)
+    let curStep = ::g_crew.skillValueToStep(item, value)
     if (curStep >= totalSteps)
       continue
 
-    local availValue = ::g_crew.getMaxAvailbleStepValue(item, value, skillPoints)
-    local availStep = ::g_crew.skillValueToStep(item, availValue)
+    let availValue = ::g_crew.getMaxAvailbleStepValue(item, value, skillPoints)
+    let availStep = ::g_crew.skillValueToStep(item, availValue)
 
     if (totalSteps == availStep)
       allowedMax++

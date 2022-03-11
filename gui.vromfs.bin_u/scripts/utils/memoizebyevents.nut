@@ -12,7 +12,7 @@
  * @return {function}                 - memoized function, to be used instead of the original one.
  */
 
-local alwaysClearOnEvents = [
+let alwaysClearOnEvents = [
   "SignOut",
   "LoginComplete",
   "ScriptsReloaded",
@@ -22,10 +22,10 @@ local function memoizeByEvents(func, hashFunc = null, clearOnEvents = [])
 {
   hashFunc = hashFunc ?? @(...) vargv[0]
 
-  local cacheDefault = {}
-  local cacheForNull = {}
+  let cacheDefault = {}
+  let cacheForNull = {}
 
-  local function onEventCb(p) {
+  let function onEventCb(p) {
     cacheDefault.clear()
     cacheForNull.clear()
   }
@@ -36,12 +36,12 @@ local function memoizeByEvents(func, hashFunc = null, clearOnEvents = [])
   foreach (event in clearOnEvents)
     ::add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
 
-  local function memoizedFunc(...) {
-    local args = [null].extend(vargv)
-    local rawHash = hashFunc.acall(args)
+  let function memoizedFunc(...) {
+    let args = [null].extend(vargv)
+    let rawHash = hashFunc.acall(args)
     //index cannot be null. use different cache to avoid collision
-    local hash = rawHash ?? 0
-    local cache = rawHash != null ? cacheDefault : cacheForNull
+    let hash = rawHash ?? 0
+    let cache = rawHash != null ? cacheDefault : cacheForNull
     if (!(hash in cache))
       cache[hash] <- func.acall(args)
     return cache[hash]

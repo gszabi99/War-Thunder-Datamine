@@ -1,10 +1,10 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+let u = require("sqStdLibs/helpers/u.nut")
+let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
-local saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
+let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
 
-local function disableSeenUserlogs(idsList) {
+let function disableSeenUserlogs(idsList) {
   if (u.isEmpty(idsList))
     return
 
@@ -13,7 +13,7 @@ local function disableSeenUserlogs(idsList) {
     if (!id)
       continue
 
-    local disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : ::disable_user_log_entry
+    let disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : ::disable_user_log_entry
     if (disableFunc(id))
     {
       needSave = true
@@ -29,7 +29,7 @@ local function disableSeenUserlogs(idsList) {
 }
 
 
-local actionByLogType = {
+let actionByLogType = {
   [::EULT_PUNLOCK_ACCEPT]       = @(log) ::gui_start_battle_tasks_wnd(),
   [::EULT_PUNLOCK_EXPIRED]      = @(log) ::gui_start_battle_tasks_wnd(),
   [::EULT_PUNLOCK_CANCELED]     = @(log) ::gui_start_battle_tasks_wnd(),
@@ -37,7 +37,7 @@ local actionByLogType = {
   [::EULT_PUNLOCK_ACCEPT_MULTI] = @(log) ::gui_start_battle_tasks_wnd(),
   [::EULT_INVITE_TO_TOURNAMENT] = function (log)
   {
-    local battleId = log?.battleId
+    let battleId = log?.battleId
     if (battleId == null)
       return
 
@@ -55,20 +55,20 @@ local actionByLogType = {
   }
 }
 
-local function getTournamentRewardData(log) {
-  local res = []
+let function getTournamentRewardData(log) {
+  let res = []
 
   if (!log?.rewardTS)
     return []
 
   foreach(idx, block in log.rewardTS)
   {
-    local result = clone block
+    let result = clone block
 
     result.type <- "TournamentReward"
     result.eventId <- log.name
     result.reason <- block?.awardType ?? ""
-    local reasonNum = block?.fieldValue ?? 0
+    let reasonNum = block?.fieldValue ?? 0
     result.reasonNum <- reasonNum
     result.value <- reasonNum
     result[block?.fieldName ?? result.reason] <- reasonNum

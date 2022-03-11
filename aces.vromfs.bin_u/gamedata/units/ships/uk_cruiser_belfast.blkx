@@ -1846,18 +1846,6 @@
         },
         "compartment_05_dm": {
           "hp": 3351.0
-        },
-        "compartment_06_dm": {
-          "hp": 2510.0
-        },
-        "compartment_07_dm": {
-          "hp": 2983.0
-        },
-        "compartment_08_dm": {
-          "hp": 2500.0
-        },
-        "compartment_09_dm": {
-          "hp": 3500.0
         }
       },
       "control_compartments": {
@@ -1890,28 +1878,28 @@
         "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 8000.0
+          "hp": 7614.0
         },
         "cover_02_dm": {
-          "hp": 6559.0
+          "hp": 5903.0
         },
         "cover_03_dm": {
-          "hp": 8000.0
+          "hp": 6568.0
         },
         "cover_04_dm": {
-          "hp": 7637.0
-        },
-        "cover_05_dm": {
           "hp": 8000.0
         },
+        "cover_05_dm": {
+          "hp": 7634.0
+        },
         "cover_06_dm": {
-          "hp": 7630.0
+          "hp": 8000.0
         },
         "cover_07_dm": {
           "hp": 5000.0
         },
         "cover_08_dm": {
-          "hp": 5609.0
+          "hp": 5000.0
         }
       },
       "superstructures": {
@@ -1978,30 +1966,6 @@
           "hp": 1000.0
         },
         "bulkhead_08_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_09_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_10_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_11_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_12_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_13_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_14_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_15_dm": {
-          "hp": 1000.0
-        },
-        "bulkhead_16_dm": {
           "hp": 1000.0
         }
       },
@@ -2730,47 +2694,27 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 67
+        "crew": 110
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 66
+        "crew": 110
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 67
+        "crew": 111
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 67
+        "crew": 110
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 63
-      },
-      "sailor7": {
-        "dmPart": "compartment_06_dm",
-        "role": "sailor",
-        "crew": 48
-      },
-      "sailor8": {
-        "dmPart": "compartment_07_dm",
-        "role": "sailor",
-        "crew": 56
-      },
-      "sailor9": {
-        "dmPart": "compartment_08_dm",
-        "role": "sailor",
-        "crew": 48
-      },
-      "sailor10": {
-        "dmPart": "compartment_09_dm",
-        "role": "sailor",
-        "crew": 66
+        "crew": 106
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -2815,7 +2759,7 @@
       "sailor19": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 7
       },
       "sailor20": {
         "dmPart": "ammunition_storage_aux_01_dm",
@@ -7813,11 +7757,7 @@
               "compartment_02_dm": [],
               "compartment_03_dm": [],
               "compartment_04_dm": [],
-              "compartment_05_dm": [],
-              "compartment_06_dm": [],
-              "compartment_07_dm": [],
-              "compartment_08_dm": [],
-              "compartment_09_dm": []
+              "compartment_05_dm": []
             }
           }
         }
@@ -7831,11 +7771,7 @@
               "compartment_02_dm": [],
               "compartment_03_dm": [],
               "compartment_04_dm": [],
-              "compartment_05_dm": [],
-              "compartment_06_dm": [],
-              "compartment_07_dm": [],
-              "compartment_08_dm": [],
-              "compartment_09_dm": []
+              "compartment_05_dm": []
             }
           }
         }
@@ -9061,11 +8997,11 @@
   {
     "breaches": {
       "repairSpeed": 45.0,
-      "waterMassVel": -500000.0,
+      "waterMassVel": -100000.0,
       "waterMassMult": 200.0,
       "sizeToRepair": [0.01,4.0,15.0,600.0],
       "additionalWaterDeathThreshold": 32000000.0,
-      "additionalWaterShouldDiePercent": 0.3,
+      "additionalWaterShouldDiePercent": 0.27,
       "fatalBreachDrownTime": 45.0,
       "maxHeelingAngle": 37.0,
       "maxHeelingTime": 40.0,
@@ -9080,7 +9016,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.22,
+          "weight": 0.25,
+          "maxWaterAlive": 1.0
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_02_dm",
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -9094,16 +9037,7 @@
                 "partNo": "ammunition_storage_charges_01_dm",
                 "critWaterLevel": 0.4
               }
-            }
-          ]
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_02_dm",
-          "weight": 0.65,
-          "maxWaterAlive": 1.0,
-          "innerParts": [
+            },
             {
               "part": {
                 "partNo": "ammunition_storage_shells_02_dm",
@@ -9128,14 +9062,20 @@
       {
         "cover": {
           "part": "cover_03_dm",
-          "weight": 0.88,
-          "maxWaterAlive": 1.0
+          "weight": 0.65,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "ammunition_storage_aux_02_dm",
+              "critWaterLevel": 0.6
+            }
+          }
         }
       },
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 1.0,
+          "weight": 0.55,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -9148,7 +9088,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.55,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -9175,7 +9115,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.46,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -9189,18 +9129,6 @@
                 "partNo": "transmission_04_dm",
                 "critWaterLevel": 0.4
               }
-            },
-            {
-              "part": {
-                "partNo": "ammunition_storage_shells_03_dm",
-                "critWaterLevel": 0.55
-              }
-            },
-            {
-              "part": {
-                "partNo": "ammunition_storage_shells_03_dm",
-                "critWaterLevel": 0.55
-              }
             }
           ]
         }
@@ -9208,12 +9136,24 @@
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.41,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
-                "partNo": "ammunition_storage_shells_04_dm",
+                "partNo": "ammunition_storage_charges_03_dm",
+                "critWaterLevel": 0.55
+              }
+            },
+            {
+              "part": {
+                "partNo": "ammunition_storage_shells_03_dm",
+                "critWaterLevel": 0.55
+              }
+            },
+            {
+              "part": {
+                "partNo": "ammunition_storage_charges_04_dm",
                 "critWaterLevel": 0.55
               }
             },
@@ -9229,14 +9169,8 @@
       {
         "cover": {
           "part": "cover_08_dm",
-          "weight": 0.41,
-          "maxWaterAlive": 1.0,
-          "innerParts": {
-            "part": {
-              "partNo": "steering_gear_01_dm",
-              "critWaterLevel": 0.55
-            }
-          }
+          "weight": 0.2,
+          "maxWaterAlive": 1.0
         }
       }
     ]

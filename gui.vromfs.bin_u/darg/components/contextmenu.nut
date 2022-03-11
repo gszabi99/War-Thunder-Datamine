@@ -1,15 +1,16 @@
 from "daRg" import *
-local style = require("contextMenu.style.nut")
-local {addModalWindow, removeModalWindow} = require("modalWindows.nut")
+let style = require("contextMenu.style.nut")
+let {addModalWindow, removeModalWindow} = require("modalWindows.nut")
 
 local lastMenuIdx = 0
-local function contextMenu(x, y, width, actions, menu_style = style) {
+
+let function contextMenu(x, y, width, actions, menu_style = style) {
   lastMenuIdx++
-  local uid = "context_menu_{0}".subst(lastMenuIdx)
-  local closeMenu = @() removeModalWindow(uid)
-  local menuBgColor = menu_style?.menuBgColor ?? style.menuBgColor
-  local closeHotkeys = menu_style?.closeHotkeys ?? [ ["Esc", closeMenu] ]
-  local function defMenuCtor(){
+  let uid = "context_menu_{0}".subst(lastMenuIdx)
+  let closeMenu = @() removeModalWindow(uid)
+  let menuBgColor = menu_style?.menuBgColor ?? style.menuBgColor
+  let closeHotkeys = menu_style?.closeHotkeys ?? [ ["Esc", closeMenu] ]
+  let function defMenuCtor(){
     return {
       rendObj = ROBJ_SOLID
       size = [width, SIZE_TO_CONTENT]
@@ -29,7 +30,7 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
     }
   }
 
-  local menuCtor = menu_style?.menuCtor ?? defMenuCtor
+  let menuCtor = menu_style?.menuCtor ?? defMenuCtor
   set_kb_focus(null)
   addModalWindow({
     key = uid

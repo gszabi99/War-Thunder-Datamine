@@ -1,4 +1,4 @@
-class ::g_invites_classes.ChatRoom extends ::BaseInvite
+::g_invites_classes.ChatRoom <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   roomId = ""
@@ -16,7 +16,7 @@ class ::g_invites_classes.ChatRoom extends ::BaseInvite
 
     if (roomType == ::g_chat_room_type.THREAD)
     {
-      local threadInfo = ::g_chat.addThreadInfoById(roomId)
+      let threadInfo = ::g_chat.addThreadInfoById(roomId)
       threadInfo.checkRefreshThread()
       if (threadInfo.lastUpdateTime < 0)
         setDelayed(true)
@@ -45,9 +45,9 @@ class ::g_invites_classes.ChatRoom extends ::BaseInvite
 
   function getChatInviteText()
   {
-    local nameF = "<Link=%s><Color="+inviteActiveColor+">%s</Color></Link>"
+    let nameF = "<Link=%s><Color="+inviteActiveColor+">%s</Color></Link>"
 
-    local clickNameText = roomType.getInviteClickNameText(roomId)
+    let clickNameText = roomType.getInviteClickNameText(roomId)
     return ::loc(roomType.inviteLocIdFull,
                  { player = format(nameF, getChatInviterLink(), getInviterName()),
                    channel = format(nameF, getChatLink(), clickNameText) })

@@ -1,14 +1,14 @@
 local configId = 0
 
-local configs = {}
+let configs = {}
 
-local function stashBhvValueConfig(config) {
+let function stashBhvValueConfig(config) {
  configId++
  configs[configId] <- config
  return configId
 }
 
-local function popBhvValueConfig(id) {
+let function popBhvValueConfig(id) {
   return configs.rawdelete(id)
 }
 

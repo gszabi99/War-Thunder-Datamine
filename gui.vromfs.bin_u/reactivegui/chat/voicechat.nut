@@ -1,16 +1,16 @@
-local colors = require("reactiveGui/style/colors.nut")
-local voiceChatState = require("voiceChatState.nut")
-local fontsState = require("reactiveGui/style/fontsState.nut")
+let colors = require("reactiveGui/style/colors.nut")
+let voiceChatState = require("voiceChatState.nut")
+let fontsState = require("reactiveGui/style/fontsState.nut")
 
-local voiceChatElements = function() {
-  local children = []
+let voiceChatElements = function() {
+  let children = []
   foreach(idx, member in voiceChatState.voiceChatMembers.value) {
-    local voiceChatMember = member
-    local prevVisIdx = voiceChatMember.visibleIdx
-    local curVisIdx = idx
+    let voiceChatMember = member
+    let prevVisIdx = voiceChatMember.visibleIdx
+    let curVisIdx = idx
     voiceChatMember.visibleIdx = curVisIdx
     if (prevVisIdx != curVisIdx) {
-      local prefix = curVisIdx < prevVisIdx ? "voiceChatMoveBottom" : "voiceChatMoveTop"
+      let prefix = curVisIdx < prevVisIdx ? "voiceChatMoveBottom" : "voiceChatMoveTop"
       anim_start($"{prefix}{voiceChatMember.id}")
     }
 
@@ -52,7 +52,7 @@ local voiceChatElements = function() {
   return children
 }
 
-local voiceChatWidget = @() {
+let voiceChatWidget = @() {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM

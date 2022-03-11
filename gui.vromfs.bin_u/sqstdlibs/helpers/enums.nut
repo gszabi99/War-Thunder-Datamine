@@ -1,4 +1,4 @@
-local u = require("u.nut")
+let u = require("u.nut")
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 local function isTable(v) {return type(v)=="table"}
 local function isArray(v) {return type(v)=="array"}
@@ -53,18 +53,21 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
     local valueArr = getPropValue(propName, typeTbl)
     if (!isArray(valueArr))
       valueArr = [valueArr]
-    foreach (value in valueArr) {
-      if (!caseSensitive)
-        if (isString(value))
-          value = value.tolower()
-        else {
-          assertOnce("bad value type",
-            "".concat("enums: Bad value in type for no caseSensitive cache:\n",
-            $"propName = {propName}, propValue = {value}, propValueType = {(typeof value)}"))
-          continue
-        }
 
-      cacheTable[value] <- typeTbl
+    foreach (value in valueArr) {
+      local key
+      if (caseSensitive)
+        key = value
+      else if (isString(value))
+        key = value.tolower()
+      else {
+        assertOnce("bad value type",
+          "".concat("enums: Bad value in type for no caseSensitive cache:\n",
+          $"propName = {propName}, propValue = {value}, propValueType = {(typeof value)}"))
+        continue
+      }
+
+      cacheTable[key] <- typeTbl
     }
   }
   return cacheTable?[propValue] ?? defaultVal

@@ -1,19 +1,19 @@
-local progressMsg = require("sqDagui/framework/progressMsg.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
-local { getMissionGroup, getMissionGroupName } = require("scripts/missions/missionsFilterData.nut")
-local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
-local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+let progressMsg = require("sqDagui/framework/progressMsg.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
+let { getMissionGroup, getMissionGroupName } = require("scripts/missions/missionsFilterData.nut")
+let { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
+let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
 ::g_script_reloader.registerPersistentData("current_campaign_globals", ::getroottable(), ["current_campaign", "current_campaign_name"])
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
-class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.BASE
   applyAtClose = false
@@ -68,7 +68,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function initDescHandler()
   {
-    local descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
+    let descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
     registerSubHandler(descHandler)
     missionDescWeak = descHandler.weakref()
   }
@@ -81,7 +81,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function loadCollapsedChapters()
   {
-    local collapsedList = ::load_local_account_settings(getCollapseListSaveId(), "")
+    let collapsedList = ::load_local_account_settings(getCollapseListSaveId(), "")
     collapsedCamp = ::g_string.split(collapsedList, ";")
   }
 
@@ -114,17 +114,17 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function initMissionsList(title)
   {
-    local customChapterId = (gm == ::GM_DYNAMIC) ? ::current_campaign_id : missionsListCampaignId.value
+    let customChapterId = (gm == ::GM_DYNAMIC) ? ::current_campaign_id : missionsListCampaignId.value
     local customChapters = null
     if (!showAllCampaigns && (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION))
       customChapters = ::current_campaign
 
     if (gm == ::GM_DYNAMIC)
     {
-      local info = DataBlock()
+      let info = DataBlock()
       dynamic_get_visual(info)
-      local l_file = info.getStr("layout","")
-      local dynLayouts = ::get_dynamic_layouts()
+      let l_file = info.getStr("layout","")
+      let dynLayouts = ::get_dynamic_layouts()
       for (local i = 0; i < dynLayouts.len(); i++)
         if (dynLayouts[i].mis_file == l_file)
         {
@@ -133,7 +133,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         }
     }
 
-    local obj = getObj("chapter_name")
+    let obj = getObj("chapter_name")
     if (obj != null)
       obj.setValue(title)
 
@@ -159,13 +159,13 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillMissionsList()
   {
-    local listObj = getObj("items_list")
+    let listObj = getObj("items_list")
     if (!listObj)
       return
 
-    local selMisConfig = curMission || misListType.getCurMission()
+    let selMisConfig = curMission || misListType.getCurMission()
 
-    local view = { items = [] }
+    let view = { items = [] }
     local selIdx = -1
     local foundCurrent = false
     local hasVideoToPlay = false
@@ -207,7 +207,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
       if (::g_mislist_type.isUrlMission(mission))
       {
-        local medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
+        let medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
         view.items.append({
           itemIcon = medalIcon
           id = mission.id
@@ -259,14 +259,14 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
     for (local i = 0; i < listObj.childrenCount(); i++)
       listObj.getChild(i).setIntProp(listIdxPID, i)
 
     if (selIdx >= 0 && selIdx < listObj.childrenCount())
     {
-      local mission = missions[selIdx]
+      let mission = missions[selIdx]
       if (hasVideoToPlay && gm == ::GM_CAMPAIGN)
         playChapterVideo(mission.chapter, true)
 
@@ -282,13 +282,13 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function createFilterDataArray()
   {
-    local listObj = getObj("items_list")
+    let listObj = getObj("items_list")
 
     filterDataArray = []
     foreach(idx, mission in missions)
     {
-      local locText = misListType.getMissionNameText(mission)
-      local locString = ::g_string.utf8ToLower(locText)
+      let locText = misListType.getMissionNameText(mission)
+      let locString = ::g_string.utf8ToLower(locText)
       filterDataArray.append({
         locString = ::stringReplace(locString, "\t", "") //for japan and china localizations
         misObject = listObj.getChild(idx)
@@ -302,7 +302,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function playChapterVideo(chapterName, checkSeen = false)
   {
-    local videoName = "video/" + chapterName
+    let videoName = "video/" + chapterName
     if (checkSeen && ::was_video_seen(videoName))
       return
 
@@ -320,10 +320,10 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedMissionIndex(needCheckFocused = true)
   {
-    local list = getObj("items_list")
+    let list = getObj("items_list")
     if (list != null && (!needCheckFocused || list.isHovered()))
     {
-      local index = list.getValue()
+      let index = list.getValue()
       if (index >=0 && index < list.childrenCount())
         return index
     }
@@ -351,7 +351,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::checkObj(obj))
     {
-      local value = obj.getValue()
+      let value = obj.getValue()
       if (value >= 0 && value < obj.childrenCount())
         obj.getChild(value).scrollToView()
     }
@@ -369,8 +369,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local isHover = obj.isHovered()
-    local idx = obj.getIntProp(listIdxPID, -1)
+    let isHover = obj.isHovered()
+    let idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredIdx == idx))
       return
     hoveredIdx = isHover ? idx : -1
@@ -423,14 +423,14 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     isOnlyFavorites = ::loadLocalByAccount(getFavoritesSaveId(), false)
-    local checkObj = showSceneBtn("favorite_missions_switch", true)
+    let checkObj = showSceneBtn("favorite_missions_switch", true)
     if (checkObj)
       checkObj.setValue(isOnlyFavorites)
   }
 
   function onOnlyFavoritesSwitch(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value == isOnlyFavorites)
       return
 
@@ -448,11 +448,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     misListType.toggleFavorite(curMission)
     updateButtons()
 
-    local listObj = getObj("items_list")
+    let listObj = getObj("items_list")
     if (curMissionIdx < 0 || curMissionIdx >= listObj.childrenCount())
       return
 
-    local medalObj = listObj.getChild(curMissionIdx).findObject("medal_icon")
+    let medalObj = listObj.getChild(curMissionIdx).findObject("medal_icon")
     if (medalObj)
       medalObj["background-image"] = misListType.isMissionFavorite(curMission) ? "#ui/gameuiskin#favorite" : ""
   }
@@ -461,7 +461,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   {
     if( ! filterText.len())
       saveCollapsedChapters()
-    local gt = ::get_game_type()
+    let gt = ::get_game_type()
     if ((gm == ::GM_DYNAMIC) && (gt & ::GT_COOPERATIVE) && ::SessionLobby.isInRoom())
     {
       ::first_generation <- false
@@ -488,8 +488,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (showMsgbox)
       {
-        local unitNameLoc = ::colorize("activeTextColor", ::getUnitName(curMission.mustHaveUnit))
-        local requirements = ::loc("conditions/char_unit_exist/single", { value = unitNameLoc })
+        let unitNameLoc = ::colorize("activeTextColor", ::getUnitName(curMission.mustHaveUnit))
+        let requirements = ::loc("conditions/char_unit_exist/single", { value = unitNameLoc })
         ::showInfoMsgBox(::loc("charServer/needUnlock") + "\n\n" + requirements)
       }
       return false
@@ -498,8 +498,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (showMsgbox)
       {
-        local unlockId = curMission.blk.chapter + "/" + curMission.blk.name
-        local msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(unlockId, 1)
+        let unlockId = curMission.blk.chapter + "/" + curMission.blk.name
+        let msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(unlockId, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false
@@ -559,7 +559,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::getTblValue("blk", curMission) == null && ::g_mislist_type.isUrlMission(curMission))
     {
-      local misBlk = curMission.urlMission.getMetaInfo()
+      let misBlk = curMission.urlMission.getMetaInfo()
       if (misBlk)
         curMission.blk <- misBlk
       else
@@ -600,16 +600,16 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
-    local isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == curMission)
+    let hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
+    let isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == curMission)
 
     showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
 
-    local isHeader  = curMission?.isHeader ?? false
-    local isMission = curMission != null && !isHeader
+    let isHeader  = curMission?.isHeader ?? false
+    let isMission = curMission != null && !isHeader
 
-    local isShowFavoritesBtn = isCurItemInFocus && isMission && misListType.canMarkFavorites()
-    local favObj = showSceneBtn("btn_favorite", isShowFavoritesBtn)
+    let isShowFavoritesBtn = isCurItemInFocus && isMission && misListType.canMarkFavorites()
+    let favObj = showSceneBtn("btn_favorite", isShowFavoritesBtn)
     if (::check_obj(favObj) && isShowFavoritesBtn)
       favObj.setValue(misListType.isMissionFavorite(curMission) ?
         ::loc("mainmenu/btnFavoriteUnmark") : ::loc("mainmenu/btnFavorite"))
@@ -625,11 +625,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         startText = ::loc("mainmenu/btnWatchMovie")
     }
 
-    local isShowStartBtn = startText != ""
-    local startBtnObj = showSceneBtn("btn_start", isShowStartBtn)
+    let isShowStartBtn = startText != ""
+    let startBtnObj = showSceneBtn("btn_start", isShowStartBtn)
     if (::check_obj(startBtnObj) && isShowStartBtn)
     {
-      local enabled = isHeader || (isMission && checkStartBlkMission())
+      let enabled = isHeader || (isMission && checkStartBlkMission())
       startBtnObj.inactiveColor = enabled ? "no" : "yes"
       setDoubleTextToButton(scene, "btn_start", startText)
     }
@@ -648,8 +648,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && misListType.canModify(curMission))
     showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && misListType.canDelete(curMission))
 
-    local linkData = misListType.getInfoLinkData()
-    local linkObj = showSceneBtn("btn_user_missions_info_link", linkData != null)
+    let linkData = misListType.getInfoLinkData()
+    let linkObj = showSceneBtn("btn_user_missions_info_link", linkData != null)
     if (linkObj && linkData)
     {
       linkObj.link = linkData.link
@@ -668,15 +668,15 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCollapsedItems(selCamp=null)
   {
-    local listObj = getObj("items_list")
+    let listObj = getObj("items_list")
     if (!listObj) return
 
     guiScene.setUpdatesEnabled(false, false)
     local collapsed = false
-    local wasIdx = listObj.getValue()
+    let wasIdx = listObj.getValue()
     local selIdx = -1
     local hasAnyVisibleMissions = false
-    local isFilteredMissions = filterText.len() > 0
+    let isFilteredMissions = filterText.len() > 0
     foreach(idx, m in missions)
     {
       local isVisible = true
@@ -684,11 +684,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       {
         collapsed = !isFilteredMissions && ::isInArray(m.id, collapsedCamp)
 
-        local obj = listObj.getChild(idx)
+        let obj = listObj.getChild(idx)
         if (obj)
         {
           obj.collapsed = collapsed? "yes" : "no"
-          local collapseBtnObj = obj.findObject("btn_" + obj.id)
+          let collapseBtnObj = obj.findObject("btn_" + obj.id)
           if (::check_obj(collapseBtnObj))
             collapseBtnObj.show(!isFilteredMissions)
         }
@@ -699,11 +699,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       else
         isVisible = !collapsed
 
-      local obj = listObj.getChild(idx)
+      let obj = listObj.getChild(idx)
       if (!obj)
         continue
 
-      local filterData = filterDataArray[idx]
+      let filterData = filterDataArray[idx]
       isVisible = isVisible && filterData.filterCheck
       if (isVisible && (selIdx < 0 || wasIdx == idx))
         selIdx = idx
@@ -724,7 +724,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         listObj.getChild(selIdx).scrollToView()
     }
 
-    local listText = hasAnyVisibleMissions ? "" : getEmptyListMsg()
+    let listText = hasAnyVisibleMissions ? "" : getEmptyListMsg()
     scene.findObject("items_list_msg").setValue(listText)
   }
 
@@ -751,14 +751,14 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   function onCollapse(obj)
   {
     if (!obj) return
-    local id = obj.id
+    let id = obj.id
     if (id.len() > 4 && id.slice(0, 4) == "btn_")
       collapse(id.slice(4))
   }
 
   function openMissionOptions(mission)
   {
-    local campaignName = ::current_campaign_id
+    let campaignName = ::current_campaign_id
 
     missionName = ::current_campaign_mission
 
@@ -768,11 +768,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     missionBlk = ::DataBlock()
     missionBlk.setFrom(mission.blk)
 
-    local isUrlMission = ::g_mislist_type.isUrlMission(mission)
+    let isUrlMission = ::g_mislist_type.isUrlMission(mission)
     if (isUrlMission)
       missionBlk.url = mission.urlMission.url
 
-    local coopAvailable = isGameModeCoop(gm) && ::can_play_gamemode_by_squad(gm) && !::is_user_mission(missionBlk)
+    let coopAvailable = isGameModeCoop(gm) && ::can_play_gamemode_by_squad(gm) && !::is_user_mission(missionBlk)
     ::mission_settings.coop = missionBlk.getBool("gt_cooperative", false) && coopAvailable
 
     missionBlk.setInt("_gameMode", gm)
@@ -795,12 +795,12 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     else
       ::select_mission(missionBlk, gm != ::GM_DOMINATION && gm != ::GM_SKIRMISH)
 
-    local gt = ::get_game_type()
-    local optionItems = ::get_briefing_options(gm, gt, missionBlk)
-    local diffOption = ::u.search(optionItems, function(item) { return ::getTblValue(0, item) == ::USEROPT_DIFFICULTY })
+    let gt = ::get_game_type()
+    let optionItems = ::get_briefing_options(gm, gt, missionBlk)
+    let diffOption = ::u.search(optionItems, function(item) { return ::getTblValue(0, item) == ::USEROPT_DIFFICULTY })
     needCheckDiffAfterOptions = diffOption != null
 
-    local cb = ::Callback(afterMissionOptionsApply, this)
+    let cb = ::Callback(afterMissionOptionsApply, this)
     createModalOptions(optionItems, (@(cb, missionBlk) function() {
       ::gui_handlers.Briefing.finalApply.call(this, missionBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
       cb()
@@ -809,7 +809,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function afterMissionOptionsApply()
   {
-    local diffCode = ::mission_settings.diff
+    let diffCode = ::mission_settings.diff
     if (!::check_diff_pkg(diffCode))
       return
 
@@ -823,8 +823,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function createModalOptions(optionItems, applyFunc)
   {
-    local params = getModalOptionsParam(optionItems, applyFunc)
-    local handler = ::handlersManager.loadHandler(::gui_handlers.GenericOptionsModal, params)
+    let params = getModalOptionsParam(optionItems, applyFunc)
+    let handler = ::handlersManager.loadHandler(::gui_handlers.GenericOptionsModal, params)
 
     if (!optionItems.len())
       handler.applyOptions()
@@ -844,7 +844,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function showNav(show)
   {
-    local obj = getObj("nav-help")
+    let obj = getObj("nav-help")
     if (obj)
     {
       obj.show(show)
@@ -862,7 +862,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!canSwitchMisListType)
       return
-    local tabsObj = scene.findObject("chapter_top_list")
+    let tabsObj = scene.findObject("chapter_top_list")
     if (!::checkObj(tabsObj))
     {
       canSwitchMisListType = false
@@ -874,11 +874,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       curMisListType = ::SessionLobby.getMisListType()
     else
     {
-      local typeName = ::loadLocalByAccount("wnd/chosenMisListType", "")
+      let typeName = ::loadLocalByAccount("wnd/chosenMisListType", "")
       curMisListType = ::g_mislist_type.getTypeByName(typeName)
     }
 
-    local typesList = []
+    let typesList = []
     local selIdx = 0
     foreach(mlType in ::g_mislist_type.types)
       if (mlType.canCreate(gm))
@@ -905,7 +905,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillHeaderTabs(tabsObj, typesList, selIdx)
   {
-    local view = {
+    let view = {
       tabs = []
     }
     foreach(idx, mlType in typesList)
@@ -916,7 +916,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         navImagesText = ::get_navigation_images_text(idx, typesList.len())
       })
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
   }
 
@@ -925,11 +925,11 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     if (!canSwitchMisListType)
       return
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 
-    local typeName = obj.getChild(value).id
+    let typeName = obj.getChild(value).id
     misListType = ::g_mislist_type.getTypeByName(typeName)
     ::saveLocalByAccount("wnd/chosenMisListType", misListType.id)
     updateFavorites()
@@ -960,7 +960,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function applyMissionFilter()
   {
-    local filterEditBox = scene.findObject("filter_edit_box")
+    let filterEditBox = scene.findObject("filter_edit_box")
     if (!::checkObj(filterEditBox))
       return
 
@@ -970,7 +970,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     local showCampaign = false
     for (local idx = filterDataArray.len() - 1; idx >= 0; --idx)
     {
-      local filterData = filterDataArray[idx]
+      let filterData = filterDataArray[idx]
       //need update headers by missions content
       local filterCheck = filterData.isHeader || checkFilterData(filterData)
       if (!filterData.isHeader)
@@ -1026,10 +1026,10 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-class ::gui_handlers.SingleMissions extends ::gui_handlers.CampaignChapter
+::gui_handlers.SingleMissions <- class extends ::gui_handlers.CampaignChapter
 {
-  sceneBlkName = "gui/chapter.blk"
-  sceneNavBlkName = "gui/backSelectNavChapter.blk"
+  sceneBlkName = "%gui/chapter.blk"
+  sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   function initScreen()
@@ -1039,34 +1039,34 @@ class ::gui_handlers.SingleMissions extends ::gui_handlers.CampaignChapter
   }
 }
 
-class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
+::gui_handlers.SingleMissionsModal <- class extends ::gui_handlers.SingleMissions
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/chapterModal.blk"
-  sceneNavBlkName = "gui/backSelectNavChapter.blk"
+  sceneBlkName = "%gui/chapterModal.blk"
+  sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   owner = null
 
   filterMask = {}
 
   function initScreen()
   {
-    local navObj = scene.findObject("nav-help")
+    let navObj = scene.findObject("nav-help")
     if(::checkObj(navObj))
     {
-      local backBtn = navObj.findObject("btn_back")
+      let backBtn = navObj.findObject("btn_back")
       if (::checkObj(backBtn)) guiScene.destroyElement(backBtn)
 
       showSceneBtn("btn_inviteSquad", ::enable_coop_in_SingleMissions)
     }
 
-    local frameObj = scene.findObject("header_buttons")
+    let frameObj = scene.findObject("header_buttons")
     if (frameObj)
-      guiScene.replaceContent(frameObj, "gui/frameHeaderRefresh.blk", this)
+      guiScene.replaceContent(frameObj, "%gui/frameHeaderRefresh.blk", this)
 
     if (wndGameMode == ::GM_SKIRMISH || wndGameMode == ::GM_SINGLE_MISSION)
     {
-      local listboxFilterHolder = scene.findObject("listbox_filter_holder")
-      guiScene.replaceContent(listboxFilterHolder, "gui/chapter_include_filter.blk", this)
+      let listboxFilterHolder = scene.findObject("listbox_filter_holder")
+      guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
     }
 
     base.initScreen()
@@ -1074,7 +1074,7 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
 
   function getFilterMask()
   {
-    local mask = filterMask?[misListType.id]
+    let mask = filterMask?[misListType.id]
     if (mask)
       return mask
 
@@ -1090,7 +1090,7 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     if (wndGameMode != ::GM_SKIRMISH || misListType == ::g_mislist_type.URL)
       return true
 
-    local mask = getFilterMask()
+    let mask = getFilterMask()
     return (filterData.allowedUnitTypesMask & mask.unit) != 0
       && (filterData.group & mask.group) != 0
   }
@@ -1102,8 +1102,8 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     if (wndGameMode != ::GM_SKIRMISH)
       return
 
-    local isFilterVisible = misListType != ::g_mislist_type.URL && filterDataArray.len() != 0
-    local nestObj = showSceneBtn("filter_nest", isFilterVisible)
+    let isFilterVisible = misListType != ::g_mislist_type.URL && filterDataArray.len() != 0
+    let nestObj = showSceneBtn("filter_nest", isFilterVisible)
 
     if (!isFilterVisible)
       return
@@ -1132,52 +1132,49 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
 
   getAvailableUnitTypes = @() unitTypes.types
     .filter(@(u) u.isAvailable())
-    .sort(@(a, b) a.esUnitType <=> b.esUnitType)
+    .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
 
   function getFiltersView()
   {
-    local availableUnitTypes = getAvailableUnitTypes()
-    local availableMissionGroups = getAvailableMissionGroups()
-    local mask = getFilterMask()
+    let availableUnitTypes = getAvailableUnitTypes()
+    let availableMissionGroups = getAvailableMissionGroups()
+    let mask = getFilterMask()
 
-    local unitColumnView = [{
-      id    = "all_items"
-      image = $"#ui/gameuiskin#all_unit_types.svg"
-      text  = ::loc("all_units")
-      value = availableUnitTypes.findindex(@(u) !(u.bit & mask.unit)) == null
-    }]
-    .extend(availableUnitTypes.map(@(u) {
+    let unitColumnView = availableUnitTypes.map(@(u) {
       id    = $"unit_{u.bit}"
       image = u.testFlightIcon
       text  = u.getArmyLocName()
       value = !!(u.bit & mask.unit)
-    }))
+    })
 
-    local groupColumnView = [{
-      id    = "all_items"
-      text  = ::loc("chapters/all")
-      value = availableMissionGroups.findindex(@(g) !(g & mask.group)) == null
-    }]
-    .extend(availableMissionGroups.map(@(g) {
+    let groupColumnView = availableMissionGroups.map(@(g) {
       id    = $"group_{g}"
       text  = getMissionGroupName(g)
       value = !!(g & mask.group)
-    }))
+    })
 
     return [
-      { checkbox = unitColumnView }
       { checkbox = groupColumnView }
+      { checkbox = unitColumnView }
     ]
   }
 
   function onFilterCbChange(objId, typeName, value)
   {
-    local mask = getFilterMask()
-    if (objId == "all_items")
-      mask[typeName] = value ? -1 : 0
+    let mask = getFilterMask()
+    if (objId == RESET_ID)
+      mask[typeName] = 0
+    else if (objId == "group_favorite")
+    {
+      if (value == isOnlyFavorites)
+        return
+
+      isOnlyFavorites = value
+      ::saveLocalByAccount(getFavoritesSaveId(), isOnlyFavorites)
+    }
     else
     {
-      local bit = objId.split("_")[1].tointeger()
+      let bit = objId.split("_")[1].tointeger()
       mask[typeName] = mask[typeName] ^ bit
     }
     applyMissionFilter()

@@ -1,11 +1,11 @@
-local string = require("std/string.nut")
-local u = require("sqStdLibs/helpers/u.nut")
+let string = require("std/string.nut")
+let u = require("sqStdLibs/helpers/u.nut")
 
 local intIconToString = @(id) ""
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
-local BhvAvatar = class
+let BhvAvatar = class
 {
   eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
@@ -62,8 +62,8 @@ local BhvAvatar = class
 
   function updateView(obj)
   {
-    local image = obj?.value ?? ""
-    local hasImage = image != ""
+    let image = obj?.value ?? ""
+    let hasImage = image != ""
     obj.set_prop_latent("background-image", hasImage ? getIconPath(image) : "")
     obj.set_prop_latent("background-color", hasImage ? "#FFFFFFFF" : "#00000000")
     if (!hasImage)
@@ -77,10 +77,10 @@ local BhvAvatar = class
       return
     }
 
-    local imgBlk = getConfig()?[image]
-    local size = ::clamp(imgBlk?.size || 1.0, 0.01, 1.0)
-    local x = imgBlk?.pos?.x ?? 0.0
-    local y = imgBlk?.pos?.y ?? 0.0
+    let imgBlk = getConfig()?[image]
+    let size = ::clamp(imgBlk?.size || 1.0, 0.01, 1.0)
+    let x = imgBlk?.pos?.x ?? 0.0
+    let y = imgBlk?.pos?.y ?? 0.0
     obj.set_prop_latent("background-repeat",  "part")
     obj.set_prop_latent("background-position",
       ::format("%d,%d,%d,%d",

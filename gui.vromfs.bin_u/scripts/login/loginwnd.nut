@@ -1,18 +1,18 @@
-local statsd = require("statsd")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
-local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local twoStepModal = require("scripts/login/twoStepModal.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
-local loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
+let statsd = require("statsd")
+let { animBgLoad } = require("scripts/loading/animBg.nut")
+let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+let { openUrl } = require("scripts/onlineShop/url.nut")
+let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+let twoStepModal = require("scripts/login/twoStepModal.nut")
+let exitGame = require("scripts/utils/exitGame.nut")
+let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+let loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
 
-class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
+::gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler
 {
   sceneBlkName = loginWndBlkPath.value
 
@@ -51,32 +51,32 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     ::enable_keyboard_layout_change_tracking(true)
     ::enable_keyboard_locks_change_tracking(true)
 
-    local bugDiscObj = scene.findObject("browser_bug_disclaimer")
+    let bugDiscObj = scene.findObject("browser_bug_disclaimer")
     if (::checkObj(bugDiscObj))
       bugDiscObj.show(::target_platform == "linux64" && ::is_steam_big_picture()) //STEAM_OS
 
-    local lp = ::get_login_pass()
-    local isVietnamese = ::is_vietnamese_version()
+    let lp = ::get_login_pass()
+    let isVietnamese = ::is_vietnamese_version()
     if (isVietnamese)
       lp.autoSave = lp.autoSave & ::AUTO_SAVE_FLG_LOGIN
 
-    local disableSSLCheck = lp.autoSave & ::AUTO_SAVE_FLG_NOSSLCERT
+    let disableSSLCheck = lp.autoSave & ::AUTO_SAVE_FLG_NOSSLCERT
 
-    local unObj = scene.findObject("loginbox_username")
+    let unObj = scene.findObject("loginbox_username")
     if (::checkObj(unObj))
       unObj.setValue(lp.login)
 
-    local psObj = scene.findObject("loginbox_password")
+    let psObj = scene.findObject("loginbox_password")
     if (::checkObj(psObj)) {
       psObj["password-smb"] = ::loc("password_mask_char", "*")
       psObj.setValue(lp.password)
     }
 
-    local alObj = scene.findObject("loginbox_autosave_login")
+    let alObj = scene.findObject("loginbox_autosave_login")
     if (::checkObj(alObj))
       alObj.setValue(lp.autoSave & ::AUTO_SAVE_FLG_LOGIN)
 
-    local spObj = scene.findObject("loginbox_autosave_password")
+    let spObj = scene.findObject("loginbox_autosave_password")
     if (::checkObj(spObj))
     {
       spObj.show(!isVietnamese)
@@ -89,9 +89,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     }
 
     setDisableSslCertBox(disableSSLCheck)
-    local isSteamRunning = ::steam_is_running()
-    local showSteamLogin = isSteamRunning
-    local showWebLogin = !isSteamRunning && ::webauth_start(this, onSsoAuthorizationComplete)
+    let isSteamRunning = ::steam_is_running()
+    let showSteamLogin = isSteamRunning
+    let showWebLogin = !isSteamRunning && ::webauth_start(this, onSsoAuthorizationComplete)
     showSceneBtn("secondary_auth_block", showSteamLogin || showWebLogin)
     showSceneBtn("steam_login_action_button", showSteamLogin)
     showSceneBtn("sso_login_action_button", showWebLogin)
@@ -99,10 +99,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     initial_autologin = ::is_autologin_enabled()
 
-    local saveLoginAndPassMask = ::AUTO_SAVE_FLG_LOGIN | ::AUTO_SAVE_FLG_PASS
-    local autoLoginEnable = (lp.autoSave & saveLoginAndPassMask) == saveLoginAndPassMask
+    let saveLoginAndPassMask = ::AUTO_SAVE_FLG_LOGIN | ::AUTO_SAVE_FLG_PASS
+    let autoLoginEnable = (lp.autoSave & saveLoginAndPassMask) == saveLoginAndPassMask
     local autoLogin = (initial_autologin && autoLoginEnable) || ::need_force_autologin()
-    local autoLoginObj = scene.findObject("loginbox_autologin")
+    let autoLoginObj = scene.findObject("loginbox_autologin")
     if (::checkObj(autoLoginObj))
     {
       autoLoginObj.show(!isVietnamese)
@@ -114,15 +114,15 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     if ("dgs_get_argv" in ::getroottable())
     {
-      local s = ::dgs_get_argv("stoken")
+      let s = ::dgs_get_argv("stoken")
       if (!::u.isEmpty(s))
         lp.stoken <- s
     }
     else if ("dgs_argc" in ::getroottable())
       for (local i = 1; i < ::dgs_argc(); i++)
       {
-        local str = ::dgs_argv(i);
-        local idx = str.indexof("-stoken:")
+        let str = ::dgs_argv(i);
+        let idx = str.indexof("-stoken:")
         if (idx != null)
           lp.stoken <- str.slice(idx+8)
       }
@@ -154,7 +154,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function setDisableSslCertBox(value)
   {
-    local dcObj = showSceneBtn("loginbox_disable_ssl_cert", value)
+    let dcObj = showSceneBtn("loginbox_disable_ssl_cert", value)
     if (::checkObj(dcObj))
       dcObj.setValue(value)
   }
@@ -162,10 +162,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   function checkShardingCircuits()
   {
     local defValue = 0
-    local networkBlk = ::get_network_block()
-    local avCircuits = networkBlk.getBlockByName(availableCircuitsBlockName)
+    let networkBlk = ::get_network_block()
+    let avCircuits = networkBlk.getBlockByName(availableCircuitsBlockName)
 
-    local configCircuitName = ::get_cur_circuit_name()
+    let configCircuitName = ::get_cur_circuit_name()
     shardItems = [{
                     item = configCircuitName
                     text = ::loc("circuit/" + configCircuitName)
@@ -180,8 +180,8 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       shardItems = []
       for(local i = 0; i < avCircuits.paramCount(); ++i)
       {
-        local param = avCircuits.getParamName(i)
-        local value = avCircuits.getParamValue(i)
+        let param = avCircuits.getParamName(i)
+        let value = avCircuits.getParamValue(i)
         if (param == paramName && typeof(value) == "string")
         {
           if (value == defaultCircuit)
@@ -195,12 +195,12 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       }
     }
 
-    local show = shardItems.len() > 1
-    local shardObj = showSceneBtn("sharding_block", show)
+    let show = shardItems.len() > 1
+    let shardObj = showSceneBtn("sharding_block", show)
     if (show && ::checkObj(shardObj))
     {
-      local dropObj = shardObj.findObject("sharding_dropright_block")
-      local shardData = ::create_option_combobox("sharding_list", shardItems, defValue, null, true)
+      let dropObj = shardObj.findObject("sharding_dropright_block")
+      let shardData = ::create_option_combobox("sharding_list", shardItems, defValue, null, true)
       guiScene.replaceContentFromText(dropObj, shardData, shardData.len(), this)
     }
   }
@@ -210,21 +210,21 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     if (!isValid())
       return
 
-    local remoteCompObj = scene.findObject("loginbox_remote_comp")
-    local rememberDeviceObj = scene.findObject("loginbox_code_remember_this_device")
-    local savePassObj = scene.findObject("loginbox_autosave_password")
-    local saveLoginObj = scene.findObject("loginbox_autosave_login")
-    local autoLoginObj = scene.findObject("loginbox_autologin")
-    local disableCertObj = scene.findObject("loginbox_disable_ssl_cert")
+    let remoteCompObj = scene.findObject("loginbox_remote_comp")
+    let rememberDeviceObj = scene.findObject("loginbox_code_remember_this_device")
+    let savePassObj = scene.findObject("loginbox_autosave_password")
+    let saveLoginObj = scene.findObject("loginbox_autosave_login")
+    let autoLoginObj = scene.findObject("loginbox_autologin")
+    let disableCertObj = scene.findObject("loginbox_disable_ssl_cert")
 
     if (rememberDeviceObj.isVisible())
       remoteCompObj.setValue(!rememberDeviceObj.getValue())
     else
       rememberDeviceObj.setValue(!remoteCompObj.getValue())
 
-    local isRemoteComp = remoteCompObj.getValue()
-    local isAutosaveLogin = saveLoginObj.getValue()
-    local isAutosavePass = savePassObj.getValue()
+    let isRemoteComp = remoteCompObj.getValue()
+    let isAutosaveLogin = saveLoginObj.getValue()
+    let isAutosavePass = savePassObj.getValue()
 
     setDisableSslCertBox(disableCertObj.getValue())
 
@@ -242,30 +242,30 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function initLanguageSwitch()
   {
-    local canSwitchLang = ::canSwitchGameLocalization()
+    let canSwitchLang = ::canSwitchGameLocalization()
     showSceneBtn("language_selector", canSwitchLang)
     if (!canSwitchLang)
       return
 
     localizationInfo = localizationInfo || ::g_language.getGameLocalizationInfo()
-    local curLangId = ::get_current_language()
+    let curLangId = ::get_current_language()
     local lang = localizationInfo[0]
     foreach (l in localizationInfo)
       if (l.id == curLangId)
         lang = l
 
-    local objLangLabel = scene.findObject("label_language")
+    let objLangLabel = scene.findObject("label_language")
     if (::checkObj(objLangLabel))
     {
       local title = ::loc("profile/language")
-      local titleEn = ::loc("profile/language/en")
+      let titleEn = ::loc("profile/language/en")
       title += (title == titleEn ? "" : ::loc("ui/parentheses/space", { text = titleEn })) + ":"
       objLangLabel.setValue(title)
     }
-    local objLangIcon = scene.findObject("btn_language_icon")
+    let objLangIcon = scene.findObject("btn_language_icon")
     if (::checkObj(objLangIcon))
       objLangIcon["background-image"] = lang.icon
-    local objLangName = scene.findObject("btn_language_text")
+    let objLangName = scene.findObject("btn_language_text")
     if (::checkObj(objLangName))
       objLangName.setValue(lang.title)
   }
@@ -279,15 +279,15 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     if (!::checkObj(obj) || localizationInfo.len() < 2)
       return
 
-    local curLangId = ::get_current_language()
-    local menu = {
+    let curLangId = ::get_current_language()
+    let menu = {
       handler = this
       closeOnUnhover = true
       actions = []
     }
     for (local i = 0; i < localizationInfo.len(); i++)
     {
-      local lang = localizationInfo[i]
+      let lang = localizationInfo[i]
       menu.actions.append({
         actionName  = lang.id
         text        = lang.title
@@ -301,26 +301,26 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onClosePopups()
   {
-    local obj = scene.findObject("btn_language")
+    let obj = scene.findObject("btn_language")
     if (::checkObj(obj))
       ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
   }
 
   function onChangeLanguage(langId)
   {
-    local no_dump_login = scene.findObject("loginbox_username").getValue() || ""
-    local no_dump_pass = scene.findObject("loginbox_password").getValue() || ""
-    local isRemoteComp = scene.findObject("loginbox_remote_comp").getValue()
-    local code_remember_this_device = scene.findObject("loginbox_code_remember_this_device").getValue()
-    local isAutosaveLogin = scene.findObject("loginbox_autosave_login").getValue()
-    local isAutosavePass = scene.findObject("loginbox_autosave_password").getValue()
-    local autologin = scene.findObject("loginbox_autologin").getValue()
-    local shardingListObj = scene.findObject("sharding_list")
-    local shard = shardingListObj ? shardingListObj.getValue() : -1
+    let no_dump_login = scene.findObject("loginbox_username").getValue() || ""
+    let no_dump_pass = scene.findObject("loginbox_password").getValue() || ""
+    let isRemoteComp = scene.findObject("loginbox_remote_comp").getValue()
+    let code_remember_this_device = scene.findObject("loginbox_code_remember_this_device").getValue()
+    let isAutosaveLogin = scene.findObject("loginbox_autosave_login").getValue()
+    let isAutosavePass = scene.findObject("loginbox_autosave_password").getValue()
+    let autologin = scene.findObject("loginbox_autologin").getValue()
+    let shardingListObj = scene.findObject("sharding_list")
+    let shard = shardingListObj ? shardingListObj.getValue() : -1
 
     ::g_language.setGameLocalization(langId, true, true)
 
-    local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
+    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
     scene = handler ? handler.scene : null
     if (!::checkObj(scene))
       return
@@ -367,9 +367,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
         ::set_network_circuit(shardItems[scene.findObject("sharding_list").getValue()].item)
     }
 
-    local autoSaveLogin = ::get_object_value(scene, "loginbox_autosave_login", defaultSaveLoginFlagVal)
-    local autoSavePassword = ::get_object_value(scene, "loginbox_autosave_password", defaultSavePasswordFlagVal)
-    local disableSSLCheck = ::get_object_value(scene, "loginbox_disable_ssl_cert", false)
+    let autoSaveLogin = ::get_object_value(scene, "loginbox_autosave_login", defaultSaveLoginFlagVal)
+    let autoSavePassword = ::get_object_value(scene, "loginbox_autosave_password", defaultSavePasswordFlagVal)
+    let disableSSLCheck = ::get_object_value(scene, "loginbox_disable_ssl_cert", false)
     local autoSave = (autoSaveLogin     ? ::AUTO_SAVE_FLG_LOGIN     : 0) |
                      (autoSavePassword  ? ::AUTO_SAVE_FLG_PASS      : 0) |
                      (disableSSLCheck   ? ::AUTO_SAVE_FLG_NOSSLCERT : 0)
@@ -381,7 +381,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     if (!::checkObj(scene)) //set_login_pass start onlineJob
       return
 
-    local autoLogin = (autoSaveLogin && autoSavePassword) ?
+    let autoLogin = (autoSaveLogin && autoSavePassword) ?
                 ::get_object_value(scene, "loginbox_autologin", defaultSaveAutologinFlagVal)
                 : false
     ::set_autologin_enabled(autoLogin)
@@ -410,7 +410,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   function doLoginWaitJob()
   {
     ::disable_autorelogin_once <- false
-    local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
     local result = requestLogin(no_dump_login)
     proceedAuthorizationResult(result, no_dump_login)
   }
@@ -423,14 +423,14 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam"})
     ::dagor.debug("Steam Login: check_login_pass with code " + steamSpecCode)
-    local result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
+    let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
     proceedAuthorizationResult(result, "")
   }
 
   function onSsoAuthorization()
   {
-    local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
-    local no_dump_url = ::webauth_get_url(no_dump_login)
+    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+    let no_dump_url = ::webauth_get_url(no_dump_login)
     openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
   }
@@ -441,7 +441,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     if (params.success)
     {
-      local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+      let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
       continueLogin(no_dump_login);
     }
   }
@@ -453,9 +453,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       return
     }
 
-    local result = data.status
-    local code = data.code
-    local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+    let result = data.status
+    let code = data.code
+    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
 
     if (result == ::YU2_TIMEOUT && requestGet2stepCodeAtempt-- > 0)
     {
@@ -466,7 +466,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     if (result == ::YU2_OK)
     {
       isLoginRequestInprogress = true
-      local loginResult = requestLoginWithCode(no_dump_login, code)
+      let loginResult = requestLoginWithCode(no_dump_login, code)
       proceedAuthorizationResult(loginResult, no_dump_login)
     }
   }
@@ -505,10 +505,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
         if (needTrySteamLink())
         {
-          local isRemoteComp = ::get_object_value(scene, "loginbox_remote_comp", false)
+          let isRemoteComp = ::get_object_value(scene, "loginbox_remote_comp", false)
           statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam_link"})
           ::dagor.debug("Steam Link Login: check_login_pass")
-          local res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
+          let res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
           ::dagor.debug("Steam Link Login: link existing account, result = " + res)
           if (res == ::YU2_OK)
             ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
@@ -597,7 +597,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onEventKeyboardLayoutChanged(params)
   {
-    local layoutIndicator =
+    let layoutIndicator =
       scene.findObject("loginbox_password_layout_indicator")
 
     if (!::checkObj(layoutIndicator))
@@ -612,7 +612,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onEventKeyboardLocksChanged(params)
   {
-    local capsIndicator = scene.findObject("loginbox_password_caps_indicator")
+    let capsIndicator = scene.findObject("loginbox_password_caps_indicator")
     if (::check_obj(capsIndicator))
       capsIndicator.show((params.locks & 1) == 1)
   }
@@ -638,7 +638,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   function onChangeLogin(obj)
   {
     //Don't save value to local, so it doens't appear in logs.
-    local res = !::g_string.validateEmail(obj.getValue()) && (stoken == "")
+    let res = !::g_string.validateEmail(obj.getValue()) && (stoken == "")
     obj.warning = res? "yes" : "no"
     obj.warningText = res? "yes" : "no"
     obj.tooltip = res? ::loc("tooltip/invalidEmail/possibly") : ""
@@ -670,7 +670,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function setLoginBtnState ()
   {
-    local loginBtnObj = scene.findObject("login_action_button")
+    let loginBtnObj = scene.findObject("login_action_button")
     if (!::check_obj(loginBtnObj))
       return false
 

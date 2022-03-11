@@ -34,17 +34,17 @@ const firstColumnWidth = 0.45
     ::set_lut_texture(::get_default_lut_texture())
 }
 
-class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.PostFxSettings <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/postFxSettings.blk"
+  sceneBlkName = "%gui/postfxSettings.blk"
 
   function updateVisibility()
   {
     //tonemapping
-    local tm = ::get_tonemappingMode();
+    let tm = ::get_tonemappingMode();
 
-    local reinard = tm == 1;
-    local polynom = tm == 2;
+    let reinard = tm == 1;
+    let polynom = tm == 2;
 
     scene.findObject("L_inv_white").show(reinard);
     scene.findObject("U_A").show(polynom);
@@ -58,8 +58,8 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
     //lensFlare
     if (::use_lense_flares())
     {
-      local lfm = ::get_lenseFlareMode();
-      local showLenseFlareSettings = lfm > 0;
+      let lfm = ::get_lenseFlareMode();
+      let showLenseFlareSettings = lfm > 0;
       scene.findObject("lenseFlareHaloPower").show(showLenseFlareSettings);
       scene.findObject("lenseFlareGhostsPower").show(showLenseFlareSettings);
     }
@@ -67,16 +67,16 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSliderValue(name, value)
   {
-    local valueObj = scene.findObject(name+"_value")
+    let valueObj = scene.findObject(name+"_value")
     if (!valueObj) return
-    local valueText = value.tostring();
+    let valueText = value.tostring();
     valueObj.setValue(valueText)
   }
 
   function createRowMarkup(name, controlMarkup)
   {
-    local controlCell = ::format("td { width:t='%.3fpw'; padding-left:t='@optPad'; %s }", 1.0 - firstColumnWidth, controlMarkup)
-    local res = ::format("tr{ id:t='%s'; td { width:t='%.3fpw'; overflow:t='hidden'; optiontext {text:t='%s'; } } %s }",
+    let controlCell = ::format("td { width:t='%.3fpw'; padding-left:t='@optPad'; %s }", 1.0 - firstColumnWidth, controlMarkup)
+    let res = ::format("tr{ id:t='%s'; td { width:t='%.3fpw'; overflow:t='hidden'; optiontext {text:t='%s'; } } %s }",
       name, firstColumnWidth, "#options/" + name, controlCell)
     return res
   }
@@ -89,7 +89,7 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
       markuo += format(" optionValueText { id:t='%s' } ", name+"_value");
     markuo = createRowMarkup(name, markuo)
 
-    local dObj = scene.findObject("postfx_table")
+    let dObj = scene.findObject("postfx_table")
     guiScene.appendWithBlk(dObj, markuo, this)
 
     if (showValue)
@@ -100,7 +100,7 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
   {
     local markuo = ::create_option_list("postfx_settings_" + name, list, value, cb, true)
     markuo = createRowMarkup(name, markuo)
-    local dObj = scene.findObject("postfx_table")
+    let dObj = scene.findObject("postfx_table")
     guiScene.appendWithBlk(dObj, markuo, this)
   }
 
@@ -143,13 +143,13 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
 
   function setValue(name, value)
   {
-    local sliderObj = scene.findObject(name);
+    let sliderObj = scene.findObject(name);
     if (::checkObj(sliderObj))
       sliderObj.setValue(value);
   }
   function getValue(name)
   {
-    local sliderObj = scene.findObject(name);
+    let sliderObj = scene.findObject(name);
     return sliderObj.getValue();
   }
 

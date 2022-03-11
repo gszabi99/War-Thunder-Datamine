@@ -1,4 +1,4 @@
-class ::mission_rules.UnitsDeck extends ::mission_rules.Base
+::mission_rules.UnitsDeck <- class extends ::mission_rules.Base
 {
   needLeftRespawnOnSlots = true
 
@@ -17,8 +17,8 @@ class ::mission_rules.UnitsDeck extends ::mission_rules.Base
   {
     if (!unit)
       return 0
-    local myState = getMyStateBlk()
-    local limitedUnits = ::getTblValue("limitedUnits", myState)
+    let myState = getMyStateBlk()
+    let limitedUnits = ::getTblValue("limitedUnits", myState)
     return ::getTblValue(unit.name, limitedUnits, 0)
   }
 
@@ -32,7 +32,7 @@ class ::mission_rules.UnitsDeck extends ::mission_rules.Base
 
   function getSpecialCantRespawnMessage(unit)
   {
-    local leftRespawns = getUnitLeftRespawns(unit)
+    let leftRespawns = getUnitLeftRespawns(unit)
     if (leftRespawns || isUnitAvailableBySpawnScore(unit))
       return null
     return ::loc("respawn/noUnitLeft", { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
@@ -40,39 +40,39 @@ class ::mission_rules.UnitsDeck extends ::mission_rules.Base
 
   function hasCustomUnitRespawns()
   {
-    local myTeamDataBlk = getMyTeamDataBlk()
+    let myTeamDataBlk = getMyTeamDataBlk()
     return myTeamDataBlk != null
   }
 
   function calcFullUnitLimitsData(isTeamMine = true)
   {
-    local res = base.calcFullUnitLimitsData()
+    let res = base.calcFullUnitLimitsData()
     res.defaultUnitRespawnsLeft = 0
 
-    local myTeamDataBlk = isTeamMine ? getMyTeamDataBlk() : getEnemyTeamDataBlk()
-    local distributedBlk = ::getTblValue("distributedUnits", myTeamDataBlk)
-    local limitedBlk = ::getTblValue("limitedUnits", myTeamDataBlk)
-    local myTeamUnitsParamsBlk = isTeamMine
+    let myTeamDataBlk = isTeamMine ? getMyTeamDataBlk() : getEnemyTeamDataBlk()
+    let distributedBlk = ::getTblValue("distributedUnits", myTeamDataBlk)
+    let limitedBlk = ::getTblValue("limitedUnits", myTeamDataBlk)
+    let myTeamUnitsParamsBlk = isTeamMine
       ? getMyTeamDataBlk("unitsParamsList") : getEnemyTeamDataBlk("unitsParamsList")
-    local weaponsLimitsBlk = getWeaponsLimitsBlk()
-    local unitsGroups = getUnitsGroups()
+    let weaponsLimitsBlk = getWeaponsLimitsBlk()
+    let unitsGroups = getUnitsGroups()
 
     if (::u.isDataBlock(limitedBlk))
       for(local i = 0; i < limitedBlk.paramCount(); i++)
       {
-        local unitName = limitedBlk.getParamName(i)
-        local teamUnitPreset = ::getTblValue(unitName, myTeamUnitsParamsBlk, null)
-        local userUnitPreset = ::getTblValue(unitName, weaponsLimitsBlk, null)
-        local weapon = ::getTblValue("weapon", teamUnitPreset, null)
+        let unitName = limitedBlk.getParamName(i)
+        let teamUnitPreset = ::getTblValue(unitName, myTeamUnitsParamsBlk, null)
+        let userUnitPreset = ::getTblValue(unitName, weaponsLimitsBlk, null)
+        let weapon = ::getTblValue("weapon", teamUnitPreset, null)
 
-        local presetData = {
+        let presetData = {
           weaponPresetId = ::getTblValue("name", weapon, "")
           teamUnitPresetAmount = ::getTblValue("count", weapon, "")
           userUnitPresetAmount = ::getTblValue("respawnsLeft", userUnitPreset, 0)
         }
 
-        local group = unitsGroups?[unitName]
-        local limit = ::g_unit_limit_classes.LimitByUnitName(
+        let group = unitsGroups?[unitName]
+        let limit = ::g_unit_limit_classes.LimitByUnitName(
           unitName,
           limitedBlk.getParamValue(i),
           {
@@ -93,7 +93,7 @@ class ::mission_rules.UnitsDeck extends ::mission_rules.Base
       return false
 
     local missionUnit = unit
-    local missionUnitName = getMyStateBlk()?.userUnitToUnitGroup[unit.name] ?? ""
+    let missionUnitName = getMyStateBlk()?.userUnitToUnitGroup[unit.name] ?? ""
     if (missionUnitName != "")
       missionUnit = ::getAircraftByName(missionUnitName)
 

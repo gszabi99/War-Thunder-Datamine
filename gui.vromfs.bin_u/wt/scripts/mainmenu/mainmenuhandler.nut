@@ -1,15 +1,15 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
-local contentStateModule = require("scripts/clientState/contentState.nut")
-local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
-local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { tryOpenTutorialRewardHandler } = require("scripts/tutorials/tutorialRewardHandler.nut")
-local { getCrewUnlockTime } = require("scripts/crew/crewInfo.nut")
-local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let time = require("scripts/time.nut")
+let contentStateModule = require("scripts/clientState/contentState.nut")
+let topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
+let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+let exitGame = require("scripts/utils/exitGame.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { tryOpenTutorialRewardHandler } = require("scripts/tutorials/tutorialRewardHandler.nut")
+let { getCrewUnlockTime } = require("scripts/crew/crewInfo.nut")
+let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
+::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination
 {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
@@ -56,7 +56,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
     if (::is_vietnamese_version() || ::is_vendor_tencent() || topMenuHandler.value == null)
       return
 
-    local text = ::loc("mainmenu/online_info", {
+    let text = ::loc("mainmenu/online_info", {
       playersOnline = ::online_stats.players_total,
       battles = ::online_stats.rooms_total
     })
@@ -71,9 +71,9 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 
   function updateClanRequests()
   {
-    local haveRights = ::g_clans.isHaveRightsToReviewCandidates()
-    local isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
-    local obj = showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
+    let haveRights = ::g_clans.isHaveRightsToReviewCandidates()
+    let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
+    let obj = showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
     if (::checkObj(obj) && isReqButtonDisplay)
       obj.setValue(::loc("clan/btnShowRequests") + ::loc("ui/parentheses/space",
         {text = ::g_clans.getMyClanCandidates().len()}))
@@ -127,9 +127,9 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 
   function updateLowQualityModelWarning()
   {
-    local lowQuality = !::is_loaded_model_high_quality()
-    local warningObj = showSceneBtn("low-quality-model-warning", lowQuality)
-    local canDownloadPackage = ::can_download_package()
+    let lowQuality = !::is_loaded_model_high_quality()
+    let warningObj = showSceneBtn("low-quality-model-warning", lowQuality)
+    let canDownloadPackage = ::can_download_package()
     ::showBtn("low_quality_model_download_button", canDownloadPackage, warningObj)
 
     if (lowQuality && canDownloadPackage && isSceneActive() && ::isInMenu())
@@ -139,12 +139,12 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
   forceUpdateSelUnitInfo = @() updateSelUnitInfo(true)
   function updateSelUnitInfo(isForced = false)
   {
-    local unitName = ::hangar_get_current_unit_name()
+    let unitName = ::hangar_get_current_unit_name()
     if (!isForced && unitName == visibleUnitInfoName)
       return
     visibleUnitInfoName = unitName
 
-    local unit = ::getAircraftByName(unitName)
+    let unit = ::getAircraftByName(unitName)
     updateUnitCrewLocked(unit)
     updateUnitRentInfo(unit)
     updateLowQualityModelWarning()
@@ -152,16 +152,16 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 
   function updateUnitRentInfo(unit)
   {
-    local rentInfoObj = scene.findObject("rented_unit_info_text")
-    local messageTemplate = ::loc("mainmenu/unitRentTimeleft") + ::loc("ui/colon") + "%s"
+    let rentInfoObj = scene.findObject("rented_unit_info_text")
+    let messageTemplate = ::loc("mainmenu/unitRentTimeleft") + ::loc("ui/colon") + "%s"
     SecondsUpdater(rentInfoObj, function(obj, params) {
-      local isVisible = !!unit && unit.isRented()
+      let isVisible = !!unit && unit.isRented()
       obj.show(isVisible)
       if (isVisible)
       {
-        local sec = unit.getRentTimeleft()
-        local hours = time.secondsToHours(sec)
-        local timeStr = hours < 1.0 ?
+        let sec = unit.getRentTimeleft()
+        let hours = time.secondsToHours(sec)
+        let timeStr = hours < 1.0 ?
           time.secondsToString(sec) :
           time.hoursToString(hours, false, true, true)
         obj.setValue(::format(messageTemplate, timeStr))
@@ -171,14 +171,14 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
   }
 
   function updateUnitCrewLocked(unit) {
-    local lockObj = scene.findObject("crew-notready-topmenu")
+    let lockObj = scene.findObject("crew-notready-topmenu")
     lockObj.tooltip = ::format(::loc("msgbox/no_available_aircrafts"),
       time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     local wasShown = false
     SecondsUpdater(lockObj, function(obj, params) {
-      local crew = unit != null ? ::getCrewByAir(unit) : null
-      local unlockTime = crew != null ? getCrewUnlockTime(crew) : 0
+      let crew = unit != null ? ::getCrewByAir(unit) : null
+      let unlockTime = crew != null ? getCrewUnlockTime(crew) : 0
       obj.show(unlockTime > 0)
       if (unlockTime <= 0) {
         if (wasShown) {
@@ -189,12 +189,12 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
       }
 
       wasShown = true
-      local timeStr = time.secondsToString(unlockTime)
+      let timeStr = time.secondsToString(unlockTime)
       obj.findObject("time").setValue(timeStr)
 
-      local showButtons = ::has_feature("EarlyExitCrewUnlock")
-      local crewCost = ::shop_get_unlock_crew_cost(crew.id)
-      local crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
+      let showButtons = ::has_feature("EarlyExitCrewUnlock")
+      let crewCost = ::shop_get_unlock_crew_cost(crew.id)
+      let crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
       if (showButtons)
       {
         placePriceTextToButton(obj, "btn_unlock_crew", ::loc("mainmenu/btn_crew_unlock"), crewCost, 0)

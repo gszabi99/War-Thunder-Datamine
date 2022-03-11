@@ -1,4 +1,4 @@
-local function getLocalizedShortcutName(shortcutId) {
+let function getLocalizedShortcutName(shortcutId) {
   return ::loc($"hotkeys/{shortcutId}")
 }
 

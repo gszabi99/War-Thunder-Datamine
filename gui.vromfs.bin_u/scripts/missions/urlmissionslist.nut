@@ -18,7 +18,7 @@ g_url_missions.loadOnce <- function loadOnce()
   if (isLoaded)
     return
 
-  local listBlk = ::loadLocalByAccount(listSavePath)
+  let listBlk = ::loadLocalByAccount(listSavePath)
   if (::u.isDataBlock(listBlk))
     foreach(misUrlBlk in listBlk % "mission")
       if (::u.isDataBlock(misUrlBlk))
@@ -41,9 +41,9 @@ g_url_missions.fixUrlMissionNames <- function fixUrlMissionNames()
       for (local i = 1; i < MAX_URL_MISSIONS; i++)
       {
         local newName = mission.name
-        local namePostFix = "[" + i.tostring() + "]"
-        local newNameLen = utf8(newName + namePostFix).charCount()
-        local unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGHT
+        let namePostFix = "[" + i.tostring() + "]"
+        let newNameLen = utf8(newName + namePostFix).charCount()
+        let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGHT
         if (unlimitCharCount > 0)
           newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGHT - unlimitCharCount)
         newName += namePostFix
@@ -64,7 +64,7 @@ g_url_missions.save <- function save()
   if (!isLoaded)
     return
 
-  local saveBlk = ::DataBlock()
+  let saveBlk = ::DataBlock()
   foreach(mission in list)
     saveBlk.mission <- mission.getSaveBlk()
   ::saveLocalByAccount(listSavePath, saveBlk)
@@ -89,7 +89,7 @@ g_url_missions.openModifyUrlMissionWnd <- function openModifyUrlMissionWnd(urlMi
 
 g_url_missions.openDeleteUrlMissionConfirmationWnd <- function openDeleteUrlMissionConfirmationWnd(urlMission)
 {
-  local text = ::loc("urlMissions/msgBox/deleteConfirmation" {name = urlMission.name})
+  let text = ::loc("urlMissions/msgBox/deleteConfirmation" {name = urlMission.name})
   ::scene_msg_box("delete_url_mission_confirmation", null, text, [
       [ "yes", @() ::g_url_missions.deleteMission(urlMission) ],
       [ "no", @() null ]
@@ -160,7 +160,7 @@ g_url_missions.modifyMission <- function modifyMission(urlMission, name, url)
 
 g_url_missions.deleteMission <- function deleteMission(urlMission)
 {
-  local idx = list.indexof(urlMission)
+  let idx = list.indexof(urlMission)
   if (idx == null)
     return
 
@@ -185,7 +185,7 @@ g_url_missions.createMission <- function createMission(name, url)
   if (!checkDuplicates(name, url))
     return false
 
-  local urlMission = ::UrlMission(name, url)
+  let urlMission = ::UrlMission(name, url)
   list.append(urlMission)
   save()
   ::broadcastEvent("UrlMissionAdded", { mission = urlMission })

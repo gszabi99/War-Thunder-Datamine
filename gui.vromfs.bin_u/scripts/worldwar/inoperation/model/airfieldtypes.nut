@@ -1,4 +1,4 @@
-local  AT_RUNWAY = {
+let  AT_RUNWAY = {
   name = "AT_RUNWAY"
   objName = "airfield"
   locId = "air"
@@ -10,7 +10,7 @@ local  AT_RUNWAY = {
   flyoutSound = "ww_unit_move_airplanes"
 }
 
-local  AT_HELIPAD = {
+let  AT_HELIPAD = {
   name = "AT_HELIPAD"
   objName = "helipad"
   locId = "helicopter"
@@ -23,6 +23,6 @@ local  AT_HELIPAD = {
 }
 
 return {
-  AT_RUNWAY  = AT_RUNWAY
-  AT_HELIPAD = AT_HELIPAD
+  AT_RUNWAY
+  AT_HELIPAD
 }

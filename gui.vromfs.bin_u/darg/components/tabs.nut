@@ -1,12 +1,12 @@
 from "daRg" import *
 from "frp" import *
 
-local function defTab(tab_item, is_current, handler) {
-  local grp = ElemGroup()
-  local stateFlags = Watched(0)
+let function defTab(tab_item, is_current, handler) {
+  let grp = ElemGroup()
+  let stateFlags = Watched(0)
 
   return function () {
-    local isHover = (stateFlags.value & S_HOVER)
+    let isHover = (stateFlags.value & S_HOVER)
     local fillColor, textColor
     if (is_current) {
       textColor = isHover ? Color(255, 255,255) : Color(0, 255, 0)
@@ -45,7 +45,7 @@ local function defTab(tab_item, is_current, handler) {
 }
 
 
-local function defHolder(params) {
+let function defHolder(params) {
   return {
     rendObj = ROBJ_SOLID
     size = [flex(), SIZE_TO_CONTENT]
@@ -58,13 +58,13 @@ local function defHolder(params) {
 }
 
 
-local function tabs(holder = defHolder, tab = defTab) {
+let function tabs(holder = defHolder, tab = defTab) {
   return function(params) {
-    local children = params.tabs.map(function(item) {
+    let children = params.tabs.map(function(item) {
       return tab(item, item.id == params.currentTab, @() params.onChange(item))
     })
 
-    local result = (typeof holder == "function") ? holder(params) : holder
+    let result = (typeof holder == "function") ? holder(params) : holder
     result.children <- children
     return result
   }

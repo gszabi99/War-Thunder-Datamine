@@ -1,29 +1,29 @@
-local { mkRadar} = require("radarComponent.nut")
-local aamAim = require("rocketAamAim.nut")
-local agmAim = require("agmAim.nut")
-local tws = require("tws.nut")
-local {IsMlwsLwsHudVisible} = require("twsState.nut")
-local sightIndicators = require("hud/tankSightIndicators.nut")
-local activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.nut")
-local { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
-local { IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
-local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
-local { bw, bh, rw, rh } = require("style/screenState.nut")
+let { mkRadar} = require("radarComponent.nut")
+let aamAim = require("rocketAamAim.nut")
+let agmAim = require("agmAim.nut")
+let tws = require("tws.nut")
+let {IsMlwsLwsHudVisible} = require("twsState.nut")
+let sightIndicators = require("hud/tankSightIndicators.nut")
+let activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.nut")
+let { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
+let { IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
+let { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
+let { bw, bh, rw, rh } = require("style/screenState.nut")
 
-local greenColor = Color(10, 202, 10, 250)
-local redColor = Color(255, 35, 30, 255)
+let greenColor = Color(10, 202, 10, 250)
+let redColor = Color(255, 35, 30, 255)
 
-local styleAamAim = {
+let styleAamAim = {
   color = greenColor
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(2.0)
 }
 
-local radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03 * rh.value])
+let radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03 * rh.value])
 
-local function Root() {
-  local colorWacthed = Watched(greenColor)
-  local colorAlertWatched = Watched(redColor)
+let function Root() {
+  let colorWacthed = Watched(greenColor)
+  let colorAlertWatched = Watched(redColor)
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
@@ -47,10 +47,10 @@ local function Root() {
 }
 
 
-local function tankDmgIndicator() {
+let function tankDmgIndicator() {
   return function() {
-    local colorWacthed = Watched(greenColor)
-    local children = [activeProtectionSystem]
+    let colorWacthed = Watched(greenColor)
+    let children = [activeProtectionSystem]
     if (IsMlwsLwsHudVisible.value)
       children.append(tws({
         colorWatched = colorWacthed,

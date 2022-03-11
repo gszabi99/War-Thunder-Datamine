@@ -1,8 +1,8 @@
-local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local time = require("scripts/time.nut")
+let squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
+let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let time = require("scripts/time.nut")
 
-local PROGRESS_PARAMS = {
+let PROGRESS_PARAMS = {
   type = "old"
   rotation = 0
   markerPos = 100
@@ -13,7 +13,7 @@ local PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-class ::gui_handlers.clanAverageActivityModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanAverageActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   clanData = null
@@ -30,27 +30,27 @@ class ::gui_handlers.clanAverageActivityModal extends ::gui_handlers.BaseGuiHand
       clan_activity_header_text = ::loc("clan/activity")
       clan_activity_description = ::loc("clan/activity/progress/desc_no_progress")
     }
-    local maxMemberActivity = max(clanData.maxActivityPerPeriod, 1)
+    let maxMemberActivity = max(clanData.maxActivityPerPeriod, 1)
     if (clanData.maxClanActivity > 0)
     {
-      local maxActivity = maxMemberActivity * clanData.members.len()
-      local limitClanActivity = min(maxActivity, clanData.maxClanActivity)
-      local myActivity = ::u.search(clanData.members,
+      let maxActivity = maxMemberActivity * clanData.members.len()
+      let limitClanActivity = min(maxActivity, clanData.maxClanActivity)
+      let myActivity = ::u.search(clanData.members,
         @(member) member.uid == ::my_user_id_str)?.curPeriodActivity ?? 0
-      local clanActivity = getClanActivity()
+      let clanActivity = getClanActivity()
 
       if (clanActivity > 0)
       {
-        local percentMemberActivity = min(100.0 * myActivity / maxMemberActivity, 100)
-        local percentClanActivity = min(100.0 * clanActivity / maxActivity, 100)
-        local myExp = min(min(1, 1.0 * percentMemberActivity/percentClanActivity) * clanActivity,
+        let percentMemberActivity = min(100.0 * myActivity / maxMemberActivity, 100)
+        let percentClanActivity = min(100.0 * clanActivity / maxActivity, 100)
+        let myExp = min(min(1, 1.0 * percentMemberActivity/percentClanActivity) * clanActivity,
           clanData.maxClanActivity)
-        local roundMyExp = ::round(myExp)
-        local limit = min(100.0 * limitClanActivity / maxActivity, 100)
-        local isAllVehiclesResearched = squadronUnitAction.isAllVehiclesResearched()
-        local expBoost = ::clan_get_exp_boost()/100.0
-        local hasBoost = expBoost > 0
-        local descrArray = clanData.nextRewardDayId != null
+        let roundMyExp = ::round(myExp)
+        let limit = min(100.0 * limitClanActivity / maxActivity, 100)
+        let isAllVehiclesResearched = squadronUnitAction.isAllVehiclesResearched()
+        let expBoost = ::clan_get_exp_boost()/100.0
+        let hasBoost = expBoost > 0
+        let descrArray = clanData.nextRewardDayId != null
           ? [::loc("clan/activity_period_end", {date = ::colorize("activeTextColor",
               time.buildDateTimeStr(clanData.nextRewardDayId, false, false))}) + "\n"]
           : []
@@ -62,18 +62,18 @@ class ::gui_handlers.clanAverageActivityModal extends ::gui_handlers.BaseGuiHand
           ? ::loc("clan/activity/progress/desc_all_researched")
           : ::loc("clan/activity/progress/desc"))
 
-        local markerPosMyExp = min(100 * myExp / limitClanActivity, 100)
+        let markerPosMyExp = min(100 * myExp / limitClanActivity, 100)
 
-        local pxCountToEdgeWnd = ::to_pixels((1-markerPosMyExp/100.0)
+        let pxCountToEdgeWnd = ::to_pixels((1-markerPosMyExp/100.0)
           + "*0.4@scrn_tgt + 1@tablePad + 5@blockInterval")
-        local myExpTextSize = daguiFonts.getStringWidthPx(::getShortTextFromNum(roundMyExp)
+        let myExpTextSize = daguiFonts.getStringWidthPx(::getShortTextFromNum(roundMyExp)
             + (hasBoost ? (" + " + ::getShortTextFromNum((roundMyExp*expBoost).tointeger())) : ""),
           "fontNormal", guiScene)
-        local offsetMyExpText = ::min(pxCountToEdgeWnd - myExpTextSize/2, 0)
-        local myExpShortText= ::colorize("activeTextColor",
+        let offsetMyExpText = ::min(pxCountToEdgeWnd - myExpTextSize/2, 0)
+        let myExpShortText= ::colorize("activeTextColor",
           ::getShortTextFromNum(roundMyExp) + (hasBoost ? (" + " + ::colorize("goodTextColor",
           ::getShortTextFromNum((roundMyExp*expBoost).tointeger()))) : ""))
-        local myExpFullText= ::colorize("activeTextColor",
+        let myExpFullText= ::colorize("activeTextColor",
           roundMyExp + (hasBoost ? (" + " + ::colorize("goodTextColor",
             ::round((roundMyExp*expBoost).tointeger()))) : ""))
 
@@ -144,7 +144,7 @@ class ::gui_handlers.clanAverageActivityModal extends ::gui_handlers.BaseGuiHand
       }
     }
 
-    local data = ::handyman.renderCached("gui/clans/clanAverageActivityModal", view)
+    let data = ::handyman.renderCached("%gui/clans/clanAverageActivityModal", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
   }
 

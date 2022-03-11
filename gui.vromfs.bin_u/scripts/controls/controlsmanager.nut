@@ -2,9 +2,9 @@
 ::g_script_reloader.loadOnce("scripts/controls/controlsGlobals.nut")
 ::g_script_reloader.loadOnce("scripts/controls/controlsCompatibility.nut")
 
-local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { eachBlock } = require("std/datablock.nut")
+let shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
+let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { eachBlock } = require("std/datablock.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::g_controls_manager <- {
@@ -98,9 +98,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function fixDeviceMapping()
   {
-    local realMapping = []
+    let realMapping = []
 
-    local blkDeviceMapping = ::DataBlock()
+    let blkDeviceMapping = ::DataBlock()
     ::fill_joysticks_desc(blkDeviceMapping)
 
     eachBlock(blkDeviceMapping, @(blkJoy)
@@ -126,7 +126,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       if (!("shortcutsList" in ::getroottable()))
         return {}
 
-      local axisShortcutSuffixesList = []
+      let axisShortcutSuffixesList = []
       foreach (axisShortcut in shortcutsAxisListModule.types)
         if (axisShortcut.type == CONTROL_TYPE.AXIS_SHORTCUT)
           axisShortcutSuffixesList.append(axisShortcut.id)
@@ -176,7 +176,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     foreach (shortcut in ::shortcutsList)
       if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false))
       {
-        local axis = curPreset.getAxis(shortcut.id)
+        let axis = curPreset.getAxis(shortcut.id)
         if (axis.axisId == -1)
           axis.relative = true
       }
@@ -186,11 +186,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     foreach (fixData in fixesList)
     {
-      local value = "valueFunction" in fixData ?
+      let value = "valueFunction" in fixData ?
         fixData.valueFunction() : fixData.value
       if (::getTblValue("isAppend", fixData))
       {
-        local isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
+        let isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
         if (curPreset.isHotkeyShortcutBinded(fixData.source, value)
             || (fixData.shouldAppendIfEmptyOnXInput
                 && isGamepadExpected
@@ -218,8 +218,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function clearGuiOptions()
   {
-    local prefix = "USEROPT_"
-    local userOptTypes = []
+    let prefix = "USEROPT_"
+    let userOptTypes = []
     foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         userOptTypes.append(oType)
@@ -232,9 +232,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!::g_login.isProfileReceived())
       return
 
-    local mainOptionsMode = getGuiOptionsMode()
+    let mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
-    local prefix = "USEROPT_"
+    let prefix = "USEROPT_"
     foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         if (oType in ::getroottable())

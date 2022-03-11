@@ -1,23 +1,23 @@
-local time = require("scripts/time.nut")
-local { acos } = require("math")
-local penalty = require("penalty")
-local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local contentPreview = require("scripts/customization/contentPreview.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local { canBuyNotResearched,
+let time = require("scripts/time.nut")
+let { acos } = require("math")
+let penalty = require("penalty")
+let decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
+let unitActions = require("scripts/unit/unitActions.nut")
+let contentPreview = require("scripts/customization/contentPreview.nut")
+let { openUrl } = require("scripts/onlineShop/url.nut")
+let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+let { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 
-local { isPlatformPC } = require("scripts/clientState/platform.nut")
-local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
-local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-local { isCollectionPrize, isCollectionItem } = require("scripts/collections/collections.nut")
-local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
-local { loadModel } = require("scripts/hangarModelLoadManager.nut")
-local { showedUnit, getShowedUnitName, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { isPlatformPC } = require("scripts/clientState/platform.nut")
+let { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
+let { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
+let { isCollectionPrize, isCollectionItem } = require("scripts/collections/collections.nut")
+let { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
+let { loadModel } = require("scripts/hangarModelLoadManager.nut")
+let { showedUnit, getShowedUnitName, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -40,7 +40,7 @@ enum decalTwoSidedMode
 
 ::on_decal_job_complete <- function on_decal_job_complete(taskId)
 {
-  local callback = ::getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
+  let callback = ::getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
   if (callback)
   {
     callback()
@@ -74,7 +74,7 @@ enum decalTwoSidedMode
 {
   if (!::g_login.isProfileReceived())
     return
-  local skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
+  let skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
   if (!skip)
   {
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
@@ -103,9 +103,9 @@ enum decalTwoSidedMode
   }
 }
 
-class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.DecalMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/customization/customization.blk"
+  sceneBlkName = "%gui/customization/customization.blk"
   unit = null
   owner = null
 
@@ -171,7 +171,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     ::hangar_focus_model(true)
 
-    local unitInfoPanel = ::create_slot_info_panel(scene, false, "showroom")
+    let unitInfoPanel = ::create_slot_info_panel(scene, false, "showroom")
     registerSubHandler(unitInfoPanel)
     unitInfoPanelWeak = unitInfoPanel.weakref()
     if (needForceShowUnitInfoPanel)
@@ -187,7 +187,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!isUnitOwn && !previewMode)
     {
-      local skinId = unit.getPreviewSkinId()
+      let skinId = unit.getPreviewSkinId()
       if (skinId != "" && skinId != initialAppliedSkinId)
         applySkin(skinId, true)
     }
@@ -207,7 +207,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getHandlerRestoreData()
   {
-    local data = {
+    let data = {
       openData = {
       }
       stateData = {
@@ -239,7 +239,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     setDmgSkinMode(::hangar_get_loaded_model_damage_state(unit.name) == MDS_DAMAGED)
 
-    local bObj = scene.findObject("btn_testflight")
+    let bObj = scene.findObject("btn_testflight")
     if (::checkObj(bObj))
     {
       bObj.setValue(unit.unitType.getTestFlightText())
@@ -270,15 +270,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (previewMode & PREVIEW_MODE.SKIN)
     {
-      local skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
-      local skin = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
+      let skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
+      let skin = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
       if (skin)
         title += ::loc("ui/comma") + ::loc("options/skin") + " " + ::colorize(skin.getRarityColor(), skin.getName())
     }
     else if (previewMode & PREVIEW_MODE.DECORATOR)
     {
-      local typeText = ::loc("trophy/unlockables_names/" + decoratorPreview.decoratorType.resourceType)
-      local nameText = ::colorize(decoratorPreview.getRarityColor(), decoratorPreview.getName())
+      let typeText = ::loc("trophy/unlockables_names/" + decoratorPreview.decoratorType.resourceType)
+      let nameText = ::colorize(decoratorPreview.getRarityColor(), decoratorPreview.getName())
       title += typeText + " " + nameText
     }
 
@@ -287,18 +287,18 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurCategoryListObj()
   {
-    local decalsObj = scene.findObject("decals_list")
+    let decalsObj = scene.findObject("decals_list")
     if (!::checkObj(decalsObj))
       return null
 
-    local value = decalsObj.getValue()
+    let value = decalsObj.getValue()
     if (value < 0 || value >= decalsObj.childrenCount())
       return null
 
-    local categoryObj = decalsObj.getChild(value)
+    let categoryObj = decalsObj.getChild(value)
     if (::checkObj(categoryObj))
     {
-      local categoryListObj = categoryObj.findObject("collapse_content_" + (categoryObj?.id ?? ""))
+      let categoryListObj = categoryObj.findObject("collapse_content_" + (categoryObj?.id ?? ""))
       if (::checkObj(categoryListObj))
         return categoryListObj
     }
@@ -311,17 +311,17 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local bObj = null
     local shortcuts = []
 
-    local hasKeyboard = isPlatformPC
-    local hasGamepad = ::show_console_buttons
+    let hasKeyboard = isPlatformPC
+    let hasGamepad = ::show_console_buttons
 
     //Flip
-    local btn_toggle_mirror_text = ::loc("decals/flip") + (hasKeyboard ? " (F)" : "")
+    let btn_toggle_mirror_text = ::loc("decals/flip") + (hasKeyboard ? " (F)" : "")
     bObj = scene.findObject("btn_toggle_mirror")
     if(::checkObj(bObj))
       bObj.setValue(btn_toggle_mirror_text)
 
     //TwoSided
-    local text = ::loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + ::loc("ui/colon")
+    let text = ::loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + ::loc("ui/colon")
     bObj = scene.findObject("two_sided_label")
     if(::checkObj(bObj))
       bObj.setValue(text)
@@ -349,7 +349,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedBuiltinSkinId()
   {
-    local res = previewSkinId || ::hangar_get_last_skin(unit.name)
+    let res = previewSkinId || ::hangar_get_last_skin(unit.name)
     return res == "" ? "default" : res // hangar_get_last_skin() can return empty string.
   }
 
@@ -360,16 +360,16 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!::can_save_current_skin_template())
     {
-      local message = ::format(::loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
+      let message = ::format(::loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
       msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
       return
     }
 
-    local allowCurrentSkin = access_SkinsUnrestrictedExport // true - current skin, false - default skin.
-    local success = ::save_current_skin_template(allowCurrentSkin)
+    let allowCurrentSkin = access_SkinsUnrestrictedExport // true - current skin, false - default skin.
+    let success = ::save_current_skin_template(allowCurrentSkin)
 
-    local templateName = "template_" + unit.name
-    local message = success ? ::format(::loc("decals/successfulLoadedSkinSample"), templateName) : ::loc("decals/failedLoadedSkinSample")
+    let templateName = "template_" + unit.name
+    let message = success ? ::format(::loc("decals/successfulLoadedSkinSample"), templateName) : ::loc("decals/failedLoadedSkinSample")
     msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
 
     updateMainGuiElements()
@@ -398,7 +398,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventDecalJobComplete(params)
   {
-    local isInEditMode = currentState & decoratorEditState.EDITING
+    let isInEditMode = currentState & decoratorEditState.EDITING
     if (isInEditMode && currentType == ::g_decorator_type.DECALS)
       updateDecoratorActionBtnStates()
   }
@@ -408,21 +408,21 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!access_Skins)
       return
 
-    local isVisible = !previewMode && isUnitOwn && unit.unitType.isSkinAutoSelectAvailable()
+    let isVisible = !previewMode && isUnitOwn && unit.unitType.isSkinAutoSelectAvailable()
     showSceneBtn("auto_skin_block", isVisible)
     if (!isVisible)
       return
 
-    local autoSkinId = "auto_skin_control"
-    local controlObj = scene.findObject(autoSkinId)
+    let autoSkinId = "auto_skin_control"
+    let controlObj = scene.findObject(autoSkinId)
     if (::check_obj(controlObj))
     {
       controlObj.setValue(::g_decorator.isAutoSkinOn(unit.name))
       return
     }
 
-    local placeObj = scene.findObject("auto_skin_place")
-    local markup = ::create_option_switchbox({
+    let placeObj = scene.findObject("auto_skin_place")
+    let markup = ::create_option_switchbox({
       id = autoSkinId
       value = ::g_decorator.isAutoSkinOn(unit.name)
       cb = "onAutoSkinchange"
@@ -441,21 +441,21 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     skinList = ::g_decorator.getSkinsOption(unit.name, true, false, true)
-    local curSkinId = getSelectedBuiltinSkinId()
-    local curSkinIndex = ::find_in_array(skinList.values, curSkinId, 0)
-    local tooltipParams = previewMode ? { showAsTrophyContent = true } : null
+    let curSkinId = getSelectedBuiltinSkinId()
+    let curSkinIndex = ::find_in_array(skinList.values, curSkinId, 0)
+    let tooltipParams = previewMode ? { showAsTrophyContent = true } : null
 
-    local skinItems = []
+    let skinItems = []
     foreach(i, decorator in skinList.decorators)
     {
-      local access = skinList.access[i]
-      local canBuy = !previewMode && decorator.canBuyUnlock(unit)
-      local canFindOnMarketplace = !previewMode && decorator.canBuyCouponOnMarketplace(unit)
-      local priceText = canBuy ? decorator.getCost().getTextAccordingToBalance() : ""
-      local isUnlocked = decorator.isUnlocked()
+      let access = skinList.access[i]
+      let canBuy = !previewMode && decorator.canBuyUnlock(unit)
+      let canFindOnMarketplace = !previewMode && decorator.canBuyCouponOnMarketplace(unit)
+      let priceText = canBuy ? decorator.getCost().getTextAccordingToBalance() : ""
+      let isUnlocked = decorator.isUnlocked()
       local text = skinList.items[i].text
-      local image = skinList.items[i].image ?? ""
-      local images = []
+      let image = skinList.items[i].image ?? ""
+      let images = []
       if (image != "")
         images.append({ image, imageNoMargin = !isUnlocked })
       if (!isUnlocked)
@@ -483,7 +483,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSkinTooltip(skinId)
   {
-    local tooltipObj = scene.findObject("skinTooltip")
+    let tooltipObj = scene.findObject("skinTooltip")
     tooltipObj.tooltipId = DECORATION.getTooltipId($"{unit.name}/{skinId}", ::UNLOCKABLE_SKIN)
   }
 
@@ -498,7 +498,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!::checkObj(nestObj))
         return
     }
-    local skinsDropright = ::create_option_combobox(listObjId, items, index, cb, needCreateList)
+    let skinsDropright = ::create_option_combobox(listObjId, items, index, cb, needCreateList)
     if (needCreateList)
       guiScene.prependWithBlk(nestObj, skinsDropright, this)
     else
@@ -508,7 +508,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateUserSkinList()
   {
     ::reload_user_skins()
-    local userSkinsOption = ::get_option(::USEROPT_USER_SKIN)
+    let userSkinsOption = ::get_option(::USEROPT_USER_SKIN)
     renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
 
@@ -517,23 +517,23 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isUnitOwn || !isUnitTank)
       return
 
-    local options = [::USEROPT_TANK_CAMO_SCALE,
+    let options = [::USEROPT_TANK_CAMO_SCALE,
                      ::USEROPT_TANK_CAMO_ROTATION]
     if (::has_feature("SpendGold"))
       options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
 
-    local view = { isTooltipByHold = ::show_console_buttons, rows = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, rows = [] }
     foreach(optType in options)
     {
-      local option = ::get_option(optType)
+      let option = ::get_option(optType)
       view.rows.append({
         id = option.id
         name = "#options/" + option.id
         option = ::create_option_slider(option.id, option.value, option.cb, true, "slider", option)
       })
     }
-    local data = ::handyman.renderCached(("gui/options/verticalOptions"), view)
-    local slObj = scene.findObject("tank_skin_settings")
+    let data = ::handyman.renderCached(("%gui/options/verticalOptions"), view)
+    let slObj = scene.findObject("tank_skin_settings")
     if (::checkObj(slObj))
       guiScene.replaceContentFromText(slObj, data, data.len(), this)
 
@@ -545,47 +545,47 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isUnitOwn || !isUnitTank)
       return
 
-    local skinIndex = skinList?.values.indexof(previewSkinId) ?? 0
-    local skinDecorator = skinList?.decorators[skinIndex]
-    local canScaleAndRotate = skinDecorator?.getCouponItemdefId() == null
+    let skinIndex = skinList?.values.indexof(previewSkinId) ?? 0
+    let skinDecorator = skinList?.decorators[skinIndex]
+    let canScaleAndRotate = skinDecorator?.getCouponItemdefId() == null
 
-    local have_premium = ::havePremium()
+    let have_premium = ::havePremium()
     local option = null
 
     option = ::get_option(::USEROPT_TANK_SKIN_CONDITION)
-    local tscId = option.id
-    local tscTrObj = scene.findObject("tr_" + tscId)
+    let tscId = option.id
+    let tscTrObj = scene.findObject("tr_" + tscId)
     if (::checkObj(tscTrObj))
     {
       tscTrObj.inactiveColor = have_premium? "no" : "yes"
       tscTrObj.tooltip = have_premium ? "" : ::loc("mainmenu/onlyWithPremium")
-      local sliderObj = scene.findObject(tscId)
-      local value = have_premium ? option.value : option.defVal
+      let sliderObj = scene.findObject(tscId)
+      let value = have_premium ? option.value : option.defVal
       sliderObj.setValue(value)
       updateSkinConditionValue(value, sliderObj)
     }
 
     option = ::get_option(::USEROPT_TANK_CAMO_SCALE)
-    local tcsId = option.id
-    local tcsTrObj = scene.findObject("tr_" + tcsId)
+    let tcsId = option.id
+    let tcsTrObj = scene.findObject("tr_" + tcsId)
     if (::checkObj(tcsTrObj))
     {
       tcsTrObj.tooltip = canScaleAndRotate ? "" : ::loc("guiHints/not_available_on_this_camo")
-      local sliderObj = scene.findObject(tcsId)
-      local value = canScaleAndRotate ? option.value : option.defVal
+      let sliderObj = scene.findObject(tcsId)
+      let value = canScaleAndRotate ? option.value : option.defVal
       sliderObj.setValue(value)
       sliderObj.enable(canScaleAndRotate)
       onChangeTankCamoScale(sliderObj)
     }
 
     option = ::get_option(::USEROPT_TANK_CAMO_ROTATION)
-    local tcrId = option.id
-    local tcrTrObj = scene.findObject("tr_" + tcrId)
+    let tcrId = option.id
+    let tcrTrObj = scene.findObject("tr_" + tcrId)
     if (::checkObj(tcrTrObj))
     {
       tcrTrObj.tooltip = canScaleAndRotate ? "" : ::loc("guiHints/not_available_on_this_camo")
-      local sliderObj = scene.findObject(tcrId)
-      local value = canScaleAndRotate ? option.value : option.defVal
+      let sliderObj = scene.findObject(tcrId)
+      let value = canScaleAndRotate ? option.value : option.defVal
       sliderObj.setValue(value)
       sliderObj.enable(canScaleAndRotate)
       onChangeTankCamoRotation(sliderObj)
@@ -597,8 +597,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local oldValue = ::get_option(::USEROPT_TANK_SKIN_CONDITION).value
-    local newValue = obj.getValue()
+    let oldValue = ::get_option(::USEROPT_TANK_SKIN_CONDITION).value
+    let newValue = obj.getValue()
     if (oldValue == newValue)
       return
 
@@ -615,7 +615,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function askBuyPremium(afterCloseFunc)
   {
-    local msgText = ::loc("msgbox/noEntitlement/PremiumAccount")
+    let msgText = ::loc("msgbox/noEntitlement/PremiumAccount")
     msgBox("no_premium", msgText,
          [["ok", @() startOnlineShop("premium", afterCloseFunc) ],
          ["cancel", @() null ]], "ok", { checkDuplicateId = true })
@@ -623,7 +623,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSkinConditionValue(value, obj)
   {
-    local textObj = scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = scene.findObject("value_" + (obj?.id ?? ""))
     if (!::checkObj(textObj))
       return
 
@@ -636,10 +636,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local textObj = scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = scene.findObject("value_" + (obj?.id ?? ""))
     if (::checkObj(textObj))
     {
-      local value = obj.getValue()
+      let value = obj.getValue()
       ::hangar_set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
       textObj.setValue((hangar_get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
     }
@@ -650,11 +650,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local textObj = scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = scene.findObject("value_" + (obj?.id ?? ""))
     if (::checkObj(textObj))
     {
-      local value = obj.getValue()
-      local visualValue = value * 180 / 100
+      let value = obj.getValue()
+      let visualValue = value * 180 / 100
       textObj.setValue((visualValue > 0 ? "+" : "") + visualValue.tostring())
       ::hangar_set_tank_camo_rotation(value)
     }
@@ -665,10 +665,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!access_Attachables)
       return
 
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = []}
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = []}
     for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++)
     {
-      local button = getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
+      let button = getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
       button.id = "slot_attach_" + i
       button.onClick = "onAttachableSlotClick"
       button.onDblClick = "onAttachableSlotDoubleClick"
@@ -676,16 +676,16 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       view.buttons.append(button)
     }
 
-    local dObj = scene.findObject("attachable_div")
+    let dObj = scene.findObject("attachable_div")
     if (!::checkObj(dObj))
       return
 
-    local attachListObj = dObj.findObject("slots_attachable_list")
+    let attachListObj = dObj.findObject("slots_attachable_list")
     if (!::checkObj(attachListObj))
       return
 
     dObj.show(true)
-    local data = ::handyman.renderCached("gui/commonParts/imageButton", view)
+    let data = ::handyman.renderCached("%gui/commonParts/imageButton", view)
 
     guiScene.replaceContentFromText(attachListObj, data, data.len(), this)
     attachListObj.setValue(curAttachSlot)
@@ -693,10 +693,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDecalSlots()
   {
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
     for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++)
     {
-      local button = getViewButtonTable(i, ::g_decorator_type.DECALS)
+      let button = getViewButtonTable(i, ::g_decorator_type.DECALS)
       button.id = "slot_" + i
       button.onClick = "onDecalSlotClick"
       button.onDblClick = "onDecalSlotDoubleClick"
@@ -704,10 +704,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       view.buttons.append(button)
     }
 
-    local dObj = scene.findObject("slots_list")
+    let dObj = scene.findObject("slots_list")
     if (::checkObj(dObj))
     {
-      local data = ::handyman.renderCached("gui/commonParts/imageButton", view)
+      let data = ::handyman.renderCached("%gui/commonParts/imageButton", view)
       guiScene.replaceContentFromText(dObj, data, data.len(), this)
     }
 
@@ -716,11 +716,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getViewButtonTable(slotIdx, decoratorType)
   {
-    local canEditDecals = isUnitOwn && previewSkinId == null
-    local slot = getSlotInfo(slotIdx, false, decoratorType)
-    local decalId = slot.decalId
-    local decorator = ::g_decorator.getDecorator(decalId, decoratorType)
-    local slotRatio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
+    let canEditDecals = isUnitOwn && previewSkinId == null
+    let slot = getSlotInfo(slotIdx, false, decoratorType)
+    let decalId = slot.decalId
+    let decorator = ::g_decorator.getDecorator(decalId, decoratorType)
+    let slotRatio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
     local buttonTooltip = slot.isEmpty ? ::loc(decoratorType.emptySlotLocId) : ""
     if (!isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
@@ -757,11 +757,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true)
   {
-    local isGift   = ::isUnitGift(unit)
+    let isGift   = ::isUnitGift(unit)
     local canBuyOnline = ::canBuyUnitOnline(unit)
-    local canBuyNotResearchedUnit = canBuyNotResearched(unit)
-    local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
-    local canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(unit)
+    let canBuyNotResearchedUnit = canBuyNotResearched(unit)
+    let canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
+    let canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
     {
@@ -774,13 +774,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local bObj = showSceneBtn("btn_buy", canBuyIngame)
     if (canBuyIngame && ::check_obj(bObj))
     {
-      local price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
+      let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
       placePriceTextToButton(scene, "btn_buy", ::loc("mainmenu/btnOrder"), price)
 
       ::showUnitDiscount(bObj.findObject("buy_discount"), unit)
     }
 
-    local bOnlineObj = showSceneBtn("btn_buy_online", canBuyOnline)
+    let bOnlineObj = showSceneBtn("btn_buy_online", canBuyOnline)
     if (canBuyOnline && ::check_obj(bOnlineObj))
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), unit)
 
@@ -791,43 +791,43 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (isUnitOwn && previewSkinId && skinList)
     {
-      local skinIndex = skinList.values.indexof(previewSkinId) ?? -1
+      let skinIndex = skinList.values.indexof(previewSkinId) ?? -1
       skinDecorator = skinList.decorators?[skinIndex]
       skinCouponItemdefId = skinDecorator?.getCouponItemdefId()
     }
 
-    local canBuySkin = skinDecorator?.canBuyUnlock(unit) ?? false
-    local canConsumeSkinCoupon = !canBuySkin &&
+    let canBuySkin = skinDecorator?.canBuyUnlock(unit) ?? false
+    let canConsumeSkinCoupon = !canBuySkin &&
       (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
-    local canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
+    let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
     bObj = showSceneBtn("btn_buy_skin", canBuySkin)
     if (canBuySkin && ::check_obj(bObj))
     {
-      local price = skinDecorator.getCost()
+      let price = skinDecorator.getCost()
       placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
     }
 
-    local can_testflight = ::isTestFlightAvailable(unit) && !decoratorPreview
-    local can_createUserSkin = ::can_save_current_skin_template()
+    let can_testflight = ::isTestFlightAvailable(unit) && !decoratorPreview
+    let can_createUserSkin = ::can_save_current_skin_template()
 
     bObj = scene.findObject("btn_load_userskin_sample")
     if (::checkObj(bObj))
       bObj.inactiveColor = can_createUserSkin ? "no" : "yes"
 
-    local isInEditMode = currentState & decoratorEditState.EDITING
+    let isInEditMode = currentState & decoratorEditState.EDITING
     updateBackButton()
 
     if (decoratorType == null)
       decoratorType = currentType
 
-    local focusedType = getCurrentFocusedType()
-    local focusedSlot = getSlotInfo(getCurrentDecoratorSlot(focusedType), true, focusedType)
+    let focusedType = getCurrentFocusedType()
+    let focusedSlot = getSlotInfo(getCurrentDecoratorSlot(focusedType), true, focusedType)
 
     bObj = scene.findObject("btn_toggle_damaged")
-    local isDmgSkinPreviewMode = ::checkObj(bObj) && bObj.getValue()
+    let isDmgSkinPreviewMode = ::checkObj(bObj) && bObj.getValue()
 
-    local usableSkinsCount = ::u.filter(skinList?.access ?? [], @(a) a.isOwn).len()
+    let usableSkinsCount = ::u.filter(skinList?.access ?? [], @(a) a.isOwn).len()
 
     ::showBtnTable(scene, {
           btn_go_to_collection = ::show_console_buttons && !isInEditMode && isDecoratorsListOpen
@@ -868,7 +868,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (needUpdateSlotDivs)
       updateSlotsDivsVisibility(decoratorType)
 
-    local isHangarLoaded = ::hangar_is_loaded()
+    let isHangarLoaded = ::hangar_is_loaded()
     ::enableBtnTable(scene, {
           decalslots_div     = isHangarLoaded
           slots_list         = isHangarLoaded
@@ -883,7 +883,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBackButton()
   {
-    local bObj = scene.findObject("btn_back")
+    let bObj = scene.findObject("btn_back")
     if (!bObj?.isValid())
       return
 
@@ -896,7 +896,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if ((currentState & decoratorEditState.SELECT) && ::show_console_buttons)
     {
-      local listObj = getCurCategoryListObj()
+      let listObj = getCurCategoryListObj()
       if (listObj?.isValid() && listObj.isHovered())
       {
         bObj.text = ::loc("mainmenu/btnCollapse")
@@ -916,7 +916,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDecoratorActions(show, decoratorType)
   {
-    local hintsObj = showSceneBtn("decals_hint", show)
+    let hintsObj = showSceneBtn("decals_hint", show)
     if (show && ::checkObj(hintsObj))
     {
       ::showBtnTable(hintsObj, {
@@ -926,10 +926,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //Flip
-    local showMirror = show && decoratorType.canMirror()
+    let showMirror = show && decoratorType.canMirror()
     showSceneBtn("btn_toggle_mirror", showMirror)
     //TwoSided
-    local showAbsBf = show && decoratorType.canToggle()
+    let showAbsBf = show && decoratorType.canToggle()
     showSceneBtn("two_sided", showAbsBf)
 
     if (showMirror || showAbsBf)
@@ -947,9 +947,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     obj = scene.findObject("btn_toggle_mirror")
     if (::check_obj(obj))
     {
-      local enabled = ::get_hangar_mirror_current_decal()
-      local icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
-      local iconObj = obj.findObject("btn_toggle_mirror_img")
+      let enabled = ::get_hangar_mirror_current_decal()
+      let icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
+      let iconObj = obj.findObject("btn_toggle_mirror_img")
       iconObj["background-image"] = icon
       iconObj.getParent().active = enabled ? "yes" : "no"
     }
@@ -957,11 +957,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSlotsDivsVisibility(decoratorType = null)
   {
-    local inBasicMode = currentState & decoratorEditState.NONE
-    local showDecalsSlotDiv = access_Decals
+    let inBasicMode = currentState & decoratorEditState.NONE
+    let showDecalsSlotDiv = access_Decals
       && (inBasicMode || (decoratorType == ::g_decorator_type.DECALS && (currentState & decoratorEditState.SELECT)))
 
-    local showAttachableSlotsDiv = access_Attachables
+    let showAttachableSlotsDiv = access_Attachables
       && (inBasicMode || (decoratorType == ::g_decorator_type.ATTACHABLES && (currentState & decoratorEditState.SELECT)))
 
     ::showBtnTable(scene, {
@@ -972,15 +972,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUnitStatus()
   {
-    local obj = scene.findObject("unit_status")
+    let obj = scene.findObject("unit_status")
     if (!::check_obj(obj))
       return
-    local isShow = previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)
+    let isShow = previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)
     obj.show(isShow)
     if (!isShow)
       return
     obj.findObject("icon")["background-image"] = isUnitOwn ? "ui/gameuiskin#favorite" : "ui/gameuiskin#locked"
-    local textObj = obj.findObject("text")
+    let textObj = obj.findObject("text")
     textObj.setValue(::loc(isUnitOwn ? "conditions/unitExists" : "weaponry/unit_not_bought"))
     textObj.overlayTextColor = isUnitOwn ? "good" : "bad"
   }
@@ -990,7 +990,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (previewMode != PREVIEW_MODE.DECORATOR)
       return
 
-    local isUnitAutoselected = initialUnitId && initialUnitId != unit?.name
+    let isUnitAutoselected = initialUnitId && initialUnitId != unit?.name
     local obj = showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
     if (obj && isUnitAutoselected)
       obj.findObject("label").setValue(::loc("decoratorPreview/autoselectedUnit", {
@@ -1004,17 +1004,17 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     obj = showSceneBtn("previewed_decorator", true)
     if (obj)
     {
-      local txtApplyDecorator = ::loc("decoratorPreview/applyManually/" + currentType.resourceType)
-      local labelObj = obj.findObject("label")
+      let txtApplyDecorator = ::loc("decoratorPreview/applyManually/" + currentType.resourceType)
+      let labelObj = obj.findObject("label")
       labelObj.setValue(txtApplyDecorator + ::loc("ui/colon"))
 
-      local params = { showAsTrophyContent = true }
-      local view = {
+      let params = { showAsTrophyContent = true }
+      let view = {
         isTooltipByHold = ::show_console_buttons,
         buttons = [ generateDecalButton("", decoratorPreview, currentType, params) ]
       }
-      local slotsObj = obj.findObject("decorator_preview_div")
-      local markup = ::handyman.renderCached("gui/commonParts/imageButton", view)
+      let slotsObj = obj.findObject("decorator_preview_div")
+      let markup = ::handyman.renderCached("%gui/commonParts/imageButton", view)
       guiScene.replaceContentFromText(slotsObj, markup, markup.len(), this)
     }
   }
@@ -1056,7 +1056,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local slotId = obj.getValue()
+    let slotId = obj.getValue()
 
     setCurrentDecoratorSlot(slotId, ::g_decorator_type.DECALS)
     updateButtons(::g_decorator_type.DECALS)
@@ -1064,8 +1064,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDecalSlotActivate(obj)
   {
-    local value = obj.getValue()
-    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    let value = obj.getValue()
+    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (::check_obj(childObj))
       onDecalSlotClick(childObj)
   }
@@ -1075,7 +1075,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local slotId = obj.getValue()
+    let slotId = obj.getValue()
 
     setCurrentDecoratorSlot(slotId, ::g_decorator_type.ATTACHABLES)
     updateButtons(::g_decorator_type.ATTACHABLES)
@@ -1083,8 +1083,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAttachableSlotActivate(obj)
   {
-    local value = obj.getValue()
-    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    let value = obj.getValue()
+    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (!::checkObj(childObj))
       return
 
@@ -1105,7 +1105,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkSlotIndex(slotId, decoratorType))
       return
 
-    local prevSlotId = actionObj.getParent().getValue()
+    let prevSlotId = actionObj.getParent().getValue()
     if (isDecoratorsListOpen && slotId == prevSlotId)
       return
 
@@ -1117,7 +1117,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     else
       updateButtons(decoratorType)
 
-    local slot = getSlotInfo(slotId, false, decoratorType)
+    let slot = getSlotInfo(slotId, false, decoratorType)
     if (!slot.isEmpty && decoratorType != ::g_decorator_type.ATTACHABLES
                       && decoratorType != ::g_decorator_type.DECALS)
       decoratorType.specifyEditableSlot(slotId)
@@ -1143,14 +1143,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::u.isEmpty(previewSkinId) || !skinList)
       return true
 
-    local skinIndex = ::find_in_array(skinList.values, previewSkinId, 0)
-    local skinDecorator = skinList.decorators[skinIndex]
+    let skinIndex = ::find_in_array(skinList.values, previewSkinId, 0)
+    let skinDecorator = skinList.decorators[skinIndex]
 
     if (skinDecorator.canBuyUnlock(unit))
     {
-      local cost = skinDecorator.getCost()
-      local priceText = cost.getTextAccordingToBalance()
-      local msgText = ::warningIfGold(
+      let cost = skinDecorator.getCost()
+      let priceText = cost.getTextAccordingToBalance()
+      let msgText = ::warningIfGold(
         ::loc("decals/needToBuySkin",
           {purchase = skinDecorator.getName(), cost = priceText}),
         skinDecorator.getCost())
@@ -1194,16 +1194,16 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local slotName = ::getObjIdByPrefix(obj, "slot_attach_")
-    local slotId = slotName ? slotName.tointeger() : -1
+    let slotName = ::getObjIdByPrefix(obj, "slot_attach_")
+    let slotId = slotName ? slotName.tointeger() : -1
 
     openDecorationsListForSlot(slotId, obj, ::g_decorator_type.ATTACHABLES)
   }
 
   function onDecalSlotClick(obj)
   {
-    local slotName = ::getObjIdByPrefix(obj, "slot_")
-    local slotId = slotName ? slotName.tointeger() : -1
+    let slotName = ::getObjIdByPrefix(obj, "slot_")
+    let slotId = slotName ? slotName.tointeger() : -1
     openDecorationsListForSlot(slotId, obj, ::g_decorator_type.DECALS)
   }
 
@@ -1219,12 +1219,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDecoratorSlotDoubleClick(decoratorType)
   {
-    local slotIdx = getCurrentDecoratorSlot(decoratorType)
-    local slotInfo = getSlotInfo(slotIdx, false, decoratorType)
+    let slotIdx = getCurrentDecoratorSlot(decoratorType)
+    let slotInfo = getSlotInfo(slotIdx, false, decoratorType)
     if (slotInfo.isEmpty)
       return
 
-    local decorator = ::g_decorator.getDecorator(slotInfo.decalId, decoratorType)
+    let decorator = ::g_decorator.getDecorator(slotInfo.decalId, decoratorType)
     currentState = decoratorEditState.REPLACE
     enterEditDecalMode(slotIdx, decorator)
   }
@@ -1236,14 +1236,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         || (currentState & decoratorEditState.NONE))
       return
 
-    local wObj = scene.findObject("decals_list")
+    let wObj = scene.findObject("decals_list")
     if (!::checkObj(wObj))
       return
 
     currentType = decoratorType
 
-    local decCategories = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
-    local view = { collapsableBlocks = [] }
+    let decCategories = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
+    let view = { collapsableBlocks = [] }
     foreach (idx, category in decCategories)
       view.collapsableBlocks.append({
         id = decoratorType.categoryWidgetIdPrefix + category
@@ -1255,7 +1255,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         contentParams = "on_wrap_up:t='onDecalItemHeader'; on_wrap_down:t='onDecalItemNextHeader';"
       })
 
-    local data = ::handyman.renderCached("gui/commonParts/collapsableBlock", view)
+    let data = ::handyman.renderCached("%gui/commonParts/collapsableBlock", view)
     guiScene.replaceContentFromText(wObj, data, data.len(), this)
 
     showDecoratorsList()
@@ -1267,13 +1267,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       selCategoryId = ::loadLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, "")
     else
     {
-      local decal = ::g_decorator.getDecorator(slot.decalId, decoratorType)
+      let decal = ::g_decorator.getDecorator(slot.decalId, decoratorType)
       selCategoryId = decal ? decal.category : ""
     }
 
     if (selCategoryId != "")
     {
-      local idx = decCategories.indexof(selCategoryId) ?? -1
+      let idx = decCategories.indexof(selCategoryId) ?? -1
       if (idx >= 0)
         wObj.setValue(idx)
       else
@@ -1285,35 +1285,35 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function generateDecalCategoryContent(categoryId, decoratorType)
   {
-    local curSlotDecalId = getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-    local decoratorsData = ::g_decorator.getCachedDecoratorsDataByType(decoratorType, unit.unitType.tag)
+    let curSlotDecalId = getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
+    let decoratorsData = ::g_decorator.getCachedDecoratorsDataByType(decoratorType, unit.unitType.tag)
 
     if (!(categoryId in decoratorsData))
       return ""
 
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
     foreach (decorator in decoratorsData[categoryId])
       view.buttons.append(generateDecalButton(curSlotDecalId, decorator, decoratorType))
 
     if (!view.buttons.len())
       return ""
 
-    return ::handyman.renderCached("gui/commonParts/imageButton", view)
+    return ::handyman.renderCached("%gui/commonParts/imageButton", view)
   }
 
   function generateDecalButton(curSlotDecalId, decorator, decoratorType, params = null)
   {
-    local isTrophyContent = params?.showAsTrophyContent ?? false
-    local isUnlocked = decorator.canUse(unit)
-    local lockCountryImg = ::get_country_flag_img("decal_locked_" + ::getUnitCountry(unit))
-    local unitLocked = decorator.getUnitTypeLockIcon()
-    local cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
+    let isTrophyContent = params?.showAsTrophyContent ?? false
+    let isUnlocked = decorator.canUse(unit)
+    let lockCountryImg = ::get_country_flag_img("decal_locked_" + ::getUnitCountry(unit))
+    let unitLocked = decorator.getUnitTypeLockIcon()
+    let cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
       : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
       : null
-    local statusLock = !isTrophyContent ? getStatusLockText(decorator)
+    let statusLock = !isTrophyContent ? getStatusLockText(decorator)
       : isUnlocked || cost != null ? null
       : "achievement"
-    local leftAmount = decorator.limit - decorator.getCountOfUsingDecorator(unit)
+    let leftAmount = decorator.limit - decorator.getCountOfUsingDecorator(unit)
 
     return {
       id = "decal_" + decorator.id
@@ -1368,13 +1368,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!decorator || decorator.canUse(unit))
       return false
 
-    local text = []
+    let text = []
     if (decorator.isLockedByCountry(unit))
       text.append(::loc("mainmenu/decalNotAvailable"))
 
     if (decorator.isLockedByUnit(unit))
     {
-      local unitsList = []
+      let unitsList = []
       foreach(unitName in decorator.units)
         unitsList.append(::colorize("userlogColoredText", ::getUnitName(unitName)))
       text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
@@ -1422,7 +1422,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCollectionButtonClick()
   {
-    local selectedDecorator = getSelectedDecal(currentType)
+    let selectedDecorator = getSelectedDecal(currentType)
     if (!isCollectionItem(selectedDecorator))
       return
 
@@ -1442,12 +1442,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedDecal(decoratorType)
   {
-    local listObj = getCurCategoryListObj()
+    let listObj = getCurCategoryListObj()
     if (!::checkObj(listObj))
       return null
 
-    local value = listObj.getValue()
-    local decalObj = (value >= 0 && value < listObj.childrenCount()) ? listObj.getChild(value) : null
+    let value = listObj.getValue()
+    let decalObj = (value >= 0 && value < listObj.childrenCount()) ? listObj.getChild(value) : null
     return getDecalInfoByObj(decalObj, decoratorType)
   }
 
@@ -1456,23 +1456,23 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return null
 
-    local decalId = ::getObjIdByPrefix(obj, "decal_") || ""
+    let decalId = ::getObjIdByPrefix(obj, "decal_") || ""
 
     return ::g_decorator.getDecorator(decalId, decoratorType)
   }
 
   function onDecoratorItemActivate(obj)
   {
-    local value = obj.getValue()
-    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    let value = obj.getValue()
+    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     onDecoratorItemClick(childObj)
   }
 
   function collapseOpenedCategory() {
-    local wObj = scene.findObject("decals_list")
+    let wObj = scene.findObject("decals_list")
     if (!::check_obj(wObj))
       return
-    local prevValue = wObj.getValue()
+    let prevValue = wObj.getValue()
     wObj.setValue(-1)
     updateBackButton()
     guiScene.applyPendingChanges(false)
@@ -1481,10 +1481,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function moveMouseOnDecalsHeader(valueDiff = 0) {
-    local wObj = scene.findObject("decals_list")
+    let wObj = scene.findObject("decals_list")
     if (!::check_obj(wObj))
       return false
-    local newValue = wObj.getValue() + valueDiff
+    let newValue = wObj.getValue() + valueDiff
     if (newValue < 0 || wObj.childrenCount() <= newValue)
       return false
     ::move_mouse_on_child(wObj.getChild(newValue), 0)
@@ -1500,22 +1500,22 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDecoratorItemClick(obj)
   {
-    local decorator = getDecalInfoByObj(obj, currentType)
+    let decorator = getDecalInfoByObj(obj, currentType)
     if (!decorator)
       return
 
-    local decoratorsListObj = obj.getParent()
+    let decoratorsListObj = obj.getParent()
     if (decoratorsListObj.getValue() != decorator.catIndex)
       decoratorsListObj.setValue(decorator.catIndex)
 
     if (!decoratorPreview && decorator.isOutOfLimit(unit))
       return ::g_popups.add("", ::loc("mainmenu/decoratorExceededLimit", {limit = decorator.limit}))
 
-    local curSlotIdx = getCurrentDecoratorSlot(currentType)
-    local isDecal = currentType == ::g_decorator_type.DECALS
+    let curSlotIdx = getCurrentDecoratorSlot(currentType)
+    let isDecal = currentType == ::g_decorator_type.DECALS
     if (!decoratorPreview && isDecal)
     {
-      local isRestrictionShown = showDecoratorAccessRestriction(decorator)
+      let isRestrictionShown = showDecoratorAccessRestriction(decorator)
       if (isRestrictionShown)
         return
 
@@ -1537,7 +1537,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       //getSlotInfo is too slow for decals (~150ms)(because of code func hangar_get_decal_in_slot),
       // so it better to use as last check, so not to worry with lags
-      local slotInfo = getSlotInfo(curSlotIdx, false, currentType)
+      let slotInfo = getSlotInfo(curSlotIdx, false, currentType)
       if (!slotInfo.isEmpty && decorator.id != slotInfo.decalId)
       {
         currentState = decoratorEditState.REPLACE
@@ -1555,25 +1555,25 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkObj(obj))
       return
 
-    local decalId = ::getObjIdByPrefix(obj, "decal_") || ""
+    let decalId = ::getObjIdByPrefix(obj, "decal_") || ""
 
-    local decal = ::g_decorator.getDecorator(decalId, currentType)
+    let decal = ::g_decorator.getDecorator(decalId, currentType)
     if (!decal)
       return
 
     if (!decal.canUse(unit))
       return
 
-    local slotIdx = getCurrentDecoratorSlot(currentType)
-    local slotInfo = getSlotInfo(slotIdx, false, currentType)
+    let slotIdx = getCurrentDecoratorSlot(currentType)
+    let slotInfo = getSlotInfo(slotIdx, false, currentType)
     if (!slotInfo.isEmpty)
       enterEditDecalMode(slotIdx, decal)
   }
 
   function onDecalCategoryActivate(obj)
   {
-    local value = obj.getValue()
-    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    let value = obj.getValue()
+    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (::checkObj(childObj))
       fillDecalCategoryContent(childObj)
   }
@@ -1585,33 +1585,33 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillDecalsCategoryContentImpl(decoratorType)
   {
-    local wObj = scene.findObject("decals_list")
+    let wObj = scene.findObject("decals_list")
     if (!::checkObj(wObj))
       return
-    local idx = wObj.getValue()
+    let idx = wObj.getValue()
     if (idx < 0)
       return
 
-    local categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
-    local category = categoriesOrder[idx]
-    local categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
-    local categoryObj = wObj.findObject(categoryBlockId)
+    let categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
+    let category = categoriesOrder[idx]
+    let categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
+    let categoryObj = wObj.findObject(categoryBlockId)
     if (!::checkObj(categoryObj))
       return
 
-    local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
+    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
     if (!::checkObj(decalsListObj))
       return
 
-    local data = generateDecalCategoryContent(category, decoratorType)
+    let data = generateDecalCategoryContent(category, decoratorType)
     guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
 
     ::saveLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, category)
 
-    local decalId = preSelectDecorator ? preSelectDecorator.id :
+    let decalId = preSelectDecorator ? preSelectDecorator.id :
       getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-    local decal = ::g_decorator.getDecorator(decalId, decoratorType)
-    local index = decal && decal.category == category? decal.catIndex : 0
+    let decal = ::g_decorator.getDecorator(decalId, decoratorType)
+    let index = decal && decal.category == category? decal.catIndex : 0
     editableDecoratorId = decal? decalId : null
 
     decalsListObj.setValue(index)
@@ -1625,18 +1625,18 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!categoryId)
       return
 
-    local categoryBlockId = decoratorType.categoryWidgetIdPrefix + categoryId
-    local categoryObj = scene.findObject(categoryBlockId)
+    let categoryBlockId = decoratorType.categoryWidgetIdPrefix + categoryId
+    let categoryObj = scene.findObject(categoryBlockId)
     if (!::check_obj(categoryObj))
       return
 
-    local headerObj = categoryObj.findObject("btn_" + categoryBlockId)
+    let headerObj = categoryObj.findObject("btn_" + categoryBlockId)
     if (::check_obj(headerObj))
       headerObj.scrollToView(true)
 
-    local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
-    local index = (::checkObj(decalsListObj) && decalsListObj.childrenCount()) ? decalsListObj.getValue() : -1
-    local itemObj = (index >= 0) ? decalsListObj.getChild(index) : null
+    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
+    let index = (::checkObj(decalsListObj) && decalsListObj.childrenCount()) ? decalsListObj.getValue() : -1
+    let itemObj = (index >= 0) ? decalsListObj.getChild(index) : null
     if (::checkObj(itemObj))
       itemObj.scrollToView()
   }
@@ -1653,7 +1653,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (currentState & decoratorEditState.SELECT)
     {
-      local listObj = getCurCategoryListObj()
+      let listObj = getCurCategoryListObj()
       if (listObj?.isValid() && listObj.isHovered())
         return collapseOpenedCategory()
 
@@ -1674,7 +1674,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     decorator.decoratorType.save(unit.name, false)
 
-    local afterSuccessFunc = ::Callback((@(decorator, afterPurchDo) function() {
+    let afterSuccessFunc = ::Callback((@(decorator, afterPurchDo) function() {
       ::update_gamercards()
       updateSelectedCategory(decorator)
       if (afterPurchDo)
@@ -1690,16 +1690,16 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isDecoratorsListOpen)
       return
 
-    local categoryBlockId = decorator.decoratorType.categoryWidgetIdPrefix + decorator.category
-    local categoryObj = getObj(categoryBlockId)
+    let categoryBlockId = decorator.decoratorType.categoryWidgetIdPrefix + decorator.category
+    let categoryObj = getObj(categoryBlockId)
 
     if (!::checkObj(categoryObj) || categoryObj.isVisible())
       return
 
-    local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
+    let decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
     if (::checkObj(decalsListObj))
     {
-      local data = generateDecalCategoryContent(decorator.category, decorator.decoratorType)
+      let data = generateDecalCategoryContent(decorator.category, decorator.decoratorType)
       guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
       decalsListObj.getChild(decalsListObj.getValue()).selected = "yes"
     }
@@ -1710,7 +1710,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if ((currentState & decoratorEditState.EDITING) || !decorator)
       return
 
-    local decoratorType = decorator.decoratorType
+    let decoratorType = decorator.decoratorType
     decoratorType.specifyEditableSlot(slotIdx)
 
     if (!decoratorType.enterEditMode(decorator.id))
@@ -1726,7 +1726,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decoratorType == ::g_decorator_type.DECALS)
       ::dmViewer.update()
 
-    local slotInfo = getSlotInfo(getCurrentDecoratorSlot(decoratorType), true, decoratorType)
+    let slotInfo = getSlotInfo(getCurrentDecoratorSlot(decoratorType), true, decoratorType)
     if (contentUpdate)
     {
       updateSlotsBlockByType(decoratorType)
@@ -1747,7 +1747,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!(currentState & decoratorEditState.EDITING))
       return
 
-    local decorator = g_decorator.getDecorator(editableDecoratorId, currentType)
+    let decorator = g_decorator.getDecorator(editableDecoratorId, currentType)
 
     if (!save || !decorator)
     {
@@ -1764,7 +1764,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decorator.canBuyCouponOnMarketplace(unit))
       return askMarketplaceCouponActionOnExitEditMode(decorator)
 
-    local isRestrictionShown = showDecoratorAccessRestriction(decorator)
+    let isRestrictionShown = showDecoratorAccessRestriction(decorator)
     if (isRestrictionShown)
       return
 
@@ -1792,8 +1792,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function askBuyDecorator(decorator, afterPurchDo = null)
   {
-    local cost = decorator.getCost()
-    local msgText = ::warningIfGold(
+    let cost = decorator.getCost()
+    let msgText = ::warningIfGold(
       ::loc("shop/needMoneyQuestion_purchaseDecal",
         {purchase = ::colorize("userlogColoredText", decorator.getName()),
           cost = cost.getTextAccordingToBalance()}),
@@ -1813,7 +1813,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function askMarketplaceCouponAction(decorator)
   {
-    local inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false)
     {
       inventoryItem.consume(::Callback(function(result) {
@@ -1823,10 +1823,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+    let couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
     if (!(couponItem?.hasLink() ?? false))
       return
-    local couponName = ::colorize("activeTextColor", couponItem.getName())
+    let couponName = ::colorize("activeTextColor", couponItem.getName())
     msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
         [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
         [ "cancel", onBtnBack ]
@@ -1854,7 +1854,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function showFailedInstallPopup(decorator)
   {
-    local attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
+    let attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
       ::g_popups.add("", ::loc("mainmenu/failedInstallAttachableAngle",
         { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
@@ -1870,7 +1870,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function installDecorationOnUnit(decorator)
   {
-    local save = !!decorator && decorator.isUnlocked() && previewMode != PREVIEW_MODE.DECORATOR
+    let save = !!decorator && decorator.isUnlocked() && previewMode != PREVIEW_MODE.DECORATOR
     return currentType.exitEditMode(true, save,
       ::Callback( function () { onFinishInstallDecoratorOnUnit(true) }, this))
   }
@@ -1921,7 +1921,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSkinChange(obj)
   {
-    local skinNum = obj.getValue()
+    let skinNum = obj.getValue()
     if (!skinList || !(skinNum in skinList.values))
     {
       ::callstack()
@@ -1929,12 +1929,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local skinId = skinList.values[skinNum]
-    local access = skinList.access[skinNum]
+    let skinId = skinList.values[skinNum]
+    let access = skinList.access[skinNum]
 
     if (isUnitOwn && access.isOwn && !previewMode)
     {
-      local curSkinId = ::hangar_get_last_skin(unit.name)
+      let curSkinId = ::hangar_get_last_skin(unit.name)
       if (!previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
         return
 
@@ -1968,8 +1968,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserSkinChanged(obj)
   {
-    local value = obj.getValue()
-    local prevValue = ::get_option(::USEROPT_USER_SKIN).value
+    let value = obj.getValue()
+    let prevValue = ::get_option(::USEROPT_USER_SKIN).value
     if (prevValue == value)
       return
 
@@ -2012,7 +2012,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setDmgSkinMode(enable)
   {
-    local cObj = scene.findObject("btn_toggle_damaged")
+    let cObj = scene.findObject("btn_toggle_damaged")
     if (::checkObj(cObj))
       cObj.setValue(enable)
   }
@@ -2029,7 +2029,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       ::hangar_set_dm_viewer_mode(obj.getValue() ? ::DM_VIEWER_EXTERIOR : ::DM_VIEWER_NONE)
       if (obj.getValue())
       {
-        local bObj = scene.findObject("dmg_skin_state")
+        let bObj = scene.findObject("dmg_skin_state")
         if (::checkObj(bObj))
           bObj.setValue(::hangar_get_loaded_model_damage_state(unit.name))
       }
@@ -2044,13 +2044,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBuySkin()
   {
-    local skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
-    local previewSkinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
+    let skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
+    let previewSkinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
     if (!previewSkinDecorator)
       return
 
-    local cost = previewSkinDecorator.getCost()
-    local msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseSkin",
+    let cost = previewSkinDecorator.getCost()
+    let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseSkin",
                           { purchase = previewSkinDecorator.getName(),
                             cost = cost.getTextAccordingToBalance()
                           }), cost)
@@ -2065,7 +2065,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function buySkin(skinName, cost)
   {
-    local afterSuccessFunc = ::Callback((@(skinName) function() {
+    let afterSuccessFunc = ::Callback((@(skinName) function() {
         ::update_gamercards()
         applySkin(skinName)
         updateMainGuiElements()
@@ -2076,9 +2076,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnMarketplaceFindSkin(obj)
   {
-    local skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
-    local skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
-    local item = ::ItemsManager.findItemById(skinDecorator?.getCouponItemdefId())
+    let skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
+    let skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
+    let item = ::ItemsManager.findItemById(skinDecorator?.getCouponItemdefId())
     if (!item?.hasLink())
       return
     item.openLink()
@@ -2086,14 +2086,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnMarketplaceConsumeCouponSkin(obj)
   {
-    local skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
-    local skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
-    local itemdefId = skinDecorator?.getCouponItemdefId()
-    local inventoryItem = ::ItemsManager.getInventoryItemById(itemdefId)
+    let skinId = ::g_unlocks.getSkinId(unit.name, previewSkinId)
+    let skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
+    let itemdefId = skinDecorator?.getCouponItemdefId()
+    let inventoryItem = ::ItemsManager.getInventoryItemById(itemdefId)
     if (!inventoryItem?.canConsume())
       return
 
-    local skinName = previewSkinId
+    let skinName = previewSkinId
     inventoryItem.consume(::Callback(function(result) {
       if (this == null || !result?.success)
         return
@@ -2108,14 +2108,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local decalId = ""
     if (checkDecalsList && isDecoratorsListOpen && slotId == getCurrentDecoratorSlot(decoratorType))
     {
-      local decal = getSelectedDecal(decoratorType)
+      let decal = getSelectedDecal(decoratorType)
       if (decal)
         decalId = decal.id
     }
 
     if (decalId == "" && isValid && decoratorType != null)
     {
-      local liveryName = getSelectedBuiltinSkinId()
+      let liveryName = getSelectedBuiltinSkinId()
       decalId = decoratorType.getDecoratorNameInSlot(slotId, unit.name, liveryName, false)
       isValid = isValid && slotId < decoratorType.getMaxSlots()
     }
@@ -2145,8 +2145,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     // TestFlight wnd can have a Slotbar, where unit can be changed.
-    local afterCloseFunc = (@(owner, unit) function() {
-      local newUnitName = getShowedUnitName()
+    let afterCloseFunc = (@(owner, unit) function() {
+      let newUnitName = getShowedUnitName()
       if (newUnitName == "")
         return setShowUnit(unit)
 
@@ -2173,7 +2173,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnMarketplaceFindUnit(obj)
   {
-    local item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
+    let item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
     if (!(item?.hasLink() ?? false))
       return
     item.openLink()
@@ -2192,15 +2192,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onBtnDecoratorEdit()
   {
     currentType = getCurrentFocusedType()
-    local curSlotIdx = getCurrentDecoratorSlot(currentType)
-    local slotInfo = getSlotInfo(curSlotIdx, true, currentType)
-    local decorator = ::g_decorator.getDecorator(slotInfo.decalId, currentType)
+    let curSlotIdx = getCurrentDecoratorSlot(currentType)
+    let slotInfo = getSlotInfo(curSlotIdx, true, currentType)
+    let decorator = ::g_decorator.getDecorator(slotInfo.decalId, currentType)
     enterEditDecalMode(curSlotIdx, decorator)
   }
 
   function onBtnDeleteDecal()
   {
-    local decoratorType = getCurrentFocusedType()
+    let decoratorType = getCurrentFocusedType()
     deleteDecorator(decoratorType, getCurrentDecoratorSlot(decoratorType))
   }
 
@@ -2209,8 +2209,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local slotName = ::getObjIdByPrefix(obj.getParent(), "slot_")
-    local slotId = slotName.tointeger()
+    let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_")
+    let slotId = slotName.tointeger()
 
     deleteDecorator(::g_decorator_type.DECALS, slotId)
   }
@@ -2220,15 +2220,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local slotName = ::getObjIdByPrefix(obj.getParent(), "slot_attach_")
-    local slotId = slotName.tointeger()
+    let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_attach_")
+    let slotId = slotName.tointeger()
 
     deleteDecorator(::g_decorator_type.ATTACHABLES, slotId)
   }
 
   function deleteDecorator(decoratorType, slotId)
   {
-    local slotInfo = getSlotInfo(slotId, false, decoratorType)
+    let slotInfo = getSlotInfo(slotId, false, decoratorType)
     msgBox("delete_decal", ::loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
     [
       ["ok", (@(decoratorType, slotInfo) function() {
@@ -2246,7 +2246,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSlotsBlockByType(decoratorType = ::g_decorator_type.UNKNOWN)
   {
-    local all = decoratorType == ::g_decorator_type.UNKNOWN
+    let all = decoratorType == ::g_decorator_type.UNKNOWN
     if (all || decoratorType == ::g_decorator_type.ATTACHABLES)
       updateAttachablesSlots()
 
@@ -2268,8 +2268,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTwoSidedState()
   {
-    local isTwoSided = ::get_hangar_abs()
-    local isOppositeMirrored = ::get_hangar_opposite_mirrored()
+    let isTwoSided = ::get_hangar_abs()
+    let isOppositeMirrored = ::get_hangar_opposite_mirrored()
     return !isTwoSided ? decalTwoSidedMode.OFF
          : !isOppositeMirrored ? decalTwoSidedMode.ON
          : decalTwoSidedMode.ON_MIRRORED
@@ -2277,10 +2277,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setTwoSidedState(idx)
   {
-    local isTwoSided = ::get_hangar_abs()
-    local isOppositeMirrored = ::get_hangar_opposite_mirrored()
-    local needTwoSided  = idx != decalTwoSidedMode.OFF
-    local needOppositeMirrored = idx == decalTwoSidedMode.ON_MIRRORED
+    let isTwoSided = ::get_hangar_abs()
+    let isOppositeMirrored = ::get_hangar_opposite_mirrored()
+    let needTwoSided  = idx != decalTwoSidedMode.OFF
+    let needOppositeMirrored = idx == decalTwoSidedMode.ON_MIRRORED
     if (needTwoSided != isTwoSided)
       ::hangar_toggle_abs()
     if (needOppositeMirrored != isOppositeMirrored)
@@ -2295,7 +2295,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onTwoSided() // TwoSided
   {
-    local obj = scene.findObject("two_sided_select")
+    let obj = scene.findObject("two_sided_select")
     if (check_obj(obj))
       obj.setValue((obj.getValue() + 1) % obj.childrenCount())
   }
@@ -2331,29 +2331,29 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function showDecoratorsList()
   {
-    local show = !!(currentState & decoratorEditState.SELECT)
+    let show = !!(currentState & decoratorEditState.SELECT)
 
     isDecoratorsListOpen = show
-    local slotsObj = scene.findObject(currentType.listId)
+    let slotsObj = scene.findObject(currentType.listId)
     if (::check_obj(slotsObj))
     {
-      local sel = slotsObj.getValue()
+      let sel = slotsObj.getValue()
       for (local i = 0; i < slotsObj.childrenCount(); i++)
       {
-        local selectedItem = sel == i && show
+        let selectedItem = sel == i && show
         slotsObj.getChild(i).highlighted = selectedItem? "yes" : "no"
       }
     }
 
     ::hangar_notify_decal_menu_visibility(show)
 
-    local mObj = scene.findObject("decals_wnd")
+    let mObj = scene.findObject("decals_wnd")
     if (!::check_obj(mObj))
       return
 
     mObj.show(show)
 
-    local headerObj = mObj.findObject("decals_wnd_header")
+    let headerObj = mObj.findObject("decals_wnd_header")
     if (::check_obj(headerObj))
       headerObj.setValue(::loc(currentType.listHeaderLocId))
   }
@@ -2366,16 +2366,16 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (currentState == decoratorEditState.EDITING)
       return stopDecalEdition(true)
 
-    local curSlotIdx = getCurrentDecoratorSlot(currentType)
-    local curSlotInfo = getSlotInfo(curSlotIdx, false, currentType)
+    let curSlotIdx = getCurrentDecoratorSlot(currentType)
+    let curSlotInfo = getSlotInfo(curSlotIdx, false, currentType)
     if (curSlotInfo.isEmpty)
       return
 
-    local curSlotDecoratorId = curSlotInfo.decalId
+    let curSlotDecoratorId = curSlotInfo.decalId
     if (curSlotDecoratorId == "")
       return
 
-    local curSlotDecorator = ::g_decorator.getDecorator(curSlotDecoratorId, currentType)
+    let curSlotDecorator = ::g_decorator.getDecorator(curSlotDecoratorId, currentType)
     enterEditDecalMode(curSlotIdx, curSlotDecorator)
   }
 
@@ -2446,7 +2446,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updatePenaltyText()
   {
-    local obj = scene.findObject("decal_text_area")
+    let obj = scene.findObject("decal_text_area")
     if (!::check_obj(obj))
       return
 
@@ -2456,7 +2456,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       local timeSec = ::get_time_till_decals_disabled()
       if (timeSec == 0)
       {
-        local st = penalty.getPenaltyStatus()
+        let st = penalty.getPenaltyStatus()
         if ("seconds_left" in st)
           timeSec = st.seconds_left
       }
@@ -2492,11 +2492,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       case PREVIEW_MODE.UNIT:
       case PREVIEW_MODE.SKIN:
-        local skinBlockName = previewParams.unitName + "/" + previewParams.skinName
+        let skinBlockName = previewParams.unitName + "/" + previewParams.skinName
         ::g_decorator.previewedLiveSkinIds.append(skinBlockName)
         if (initialUserSkinId != "")
           ::get_user_skins_profile_blk()[unit.name] = ""
-        local isForApprove = previewParams?.isForApprove ?? false
+        let isForApprove = previewParams?.isForApprove ?? false
         ::g_decorator.approversUnitToPreviewLiveResource = isForApprove ? showedUnit.value : null
         ::g_delayed_actions.add(::Callback(function() {
           applySkin(previewParams.skinName, true)
@@ -2514,7 +2514,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     foreach (decoratorType in [ ::g_decorator_type.DECALS, ::g_decorator_type.ATTACHABLES ])
       for (local i = 0; i < decoratorType.getAvailableSlots(unit); i++)
       {
-        local slot = getSlotInfo(i, false, decoratorType)
+        let slot = getSlotInfo(i, false, decoratorType)
         if (!slot.isEmpty)
             decoratorType.removeDecorator(slot.id, save)
       }
@@ -2528,7 +2528,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function preSelectSlotAndDecorator(decorator, slotIdx)
   {
-    local decoratorType = decorator.decoratorType
+    let decoratorType = decorator.decoratorType
     if (decoratorType == ::g_decorator_type.SKINS)
     {
       if (unit.name == ::g_unlocks.getPlaneBySkinId(decorator.id))
@@ -2538,10 +2538,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (slotIdx != -1)
       {
-        local listObj = scene.findObject(decoratorType.listId)
+        let listObj = scene.findObject(decoratorType.listId)
         if (::check_obj(listObj))
         {
-          local slotObj = listObj.getChild(slotIdx)
+          let slotObj = listObj.getChild(slotIdx)
           if (::check_obj(slotObj))
             openDecorationsListForSlot(slotIdx, slotObj, decoratorType)
         }

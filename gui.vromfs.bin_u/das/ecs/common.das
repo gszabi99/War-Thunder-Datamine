@@ -1,9 +1,7 @@
 module common shared
 require ecs
 require DagorMathUtils
-require strings
 require daslib/strings_boost
-require daslib/instance_function
 
 
 [generic]
@@ -50,27 +48,24 @@ def find_index(arr: StringList; val: string) : int
   return -1
 
 
-[generic, export]
-def list_safe_at(t: VecT implicit; idx: int): ChildT const?#
+def operator ?[] (t: IntList implicit; idx: int): int const?#
   if uint(idx) < uint(length(t))
     unsafe
-      return reinterpret<ChildT const?#> addr(t.[idx])
-  unsafe
-    return reinterpret<ChildT const?#> null
-
-
-[instance_function(list_safe_at, VecT = IntList, ChildT = "int")]
-def operator ?[] (t: IntList implicit; idx: int): int const?#
+      return reinterpret<int const?#> addr(t.[idx])
   unsafe
     return reinterpret<int const?#> null
 
-[instance_function(list_safe_at, VecT = FloatList, ChildT = "float")]
 def operator ?[] (t: FloatList implicit; idx: int): float const?#
+  if uint(idx) < uint(length(t))
+    unsafe
+      return reinterpret<float const?#> addr(t.[idx])
   unsafe
     return reinterpret<float const?#> null
 
-[instance_function(list_safe_at, VecT = BoolList, ChildT = "bool")]
 def operator ?[] (t: BoolList implicit; idx: int): bool const?#
+  if uint(idx) < uint(length(t))
+    unsafe
+      return reinterpret<bool const?#> addr(t.[idx])
   unsafe
     return reinterpret<bool const?#> null
 

@@ -1,12 +1,12 @@
-local time = require("scripts/time.nut")
-local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-local ent = require("scripts/onlineShop/entitlements.nut")
-local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+let time = require("scripts/time.nut")
+let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+let ent = require("scripts/onlineShop/entitlements.nut")
+let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
-local { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+let { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
-local payMethodsCfg = [
+let payMethodsCfg = [
   { id = ::YU2_PAY_QIWI,        name = "qiwi" }
   { id = ::YU2_PAY_YANDEX,      name = "yandex" }
   { id = ::YU2_PAY_PAYPAL,      name = "paypal" }
@@ -19,11 +19,11 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
 local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
 
-class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.OnlineShopHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/chapterModal.blk"
-  sceneNavBlkName = "gui/navOnlineShop.blk"
+  sceneBlkName = "%gui/chapterModal.blk"
+  sceneNavBlkName = "%gui/navOnlineShop.blk"
   useRowVisual = false
 
   owner = null
@@ -74,7 +74,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     setParams(params)
 
-    local blockObj = scene.findObject("chapter_include_block")
+    let blockObj = scene.findObject("chapter_include_block")
     if (::checkObj(blockObj))
       blockObj.show(true)
 
@@ -84,18 +84,18 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     groupCost = {}
 
     local data = ""
-    local rowsView = []
+    let rowsView = []
     local idx = 0
-    local isGold = chapter == "eagles"
+    let isGold = chapter == "eagles"
     local curChapter = ""
-    local eblk = ::OnlineShopModel.getPriceBlk()
+    let eblk = ::OnlineShopModel.getPriceBlk()
 
     local first = true
-    local numBlocks = eblk.blockCount()
+    let numBlocks = eblk.blockCount()
     for (local i = 0; i < numBlocks; i++)
     {
-      local ib = eblk.getBlock(i)
-      local name = ib.getBlockName()
+      let ib = eblk.getBlock(i)
+      let name = ib.getBlockName()
       if (chapter == null && ::isInArray(ib?.chapter, skipChapters))
         continue
       if (chapter != null && ib?.chapter != chapter)
@@ -110,7 +110,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       //load data from eBlk
       for (local j = 0; j < ib.paramCount(); j++)
       {
-        local paramName = ib.getParamName(j)
+        let paramName = ib.getParamName(j)
         if (!(paramName in goods[name]))
           goods[name][paramName] <- ib.getParamValue(j)
       }
@@ -120,8 +120,8 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
       foreach(param in ["entitlementGift", "aircraftGift", "showEntAsGift"])
       {
-        local arr = []
-        local list = ib % param
+        let arr = []
+        let list = ib % param
         foreach(l in list)
           if (!::isInArray(l, arr))
             arr.append(l)
@@ -149,25 +149,25 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
           if (goods[name].chapter != curChapter)
           {
             curChapter = goods[name].chapter
-            local view = {
+            let view = {
               itemTag = "chapter_item_unlocked"
               id = curChapter
               itemText = "#charServer/chapter/" + curChapter
             }
-            data += ::handyman.renderCached("gui/missions/missionBoxItem", view)
+            data += ::handyman.renderCached("%gui/missions/missionBoxItem", view)
           }
           if (goods[name]?.chapterImage)
             chImages[goods[name].chapter] <- goods[name].chapterImage
         }
 
-        local discount = ::g_discount.getEntitlementDiscount(name)
-        local view = {
+        let discount = ::g_discount.getEntitlementDiscount(name)
+        let view = {
           itemIcon = getItemIcon(name)
           id = name
           isSelected = first
           discountText = discount > 0? ("-" + discount + "%") : null
         }
-        data += ::handyman.renderCached("gui/missions/missionBoxItem", view)
+        data += ::handyman.renderCached("%gui/missions/missionBoxItem", view)
       }
       first = false
       idx++
@@ -181,19 +181,19 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("wnd_update").setUserData(this)
       scene.findObject("wnd_title").setValue(::loc("charServer/chapter/" + chapter))
 
-      local rootObj = scene.findObject("wnd_frame")
+      let rootObj = scene.findObject("wnd_frame")
       rootObj["class"] = "wnd"
       rootObj.width = "@onlineShopWidth + 2@blockInterval"
       rootObj.padByLine = "yes"
-      local contentObj = scene.findObject("wnd_content")
+      let contentObj = scene.findObject("wnd_content")
       contentObj.flow = "vertical"
 
-      data = ::handyman.renderCached(("gui/onlineShop/onlineShopWithVisualRow"), {
+      data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow"), {
         chImages = (chapter in chImages) ? $"#ui/onlineShop/{chImages[chapter]}" : null
         rows = rowsView
       })
       guiScene.replaceContentFromText(contentObj, data, data.len(), this)
-      local tblObj = scene.findObject("items_list")
+      let tblObj = scene.findObject("items_list")
 
       guiScene.setUpdatesEnabled(true, true)
       guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
@@ -203,16 +203,16 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("chapter_update").setUserData(this)
       scene.findObject("chapter_name").setValue(::loc("mainmenu/btnOnlineShop"))
 
-      local listObj = scene.findObject("items_list")
+      let listObj = scene.findObject("items_list")
       guiScene.replaceContentFromText(scene.findObject("items_list"), data, data.len(), this)
 
       foreach(name, item in goods)
       {
-        local obj = listObj.findObject("txt_" + name)
+        let obj = listObj.findObject("txt_" + name)
         if (obj)
         {
           local text = ent.getEntitlementName(item)
-          local priceText = getItemPriceText(name)
+          let priceText = getItemPriceText(name)
           if (priceText!="")
             text = ::format("(%s) %s", priceText, text)
           obj.setValue(text)
@@ -222,8 +222,8 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local rBlk = ::get_ranks_blk()
-    local wBlk = ::get_warpoints_blk()
+    let rBlk = ::get_ranks_blk()
+    let wBlk = ::get_warpoints_blk()
     premiumRpMult = rBlk?.xpMultiplier || 1.0
     premiumWpMult = wBlk?.wpMultiplier || 1.0
     premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
@@ -273,11 +273,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getPricePerItem(item)
   {
-    local value = ent.getEntitlementAmount(item)
+    let value = ent.getEntitlementAmount(item)
     if (value <= 0)
       return 0
 
-    local cost = getPrice(item)
+    let cost = getPrice(item)
     return cost.tofloat() / value
   }
 
@@ -307,7 +307,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
           return false
       return true
     }
-    local realname = item?.alias ?? item.name
+    let realname = item?.alias ?? item.name
     return (isBuyOnce(item) && ::has_entitlement(realname))
   }
 
@@ -322,8 +322,8 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (product == null)
       return ""
 
-    local resArr = []
-    local paramTbl = {
+    let resArr = []
+    let paramTbl = {
       bonusRpPercent           = bonusPercentText(premiumRpMult)
       bonusWpPercent           = bonusPercentText(premiumWpMult)
       bonusBattleTimeWpPercent = bonusPercentText(premiumBattleTimeWpMult)
@@ -332,12 +332,12 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (product?.useGroupAmount && ("group" in product))
       paramTbl.amount <- ent.getEntitlementAmount(product).tointeger()
 
-    local locId = "charServer/entitlement/{0}/desc".subst(ent.getEntitlementLocId(product))
+    let locId = "charServer/entitlement/{0}/desc".subst(ent.getEntitlementLocId(product))
     resArr.append(::loc(locId, paramTbl))
 
     foreach(giftName in product.entitlementGift)
     {
-      local config = ent.getEntitlementConfig(giftName)
+      let config = ent.getEntitlementConfig(giftName)
       resArr.append(format(::loc("charServer/gift/entitlement"), ent.getEntitlementName(config)))
     }
     foreach(airName in product.aircraftGift)
@@ -351,11 +351,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (("ttl" in product) || ("httl" in product))
     {
-      local renewText = ent.getEntitlementTimeText(product)
+      let renewText = ent.getEntitlementTimeText(product)
       if (renewText!="")
       {
-        local realname = ("alias" in product) ? product.alias : productId
-        local expire = entitlement_expires_in(realname == "PremiumAccount"
+        let realname = ("alias" in product) ? product.alias : productId
+        let expire = entitlement_expires_in(realname == "PremiumAccount"
           ? ::shop_get_premium_account_ent_name()
           : realname)
         if (expire>0)
@@ -366,31 +366,31 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local priceText = ent.getEntitlementPrice(product)
+    let priceText = ent.getEntitlementPrice(product)
     if (!useRowVisual && priceText!="")
     {
       local priceInfo = ""
       if (("group" in product) && (product.group in groupCost))
       {
-        local itemPrice = getPricePerItem(product)
-        local defItemPrice = groupCost[product.group]
+        let itemPrice = getPricePerItem(product)
+        let defItemPrice = groupCost[product.group]
         if (itemPrice && defItemPrice)
         {
-          local discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
+          let discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
           if (discount != 0)
             priceInfo = format(::loc("charServer/entitlement/discount"), discount)
         }
       } else
         if (productId in bundles)
         {
-          local itemPrice = getPrice(product)
+          let itemPrice = getPrice(product)
           local bundlePrice = 0
           foreach(name in bundles[productId])
             if (name in goods)
               bundlePrice += getPrice(goods[name])
           if (bundlePrice>0)
           {
-            local discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
+            let discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
             priceInfo = format(::loc("charServer/entitlement/discount"), discount)
           }
         }
@@ -402,7 +402,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (product?.chapter == "warpoints")
     {
-      local days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
+      let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
       if (days > 0)
         resArr.append(::colorize("warningTextColor",
           ::loc("charServer/chapter/warpoints/expireWarning", { days = days })))
@@ -425,7 +425,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("btn_buy_online").setValue(::loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
 
     local discountText = ""
-    local discount = ::g_discount.getEntitlementDiscount(product.name)
+    let discount = ::g_discount.getEntitlementDiscount(product.name)
     if (product != null && discount > 0)
       discountText = "-" + discount + "%"
     scene.findObject("buy_online-discount").setValue(discountText)
@@ -433,14 +433,14 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelect()
   {
-    local listObj = scene.findObject("items_list")
-    local value = listObj.getValue()
+    let listObj = scene.findObject("items_list")
+    let value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return
 
-    local obj = listObj.getChild(value)
+    let obj = listObj.getChild(value)
     task = obj.id
-    local product = goods?[task]
+    let product = goods?[task]
     updateProductInfo(product, task)
   }
 
@@ -471,11 +471,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function goForwardIfPurchase()
   {
-    local taskId = ::purchase_entitlement(task)
-    local taskOptions = {
+    let taskId = ::purchase_entitlement(task)
+    let taskOptions = {
       showProgressBox = true
     }
-    local taskSuccessCallback = ::Callback(function ()
+    let taskSuccessCallback = ::Callback(function ()
       {
         goForward(startFunc)
       }, this)
@@ -484,20 +484,20 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onStart()  //onBuy
   {
-    local product = goods?[task]
+    let product = goods?[task]
     if (product == null || isBought(product))
       return
     if (product?.onlinePurchase ?? false)
       return onOnlinePurchase(task)
 
-    local costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
-    local price = ::Cost(0, costGold)
-    local msgText = ::warningIfGold(
+    let costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
+    let price = ::Cost(0, costGold)
+    let msgText = ::warningIfGold(
       ::loc("onlineShop/needMoneyQuestion",
         {purchase = ent.getEntitlementName(product), cost = price.getTextAccordingToBalance()}),
       price)
-    local curIdx = scene.findObject("items_list").getValue()
-    local onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curIdx)
+    let curIdx = scene.findObject("items_list").getValue()
+    let onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curIdx)
     msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
@@ -511,17 +511,17 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOnlinePurchase(itemId)
   {
-    local payMethods = yuplay2_get_payment_methods()
+    let payMethods = yuplay2_get_payment_methods()
     if (!payMethods || ::steam_is_running() || !::has_feature("PaymentMethods"))
       return ::OnlineShopModel.doBrowserPurchase(itemId)
 
-    local items = []
+    let items = []
     local selItem = null
     foreach(method in payMethodsCfg)
       if (payMethods & method.id)
       {
-        local payMethodId = method.id
-        local name = "yuNetwork/payMethod/" + method.name
+        let payMethodId = method.id
+        let name = "yuNetwork/payMethod/" + method.name
         items.append({
           name = name
           icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
@@ -530,7 +530,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         selItem = selItem || name
       }
 
-    local name = "yuNetwork/payMethod/other"
+    let name = "yuNetwork/payMethod/other"
     items.append({
       name = name
       icon = ""
@@ -543,7 +543,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onYuplayPurchase(itemId, payMethod, nameLocId)
   {
-    local msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
+    let msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
       purchase = ::colorize("activeTextColor", ent.getEntitlementName(goods[itemId])),
       paymentSystem = ::colorize("userlogColoredText", ::loc(nameLocId))
     })
@@ -555,13 +555,13 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doYuplayPurchase(itemId, payMethod)
   {
-    local guid = bundlesShopInfo.value?[itemId].guid ?? ""
+    let guid = bundlesShopInfo.value?[itemId].guid ?? ""
     ::dagor.assertf(guid != "", $"Error: not found guid for {itemId}")
 
-    local response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
+    let response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
     if (response != ::YU2_OK)
     {
-      local errorText = ::get_yu2_error_text(response)
+      let errorText = ::get_yu2_error_text(response)
       msgBox("errorMessageBox", errorText, [["ok", function(){}]], "ok")
       ::dagor.debug($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return
@@ -584,12 +584,12 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj)
       return
 
-    local pObj = obj.getParent()
+    let pObj = obj.getParent()
     if (!pObj || !(pObj?.id in goods))
       return
-    local id = pObj.id
+    let id = pObj.id
 
-    local listObj = scene.findObject("items_list")
+    let listObj = scene.findObject("items_list")
     if (!listObj)
       return
     for (local idx = 0; idx < listObj.childrenCount(); idx++)
@@ -608,11 +608,11 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (useRowVisual)
       return
 
-    local obj = scene.findObject("items_list").findObject(name)
-    local curIcon = getItemIcon(name)
+    let obj = scene.findObject("items_list").findObject(name)
+    let curIcon = getItemIcon(name)
     if (curIcon && obj)
     {
-      local medalObj = obj.findObject("medal_icon")
+      let medalObj = obj.findObject("medal_icon")
       if (medalObj)
         medalObj["background-image"] = curIcon
     }
@@ -640,21 +640,21 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRowView(item, isGold, even) {
     local amount = ent.getEntitlementAmount(item)
-    local additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
+    let additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
     local amountText = ""
     local savingText = ""
-    local discount = ::g_discount.getEntitlementDiscount(item.name)
-    local productInfo = bundlesShopInfo.value?[item.name]
+    let discount = ::g_discount.getEntitlementDiscount(item.name)
+    let productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
       savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
     else if (productInfo?.discount_mul)
       savingText = ::format(::loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
     else if (item?.group && item.group in groupCost) {
-      local itemPrice = getPrice(item)
-      local defItemPrice = groupCost[item.group]
+      let itemPrice = getPrice(item)
+      let defItemPrice = groupCost[item.group]
       if (itemPrice && defItemPrice && (!isGold || !::steam_is_running())) {
-        local calcAmount = amount + additionalAmount
+        let calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
         if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
@@ -662,7 +662,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local isTimeAmount = item?.httl || item?.ttl
+    let isTimeAmount = item?.httl || item?.ttl
     if (isTimeAmount)
       amount *= 24
 
@@ -671,10 +671,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     else {
       amount = amount.tointeger()
 
-      local originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
+      let originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
       local addString = ""
       if (additionalAmount > 0) {
-        local addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
+        let addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
         addString = ::loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
       }
 
@@ -693,10 +693,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-class ::gui_handlers.OnlineShopRowHandler extends ::gui_handlers.OnlineShopHandler
+::gui_handlers.OnlineShopRowHandler <- class extends ::gui_handlers.OnlineShopHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/emptyFrame.blk"
+  sceneBlkName = "%gui/emptyFrame.blk"
   sceneNavBlkName = null
   useRowVisual = true
 

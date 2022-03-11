@@ -249,6 +249,9 @@
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
+          "setCueEnabled": {
+            "value": true
+          },
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
@@ -281,6 +284,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setDesignationLockModeCommon": {
@@ -574,6 +580,11 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
+              },
+              "designateTargetUnderCue": {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
               }
             }
           }
@@ -657,6 +668,11 @@
             "command": "selectTarget",
             "actions": {
               "designateActiveDetectedTarget": {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
+              },
+              "designateTargetUnderCue": {
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
@@ -1052,20 +1068,23 @@
             "setNextDetectedTargetActive": []
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": []
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": [],
+            "setCueDopplerSpeed": []
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": []
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 0,
-              "self": true
-            }
           }
         }
       }

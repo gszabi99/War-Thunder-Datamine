@@ -10,7 +10,7 @@ popup_menu {
   pos:t='<<position>>'
   position:t='root'
 
-  include "gui/commonParts/multiSelect"
+  include "%gui/commonParts/multiSelect"
 
   popup_menu_arrow{}
 }

@@ -1,7 +1,8 @@
-local interopGet = require("interopGen.nut")
+let interopGet = require("interopGen.nut")
 
-local missionState = {
+let missionState = {
   gameType = Watched(0)
+  gameOverReason = Watched(0)
   timeLeft = Watched(900)
   roundTimeLeft = Watched(900)
   scoreTeamA = Watched(0)
@@ -13,6 +14,7 @@ local missionState = {
   deathPenaltyMul = Watched(1.0)
   ctaDeathTicketPenalty = Watched(1)
   useDeathmatchHUD = Watched(false)
+  timeLimitWarn = Watched(-1)
 }
 
 

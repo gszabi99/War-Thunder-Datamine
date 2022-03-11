@@ -1,7 +1,7 @@
 from "%darg/ui_imports.nut" import *
 
-local margin = fsh(0.3)
-local height = calc_str_box({text="A"})[1] + 2*margin
+let margin = fsh(0.3)
+let height = calc_str_box({text="A"})[1] + 2*margin
 
 return {
   gridMargin = margin
@@ -11,6 +11,7 @@ return {
     HighlightFailure = Color(255,100,100)
 
     ControlBg = Color(10, 10, 10, 160)
+    ReadOnly = Color(80, 80, 80, 80)
     Interactive = Color(80, 120, 200, 80)
     Hover = Color(110, 110, 150, 50)
     Active = Color(100, 120, 200, 120)
@@ -18,6 +19,7 @@ return {
     FrameActive = Color(250,200,50,200)
     FrameDefault =  Color(100,100,100,100)
 
+    TextReadOnly = Color(100,100,100)
     TextDefault = Color(255,255,255)
     TextError = Color(255, 20, 20)
 

@@ -26,12 +26,12 @@
       }
 
 */
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
-class ::gui_handlers.ActionsList extends ::BaseGuiHandler
+::gui_handlers.ActionsList <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/actionsList/actionsListBlock.blk"
+  sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"
 
   params    = null
@@ -39,7 +39,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 
   closeOnUnhover = true
 
-  __al_item_obj_tpl = "gui/actionsList/actionsListItem"
+  __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
   static function open(_parentObj, _params)
   {
@@ -48,7 +48,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
       || ::gui_handlers.ActionsList.hasActionsListOnObject(_parentObj))
       return
 
-    local params = {
+    let params = {
       scene = _parentObj
       params = _params
     }
@@ -75,12 +75,12 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
     if (!("actions" in params) || params.actions.len() <= 0)
       return goBack()
 
-    local nest = scene.findObject("list_nest")
+    let nest = scene.findObject("list_nest")
 
     local isIconed = false
     foreach (idx, action in params.actions)
     {
-      local show = ::getTblValue("show", action, true)
+      let show = ::getTblValue("show", action, true)
       if (!("show" in action))
         action.show <- show
 
@@ -90,7 +90,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
     }
     scene.iconed = isIconed ? "yes" : "no"
 
-    local data = ::handyman.renderCached(__al_item_obj_tpl, params)
+    let data = ::handyman.renderCached(__al_item_obj_tpl, params)
     guiScene.replaceContentFromText(nest, data, data.len(), this)
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
@@ -104,7 +104,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
         if (!::checkObj(nest))
           return
 
-        local selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
+        let selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         guiScene.applyPendingChanges(false)
         ::move_mouse_on_child(nest, ::max(selIdx, 0))
       })
@@ -113,7 +113,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
   function updatePosition()
   {
     guiScene.applyPendingChanges(false)
-    local defaultAlign = params?.orientation ?? ALIGN.TOP
+    let defaultAlign = params?.orientation ?? ALIGN.TOP
     ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, defaultAlign, scene)
   }
 
@@ -126,7 +126,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
   function onAction(obj)
   {
     close()
-    local actionName = obj?.id ?? ""
+    let actionName = obj?.id ?? ""
     if (actionName == "")
       return
 
@@ -165,7 +165,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
       if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
         return
 
-      local currentObj = getSelectedChild(obj)
+      let currentObj = getSelectedChild(obj)
       if (!currentObj)
         return close()
 
@@ -189,7 +189,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 
   static function removeActionsListFromObject(obj, fadeout = false)
   {
-    local alObj = obj.findObject("actions_list")
+    let alObj = obj.findObject("actions_list")
     if (!::checkObj(alObj))
       return
     if (fadeout)

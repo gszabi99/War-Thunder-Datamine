@@ -1,7 +1,7 @@
-class ::gui_handlers.RemoteMissionModalHandler extends ::gui_handlers.CampaignChapter
+::gui_handlers.RemoteMissionModalHandler <- class extends ::gui_handlers.CampaignChapter
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/empty.blk"
+  sceneBlkName = "%gui/empty.blk"
 
   mission = null
 

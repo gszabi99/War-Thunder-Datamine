@@ -1,6 +1,6 @@
-local BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
+let BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
 
-class ::items_classes.UniversalSpare extends BaseItemModClass
+::items_classes.UniversalSpare <- class extends BaseItemModClass
 {
   static iType = itemType.UNIVERSAL_SPARE
   static defaultLocId = "universalSpare"
@@ -23,7 +23,7 @@ class ::items_classes.UniversalSpare extends BaseItemModClass
 
   function getDescriptionIntroArray()
   {
-    local res = [::loc("items/universalSpare/description/uponActivation")]
+    let res = [::loc("items/universalSpare/description/uponActivation")]
     if (numSpares > 1)
       res.append(::loc("items/universalSpare/numSpares") + ::loc("ui/colon") + ::colorize("activeTextColor", numSpares))
     return res
@@ -54,17 +54,17 @@ class ::items_classes.UniversalSpare extends BaseItemModClass
       || count <= 0 || count > getAmount())
       return false
 
-    local successCb = function() {
+    let successCb = function() {
       if (extSuccessCb)
         extSuccessCb()
       ::broadcastEvent("UniversalSpareActivated")
     }
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.uid = uids[0]
     blk.unit = unit.name
     blk.useItemsCount = count
-    local taskId = ::char_send_blk("cln_apply_spare_item", blk)
+    let taskId = ::char_send_blk("cln_apply_spare_item", blk)
     return ::g_tasker.addTask(taskId, { showProgressBox = true }, successCb)
   }
 
@@ -79,7 +79,7 @@ class ::items_classes.UniversalSpare extends BaseItemModClass
 
   function _getBaseIconCfg()
   {
-    local layerId = "universal_spare_base"
+    let layerId = "universal_spare_base"
     return ::LayersIcon.findLayerCfg(layerId)
   }
 
@@ -92,8 +92,8 @@ class ::items_classes.UniversalSpare extends BaseItemModClass
 
   function _getRankLayer()
   {
-    local textLayerStyle = "universal_spare_rank_text"
-    local layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
+    let textLayerStyle = "universal_spare_rank_text"
+    let layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
       return null
     layerCfg.text <- getRankText()
@@ -104,8 +104,8 @@ class ::items_classes.UniversalSpare extends BaseItemModClass
   {
     if (!countries || countries.len() != 1)
       return null
-    local flagLayerStyle = "universal_spare_flag"
-    local layerCfg = ::LayersIcon.findLayerCfg(flagLayerStyle)
+    let flagLayerStyle = "universal_spare_flag"
+    let layerCfg = ::LayersIcon.findLayerCfg(flagLayerStyle)
     if (!layerCfg)
       return null
     layerCfg.img <- ::get_country_icon(countries[0])

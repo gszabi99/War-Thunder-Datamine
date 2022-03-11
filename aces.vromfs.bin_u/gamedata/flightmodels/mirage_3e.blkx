@@ -88,7 +88,11 @@
         "hp": 95.5
       },
       "fuse_dm": {
-        "hp": 95.5
+        "hp": 72.8
+      },
+      "tail_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 100.5
       },
       "wing1_l_dm": {
         "genericDamageMult": 0.3,
@@ -1128,6 +1132,26 @@
       "part": {
         "name": "spar_r_dm"
       }
+    },
+    {
+      "part": [
+        {
+          "name": "tail_dm"
+        },
+        {
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 19.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
+        }
+      ]
     },
     {
       "part": {
@@ -2947,7 +2971,7 @@
     "emtr_break_wing1_r_to": [0.109118,-0.497304,-2.27333],
     "emtr_break_wing2_r_from": [0.109118,-0.497304,-2.9308],
     "emtr_break_wing2_r_to": [0.109118,-0.497304,-3.36908],
-    "emtr_break_wing_tail": [-3.0,0.0,0.0],
+    "emtr_break_wing_tail": [-2.68527,0.0,0.0],
     "finCut": true
   }
 }

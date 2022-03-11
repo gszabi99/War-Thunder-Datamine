@@ -1,5 +1,5 @@
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
-::g_script_reloader.loadOnce("sqDagui/daguiUtil.nut") //!!FIX ME: better to make this modules too
+::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut") //!!FIX ME: better to make this modules too
 
 const TIME_INTERVAL_SWITCH_OFF = 1000000.0
 
@@ -26,7 +26,7 @@ local DaguiSceneTimers = class
 
   function addTimer(time, action)
   {
-    local timer = {
+    let timer = {
       time = time + curTime
       action = action
     }
@@ -37,7 +37,7 @@ local DaguiSceneTimers = class
 
   function removeTimer(timer)
   {
-    local idx = timersList.indexof(timer)
+    let idx = timersList.indexof(timer)
     if (idx != null)
       timersList.remove(idx)
   }

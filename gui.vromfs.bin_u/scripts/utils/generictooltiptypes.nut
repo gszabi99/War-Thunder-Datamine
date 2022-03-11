@@ -1,16 +1,17 @@
-local { addTypes } = require("sqStdLibs/helpers/enums.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
-local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
-local { getChallengeView } = require("scripts/battlePass/challenges.nut")
-local { fillItemDescr, fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
-local { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { addTypes } = require("sqStdLibs/helpers/enums.nut")
+let workshop = require("scripts/items/workshop/workshop.nut")
+let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+let { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
+let { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
+let { getChallengeView } = require("scripts/battlePass/challenges.nut")
+let { fillItemDescr, fillDescTextAboutDiv,
+  fillItemDescUnderTable } = require("scripts/items/itemVisual.nut")
+let { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-local tooltipTypes = {
+let tooltipTypes = {
   types = []
 }
 
@@ -19,7 +20,7 @@ tooltipTypes.template <- {
 
   _buildId = function(id, params = null)
   {
-    local t = params ? clone params : {}
+    let t = params ? clone params : {}
     t.ttype <- typeName
     t.id    <- id
     return ::save_to_json(t)
@@ -48,12 +49,12 @@ tooltipTypes.template <- {
   onClose = @(obj) null
 }
 
-local function addTooltipTypes(tTypes) {
+let function addTooltipTypes(tTypes) {
   addTypes(tooltipTypes, tTypes, null, "typeName")
   return tTypes.map(@(_, id) tooltipTypes[id])
 }
 
-local exportTypes = addTooltipTypes({
+let exportTypes = addTooltipTypes({
   EMPTY = {
   }
 
@@ -64,7 +65,7 @@ local exportTypes = addTooltipTypes({
       if (!::checkObj(obj))
         return false
 
-      local config = ::build_log_unlock_data(params.__merge({ id = unlockId }))
+      let config = ::build_log_unlock_data(params.__merge({ id = unlockId }))
 
       if (config.type == -1)
         return false
@@ -82,39 +83,39 @@ local exportTypes = addTooltipTypes({
         return false
 
       local config = null
-      local stage = (params?.stage??-1).tointeger()
-      local unlock = ::g_unlocks.getUnlockById(unlockId)
+      let stage = (params?.stage??-1).tointeger()
+      let unlock = ::g_unlocks.getUnlockById(unlockId)
       if (unlock==null)
         return false
       config = ::build_conditions_config(unlock, stage)
 
-      local isCompleted = ::is_unlocked(-1, unlockId)
+      let isCompleted = ::is_unlocked(-1, unlockId)
       ::build_unlock_desc(config, {showProgress = !isCompleted, showCost = !isCompleted})
-      local reward = ::g_unlock_view.getRewardText(config, stage)
+      let reward = ::g_unlock_view.getRewardText(config, stage)
 
       local header = ::loc(unlockId + "/name")
-      local locId = config?.locId??""
+      let locId = config?.locId??""
       if (locId != "")
         header = getUnlockLocName(config)
       if (stage >= 0)
         header += " " + ::roman_numerals[stage + 1]
 
-      obj.getScene().replaceContent(obj, "gui/unlocks/shortTooltip.blk", handler)
+      obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
       obj.findObject("header").setValue(header)
 
-      local dObj = obj.findObject("description")
+      let dObj = obj.findObject("description")
       dObj.setValue(config.text)
       if (!isCompleted)
       {
-        local pObj = obj.findObject("progress")
-        local progressData = config.getProgressBarData()
+        let pObj = obj.findObject("progress")
+        let progressData = config.getProgressBarData()
         pObj.setValue(progressData.value)
         pObj.show(progressData.show)
       }
       else if(config.text != "")
         obj.findObject("challenge_complete").show(true)
 
-      local rObj = ::showBtn("reward", reward != "", obj)
+      let rObj = ::showBtn("reward", reward != "", obj)
       rObj.setValue(reward)
 
       return true
@@ -127,7 +128,7 @@ local exportTypes = addTooltipTypes({
                  //for skins decorId is like skin unlock id   -  <unitName>"/"<skinName>
     getTooltipId = function(decorId, decorType, params = null, p3 = null)
     {
-      local p = params || {}
+      let p = params || {}
       p.decorType <- decorType
       return _buildId(decorId, p)
     }
@@ -135,16 +136,16 @@ local exportTypes = addTooltipTypes({
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, params)
     {
-      local unlockType = ::getTblValue("decorType", params, -1)
-      local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
+      let unlockType = ::getTblValue("decorType", params, -1)
+      let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
       if (decoratorType == ::g_decorator_type.UNKNOWN)
         return false
 
-      local decorator = ::g_decorator.getDecorator(id, decoratorType)
+      let decorator = ::g_decorator.getDecorator(id, decoratorType)
       if (!decorator)
         return false
 
-      obj.getScene().replaceContent(obj, "gui/customization/decalTooltip.blk", handler)
+      obj.getScene().replaceContent(obj, "%gui/customization/decalTooltip.blk", handler)
 
       updateDecoratorDescription(obj, handler, decoratorType, decorator, params)
       return true
@@ -152,15 +153,19 @@ local exportTypes = addTooltipTypes({
   }
 
   ITEM = { //by item name
+    item = null
+    tooltipObj = null
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, itemName, params = null)
     {
       if (!::checkObj(obj))
         return false
 
-      local item = ::ItemsManager.findItemById(itemName)
+      item = ::ItemsManager.findItemById(itemName)
       if (!item)
         return false
+
+      tooltipObj = obj
 
       if (params?.isDisguised || workshop.shouldDisguiseItem(item))
       {
@@ -169,13 +174,21 @@ local exportTypes = addTooltipTypes({
       }
 
       local preferMarkup = item.isPreferMarkupDescInTooltip
-      obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
+      obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
       fillItemDescr(item, obj, handler, false, preferMarkup,
         params.__merge({ showOnlyCategoriesOfPrizes = true, showTooltip = false }))
+
+      if (item?.hasLifetimeTimer())
+        obj?.findObject("update_timer").setUserData(this)
+
       return true
     }
     onEventItemsShopUpdate = function(eventParams, obj, handler, id, params) {
       fillTooltip(obj, handler, id, params)
+    }
+    onTimer = function (obj, dt) {
+      if (item && tooltipObj?.isValid())
+        fillItemDescUnderTable(item, tooltipObj)
     }
   }
 
@@ -193,8 +206,8 @@ local exportTypes = addTooltipTypes({
       if (!item)
         return false
 
-      local preferMarkup = item.isPreferMarkupDescInTooltip
-      obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
+      let preferMarkup = item.isPreferMarkupDescInTooltip
+      obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
       fillItemDescr(item, obj, handler, false, preferMarkup,
         { showOnlyCategoriesOfPrizes = true })
 
@@ -221,10 +234,10 @@ local exportTypes = addTooltipTypes({
       if (!::checkObj(obj))
         return false
 
-      local item = ::ItemsManager.findItemById(itemName)
+      let item = ::ItemsManager.findItemById(itemName)
       if (!item)
         return false
-      local data = item.getLongDescriptionMarkup()
+      let data = item.getLongDescriptionMarkup()
       if (data == "")
         return false
 
@@ -241,13 +254,13 @@ local exportTypes = addTooltipTypes({
     {
       if (!::checkObj(obj))
         return false
-      local unit = getAircraftByName(id)
+      let unit = getAircraftByName(id)
       if (!unit)
         return false
-      local guiScene = obj.getScene()
+      let guiScene = obj.getScene()
       guiScene.setUpdatesEnabled(false, false)
-      guiScene.replaceContent(obj, "gui/airTooltip.blk", handler)
-      local contentObj = obj.findObject("air_info_tooltip")
+      guiScene.replaceContent(obj, "%gui/airTooltip.blk", handler)
+      let contentObj = obj.findObject("air_info_tooltip")
       ::showAirInfo(unit, true, contentObj, handler, params)
       guiScene.setUpdatesEnabled(true, true)
 
@@ -255,7 +268,7 @@ local exportTypes = addTooltipTypes({
         return true
 
       contentObj.height = "1@rh - 2@framePadding"
-      local unitImgObj = contentObj.findObject("aircraft-image")
+      let unitImgObj = contentObj.findObject("aircraft-image")
       if (unitImgObj?.isValid())
         unitImgObj.height = "fh"
       return true
@@ -281,11 +294,11 @@ local exportTypes = addTooltipTypes({
       if (!::checkObj(obj))
         return false
 
-      local name = ::loc("ui/quotes", {text = ::loc(group.name)})
-      local list = []
+      let name = ::loc("ui/quotes", {text = ::loc(group.name)})
+      let list = []
       foreach(str in group.units)
       {
-        local unit = getAircraftByName(str)
+        let unit = getAircraftByName(str)
         if (!unit)
           continue
 
@@ -296,9 +309,9 @@ local exportTypes = addTooltipTypes({
         })
       }
 
-      local columns = []
-      local unitsInArmyRowsMax = ::max(::floor(list.len() / 2).tointeger(), 3)
-      local hasMultipleColumns = list.len() > unitsInArmyRowsMax
+      let columns = []
+      let unitsInArmyRowsMax = ::max(::floor(list.len() / 2).tointeger(), 3)
+      let hasMultipleColumns = list.len() > unitsInArmyRowsMax
       if (!hasMultipleColumns)
         columns.append({ groupList = list })
       else
@@ -307,7 +320,7 @@ local exportTypes = addTooltipTypes({
         columns.append({ groupList = list.slice(unitsInArmyRowsMax) })
       }
 
-      local data = ::handyman.renderCached("gui/tooltips/unitGroupTooltip", {
+      let data = ::handyman.renderCached("%gui/tooltips/unitGroupTooltip", {
         title = $"{::loc("unitsGroup/groupContains", { name = name})}{::loc("ui/colon")}",
         hasMultipleColumns = hasMultipleColumns,
         columns = columns
@@ -323,13 +336,13 @@ local exportTypes = addTooltipTypes({
     {
       if (!::checkObj(obj))
         return false
-      local groupName = params?.groupName
-      local missionRules = ::g_mis_custom_state.getCurMissionRules()
+      let groupName = params?.groupName
+      let missionRules = ::g_mis_custom_state.getCurMissionRules()
       if (!groupName || !missionRules)
         return false
 
-      local unitsList = missionRules.getRandomUnitsList(groupName)
-      local unitsView = []
+      let unitsList = missionRules.getRandomUnitsList(groupName)
+      let unitsView = []
       local unit
       foreach (unitName in unitsList)
       {
@@ -345,7 +358,7 @@ local exportTypes = addTooltipTypes({
           })
       }
 
-      local tooltipParams = {
+      let tooltipParams = {
         groupName = ::loc("respawn/randomUnitsGroup/description",
           {groupName = ::colorize("activeTextColor", missionRules.getRandomUnitsGroupLocName(groupName))})
         rankGroup = ::loc("shop/age") + ::loc("ui/colon") +
@@ -354,7 +367,7 @@ local exportTypes = addTooltipTypes({
           ::colorize("activeTextColor", missionRules.getRandomUnitsGroupLocBattleRating(groupName))
         units = unitsView
       }
-      local data = ::handyman.renderCached("gui/tooltips/randomUnitTooltip", tooltipParams)
+      let data = ::handyman.renderCached("%gui/tooltips/randomUnitTooltip", tooltipParams)
 
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
@@ -368,12 +381,12 @@ local exportTypes = addTooltipTypes({
     }
     getTooltipContent = function(categoryName, params)
     {
-      local unit = ::getAircraftByName(params?.unitName ?? "")
-      local crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
-      local skillCategory = getSkillCategoryByName(categoryName)
-      local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
-      local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
-      local crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
+      let unit = ::getAircraftByName(params?.unitName ?? "")
+      let crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
+      let skillCategory = getSkillCategoryByName(categoryName)
+      let crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
+      let crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
+      let crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
       if (skillCategory != null && crewUnitType != ::CUT_INVALID && crewData != null)
         return getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit)
       return ""
@@ -387,8 +400,8 @@ local exportTypes = addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params)
     {
-      local crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
-      local unit = ::getAircraftByName(::getTblValue("unitName", params, ""))
+      let crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
+      let unit = ::getAircraftByName(::getTblValue("unitName", params, ""))
       if (!unit)
         return ""
 
@@ -409,8 +422,8 @@ local exportTypes = addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params)
     {
-      local crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
-      local unit = ::getAircraftByName(::getTblValue("unitName", params, ""))
+      let crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
+      let unit = ::getAircraftByName(::getTblValue("unitName", params, ""))
       if (!unit)
         return ""
 
@@ -431,23 +444,23 @@ local exportTypes = addTooltipTypes({
       if (!::check_obj(obj))
         return false
 
-      local warbond = ::g_warbonds.findWarbond(
+      let warbond = ::g_warbonds.findWarbond(
         ::getTblValue("wbId", params),
         ::getTblValue("wbListId", params)
       )
-      local award = warbond? warbond.getAwardById(id) : null
+      let award = warbond? warbond.getAwardById(id) : null
       if (!award)
         return false
 
-      local guiScene = obj.getScene()
-      guiScene.replaceContent(obj, "gui/items/itemTooltip.blk", handler)
+      let guiScene = obj.getScene()
+      guiScene.replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
       if (award.fillItemDesc(obj, handler))
         return true
 
       obj.findObject("item_name").setValue(award.getNameText())
       obj.findObject("item_desc").setValue(award.getDescText())
 
-      local imageData = award.getDescriptionImage()
+      let imageData = award.getDescriptionImage()
       guiScene.replaceContentFromText(obj.findObject("item_icon"), imageData, imageData.len(), handler)
       return true
     }
@@ -460,15 +473,15 @@ local exportTypes = addTooltipTypes({
       if (!::check_obj(obj))
         return false
 
-      local battleTask = ::g_battle_tasks.getTaskById(id)
+      let battleTask = ::g_battle_tasks.getTaskById(id)
       if (!battleTask)
         return false
 
-      local config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
-      local view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true})
-      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view], isSmallText = true})
+      let config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
+      let view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true})
+      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem", {items = [view], isSmallText = true})
 
-      local guiScene = obj.getScene()
+      let guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
       guiScene.replaceContentFromText(obj, data, data.len(), handler)
       return true
@@ -482,11 +495,11 @@ local exportTypes = addTooltipTypes({
       if (!::check_obj(obj))
         return false
 
-      local unlockBlk = id && id != "" && ::g_unlocks.getUnlockById(id)
-      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem",
+      let unlockBlk = id && id != "" && ::g_unlocks.getUnlockById(id)
+      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem",
         { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })], isSmallText = true})
 
-      local guiScene = obj.getScene()
+      let guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
       guiScene.replaceContentFromText(obj, data, data.len(), handler)
       return true
@@ -500,35 +513,35 @@ local exportTypes = addTooltipTypes({
       if (!::checkObj(obj))
         return false
 
-      local unlockBlk = unlockId && unlockId != "" && ::g_unlocks.getUnlockById(unlockId)
+      let unlockBlk = unlockId && unlockId != "" && ::g_unlocks.getUnlockById(unlockId)
       if(!unlockBlk)
         return false
 
-      local config = build_conditions_config(unlockBlk)
+      let config = build_conditions_config(unlockBlk)
       ::build_unlock_desc(config)
-      local name = config.id
-      local unlockType = config.unlockType
-      local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-      local guiScene = obj.getScene()
+      let name = config.id
+      let unlockType = config.unlockType
+      let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
+      let guiScene = obj.getScene()
       if (decoratorType == ::g_decorator_type.DECALS
           || decoratorType == ::g_decorator_type.ATTACHABLES
           || unlockType == ::UNLOCKABLE_MEDAL)
       {
-        local bgImage = ::format("background-image:t='%s';", config.image)
-        local size = ::format("size:t='128, 128/%f';", config.imgRatio)
+        let bgImage = ::format("background-image:t='%s';", config.image)
+        let size = ::format("size:t='128, 128/%f';", config.imgRatio)
 
         guiScene.appendWithBlk(obj, ::format("img{ %s }", bgImage + size), this)
       }
       else if (decoratorType == ::g_decorator_type.SKINS)
       {
-        local unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(name))
+        let unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(name))
         local text = []
         if (unit)
           text.append(::loc("reward/skin_for") + " " + ::getUnitName(unit))
         text.append(decoratorType.getLocDesc(name))
 
         text = ::locOrStrip(::g_string.implode(text, "\n"))
-        local textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
+        let textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
         guiScene.appendWithBlk(obj, ::format(textBlock, text), this)
       }
       else
@@ -539,8 +552,8 @@ local exportTypes = addTooltipTypes({
   }
 })
 
-local function getTooltipType(typeName) {
-  local res = tooltipTypes?[typeName]
+let function getTooltipType(typeName) {
+  let res = tooltipTypes?[typeName]
   return ::type(res) == "table" ? res : EMPTY
 }
 

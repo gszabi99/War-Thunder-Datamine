@@ -11,15 +11,15 @@
   applyDescConfig(config) - direct used atm, but better to exchange them on events
 */
 
-local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { getMissionRewardsMarkup, getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
-local { getTutorialFirstCompletRewardData } = require("scripts/tutorials/tutorialsData.nut")
+let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+let { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+let { getMissionRewardsMarkup, getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+let { getTutorialFirstCompletRewardData } = require("scripts/tutorials/tutorialsData.nut")
 
-class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/missionDescr.blk"
+  sceneBlkName = "%gui/missionDescr.blk"
 
   curMission = null
   mapPreviewBlk = null //when not set, detected by mission
@@ -38,7 +38,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   static function create(nest, mission = null)
   {
-    local params = {
+    let params = {
       scene = nest
       curMission = mission
     }
@@ -55,7 +55,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
   function initChaptersImages() //!!FIX ME: better to init this once per login
   {
     chapterImgList = {}
-    local chaptersBlk = ::DataBlock()
+    let chaptersBlk = ::DataBlock()
     chaptersBlk.load("config/chapters.blk")
     foreach(cBlk in chaptersBlk % "images")
       if (::u.isDataBlock(cBlk))
@@ -94,7 +94,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function applyDescConfig(config)
   {
-    local previewBlk = ::getTblValue("previewBlk", config)
+    let previewBlk = ::getTblValue("previewBlk", config)
     ::g_map_preview.setMapPreview(scene.findObject("tactical-map"), previewBlk)
     guiScene.applyPendingChanges(false) //need to refresh object sizes after map appear or disappear
 
@@ -106,13 +106,13 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     getObj("descr-flag")["background-image"] = ("flag" in config && gm != ::GM_BENCHMARK)? config.flag : ""
     getObj("descr-chapterImg")["background-image"] = ("chapterImg" in config)? config.chapterImg : ""
 
-    local rewardsObj = getObj("descr-rewards")
-    local isShow = (config?.rewards.len() ?? 0) > 0
+    let rewardsObj = getObj("descr-rewards")
+    let isShow = (config?.rewards.len() ?? 0) > 0
     rewardsObj.show(isShow)
     if (isShow)
       guiScene.replaceContentFromText(rewardsObj, config.rewards, config.rewards.len(), this)
 
-    local countriesObj = getObj("descr-countries")
+    let countriesObj = getObj("descr-countries")
     if ("countries" in config)
     {
       guiScene.replaceContentFromText(countriesObj, config.countries, config.countries.len(), this)
@@ -122,14 +122,14 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     guiScene.setUpdatesEnabled(true, true)
 
-    local nameObj = getObj("descr_scroll_top_point")
+    let nameObj = getObj("descr_scroll_top_point")
     if (::checkObj(nameObj))
       nameObj.scrollToView()
   }
 
   function getHeaderDescConfig(mission)
   {
-    local config = {}
+    let config = {}
     config.name <- ::loc((mission.isCampaign? "campaigns/" : "chapters/")+mission.id)
     config.maintext <- ::loc((mission.isCampaign? "campaigns/" : "chapters/")+mission.id+"/desc", "")
     if (mission.id in chapterImgList)
@@ -139,11 +139,11 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getUrlMissionDescConfig(mission)
   {
-    local urlMission = ::getTblValue("urlMission", mission)
+    let urlMission = ::getTblValue("urlMission", mission)
     if (!urlMission)
       return {}
 
-    local config = getBlkMissionDescConfig(mission, urlMission.fullMissionBlk)
+    let config = getBlkMissionDescConfig(mission, urlMission.fullMissionBlk)
     config.name <- urlMission.name
     config.maintext <- urlMission.hasErrorByLoading ? ::colorize("badTextColor", urlMission.url) : urlMission.url
     return config
@@ -151,19 +151,19 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getBlkMissionDescConfig(mission, previewBlk = null)
   {
-    local config = {}
-    local blk = ::g_mislist_type.isUrlMission(curMission)
+    let config = {}
+    let blk = ::g_mislist_type.isUrlMission(curMission)
                 ? curMission.urlMission.getMetaInfo()
                 : ::getTblValue("blk", mission)
     if (!blk)
       return config
 
-    local gt = ::get_game_type_by_mode(gm)
+    let gt = ::get_game_type_by_mode(gm)
     if (previewBlk)
       config.previewBlk <- previewBlk
     else
     {
-      local m = DataBlock()
+      let m = DataBlock()
       m.load(blk.getStr("mis_file",""))
       config.previewBlk <- m
     }
@@ -188,7 +188,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     }
     if (gm == ::GM_SINGLE_MISSION)
     {
-      local missionAvailableForCoop = blk.getBool("gt_cooperative", false)
+      let missionAvailableForCoop = blk.getBool("gt_cooperative", false)
         && ::can_play_gamemode_by_squad(gm)
         && !::is_user_mission(blk)
       config.coop <- missionAvailableForCoop? ::loc("single_mission/available_for_coop") : ""
@@ -227,7 +227,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (config.condition != "")
       config.conditionItem <- ::loc("sm_conditions") + ::loc("ui/colon")
 
-    local aircraft = blk.getStr("player_class", "")
+    let aircraft = blk.getStr("player_class", "")
     if ((aircraft != "") && !(gt & ::GT_VERSUS)
         && (gm != ::GM_EVENT) && (gm != ::GM_TOURNAMENT) && (gm != ::GM_DYNAMIC) && (gm != ::GM_BUILDER) && (gm != ::GM_BENCHMARK))
     {
@@ -235,7 +235,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
       config.aircraft <- ::getUnitName(aircraft) + "; " +
                  getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", ")
 
-      local country = ::getShopCountry(aircraft)
+      let country = ::getShopCountry(aircraft)
       dagor.debug("aircraft = "+aircraft+" country = "+country)
       config.flag <- ::get_country_icon(country, true)
     }
@@ -249,8 +249,8 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (gm == ::GM_DOMINATION && blk?.timeLimit)
     {
-      local option = ::get_option(::USEROPT_TIME_LIMIT)
-      local timeLimitText = option.getTitle() + ::loc("ui/colon") + option.getValueLocText(blk.timeLimit)
+      let option = ::get_option(::USEROPT_TIME_LIMIT)
+      let timeLimitText = option.getTitle() + ::loc("ui/colon") + option.getValueLocText(blk.timeLimit)
       config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
     }
 
@@ -261,15 +261,15 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (blk.getStr("recommendedPlayers","") != "")
       config.maintext += ::format(::loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"
 
-    local rBlk = ::get_pve_awards_blk()
+    let rBlk = ::get_pve_awards_blk()
     if (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION || gm == ::GM_TRAINING)
     {
-      local status = max(mission.singleProgress, mission.onlineProgress)
+      let status = max(mission.singleProgress, mission.onlineProgress)
       config.status <- status
-      local dataBlk = rBlk?[::get_game_mode_name(gm)]
+      let dataBlk = rBlk?[::get_game_mode_name(gm)]
       if (dataBlk)
       {
-        local rewardsConfig = [{
+        let rewardsConfig = [{
           highlighted = ::DIFFICULTY_ARCADE > status
           isComplete = ::DIFFICULTY_ARCADE <= status
           isBaseReward = true
@@ -291,7 +291,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
             isAdditionalReward = true
           })
         else {
-          local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[mission.id], {
+          let firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[mission.id], {
             showFullReward = true
             isMissionComplete = ::DIFFICULTY_ARCADE <= status
           })
@@ -303,11 +303,11 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     } else
     if (gm == ::GM_DYNAMIC && rBlk?.dynamic)
     {
-      local dataBlk = rBlk.dynamic
-      local rewMoney = ::Cost()
-      local xpId = "xpEarnedWinDiff0"
-      local wpId = "wpEarnedWinDiff0"
-      local muls = ::get_player_multipliers()
+      let dataBlk = rBlk.dynamic
+      let rewMoney = ::Cost()
+      let xpId = "xpEarnedWinDiff0"
+      let wpId = "wpEarnedWinDiff0"
+      let muls = ::get_player_multipliers()
 
       rewMoney.rp = (dataBlk?[xpId] != null)
                      ? dataBlk[xpId] * muls.xpMultiplier
@@ -317,13 +317,13 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
                     ? dataBlk[wpId] * muls.wpMultiplier
                     : 0
 
-      local mul = ("presetName" in mission)
+      let mul = ("presetName" in mission)
                   ? dataBlk[mission.presetName]
                   : 0.0
       if (mul)
         config.baseReward <- buildRewardText(::loc("baseReward"), rewMoney.multiply(mul), true, true)
 
-      local reqAir = ("player_class" in mission.blk? mission.blk.player_class : "")
+      let reqAir = ("player_class" in mission.blk? mission.blk.player_class : "")
       if(reqAir != "")
       {
         config.aircraftItem <- ::loc("options/aircraft") + ::loc("ui/colon")
@@ -336,12 +336,12 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
       config.requirementsItem <- ::loc("unlocks/requirements") + ::loc("ui/colon")
       if ("mustHaveUnit" in curMission)
       {
-        local unitNameLoc = ::colorize("activeTextColor", ::getUnitName(curMission.mustHaveUnit))
+        let unitNameLoc = ::colorize("activeTextColor", ::getUnitName(curMission.mustHaveUnit))
         config.requirements <- ::loc("conditions/char_unit_exist/single", { value = unitNameLoc })
       }
       else
       {
-        local unlockName = mission.blk.chapter + "/" + mission.blk.name
+        let unlockName = mission.blk.chapter + "/" + mission.blk.name
         config.requirements <- ::get_unlock_description(unlockName, 1, true)
       }
     }

@@ -16,14 +16,15 @@
 
 g_unit_crew_cache.getUnitCrewDataById <- function getUnitCrewDataById(crewId, unit)
 {
-  if (unit == null || crewId == null)
+  if (crewId == null)
     return null
 
-  if (crewId != lastUnitCrewId || unit.name != lastUnitName)
+  let unitName = unit?.name ?? ""
+  if (crewId != lastUnitCrewId || unitName != lastUnitName)
   {
     lastUnitCrewId = crewId
-    lastUnitName = unit.name
-    local unitCrewBlk = ::get_aircraft_crew_blk(lastUnitCrewId, lastUnitName)
+    lastUnitName = unitName
+    let unitCrewBlk = ::get_aircraft_crew_blk(lastUnitCrewId, lastUnitName)
     lastUnitCrewData = ::buildTableFromBlk(unitCrewBlk)
   }
   return lastUnitCrewData

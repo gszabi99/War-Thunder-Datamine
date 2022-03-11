@@ -1,8 +1,8 @@
-class ::gui_handlers.ChatThreadHeader extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ChatThreadHeader <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "gui/chat/chatThreadsListRows"
+  sceneTplName = "%gui/chat/chatThreadsListRows"
 
   roomId = ""
   threadInfo = null
@@ -20,7 +20,7 @@ class ::gui_handlers.ChatThreadHeader extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local timerObj = scene.findObject("room_" + roomId)
+    let timerObj = scene.findObject("room_" + roomId)
     if (::checkObj(timerObj))
       timerObj.setUserData(this)
   }

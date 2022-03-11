@@ -1,7 +1,7 @@
-class ::gui_handlers.ChooseAmountWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/wndLib/chooseAmountWnd"
+  sceneTplName = "%gui/wndLib/chooseAmountWnd"
   needVoiceChat = false
 
   parentObj = null
@@ -20,7 +20,7 @@ class ::gui_handlers.ChooseAmountWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneTplView()
   {
-    local res = {}
+    let res = {}
     foreach(key in ["align", "headerText", "buttonText",
         "minValue", "maxValue", "curValue", "valueStep"])
       res[key] <- this[key]
@@ -40,10 +40,10 @@ class ::gui_handlers.ChooseAmountWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local buttonDecObj = scene.findObject("buttonDec")
+    let buttonDecObj = scene.findObject("buttonDec")
     if (::check_obj(buttonDecObj))
       buttonDecObj.enable(curValue != minValue)
-    local buttonIncObj = scene.findObject("buttonInc")
+    let buttonIncObj = scene.findObject("buttonInc")
     if (::check_obj(buttonIncObj))
       buttonIncObj.enable(curValue != maxValue)
   }

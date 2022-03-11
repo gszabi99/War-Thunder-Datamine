@@ -1863,15 +1863,6 @@
             "defaultPitch": 20.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 75.0
-          },
-          {
-            "bullets": 1000
-          },
-          {
             "allowableDelta": 2.0
           },
           {
@@ -1918,6 +1909,15 @@
           },
           {
             "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 60.0
+          },
+          {
+            "speedPitch": 55.0
+          },
+          {
+            "bullets": 2000
           },
           {
             "useGunnerTargetingQuality": false
@@ -1989,9 +1989,6 @@
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 180.0,
           "defaultPitch": 20.0,
-          "speedYaw": 60.0,
-          "speedPitch": 75.0,
-          "bullets": 1000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2008,6 +2005,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_01",
@@ -2056,9 +2056,6 @@
           "breechDP": "main_caliber_gun_02_dm",
           "defaultYaw": 180.0,
           "defaultPitch": 20.0,
-          "speedYaw": 60.0,
-          "speedPitch": 75.0,
-          "bullets": 1000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2075,6 +2072,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_02",
@@ -2121,9 +2121,6 @@
           "breechDP": "main_caliber_gun_02_dm",
           "defaultYaw": 180.0,
           "defaultPitch": 20.0,
-          "speedYaw": 60.0,
-          "speedPitch": 75.0,
-          "bullets": 1000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2140,6 +2137,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_02",
@@ -2997,19 +2997,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 40.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -4000.0,
+      "waterMassMult": 30.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 110000.0,
-      "additionalWaterShouldDiePercent": 0.44,
+      "additionalWaterDeathThreshold": 100000.0,
+      "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
       "maxHeelingTime": 10.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -3023,13 +3023,13 @@
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.75
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.75
+                "critWaterLevel": 0.9
               }
             },
             {
@@ -3044,7 +3044,7 @@
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.3,
+          "weight": 0.75,
           "maxWaterAlive": 1.0
         }
       },
@@ -3060,7 +3060,7 @@
             }
           },
           {
-            "weight": 0.4
+            "weight": 0.6
           },
           {
             "maxWaterAlive": 1.0

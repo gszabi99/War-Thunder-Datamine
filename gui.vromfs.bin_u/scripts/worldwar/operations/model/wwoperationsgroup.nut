@@ -1,4 +1,4 @@
-local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::WwOperationsGroup <- class
 {
@@ -21,13 +21,13 @@ local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhi
 
   function getNameText()
   {
-    local map = getMap()
+    let map = getMap()
     return map ? map.getNameText() : ""
   }
 
   function getDescription()
   {
-    local map = getMap()
+    let map = getMap()
     return map ? map.getDescription() : ""
   }
 
@@ -78,7 +78,7 @@ local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhi
 
   function canJoinByCountry(country)
   {
-    local countriesByTeams = getCountriesByTeams()
+    let countriesByTeams = getCountriesByTeams()
     foreach(cList in countriesByTeams)
       if (::isInArray(country, cList))
         return true
@@ -91,7 +91,7 @@ local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhi
 
   function getCantJoinReasonData(country)
   {
-    local res = {
+    let res = {
       canJoin = false
       reasonText = ""
     }
@@ -103,7 +103,7 @@ local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhi
     }
 
     //find operation which can join by country
-    local operation = ::u.search(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let operation = ::u.search(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!operation)
       return res
     return operation.getCantJoinReasonData(country)
@@ -111,7 +111,7 @@ local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhi
 
   function join(country)
   {
-    local opList = ::u.filter(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let opList = ::u.filter(getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!opList.len())
     {
       ::showInfoMsgBox(getCantJoinReasonData(country).reasonText)

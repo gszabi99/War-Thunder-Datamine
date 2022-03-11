@@ -1,12 +1,12 @@
 require("scripts/onlineShop/ingameConsoleStore.nut")
 
-local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-local shopData = require("scripts/onlineShop/xboxShopData.nut")
-local statsd = require("statsd")
-local xboxSetPurchCb = require("scripts/onlineShop/xboxPurchaseCallback.nut")
+let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+let shopData = require("scripts/onlineShop/xboxShopData.nut")
+let statsd = require("statsd")
+let xboxSetPurchCb = require("scripts/onlineShop/xboxPurchaseCallback.nut")
 
 
-local sheetsArray = [
+let sheetsArray = [
   {
     id = "xbox_game_content"
     locId = "itemTypes/xboxGameContent"
@@ -39,12 +39,12 @@ local sheetsArray = [
 
 foreach (sh in sheetsArray)
 {
-  local sheet = sh
+  let sheet = sh
   seenList.setSubListGetter(sheet.getSeenId(), @() (
     shopData.xboxProceedItems?[sheet.mediaType] ?? []).filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
 }
 
-class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
+::gui_handlers.XboxShop <- class extends ::gui_handlers.IngameConsoleStore
 {
   function loadCurSheetItemsList()
   {
@@ -57,10 +57,10 @@ class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
     if (!curItem)
       return
 
-    local wasItemBought = curItem.isBought
+    let wasItemBought = curItem.isBought
     curItem.updateIsBoughtStatus()
 
-    local wasPurchasePerformed = wasItemBought != curItem.isBought
+    let wasPurchasePerformed = wasItemBought != curItem.isBought
 
     if (wasPurchasePerformed)
     {
@@ -106,7 +106,7 @@ class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
   }
 }
 
-local openIngameStore = ::kwarg(
+let openIngameStore = ::kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false

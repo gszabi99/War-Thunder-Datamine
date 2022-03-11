@@ -1,3 +1,3 @@
 <<#buttons>>
-  include "gui/commonParts/button"
+  include "%gui/commonParts/button"
 <</buttons>>

@@ -1,13 +1,13 @@
-local { getModsTreeSize, generateModsTree, generateModsBgElems,
+let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("scripts/weaponry/modsTree.nut")
-local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-local { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
+let tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+let prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
   getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
-local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-local { getItemAmount,
+let { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+let { getItemAmount,
         getItemCost,
         getAllModsCost,
         getByCurBundle,
@@ -16,13 +16,13 @@ local { getItemAmount,
         isModInResearch,
         getBundleCurItem,
         canResearchItem } = require("scripts/weaponry/itemInfo.nut")
-local { getModItemName, getReqModsText, getBulletsListHeader
+let { getModItemName, getReqModsText, getBulletsListHeader
 } = require("scripts/weaponry/weaponryDescription.nut")
-local { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
-local { isBullets, getBulletsList, setUnitLastBullets,
+let { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
+let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
   getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
-local { WEAPON_TAG,
+let { WEAPON_TAG,
         getLastWeapon,
         validateLastWeapon,
         setLastWeapon,
@@ -33,11 +33,11 @@ local { WEAPON_TAG,
         getSecondaryWeaponsList,
         isUnitHaveAnyWeaponsTags,
         needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
-local { setDoubleTextToButton, placePriceTextToButton
+let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let { setDoubleTextToButton, placePriceTextToButton
 } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
-local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
+let { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
+let { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -50,7 +50,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   if ((modNames?.len() ?? 0) == 0)
     return
 
-  local db = ::DataBlock()
+  let db = ::DataBlock()
   db[unitName] <- ::DataBlock()
   foreach (modName in modNames)
     db[unitName][modName] <- enable
@@ -59,10 +59,10 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
 
 ::enable_current_modifications <- function enable_current_modifications(unitName)
 {
-  local db = ::DataBlock()
+  let db = ::DataBlock()
   db[unitName] <- ::DataBlock()
 
-  local air = getAircraftByName(unitName)
+  let air = getAircraftByName(unitName)
   foreach(mod in air.modifications)
     db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
 
@@ -77,13 +77,13 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
 }
 
-local getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
+let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
   ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name, params)
   : null
 
 local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
-class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   items = null
 
@@ -110,7 +110,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   guiScene = null
   scene = null
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/weaponry/weapons.blk"
+  sceneBlkName = "%gui/weaponry/weapons.blk"
   tierIdPrefix = "tierLine_"
 
   tooltipOpenTime = -1
@@ -137,7 +137,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     premiumModsHeight = unitSlotCellHeight
       + ::to_pixels($"{researchMode ? 2 : 1}@buttonHeight +1@modCellHeight")
 
-    local imageBlock = scene.findObject("researchMode_image_block")
+    let imageBlock = scene.findObject("researchMode_image_block")
     if (imageBlock?.isValid())
     {
       imageBlock.height = $"{heightInModCell(premiumModsHeight)}@modCellHeight"
@@ -187,10 +187,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateWeaponsAndBulletsLists()
     updateWndWidth()
 
-    local frameObj =  scene.findObject("mods_frame")
+    let frameObj =  scene.findObject("mods_frame")
     if(frameObj?.isValid())
       frameObj.width = ::to_pixels($"{wndWidth}@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw")
-    local data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
+    let data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
     mainModsObj.setValue(-1)
     guiScene.replaceContentFromText(mainModsObj, data, data.len(), this)
     modsBgObj = mainModsObj.findObject("bg_elems")
@@ -221,10 +221,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     bulletsByGroupIndex = {}
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
     {
-      local bulletsList = getBulletsList(air.name, groupIndex, {
+      let bulletsList = getBulletsList(air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
-      local curBulletsName = ::get_last_bullets(air.name, groupIndex)
+      let curBulletsName = ::get_last_bullets(air.name, groupIndex)
       if (groupIndex < air.unitType.bulletSetsQuantity)
         lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
@@ -236,19 +236,19 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWndWidth()
   {
-    local weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
+    let weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
       + (isUnitHaveSecondaryWeapons(air) ? 1 : 0)//Since we have secondary weapons own window
       + bulletsByGroupIndex.len()
       + expendablesArray.len()
-    local premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
+    let premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
     wndWidth = ::clamp(
       ::max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(air).guiPosX), 6, 7)
   }
 
   function onSlotbarSelect()
   {
-    local newCrew = getCurCrew()
-    local newUnit = newCrew ? ::g_crew.getCrewUnit(newCrew) : null
+    let newCrew = getCurCrew()
+    let newUnit = newCrew ? ::g_crew.getCrewUnit(newCrew) : null
     if (!newUnit || newUnit == air)
       return
 
@@ -267,13 +267,13 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (researchMode && !isAnyModuleInResearch())
     {
-      local modForResearch = findAnyNotResearchedMod(air)
+      let modForResearch = findAnyNotResearchedMod(air)
       if (modForResearch)
       {
         setModificatonOnResearch(modForResearch,
           (@(modForResearch) function() {
             updateAllItems()
-            local guiPosIdx = ::getTblValue("guiPosIdx", modForResearch, -1)
+            let guiPosIdx = ::getTblValue("guiPosIdx", modForResearch, -1)
             ::dagor.assertf(guiPosIdx >= 0, "missing guiPosIdx, mod - " + ::getTblValue("name", modForResearch, "none") + "; unit - " + air.name)
             selectResearchModule(guiPosIdx >= 0? guiPosIdx : 0)
           })(modForResearch))
@@ -286,7 +286,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local modIdx = customPosIdx
     if (modIdx < 0)
     {
-      local finishedResearch = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      let finishedResearch = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       foreach(item in items)
         if (isModInResearch(air, item))
         {
@@ -303,14 +303,14 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWindowTitle()
   {
-    local titleObj = scene.findObject("wnd_title")
+    let titleObj = scene.findObject("wnd_title")
     if (!::checkObj(titleObj))
       return
 
     local titleText = ::loc("mainmenu/btnWeapons") + " " + ::loc("ui/mdash") + " " + ::getUnitName(air)
     if (researchMode)
     {
-      local modifName = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      let modifName = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = ::loc("modifications/finishResearch",
         {modName = getModificationName(air, modifName)})
     }
@@ -319,20 +319,20 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWindowHeightAndPos()
   {
-    local frameObj = scene.findObject("mods_frame")
+    let frameObj = scene.findObject("mods_frame")
     if (::check_obj(frameObj))
     {
-      local frameHeight = frameObj.getSize()[1]
-      local maxFrameHeight = ::g_dagui_utils.toPixels(guiScene, "@maxWeaponsWindowHeight")
+      let frameHeight = frameObj.getSize()[1]
+      let maxFrameHeight = ::g_dagui_utils.toPixels(guiScene, "@maxWeaponsWindowHeight")
 
       if (frameHeight > maxFrameHeight)
       {
-        local frameHeaderHeight = ::g_dagui_utils.toPixels(guiScene, "@frameHeaderHeight")
+        let frameHeaderHeight = ::g_dagui_utils.toPixels(guiScene, "@frameHeaderHeight")
         if (frameHeight - frameHeaderHeight < maxFrameHeight)
         {
           frameObj.isHeaderHidden = "yes"
           showSceneBtn("close_alt_btn", !researchMode)
-          local researchModeImgObj = scene.findObject("researchMode_image_block")
+          let researchModeImgObj = scene.findObject("researchMode_image_block")
           researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
         }
         else
@@ -351,17 +351,17 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     tutorialModule.saveShowedTutorial("researchMod")
 
-    local finMod = ::getTblValue(::researchedModForCheck, researchBlock, "")
-    local newMod = ::shop_get_researchable_module_name(airName)
+    let finMod = ::getTblValue(::researchedModForCheck, researchBlock, "")
+    let newMod = ::shop_get_researchable_module_name(airName)
 
-    local finIdx = getItemIdxByName(finMod)
-    local newIdx = getItemIdxByName(newMod)
+    let finIdx = getItemIdxByName(finMod)
+    let newIdx = getItemIdxByName(newMod)
 
     if (finIdx < 0 || newIdx < 0)
       return
 
-    local newModName = getModificationName(air, items[newIdx].name, true)
-    local steps = [
+    let newModName = getModificationName(air, items[newIdx].name, true)
+    let steps = [
       {
         obj = ["item_" + newIdx]
         text = ::loc("help/newModification", {modName = newModName})
@@ -379,12 +379,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     ]
 
-    local finItem = items[finIdx]
-    local balance = ::Cost()
+    let finItem = items[finIdx]
+    let balance = ::Cost()
     balance.setFromTbl(::get_balance())
     if (getItemAmount(air, finItem) < 1 && getItemCost(air, finItem) <= balance)
     {
-      local finModName = getModificationName(air, items[finIdx].name, true)
+      let finModName = getModificationName(air, items[finIdx].name, true)
       steps.insert(0,
         {
           obj = ["item_" + finIdx]
@@ -418,7 +418,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     availableFlushExp = ::shop_get_unit_excess_exp(airName)
-    local freeRPObj = scene.findObject("available_free_exp_text")
+    let freeRPObj = scene.findObject("available_free_exp_text")
     if (::checkObj(freeRPObj))
       freeRPObj.setValue(::get_flush_exp_text(availableFlushExp))
   }
@@ -427,11 +427,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     showTaskProgressBox()
     availableFlushExp = ::shop_get_unit_excess_exp(airName)
-    local curResModuleName = ::shop_get_researchable_module_name(airName)
+    let curResModuleName = ::shop_get_researchable_module_name(airName)
 
     if(availableFlushExp <= 0 || curResModuleName == "")
     {
-      local afterDoneFunc = function() {
+      let afterDoneFunc = function() {
         destroyProgressBox()
         updateAllItems()
         goBack()
@@ -474,7 +474,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventModificationPurchased(params)
   {
-    local modName = params?.modName
+    let modName = params?.modName
     if (modName)
       purchasedModifications.append(modName)
 
@@ -497,8 +497,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     lastWeapon = getLastWeapon(airName)
-    local secondaryWeapons = getSecondaryWeaponsList(air)
-    local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
+    let secondaryWeapons = getSecondaryWeaponsList(air)
+    let selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
     if (selWeapon == null)
       return
 
@@ -522,7 +522,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function addItemToList(item, iType)
   {
-    local idx = items.len()
+    let idx = items.len()
 
     item.type <- iType
     item.guiPosIdx <- idx
@@ -533,12 +533,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function createItem(item, iType, holderObj, posX, posY)
   {
-    local id = addItemToList(item, iType)
+    let id = addItemToList(item, iType)
 
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    local currentEdiff = getCurrentEdiff()
+    let currentEdiff = getCurrentEdiff()
     return createModItem(id, air, item, iType, holderObj, this,
       { posX = posX, posY = posY, curEdiff = currentEdiff,
         tooltipId = getCustomTooltipId(air.name, item, {
@@ -557,8 +557,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function createUnitItemObj(id, item, holderObj, posX, posY)
   {
-    local blockObj = guiScene.createElementByObject(holderObj, "gui/weaponry/nextUnitItem.blk", "weapon_item_unit", this)
-    local titleObj = blockObj.findObject("nextResearch_title")
+    let blockObj = guiScene.createElementByObject(holderObj, "%gui/weaponry/nextUnitItem.blk", "weapon_item_unit", this)
+    let titleObj = blockObj.findObject("nextResearch_title")
     titleObj.setValue(researchMode? ::loc("mainmenu/nextResearch/title") : "")
 
     local position = (posX + 0.5).tostring() + "@modCellWidth-0.5w, " + (posY + 0.5).tostring() + "@modCellHeight-0.5h"
@@ -594,11 +594,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItem(idx)
   {
-    local itemObj = getItemObj(idx)
+    let itemObj = getItemObj(idx)
     if (!::checkObj(itemObj) || !(idx in items))
       return
 
-    local item = items[idx]
+    let item = items[idx]
     if (isItemTypeUnit(item.type))
       return updateUnitItem(item, itemObj)
 
@@ -609,8 +609,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(air, visualItem)
 
-    local hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
-    local currentEdiff = getCurrentEdiff()
+    let hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
+    let currentEdiff = getCurrentEdiff()
     updateModItem(air, item, itemObj, true, this, {
       canShowResearch = availableFlushExp == 0 && setResearchManually
       flushExp = availableFlushExp
@@ -628,9 +628,9 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBuyAllButton()
   {
-    local btnId = "btn_buyAll"
-    local cost = getAllModsCost(air, true)
-    local show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
+    let btnId = "btn_buyAll"
+    let cost = getAllModsCost(air, true)
+    let show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
     showSceneBtn(btnId, show)
     if (show)
       placePriceTextToButton(scene, btnId, ::loc("mainmenu/btnBuyAll"), cost)
@@ -644,7 +644,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillAvailableRPText()
     for(local i = 0; i < items.len(); i++)
       updateItem(i)
-    local treeSize = getModsTreeSize(air)
+    let treeSize = getModsTreeSize(air)
     updateTiersStatus(treeSize)
     updateButtons()
     updateBuyAllButton()
@@ -652,11 +652,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local isAnyModInResearch = isAnyModuleInResearch()
+    let isAnyModInResearch = isAnyModuleInResearch()
     showSceneBtn("btn_exit", researchMode && (!isAnyModInResearch || availableFlushExp <= 0 || setResearchManually))
     showSceneBtn("btn_spendExcessExp", researchMode && isAnyModInResearch && availableFlushExp > 0)
 
-    local checkboxObj = scene.findObject("auto_purchase_mods")
+    let checkboxObj = scene.findObject("auto_purchase_mods")
     if (::checkObj(checkboxObj))
     {
       checkboxObj.show(isOwn)
@@ -667,11 +667,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUnitItem(item, itemObj)
   {
-    local params = {
+    let params = {
       slotbarActions = airActions
       getEdiffFunc  = getCurrentEdiff.bindenv(this)
     }
-    local unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
+    let unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
     guiScene.replaceContentFromText(itemObj, unitBlk, unitBlk.len(), this)
     itemObj.tooltipId = ::g_tooltip.getIdUnit(item.unit.name, params)
     ::fill_unit_item_timers(itemObj.findObject("unit_item"), item.unit, params)
@@ -679,11 +679,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function isAnyModuleInResearch()
   {
-    local module = ::shop_get_researchable_module_name(airName)
+    let module = ::shop_get_researchable_module_name(airName)
     if (module == "")
       return false
 
-    local moduleData = getModificationByName(air, module)
+    let moduleData = getModificationByName(air, module)
     if (!moduleData || isModResearched(air, moduleData))
       return false
 
@@ -692,7 +692,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItemBundle(item)
   {
-    local bundle = getItemBundle(item)
+    let bundle = getItemBundle(item)
     if (!bundle)
       updateItem(item.guiPosIdx)
     else
@@ -705,7 +705,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function createTreeItems(obj, branch, treeOffsetY = 0)
   {
-    local branchItems = collectBranchItems(branch, [])
+    let branchItems = collectBranchItems(branch, [])
     branchItems.sort(@(a,b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
     foreach(item in branchItems)
       createItem(item, weaponsItem.modification, obj, item.guiPosX, item.tier + treeOffsetY - 1)
@@ -723,8 +723,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "")
   {
-    local fullWidth = wndWidth - treeOffsetX
-    local view = {
+    let fullWidth = wndWidth - treeOffsetX
+    let view = {
       width = fullWidth
       height = height
       offsetX = treeOffsetX
@@ -746,15 +746,15 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
 
       //increase last column width to full window width
-      local widthDiff = fullWidth - headerWidth
+      let widthDiff = fullWidth - headerWidth
       if (widthDiff > 0)
         columnsList[columnsList.len() - 1].width += widthDiff
     }
 
-    local needTierArrows = blockIdPrefix != ""
+    let needTierArrows = blockIdPrefix != ""
     for(local i = 1; i <= height; i++)
     {
-      local row = {
+      let row = {
         width = fullWidth
         top = i - 1
       }
@@ -769,7 +769,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       view.rows.append(row)
     }
 
-    local data = ::handyman.renderCached("gui/weaponry/weaponryBg", view)
+    let data = ::handyman.renderCached("%gui/weaponry/weaponryBg", view)
     if (data!="")
       guiScene.appendWithBlk(obj, data, this)
   }
@@ -779,7 +779,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local data = ""
     foreach(idx, a in arrowsList)
     {
-      local id = "arrow_" + idx
+      let id = "arrow_" + idx
 
       if (a.from[0]!=a.to[0]) //hor arrow
         data += format("modArrow { id:t='%s'; type:t='right'; " +
@@ -802,12 +802,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillModsTree()
   {
-    local treeOffsetY = heightInModCell(::to_pixels("1@frameHeaderHeight") + premiumModsHeight)
-    local tree = generateModsTree(air)
+    let treeOffsetY = heightInModCell(::to_pixels("1@frameHeaderHeight") + premiumModsHeight)
+    let tree = generateModsTree(air)
     if (!tree)
       return
 
-    local treeSize = getModsTreeSize(air)
+    let treeSize = getModsTreeSize(air)
     if (treeSize.guiPosX > wndWidth)
       ::dagor.logerr($"Modifications: {air.name} too much modifications in a row")
 
@@ -816,7 +816,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!(treeSize.tier > 0))
       return
 
-    local bgElems = generateModsBgElems(air)
+    let bgElems = generateModsBgElems(air)
     createTreeBlocks(modsBgObj, bgElems.blocks, treeSize.tier, 0, treeOffsetY, "unlocked", tierIdPrefix)
     createTreeArrows(modsBgObj, bgElems.arrows, treeOffsetY)
     createTreeItems(mainModsObj, tree, treeOffsetY)
@@ -826,7 +826,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTiersStatus(size)
   {
-    local tiersArray = getResearchedModsArray(size.tier)
+    let tiersArray = getResearchedModsArray(size.tier)
     for(local i = 1; i <= size.tier; i++)
     {
       if (tiersArray[i-1] == null)
@@ -834,21 +834,21 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         ::dagor.assertf(false, ::format("No modification data for unit '%s' in tier %s.", air.name, i.tostring()))
         break
       }
-      local unlocked = isWeaponTierAvailable(air, i)
-      local owned = (tiersArray[i-1].notResearched == 0)
+      let unlocked = isWeaponTierAvailable(air, i)
+      let owned = (tiersArray[i-1].notResearched == 0)
       scene.findObject(tierIdPrefix + i).type = owned? "owned" : unlocked ? "unlocked" : "locked"
 
-      local jObj = scene.findObject(tierIdPrefix + (i+1).tostring())
+      let jObj = scene.findObject(tierIdPrefix + (i+1).tostring())
       if(::checkObj(jObj))
       {
-        local modsCountObj = jObj.findObject(tierIdPrefix + (i+1).tostring() + "_txt")
-        local countMods = tiersArray[i-1].researched
-        local reqMods = air.needBuyToOpenNextInTier[i-1]
+        let modsCountObj = jObj.findObject(tierIdPrefix + (i+1).tostring() + "_txt")
+        let countMods = tiersArray[i-1].researched
+        let reqMods = air.needBuyToOpenNextInTier[i-1]
         if(countMods >= reqMods)
           if(!unlocked)
           {
             modsCountObj.setValue(countMods.tostring() + ::loc("weapons_types/short/separator") + reqMods.tostring())
-            local tooltipText = "<color=@badTextColor>" + ::loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
+            let tooltipText = "<color=@badTextColor>" + ::loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
             modsCountObj.tooltip = ::loc("weaponry/unlockTier/countsBlock/startText") + "\n" +  tooltipText
             jObj.tooltip = tooltipText
           }
@@ -861,9 +861,9 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         else
         {
           modsCountObj.setValue(countMods.tostring() + ::loc("weapons_types/short/separator") + reqMods.tostring())
-          local req = reqMods - countMods
+          let req = reqMods - countMods
 
-          local tooltipText = ::loc("weaponry/unlockTier/tooltip",
+          let tooltipText = ::loc("weaponry/unlockTier/tooltip",
                                     { amount = req.tostring(), tier = ::get_roman_numeral(i+1) })
           jObj.tooltip = tooltipText
           modsCountObj.tooltip = ::loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
@@ -882,7 +882,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (!isModificationInTree(air, mod))
           continue
 
-        local idx = mod.tier-1
+        let idx = mod.tier-1
         tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
 
          if(isModResearched(air, mod))
@@ -899,8 +899,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::has_feature("SpendGold"))
       return
 
-    local offsetX = researchMode ? 0 : 1.0
-    local offsetY = researchMode
+    let offsetX = researchMode ? 0 : 1.0
+    let offsetY = researchMode
       ? heightInModCell(premiumModsHeight - ::to_pixels("1@modCellHeight + 1@blockInterval"))
       : 0
     local nextX = offsetX
@@ -912,7 +912,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (researchMode)
       return
 
-    local columnsList = [getWeaponsColumnData()]
+    let columnsList = [getWeaponsColumnData()]
     createTreeBlocks(modsBgObj, columnsList, 1, offsetX, offsetY)
   }
 
@@ -938,14 +938,14 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local offsetX = 0
-    local offsetY = heightInModCell(::to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
-    local columnsList = []
+    let offsetY = heightInModCell(::to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
+    let columnsList = []
     //add primary weapons bundle
-    local primaryWeaponsList = []
+    let primaryWeaponsList = []
     foreach(i, modName in getPrimaryWeaponsList(air))
     {
-      local mod = (modName=="")? null : getModificationByName(air, modName)
-      local item = { name = modName, weaponMod = mod }
+      let mod = (modName=="")? null : getModificationByName(air, modName)
+      let item = { name = modName, weaponMod = mod }
 
       if (mod)
       {
@@ -967,11 +967,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     //add secondary weapons
     if (isUnitHaveSecondaryWeapons(air))
     {
-      local secondaryWeapons = getSecondaryWeaponsList(air)
+      let secondaryWeapons = getSecondaryWeaponsList(air)
       lastWeapon = validateLastWeapon(airName) //real weapon or ..._default
       dagor.debug("initial set lastWeapon " + lastWeapon )
       if (needSecondaryWeaponsWnd(air)) {
-        local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
+        let selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
         if (selWeapon)
           createItem(selWeapon, weaponsItem.weapon, mainModsObj, offsetX, offsetY)
@@ -992,7 +992,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       createBundle(getBulletsItemsList(air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, mainModsObj, offsetX, offsetY)
 
-      local name = getBulletsListHeader(air, bulletsList)
+      let name = getBulletsListHeader(air, bulletsList)
       columnsList.append(getWeaponsColumnData(name).__merge(
         {
           haveWarning = checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY
@@ -1017,7 +1017,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWeaponsWarning()
   {
-    local iconObj = scene.findObject("weapons_warning")
+    let iconObj = scene.findObject("weapons_warning")
     if (iconObj?.isValid())
       iconObj.display = (checkUnitSecondaryWeapons(air) != UNIT_WEAPONS_READY) ? "show" : "hide"
   }
@@ -1026,12 +1026,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
     {
-      local bulletsList = getBulletsList(air.name, groupIndex, {
+      let bulletsList = getBulletsList(air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false })
       if (!bulletsList.values.len() || bulletsList.duplicate)
         continue
 
-      local iconObj = scene.findObject($"bullets{groupIndex}_warning")
+      let iconObj = scene.findObject($"bullets{groupIndex}_warning")
         if (iconObj?.isValid())
           iconObj.display = (checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY)
             ? "show" : "hide"
@@ -1061,7 +1061,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       id = obj.id
     if (id.len() <= 5 || id.slice(0,5) != "item_")
       return -1
-    local idx = id.slice(5).tointeger()
+    let idx = id.slice(5).tointeger()
     return (idx in items)? idx : -1
   }
 
@@ -1078,14 +1078,14 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(mainModsObj))
       return null
 
-    local val = mainModsObj.getValue() - 1
-    local itemObj = mainModsObj.findObject("item_" + val)
+    let val = mainModsObj.getValue() - 1
+    let itemObj = mainModsObj.findObject("item_" + val)
     return ::check_obj(itemObj) ? itemObj : null
   }
 
   function doCurrentItemAction()
   {
-    local itemObj = getCurItemObj()
+    let itemObj = getCurItemObj()
     if (itemObj)
       onModAction(itemObj, false)
   }
@@ -1094,7 +1094,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (researchMode)
     {
-      local idx = getItemIdxByObj(obj)
+      let idx = getItemIdxByObj(obj)
       if (idx >= 0)
         mainModsObj.setValue(items[idx].guiPosIdx+1)
       return
@@ -1122,16 +1122,16 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(mainModsObj))
       return null
-    local item = getSelItemFromNavObj(mainModsObj)
+    let item = getSelItemFromNavObj(mainModsObj)
     return (item && isItemTypeUnit(item.type))? item : null
   }
 
   function getSelItemFromNavObj(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return null
-    local idx = getItemIdxByObj(obj.getChild(value))
+    let idx = getItemIdxByObj(obj.getChild(value))
     if (idx < 0)
       return null
     return items[idx]
@@ -1172,7 +1172,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local id = obj?.id
+    let id = obj?.id
     if (!id || id.len() <= 5 || id.slice(0,5) != "item_")
       return base.onStickDropDown(obj, show)
 
@@ -1216,7 +1216,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onModAction(obj, fullAction = true, stickBundle = false)
   {
-    local idx = getItemIdxByObj(obj)
+    let idx = getItemIdxByObj(obj)
     if (idx < 0)
       return
 
@@ -1231,8 +1231,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doItemAction(item, fullAction = true)
   {
-    local amount = getItemAmount(air, item)
-    local onlyBuy = !fullAction && !getItemBundle(item)
+    let amount = getItemAmount(air, item)
+    let onlyBuy = !fullAction && !getItemBundle(item)
 
     if (checkResearchOperation(item))
       return
@@ -1269,7 +1269,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (item.type == weaponsItem.modification)
     {
-      local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
+      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
       if (groupDef >= 0)
       {
         setLastBullets(item, groupDef)
@@ -1279,7 +1279,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       {
         if (getModificationBulletsGroup(item.name) != "")
         {
-          local id = getBulletGroupIndex(airName, item.name)
+          let id = getBulletGroupIndex(airName, item.name)
           local isChanged = false
           if (id >= 0)
             isChanged = setLastBullets(item, id)
@@ -1310,7 +1310,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (canResearchItem(air, item, availableFlushExp <= 0 && setResearchManually))
     {
-      local afterFuncDone = (@(item) function() {
+      let afterFuncDone = (@(item) function() {
         setModificatonOnResearch(item, function()
         {
           updateAllItems()
@@ -1331,7 +1331,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setModificatonOnResearch(item, afterDoneFunc = null)
   {
-    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
@@ -1368,7 +1368,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function _flushItemExp(modName, afterDoneFunc = null)
   {
-    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
         setResearchManually = true
         if (afterDoneFunc)
           afterDoneFunc()
@@ -1396,11 +1396,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAltModAction(obj) //only buy atm before no research.
   {
-    local idx = getItemIdxByObj(obj)
+    let idx = getItemIdxByObj(obj)
     if (idx < 0)
       return
 
-    local item = items[idx]
+    let item = items[idx]
     if (item.type==weaponsItem.spare)
     {
       ::gui_handlers.UniversalSpareApplyWnd.open(air, getItemObj(idx))
@@ -1441,7 +1441,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (item.type==weaponsItem.modification || item.type==weaponsItem.expendables)
     {
-      local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
+      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
       if (groupDef>=0)
         return
 
@@ -1468,8 +1468,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!(groupIdx in lastBullets))
       return false
 
-    local curBullets = ::get_last_bullets(airName, groupIdx)
-    local isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
+    let curBullets = ::get_last_bullets(airName, groupIdx)
+    let isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
     setUnitLastBullets(air, groupIdx, item.name)
     if (isChanged) {
       guiScene.playSound("check")
@@ -1480,8 +1480,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkAndBuyWeaponry(modItem, open = false)
   {
-    local listObj = mainModsObj
-    local curValue = mainModsObj.getValue()
+    let listObj = mainModsObj
+    let curValue = mainModsObj.getValue()
     checkSaveBulletsAndDo(::Callback(function() {
       weaponsPurchase(air, {
         modItem = modItem,
@@ -1493,17 +1493,17 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setLastPrimary(item)
   {
-    local lastPrimary = getLastPrimaryWeapon(air)
+    let lastPrimary = getLastPrimaryWeapon(air)
     if (lastPrimary==item.name)
       return
-    local mod = getModificationByName(air, (item.name=="") ? lastPrimary : item.name)
+    let mod = getModificationByName(air, (item.name=="") ? lastPrimary : item.name)
     if (mod)
       switchMod(mod, false)
   }
 
   function switchMod(item, checkCanDisable = true)
   {
-    local equipped = ::shop_is_modification_enabled(airName, item.name)
+    let equipped = ::shop_is_modification_enabled(airName, item.name)
     if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
 
@@ -1514,12 +1514,12 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doSwitchMod(item, equipped)
   {
-    local taskSuccessCallback = (@(air, item) function() {
+    let taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
       ::broadcastEvent("ModificationChanged")
     }) (air, item)
 
-    local taskId = enable_modifications(airName, [item.name], !equipped)
+    let taskId = enable_modifications(airName, [item.name], !equipped)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
   }
 
@@ -1527,7 +1527,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     doWhenActiveOnce("updateAllItems")
     doWhenActiveOnce("unstickCurBundle")
 
-    local curWeapon = validateLastWeapon(airName)
+    let curWeapon = validateLastWeapon(airName)
     if (curWeapon != lastWeapon)
       doWhenActiveOnce("onEventUnitWeaponChanged")
   }
@@ -1558,7 +1558,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (taskId >= 0 && func)
       {
-        local cb = ::u.isFunction(func) ? ::Callback(func, this) : func
+        let cb = ::u.isFunction(func) ? ::Callback(func, this) : func
         ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
       }
     }
@@ -1574,8 +1574,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeAutoPurchaseModsValue(obj)
   {
-    local value = obj.getValue()
-    local savedValue = getAutoPurchaseValue()
+    let value = obj.getValue()
+    let savedValue = getAutoPurchaseValue()
     if (value == savedValue)
       return
 
@@ -1590,7 +1590,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (researchMode)
     {
-      local curResName = ::shop_get_researchable_module_name(airName)
+      let curResName = ::shop_get_researchable_module_name(airName)
       if (::getTblValue("name", lastResearchMod, "") != curResName)
         setModificatonOnResearch(getModificationByName(air, curResName))
     }
@@ -1640,8 +1640,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (p.unit != air)
       return
-    local modName = p.mod.name
-    local itemidx = items.findindex(@(item) item.name == modName)
+    let modName = p.mod.name
+    let itemidx = items.findindex(@(item) item.name == modName)
     if (itemidx != null)
       updateItem(itemidx)
   }
@@ -1670,7 +1670,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   curValue = 0
   minValue = 0
@@ -1689,7 +1689,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
   someAction = true
   scene = null
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/multiplePurchase.blk"
+  sceneBlkName = "%gui/multiplePurchase.blk"
 
   function initScreen()
   {
@@ -1700,7 +1700,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     itemCost = getItemCost(unit, item)
-    local statusTbl = getItemStatusTbl(unit, item)
+    let statusTbl = getItemStatusTbl(unit, item)
     minValue = statusTbl.amount
     maxValue = statusTbl.maxAmount
     minUserValue = statusTbl.amount + 1
@@ -1713,7 +1713,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
       canShowStatusImage = false
     })
 
-    local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
+    let discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)
 
     sceneUpdate()
@@ -1727,7 +1727,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 
     if (curValue <= minValue)
     {
-      local balance = ::get_balance()
+      let balance = ::get_balance()
       local maxBuy = maxValue - minValue
       if (maxBuy * itemCost.gold > balance.gold && balance.gold >= 0)
         maxBuy = (balance.gold / itemCost.gold).tointeger()
@@ -1736,13 +1736,13 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
       curValue = itemCost.gold > 0 ? minUserValue: minValue + max(maxBuy, 1)
     }
 
-    local sObj = scene.findObject("skillSlider")
+    let sObj = scene.findObject("skillSlider")
     sObj.max = maxValue
 
-    local oldObj = scene.findObject("oldSkillProgress")
+    let oldObj = scene.findObject("oldSkillProgress")
     oldObj.max = maxValue
 
-    local newObj = scene.findObject("newSkillProgress")
+    let newObj = scene.findObject("newSkillProgress")
     newObj.min = minValue
     newObj.max = maxValue
   }
@@ -1777,7 +1777,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     if (newValue < minUserValue)
       newValue = minUserValue
 
-    local value = clamp(newValue, minUserValue, maxUserValue)
+    let value = clamp(newValue, minUserValue, maxUserValue)
 
     curValue = value
     sceneUpdate()
@@ -1785,9 +1785,9 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtonPriceText()
   {
-    local buyValue = curValue - minValue
-    local wpCost = buyValue * itemCost.wp
-    local eaCost = buyValue * itemCost.gold
+    let buyValue = curValue - minValue
+    let wpCost = buyValue * itemCost.wp
+    let eaCost = buyValue * itemCost.gold
     placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
   }
 
@@ -1796,8 +1796,8 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("skillSlider").setValue(curValue)
     scene.findObject("oldSkillProgress").setValue(minValue)
     scene.findObject("newSkillProgress").setValue(curValue)
-    local buyValue = curValue - minValue
-    local buyValueText = buyValue==0? "": ("+" + buyValue.tostring())
+    let buyValue = curValue - minValue
+    let buyValueText = buyValue==0? "": ("+" + buyValue.tostring())
     scene.findObject("text_buyingValue").setValue(buyValueText)
     scene.findObject("buttonInc").enable(curValue < maxUserValue)
     scene.findObject("buttonMax").enable(curValue != maxUserValue)

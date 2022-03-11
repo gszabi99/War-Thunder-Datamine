@@ -1,13 +1,14 @@
-local time = require("scripts/time.nut")
-local { cutPostfix } = require("std/string.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-local { getPrizeChanceConfig } = require("scripts/items/prizeChance.nut")
-local { MODIFICATION, SPARE } = require("scripts/weaponry/weaponryTooltips.nut")
-local { isLoadingBgUnlock } = require("scripts/loading/loadingBgData.nut")
+let time = require("scripts/time.nut")
+let { cutPostfix } = require("std/string.nut")
+let workshop = require("scripts/items/workshop/workshop.nut")
+let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+let { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+let { getPrizeChanceConfig } = require("scripts/items/prizeChance.nut")
+let { MODIFICATION, SPARE } = require("scripts/weaponry/weaponryTooltips.nut")
+let { isLoadingBgUnlock } = require("scripts/loading/loadingBgData.nut")
+let TrophyMultiAward = require("scripts/items/trophyMultiAward.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -58,21 +59,21 @@ enum STACK_TYPE {
 const UNITS_STACK_DETAILED_COUNT = 3
 const UNITS_STACK_BY_TYPE_COUNT  = 6
 
-local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
+let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
 ::PrizesView <- {
-  template = "gui/items/trophyDesc"
+  template = "%gui/items/trophyDesc"
 
   function getTrophyOpenCountTillPrize(content, trophyInfo) {
-    local res = []
+    let res = []
     local trophiesCountTillPrize = 0
     foreach (prize in content) {
       if (prize?.till == null)
         continue
 
-      local prizeType = getPrizeType(prize)
-      local isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(::getAircraftByName(prize.unit))
-      local locId = isReceived ? "trophy/prizeAlreadyReceived" : "trophy/openCountTillPrize"
+      let prizeType = getPrizeType(prize)
+      let isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(::getAircraftByName(prize.unit))
+      let locId = isReceived ? "trophy/prizeAlreadyReceived" : "trophy/openCountTillPrize"
       res.append(::loc(locId, {
         prizeText = getPrizeText(prize, false, false, !isReceived)
         trophiesCount = prize.till
@@ -90,8 +91,8 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
   }
 
   function getFilteredListsData(prizesList, isFitFunction) {
-    local filteredItems = []
-    local newPrizesList = []
+    let filteredItems = []
+    let newPrizesList = []
 
     foreach(prize in prizesList) {
       if (isFitFunction(prize))
@@ -107,8 +108,8 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
   }
 
   function getPrizesViewArrayByWeightCategory(prizes, category, title, params) {
-    local { showOnlyCategoriesOfPrizes = false, categoryId } = params
-    local isFirstHighlightedLine = categoryId % 2 == 0
+    let { showOnlyCategoriesOfPrizes = false, categoryId } = params
+    let isFirstHighlightedLine = categoryId % 2 == 0
     local prizeTitleView = getPrizeChanceConfig(category).__merge({
       title = title
       isHighlightedLine = isFirstHighlightedLine
@@ -117,7 +118,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     if (showOnlyCategoriesOfPrizes)
       return [prizeTitleView]
 
-    local arrayForView = getPrizesStacksArrayForView([], params.__merge({
+    let arrayForView = getPrizesStacksArrayForView([], params.__merge({
       stacksList = prizes
       isFirstHighlightedLine = !isFirstHighlightedLine
     }))
@@ -145,21 +146,21 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     $"trophy/unlockables_names/{itemBlkType == "unit" ? "aircraft" : itemBlkType}")
 
   function getPrizesStacksViewByWeight(content, fixedAmountHeaderFunc, params) {
-    local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, showOnlyCategoriesOfPrizes = false } = params
-    local view = clone params
+    let { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, showOnlyCategoriesOfPrizes = false } = params
+    let view = clone params
     local stacksList = _stackContent(content, stackLevel, shopDesc)
-    local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
-    local isFitByItemType = function(prize, itemType) {
+    let fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
+    let isFitByItemType = function(prize, itemType) {
       if(prize.prizeType != PRIZE_TYPE.ITEM)
         return false
 
-      local blkType = prize?.item.blkType
+      let blkType = prize?.item.blkType
       if (itemType == blkType)
         return true
 
       return itemType == "unit" && unitItemTypes.contains(blkType)
     }
-    local isFitByRarity = @(prize, rarity) rarity == prize?.item.getQuality()
+    let isFitByRarity = @(prize, rarity) rarity == prize?.item.getQuality()
 
     view.isCollapsable <- !showOnlyCategoriesOfPrizes
     if (fixedAmountHeaderFunc)
@@ -171,11 +172,11 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     params.fixedAmount <- fixedAmount
     params.categoryId <- 0
 
-    local notFoundPrizes = []
-    local prizeListView = []
+    let notFoundPrizes = []
+    let prizeListView = []
     foreach(category in categoryWeight) {
-      local itemBlkType = category.prizeType
-      local byTypeLists = getFilteredListsData(stacksList,
+      let itemBlkType = category.prizeType
+      let byTypeLists = getFilteredListsData(stacksList,
         @(p) isFitByItemType(p, itemBlkType))
 
       local byTypeArray = byTypeLists.filteredItems
@@ -184,7 +185,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       if (byTypeArray.len() == 0)
         continue
 
-      local categoryText = getItemTypePrizeText(itemBlkType)
+      let categoryText = getItemTypePrizeText(itemBlkType)
       if (category.weight != null) {
         params.categoryId++
         prizeListView.extend(getPrizesViewArrayByWeightCategory(
@@ -194,11 +195,11 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       }
 
       foreach (rarityWeight in category.rarity) {
-        local rarity = rarityWeight.rarity
-        local byRarityLists = getFilteredListsData(byTypeArray,
+        let rarity = rarityWeight.rarity
+        let byRarityLists = getFilteredListsData(byTypeArray,
           @(p) isFitByRarity(p, rarity))
 
-        local byRarityArray = byRarityLists.filteredItems
+        let byRarityArray = byRarityLists.filteredItems
         byTypeArray = byRarityLists.lostPrizesList
 
         if (byRarityArray.len() == 0)
@@ -211,17 +212,17 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       }
 
       while (byTypeArray.len() > 0) {
-        local rarity = byTypeArray[0]?.item.getQuality()
+        let rarity = byTypeArray[0]?.item.getQuality()
         if (rarity == null) {
           notFoundPrizes.append(byTypeArray[0])
           byTypeArray.remove(0)
           continue
         }
 
-        local byRarityLists = getFilteredListsData(byTypeArray,
+        let byRarityLists = getFilteredListsData(byTypeArray,
           @(p) isFitByRarity(p, rarity))
 
-        local byRarityArray = byRarityLists.filteredItems
+        let byRarityArray = byRarityLists.filteredItems
         byTypeArray = byRarityLists.lostPrizesList
         params.categoryId++
         prizeListView.extend(getPrizesViewArrayByWeightCategory(byRarityArray,
@@ -241,10 +242,10 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       itemBlkType = unitItemTypes.contains(itemBlkType) ? "unit"
         : itemBlkType
 
-      local byTypeLists = getFilteredListsData(stacksList,
+      let byTypeLists = getFilteredListsData(stacksList,
         @(p) isFitByItemType(p, itemBlkType))
 
-      local byTypeArray = byTypeLists.filteredItems
+      let byTypeArray = byTypeLists.filteredItems
       stacksList = byTypeLists.lostPrizesList
       params.categoryId++
       prizeListView.extend(getPrizesViewArrayByWeightCategory(byTypeArray,
@@ -268,17 +269,17 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       isFirstHighlightedLine = false } = params
 
     stacksList = stacksList ?? _stackContent(content, stackLevel, shopDesc)
-    local showCount = fixedAmount == 1
+    let showCount = fixedAmount == 1
 
     local maxButtonsCount = 0
     local hasChanceIcon = false
-    local prizeListView = []
+    let prizeListView = []
     foreach (idx, st in stacksList) {
       local data = null
       if (st.level == prizesStack.NOT_STACKED)
         data = getPrizesViewData(st.prize, showCount, params)
       else if (st.stackType == STACK_TYPE.ITEM) {//onl stack by items atm, so this only to do last check.
-        local detailed = st.level == prizesStack.DETAILED
+        let detailed = st.level == prizesStack.DETAILED
         local name = ""
         if (detailed)
           name = st.item.getStackName(st.params)
@@ -289,7 +290,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
         if (showCount && st.countMax > 1)
           countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : (" x" + st.countMax)
 
-        local kinds = detailed ? "" : ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = ::loc("trophy/item_type_different_kinds") }))
+        let kinds = detailed ? "" : ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = ::loc("trophy/item_type_different_kinds") }))
         data = {
           title = name + countText + kinds
           icon = getPrizeTypeIcon(st.prize)
@@ -310,7 +311,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       if (data != null) {
         maxButtonsCount = ::max(data?.buttonsCount ?? 0, maxButtonsCount)
         if (needShowDropChance) {
-          local chanceConfig = getPrizeChanceConfig(st.prize)
+          let chanceConfig = getPrizeChanceConfig(st.prize)
           hasChanceIcon = hasChanceIcon || chanceConfig.chanceIcon != null
           data.__update(chanceConfig)
         }
@@ -323,7 +324,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     if (hasChanceIcon) {
       prizeListView.each(function(d) {
         d.buttonsCount <- maxButtonsCount + 1
-        local buttons = d?.buttons ?? []
+        let buttons = d?.buttons ?? []
         if (buttons.len() < maxButtonsCount)
           d.buttons <- buttons.resize(maxButtonsCount, { emptyButton = true })
       })
@@ -381,7 +382,7 @@ PrizesView.getPrizeType <- function getPrizeType(prize)
 
 PrizesView.getStackType <- function getStackType(prize)
 {
-  local prizeType = getPrizeType(prize)
+  let prizeType = getPrizeType(prize)
   if (prizeType == PRIZE_TYPE.ITEM)
     return STACK_TYPE.ITEM
   if (::isInArray(prizeType, [ PRIZE_TYPE.GOLD, PRIZE_TYPE.WARPOINTS, PRIZE_TYPE.EXP, PRIZE_TYPE.WARBONDS ]))
@@ -407,10 +408,10 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   {
     if (full)
     {
-      name = ::TrophyMultiAward(prize).getDescription(true)
+      name = TrophyMultiAward(prize).getDescription(true)
       color = ""
     } else
-      name = ::TrophyMultiAward(prize).getName()
+      name = TrophyMultiAward(prize).getName()
   }
   else if (prize?.unit)
   {
@@ -428,8 +429,8 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
       name = ::loc("shop/unitRent")
     else
     {
-      local unitName = prize.rentedUnit
-      local unitColor = ::getUnitClassColor(unitName)
+      let unitName = prize.rentedUnit
+      let unitColor = ::getUnitClassColor(unitName)
       name = ::loc("shop/rentUnitFor", {
         unit = ::colorize(unitColor, ::getUnitName(unitName, true))
         time = ::colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
@@ -438,7 +439,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.item || prize?.trophy)
   {
-    local id = prize?.item || prize?.trophy
+    let id = prize?.item || prize?.trophy
     local item = ::ItemsManager.findItemById(id)
     if (_typeName)
     {
@@ -477,9 +478,9 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.unlock)
   {
-    local unlockId = prize.unlock
-    local unlockType = ::get_unlock_type_by_id(unlockId)
-    local typeValid = unlockType >= 0
+    let unlockId = prize.unlock
+    let unlockType = ::get_unlock_type_by_id(unlockId)
+    let typeValid = unlockType >= 0
 
     local unlockTypeName = isLoadingBgUnlock(unlockId)
       ? ::loc("loading_bg")
@@ -505,15 +506,15 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   {
     if (prize?.resourceType)
     {
-      local decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
-      local locName = decoratorType.getLocName(prize.resource, true)
-      local valid = decoratorType != ::g_decorator_type.UNKNOWN
-      local decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
+      let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+      let locName = decoratorType.getLocName(prize.resource, true)
+      let valid = decoratorType != ::g_decorator_type.UNKNOWN
+      let decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
       name = locName
 
       if (colored)
       {
-        local nameColor = !valid ? "badTextColor"
+        let nameColor = !valid ? "badTextColor"
           : forcedColor != "" ? forcedColor
           : decorator ? decorator.getRarityColor()
           : "activeTextColor"
@@ -531,22 +532,22 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
     name = ::Cost().setFrp(prize.exp).toStringWithParams({isColored = colored})
   else if (prize?.warbonds)
   {
-    local wb = ::g_warbonds.findWarbond(prize.warbonds)
+    let wb = ::g_warbonds.findWarbond(prize.warbonds)
     name = wb && prize?.count ? wb.getPriceText(prize.count, true, false) : ""
     showCount = false
   }
   else if (prize?.unlockAddProgress)
   {
-    local unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
+    let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
     if (unlock != null) {
-      local config = ::build_conditions_config(unlock)
+      let config = ::build_conditions_config(unlock)
       if (config.maxVal <= (prize?.count ?? 1)) //show reward only for item what open unlock
         name = get_unlock_rewards_text(config)
     }
     if (name == "") {
-      local progressArray = prize.unlockAddProgress.split("_")
-      local value = progressArray.top()
-      local typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
+      let progressArray = prize.unlockAddProgress.split("_")
+      let value = progressArray.top()
+      let typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
       if (_typeName)
         name = ::loc(typeName)
       else
@@ -563,13 +564,13 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   local countText = ""
   if (showCount)
   {
-    local count = prize?.count ?? 1
+    let count = prize?.count ?? 1
     countText = (!_typeName && count > 1) ? " x" + count : ""
     if (colored)
       countText = ::colorize("commonTextColor", countText)
   }
 
-  local commentText = prize?.commentText ?? ""
+  let commentText = prize?.commentText ?? ""
 
   if (forcedColor != "")
     color = forcedColor
@@ -587,22 +588,22 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
   if (!prize || prize?.noIcon)
     return ""
   if (isPrizeMultiAward(prize))
-    return ::TrophyMultiAward(prize).getTypeIcon()
+    return TrophyMultiAward(prize).getTypeIcon()
   if (prize?.unit)
     return unitImage ? ::image_for_air(prize.unit) : ::getUnitClassIco(prize.unit)
   if (prize?.rentedUnit)
     return "#ui/gameuiskin#item_type_rent"
   if (prize?.item)
   {
-    local item = ::ItemsManager.findItemById(prize.item)
+    let item = ::ItemsManager.findItemById(prize.item)
     return item?.getSmallIconName() ?? ::BaseItem.typeIcon
   }
   if (prize?.trophy)
   {
-    local item = ::ItemsManager.findItemById(prize.trophy)
+    let item = ::ItemsManager.findItemById(prize.trophy)
     if (!item)
       return ::BaseItem.typeIcon
-    local topPrize = item.getTopPrize()
+    let topPrize = item.getTopPrize()
     return topPrize ? getPrizeTypeIcon(topPrize) : "#ui/gameuiskin#item_type_trophies"
   }
   if (prize?.premium_in_hours)
@@ -629,7 +630,7 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
   if (prize?.warbonds)
     return "#ui/gameuiskin#item_type_warbonds"
   if (prize?.unlockAddProgress) {
-    local unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
+    let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
     local rewardText = ""
     if (unlock != null)
       rewardText = ::get_unlock_rewards_text(::build_conditions_config(unlock))
@@ -649,7 +650,7 @@ PrizesView._getContentFixedAmount <- function _getContentFixedAmount(content)
   local res = -1
   foreach (prize in content)
   {
-    local itemCount = prize?.count ?? 1
+    let itemCount = prize?.count ?? 1
     if (res == itemCount)
       continue
     if (res >= 1)
@@ -670,7 +671,7 @@ PrizesView._getContentFixedAmount <- function _getContentFixedAmount(content)
 //}
 PrizesView._createStack <- function _createStack(prize)
 {
-  local count = prize?.count ?? 1
+  let count = prize?.count ?? 1
   return {
     prizeType = getPrizeType(prize)
     stackType = getStackType(prize)
@@ -694,7 +695,7 @@ PrizesView._findOneStack <- function _findOneStack(stackList, prizeType, checkFu
 
 PrizesView._addPrizeItemToStack <- function _addPrizeItemToStack(stack, item, prize, stackLevel)
 {
-  local count = prize?.count ?? 1
+  let count = prize?.count ?? 1
   stack.countMin = ::min(stack.countMin, count)
   stack.countMax = ::max(stack.countMax, count)
   stack.level    = ::max(stack.level, stackLevel)
@@ -705,13 +706,13 @@ PrizesView._addPrizeItemToStack <- function _addPrizeItemToStack(stack, item, pr
 
 PrizesView._findAndStackPrizeItem <- function _findAndStackPrizeItem(prize, stackList, stackLevel)
 {
-  local item = ::ItemsManager.findItemById(prize?.item)
+  let item = ::ItemsManager.findItemById(prize?.item)
   if (!item)
     return true
 
-  local itype = item.iType
+  let itype = item.iType
   local stack = _findOneStack(stackList, PRIZE_TYPE.ITEM, (@(itype, item, prize, stackLevel) function(stack) {
-      local sItem = stack.item
+      let sItem = stack.item
       if (!sItem || sItem.iType != itype)
         return false
 
@@ -747,7 +748,7 @@ PrizesView.getPrizeCurrencyCfg <- function getPrizeCurrencyCfg(prize)
     return {  type = PRIZE_TYPE.EXP, val = prize.exp, printFunc = @(val) ::Cost().setFrp(val).tostring() }
   if (prize?.warbonds && (prize?.count ?? 0) > 0)
   {
-    local wbId = prize.warbonds
+    let wbId = prize.warbonds
     return {  type = PRIZE_TYPE.WARBONDS, val = prize.count, printFunc = @(val) ::g_warbonds.findWarbond(wbId).getPriceText(val, true, false) }
   }
   return null
@@ -755,11 +756,11 @@ PrizesView.getPrizeCurrencyCfg <- function getPrizeCurrencyCfg(prize)
 
 PrizesView._findAndStackPrizeCurrency <- function _findAndStackPrizeCurrency(prize, stackList)
 {
-  local prizeType = getPrizeType(prize)
+  let prizeType = getPrizeType(prize)
 
   local stack = _findOneStack(stackList, prizeType)
 
-  local cfg = getPrizeCurrencyCfg(prize)
+  let cfg = getPrizeCurrencyCfg(prize)
   if (!cfg)
     return false
 
@@ -781,7 +782,7 @@ PrizesView._findAndStackPrizeCurrency <- function _findAndStackPrizeCurrency(pri
 
 PrizesView.getStackCurrencyText <- function getStackCurrencyText(stack)
 {
-  local printFunc = stack.params.printFunc
+  let printFunc = stack.params.printFunc
   local res = printFunc(stack.countMin)
   if (stack.countMin != stack.countMax)
     res += " - " + printFunc(stack.countMax)
@@ -793,7 +794,7 @@ PrizesView._findAndStackPrizeUnit <- function _findAndStackPrizeUnit(prize, stac
   if (shopDesc)
     return false
 
-  local prizeType = getPrizeType(prize)
+  let prizeType = getPrizeType(prize)
 
   local stack = _findOneStack(stackList, prizeType)
 
@@ -820,34 +821,34 @@ PrizesView._findAndStackPrizeUnit <- function _findAndStackPrizeUnit(prize, stac
 
 PrizesView._getStackUnitsText <- function _getStackUnitsText(stack)
 {
-  local isDetailed = stack.level == prizesStack.DETAILED
-  local prizeType = getPrizeType(stack.prize)
-  local isRent = prizeType == PRIZE_TYPE.RENTED_UNIT
+  let isDetailed = stack.level == prizesStack.DETAILED
+  let prizeType = getPrizeType(stack.prize)
+  let isRent = prizeType == PRIZE_TYPE.RENTED_UNIT
 
-  local units = []
+  let units = []
   foreach (p in stack.params.prizes)
   {
-    local unitId = isRent ? p.rentedUnit : p.unit
-    local color = ::getUnitClassColor(unitId)
+    let unitId = isRent ? p.rentedUnit : p.unit
+    let color = ::getUnitClassColor(unitId)
     local name = ::colorize(color, ::getUnitName(unitId))
     if (isRent)
       name += _getUnitRentComment(p.timeHours, p.numSpares, true)
     units.append(name)
   }
 
-  local header = getPrizeTypeName(stack.prize)
-  local headerSeparator = ::loc("ui/colon") + (isDetailed ? "\n" : "")
-  local unitsSeparator  = isDetailed ? "\n" : ::loc("ui/comma")
+  let header = getPrizeTypeName(stack.prize)
+  let headerSeparator = ::loc("ui/colon") + (isDetailed ? "\n" : "")
+  let unitsSeparator  = isDetailed ? "\n" : ::loc("ui/comma")
 
   return header + headerSeparator + ::g_string.implode(units, unitsSeparator)
 }
 
 PrizesView._stackContent <- function _stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = false)
 {
-  local res = []
+  let res = []
   foreach (prize in content)
   {
-    local stackType = getStackType(prize)
+    let stackType = getStackType(prize)
 
     if (stackType == STACK_TYPE.ITEM && _findAndStackPrizeItem(prize, res, stackLevel))
       continue
@@ -866,22 +867,22 @@ PrizesView.getPrizesListText <- function getPrizesListText(content, fixedAmountH
   if (!hasHeaderWithoutContent && !content.len())
     return ""
 
-  local stacksList = _stackContent(content, prizesStack.DETAILED)
-  local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1 //1 - dont use fixed amount
-  local showCount = fixedAmount == 1
-  local list = []
+  let stacksList = _stackContent(content, prizesStack.DETAILED)
+  let fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1 //1 - dont use fixed amount
+  let showCount = fixedAmount == 1
+  let list = []
 
   if (fixedAmountHeaderFunc)
     list.append(fixedAmountHeaderFunc(fixedAmount))
 
-  local listMarker = ::nbsp + ::colorize("grayOptionColor", ::loc("ui/mdash")) + ::nbsp
+  let listMarker = ::nbsp + ::colorize("grayOptionColor", ::loc("ui/mdash")) + ::nbsp
   foreach (st in stacksList)
   {
     if (st.level == prizesStack.NOT_STACKED)
       list.append(listMarker + getPrizeText(st.prize, true, false, showCount))
     else if (st.stackType == STACK_TYPE.ITEM) //onl stack by items atm, so this only to do last check.
     {
-      local detailed = st.level == prizesStack.DETAILED
+      let detailed = st.level == prizesStack.DETAILED
 
       local name = ""
       if (detailed)
@@ -893,7 +894,7 @@ PrizesView.getPrizesListText <- function getPrizesListText(content, fixedAmountH
       if (showCount && st.countMax > 1)
         countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : (" x" + st.countMax)
 
-      local kinds = detailed ? "" : ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = ::loc("trophy/item_type_different_kinds") }))
+      let kinds = detailed ? "" : ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = ::loc("trophy/item_type_different_kinds") }))
       list.append(listMarker + name + countText + kinds)
     } else if (st.stackType == STACK_TYPE.VEHICLE)
     {
@@ -909,17 +910,17 @@ PrizesView.getPrizesListText <- function getPrizesListText(content, fixedAmountH
 
 PrizesView.getViewDataUnit <- function getViewDataUnit(unitName, params = null, rentTimeHours = 0, numSpares = 0)
 {
-  local unit = ::getAircraftByName(unitName)
+  let unit = ::getAircraftByName(unitName)
   if (!unit)
     return null
 
-  local isBought = ::isUnitBought(unit)
-  local receivedPrizes = ::getTblValue("receivedPrizes", params, true)
-  local classIco = ::getTblValue("singlePrize", params, false) ? null : ::getUnitClassIco(unit)
-  local shopItemType = getUnitRole(unit)
-  local isShowLocalState = receivedPrizes || rentTimeHours > 0
-  local buttons = getPrizeActionButtonsView({ unit = unitName }, params)
-  local receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
+  let isBought = ::isUnitBought(unit)
+  let receivedPrizes = ::getTblValue("receivedPrizes", params, true)
+  let classIco = ::getTblValue("singlePrize", params, false) ? null : ::getUnitClassIco(unit)
+  let shopItemType = getUnitRole(unit)
+  let isShowLocalState = receivedPrizes || rentTimeHours > 0
+  let buttons = getPrizeActionButtonsView({ unit = unitName }, params)
+  let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
 
   local infoText = ""
   if (rentTimeHours > 0)
@@ -927,7 +928,7 @@ PrizesView.getViewDataUnit <- function getViewDataUnit(unitName, params = null, 
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + ::colorize("badTextColor", ::loc(receiveOnce))
 
-  local unitPlate = ::build_aircraft_item(unitName, unit, {
+  let unitPlate = ::build_aircraft_item(unitName, unit, {
     hasActions = true,
     status = (!receivedPrizes && isBought) ? "locked" : "canBuy",
     isLocalState = isShowLocalState
@@ -963,7 +964,7 @@ PrizesView._getUnitRentComment <- function _getUnitRentComment(rentTimeHours = 0
 {
   if (!rentTimeHours)
     return ""
-  local timeStr = ::colorize("userlogColoredText", time.hoursToString(rentTimeHours))
+  let timeStr = ::colorize("userlogColoredText", time.hoursToString(rentTimeHours))
   local text = short ? timeStr :
     ::colorize("activeTextColor", ::loc("shop/rentFor", { time =  timeStr }))
   if (numSpares)
@@ -973,11 +974,11 @@ PrizesView._getUnitRentComment <- function _getUnitRentComment(rentTimeHours = 0
 
 PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
 {
-  local unit = ::getAircraftByName(unitName)
+  let unit = ::getAircraftByName(unitName)
   if (!unit)
     return null
 
-  local { showTooltip = true } = params
+  let { showTooltip = true } = params
   local icon = ""
   if (modName == "premExpMul") //talisman
     icon = "#ui/gameuiskin#item_type_talisman"
@@ -996,12 +997,12 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
 
 PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params)
 {
-  local unit = ::getAircraftByName(unitName)
-  local spare = ::getTblValue("spare", unit)
+  let unit = ::getAircraftByName(unitName)
+  let spare = ::getTblValue("spare", unit)
   if (!spare)
     return null
 
-  local { showTooltip = true } = params
+  let { showTooltip = true } = params
   local title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
               + ::colorize("userlogColoredText", ::loc("spare/spare"))
   if (count && count > 1)
@@ -1017,15 +1018,15 @@ PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params
 
 PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize, params)
 {
-  local specLevel = prize?.specialization ?? 1
-  local unitName = prize?.unitName
-  local unit = ::getAircraftByName(unitName)
+  let specLevel = prize?.specialization ?? 1
+  let unitName = prize?.unitName
+  let unit = ::getAircraftByName(unitName)
   if (!unit)
     return null
 
-  local { showTooltip = true } = params
-  local crew = ::get_crew_by_id(prize?.crew ?? 0)
-  local title = ::colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + ::loc("ui/colon")
+  let { showTooltip = true } = params
+  let crew = ::get_crew_by_id(prize?.crew ?? 0)
+  let title = ::colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + ::loc("ui/colon")
               + ::colorize("activeTextColor", ::getUnitName(unit))
               + ", " + ::colorize("userlogColoredText", ::loc("crew/qualification/" + specLevel))
   return {
@@ -1038,13 +1039,13 @@ PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize
 
 PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params = null)
 {
-  local { showTooltip = true } = params
-  local id = prize?.resource ?? ""
-  local decoratorType = ::g_decorator_type.getTypeByResourceType(prize?.resourceType)
-  local isHave = decoratorType.isPlayerHaveDecorator(id)
-  local isReceivedPrizes = params?.receivedPrizes ?? false
-  local buttons = getPrizeActionButtonsView(prize, params)
-  local receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
+  let { showTooltip = true } = params
+  let id = prize?.resource ?? ""
+  let decoratorType = ::g_decorator_type.getTypeByResourceType(prize?.resourceType)
+  let isHave = decoratorType.isPlayerHaveDecorator(id)
+  let isReceivedPrizes = params?.receivedPrizes ?? false
+  let buttons = getPrizeActionButtonsView(prize, params)
+  let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
 
   return {
     icon  = decoratorType.prizeTypeIcon
@@ -1058,11 +1059,11 @@ PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params =
 
 PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params = null)
 {
-  local { showTooltip = true } = params
-  local primaryIcon = prize?.primaryIcon
-  local buttons = getPrizeActionButtonsView(prize, params)
-  local item = ::ItemsManager.findItemById(prize?.item)
-  local itemIcon = (params?.isShowItemIconInsteadItemType ?? false) && item
+  let { showTooltip = true } = params
+  let primaryIcon = prize?.primaryIcon
+  let buttons = getPrizeActionButtonsView(prize, params)
+  let item = ::ItemsManager.findItemById(prize?.item)
+  let itemIcon = (params?.isShowItemIconInsteadItemType ?? false) && item
     ? item.getIconName()
     : getPrizeTypeIcon(prize)
   return {
@@ -1079,7 +1080,7 @@ PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params 
 
 PrizesView.getViewDataMultiAward <- function getViewDataMultiAward(prize, params = null)
 {
-  local multiAward = ::TrophyMultiAward(prize)
+  let multiAward = TrophyMultiAward(prize)
   return {
     icon = multiAward.getTypeIcon()
     title = multiAward.getDescription(true)
@@ -1091,10 +1092,10 @@ PrizesView.getViewDataDefault <- function getViewDataDefault(prize, showCount, p
   //!!FIX ME: better to refactor this. it used only here, but each function try do detect prize type by self
   //much faster will be to get viewData array and gen desc by it than in each function detect prize type.
   //Now we have function getPrizeType() for prize type detection.
-  local { showTooltip = true } = params
-  local title = getPrizeText(prize, true, false, showCount, true)
-  local icon = getPrizeTypeIcon(prize)
-  local tooltipId = !showTooltip ? null
+  let { showTooltip = true } = params
+  let title = getPrizeText(prize, true, false, showCount, true)
+  let icon = getPrizeTypeIcon(prize)
+  let tooltipId = !showTooltip ? null
     : prize?.trophy ? ::g_tooltip.getIdSubtrophy(prize.trophy)
     : prize?.unlock ? ::g_tooltip.getIdUnlock(prize.unlock, params)
     : null
@@ -1123,7 +1124,7 @@ PrizesView.getPrizesViewData <- function getPrizesViewData(prize, showCount = tr
   if (isPrizeMultiAward(prize))
     return getViewDataMultiAward(prize, params)
 
-  local unitName = prize?.unit
+  let unitName = prize?.unit
   if (unitName)
     if (prize?.mod)
       return getViewDataMod(unitName, prize?.mod, params)
@@ -1151,7 +1152,7 @@ PrizesView.getPrizesListView <- function getPrizesListView(content, params = nul
   if (!hasHeaderWithoutContent && !content.len())
     return ""
 
-  local view = params ? clone params : {}
+  let view = params ? clone params : {}
   if ("headerParams" in params) {
     view.__update(params.headerParams)
     params.rawdelete("headerParams")
@@ -1170,7 +1171,7 @@ PrizesView.getPrizesListView <- function getPrizesListView(content, params = nul
   view.list <- []
   foreach (prize in content)
   {
-    local data = getPrizesViewData(prize, true, params)
+    let data = getPrizesViewData(prize, true, params)
     if (data)
       view.list.append(data)
   }
@@ -1179,12 +1180,12 @@ PrizesView.getPrizesListView <- function getPrizesListView(content, params = nul
 
 PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = null)
 {
-  local { stackLevel = prizesStack.DETAILED } = params
+  let { stackLevel = prizesStack.DETAILED } = params
   if (stackLevel == prizesStack.NOT_STACKED && !fixedAmountHeaderFunc)
     return getPrizesListView(content, params)
 
-  local view = params ? clone params : {}
-  local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
+  let view = params ? clone params : {}
+  let fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
   if (fixedAmountHeaderFunc)
     view.header <- fixedAmountHeaderFunc(fixedAmount)
 
@@ -1195,19 +1196,19 @@ PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmo
 
 PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize, params = null)
 {
-  local view = []
+  let view = []
   if (!params?.shopDesc)
     return view
 
-  local itemId = prize?.item ?? params?.relatedItem
+  let itemId = prize?.item ?? params?.relatedItem
   if (itemId)
   {
-    local item = ::ItemsManager.findItemById(itemId)
+    let item = ::ItemsManager.findItemById(itemId)
     if (!item || workshop.shouldDisguiseItem(item))
       return view
     if (item.canPreview() && ::isInMenu())
     {
-      local gcb = globalCallbacks.ITEM_PREVIEW
+      let gcb = globalCallbacks.ITEM_PREVIEW
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"
         tooltip = "#mainmenu/btnPreview"
@@ -1217,7 +1218,7 @@ PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize
     }
     if (item.hasLink())
     {
-      local gcb = globalCallbacks.ITEM_LINK
+      let gcb = globalCallbacks.ITEM_LINK
       view.append({
         image = "#ui/gameuiskin#gc.svg"
         tooltip = "#" + item.linkActionLocId
@@ -1228,10 +1229,10 @@ PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize
     return view
   }
 
-  local unitId = prize?.unit || prize?.rentedUnit
+  let unitId = prize?.unit || prize?.rentedUnit
   if (unitId && ::getAircraftByName(unitId)?.isInShop)
   {
-    local gcb = globalCallbacks.UNIT_PREVIEW
+    let gcb = globalCallbacks.UNIT_PREVIEW
     view.append({
       image = "#ui/gameuiskin#btn_preview.svg"
       tooltip = "#mainmenu/btnPreview"
@@ -1241,13 +1242,13 @@ PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize
     return view
   }
 
-  local resource = prize?.resource
-  local resourceType = prize?.resourceType
+  let resource = prize?.resource
+  let resourceType = prize?.resourceType
   if (resource && resourceType)
   {
-    local gcb = globalCallbacks.DECORATOR_PREVIEW
-    local decType = ::g_decorator_type.getTypeByResourceType(resourceType)
-    local decorator = ::g_decorator.getDecorator(resource, decType)
+    let gcb = globalCallbacks.DECORATOR_PREVIEW
+    let decType = ::g_decorator_type.getTypeByResourceType(resourceType)
+    let decorator = ::g_decorator.getDecorator(resource, decType)
     if (decorator?.canPreview())
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"

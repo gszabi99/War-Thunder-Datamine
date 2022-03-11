@@ -1374,39 +1374,21 @@
         "genericDamageMult": 0.15,
         "armorThrough": 35.0,
         "compartment_01_dm": {
-          "hp": 5107.0
+          "hp": 6463.0
         },
         "compartment_02_dm": {
-          "hp": 5033.0
+          "hp": 8000.0
         },
         "compartment_03_dm": {
-          "hp": 5000.0
+          "hp": 8000.0
         },
         "compartment_04_dm": {
-          "hp": 5000.0
+          "hp": 8000.0
         },
         "compartment_05_dm": {
-          "hp": 7592.0
+          "hp": 8000.0
         },
         "compartment_06_dm": {
-          "hp": 7931.0
-        },
-        "compartment_07_dm": {
-          "hp": 5356.0
-        },
-        "compartment_08_dm": {
-          "hp": 5000.0
-        },
-        "compartment_09_dm": {
-          "hp": 5000.0
-        },
-        "compartment_10_dm": {
-          "hp": 5000.0
-        },
-        "compartment_11_dm": {
-          "hp": 6219.0
-        },
-        "compartment_12_dm": {
           "hp": 8000.0
         }
       },
@@ -1649,6 +1631,12 @@
           "hp": 3500.0
         },
         "elevator_17_dm": {
+          "hp": 3500.0
+        },
+        "elevator_18_dm": {
+          "hp": 3500.0
+        },
+        "elevator_19_dm": {
           "hp": 3500.0
         }
       },
@@ -1902,9 +1890,11 @@
         "armorThrough": 500.0,
         "explosionDamageMult": 1.5,
         "transmission_01_dm": {
+          "stopChanceOnDeadPart": 0.0,
           "hp": 4500.0
         },
         "transmission_02_dm": {
+          "stopChanceOnDeadPart": 0.0,
           "hp": 4500.0
         }
       },
@@ -2035,15 +2025,6 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 38.1,
         "fireDamageMult": 0.1,
-        "bulkhead_01_dm": {
-          "hp": 10000.0
-        },
-        "bulkhead_02_dm": {
-          "hp": 10000.0
-        },
-        "bulkhead_03_dm": {
-          "hp": 10000.0
-        },
         "bulkhead_04_dm": {
           "hp": 10000.0
         },
@@ -2062,19 +2043,10 @@
         "bulkhead_09_dm": {
           "hp": 10000.0
         },
-        "bulkhead_10_dm": {
-          "hp": 10000.0
-        },
         "bulkhead_11_dm": {
           "hp": 10000.0
         },
-        "bulkhead_12_dm": {
-          "hp": 10000.0
-        },
         "bulkhead_13_dm": {
-          "hp": 10000.0
-        },
-        "bulkhead_14_dm": {
           "hp": 10000.0
         },
         "bulkhead_15_dm": {
@@ -2094,12 +2066,6 @@
         },
         "bulkhead_20_dm": {
           "hp": 10000.0
-        },
-        "bulkhead_21_dm": {
-          "hp": 10000.0
-        },
-        "bulkhead_22_dm": {
-          "hp": 10000.0
         }
       },
       "citadel_armor": {
@@ -2108,7 +2074,7 @@
         "armorThickness": 40.0,
         "fireDamageMult": 0.1,
         "armor_cit_01_dm": {
-          "armorThickness": 38.0,
+          "armorThickness": 38.1,
           "hp": 10000.0
         },
         "armor_cit_02_dm": {
@@ -2117,7 +2083,7 @@
           "hp": 10000.0
         },
         "armor_cit_03_dm": {
-          "armorThickness": 63.0,
+          "armorThickness": 44.45,
           "hp": 10000.0
         },
         "armor_cit_04_dm": {
@@ -2126,12 +2092,21 @@
           "hp": 10000.0
         },
         "armor_cit_05_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "armor_cit_18_dm": {
           "armorThickness": 228.6,
           "armorClass": "ship_RGA",
+          "hp": 10000.0
+        },
+        "armor_cit_19_dm": {
+          "armorThickness": 25.4,
+          "armorClass": "ship_structural_steel",
+          "hp": 10000.0
+        },
+        "armor_cit_20_dm": {
+          "armorThickness": 25.4,
           "hp": 10000.0
         },
         "armor_cit_06_dm": {
@@ -2177,7 +2152,7 @@
           "hp": 10000.0
         },
         "armor_cit_14_dm": {
-          "armorThickness": 76.2,
+          "armorThickness": 63.5,
           "hp": 10000.0
         },
         "armor_cit_15_dm": {
@@ -2190,30 +2165,286 @@
           "hp": 10000.0
         }
       },
+      "citadel_armor_plates": {
+        "fireProtectionHp": 120.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 40.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true,
+        "fireDamageMult": 0.001,
+        "shatterDamageMult": 0.001,
+        "stopChanceOnDeadPart": 0.5,
+        "ignoreDeadWithSplash": true,
+        "restrainDamage": 0.5,
+        "splashPenetrationToArmorThreshold": 0.155,
+        "kineticPenetrationToArmorThreshold": 0.6
+      },
       "belt_armor": {
+        "fireProtectionHp": 120.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 40.0,
+        "hidableInViewer": true,
+        "fireDamageMult": 0.1
+      },
+      "belt_armor_plates": {
         "fireProtectionHp": 120.0,
         "armorClass": "ship_RGA",
         "armorThickness": 40.0,
         "hidableInViewer": true,
-        "fireDamageMult": 0.1,
-        "armor_belt_01_dm": {
-          "armorThickness": 127.0,
-          "hp": 10000.0
-        },
-        "armor_belt_02_dm": {
-          "armorThickness": 203.2,
-          "hp": 10000.0
-        },
-        "armor_belt_03_dm": {
-          "armorThickness": 254.0,
-          "hp": 10000.0
-        },
-        "armor_belt_04_dm": {
+        "hidableInXrayViewer": true,
+        "fireDamageMult": 0.001,
+        "shatterDamageMult": 0.001,
+        "stopChanceOnDeadPart": 0.5,
+        "ignoreDeadWithSplash": true,
+        "restrainDamage": 0.5,
+        "splashPenetrationToArmorThreshold": 0.155,
+        "kineticPenetrationToArmorThreshold": 0.6,
+        "armor_belt_l_01_dm": {
           "armorThickness": 279.4,
           "hp": 10000.0
         },
-        "armor_belt_05_dm": {
+        "armor_belt_l_02_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_03_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_04_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_05_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_06_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_07_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_01_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_02_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_03_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_04_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_05_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_06_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_r_07_dm": {
+          "armorThickness": 279.4,
+          "hp": 10000.0
+        },
+        "armor_belt_l_08_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_09_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_10_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_11_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_12_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_13_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_14_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_08_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_09_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_10_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_11_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_12_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_13_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_14_dm": {
+          "armorThickness": 254.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_15_dm": {
           "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_16_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_17_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_18_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_19_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_20_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_21_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_15_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_16_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_17_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_18_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_19_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_20_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_r_21_dm": {
+          "armorThickness": 228.6,
+          "hp": 10000.0
+        },
+        "armor_belt_l_22_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_23_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_24_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_25_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_26_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_27_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_28_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_22_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_23_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_24_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_25_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_26_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_27_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_r_28_dm": {
+          "armorThickness": 203.2,
+          "hp": 10000.0
+        },
+        "armor_belt_l_29_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_30_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_belt_l_31_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_29_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_30_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_belt_r_31_dm": {
+          "armorThickness": 127.0,
           "hp": 10000.0
         }
       },
@@ -2475,52 +2706,52 @@
         "kineticProtectionEquivalentPerMeter": 27.3,
         "hidableInXrayViewer": true,
         "coal_bunker_01_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_02_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_03_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_04_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_05_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_06_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_07_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_08_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_09_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_10_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_11_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_12_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_13_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_14_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_15_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         },
         "coal_bunker_16_dm": {
-          "hp": 12000.0
+          "hp": 5000.0
         }
       },
       "gun_masks": {
@@ -2576,354 +2807,324 @@
       "sailor3": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 46
+        "crew": 85
       },
       "sailor4": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 45
+        "crew": 105
       },
       "sailor5": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 45
+        "crew": 107
       },
       "sailor6": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 45
+        "crew": 105
       },
       "sailor7": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 68
+        "crew": 105
       },
       "sailor8": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 71
+        "crew": 105
       },
       "sailor9": {
-        "dmPart": "compartment_07_dm",
-        "role": "sailor",
-        "crew": 48
-      },
-      "sailor10": {
-        "dmPart": "compartment_08_dm",
-        "role": "sailor",
-        "crew": 45
-      },
-      "sailor11": {
-        "dmPart": "compartment_09_dm",
-        "role": "sailor",
-        "crew": 45
-      },
-      "sailor12": {
-        "dmPart": "compartment_10_dm",
-        "role": "sailor",
-        "crew": 45
-      },
-      "sailor13": {
-        "dmPart": "compartment_11_dm",
-        "role": "sailor",
-        "crew": 56
-      },
-      "sailor14": {
-        "dmPart": "compartment_12_dm",
-        "role": "sailor",
-        "crew": 74
-      },
-      "sailor15": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 10
       },
-      "sailor16": {
+      "sailor10": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 10
       },
-      "sailor17": {
+      "sailor11": {
         "dmPart": "main_caliber_turret_03_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 10
       },
-      "sailor18": {
+      "sailor12": {
         "dmPart": "main_caliber_turret_04_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 10
       },
-      "sailor19": {
+      "sailor13": {
         "dmPart": "main_caliber_turret_05_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 10
       },
-      "sailor20": {
+      "sailor14": {
         "dmPart": "auxiliary_caliber_turret_01_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor21": {
+      "sailor15": {
         "dmPart": "auxiliary_caliber_turret_02_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor22": {
+      "sailor16": {
         "dmPart": "auxiliary_caliber_turret_03_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor23": {
+      "sailor17": {
         "dmPart": "auxiliary_caliber_turret_04_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor24": {
+      "sailor18": {
         "dmPart": "auxiliary_caliber_turret_05_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor25": {
+      "sailor19": {
         "dmPart": "auxiliary_caliber_turret_06_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor26": {
+      "sailor20": {
         "dmPart": "auxiliary_caliber_turret_07_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor27": {
+      "sailor21": {
         "dmPart": "auxiliary_caliber_turret_08_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor28": {
+      "sailor22": {
         "dmPart": "auxiliary_caliber_turret_09_dm",
         "role": "sailor",
         "crew": 4
       },
-      "sailor29": {
+      "sailor23": {
         "dmPart": "auxiliary_caliber_turret_10_dm",
         "role": "sailor",
         "crew": 4
       },
-      "sailor30": {
+      "sailor24": {
         "dmPart": "auxiliary_caliber_turret_11_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor31": {
+      "sailor25": {
         "dmPart": "auxiliary_caliber_turret_12_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor32": {
+      "sailor26": {
         "dmPart": "auxiliary_caliber_turret_13_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor33": {
+      "sailor27": {
         "dmPart": "auxiliary_caliber_turret_14_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor34": {
+      "sailor28": {
         "dmPart": "auxiliary_caliber_turret_15_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor35": {
+      "sailor29": {
         "dmPart": "auxiliary_caliber_turret_16_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor36": {
+      "sailor30": {
         "dmPart": "engine_room_01_dm",
         "role": "sailor",
-        "crew": 35
+        "crew": 40
       },
-      "sailor37": {
+      "sailor31": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
-        "crew": 35
+        "crew": 40
       },
-      "sailor38": {
+      "sailor32": {
         "dmPart": "engine_room_03_dm",
         "role": "sailor",
-        "crew": 35
+        "crew": 40
       },
-      "sailor39": {
+      "sailor33": {
         "dmPart": "engine_room_04_dm",
         "role": "sailor",
-        "crew": 35
+        "crew": 25
       },
-      "sailor40": {
+      "sailor34": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
         "crew": 30
       },
-      "sailor41": {
+      "sailor35": {
         "dmPart": "transmission_02_dm",
         "role": "sailor",
         "crew": 30
       },
-      "sailor42": {
+      "sailor36": {
         "dmPart": "elevator_01_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor43": {
+      "sailor37": {
         "dmPart": "elevator_02_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor44": {
+      "sailor38": {
         "dmPart": "elevator_03_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor45": {
+      "sailor39": {
         "dmPart": "elevator_04_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor46": {
+      "sailor40": {
         "dmPart": "elevator_05_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor47": {
+      "sailor41": {
         "dmPart": "ammunition_storage_shells_01_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor48": {
+      "sailor42": {
         "dmPart": "ammunition_storage_shells_02_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor49": {
+      "sailor43": {
         "dmPart": "ammunition_storage_shells_03_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor50": {
+      "sailor44": {
         "dmPart": "ammunition_storage_shells_04_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor51": {
+      "sailor45": {
         "dmPart": "ammunition_storage_shells_05_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor52": {
+      "sailor46": {
         "dmPart": "ammunition_storage_shells_06_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor53": {
+      "sailor47": {
         "dmPart": "ammunition_storage_shells_07_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor54": {
+      "sailor48": {
         "dmPart": "ammunition_storage_shells_08_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor55": {
+      "sailor49": {
         "dmPart": "ammunition_storage_shells_09_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor56": {
+      "sailor50": {
         "dmPart": "ammunition_storage_shells_10_dm",
         "role": "sailor",
         "crew": 15
       },
-      "sailor57": {
+      "sailor51": {
         "dmPart": "ammunition_storage_shells_11_dm",
         "role": "sailor",
-        "crew": 40
+        "crew": 58
       },
-      "sailor58": {
+      "sailor52": {
         "dmPart": "ammunition_storage_aux_01_dm",
         "role": "sailor",
         "crew": 10
       },
-      "sailor59": {
+      "sailor53": {
         "dmPart": "ammunition_storage_aux_02_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor60": {
+      "sailor54": {
         "dmPart": "ammunition_storage_aux_03_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor61": {
+      "sailor55": {
         "dmPart": "ammunition_storage_aux_04_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor62": {
+      "sailor56": {
         "dmPart": "ammunition_storage_aux_05_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor63": {
+      "sailor57": {
         "dmPart": "ammunition_storage_aux_06_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor64": {
+      "sailor58": {
         "dmPart": "ammunition_storage_aux_07_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor65": {
+      "sailor59": {
         "dmPart": "ammunition_storage_aux_08_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor66": {
+      "sailor60": {
         "dmPart": "ammunition_storage_aux_09_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor67": {
+      "sailor61": {
         "dmPart": "ammunition_storage_aux_10_dm",
         "role": "sailor",
         "crew": 8
       },
-      "sailor68": {
+      "sailor62": {
         "dmPart": "ammunition_storage_aux_11_dm",
         "role": "sailor",
-        "crew": 18
+        "crew": 26
       },
-      "sailor69": {
+      "sailor63": {
         "dmPart": "rangefinder_01_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor70": {
+      "sailor64": {
         "dmPart": "rangefinder_02_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor71": {
+      "sailor65": {
         "dmPart": "rangefinder_03_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor72": {
+      "sailor66": {
         "dmPart": "rangefinder_04_dm",
         "role": "sailor",
         "crew": 2
       },
-      "sailor73": {
+      "sailor67": {
         "dmPart": "fire_control_room_01_dm",
         "role": "sailor",
         "crew": 10
@@ -5993,13 +6194,7 @@
               "compartment_03_dm": [],
               "compartment_04_dm": [],
               "compartment_05_dm": [],
-              "compartment_06_dm": [],
-              "compartment_07_dm": [],
-              "compartment_08_dm": [],
-              "compartment_09_dm": [],
-              "compartment_10_dm": [],
-              "compartment_11_dm": [],
-              "compartment_12_dm": []
+              "compartment_06_dm": []
             }
           }
         }
@@ -6014,13 +6209,7 @@
               "compartment_03_dm": [],
               "compartment_04_dm": [],
               "compartment_05_dm": [],
-              "compartment_06_dm": [],
-              "compartment_07_dm": [],
-              "compartment_08_dm": [],
-              "compartment_09_dm": [],
-              "compartment_10_dm": [],
-              "compartment_11_dm": [],
-              "compartment_12_dm": []
+              "compartment_06_dm": []
             }
           }
         }
@@ -7942,7 +8131,7 @@
       "waterMassMult": 210.0,
       "sizeToRepair": [0.01,5.0,25.0,600.0],
       "additionalWaterDeathThreshold": 35000000.0,
-      "additionalWaterShouldDiePercent": 0.3,
+      "additionalWaterShouldDiePercent": 0.32,
       "fatalBreachDrownTime": 45.0,
       "maxHeelingAngle": 13.0,
       "maxHeelingTime": 40.0,

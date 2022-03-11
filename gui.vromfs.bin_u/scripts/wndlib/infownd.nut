@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*
@@ -31,10 +31,10 @@ const INFO_WND_SAVE_PATH = "infoWnd"
     clear all info about saved switches
 */
 
-class ::gui_handlers.InfoWnd extends ::BaseGuiHandler
+::gui_handlers.InfoWnd <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/wndLib/infoWnd.blk"
+  sceneBlkName = "%gui/wndLib/infoWnd.blk"
 
   checkId = null
   header = ""
@@ -88,7 +88,7 @@ class ::gui_handlers.InfoWnd extends ::BaseGuiHandler
   {
     buttonsCbs = {}
     local markup = ""
-    local infoHandler = this
+    let infoHandler = this
     local hasBigButton = false
     if (buttons)
       foreach(idx, btn in buttons)
@@ -97,7 +97,7 @@ class ::gui_handlers.InfoWnd extends ::BaseGuiHandler
         if ("onClick" in btn)
           cb = ::Callback(btn.onClick, buttonsContext)
 
-        local cbName = "onClickBtn" + idx
+        let cbName = "onClickBtn" + idx
         buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
           if (cb)
             cb()
@@ -105,7 +105,7 @@ class ::gui_handlers.InfoWnd extends ::BaseGuiHandler
             infoHandler.onButtonClick()
         })(cb, infoHandler)
         btn.funcName <- cbName
-        markup += ::handyman.renderCached("gui/commonParts/button", btn)
+        markup += ::handyman.renderCached("%gui/commonParts/button", btn)
 
         hasBigButton = hasBigButton || ::getTblValue("isToBattle", btn, false)
       }

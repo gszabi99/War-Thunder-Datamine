@@ -1,26 +1,26 @@
-local hudState = require("hudState")
+let hudState = require("hudState")
 
-local function getAabbObjFromHud(hudFuncName) {
-  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+let function getAabbObjFromHud(hudFuncName) {
+  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
   if (handler == null || !(hudFuncName in handler))
     return null
 
   return ::get_dagui_obj_aabb(handler[hudFuncName]())
 }
 
-local dmPanelStates = {
+let dmPanelStates = {
   aabb = null
 }
 
-local function update_damage_panel_state(params) {
+let function update_damage_panel_state(params) {
   dmPanelStates.aabb <- params
 }
 
 ::cross_call_api.update_damage_panel_state <- update_damage_panel_state
 ::g_script_reloader.registerPersistentData("dmPanelState", dmPanelStates, [ "aabb" ])
 
-local function getDamagePannelAabb() {
-  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+let function getDamagePannelAabb() {
+  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
   if (!handler)
     return null
 
@@ -28,8 +28,8 @@ local function getDamagePannelAabb() {
     : ::get_dagui_obj_aabb(handler.getDamagePannelObj())
 }
 
-local function getAircraftInstrumentsAabb() {
-  local bbox = hudState.getHudAircraftInstrumentsBbox()
+let function getAircraftInstrumentsAabb() {
+  let bbox = hudState.getHudAircraftInstrumentsBbox()
   if (bbox == null || bbox.x2 == 0 || bbox.y2 == 0)
     return null
   return {
@@ -39,7 +39,7 @@ local function getAircraftInstrumentsAabb() {
   }
 }
 
-local aabbList = {
+let aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
   hitCamera = @() ::g_hud_hitcamera.getAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")

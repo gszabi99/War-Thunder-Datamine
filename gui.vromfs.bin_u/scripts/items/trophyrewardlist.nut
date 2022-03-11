@@ -1,18 +1,18 @@
-local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {
-  local rewardsArray = params?.rewardsArray
+  let rewardsArray = params?.rewardsArray
   if (!rewardsArray || !rewardsArray.len())
     return
 
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardsList, params)
 }
 
-class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.trophyRewardsList <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/items/trophyRewardsList.blk"
+  sceneBlkName = "%gui/items/trophyRewardsList.blk"
 
   rewardsArray = []
   tittleLocId = "mainmenu/rewardsList"
@@ -21,13 +21,13 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local listObj = scene.findObject("items_list")
+    let listObj = scene.findObject("items_list")
     if (!::checkObj(listObj))
       return goBack()
 
     infoHandler = itemInfoHandler(scene.findObject("item_info"))
 
-    local titleObj = scene.findObject("title")
+    let titleObj = scene.findObject("title")
     if (::check_obj(titleObj))
       titleObj.setValue(::loc(tittleLocId))
 
@@ -42,7 +42,7 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillList(listObj)
   {
-    local data = getItemsImages()
+    let data = getItemsImages()
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
@@ -57,24 +57,24 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItemInfo(obj)
   {
-    local val = obj.getValue()
-    local reward_config = rewardsArray[val]
-    local isItem = reward_config?.item != null
+    let val = obj.getValue()
+    let reward_config = rewardsArray[val]
+    let isItem = reward_config?.item != null
     infoHandler?.setHandlerVisible(isItem)
-    local infoTextObj = showSceneBtn("item_info_text", !isItem)
+    let infoTextObj = showSceneBtn("item_info_text", !isItem)
     if (isItem)
     {
       if (!infoHandler)
         return
 
-      local item = ::ItemsManager.findItemById(reward_config.item)
+      let item = ::ItemsManager.findItemById(reward_config.item)
       infoHandler.updateHandlerData(item, true, true, reward_config)
     } else
     {
       if (!::check_obj(infoTextObj))
         return
 
-      local text = [::trophyReward.getName(reward_config)]
+      let text = [::trophyReward.getName(reward_config)]
       text.append(::trophyReward.getDecription(reward_config, true))
       infoTextObj.setValue(::g_string.implode(text, "\n"))
     }
@@ -82,7 +82,7 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventItemsShopUpdate(p)
   {
-    local listObj = scene.findObject("items_list")
+    let listObj = scene.findObject("items_list")
     if (!::check_obj(listObj))
       return
 

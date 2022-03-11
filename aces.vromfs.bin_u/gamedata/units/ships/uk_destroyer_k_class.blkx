@@ -1754,10 +1754,10 @@
           "hp": 2500.0
         },
         "compartment_03_dm": {
-          "hp": 2033.0
+          "hp": 1800.0
         },
         "compartment_04_dm": {
-          "hp": 1800.0
+          "hp": 1835.0
         }
       },
       "control_compartments": {
@@ -1788,18 +1788,21 @@
           "hp": 1500.0
         },
         "cover_02_dm": {
-          "hp": 1000.0
+          "hp": 1181.0
         },
         "cover_03_dm": {
-          "hp": 1500.0
+          "hp": 1000.0
         },
         "cover_04_dm": {
-          "hp": 1093.0
+          "hp": 1313.0
         },
         "cover_05_dm": {
-          "hp": 1067.0
+          "hp": 1093.0
         },
         "cover_06_dm": {
+          "hp": 1339.0
+        },
+        "cover_07_dm": {
           "hp": 1000.0
         }
       },
@@ -1835,9 +1838,6 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 14.5,
         "fireDamageMult": 0.1,
-        "bulkhead_01_dm": {
-          "hp": 7000.0
-        },
         "bulkhead_02_dm": {
           "hp": 7000.0
         },
@@ -1854,9 +1854,6 @@
           "hp": 7000.0
         },
         "bulkhead_07_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_08_dm": {
           "hp": 7000.0
         },
         "bulkhead_09_dm": {
@@ -2376,12 +2373,12 @@
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 16
+        "crew": 15
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 13
+        "crew": 15
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -2441,7 +2438,7 @@
       "sailor17": {
         "dmPart": "transmission_02_dm",
         "role": "sailor",
-        "crew": 25
+        "crew": 24
       },
       "sailor18": {
         "dmPart": "radio_station_dm",
@@ -6271,9 +6268,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -60000.0,
+      "waterMassMult": 100.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 8200000.0,
       "additionalWaterShouldDiePercent": 0.3,
@@ -6291,14 +6288,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.3,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.22,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -6315,21 +6312,6 @@
             },
             {
               "part": {
-                "partNo": "ammunition_storage_aux_01_dm",
-                "critWaterLevel": 0.5
-              }
-            }
-          ]
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_03_dm",
-          "weight": 1.0,
-          "maxWaterAlive": 1.0,
-          "innerParts": [
-            {
-              "part": {
                 "partNo": "ammunition_storage_shells_02_dm",
                 "critWaterLevel": 0.5
               }
@@ -6339,32 +6321,46 @@
                 "partNo": "ammunition_storage_charges_02_dm",
                 "critWaterLevel": 0.5
               }
-            },
-            {
-              "part": {
-                "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.55
-              }
             }
           ]
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_03_dm",
+          "weight": 0.7,
+          "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.45,
+          "weight": 1.0,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.55
+            }
+          }
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_05_dm",
+          "weight": 0.85,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.55
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.55
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -6372,7 +6368,7 @@
       },
       {
         "cover": {
-          "part": "cover_05_dm",
+          "part": "cover_06_dm",
           "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
@@ -6393,8 +6389,8 @@
       },
       {
         "cover": {
-          "part": "cover_06_dm",
-          "weight": 0.25,
+          "part": "cover_07_dm",
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       }

@@ -1,6 +1,6 @@
-local time = require("scripts/time.nut")
-local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
+let time = require("scripts/time.nut")
+let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null)
 {
@@ -19,13 +19,13 @@ global enum BattleTasksWndTab {
   HISTORY
 }
 
-class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.BattleTasksWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
-  sceneTplName = "gui/unlocks/battleTasks"
-  sceneTplDescriptionName = "gui/unlocks/battleTasksDescription"
-  battleTaskItemTpl = "gui/unlocks/battleTasksItem"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneTplName = "%gui/unlocks/battleTasks"
+  sceneTplDescriptionName = "%gui/unlocks/battleTasksDescription"
+  battleTaskItemTpl = "%gui/unlocks/battleTasksItem"
 
   currentTasksArray = null
 
@@ -79,7 +79,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateBattleTasksData()
     updateButtons()
 
-    local tabType = currentTabType? currentTabType : findTabSheetByTaskId()
+    let tabType = currentTabType? currentTabType : findTabSheetByTaskId()
     getTabsListObj().setValue(tabType)
 
     updateWarbondsBalance()
@@ -90,11 +90,11 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (currentTaskId)
       foreach (tabType, tasksArray in configsArrayByTabType)
       {
-        local task = tasksArray && ::u.search(tasksArray, function(task) { return currentTaskId == task.id }.bindenv(this) )
+        let task = tasksArray && ::u.search(tasksArray, function(task) { return currentTaskId == task.id }.bindenv(this) )
         if (!task)
           continue
 
-        local tab = ::u.search(tabsList, @(tabData) tabData.tabType == tabType)
+        let tab = ::u.search(tabsList, @(tabData) tabData.tabType == tabType)
         if (!("isVisible" in tab) || tab.isVisible())
           return tabType
         break
@@ -120,17 +120,17 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildBattleTasksArray(tabType)
   {
-    local filteredByDiffArray = []
+    let filteredByDiffArray = []
     local haveRewards = false
     foreach(t in difficultiesByTabType[tabType])
     {
       // 0) Prepare: Receive tasks list by available battle tasks difficulty
-      local arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, currentTasksArray)
+      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, currentTasksArray)
       if (arr.len() == 0)
         continue
 
       // 1) Search for task with reward, to put it first in list
-      local taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(arr)
+      let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(arr)
       if (!::g_battle_tasks.showAllTasksValue && !::u.isEmpty(taskWithReward))
       {
         filteredByDiffArray.append(taskWithReward)
@@ -146,13 +146,13 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       local gameModeDifficulty = null
       if (tabType != BattleTasksWndTab.BATTLE_TASKS_HARD)
       {
-        local obj = getDifficultySwitchObj()
-        local val = obj.getValue()
-        local diffCode = ::getTblValue(val, usingDifficulties, ::DIFFICULTY_ARCADE)
+        let obj = getDifficultySwitchObj()
+        let val = obj.getValue()
+        let diffCode = ::getTblValue(val, usingDifficulties, ::DIFFICULTY_ARCADE)
         gameModeDifficulty = ::g_difficulty.getDifficultyByDiffCode(diffCode)
       }
 
-      local filteredByModeArray = ::g_battle_tasks.getTasksArrayByDifficulty(filteredByDiffArray, gameModeDifficulty)
+      let filteredByModeArray = ::g_battle_tasks.getTasksArrayByDifficulty(filteredByDiffArray, gameModeDifficulty)
 
       resultArray = filteredByModeArray.filter(@(task) (
           ::g_battle_tasks.showAllTasksValue
@@ -167,11 +167,11 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillBattleTasksList()
   {
-    local listBoxObj = getConfigsListObj()
+    let listBoxObj = getConfigsListObj()
     if (!::checkObj(listBoxObj))
       return
 
-    local view = {items = []}
+    let view = {items = []}
     foreach (idx, config in configsArrayByTabType[currentTabType])
     {
       view.items.append(::g_battle_tasks.generateItemView(config))
@@ -182,12 +182,12 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     updateNoTasksText(view.items)
-    local data = ::handyman.renderCached(battleTaskItemTpl, view)
+    let data = ::handyman.renderCached(battleTaskItemTpl, view)
     guiScene.replaceContentFromText(listBoxObj, data, data.len(), this)
 
     foreach(config in configsArrayByTabType[currentTabType])
     {
-      local task = config.originTask
+      let task = config.originTask
       ::g_battle_tasks.setUpdateTimer(task, scene.findObject(task.id))
     }
 
@@ -197,9 +197,9 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (finishedTaskIdx < listBoxObj.childrenCount())
       listBoxObj.setValue(finishedTaskIdx)
 
-    local needShowWarbondProgress = !::has_feature("BattlePass")
-    local obj = scene.findObject("warbond_shop_progress_block")
-    local curWb = ::g_warbonds.getCurrentWarbond()
+    let needShowWarbondProgress = !::has_feature("BattlePass")
+    let obj = scene.findObject("warbond_shop_progress_block")
+    let curWb = ::g_warbonds.getCurrentWarbond()
     if (needShowWarbondProgress && currentTabType == BattleTasksWndTab.BATTLE_TASKS)
       ::g_warbonds_view.createProgressBox(curWb, obj, this)
     else if (currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
@@ -208,8 +208,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateNoTasksText(items = [])
   {
-    local tabsListObj = getTabsListObj()
-    local tabData = getSelectedTabData(tabsListObj)
+    let tabsListObj = getTabsListObj()
+    let tabData = getSelectedTabData(tabsListObj)
 
     local text = ""
     if (items.len() == 0 && "noTasksLocId" in tabData)
@@ -219,17 +219,17 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWidgetsVisibility()
   {
-    local listBoxObj = getConfigsListObj()
+    let listBoxObj = getConfigsListObj()
     if (!::checkObj(listBoxObj))
       return
 
     foreach(taskId, w in newIconWidgetByTaskId)
     {
-      local newIconWidgetContainer = listBoxObj.findObject("new_icon_widget_" + taskId)
+      let newIconWidgetContainer = listBoxObj.findObject("new_icon_widget_" + taskId)
       if (!::checkObj(newIconWidgetContainer))
         continue
 
-      local widget = NewIconWidget(guiScene, newIconWidgetContainer)
+      let widget = NewIconWidget(guiScene, newIconWidgetContainer)
       newIconWidgetByTaskId[taskId] = widget
       widget.setWidgetVisible(::g_battle_tasks.isBattleTaskNew(taskId))
     }
@@ -245,9 +245,9 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillTasksHistory()
   {
-    local finishedTasksUserlogsArray = ::getUserLogsList(userglogFinishedTasksFilter)
+    let finishedTasksUserlogsArray = ::getUserLogsList(userglogFinishedTasksFilter)
 
-    local view = {
+    let view = {
       doneTasksTable = {}
     }
 
@@ -260,21 +260,21 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
       foreach(idx, uLog in finishedTasksUserlogsArray)
       {
-        local config = ::build_log_unlock_data(uLog)
+        let config = ::build_log_unlock_data(uLog)
         local text = config.name
         if (!::u.isEmpty(config.rewardText))
           text += ::loc("ui/parentheses/space", {text = config.rewardText})
         text = ::colorize("activeTextColor", text)
 
-        local timeStr = time.buildDateTimeStr(uLog.time, true)
-        local rowData = [{textType = "textareaNoTab", text = text, tooltip = text, width = "65%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'"},
+        let timeStr = time.buildDateTimeStr(uLog.time, true)
+        let rowData = [{textType = "textareaNoTab", text = text, tooltip = text, width = "65%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'"},
                          {textType = "textarea", text = timeStr, tooltip = timeStr, tdalign = "right", width = "35%pw"}]
 
         view.doneTasksTable.rows += ::buildTableRow("tr_" + idx, rowData, idx % 2 == 0)
       }
     }
 
-    local data = ::handyman.renderCached(sceneTplDescriptionName, view)
+    let data = ::handyman.renderCached(sceneTplDescriptionName, view)
     guiScene.replaceContentFromText(scene.findObject("tasks_history_frame"), data, data.len(), this)
   }
 
@@ -284,7 +284,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     ::g_sound.stop()
-    local curTabData = getSelectedTabData(obj)
+    let curTabData = getSelectedTabData(obj)
     currentTabType = curTabData.tabType
     changeFrameVisibility()
     updateTabButtons()
@@ -333,16 +333,16 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onTasksListDblClick(obj)
   {
-    local value = obj.getValue()
-    local config = getConfigByValue(value)
-    local task = ::g_battle_tasks.getTaskById(config)
+    let value = obj.getValue()
+    let config = getConfigByValue(value)
+    let task = ::g_battle_tasks.getTaskById(config)
     if (!task)
       return
 
     if (::g_battle_tasks.canGetReward(task))
       return ::g_battle_tasks.requestRewardForTask(task.id)
 
-    local isActive = ::g_battle_tasks.isTaskActive(task)
+    let isActive = ::g_battle_tasks.isTaskActive(task)
     if (isActive && ::g_battle_tasks.canCancelTask(task))
       return onCancel(config)
 
@@ -352,12 +352,12 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSelectTask(obj)
   {
-    local val = obj.getValue()
+    let val = obj.getValue()
     finishedTaskIdx = val
 
     ::g_sound.stop()
 
-    local config = getConfigByValue(val)
+    let config = getConfigByValue(val)
     preparePlaybackForConfig(config)
 
     updateButtons(config)
@@ -378,8 +378,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!config)
       return
 
-    local uid = config.id
-    local widget = ::getTblValue(uid, newIconWidgetByTaskId)
+    let uid = config.id
+    let widget = ::getTblValue(uid, newIconWidgetByTaskId)
     if (!widget)
       return
 
@@ -389,17 +389,17 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons(config = null)
   {
-    local task = ::g_battle_tasks.getTaskById(config)
-    local isBattleTask = ::g_battle_tasks.isBattleTask(task)
+    let task = ::g_battle_tasks.getTaskById(config)
+    let isBattleTask = ::g_battle_tasks.isBattleTask(task)
 
-    local isActive = ::g_battle_tasks.isTaskActive(task)
-    local isDone = ::g_battle_tasks.isTaskDone(task)
-    local canCancel = isBattleTask && ::g_battle_tasks.canCancelTask(task)
-    local canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
-    local isController = ::g_battle_tasks.isController(task)
-    local showActivateButton = !isActive && ::g_battle_tasks.canActivateTask(task)
+    let isActive = ::g_battle_tasks.isTaskActive(task)
+    let isDone = ::g_battle_tasks.isTaskDone(task)
+    let canCancel = isBattleTask && ::g_battle_tasks.canCancelTask(task)
+    let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
+    let isController = ::g_battle_tasks.isController(task)
+    let showActivateButton = !isActive && ::g_battle_tasks.canActivateTask(task)
 
-    local showCancelButton = isActive && canCancel && !canGetReward && !isController
+    let showCancelButton = isActive && canCancel && !canGetReward && !isController
 
     ::showBtnTable(scene, {
       btn_activate = showActivateButton
@@ -407,8 +407,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       btn_warbonds_shop = ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(::gui_handlers.WarbondsShop)
     })
 
-    local showRerollButton = isBattleTask && !isDone && !canGetReward && !::u.isEmpty(::g_battle_tasks.rerollCost)
-    local taskObj = getCurrentTaskObj()
+    let showRerollButton = isBattleTask && !isDone && !canGetReward && !::u.isEmpty(::g_battle_tasks.rerollCost)
+    let taskObj = getCurrentTaskObj()
     if (!::check_obj(taskObj))
       return
 
@@ -418,7 +418,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
     showSceneBtn("btn_requirements_list", ::show_console_buttons && ::getTblValue("names", config, []).len() != 0)
 
-    local id = config?.id ?? ""
+    let id = config?.id ?? ""
     ::enableBtnTable(taskObj, {[getConfigPlaybackButtonId(id)] = ::g_sound.canPlay(id)})
   }
 
@@ -441,13 +441,13 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateProgressText()
   {
-    local textObj = scene.findObject("progress_text")
+    let textObj = scene.findObject("progress_text")
     if (!::check_obj(textObj))
       return
 
-    local curWb = ::g_warbonds.getCurrentWarbond()
+    let curWb = ::g_warbonds.getCurrentWarbond()
     local text = ""
-    local tooltip = ""
+    let tooltip = ""
     if (curWb && currentTabType == BattleTasksWndTab.BATTLE_TASKS && !::has_feature("BattlePass"))
       text = ::g_warbonds_view.getCurrentShopProgressBarText(curWb)
 
@@ -457,11 +457,11 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentTaskObj()
   {
-    local listObj = getConfigsListObj()
+    let listObj = getConfigsListObj()
     if (!::checkObj(listObj))
       return null
 
-    local value = listObj.getValue()
+    let value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return null
 
@@ -471,16 +471,16 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
   function getRadioButtonsView()
   {
     usingDifficulties = []
-    local tplView = []
-    local curMode = ::game_mode_manager.getCurrentGameMode()
-    local selDiff = ::g_difficulty.getDifficultyByDiffCode(curMode ? curMode.diffCode : ::DIFFICULTY_ARCADE)
+    let tplView = []
+    let curMode = ::game_mode_manager.getCurrentGameMode()
+    let selDiff = ::g_difficulty.getDifficultyByDiffCode(curMode ? curMode.diffCode : ::DIFFICULTY_ARCADE)
 
     foreach(idx, diff in ::g_difficulty.types)
     {
       if (diff.diffCode < 0 || !diff.isAvailable(::GM_DOMINATION))
         continue
 
-      local arr = ::g_battle_tasks.getTasksArrayByDifficulty(::g_battle_tasks.getTasksArray(), diff)
+      let arr = ::g_battle_tasks.getTasksArrayByDifficulty(::g_battle_tasks.getTasksArray(), diff)
       if (arr.len() == 0)
         continue
 
@@ -499,7 +499,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTabsView()
   {
-    local view = {tabs = []}
+    let view = {tabs = []}
     foreach (idx, tabData in tabsList)
     {
       view.tabs.append({
@@ -509,7 +509,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    return ::handyman.renderCached("gui/frameHeaderTabs", view)
+    return ::handyman.renderCached("%gui/frameHeaderTabs", view)
   }
 
   function onChangeShowMode(obj)
@@ -519,13 +519,13 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentSelectedTask()
   {
-    local config = getCurrentConfig()
+    let config = getCurrentConfig()
     return ::g_battle_tasks.getTaskById(config)
   }
 
   function getConfigByValue(value)
   {
-    local checkArray = ::getTblValue(currentTabType, configsArrayByTabType, [])
+    let checkArray = ::getTblValue(currentTabType, configsArrayByTabType, [])
     return ::getTblValue(value, checkArray)
   }
 
@@ -536,25 +536,25 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function madeTaskAction(mode)
   {
-    local task = getCurrentSelectedTask()
+    let task = getCurrentSelectedTask()
     if (!::getTblValue("id", task))
       return
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.setStr("mode", mode)
     blk.setStr("unlockName", task.id)
 
-    local taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
+    let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
     ::g_tasker.addTask(taskId, {showProgressBox = true}, notifyUpdate)
   }
 
   function onTaskReroll(obj)
   {
-    local taskId = obj?.task_id
+    let taskId = obj?.task_id
     if (!taskId)
       return
 
-    local task = ::g_battle_tasks.getTaskById(taskId)
+    let task = ::g_battle_tasks.getTaskById(taskId)
     if (!task)
       return
 
@@ -574,7 +574,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onActivate()
   {
-    local task = getCurrentSelectedTask()
+    let task = getCurrentSelectedTask()
     if (!::g_battle_tasks.canActivateTask(task))
       return
 
@@ -621,7 +621,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!::has_feature("Warbonds"))
       return
 
-    local warbondsObj = scene.findObject("warbonds_balance")
+    let warbondsObj = scene.findObject("warbonds_balance")
     warbondsObj.setValue(::g_warbonds.getBalanceText())
     warbondsObj.tooltip = ::loc("warbonds/maxAmount", {warbonds = ::g_warbonds.getLimit()})
   }
@@ -636,7 +636,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(scene))
       return
 
-    local pbObj = scene.findObject(getConfigPlaybackButtonId(p.id))
+    let pbObj = scene.findObject(getConfigPlaybackButtonId(p.id))
     if (!::check_obj(pbObj))
       return
 
@@ -646,19 +646,19 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (p.success)
       return
 
-    local config = getConfigByValue(finishedTaskIdx)
+    let config = getConfigByValue(finishedTaskIdx)
     if (config)
       preparePlaybackForConfig(config, true)
   }
 
   function onEventFinishedPlayback(p)
   {
-    local config = getConfigByValue(finishedTaskIdx)
+    let config = getConfigByValue(finishedTaskIdx)
     if (!config)
       return
 
-    local pbObjId = getConfigPlaybackButtonId(config.id)
-    local pbObj = scene.findObject(pbObjId)
+    let pbObjId = getConfigPlaybackButtonId(config.id)
+    let pbObj = scene.findObject(pbObjId)
     if (::check_obj(pbObj))
       pbObj.setValue(false)
   }
@@ -670,7 +670,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentConfig()
   {
-    local listBoxObj = getConfigsListObj()
+    let listBoxObj = getConfigsListObj()
     if (!::checkObj(listBoxObj))
       return null
 
@@ -679,11 +679,11 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onViewBattleTaskRequirements()
   {
-    local config = getCurrentConfig()
+    let config = getCurrentConfig()
     if (::getTblValue("names", config, []).len() == 0)
       return
 
-    local awardsList = []
+    let awardsList = []
     foreach(id in config.names)
       awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
 
@@ -695,7 +695,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function switchPlaybackMode(obj)
   {
-    local config = getConfigByValue(finishedTaskIdx)
+    let config = getConfigByValue(finishedTaskIdx)
     if (!config)
       return
 
@@ -716,8 +716,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-local function openBattleTasksWndFromPromo(params = [], obj = null) {
-  local taskId = obj?.task_id ?? params?[0]
+let function openBattleTasksWndFromPromo(params = [], obj = null) {
+  let taskId = obj?.task_id ?? params?[0]
   ::g_warbonds_view.resetShowProgressBarFlag()
   ::gui_start_battle_tasks_wnd(taskId)
 }

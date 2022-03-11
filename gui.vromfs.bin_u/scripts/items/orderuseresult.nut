@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 ::g_order_use_result <- {
   types = []
 }

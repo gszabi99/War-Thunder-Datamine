@@ -1,15 +1,15 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { calc_crew_parameters } = require("unitCalculcation")
-local { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("scripts/crew/crewSkills.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { calc_crew_parameters } = require("unitCalculcation")
+let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("scripts/crew/crewSkills.nut")
 
-local parametersByCrewId = {}
-local skillGroups = { //skills which have completely the same parameters for different members
+let parametersByCrewId = {}
+let skillGroups = { //skills which have completely the same parameters for different members
   eyesight = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
   field_repair = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
   machine_gunner = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
 }
 
-local function getParametersByCrewId(crewId, unitName) {
+let function getParametersByCrewId(crewId, unitName) {
   local parameters = parametersByCrewId?[crewId][unitName]
   if (parameters == null) {
     /*local values =
@@ -40,25 +40,25 @@ local function getParametersByCrewId(crewId, unitName) {
   return parameters
 }
 
-local function removeParametersByCrew(params) {
-  local crewId = params.crew.id
+let function removeParametersByCrew(params) {
+  let crewId = params.crew.id
   if (crewId in parametersByCrewId)
     delete parametersByCrewId[crewId]
 }
 
-local function onEventCrewSkillsChanged(params) {
+let function onEventCrewSkillsChanged(params) {
   removeParametersByCrew(params)
 }
 
-local function onEventQualificationIncreased(params) {
+let function onEventQualificationIncreased(params) {
   removeParametersByCrew(params)
 }
 
-local function onEventSignOut(params) {
+let function onEventSignOut(params) {
   parametersByCrewId.clear()
 }
 
-local function getBaseDescriptionText(memberName, skillName, crew) {
+let function getBaseDescriptionText(memberName, skillName, crew) {
   local locId = ::format("crew/%s/%s/tooltip", memberName, skillName)
   local locParams = null
 
@@ -66,8 +66,8 @@ local function getBaseDescriptionText(memberName, skillName, crew) {
     && ::isInArray(memberName, ["driver", "tank_gunner", "commander", "loader", "radio_gunner"])) {
     locId = "crew/eyesight/tank/tooltip"
 
-    local blk = ::dgs_get_game_params()
-    local detectDefaults = blk?.detectDefaults
+    let blk = ::dgs_get_game_params()
+    let detectDefaults = blk?.detectDefaults
     locParams = {
       targetingMul = ::getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)
       binocularMul = ::getTblValue("distanceMultForBinocularView", detectDefaults, 1.0)
@@ -77,18 +77,18 @@ local function getBaseDescriptionText(memberName, skillName, crew) {
   return ::loc(locId, locParams)
 }
 
-local function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit) {
-  local resArray = [getBaseDescriptionText(memberName, skillName, crew)]
+let function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit) {
+  let resArray = [getBaseDescriptionText(memberName, skillName, crew)]
   if (unit && unit.unitType.crewUnitType != crewUnitType) {
-    local text = ::loc("crew/skillsWorkWithUnitsSameType")
+    let text = ::loc("crew/skillsWorkWithUnitsSameType")
     resArray.append(::colorize("warningTextColor", text))
   }
   else if (crew && memberName == "groundService" && skillName == "repair") {
-    local fullParamsList = ::g_skill_parameters_request_type.CURRENT_VALUES.getParameters(crew.id, unit)
-    local repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
+    let fullParamsList = ::g_skill_parameters_request_type.CURRENT_VALUES.getParameters(crew.id, unit)
+    let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
     if (repairRank!=0 && unit && unit.rank > repairRank)
     {
-      local text = ::loc("crew/notEnoughRepairRank", {
+      let text = ::loc("crew/notEnoughRepairRank", {
                           rank = ::colorize("activeTextColor", ::get_roman_numeral(unit.rank))
                           level = ::colorize("activeTextColor",
                             getMinSkillsUnitRepairRank(unit.rank))
@@ -98,10 +98,10 @@ local function getTooltipText(memberName, skillName, crewUnitType, crew, difficu
   }
   else if (memberName == "loader" && skillName == "loading_time_mult")
   {
-    local wBlk = ::get_wpcost_blk()
+    let wBlk = ::get_wpcost_blk()
     if (unit && wBlk?[unit.name].primaryWeaponAutoLoader)
     {
-      local text = ::loc("crew/loader/loading_time_mult/tooltipauto")
+      let text = ::loc("crew/loader/loading_time_mult/tooltipauto")
       resArray.append(::colorize("warningTextColor", text))
     }
   }
@@ -110,8 +110,8 @@ local function getTooltipText(memberName, skillName, crewUnitType, crew, difficu
 }
 
 //skillsList = [{ memberName = "", skillName = "" }]
-local function getColumnsTypesList(skillsList, crewUnitType) {
-  local columnTypes = []
+let function getColumnsTypesList(skillsList, crewUnitType) {
+  let columnTypes = []
   foreach (columnType in ::g_skill_parameters_column_type.types) {
     if (!columnType.checkCrewUnitType(crewUnitType))
       continue
@@ -126,13 +126,13 @@ local function getColumnsTypesList(skillsList, crewUnitType) {
   return columnTypes
 }
 
-local function getSkillListHeaderRow(crew, columnTypes, unit) {
-  local res = {
+let function getSkillListHeaderRow(crew, columnTypes, unit) {
+  let res = {
     descriptionLabel = ::loc("crewSkillParameterTable/descriptionLabel")
     valueItems = []
   }
 
-  local headerImageParams = {
+  let headerImageParams = {
     crew = crew
     unit = unit
   }
@@ -151,15 +151,15 @@ local function getSkillListHeaderRow(crew, columnTypes, unit) {
 }
 
 //skillsList = [{ memberName = "", skillName = "" }]
-local function getParametersByRequestType(crewId, skillsList, difficulty, requestType, useSelectedParameters, unit) {
-  local res = {}
-  local fullParamsList = useSelectedParameters
+let function getParametersByRequestType(crewId, skillsList, difficulty, requestType, useSelectedParameters, unit) {
+  let res = {}
+  let fullParamsList = useSelectedParameters
                          ? requestType.getSelectedParameters(crewId, unit)
                          : requestType.getParameters(crewId, unit)
 
   foreach(skill in skillsList) {
     // Leaving data only related to selected difficulty, member and skill.
-    local skillParams = fullParamsList?[difficulty.crewSkillName][skill.memberName][skill.skillName]
+    let skillParams = fullParamsList?[difficulty.crewSkillName][skill.memberName][skill.skillName]
     if (!skillParams)
       continue
     foreach(key, value in skillParams) {
@@ -175,8 +175,8 @@ local function getParametersByRequestType(crewId, skillsList, difficulty, reques
   return res
 }
 
-local function getSortedArrayByParamsTable(parameters, crewUnitType) {
-  local res = []
+let function getSortedArrayByParamsTable(parameters, crewUnitType) {
+  let res = []
   foreach(name, valuesArr in parameters) {
     if (crewUnitType != ::CUT_AIRCRAFT && name == "airfieldMinRepairTime")
       continue
@@ -195,30 +195,30 @@ local function getSortedArrayByParamsTable(parameters, crewUnitType) {
   return res
 }
 
-local function parseParameters(columnTypes,
+let function parseParameters(columnTypes,
   currentParametersByRequestType, selectedParametersByRequestType, crewUnitType)
 {
-  local res = []
-  local currentParameters = currentParametersByRequestType[::g_skill_parameters_request_type.CURRENT_VALUES]
+  let res = []
+  let currentParameters = currentParametersByRequestType[::g_skill_parameters_request_type.CURRENT_VALUES]
   if (!::u.isTable(currentParameters))
     return res
 
-  local paramsArray = getSortedArrayByParamsTable(currentParameters, crewUnitType)
+  let paramsArray = getSortedArrayByParamsTable(currentParameters, crewUnitType)
   foreach (idx, paramData in paramsArray)
   {
-    local parametersType = ::g_skill_parameters_type.getTypeByParamName(paramData.name)
+    let parametersType = ::g_skill_parameters_type.getTypeByParamName(paramData.name)
     parametersType.parseColumns(paramData, columnTypes,
       currentParametersByRequestType, selectedParametersByRequestType, res)
   }
   return res
 }
 
-local function filterSkillsList(skillsList) {
-  local res = []
+let function filterSkillsList(skillsList) {
+  let res = []
   foreach(skill in skillsList) {
-    local group = ::getTblValue(skill.skillName, skillGroups)
+    let group = ::getTblValue(skill.skillName, skillGroups)
     if (group) {
-      local resSkill = ::u.search(res, (@(skill, group) function(resSkill) {
+      let resSkill = ::u.search(res, (@(skill, group) function(resSkill) {
                          return skill.skillName == resSkill.skillName && ::isInArray(resSkill.memberName, group)
                        })(skill, group))
       if (resSkill)
@@ -231,22 +231,22 @@ local function filterSkillsList(skillsList) {
 }
 
 //skillsList = [{ memberName = "", skillName = "" }]
-local function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, crewUnitType, unit)
+let function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, crewUnitType, unit)
 {
-  local skillsList = filterSkillsList(notFilteredSkillsList)
+  let skillsList = filterSkillsList(notFilteredSkillsList)
 
-  local columnTypes = getColumnsTypesList(skillsList, crewUnitType)
+  let columnTypes = getColumnsTypesList(skillsList, crewUnitType)
 
   //preparing full requestsList
-  local fullRequestsList = [::g_skill_parameters_request_type.CURRENT_VALUES] //required for getting params list
+  let fullRequestsList = [::g_skill_parameters_request_type.CURRENT_VALUES] //required for getting params list
   foreach(columnType in columnTypes) {
     ::u.appendOnce(columnType.previousParametersRequestType, fullRequestsList, true)
     ::u.appendOnce(columnType.currentParametersRequestType, fullRequestsList, true)
   }
 
   //collect parameters by request types
-  local currentParametersByRequestType = {}
-  local selectedParametersByRequestType = {}
+  let currentParametersByRequestType = {}
+  let selectedParametersByRequestType = {}
   foreach (requestType in fullRequestsList) {
     currentParametersByRequestType[requestType] <-
       getParametersByRequestType(crew.id, skillsList,  difficulty, requestType, false, unit)
@@ -255,7 +255,7 @@ local function getSkillListParameterRowsView(crew, difficulty, notFilteredSkills
   }
 
   // Here goes generation of skill parameters cell values.
-  local res = parseParameters(columnTypes,
+  let res = parseParameters(columnTypes,
     currentParametersByRequestType, selectedParametersByRequestType, crewUnitType)
   // If no parameters added then hide table's header.
   if (res.len()) // Nothing but header row.
@@ -264,13 +264,13 @@ local function getSkillListParameterRowsView(crew, difficulty, notFilteredSkills
   return res
 }
 
-local function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUnitType, unit) {
-  local skillsList = [{
+let function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUnitType, unit) {
+  let skillsList = [{
     memberName = memberName
     skillName = skillName
   }]
 
-  local view = {
+  let view = {
     skillName = ::loc("crew/" + skillName)
     tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit)
 
@@ -287,7 +287,7 @@ local function getSkillDescriptionView(crew, difficulty, memberName, skillName, 
   view.headerItems <- view.parameterRows[0].valueItems
 
   //getprogressbarFrom a first row (it the same for all rows, so we showing it in a top of tooltip
-  local firstRow = ::getTblValue(1, view.parameterRows)
+  let firstRow = ::getTblValue(1, view.parameterRows)
   view.progressBarValue <- ::getTblValue("progressBarValue", firstRow)
   view.progressBarSelectedValue <- ::getTblValue("progressBarSelectedValue", firstRow)
 

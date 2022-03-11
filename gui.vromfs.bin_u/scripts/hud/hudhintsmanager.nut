@@ -1,5 +1,5 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local DaguiSceneTimers = require("sqDagui/timer/daguiSceneTimers.nut")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let DaguiSceneTimers = require("sqDagui/timer/daguiSceneTimers.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -57,7 +57,7 @@ enum HintShowState {
       timers.reset()
     } else
     {
-      local hintOptionsBlk = ::DataBlock()
+      let hintOptionsBlk = ::DataBlock()
       foreach (hint in ::g_hud_hints.types)
         hint.updateHintOptionsBlk(hintOptionsBlk)
       ::set_hint_options_by_blk(hintOptionsBlk)
@@ -67,7 +67,7 @@ enum HintShowState {
 
   function removeAllHints(hintFilterField = "isHideOnDeath")
   {
-    local hints = ::u.filter(activeHints, @(hintData) hintData.hint[hintFilterField])
+    let hints = ::u.filter(activeHints, @(hintData) hintData.hint[hintFilterField])
     foreach (hintData in hints)
       removeHint(hintData, true)
   }
@@ -138,7 +138,7 @@ enum HintShowState {
 
           removeDelayedShowTimer(hint)
 
-          local hintData = findActiveHintFromSameGroup(hint)
+          let hintData = findActiveHintFromSameGroup(hint)
           if (!hintData)
             return
           removeHint(hintData, hintData.hint.isInstantHide(eventData))
@@ -150,8 +150,8 @@ enum HintShowState {
             if (!hint.isCurrent(eventData, false))
               return
 
-            local hintData = findActiveHintFromSameGroup(hint)
-            local needUpdate = func.call(hint, hintData, eventData)
+            let hintData = findActiveHintFromSameGroup(hint)
+            let needUpdate = func.call(hint, hintData, eventData)
             if (hintData && needUpdate)
               updateHint(hintData)
           })(hint, func), this)
@@ -175,7 +175,7 @@ enum HintShowState {
       lifeTimerWeak = null
     })
 
-    local addedHint = activeHints?[activeHints.len()-1]
+    let addedHint = activeHints?[activeHints.len()-1]
     return addedHint
   }
 
@@ -184,7 +184,7 @@ enum HintShowState {
     if (!hintData.hint.selfRemove)
       return
 
-    local lifeTime = hintData.hint.getLifeTime(hintData.eventData)
+    let lifeTime = hintData.hint.getLifeTime(hintData.eventData)
     if (hintData.lifeTimerWeak)
     {
       if (lifeTime <= 0)
@@ -221,7 +221,7 @@ enum HintShowState {
 
   function removeFromList(hintData)
   {
-    local idx = activeHints.findindex(@(item) item == hintData)
+    let idx = activeHints.findindex(@(item) item == hintData)
     if (idx != null)
       activeHints.remove(idx)
   }
@@ -231,7 +231,7 @@ enum HintShowState {
     if (!hint.isCurrent(eventData, false))
       return
 
-    local res = checkHintInterval(hint)
+    let res = checkHintInterval(hint)
     if (res == HintShowState.DISABLE)
     {
       ::disable_hint(hint.mask)
@@ -279,15 +279,15 @@ enum HintShowState {
     if (!::checkObj(nest))
       return
 
-    local hintNestObj = nest.findObject(hintData.hint.getHintNestId())
+    let hintNestObj = nest.findObject(hintData.hint.getHintNestId())
     if (!::checkObj(hintNestObj))
       return
 
     checkRemovedHints(hintData.hint) //remove hints with not finished animation if needed
     removeSingleInNestHints(hintData.hint)
 
-    local id = hintData.hint.name + (++hintIdx)
-    local markup = hintData.hint.buildMarkup(hintData.eventData, id)
+    let id = hintData.hint.name + (++hintIdx)
+    let markup = hintData.hint.buildMarkup(hintData.eventData, id)
     guiScene.appendWithBlk(hintNestObj, markup, markup.len(), null)
     hintData.hintObj = hintNestObj.findObject(id)
     setCoutdownTimer(hintData)
@@ -301,18 +301,18 @@ enum HintShowState {
     if (!hintData.hint.selfRemove)
       return
 
-    local hintObj = hintData.hintObj
+    let hintObj = hintData.hintObj
     if (!::checkObj(hintObj))
       return
 
     hintData.secondsUpdater <- SecondsUpdater(hintObj, (@(hintData) function (obj, params) {
-      local textObj = obj.findObject("time_text")
+      let textObj = obj.findObject("time_text")
       if (!::checkObj(textObj))
         return false
 
-      local lifeTime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
-      local offset = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
-      local timeLeft = (lifeTime - offset + 0.5).tointeger()
+      let lifeTime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
+      let offset = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
+      let timeLeft = (lifeTime - offset + 0.5).tointeger()
 
       if (timeLeft < 0)
         return true
@@ -324,11 +324,11 @@ enum HintShowState {
 
   function hideHint(hintData, isInstant)
   {
-    local hintObject = hintData.hintObj
+    let hintObject = hintData.hintObj
     if (!::check_obj(hintObject))
       return
 
-    local needFinalizeRemove = hintData.hint.hideHint(hintObject, isInstant)
+    let needFinalizeRemove = hintData.hint.hideHint(hintObject, isInstant)
     if (needFinalizeRemove)
       animatedRemovedHints.append(clone hintData)
   }
@@ -345,7 +345,7 @@ enum HintShowState {
   {
     for(local i = animatedRemovedHints.len() - 1; i >= 0; i--)
     {
-      local hintData = animatedRemovedHints[i]
+      let hintData = animatedRemovedHints[i]
       if (::check_obj(hintData.hintObj))
       {
         if (!hint.hintType.isSameReplaceGroup(hintData.hint, hint))
@@ -369,17 +369,17 @@ enum HintShowState {
   {
     updateRemoveTimer(hintData)
 
-    local hintObj = hintData.hintObj
+    let hintObj = hintData.hintObj
     if (!::checkObj(hintObj))
       return showHint(hintData)
 
     setCoutdownTimer(hintData)
 
-    local timeBarObj = hintObj.findObject("time_bar")
+    let timeBarObj = hintObj.findObject("time_bar")
     if (::checkObj(timeBarObj))
     {
-      local totaltime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
-      local currentTime = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
+      let totaltime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
+      let currentTime = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
       ::g_time_bar.setPeriod(timeBarObj, totaltime)
       ::g_time_bar.setCurrentTime(timeBarObj, currentTime)
     }
@@ -394,7 +394,7 @@ enum HintShowState {
 
   function checkHintInterval(hint)
   {
-    local interval = hint.getTimeInterval()
+    let interval = hint.getTimeInterval()
     if (interval == HINT_INTERVAL.ALWAYS_VISIBLE)
       return HintShowState.SHOW_HINT
     else if (interval == HINT_INTERVAL.HIDDEN)
@@ -406,7 +406,7 @@ enum HintShowState {
     }
     else
     {
-      local ageSec = (::dagor.getCurTime() - lastShowedTimeDict[hint.maskId]) * 0.001
+      let ageSec = (::dagor.getCurTime() - lastShowedTimeDict[hint.maskId]) * 0.001
       return ageSec >= interval ? HintShowState.SHOW_HINT : HintShowState.NOT_MATCH
     }
 

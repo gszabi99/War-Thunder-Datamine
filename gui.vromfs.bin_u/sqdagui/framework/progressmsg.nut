@@ -1,6 +1,6 @@
-local Callback = require("sqStdLibs/helpers/callback.nut").Callback
+let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
-local msgList = {}
+let msgList = {}
 
 local buttonsDelayDefault = 30
 local textLocIdDefault = ""
@@ -45,13 +45,13 @@ local Msg = class {
   function incrementImpl(config)
   {
     showCount++
-    local hasSceneChanges = applyConfig(config) || !::check_obj(sceneObj)
+    let hasSceneChanges = applyConfig(config) || !::check_obj(sceneObj)
     if (!hasSceneChanges)
       return
 
-    local prevSceneObj = sceneObj //destroy previous message only after create new to not activate handlers behind on switch.
+    let prevSceneObj = sceneObj //destroy previous message only after create new to not activate handlers behind on switch.
 
-    local cancelCb = Callback(function() {
+    let cancelCb = Callback(function() {
       if (onCancelCb)
         onCancelCb()
       destroy()
@@ -91,7 +91,7 @@ return {
   create = @(uid, config) uid in msgList ? msgList[uid].increment(config) : msgList[uid] <- Msg(uid, config)
 
   destroy = function(uid, shouldCheckCounter = false) {
-    local msg = msgList?[uid]
+    let msg = msgList?[uid]
     if (!msg)
       return
     if (shouldCheckCounter)

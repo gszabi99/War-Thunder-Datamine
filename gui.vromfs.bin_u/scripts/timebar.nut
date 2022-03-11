@@ -19,7 +19,7 @@
    */
   function setPeriod(timeBarObj, periodTime, isCyclic = false)
   {
-    local speed = periodTime ? 360.0 / periodTime : 0
+    let speed = periodTime ? 360.0 / periodTime : 0
     _setSpeed(timeBarObj, speed)
 
     if (isCyclic)
@@ -48,7 +48,7 @@
    */
   function setCurrentTime(timeBarObj, currentTime)
   {
-    local curVal = currentTime * _getSpeed(timeBarObj)
+    let curVal = currentTime * _getSpeed(timeBarObj)
     timeBarObj["sector-angle-2"] = curVal.tostring()
   }
 
@@ -99,7 +99,7 @@
 
   function _setDirection(timeBarObj, direction)
   {
-    local w = _getSpeed(timeBarObj)
+    let w = _getSpeed(timeBarObj)
     timeBarObj.direction = direction
     _setSpeed(timeBarObj, w)
   }

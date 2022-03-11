@@ -1,7 +1,7 @@
 from "daRg" import *
 from "frp" import *
 
-local defStyling = {
+let defStyling = {
   Bar = function(has_scroll) {
     if (has_scroll) {
       return class {
@@ -29,32 +29,32 @@ local defStyling = {
 }
 
 
-local function resolveBarClass(bar, has_scroll) {
+let function resolveBarClass(bar, has_scroll) {
   if (type(bar) == "function") {
     return bar(has_scroll)
   }
   return bar
 }
 
-local function calcBarSize(bar_class, axis) {
+let function calcBarSize(bar_class, axis) {
   return axis == 0 ? [flex(), bar_class._height] : [bar_class._width, flex()]
 }
 
 
-local function scrollbar(scroll_handler, options={}) {
-  local stateFlags = Watched(0)
-  local styling   = options?.styling ?? defStyling
-  local barClass  = options?.barStyle ?? styling.Bar
-  local knobClass = options?.knobStyle ?? styling.Knob
+let function scrollbar(scroll_handler, options={}) {
+  let stateFlags = Watched(0)
+  let styling   = options?.styling ?? defStyling
+  let barClass  = options?.barStyle ?? styling.Bar
+  let knobClass = options?.knobStyle ?? styling.Knob
 
-  local orientation = options?.orientation ?? O_VERTICAL
-  local axis        = orientation == O_VERTICAL ? 1 : 0
+  let orientation = options?.orientation ?? O_VERTICAL
+  let axis        = orientation == O_VERTICAL ? 1 : 0
 
   return function() {
-    local elem = scroll_handler.elem
+    let elem = scroll_handler.elem
 
     if (!elem) {
-      local cls = resolveBarClass(barClass, false)
+      let cls = resolveBarClass(barClass, false)
       return class extends cls {
         key = scroll_handler
         behavior = Behaviors.Slider
@@ -75,7 +75,7 @@ local function scrollbar(scroll_handler, options={}) {
     }
 
     if (contentSize <= elemSize) {
-      local cls = resolveBarClass(barClass, false)
+      let cls = resolveBarClass(barClass, false)
       return class extends cls {
         key = scroll_handler
         behavior = Behaviors.Slider
@@ -85,15 +85,15 @@ local function scrollbar(scroll_handler, options={}) {
     }
 
 
-    local minV = 0
-    local maxV = contentSize - elemSize
-    local fValue = scrollPos
+    let minV = 0
+    let maxV = contentSize - elemSize
+    let fValue = scrollPos
 
-    local color = "colorCalc" in knobClass
+    let color = "colorCalc" in knobClass
       ? knobClass.colorCalc(stateFlags.value)
       : knobClass?.color
 
-    local knob = class extends knobClass {
+    let knob = class extends knobClass {
       size = [flex(elemSize), flex(elemSize)]
       color = color
       key = "knob"
@@ -101,7 +101,7 @@ local function scrollbar(scroll_handler, options={}) {
       children = "hoverChild" in knobClass ? knobClass.hoverChild(stateFlags.value) : null
     }
 
-    local cls = resolveBarClass(barClass, true)
+    let cls = resolveBarClass(barClass, true)
     return class extends cls {
       key = scroll_handler
       behavior = Behaviors.Slider
@@ -138,7 +138,7 @@ local function scrollbar(scroll_handler, options={}) {
   }
 }
 
-local DEF_SIDE_SCROLL_OPTIONS = { //const
+let DEF_SIDE_SCROLL_OPTIONS = { //const
   styling = defStyling
   rootBase = null
   scrollAlign = ALIGN_RIGHT
@@ -151,15 +151,15 @@ local DEF_SIDE_SCROLL_OPTIONS = { //const
   joystickScroll = true
 }
 
-local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
+let function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
   options = DEF_SIDE_SCROLL_OPTIONS.__merge(options)
 
-  local styling = options.styling
-  local scrollHandler = options?.scrollHandler ?? ScrollHandler()
-  local rootBase = options.rootBase ?? styling.ContentRoot
-  local scrollAlign = options.scrollAlign
+  let styling = options.styling
+  let scrollHandler = options?.scrollHandler ?? ScrollHandler()
+  let rootBase = options.rootBase ?? styling.ContentRoot
+  let scrollAlign = options.scrollAlign
 
-  local function contentRoot() {
+  let function contentRoot() {
     local bhv = rootBase?.behavior ?? []
     if (typeof(bhv) != "array")
       bhv = [bhv]
@@ -180,7 +180,7 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
     }
   }
 
-  local childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
+  let childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
     ? [scrollbar(scrollHandler, options), contentRoot]
     : [contentRoot, scrollbar(scrollHandler, options)]
 
@@ -196,12 +196,12 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 }
 
 
-local function makeHVScrolls(content, options={}) {
-  local styling = options?.styling ?? defStyling
-  local scrollHandler = options?.scrollHandler ?? ScrollHandler()
-  local rootBase = options?.rootBase ?? styling.ContentRoot
+let function makeHVScrolls(content, options={}) {
+  let styling = options?.styling ?? defStyling
+  let scrollHandler = options?.scrollHandler ?? ScrollHandler()
+  let rootBase = options?.rootBase ?? styling.ContentRoot
 
-  local function contentRoot() {
+  let function contentRoot() {
     local bhv = rootBase?.behavior ?? []
     if (typeof(bhv)!="array")
       bhv = [bhv]
@@ -238,16 +238,16 @@ local function makeHVScrolls(content, options={}) {
 }
 
 
-local function makeVertScroll(content, options={}) {
-  local o = clone options
+let function makeVertScroll(content, options={}) {
+  let o = clone options
   o.orientation <- O_VERTICAL
   o.scrollAlign <- o?.scrollAlign ?? ALIGN_RIGHT
   return makeSideScroll(content, o)
 }
 
 
-local function makeHorizScroll(content, options={}) {
-  local o = clone options
+let function makeHorizScroll(content, options={}) {
+  let o = clone options
   o.orientation <- O_HORIZONTAL
   o.scrollAlign <- o?.scrollAlign ?? ALIGN_BOTTOM
   return makeSideScroll(content, o)

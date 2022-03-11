@@ -1,9 +1,9 @@
-local stdMath = require("std/math.nut")
+let stdMath = require("std/math.nut")
 
-local getViewClusters = function()
+let getViewClusters = function()
 {
-  local viewClusters = []
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+  let viewClusters = []
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   foreach (idx, item in clusterOpt.items)
   {
     viewClusters.append({
@@ -16,12 +16,12 @@ local getViewClusters = function()
   return viewClusters
 }
 
-local createClusterSelectMenu = function(placeObj, alight = "top")
+let createClusterSelectMenu = function(placeObj, alight = "top")
 {
   ::gui_start_multi_select_menu({
     list = getViewClusters()
     onChangeValuesBitMaskCb = function(mask) {
-      local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+      let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
       ::set_option(::USEROPT_RANDB_CLUSTER, mask, clusterOpt)
     }
     align = alight
@@ -29,23 +29,23 @@ local createClusterSelectMenu = function(placeObj, alight = "top")
   })
 }
 
-local getCurrentClustersTexts = function()
+let getCurrentClustersTexts = function()
 {
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-  local result = []
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+  let result = []
   for (local i = 0; i < clusterOpt.values.len(); i++)
     if ((clusterOpt.value & (1 << i)) > 0)
       result.append(clusterOpt.items[i].text)
   return result
 }
 
-local updateClusters = function(placeObj)
+let updateClusters = function(placeObj)
 {
   if (!::check_obj(placeObj))
     return
 
   local clustersText = ::loc("options/cluster") + ::loc("ui/colon")
-  local currentClusterNames = getCurrentClustersTexts()
+  let currentClusterNames = getCurrentClustersTexts()
   local first = true
   foreach(clusterName in currentClusterNames)
   {
@@ -55,10 +55,10 @@ local updateClusters = function(placeObj)
   placeObj.setValue(clustersText)
 }
 
-local getCurrentClusters = function()
+let getCurrentClusters = function()
 {
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-  local result = []
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+  let result = []
   for (local i = 0; i < clusterOpt.values.len(); i++)
     if ((clusterOpt.value & (1 << i)) > 0)
       result.append(clusterOpt.values[i])

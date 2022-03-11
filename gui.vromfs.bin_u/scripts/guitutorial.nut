@@ -1,4 +1,4 @@
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let tutorAction = require("scripts/tutorials/tutorialActions.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
 
@@ -23,14 +23,14 @@ guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handle
   //    id, onClick
   //  }...]
 {
-  local guiScene = scene.getScene()
-  local sizeIncMul = ::getTblValue("sizeIncMul", params, _sizeIncMul)
-  local sizeIncAdd = ::getTblValue("sizeIncAdd", params, _sizeIncAdd)
-  local isFullscreen = params?.isFullscreen ?? _isFullscreen
-  local rootBox = ::GuiBox().setFromDaguiObj(isFullscreen ? guiScene.getRoot() : scene)
-  local rootPosCompensation = [ - rootBox.c1[0], - rootBox.c1[1] ]
-  local defOnClick = ::getTblValue("onClick", params, null)
-  local view = {
+  let guiScene = scene.getScene()
+  let sizeIncMul = ::getTblValue("sizeIncMul", params, _sizeIncMul)
+  let sizeIncAdd = ::getTblValue("sizeIncAdd", params, _sizeIncAdd)
+  let isFullscreen = params?.isFullscreen ?? _isFullscreen
+  let rootBox = ::GuiBox().setFromDaguiObj(isFullscreen ? guiScene.getRoot() : scene)
+  let rootPosCompensation = [ - rootBox.c1[0], - rootBox.c1[1] ]
+  let defOnClick = ::getTblValue("onClick", params, null)
+  let view = {
     id = ::getTblValue("id", params, _id)
     isFullscreen = isFullscreen
     lightBlock = ::getTblValue("lightBlock", params, _lightBlock)
@@ -39,15 +39,15 @@ guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handle
     darkBlocks = []
   }
 
-  local rootXPad = isFullscreen ? -::to_pixels("1@bwInVr") : 0
-  local rootYPad = isFullscreen ? -::to_pixels("1@bhInVr") : 0
-  local darkBoxes = []
+  let rootXPad = isFullscreen ? -::to_pixels("1@bwInVr") : 0
+  let rootYPad = isFullscreen ? -::to_pixels("1@bhInVr") : 0
+  let darkBoxes = []
   if (view.darkBlock && view.darkBlock != "")
     darkBoxes.append(rootBox.cloneBox(rootXPad, rootYPad).incPos(rootPosCompensation))
 
   foreach(config in objDataArray)
   {
-    local block = getBlockFromObjData(config, scene, defOnClick)
+    let block = getBlockFromObjData(config, scene, defOnClick)
     if (!block)
       continue
 
@@ -58,7 +58,7 @@ guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handle
 
     for(local i = darkBoxes.len() - 1; i >= 0; i--)
     {
-      local newBoxes = block.box.cutBox(darkBoxes[i])
+      let newBoxes = block.box.cutBox(darkBoxes[i])
       if (!newBoxes)
         continue
 
@@ -70,7 +70,7 @@ guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handle
   foreach(box in darkBoxes)
     view.darkBlocks.append(blockToView({ box = box, onClick = defOnClick }))
 
-  local data = ::handyman.renderCached(("gui/tutorials/tutorDarkScreen"), view)
+  let data = ::handyman.renderCached(("%gui/tutorials/tutorDarkScreen"), view)
   guiScene.replaceContentFromText(scene, data, data.len(), handler)
 
   return scene.findObject(view.id)
@@ -88,7 +88,7 @@ guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = nu
   {
     for (local i = 0; i < obj.len(); i++)
     {
-      local block = getBlockFromObjData(obj[i], scene)
+      let block = getBlockFromObjData(obj[i], scene)
       if (!block)
         continue
       if (!res)
@@ -116,7 +116,7 @@ guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = nu
   if (!res)
     return null
 
-  local id = ::getTblValue("id", objData)
+  let id = ::getTblValue("id", objData)
   if (id)
     res.id <- id
   res.onClick <- ::getTblValue("onClick", objData, defOnClick)
@@ -127,7 +127,7 @@ guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = nu
 
 guiTutor.blockToView <- function blockToView(block)
 {
-  local box = block.box
+  let box = block.box
   for(local i = 0; i < 2; i++)
   {
     block["pos" + i] <- box.c1[i]
@@ -154,10 +154,10 @@ guiTutor.blockToView <- function blockToView(block)
   })
 }
 
-class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.Tutor <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/tutorials/tutorWnd.blk"
+  sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
   config = null
   ownerWeak = null
@@ -188,32 +188,32 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
     if (!ownerWeak)
       return finalizeTutorial()
 
-    local stepData = config[stepIdx]
-    local actionType = ::getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
-    local params = {
+    let stepData = config[stepIdx]
+    let actionType = ::getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
+    let params = {
       onClick = (actionType == tutorAction.ANY_CLICK)? "onNext" : null
     }
 
-    local msgObj = scene.findObject("msg_text")
+    let msgObj = scene.findObject("msg_text")
     local text = ::getTblValue("text", stepData, "")
 
-    local bottomText = ::getTblValue("bottomText", stepData, "")
+    let bottomText = ::getTblValue("bottomText", stepData, "")
     if (text != "" && bottomText != "")
       text += "\n\n" + bottomText
 
     msgObj.setValue(text)
 
-    local needAccessKey = (actionType == tutorAction.OBJ_CLICK ||
+    let needAccessKey = (actionType == tutorAction.OBJ_CLICK ||
                            actionType == tutorAction.FIRST_OBJ_CLICK)
-    local shortcut = ::getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
-    local blocksList = []
+    let shortcut = ::getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
+    let blocksList = []
     local objList = stepData?.obj ?? []
     if (!::u.isArray(objList))
       objList = [objList]
 
     foreach(obj in objList)
     {
-      local block = ::guiTutor.getBlockFromObjData(obj, ownerWeak.scene)
+      let block = ::guiTutor.getBlockFromObjData(obj, ownerWeak.scene)
       if (!block)
         continue
 
@@ -226,24 +226,24 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
       blocksList.append(block)
     }
 
-    local needArrow = (stepData?.haveArrow ?? true) && blocksList.len() > 0
+    let needArrow = (stepData?.haveArrow ?? true) && blocksList.len() > 0
     if (needArrow && !blocksList.findvalue(@(b) b?.hasArrow == true))
       blocksList[0].hasArrow = true
 
     updateObjectsPos(blocksList, needArrow)
 
     if (needArrow) {
-      local mainMsgY = scene.findObject("msg_block").getPosRC()[1]
-      local arrowWidth = ::to_pixels("1@tutorArrowSize")
-      local arrowHeight = ::to_pixels("3@tutorArrowSize")
-      local view = { arrows = [] }
+      let mainMsgY = scene.findObject("msg_block").getPosRC()[1]
+      let arrowWidth = ::to_pixels("1@tutorArrowSize")
+      let arrowHeight = ::to_pixels("3@tutorArrowSize")
+      let view = { arrows = [] }
 
       foreach (block in blocksList)
       {
         if (!block.hasArrow)
           continue
 
-        local isTop = mainMsgY < block.box.c1[1]
+        let isTop = mainMsgY < block.box.c1[1]
         view.arrows.append({
           left     = (block.box.c1[0] + block.box.c2[0] - arrowWidth) / 2
           top      = isTop ? block.box.c1[1] - arrowHeight : block.box.c2[1]
@@ -251,7 +251,7 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
         })
       }
 
-      local blk = ::handyman.renderCached("gui/tutorials/tutorArrow", view)
+      let blk = ::handyman.renderCached("%gui/tutorials/tutorArrow", view)
       guiScene.replaceContentFromText(scene.findObject("arrows_container"), blk, blk.len(), this)
     }
 
@@ -275,10 +275,10 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
       markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
     }
 
-    local nextShObj = scene.findObject("next_step_shortcut")
+    let nextShObj = scene.findObject("next_step_shortcut")
     guiScene.replaceContentFromText(nextShObj, markup, markup.len(), ownerWeak)
 
-    local waitTime = ::getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY? 1 : -1)
+    let waitTime = ::getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY? 1 : -1)
     if (waitTime > 0)
       ::Timer(scene, waitTime, (@(stepIdx) function() {timerNext(stepIdx)})(stepIdx), this)
 
@@ -289,22 +289,22 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
   {
     guiScene.applyPendingChanges(false)
 
-    local boxList = []
+    let boxList = []
     foreach(b in blocks)
       boxList.append(b.box)
 
     if (needArrow)
     {
-      local incSize = ::to_pixels("3@tutorArrowSize") // arrow height
+      let incSize = ::to_pixels("3@tutorArrowSize") // arrow height
       foreach(b in blocks)
         if (b.hasArrow)
           boxList.append(b.box.cloneBox(incSize)) // inc targetBox for correct place message
     }
 
-    local mainMsgObj = scene.findObject("msg_block")
-    local minPos = guiScene.calcString("1@bh", null)
-    local maxPos = guiScene.calcString("sh -1@bh", null)
-    local newPos = LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
+    let mainMsgObj = scene.findObject("msg_block")
+    let minPos = guiScene.calcString("1@bh", null)
+    let maxPos = guiScene.calcString("sh -1@bh", null)
+    let newPos = LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
     if (newPos != null)
       mainMsgObj.top = newPos.tostring()
   }
@@ -339,8 +339,8 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
     if (canceled)
       return
 
-    local stepData = ::getTblValue(stepIdx, config)
-    local cb = ::getTblValue("cb", stepData)
+    let stepData = ::getTblValue(stepIdx, config)
+    let cb = ::getTblValue("cb", stepData)
     if (!cb)
       return
 

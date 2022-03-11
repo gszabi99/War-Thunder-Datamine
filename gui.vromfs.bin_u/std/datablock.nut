@@ -1,17 +1,17 @@
-local { isFunction, isDataBlock } = require("underscore.nut")
+let { isFunction, isDataBlock } = require("underscore.nut")
 // Recursive translator to DataBlock data.
 // sometimes more conviniet to store, search and use data in DataBlock.
 // It saves order of items in tables as an array,
 // and block can easily be found by header as in table.
 
-local function fillBlock(id, block, data, arrayKey = "array") {
+let function fillBlock(id, block, data, arrayKey = "array") {
   if (type(data) == "array") {
-    local newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
+    let newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (idx, v in data)
       fillBlock(v?.label ?? arrayKey, newBl, v)
   }
   else if (type(data) == "table") {
-    local newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
+    let newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (key, val in data)
       fillBlock(key, newBl, val)
   }
@@ -24,18 +24,18 @@ local function fillBlock(id, block, data, arrayKey = "array") {
 }
 
 // callback(blockValue[, blockName[, index]])
-local function eachBlock(db, callback, thisArg = null) {
+let function eachBlock(db, callback, thisArg = null) {
   if (db == null)
     return
 
   assert(isDataBlock(db))
   assert(isFunction(callback))
-  local numArgs = callback.getfuncinfos().parameters.len() - 1
+  let numArgs = callback.getfuncinfos().parameters.len() - 1
   assert(numArgs >= 1 && numArgs <= 3)
 
-  local l = db.blockCount()
+  let l = db.blockCount()
   for (local i = 0; i < l; i++) {
-    local b = db.getBlock(i)
+    let b = db.getBlock(i)
     if (numArgs == 1)
       callback.call(thisArg, b)
     else if (numArgs == 2)
@@ -46,16 +46,16 @@ local function eachBlock(db, callback, thisArg = null) {
 }
 
 // callback(paramValue[, paramName[, index]])
-local function eachParam(db, callback, thisArg = null) {
+let function eachParam(db, callback, thisArg = null) {
   if (db == null)
     return
 
   assert(isDataBlock(db))
   assert(isFunction(callback))
-  local numArgs = callback.getfuncinfos().parameters.len() - 1
+  let numArgs = callback.getfuncinfos().parameters.len() - 1
   assert(numArgs >= 1 && numArgs <= 3)
 
-  local l = db.paramCount()
+  let l = db.paramCount()
   for (local i = 0; i < l; i++)
     if (numArgs == 2)
       callback.call(thisArg, db.getParamValue(i), db.getParamName(i))
@@ -71,17 +71,17 @@ local function copyParamsToTable(db, table = null) {
   return table
 }
 
-local function blk2SquirrelObjNoArrays(blk){
-  local res = {}
+let function blk2SquirrelObjNoArrays(blk){
+  let res = {}
   for (local i=0; i<blk.paramCount(); i++){
-    local paramName = blk.getParamName(i)
-    local paramValue = blk.getParamValue(i)
+    let paramName = blk.getParamName(i)
+    let paramValue = blk.getParamValue(i)
     if (paramName not in res)
       res[paramName] <- paramValue
   }
   for (local i=0; i<blk.blockCount(); i++){
-    local block = blk.getBlock(i)
-    local blockName = block.getBlockName()
+    let block = blk.getBlock(i)
+    let blockName = block.getBlockName()
     if (blockName not in res)
       res[blockName] <- blk2SquirrelObjNoArrays(block)
   }
@@ -89,18 +89,18 @@ local function blk2SquirrelObjNoArrays(blk){
 }
 
 
-local function blk2SquirrelObj(blk){
-  local res = {}
+let function blk2SquirrelObj(blk){
+  let res = {}
   for (local i=0; i<blk.blockCount(); i++){
-    local block = blk.getBlock(i)
-    local blockName = block.getBlockName()
+    let block = blk.getBlock(i)
+    let blockName = block.getBlockName()
     if (blockName not in res)
       res[blockName] <- []
    res[blockName].append(blk2SquirrelObj(block))
   }
   for (local i=0; i<blk.paramCount(); i++){
-    local paramName = blk.getParamName(i)
-    local paramValue = blk.getParamValue(i)
+    let paramName = blk.getParamName(i)
+    let paramValue = blk.getParamValue(i)
     if (paramName not in res)
       res[paramName] <- []
     res[paramName].append(paramValue)
@@ -108,8 +108,8 @@ local function blk2SquirrelObj(blk){
   return res
 }
 
-local function normalizeConvertedBlk(obj){
-  local t = type(obj)
+let function normalizeConvertedBlk(obj){
+  let t = type(obj)
   if (t == "array" && obj.len()==1) {
     return normalizeConvertedBlk(obj[0])
   }
@@ -119,10 +119,10 @@ local function normalizeConvertedBlk(obj){
   return obj
 }
 
-local function normalizeAndFlattenConvertedBlk(obj){
-  local t = type(obj)
+let function normalizeAndFlattenConvertedBlk(obj){
+  let t = type(obj)
   if (t == "array" && obj.len()==1) {
-    local el = obj[0]
+    let el = obj[0]
     if (type(el)=="table" && el.len()==1){
       foreach(k, v in el){
         return (type(v)=="array")
@@ -139,11 +139,11 @@ local function normalizeAndFlattenConvertedBlk(obj){
   return obj
 }
 
-local convertBlkFlat = @(blk) normalizeAndFlattenConvertedBlk(blk2SquirrelObj(blk))
-local convertBlk = @(blk) normalizeConvertedBlk(blk2SquirrelObj(blk))
+let convertBlkFlat = @(blk) normalizeAndFlattenConvertedBlk(blk2SquirrelObj(blk))
+let convertBlk = @(blk) normalizeConvertedBlk(blk2SquirrelObj(blk))
 
-local function getParamsListByName(blk, name){
-  local res = []
+let function getParamsListByName(blk, name){
+  let res = []
   for (local j = 0; j < blk.paramCount(); j++) {
     if (blk.getParamName(j)!=name)
       continue
@@ -153,7 +153,7 @@ local function getParamsListByName(blk, name){
 }
 
 
-local function getBlkByPathArray(path, blk, defaultValue = null) {
+let function getBlkByPathArray(path, blk, defaultValue = null) {
   local currentBlk = blk
   foreach (p in path) {
     if (!isDataBlock(currentBlk))
@@ -167,8 +167,8 @@ local function getBlkValueByPath(blk, path, defVal=null) {
   if (!blk || !path)
     return defVal
 
-  local nodes = path.split("/")
-  local key = nodes.len() ? nodes.pop() : null
+  let nodes = path.split("/")
+  let key = nodes.len() ? nodes.pop() : null
   if (!key || !key.len())
     return defVal
 
@@ -185,7 +185,7 @@ local function setFuncBlkByArrayPath(blk, path, func){
   if (type(path) != "array")
     path = [path]
   assert(path.len()>0)
-  local valForSet = path[path.len()-1]
+  let valForSet = path[path.len()-1]
   assert(type(valForSet)=="string")
 
   local got = blk

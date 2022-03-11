@@ -1,16 +1,16 @@
-local colors = require("reactiveGui/style/colors.nut")
-local { safeAreaSizeMenu } = require("reactiveGui/style/screenState.nut")
-local closeBtn = require("reactiveGui/components/closeBtn.nut")
+let colors = require("reactiveGui/style/colors.nut")
+let { safeAreaSizeMenu } = require("reactiveGui/style/screenState.nut")
+let closeBtn = require("reactiveGui/components/closeBtn.nut")
 
-local frameHeaderPad = ::dp(2)
-local frameHeaderHeight = ::scrn_tgt(0.045)
-local borderWidth = ::dp(1)
+let frameHeaderPad = ::dp(2)
+let frameHeaderHeight = ::scrn_tgt(0.045)
+let borderWidth = ::dp(1)
 
-local srw = ::Computed(@() ::min(::scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
-local maxWindowHeight = ::Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
+let srw = ::Computed(@() ::min(::scrn_tgt(1.4), safeAreaSizeMenu.value.size[0]))
+let maxWindowHeight = ::Computed(@() safeAreaSizeMenu.value.size[1] - frameHeaderHeight
   - ::scrn_tgt(0.01) - ::fpx(59))
 
-local frameHeader = @(headerParams) {
+let frameHeader = @(headerParams) {
   size = [flex(), frameHeaderHeight]
   rendObj = ROBJ_SOLID
   color = colors.menu.frameHeaderColor
@@ -22,7 +22,7 @@ local frameHeader = @(headerParams) {
   ]
 }.__update(headerParams)
 
-local frameHandler = ::kwarg(function(content, frameParams = {}, headerParams = {}) {
+let frameHandler = ::kwarg(function(content, frameParams = {}, headerParams = {}) {
   return @(){
     size = flex()
     halign = ALIGN_CENTER

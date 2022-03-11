@@ -1,4 +1,4 @@
-local swapAB = ::gui_scene.circleButtonAsAction
+let swapAB = ::gui_scene.circleButtonAsAction
 ::gui_scene.config.setClickButtons([swapAB ? "J:B" : "J:A", "J:RT", "Space"])
 
 return {

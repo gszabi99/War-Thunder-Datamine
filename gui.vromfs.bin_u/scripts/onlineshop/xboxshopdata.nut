@@ -1,17 +1,17 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-local statsd = require("statsd")
-local progressMsg = require("sqDagui/framework/progressMsg.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+let statsd = require("statsd")
+let progressMsg = require("sqDagui/framework/progressMsg.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
-local XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
+let XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 
-local itemsList = persist("itemsList", @() {})
+let itemsList = persist("itemsList", @() {})
 
-local visibleSeenIds = []
-local xboxProceedItems = {}
+let visibleSeenIds = []
+let xboxProceedItems = {}
 
 local onReceiveCatalogCb = null
 local statsdMetric = "unknown"
@@ -27,20 +27,20 @@ local haveItemDiscount = null
     return
   }
 
-  local xboxShopBlk = GUI.get()?.xbox_ingame_shop
-  local skipItemsList = xboxShopBlk?.itemsHide ?? ::DataBlock()
+  let xboxShopBlk = GUI.get()?.xbox_ingame_shop
+  let skipItemsList = xboxShopBlk?.itemsHide ?? ::DataBlock()
   xboxProceedItems.clear()
   itemsList.clear()
   for (local i = 0; i < catalog.blockCount(); i++)
   {
-    local itemBlock = catalog.getBlock(i)
+    let itemBlock = catalog.getBlock(i)
     if (itemBlock.getBlockName() in skipItemsList)
     {
       ::dagor.debug("XBOX SHOP: SKIP: " + itemBlock.Name + " by id " + itemBlock.getBlockName())
       continue
     }
 
-    local item = XboxShopPurchasableItem(itemBlock)
+    let item = XboxShopPurchasableItem(itemBlock)
     if (!(item.mediaItemType in xboxProceedItems))
       xboxProceedItems[item.mediaItemType] <- []
     xboxProceedItems[item.mediaItemType].append(item)
@@ -67,7 +67,7 @@ local haveItemDiscount = null
   ::broadcastEvent("XboxShopDataUpdated")
 }
 
-local requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown")
+let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown")
 {
   if (!::is_platform_xbox)
     return
@@ -92,9 +92,9 @@ local requestData = function(isSilent = false, cb = null, invSeenList = false, m
   */
 }
 
-local canUseIngameShop = @() ::is_platform_xbox && ::has_feature("XboxIngameShop")
+let canUseIngameShop = @() ::is_platform_xbox && ::has_feature("XboxIngameShop")
 
-local getVisibleSeenIds = function()
+let getVisibleSeenIds = function()
 {
   if (!visibleSeenIds.len() && xboxProceedItems.len())
   {
@@ -107,7 +107,7 @@ local getVisibleSeenIds = function()
 seenList.setListGetter(getVisibleSeenIds)
 
 local isItemsInitedOnce = false
-local initXboxItemsListAfterLogin = function()
+let initXboxItemsListAfterLogin = function()
 {
   if (canUseIngameShop() && !isItemsInitedOnce)
   {
@@ -116,7 +116,7 @@ local initXboxItemsListAfterLogin = function()
   }
 }
 
-local haveAnyItemWithDiscount = function()
+let haveAnyItemWithDiscount = function()
 {
   if (!xboxProceedItems.len())
     return false
@@ -134,7 +134,7 @@ local haveAnyItemWithDiscount = function()
   return haveItemDiscount
 }
 
-local haveDiscount = function()
+let haveDiscount = function()
 {
   if (!canUseIngameShop())
     return false

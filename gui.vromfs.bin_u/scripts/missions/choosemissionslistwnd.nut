@@ -9,10 +9,10 @@
                      called only if list was changed
 */
 
-class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "gui/missions/chooseMissionsListWnd.blk"
+  sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 
   headerText = ""
   missionsList = null
@@ -28,7 +28,7 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   static function open(config)
   {
-    local misList = ::getTblValue("missionsList", config)
+    let misList = ::getTblValue("missionsList", config)
     if (!::u.isArray(misList) || !misList.len())
     {
       ::script_net_assert_once(" bad_missions_list",
@@ -53,14 +53,14 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   function initDescHandler()
   {
-    local descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
+    let descHandler = ::gui_handlers.MissionDescription.create(getObj("mission_desc"), curMission)
     registerSubHandler(descHandler)
     missionDescWeak = descHandler.weakref()
   }
 
   function selMissionsToMap(fullList, selList)
   {
-    local res = {}
+    let res = {}
     foreach(mission in fullList)
       res[mission.id] <- false
     foreach(mission in selList)
@@ -70,7 +70,7 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   function mapToSelectedMissions(fullList, misMap)
   {
-    local res = []
+    let res = []
     foreach(mission in fullList)
       if (::getTblValue(mission.id, misMap, false))
         res.append(mission)
@@ -92,7 +92,7 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   function fillMissionsList()
   {
-    local view = { items = [] }
+    let view = { items = [] }
     foreach(mission in missionsList)
       view.items.append({
         id = mission.id
@@ -101,18 +101,18 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
         isChosen = isMissionSelected(mission) ? "yes" : "no"
       })
 
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(misListObj, data, data.len(), this)
     misListObj.setValue(0)
   }
 
   function updateButtons()
   {
-    local chooseBtn = showSceneBtn("btn_choose", !!curMission)
+    let chooseBtn = showSceneBtn("btn_choose", !!curMission)
     if (curMission)
       chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
 
-    local chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
+    let chooseAllText = isAllMissionsSelected() ? ::loc("misList/unselectAll") : ::loc("misList/selectAll")
     scene.findObject("btn_choose_all").setValue(chooseAllText)
   }
 
@@ -122,14 +122,14 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
       return
 
     selMissionsMap[mission.id] <- isSelected
-    local checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
+    let checkBoxObj = misListObj.findObject("checkbox_" + mission.id)
     if (::check_obj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
       checkBoxObj.setValue(isSelected)
   }
 
   function onMissionSelect(obj)
   {
-    local mission = ::getTblValue(obj.getValue(), missionsList)
+    let mission = ::getTblValue(obj.getValue(), missionsList)
     if (mission == curMission)
       return
 
@@ -150,7 +150,7 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   function onChooseAll()
   {
-    local needSelect = !isAllMissionsSelected()
+    let needSelect = !isAllMissionsSelected()
     foreach(mission in missionsList)
       markSelected(mission, needSelect)
     updateButtons()
@@ -158,20 +158,20 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
 
   function onMissionCheckBox(obj)
   {
-    local id = ::getObjIdByPrefix(obj, "checkbox_")
+    let id = ::getObjIdByPrefix(obj, "checkbox_")
     if (!id)
       return
 
     if (!curMission || curMission.id != id)
     {
-      local idx = missionsList.findindex(@(m) m.id == id)
+      let idx = missionsList.findindex(@(m) m.id == id)
       if (idx == null)
         return
 
       misListObj.setValue(idx)
     }
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (isMissionSelected(curMission) != obj.getValue())
     {
       markSelected(curMission, value)

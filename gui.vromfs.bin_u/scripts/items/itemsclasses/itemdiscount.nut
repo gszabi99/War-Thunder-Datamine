@@ -1,6 +1,6 @@
-local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 
-class ::items_classes.Discount extends ::BaseItem
+::items_classes.Discount <- class extends ::BaseItem
 {
   static iType = itemType.DISCOUNT
   static defaultLocId = "personalDiscount"
@@ -44,13 +44,13 @@ class ::items_classes.Discount extends ::BaseItem
       return
     purchasesMaxCount = ::getTblValue("purchasesMaxCount", blk, 0)
     discountDescriptionDataItems = ::parse_discount_description(blk?.discountsDesc)
-    local sortData = ::create_discount_description_sort_data(blk?.discountsDesc)
+    let sortData = ::create_discount_description_sort_data(blk?.discountsDesc)
     ::sort_discount_description_items(discountDescriptionDataItems, sortData)
   }
 
   /* override */ function doMainAction(cb, handler, params = null)
   {
-    local baseResult = base.doMainAction(cb, handler, params)
+    let baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return activateDiscount(cb, handler)
     return true
@@ -64,11 +64,11 @@ class ::items_classes.Discount extends ::BaseItem
     if (uids == null || uids.len() == 0)
       return false
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.setStr("name", uids[0])
 
-    local taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
-    local taskCallback = ::Callback((@(cb) function() {
+    let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
+    let taskCallback = ::Callback((@(cb) function() {
       ::g_discount.updateDiscountData()
       cb({ success = true })
     })(cb), handler)
@@ -84,7 +84,7 @@ class ::items_classes.Discount extends ::BaseItem
     local item = discountDescriptionDataItems[0]
     if (item.type == "aircraft")
     {
-      local hasMultipleVehicles = (discountDescriptionDataItems.len() > 1 &&
+      let hasMultipleVehicles = (discountDescriptionDataItems.len() > 1 &&
         discountDescriptionDataItems[1].type == "aircraft" &&
         discountDescriptionDataItems[1].category == discountDescriptionDataItems[0].category)
       if (hasMultipleVehicles)
@@ -106,7 +106,7 @@ class ::items_classes.Discount extends ::BaseItem
 
   function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive())
@@ -123,7 +123,7 @@ class ::items_classes.Discount extends ::BaseItem
       return false
     for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i)
     {
-      local currentDiscountUid = ::get_current_personal_discount_uid(i)
+      let currentDiscountUid = ::get_current_personal_discount_uid(i)
       if (::isInArray(currentDiscountUid, uids))
         return true
     }
@@ -135,14 +135,14 @@ class ::items_classes.Discount extends ::BaseItem
     local result = ""
     if (isActive() && purchasesMaxCount != 0)
     {
-      local locParams = {
+      let locParams = {
         purchasesCount = purchasesCount
         purchasesMaxCount = purchasesMaxCount
       }
       result += ::loc("items/discount/purchasesCounter", locParams) + "\n"
     }
 
-    local expireText = getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       result += expireText + "\n"
 
@@ -157,12 +157,12 @@ class ::items_classes.Discount extends ::BaseItem
 
   function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" })
   {
-    local value = ::getTblValue("discountValue", dataItem, 0)
+    let value = ::getTblValue("discountValue", dataItem, 0)
     if (value)
       return toTextFunc(value)
 
-    local minValue = ::getTblValue("discountMin", dataItem, 0)
-    local maxValue = ::getTblValue("discountMax", dataItem, 0)
+    let minValue = ::getTblValue("discountMin", dataItem, 0)
+    let maxValue = ::getTblValue("discountMax", dataItem, 0)
     local res = toTextFunc(minValue)
     if (minValue != maxValue)
       res += " - " + toTextFunc(maxValue)
@@ -171,31 +171,31 @@ class ::items_classes.Discount extends ::BaseItem
 
   function getDataItemDescription(dataItem)
   {
-    local nameId = isSpecialOffer ? "specialOffer" : "discount"
+    let nameId = isSpecialOffer ? "specialOffer" : "discount"
     local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
       locId += "/" + dataItem.type
-    local locParams = getLocParamsDescription(dataItem)
+    let locParams = getLocParamsDescription(dataItem)
     return ::loc(locId, locParams)
   }
 
   function getLocParamsDescription(dataItem) {
-    local locParams = {
+    let locParams = {
       discount = _getDataItemDiscountText(dataItem)
       discountValue = dataItem?.discountValue ?? 0
       discountMax = dataItem?.discountMax ?? 0
       discountMin = dataItem?.discountMin ?? 0
     }
 
-    local countryName = dataItem?.countryName
+    let countryName = dataItem?.countryName
     if (countryName != null)
       locParams.countryNameOptional <- $" ({::loc(countryName)})"
     else
       locParams.countryNameOptional <- ""
 
-    local aircraftName = dataItem?.aircraftName
+    let aircraftName = dataItem?.aircraftName
     if (aircraftName != null) {
-      local unit = ::getAircraftByName(aircraftName)
+      let unit = ::getAircraftByName(aircraftName)
       if (unit != null) {
         locParams.aircraftName <- ::getUnitName(unit, true)
         locParams.unit <- unit
@@ -205,13 +205,13 @@ class ::items_classes.Discount extends ::BaseItem
       }
     }
 
-    local rank = dataItem?.rank
+    let rank = dataItem?.rank
     if (rank != null)
       locParams.rank <- ::get_roman_numeral(rank)
 
-    local entitlementName = dataItem?.entitlementName
+    let entitlementName = dataItem?.entitlementName
     if (entitlementName != null) {
-      local entitlementConfig = getEntitlementConfig(entitlementName)
+      let entitlementConfig = getEntitlementConfig(entitlementName)
       locParams.entitlementName <- getEntitlementName(entitlementConfig)
     }
     locParams.discount = ::colorize("activeTextColor", locParams.discount)
@@ -238,14 +238,14 @@ class ::items_classes.Discount extends ::BaseItem
 
   function canStack(item)
   {
-    local fixedType = isFixedType()
+    let fixedType = isFixedType()
     if (item.isFixedType() != fixedType)
       return false
     if (!fixedType)
       return true
 
-    local data1 = discountDescriptionDataItems[0]
-    local data2 = item.discountDescriptionDataItems[0]
+    let data1 = discountDescriptionDataItems[0]
+    let data2 = item.discountDescriptionDataItems[0]
     foreach(p in stackBases)
       if (::getTblValue(p, data1) != ::getTblValue(p, data2))
         return false
@@ -257,22 +257,22 @@ class ::items_classes.Discount extends ::BaseItem
     if (!isFixedType())
       return
 
-    local data = discountDescriptionDataItems[0]
+    let data = discountDescriptionDataItems[0]
     if (!stackParams.len()) //stack not inited
       foreach(p in stackBases)
         stackParams[p] <- ::getTblValue(p, data)
 
     foreach(p in stackVariables)
     {
-      local pValue = ::getTblValue(p, data)
-      local stackValue = ::getTblValue(p, stackParams, pValue)
+      let pValue = ::getTblValue(p, data)
+      let stackValue = ::getTblValue(p, stackParams, pValue)
       stackParams[p] <- (pValue == stackValue) ? pValue : null
     }
 
-    local value = data.discountValue
-    local minValue = ::getTblValue("discountMin", stackParams)
+    let value = data.discountValue
+    let minValue = ::getTblValue("discountMin", stackParams)
     stackParams.discountMin <- minValue ? ::min(minValue, value) : value
-    local maxValue = ::getTblValue("discountMax", stackParams)
+    let maxValue = ::getTblValue("discountMax", stackParams)
     stackParams.discountMax <- maxValue ? ::max(maxValue, value) : value
   }
 
@@ -281,14 +281,14 @@ class ::items_classes.Discount extends ::BaseItem
     if (discountDescriptionDataItems == null)
       return getName(colored)
 
-    local itemData = discountDescriptionDataItems[0]
+    let itemData = discountDescriptionDataItems[0]
     local discountType = $"item/discount/{itemData?.type ?? ""}"
     if (itemData?.aircraftName != null)
       discountType = $"{itemData.aircraftName}_shop"
     else if (itemData?.countryName != null)
       discountType = itemData.countryName
 
-    local discountValue = _getDataItemDiscountText(itemData)
+    let discountValue = _getDataItemDiscountText(itemData)
 
     return $"{::loc(discountType, "")}{::loc("ui/colon")}{discountValue}"
   }
@@ -310,7 +310,7 @@ class ::items_classes.Discount extends ::BaseItem
 
   function _getTextLayer()
   {
-    local layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
+    let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""
 

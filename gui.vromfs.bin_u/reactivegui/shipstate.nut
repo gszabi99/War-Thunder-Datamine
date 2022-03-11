@@ -1,7 +1,7 @@
-local interopGet = require("interopGen.nut")
+let interopGet = require("interopGen.nut")
 
 
-local shipState = {
+let shipState = {
   speed = Watched(0)
   steering = Watched(0.0)
   buoyancy = Watched(1.0)

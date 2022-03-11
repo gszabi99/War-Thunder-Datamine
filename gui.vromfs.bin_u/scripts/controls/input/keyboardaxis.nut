@@ -12,7 +12,7 @@ local blockNameByDirection = {
  * Input keyboard axis.
  * Container for displayed axis keyboard by min-max range
  */
-class ::Input.KeyboardAxis extends ::Input.InputBase
+::Input.KeyboardAxis <- class extends ::Input.InputBase
 {
   elements = null
   isCompositAxis = null
@@ -25,13 +25,13 @@ class ::Input.KeyboardAxis extends ::Input.InputBase
 
   function getMarkup()
   {
-    local data = getMarkupData()
+    let data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
-    local view = {}
+    let view = {}
     local needArrows = !isCompositAxis
     foreach (element in elements)
     {
@@ -41,11 +41,11 @@ class ::Input.KeyboardAxis extends ::Input.InputBase
       view[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getMarkup()
     }
-    local arrows = [{direction = AxisDirection.X}]
+    let arrows = [{direction = AxisDirection.X}]
     if (needArrows && isCompositAxis)
       arrows.append({direction = AxisDirection.Y})
     return {
-      template = "gui/controls/input/keyboardAxis"
+      template = "%gui/controls/input/keyboardAxis"
       view = view.__merge({
         needArrows = needArrows
         arrows = arrows})
@@ -67,7 +67,7 @@ class ::Input.KeyboardAxis extends ::Input.InputBase
 
   function getConfig()
   {
-    local elemConf = {}
+    let elemConf = {}
     local needArrows = !isCompositAxis
     foreach (element in elements)
     {
@@ -77,7 +77,7 @@ class ::Input.KeyboardAxis extends ::Input.InputBase
       elemConf[blockNameByDirection[isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getConfig()
     }
-    local arrows = [{direction = AxisDirection.X}]
+    let arrows = [{direction = AxisDirection.X}]
     if (needArrows && isCompositAxis)
       arrows.append({direction = AxisDirection.Y})
 

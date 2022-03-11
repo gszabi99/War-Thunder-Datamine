@@ -1,7 +1,7 @@
 from "daRg" import *
 from "%darg/darg_library.nut" import hdpx
 
-local autoScrollTextArea = @(params) {
+let autoScrollTextArea = @(params) {
   size = [flex(), SIZE_TO_CONTENT]
   clipChildren = true
 

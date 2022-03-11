@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-local defButtonStyle = {
+let defButtonStyle = {
   text = {
     normal = {
       color = Color(200,200,200)
@@ -24,15 +24,15 @@ local defButtonStyle = {
   }
 }
 
-local function textButton(text, handler= @() null, params = {}, style = defButtonStyle){
-  local stateFlags = Watched(0)
-  local disabled = params?.disabled
-  local textStyle = style?.text ?? defButtonStyle.text
-  local boxStyle = style?.box ?? defButtonStyle.box
-  local textNormal = textStyle?.normal ?? defButtonStyle.text.normal
-  local boxNormal = boxStyle?.normal ?? defButtonStyle.box.normal
+let function textButton(text, handler= @() null, params = {}, style = defButtonStyle){
+  let stateFlags = Watched(0)
+  let disabled = params?.disabled
+  let textStyle = style?.text ?? defButtonStyle.text
+  let boxStyle = style?.box ?? defButtonStyle.box
+  let textNormal = textStyle?.normal ?? defButtonStyle.text.normal
+  let boxNormal = boxStyle?.normal ?? defButtonStyle.box.normal
   return function(){
-    local s = stateFlags.value
+    let s = stateFlags.value
     local state = "normal"
     if (disabled?.value)
       state = "disabled"
@@ -41,8 +41,8 @@ local function textButton(text, handler= @() null, params = {}, style = defButto
     else if (s & S_HOVER)
       state = "hover"
 
-    local textS = textStyle?[state] ?? {}
-    local boxS = boxStyle?[state] ?? {}
+    let textS = textStyle?[state] ?? {}
+    let boxS = boxStyle?[state] ?? {}
     return {
       rendObj = ROBJ_BOX
       children = {rendObj = ROBJ_DTEXT text}.__update(textNormal, textS)

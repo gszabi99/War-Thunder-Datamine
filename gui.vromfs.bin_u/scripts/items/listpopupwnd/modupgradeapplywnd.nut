@@ -1,8 +1,8 @@
-local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
+let weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
 
-class ::gui_handlers.ModUpgradeApplyWnd extends ::gui_handlers.ItemsListWndBase
+::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
 {
-  sceneTplName = "gui/items/modUpgradeApplyWnd"
+  sceneTplName = "%gui/items/modUpgradeApplyWnd"
 
   unit = null
   mod = null
@@ -30,7 +30,7 @@ class ::gui_handlers.ModUpgradeApplyWnd extends ::gui_handlers.ItemsListWndBase
   {
     base.initScreen()
 
-    local newLevel = ::get_modification_level(unit.name, mod.name) + 1
+    let newLevel = ::get_modification_level(unit.name, mod.name) + 1
     ::calculate_mod_or_weapon_effect_with_level(unit.name, mod.name, newLevel, true, this,
       function(effect, ...) {
         if (isValid())

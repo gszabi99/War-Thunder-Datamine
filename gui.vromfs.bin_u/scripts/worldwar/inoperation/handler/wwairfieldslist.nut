@@ -1,11 +1,11 @@
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
-class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
+::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "gui/worldWar/airfieldObject"
+  sceneTplName = "%gui/worldWar/airfieldObject"
   sceneBlkName = null
-  airfieldBlockTplName = "gui/worldWar/worldWarMapArmyItem"
+  airfieldBlockTplName = "%gui/worldWar/worldWarMapArmyItem"
 
   airfieldIdPrefix = "airfield_"
 
@@ -47,9 +47,9 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
   function getAirfields()
   {
-    local selAirfield = ::ww_get_selected_airfield()
-    local airfields = []
-    local fieldsArray = ::g_world_war.getAirfieldsArrayBySide(side)
+    let selAirfield = ::ww_get_selected_airfield()
+    let airfields = []
+    let fieldsArray = ::g_world_war.getAirfieldsArrayBySide(side)
     foreach(idx, field in fieldsArray)
     {
       airfields.append({
@@ -65,17 +65,17 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
   function updateAirfields()
   {
-    local airfields = getAirfields()
-    local placeObj = scene.findObject("airfields_list")
-    local view = { airfields = airfields }
-    local data = ::handyman.renderCached("gui/worldWar/wwAirfieldsList", view)
+    let airfields = getAirfields()
+    let placeObj = scene.findObject("airfields_list")
+    let view = { airfields = airfields }
+    let data = ::handyman.renderCached("%gui/worldWar/wwAirfieldsList", view)
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
     ownedAirfieldsNumber = airfields.len()
   }
 
   function fillTimer(airfieldIdx, cooldownView)
   {
-    local placeObj = scene.findObject("airfield_object")
+    let placeObj = scene.findObject("airfield_object")
     if (!::check_obj(placeObj))
       return
 
@@ -95,7 +95,7 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
     if (!::getTblValue("army", cooldownView))
       return
 
-    local airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
+    let airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
     if (!airfield)
       return
 
@@ -107,24 +107,24 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
     foreach (idx, item in cooldownView.army)
     {
-      local blockObj = placeObj.findObject(item.getId())
+      let blockObj = placeObj.findObject(item.getId())
       if (!::check_obj(blockObj))
         return
-      local timerObj = blockObj.findObject("arrival_time_text")
+      let timerObj = blockObj.findObject("arrival_time_text")
       if (!::check_obj(timerObj))
         return
 
-      local timerText = airfield.cooldownFormations[item.getFormationID()].getCooldownText()
+      let timerText = airfield.cooldownFormations[item.getFormationID()].getCooldownText()
       timerObj.setValue(timerText)
     }
   }
 
   function updateAirfieldFormation(index = -1)
   {
-    local blockObj = scene.findObject("airfield_block")
+    let blockObj = scene.findObject("airfield_block")
     if (!::check_obj(blockObj))
       return
-    local placeObj = blockObj.findObject("free_formations")
+    let placeObj = blockObj.findObject("free_formations")
     if (!::check_obj(placeObj))
       return
 
@@ -135,8 +135,8 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
       return
     }
 
-    local airfield = ::g_world_war.getAirfieldByIndex(index)
-    local formationView = {
+    let airfield = ::g_world_war.getAirfieldByIndex(index)
+    let formationView = {
       army = []
       showArmyGroupText = false
       hasFormationData = true
@@ -150,12 +150,12 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
     foreach (i, formation in [airfield.clanFormation, airfield.allyFormation])
       if (formation)
       {
-        local wwFormationView = formation.getView()
+        let wwFormationView = formation.getView()
         if (wwFormationView && wwFormationView.unitsCount() > 0)
           formationView.army.append(formation.getView())
       }
 
-    local data = ::handyman.renderCached(airfieldBlockTplName, formationView)
+    let data = ::handyman.renderCached(airfieldBlockTplName, formationView)
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
     blockObj.show(true)
@@ -176,11 +176,11 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
   function updateAirfieldCooldownList(index = -1)
   {
-    local placeObj = scene.findObject("cooldowns_list")
+    let placeObj = scene.findObject("cooldowns_list")
     if (index < 0)
       guiScene.replaceContentFromText(placeObj, "", 0, this)
 
-    local cooldownView = {
+    let cooldownView = {
       army = []
       showArmyGroupText = false
       hasFormationData = true
@@ -191,12 +191,12 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
       formationType = "cooldown"
     }
 
-    local airfield = ::g_world_war.getAirfieldByIndex(index)
-    local cooldownFormations = airfield.getCooldownsWithManageAccess()
+    let airfield = ::g_world_war.getAirfieldByIndex(index)
+    let cooldownFormations = airfield.getCooldownsWithManageAccess()
     foreach (i, cooldown in cooldownFormations)
       cooldownView.army.append(cooldown.getView())
 
-    local data = ::handyman.renderCached(airfieldBlockTplName, cooldownView)
+    let data = ::handyman.renderCached(airfieldBlockTplName, cooldownView)
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
     fillTimer(index, cooldownView)
   }
@@ -206,40 +206,40 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
     if (!airfield)
       return false
 
-    local cooldownFormations = airfield.getCooldownsWithManageAccess()
+    let cooldownFormations = airfield.getCooldownsWithManageAccess()
     return cooldownFormations.len() > 0
   }
 
   function updateAirfieldDescription(index = -1)
   {
-    local airfieldBlockObj = scene.findObject("airfield_block")
+    let airfieldBlockObj = scene.findObject("airfield_block")
     if (!::check_obj(airfieldBlockObj))
       return
 
-    local airfield = ::g_world_war.getAirfieldByIndex(index)
-    local isAirfielValid = airfield.isValid()
+    let airfield = ::g_world_war.getAirfieldByIndex(index)
+    let isAirfielValid = airfield.isValid()
 
     airfieldBlockObj.show(isAirfielValid)
     if (!isAirfielValid)
       return
 
-    local airfieldInfoObj = airfieldBlockObj.findObject("airfield_info_text")
+    let airfieldInfoObj = airfieldBlockObj.findObject("airfield_info_text")
     if (!::check_obj(airfieldInfoObj))
       return
 
-    local airfieldUnitsText = "".concat(
+    let airfieldUnitsText = "".concat(
       ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
         ::loc("ui/colon"))
-    local airfieldInFlyText = ::loc("worldwar/airfield_in_fly") + ::loc("ui/colon")
-    local airfieldCapacityText = "".concat(
+    let airfieldInFlyText = ::loc("worldwar/airfield_in_fly") + ::loc("ui/colon")
+    let airfieldCapacityText = "".concat(
       ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
         ::loc("ui/colon"))
-    local iconText = airfield.airfieldType.unitType.fontIcon
+    let iconText = airfield.airfieldType.unitType.fontIcon
 
-    local airfieldUnitsNumber = airfield.getUnitsNumber()
-    local inFlyUnitsNumber = airfield.getUnitsInFlyNumber()
-    local airfieldCapacityNumber = airfield.getSize()
-    local isFull = airfieldUnitsNumber + inFlyUnitsNumber >= airfieldCapacityNumber
+    let airfieldUnitsNumber = airfield.getUnitsNumber()
+    let inFlyUnitsNumber = airfield.getUnitsInFlyNumber()
+    let airfieldCapacityNumber = airfield.getSize()
+    let isFull = airfieldUnitsNumber + inFlyUnitsNumber >= airfieldCapacityNumber
 
     local airfieldInfoValue = airfieldUnitsNumber
     local airfieldTooltip = airfieldUnitsText +
@@ -260,18 +260,18 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
       ::colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
     airfieldInfoObj.tooltip = airfieldTooltip
 
-    local hasFormationUnits = hasFormationsForFly(airfield)
-    local hasCooldownUnits = hasArmyOnCooldown(airfield)
-    local formationTextObj = airfieldBlockObj.findObject("free_formations_text")
+    let hasFormationUnits = hasFormationsForFly(airfield)
+    let hasCooldownUnits = hasArmyOnCooldown(airfield)
+    let formationTextObj = airfieldBlockObj.findObject("free_formations_text")
     if (!::check_obj(formationTextObj))
       return
 
-    local text = hasFormationUnits ? ::loc("worldwar/state/ready_to_fly") + ::loc("ui/colon")
+    let text = hasFormationUnits ? ::loc("worldwar/state/ready_to_fly") + ::loc("ui/colon")
       : hasCooldownUnits ? ::loc("worldwar/state/no_units_to_fly")
       : ::loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
     formationTextObj.setValue(text)
 
-    local hasEnoughToFly = airfield.hasEnoughUnitsToFly()
+    let hasEnoughToFly = airfield.hasEnoughUnitsToFly()
     showSceneBtn("control_help", hasEnoughToFly)
     showSceneBtn("alert_text", !hasEnoughToFly)
 
@@ -319,15 +319,15 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
   function onAirfieldClick(obj)
   {
-    local index = ::to_integer_safe(obj.id.slice(airfieldIdPrefix.len()), -1)
-    local mapObj = ::get_cur_gui_scene()["worldwar_map"]
+    let index = ::to_integer_safe(obj.id.slice(airfieldIdPrefix.len()), -1)
+    let mapObj = ::get_cur_gui_scene()["worldwar_map"]
     ::ww_gui_bhv.worldWarMapControls.selectAirfield.call(
       ::ww_gui_bhv.worldWarMapControls, mapObj, {airfieldIdx = index})
   }
 
   function selectDefaultFormation()
   {
-    local placeObj = scene.findObject("free_formations")
+    let placeObj = scene.findObject("free_formations")
     selectRadioButtonBlock(placeObj, 0)
   }
 
@@ -338,7 +338,7 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
     for (local index = 0; index < ::ww_get_airfields_count(); index++)
     {
-      local airfieldObj = scene.findObject(getAirfieldId(index))
+      let airfieldObj = scene.findObject(getAirfieldId(index))
       if (::checkObj(airfieldObj))
         airfieldObj.selected = selectedAirfield == index? "yes" : "no"
     }

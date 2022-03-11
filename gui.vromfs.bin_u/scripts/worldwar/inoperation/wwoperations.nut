@@ -20,7 +20,7 @@ g_operations.fullUpdate <- function fullUpdate()
   if (!isUpdateRequired)
     return
 
-  local curTime = ::dagor.getCurTime()
+  let curTime = ::dagor.getCurTime()
   if (curTime - lastUpdateTime < UPDATE_REFRESH_DELAY)
     return
 
@@ -58,15 +58,15 @@ g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupI
 
 g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
 {
-  local operationUnits = {}
-  local blk = ::DataBlock()
+  let operationUnits = {}
+  let blk = ::DataBlock()
   ::ww_get_sides_info(blk)
 
-  local sidesBlk = blk?["sides"]
+  let sidesBlk = blk?["sides"]
   if (sidesBlk == null)
     return operationUnits
 
-  local sideBlk = sidesBlk?[side.tostring()]
+  let sideBlk = sidesBlk?[side.tostring()]
   if (sideBlk == null)
     return operationUnits
 
@@ -81,7 +81,7 @@ g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(s
 
 g_operations.getCurrentOperation <- function getCurrentOperation()
 {
-  local operationId = ::ww_get_operation_id()
+  let operationId = ::ww_get_operation_id()
   if (!(operationId in operationStatusById))
     operationStatusById[operationId] <- ::WwOperationModel()
 
@@ -102,7 +102,7 @@ g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(params)
 
 g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params)
 {
-  local armyName = ::getTblValue("army", params)
+  let armyName = ::getTblValue("army", params)
   getCurrentOperation().armies.updateArmyStatus(armyName)
 }
 

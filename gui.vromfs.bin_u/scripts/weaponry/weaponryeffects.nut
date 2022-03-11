@@ -1,8 +1,8 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local string = require("std/string.nut")
-local stdMath = require("std/math.nut")
-local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
-local { KGF_TO_NEWTON } = require("scripts/weaponry/weaponryInfo.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
+let string = require("std/string.nut")
+let stdMath = require("std/math.nut")
+let countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
+let { KGF_TO_NEWTON } = require("scripts/weaponry/weaponryInfo.nut")
 
 const GOOD_COLOR = "@goodTextColor"
 const BAD_COLOR = "@badTextColor"
@@ -14,14 +14,14 @@ const MEASURE_UNIT_CLIMB_SPEED = 3
 
 
 /**************************************** CACHED PARAMS FOR SINLGE CALCULATION ******************************************************/
-local UPGRADES_ORDER = ["withLevel", "withOverdrive"] //const
-local upgradesKeys = []
+let UPGRADES_ORDER = ["withLevel", "withOverdrive"] //const
+let upgradesKeys = []
 local needToShowDiff = false
 
 
 /**************************************** EFFECTS PRESETS ******************************************************/
 
-local presetsList = {
+let presetsList = {
   SPEED = {
     measureType = MEASURE_UNIT_SPEED
     validateValue = @(value) ::fabs(value) * 3.6 > 0.1 ? value : null
@@ -44,7 +44,7 @@ local presetsList = {
     {
       if (!canShowForUnit(unit))
         return ""
-      local value = getValue(unit, effects, modeId)
+      let value = getValue(unit, effects, modeId)
       local value2 = effects?[modeId]?[id+"_base"]
       if (value2 != null)
         value2 = validateValue(value2)
@@ -62,7 +62,7 @@ local presetsList = {
     {
       if (!canShowForUnit(unit))
         return ""
-      local value = getValue(unit, effects, modeId)
+      let value = getValue(unit, effects, modeId)
       if (value != null)
         return ::loc(getLocId(unit, effects),
                   {
@@ -77,7 +77,7 @@ local presetsList = {
 
 /**************************************** EFFECT TEMPLATE ******************************************************/
 
-local effectTypeTemplate = {
+let effectTypeTemplate = {
   id = ""
   measureType = ""
   presize = 1
@@ -125,7 +125,7 @@ local effectTypeTemplate = {
       return res
     foreach(key in upgradesKeys)
     {
-      local value = getValuePart(unit, effects?[key], modeId)
+      let value = getValuePart(unit, effects?[key], modeId)
       if (value != null)
         res += value
     }
@@ -136,7 +136,7 @@ local effectTypeTemplate = {
   {
     if (!canShowForUnit(unit))
       return ""
-    local value = getValue(unit, effects, modeId)
+    let value = getValue(unit, effects, modeId)
     if (value == null)
       return ""
 
@@ -148,7 +148,7 @@ local effectTypeTemplate = {
     local addValueText = ""
     foreach(key in upgradesKeys)
     {
-      local addVal = getValuePart(unit, effects?[key], modeId) ?? 0.0
+      let addVal = getValuePart(unit, effects?[key], modeId) ?? 0.0
       hasAddValues = hasAddValues || addVal != 0
       addValueText += " " + valueToString(addVal, true)
     }
@@ -162,7 +162,7 @@ local effectTypeTemplate = {
   }
 }
 
-local function effectTypeConstructor()
+let function effectTypeConstructor()
 {
   if (preset in presetsList)
     foreach(key, value in presetsList[preset])
@@ -172,7 +172,7 @@ local function effectTypeConstructor()
 
 /**************************************** USUAL EFFECTS ******************************************************/
 
-local effectsType = {
+let effectsType = {
   types = []
   template = effectTypeTemplate
 }
@@ -196,7 +196,7 @@ enums.addTypes(effectsType, [
   { id = "horsePowers",             measureType = "hp", presize = 0.1
     canShowForUnit = @(unit) !unit?.isTank() || ::has_feature("TankModEffect")
     getLocId = function(unit, effects) {
-      local key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
+      let key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
       return "modification/" + key + "_change"
     }
   }
@@ -335,7 +335,7 @@ effectTypeConstructor)
 
 /**************************************** WEAPONS EFFECTS ******************************************************/
 
-local weaponEffectsType = {
+let weaponEffectsType = {
   types = []
   template = effectTypeTemplate
 }
@@ -349,18 +349,18 @@ effectTypeConstructor)
 
 /**************************************** FULL DESC GENERATION ******************************************************/
 
-local startTab = ::nbsp + ::nbsp + ::nbsp + ::nbsp
+let startTab = ::nbsp + ::nbsp + ::nbsp + ::nbsp
 local getEffectsStackFunc = function(unit, effectsConfig, modeId)
 {
   return function(res, eType) {
-    local text = eType.getText(unit, effectsConfig, modeId)
+    let text = eType.getText(unit, effectsConfig, modeId)
     if (text.len())
       res += "\n" + startTab + text
     return res
   }
 }
 
-local function hasNotZeroDiff(effects1, effects2)
+let function hasNotZeroDiff(effects1, effects2)
 {
   if (!effects1 || !effects2)
     return false
@@ -372,7 +372,7 @@ local function hasNotZeroDiff(effects1, effects2)
   return false
 }
 
-local function hasNotZeroDiffSublist(list1, list2)
+let function hasNotZeroDiffSublist(list1, list2)
 {
   if (!list1 || !list2)
     return false
@@ -382,7 +382,7 @@ local function hasNotZeroDiffSublist(list1, list2)
   return false
 }
 
-local function prepareCalculationParams(unit, effects, modeId)
+let function prepareCalculationParams(unit, effects, modeId)
 {
   upgradesKeys.clear()
   foreach(key in UPGRADES_ORDER)
@@ -393,12 +393,12 @@ local function prepareCalculationParams(unit, effects, modeId)
   needToShowDiff = upgradesKeys.len() > 0 && ::has_feature("ModUpgradeDifference")
 }
 
-local DESC_PARAMS = { needComment = true, curEdiff = null }
+let DESC_PARAMS = { needComment = true, curEdiff = null }
 local function getDesc(unit, effects, p = DESC_PARAMS)
 {
   p = DESC_PARAMS.__merge(p)
 
-  local modeId = (p.curEdiff != null
+  let modeId = (p.curEdiff != null
     ? ::get_difficulty_by_ediff(p.curEdiff)
     : ::get_current_shop_difficulty()).crewSkillName
   prepareCalculationParams(unit, effects, modeId)

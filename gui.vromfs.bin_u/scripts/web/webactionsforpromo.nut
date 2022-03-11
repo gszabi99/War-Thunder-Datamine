@@ -1,9 +1,9 @@
-local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
-local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+let { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
+let { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
+let { addPromoAction } = require("scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
-local function openLinkWithSource(params = [], source = "promo_open_link") {
+let function openLinkWithSource(params = [], source = "promo_open_link") {
   local link = ""
   local forceBrowser = false
   if (::u.isString(params))
@@ -14,14 +14,14 @@ local function openLinkWithSource(params = [], source = "promo_open_link") {
     forceBrowser = params?[1] ?? false
   }
 
-  local processedLink = validateLink(link)
+  let processedLink = validateLink(link)
   if (processedLink == null)
     return
   openUrl(processedLink, forceBrowser, false, source)
 }
 
 addPromoAction("url", function(handler, params, obj) {
-  local pollId = getPollIdByFullUrl(params?[0] ?? "")
+  let pollId = getPollIdByFullUrl(params?[0] ?? "")
   if (pollId != null)
     invalidateTokensCache(pollId.tointeger())
   return openLinkWithSource(params)

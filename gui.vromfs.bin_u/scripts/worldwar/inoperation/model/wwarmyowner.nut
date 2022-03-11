@@ -1,4 +1,4 @@
-class ::WwArmyOwner
+::WwArmyOwner <- class
 {
   side         = null
   country      = null

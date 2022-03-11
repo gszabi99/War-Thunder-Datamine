@@ -13,7 +13,7 @@ g_invites.addInvite <- function addInvite(inviteClass, params)
 {
   checkCleanList()
 
-  local uid = inviteClass.getUidByParams(params)
+  let uid = inviteClass.getUidByParams(params)
   local invite = findInviteByUid(uid)
   if (invite)
   {
@@ -79,8 +79,8 @@ g_invites.addInviteToSquad <- function addInviteToSquad(squadId, leaderId)
 
 g_invites.removeInviteToSquad <- function removeInviteToSquad(squadId)
 {
-  local uid = ::g_invites_classes.Squad.getUidByParams({squadId = squadId})
-  local invite = findInviteByUid(uid)
+  let uid = ::g_invites_classes.Squad.getUidByParams({squadId = squadId})
+  let invite = findInviteByUid(uid)
   if (invite)
     remove(invite)
 }
@@ -140,7 +140,7 @@ g_invites.acceptInviteByLink <- function acceptInviteByLink(link)
   if (!::g_string.startsWith(link, ::BaseInvite.chatLinkPrefix))
     return false
 
-  local invite = ::g_invites.findInviteByChatLink(link)
+  let invite = ::g_invites.findInviteByChatLink(link)
   if (invite && !invite.isOutdated())
     invite.accept()
   else
@@ -184,7 +184,7 @@ g_invites.updateNewInvitesAmount <- function updateNewInvitesAmount()
 
 g_invites._timedInvitesUpdate <- function _timedInvitesUpdate( dt = 0 )
 {
-  local now = ::get_charserver_time_sec()
+  let now = ::get_charserver_time_sec()
   checkCleanList()
 
   foreach(invite in list)
@@ -208,7 +208,7 @@ g_invites.rescheduleInvitesTask <- function rescheduleInvitesTask()
   local nextTriggerTimestamp = -1
   foreach(invite in list)
   {
-    local  ts = invite.getNextTriggerTimestamp()
+    let  ts = invite.getNextTriggerTimestamp()
     if (ts < 0)
       continue
     if (nextTriggerTimestamp < 0 || nextTriggerTimestamp > ts )
@@ -232,11 +232,11 @@ g_invites.rescheduleInvitesTask <- function rescheduleInvitesTask()
 g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs()
 {
   local needReshedule = false
-  local now = ::get_charserver_time_sec();
-  local total = ::get_user_logs_count()
+  let now = ::get_charserver_time_sec();
+  let total = ::get_user_logs_count()
   for (local i = total-1; i >= 0; i--)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if ( blk.type == ::EULT_WW_CREATE_OPERATION ||
@@ -262,11 +262,11 @@ g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs()
         continue
       }
 
-      local ulogId = blk.id
-      local battleId = ::getTblValue("battleId", blk.body, "")
-      local inviteTime = ::getTblValue("inviteTime", blk.body, -1)
-      local startTime = ::getTblValue("startTime", blk.body, -1)
-      local endTime = ::getTblValue("endTime", blk.body, -1)
+      let ulogId = blk.id
+      let battleId = ::getTblValue("battleId", blk.body, "")
+      let inviteTime = ::getTblValue("inviteTime", blk.body, -1)
+      let startTime = ::getTblValue("startTime", blk.body, -1)
+      let endTime = ::getTblValue("endTime", blk.body, -1)
 
       ::dagor.debug( "checking battle invite ulog ("+ulogId+") : battleId '"+battleId+"'");
       if ( startTime <= now || ::isInArray(ulogId, ::g_invites.knownTournamentInvites) )
@@ -299,11 +299,11 @@ g_invites.onEventScriptsReloaded <- function onEventScriptsReloaded(p)
 {
   list = ::u.map(list, function(invite)
   {
-    local params = invite.reloadParams
+    let params = invite.reloadParams
     foreach(inviteClass in ::g_invites_classes)
       if (inviteClass.getUidByParams(params) == invite.uid)
       {
-        local newInvite = inviteClass(params)
+        let newInvite = inviteClass(params)
         newInvite.afterScriptsReload(invite)
         return newInvite
       }

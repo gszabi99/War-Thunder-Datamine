@@ -1,9 +1,9 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/benchmark.blk"
+  sceneBlkName = "%gui/benchmark.blk"
 
   title = null
   benchmark_data = null
@@ -16,12 +16,12 @@ class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerW
     if ("benchTotalTime" in benchmark_data)
     {
       local resultTableData = ""
-      local avgfps = format("%.1f", benchmark_data.benchTotalTime > 0.1 ?
+      let avgfps = format("%.1f", benchmark_data.benchTotalTime > 0.1 ?
         (benchmark_data.benchTotalFrames / benchmark_data.benchTotalTime) : 0.0 )
 
       resultTableData = getStatRow("stat_avgfps", "benchmark/avgfps", avgfps)
 
-      local minfps = format("%.1f", benchmark_data.benchMinFPS)
+      let minfps = format("%.1f", benchmark_data.benchMinFPS)
       resultTableData += getStatRow("stat_minfps", "benchmark/minfps", minfps)
 
       resultTableData += getStatRow("stat_total", "benchmark/total", benchmark_data.benchTotalFrames)
@@ -35,7 +35,7 @@ class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerW
 
   function getStatRow(id, statType, statCount)
   {
-    local rowData = [
+    let rowData = [
                       {
                         text = ::loc(statType),
                         tdalign = "right",

@@ -1,12 +1,12 @@
 from "%darg/ui_imports.nut" import *
 
-local calcColor = @(sf) (sf & S_HOVER) ? 0xFFFFFFFF : 0xA0A0A0A0
+let calcColor = @(sf) (sf & S_HOVER) ? 0xFFFFFFFF : 0xA0A0A0A0
 
-local lineWidth = hdpx(2)
-local boxSize = hdpx(20)
+let lineWidth = hdpx(2)
+let boxSize = hdpx(20)
 
-local function box(isSelected, sf) {
-  local color = calcColor(sf)
+let function box(isSelected, sf) {
+  let color = calcColor(sf)
   return {
     size = [boxSize, boxSize]
     rendObj = ROBJ_BOX
@@ -18,30 +18,30 @@ local function box(isSelected, sf) {
       ? {
           size = flex()
           rendObj = ROBJ_SOLID
-          color = color
+          color
         }
       : null
   }
 }
 
-local label = @(text, sf) {
+let label = @(text, sf) {
   size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_DTEXT
   color = calcColor(sf)
   text = text
 }
 
-local function optionCtor(option, isSelected, onClick) {
-  local stateFlags = Watched(0)
+let function optionCtor(option, isSelected, onClick) {
+  let stateFlags = Watched(0)
   return function() {
-    local sf = stateFlags.value
+    let sf = stateFlags.value
 
     return {
       size = [flex(), SIZE_TO_CONTENT]
       watch = stateFlags
       behavior = Behaviors.Button
       onElemState = @(s) stateFlags(s)
-      onClick = onClick
+      onClick
       stopHover = true
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
@@ -60,5 +60,5 @@ return {
     flow = FLOW_VERTICAL
     gap = hdpx(5)
   }
-  optionCtor = optionCtor
+  optionCtor
 }

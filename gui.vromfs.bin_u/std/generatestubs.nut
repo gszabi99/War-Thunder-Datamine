@@ -1,7 +1,7 @@
-local io = require("io")
-local {file_exists} = require("dagor.fs")
-local {argv} = require("dagor.system")
-local {get_native_module_names} = require("modules")
+let io = require("io")
+let {file_exists} = require("dagor.fs")
+let {argv} = require("dagor.system")
+let {get_native_module_names} = require("modules")
 /*
   allow generate stubs for native modules
   TODO:
@@ -9,21 +9,21 @@ local {get_native_module_names} = require("modules")
     class are not generated yet
 
 */
-local function saveFile(file_path, data){
+let function saveFile(file_path, data){
   assert(type(data) == "string", "data should be string")
-  local file = io.file(file_path, "wt+")
+  let file = io.file(file_path, "wt+")
   file.writestring(data)
   file.close()
   return true
 }
 
-local params_names = ["a", "b", "c", "d", "e"].extend(array(10).map(@(_, i) $"var_{i+5}"))
+let params_names = ["a", "b", "c", "d", "e"].extend(array(10).map(@(_, i) $"var_{i+5}"))
 local function mkFunStubStr(func, name=null){
-  local infos = func.getfuncinfos()
-  local {paramscheck/*, freevars, typecheck*/} = infos
+  let infos = func.getfuncinfos()
+  let {paramscheck/*, freevars, typecheck*/} = infos
   name = name ?? infos.name
   name = name!=null ? $" {name}" : ""
-  local args_string = paramscheck>=0 ? ", ".join(array(paramscheck).map(@(_, i) params_names[i])) : ""
+  let args_string = paramscheck>=0 ? ", ".join(array(paramscheck).map(@(_, i) params_names[i])) : ""
   return name == " constructor"
     ? $"constructor({args_string})\{\}"
     : $"function{name}({args_string})\{\}"
@@ -31,16 +31,16 @@ local function mkFunStubStr(func, name=null){
 
 const INDENT_SYM = "  "
 
-local function mkStubStr(val, name=null, indent=0){
-  local typ = type(val)
-  local indentStr = "".join(array(indent, INDENT_SYM))
-  local mkStubSt = callee()
+let function mkStubStr(val, name=null, indent=0){
+  let typ = type(val)
+  let indentStr = "".join(array(indent, INDENT_SYM))
+  let mkStubSt = callee()
   if (["string", "float", "integer", "boolean"].contains(typ))
     return name == null ? val.tostring() : $"{indentStr}{name} = {val.tostring()}"
   if (typ=="function")
     return  $"{indentStr}{mkFunStubStr(val, name)}"
   if (typ=="table"){
-    local res = [name!=null ? $"{indentStr}{name} = \{" : $"{indentStr}\{"]
+    let res = [name!=null ? $"{indentStr}{name} = \{" : $"{indentStr}\{"]
     foreach(k, v in val){
       res.append(mkStubSt(v, k, indent+1))
     }
@@ -48,7 +48,7 @@ local function mkStubStr(val, name=null, indent=0){
     return "\n".join(res)
   }
   if (typ=="class"){
-    local res = [name==null ? $"{indentStr}class\{" : $"{indentStr}{name} = class\{"]
+    let res = [name==null ? $"{indentStr}class\{" : $"{indentStr}{name} = class\{"]
     foreach(k, v in val){
       res.append(mkStubSt(v, k, indent+1))
     }
@@ -65,7 +65,7 @@ local function mkStubStr(val, name=null, indent=0){
   return name == null ? $"\"{typ}\"" : $"{indentStr}{name} = \"{typ}\""
 }
 
-local mkModuleStub = @(nm) mkStubStr(require(nm), nm)
+let mkModuleStub = @(nm) mkStubStr(require(nm), nm)
 
 local function generateStubs(stubsDir=""){
   stubsDir = stubsDir ?? ""

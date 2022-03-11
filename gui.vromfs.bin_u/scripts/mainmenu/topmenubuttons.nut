@@ -1,10 +1,10 @@
-local cache = { byId = {} }
+let cache = { byId = {} }
 
-local buttonsListWatch = ::Watched({})
+let buttonsListWatch = ::Watched({})
 
-local getButtonConfigById = function(id) {
+let getButtonConfigById = function(id) {
   if (!(id in cache.byId)) {
-    local buttonCfg = buttonsListWatch.value.findvalue(@(t) t.id == id)
+    let buttonCfg = buttonsListWatch.value.findvalue(@(t) t.id == id)
     cache.byId[id] <- buttonCfg ?? buttonsListWatch.value.UNKNOWN
   }
   return cache.byId[id]

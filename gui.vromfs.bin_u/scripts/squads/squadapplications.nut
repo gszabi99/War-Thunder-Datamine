@@ -1,4 +1,4 @@
-local SquadApplicationsList = class
+let SquadApplicationsList = class
 {
   [PERSISTENT_DATA_PARAMS] = ["applicationsList"]
   popupTextColor = "@chatTextInviteColor"
@@ -18,7 +18,7 @@ local SquadApplicationsList = class
   {
     if (squadId in applicationsList)
       return
-    local squad = createApplication(squadId,leaderId)
+    let squad = createApplication(squadId,leaderId)
     applicationsList[squadId] <- squad
     updateApplication(applicationsList[squadId])
     if (isEventNeed)
@@ -38,7 +38,7 @@ local SquadApplicationsList = class
   function updateApplicationsList(applicationsArr)
   {
     local sid = null
-    local leadersArr = []
+    let leadersArr = []
     local isEventNeed = false
     foreach (squad in applicationsList)
     {
@@ -73,7 +73,7 @@ local SquadApplicationsList = class
 
     if (needPopup)
     {
-      local msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
+      let msg = ::colorize(popupTextColor,getDeniedPopupText(applicationsList[squadId]))
       ::g_popups.add(null, msg)
     }
     deleteApplication(squadId)
@@ -84,7 +84,7 @@ local SquadApplicationsList = class
     if (applicationsList.len() <= 0)
       return
 
-    local leadersArr = []
+    let leadersArr = []
     foreach (squad in applicationsList)
     {
       leadersArr.append(squad.squadId)
@@ -115,9 +115,9 @@ local SquadApplicationsList = class
   {
     if (application.leaderName.len() == 0)
     {
-      local leaderId = application.leaderId
+      let leaderId = application.leaderId
 
-      local cb = ::Callback(function(r)
+      let cb = ::Callback(function(r)
                             {
                               application.leaderName <- getLeaderName(leaderId)
                             }, this)
@@ -127,7 +127,7 @@ local SquadApplicationsList = class
 
   function getLeaderName(leaderId)
   {
-    local leaderContact = ::getContact(leaderId.tostring())
+    let leaderContact = ::getContact(leaderId.tostring())
     if (!leaderContact)
       return ""
 

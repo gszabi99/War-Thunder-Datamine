@@ -43,7 +43,7 @@ craftBranchTree {
           position:t='relative'
           left:t='0.5pw - 0.5w'
           smallItems:t='yes'
-          include "gui/items/item"
+          include "%gui/items/item"
         }
         <<#totalEfficiency>>
         textareaNoTab {

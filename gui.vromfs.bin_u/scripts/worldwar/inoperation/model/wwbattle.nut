@@ -1,18 +1,18 @@
-local time = require("scripts/time.nut")
-local systemMsg = require("scripts/utils/systemMsg.nut")
-local wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+let time = require("scripts/time.nut")
+let systemMsg = require("scripts/utils/systemMsg.nut")
+let wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
+let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
 const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
-class ::WwBattle
+::WwBattle <- class
 {
   id = ""
   status = 0
@@ -72,38 +72,38 @@ class ::WwBattle
 
   function applyBattleUpdates(blk)
   {
-    local updatesBlk = blk.getBlockByName("battleUpdates")
+    let updatesBlk = blk.getBlockByName("battleUpdates")
     if (!updatesBlk)
       return
 
     for (local i = 0; i < updatesBlk.blockCount(); i++)
     {
-      local updateBlk = updatesBlk.getBlock(i)
+      let updateBlk = updatesBlk.getBlock(i)
       if ((updateBlk?.updateId ?? -1) <= updateAppliedOnHost)
         continue
 
-      local teamsBlk = updateBlk.getBlockByName("teams")
+      let teamsBlk = updateBlk.getBlockByName("teams")
       for (local j = 0; j < teamsBlk.blockCount(); j++)
       {
-        local teamBlk = teamsBlk.getBlock(j)
+        let teamBlk = teamsBlk.getBlock(j)
         if (teamBlk == null)
           continue
 
-        local teamName = teamBlk.getBlockName() || ""
+        let teamName = teamBlk.getBlockName() || ""
         if (teamName.len() == 0)
           continue
 
-        local unitsAddedBlock = teamBlk.getBlockByName("unitsAdded")
-        local team = teams[teamName]
-        local newUnits = []
+        let unitsAddedBlock = teamBlk.getBlockByName("unitsAdded")
+        let team = teams[teamName]
+        let newUnits = []
 
         for(local k = 0; k < unitsAddedBlock.blockCount(); k++)
         {
-          local unitBlock = unitsAddedBlock.getBlock(k)
+          let unitBlock = unitsAddedBlock.getBlock(k)
           if (unitBlock == null)
             continue
 
-          local unitName = unitBlock.getBlockName() || ""
+          let unitName = unitBlock.getBlockName() || ""
           if (unitName.len() == 0)
             continue
 
@@ -182,11 +182,11 @@ class ::WwBattle
   function getLocName(side = null)
   {
     side = side ?? getSide(::get_profile_country_sq())
-    local teamName = getTeamNameBySide(side)
+    let teamName = getTeamNameBySide(side)
     if (localizeConfig == null)
       return id
 
-    local locId = ((localizeConfig?[$"locNameTeam{teamName}"].len() ?? 0) > 0)
+    let locId = ((localizeConfig?[$"locNameTeam{teamName}"].len() ?? 0) > 0)
       ? $"locNameTeam{teamName}"
       : "locName"
     return getMissionLocName(localizeConfig, locId)
@@ -236,40 +236,40 @@ class ::WwBattle
     maxPlayersNumber = 0
     unitTypeMask = 0
 
-    local teamsBlk = blk.getBlockByName("teams")
-    local descBlk = blk.getBlockByName("desc")
-    local waitingTeamsBlk = descBlk ? descBlk.getBlockByName("teamsInfo") : null
+    let teamsBlk = blk.getBlockByName("teams")
+    let descBlk = blk.getBlockByName("desc")
+    let waitingTeamsBlk = descBlk ? descBlk.getBlockByName("teamsInfo") : null
     if (!teamsBlk || (isWaiting() && !waitingTeamsBlk))
       return
 
     for (local i = 0; i < teamsBlk.blockCount(); ++i)
     {
-      local teamBlk = teamsBlk.getBlock(i)
-      local teamName = teamBlk.getBlockName() || ""
+      let teamBlk = teamsBlk.getBlock(i)
+      let teamName = teamBlk.getBlockName() || ""
       if (teamName.len() == 0)
         continue
 
-      local teamSideName = teamBlk?.side ?? ""
+      let teamSideName = teamBlk?.side ?? ""
       if (teamSideName.len() == 0)
         continue
 
-      local numPlayers = teamBlk?.players ?? 0
-      local teamMaxPlayers = teamBlk?.maxPlayers ?? 0
+      let numPlayers = teamBlk?.players ?? 0
+      let teamMaxPlayers = teamBlk?.maxPlayers ?? 0
 
-      local armyNamesBlk = teamBlk.getBlockByName("armyNames")
-      local teamArmyNames = []
-      local teamUnitTypes = []
+      let armyNamesBlk = teamBlk.getBlockByName("armyNames")
+      let teamArmyNames = []
+      let teamUnitTypes = []
       local firstArmyCountry = ""
-      local countries = {}
+      let countries = {}
       if (armyNamesBlk)
       {
         for (local j = 0; j < armyNamesBlk.paramCount(); ++j)
         {
-          local armyName = armyNamesBlk.getParamValue(j) || ""
+          let armyName = armyNamesBlk.getParamValue(j) || ""
           if (armyName.len() == 0)
             continue
 
-          local army = g_world_war.getArmyByName(armyName)
+          let army = g_world_war.getArmyByName(armyName)
           if (!army)
           {
             ::script_net_assert_once("WW can't find army", "ww: can't find army " + armyName)
@@ -285,22 +285,22 @@ class ::WwBattle
 
           teamArmyNames.append(armyName)
           ::u.appendOnce(army.unitType, teamUnitTypes)
-          local wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(army.unitType)
+          let wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(army.unitType)
           if (wwUnitType.canBeControlledByPlayer)
             unitTypeMask = unitTypeMask | unitTypes.getByEsUnitType(wwUnitType.esUnitCode).bit
         }
       }
 
-      local teamUnitsRemain = []
+      let teamUnitsRemain = []
       if (!isWaiting())
       {
-        local unitsRemainBlk = teamBlk.getBlockByName("unitsRemain")
-        local aiUnitsBlk = teamBlk.getBlockByName("aiUnits")
+        let unitsRemainBlk = teamBlk.getBlockByName("unitsRemain")
+        let aiUnitsBlk = teamBlk.getBlockByName("aiUnits")
         teamUnitsRemain.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitsRemainBlk, aiUnitsBlk))
         teamUnitsRemain.extend(wwActionsWithUnitsList.getFakeUnitsArray(teamBlk))
       }
 
-      local teamInfo = {name = teamName
+      let teamInfo = {name = teamName
                         players = numPlayers
                         maxPlayers = teamMaxPlayers
                         minPlayers = minPlayersPerArmy
@@ -320,7 +320,7 @@ class ::WwBattle
 
   function getCantJoinReasonData(side, needCheckSquad = true)
   {
-    local res = {
+    let res = {
       code = WW_BATTLE_CANT_JOIN_REASON.CAN_JOIN
       canJoin = false
       reasonText = ""
@@ -379,7 +379,7 @@ class ::WwBattle
       return res
     }
 
-    local team = getTeamBySide(side)
+    let team = getTeamBySide(side)
     if (!team)
     {
       ::script_net_assert_once("WW can't find team in battle", "ww: can't find team in battle")
@@ -399,11 +399,11 @@ class ::WwBattle
 
     if (::g_squad_manager.isSquadLeader())
     {
-      local notAllowedInWorldWarMembers = ::g_squad_manager.getMembersNotAllowedInWorldWar()
+      let notAllowedInWorldWarMembers = ::g_squad_manager.getMembersNotAllowedInWorldWar()
       if (notAllowedInWorldWarMembers.len() > 0)
       {
-        local tArr = notAllowedInWorldWarMembers.map(@(m) ::colorize("warningTextColor", m.name))
-        local text = ::g_string.implode(tArr, ",")
+        let tArr = notAllowedInWorldWarMembers.map(@(m) ::colorize("warningTextColor", m.name))
+        let text = ::g_string.implode(tArr, ",")
         res.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_MEMBERS_NO_WW_ACCESS
         res.reasonText = ::loc("worldwar/squad/notAllowedMembers")
         res.fullReasonText = ::loc("worldwar/squad/notAllowedMembers") + ::loc("ui/colon") + "\n" + text
@@ -419,9 +419,9 @@ class ::WwBattle
       return res
     }
 
-    local maxPlayersInTeam = team.maxPlayers
-    local queue = wwQueuesData.getData()?[id]
-    local isInQueueAmount = getPlayersInQueueByTeamName(queue, team.name)
+    let maxPlayersInTeam = team.maxPlayers
+    let queue = wwQueuesData.getData()?[id]
+    let isInQueueAmount = getPlayersInQueueByTeamName(queue, team.name)
     if (isInQueueAmount >= maxPlayersInTeam)
     {
       res.code = WW_BATTLE_CANT_JOIN_REASON.QUEUE_FULL
@@ -429,7 +429,7 @@ class ::WwBattle
       return res
     }
 
-    local countryName = getCountryNameBySide(side)
+    let countryName = getCountryNameBySide(side)
     if (!countryName)
     {
       ::script_net_assert_once("WW can't get country",
@@ -439,7 +439,7 @@ class ::WwBattle
       return res
     }
 
-    local teamName = getTeamNameBySide(side)
+    let teamName = getTeamNameBySide(side)
     if (!teamName)
     {
       ::script_net_assert_once("WW can't get team",
@@ -463,8 +463,8 @@ class ::WwBattle
       return res
     }
 
-    local remainUnits = getUnitsRequiredForJoin(team, side)
-    local myCheckingData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
+    let remainUnits = getUnitsRequiredForJoin(team, side)
+    let myCheckingData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
       ::g_user_utils.getMyStateData(), remainUnits, team.country)
     if (myCheckingData.joinStatus != memberStatus.READY)
     {
@@ -487,7 +487,7 @@ class ::WwBattle
 
   function isPlayerTeamFull()
   {
-    local team = getTeamBySide(::ww_get_player_side())
+    let team = getTeamBySide(::ww_get_player_side())
     if (team)
       return team.players >= team.maxPlayers
     return false
@@ -497,7 +497,7 @@ class ::WwBattle
   {
     if (!team)
     {
-      local side = getSide(::get_profile_country_sq())
+      let side = getSide(::get_profile_country_sq())
       if (side == ::SIDE_NONE)
         return false
 
@@ -508,7 +508,7 @@ class ::WwBattle
 
   function isStillInOperation()
   {
-    local battles = ::g_world_war.getBattles(
+    let battles = ::g_world_war.getBattles(
         (@(id) function(checkedBattle) {
           return checkedBattle.id == id
         })(id)
@@ -532,7 +532,7 @@ class ::WwBattle
       return reasonData
     }
 
-    local maxPlayersInTeam = team.maxPlayers
+    let maxPlayersInTeam = team.maxPlayers
     if (team.players + ::g_squad_manager.getOnlineMembersCount() > maxPlayersInTeam)
     {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_TEAM_FULL
@@ -561,16 +561,16 @@ class ::WwBattle
       return reasonData
     }
 
-    local remainUnits = getUnitsRequiredForJoin(team, side)
-    local membersCheckingDatas = ::g_squad_utils.getMembersAvailableUnitsCheckingData(remainUnits, team.country)
+    let remainUnits = getUnitsRequiredForJoin(team, side)
+    let membersCheckingDatas = ::g_squad_utils.getMembersAvailableUnitsCheckingData(remainUnits, team.country)
 
-    local langConfig = []
+    let langConfig = []
     local shortMessage = ""
     foreach (idx, data in membersCheckingDatas)
     {
       if (data.joinStatus != memberStatus.READY && data.memberData.online == true)
       {
-        local memberLangConfig = [
+        let memberLangConfig = [
           systemMsg.makeColoredValue(COLOR_TAG.USERLOG, data.memberData.name),
           "ui/colon",
           ::g_squad_utils.getMemberStatusLocId(data.joinStatus)
@@ -613,15 +613,15 @@ class ::WwBattle
 
   function tryToJoin(side)
   {
-    local cantJoinReasonData = getCantJoinReasonData(side, true)
+    let cantJoinReasonData = getCantJoinReasonData(side, true)
     if (!cantJoinReasonData.canJoin)
     {
       ::showInfoMsgBox(cantJoinReasonData.reasonText)
       return
     }
 
-    local joinCb = ::Callback(@() join(side), this)
-    local warningReasonData = getWarningReasonData(side)
+    let joinCb = ::Callback(@() join(side), this)
+    let warningReasonData = getWarningReasonData(side)
     if (warningReasonData.needMsgBox &&
         !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false))
     {
@@ -643,9 +643,9 @@ class ::WwBattle
 
   function join(side)
   {
-    local opId = ::ww_get_operation_id()
-    local countryName = getCountryNameBySide(side)
-    local teamName = getTeamNameBySide(side)
+    let opId = ::ww_get_operation_id()
+    let countryName = getCountryNameBySide(side)
+    let teamName = getTeamNameBySide(side)
 
     dagor.debug("ww: join ww battle op:" + opId.tostring() + ", battle:" + id +
                 ", country:" + countryName + ", team:" + teamName)
@@ -666,7 +666,7 @@ class ::WwBattle
       if (membersCheckingDatas[i].unitsCountUnderLimit >= membersCheckingDatas.len())
         membersCheckingDatas.remove(i)
 
-    local unbrokenAvailableUnits = []
+    let unbrokenAvailableUnits = []
     foreach (idx, data in membersCheckingDatas)
       unbrokenAvailableUnits.append(data.unbrokenAvailableUnits)
 
@@ -696,7 +696,7 @@ class ::WwBattle
 
   function getWarningReasonData(side)
   {
-    local res = {
+    let res = {
         needShow = false
         needMsgBox = false
         warningText = ""
@@ -708,20 +708,20 @@ class ::WwBattle
     if (!isValid() || isFinished())
       return res
 
-    local team = getTeamBySide(side)
-    local isCrewByUnitsGroup = isBattleByUnitsGroup()
-    local countryCrews = isCrewByUnitsGroup
+    let team = getTeamBySide(side)
+    let isCrewByUnitsGroup = isBattleByUnitsGroup()
+    let countryCrews = isCrewByUnitsGroup
       ? slotbarPresets.getCurPreset().countryPresets?[team?.country ?? ""].units
       : ::get_crews_list_by_country(team.country)
 
      if (countryCrews == null)
        return res
 
-    local availableUnits = getTeamRemainUnits(team, isCrewByUnitsGroup)
-    local crewNames = []
+    let availableUnits = getTeamRemainUnits(team, isCrewByUnitsGroup)
+    let crewNames = []
     foreach(crew in countryCrews)
     {
-      local crewUnit = isCrewByUnitsGroup
+      let crewUnit = isCrewByUnitsGroup
         ? crew
         : ::g_crew.getCrewUnit(crew)
       if (crewUnit != null)
@@ -766,7 +766,7 @@ class ::WwBattle
 
   function getUnitsRequiredForJoin(team, side)
   {
-    local unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
@@ -781,17 +781,17 @@ class ::WwBattle
 
   function getTeamRemainUnits(team, onlyBestAvailableFromGroup = false)
   {
-    local availableUnits = {}
-    local eDiff = ::DIFFICULTY_REALISTIC
-    local curPreset = slotbarPresets.getCurPreset()
-    local country = team?.country ?? ""
-    local curSlotbarUnits = curPreset?.countryPresets[country].units ?? []
+    let availableUnits = {}
+    let eDiff = ::DIFFICULTY_REALISTIC
+    let curPreset = slotbarPresets.getCurPreset()
+    let country = team?.country ?? ""
+    let curSlotbarUnits = curPreset?.countryPresets[country].units ?? []
     foreach(unit in team.unitsRemain)
     {
       if (unit.count <= 0 || unit.isControlledByAI())
         continue
 
-      local groupUnits = unitsGroups?[unit.name].units
+      let groupUnits = unitsGroups?[unit.name].units
       if (groupUnits == null)
         availableUnits[unit.name] <- unit.count
       else
@@ -802,7 +802,7 @@ class ::WwBattle
           continue
         }
 
-        local sortedUnits = groupUnits.values().map(
+        let sortedUnits = groupUnits.values().map(
           @(u) { unit = u, rank = u.getBattleRating(eDiff), isInSlotbar = ::isInArray(u, curSlotbarUnits) })
         sortedUnits.sort(@(a, b) b.rank <=> a.rank
           || b.isInSlotbar <=> a.isInSlotbar
@@ -830,7 +830,7 @@ class ::WwBattle
     if (side == -1)
       side = ::ww_get_player_side()
 
-    local team = getTeamBySide(side)
+    let team = getTeamBySide(side)
     return team ? ::g_string.cutPrefix(team.name, "team") : ""
   }
 
@@ -875,7 +875,7 @@ class ::WwBattle
     if (!isValid())
       return ""
 
-    local sectorIdx = ::ww_get_zone_idx_world(pos)
+    let sectorIdx = ::ww_get_zone_idx_world(pos)
     return sectorIdx >= 0 ? ::ww_get_zone_name(sectorIdx) : ""
   }
 
@@ -890,8 +890,8 @@ class ::WwBattle
     if (battleActivateMillisec <= 0)
       return 0
 
-    local waitTimeSec = ::g_world_war.getSetting("joinBattleDelayTimeSec", 0)
-    local passedSec = ::get_charserver_time_sec() -
+    let waitTimeSec = ::g_world_war.getSetting("joinBattleDelayTimeSec", 0)
+    let passedSec = ::get_charserver_time_sec() -
       time.millisecondsToSecondsInt(battleActivateMillisec)
 
     return waitTimeSec - passedSec
@@ -948,12 +948,12 @@ class ::WwBattle
 
   function getTotalPlayersInQueueInfo(side)
   {
-    local queue = wwQueuesData.getData()?[id]
+    let queue = wwQueuesData.getData()?[id]
     if (!queue)
       return 0
 
-    local friendlySideNumber = getPlayersInQueueBySide(queue, side)
-    local enemySideNumber = getPlayersInQueueBySide(queue, ::g_world_war.getOppositeSide(side))
+    let friendlySideNumber = getPlayersInQueueBySide(queue, side)
+    let enemySideNumber = getPlayersInQueueBySide(queue, ::g_world_war.getOppositeSide(side))
 
     if (!::has_feature("worldWarMaster") && !getMyAssignCountry())
       return friendlySideNumber + enemySideNumber
@@ -979,7 +979,7 @@ class ::WwBattle
 
   function getPlayersInQueueBySide(queue, side)
   {
-    local team = getTeamBySide(side)
+    let team = getTeamBySide(side)
     if (!team)
       return 0
 
@@ -988,12 +988,12 @@ class ::WwBattle
 
   function getPlayersInQueueByTeamName(queue, teamName)
   {
-    local teamData = queue?[teamName]
+    let teamData = queue?[teamName]
     if (!teamData)
       return 0
 
     local count = teamData?.playersOther ?? 0
-    local clanPlayers = teamData?.playersInClans ?? []
+    let clanPlayers = teamData?.playersInClans ?? []
     foreach(clanPlayer in clanPlayers)
       count += clanPlayer?.count ?? 0
 
@@ -1011,8 +1011,8 @@ class ::WwBattle
     if (getMyAssignCountry())
       return false
 
-    local joinPlayersCount = ::g_squad_manager.getOnlineMembersCount()
-    local excessPlayersSide = getExcessPlayersSide(side, joinPlayersCount)
+    let joinPlayersCount = ::g_squad_manager.getOnlineMembersCount()
+    let excessPlayersSide = getExcessPlayersSide(side, joinPlayersCount)
     if (excessPlayersSide != ::SIDE_NONE && excessPlayersSide == side)
       return true
 
@@ -1021,7 +1021,7 @@ class ::WwBattle
 
   function isQueueExcessPlayersInTeam(teamName, joinPlayersCount)
   {
-    local queue = wwQueuesData.getData()?[id]
+    let queue = wwQueuesData.getData()?[id]
     if (!queue)
       return false
 
@@ -1043,7 +1043,7 @@ class ::WwBattle
 
   function getMyAssignCountry()
   {
-    local operation = getOperationById(::ww_get_operation_id())
+    let operation = getOperationById(::ww_get_operation_id())
     return operation ? operation.getMyAssignCountry() : null
   }
 
@@ -1057,14 +1057,14 @@ class ::WwBattle
 
   function hasUnitsToFight(country, team, side)
   {
-    local requiredUnits = getUnitsRequiredForJoin(team, side)
+    let requiredUnits = getUnitsRequiredForJoin(team, side)
 
     if (!requiredUnits)
       return true
 
     foreach(unitName, value in requiredUnits)
     {
-      local unit = ::all_units?[unitName]
+      let unit = ::all_units?[unitName]
       if (!unit)
         continue
 
@@ -1087,7 +1087,7 @@ class ::WwBattle
 
     foreach (teamName, teamData in battle.teams)
     {
-      local curTeamData = teams?[teamName]
+      let curTeamData = teams?[teamName]
       if (!curTeamData)
         return false
 
@@ -1097,7 +1097,7 @@ class ::WwBattle
 
       foreach(idx, unitsData in teamData.unitsRemain)
       {
-        local curUnitsData = curTeamData.unitsRemain[idx]
+        let curUnitsData = curTeamData.unitsRemain[idx]
         if (unitsData.name != curUnitsData.name ||
             unitsData.count != curUnitsData.count)
           return false
@@ -1131,12 +1131,12 @@ class ::WwBattle
 
   function getGroupId()
   {
-    local playerSide = getSide(::get_profile_country_sq())
-    local playerTeam = getTeamBySide(playerSide)
+    let playerSide = getSide(::get_profile_country_sq())
+    let playerTeam = getTeamBySide(playerSide)
     if (!playerTeam)
       return ""
 
-    local unitTypeArray = playerTeam.unitTypes.map(@(u) u.tostring())
+    let unitTypeArray = playerTeam.unitTypes.map(@(u) u.tostring())
     unitTypeArray.append("vs")
 
     foreach(team in teams)
@@ -1147,12 +1147,12 @@ class ::WwBattle
 
   function getTimeStartAutoBattle()
   {
-    local hasOperationTimeOnCreation = operationTimeOnCreationMillisec > 0
-    local creationTime = hasOperationTimeOnCreation ? operationTimeOnCreationMillisec : creationTimeMillisec
+    let hasOperationTimeOnCreation = operationTimeOnCreationMillisec > 0
+    let creationTime = hasOperationTimeOnCreation ? operationTimeOnCreationMillisec : creationTimeMillisec
     if (creationTime <= 0)
       return 0
 
-    local maxBattleWaitTimeSec = time.minutesToSeconds(
+    let maxBattleWaitTimeSec = time.minutesToSeconds(
       ::g_world_war.getWWConfigurableValue("maxBattleWaitTimeMin", MAX_BATTLE_WAIT_TIME_MIN_DEFAULT))
     if (maxBattleWaitTimeSec <= 0)
       return 0

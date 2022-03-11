@@ -1,15 +1,15 @@
-local colors = require("style/colors.nut")
+let colors = require("style/colors.nut")
 
 const MAX_DOST = 5
 
-local images = {
+let images = {
   dotHole = Picture("!ui/gameuiskin#dot_hole")
   dotFilled = Picture("!ui/gameuiskin#dot_filled")
 }
 
 
-local moduleIconConstructor = function (params) {
-  local icon = typeof params.icon == "function"
+let moduleIconConstructor = function (params) {
+  let icon = typeof params.icon == "function"
                ? @() params.icon(params.iconWatch.value)
                : @() params.icon
   return @(color) @() {
@@ -40,7 +40,7 @@ local moduleIconConstructor = function (params) {
 }
 
 
-local dotAlive = @(broken_count) {
+let dotAlive = @(broken_count) {
   rendObj = ROBJ_IMAGE
   image = images.dotFilled
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
@@ -49,7 +49,7 @@ local dotAlive = @(broken_count) {
 }
 
 
-local dotDead = {
+let dotDead = {
   rendObj = ROBJ_IMAGE
   image = images.dotHole
   color = colors.hud.damageModule.dmModuleDestroyed
@@ -67,9 +67,9 @@ local dotDead = {
   ]
 }
 
-local dots = function (total_count, broken_count) {
-  local aliveCount = total_count - broken_count
-  local children = []
+let dots = function (total_count, broken_count) {
+  let aliveCount = total_count - broken_count
+  let children = []
   if (aliveCount > 0 && total_count > 0) {
     children.resize(aliveCount, dotAlive(broken_count))
     children.resize(total_count, dotDead)
@@ -84,7 +84,7 @@ local dots = function (total_count, broken_count) {
 }
 
 
-local text = @(total_count, broken_count) {
+let text = @(total_count, broken_count) {
   rendObj = ROBJ_DTEXT
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
   halign = ALIGN_CENTER
@@ -96,12 +96,12 @@ local text = @(total_count, broken_count) {
 /// Return component represents state of group
 /// of similar dm modules (engines, torpedos, etc.)
 ///
-local dmModule = function (params) {
-  local totalCountState = params.totalCountState
-  local brokenCountState = params.brokenCountState
-  local cooldownState = params?.cooldownState
+let dmModule = function (params) {
+  let totalCountState = params.totalCountState
+  let brokenCountState = params.brokenCountState
+  let cooldownState = params?.cooldownState
 
-  local moduleIcon = moduleIconConstructor(params)
+  let moduleIcon = moduleIconConstructor(params)
 
   return function () {
     if (totalCountState.value == 0) {
@@ -119,7 +119,7 @@ local dmModule = function (params) {
       color = colors.hud.damageModule.dmModuleDamaged
     ::anim_start(brokenCountState)
 
-    local children = [moduleIcon(color)]
+    let children = [moduleIcon(color)]
     if (totalCountState.value > 1) {
       if (totalCountState.value < MAX_DOST) {
         children.append(dots(totalCountState.value, brokenCountState.value))
@@ -143,7 +143,7 @@ local dmModule = function (params) {
   }
 }
 
-local export = class {
+let export = class {
   _call = @(self, params) dmModule(params)
 }()
 

@@ -1419,7 +1419,6 @@
         "sensor": {
           "blk": "gameData/sensors/naval/su_foot_n.blk",
           "designationFromBody": true,
-          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -1523,7 +1522,7 @@
             "elevator": "elevator_01_dm",
             "dstrElevatorDisablesShooting": false,
             "ammo_turret_01_dm": {
-              "count": 85
+              "count": 80
             }
           }
         },
@@ -1538,7 +1537,7 @@
             "elevator": "elevator_01_dm",
             "dstrElevatorDisablesShooting": false,
             "ammunition_storage_01_dm": {
-              "count": 30
+              "count": 160
             }
           }
         }
@@ -1568,7 +1567,7 @@
             "elevator": "elevator_02_dm",
             "dstrElevatorDisablesShooting": false,
             "ammo_turret_02_dm": {
-              "count": 85
+              "count": 80
             }
           }
         },
@@ -1583,7 +1582,7 @@
             "elevator": "elevator_02_dm",
             "dstrElevatorDisablesShooting": false,
             "ammunition_storage_02_dm": {
-              "count": 30
+              "count": 160
             }
           }
         }
@@ -2351,18 +2350,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -27000.0,
+      "waterMassMult": 70.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
       "additionalWaterDeathThreshold": 1500000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.25
     }
   },
   {
@@ -2370,33 +2369,22 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.2,
+          "weight": 0.3,
           "maxWaterAlive": 1.0
         }
       },
       {
-        "cover": [
-          {
-            "part": "compartment_02_dm"
-          },
-          {
-            "weight": 0.75
-          },
-          {
-            "maxWaterAlive": 1.0
-          },
-          {
-            "maxWaterAlive": 1.0
-          },
-          {
-            "innerParts": {
-              "part": {
-                "partNo": "ammunition_storage_01_dm",
-                "critWaterLevel": 0.85
-              }
+        "cover": {
+          "part": "compartment_02_dm",
+          "weight": 0.75,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "ammunition_storage_01_dm",
+              "critWaterLevel": 0.85
             }
           }
-        ]
+        }
       },
       {
         "cover": {
@@ -2407,7 +2395,7 @@
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.3
               }
             },
             {
@@ -2428,13 +2416,13 @@
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_03_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.9
               }
             }
           ]
@@ -2443,14 +2431,14 @@
       {
         "cover": {
           "part": "compartment_05_dm",
-          "weight": 0.35,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "compartment_06_dm",
-          "weight": 0.33,
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

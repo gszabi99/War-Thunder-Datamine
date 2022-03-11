@@ -1,19 +1,19 @@
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-local userstatRewardTitleLocId = "battlePass/rewardsTitle"
-local userstatItemsListLocId = "mainmenu/rewardsList"
+let userstatRewardTitleLocId = "battlePass/rewardsTitle"
+let userstatItemsListLocId = "mainmenu/rewardsList"
 
-local waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
+let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
 
-local function showRewardWnd(rewards) {
+let function showRewardWnd(rewards) {
   if ((rewards?.len() ?? 0) == 0)
     return
 
-  local rewardsToShow = []
+  let rewardsToShow = []
   local firstItemId = null
-  foreach (itemId, count in rewards) {
-    itemId = itemId.tointeger()
-    local item = ::ItemsManager.findItemById(itemId)
+  foreach (itemIdSrc, count in rewards) {
+    let itemId = itemIdSrc.tointeger()
+    let item = ::ItemsManager.findItemById(itemId)
     if (item == null)
       continue
     if (item.shouldAutoConsume) //show recived rewards after auto consume
@@ -34,28 +34,28 @@ local function showRewardWnd(rewards) {
     })
 }
 
-local getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
+let getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
   @(itemData) itemData.itemId == itemId)
 
-local function removeUserstatItemRewardToShow(itemId) {
-  local rewardIdx = waitingToShowRewardsArray.findindex(@(itemData) itemData.itemId == itemId)
+let function removeUserstatItemRewardToShow(itemId) {
+  let rewardIdx = waitingToShowRewardsArray.findindex(@(itemData) itemData.itemId == itemId)
   if (rewardIdx == null)
     return
 
   waitingToShowRewardsArray.remove(rewardIdx)
 }
 
-local function canGetRewards(onAcceptFn, params) {
+let function canGetRewards(onAcceptFn, params) {
   if ((params.rewards?.len() ?? 0) == 0)
     return true
 
   local waitingWarbondsToReciveAmount = waitingToShowRewardsArray.reduce(
     @(res, a) res + (::ItemsManager.findItemById(a.itemId)?.getWarbondsAmount() ?? 0), 0)
   foreach (itemId, count in params.rewards) {
-    local item = ::ItemsManager.findItemById(itemId.tointeger())
+    let item = ::ItemsManager.findItemById(itemId.tointeger())
     if (item == null)
       continue
-    local warbondsAmount = item?.getWarbondsAmount() ?? 0
+    let warbondsAmount = item?.getWarbondsAmount() ?? 0
     if (warbondsAmount == 0)
       continue
 

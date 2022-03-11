@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local state = persist("globalState", @() {
+let state = persist("globalState", @() {
   isInFlight = Watched(false)
 })
 

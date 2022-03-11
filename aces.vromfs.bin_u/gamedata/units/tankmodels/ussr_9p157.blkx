@@ -180,7 +180,8 @@
           "armorThickness": 60.0
         },
         "turret_02_side_dm": {
-          "armorThickness": 13.0
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank"
         },
         "turret_01_front_dm": {
           "armorThickness": 60.0
@@ -198,7 +199,8 @@
           "armorThickness": 18.0
         },
         "turret_03_top_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank"
         },
         "turret_01_bottom_dm": {
           "armorThickness": 15.0
@@ -510,7 +512,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -541,7 +543,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -1888,6 +1890,25 @@
             "pitch": [-10.0,20.0]
           }
         }
+      },
+      {
+        "animatedBones": [
+          {
+            "node": "antenna_target_tagging"
+          },
+          {
+            "node": "antenna_target_tagging_mount"
+          },
+          {
+            "node": "ex_armor_04"
+          },
+          {
+            "node": "bone_gun_barrel"
+          },
+          {
+            "node": "bone_drive_turret_v"
+          }
+        ]
       }
     ]
   },

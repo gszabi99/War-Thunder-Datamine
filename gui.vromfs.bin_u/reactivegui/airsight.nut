@@ -1,5 +1,5 @@
-local {round, PI, cos, sin} = require("std/math.nut")
-local {
+let {round, PI, cos, sin} = require("std/math.nut")
+let {
   IsMachineGunEmpty, GunOverheatState, GunDirectionX, IsCannonEmpty, isAllCannonsEmpty,
   GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
   TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
@@ -7,31 +7,31 @@ local {
   IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, Agm,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime} = require("airState.nut")
-local { TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+let { TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
 
-local { backgroundColor } = require("style/airHudStyle.nut")
-local { LaserPoint, HaveLaserPoint } = require("planeState.nut")
+let { backgroundColor } = require("style/airHudStyle.nut")
+let { LaserPoint, HaveLaserPoint } = require("planeState/planeWeaponState.nut")
 
 const NUM_TURRETS_MAX = 10
 const NUM_CANNONS_MAX = 3
 
-local styleLineForeground = {
+let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH)
 }
 
-local sqL = 80
-local l = 20
-local offset = (100 - sqL) * 0.5
+let sqL = 80
+let l = 20
+let offset = (100 - sqL) * 0.5
 
-local normalTurretSight = [
+let normalTurretSight = [
   [VECTOR_LINE, -50 + offset, -50 + offset, 50 - offset, -50 + offset],
   [VECTOR_LINE, 50 - offset, 50 - offset, 50 - offset, -50 + offset],
   [VECTOR_LINE, -50 + offset, 50 - offset, 50 - offset, 50 - offset],
   [VECTOR_LINE, -50 + offset, -50 + offset, -50 + offset, 50 - offset]
 ]
 
-local ccipTurretSight = [
+let ccipTurretSight = [
   [VECTOR_LINE, -50 + offset, -50 + offset, 50 - offset, -50 + offset],
   [VECTOR_LINE, 50 - offset, 50 - offset, 50 - offset, -50 + offset],
   [VECTOR_LINE, -50 + offset, 50 - offset, 50 - offset, 50 - offset],
@@ -42,14 +42,14 @@ local ccipTurretSight = [
   [VECTOR_LINE, -40, -40, -55, -55]
 ]
 
-local dashTurretSight = [
+let dashTurretSight = [
   [VECTOR_LINE, 0, -50, 0, -50 + l],
   [VECTOR_LINE, 50 - l, 0, 50, 0],
   [VECTOR_LINE, 0, 50 - l, 0, 50],
   [VECTOR_LINE, -50, 0, -50 + l, 0]
 ]
 
-local ccipDashTurretSight = [
+let ccipDashTurretSight = [
   [VECTOR_LINE, 0, -50, 0, -50 + l],
   [VECTOR_LINE, 50 - l, 0, 50, 0],
   [VECTOR_LINE, 0, 50 - l, 0, 50],
@@ -60,15 +60,15 @@ local ccipDashTurretSight = [
   [VECTOR_LINE, -40, -40, -55, -55]
 ]
 
-local triggerGun = {}
-local isGunBlinking = keepref(Computed(@() GunInDeadZone.value))
+let triggerGun = {}
+let isGunBlinking = keepref(Computed(@() GunInDeadZone.value))
 isGunBlinking.subscribe(@(v) v ? ::anim_start(triggerGun) : ::anim_request_stop(triggerGun))
 
-local gunDirection = @(isBackground, isSightHud) function() {
+let gunDirection = @(isBackground, isSightHud) function() {
 
-  local watchList = [GunSightMode, GunOverheatState, IsMachineGunEmpty, GunDirectionX, GunDirectionY, HudColor,
+  let watchList = [GunSightMode, GunOverheatState, IsMachineGunEmpty, GunDirectionX, GunDirectionY, HudColor,
                      isAllCannonsEmpty, AlertColorHigh, GunDirectionVisible, IsCannonEmpty]
-  local res = { watch = watchList}
+  let res = { watch = watchList}
 
   if (GunSightMode.value == 0 && isSightHud)
     return res
@@ -76,9 +76,9 @@ local gunDirection = @(isBackground, isSightHud) function() {
     return res
 
 
-  local mainCommands = []
-  local overheatCommands = []
-  local selectedSightCommands = GunSightMode.value == 0 ? normalTurretSight : ccipTurretSight
+  let mainCommands = []
+  let overheatCommands = []
+  let selectedSightCommands = GunSightMode.value == 0 ? normalTurretSight : ccipTurretSight
 
   for (local i = 0; i < selectedSightCommands.len(); ++i) {
     if (i >= GunOverheatState.value) {
@@ -124,13 +124,13 @@ local gunDirection = @(isBackground, isSightHud) function() {
 
 const dashCount = 36
 const circleSize = 2.5
-local angleReloadArrow = 90.0
+let angleReloadArrow = 90.0
 
-local function reloadTurret(currentTime){
-  local angleAnim = ((currentTime * 180) % 360) * (PI / 180)  // 360 per 2 sec
-  local commands = []
-  local angleDegree = angleReloadArrow / dashCount
-  local angle = angleDegree * (PI / 180)
+let function reloadTurret(currentTime){
+  let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  // 360 per 2 sec
+  let commands = []
+  let angleDegree = angleReloadArrow / dashCount
+  let angle = angleDegree * (PI / 180)
   for(local i = 0; i < dashCount; ++i) {
       commands.append([
         VECTOR_LINE,
@@ -145,7 +145,7 @@ local function reloadTurret(currentTime){
 
 
 //used for aircraft turret Sight turret/fixedGun overheat/jam and fixed gun overheat
-local function relativCircle(percent){
+let function relativCircle(percent){
 
   if (percent >= 0.99999999){
     return [
@@ -153,11 +153,11 @@ local function relativCircle(percent){
     ]
   }
 
-  local commands = []
-  local angleDegree = 360 / dashCount
-  local angle = angleDegree * (PI / 180)
-  local startingAngleOffset = 120 * (PI / 180)
-  local dashAmmount = round((percent * 360) / angleDegree)
+  let commands = []
+  let angleDegree = 360 / dashCount
+  let angle = angleDegree * (PI / 180)
+  let startingAngleOffset = 120 * (PI / 180)
+  let dashAmmount = round((percent * 360) / angleDegree)
   for(local i = 0; i < dashAmmount; ++i) {
     commands.append([
       VECTOR_LINE,
@@ -170,7 +170,7 @@ local function relativCircle(percent){
   return commands
 }
 
-local createTurretSights = @(turretIndex) @() styleLineForeground.__merge({
+let createTurretSights = @(turretIndex) @() styleLineForeground.__merge({
   watch = [HudColor, TurretsDirectionX[turretIndex], TurretsDirectionY[turretIndex], TurretsReloading[turretIndex], TurretsVisible[turretIndex]]
   rendObj = ROBJ_VECTOR_CANVAS
   pos = [TurretsDirectionX[turretIndex].value, TurretsDirectionY[turretIndex].value]
@@ -194,7 +194,7 @@ local createTurretSights = @(turretIndex) @() styleLineForeground.__merge({
   })
 })
 
-local function aircraftTurretsComponent(isBackground, isSightHud) {
+let function aircraftTurretsComponent(isBackground, isSightHud) {
   return {
     size = flex()
     children = array(NUM_TURRETS_MAX).map(@(_, i) createTurretSights(i))
@@ -203,7 +203,7 @@ local function aircraftTurretsComponent(isBackground, isSightHud) {
 
 
 
-local function fixedGunsSight(sightId){
+let function fixedGunsSight(sightId){
   if (sightId == 0) {
     return [
       [VECTOR_LINE, 0, 50, 0, 150],
@@ -237,14 +237,14 @@ local function fixedGunsSight(sightId){
   ]
 }
 
-local fixedGunsDirection = @(isBackground) function() {
+let fixedGunsDirection = @(isBackground) function() {
 
-  local res = { watch = [FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY] }
+  let res = { watch = [FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY] }
 
   if (!FixedGunDirectionVisible.value)
     return res
 
-  local overheatLines = @(){
+  let overheatLines = @(){
     watch = [AlertColorHigh, FixedGunOverheat]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(1)
@@ -253,7 +253,7 @@ local fixedGunsDirection = @(isBackground) function() {
     fillColor = Color(0, 0, 0, 0)
     commands = relativCircle(FixedGunOverheat.value)
   }
-  local lines = @() {
+  let lines = @() {
     watch = [FixedGunSightMode, HudColor]
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(0.625), sh(0.625)]
@@ -270,14 +270,14 @@ local fixedGunsDirection = @(isBackground) function() {
   })
 }
 
-local helicopterCCRP = @(isBackground) function() {
+let helicopterCCRP = @(isBackground) function() {
 
-  local res =  { watch = [FixedGunDirectionX, FixedGunDirectionY, FixedGunDirectionVisible, FixedGunSightMode] }
+  let res =  { watch = [FixedGunDirectionX, FixedGunDirectionY, FixedGunDirectionVisible, FixedGunSightMode] }
 
   if (!FixedGunDirectionVisible.value || FixedGunSightMode.value != 2)
     return res
 
-  local lines = @() styleLineForeground.__merge({
+  let lines = @() styleLineForeground.__merge({
     watch = [TargetX, TargetY, HudColor]
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(0.625), sh(0.625)]
@@ -293,7 +293,7 @@ local helicopterCCRP = @(isBackground) function() {
   })
 }
 
-local function agmTrackZone(width, height, isBackground) {
+let function agmTrackZone(width, height, isBackground) {
   return @() styleLineForeground.__merge({
     watch = [IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, HudColor]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -314,10 +314,10 @@ local function agmTrackZone(width, height, isBackground) {
   })
 }
 
-local function agmTrackZoneComponent(isBackground) {
-  local width = sw(100)
-  local height = sh(100)
-  local pos = [sw(50) - width * 0.5, sh(50) - height * 0.5]
+let function agmTrackZoneComponent(isBackground) {
+  let width = sw(100)
+  let height = sh(100)
+  let pos = [sw(50) - width * 0.5, sh(50) - height * 0.5]
   return {
     pos = pos
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1 duration = 0.5, play = true, loop = true, easing = InOutCubic}]
@@ -325,9 +325,9 @@ local function agmTrackZoneComponent(isBackground) {
   }
 }
 
-local function laserDesignator(width, height, isBackground) {
-  local lhl = 5
-  local lvl = 7
+let function laserDesignator(width, height, isBackground) {
+  let lhl = 5
+  let lvl = 7
   return @() styleLineForeground.__merge({
     watch = [IsAgmEmpty, HudColor, AlertColorHigh]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -344,9 +344,9 @@ local function laserDesignator(width, height, isBackground) {
   })
 }
 
-local function laserDesignatorComponent(isBackground) {
-  local width = hdpx(150)
-  local height = hdpx(100)
+let function laserDesignatorComponent(isBackground) {
+  let width = hdpx(150)
+  let height = hdpx(100)
   return @() {
     watch = IsLaserDesignatorEnabled
     hplace = ALIGN_CENTER
@@ -357,22 +357,22 @@ local function laserDesignatorComponent(isBackground) {
   }
 }
 
-local laserTrigger = {}
-local needLaserBlink = Computed(@() (!IsLaserDesignatorEnabled.value &&
+let laserTrigger = {}
+let needLaserBlink = Computed(@() (!IsLaserDesignatorEnabled.value &&
   Agm.timeToHit.value > 0))
 
 needLaserBlink.subscribe(@(v) v ? ::anim_start(laserTrigger) : ::anim_request_stop(laserTrigger))
 
-local function getLaserText(laserEnabled, timeToHit, timeToWarning) {
-  local texts = laserEnabled ? ::loc("HUD/TXT_LASER_DESIGNATOR")
+let function getLaserText(laserEnabled, timeToHit, timeToWarning) {
+  let texts = laserEnabled ? ::loc("HUD/TXT_LASER_DESIGNATOR")
     : (timeToHit > 0 && timeToWarning <= 0) ? ::loc("HUD/TXT_ENABLE_LASER_NOW")
     : ""
   return texts
 }
 
-local laserDesignatorStatusComponent = @(isBackground) function() {
+let laserDesignatorStatusComponent = @(isBackground) function() {
 
-  local res = {
+  let res = {
     watch = [IsLaserDesignatorEnabled, Agm.timeToHit, Agm.timeToWarning, HudColor]
     animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, play = needLaserBlink.value, loop = true, easing = InOutSine, trigger = laserTrigger}]
     key = needLaserBlink
@@ -390,9 +390,9 @@ local laserDesignatorStatusComponent = @(isBackground) function() {
   })
 }
 
-local atgmTrackerStatusComponent = @(isBackground) function() {
+let atgmTrackerStatusComponent = @(isBackground) function() {
 
-  local res = {
+  let res = {
     watch = [IsATGMOutOfTrackerSector, NoLosToATGM, HudColor]
     animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, play = true, loop = true, easing = InOutSine}]
   }
@@ -409,7 +409,7 @@ local atgmTrackerStatusComponent = @(isBackground) function() {
   })
 }
 
-local function aircraftRocketSightMode(sightMode){
+let function aircraftRocketSightMode(sightMode){
 
   if (sightMode == 0) {
     return [
@@ -443,14 +443,14 @@ local function aircraftRocketSightMode(sightMode){
 }
 
 
-local aircraftRocketSight = @(width, height, isBackground) function() {
+let aircraftRocketSight = @(width, height, isBackground) function() {
 
-  local res = { watch = [RocketAimX, RocketAimY, RocketAimVisible] }
+  let res = { watch = [RocketAimX, RocketAimY, RocketAimVisible] }
 
   if (!RocketAimVisible.value)
     return res
 
-  local lines = @() styleLineForeground.__merge({
+  let lines = @() styleLineForeground.__merge({
     watch = RocketSightMode
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0,0,0,0)
@@ -466,7 +466,7 @@ local aircraftRocketSight = @(width, height, isBackground) function() {
   })
 }
 
-local function laserPoint(isBackground) {
+let function laserPoint(isBackground) {
   return {
     size = [ph(1.5), ph(1.5)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -484,7 +484,7 @@ local function laserPoint(isBackground) {
   }
 }
 
-local function laserPointComponent(isBackground) {
+let function laserPointComponent(isBackground) {
   return @() {
     watch = HaveLaserPoint
     size = flex()

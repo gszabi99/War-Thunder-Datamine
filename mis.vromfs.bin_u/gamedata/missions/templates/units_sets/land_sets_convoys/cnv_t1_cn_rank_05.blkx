@@ -44,7 +44,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [21383.5,1.7,47318.7]
+          [13694.4,166.95,47410.7]
         ],
         "props": [
           {
@@ -57,7 +57,10 @@
             "squad_members": "cnv_t1_convoy_01_acar"
           },
           {
-            "squad_members": "cnv_t1_convoy_01_aaa"
+            "squad_members": "cnv_t1_convoy_modern_aaa_01"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_outdated_aaa_01"
           },
           {
             "squad_members": "cnv_t1_convoy_01_tank"
@@ -72,7 +75,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [19724.0,1.7,47099.6]
+          [11006.6,166.95,47287.1]
         ],
         "props": [
           {
@@ -85,7 +88,10 @@
             "squad_members": "cnv_t1_convoy_02_acar"
           },
           {
-            "squad_members": "cnv_t1_convoy_02_aaa"
+            "squad_members": "cnv_t1_convoy_modern_aaa_02"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_outdated_aaa_02"
           },
           {
             "squad_members": "cnv_t1_convoy_02_tank"
@@ -363,7 +369,7 @@
     },
     {
       "tankModels": {
-        "name": "cnv_t1_convoy_01_aaa",
+        "name": "cnv_t1_convoy_modern_aaa_01",
         "tm": [
           [0.461749,0.0,0.887011],
           [0.0,1.0,0.0],
@@ -388,13 +394,14 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 4,
+          "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [12.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
           "attack_type": "fire_at_will",
+          "use_search_radar": false,
           "isDelayed": true,
           "stealthRadius": 0.0,
           "setStealth": true
@@ -404,7 +411,7 @@
     },
     {
       "tankModels": {
-        "name": "cnv_t1_convoy_02_aaa",
+        "name": "cnv_t1_convoy_modern_aaa_02",
         "tm": [
           [0.461749,0.0,0.887011],
           [0.0,1.0,0.0],
@@ -429,7 +436,90 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 4,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "use_search_radar": false,
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_outdated_aaa_01",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68916.1,0.550003,36980.7]
+        ],
+        "unit_class": "cn_m42_duster",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "cnv_t1_convoy_outdated_aaa_02",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [68950.5,0.549973,36965.4]
+        ],
+        "unit_class": "cn_m42_duster",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [12.0,6.0],

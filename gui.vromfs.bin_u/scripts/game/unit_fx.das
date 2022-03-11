@@ -2,19 +2,8 @@ require ecs
 require Unit
 require UnitFx
 require WTDamageModel
-require %wt.game.events
-require %wt.game.utils_common
-
-
-[es (on_event=CmdInitComponent)]
-def unit_fx_initializer_es(evt: Event;
-                    uid: int;
-                    eid: ecs::EntityId;
-                    var unit_fx: UnitFx)
-  var unit = get_unit(uid)
-  if unit != null && unit.isGroundModel
-    unit_fx |> init(*unit)
-    debug("ECS: unitFx create for uid:{uid} eid:{eid}")
+require %wtGame.events
+require %wtGame.utils_common
 
 
 [es]

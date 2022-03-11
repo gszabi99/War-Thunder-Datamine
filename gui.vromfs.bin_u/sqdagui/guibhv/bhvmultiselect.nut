@@ -1,4 +1,4 @@
-class gui_bhv.MultiSelect extends gui_bhv.posNavigator
+gui_bhv.MultiSelect <- class extends gui_bhv.posNavigator
 {
   bhvId = "MultiSelect"
   valuePID = ::dagui_propid.add_name_id("bitValue")  //values by bits   chosen:yes;
@@ -31,18 +31,18 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
   function chooseItems(obj, bitValue, needSound = true)
   {
     local needNotify = false
-    local total = obj.childrenCount()
+    let total = obj.childrenCount()
     bitValue = bitValue & ((1 << total) - 1) //validate mask by len
 
-    local prevValue = getValue(obj)
+    let prevValue = getValue(obj)
     needNotify = prevValue != bitValue
 
     local soundName = null
-    local valuesToUpdate = bitValue | prevValue //all what was selected or need to select
+    let valuesToUpdate = bitValue | prevValue //all what was selected or need to select
     for(local i = 0; i < total; i++)
       if (valuesToUpdate & (1 << i))
       {
-        local childObj = getChildObj(obj, i)
+        let childObj = getChildObj(obj, i)
         if (childObj.isValid())
         {
           if (!soundName && (bitValue & (1 << i)) != (prevValue & (1 << i)))
@@ -68,7 +68,7 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    local value = getHoveredChild(obj).hoveredIdx ?? -1
+    let value = getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)
         return ::RETCODE_NOTHING
@@ -77,10 +77,10 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
       return ::RETCODE_HALT
     }
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
+    let wasHoldStarted = onActivateUnpushed(obj)
     if ((!wasHoldStarted || needActionAfterHold(obj)) && pushedIdx == value)
       chooseItem(obj, value)
 

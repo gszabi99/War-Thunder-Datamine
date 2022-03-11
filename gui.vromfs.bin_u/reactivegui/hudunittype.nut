@@ -1,4 +1,4 @@
-local hudState = require("hudState.nut")
+let hudState = require("hudState.nut")
 
 return {
   isAir        = @() hudState.unitType.value == "aircraft"

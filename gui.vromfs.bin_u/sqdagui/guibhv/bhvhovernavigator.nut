@@ -1,11 +1,11 @@
-local { markChildrenInteractive, markObjShortcutOnHover } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+let { markChildrenInteractive, markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 /*
 getValue is always hovered child index or -1
 setValue only move mouse to child
 */
 
-class ::gui_bhv.HoverNavigator extends ::gui_bhv.posNavigator {
+::gui_bhv.HoverNavigator <- class extends ::gui_bhv.posNavigator {
   bhvId = "HoverNavigator"
 
   function onAttach(obj)

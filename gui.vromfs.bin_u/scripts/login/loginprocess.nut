@@ -7,7 +7,7 @@ enum LOGIN_PROGRESS
   FINISHED
 }
 
-local matchingStageToLoginState = {
+let matchingStageToLoginState = {
   [ONLINE_BINARIES_INITED] = LOGIN_STATE.ONLINE_BINARIES_INITED, // warning disable: -const-never-declared
   [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED                   // warning disable: -const-never-declared
 }
@@ -18,7 +18,7 @@ local matchingStageToLoginState = {
     ::g_login.addState(matchingStageToLoginState[stage])
 }
 
-class LoginProcess
+::LoginProcess <- class
 {
   curProgress = LOGIN_PROGRESS.NOT_STARTED
 
@@ -35,7 +35,7 @@ class LoginProcess
 
   function restoreStateAfterScriptsReload()
   {
-    local curMState = ::get_online_client_cur_state()
+    let curMState = ::get_online_client_cur_state()
     foreach(mState, lState in matchingStageToLoginState)
       if (mState & curMState)
         ::g_login.addState(lState)
@@ -56,11 +56,11 @@ class LoginProcess
     else if (curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
     {
       //connect to matching
-      local successCb = ::Callback(function()
+      let successCb = ::Callback(function()
                         {
                           ::g_login.addState(LOGIN_STATE.MATCHING_CONNECTED)
                         }, this)
-      local errorCb   = ::Callback(function()
+      let errorCb   = ::Callback(function()
                         {
                           destroy()
                         }, this)

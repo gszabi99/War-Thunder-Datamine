@@ -119,7 +119,7 @@
         "minValue": -150.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 90.0
+        "width": 65.0
       }
     },
     "pulseTrack": {
@@ -182,6 +182,9 @@
     },
     "pulseBoresightLock": {
       "range1": 18500.0
+    },
+    "pulseDopplerBoresightLock": {
+      "range1": 46250.0
     }
   },
   "fsms": {
@@ -200,7 +203,12 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-60.0,60.0],
-            "distanceRange": [0.0,92500.0]
+            "azmithWidth": 2.5,
+            "distanceRange": [0.0,92500.0],
+            "distanceWidth": 1000.0,
+            "distanceRelWidthMin": 0.05,
+            "dopplerSpeedWidth": 65.0,
+            "dopplerSpeedRelWidthMin": 0.05
           }
         },
         "setStandbyModeCommon": {
@@ -251,7 +259,7 @@
             "signal": "pulseSearch"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDopplerSearch"
+            "scopeRangeSet": "pulse"
           }
         },
         "setSearchModeCommon": {
@@ -272,6 +280,9 @@
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
+          "setCueEnabled": {
+            "value": true
+          },
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
@@ -313,6 +324,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setDesignationLockModeCommon": {
@@ -332,7 +346,7 @@
           },
           "setRelSpeedGatePos": {
             "source": "targetDesignation",
-            "width": 30.0
+            "width": 65.0
           },
           "setScanPatternSet": [],
           "setScanPattern": {
@@ -374,9 +388,7 @@
           "setSignal": {
             "signal": "pulseDopplerSearch"
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "pulseDopplerSearch"
-          }
+          "setScopeRangeSet": []
         },
         "setBoresightLockModeCommon": {
           "setEnabled": {
@@ -412,6 +424,9 @@
             "source": "constRange",
             "pos": 675.0,
             "width": 1950.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "pulseBoresightLock"
           },
           "setIllumination": {
             "illumination": false
@@ -639,6 +654,11 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
+              },
+              "designateTargetUnderCue": {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
               }
             }
           }
@@ -722,6 +742,11 @@
             "command": "selectTarget",
             "actions": {
               "designateActiveDetectedTarget": {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
+              },
+              "designateTargetUnderCue": {
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
@@ -1117,20 +1142,23 @@
             "setNextDetectedTargetActive": []
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": []
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": [],
+            "setCueDopplerSpeed": []
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": []
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 0,
-              "self": true
-            }
           }
         }
       }

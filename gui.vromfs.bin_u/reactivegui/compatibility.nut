@@ -1,4 +1,4 @@
-local behaviors = {
+let behaviors = {
   TouchScreenButton = "TouchScreenButton"
 }
 if (getconsttable()?.Behaviors)

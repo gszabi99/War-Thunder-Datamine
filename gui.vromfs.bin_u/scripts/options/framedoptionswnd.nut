@@ -1,7 +1,7 @@
-class ::gui_handlers.FramedOptionsWnd extends ::gui_handlers.GenericOptions
+::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/framedOptionsWnd.blk"
+  sceneBlkName = "%gui/options/framedOptionsWnd.blk"
   sceneNavBlkName = null
   multipleInstances = true
 
@@ -11,7 +11,7 @@ class ::gui_handlers.FramedOptionsWnd extends ::gui_handlers.GenericOptions
 
   function initScreen()
   {
-    local tableObj = scene.findObject("optionslist")
+    let tableObj = scene.findObject("optionslist")
     tableObj.width = menuWidth
     if (options)
     {
@@ -40,16 +40,16 @@ class ::gui_handlers.FramedOptionsWnd extends ::gui_handlers.GenericOptions
 
   function initOpenAnimParams()
   {
-    local animObj = scene.findObject("anim_block")
+    let animObj = scene.findObject("anim_block")
     if (!animObj)
       return
-    local size = animObj.getSize()
+    let size = animObj.getSize()
     if (!size[0] || !size[1])
       return
 
-    local isVertical = align == ALIGN.TOP || align == ALIGN.BOTTOM
-    local scaleId = isVertical ? "height" : "width"
-    local scaleAxis = isVertical ? 1 : 0
+    let isVertical = align == ALIGN.TOP || align == ALIGN.BOTTOM
+    let scaleId = isVertical ? "height" : "width"
+    let scaleAxis = isVertical ? 1 : 0
 
     animObj[scaleId] = "1"
     animObj[scaleId + "-base"] = "1"

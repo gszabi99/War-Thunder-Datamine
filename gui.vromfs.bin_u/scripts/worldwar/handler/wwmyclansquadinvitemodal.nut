@@ -4,7 +4,7 @@ enum wwClanSquadInviteColors {
   MATCH_GAME = "successTextColor"
 }
 
-class ::gui_handlers.WwMyClanSquadInviteModal extends ::gui_handlers.MyClanSquadsListModal
+::gui_handlers.WwMyClanSquadInviteModal <- class extends ::gui_handlers.MyClanSquadsListModal
 {
   operationId = null
   battleId = null
@@ -57,14 +57,14 @@ class ::gui_handlers.WwMyClanSquadInviteModal extends ::gui_handlers.MyClanSquad
 
   function canWwBattleInvite(squad)
   {
-    local presenceParams = squad?.data?.presence ?? {}
-    local presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
+    let presenceParams = squad?.data?.presence ?? {}
+    let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
     return presenceType.canInviteToWWBattle && !isGameParamsMatch(presenceParams) && isSquadOnline(squad)
   }
 
   function onSquadLeaderInvite(obj)
   {
-    local actionSquad = getSquadByObj(obj)
+    let actionSquad = getSquadByObj(obj)
     if (!actionSquad)
       return
 
@@ -81,9 +81,9 @@ class ::gui_handlers.WwMyClanSquadInviteModal extends ::gui_handlers.MyClanSquad
 
   function getPresence(squad)
   {
-    local presenceParams = squad?.data?.presence ?? {}
-    local presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
-    local presenceText = presenceType.getLocText(presenceParams)
+    let presenceParams = squad?.data?.presence ?? {}
+    let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
+    let presenceText = presenceType.getLocText(presenceParams)
 
     return colorizePresence(presenceText, presenceParams, presenceType)
   }
@@ -98,7 +98,7 @@ class ::gui_handlers.WwMyClanSquadInviteModal extends ::gui_handlers.MyClanSquad
     if (isGameParamsMatch(presenceParams))
       return ::colorize(wwClanSquadInviteColors.MATCH_GAME, text)
 
-    local color = presenceType.canInviteToWWBattle
+    let color = presenceType.canInviteToWWBattle
       ? wwClanSquadInviteColors.ENABLED : wwClanSquadInviteColors.BUSY
     return ::colorize(color, text)
   }

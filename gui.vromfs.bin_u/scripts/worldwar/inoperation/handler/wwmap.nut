@@ -1,19 +1,19 @@
-local time = require("scripts/time.nut")
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.nut")
-local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let time = require("scripts/time.nut")
+let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.nut")
+let actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
-class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwMap <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/worldWar/worldWarMap.blk"
+  sceneBlkName = "%gui/worldWar/worldWarMap.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
-  operationStringTpl = "gui/worldWar/operationString"
+  operationStringTpl = "%gui/worldWar/operationString"
   handlerLocId = "mainmenu/operationsMap"
 
   UPDATE_ARMY_STRENGHT_DELAY = 60000
@@ -105,11 +105,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function initMapName()
   {
-    local headerObj = scene.findObject("operation_name")
+    let headerObj = scene.findObject("operation_name")
     if (!::check_obj(headerObj))
       return
 
-    local curOperation = getOperationById(::ww_get_operation_id())
+    let curOperation = getOperationById(::ww_get_operation_id())
     headerObj.setValue(curOperation? curOperation.getNameText() : "")
   }
 
@@ -126,7 +126,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateGamercardType()
   {
-    local gamercardObj = scene.findObject("gamercard_div")
+    let gamercardObj = scene.findObject("gamercard_div")
     if (!::check_obj(gamercardObj))
       return
 
@@ -137,11 +137,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function initPageSwitch(forceTabSwitch = null)
   {
-    local pagesObj = scene.findObject("pages_list")
+    let pagesObj = scene.findObject("pages_list")
     if (!::checkObj(pagesObj))
       return
 
-    local tabIndex = forceTabSwitch != null ? forceTabSwitch
+    let tabIndex = forceTabSwitch != null ? forceTabSwitch
       : currentOperationInfoTabType ? currentOperationInfoTabType.index : 0
 
     pagesObj.setValue(tabIndex)
@@ -172,18 +172,18 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function initReinforcementPageSwitch()
   {
-    local tabsObj = scene.findObject("reinforcement_pages_list")
+    let tabsObj = scene.findObject("reinforcement_pages_list")
     if (!::check_obj(tabsObj))
       return
 
-    local show = ::g_world_war.haveManagementAccessForAnyGroup()
+    let show = ::g_world_war.haveManagementAccessForAnyGroup()
     showSceneBtn("reinforcements_block", show)
     showSceneBtn("armies_block", show)
 
     local defaultTabId = 0
     if (show)
     {
-      local reinforcement = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT
+      let reinforcement = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT
       updateSecondaryBlockTab(reinforcement)
       if (reinforcement.needAutoSwitch())
         defaultTabId = reinforcement.code
@@ -200,7 +200,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateMainBlock()
   {
-    local operationBlockObj = scene.findObject("selected_page_block")
+    let operationBlockObj = scene.findObject("selected_page_block")
     if (!::checkObj(operationBlockObj))
       return
 
@@ -221,7 +221,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSecondaryBlockTabs()
   {
-    local blockObj = scene.findObject("reinforcement_pages_list")
+    let blockObj = scene.findObject("reinforcement_pages_list")
     if (!::checkObj(blockObj))
       return
 
@@ -235,8 +235,8 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(blockObj))
       return
 
-    local tabId = ::getTblValue("tabId", tab, "")
-    local tabObj = blockObj.findObject(tabId + "_text")
+    let tabId = ::getTblValue("tabId", tab, "")
+    let tabObj = blockObj.findObject(tabId + "_text")
     if (!::checkObj(tabObj))
       return
 
@@ -246,7 +246,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
     tabObj.setValue(tabName + tab.getTabTextPostfix())
 
-    local tabAlertObj = blockObj.findObject(tabId + "_alert")
+    let tabAlertObj = blockObj.findObject(tabId + "_alert")
     if (!::check_obj(tabAlertObj))
       return
 
@@ -261,7 +261,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!currentReinforcementInfoTabType || !isSecondaryBlockVisible())
       return
 
-    local commandersObj = scene.findObject("reinforcement_block")
+    let commandersObj = scene.findObject("reinforcement_block")
     if (!::checkObj(commandersObj))
       return
 
@@ -272,34 +272,34 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function isSecondaryBlockVisible()
   {
-    local secondaryBlockObj = scene.findObject("content_block_2")
+    let secondaryBlockObj = scene.findObject("content_block_2")
     return ::check_obj(secondaryBlockObj) && secondaryBlockObj.isVisible()
   }
 
   function initGCBottomBar()
   {
-    local obj = scene.findObject("gamercard_bottom_navbar_place")
+    let obj = scene.findObject("gamercard_bottom_navbar_place")
     if (!::checkObj(obj))
       return
-    guiScene.replaceContent(obj, "gui/worldWar/worldWarMapGCBottom.blk", this)
+    guiScene.replaceContent(obj, "%gui/worldWar/worldWarMapGCBottom.blk", this)
   }
 
   function initArmyControlButtons()
   {
-    local obj = scene.findObject("ww_army_controls_place")
+    let obj = scene.findObject("ww_army_controls_place")
     if (!::checkObj(obj))
       return
 
     local markUp = ""
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
-      markUp += ::handyman.renderCached("gui/commonParts/button", buttonView)
+      markUp += ::handyman.renderCached("%gui/commonParts/button", buttonView)
 
     guiScene.replaceContentFromText(obj, markUp, markUp.len(), this)
   }
 
   function updateArmyActionButtons()
   {
-    local nestObj = scene.findObject("ww_army_controls_nest")
+    let nestObj = scene.findObject("ww_army_controls_nest")
     if (!::check_obj(nestObj))
       return
 
@@ -314,7 +314,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       hasAccess = true
     else if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
-      local airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+      let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
       if (airfield.getAvailableFormations().len())
         hasAccess = true
     }
@@ -322,15 +322,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
              currentSelectedObject == mapObjectSelect.LOG_ARMY)
       hasAccess = ::g_world_war.haveManagementAccessForSelectedArmies()
 
-    local btnBlockObj = scene.findObject("ww_army_controls_place")
+    let btnBlockObj = scene.findObject("ww_army_controls_place")
     if (!::check_obj(btnBlockObj))
       return
 
     local showAny = false
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
     {
-      local showButton = hasAccess && !buttonView.isHidden()
-      local buttonObj = ::showBtn(buttonView.id, showButton, btnBlockObj)
+      let showButton = hasAccess && !buttonView.isHidden()
+      let buttonObj = ::showBtn(buttonView.id, showButton, btnBlockObj)
       if (showButton && ::check_obj(buttonObj))
       {
         buttonObj.enable(buttonView.isEnabled())
@@ -341,18 +341,18 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     }
     btnBlockObj.show(showAny)
 
-    local warningTextObj = scene.findObject("ww_no_army_to_controls")
+    let warningTextObj = scene.findObject("ww_no_army_to_controls")
     if (::check_obj(warningTextObj))
       warningTextObj.show(!showAny)
   }
 
   function initToBattleButton()
   {
-    local toBattleNest = showSceneBtn("gamercard_tobattle", true)
+    let toBattleNest = showSceneBtn("gamercard_tobattle", true)
     if (toBattleNest)
     {
       scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      local toBattleBlk = ::handyman.renderCached("gui/mainmenu/toBattleButton", {
+      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -364,17 +364,17 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateToBattleButton()
   {
-    local toBattleButtonObj = scene.findObject("to_battle_button")
+    let toBattleButtonObj = scene.findObject("to_battle_button")
     if (!::checkObj(scene) || !::checkObj(toBattleButtonObj))
       return
 
-    local isSquadMember = isOperationActive() && ::g_squad_manager.isSquadMember()
+    let isSquadMember = isOperationActive() && ::g_squad_manager.isSquadMember()
     local txt = ::loc("worldWar/btn_battles")
     local isCancel = false
 
     if (isSquadMember)
     {
-      local isReady = ::g_squad_manager.isMeReady()
+      let isReady = ::g_squad_manager.isMeReady()
       txt = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
       isCancel = isReady
     }
@@ -384,7 +384,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       isCancel = true
     }
 
-    local enable = isOperationActive() && hasBattlesToPlay()
+    let enable = isOperationActive() && hasBattlesToPlay()
     toBattleButtonObj.inactiveColor = enable? "no" : "yes"
     toBattleButtonObj.setValue(txt)
     toBattleButtonObj.findObject("to_battle_button_text").setValue(txt)
@@ -404,15 +404,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (::g_world_war.isCurrentOperationFinished())
       return ::showInfoMsgBox(::loc("worldwar/operation_complete"))
 
-    local isSquadMember = ::g_squad_manager.isSquadMember()
+    let isSquadMember = ::g_squad_manager.isSquadMember()
     if (isSquadMember)
       return ::g_squad_manager.setReadyFlag()
 
-    local isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+    let isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
     if (isInOperationQueue)
       return ::g_world_war.leaveWWBattleQueues()
 
-    local playerSide = ::ww_get_player_side()
+    let playerSide = ::ww_get_player_side()
     if (playerSide == ::SIDE_NONE)
       return ::showInfoMsgBox(::loc("msgbox/internal_error_header"))
 
@@ -449,7 +449,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onArmyMove(obj)
   {
-    local cursorPos = ::get_dagui_mouse_cursor_pos()
+    let cursorPos = ::get_dagui_mouse_cursor_pos()
 
     if (currentSelectedObject == mapObjectSelect.ARMY ||
         currentSelectedObject == mapObjectSelect.LOG_ARMY)
@@ -461,7 +461,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       })
     else if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
-      local mapObj = scene.findObject("worldwar_map")
+      let mapObj = scene.findObject("worldwar_map")
       if (!::checkObj(mapObj))
         return
 
@@ -501,16 +501,16 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function collectArmyStrengthData()
   {
-    local result = {}
+    let result = {}
 
-    local currentStrenghtInfo = ::g_world_war.getSidesStrenghtInfo()
+    let currentStrenghtInfo = ::g_world_war.getSidesStrenghtInfo()
     for (local side = ::SIDE_NONE; side < ::SIDE_TOTAL; side++)
     {
       if (!(side in currentStrenghtInfo))
         continue
 
-      local sideName = ::ww_side_val_to_name(side)
-      local armyGroups = ::g_world_war.getArmyGroupsBySide(side)
+      let sideName = ::ww_side_val_to_name(side)
+      let armyGroups = ::g_world_war.getArmyGroupsBySide(side)
       if (!armyGroups.len())
         continue
 
@@ -522,7 +522,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
       foreach(group in armyGroups)
       {
-        local country = group.getArmyCountry()
+        let country = group.getArmyCountry()
         if (!::isInArray(country, result[sideName].country))
           result[sideName].country.append(country)
       }
@@ -535,7 +535,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function collectUnitsData(formationsArray)
   {
-    local unitsList = []
+    let unitsList = []
     foreach(formation in formationsArray)
       unitsList.extend(formation.getUnits())
 
@@ -544,28 +544,28 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function markMainObjectiveZones()
   {
-    local objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
-    local staticBlk = ::u.copy(objectivesBlk?.data) || ::DataBlock()
-    local dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
+    let staticBlk = ::u.copy(objectivesBlk?.data) || ::DataBlock()
+    let dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
 
     for (local i = 0; i < staticBlk.blockCount(); i++)
     {
-      local statBlk = staticBlk.getBlock(i)
+      let statBlk = staticBlk.getBlock(i)
       if (!statBlk?.mainObjective)
         continue
 
-      local oType = ::g_ww_objective_type.getTypeByTypeName(statBlk?.type)
+      let oType = ::g_ww_objective_type.getTypeByTypeName(statBlk?.type)
       if (oType != ::g_ww_objective_type.OT_CAPTURE_ZONE)
         continue
 
-      local dynBlock = dynamicBlk?[statBlk.getBlockName()]
+      let dynBlock = dynamicBlk?[statBlk.getBlockName()]
       if (!dynBlock)
         continue
 
-      local zones = oType.getUpdatableZonesParams(
+      let zones = oType.getUpdatableZonesParams(
         dynBlock, statBlk, ::ww_side_val_to_name(::ww_get_player_side())
       )
       if (!zones.len())
@@ -573,8 +573,8 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
       for (local j = WW_MAP_HIGHLIGHT.LAYER_0; j<= WW_MAP_HIGHLIGHT.LAYER_2; j++)
       {
-        local filteredZones = zones.filter(@(zone) zone.mapLayer == j)
-        local zonesArray = ::u.map(filteredZones, @(zone) zone.id)
+        let filteredZones = zones.filter(@(zone) zone.mapLayer == j)
+        let zonesArray = ::u.map(filteredZones, @(zone) zone.id)
         ::ww_highlight_zones_by_name(zonesArray, j)
       }
     }
@@ -582,19 +582,19 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function showSidesStrenght()
   {
-    local blockObj = scene.findObject("content_block_3")
-    local armyStrengthData = collectArmyStrengthData()
+    let blockObj = scene.findObject("content_block_3")
+    let armyStrengthData = collectArmyStrengthData()
 
-    local orderArray = ::g_world_war.getSidesOrder()
+    let orderArray = ::g_world_war.getSidesOrder()
 
-    local side1Name = ::ww_side_val_to_name(orderArray.len()? orderArray[0] : ::SIDE_NONE)
-    local side1Data = ::getTblValue(side1Name, armyStrengthData, {})
+    let side1Name = ::ww_side_val_to_name(orderArray.len()? orderArray[0] : ::SIDE_NONE)
+    let side1Data = ::getTblValue(side1Name, armyStrengthData, {})
 
-    local side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
-    local side2Data = ::getTblValue(side2Name, armyStrengthData, {})
+    let side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
+    let side2Data = ::getTblValue(side2Name, armyStrengthData, {})
 
-    local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
-    local view = {
+    let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    let view = {
       armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       side1TotalVehicle = 0
@@ -602,9 +602,9 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       unitString = []
     }
 
-    local armyStrengthsTable = {}
-    local armyStrengths = []
-    local totalVehicle = {
+    let armyStrengthsTable = {}
+    let armyStrengths = []
+    let totalVehicle = {
       [side1Name] = 0,
       [side2Name] = 0
     }
@@ -646,7 +646,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     view.side1TotalVehicle = totalVehicle[side1Name]
     view.side2TotalVehicle = totalVehicle[side2Name]
 
-    local data = ::handyman.renderCached("gui/worldWar/worldWarMapSidesStrenght", view)
+    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapSidesStrenght", view)
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     needUpdateSidesStrenghtView = false
@@ -654,19 +654,19 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function showSelectedArmy()
   {
-    local blockObj = scene.findObject("content_block_3")
-    local selectedArmyNames = ::ww_get_selected_armies_names()
+    let blockObj = scene.findObject("content_block_3")
+    let selectedArmyNames = ::ww_get_selected_armies_names()
     if (!selectedArmyNames.len())
       return
 
-    local selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
+    let selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
     if (!selectedArmy.isValid())
     {
       ::ww_event("MapClearSelection")
       return
     }
 
-    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", selectedArmy.getView())
+    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", selectedArmy.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     if (timerDescriptionHandler)
@@ -685,11 +685,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function showSelectedLogArmy(params)
   {
-    local blockObj = scene.findObject("content_block_3")
+    let blockObj = scene.findObject("content_block_3")
     if (!::check_obj(blockObj) || !("wwArmy" in params))
       return
 
-    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", params.wwArmy.getView())
+    local data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", params.wwArmy.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -699,10 +699,10 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(blockObj) || !selectedArmy)
       return
 
-    local armyView = selectedArmy.getView()
+    let armyView = selectedArmy.getView()
     foreach (fieldId, func in armyView.getRedrawArmyStatusData())
     {
-      local redrawFieldObj = blockObj.findObject(fieldId)
+      let redrawFieldObj = blockObj.findObject(fieldId)
       if (::check_obj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView))
     }
@@ -712,13 +712,13 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function showSelectedReinforcement(params)
   {
-    local blockObj = scene.findObject("content_block_3")
-    local reinforcement = ::g_world_war.getReinforcementByName(::getTblValue("name", params))
+    let blockObj = scene.findObject("content_block_3")
+    let reinforcement = ::g_world_war.getReinforcementByName(::getTblValue("name", params))
     if (!reinforcement)
       return
 
-    local reinfView = reinforcement.getView()
-    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", reinfView)
+    let reinfView = reinforcement.getView()
+    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", reinfView)
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -731,7 +731,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
         getTblValue("formationId", params, -1) < 0)
       return
 
-    local airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+    let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
     local formation = null
 
     if (params.formationType == "formation")
@@ -751,14 +751,14 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local blockObj = scene.findObject("content_block_3")
-    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", formation.getView())
+    let blockObj = scene.findObject("content_block_3")
+    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", formation.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
   function setCurrentSelectedObject(value, params = {})
   {
-    local lastSelectedOject = currentSelectedObject
+    let lastSelectedOject = currentSelectedObject
     currentSelectedObject = value
     ::g_ww_map_controls_buttons.setSelectedObjectCode(currentSelectedObject)
 
@@ -795,25 +795,25 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateReinforcements()
   {
-    local hasUnseenIcon = updateRearZonesHighlight()
+    let hasUnseenIcon = updateRearZonesHighlight()
     updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.REINFORCEMENT, null, hasUnseenIcon)
     return ::g_world_war.hasSuspendedReinforcements()
   }
 
   function updateRearZonesHighlight()
   {
-    local emptySidesReinforcementList = {}
-    local rearZones = ::g_world_war.getRearZones()
+    let emptySidesReinforcementList = {}
+    let rearZones = ::g_world_war.getRearZones()
     foreach (sideName, zones in rearZones)
       emptySidesReinforcementList[::ww_side_name_to_val(sideName)] <- true
 
     local hasUnseenIcon = false
-    local arrivingReinforcementSides = {}
-    local reinforcements = ::g_world_war.getMyReadyReinforcementsArray()
+    let arrivingReinforcementSides = {}
+    let reinforcements = ::g_world_war.getMyReadyReinforcementsArray()
     foreach (reinforcement in reinforcements)
     {
-      local name = reinforcement?.name
-      local side = reinforcement?.armyGroup.owner.side
+      let name = reinforcement?.name
+      let side = reinforcement?.armyGroup.owner.side
       if (!side)
         continue
 
@@ -854,15 +854,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAFKData()
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::ww_get_sides_info(blk)
-    local sidesBlk = blk?.sides
+    let sidesBlk = blk?.sides
     if (sidesBlk == null)
       return
-    local loseSide = sidesBlk[::SIDE_2.tostring()].afkLoseTimeMsec
+    let loseSide = sidesBlk[::SIDE_2.tostring()].afkLoseTimeMsec
       < sidesBlk[::SIDE_1.tostring()].afkLoseTimeMsec
         ? ::SIDE_2 : ::SIDE_1
-    local newLoseTime = sidesBlk[loseSide.tostring()].afkLoseTimeMsec
+    let newLoseTime = sidesBlk[loseSide.tostring()].afkLoseTimeMsec
     afkData.isNeedAFKTimer = afkData.loseSide != loseSide || afkData.afkLoseTimeMsec != newLoseTime
     afkData.loseSide = loseSide
     afkData.afkLoseTimeMsec = newLoseTime
@@ -900,24 +900,24 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
   function fillAFKTimer()
   {
     destroyAllAFKTimers()
-    local afkLostObj = scene.findObject("afk_lost")
+    let afkLostObj = scene.findObject("afk_lost")
     if(::check_obj(afkLostObj))
       afkLostObj.show(false)
-    local operStatObj = scene.findObject("wwmap_operation_status")
+    let operStatObj = scene.findObject("wwmap_operation_status")
     if(::check_obj(operStatObj))
       operStatObj.animation = "hide"
-    local afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
+    let afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
       / ::ww_get_speedup_factor()).tointeger()
-    local delayTime = ::max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
+    let delayTime = ::max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
       - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
     afkLostTimer = ::Timer(scene, delayTime,
       function()
       {
-        local needMsgWnd = afkData.haveAccess && afkData.isMeLost
-        local textColor = needMsgWnd ? "white" : afkData.isMeLost
+        let needMsgWnd = afkData.haveAccess && afkData.isMeLost
+        let textColor = needMsgWnd ? "white" : afkData.isMeLost
           ? "wwTeamEnemyColor" : "wwTeamAllyColor"
-        local msgLoc = "".concat(
+        let msgLoc = "".concat(
           ::loc(afkData.isMeLost
             ? "worldwar/operation/myTechnicalDefeatWarning"
             : "worldwar/operation/enemyTechnicalDefeatWarning"),
@@ -926,14 +926,14 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
         afkCountdownTimer = ::Timer(scene, 1,
           function()
           {
-            local afkObj = scene.findObject("afk_lost")
-            local statObj = scene.findObject("wwmap_operation_status")
-            local textObj = statObj.findObject("wwmap_operation_status_text")
-            local afkLoseTime = time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
+            let afkObj = scene.findObject("afk_lost")
+            let statObj = scene.findObject("wwmap_operation_status")
+            let textObj = statObj.findObject("wwmap_operation_status_text")
+            let afkLoseTime = time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
               - ::g_world_war.getOperationTimeSec()
             if(afkLoseTime <= 0)
               afkCountdownTimer?.destroy()
-            local txt = afkLoseTime > 0
+            let txt = afkLoseTime > 0
               ? "".concat(::colorize(textColor, msgLoc), time.secondsToString(afkLoseTime))
               : ::colorize(textColor, ::loc(afkData.isMeLost
                 ? "worldwar/operation/myTechnicalDefeat"
@@ -956,28 +956,28 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function initOperationStatus(sendEvent = true)
   {
-    local objStartBox = scene.findObject("wwmap_operation_status")
+    let objStartBox = scene.findObject("wwmap_operation_status")
     if (!::check_obj(objStartBox))
       return
 
-    local objTarget = scene.findObject("operation_status")
+    let objTarget = scene.findObject("operation_status")
     if (!::check_obj(objTarget))
       return
 
-    local isFinished = ::g_world_war.isCurrentOperationFinished()
-    local isPaused = ::ww_is_operation_paused()
+    let isFinished = ::g_world_war.isCurrentOperationFinished()
+    let isPaused = ::ww_is_operation_paused()
     local statusText = ""
 
     if (isFinished)
     {
-      local isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
+      let isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
       statusText = ::loc(isVictory ? "debriefing/victory" : "debriefing/defeat")
       guiScene.playSound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
       objStartBox.show(true)
     }
     else if (isPaused)
     {
-      local activationTime = ::ww_get_operation_activation_time()
+      let activationTime = ::ww_get_operation_activation_time()
       objStartBox.show(true)
       if (activationTime)
       {
@@ -1001,11 +1001,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     objTarget.setValue(statusText)
     objTarget.show(false)
 
-    local copyObjTarget = scene.findObject("operation_status_hidden_copy")
+    let copyObjTarget = scene.findObject("operation_status_hidden_copy")
     if (::check_obj(copyObjTarget))
       copyObjTarget.setValue(statusText)
 
-    local objStart = objStartBox.findObject("wwmap_operation_status_text")
+    let objStart = objStartBox.findObject("wwmap_operation_status_text")
     if (!::check_obj(objStart))
     {
       objTarget.setValue(statusText)
@@ -1033,11 +1033,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function fullTimeToStartOperation()
   {
-    local activationTime = ::ww_get_operation_activation_time()
+    let activationTime = ::ww_get_operation_activation_time()
     if (activationTime)
       foreach (objName in ["operation_status", "wwmap_operation_status_text"])
       {
-        local obj = scene.findObject(objName)
+        let obj = scene.findObject(objName)
         if (::check_obj(obj))
           obj.setValue(getTimeToStartOperationText(activationTime))
       }
@@ -1050,15 +1050,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTimeToStartOperationText(activationTime)
   {
-    local activationMillis = activationTime - get_charserver_time_millisec()
+    let activationMillis = activationTime - get_charserver_time_millisec()
     if (activationMillis <= 0)
       return ""
 
-    local activationSec = time.millisecondsToSecondsInt(activationMillis)
+    let activationSec = time.millisecondsToSecondsInt(activationMillis)
     if (activationSec == 0)
       return ::loc("debriefing/pause")
 
-    local timeToActivation = ::loc("worldwar/activationTime",
+    let timeToActivation = ::loc("worldwar/activationTime",
       {text = time.hoursToString(time.secondsToHours(activationSec), false, true)})
     return ::loc("debriefing/pause") + ::loc("ui/parentheses/space",
       {text = timeToActivation})
@@ -1081,7 +1081,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWMapAirfieldSelected(params)
   {
-    local tabsObj = scene.findObject("reinforcement_pages_list")
+    let tabsObj = scene.findObject("reinforcement_pages_list")
     if (tabsObj.getValue() != 2)
     {
       tabsObj.setValue(2)
@@ -1141,7 +1141,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWMapSelectedBattle(params)
   {
-    local wwBattle = ::getTblValue("battle", params, ::WwBattle())
+    let wwBattle = ::getTblValue("battle", params, ::WwBattle())
     openBattleDescriptionModal(wwBattle)
   }
 
@@ -1152,11 +1152,11 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWSelectedReinforcement(params)
   {
-    local mapObj = scene.findObject("worldwar_map")
+    let mapObj = scene.findObject("worldwar_map")
     if (!::checkObj(mapObj))
       return
 
-    local name = ::getTblValue("name", params, "")
+    let name = ::getTblValue("name", params, "")
     if (::u.isEmpty(name))
       return
 
@@ -1185,21 +1185,21 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeInfoBlockVisibility(obj)
   {
-    local blockObj = getObj("ww-right-panel")
+    let blockObj = getObj("ww-right-panel")
     if (!::check_obj(blockObj))
       return
 
     isRightPanelVisible = !isRightPanelVisible
     blockObj.show(isRightPanelVisible)
 
-    local rootObj = obj.getParent()
+    let rootObj = obj.getParent()
     rootObj.collapsed = isRightPanelVisible ? "no" : "yes"
     updateGamercardType()
   }
 
   function onEventWWShowLogArmy(params)
   {
-    local mapObj = guiScene["worldwar_map"]
+    let mapObj = guiScene["worldwar_map"]
     if (::check_obj(mapObj))
       ::ww_gui_bhv.worldWarMapControls.selectArmy.call(
         ::ww_gui_bhv.worldWarMapControls, mapObj, params.wwArmy.getName(), true, mapObjectSelect.LOG_ARMY
@@ -1209,7 +1209,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWNewLogsDisplayed(params)
   {
-    local tabObj = getObj("operation_log_block_text")
+    let tabObj = getObj("operation_log_block_text")
     if (!::check_obj(tabObj))
       return
 
@@ -1221,17 +1221,17 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWMapArmiesByStatusUpdated(params)
   {
-    local armies = ::getTblValue("armies", params, [])
+    let armies = ::getTblValue("armies", params, [])
     if (armies.len() == 0)
       return
 
     updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.ARMIES)
 
-    local selectedArmyNames = ::ww_get_selected_armies_names()
+    let selectedArmyNames = ::ww_get_selected_armies_names()
     if (!selectedArmyNames.len())
       return
 
-    local army = armies[0]
+    let army = armies[0]
     if (army.name != selectedArmyNames[0])
       return
 
@@ -1240,15 +1240,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWShowRearZones(params)
   {
-    local reinforcement = ::g_world_war.getReinforcementByName(params?.name)
+    let reinforcement = ::g_world_war.getReinforcementByName(params?.name)
     if (!reinforcement)
       return
 
-    local reinforcementSide = reinforcement.getArmySide()
-    local reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
+    let reinforcementSide = reinforcement.getArmySide()
+    let reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
     local highlightedZones = []
     if (::g_ww_unit_type.isAir(reinforcementType)) {
-      local filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
+      let filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
       highlightedZones = ::u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
         function(airfield) {
           return ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
@@ -1296,12 +1296,12 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
   {
     initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
 
-    local tabsObj = scene.findObject("reinforcement_pages_list")
+    let tabsObj = scene.findObject("reinforcement_pages_list")
     if (!::check_obj(tabsObj))
       return
 
-    local tabBlockId = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
-    local tabBlockObj = tabsObj.findObject(tabBlockId)
+    let tabBlockId = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
+    let tabBlockObj = tabsObj.findObject(tabBlockId)
     if (!::check_obj(tabBlockObj) || !tabBlockObj.isVisible())
       return
 
@@ -1311,12 +1311,12 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventMyClanIdChanged(p)
   {
-    local wwOperation = getOperationById(::ww_get_operation_id())
+    let wwOperation = getOperationById(::ww_get_operation_id())
     if (!wwOperation)
       return
 
-    local joinCountry = wwOperation.getMyAssignCountry()
-    local cantJoinReason = wwOperation.getCantJoinReasonData(joinCountry)
+    let joinCountry = wwOperation.getMyAssignCountry()
+    let cantJoinReason = wwOperation.getCantJoinReasonData(joinCountry)
 
     if (!cantJoinReason.canJoin)
     {
@@ -1329,18 +1329,18 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
   {
     initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
 
-    local objStartBox = scene.findObject("wwmap_operation_objective")
+    let objStartBox = scene.findObject("wwmap_operation_objective")
     if (!::check_obj(objStartBox))
       return
 
     local objTarget = null
-    local objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = ::g_world_war.getOperationObjectives()
     foreach (dataBlk in objectivesBlk.data)
     {
       if (!dataBlk?.mainObjective)
         continue
 
-      local oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
+      let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
       objTarget = scene.findObject(oType.getNameId(dataBlk, ::ww_get_player_side()))
       if (objTarget)
         break
@@ -1352,10 +1352,10 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     objStartBox.show(true)
     objStartBox.animation = "show"
 
-    local objStart = ::showBtn("objective_anim_start_text", true, objStartBox)
+    let objStart = ::showBtn("objective_anim_start_text", true, objStartBox)
     objStart.setValue(objTarget.getValue())
 
-    local animationFunc = function() {
+    let animationFunc = function() {
       objStartBox.animation = "hide"
       ::create_ObjMoveToOBj(scene, objStart, objTarget,
         {time = 0.6, bhvFunc = "square", isTargetVisible = true})
@@ -1366,14 +1366,14 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function getWndHelpConfig()
   {
-    local res = {
-      textsBlk = "gui/worldWar/wwMapHelp.blk"
+    let res = {
+      textsBlk = "%gui/worldWar/wwMapHelp.blk"
       objContainer = scene.findObject("root-box")
     }
 
-    local tab1 = currentOperationInfoTabType
-    local tab2 = currentReinforcementInfoTabType
-    local links = [
+    let tab1 = currentOperationInfoTabType
+    let tab2 = currentReinforcementInfoTabType
+    let links = [
       { obj = "topmenu_ww_menu_btn"
         msgId = "hint_topmenu_ww_menu_btn"
       },
@@ -1443,7 +1443,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtonsAfterSetMode(isEnabled)
   {
-    local cancelBtnObj = scene.findObject("cancel_action_mode")
+    let cancelBtnObj = scene.findObject("cancel_action_mode")
     if (::check_obj(cancelBtnObj))
       cancelBtnObj.enable(isEnabled)
   }

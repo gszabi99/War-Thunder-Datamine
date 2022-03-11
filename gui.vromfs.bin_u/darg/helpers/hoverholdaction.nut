@@ -2,12 +2,12 @@ from "daRg" import gui_scene
 
 const REPAY_TIME = 0.3
 
-local allTimers = {}
+let allTimers = {}
 
-local function mkOnHover(groupId, itemId, action, repayTime = REPAY_TIME) {
+let function mkOnHover(groupId, itemId, action, repayTime = REPAY_TIME) {
   if (!(groupId in allTimers))
     allTimers[groupId] <- {}
-  local groupTimers = allTimers[groupId]
+  let groupTimers = allTimers[groupId]
   return function(on) {
     if (groupTimers?[itemId]) {
       gui_scene.clearTimer(groupTimers[itemId])

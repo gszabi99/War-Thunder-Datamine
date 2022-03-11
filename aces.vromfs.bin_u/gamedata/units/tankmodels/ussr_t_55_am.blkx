@@ -181,6 +181,9 @@
         "turret_01_front_dm": {
           "armorThickness": 5.0,
           "hidableInViewer": true
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 5.0
         }
       },
       "anti_fragmentation_screen": {
@@ -329,7 +332,8 @@
           "armorThickness": 200.0
         },
         "turret_side_dm": {
-          "armorThickness": 160.0
+          "armorThickness": 160.0,
+          "variableThickness": true
         },
         "turret_01_side_dm": {
           "armorThickness": 140.0
@@ -339,9 +343,6 @@
         },
         "turret_02_top_dm": {
           "armorThickness": 60.0
-        },
-        "turret_01_back_dm": {
-          "armorThickness": 45.0
         },
         "turret_03_side_dm": {
           "armorThickness": 100.0
@@ -572,7 +573,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -603,7 +604,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2733,12 +2734,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 0.0,
-          "errMeasureVelFwdShift": 0.0,
-          "errMeasureVelDir": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
+          "errMeasureVelFast": 40.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 5.0,
+          "errTargettingOn100kmph": 5.0,
+          "errTargetting": 15.0,
+          "errExplTime": 0.02,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -3749,12 +3750,12 @@
                 "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
+                "errMeasureVelFast": 40.0,
+                "errMeasureVelFwdShift": 1.0,
+                "errMeasureVelDir": 5.0,
+                "errTargettingOn100kmph": 5.0,
+                "errTargetting": 15.0,
+                "errExplTime": 0.02,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",
@@ -3876,22 +3877,22 @@
                   "errMeasureVel": 0.0
                 },
                 {
-                  "errMeasureVelFast": 0.0
+                  "errMeasureVelFast": 40.0
                 },
                 {
-                  "errMeasureVelFwdShift": 0.0
+                  "errMeasureVelFwdShift": 1.0
                 },
                 {
-                  "errMeasureVelDir": 0.0
+                  "errMeasureVelDir": 5.0
                 },
                 {
-                  "errTargettingOn100kmph": 0.0
+                  "errTargettingOn100kmph": 5.0
                 },
                 {
-                  "errTargetting": 3.0
+                  "errTargetting": 15.0
                 },
                 {
-                  "errExplTime": 0.0
+                  "errExplTime": 0.02
                 },
                 {
                   "turret": {

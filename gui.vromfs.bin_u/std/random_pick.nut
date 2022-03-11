@@ -1,7 +1,7 @@
-local Rand = require("rand.nut")
+let Rand = require("rand.nut")
 
-local function pickword(dictionary, seed=null, allow_cache=false){
-  local rand = Rand(seed)
+let function pickword(dictionary, seed=null, allow_cache=false){
+  let rand = Rand(seed)
   local totalWeight = 0.0
   assert(["table","array"].indexof(type(dictionary))!=null, "dictionary should be array or table")
   if (type(dictionary) == "table"){
@@ -18,13 +18,13 @@ local function pickword(dictionary, seed=null, allow_cache=false){
   }
   if (totalWeight <= 0.0)
     return null
-  local rand_val = rand.rfloat(0, totalWeight)
+  let rand_val = rand.rfloat(0, totalWeight)
   local ret = null
   local cur_rand_sum = 0
   foreach (key, val in dictionary) {
-    local isArray = type(dictionary) == "array"
-    local word = isArray ? val : key
-    local weight = isArray ? 1 : val.tofloat()
+    let isArray = type(dictionary) == "array"
+    let word = isArray ? val : key
+    let weight = isArray ? 1 : val.tofloat()
     if (word == "___totalWeight___")
       continue
     cur_rand_sum += weight

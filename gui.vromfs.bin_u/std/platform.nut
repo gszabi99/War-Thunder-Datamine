@@ -1,40 +1,43 @@
-local {dgs_get_settings} = require("dagor.system")
-local platform = require("platform")
-local {get_platform_string_id, get_console_model, get_console_model_revision} = platform
+let {dgs_get_settings} = require("dagor.system")
+let platform = require("platform")
+let {get_platform_string_id, get_console_model, get_console_model_revision} = platform
 
-local platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
-local oneOf = @(...) vargv.contains(platformId)
-local consoleModel = get_console_model()
-local isModel = @(model) consoleModel == model
-local consoleRevision = get_console_model_revision(consoleModel)
+let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
+let oneOf = @(...) vargv.contains(platformId)
+let consoleModel = get_console_model()
+let isModel = @(model) consoleModel == model
+let consoleRevision = get_console_model_revision(consoleModel)
 
-local is_pc = oneOf("win32", "win64", "macosx", "linux64")
-local is_sony = oneOf("ps4", "ps5")
-local is_xbox = oneOf("xboxOne", "xboxScarlett")
-local is_nswitch = oneOf("nswitch")
-local is_mobile = oneOf("iOS", "android")
-local is_console = is_sony || is_xbox || is_nswitch
-local isXboxOne = platformId == "xboxOne"
-local isXboxScarlett = platformId == "xboxScarlett"
-local isXbox = isXboxOne || isXboxScarlett
+let is_pc = oneOf("win32", "win64", "macosx", "linux64")
+let is_sony = oneOf("ps4", "ps5")
+let is_xbox = oneOf("xboxOne", "xboxScarlett")
+let is_nswitch = oneOf("nswitch")
+let is_mobile = oneOf("iOS", "android")
+let is_android = platformId == "android"
+let is_console = is_sony || is_xbox || is_nswitch
+let isXboxOne = platformId == "xboxOne"
+let isXboxScarlett = platformId == "xboxScarlett"
+let isXbox = isXboxOne || isXboxScarlett
 
-local isPS4 = platformId == "ps4"
-local isPS5 = platformId == "ps5"
-local isSony = isPS4 || isPS5
+let isPS4 = platformId == "ps4"
+let isPS5 = platformId == "ps5"
+let isSony = is_sony
 
-local isPC = ["win32", "win64", "macosx", "linux64"].contains(platformId)
+let isPC = is_pc
 
-local aliases = {
+let aliases = {
   pc = is_pc
   xbox = is_xbox
   sony = is_sony
   console = is_console
   mobile = is_mobile
+  google = is_android
 }
-local platformAlias = is_sony ? "sony"
+let platformAlias = is_sony ? "sony"
   : is_xbox ? "xbox"
   : is_mobile ? "mobile"
   : is_pc ? "pc"
+  : is_android ? "android"
   : platformId
 
 enum SCE_REGION {
@@ -52,9 +55,9 @@ return {
   is_ps4 = oneOf("ps4")
   is_ps5 = oneOf("ps5")
   is_sony
-  is_android = oneOf("android")
   is_ios = oneOf("iOS")
   is_mobile
+  is_android
   is_xbox
   is_xboxone = oneOf("xboxOne")
   is_xbox_scarlett = oneOf("xboxScarlett")

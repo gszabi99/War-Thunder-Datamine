@@ -1,4 +1,4 @@
-local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+let { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 
 slotInfoPanelButtons([
   {

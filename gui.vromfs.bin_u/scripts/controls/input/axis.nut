@@ -1,6 +1,6 @@
-local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 
-class ::Input.Axis extends ::Input.InputBase
+::Input.Axis <- class extends ::Input.InputBase
 {
   //from ::JoystickParams().getAxis()
   axisId = null
@@ -26,13 +26,13 @@ class ::Input.Axis extends ::Input.InputBase
 
   function getMarkup()
   {
-    local data = getMarkupData()
+    let data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
-    local data = {
+    let data = {
       template = ""
       view = {}
     }
@@ -40,17 +40,17 @@ class ::Input.Axis extends ::Input.InputBase
     if (deviceId == ::JOYSTICK_DEVICE_0_ID)
     {
       data.view.buttonImage <- getImage()
-      data.template = "gui/shortcutAxis"
+      data.template = "%gui/shortcutAxis"
     }
     else if (deviceId == ::STD_MOUSE_DEVICE_ID)
     {
       data.view.buttonImage <- getImage()
-      data.template = "gui/shortcutAxis"
+      data.template = "%gui/shortcutAxis"
     }
     else
     {
       data.view.text <- getText()
-      data.template = "gui/keyboardButton"
+      data.template = "%gui/keyboardButton"
     }
 
     return data
@@ -58,7 +58,7 @@ class ::Input.Axis extends ::Input.InputBase
 
   function getText()
   {
-    local device = ::joystick_get_default()
+    let device = ::joystick_get_default()
     if (!device)
       return ""
 

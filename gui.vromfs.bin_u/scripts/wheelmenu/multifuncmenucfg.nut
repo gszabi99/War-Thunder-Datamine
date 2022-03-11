@@ -1,59 +1,59 @@
-local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local vehicleModel = require("vehicleModel")
-local { is_bit_set, number_of_set_bits } = require("std/math.nut")
-local { getCantUseVoiceMessagesReason } = require("scripts/wheelmenu/voiceMessages.nut")
-local memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
-local { emulateShortcut } = ::require_native("controls")
+let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let vehicleModel = require("vehicleModel")
+let { is_bit_set, number_of_set_bits } = require("std/math.nut")
+let { getCantUseVoiceMessagesReason } = require("scripts/wheelmenu/voiceMessages.nut")
+let memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
+let { emulateShortcut } = ::require_native("controls")
 
-local getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
-local toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
+let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
+let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 
-local function memoizeByMission(func, hashFunc = null) {
+let function memoizeByMission(func, hashFunc = null) {
   return memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 }
 
-local hasFlaps = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
-local hasGear  = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
-local hasAirbrake = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
-local hasChite = ::memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
-local hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
-local hasBayDoor = memoizeByMission(@(unitId) vehicleModel.hasBayDoor())
-local hasSchraegeMusik = ::memoize(@(unitId) vehicleModel.hasSchraegeMusik())
-local hasCountermeasureFlareGuns = ::memoize(@(unitId) vehicleModel.hasCountermeasureFlareGuns())
-local hasCountermeasureSystemIRCM = ::memoize(@(unitId) vehicleModel.hasCountermeasureSystemIRCM())
+let hasFlaps = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
+let hasGear  = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
+let hasAirbrake = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
+let hasChite = ::memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
+let hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
+let hasBayDoor = memoizeByMission(@(unitId) vehicleModel.hasBayDoor())
+let hasSchraegeMusik = ::memoize(@(unitId) vehicleModel.hasSchraegeMusik())
+let hasCountermeasureFlareGuns = ::memoize(@(unitId) vehicleModel.hasCountermeasureFlareGuns())
+let hasCountermeasureSystemIRCM = ::memoize(@(unitId) vehicleModel.hasCountermeasureSystemIRCM())
 
-local hasCollimatorSight = ::memoize(@(unitId) vehicleModel.hasCollimatorSight())
-local hasSightStabilization = ::memoize(@(unitId) vehicleModel.hasSightStabilization())
-local hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
-local hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
-local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
-local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
-local hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
-local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
-local isTerraformAvailable = ::memoize(@(unitId) vehicleModel.isTerraformAvailable())
-local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
-local hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
-local getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
+let hasCollimatorSight = ::memoize(@(unitId) vehicleModel.hasCollimatorSight())
+let hasSightStabilization = ::memoize(@(unitId) vehicleModel.hasSightStabilization())
+let hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
+let hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
+let hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
+let hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
+let hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
+let hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
+let isTerraformAvailable = ::memoize(@(unitId) vehicleModel.isTerraformAvailable())
+let canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
+let hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
+let getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
 
-local hasAiGunners = memoizeByMission(@(unitId) vehicleModel.hasAiGunners())
-local hasGunStabilizer = ::memoize(@(unitId) vehicleModel.hasGunStabilizer())
-local hasAlternativeShotFrequency = ::memoize(@(unitId) vehicleModel.hasAlternativeShotFrequency())
+let hasAiGunners = memoizeByMission(@(unitId) vehicleModel.hasAiGunners())
+let hasGunStabilizer = ::memoize(@(unitId) vehicleModel.hasGunStabilizer())
+let hasAlternativeShotFrequency = ::memoize(@(unitId) vehicleModel.hasAlternativeShotFrequency())
 
-local getWeapTgMask = ::memoize(@(unitId) vehicleModel.getWeaponsTriggerGroupsMask())
-local hasMultipleWeaponTriggers = ::memoize(@(unitId) number_of_set_bits(getWeapTgMask(unitId)) > 1)
-local hasWeaponPrimary    = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_PRIMARY))
-local hasWeaponSecondary  = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_SECONDARY))
-local hasWeaponMachinegun = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_MACHINE_GUN))
+let getWeapTgMask = ::memoize(@(unitId) vehicleModel.getWeaponsTriggerGroupsMask())
+let hasMultipleWeaponTriggers = ::memoize(@(unitId) number_of_set_bits(getWeapTgMask(unitId)) > 1)
+let hasWeaponPrimary    = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_PRIMARY))
+let hasWeaponSecondary  = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_SECONDARY))
+let hasWeaponMachinegun = ::memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_MACHINE_GUN))
 
-local hasCameraCockpit  = ::memoize(@(unitId) vehicleModel.hasCockpit())
-local hasCameraExternal       = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
-local hasCameraVirtualCockpit = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
-local hasCameraGunner   = ::memoize(@(unitId) vehicleModel.hasGunners())
-local hasCameraBombview = ::memoize(@(unitId) vehicleModel.hasBombview())
+let hasCameraCockpit  = ::memoize(@(unitId) vehicleModel.hasCockpit())
+let hasCameraExternal       = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
+let hasCameraVirtualCockpit = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
+let hasCameraGunner   = ::memoize(@(unitId) vehicleModel.hasGunners())
+let hasCameraBombview = ::memoize(@(unitId) vehicleModel.hasBombview())
 
-local hasMissionBombingZones = memoizeByMission(@(unitId) vehicleModel.hasMissionBombingZones())
+let hasMissionBombingZones = memoizeByMission(@(unitId) vehicleModel.hasMissionBombingZones())
 
-local hasEnginesWithFeatheringControl = ::memoize(function(unitId) {
+let hasEnginesWithFeatheringControl = ::memoize(function(unitId) {
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
     if (vehicleModel.hasFeatheringControl(idx))
       return true
@@ -61,36 +61,36 @@ local hasEnginesWithFeatheringControl = ::memoize(function(unitId) {
 })
 
 local savedManualEngineControlValue = false
-local function enableManualEngineControl() {
+let function enableManualEngineControl() {
   savedManualEngineControlValue = vehicleModel.canUseManualEngineControl()
   if (savedManualEngineControlValue == false)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
-local function restoreManualEngineControl() {
+let function restoreManualEngineControl() {
   if (vehicleModel.canUseManualEngineControl() != savedManualEngineControlValue)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
 
 local savedEngineControlBitMask = 0xFF
-local function selectControlEngine(engineNum) {
+let function selectControlEngine(engineNum) {
   savedEngineControlBitMask = vehicleModel.getEngineControlBitMask()
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
     if ((idx == engineNum-1) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
-local function restoreControlEngines() {
-  local curMask = vehicleModel.getEngineControlBitMask()
+let function restoreControlEngines() {
+  let curMask = vehicleModel.getEngineControlBitMask()
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
     if (is_bit_set(curMask, idx) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
 
-local function voiceMessagesMenuFunc() {
+let function voiceMessagesMenuFunc() {
   if (!::is_xinput_device())
     return null
   if (getCantUseVoiceMessagesReason(false) != "")
     return null
-  local shouldUseSquadMsg = ::is_last_voice_message_list_for_squad()
+  let shouldUseSquadMsg = ::is_last_voice_message_list_for_squad()
     && getCantUseVoiceMessagesReason(true) == ""
   return {
     action = ::Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
@@ -103,7 +103,7 @@ local function voiceMessagesMenuFunc() {
 
 //--------------------------------------------------------------------------------------------------
 
-local cfg = {
+let cfg = {
 
   ["root_air"] = {
     title = "hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU"
@@ -178,10 +178,10 @@ local cfg = {
   ["radar"] = {
     title = "hotkeys/ID_SENSORS_HEADER"
     enable = ::memoize(function(unitId) {
-      local unitBlk = ::get_full_unit_blk(unitId)
+      let unitBlk = ::get_full_unit_blk(unitId)
       if (unitBlk?.sensors)
         foreach (sensor in (unitBlk.sensors % "sensor")) {
-          local sensorBlk = blkOptFromPath(sensor?.blk)
+          let sensorBlk = blkOptFromPath(sensor?.blk)
           if (sensorBlk?.type == "radar" && (sensorBlk?.showOnHud ?? true))
             return true
         }

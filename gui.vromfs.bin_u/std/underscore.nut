@@ -12,27 +12,27 @@
   make common iteratee function
 */
 
-local isTable = @(v) typeof(v)=="table"
-local isArray = @(v) typeof(v)=="array"
-local isString = @(v) typeof(v)=="string"
-local isFunction = @(v) typeof(v)=="function"
-local function isDataBlock(obj) {
+let isTable = @(v) typeof(v)=="table"
+let isArray = @(v) typeof(v)=="array"
+let isString = @(v) typeof(v)=="string"
+let isFunction = @(v) typeof(v)=="function"
+let function isDataBlock(obj) {
   //prefer this as it can handle any DataBlock binding and implementation
   if (obj?.paramCount!=null && obj?.blockCount != null)
     return true
   return false
 }
 
-local callableTypes = ["function","table","instance"]
-local recursivetypes =["table","array","class"]
+let callableTypes = ["function","table","instance"]
+let recursivetypes =["table","array","class"]
 
-local function isCallable(v) {
+let function isCallable(v) {
   return callableTypes.indexof(type(v)) != null && (v.getfuncinfos() != null)
 }
 
-local function mkIteratee(func){
-  local infos = func.getfuncinfos()
-  local params = infos.parameters.len()-1
+let function mkIteratee(func){
+  let infos = func.getfuncinfos()
+  let params = infos.parameters.len()-1
   assert(params>0 && params<3)
   if (params == 3)
     return func
@@ -45,14 +45,14 @@ local function mkIteratee(func){
 /**
   Check for proper iteratee and so on - under construction
 */
-local function funcCheckArgsNum(func, numRequired){
-  local infos = func.getfuncinfos()
+let function funcCheckArgsNum(func, numRequired){
+  let infos = func.getfuncinfos()
   local plen = infos.parameters.len() - 1
-  local deplen = infos.defparams.len()
-  local isVargv = infos.varargs > 0
+  let deplen = infos.defparams.len()
+  let isVargv = infos.varargs > 0
   if (isVargv)
     plen -= 2
-  local mandatoryParams = plen - deplen
+  let mandatoryParams = plen - deplen
   if (mandatoryParams > numRequired)
     return false
   if ((mandatoryParams <= numRequired) && (plen >= numRequired))
@@ -73,8 +73,8 @@ one whose elements all satisfy predicate and one whose elements all do not satis
 predicate is transformed through iteratee to facilitate shorthand syntaxes.
 */
 local function partition(list, predicate){
-  local ok = []
-  local not_ok = []
+  let ok = []
+  let not_ok = []
   predicate = mkIteratee(predicate)
   foreach(index, value in list){
     if (predicate(value, index, list))
@@ -97,7 +97,7 @@ local function partition(list, predicate){
   => ["moe", "larry", "curly"]
   if entry doesnt have property it skipped in return value
  */
-local function pluck(list, propertyName){
+let function pluck(list, propertyName){
   return list.map(function(v){
     if (propertyName not in v)
       throw null
@@ -117,8 +117,8 @@ local function pluck(list, propertyName){
  * values the keys. For this to work, all of your table's values should be
  * unique and string serializable.
  */
-local function invert(table) {
-  local res = {}
+let function invert(table) {
+  let res = {}
   foreach (key, val in table)
     res[val] <- key
   return res
@@ -130,7 +130,7 @@ local function invert(table) {
  * If value not exist in one of table it will be pushed to func as defValue
  */
 local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
-  local res = {}
+  let res = {}
   if (func == null)
     func = function (val1, val2) {return val2}
   foreach(key, value in tbl1)
@@ -143,10 +143,10 @@ local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams =
   return res
 }
 
-local function isEqual(val1, val2, customIsEqual={}){
+let function isEqual(val1, val2, customIsEqual={}){
   if (val1 == val2)
     return true
-  local valType = type(val1)
+  let valType = type(val1)
   if (valType != type(val2))
     return false
 
@@ -180,11 +180,11 @@ local function isEqual(val1, val2, customIsEqual={}){
 * (for example to extract key form list of tables to make unique by that)
 */
 local function unique(list, hashfunc=null){
-  local values = {}
-  local res = []
+  let values = {}
+  let res = []
   hashfunc = hashfunc ?? @(v) v
   foreach (v in list){
-    local hash = hashfunc(v)
+    let hash = hashfunc(v)
     if (hash in values)
       continue
     values[hash]<-true
@@ -198,14 +198,14 @@ foreach (k, v in range(-1, -5, -1))
 print("\n")
 // -1  -2  -3  -4
 */
-local function range(m, n=null, step=1) {
-  local start = n==null ? 0 : m
-  local end = n==null ? m : n
+let function range(m, n=null, step=1) {
+  let start = n==null ? 0 : m
+  let end = n==null ? m : n
   for (local i=start; (end>start) ? i<end : i>end; i+=step)
     yield i
 }
 
-local function enumerate(obj) {
+let function enumerate(obj) {
   foreach (k, v in obj)
     yield [k, v]
 }
@@ -231,9 +231,9 @@ foreach (pair in reversed_enumerate(arr)) { // unfortunatel we have no destructu
 // [1]: b
 // [0]: a
 */
-local function reversed_enumerate(obj) {
+let function reversed_enumerate(obj) {
   assert(isArray(obj), "reversed supported only for arrays")
-  local l = obj.len()
+  let l = obj.len()
   for (local i=l-1; i>=0; --i)
     yield [i, obj[i]]
 }
@@ -253,8 +253,8 @@ local function isEqualSimple(list1, list2, compareFunc=null) {
 }
 
 //create from one-dimentional array two-dimentional array by slice it to rows with fixed amount of columns
-local function arrayByRows(arr, columns) {
-  local res = []
+let function arrayByRows(arr, columns) {
+  let res = []
   for(local i = 0; i < arr.len(); i += columns)
     res.append(arr.slice(i, i + columns))
   return res
@@ -264,13 +264,13 @@ local function arrayByRows(arr, columns) {
 **Chunk a single array into multiple arrays, each containing count or fewer items.
 */
 
-local function chunk(list, count) {
+let function chunk(list, count) {
   if (count == null || count < 1) return []
-  local result = []
+  let result = []
   local i = 0
-  local length = list.len()
+  let length = list.len()
   while (i < length) {
-    local n = i + count
+    let n = i + count
     result.append(list.slice(i, n))
     i = n
   }
@@ -282,8 +282,8 @@ local function chunk(list, count) {
  * element in the array (or a property name), returns an object with an index
  * of each item.
  */
-local function indexBy(list, iteratee) {
-  local res = {}
+let function indexBy(list, iteratee) {
+  let res = {}
   if (isString(iteratee)){
     foreach (idx, val in list)
       res[val[iteratee]] <- val
@@ -296,7 +296,7 @@ local function indexBy(list, iteratee) {
   return res
 }
 
-local function deep_clone(val) {
+let function deep_clone(val) {
   if (!recursivetypes.contains(type(val)))
     return val
   return val.map(deep_clone)
@@ -335,15 +335,15 @@ local function deep_update(target, source) {
 }
 
 //Creates new value from target and source, by merges (mutates) target arrays and tables recursively with source
-local function deep_merge(target, source) {
-  local ret = deep_clone(target)
+let function deep_merge(target, source) {
+  let ret = deep_clone(target)
   return deep_update(ret, source)
 }
 //
-local function flatten(list, depth = -1, level=0){
+let function flatten(list, depth = -1, level=0){
   if (!isArray(list))
     return list
-  local res = []
+  let res = []
   foreach (i in list){
     if (!isArray(i) || level==depth)
       res.append(i)
@@ -361,7 +361,7 @@ local function flatten(list, depth = -1, level=0){
 
 examples:
 ```
-local {set_huge_alloc_threshold} = require("dagor.memtrace")
+let {set_huge_alloc_threshold} = require("dagor.memtrace")
 local class ChangeAllocThres{
   _prev_limit = null
   _limit = null
@@ -376,14 +376,14 @@ local a = do_in_scope(ChangeAllocThres(8<<10), @(...) array(10000000, {foo=10}))
 ```
 */
 
-local function do_in_scope(obj, doFn){
+let function do_in_scope(obj, doFn){
   assert(
     type(obj)=="instance" &&  "__enter__" in obj && "__exit__" in obj,
     "to support 'do_in_scope' object passed as first argument should implement '__enter__' and '__exit__' methods"
   )
   assert(type(doFn) == "function", "function should be passed as second argument")
 
-  local on = obj.__enter__()
+  let on = obj.__enter__()
   local err
   local res
   try{
@@ -399,6 +399,17 @@ local function do_in_scope(obj, doFn){
   return res
 }
 
+let function insertGap(list, gap){
+  let res = []
+  let len = list.len()
+  foreach (idx, l in list){
+    res.append(l)
+    if (idx==len-1)
+      break
+    res.append(gap)
+  }
+  return res
+}
 
 return {
   invert
@@ -426,4 +437,5 @@ return {
   deep_update
   deep_merge
   flatten
+  insertGap
 }

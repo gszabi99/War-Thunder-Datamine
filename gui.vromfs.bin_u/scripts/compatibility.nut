@@ -2,7 +2,7 @@
 {
   if (!("get_game_version" in ::getroottable()))
     return false
-  local cur = isTorrentVersion ? ::get_game_version() : ::get_base_game_version()
+  let cur = isTorrentVersion ? ::get_game_version() : ::get_base_game_version()
   return cur == 0 || cur >= ::get_version_int_from_string(verTxt)
 }
 
@@ -10,18 +10,18 @@
 {
   if (!("get_game_version" in ::getroottable()))
     return true
-  local cur = isTorrentVersion ? ::get_game_version() : ::get_base_game_version()
+  let cur = isTorrentVersion ? ::get_game_version() : ::get_base_game_version()
   return cur != 0 && cur <= ::get_version_int_from_string(verTxt)
 }
 
 ::get_version_int_from_string <- function get_version_int_from_string(versionText)
 {
   local res = 0
-  local list = ::split(versionText, ".")
-  local intRegExp = regexp2(@"\D+")
+  let list = ::split(versionText, ".")
+  let intRegExp = regexp2(@"\D+")
   for(local i = list.len()-1; i >= 0; i--)
   {
-    local val = list[i]
+    let val = list[i]
     if (intRegExp.match(val))
     {
       ::dagor.assertf(false, "Error: cant convert version text to int: " + versionText)

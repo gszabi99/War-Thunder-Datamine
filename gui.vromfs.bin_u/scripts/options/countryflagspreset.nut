@@ -1,6 +1,6 @@
 ::g_script_reloader.loadOnce("scripts/options/bhvHarmonizedImage.nut")
-local { eachParam } = require("std/datablock.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let { eachParam } = require("std/datablock.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
 ::country_flags_preset <- {}
 
@@ -22,24 +22,24 @@ local { GUI } = require("scripts/utils/configs.nut")
 
 ::get_country_icon <- function get_country_icon(countryId, big=false, locked=false)
 {
-  local id = countryId + (big ? "_big" : "") + (locked ? "_locked" : "")
+  let id = countryId + (big ? "_big" : "") + (locked ? "_locked" : "")
   return ::get_country_flag_img(id)
 }
 
 ::init_country_flags_preset <- function init_country_flags_preset()
 {
-  local blk = GUI.get()
+  let blk = GUI.get()
   if (!blk)
     return
-  local texBlk = blk?.texture_presets
+  let texBlk = blk?.texture_presets
   if (!texBlk || typeof(texBlk)!="instance" || !(texBlk instanceof ::DataBlock))
   {
     ::script_net_assert_once("flags_presets", "Error: not texture_presets block in gui.blk")
     return
   }
 
-  local defPreset = "default"
-  local presetsList = [::get_country_flags_preset()]
+  let defPreset = "default"
+  let presetsList = [::get_country_flags_preset()]
   if (presetsList[0] != defPreset)
     presetsList.append(defPreset)
 
@@ -47,7 +47,7 @@ local { GUI } = require("scripts/utils/configs.nut")
 
   foreach(blockName in presetsList)
   {
-    local block = texBlk?[blockName]
+    let block = texBlk?[blockName]
     if (!block || typeof(block)!="instance" || !(block instanceof ::DataBlock))
       continue
 

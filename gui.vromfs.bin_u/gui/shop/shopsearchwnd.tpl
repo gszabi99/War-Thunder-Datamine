@@ -160,7 +160,7 @@ root {
   }
 
   gamercard_div {
-    include 'gui/gamercardTopPanel.blk'
-    include 'gui/gamercardBottomPanel.blk'
+    include '%gui/gamercardTopPanel.blk'
+    include '%gui/gamercardBottomPanel.blk'
   }
 }

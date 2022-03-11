@@ -1,12 +1,12 @@
-local Unit = require("scripts/unit/unit.nut")
-local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
-local { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { initWeaponParams } = require("scripts/weaponry/weaponsParams.nut")
-local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
-local { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let Unit = require("scripts/unit/unit.nut")
+let optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
+let { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
+let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { initWeaponParams } = require("scripts/weaponry/weaponsParams.nut")
+let controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
 ::all_units <- {}
 
@@ -34,7 +34,7 @@ if (showedUnit.value != null)
 ::init_all_units <- function init_all_units()
 {
   ::all_units.clear()
-  local all_units_array = ::gather_and_build_aircrafts_list()
+  let all_units_array = ::gather_and_build_aircrafts_list()
   foreach (unitTbl in all_units_array)
   {
     local unit = Unit(unitTbl)
@@ -57,26 +57,26 @@ if (showedUnit.value != null)
   if (usageAmountCounted)
     return
 
-  local statsblk = ::get_global_stats_blk()
+  let statsblk = ::get_global_stats_blk()
   if (!statsblk?.aircrafts)
     return
 
-  local shopStatsAirs = []
-  local shopBlk = ::get_shop_blk()
+  let shopStatsAirs = []
+  let shopBlk = ::get_shop_blk()
 
   for (local tree = 0; tree < shopBlk.blockCount(); tree++)
   {
-    local tblk = shopBlk.getBlock(tree)
+    let tblk = shopBlk.getBlock(tree)
     for (local page = 0; page < tblk.blockCount(); page++)
     {
-      local pblk = tblk.getBlock(page)
+      let pblk = tblk.getBlock(page)
       for (local range = 0; range < pblk.blockCount(); range++)
       {
-        local rblk = pblk.getBlock(range)
+        let rblk = pblk.getBlock(range)
         for (local a = 0; a < rblk.blockCount(); a++)
         {
-          local airBlk = rblk.getBlock(a)
-          local stats = statsblk.aircrafts?[airBlk.getBlockName()]
+          let airBlk = rblk.getBlock(a)
+          let stats = statsblk.aircrafts?[airBlk.getBlockName()]
           if (stats?.flyouts_factor)
             shopStatsAirs.append(stats.flyouts_factor)
         }
@@ -96,7 +96,7 @@ if (showedUnit.value != null)
 
   for(local i = 0; i<::usageRating_amount.len(); i++)
   {
-    local idx = ::floor((i+1).tofloat() * shopStatsAirs.len() / (::usageRating_amount.len()+1) + 0.5)
+    let idx = ::floor((i+1).tofloat() * shopStatsAirs.len() / (::usageRating_amount.len()+1) + 0.5)
     ::usageRating_amount[i] = (idx==shopStatsAirs.len()-1)? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx+1])
   }
   usageAmountCounted = true
@@ -120,7 +120,7 @@ if (showedUnit.value != null)
 
   function()
   {
-    local blk = GUI.get()
+    let blk = GUI.get()
 
     initBulletIcons(blk)
 
@@ -135,14 +135,14 @@ if (showedUnit.value != null)
 
   function()
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.load($"{controlsPresetConfigPath.value}config/hud.blk")
     if (blk?.crosshair)
     {
-      local crosshairs = blk.crosshair % "pictureTpsView"
+      let crosshairs = blk.crosshair % "pictureTpsView"
       foreach (crosshair in crosshairs)
         ::crosshair_icons.append(crosshair)
-      local colors = blk.crosshair % "crosshairColor"
+      let colors = blk.crosshair % "crosshairColor"
       foreach (colorBlk in colors)
         ::crosshair_colors.append({
           name = colorBlk.name
@@ -151,7 +151,7 @@ if (showedUnit.value != null)
     }
     if (blk?.thermovision)
     {
-      local clrs = blk.thermovision % "color"
+      let clrs = blk.thermovision % "color"
       foreach (colorBlk in clrs)
       {
         ::thermovision_colors.append({ menu_rgb = colorBlk.menu_rgb })
@@ -172,7 +172,7 @@ if (showedUnit.value != null)
 
   function()
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.load("config/postFxOptions.blk")
     if (blk?.lut_list)
     {

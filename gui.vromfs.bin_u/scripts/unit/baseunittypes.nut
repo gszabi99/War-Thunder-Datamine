@@ -1,8 +1,18 @@
+enum VISUAL_SORT_ORDER {
+  INVALID
+  TANK
+  HELICOPTER
+  AIRCRAFT
+  SHIP
+  BOAT
+}
+
 return {
   INVALID = {
     name = "Invalid"
     armyId = ""
     esUnitType = ::ES_UNIT_TYPE_INVALID
+    visualSortOrder = VISUAL_SORT_ORDER.INVALID
     haveAnyUnitInCountry = @() false
   }
 
@@ -11,6 +21,7 @@ return {
     tag = "air"
     armyId = "aviation"
     esUnitType = ::ES_UNIT_TYPE_AIRCRAFT
+    visualSortOrder = VISUAL_SORT_ORDER.AIRCRAFT
     fontIcon = ::loc("icon/unittype/aircraft")
     testFlightIcon = "#ui/gameuiskin#slot_testflight.svg"
     testFlightName = "TestFlight"
@@ -29,7 +40,7 @@ return {
         return false
       if (!country)
         return true
-      local countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
       return ::has_feature(countryShort + "AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = false
@@ -45,6 +56,7 @@ return {
     tag = "tank"
     armyId = "army"
     esUnitType = ::ES_UNIT_TYPE_TANK
+    visualSortOrder = VISUAL_SORT_ORDER.TANK
     fontIcon = ::loc("icon/unittype/tank")
     testFlightIcon = "#ui/gameuiskin#slot_testdrive.svg"
     testFlightName = "TestDrive"
@@ -59,7 +71,7 @@ return {
         return false
       if (!country)
         return true
-      local countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
       return ::has_feature(countryShort + "TanksInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
@@ -76,6 +88,7 @@ return {
     tag = "ship"
     armyId = "ships"
     esUnitType = ::ES_UNIT_TYPE_SHIP
+    visualSortOrder = VISUAL_SORT_ORDER.SHIP
     fontIcon = ::loc("icon/unittype/ship")
     testFlightIcon = "#ui/gameuiskin#slot_test_out_to_sea.svg"
     testFlightName = "TestSail"
@@ -92,7 +105,7 @@ return {
         return false
       if (!country)
         return true
-      local countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
       return ::has_feature(countryShort + "ShipsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
@@ -109,6 +122,7 @@ return {
     tag = "helicopter"
     armyId = "helicopters"
     esUnitType = ::ES_UNIT_TYPE_HELICOPTER
+    visualSortOrder = VISUAL_SORT_ORDER.HELICOPTER
     fontIcon = ::loc("icon/unittype/helicopter")
     testFlightIcon = "#ui/gameuiskin#slot_heli_testflight.svg"
     testFlightName = "TestFlight"
@@ -135,6 +149,7 @@ return {
     tag = "boat"
     armyId = "boats"
     esUnitType = ::ES_UNIT_TYPE_BOAT
+    visualSortOrder = VISUAL_SORT_ORDER.BOAT
     fontIcon = ::loc("icon/unittype/boat")
     testFlightIcon = "#ui/gameuiskin#slot_test_out_to_sea_boat.svg"
     testFlightName = "TestSail"
@@ -152,7 +167,7 @@ return {
         return false
       if (!country)
         return true
-      local countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
       return ::has_feature(countryShort + "BoatsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true

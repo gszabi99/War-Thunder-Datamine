@@ -1,14 +1,27 @@
-local { gameType, useDeathmatchHUD } = require("reactiveGui/missionState.nut")
-local { safeAreaSizeHud } = require("reactiveGui/style/screenState.nut")
-local football = require("football.ui.nut")
-local deathmatch = require("deathmatch.ui.nut")
+let { gameType, useDeathmatchHUD, timeLeft, timeLimitWarn } = require("reactiveGui/missionState.nut")
+let { safeAreaSizeHud } = require("reactiveGui/style/screenState.nut")
+let { secondsToTimeSimpleString } = require("std/time.nut")
+let football = require("football.ui.nut")
+let deathmatch = require("deathmatch.ui.nut")
 
-local function getScoreBoardChildren() {
+let timerComponent = @() {
+  watch = timeLeft
+  rendObj = ROBJ_DTEXT
+  font = Fonts.medium_text_hud
+  color = Color(255, 255, 255)
+  pos = [0, hdpx(40)]
+  text = secondsToTimeSimpleString(timeLeft.value)
+}
+
+let function getScoreBoardChildren() {
   if ((gameType.value & GT_FOOTBALL) != 0)
     return football
 
   if (useDeathmatchHUD.value)
     return deathmatch
+
+  if (timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
+    return timerComponent
 
   return null
 }
@@ -17,6 +30,6 @@ return @() {
   size = flex()
   margin = safeAreaSizeHud.value.borders
   halign = ALIGN_CENTER
-  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud]
+  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, timeLeft, timeLimitWarn]
   children = getScoreBoardChildren()
 }

@@ -1,10 +1,10 @@
-local clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
+let clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
 
-class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL;
-  sceneBlkName = "gui/clans/clanChangeMembershipReqWnd.blk";
+  sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
 
   owner = null;
@@ -45,7 +45,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   function reinitScreen()
   {
-    local container = ::create_options_container("optionslist", optionItems, true, 0.5, false)
+    let container = ::create_options_container("optionslist", optionItems, true, 0.5, false)
     guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
@@ -60,7 +60,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
     recalcMinRankCondTypeSwitchState()
 
-    local isMembershipAccptanceEnabled = clanMembershipAcceptance.getValue(clanData)
+    let isMembershipAccptanceEnabled = clanMembershipAcceptance.getValue(clanData)
     scene.findObject("membership_acceptance_checkbox").setValue(isMembershipAccptanceEnabled)
   }
 
@@ -69,32 +69,32 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        local option = ::get_option(diff.clanReqOption)
-        local modeName = diff.getEgdName(false)
+        let option = ::get_option(diff.clanReqOption)
+        let modeName = diff.getEgdName(false)
         local battlesRequired = 0;
-        local req = rawClanMemberRequirementsBlk.getBlockByName(option.id)
+        let req = rawClanMemberRequirementsBlk.getBlockByName(option.id)
         if ( req  &&  (req.type == "battles")  &&  (req.difficulty == modeName) )
           battlesRequired = req.getInt("count", 0)
 
-        local optIdx = option.values.indexof(battlesRequired) ?? 0
+        let optIdx = option.values.indexof(battlesRequired) ?? 0
         scene.findObject(option.id).setValue(optIdx)
       }
   }
 
   function loadRequirementsRanks( rawClanMemberRequirementsBlk )
   {
-    local rawRanksCond = rawClanMemberRequirementsBlk.getBlockByName("ranks") || ::DataBlock()
+    let rawRanksCond = rawClanMemberRequirementsBlk.getBlockByName("ranks") || ::DataBlock()
     foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
-      local obj = scene.findObject("rankReq" + unitType.name)
+      let obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
       local ranksRequired = 0
-      local req = rawRanksCond.getBlockByName("rank_" + unitType.name)
+      let req = rawRanksCond.getBlockByName("rank_" + unitType.name)
       if (req?.type == "rank" && req?.unitType == unitType.name)
         ranksRequired = req.getInt("rank", 0)
 
@@ -112,11 +112,11 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
       if (!unitType.isAvailable())
         continue
 
-      local obj = scene.findObject("rankReq" + unitType.name)
+      let obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
-      local ranksRequired = obj.getValue()
+      let ranksRequired = obj.getValue()
       if (ranksRequired > 0)
         nonEmptyRankReqCount++
     }
@@ -130,8 +130,8 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        local option = ::get_option(diff.clanReqOption)
-        local optIdx = scene.findObject(option.id).getValue()
+        let option = ::get_option(diff.clanReqOption)
+        let optIdx = scene.findObject(option.id).getValue()
         if (optIdx > 0)
           nonEmptyBattlesReqCount++
       }
@@ -159,8 +159,8 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   function onApply()
   {
-    local newRequirements = ::DataBlock()
-    local gotChanges = fillRequirements(newRequirements)
+    let newRequirements = ::DataBlock()
+    let gotChanges = fillRequirements(newRequirements)
 
     if (gotChanges)
       sendRequirementsToChar(newRequirements, autoAcceptMembershipObject.getValue())
@@ -178,16 +178,16 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
     if ( ::u.isEqual(clanData.membershipRequirements, newRequirements) )
     {
-      local autoAccept = autoAcceptMembershipObject.getValue()
+      let autoAccept = autoAcceptMembershipObject.getValue()
       if ( clanData.autoAcceptMembership == autoAccept )
         return false;
     }
 
-    local validateResult = ::clan_validate_membership_requirements(newRequirements)
+    let validateResult = ::clan_validate_membership_requirements(newRequirements)
     if ( validateResult == "" )
       return true;
 
-    local errText = ::format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
+    let errText = ::format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
     callstack()
     ::script_net_assert_once("bad clan requirements", errText)
     return false
@@ -196,7 +196,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   function appendRequirementsRanks( newRequirements )
   {
-    local rankCondType = minRankCondTypeObject.getValue() ? "and" : "or"
+    let rankCondType = minRankCondTypeObject.getValue() ? "and" : "or"
     local ranksSubBlk = null
 
     foreach (unitType in unitTypes.types)
@@ -204,11 +204,11 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
       if (!unitType.isAvailable())
         continue
 
-      local obj = scene.findObject("rankReq" + unitType.name)
+      let obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
-      local rankVal = obj.getValue()
+      let rankVal = obj.getValue()
       if ( rankVal > 0 )
       {
         if ( !ranksSubBlk )
@@ -217,7 +217,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
           ranksSubBlk.setStr( "type", rankCondType )
         }
 
-        local condBlk = ranksSubBlk.addNewBlock("rank_" + unitType.name)
+        let condBlk = ranksSubBlk.addNewBlock("rank_" + unitType.name)
         condBlk.setStr( "type", "rank" )
         condBlk.setInt( "rank", rankVal )
         condBlk.setInt( "count", 1 )
@@ -232,13 +232,13 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        local option = ::get_option(diff.clanReqOption)
-        local modeName = diff.getEgdName(false);
-        local battleReqVal = option.values[scene.findObject(option.id).getValue()];
+        let option = ::get_option(diff.clanReqOption)
+        let modeName = diff.getEgdName(false);
+        let battleReqVal = option.values[scene.findObject(option.id).getValue()];
 
         if ( battleReqVal > 0 )
         {
-          local condBlk = newRequirements.addNewBlock(option.id)
+          let condBlk = newRequirements.addNewBlock(option.id)
           condBlk.setStr( "type", "battles" )
           condBlk.setStr( "difficulty", modeName )
           condBlk.setInt( "count", battleReqVal )
@@ -249,7 +249,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   function sendRequirementsToChar( newRequirements, autoAccept )
   {
-    local resultCB = ::Callback((@(newRequirements, autoAccept) function() {
+    let resultCB = ::Callback((@(newRequirements, autoAccept) function() {
       clanData.membershipRequirements = newRequirements;
       clanData.autoAcceptMembership = autoAccept;
 
@@ -260,7 +260,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
       goBack()
     })(newRequirements, autoAccept), this )
 
-    local taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
+    let taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
 
     ::g_tasker.addTask(taskId, {showProgressBox = true}, resultCB)
   }

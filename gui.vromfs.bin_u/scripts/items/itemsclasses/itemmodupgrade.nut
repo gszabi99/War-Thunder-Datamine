@@ -1,6 +1,6 @@
-local BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
+let BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
 
-class ::items_classes.ModUpgrade extends BaseItemModClass
+::items_classes.ModUpgrade <- class extends BaseItemModClass
 {
   static iType = itemType.MOD_UPGRADE
   static defaultLocId = "modUpgrade"
@@ -49,17 +49,17 @@ class ::items_classes.ModUpgrade extends BaseItemModClass
 
   function activateOnMod(unit, mod, extSuccessCb = null)
   {
-    local uid = uids?[0]
+    let uid = uids?[0]
     if (uid == null)
       return false
 
-    local successCb = function() {
+    let successCb = function() {
       if (extSuccessCb)
         extSuccessCb()
       ::broadcastEvent("ModUpgraded", { unit = unit, mod = mod })
     }
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.uid = uid
     blk.unit = unit.name
     blk.mod = mod.name

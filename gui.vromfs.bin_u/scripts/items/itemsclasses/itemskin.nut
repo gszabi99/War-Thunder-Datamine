@@ -1,6 +1,6 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+let ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
 
-class ::items_classes.Skin extends ItemCouponBase {
+::items_classes.Skin <- class extends ItemCouponBase {
   static iType = itemType.SKIN
   static typeIcon = "#ui/gameuiskin#item_type_skin"
   static descHeaderLocId = "coupon/for/skin"

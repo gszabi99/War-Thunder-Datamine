@@ -1,6 +1,6 @@
-local hudTankStates = require("hudTankStates")
-local { hudTankMovementStatesVisible } = require("scripts/hud/hudConfigByGame.nut")
-local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let hudTankStates = require("hudTankStates")
+let { hudTankMovementStatesVisible } = require("scripts/hud/hudConfigByGame.nut")
+let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 enum ORDER //order for movement state info
 {
@@ -10,7 +10,7 @@ enum ORDER //order for movement state info
   SPEED
 }
 
-local tankStatesByObjId = {
+let tankStatesByObjId = {
   stabilizer = {
     objName = "stabilizer"
     updateConfigs = [{
@@ -101,8 +101,8 @@ local tankStatesByObjId = {
   }
 }
 
-local function updateState(obj, watchConfig, value) {
-  local isVisible = watchConfig?.isVisible(value) ?? true
+let function updateState(obj, watchConfig, value) {
+  let isVisible = watchConfig?.isVisible(value) ?? true
   if (!::check_obj(obj))
     return
   obj.show(isVisible)
@@ -112,11 +112,11 @@ local function updateState(obj, watchConfig, value) {
   watchConfig.updateObj(obj, value)
 }
 
-local function getValueForObjUpdate(updateConfigs) {
-  local stateValue = []
+let function getValueForObjUpdate(updateConfigs) {
+  let stateValue = []
   foreach (updateConfig in updateConfigs) {
-    local config = updateConfig
-    local watch = config.watch
+    let config = updateConfig
+    let watch = config.watch
     if (watch == null)
       continue
 
@@ -132,13 +132,13 @@ local function getValueForObjUpdate(updateConfigs) {
   return stashBhvValueConfig(stateValue)
 }
 
-local function getMovementViewArray() {
-  local statesArray = []
+let function getMovementViewArray() {
+  let statesArray = []
   foreach (id, state in tankStatesByObjId) {
     if (!(id in hudTankMovementStatesVisible.value) || state?.orderView == null)
       continue
 
-    local stateValue = getValueForObjUpdate(state.updateConfigs)
+    let stateValue = getValueForObjUpdate(state.updateConfigs)
     if (stateValue == "")
       continue
 
@@ -153,16 +153,16 @@ local function getMovementViewArray() {
   return statesArray
 }
 
-local function showHudTankMovementStates(scene) {
-  local movementStatesObj = scene.findObject("hud_movement_info")
+let function showHudTankMovementStates(scene) {
+  let movementStatesObj = scene.findObject("hud_movement_info")
   if (!::check_obj(movementStatesObj))
     return
 
-  local blk = ::handyman.renderCached("gui/hud/hudTankMovementInfo", {tankStates = getMovementViewArray()})
+  let blk = ::handyman.renderCached("%gui/hud/hudTankMovementInfo", {tankStates = getMovementViewArray()})
   guiScene.replaceContentFromText(movementStatesObj, blk, blk.len(), this)
 }
 
-local getConfigValueById = @(objName) getValueForObjUpdate(tankStatesByObjId?[objName].updateConfigs ?? [])
+let getConfigValueById = @(objName) getValueForObjUpdate(tankStatesByObjId?[objName].updateConfigs ?? [])
 
 return {
   showHudTankMovementStates = showHudTankMovementStates

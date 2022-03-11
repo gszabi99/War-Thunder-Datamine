@@ -1,12 +1,12 @@
-local {logerr} = require("dagor.debug")
-local regexp2 = require("regexp2")
+let {logerr} = require("dagor.debug")
+let regexp2 = require("regexp2")
 
-local verTrim = regexp2(@"^\s+|\s+$")
-local dotCase = regexp2(@"^\d+\.\d+\.\d+\.\d+$")
-local dashCase = regexp2(@"^\d+_\d+_\d+_\d+$")
+let verTrim = regexp2(@"^\s+|\s+$")
+let dotCase = regexp2(@"^\d+\.\d+\.\d+\.\d+$")
+let dashCase = regexp2(@"^\d+_\d+_\d+_\d+$")
 
-local function mkVersionFromString(versionRaw){
-  local version = verTrim.replace("", versionRaw)
+let function mkVersionFromString(versionRaw){
+  let version = verTrim.replace("", versionRaw)
   if (dotCase.match(version))
     return version.split(".")
   if (dashCase.match(version))
@@ -16,11 +16,11 @@ local function mkVersionFromString(versionRaw){
   return null
 }
 
-local function mkVersionFromInt(version){
+let function mkVersionFromInt(version){
   return [version>>24, ((version>>16)&255), ((version>>8)&255), (version&255)]
 }
 
-local function versionToInt(version){
+let function versionToInt(version){
   return version
     ? ((version[0]).tointeger() << 24) | ((version[1]).tointeger() << 16)
       | ((version[2]).tointeger() << 8) | (version[3]).tointeger()
@@ -30,7 +30,7 @@ local function versionToInt(version){
 local class Version {
   version = null
   constructor(v){
-    local t = type(v)
+    let t = type(v)
 
     if (t == "string")
       version = mkVersionFromString(v)

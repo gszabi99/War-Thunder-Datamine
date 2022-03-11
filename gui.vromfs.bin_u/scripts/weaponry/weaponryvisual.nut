@@ -1,31 +1,31 @@
-local modUpgradeElem = require("scripts/weaponry/elems/modUpgradeElem.nut")
-local { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
+let modUpgradeElem = require("scripts/weaponry/elems/modUpgradeElem.nut")
+let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
   getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
 } = require("scripts/weaponry/itemInfo.nut")
-local { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("scripts/weaponry/bulletsInfo.nut")
-local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
-local { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
-local { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
-local { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("scripts/weaponry/weaponryTooltips.nut")
+let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("scripts/weaponry/bulletsInfo.nut")
+let { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
+let { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
+let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
+let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("scripts/weaponry/weaponryTooltips.nut")
 
 ::dagui_propid.add_name_id("_iconBulletName")
 
-local function getBulletsCountText(curVal, maxVal, unallocated, guns)
+let function getBulletsCountText(curVal, maxVal, unallocated, guns)
 {
   local restText = ""
   if (unallocated && curVal < maxVal)
     restText = ::colorize("userlogColoredText", ::format(" %s", ::loc("ui/parentheses",
       { text = ::format("+%d", guns * ::min(unallocated, maxVal - curVal)) })))
-  local valColor = (!curVal || maxVal == 0) ? "badTextColor"
+  let valColor = (!curVal || maxVal == 0) ? "badTextColor"
     : (curVal == maxVal) ? "goodTextColor"
     : "activeTextColor"
-  local valText = ::colorize(valColor, guns * curVal)
+  let valText = ::colorize(valColor, guns * curVal)
   return ::format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
 }
 
-local function getStatusIcon(unit, item)
+let function getStatusIcon(unit, item)
 {
-  local misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = ::g_mis_custom_state.getCurMissionRules()
   if (item.type==weaponsItem.weapon
     && ::is_in_flight()
     && misRules.isWorldWar
@@ -36,31 +36,31 @@ local function getStatusIcon(unit, item)
   return ""
 }
 
-local function getItemImage(unit, item){return null}
-getItemImage = function(unit, item)
+let function getItemImage(unit, item)
 {
   if (!isBullets(item))
   {
+    let self = callee()
     if (item.type == weaponsItem.bundle)
-      return getByCurBundle(unit, item, getItemImage)
+      return getByCurBundle(unit, item, self)
 
     if("image" in item && item.image != "")
       return item.image
     if (item.type == weaponsItem.primaryWeapon && ("weaponMod" in item) && item.weaponMod)
-      return getItemImage(unit, item.weaponMod)
+      return self(unit, item.weaponMod)
   }
   return ""
 }
 
-local getTooltipId = @(unitName, mod, params)
+let getTooltipId = @(unitName, mod, params)
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
     : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name, params)
     : MODIFICATION.getTooltipId(unitName, mod.name, params)
 
-local function getWeaponItemViewParams(id, unit, item, params = {})
+let function getWeaponItemViewParams(id, unit, item, params = {})
 {
-  local res = {
+  let res = {
     id                        = id
     itemWidth                 = params?.itemWidth ?? 1
     posX                      = params?.posX ?? 0
@@ -122,7 +122,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     actionHoldDummyCanShow    = "yes"
   }
 
-  local isOwn = ::isUnitUsable(unit)
+  let isOwn = ::isUnitUsable(unit)
   local visualItem = item
   res.isBundle = item.type == weaponsItem.bundle
   if (res.isBundle)
@@ -132,14 +132,14 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       visualItem.type <- weaponsItem.bundle
   }
   res.nameText = getModItemName(unit, visualItem, params?.limitedName ?? true)
-  local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
+  let isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
   res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
     hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo
   }))
-  local bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
+  let bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
   if (bIcoItem)
   {
-    local bulletsSet = getBulletsSetData(unit, bIcoItem.name)
+    let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
     ::dagor.assertf(unit?.isTank() || bulletsSet!=null,
           $"No bullets in bullets set {visualItem.name} for {unit.name}")
 
@@ -147,27 +147,27 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     res.bulletImg = getBulletsIconView(bulletsSet)
   }
   res.itemImg = getItemImage(unit, visualItem)
-  local statusTbl = getItemStatusTbl(unit, visualItem)
-  local canBeDisabled = isCanBeDisabled(item)
-  local isSwitcher = (visualItem.type == weaponsItem.weapon) ||
+  let statusTbl = getItemStatusTbl(unit, visualItem)
+  let canBeDisabled = isCanBeDisabled(item)
+  let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
     (visualItem.type == weaponsItem.primaryWeapon) ||
     isBullets(visualItem)
-  local discount = ::getDiscountByPath(
+  let discount = ::getDiscountByPath(
     getDiscountPath(unit, visualItem, statusTbl.discountType))
-  local itemCostText = getFullItemCostText(unit, item)
+  let itemCostText = getFullItemCostText(unit, item)
   local priceText = statusTbl.showPrice && (params?.canShowPrice ?? true) ? itemCostText : ""
-  local flushExp = params?.flushExp ?? 0
-  local canShowResearch = params?.canShowResearch ?? true
-  local canResearch = canResearchItem(unit, visualItem, false)
-  local itemReqExp = visualItem?.reqExp ?? 0
-  local isModResearching = canShowResearch &&
+  let flushExp = params?.flushExp ?? 0
+  let canShowResearch = params?.canShowResearch ?? true
+  let canResearch = canResearchItem(unit, visualItem, false)
+  let itemReqExp = visualItem?.reqExp ?? 0
+  let isModResearching = canShowResearch &&
                                canResearch &&
                                statusTbl.modExp >= 0 &&
                                statusTbl.modExp < itemReqExp &&
                                !statusTbl.amount
-  local isInResearch = isModInResearch(unit, visualItem)
-  local isResearchInProgress = isModResearching && isInResearch
-  local isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isInResearch
+  let isInResearch = isModInResearch(unit, visualItem)
+  let isResearchInProgress = isModResearching && isInResearch
+  let isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isInResearch
   local showStatus = false
   res.optEquipped = isForceHidePlayerInfo || statusTbl.equipped ? "yes" : "no"
   if (params?.canShowStatusImage ?? true)
@@ -181,9 +181,9 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     !isSwitcher || isFakeBullet(visualItem.name)
   res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
-  local isScoreCost = ::is_in_flight()
+  let isScoreCost = ::is_in_flight()
     && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
-  local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
+  let haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount && !isScoreCost)
   {
     if (res.isShowDiscount)
@@ -196,20 +196,20 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       priceText = "<color=@goodTextColor>" + priceText +"</color>"
   }
   res.nameTextWithPrice = res.nameText
-  local spawnScoreCost = getFullItemCostText(unit, item, true)
+  let spawnScoreCost = getFullItemCostText(unit, item, true)
   if (statusTbl.showPrice && (params?.canShowPrice ?? true) && spawnScoreCost != "")
     res.nameTextWithPrice = "".concat(res.nameTextWithPrice, ::loc("ui/parentheses/space", {text = spawnScoreCost}))
-  local showProgress = isResearchInProgress || isResearchPaused
+  let showProgress = isResearchInProgress || isResearchPaused
   res.isShowPrice = !showProgress && (statusTbl.showPrice || canResearch)
   res.hideProgressBlock = !showProgress
   if (showProgress)
   {
-    local diffExp = params?.diffExp ?? 0
-    local paused = isResearchPaused? "yes" : "no"
+    let diffExp = params?.diffExp ?? 0
+    let paused = isResearchPaused? "yes" : "no"
     res.researchProgress = (itemReqExp ? statusTbl.modExp.tofloat() / itemReqExp : 1) * 1000
     res.progressType = diffExp ? "new" : ""
     res.progressPaused = paused
-    local oldExp = max(0, statusTbl.modExp - diffExp)
+    let oldExp = max(0, statusTbl.modExp - diffExp)
     res.hideOldResearchProgress = oldExp == 0
     res.oldResearchProgress = (itemReqExp ? oldExp.tofloat() / itemReqExp : 1) * 1000
   }
@@ -219,7 +219,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       res.priceText = priceText
     else if (canResearch && !isResearchInProgress && !isResearchPaused)
     {
-      local showExp = itemReqExp - statusTbl.modExp
+      let showExp = itemReqExp - statusTbl.modExp
       local rpText = ::Cost().setRp(showExp).tostring()
       if (flushExp > 0 && flushExp > showExp)
         rpText = ::colorize("goodTextColor", rpText)
@@ -251,16 +251,16 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   res.itemTextColor = res.isShowStatusImg ?
     "badTextColor" : res.hideWarningIcon ?
       "commonTextColor" : "warningTextColor"
-  local bulletsManager = params?.selectBulletsByManager
-  local bulGroup = bulletsManager?.canChangeBulletsCount() ?
+  let bulletsManager = params?.selectBulletsByManager
+  let bulGroup = bulletsManager?.canChangeBulletsCount() ?
     bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
   res.hideBulletsChoiceBlock = bulGroup == null
   if(!res.hideBulletsChoiceBlock)
   {
-    local guns = bulGroup.guns
-    local maxVal = bulGroup.maxBulletsCount
-    local curVal = bulGroup.bulletsCount
-    local unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
+    let guns = bulGroup.guns
+    let maxVal = bulGroup.maxBulletsCount
+    let curVal = bulGroup.bulletsCount
+    let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
     res.bulletsCountText = getBulletsCountText(curVal, maxVal, unallocated, guns)
     if(res.needSliderButtons)
     {
@@ -329,33 +329,33 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   return res
 }
 
-local function updateModItem(unit, item, itemObj, showButtons, handler, params = {})
+let function updateModItem(unit, item, itemObj, showButtons, handler, params = {})
 {
-  local id = itemObj?.id ?? ""
-  local viewParams = getWeaponItemViewParams(id, unit, item,
+  let id = itemObj?.id ?? ""
+  let viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({showButtons = showButtons}))
-  local { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
+  let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
 
   itemObj.findObject("name").setValue(viewParams.nameText)
 
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId
-  local tooltipObj = itemObj.findObject(isTooltipByHold ? "centralBlock" : $"tooltip_{id}")
+  let tooltipObj = itemObj.findObject(isTooltipByHold ? "centralBlock" : $"tooltip_{id}")
   if (::check_obj(tooltipObj))
     tooltipObj.tooltipId = tooltipId
 
   if (viewParams.iconBulletName != "")
   {
-    local divObj = itemObj.findObject("bullets")
+    let divObj = itemObj.findObject("bullets")
     if (::check_obj(divObj))
     {
       divObj._iconBulletName = viewParams.iconBulletName
-      local data = ::handyman.renderCached(("gui/weaponry/bullets"), viewParams.bulletImg)
+      let data = ::handyman.renderCached(("%gui/weaponry/bullets"), viewParams.bulletImg)
       itemObj.getScene().replaceContentFromText(divObj, data, data.len(), handler)
     }
   }
 
-  local imgObj = itemObj.findObject("image")
+  let imgObj = itemObj.findObject("image")
   imgObj["background-image"] = viewParams.iconBulletName != "" ? "" : viewParams.itemImg
 
   ::showBtn("status_image", viewParams.isShowStatusImg, itemObj)
@@ -365,7 +365,7 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
 
   if (viewParams.isShowDiscount)
   {
-    local dObj = itemObj.findObject("discount")
+    let dObj = itemObj.findObject("discount")
     if(::check_obj(dObj))
     {
       dObj.setValue(viewParams.discountText)
@@ -373,25 +373,25 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
     }
   }
 
-  local priceObj = itemObj.findObject("price")
+  let priceObj = itemObj.findObject("price")
   if (::check_obj(priceObj))
   {
     priceObj.setValue(viewParams.priceText)
     priceObj.show(viewParams.isShowPrice)
   }
 
-  local progressBlock = itemObj.findObject("mod_research_block")
+  let progressBlock = itemObj.findObject("mod_research_block")
   if (::check_obj(progressBlock))
   {
     progressBlock.show(!viewParams.hideProgressBlock)
     if (!viewParams.hideProgressBlock)
     {
-      local progressObj = progressBlock.findObject("mod_research_progress")
+      let progressObj = progressBlock.findObject("mod_research_progress")
       progressObj.setValue(viewParams.researchProgress)
       progressObj.type = viewParams.progressType
       progressObj.paused = viewParams.progressPaused
 
-      local progressObjOld = progressBlock.findObject("mod_research_progress_old")
+      let progressObjOld = progressBlock.findObject("mod_research_progress_old")
       progressObjOld.show(!viewParams.hideOldResearchProgress)
       progressObjOld.setValue(viewParams.oldResearchProgress)
       progressObjOld.paused = viewParams.progressPaused
@@ -400,14 +400,14 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
 
   itemObj.equipped = viewParams.optEquipped
   itemObj.status = viewParams.optStatus
-  local iconObj = itemObj.findObject("icon")
+  let iconObj = itemObj.findObject("icon")
   if (::check_obj(iconObj))
   {
     iconObj.equipped = viewParams.optEquipped
     iconObj.status = viewParams.optStatus
   }
 
-  local amountObject = itemObj.findObject("amount")
+  let amountObject = itemObj.findObject("amount")
   if (::check_obj(amountObject))
   {
     amountObject.setValue(viewParams.amountText)
@@ -418,28 +418,28 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
 
   if(!viewParams.hideBulletsChoiceBlock)
   {
-    local holderObj = ::showBtn("bullets_amount_choice_block", true, itemObj)
-    local textObj = holderObj.findObject("bulletsCountText")
+    let holderObj = ::showBtn("bullets_amount_choice_block", true, itemObj)
+    let textObj = holderObj.findObject("bulletsCountText")
     if (::check_obj(textObj))
       textObj.setValue(viewParams.bulletsCountText)
     if(viewParams.needSliderButtons)
     {
-      local btnDec = holderObj.findObject("buttonDec")
+      let btnDec = holderObj.findObject("buttonDec")
       if (::check_obj(btnDec))
         btnDec.bulletsLimit = viewParams.decBulletsLimit
 
-      local btnIncr = holderObj.findObject("buttonInc")
+      let btnIncr = holderObj.findObject("buttonInc")
       if (::check_obj(btnIncr))
         btnIncr.bulletsLimit = viewParams.incBulletsLimit
     }
 
-    local slidObj = holderObj.findObject("bulletsSlider")
+    let slidObj = holderObj.findObject("bulletsSlider")
     if (::check_obj(slidObj))
     {
       slidObj.max = viewParams.sliderMax
       slidObj.setValue(viewParams.sliderValue)
     }
-    local invSlidObj = holderObj.findObject("invisBulletsSlider")
+    let invSlidObj = holderObj.findObject("invisBulletsSlider")
     if (::check_obj(invSlidObj))
     {
       invSlidObj.groupIdx = viewParams.sliderGroupIdx
@@ -451,18 +451,18 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
 
   ::showBtn("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
 
-  local upgradesObj = itemObj.findObject("upgrade_img")
+  let upgradesObj = itemObj.findObject("upgrade_img")
   if (::check_obj(upgradesObj))
     upgradesObj.upgradeStatus = viewParams.modUpgradeStatus
 
-  local statusIcon = itemObj.findObject("status_icon")
+  let statusIcon = itemObj.findObject("status_icon")
   if (::check_obj(statusIcon))
     statusIcon["background-image"] = viewParams.statusIconImg
 
   modUpgradeElem.setValueToObj(itemObj.findObject("mod_upgrade_icon"), unit.name, item.name)
 
   if (isTooltipByHold) {
-    local dummyBtn = itemObj.findObject("actionHoldDummy")
+    let dummyBtn = itemObj.findObject("actionHoldDummy")
     if (dummyBtn?.isValid())
       dummyBtn.canShow = actionHoldDummyCanShow
   }
@@ -470,20 +470,20 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
   if (!showButtons)
     return
 
-  local actionBtn = itemObj.findObject("actionBtn")
+  let actionBtn = itemObj.findObject("actionBtn")
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
 
-  local altBtn = itemObj.findObject("altActionBtn")
+  let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = viewParams.altBtnCanShow
   if (viewParams.altBtnTooltip != "")
     altBtn.tooltip = viewParams.altBtnTooltip
-  local textObj = altBtn.findObject("altBtnBuyText")
+  let textObj = altBtn.findObject("altBtnBuyText")
   if (::check_obj(textObj))
     textObj.setValue(viewParams.altBtnBuyText)
 }
 
-local function createModItemLayout(id, unit, item, iType, params = {})
+let function createModItemLayout(id, unit, item, iType, params = {})
 {
   if (!("type" in item))
     item.type <- iType
@@ -491,9 +491,9 @@ local function createModItemLayout(id, unit, item, iType, params = {})
   return ::handyman.renderCached(weaponItemTplPath.value, getWeaponItemViewParams(id, unit, item, params))
 }
 
-local function createModItem(id, unit, item, iType, holderObj, handler, params = {})
+let function createModItem(id, unit, item, iType, holderObj, handler, params = {})
 {
-  local data = createModItemLayout(id, unit, item, iType, params)
+  let data = createModItemLayout(id, unit, item, iType, params)
   holderObj.getScene().appendWithBlk(holderObj, data, handler)
   return holderObj.findObject(id)
 }
@@ -503,9 +503,9 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
   if (itemsList.len()==0)
     return null
 
-  local maxItemsInColumn = params?.maxItemsInColumn ?? 5
-  local createItemFunc = params?.createItemFunc ?? createModItem
-  local bundleItem = {
+  let maxItemsInColumn = params?.maxItemsInColumn ?? 5
+  let createItemFunc = params?.createItemFunc ?? createModItem
+  let bundleItem = {
       name = id
       type = weaponsItem.bundle
       hideStatus = true
@@ -523,66 +523,66 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
     return itemsList[0]
   }
 
-  local bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
+  let bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
   bundleObj["class"] = "dropDown"
 
-  local guiScene = holderObj.getScene()
-  local hoverObj = guiScene.createElementByObject(bundleObj, "gui/weaponry/weaponBundleTop.blk", "hoverSize", handler)
+  let guiScene = holderObj.getScene()
+  let hoverObj = guiScene.createElementByObject(bundleObj, "%gui/weaponry/weaponBundleTop.blk", "hoverSize", handler)
 
-  local cols = ((itemsList.len()-1)/maxItemsInColumn + 1).tointeger()
-  local rows = ((itemsList.len()-1)/cols + 1).tointeger()
-  local itemsObj = hoverObj.findObject("items_field")
+  let cols = ((itemsList.len()-1)/maxItemsInColumn + 1).tointeger()
+  let rows = ((itemsList.len()-1)/cols + 1).tointeger()
+  let itemsObj = hoverObj.findObject("items_field")
   foreach(idx, item in itemsList)
     createItemFunc.call(handler, id + "_" + idx, unit, item, itemsType, itemsObj, handler, { posX = (idx/rows).tointeger(), posY = idx%rows })
   itemsObj.width = cols + "@modCellWidth"
   itemsObj.height = rows + "@modCellHeight"
 
   hoverObj.width = cols + "@modCellWidth"
-  local rootSize = guiScene.getRoot().getSize()
-  local rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] //better to use width const here, but need const calculator from dagui for that
+  let rootSize = guiScene.getRoot().getSize()
+  let rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] //better to use width const here, but need const calculator from dagui for that
   if (rightSide)
     hoverObj.pos = "0.5pw-0.5@modCellWidth, ph"
   else
     hoverObj.pos = "0.5pw+0.5@modCellWidth-w, ph"
 
-  local cellObj = params?.cellSizeObj || bundleObj
-  local cellSize = cellObj.getSize()
-  local extraHeight = ::to_pixels("2@modBundlePopupBgPadH + 1@modBundlePopupAdditionalBtnsHeight")
+  let cellObj = params?.cellSizeObj || bundleObj
+  let cellSize = cellObj.getSize()
+  let extraHeight = ::to_pixels("2@modBundlePopupBgPadH + 1@modBundlePopupAdditionalBtnsHeight")
   hoverObj["height-end"] = (cellSize[1] * rows + extraHeight).tointeger().tostring()
   return bundleItem
 }
 
-local function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
+let function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
 {
-  local show = bulGroup != null && bulletsManager != null && bulletsManager.canChangeBulletsCount()
-  local holderObj = ::showBtn("bullets_amount_choice_block", show, itemObj)
+  let show = bulGroup != null && bulletsManager != null && bulletsManager.canChangeBulletsCount()
+  let holderObj = ::showBtn("bullets_amount_choice_block", show, itemObj)
   if (!show || !holderObj)
     return
 
-  local guns = bulGroup.guns
-  local maxVal = bulGroup.maxBulletsCount
-  local curVal = bulGroup.bulletsCount
-  local unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
+  let guns = bulGroup.guns
+  let maxVal = bulGroup.maxBulletsCount
+  let curVal = bulGroup.bulletsCount
+  let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
 
-  local textObj = holderObj.findObject("bulletsCountText")
+  let textObj = holderObj.findObject("bulletsCountText")
   if (::check_obj(textObj))
     textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns))
 
-  local btnDec = holderObj.findObject("buttonDec")
+  let btnDec = holderObj.findObject("buttonDec")
   if (::checkObj(btnDec))
     btnDec.bulletsLimit = curVal != 0? "no" : "yes"
 
-  local btnIncr = holderObj.findObject("buttonInc")
+  let btnIncr = holderObj.findObject("buttonInc")
   if (::checkObj(btnIncr))
     btnIncr.bulletsLimit = (curVal != maxVal && unallocated != 0)? "no" : "yes"
 
-  local slidObj = holderObj.findObject("bulletsSlider")
+  let slidObj = holderObj.findObject("bulletsSlider")
   if (::checkObj(slidObj))
   {
     slidObj.max = maxVal.tostring()
     slidObj.setValue(curVal)
   }
-  local invSlidObj = holderObj.findObject("invisBulletsSlider")
+  let invSlidObj = holderObj.findObject("invisBulletsSlider")
   if (::checkObj(invSlidObj))
   {
     invSlidObj.groupIdx = bulGroup.groupIndex

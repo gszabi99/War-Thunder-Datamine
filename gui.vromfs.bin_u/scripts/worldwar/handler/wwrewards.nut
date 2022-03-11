@@ -1,9 +1,9 @@
-local time = require("scripts/time.nut")
+let time = require("scripts/time.nut")
 
-class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneBlkName = "gui/clans/clanSeasonInfoModal.blk"
+  sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
   isClanRewards = false
   rewardsBlk = null
@@ -22,7 +22,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(rewardsListObj))
       return goBack()
 
-    local wndTitle = ::g_string.implode([
+    let wndTitle = ::g_string.implode([
       (lbMode ? ::loc("worldwar/leaderboard/" + lbMode) : ""),
       (lbDay ? ::loc("enumerated_day", {number=lbDay}) : !isClanRewards ? ::loc("worldwar/allSeason") : ""),
       (lbMap ? lbMap.getNameText() : ::loc("worldwar/allMaps")),
@@ -36,17 +36,17 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
     rewards = []
     foreach (rewardBlk in rewardsBlk)
     {
-      local reward = getRewardData(rewardBlk)
+      let reward = getRewardData(rewardBlk)
       if (!reward)
         continue
 
-      local blockCount = rewardBlk.blockCount()
+      let blockCount = rewardBlk.blockCount()
       if (blockCount)
       {
         reward.internalRewards <- []
         for (local i = 0; i < rewardBlk.blockCount(); i++)
         {
-          local internalReward = getRewardData(rewardBlk.getBlock(i), false)
+          let internalReward = getRewardData(rewardBlk.getBlock(i), false)
           if (internalReward)
             reward.internalRewards.append(internalReward)
         }
@@ -60,7 +60,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRewardData(rewardBlk, needPlace = true)
   {
-    local reward = {}
+    let reward = {}
     for (local i = 0; i < rewardBlk.paramCount(); i++)
       reward[rewardBlk.getParamName(i)] <- rewardBlk.getParamValue(i)
 
@@ -80,7 +80,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
         interactive = true
       }))
 
-    return ::handyman.renderCached("gui/items/item", view)
+    return ::handyman.renderCached("%gui/items/item", view)
   }
 
   function getPlaceText(tillPlace, prevPlace, isClan = false)
@@ -109,16 +109,16 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
     local prevPlace = 0
     return {
       rewardsList = ::u.map(rewards, function(reward) {
-        local rewardRowView = {
+        let rewardRowView = {
           title = getRewardTitle(reward.tillPlace, prevPlace)
           condition = getPlaceText(reward.tillPlace, prevPlace, isClanRewards)
         }
         prevPlace = reward.tillPlace
 
-        local trophyId = reward?.itemdefid
+        let trophyId = reward?.itemdefid
         if (trophyId)
         {
-          local trophyItem = ::ItemsManager.findItemById(trophyId)
+          let trophyItem = ::ItemsManager.findItemById(trophyId)
           if (trophyItem)
           {
               rewardRowView.trophyMarkup <- getItemsMarkup([trophyItem])
@@ -126,19 +126,19 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
           }
         }
 
-        local internalRewards = reward?.internalRewards
+        let internalRewards = reward?.internalRewards
         if (internalRewards)
         {
           rewardRowView.internalRewardsList <- []
 
-          local internalRewardsList = []
+          let internalRewardsList = []
           local internalPrevPlace = 0
           foreach (internalReward in internalRewards)
           {
-            local internalTrophyId = internalReward?.itemdefid
+            let internalTrophyId = internalReward?.itemdefid
             if (internalTrophyId)
             {
-              local internalTrophyItem = ::ItemsManager.findItemById(internalTrophyId)
+              let internalTrophyItem = ::ItemsManager.findItemById(internalTrophyId)
               if (internalTrophyItem)
                 internalRewardsList.append({
                   internalTrophyMarkup = getItemsMarkup([internalTrophyItem])
@@ -170,8 +170,8 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnMoreInfo(obj)
   {
-    local rewardsArray = []
-    local addItem = @(item) ::u.appendOnce(item?.itemdefid, rewardsArray, true)
+    let rewardsArray = []
+    let addItem = @(item) ::u.appendOnce(item?.itemdefid, rewardsArray, true)
     rewards.each(@(reward) reward?.internalRewards.each(addItem) ?? addItem(reward))
     ::gui_start_open_trophy_rewards_list({
       rewardsArray = rewardsArray.map(@(reward) { item = reward })
@@ -183,7 +183,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
   function updateRewardsList()
   {
     local val = ::get_obj_valid_index(rewardsListObj)
-    local markup = ::handyman.renderCached("gui/worldWar/wwRewardItem", getRewardsView())
+    let markup = ::handyman.renderCached("%gui/worldWar/wwRewardItem", getRewardsView())
     guiScene.replaceContentFromText(rewardsListObj, markup, markup.len(), this)
 
     if (val < 0 || val >= rewardsListObj.childrenCount())

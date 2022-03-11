@@ -25,7 +25,7 @@ root {
         flow:t='vertical'
         overflow-y:t='auto'
 
-        include "gui/weaponry/weaponryPreset"
+        include "%gui/weaponry/weaponryPreset"
       }
       blockSeparator{}
       tdiv{

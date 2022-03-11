@@ -6,10 +6,10 @@ enum GamercardDrawerState
   STATE_CLOSING
 }
 
-class ::gui_handlers.GamercardDrawer extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.GamercardDrawer <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/gamercardDrawer.blk"
+  sceneBlkName = "%gui/gamercardDrawer.blk"
   heightPID = ::dagui_propid.add_name_id("height")
   currentTarget = null
   currentVisible = false
@@ -51,7 +51,7 @@ class ::gui_handlers.GamercardDrawer extends ::gui_handlers.BaseGuiHandlerWT
 
   function setOpenAnim(open)
   {
-    local gamercardDrawerObject = getObj("gamercard_drawer")
+    let gamercardDrawerObject = getObj("gamercard_drawer")
     if (!gamercardDrawerObject)
       return
 
@@ -59,25 +59,25 @@ class ::gui_handlers.GamercardDrawer extends ::gui_handlers.BaseGuiHandlerWT
 
     //if we already at finish state, there will be no anim event.
     //so we need to call it self to go to the next state
-    local timerValue = gamercardDrawerObject["_size-timer"]
+    let timerValue = gamercardDrawerObject["_size-timer"]
     if ((open && timerValue == "1") || (!open && timerValue == "0"))
       onDrawerDeactivate(gamercardDrawerObject)
   }
 
   function updateDrawer(params)
   {
-    local target = params.target
-    local visible = params.visible
+    let target = params.target
+    let visible = params.visible
     isBlockOtherRestoreFocus = params?.isBlockOtherRestoreFocus ?? false
-    local contentObject = getObj("gamercard_drawer_content")
+    let contentObject = getObj("gamercard_drawer_content")
     if (contentObject == null)
       return
 
-    local isTargetChanged = !currentTarget || !currentTarget.isEqual(target)
+    let isTargetChanged = !currentTarget || !currentTarget.isEqual(target)
     if (!isTargetChanged && visible == currentVisible)
       return
 
-    local p = target.getParent()
+    let p = target.getParent()
     if (p?.id == null || p.id != contentObject.id)
       return
 
@@ -111,7 +111,7 @@ class ::gui_handlers.GamercardDrawer extends ::gui_handlers.BaseGuiHandlerWT
     currentState = GamercardDrawerState.STATE_OPENED
     if (currentTarget != null)
       setEnableContent(currentTarget)
-    local params = {
+    let params = {
       target = currentTarget
     }
     ::broadcastEvent("GamercardDrawerOpened", params)
@@ -143,13 +143,13 @@ class ::gui_handlers.GamercardDrawer extends ::gui_handlers.BaseGuiHandlerWT
 
   function toggleFuncOnObjs(guiObjFunc, obj = null)
   {
-    local objId = obj?.id
-    local contentObject = getObj("gamercard_drawer_content")
+    let objId = obj?.id
+    let contentObject = getObj("gamercard_drawer_content")
     if (!contentObject)
       return
     for (local i = 0; i < contentObject.childrenCount(); ++i)
     {
-      local child = contentObject.getChild(i)
+      let child = contentObject.getChild(i)
       child[guiObjFunc](child?.id == objId)
     }
   }

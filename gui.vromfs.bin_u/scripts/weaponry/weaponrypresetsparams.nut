@@ -1,27 +1,28 @@
-local { deep_clone } = require("std/underscore.nut")
-local { BULLET_TYPE } = require("scripts/weaponry/bulletsInfo.nut")
-local { TRIGGER_TYPE,
+let { deep_clone } = require("std/underscore.nut")
+let { BULLET_TYPE } = require("scripts/weaponry/bulletsInfo.nut")
+let { TRIGGER_TYPE,
         getPresetsList,
         getUnitWeaponry,
         isWeaponEnabled,
         isWeaponUnlocked } = require("scripts/weaponry/weaponryInfo.nut")
-local { WEAPON_PRESET_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
-local { getTierTooltipParams } = require("scripts/weaponry/weaponryTooltipPkg.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let { WEAPON_PRESET_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
+let { getTierTooltipParams } = require("scripts/weaponry/weaponryTooltipPkg.nut")
+let { GUI } = require("scripts/utils/configs.nut")
+let { getUnitPresets } = require("scripts/weaponry/weaponryPresets.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
-local TIERS_NUMBER = 13
+let TIERS_NUMBER = 13
 
-local CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED"]
-local CHAPTER_FAVORITE_IDX = CHAPTER_ORDER.findindex(@(p) p == "FAVORITE")
-local PURPOSE_TYPE = {
+let CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED"]
+let CHAPTER_FAVORITE_IDX = CHAPTER_ORDER.findindex(@(p) p == "FAVORITE")
+let PURPOSE_TYPE = {
   AIR_TO_AIR = [BULLET_TYPE.AAM, BULLET_TYPE.ROCKET_AIR]
   AIR_TO_SEA = [BULLET_TYPE.TORPEDO]
   ARMORED    = [BULLET_TYPE.ATGM_TANK]
 }
 
-local GROUP_ORDER = [
+let GROUP_ORDER = [
   [TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.MINES, TRIGGER_TYPE.TORPEDOES],
   [TRIGGER_TYPE.ROCKETS],
   [TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.TURRETS,
@@ -32,13 +33,13 @@ local GROUP_ORDER = [
 
 local unAllocatedTiers = []
 
-local function getWeaponrySize(massKg)
+let function getWeaponrySize(massKg)
 {
-  local blk = GUI.get()?.weaponrySizes
+  let blk = GUI.get()?.weaponrySizes
   if (blk == null)
     return ""
 
-  local sizes = (blk % "size").sort(@(a, b)a.max <=> b.max)
+  let sizes = (blk % "size").sort(@(a, b)a.max <=> b.max)
   foreach (size in sizes)
     if (massKg > size.max)
       continue
@@ -47,12 +48,12 @@ local function getWeaponrySize(massKg)
   return ""
 }
 
-local function getTypeByPurpose(weaponry)
+let function getTypeByPurpose(weaponry)
 {
   if (::u.isEmpty(weaponry))
     return "NONE"
 
-  local res =[]
+  let res =[]
   foreach (triggerType in weaponry)
     foreach (inst in triggerType)
       foreach (w in inst)
@@ -84,13 +85,13 @@ local function getTypeByPurpose(weaponry)
     "UNIVERSAL" : ::isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA" : "AIR_TO_GROUND"
 }
 
-local function getTierIcon(weaponry, itemsNum)
+let function getTierIcon(weaponry, itemsNum)
 {
-  local path = "#ui/gameuiskin#"
-  local triggerType = weaponry.tType
-  local iconType = weaponry.iconType
-  local isGroup = itemsNum > 1
-  local isBlock = (weaponry?.amountPerTier ?? 0) > 1
+  let path = "#ui/gameuiskin#"
+  let triggerType = weaponry.tType
+  let iconType = weaponry.iconType
+  let isGroup = itemsNum > 1
+  let isBlock = (weaponry?.amountPerTier ?? 0) > 1
 
   if (iconType != null)
     return $"{path}{iconType}"
@@ -114,17 +115,17 @@ local function getTierIcon(weaponry, itemsNum)
   if (triggerType == TRIGGER_TYPE.FLARES)
     return $"{path}ltc"
 
-  local size = getWeaponrySize(weaponry.massKg)
-  local wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
-  local groupStr = isBlock || isGroup ? $"{size}_group" : size
+  let size = getWeaponrySize(weaponry.massKg)
+  let wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
+  let groupStr = isBlock || isGroup ? $"{size}_group" : size
 
   return $"{path}{wStr}_{groupStr}"
 }
 
 local function createTier(weaponry, presetName, itemsNum = 0)
 {
-  local tierId  = weaponry?.tierId ?? -1
-  local tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
+  let tierId  = weaponry?.tierId ?? -1
+  let tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
   itemsNum = itemsNum > 0 ? itemsNum : weaponry.num
   return {
     tierId  = tierId
@@ -135,15 +136,15 @@ local function createTier(weaponry, presetName, itemsNum = 0)
   }
 }
 
-local function getBlocks(weaponry)
+let function getBlocks(weaponry)
 {
-  local amountPerTier = weaponry.amountPerTier
+  let amountPerTier = weaponry.amountPerTier
   if (amountPerTier == null)
     return [weaponry]
 
-  local count = weaponry.num / amountPerTier
-  local rest = weaponry.num % amountPerTier
-  local res = []
+  let count = weaponry.num / amountPerTier
+  let rest = weaponry.num % amountPerTier
+  let res = []
   if (count > 0)
     res.append(weaponry.__merge({
       num = count
@@ -155,23 +156,23 @@ local function getBlocks(weaponry)
   return res
 }
 
-local function getWeaponryDistribution(weaponry, preset, isCentral = false)
+let function getWeaponryDistribution(weaponry, preset, isCentral = false)
 {
-  local isEvenCount = weaponry.num % 2 == 0
-  local isAllocateByGroup = preset.totalItemsAmount > TIERS_NUMBER
+  let isEvenCount = weaponry.num % 2 == 0
+  let isAllocateByGroup = preset.totalItemsAmount > TIERS_NUMBER
   // Group weapons when numbers of free tiers less then weapon items amount
   if (isAllocateByGroup)
   {
     if (!isCentral && isEvenCount)
     {
-      local tier = createTier(weaponry, preset.id, weaponry.num / 2)
+      let tier = createTier(weaponry, preset.id, weaponry.num / 2)
       return [tier, clone tier]
     }
     else
       return [createTier(weaponry, preset.id)]
   }
   // Place one weapon item per one tier when tiers amount is enough
-  local res = []
+  let res = []
   for (local i = 0; i < weaponry.num; i++)
   {
     // Set empty tier in center when count is EVEN
@@ -188,9 +189,9 @@ local function getWeaponryDistribution(weaponry, preset, isCentral = false)
 //  - group of weapons (a few instances of the same type weapon placed into one tier) such as "bombs_group"
 //  - weapon block (a few instances of the same type weapon united in functional block,
 //    looked like one whole and being an one new entity) such as "rockets_block".
-local function getWeaponryGroup(preset, groupOrder)
+let function getWeaponryGroup(preset, groupOrder)
 {
-  local res = []
+  let res = []
   foreach (triggerType in groupOrder)
     if (preset?[triggerType])
       foreach (w in preset[triggerType])
@@ -200,22 +201,22 @@ local function getWeaponryGroup(preset, groupOrder)
 }
 
 // It set indexes to tiers place symmetric from center to edges
-local function getIndexedTiers(tiers, tiersCount)
+let function getIndexedTiers(tiers, tiersCount)
 {
-  local middleTierIdx = ::ceil(TIERS_NUMBER/2.0).tointeger() - 1
+  let middleTierIdx = ::ceil(TIERS_NUMBER/2.0).tointeger() - 1
   if (tiersCount == 0) // CENTRAL part of tiers
   {
-    local delta = ::ceil(tiers.len()/2.0).tointeger() - 1
+    let delta = ::ceil(tiers.len()/2.0).tointeger() - 1
     for (local i = 0; i < tiers.len(); i++)
       tiers[i].tierId = middleTierIdx - (delta - i)
   }
   else // SIDE part of tiers
   {
-    local isEvenCount = tiers.len() % 2 == 0
+    let isEvenCount = tiers.len() % 2 == 0
     if (!isEvenCount) // if SIDE tier has odd number of weapons
       unAllocatedTiers.append(tiers.pop())
-    local lim = tiers.len() / 2
-    local delta = ::ceil(tiersCount/2.0).tointeger()
+    let lim = tiers.len() / 2
+    let delta = ::ceil(tiersCount/2.0).tointeger()
     for (local i = 0; i < lim; i++)
     {
       tiers[i].tierId = middleTierIdx + delta + i
@@ -226,21 +227,21 @@ local function getIndexedTiers(tiers, tiersCount)
   return tiers
 }
 
-local function getPredefinedTiers(preset)
+let function getPredefinedTiers(preset)
 {
-  local res = []
-  local filledTiers = {}
+  let res = []
+  let filledTiers = {}
   foreach (triggerType in TRIGGER_TYPE)
     if (preset?[triggerType] != null)
       foreach (weaponry in preset[triggerType])
         if (weaponry?.tiers && !::u.isEmpty(weaponry.tiers)) // Tiers config takes effect only when all weapons in preset have tiers
         {
-          local amountPerTier = weaponry.amountPerTier ?? 1
-          local iconType = weaponry.iconType
+          let amountPerTier = weaponry.amountPerTier ?? 1
+          let iconType = weaponry.iconType
           foreach (idx, tier in weaponry.tiers)
           {
-            local tierId = ::min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
-            local params = {
+            let tierId = ::min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
+            let params = {
               tierId = tierId
               tType = triggerType
               isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
@@ -250,7 +251,7 @@ local function getPredefinedTiers(preset)
             if (filledTiers?[tierId])
             {
               // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
-              local currTier = ::u.search(res, @(p) p.tierId == tierId)
+              let currTier = ::u.search(res, @(p) p.tierId == tierId)
               if (currTier)
               {
                 currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
@@ -283,9 +284,9 @@ local function getPredefinedTiers(preset)
   return res
 }
 
-local function getTiers(unit, preset)
+let function getTiers(unit, preset)
 {
-  local res = getPredefinedTiers(preset)
+  let res = getPredefinedTiers(preset)
   unAllocatedTiers = []
 
   if (!res.len())
@@ -294,7 +295,7 @@ local function getTiers(unit, preset)
       foreach (triggerType in GROUP_ORDER[i])
         if (preset?[triggerType])
         {
-          local group = getWeaponryGroup(preset, GROUP_ORDER[i])
+          let group = getWeaponryGroup(preset, GROUP_ORDER[i])
           for (local j = 0; j < group.len(); j++)
             res.extend(getIndexedTiers(getWeaponryDistribution(group[j],
               preset, res.len() == 0), res.len()))
@@ -308,7 +309,7 @@ local function getTiers(unit, preset)
       while (res.len() > TIERS_NUMBER)
 
     // Add empty tiers if it's needed and allocate them symmetric
-    local emptyTiers = []
+    let emptyTiers = []
     for (local i = res.len(); i < TIERS_NUMBER; i++)
       emptyTiers.append({tierId = -1})
     res.extend(getIndexedTiers(emptyTiers, res.len()))
@@ -325,20 +326,20 @@ local function getTiers(unit, preset)
   return res
 }
 
-local function getFavoritePresets(unitName) {
-  local savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
+let function getFavoritePresets(unitName) {
+  let savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
   return ::load_local_account_settings(savePath, ::DataBlock()) % "presetId"
 }
 
-local function setFavoritePresets(unitName, favoriteArr=[]) {
-  local savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
-  local data = ::DataBlock()
+let function setFavoritePresets(unitName, favoriteArr=[]) {
+  let savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
+  let data = ::DataBlock()
   foreach (inst in favoriteArr)
     data.addStr("presetId", inst)
   ::save_local_account_settings(savePath, data)
 }
 
-local function sortPresetLists(listArr) {
+let function sortPresetLists(listArr) {
   foreach (list in listArr)
     list.sort(@(a, b)
       a.chapterOrd <=> b.chapterOrd
@@ -347,26 +348,23 @@ local function sortPresetLists(listArr) {
       || b.totalMass <=> a.totalMass)
 }
 
-local function updateUnitWeaponsByPreset(unit)
-{
+let function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and why modify weapons get from wpcost
   if (!unit)
     return
 
-  local unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = ::get_full_unit_blk(unit.name)
   if( !unitBlk )
     return
 
-  local presetArr = (unitBlk?.weapon_presets ?? ::DataBlock()) % "preset"
-  local weapons = unit.weapons
-  foreach (wp in presetArr)
-  {
-    local idx = weapons.findindex(@(inst) inst.name == wp.name)
-    if (wp?.weaponConfig.presetType != null && idx != null)
-      weapons[idx].presetType <- wp.weaponConfig.presetType
-  }
+  foreach (wp in getUnitPresets(unitBlk))
+    if (wp?.weaponConfig.presetType != null) {
+      let weapon = unit.getWeapons().findvalue(@(inst) inst.name == wp.name)
+      if (weapon != null)
+        weapon.presetType <- wp.weaponConfig.presetType
+    }
 }
 
-local function getReqRankByMod(reqMod, modifications) {
+let function getReqRankByMod(reqMod, modifications) {
   local res = 1
   if (!reqMod)
     return res
@@ -376,23 +374,22 @@ local function getReqRankByMod(reqMod, modifications) {
   return res
 }
 
-local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
+let function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
-  // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
-  local modifications = ::get_wpcost_blk()?[unit.name].modifications
+  let modifications = unit.modifications
   updateUnitWeaponsByPreset(unit)
-  local res = {presets = [],
+  let res = {presets = [],
     presetsList = deep_clone(getPresetsList(unit, chooseMenuList)),
     favoriteArr = getFavoritePresets(unit.name)}
-  local presets = res.presets
-  local presetsList = res.presetsList
-  local isOwn = ::isUnitUsable(unit)
+  let presets = res.presets
+  let presetsList = res.presetsList
+  let isOwn = ::isUnitUsable(unit)
 
   foreach(idx, preset in presetsList)
   {
-    local weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
-    local pType = preset?.presetType ?? getTypeByPurpose(weaponry)
-    local isFavorite = ::isInArray(preset.name, res.favoriteArr)
+    let weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
+    let pType = preset?.presetType ?? getTypeByPurpose(weaponry)
+    let isFavorite = ::isInArray(preset.name, res.favoriteArr)
     if(preset?.presetType && !::isInArray(preset.presetType, CHAPTER_ORDER))
       CHAPTER_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
     if (preset?.isEnabled == null)
@@ -413,14 +410,14 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
         isEnabled        = preset.isEnabled
         rank             = getReqRankByMod(preset?.reqModification, modifications)
       })
-    local p = presets[idx]
+    let p = presets[idx]
     foreach (weaponType, triggers in weaponry)
       foreach (t in triggers)
       {
-        local tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
+        let tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
         if (!p?[tType])
           p[tType] <- []
-        local w = p[tType]
+        let w = p[tType]
         foreach (weaponName, weapon in t)
           if (typeof(weapon) == "table")
           {

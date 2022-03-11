@@ -10,21 +10,21 @@ These functions also has very poor API:
 !!!!
 */
 
-local timeBase = require("std/time.nut")
-local stdStr = require("string")
-local math = require("math")
+let timeBase = require("std/time.nut")
+let stdStr = require("string")
+let math = require("math")
 
-local {TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS} = timeBase
+let {TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS} = timeBase
 
 local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = ::loc) {
-  local res = []
-  local sign = time >= 0 ? "" : i18n("ui/minus")
+  let res = []
+  let sign = time >= 0 ? "" : i18n("ui/minus")
   time = math.fabs(time.tofloat())
 
-  local dd = (time / 24).tointeger()
-  local hh = (time % 24).tointeger()
-  local mm = (time * TIME_MINUTE_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
-  local ss = (time * TIME_HOUR_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
+  let dd = (time / 24).tointeger()
+  let hh = (time % 24).tointeger()
+  let mm = (time * TIME_MINUTE_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
+  let ss = (time * TIME_HOUR_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
 
   if (dd>0) {
     res.append(fullUnits ? i18n("measureUnits/full/days", { n = dd }) :
@@ -66,21 +66,21 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
 
 local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = ::loc) {
   value = value != null ? value.tofloat() : 0.0
-  local s = (math.fabs(value) + 0.5).tointeger()
-  local res = []
-  local separator = useAbbreviations ? " " : ":"
-  local sign = value >= 0 ? "" : i18n("ui/minus")
+  let s = (math.fabs(value) + 0.5).tointeger()
+  let res = []
+  let separator = useAbbreviations ? " " : ":"
+  let sign = value >= 0 ? "" : i18n("ui/minus")
 
-  local hoursNum = s / TIME_HOUR_IN_SECONDS
-  local minutesNum = (s % TIME_HOUR_IN_SECONDS) / TIME_MINUTE_IN_SECONDS
-  local secondsNum = (secondsFraction > 0 ? value : s) % TIME_MINUTE_IN_SECONDS
+  let hoursNum = s / TIME_HOUR_IN_SECONDS
+  let minutesNum = (s % TIME_HOUR_IN_SECONDS) / TIME_MINUTE_IN_SECONDS
+  let secondsNum = (secondsFraction > 0 ? value : s) % TIME_MINUTE_IN_SECONDS
 
   if (hoursNum != 0) {
     res.append(stdStr.format("%d%s", hoursNum, useAbbreviations ? i18n("measureUnits/hours") : ""))
   }
 
   if (!dontShowZeroParam || minutesNum != 0) {
-    local fStr = res.len() > 0 ? "%02d%s" : "%d%s"
+    let fStr = res.len() > 0 ? "%02d%s" : "%d%s"
     if (res.len()>0)
       res.append(separator)
     res.append(
@@ -89,8 +89,8 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
   }
 
   if (!dontShowZeroParam || secondsNum != 0 || res.len()==0) {
-    local symbolsNum = res.len() ? 2 : 1
-    local fStr = secondsFraction > 0
+    let symbolsNum = res.len() ? 2 : 1
+    let fStr = secondsFraction > 0
       ? $"%0{secondsFraction + 1 + symbolsNum}.{secondsFraction}f%s"
       : $"%0{symbolsNum}d%s"
     if (res.len()>0)
@@ -106,9 +106,9 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
 }
 
 
-local function buildDateStr(timeTable) {
-  local year = timeTable?.year ?? -1
-  local locId = year > 0 ? "date_format" : "date_format_short"
+let function buildDateStr(timeTable) {
+  let year = timeTable?.year ?? -1
+  let locId = year > 0 ? "date_format" : "date_format_short"
   return ::loc(locId, {
     year = year
     day = timeTable?.day ?? -1
@@ -117,15 +117,15 @@ local function buildDateStr(timeTable) {
   })
 }
 
-local function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
-  local sec = timeTable?.sec ?? -1
+let function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
+  let sec = timeTable?.sec ?? -1
   if (showSeconds && (sec > 0 || (showZeroSeconds && sec == 0)))
     return stdStr.format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
   else
     return stdStr.format("%d:%02d", timeTable.hour, timeTable.min)
 }
 
-local buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
+let buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
   formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds)})
 
 return timeBase.__merge({

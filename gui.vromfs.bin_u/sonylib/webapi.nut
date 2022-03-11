@@ -1,11 +1,11 @@
-local DataBlock = require("DataBlock")
-local json = require_optional("json")
-local toJson = json?.to_string ?? getroottable()?.save_to_json
+let DataBlock = require("DataBlock")
+let json = require_optional("json")
+let toJson = json?.to_string ?? getroottable()?.save_to_json
 
 assert(toJson!=null, "no json module found")
 
-local nativeApi = require_optional("sony.webapi")
-local {abortAllPendingRequests= @() null,
+let nativeApi = require_optional("sony.webapi")
+let {abortAllPendingRequests= @() null,
   getPreferredVersion = @() 2,
   subscribeToBlocklistUpdates= @(...) null,
   subscribeToFriendsUpdates = @(...) null,
@@ -13,24 +13,24 @@ local {abortAllPendingRequests= @() null,
   unsubscribeFromFriendsUpdates = @(...) null
   } = nativeApi
 
-local nativeSend = nativeApi?.send ?? @(...) null
+let nativeSend = nativeApi?.send ?? @(...) null
 
-local { dgs_get_settings } = require("dagor.system")
-local { get_platform_string_id } = require("platform")
-local platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
+let { dgs_get_settings } = require("dagor.system")
+let { get_platform_string_id } = require("platform")
+let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
 
-local webApiMimeTypeBinary = "application/octet-stream"
-local webApiMimeTypeImage = "image/jpeg"
-local webApiMimeTypeJson = "application/json; encoding=utf-8"
+let webApiMimeTypeBinary = "application/octet-stream"
+let webApiMimeTypeImage = "image/jpeg"
+let webApiMimeTypeJson = "application/json; encoding=utf-8"
 
-local webApiMethodGet = 0
-local webApiMethodPost = 1
-local webApiMethodPut = 2
-local webApiMethodDelete = 3
-local webApiMethodPatch = 4
+let webApiMethodGet = 0
+let webApiMethodPost = 1
+let webApiMethodPut = 2
+let webApiMethodDelete = 3
+let webApiMethodPatch = 4
 
-local function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
-  local request = DataBlock()
+let function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
+  let request = DataBlock()
   request.apiGroup = api.group
   request.method = method
   request.path = path != null ? $"{api.path}/{path}" : $"{api.path}"
@@ -62,8 +62,8 @@ local function createRequest(api, method, path=null, params={}, data=null, force
   return request
 }
 
-local function createPart(mimeType, name, data) {
-  local part = DataBlock()
+let function createPart(mimeType, name, data) {
+  let part = DataBlock()
   part.reqHeaders = DataBlock()
   part.reqHeaders["Content-Type"] = mimeType
   part.reqHeaders["Content-Description"] = name
@@ -77,7 +77,7 @@ local function createPart(mimeType, name, data) {
   return part
 }
 
-local function makeIterable(request, pos, size) {
+let function makeIterable(request, pos, size) {
   // Some APIs accept either start (majority) or offset (friendlist), other param is ignored
   request.params.start = pos
   request.params.offset = request.params.start
@@ -86,14 +86,14 @@ local function makeIterable(request, pos, size) {
   return request
 }
 
-local function noOpCb(response, err) { /* NO OP */ }
+let function noOpCb(response, err) { /* NO OP */ }
 
 
 // ------------ Session actions
-local sessionApi = { group = "sdk:sessionInvitation", path = "/v1/sessions" }
-local session = {
+let sessionApi = { group = "sdk:sessionInvitation", path = "/v1/sessions" }
+let session = {
   function create(info, image, data) {
-    local parts = [createPart(webApiMimeTypeJson, "session-request", info)]
+    let parts = [createPart(webApiMimeTypeJson, "session-request", info)]
     if (image != null && image.len() > 0)
       parts.append(createPart(webApiMimeTypeImage, "session-image", image))
     if (data != null && data.len() > 0)
@@ -124,7 +124,7 @@ local session = {
   function invite(sessionId, accounts, invitedata={}) {
     if (type(accounts) == "string")
       accounts = [accounts]
-    local parts = [createPart(webApiMimeTypeJson, "invitation-request", {to=accounts})]
+    let parts = [createPart(webApiMimeTypeJson, "invitation-request", {to=accounts})]
     if (invitedata != null && invitedata.len() > 0)
       parts.append(createPart(webApiMimeTypeBinary, "invitation-data", invitedata))
     return createRequest(sessionApi, webApiMethodPost, $"{sessionId}/invitations", {}, parts)
@@ -132,8 +132,8 @@ local session = {
 }
 
 
-local sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
-local sessionManager = {
+let sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
+let sessionManager = {
   function create(data) {
     return createRequest(sessionManagerApi, webApiMethodPost, null, {}, data)
   }
@@ -160,14 +160,14 @@ local sessionManager = {
       {}, { accountId = accountId, platform = platform })
   }
   function invite(sessionId, accountIds) {
-    local data = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
+    let data = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
     return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/invitations", {}, data)
   }
 }
 
 // ------------ Game Sessions actions
-local gameSessionManagerApi = { group = "sessionManager", path = "/v1/gameSessions" }
-local gameSessionManager = {
+let gameSessionManagerApi = { group = "sessionManager", path = "/v1/gameSessions" }
+let gameSessionManager = {
   function create(data) {
     return createRequest(gameSessionManagerApi, webApiMethodPost, null, {}, data)
   }
@@ -187,8 +187,8 @@ local gameSessionManager = {
 }
 
 // ------------ Invitation actions
-local invitationApi = { group = "sdk:sessionInvitation", path = "/v1/users/me/invitations" }
-local invitation = {
+let invitationApi = { group = "sdk:sessionInvitation", path = "/v1/users/me/invitations" }
+let invitation = {
   function use(invitationId) {
     return createRequest(invitationApi, webApiMethodPut, invitationId, {}, {usedFlag = true})
   }
@@ -198,21 +198,21 @@ local invitation = {
   }
 }
 
-local playerSessionInvitationsApi = {
+let playerSessionInvitationsApi = {
   group = "sessionManager"
   path = "/v1/users/me/playerSessionsInvitations"
 }
-local playerSessionInvitations = {
+let playerSessionInvitations = {
   function list() {
     return createRequest(playerSessionInvitationsApi, webApiMethodGet)
   }
 }
 
 // ------------ Profile actions
-local profileApi = { group = "sdk:userProfile", path = "/v1/users/me" }
-local profile = {
+let profileApi = { group = "sdk:userProfile", path = "/v1/users/me" }
+let profile = {
   function listFriends() {
-    local params = { friendStatus = "friend", presenceType = "incontext" }
+    let params = { friendStatus = "friend", presenceType = "incontext" }
     return createRequest(profileApi, webApiMethodGet, "friendList", params)
   }
 
@@ -221,8 +221,8 @@ local profile = {
   }
 }
 
-local userProfileApi = { group = "userProfile", path = "/v1/users" }
-local userProfile = {
+let userProfileApi = { group = "userProfile", path = "/v1/users" }
+let userProfile = {
   function listFriends(params = {}) {
     return createRequest(userProfileApi, webApiMethodGet, "me/friends", params)
   }
@@ -232,21 +232,21 @@ local userProfile = {
   }
 
   function getPublicProfiles(accountIds) {
-    local users = {accountIds = ",".join(accountIds)}
+    let users = {accountIds = ",".join(accountIds)}
     return createRequest(userProfileApi, webApiMethodGet, "profiles", users)
   }
 
   function getBasicPresences(accountIds) {
-    local users = {accountIds = ",".join(accountIds)}
+    let users = {accountIds = ",".join(accountIds)}
     return createRequest(userProfileApi, webApiMethodGet, "basicPresences", users)
   }
 }
 
-local communicationRestrictionsApi = {
+let communicationRestrictionsApi = {
   group = "communicationRestrictionStatus"
   path = "/v3/users/me/communication/restriction/status"
 }
-local communicationRestrictionStatus = {
+let communicationRestrictionStatus = {
   function get() {
     return createRequest(communicationRestrictionsApi, webApiMethodGet)
   }
@@ -254,18 +254,18 @@ local communicationRestrictionStatus = {
 
 
 // ------------ Activity Feed actions
-local feedApi = { group = "sdk:activityFeed", path = "/v1/users/me" }
-local feed = {
+let feedApi = { group = "sdk:activityFeed", path = "/v1/users/me" }
+let feed = {
   function post(message) {
     return createRequest(feedApi, webApiMethodPost, "feed", {}, message)
   }
 }
 
 // ----------- Commerce actions
-local commerceApi = { group = "sdk:commerce" path = "/v1/users/me/container" }
-local commerce = {
+let commerceApi = { group = "sdk:commerce" path = "/v1/users/me/container" }
+let commerce = {
   function detail(products, params={}) {
-    local path = ":".join(products)
+    let path = ":".join(products)
     return createRequest(commerceApi, webApiMethodGet, path, params)
   }
 
@@ -277,8 +277,8 @@ local commerce = {
 }
 
 
-local inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
-local inGameCatalog = {
+let inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
+let inGameCatalog = {
   // Service label is now mandatory due to the way PS5 can be setup (with two stores)
   function get(ids, serviceLabel, params={}) {
     params["serviceLabel"] <- serviceLabel
@@ -289,38 +289,38 @@ local inGameCatalog = {
 
 // ---------- Entitlement actions
 // XXX: Entitilements WebApi is no longer available on PS5, it's only for App Servers
-local entitlementsApi = { group = "sdk:entitlement", path = "/v1/users/me/entitlements"}
-local entitlements = {
+let entitlementsApi = { group = "sdk:entitlement", path = "/v1/users/me/entitlements"}
+let entitlements = {
   function granted() {
-    local params = { entitlement_type = ["service", "unified"] }
+    let params = { entitlement_type = ["service", "unified"] }
     return createRequest(entitlementsApi, webApiMethodGet, null, params)
   }
 }
 
 
 // ---------- Matches actions
-local matchesApi = { group = "matches", path = "/v1/matches" }
+let matchesApi = { group = "matches", path = "/v1/matches" }
 
-local function psnMatchCreate(data) {
+let function psnMatchCreate(data) {
   return createRequest(matchesApi, webApiMethodPost, null, {}, data)
 }
 
-local function psnMatchUpdateStatus(id, status) {
-  local data = { status = status }
+let function psnMatchUpdateStatus(id, status) {
+  let data = { status = status }
   return createRequest(matchesApi, webApiMethodPut, $"{id}/status", {}, data)
 }
-local function psnMatchJoin(id, player) {
-  local data = { players = [ player ] }
+let function psnMatchJoin(id, player) {
+  let data = { players = [ player ] }
   return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/add", {}, data)
 }
 
-local function psnMatchLeave(id, player) {
-  local data = { players = [ player ] }
+let function psnMatchLeave(id, player) {
+  let data = { players = [ player ] }
   return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
 }
 
-local function psnMatchReportResults(id, result) {
-  local data = {matchResults = {version = "1", competitiveResult = result}}
+let function psnMatchReportResults(id, result) {
+  let data = {matchResults = {version = "1", competitiveResult = result}}
   return createRequest(matchesApi, webApiMethodPost, $"{id}/results", {}, data)
 }
 
@@ -328,13 +328,13 @@ const PSN_MATCH_LEAVE_REASON_QUIT = "QUIT"
 const PSN_MATCH_LEAVE_REASON_FINISHED = "FINISHED"
 const PSN_MATCH_LEAVE_REASON_DISCONNECTED = "DISCONNECTED"
 const PSN_MATCH_STATUS_PLAYING = "PLAYING"
-local PSN_LEAVE_MATCH_REASONS = {
+let PSN_LEAVE_MATCH_REASONS = {
   QUIT = PSN_MATCH_LEAVE_REASON_QUIT
   FINISHED = PSN_MATCH_LEAVE_REASON_FINISHED
   DISCONNECTED = PSN_MATCH_LEAVE_REASON_DISCONNECTED
 }
 
-local matches = {
+let matches = {
   create = psnMatchCreate
   updateStatus = psnMatchUpdateStatus
   join = psnMatchJoin
@@ -345,12 +345,12 @@ local matches = {
 
 
 // ---------- Utility functions and wrappers
-local function is_http_success(code) { return code != null && code >= 200 && code < 300 }
+let function is_http_success(code) { return code != null && code >= 200 && code < 300 }
 
-local function send(action, onResponse=noOpCb) {
-  local cb = function(r) {
+let function send(action, onResponse=noOpCb) {
+  let cb = function(r) {
     local err = r?.error
-    local httpErr = (!is_http_success(r?.httpStatus)) ? r.httpStatus : null
+    let httpErr = (!is_http_success(r?.httpStatus)) ? r.httpStatus : null
     if (httpErr && err == null)
       err = { }
     if (err && err?.code == null)
@@ -362,14 +362,14 @@ local function send(action, onResponse=noOpCb) {
   nativeSend(action, cb)
 }
 
-local function fetch(action, onChunkReceived, chunkSize = 20) {
-  local function onResponse(response, err) {
+let function fetch(action, onChunkReceived, chunkSize = 20) {
+  let function onResponse(response, err) {
     // PSN responses are somewhat inconsistent, but we need proper iterators
-    local entry = ((type(response) == "array") ? response?[0] : response) || {}
-    local received = (getPreferredVersion() == 2)
+    let entry = ((type(response) == "array") ? response?[0] : response) || {}
+    let received = (getPreferredVersion() == 2)
                    ? (entry?.nextOffset || entry?.totalItemCount)
                    : (entry?.start||0) + (entry?.size||0)
-    local total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
+    let total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
 
     if (err == null && received < total)
       send(makeIterable(action, received, chunkSize), callee())
