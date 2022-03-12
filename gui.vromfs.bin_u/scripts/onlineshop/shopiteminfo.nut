@@ -28,7 +28,8 @@ local function requestMultipleItems(guids, onSuccess, onFailure = null) {
           ::dagor.debug($"shopItemInfo: requested [{",".join(guids)}], got\n{body}")
 
           if (body.len() > 6 && body.slice(0, 6) == "<html>") { //error 404 and other html pages
-            ::dagor.debug(url, $"ShopState: Request result is html page instead of data {url}\n{str}")
+            ::dagor.debug(ONLINE_STORE_API_URL,
+              $"ShopState: Request result is html page instead of data {ONLINE_STORE_API_URL}\n{str}")
             onFailure?()
             return
           }
