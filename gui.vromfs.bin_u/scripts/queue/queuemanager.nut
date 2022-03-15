@@ -283,6 +283,8 @@ foreach (fn in [
 
     isLeaveDelayed = false
     lastQueueReqParams = clone params
+
+    ::broadcastEvent("BeforeJoinQueue")
     local queue = createQueue(params, true)
     queue.join(
       ::Callback(function(response) {

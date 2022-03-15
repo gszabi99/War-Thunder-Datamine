@@ -402,6 +402,7 @@ foreach (fn in [
 
 require("scripts/controls/controlsFootballNy2021Hack.nut")
 require("scripts/slotbar/elems/unlockMarkerElem.nut")
+require("scripts/dlcontent/dlContent.nut")
 
 if (::g_login.isAuthorized() || ::disable_network()) //load scripts from packs only after login
   ::g_script_reloader.loadIfExist("scripts/worldWar/worldWar.nut")
