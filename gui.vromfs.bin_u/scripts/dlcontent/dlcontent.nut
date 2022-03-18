@@ -1,5 +1,5 @@
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { set_restricted_downloads_mode } = require("hangarEventCommand")
+local { set_restricted_downloads_mode = @(_) null } = require("hangarEventCommand")
 
 addListenersWithoutEnv({
   BeforeJoinQueue = @(p) set_restricted_downloads_mode(true)
