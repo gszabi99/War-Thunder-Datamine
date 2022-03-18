@@ -1,4 +1,4 @@
-let platformModule = require("scripts/clientState/platform.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 ::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

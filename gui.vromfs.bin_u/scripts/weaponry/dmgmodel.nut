@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 const RICOCHET_DATA_ANGLE = 30
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50

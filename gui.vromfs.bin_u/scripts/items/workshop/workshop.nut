@@ -1,8 +1,8 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let Set = require("workshopSet.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let seenWorkshop = require("scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 
 let OUT_OF_DATE_DAYS_WORKSHOP = 28
 

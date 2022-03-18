@@ -1,8 +1,8 @@
 let { getAvailableRespawnBases } = require_native("guiRespawn")
-let { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
-let { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
+let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::mission_rules.Base <- class
 {

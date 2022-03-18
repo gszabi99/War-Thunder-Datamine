@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 ::gui_handlers.ItemsListWndBase <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

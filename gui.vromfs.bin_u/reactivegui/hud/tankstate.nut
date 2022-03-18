@@ -1,5 +1,5 @@
-let interopGen = require("reactiveGui/interopGen.nut")
-let { floor } = require("std/math.nut")
+let interopGen = require("%rGui/interopGen.nut")
+let { floor } = require("%sqstd/math.nut")
 
 let IndicatorsVisible = Watched(false)
 let CurrentTime = Watched(false)

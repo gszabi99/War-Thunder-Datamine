@@ -1,5 +1,5 @@
-let wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
+let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode

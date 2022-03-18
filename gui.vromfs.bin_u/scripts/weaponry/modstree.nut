@@ -1,6 +1,6 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName, getModificationBulletsGroup
-} = require("scripts/weaponry/modificationInfo.nut")
+} = require("%scripts/weaponry/modificationInfo.nut")
 
 let isModificationInTree = @(unit, mod) !mod.isHidden
   && !::wp_get_modification_cost_gold(unit.name, mod.name)

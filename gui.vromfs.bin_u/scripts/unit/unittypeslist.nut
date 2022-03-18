@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 
 const BULLETS_SETS_QUANTITY_SHORT = 4
 

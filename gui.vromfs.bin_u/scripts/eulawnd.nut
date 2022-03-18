@@ -1,6 +1,6 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { fillUserNick } = require("scripts/firstChoice/firstChoice.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 
 ::gui_start_eula <- function gui_start_eula(eulaType, isForView = false)
 {

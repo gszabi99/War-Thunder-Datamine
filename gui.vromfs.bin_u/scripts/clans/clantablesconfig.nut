@@ -1,4 +1,4 @@
-let clanInfoView = require("scripts/clans/clanInfoView.nut")
+let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 
 let function isFitsRequirements(clanData) {
   let requirements = clanData?.membership_req

@@ -1,7 +1,7 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let seenListEvents = require("scripts/seen/seenListEvents.nut")
-let Callback = require("sqStdLibs/helpers/callback.nut").Callback
+let u = require("%sqStdLibs/helpers/u.nut")
+let seenList = require("%scripts/seen/seenList.nut")
+let seenListEvents = require("%scripts/seen/seenListEvents.nut")
+let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 /*
   behaviour config params:

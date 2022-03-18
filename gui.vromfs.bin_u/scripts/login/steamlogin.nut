@@ -1,7 +1,7 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_handlers.LoginWndHandlerSteam <- class extends ::gui_handlers.LoginWndHandler

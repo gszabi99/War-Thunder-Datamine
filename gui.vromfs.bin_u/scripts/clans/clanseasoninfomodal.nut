@@ -1,5 +1,5 @@
-let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {

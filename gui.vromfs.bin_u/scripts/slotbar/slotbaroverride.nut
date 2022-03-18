@@ -1,9 +1,9 @@
-let { isDataBlock, isEmpty, isEqual } = require("sqStdLibs/helpers/u.nut")
+let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 
 let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
 let overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
 let userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
 

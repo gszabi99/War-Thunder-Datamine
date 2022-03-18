@@ -1,4 +1,4 @@
-let wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 
 let function loadUnitsFromBlk(blk, aiUnitsBlk = null)
 {

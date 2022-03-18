@@ -1,7 +1,7 @@
 let statsd = require("statsd")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler
 {

@@ -1,5 +1,5 @@
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler
 {

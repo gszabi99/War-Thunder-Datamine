@@ -1,20 +1,20 @@
-let { seasonLevel, season, seasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
-let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("scripts/battlePass/seasonStages.nut")
-let { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unlocks/userstatUnlocksState.nut")
+let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
+let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
+let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
-} = require("scripts/battlePass/challenges.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+} = require("%scripts/battlePass/challenges.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   tomorowLoginExpWatchObj, easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, seasonTasksProgressWatchObj,
   leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj, hasChallengesRewardWatchObj
-} = require("scripts/battlePass/watchObjInfoConfig.nut")
-let { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
-let { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { number_of_set_bits } = require("std/math.nut")
-require("scripts/promo/battlePassPromoHandler.nut") // Independed Modules
+} = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
+let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { number_of_set_bits } = require("%sqstd/math.nut")
+require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 let watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj

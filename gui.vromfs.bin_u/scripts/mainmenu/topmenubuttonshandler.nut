@@ -1,5 +1,5 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
 ::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

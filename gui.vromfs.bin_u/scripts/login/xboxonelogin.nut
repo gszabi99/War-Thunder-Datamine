@@ -1,6 +1,6 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler

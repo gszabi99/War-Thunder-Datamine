@@ -1,4 +1,4 @@
-let { isDataBlock } = require("std/underscore.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 
 //to use table by DataBlock api
 //Only get Data from table, not set.

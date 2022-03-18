@@ -1,22 +1,22 @@
 // warning disable: -file:forbidden-function
 
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
-let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-let dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-let { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { getVideoModes } = require("scripts/options/systemOptions.nut")
-let { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
+let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getVideoModes } = require("%scripts/options/systemOptions.nut")
+let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
-} = require("scripts/userstat/userstat.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { getDebriefingResult, setDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
-let applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
-let { blk2SquirrelObjNoArrays } = require("std/datablock.nut")
+} = require("%scripts/userstat/userstat.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
+let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 
-require("scripts/debugTools/dbgLongestUnitTooltip.nut")
+require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::callstack <- dagor.debug_dump_stack
 
@@ -472,7 +472,7 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_reset_unseen <- function debug_reset_unseen()
 {
-  require("scripts/seen/seenList.nut").clearAllSeenData()
+  require("%scripts/seen/seenList.nut").clearAllSeenData()
 }
 
 ::debug_check_dirty_words <- function debug_check_dirty_words(path = null)
@@ -569,7 +569,7 @@ let function consoleAndDebugTableData(text, data) {
 ::userstat_debug_unlocks <- @() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value)
 ::userstat_debug_stats <- @() consoleAndDebugTableData("userstatStats: ", userstatStats.value)
 
-::debug_load_anim_bg <- require("scripts/loading/animBg.nut").debugLoad
+::debug_load_anim_bg <- require("%scripts/loading/animBg.nut").debugLoad
 
 let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
 ::debug_focus <- function debug_focus(needShow = true) {
@@ -615,4 +615,4 @@ if (dbgFocusData.debugFocusTask != -1) {
   okFunc = openUrl
 })
 
-::debug_show_steam_rate_wnd <- @() require("scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)
+::debug_show_steam_rate_wnd <- @() require("%scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)

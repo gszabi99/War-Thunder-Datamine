@@ -1,7 +1,7 @@
-let {Altitude, Roll} = require("reactiveGui/planeState/planeFlyState.nut")
+let {Altitude, Roll} = require("%rGui/planeState/planeFlyState.nut")
 let {DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
-  HasDistanceScale, HasAzimuthScale, Distance} = require("reactiveGui/radarState.nut")
-let compass = require("reactiveGui/compass.nut")
+  HasDistanceScale, HasAzimuthScale, Distance} = require("%rGui/radarState.nut")
+let compass = require("%rGui/compass.nut")
 
 let baseLineWidth = hdpx(2 * LINE_WIDTH)
 

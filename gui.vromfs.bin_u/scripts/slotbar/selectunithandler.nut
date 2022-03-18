@@ -1,5 +1,5 @@
-let { canAssignInSlot, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
+let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW

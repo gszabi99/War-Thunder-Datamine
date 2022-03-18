@@ -1,6 +1,6 @@
 //local frp = require("frp")
-//local {isEqual} = require("std/underscore.nut")
-let {PI, floor, cos, sin, fabs, sqrt} = require("std/math.nut")
+//local {isEqual} = require("%sqstd/underscore.nut")
+let {PI, floor, cos, sin, fabs, sqrt} = require("%sqstd/math.nut")
 let compass = require("compass.nut")
 let {HasCompass, CompassValue} = require("compassState.nut")
 let {isPlayingReplay} = require("hudState.nut")

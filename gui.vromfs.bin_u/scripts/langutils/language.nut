@@ -1,7 +1,7 @@
-let stdMath = require("std/math.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let stdMath = require("%sqstd/math.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { get_default_lang } = require("platform")
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::g_language <- {
   currentLanguage = null

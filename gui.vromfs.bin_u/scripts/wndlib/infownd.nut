@@ -1,4 +1,4 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*

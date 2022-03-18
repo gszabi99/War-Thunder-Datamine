@@ -1,4 +1,4 @@
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
 ::gui_handlers.WwSquadList <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

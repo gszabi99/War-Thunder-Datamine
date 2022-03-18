@@ -1,11 +1,11 @@
 let { warbondsShopLevelByStages, hasBattlePass, seasonLevel
-} = require("scripts/battlePass/seasonState.nut")
+} = require("%scripts/battlePass/seasonState.nut")
 let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
-} = require("scripts/battlePass/unlocksRewardsState.nut")
-let { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
-let { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
-let { BATTLE_PASS_CHALLENGE, ITEM } = require("scripts/utils/genericTooltipTypes.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+} = require("%scripts/battlePass/unlocksRewardsState.nut")
+let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
+let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { BATTLE_PASS_CHALLENGE, ITEM } = require("%scripts/utils/genericTooltipTypes.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
 

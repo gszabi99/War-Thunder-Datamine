@@ -1,8 +1,8 @@
-let { getTimestampFromStringUtc, buildDateStr} = require("scripts/time.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { season, seasonLevel, getLevelByExp } = require("scripts/battlePass/seasonState.nut")
-let { activeUnlocks, getUnlockRewardMarkUp } = require("scripts/unlocks/userstatUnlocksState.nut")
-let { refreshUserstatUnlocks } = require("scripts/userstat/userstat.nut")
+let { getTimestampFromStringUtc, buildDateStr} = require("%scripts/time.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
+let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 
 let battlePassChallenges = ::Watched([])
 let curSeasonChallenges = ::Computed(@() battlePassChallenges.value

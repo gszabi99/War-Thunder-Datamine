@@ -1,14 +1,14 @@
-let time = require("scripts/time.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
-let workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
-let { disableSeenUserlogs, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
-let { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
-let { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
+let time = require("%scripts/time.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
+let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
+let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
+let { showUnlock } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
-} = require("scripts/userstat/userstatItemsRewards.nut")
-let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::shown_userlog_notifications <- []
 

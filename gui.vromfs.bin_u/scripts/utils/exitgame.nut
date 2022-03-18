@@ -1,5 +1,5 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { startLogout } = require("scripts/login/logout.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
 
 if (isPlatformSony && !::is_dev_version)
   return startLogout

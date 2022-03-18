@@ -1,7 +1,7 @@
-let { getObjCenteringPosRC } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"

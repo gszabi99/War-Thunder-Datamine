@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
-let { getMaxSkillValue } = require("scripts/crew/crewSkills.nut")
+let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
 
 
 ::g_skill_parameters_request_type <- {

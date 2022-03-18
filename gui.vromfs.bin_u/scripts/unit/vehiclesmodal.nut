@@ -1,6 +1,6 @@
-let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
-let { findChildIndex } = require("sqDagui/daguiUtil.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let MAX_SLOT_COUNT_X = 4
 let MAX_SLOT_COUNT_Y = 6

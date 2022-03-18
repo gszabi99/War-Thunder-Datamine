@@ -1,4 +1,4 @@
-let squadApplications = require("scripts/squads/squadApplications.nut")
+let squadApplications = require("%scripts/squads/squadApplications.nut")
 
 foreach (notificationName, callback in
           {

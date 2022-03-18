@@ -1,7 +1,7 @@
-let clustersModule = require("scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let clustersModule = require("%scripts/clusterSelect.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
   COMMON
   ANY_EVENT

@@ -1,5 +1,5 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 ::gui_handlers.WwQueueInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

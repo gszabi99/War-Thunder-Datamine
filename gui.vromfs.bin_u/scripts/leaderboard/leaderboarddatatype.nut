@@ -1,7 +1,7 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 ::g_lb_data_type <- {
   types = []

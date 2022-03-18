@@ -1,4 +1,4 @@
-let platformModule = require("scripts/clientState/platform.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 let PS4_CHUNK_FULL_CLIENT_DOWNLOADED = 19
 let PS4_CHUNK_HISTORICAL_CAMPAIGN = 11

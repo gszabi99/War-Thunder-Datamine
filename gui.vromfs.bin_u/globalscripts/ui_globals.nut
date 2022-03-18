@@ -2,7 +2,7 @@
 let realRoot = ::getroottable()
 realRoot.regexp2 <- require("regexp2")
 
-let { dlog, wlog, console_print } = require("std/log.nut")(/*TODO: toString need to be here*/)
+let { dlog, wlog, console_print } = require("%sqstd/log.nut")(/*TODO: toString need to be here*/)
 
 realRoot.loc <- require("dagor.localize").loc
 realRoot.utf8 <- require("utf8")

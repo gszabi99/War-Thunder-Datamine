@@ -1,15 +1,15 @@
 let { FRP_INITIAL } = require("frp")
-let { maxSeasonLvl, hasBattlePass, battlePassShopConfig, season } = require("scripts/battlePass/seasonState.nut")
+let { maxSeasonLvl, hasBattlePass, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { refreshUserstatUnlocks, isUserstatMissingData
-} = require("scripts/userstat/userstat.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-let seenBattlePassShop = require("scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { itemsShopListVersion, inventoryListVersion } = require("scripts/items/itemsManager.nut")
-let { isInBattleState } = require("scripts/clientState/clientStates.nut")
-let { isProfileReceived } = require("scripts/login/loginStates.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+} = require("%scripts/userstat/userstat.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/itemsManager.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 

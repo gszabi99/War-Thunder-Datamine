@@ -1,4 +1,4 @@
-let interopGen = require("reactiveGui/interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 
 let OpticAtgmSightVisible = Watched(false)
 let LaserAtgmSightVisible = Watched(false)

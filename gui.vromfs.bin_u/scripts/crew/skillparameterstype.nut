@@ -1,6 +1,6 @@
-let { getMeasureTypeBySkillParameterName } = require("scripts/crew/crewSkills.nut")
+let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_skill_parameters_type <- {
   types = []
 }

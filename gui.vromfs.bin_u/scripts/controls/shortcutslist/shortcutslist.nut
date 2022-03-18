@@ -1,6 +1,6 @@
-let shortcutsEnumData = require("scripts/controls/shortcutsList/shortcutsEnumData.nut")
+let shortcutsEnumData = require("%scripts/controls/shortcutsList/shortcutsEnumData.nut")
 
-let shortcutsModulesList = require("scripts/controls/shortcutsList/shortcutsModulesList.nut")
+let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")
 
 let shortcutsList = {
   types = []

@@ -1,4 +1,4 @@
-let guidParser = require("scripts/guidParser.nut")
+let guidParser = require("%scripts/guidParser.nut")
 
 let downloadableSkins = {} // { unitName = [] }
 

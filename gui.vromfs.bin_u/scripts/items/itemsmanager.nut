@@ -1,16 +1,16 @@
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let itemTransfer = require("scripts/items/itemsTransfer.nut")
-let stdMath = require("std/math.nut")
-let { setShouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
-let { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
-let { boosterEffectType }= require("scripts/items/boosterEffect.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { PRICE } = require("scripts/utils/configs.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let itemTransfer = require("%scripts/items/itemsTransfer.nut")
+let stdMath = require("%sqstd/math.nut")
+let { setShouldCheckAutoConsume, checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
+let { buyableSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
+let { boosterEffectType }= require("%scripts/items/boosterEffect.nut")
+let seenList = require("%scripts/seen/seenList.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { PRICE } = require("%scripts/utils/configs.nut")
 
 // Independent Modules
-require("scripts/items/roulette/bhvRoulette.nut")
+require("%scripts/items/roulette/bhvRoulette.nut")
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
 let seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -44,7 +44,7 @@ foreach (fn in [
                  "listPopupWnd/modUpgradeApplyWnd.nut"
                  "roulette/itemsRoulette.nut"
                ])
-  ::g_script_reloader.loadOnce("scripts/items/" + fn)
+  ::g_script_reloader.loadOnce("%scripts/items/" + fn)
 
 foreach (fn in [
                  "itemsBase.nut"
@@ -79,7 +79,7 @@ foreach (fn in [
                  "itemUnitCouponMod.nut"
                  "itemProfileIcon.nut"
                ])
-  ::g_script_reloader.loadOnce("scripts/items/itemsClasses/" + fn)
+  ::g_script_reloader.loadOnce("%scripts/items/itemsClasses/" + fn)
 
 
 ::ItemsManager <- {

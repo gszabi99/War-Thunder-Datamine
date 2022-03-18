@@ -1,9 +1,9 @@
-let time = require("scripts/time.nut")
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-let ent = require("scripts/onlineShop/entitlements.nut")
-let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+let time = require("%scripts/time.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
+let ent = require("%scripts/onlineShop/entitlements.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
-let { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
 let payMethodsCfg = [

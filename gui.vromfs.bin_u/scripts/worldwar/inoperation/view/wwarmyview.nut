@@ -1,8 +1,8 @@
-let time = require("scripts/time.nut")
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwTransportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+let time = require("%scripts/time.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwTransportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
 ::WwArmyView <- class
 {

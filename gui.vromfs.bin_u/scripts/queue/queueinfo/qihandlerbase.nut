@@ -1,4 +1,4 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 
 ::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT

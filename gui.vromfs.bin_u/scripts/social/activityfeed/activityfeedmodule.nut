@@ -1,6 +1,6 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let facebookPostWallMessage = persist("facebookPostWallMessage", @() ::Watched(false))
 

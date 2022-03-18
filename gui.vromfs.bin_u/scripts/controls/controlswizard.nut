@@ -1,6 +1,6 @@
 let globalEnv = require("globalEnv")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"

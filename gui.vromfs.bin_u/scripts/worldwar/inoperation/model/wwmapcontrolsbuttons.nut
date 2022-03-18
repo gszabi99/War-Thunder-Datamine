@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let transportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
-let actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
+let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
 global enum WW_MAP_CONSPLE_SHORTCUTS
 {

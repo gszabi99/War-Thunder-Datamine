@@ -1,9 +1,9 @@
 let { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
-} = require("scripts/tutorials/tutorialsData.nut")
-let { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
-let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
-let { getMoneyFromDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
-let { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
+} = require("%scripts/tutorials/tutorialsData.nut")
+let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
+let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
+let { getMoneyFromDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
+let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 
 local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL

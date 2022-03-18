@@ -1,4 +1,4 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let isProfileReceived = ::Watched(::g_login.isProfileReceived())
 

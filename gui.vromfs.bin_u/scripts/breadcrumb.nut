@@ -1,4 +1,4 @@
-let backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
+let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 local lastBaseHandlerStartData = null
 
 let function setBreadcrumbGoBackParams(handler)

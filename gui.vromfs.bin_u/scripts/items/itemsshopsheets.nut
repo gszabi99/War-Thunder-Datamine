@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
-let seenList = require("scripts/seen/seenList.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
+let seenList = require("%scripts/seen/seenList.nut")
 
 let shopSheets = {
   types = []

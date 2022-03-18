@@ -1,5 +1,5 @@
-let getShopBlkData = require("scripts/shop/getShopBlkData.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let shopCountriesList = persist("shopCountriesList", @() [])
 

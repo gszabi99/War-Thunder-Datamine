@@ -1,4 +1,4 @@
-let { cutPrefix, cutPostfix } = require("std/string.nut")
+let { cutPrefix, cutPostfix } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 
 let STEAM_PLAYER_POSTFIX = "@steam"

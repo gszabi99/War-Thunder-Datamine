@@ -1,13 +1,13 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let penalties = require("scripts/penitentiary/penalties.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
 let { getPlayerName,
         isPlayerFromXboxOne,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-let menuChatRoom = require("scripts/chat/menuChatRoom.nut")
-let { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let menuChatRoom = require("%scripts/chat/menuChatRoom.nut")
+let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, isChatEnableWithPlayer,
-  isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-let { updateContactsStatusByContacts } = require("scripts/contacts/updateContactsStatus.nut")
+  isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"

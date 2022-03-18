@@ -1,8 +1,8 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { research } = require("scripts/unit/unitActions.nut")
-let { isEqual } = require("sqStdLibs/helpers/u.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { research } = require("%scripts/unit/unitActions.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 
 enum windowState
 {

@@ -1,5 +1,5 @@
-let { isInVr } = require("reactiveGui/style/screenState.nut")
-let colors = require("reactiveGui/style/colors.nut")
+let { isInVr } = require("%rGui/style/screenState.nut")
+let colors = require("%rGui/style/colors.nut")
 
 let blurPanel = @() {
   watch = isInVr

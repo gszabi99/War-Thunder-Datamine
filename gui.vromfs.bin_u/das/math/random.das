@@ -26,3 +26,15 @@ def rnd_point_on_ring(radius_from, radius_to: float): float2
   var s, c : float
   sincos(2f * PI * rndAngle, s, c)
   return float2(radius * c, radius * s)
+
+[generic]
+def choose_index_by_weight(list)
+  var totalWeight = .0
+  for item in list
+    totalWeight += item.weight
+  var rnd = gfrnd() * totalWeight
+  for item, idx in list, iter_range(list)
+    rnd -= item.weight
+    if rnd <= .0
+      return idx
+  return length(list) - 1

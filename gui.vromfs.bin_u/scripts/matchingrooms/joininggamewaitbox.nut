@@ -1,4 +1,4 @@
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 ::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

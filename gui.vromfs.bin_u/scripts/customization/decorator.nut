@@ -1,13 +1,13 @@
-let guidParser = require("scripts/guidParser.nut")
-let itemRarity = require("scripts/items/itemRarity.nut")
-let contentPreview = require("scripts/customization/contentPreview.nut")
-let skinLocations = require("scripts/customization/skinLocations.nut")
-let stdMath = require("std/math.nut")
-let { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
-let { copyParamsToTable, eachParam } = require("std/datablock.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let itemRarity = require("%scripts/items/itemRarity.nut")
+let contentPreview = require("%scripts/customization/contentPreview.nut")
+let skinLocations = require("%scripts/customization/skinLocations.nut")
+let stdMath = require("%sqstd/math.nut")
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
+let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::Decorator <- class
 {

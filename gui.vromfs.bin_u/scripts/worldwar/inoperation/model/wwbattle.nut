@@ -1,12 +1,13 @@
-let time = require("scripts/time.nut")
-let systemMsg = require("scripts/utils/systemMsg.nut")
-let wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+let time = require("%scripts/time.nut")
+let systemMsg = require("%scripts/utils/systemMsg.nut")
+let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMyStateData } = require("%scripts/user/userUtils.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -465,7 +466,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
     let remainUnits = getUnitsRequiredForJoin(team, side)
     let myCheckingData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
-      ::g_user_utils.getMyStateData(), remainUnits, team.country)
+      getMyStateData(), remainUnits, team.country)
     if (myCheckingData.joinStatus != memberStatus.READY)
     {
       res.code = WW_BATTLE_CANT_JOIN_REASON.UNITS_NOT_ENOUGH_AVAILABLE

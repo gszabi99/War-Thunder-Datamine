@@ -1,4 +1,4 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::lights <- []
 
 ::light_lerp <- function light_lerp(t1, t2, v)

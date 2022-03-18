@@ -1,13 +1,13 @@
 // warning disable: -file:forbidden-function
 
-let dbg_dump = require("scripts/debugTools/dbgDump.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let g_path = require("std/path.nut")
+let dbg_dump = require("%scripts/debugTools/dbgDump.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let g_path = require("%sqstd/path.nut")
 let dagor_fs = require("dagor.fs")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
-let { getPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
-let { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
+let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
+let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -253,7 +253,7 @@ let { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut"
     { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
-    { id = "_fake_mpchat_log", value = require("scripts/chat/mpChatModel.nut").getLog() }
+    { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_game_type"
     "get_game_mode"
@@ -352,7 +352,7 @@ let { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut"
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
   initListLabelsSquad()
-  require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
+  require("%scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")
   ::broadcastEvent("BattleLogMessage")

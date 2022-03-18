@@ -1,11 +1,11 @@
-let mapPreferencesModal = require("scripts/missions/mapPreferencesModal.nut")
-let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
-let clustersModule = require("scripts/clusterSelect.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let Callback = require("sqStdLibs/helpers/callback.nut").Callback
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
+let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
+let clustersModule = require("%scripts/clusterSelect.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 ::dagui_propid.add_name_id("modeId")
 

@@ -1,5 +1,5 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { invert } = require("std/underscore.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { invert } = require("%sqstd/underscore.nut")
 
 let activityToGameMode = {
   air_event_arcade = "air_arcade"

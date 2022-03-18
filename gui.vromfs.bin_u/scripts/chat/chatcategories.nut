@@ -1,4 +1,4 @@
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 

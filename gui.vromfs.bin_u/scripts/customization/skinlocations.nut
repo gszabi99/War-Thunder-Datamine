@@ -1,7 +1,7 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let string = require("std/string.nut")
-let guidParser = require("scripts/guidParser.nut")
-let stdMath = require("std/math.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let string = require("%sqstd/string.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let stdMath = require("%sqstd/math.nut")
 
 const MAX_LOCATION_TYPES = 64
 

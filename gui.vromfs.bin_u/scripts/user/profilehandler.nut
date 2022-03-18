@@ -1,29 +1,29 @@
-let time = require("scripts/time.nut")
-let externalIDsService = require("scripts/user/externalIdsService.nut")
-let avatars = require("scripts/user/avatars.nut")
-let { isMeXBOXPlayer,
-        isMePS4Player,
-        isPlatformPC,
-        isPlatformSony,
-        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
-let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { fillProfileSummary } = require("scripts/user/userInfoStats.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let time = require("%scripts/time.nut")
+let externalIDsService = require("%scripts/user/externalIdsService.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony
+} = require("%scripts/clientState/platform.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
+let { canAcquireDecorator, askAcquireDecorator } = require("%scripts/customization/decoratorAcquire.nut")
+let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { fillProfileSummary } = require("%scripts/user/userInfoStats.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
-let { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { getUnlockIds, getUnitListByUnlockId } = require("scripts/unlocks/unlockMarkers.nut")
-let { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
-let shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { blk2SquirrelObjNoArrays } = require("std/datablock.nut")
+let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { getUnlockIds, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
+let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
+} = require("%scripts/user/suggestionEmailRegistration.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -328,11 +328,8 @@ let selMedalIdx = {}
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
       btn_codeApp = isPlatformPC && ::has_feature("AllowExternalLink") &&
-        !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
-          !::is_vendor_tencent()
-      btn_ps4Registration = isProfileOpened && isPlatformSony && ::g_user_utils.haveTag("psnlogin")
-      btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
-      btn_xboxRegistration = isProfileOpened && isPlatformXboxOne && ::has_feature("AllowXboxAccountLinking")
+        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()
+      btn_EmailRegistration = isProfileOpened && canEmailRegistration()
       paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
@@ -340,6 +337,9 @@ let selMedalIdx = {}
     }
 
     ::showBtnTable(scene, buttonsList)
+
+    if (buttonsList.btn_EmailRegistration)
+      scene.findObject("btn_EmailRegistration").tooltip = emailRegistrationTooltip
   }
 
   function onSheetChange(obj)
@@ -1687,21 +1687,9 @@ let selMedalIdx = {}
       goBack()
   }
 
-  function onBindPS4Email()
+  function onBindEmail()
   {
-    ::g_user_utils.launchPS4EmailRegistration()
-    doWhenActiveOnce("updateButtons")
-  }
-
-  function onBindSteamEmail()
-  {
-    ::g_user_utils.launchSteamEmailRegistration()
-    doWhenActiveOnce("updateButtons")
-  }
-
-  function onBindXboxEmail()
-  {
-    ::g_user_utils.launchXboxEmailRegistration()
+    launchEmailRegistration()
     doWhenActiveOnce("updateButtons")
   }
 

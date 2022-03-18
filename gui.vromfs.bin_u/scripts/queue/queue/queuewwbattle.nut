@@ -1,4 +1,4 @@
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 
 ::queue_classes.WwBattle <- class extends ::queue_classes.Base
 {

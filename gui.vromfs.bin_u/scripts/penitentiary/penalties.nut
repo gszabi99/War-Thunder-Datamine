@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let penalty = require("penalty")
-let { startLogout } = require("scripts/login/logout.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
 
 //  local penalist = penalty.getPenaltyList()
 //  [

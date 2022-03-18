@@ -1,14 +1,14 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let asyncActions = require("sqStdLibs/helpers/asyncActions.nut")
-let time = require("scripts/time.nut")
-let { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("scripts/items/workshop/workshop.nut")
-let startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
+let time = require("%scripts/time.nut")
+let { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
+let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
-} = require("scripts/userstat/userstatItemsRewards.nut")
-let { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
-let { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
+} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 
 global enum MARK_RECIPE {
   NONE

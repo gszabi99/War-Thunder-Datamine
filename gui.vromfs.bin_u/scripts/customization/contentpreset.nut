@@ -1,4 +1,4 @@
-let { eachBlock } = require("std/datablock.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 
 let contentPresets = []
 local contentPresetIdxByName = {}

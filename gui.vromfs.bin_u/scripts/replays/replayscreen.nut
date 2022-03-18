@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let replayMetadata = require("scripts/replays/replayMetadata.nut")
+let time = require("%scripts/time.nut")
+let replayMetadata = require("%scripts/replays/replayMetadata.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGHT = 16
 

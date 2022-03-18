@@ -1,6 +1,6 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
-let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("scripts/crew/crewSkills.nut")
+let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
 
 let parametersByCrewId = {}
 let skillGroups = { //skills which have completely the same parameters for different members

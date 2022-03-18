@@ -1,5 +1,5 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { GUI, PRICE } = require("scripts/utils/configs.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
 ::Warbond <- class
 {

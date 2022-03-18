@@ -1,5 +1,5 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { fillItemDescr } = require("scripts/items/itemVisual.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
 ::WarbondAward <- class
 {

@@ -1,5 +1,5 @@
-let { getSkillValue } = require("scripts/crew/crewSkills.nut")
-let { getSkillListParameterRowsView } = require("scripts/crew/crewSkillParameters.nut")
+let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
+let { getSkillListParameterRowsView } = require("%scripts/crew/crewSkillParameters.nut")
 
 let function getSkillCategoryName(skillCategory) {
   return ::loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)

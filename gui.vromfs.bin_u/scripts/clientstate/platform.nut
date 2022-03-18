@@ -7,7 +7,7 @@ let {
   isSony,
   isPC,
   is_console,
-  consoleRevision } = require("std/platform.nut")
+  consoleRevision } = require("%sqstd/platform.nut")
 
 let {is_running_on_steam_deck} = require_native("steam")
 
@@ -16,9 +16,10 @@ let {
   isPS4PlayerName,
   cutPlayerNamePrefix, //TODO: Uses in single place,
   cutPlayerNamePostfix //TODO: better to refactor
-} = require("scripts/user/nickTools.nut")
+} = require("%scripts/user/nickTools.nut")
 
-let remapNick = require("scripts/user/remapNick.nut")
+let remapNick = require("%scripts/user/remapNick.nut")
+let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 
 let PS4_REGION_NAMES = {
   [::SCE_REGION_SCEE]  = "scee",
@@ -28,21 +29,21 @@ let PS4_REGION_NAMES = {
 
 let getPlayerName = function(name)
 {
-  if (name == ::my_user_name)
+  if (name == ::my_user_name || getRealName(name) == ::my_user_name) //local usage
   {
     let replaceName = ::get_gui_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY, "")
     if (replaceName != "")
       return replaceName
   }
 
-  return remapNick(name)
+  return getFakeName(name) ?? remapNick(name)
 }
 
 let isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
 let isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 
-let isMePS4Player = @() ::g_user_utils.haveTag("ps4")
-let isMeXBOXPlayer = @() ::g_user_utils.haveTag("xbone")
+let isMePS4Player = @() ::get_player_tags().indexof("ps4") != null
+let isMeXBOXPlayer = @() ::get_player_tags().indexof("xbone") != null
 
 let canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
 

@@ -1,6 +1,6 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {

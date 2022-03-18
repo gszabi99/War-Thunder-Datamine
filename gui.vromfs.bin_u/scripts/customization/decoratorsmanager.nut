@@ -1,7 +1,7 @@
-let skinLocations = require("scripts/customization/skinLocations.nut")
-let guidParser = require("scripts/guidParser.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
+let skinLocations = require("%scripts/customization/skinLocations.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 
 const DEFAULT_SKIN_NAME = "default"
 

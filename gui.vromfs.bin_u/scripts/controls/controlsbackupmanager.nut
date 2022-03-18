@@ -1,5 +1,5 @@
 let DataBlock = require("DataBlock")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 ::gui_handlers.ControlsBackupManager <- class extends ::gui_handlers.SaveDataDialog
 {

@@ -1,6 +1,6 @@
-let { createBgData } = require("scripts/loading/loadingBgData.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
+let { createBgData } = require("%scripts/loading/loadingBgData.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
 const WW_BG_PATH = "config/worldwar_bg/"
 

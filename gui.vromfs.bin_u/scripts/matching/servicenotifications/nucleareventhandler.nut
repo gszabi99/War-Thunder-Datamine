@@ -1,8 +1,8 @@
 let { is_seen_nuclear_event,
         is_seen_main_nuclear_event,
         need_show_after_streak } = require("hangarEventCommand")
-let airRaidWndScene = require("scripts/wndLib/airRaidWnd.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false

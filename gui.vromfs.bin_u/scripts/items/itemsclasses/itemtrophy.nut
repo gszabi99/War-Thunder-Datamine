@@ -1,6 +1,6 @@
-let { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
+let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc,
-  TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("scripts/time.nut")
+  TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 
 ::items_classes.Trophy <- class extends ::BaseItem
 {

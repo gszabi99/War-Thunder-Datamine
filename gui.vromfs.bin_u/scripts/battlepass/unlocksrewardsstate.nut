@@ -1,5 +1,5 @@
 let { activeUnlocks, unlockProgress, emptyProgress
-} = require("scripts/unlocks/userstatUnlocksState.nut")
+} = require("%scripts/unlocks/userstatUnlocksState.nut")
 
 let mkUnlockId = @(flag) ::Computed(@() activeUnlocks.value.findindex(@(unlock) unlock?.meta[flag] ?? false))
 let basicUnlockId = mkUnlockId("season_challenges_common")

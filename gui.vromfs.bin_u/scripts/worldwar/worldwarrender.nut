@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 

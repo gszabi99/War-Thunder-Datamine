@@ -1,4 +1,4 @@
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)

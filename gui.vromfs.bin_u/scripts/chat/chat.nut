@@ -1,8 +1,8 @@
-let penalties = require("scripts/penitentiary/penalties.nut")
-let systemMsg = require("scripts/utils/systemMsg.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-let { clearBorderSymbolsMultiline } = require("std/string.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let systemMsg = require("%scripts/utils/systemMsg.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 
 global enum chatUpdateState {
   OUTDATED

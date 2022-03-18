@@ -1,6 +1,6 @@
-let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 
 elemModelType.addTypes({
   UNLOCK_MARKER = {

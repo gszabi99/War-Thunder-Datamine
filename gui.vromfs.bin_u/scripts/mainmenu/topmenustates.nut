@@ -1,4 +1,4 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let topMenuHandler = ::Watched(null)
 let topMenuShopActive = persist("topMenuShopActive", @() ::Watched(false))

@@ -1,13 +1,13 @@
-let stdMath = require("std/math.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let stdMath = require("%sqstd/math.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { doesLocTextExist = @(k) true } = require("dagor.localize")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
 const TIP_LOC_KEY_PREFIX = "loading/"
 
-::g_script_reloader.loadOnce("scripts/loading/bhvLoadingTip.nut")
+::g_script_reloader.loadOnce("%scripts/loading/bhvLoadingTip.nut")
 
 ::g_tips <- {
   TIP_LIFE_TIME_MSEC = 10000

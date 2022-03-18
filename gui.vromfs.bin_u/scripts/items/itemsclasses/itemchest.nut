@@ -1,8 +1,8 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-let { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 
 ::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST

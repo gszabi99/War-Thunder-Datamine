@@ -1,4 +1,4 @@
-let { toggleShortcut, setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
+let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 
 let touchButtonSize        = shHud(10)
 let bigTouchButtonSize     = shHud(14)

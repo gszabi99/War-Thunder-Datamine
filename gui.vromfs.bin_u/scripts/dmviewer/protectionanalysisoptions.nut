@@ -1,22 +1,22 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE,
         getLinkedGunIdx,
-        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
+        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsList,
         getBulletsSetData,
         getBulletsSearchName,
         getBulletsGroupCount,
         getLastFakeBulletsIndex,
-        getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-let { WEAPON, MODIFICATION, SINGLE_BULLET } = require("scripts/weaponry/weaponryTooltips.nut")
-let { hasUnitAtRank } = require("scripts/airInfo.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
-let { getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
+        getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { hasUnitAtRank } = require("%scripts/airInfo.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 local options = {
   types = []

@@ -1,4 +1,4 @@
-let interopGen = require("reactiveGui/interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
 
 let HasTargetTracker = Watched(false)
 let IsSightLocked = Watched(false)

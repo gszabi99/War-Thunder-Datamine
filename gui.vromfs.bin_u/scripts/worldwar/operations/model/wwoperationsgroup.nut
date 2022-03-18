@@ -1,4 +1,4 @@
-let { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::WwOperationsGroup <- class
 {

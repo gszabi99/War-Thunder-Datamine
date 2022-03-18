@@ -1,6 +1,6 @@
-let controlsOperations = require("scripts/controls/controlsOperations.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let controlsOperations = require("%scripts/controls/controlsOperations.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 return [
   {

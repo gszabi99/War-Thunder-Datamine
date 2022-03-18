@@ -1,4 +1,4 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 
 ::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT

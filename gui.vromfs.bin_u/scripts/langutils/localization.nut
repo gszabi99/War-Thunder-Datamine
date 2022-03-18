@@ -1,8 +1,8 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let {
   getPreferredVersion = @() -1
 } = isPlatformSony
-  ? require("sonyLib/webApi.nut")
+  ? require("%sonyLib/webApi.nut")
   : null
 
 ::g_localization <- {

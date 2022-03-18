@@ -1,18 +1,18 @@
-let scrollbar = require("reactiveGui/components/scrollbar.nut")
-let {formatText} = require("reactiveGui/components/formatText.nut")
+let scrollbar = require("%rGui/components/scrollbar.nut")
+let {formatText} = require("%rGui/components/formatText.nut")
 let {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
   chosenPatchnoteLoaded} = require("changeLogState.nut")
-let colors = require("reactiveGui/style/colors.nut")
-let { commonTextButton } = require("reactiveGui/components/textButton.nut")
-let modalWindow = require("reactiveGui/components/modalWindow.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
-let JB = require("reactiveGui/control/gui_buttons.nut")
-let { mkImageCompByDargKey } = require("reactiveGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
-let focusBorder = require("reactiveGui/components/focusBorder.nut")
-let blurPanel = require("reactiveGui/components/blurPanel.nut")
-let spinner = require("reactiveGui/components/spinner.nut")
+let colors = require("%rGui/style/colors.nut")
+let { commonTextButton } = require("%rGui/components/textButton.nut")
+let modalWindow = require("%rGui/components/modalWindow.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
+let JB = require("%rGui/control/gui_buttons.nut")
+let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
+let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
+let focusBorder = require("%rGui/components/focusBorder.nut")
+let blurPanel = require("%rGui/components/blurPanel.nut")
+let spinner = require("%rGui/components/spinner.nut")
 
 let tabStyle = {
   fillColor = {

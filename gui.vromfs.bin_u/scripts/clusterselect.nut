@@ -1,4 +1,4 @@
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 let getViewClusters = function()
 {

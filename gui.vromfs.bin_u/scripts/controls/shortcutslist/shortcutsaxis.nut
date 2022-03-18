@@ -1,6 +1,6 @@
-let shortcutsEnumData = require("scripts/controls/shortcutsList/shortcutsEnumData.nut")
+let shortcutsEnumData = require("%scripts/controls/shortcutsList/shortcutsEnumData.nut")
 
-let shGroupAxis = require("scripts/controls/shortcutsList/shortcutsGroupAxis.nut")
+let shGroupAxis = require("%scripts/controls/shortcutsList/shortcutsGroupAxis.nut")
 
 let shortcutsAxis = {
   types = []

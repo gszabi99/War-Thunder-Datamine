@@ -1,7 +1,7 @@
 let statsd = require("statsd")
-let { getPollIdByFullUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame)

@@ -1,5 +1,5 @@
-let string = require("std/string.nut")
-let u = require("sqStdLibs/helpers/u.nut")
+let string = require("%sqstd/string.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 local intIconToString = @(id) ""
 local getIconPath = @(icon) icon

@@ -1,10 +1,10 @@
-let time = require("scripts/time.nut")
-let unitStatus = require("scripts/unit/unitStatus.nut")
-let { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+let time = require("%scripts/time.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO,
         getAmmoCost,
-        getUnitNotReadyAmmoList } = require("scripts/weaponry/ammoInfo.nut")
-let { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
+        getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
+let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null)
 {

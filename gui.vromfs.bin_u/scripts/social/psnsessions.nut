@@ -1,7 +1,7 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let psn = require("sonyLib/webApi.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let psn = require("%sonyLib/webApi.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 enum PSN_SESSION_TYPE {
   SKIRMISH = "skirmish"

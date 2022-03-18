@@ -1,10 +1,10 @@
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
-} = require("scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { copyParamsToTable } = require("std/datablock.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+} = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { copyParamsToTable } = require("%sqstd/datablock.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")

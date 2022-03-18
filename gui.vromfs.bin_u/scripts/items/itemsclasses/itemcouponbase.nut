@@ -1,4 +1,4 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
 let CouponBase = class extends ItemExternal
 {

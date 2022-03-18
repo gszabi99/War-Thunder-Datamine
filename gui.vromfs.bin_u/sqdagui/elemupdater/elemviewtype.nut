@@ -1,4 +1,4 @@
-let enums = require("sqStdlibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 
 let viewType = {

@@ -1,4 +1,4 @@
-let { clearBorderSymbols } = require("std/string.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
 
 const PRESET_MIN_USAGE = 2
 

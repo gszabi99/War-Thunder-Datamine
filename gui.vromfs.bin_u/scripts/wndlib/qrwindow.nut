@@ -1,5 +1,5 @@
-let { generateQrBlocks } = require("std/qrCode.nut")
-let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("scripts/onlineShop/url.nut")
+let { generateQrBlocks } = require("%sqstd/qrCode.nut")
+let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 

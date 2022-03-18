@@ -1,8 +1,8 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { clearBorderSymbols } = require("std/string.nut")
-let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("scripts/clans/clanTablesConfig.nut")
-let time = require("scripts/time.nut")
-let clanContextMenu = require("scripts/clans/clanContextMenu.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
+let time = require("%scripts/time.nut")
+let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3

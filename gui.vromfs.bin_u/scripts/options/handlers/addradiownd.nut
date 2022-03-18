@@ -1,4 +1,4 @@
-let { clearBorderSymbols } = require("std/string.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
 
 ::gui_handlers.AddRadioModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

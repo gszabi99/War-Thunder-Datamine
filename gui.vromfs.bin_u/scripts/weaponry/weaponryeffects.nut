@@ -1,8 +1,8 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let string = require("std/string.nut")
-let stdMath = require("std/math.nut")
-let countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
-let { KGF_TO_NEWTON } = require("scripts/weaponry/weaponryInfo.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let string = require("%sqstd/string.nut")
+let stdMath = require("%sqstd/math.nut")
+let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
+let { KGF_TO_NEWTON } = require("%scripts/weaponry/weaponryInfo.nut")
 
 const GOOD_COLOR = "@goodTextColor"
 const BAD_COLOR = "@badTextColor"

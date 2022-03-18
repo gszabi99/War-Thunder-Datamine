@@ -1,6 +1,6 @@
-let { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
-let { findChild } = require("sqDagui/daguiUtil.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
+let { findChild } = require("%sqDagui/daguiUtil.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 
 ::dagui_propid.add_name_id("itemId")
 
@@ -196,6 +196,7 @@ let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     isDisguised = !hasItemInInventory && isDisguised
     isHidden = item?.isHiddenItem()
       || (!hasItemInInventory && workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
+      || workshopSet.isRequireExistItemsForDisplaying(itemBlock, itemsList)
     hasItemBackground = itemBlock?.hasItemBackground ?? true
     posXY = itemBlock?.posXY ?? ::Point2(0, 0)
   }
@@ -578,6 +579,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
             let hasVisibleItem = !item?.isHiddenItem()
               && (hasItemInInventory || !workshopSet.isRequireItemsForDisplaying(itemBlock, itemsList))
+              && !workshopSet.isRequireExistItemsForDisplaying(itemBlock, itemsList)
             if (!hasVisibleItem) {
               if (shouldRemoveBlankRows)
                 findVisibleItemInColumn[posXY.x] <- findVisibleItemInColumn?[posXY.x] ?? false

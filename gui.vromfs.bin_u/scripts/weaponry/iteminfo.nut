@@ -1,15 +1,15 @@
 let { isBullets,
-        getBulletGroupIndex } = require("scripts/weaponry/bulletsInfo.nut")
+        getBulletGroupIndex } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount,
-        getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
+        getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
 let { getLastWeapon,
         isWeaponEnabled,
         isWeaponUnlocked,
-        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
-  getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+  getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
 let function getItemAmount(unit, item)
 {

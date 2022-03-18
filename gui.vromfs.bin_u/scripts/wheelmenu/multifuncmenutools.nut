@@ -1,4 +1,4 @@
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let getMfmSectionTitle = @(section) section?.getTitle() ?? ::loc(section?.title ?? "")

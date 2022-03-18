@@ -1,15 +1,15 @@
-let safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
-let safeAreaHud = require("scripts/options/safeAreaHud.nut")
-let contentPreset = require("scripts/customization/contentPreset.nut")
+let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
+let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
+let contentPreset = require("%scripts/customization/contentPreset.nut")
 let soundDevice = require("soundDevice")
 let { is_stereo_mode } = ::require_native("vr")
-let { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-let { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 //
 
 
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"

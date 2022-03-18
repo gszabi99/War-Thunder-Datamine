@@ -1,7 +1,7 @@
-let avatars = require("scripts/user/avatars.nut")
+let avatars = require("%scripts/user/avatars.nut")
 let { isPs4XboxOneInteractionAvailable,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-let editContactsList = require("scripts/contacts/editContacts.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let editContactsList = require("%scripts/contacts/editContacts.nut")
 
 ::on_presences_update <- function on_presences_update(params)
 {

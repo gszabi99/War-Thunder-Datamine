@@ -1,4 +1,4 @@
-let { cutPrefix } = require("std/string.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 let dargJKeysToImage = {
   "J:D.Up"          : "dpad_up",

@@ -1,10 +1,10 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
-let progressMsg = require("sqDagui/framework/progressMsg.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
-let XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
+let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 

@@ -1,6 +1,6 @@
 let { AMMO,
         getAmmoAmount,
-        getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
+        getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !::shop_is_modification_purchased(unit.name, req)) == null

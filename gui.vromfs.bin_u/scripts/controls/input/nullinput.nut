@@ -1,4 +1,4 @@
-let { getLocalizedShortcutName } = require("scripts/controls/controlsVisual.nut")
+let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
 
 ::Input.NullInput <- class extends ::Input.InputBase
 {

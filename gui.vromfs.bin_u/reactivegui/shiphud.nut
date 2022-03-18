@@ -5,7 +5,7 @@ let voiceChat = require("chat/voiceChat.nut")
 let { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
 let { mkRadar} = require("radarComponent.nut")
 let fireControl = require("shipFireControl.nut")
-let { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
+let { dmgIndicatorStates } = require("%rGui/hudState.nut")
 
 
 let shipHud = @(){

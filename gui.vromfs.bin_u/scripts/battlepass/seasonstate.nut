@@ -1,8 +1,8 @@
-let { activeUnlocks, receiveRewards, getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
-let { userstatStats, refreshUserstatDescList } = require("scripts/userstat/userstat.nut")
+let { activeUnlocks, receiveRewards, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { userstatStats, refreshUserstatDescList } = require("%scripts/userstat/userstat.nut")
 let { basicUnlock, basicProgress, premiumUnlock, premiumProgress
-} = require("scripts/battlePass/unlocksRewardsState.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+} = require("%scripts/battlePass/unlocksRewardsState.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 let expStatId = "battlepass_exp"
 let curSeasonBattlePassUnlockId = ::Computed(@() premiumUnlock.value?.requirement)

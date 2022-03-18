@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require_native("guiMission")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 enum LIVE_STATS_MODE {
   WATCH

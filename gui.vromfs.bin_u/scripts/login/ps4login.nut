@@ -1,8 +1,8 @@
 let statsd = require("statsd")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { targetPlatform } = require("scripts/clientState/platform.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { requestPackageUpdateStatus } = require("sony")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 

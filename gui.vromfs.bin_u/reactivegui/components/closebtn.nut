@@ -1,5 +1,5 @@
-let colors = require("reactiveGui/style/colors.nut")
-let JB = require("reactiveGui/control/gui_buttons.nut")
+let colors = require("%rGui/style/colors.nut")
+let JB = require("%rGui/control/gui_buttons.nut")
 
 let closeButtonHeight = ::scrn_tgt(0.045)
 let function closeBtn(override) {

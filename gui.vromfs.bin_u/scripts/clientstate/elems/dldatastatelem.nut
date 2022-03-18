@@ -1,5 +1,5 @@
-let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10

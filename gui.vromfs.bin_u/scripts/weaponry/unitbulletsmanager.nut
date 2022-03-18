@@ -1,11 +1,11 @@
-let stdMath = require("std/math.nut")
-let { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-let { getLinkedGunIdx, getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
+let stdMath = require("%sqstd/math.nut")
+let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
+let { getLinkedGunIdx, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsSetData,
         getOptionsBulletsList,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
-        getBulletsInfoForPrimaryGuns } = require("scripts/weaponry/bulletsInfo.nut")
+        getBulletsInfoForPrimaryGuns } = require("%scripts/weaponry/bulletsInfo.nut")
 local { getGuiOptionsMode } = ::require_native("guiOptions")
 
 global enum bulletsAmountState {

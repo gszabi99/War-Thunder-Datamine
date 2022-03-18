@@ -1,13 +1,13 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
-let optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
+let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 
 /**
  * Measure type is a useful abstraction above
  * customizable and hard-coded measure units.
  */
 
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 
 ::g_measure_type <- {

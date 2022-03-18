@@ -1,10 +1,11 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo,isShowSquad,
-  getSquadInfoByMemberName, getTopSquadId } = require("scripts/statistics/squadIcon.nut")
+  getSquadInfoByMemberName, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
+let { updateNameMapping } = require("%scripts/user/nameMapping.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) // used from native code
 {
@@ -22,14 +23,6 @@ let function guiStartMPStatScreen()
 {
   gui_start_mpstatscreen_({ isFromGame = false })
   ::handlersManager.setLastBaseHandlerStartFunc(guiStartMPStatScreen)
-}
-
-::is_mpstatscreen_active <- function is_mpstatscreen_active() // used from native code
-{
-  if (!::g_login.isLoggedIn())
-    return false
-  let curHandler = ::handlersManager.getActiveBaseHandler()
-  return curHandler != null && (curHandler instanceof ::gui_handlers.MPStatisticsModal)
 }
 
 let function guiStartMPStatScreenFromGame()
@@ -166,9 +159,13 @@ let function guiStartMPStatScreenFromGame()
       else if (hdr[j] == "name")
       {
         local nameText = item
+        if (!isEmpty && !isHeader && !table[i].isBot) {
+          if (table[i]?.realName && table[i].realName != "")
+            updateNameMapping(table[i].realName, nameText)
 
-        if (!isHeader && !isEmpty && !table?[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag ?? "")
+          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+        }
+
         nameText = ::g_string.stripTags(nameText)
 
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
@@ -180,9 +177,10 @@ let function guiStartMPStatScreenFromGame()
 
         if (!isEmpty)
         {
-          if (("isLocal" in table[i]) && table[i].isLocal)
+          //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
+          if (table[i]?.isLocal)
             trAdd += "mainPlayer:t = 'yes';"
-          else if (("isInHeroSquad" in table[i]) && table[i].isInHeroSquad)
+          else if (table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item))
             trAdd += "inMySquad:t = 'yes';"
           if (("spectator" in table[i]) && table[i].spectator)
             trAdd += "spectator:t = 'yes';"
@@ -446,23 +444,27 @@ let function guiStartMPStatScreenFromGame()
       else if (hdr == "name")
       {
         local nameText = item
-
         if (!isEmpty)
         {
-          if (!table?[i].isBot)
-            nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(item), table[i]?.clanTag ?? "")
+          if (!table[i].isBot) {
+            if (table[i]?.realName && table[i].realName != "")
+              updateNameMapping(table[i].realName, nameText)
 
-          if (("invitedName" in table[i]) && table[i].invitedName != item)
+            nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+          }
+
+          if (table[i]?.invitedName && table[i].invitedName != item)
           {
             local color = ""
-            if (obj_tbl?.team)
+            if (obj_tbl?.team) {
               if (obj_tbl.team == "red")
                 color = "teamRedInactiveColor"
               else if (obj_tbl.team == "blue")
                 color = "teamBlueInactiveColor"
+            }
 
-            let playerName = ::colorize(color, platformModule.getPlayerName(table[i].invitedName))
-            nameText = ::format("%s... %s", platformModule.getPlayerName(nameText), playerName)
+            local playerName = ::colorize(color, platformModule.getPlayerName(table[i].invitedName))
+            nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
           }
         }
 
@@ -478,10 +480,11 @@ let function guiStartMPStatScreenFromGame()
         if (!isEmpty)
         {
           let isLocal = table[i].isLocal
-          let isInHeroSquad = table[i]?.isInHeroSquad ?? false
+          //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
+          let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item)
           objTr.mainPlayer = isLocal ? "yes" : "no"
           objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
-          objTr.spectator = (("spectator" in table[i]) && table[i].spectator) ? "yes" : "no"
+          objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
           let playerInfo = playersInfo?[(table[i].userId).tointeger()]
           if (!isLocal && isInHeroSquad && playerInfo?.auto_squad)
@@ -626,7 +629,7 @@ let function guiStartMPStatScreenFromGame()
       }
       else if (hdr == "squad")
       {
-        let squadInfo = (!isEmpty && isShowSquad()) ? getSquadInfoByMemberName(::getTblValue("name", table[i], "")) : null
+        let squadInfo = (!isEmpty && isShowSquad()) ? getSquadInfoByMemberName(table[i]?.name ?? "") : null
         let squadId = ::getTblValue("squadId", squadInfo, INVALID_SQUAD_ID)
         let labelSquad = squadInfo ? squadInfo.label.tostring() : ""
         let needSquadIcon = labelSquad != ""

@@ -1,7 +1,7 @@
 let { showOrder, scoresTable, statusText, statusTextBottom } = require("orderState.nut")
 let colors = require("style/colors.nut")
 let teamColors = require("style/teamColors.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 let { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
 
 

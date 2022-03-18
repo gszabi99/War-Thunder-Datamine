@@ -1,12 +1,12 @@
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { is_bit_set } = require("std/math.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
-} = require("scripts/utils/genericTooltipTypes.nut")
-let { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-let { hasActiveUnlock, getUnitListByUnlockId } = require("scripts/unlocks/unlockMarkers.nut")
-let { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
+} = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnlockLocName, getSubUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 ::g_unlock_view <- {
   function getUnlockTitle(unlockConfig) {

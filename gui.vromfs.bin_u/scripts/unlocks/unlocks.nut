@@ -1,17 +1,17 @@
-let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { hasFeatureBasic } = require("scripts/user/features.nut")
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { hasFeatureBasic } = require("%scripts/user/features.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { isPlatformSony,
         isPlatformXboxOne,
-        isPlatformPC } = require("scripts/clientState/platform.nut")
+        isPlatformPC } = require("%scripts/clientState/platform.nut")
 let psnUser = require("sony.user");
 let { isLoadingBgUnlock,
         getLoadingBgName,
-        getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
-let { statsTanks } = require("scripts/user/userInfoStats.nut")
-let { getUnlockLocName, getSubUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+        getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
+let { statsTanks } = require("%scripts/user/userInfoStats.nut")
+let { getUnlockLocName, getSubUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null

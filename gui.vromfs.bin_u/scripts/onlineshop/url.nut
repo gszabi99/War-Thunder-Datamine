@@ -1,4 +1,4 @@
-let { clearBorderSymbols } = require("std/string.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
 let base64 = require("base64")
 
 const URL_TAGS_DELIMITER = " "

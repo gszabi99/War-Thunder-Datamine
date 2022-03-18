@@ -1,5 +1,5 @@
-let { getAllModsCost } = require("scripts/weaponry/itemInfo.nut")
-let { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
+let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
+let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 
 local unitsTable = {} //unitName - unitBlock
 

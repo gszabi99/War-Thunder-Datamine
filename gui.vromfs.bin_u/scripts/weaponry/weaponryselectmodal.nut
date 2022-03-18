@@ -21,13 +21,13 @@
     ]
   }
 */
-let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-let { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
+let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon,
         setLastWeapon,
         isWeaponVisible,
         isWeaponEnabled,
-        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
+        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
 {

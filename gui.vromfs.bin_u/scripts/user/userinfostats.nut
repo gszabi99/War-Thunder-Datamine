@@ -1,8 +1,8 @@
-let time = require("scripts/time.nut")
-let avatars = require("scripts/user/avatars.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
-let { eachParam, eachBlock } = require("std/datablock.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let time = require("%scripts/time.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let { eachParam, eachBlock } = require("%sqstd/datablock.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]

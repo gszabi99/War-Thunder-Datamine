@@ -1,4 +1,4 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
 ::items_classes.CraftPart <- class extends ItemExternal {
   static iType = itemType.CRAFT_PART

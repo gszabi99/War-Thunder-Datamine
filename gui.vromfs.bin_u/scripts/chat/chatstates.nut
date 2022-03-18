@@ -1,6 +1,6 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local xboxChatEnabledCache = null
 let function getXboxChatEnableStatus(needOverlayMessage = false) {

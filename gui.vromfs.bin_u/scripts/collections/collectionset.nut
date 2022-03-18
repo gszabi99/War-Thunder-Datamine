@@ -1,4 +1,4 @@
-let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 
 local CollectionsSet = class {
   id = "" //name of config blk. not unique

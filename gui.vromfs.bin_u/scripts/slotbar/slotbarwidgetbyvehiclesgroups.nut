@@ -1,7 +1,7 @@
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
-let { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { getShopVisibleCountries } = require("scripts/shop/shopCountriesList.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
+let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 
 local handlerClass = class extends ::gui_handlers.SlotbarWidget
 {

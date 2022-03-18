@@ -1,4 +1,4 @@
-let path = "scripts/dirtyWords"
+let path = "%scripts/dirtyWords"
 let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 
 dirtyWordsFilter.init([

@@ -135,6 +135,48 @@
       "defaultCollisionGroundScrapeFx": "ship_scrape_ground_steel"
     }
   },
+  "shotDust": {
+    "fxType": {
+      "ground": "dust_shot_surface_dirt",
+      "grass": "dust_shot_surface_grass",
+      "sand": "dust_shot_surface_sand",
+      "snow": "dust_shot_surface_snow",
+      "concrete": "dust_shot_surface_asphalt",
+      "water": ""
+    },
+    "emitters": [
+      {
+        "emitter": "emtr_fire_small_dmg_01"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_02"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_03"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_04"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_05"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_01"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_02"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_03"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_04"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_05"
+      }
+    ]
+  },
   "gun_fire": {
     "cols": 4,
     "rows": 2,
@@ -2144,6 +2186,56 @@
     "fx": "smoke_point_orange_cmps_fx",
     "lifeTime": 10.0,
     "farPlane": 10000.0,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_dirt": {
+    "fx": "dust_shot_surface_dirt_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_grass": {
+    "fx": "dust_shot_surface_grass_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_sand": {
+    "fx": "dust_shot_surface_sand_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_snow": {
+    "fx": "dust_shot_surface_snow_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_asphalt": {
+    "fx": "dust_shot_surface_asphalt_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
     "numInstances": 50,
     "numReserved": 8,
     "sfxPath": "sounds/effects",

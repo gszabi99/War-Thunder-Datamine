@@ -1,4 +1,4 @@
-let TrophyMultiAward = require("scripts/items/trophyMultiAward.nut")
+let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 
 ::trophyReward <- {
   maxRewardsShow = 5

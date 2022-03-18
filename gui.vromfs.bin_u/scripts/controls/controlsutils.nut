@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
 ::shooter_control_preset <- "shooter"

@@ -5,10 +5,10 @@ let psnSystem = require("sony.sys")
 
 let seenEnumId = SEEN.EXT_PS4_SHOP
 
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
-let shopData = require("scripts/onlineShop/ps4ShopData.nut")
-let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
+let shopData = require("%scripts/onlineShop/ps4ShopData.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
 let persistent = {
   sheetsArray = []

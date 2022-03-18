@@ -1,6 +1,6 @@
-let colors = require("reactiveGui/style/colors.nut")
-let { safeAreaSizeMenu } = require("reactiveGui/style/screenState.nut")
-let closeBtn = require("reactiveGui/components/closeBtn.nut")
+let colors = require("%rGui/style/colors.nut")
+let { safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
+let closeBtn = require("%rGui/components/closeBtn.nut")
 
 let frameHeaderPad = ::dp(2)
 let frameHeaderHeight = ::scrn_tgt(0.045)

@@ -1,4 +1,4 @@
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)

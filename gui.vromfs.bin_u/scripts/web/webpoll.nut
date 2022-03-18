@@ -1,5 +1,5 @@
-let { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let api = require("dagor.webpoll")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000

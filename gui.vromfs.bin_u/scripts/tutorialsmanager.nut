@@ -1,6 +1,6 @@
 let { WEAPON_TAG,
-        isUnitHaveAnyWeaponsTags } = require("scripts/weaponry/weaponryInfo.nut")
-let { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
+        isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
+let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 
 ::g_tutorials_manager <- {
   actions = []

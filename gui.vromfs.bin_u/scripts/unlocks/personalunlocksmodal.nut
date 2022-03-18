@@ -1,6 +1,6 @@
-let { getBattleTaskUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
-let { eachParam } = require("std/datablock.nut")
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { eachParam } = require("%sqstd/datablock.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "personal_unlocks_collapsed_chapters"
 

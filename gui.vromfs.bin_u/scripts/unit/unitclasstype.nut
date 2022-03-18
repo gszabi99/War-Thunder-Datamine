@@ -1,5 +1,5 @@
-let { getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-let enums = require("sqStdLibs/helpers/enums.nut")
+let { getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 
 local unitClassType = {
   types = []

@@ -3,8 +3,8 @@ let statsd = require("statsd")
 
 let seenEnumId = SEEN.EXT_EPIC_SHOP
 
-let seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
-let shopData = require("scripts/onlineShop/epicShopData.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
+let shopData = require("%scripts/onlineShop/epicShopData.nut")
 
 let sheetsArray = [
   {

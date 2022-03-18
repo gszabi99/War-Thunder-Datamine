@@ -1,14 +1,14 @@
-let { deep_clone } = require("std/underscore.nut")
-let { BULLET_TYPE } = require("scripts/weaponry/bulletsInfo.nut")
+let { deep_clone } = require("%sqstd/underscore.nut")
+let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE,
         getPresetsList,
         getUnitWeaponry,
         isWeaponEnabled,
-        isWeaponUnlocked } = require("scripts/weaponry/weaponryInfo.nut")
-let { WEAPON_PRESET_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
-let { getTierTooltipParams } = require("scripts/weaponry/weaponryTooltipPkg.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { TIERS_NUMBER, getUnitPresets } = require("scripts/weaponry/weaponryPresets.nut")
+        isWeaponUnlocked } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+let { TIERS_NUMBER, getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 

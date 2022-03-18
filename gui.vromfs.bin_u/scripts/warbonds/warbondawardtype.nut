@@ -1,7 +1,7 @@
-let { getPurchaseLimitWb } = require("scripts/warbonds/warbondShopState.nut")
-let { DECORATION, SPECIAL_TASK } = require("scripts/utils/genericTooltipTypes.nut")
+let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
+let { DECORATION, SPECIAL_TASK } = require("%scripts/utils/genericTooltipTypes.nut")
 
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
   types = []
 }

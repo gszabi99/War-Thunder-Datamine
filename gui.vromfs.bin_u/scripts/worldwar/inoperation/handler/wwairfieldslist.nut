@@ -1,4 +1,4 @@
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 ::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler
 {

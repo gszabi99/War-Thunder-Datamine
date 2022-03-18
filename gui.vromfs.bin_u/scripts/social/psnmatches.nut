@@ -1,8 +1,8 @@
-let psn = require("sonyLib/webApi.nut")
+let psn = require("%sonyLib/webApi.nut")
 let { open_player_review, PlayerReviewMode } = require("sony.social")
-let { isPS4PlayerName } = require("scripts/clientState/platform.nut")
-let { getActivityByGameMode } = require("scripts/gameModes/psnActivities.nut")
-let { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
+let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
+let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
+let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 
 let match = {
   id = null

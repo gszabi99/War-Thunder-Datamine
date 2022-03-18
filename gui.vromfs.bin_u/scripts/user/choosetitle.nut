@@ -1,8 +1,8 @@
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let stdMath = require("std/math.nut")
-let { UNLOCK } = require("scripts/utils/genericTooltipTypes.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let stdMath = require("%sqstd/math.nut")
+let { UNLOCK } = require("%scripts/utils/genericTooltipTypes.nut")
 
 ::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

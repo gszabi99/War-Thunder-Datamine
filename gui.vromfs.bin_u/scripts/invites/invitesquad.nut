@@ -1,4 +1,4 @@
-let platformModule = require("scripts/clientState/platform.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 ::g_invites_classes.Squad <- class extends ::BaseInvite
 {

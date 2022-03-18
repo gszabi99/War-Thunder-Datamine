@@ -1,19 +1,19 @@
-let { getTimestampFromStringUtc } = require("scripts/time.nut")
-let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("scripts/clientState/platform.nut")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 
 let { canUseIngameShop,
         haveDiscount,
         getShopItemsTable,
-        needEntStoreDiscountIcon } = require("scripts/onlineShop/entitlementsStore.nut")
+        needEntStoreDiscountIcon } = require("%scripts/onlineShop/entitlementsStore.nut")
 
-let { getEntitlementId } = require("scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
+let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 
-let buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
+let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
 let topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
-let { eachBlock } = require("std/datablock.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -368,7 +368,7 @@ g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
 }
 
 // Independent Modules
-require("scripts/slotbar/elems/discountIconElem.nut")
+require("%scripts/slotbar/elems/discountIconElem.nut")
 
 ::subscribe_handler(::g_discount, ::g_listener_priority.CONFIG_VALIDATION)
 ::g_script_reloader.registerPersistentDataFromRoot("g_discount")

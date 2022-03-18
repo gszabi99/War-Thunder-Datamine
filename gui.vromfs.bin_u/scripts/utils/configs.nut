@@ -1,5 +1,5 @@
 let ConfigBase = require("configBase.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let configs = {
   PRICE = {

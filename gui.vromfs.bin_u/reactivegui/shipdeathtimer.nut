@@ -1,6 +1,6 @@
 let {timeToDeath} = require("shipState.nut")
 let {alert} = require("style/colors.nut").hud.damageModule
-let {secondsToTimeFormatString} = require("std/time.nut")
+let {secondsToTimeFormatString} = require("%sqstd/time.nut")
 let timeLocTable = require("timeLocTable.nut")
 
 let showTimeToDeath = Computed(@() timeToDeath.value > 0)

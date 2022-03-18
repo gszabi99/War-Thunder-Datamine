@@ -1,5 +1,5 @@
-let progressMsg = require("sqDagui/framework/progressMsg.nut")
-let contentSignKeys = require("scripts/inventory/inventoryContentSign.nut")
+let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01

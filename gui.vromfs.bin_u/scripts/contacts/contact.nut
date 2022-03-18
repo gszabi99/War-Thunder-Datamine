@@ -1,13 +1,13 @@
 let { isPlayerFromXboxOne,
         isPlayerFromPS4,
         getPlayerName,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-let { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { getXboxChatEnableStatus,
         isChatEnabled,
-        isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
-let { updateContacts } = require("scripts/contacts/contactsManager.nut")
-let { isEmpty, isInteger } = require("sqStdLibs/helpers/u.nut")
+        isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
+let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 
 let psnSocial = require("sony.social")

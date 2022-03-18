@@ -1,6 +1,6 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let cache = persist("cache", @() {})
 let function clearCache() {

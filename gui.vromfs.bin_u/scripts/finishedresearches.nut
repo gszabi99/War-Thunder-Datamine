@@ -1,4 +1,4 @@
-let prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []

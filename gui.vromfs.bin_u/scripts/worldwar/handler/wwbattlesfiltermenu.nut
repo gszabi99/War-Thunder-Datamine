@@ -1,6 +1,6 @@
-let stdMath = require("std/math.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let stdMath = require("%sqstd/math.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const WW_GLOBAL_BATTLES_FILTER_ID = "worldWar/ww_global_battles_filter"
 

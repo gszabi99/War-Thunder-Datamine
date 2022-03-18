@@ -1,7 +1,7 @@
-let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { MISSION_GROUP } = require("scripts/missions/missionsFilterData.nut")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { MISSION_GROUP } = require("%scripts/missions/missionsFilterData.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 ::g_mission_type <- {
   types = []

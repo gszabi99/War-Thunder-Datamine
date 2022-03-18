@@ -1,7 +1,7 @@
 let { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj
-} = require("scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+} = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
 let BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM

@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM

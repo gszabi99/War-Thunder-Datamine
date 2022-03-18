@@ -4,7 +4,7 @@ let {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight
 let tws = require("tws.nut")
 let {mkRadarForMfd} = require("radarComponent.nut")
 
-let {ceil} = require("std/math.nut")
+let {ceil} = require("%sqstd/math.nut")
 
 const mfdFontScale = 1.5
 

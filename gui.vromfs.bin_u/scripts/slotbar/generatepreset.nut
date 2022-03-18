@@ -1,6 +1,6 @@
-let { setUnits, getSlotItem, getCurPreset} = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { batchTrainCrew } = require("scripts/crew/crewActions.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { setUnits, getSlotItem, getCurPreset} = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,

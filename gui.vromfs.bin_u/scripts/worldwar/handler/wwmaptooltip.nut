@@ -1,5 +1,5 @@
 local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
-} = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+} = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
 global enum WW_MAP_TOOLTIP_TYPE
 {

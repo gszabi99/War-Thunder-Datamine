@@ -1,29 +1,29 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
 let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
-  getUnitRarity, getUnitRequireUnlockText } = require("scripts/unit/unitInfoTexts.nut")
-let unitStatus = require("scripts/unit/unitStatus.nut")
-let countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
-let { getCrewPoints } = require("scripts/crew/crewSkills.nut")
-let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+  getUnitRarity, getUnitRequireUnlockText } = require("%scripts/unit/unitInfoTexts.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
+let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
+let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
+let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux,
         getLastWeapon,
-        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isModResearched, getModificationByName
-} = require("scripts/weaponry/modificationInfo.nut")
-let { getCrewUnlockTimeByUnit } = require("scripts/crew/crewInfo.nut")
-let { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+} = require("%scripts/weaponry/modificationInfo.nut")
+let { getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
+let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { boosterEffectType, getActiveBoostersArray,
-  getBoostersEffects } = require("scripts/items/boosterEffect.nut")
-let { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
-let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("scripts/debriefing/rewardSources.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+  getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
+let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000

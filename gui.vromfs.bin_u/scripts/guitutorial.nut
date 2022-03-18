@@ -1,4 +1,4 @@
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
 

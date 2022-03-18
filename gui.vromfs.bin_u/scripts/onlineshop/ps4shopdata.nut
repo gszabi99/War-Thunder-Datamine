@@ -1,13 +1,13 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let datablock = require("DataBlock")
 
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
-let storeData = require("sonyLib/storeData.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
+let storeData = require("%sonyLib/storeData.nut")
 
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
-let psnStoreItem = require("scripts/onlineShop/psnStoreItem.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let psnStoreItem = require("%scripts/onlineShop/psnStoreItem.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let persistent = {
   categoriesData = datablock() // Collect one time in a session, reset on relogin

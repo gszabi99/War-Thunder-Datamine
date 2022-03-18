@@ -1,4 +1,4 @@
-let BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
+let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass
 {

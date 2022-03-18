@@ -1,16 +1,16 @@
-let weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
+let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
-} = require("scripts/weaponry/itemInfo.nut")
+} = require("%scripts/weaponry/itemInfo.nut")
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
   getModificationInfo, getModificationName
-} = require("scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildPiercingData } = require("scripts/weaponry/bulletsVisual.nut")
+} = require("%scripts/weaponry/bulletsInfo.nut")
+let { addBulletsParamToDesc, buildPiercingData } = require("%scripts/weaponry/bulletsVisual.nut")
 let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
-} = require("scripts/weaponry/weaponryInfo.nut")
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
-let { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
-let { getActionItemAmountText, getActionItemModificationName } = require("scripts/hud/hudActionBarInfo.nut")
+let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
+let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
 
 

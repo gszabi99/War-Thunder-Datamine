@@ -1,5 +1,5 @@
-let { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 
 ::WwUnit <- class
 {

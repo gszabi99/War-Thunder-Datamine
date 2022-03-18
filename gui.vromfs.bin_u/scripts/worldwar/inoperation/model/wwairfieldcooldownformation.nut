@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let time = require("%scripts/time.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 ::WwAirfieldCooldownFormation <- class extends ::WwAirfieldFormation
 {

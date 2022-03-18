@@ -1,6 +1,6 @@
 let hudTankStates = require("hudTankStates")
-let { hudTankMovementStatesVisible } = require("scripts/hud/hudConfigByGame.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { hudTankMovementStatesVisible } = require("%scripts/hud/hudConfigByGame.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 enum ORDER //order for movement state info
 {

@@ -1,6 +1,6 @@
-let { addButtonConfig } = require("scripts/mainmenu/topMenuButtonsConfigs.nut")
+let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
 let { getOperationById,
-        getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+        getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let template = {
   category = -1

@@ -1,4 +1,4 @@
-let { openUrl } = require("scripts/onlineShop/url.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 
 ::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

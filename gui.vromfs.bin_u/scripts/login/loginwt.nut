@@ -1,18 +1,19 @@
 let statsd = require("statsd")
-let penalties = require("scripts/penitentiary/penalties.nut")
-let tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-let contentStateModule = require("scripts/clientState/contentState.nut")
-let checkUnlocksByAbTest = require("scripts/unlocks/checkUnlocksByAbTest.nut")
-let fxOptions = require("scripts/options/fxOptions.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
-let { checkBadWeapons } = require("scripts/weaponry/weaponryInfo.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { updatePlayerRankByCountries } = require("scripts/ranks.nut")
-let { PT_STEP_STATUS, startPseudoThread } = require("scripts/utils/pseudoThread.nut")
-let { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
-let { isNeedFirstCountryChoice } = require("scripts/firstChoice/firstChoice.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let contentStateModule = require("%scripts/clientState/contentState.nut")
+let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
+let fxOptions = require("%scripts/options/fxOptions.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
+let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
+let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
+let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
+let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
+let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -326,7 +327,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
       handler.doWhenActive(@() ::gui_handlers.GampadCursorControlsSplash.open())
   }
 
-  if (::has_feature("CheckEmailVerified") && !::g_user_utils.haveTag("email_verified"))
+  if (::has_feature("CheckEmailVerified") && !havePlayerTag("email_verified"))
     handler.doWhenActive(function () {
       msgBox(
       "email_not_verified_msg_box",
@@ -338,7 +339,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
       "later", { cancel_fn = function() {}}
     )})
 
-  if (::has_feature("CheckTwoStepAuth") && !::g_user_utils.haveTag("2step"))
+  if (::has_feature("CheckTwoStepAuth") && !havePlayerTag("2step"))
     handler.doWhenActive(function () {
       ::g_popups.add(
         ::loc("mainmenu/two_step_popup_header"),

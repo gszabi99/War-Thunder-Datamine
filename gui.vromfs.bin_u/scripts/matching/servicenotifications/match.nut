@@ -1,5 +1,5 @@
-let crossplayModule = require("scripts/social/crossplay.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::notify_clusters_changed <- function notify_clusters_changed(params)
 {

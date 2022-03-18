@@ -1,17 +1,17 @@
-let time = require("scripts/time.nut")
-let seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { getAllUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
-let globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
-let { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+let time = require("%scripts/time.nut")
+let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
+let globalBattlesListData = require("%scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
+let { isMatchFilterMask } = require("%scripts/worldWar/handler/wwBattlesFilterMenu.nut")
 let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
-let stdMath = require("std/math.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-let wwAnimBgLoad = require("scripts/worldWar/wwAnimBg.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
+let stdMath = require("%sqstd/math.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
 
 let WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -838,8 +838,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   /*!!! Will be used in further tasks !!!
-  local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-  local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+  local wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
+  local { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
   function onEventWWGlobeMarkerHover(params)
   {
     local obj = scene.findObject("globe_hint")

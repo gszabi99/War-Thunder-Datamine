@@ -1,6 +1,6 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 
 let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
 

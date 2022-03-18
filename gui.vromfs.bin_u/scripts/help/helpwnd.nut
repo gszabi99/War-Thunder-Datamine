@@ -1,13 +1,13 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { search, isEmpty, isTMatrix } = require("sqStdLibs/helpers/u.nut")
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-let helpTabs = require("scripts/controls/help/controlsHelpTabs.nut")
-let helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
-let shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
+let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
+let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { EII_BULLET } = ::require_native("hudActionBarConst")
 
-require("scripts/viewUtils/bhvHelpFrame.nut")
+require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet)
 {

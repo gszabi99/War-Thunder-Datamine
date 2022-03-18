@@ -1,14 +1,14 @@
-let {Speed, Altitude, ClimbSpeed, Roll, Accel} = require("reactiveGui/planeState/planeFlyState.nut");
+let {Speed, Altitude, ClimbSpeed, Roll, Accel} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
         DistToSafety,  DistToTarget, BombCCIPMode, RocketMode,
         RadarTargetPosValid, RadarTargetPos, IlsLineScale,
-        AimLockPos, AimLockValid, TimeBeforeBombRelease} = require("reactiveGui/planeState/planeToolsState.nut")
+        AimLockPos, AimLockValid, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
 let {mpsToKmh, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkASP} = require("ilsCompasses.nut")
-let {IlsTrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("reactiveGui/rocketAamAimState.nut")
+let {IlsTrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
 let {DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, TargetsTrigger, Azimuth, IsCScopeVisible} = require("reactiveGui/radarState.nut")
-let {mode} = require("reactiveGui/radarComponent.nut")
+  HasAzimuthScale, TargetsTrigger, Azimuth, IsCScopeVisible} = require("%rGui/radarState.nut")
+let {mode} = require("%rGui/radarComponent.nut")
 let {cvt} = require("dagor.math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)

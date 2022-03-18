@@ -1,4 +1,4 @@
-let extWatched = require("reactiveGui/globals/extWatched.nut")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let baseNameFontsById = {
   tiny       = "very_tiny_text"

@@ -1,4 +1,4 @@
-let { getClansInfoByClanIds } = require("scripts/clans/clansListShortInfo.nut")
+let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 
 let modes = [
   {

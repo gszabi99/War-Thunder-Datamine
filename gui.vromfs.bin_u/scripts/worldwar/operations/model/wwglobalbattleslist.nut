@@ -1,5 +1,5 @@
-let WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-let { secondsToMilliseconds } = require("scripts/time.nut")
+let WwGlobalBattle = require("%scripts/worldWar/operations/model/wwGlobalBattle.nut")
+let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 3 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2

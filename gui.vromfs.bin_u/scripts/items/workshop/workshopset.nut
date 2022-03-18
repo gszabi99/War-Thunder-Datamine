@@ -1,6 +1,6 @@
 let workshopCraftTree = require("workshopCraftTree.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
-let { getTimestampFromStringUtc } = require("scripts/time.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
 const KNOWN_ITEMS_SAVE_ID = "workshop/known"
 const KNOWN_REQ_ITEMS_SAVE_ID = "workshop/knownReqItems"
@@ -521,7 +521,8 @@ local WorkshopSet = class {
   isDisquised = @(itemBlock, itemsList)
     isRequireCondition(itemBlock?.reqItemForIdentification, itemsList, isItemIdKnownFunc)
   isRequireItemsForDisplaying = @(itemBlock, itemsList)
-    isRequireCondition(itemBlock?.reqItemForDisplaying, itemsList, isItemIdKnownFunc) ||
+    isRequireCondition(itemBlock?.reqItemForDisplaying, itemsList, isItemIdKnownFunc)
+  isRequireExistItemsForDisplaying = @(itemBlock, itemsList)
     isRequireCondition(itemBlock?.reqItemExistsForDisplaying, itemsList, hasAmountFunc)
 
   function findTutorialItem()

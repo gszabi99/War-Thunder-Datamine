@@ -1,7 +1,7 @@
-let { calcPercent } = require("std/math.nut")
+let { calcPercent } = require("%sqstd/math.nut")
 let statsd = require("statsd")
-let { cutPrefix } = require("std/string.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 

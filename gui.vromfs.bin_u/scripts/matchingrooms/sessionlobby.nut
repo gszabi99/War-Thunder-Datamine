@@ -1,18 +1,19 @@
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
-let { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getMissionLocIdsArray } = require("%scripts/missions/missionsUtilsModule.nut")
 let base64 = require("base64")
 let DataBlock = require("DataBlock")
-let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
-  updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
-let joiningGameWaitBox = require("scripts/matchingRooms/joiningGameWaitBox.nut")
-let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+  updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
+let joiningGameWaitBox = require("%scripts/matchingRooms/joiningGameWaitBox.nut")
+let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
 let { getCdBaseDifficulty } = ::require_native("guiOptions")
-let { updateIconPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
+let { updateIconPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
+let { getRealName } = require("%scripts/user/nameMapping.nut")
 
 /*
 SessionLobby API
@@ -38,10 +39,10 @@ SessionLobby API
 */
 
 
-let time = require("scripts/time.nut")
-let ingame_chat = require("scripts/chat/mpChatModel.nut")
-let penalties = require("scripts/penitentiary/penalties.nut")
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let time = require("%scripts/time.nut")
+let ingame_chat = require("%scripts/chat/mpChatModel.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 
 const NET_SERVER_LOST = 0x82220002  //for hostCb
@@ -2360,24 +2361,20 @@ SessionLobby.isMemberInMySquadByName <- function isMemberInMySquadByName(name)
   if (!::SessionLobby.isInRoom())
     return false
 
-  local memberInfo = null
   let myInfo = getMemberPlayerInfo(::my_user_id_int64)
-  if (myInfo != null)
-  {
-    if (myInfo.squad == INVALID_SQUAD_ID)
-      return false
-    if (myInfo.name == name)
-      return false
-  }
+  if (myInfo != null && (myInfo.squad == INVALID_SQUAD_ID || myInfo.name == name))
+    return false
 
+  local memberInfo = null
   foreach (uid, member in playersInfo)
   {
-    if (member.name == name)
+    if (member.name == name || member.name == getRealName(name))
     {
       memberInfo = member
       break
     }
   }
+
   if (memberInfo == null || myInfo == null)
     return false
 

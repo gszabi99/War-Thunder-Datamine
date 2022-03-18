@@ -1,7 +1,7 @@
-let { getBundlesBlockName } = require("scripts/onlineShop/onlineBundles.nut")
-let { requestMultipleItems } = require("scripts/onlineShop/shopItemInfo.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
+let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let bundlesShopInfo = Watched(null)
 

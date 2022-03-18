@@ -1,12 +1,12 @@
-let { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
-let { clearBorderSymbols } = require("std/string.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { batchTrainCrew } = require("scripts/crew/crewActions.nut")
-let { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 // Independed Modules
-require("scripts/slotbar/hangarVehiclesPreset.nut")
+require("%scripts/slotbar/hangarVehiclesPreset.nut")
 
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"

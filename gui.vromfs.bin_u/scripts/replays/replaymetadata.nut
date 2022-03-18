@@ -1,4 +1,4 @@
-let datablockConverter = require("scripts/utils/datablockConverter.nut")
+let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 
 let buildReplayMpTable = function(replayPath)
 {

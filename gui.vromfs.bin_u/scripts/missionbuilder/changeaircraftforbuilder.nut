@@ -1,4 +1,4 @@
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::gui_handlers.changeAircraftForBuilder <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

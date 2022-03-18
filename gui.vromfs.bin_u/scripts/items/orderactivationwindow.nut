@@ -1,5 +1,5 @@
-let sheets = require("scripts/items/itemsShopSheets.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let sheets = require("%scripts/items/itemsShopSheets.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_order_activation_window <- function gui_start_order_activation_window(params = null)
 {

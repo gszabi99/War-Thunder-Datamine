@@ -1,4 +1,4 @@
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.Button <- class extends ::Input.InputBase
 {

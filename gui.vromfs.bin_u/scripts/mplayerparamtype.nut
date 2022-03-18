@@ -1,7 +1,7 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let expEventLocIds = {
   [::EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",

@@ -1,5 +1,5 @@
-let {speed, portSideMachine, sideboardSideMachine, stopping } = require("reactiveGui/shipState.nut")
-let { isInitializedMeasureUnits } = require("reactiveGui/options/optionsMeasureUnits.nut")
+let {speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
+let { isInitializedMeasureUnits } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let machineDirectionLoc = [
   ::loc("HUD/ENGINE_REV_BACK_SHORT")

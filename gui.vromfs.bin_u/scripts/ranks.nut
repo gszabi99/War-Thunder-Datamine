@@ -1,8 +1,8 @@
-::g_script_reloader.loadOnce("scripts/ranks_common_shared.nut")
+::g_script_reloader.loadOnce("%scripts/ranks_common_shared.nut")
 
-let avatars = require("scripts/user/avatars.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { PT_STEP_STATUS } = require("scripts/utils/pseudoThread.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 7

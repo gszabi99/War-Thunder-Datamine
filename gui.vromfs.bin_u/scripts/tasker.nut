@@ -1,7 +1,7 @@
-let subscriptions = require_optional("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require_optional("%sqStdLibs/helpers/subscriptions.nut")
 
 if ("g_script_reloader" in ::getroottable())
-  ::g_script_reloader.loadIfExist("scripts/framework/msgBox.nut")
+  ::g_script_reloader.loadIfExist("%scripts/framework/msgBox.nut")
 
 global enum TASK_CB_TYPE
 {

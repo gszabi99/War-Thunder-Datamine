@@ -1,4 +1,4 @@
-let squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
+let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null)
 {

@@ -1,5 +1,5 @@
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let string = require("string")
 
 local MRoomsHandlers = class {

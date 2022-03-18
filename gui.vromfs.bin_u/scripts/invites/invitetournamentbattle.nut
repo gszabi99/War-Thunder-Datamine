@@ -1,7 +1,7 @@
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
+        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 
 ::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
 {

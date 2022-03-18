@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 let globalEnv = require("globalEnv")
-let { getShortcutById } = require("scripts/controls/shortcutsUtils.nut")
+let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
 
 let function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   let nullInput = ::Input.NullInput()

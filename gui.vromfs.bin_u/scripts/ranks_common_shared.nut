@@ -1,4 +1,4 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let format = require("string").format
 
 ::DS_UT_AIRCRAFT <- "Air"

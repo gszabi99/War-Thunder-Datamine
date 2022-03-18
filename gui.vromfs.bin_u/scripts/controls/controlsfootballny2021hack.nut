@@ -6,8 +6,8 @@
  * and restores the original controls after the mission or on login.
  */
 
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 

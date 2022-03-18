@@ -1,11 +1,11 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
   EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = ::require_native("hudActionBarConst")

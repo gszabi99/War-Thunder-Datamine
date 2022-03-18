@@ -1,11 +1,11 @@
-let {Speed, Altitude, Roll, Tangage, Mach} = require("reactiveGui/planeState/planeFlyState.nut");
+let {Speed, Altitude, Roll, Tangage, Mach} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode, AamAccelLock} = require("reactiveGui/planeState/planeToolsState.nut")
+        IlsLineScale, RocketMode, CannonMode, AamAccelLock} = require("%rGui/planeState/planeToolsState.nut")
 let {mpsToKmh, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkEP, generateCompassMarkEP08} = require("ilsCompasses.nut")
-let {IlsTrackerVisible, GuidanceLockState} = require("reactiveGui/rocketAamAimState.nut")
+let {IlsTrackerVisible, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
 let {flyDirection} = require("commonElements.nut")
-let {ShellCnt}  = require("reactiveGui/planeState/planeWeaponState.nut");
+let {ShellCnt}  = require("%rGui/planeState/planeWeaponState.nut");
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 

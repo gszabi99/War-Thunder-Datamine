@@ -1,12 +1,12 @@
-let progressMsg = require("sqDagui/framework/progressMsg.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
-let { getMissionGroup, getMissionGroupName } = require("scripts/missions/missionsFilterData.nut")
-let { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionsFilterData.nut")
+let { missionsListCampaignId } = require("%scripts/missions/getMissionsListCampaignId.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { saveTutorialToCheckReward } = require("%scripts/tutorials/tutorialsData.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""

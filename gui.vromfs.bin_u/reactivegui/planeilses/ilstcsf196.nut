@@ -1,6 +1,6 @@
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale,
-       RocketMode, CannonMode, BombCCIPMode} = require("reactiveGui/planeState/planeToolsState.nut")
-let {Roll, Tangage} = require("reactiveGui/planeState/planeFlyState.nut");
+       RocketMode, CannonMode, BombCCIPMode} = require("%rGui/planeState/planeToolsState.nut")
+let {Roll, Tangage} = require("%rGui/planeState/planeFlyState.nut");
 let {baseLineWidth} = require("ilsConstants.nut")
 let {compassWrap, generateCompassTCSFMark} = require("ilsCompasses.nut")
 

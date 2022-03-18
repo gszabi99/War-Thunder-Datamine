@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
-let { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 ::g_hud_crew_member <- {
   types = []

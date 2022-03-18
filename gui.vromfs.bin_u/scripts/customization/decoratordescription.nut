@@ -1,4 +1,4 @@
-let skinLocations = require("scripts/customization/skinLocations.nut")
+let skinLocations = require("%scripts/customization/skinLocations.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null

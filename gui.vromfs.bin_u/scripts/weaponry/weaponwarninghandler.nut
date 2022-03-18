@@ -1,4 +1,4 @@
-let { saveProfile } = require("scripts/clientState/saveProfile.nut")
+let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 
 ::gui_handlers.WeaponWarningHandler <- class extends ::gui_handlers.SkipableMsgBox
 {

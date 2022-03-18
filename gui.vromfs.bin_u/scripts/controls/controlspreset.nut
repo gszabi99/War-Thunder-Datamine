@@ -1,7 +1,7 @@
-::g_script_reloader.loadOnce("scripts/controls/controlsPresets.nut")
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { copyParamsToTable, eachBlock, eachParam } = require("std/datablock.nut")
-let controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+::g_script_reloader.loadOnce("%scripts/controls/controlsPresets.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4

@@ -1,4 +1,4 @@
-let log_ = require("std/log.nut")(
+let log_ = require("%sqstd/log.nut")(
   [{
     compare = @(val) type(val)=="instance" && "formatAsString" in val
     tostring = @(val) val.formatAsString()

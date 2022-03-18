@@ -1,6 +1,6 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let platformModule = require("scripts/clientState/platform.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let time = require("%scripts/time.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 ::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null)
 {

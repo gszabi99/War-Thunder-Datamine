@@ -1,6 +1,6 @@
-::g_script_reloader.loadOnce("scripts/options/bhvHarmonizedImage.nut")
-let { eachParam } = require("std/datablock.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+::g_script_reloader.loadOnce("%scripts/options/bhvHarmonizedImage.nut")
+let { eachParam } = require("%sqstd/datablock.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::country_flags_preset <- {}
 

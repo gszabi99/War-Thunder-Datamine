@@ -1,10 +1,10 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let screenInfo = require("scripts/options/screenInfo.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let screenInfo = require("%scripts/options/screenInfo.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { is_stereo_mode } = ::require_native("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("scripts/clientState/platform.nut")
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"

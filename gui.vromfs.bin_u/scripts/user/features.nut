@@ -1,5 +1,5 @@
-let { isDataBlock } = require("sqStdLibs/helpers/u.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let defaults = ::Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false

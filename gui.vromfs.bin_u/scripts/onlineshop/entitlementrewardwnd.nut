@@ -1,5 +1,5 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-let { getEntitlementView, getEntitlementLayerIcons } = require("scripts/onlineShop/entitlementView.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
 
 ::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {

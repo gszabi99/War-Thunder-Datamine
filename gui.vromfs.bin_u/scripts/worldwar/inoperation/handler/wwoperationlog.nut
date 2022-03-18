@@ -1,4 +1,4 @@
-let { WW_LOG_BATTLE_TOOLTIP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 

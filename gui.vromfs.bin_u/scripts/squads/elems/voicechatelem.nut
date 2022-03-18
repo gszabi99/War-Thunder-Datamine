@@ -1,6 +1,6 @@
-let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-let { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2
 

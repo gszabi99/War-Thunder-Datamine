@@ -1,4 +1,4 @@
-let chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
+let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
 ::items_classes.Wager <- class extends ::BaseItem
 {

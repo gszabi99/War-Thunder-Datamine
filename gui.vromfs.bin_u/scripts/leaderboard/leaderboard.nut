@@ -1,8 +1,8 @@
-let time = require("scripts/time.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let clanContextMenu = require("scripts/clans/clanContextMenu.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
-let { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
+let time = require("%scripts/time.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO

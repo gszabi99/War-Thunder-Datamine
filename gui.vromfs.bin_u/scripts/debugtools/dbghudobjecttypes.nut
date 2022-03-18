@@ -1,5 +1,5 @@
 let { GO_FAIL, GO_WIN } = require_native("guiMission")
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_dbg_hud_object_type <- {
   types = []
 }

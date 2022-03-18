@@ -1,11 +1,11 @@
-let {Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude} = require("reactiveGui/planeState/planeFlyState.nut");
+let {Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor, TargetPosValid, TargetPos, CannonMode,
-        BombCCIPMode, RocketMode, IlsLineScale} = require("reactiveGui/planeState/planeToolsState.nut")
+        BombCCIPMode, RocketMode, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
 let {mpsToKmh, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkJ8} = require("ilsCompasses.nut")
-let {TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("reactiveGui/rocketAamAimState.nut")
+let {TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
 let {flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark} = require("commonElements.nut")
-let {floor, abs} = require("std/math.nut")
+let {floor, abs} = require("%sqstd/math.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())

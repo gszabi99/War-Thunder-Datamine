@@ -1,8 +1,8 @@
-let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let vehicleModel = require("vehicleModel")
-let { is_bit_set, number_of_set_bits } = require("std/math.nut")
-let { getCantUseVoiceMessagesReason } = require("scripts/wheelmenu/voiceMessages.nut")
-let memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
+let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
+let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
+let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { emulateShortcut } = ::require_native("controls")
 
 let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)

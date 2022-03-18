@@ -1,7 +1,7 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let bhvAvatar = require("scripts/user/bhvAvatar.nut")
-let seenAvatars = require("scripts/seen/seenList.nut").get(SEEN.AVATARS)
-let { AVATARS } = require("scripts/utils/configs.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
+let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
+let { AVATARS } = require("%scripts/utils/configs.nut")
 
 let DEFAULT_PILOT_ICON = "cardicon_default"
 

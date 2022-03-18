@@ -1,6 +1,6 @@
-let { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let penalties = require("scripts/penitentiary/penalties.nut")
-let { saveProfile } = require("scripts/clientState/saveProfile.nut")
+let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 
 ::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) //code callback on profile update
 {

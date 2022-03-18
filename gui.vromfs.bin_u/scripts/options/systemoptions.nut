@@ -1,8 +1,8 @@
 let { is_stereo_configured, configure_stereo } = ::require_native("vr")
-let applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
+let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
-let { eachBlock, eachParam } = require("std/datablock.nut")
+let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -22,7 +22,7 @@ const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 //-------------------------------------------------------------------------------
 let mQualityPresets = ::DataBlock()
-mQualityPresets.load("config/graphicsPresets.blk")
+mQualityPresets.load("%guiConfig/graphicsPresets.blk")
 
 /*
 compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.

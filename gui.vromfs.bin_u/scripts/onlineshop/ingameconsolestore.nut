@@ -1,6 +1,6 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
 ::gui_handlers.IngameConsoleStore <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

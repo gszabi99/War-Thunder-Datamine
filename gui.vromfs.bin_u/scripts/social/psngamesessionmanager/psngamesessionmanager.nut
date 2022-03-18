@@ -1,8 +1,8 @@
-let psnsm = require("scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
-let psnNotify = require("sonyLib/notifications.nut")
+let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
+let psnNotify = require("%sonyLib/notifications.nut")
 
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 
 let getSessionData = @(pushContextId) {
   gameSessions = [{

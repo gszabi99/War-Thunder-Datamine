@@ -1,4 +1,4 @@
-let { number_of_set_bits } = require("std/math.nut")
+let { number_of_set_bits } = require("%sqstd/math.nut")
 
 let function getUnlockLocName(config, key = "locId") {
   let isRawBlk = (config?.mode != null)

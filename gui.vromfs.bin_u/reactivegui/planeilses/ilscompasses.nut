@@ -1,5 +1,5 @@
-let {IlsColor, IlsLineScale} = require("reactiveGui/planeState/planeToolsState.nut")
-let {CompassValue} = require("reactiveGui/planeState/planeFlyState.nut")
+let {IlsColor, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
+let {CompassValue} = require("%rGui/planeState/planeFlyState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")
 
 let generateCompassMark = function(num, elemWidth) {

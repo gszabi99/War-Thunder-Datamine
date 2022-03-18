@@ -1,9 +1,9 @@
 let { unixtime_to_utc_timetbl } = require("dagor.time")
-let time = require("scripts/time.nut")
-let clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
-let dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-let { copyParamsToTable, eachBlock } = require("std/datablock.nut")
-let { getPlayerName, isPlatformSony } = require("scripts/clientState/platform.nut")
+let time = require("%scripts/time.nut")
+let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
+let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
+let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 const CLAN_ID_NOT_INITED = ""
 global const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-based.
@@ -1386,6 +1386,6 @@ let function getSeasonName(blk)
 }
 
 // Independent Modules
-require("scripts/slotbar/elems/squadronExpIconElem.nut")
+require("%scripts/slotbar/elems/squadronExpIconElem.nut")
 
 ::subscribe_handler(::g_clans, ::g_listener_priority.DEFAULT_HANDLER)

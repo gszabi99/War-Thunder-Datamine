@@ -1,5 +1,5 @@
-let { loadModel } = require("scripts/hangarModelLoadManager.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}

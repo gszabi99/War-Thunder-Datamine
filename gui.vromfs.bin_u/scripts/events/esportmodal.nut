@@ -1,10 +1,10 @@
-let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildTimeStr, buildDateTimeStr, buildDateStrShort,
-  isInTimerangeByUtcStrings, getTimestampFromStringUtc } = require("scripts/time.nut")
-let { secondsToString, millisecondsToSecondsInt } = require("scripts/timeLoc.nut")
-let { eachBlock, eachParam } = require("std/datablock.nut")
-let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
-let unitTypesList = require("scripts/unit/unitTypesList.nut")
+  isInTimerangeByUtcStrings, getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { secondsToString, millisecondsToSecondsInt } = require("%scripts/timeLoc.nut")
+let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 
 const MY_TOURNAMENTS = "tournaments/favorites"
 const MY_FILTERS = "tournaments/filters"

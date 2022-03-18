@@ -1,6 +1,6 @@
 let chard = require("chard")
-let { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { hasDefaultUnitsInCountry } = require("scripts/shop/shopUnitsInfo.nut")
+let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED

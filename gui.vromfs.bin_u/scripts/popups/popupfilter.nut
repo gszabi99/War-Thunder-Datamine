@@ -1,5 +1,5 @@
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const MAIN_BTN_ID  = "filter_button"
 const POUP_ID      = "filter_popup"

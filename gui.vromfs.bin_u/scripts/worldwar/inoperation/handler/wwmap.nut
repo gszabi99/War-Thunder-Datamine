@@ -1,12 +1,12 @@
-let time = require("scripts/time.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.nut")
-let actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let time = require("%scripts/time.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let mapAirfields = require("%scripts/worldWar/inOperation/model/wwMapAirfields.nut")
+let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 ::gui_handlers.WwMap <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

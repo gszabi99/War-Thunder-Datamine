@@ -1,5 +1,5 @@
 let { IsCommanderViewAimModeActive } = require("tankState.nut")
-let { IsSightLocked } = require("reactiveGui/hud/targetTrackerState.nut")
+let { IsSightLocked } = require("%rGui/hud/targetTrackerState.nut")
 
 let drawMark = @(state_var, text, pos, line_style, colorWatched) function() {
 

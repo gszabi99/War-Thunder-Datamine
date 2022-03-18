@@ -1,14 +1,14 @@
-let { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
-let { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
-let { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
+let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
+let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName
-} = require("scripts/hud/hudActionBarInfo.nut")
-let { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+} = require("%scripts/hud/hudActionBarInfo.nut")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems, getWheelBarItems, activateActionBarAction,
   getActionBarUnitName } = ::require_native("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
 } = ::require_native("hudActionBarConst")
-let { arrangeStreakWheelActions } = require("scripts/hud/hudActionBarStreakWheel.nut")
+let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 

@@ -1,7 +1,7 @@
 let { getMyClanOperation, isMyClanInQueue
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::WwQueue <- class
 {

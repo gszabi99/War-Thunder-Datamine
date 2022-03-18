@@ -1,10 +1,10 @@
-let time = require("scripts/time.nut")
-let mpChatModel = require("scripts/chat/mpChatModel.nut")
-let avatars = require("scripts/user/avatars.nut")
-let { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { updateListLabelsSquad, isShowSquad } = require("scripts/statistics/squadIcon.nut")
+let time = require("%scripts/time.nut")
+let mpChatModel = require("%scripts/chat/mpChatModel.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 

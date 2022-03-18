@@ -1,7 +1,7 @@
-let { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 
 const COOP_MAX_PLAYERS = 4
 

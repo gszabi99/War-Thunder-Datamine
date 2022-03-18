@@ -1,4 +1,4 @@
-let actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
 ::ww_gui_bhv.worldWarMapControls <- class
 {

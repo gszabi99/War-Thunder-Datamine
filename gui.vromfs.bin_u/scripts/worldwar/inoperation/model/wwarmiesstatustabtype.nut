@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_ww_map_armies_status_tab_type <- {
   types = []
   cache = {

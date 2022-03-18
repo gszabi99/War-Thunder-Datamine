@@ -1,7 +1,7 @@
-let time = require("scripts/time.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let promoConditions = require("scripts/promo/promoConditions.nut")
-let { isPollVoted } = require("scripts/web/webpoll.nut")
+let time = require("%scripts/time.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let promoConditions = require("%scripts/promo/promoConditions.nut")
+let { isPollVoted } = require("%scripts/web/webpoll.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"

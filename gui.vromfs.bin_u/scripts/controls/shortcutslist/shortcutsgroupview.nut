@@ -1,4 +1,4 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 return [
 //-------------------------------------------------------

@@ -1,9 +1,9 @@
-let psnsm = require("scripts/social/psnSessionManager/psnSessionManagerApi.nut")
-let psnNotify = require("sonyLib/notifications.nut")
+let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
+let psnNotify = require("%sonyLib/notifications.nut")
 // local base64 = require("base64")
 
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"

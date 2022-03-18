@@ -3,7 +3,7 @@
   ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
 }
 
-let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 ::gui_handlers.CampaignResults <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

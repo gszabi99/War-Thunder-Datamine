@@ -1,6 +1,6 @@
-let {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("reactiveGui/missionState.nut")
-let teamColors = require("reactiveGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("std/time.nut")
+let {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("%rGui/missionState.nut")
+let teamColors = require("%rGui/style/teamColors.nut")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
 let scoreParamsByTeam = {
   localTeam = {

@@ -1,5 +1,5 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let { skipTutorialBitmaskId } = require("scripts/tutorials/tutorialsData.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsData.nut")
 
 let TUTORIAL_VERSION_COUNTER = 1
 

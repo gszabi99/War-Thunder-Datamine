@@ -1,4 +1,4 @@
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 {
@@ -171,3 +171,11 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 }
 
 ::gui_handlers.MPStatisticsModal <- MPStatisticsModal
+
+::is_mpstatscreen_active <- function is_mpstatscreen_active() // used from native code
+{
+  if (!::g_login.isLoggedIn())
+    return false
+  let curHandler = ::handlersManager.getActiveBaseHandler()
+  return curHandler != null && (curHandler instanceof ::gui_handlers.MPStatisticsModal)
+}

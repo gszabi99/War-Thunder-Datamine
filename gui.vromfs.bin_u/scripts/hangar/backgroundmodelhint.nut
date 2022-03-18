@@ -1,4 +1,4 @@
-let { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local isVisibleHint = false
 

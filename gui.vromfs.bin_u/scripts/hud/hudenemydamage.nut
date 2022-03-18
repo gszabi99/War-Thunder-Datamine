@@ -1,4 +1,4 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
   thresholdShowHealthBelow = 0.25

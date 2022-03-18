@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 enum PART_STATE
 {

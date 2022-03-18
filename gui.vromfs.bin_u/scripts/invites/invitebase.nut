@@ -1,6 +1,6 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 
 ::g_invites_classes <- {}
 

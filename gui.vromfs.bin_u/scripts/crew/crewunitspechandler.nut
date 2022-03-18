@@ -1,4 +1,4 @@
-let { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
+let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
 
 ::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

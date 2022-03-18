@@ -1,10 +1,10 @@
-let time = require("scripts/time.nut")
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
-let { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
-let { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
+let time = require("%scripts/time.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
+let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
+let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 
 ::gui_handlers.WarbondsShop <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

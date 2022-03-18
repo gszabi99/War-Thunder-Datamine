@@ -1,7 +1,7 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
 ::gui_handlers.ModifyClanModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

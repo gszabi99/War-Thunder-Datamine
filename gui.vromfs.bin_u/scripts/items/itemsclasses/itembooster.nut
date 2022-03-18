@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
-let { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+let time = require("%scripts/time.nut")
+let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
+let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
 ::items_classes.Booster <- class extends ::BaseItem
 {

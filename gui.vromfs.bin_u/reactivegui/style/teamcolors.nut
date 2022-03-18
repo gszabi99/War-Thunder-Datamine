@@ -1,7 +1,7 @@
 local cc = ::require_native("colorCorrector")
-let {hexStringToInt} = require("std/string.nut")
-let {localTeam} = require("reactiveGui/missionState.nut")
-let {isEqual} = require("std/underscore.nut")
+let {hexStringToInt} = require("%sqstd/string.nut")
+let {localTeam} = require("%rGui/missionState.nut")
+let {isEqual} = require("%sqstd/underscore.nut")
 let colors = require("colors.nut")
 
 local teamColors = Watched({

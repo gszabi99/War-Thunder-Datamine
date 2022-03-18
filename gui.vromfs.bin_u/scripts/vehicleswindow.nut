@@ -1,4 +1,4 @@
-let { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 ::gui_handlers.VehiclesWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

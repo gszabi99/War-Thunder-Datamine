@@ -1,6 +1,6 @@
 let interopGen = require("interopGen.nut")
 let compass = require("compass.nut")
-let {PI, cos, sin, fabs, sqrt} = require("std/math.nut")
+let {PI, cos, sin, fabs, sqrt} = require("%sqstd/math.nut")
 let {CompassValue} = require("compassState.nut")
 let {greenColor, greenColorGrid} = require("style/airHudStyle.nut")
 let {fwdAngle, fov} = require("shipState.nut")

@@ -1,4 +1,4 @@
-let u = require("sqStdLibs/helpers/u.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 /**
  * Input combination.

@@ -1,9 +1,9 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
 let { getPlayerName,
         isPlatformXboxOne,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {

@@ -1,13 +1,13 @@
-let optionsListModule = require("scripts/options/optionsList.nut")
-let { isCrossNetworkChatEnabled } = require("scripts/social/crossplay.nut")
+let optionsListModule = require("%scripts/options/optionsList.nut")
+let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
-  } = require("scripts/options/systemOptions.nut")
-let fxOptions = require("scripts/options/fxOptions.nut")
-let { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
-let preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
-let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+  } = require("%scripts/options/systemOptions.nut")
+let fxOptions = require("%scripts/options/fxOptions.nut")
+let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
+let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25

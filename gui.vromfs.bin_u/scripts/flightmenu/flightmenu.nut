@@ -1,10 +1,10 @@
-let { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.nut")
-let flightMenuButtonTypes = require("scripts/flightMenu/flightMenuButtonTypes.nut")
-let { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
+let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
+let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {

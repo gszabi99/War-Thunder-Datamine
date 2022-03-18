@@ -1,4 +1,4 @@
-let ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.RentedUnit <- class extends ItemCouponBase {
   static iType = itemType.RENTED_UNIT

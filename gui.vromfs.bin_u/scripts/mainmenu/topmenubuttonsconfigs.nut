@@ -5,30 +5,30 @@ let { canUseIngameShop,
         isEntStoreTopMenuItemHidden,
         getEntStoreUnseenIcon,
         needEntStoreDiscountIcon,
-        openEntStoreTopMenuFunc } = require("scripts/onlineShop/entitlementsStore.nut")
-let contentStateModule = require("scripts/clientState/contentState.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
+        openEntStoreTopMenuFunc } = require("%scripts/onlineShop/entitlementsStore.nut")
+let contentStateModule = require("%scripts/clientState/contentState.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
 let { isPlatformSony,
         isPlatformPC,
         consoleRevision,
-        targetPlatform } = require("scripts/clientState/platform.nut")
-let encyclopedia = require("scripts/encyclopedia.nut")
-let { openChangelog } = require("scripts/changelog/changeLogState.nut")
-let openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
-let { openUrlByObj } = require("scripts/onlineShop/url.nut")
-let openQrWindow = require("scripts/wndLib/qrWindow.nut")
+        targetPlatform } = require("%scripts/clientState/platform.nut")
+let encyclopedia = require("%scripts/encyclopedia.nut")
+let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
+let openPersonalUnlocksModal = require("%scripts/unlocks/personalUnlocksModal.nut")
+let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
+let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo,
-        isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+        isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 
-let { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-let topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
-let { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
-let { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
-let { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
-let { openESportListWnd } = require("scripts/events/eSportModal.nut")
+let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
+let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
+let { buttonsListWatch } = require("%scripts/mainmenu/topMenuButtons.nut")
+let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
+let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
+let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
 
 let template = {
   id = ""

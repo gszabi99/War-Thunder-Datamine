@@ -1,4 +1,4 @@
-let { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console()
 {

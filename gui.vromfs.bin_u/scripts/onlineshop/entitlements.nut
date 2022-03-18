@@ -1,4 +1,4 @@
-let { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 
 let function getEntitlementConfig(name)
 {

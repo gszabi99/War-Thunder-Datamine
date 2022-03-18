@@ -1,6 +1,6 @@
-let callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
+let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 let function showMessageBox(params)
 {

@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { getMapByName, getMapFromShortStatusByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let time = require("%scripts/time.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getMapByName, getMapFromShortStatusByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum WW_OPERATION_STATUSES
 {

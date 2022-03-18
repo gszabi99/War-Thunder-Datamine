@@ -1,4 +1,4 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let template = {
   //id - add in generation

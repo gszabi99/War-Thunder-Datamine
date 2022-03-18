@@ -1,10 +1,10 @@
 let { seasonLevel, todayLoginExp, hasBattlePassReward,
   loginStreak, tomorowLoginExp, levelExp
-} = require("scripts/battlePass/seasonState.nut")
-let { mainChallengeOfSeason, hasChallengesReward } = require("scripts/battlePass/challenges.nut")
-let { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
-let { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
-let { number_of_set_bits } = require("std/math.nut")
+} = require("%scripts/battlePass/seasonState.nut")
+let { mainChallengeOfSeason, hasChallengesReward } = require("%scripts/battlePass/challenges.nut")
+let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
+let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
+let { number_of_set_bits } = require("%sqstd/math.nut")
 
 let seasonLvlWatchObj = [{
   watch = seasonLevel

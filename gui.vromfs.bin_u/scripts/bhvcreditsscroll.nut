@@ -1,4 +1,4 @@
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 
 const timeToShowAll = 500.0
 

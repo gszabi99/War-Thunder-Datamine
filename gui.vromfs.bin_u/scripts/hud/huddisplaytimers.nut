@@ -1,5 +1,5 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 

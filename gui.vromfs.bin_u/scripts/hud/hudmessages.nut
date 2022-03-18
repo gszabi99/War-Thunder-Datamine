@@ -1,7 +1,7 @@
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT } = require_native("guiMission")
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 

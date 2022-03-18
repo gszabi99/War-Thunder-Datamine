@@ -1,5 +1,5 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1

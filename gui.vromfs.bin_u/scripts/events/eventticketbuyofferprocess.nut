@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let time = require("%scripts/time.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 ::g_event_ticket_buy_offer <- {

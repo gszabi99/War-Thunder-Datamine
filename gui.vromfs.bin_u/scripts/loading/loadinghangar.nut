@@ -1,5 +1,5 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_handlers.LoadingHangarHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

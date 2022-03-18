@@ -1,8 +1,8 @@
-let { secondsToTime, millisecondsToSecondsInt } = require("scripts/time.nut")
-let { buildTimeStr } = require("scripts/timeLoc.nut")
+let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
+let { buildTimeStr } = require("%scripts/timeLoc.nut")
 let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
-let exitGame = require("scripts/utils/exitGame.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000

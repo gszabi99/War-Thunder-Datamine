@@ -1,10 +1,10 @@
-let stdLog = require("std/log.nut")()
+let stdLog = require("%sqstd/log.nut")()
 let log = stdLog.with_prefix("[PSN: Contacts] ")
 let logerr = stdLog.logerr
 
-let psn = require("sonyLib/webApi.nut")
-let { isPlatformSony, isPS4PlayerName } = require("scripts/clientState/platform.nut")
-let { requestUnknownPSNIds } = require("scripts/contacts/externalContactsService.nut")
+let psn = require("%sonyLib/webApi.nut")
+let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
+let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
 
 let isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 

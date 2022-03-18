@@ -1,5 +1,5 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { getCurLoadingBgData } = require("scripts/loading/loadingBgData.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getCurLoadingBgData } = require("%scripts/loading/loadingBgData.nut")
 
 const BANNED_SCREENS_SAVE_ID = "preloaderOptions/bannedScreens"
 

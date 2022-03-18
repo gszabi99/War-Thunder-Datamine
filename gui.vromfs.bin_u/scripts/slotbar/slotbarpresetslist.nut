@@ -1,4 +1,4 @@
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::SlotbarPresetsList <- class
 {

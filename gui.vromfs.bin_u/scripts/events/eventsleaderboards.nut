@@ -1,4 +1,4 @@
-let { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
+let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000

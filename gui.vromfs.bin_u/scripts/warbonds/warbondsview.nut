@@ -1,6 +1,6 @@
-let stdMath = require("std/math.nut")
-let { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
-let { warbondsShopLevelByStages } = require("scripts/battlePass/seasonState.nut")
+let stdMath = require("%sqstd/math.nut")
+let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
+let { warbondsShopLevelByStages } = require("%scripts/battlePass/seasonState.nut")
 
 enum WARBOND_SHOP_LEVEL_STATUS {
   LOCKED = "locked"

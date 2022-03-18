@@ -1,4 +1,4 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 foreach (notificationName, callback in
           {

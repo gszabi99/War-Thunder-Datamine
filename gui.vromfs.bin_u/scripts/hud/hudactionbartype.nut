@@ -1,8 +1,8 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getActionShortcutIndexByType, getActionBarUnitName, getForceWeapTriggerGroup,
   getAiGunnersState, getAutoturretState, getCurrentTriggerGroup, singleTorpedoSelected
 } = ::require_native("hudActionBar")

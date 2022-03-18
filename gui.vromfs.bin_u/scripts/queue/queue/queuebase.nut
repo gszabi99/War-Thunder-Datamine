@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let time = require("%scripts/time.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 
 ::queue_classes.Base <- class

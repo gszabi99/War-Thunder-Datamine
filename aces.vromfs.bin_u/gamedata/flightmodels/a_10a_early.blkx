@@ -16,6 +16,7 @@
   "haveCCIPForGun": true,
   "ilsKaiserA10": true,
   "isBwOpticSight": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -2475,8 +2476,8 @@
         "flaps": [0.0,1.0],
         "flaps_fixed": false,
         "trimmer_indicator": [-1.0,1.0],
-        "speed": [0.0,282.944],
-        "speed_01": [0.0,282.944],
+        "speed": [0.0,514.444],
+        "speed_01": [0.0,514.444],
         "mach": [0.0,2.5],
         "vario": [-30.48,30.48],
         "altitude_10k": [0.0,100000.0],
@@ -2968,7 +2969,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_small_group",
+            "iconType": "nar_ap_small_group_x3",
             "name": "us_hydra_70_m247_x3",
             "reqModification": "us_hydra_70",
             "ShowNodes": {
@@ -3049,7 +3050,7 @@
               "node": "bomb_pylon3"
             },
             "Weapon": {
-              "trigger": "bombs",
+              "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
               "emitter": "bomb_3",
               "bullets": 1,
@@ -3061,7 +3062,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "missile_air_to_uni",
+            "iconType": "missile_air_to_uni_x3",
             "name": "us_agm_65a_x_3",
             "reqModification": "us_agm_65b",
             "ShowNodes": {
@@ -3114,7 +3115,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_small_group",
+            "iconType": "nar_ap_small_group_x3",
             "name": "us_hydra_70_m247_x3",
             "reqModification": "us_hydra_70",
             "ShowNodes": {
@@ -3195,7 +3196,7 @@
               "node": "bomb_pylon4"
             },
             "Weapon": {
-              "trigger": "bombs",
+              "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
               "emitter": "bomb_4",
               "bullets": 1,
@@ -3419,7 +3420,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_small_group",
+            "iconType": "nar_ap_small_group_x3",
             "name": "us_hydra_70_m247_x3",
             "reqModification": "us_hydra_70",
             "ShowNodes": {
@@ -3500,7 +3501,7 @@
               "node": "bomb_pylon8"
             },
             "Weapon": {
-              "trigger": "bombs",
+              "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
               "emitter": "bomb_7",
               "bullets": 1,
@@ -3543,7 +3544,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_small_group",
+            "iconType": "nar_ap_small_group_x3",
             "name": "us_hydra_70_m247_x3",
             "reqModification": "us_hydra_70",
             "ShowNodes": {
@@ -3624,7 +3625,7 @@
               "node": "bomb_pylon9"
             },
             "Weapon": {
-              "trigger": "bombs",
+              "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
               "emitter": "bomb_8",
               "bullets": 1,
@@ -3636,7 +3637,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "missile_air_to_uni",
+            "iconType": "missile_air_to_uni_x3",
             "name": "us_agm_65a_x_3",
             "reqModification": "us_agm_65b",
             "ShowNodes": {
@@ -3991,6 +3992,31 @@
       "tier": 4
     }
   },
+  "user_skin": [
+    {
+      "name": "a_10a_early"
+    },
+    {
+      "replace_tex": {
+        "from": "a_10a_early_c*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_10a_early_c_dmg*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_10a_early_n*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_10a_early_n_dmg*"
+      }
+    }
+  ],
   "default_skin_tomoe": [
     {
       "replace_tex": {

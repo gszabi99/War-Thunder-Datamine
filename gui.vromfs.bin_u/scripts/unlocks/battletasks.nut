@@ -1,11 +1,11 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
 let statsd = require("statsd")
-let { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlocksState.nut")
+let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
-} = require("scripts/utils/genericTooltipTypes.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+} = require("%scripts/utils/genericTooltipTypes.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::g_battle_tasks <- null
 

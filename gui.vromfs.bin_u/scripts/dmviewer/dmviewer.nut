@@ -1,19 +1,19 @@
-let { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { getParametersByCrewId } = require("scripts/crew/crewSkillParameters.nut")
-let { getWeaponXrayDescText } = require("scripts/weaponry/weaponryDescription.nut")
+let { blkOptFromPath, blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
+let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { KGF_TO_NEWTON,
         isCaliberCannon,
         getCommonWeapons,
         getLastPrimaryWeapon,
         getPrimaryWeaponsList,
-        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { doesLocTextExist = @(k) true } = require("dagor.localize")
-let { hasLoadedModel } = require("scripts/hangarModelLoadManager.nut")
-let { unique } = require("std/underscore.nut")
-let { fileName } = require("std/path.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
+let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
+let { unique } = require("%sqstd/underscore.nut")
+let { fileName } = require("%sqstd/path.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
 /*
@@ -25,7 +25,7 @@ let { getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
                           and modal windows.
 */
 
-let countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
+let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 
 local compareWeaponFunc = @(w1, w2) ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
   && ::u.isEqual(w1?.blk ?? "", w2?.blk ?? "")

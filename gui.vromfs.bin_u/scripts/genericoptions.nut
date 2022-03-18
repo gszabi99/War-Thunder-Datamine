@@ -1,8 +1,8 @@
 from "soundOptions" import *
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

@@ -1,10 +1,10 @@
-let { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBlkPath.nut")
-let fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
+let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
+let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode } = ::require_native("guiOptions")
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 ::match_search_gm <- -1
 

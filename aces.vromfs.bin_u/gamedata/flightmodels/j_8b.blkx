@@ -2386,6 +2386,18 @@
       "headPosOnShooting": [7.05,0.965,0.0],
       "shadowSphereMultiplier": 2.0,
       "gunLightRadiusMul": 0.05,
+      "lightPos": [7.499,0.705,-0.004],
+      "lightColor": [0.7,0.01,0.0],
+      "lightRadius": 0.33,
+      "lightPos1": [7.504,0.438,0.278],
+      "lightColor1": [0.7,0.01,0.0],
+      "lightRadius1": 0.3,
+      "lightPos2": [7.504,0.438,-0.278],
+      "lightColor2": [0.7,0.01,0.0],
+      "lightRadius2": 0.3,
+      "lightPos3": [7.482,0.744,-0.005],
+      "lightColor3": [0.7,0.01,0.0],
+      "lightRadius3": 0.25,
       "devices": {
         "stick_ailerons": [-1.0,1.0],
         "stick_elevator": [-1.0,1.0],
@@ -2529,8 +2541,14 @@
       },
       {
         "preset": {
-          "name": "j_8b_2x_pf10",
-          "blk": "gameData/FlightModels/weaponPresets/j_8b_2x_pf10.blk"
+          "name": "j_8b_4x_pl8",
+          "blk": "gameData/FlightModels/weaponPresets/j_8b_4x_pl8.blk"
+        }
+      },
+      {
+        "preset": {
+          "name": "j_8b_2x_aspide",
+          "blk": "gameData/FlightModels/weaponPresets/j_8b_2x_aspide.blk"
         }
       },
       {
@@ -2841,8 +2859,8 @@
           {
             "WeaponPreset": {
               "iconType": "missile_air_to_air_midrange_special",
-              "name": "pf10",
-              "reqModification": "cn_pf10",
+              "name": "aspide",
+              "reqModification": "it_aspide",
               "ShowNodes": [
                 {
                   "node": "rocket_pylon_l1"
@@ -2853,7 +2871,7 @@
               ],
               "Weapon": {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/cn_pf10.blk",
+                "blk": "gameData/Weapons/rocketGuns/it_aspide_1a.blk",
                 "emitter": "aim_7e_001",
                 "bullets": 1,
                 "external": true,
@@ -2963,8 +2981,9 @@
           "index": 4,
           "tier": 6,
           "order": 7,
+          "notUseforDisbalanceCalculation": true,
           "WeaponPreset": {
-            "iconType": "bombs_middle_group_x4",
+            "iconType": "bombs_middle_group_x6",
             "name": "250kg_mk_82_x6",
             "reqModification": "cn_q5_type_250",
             "ShowNodes": {
@@ -3099,8 +3118,8 @@
           {
             "WeaponPreset": {
               "iconType": "missile_air_to_air_midrange_special",
-              "name": "pf10",
-              "reqModification": "cn_pf10",
+              "name": "aspide",
+              "reqModification": "it_aspide",
               "ShowNodes": [
                 {
                   "node": "rocket_pylon_r1"
@@ -3111,7 +3130,7 @@
               ],
               "Weapon": {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/cn_pf10.blk",
+                "blk": "gameData/Weapons/rocketGuns/it_aspide_1a.blk",
                 "emitter": "aim_7e_002",
                 "bullets": 1,
                 "external": true,
@@ -3544,7 +3563,7 @@
         "modClass": "weapon",
         "reqModification": "j_7_pl5b"
       },
-      "cn_pf10": {
+      "it_aspide": {
         "tier": 4,
         "modClass": "weapon",
         "reqModification": "cn_pl8"

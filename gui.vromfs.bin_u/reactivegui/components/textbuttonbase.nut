@@ -1,4 +1,4 @@
-let fontsState = require("reactiveGui/style/fontsState.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 let defStyle = require("textButton.style.nut")
 let hdpx = ::hdpx
 let pw = ::pw

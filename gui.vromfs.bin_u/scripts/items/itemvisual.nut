@@ -1,5 +1,5 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let { getBoostersEffectsArray, sortBoosters } = require("scripts/items/boosterEffect.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
 
 let function fillItemTable(item, holderObj)
 {

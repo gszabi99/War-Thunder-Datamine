@@ -1,5 +1,5 @@
-let localDevoice = require("scripts/penitentiary/localDevoice.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8

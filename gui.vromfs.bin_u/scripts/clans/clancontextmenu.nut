@@ -1,5 +1,5 @@
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 
 let getClanActions = function(clanId)
 {

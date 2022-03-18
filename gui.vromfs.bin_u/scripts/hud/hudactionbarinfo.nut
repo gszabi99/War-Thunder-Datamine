@@ -1,5 +1,5 @@
-let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
-let { getBulletSetNameByBulletName } = require("scripts/weaponry/bulletsInfo.nut")
+let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = ::require_native("hudActionBarConst")
 
 local cachedUnitId = ""

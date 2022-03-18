@@ -1,8 +1,8 @@
-let { clearBorderSymbolsMultiline } = require("std/string.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let changeStartMission = require("scripts/missions/changeStartMission.nut")
-let { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let changeStartMission = require("%scripts/missions/changeStartMission.nut")
+let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 const MIN_SLIDE_TIME = 2.0
 

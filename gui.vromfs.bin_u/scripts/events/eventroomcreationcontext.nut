@@ -1,4 +1,4 @@
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 enum CREWS_READY_STATUS
 {

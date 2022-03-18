@@ -1,10 +1,10 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled } = require("scripts/chat/chatStates.nut")
-let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
+let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
+let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false

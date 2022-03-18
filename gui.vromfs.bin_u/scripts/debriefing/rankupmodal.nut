@@ -1,4 +1,4 @@
-let { updatePlayerRankByCountry } = require("scripts/ranks.nut")
+let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 
 let delayedRankUpWnd = []
 

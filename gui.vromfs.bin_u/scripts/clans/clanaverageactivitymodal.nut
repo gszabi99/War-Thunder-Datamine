@@ -1,6 +1,6 @@
-let squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let time = require("scripts/time.nut")
+let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let time = require("%scripts/time.nut")
 
 let PROGRESS_PARAMS = {
   type = "old"

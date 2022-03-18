@@ -1,5 +1,5 @@
 let { getHasCompassObservable } = require("hudCompassState")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 ::gui_handlers.BaseUnitHud <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

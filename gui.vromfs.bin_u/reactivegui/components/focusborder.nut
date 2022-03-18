@@ -1,4 +1,4 @@
-let { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
+let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 
 let focusBorder = @(override = {})
   @() {

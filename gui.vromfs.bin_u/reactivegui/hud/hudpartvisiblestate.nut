@@ -1,4 +1,4 @@
-let extWatched = require("reactiveGui/globals/extWatched.nut")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let isChatPlaceVisible = extWatched("isChatPlaceVisible", @() ::cross_call.isChatPlaceVisible())
 

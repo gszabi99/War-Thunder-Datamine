@@ -1,8 +1,8 @@
-let { getCollectionsList } = require("scripts/collections/collections.nut")
-let { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { getCollectionsList } = require("%scripts/collections/collections.nut")
+let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
-  findDecoratorCouponOnMarketplace } = require("scripts/customization/decoratorAcquire.nut")
+  findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 
 const MAX_COLLECTION_ITEMS = 10
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"

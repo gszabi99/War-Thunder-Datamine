@@ -1,4 +1,4 @@
-let { getPlayerName } = require("scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
 {

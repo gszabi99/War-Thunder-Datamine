@@ -1,6 +1,6 @@
-let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let mapPreferences    = require("mapPreferences")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 

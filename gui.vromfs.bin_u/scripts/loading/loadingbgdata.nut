@@ -56,8 +56,8 @@ loading_bg
 }
 */
 
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let createBgData = @() {
   list = {}

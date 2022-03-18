@@ -1,4 +1,4 @@
-let extContactsService = require("scripts/contacts/externalContactsService.nut")
+let extContactsService = require("%scripts/contacts/externalContactsService.nut")
 local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
 ::g_xbox_squad_manager <- {

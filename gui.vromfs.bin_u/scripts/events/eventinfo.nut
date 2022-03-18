@@ -1,5 +1,5 @@
-let { getSlotbarOverrideData } = require("scripts/slotbar/slotbarOverride.nut")
-let { isRequireUnlockForUnit } = require("scripts/unit/unitStatus.nut")
+let { getSlotbarOverrideData } = require("%scripts/slotbar/slotbarOverride.nut")
+let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 
 let needShowOverrideSlotbar = @(event) event?.showEditSlotbar ?? false
 

@@ -1,14 +1,14 @@
-let stdMath = require("std/math.nut")
-let { copyParamsToTable } = require("std/datablock.nut")
+let stdMath = require("%sqstd/math.nut")
+let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getBulletsSetData,
         getBulletAnnotation,
         getBulletsSearchName,
         getModifIconItem,
-        getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
+        getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TYPE,
-  isCaliberCannon, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
-let { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+  isCaliberCannon, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let bulletIcons = {}
 let bulletAspectRatio = {}

@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let pseudoAxesList = {
   template = {

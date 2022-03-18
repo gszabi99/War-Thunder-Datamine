@@ -1,5 +1,5 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::gui_handlers.VehicleRequireFeatureWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

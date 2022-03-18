@@ -1,4 +1,4 @@
-let transportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
+let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 
 let function setActionMode(modeId = ::AUT_None) {
   ::ww_set_curr_action_type(modeId)

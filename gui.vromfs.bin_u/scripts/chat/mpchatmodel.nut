@@ -1,4 +1,5 @@
-let { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { getRealName } = require("%scripts/user/nameMapping.nut")
 
 let mpChatState = {
   log = []
@@ -68,7 +69,7 @@ local mpChatModel = {
       uid = null
       sender = sender
       text = msg
-      isMyself = sender == ::my_user_name
+      isMyself = sender == ::my_user_name || getRealName(sender) == ::my_user_name
       isBlocked = ::isPlayerNickInContacts(sender, ::EPL_BLOCKLIST)
       isAutomatic = automatic
       mode = mode

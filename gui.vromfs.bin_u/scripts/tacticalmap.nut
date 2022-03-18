@@ -1,6 +1,6 @@
-let { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryDescription.nut")
-let { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
 {

@@ -1,4 +1,4 @@
-let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
 const TIERS_NUMBER = 13
 

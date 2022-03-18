@@ -1,4 +1,4 @@
-let platform = require("scripts/clientState/platform.nut")
+let platform = require("%scripts/clientState/platform.nut")
 
 if (platform.isPlatformPS4)
   return {

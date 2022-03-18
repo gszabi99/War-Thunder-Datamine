@@ -1,4 +1,4 @@
-let { markupTooltipHoldChild } = require("scripts/utils/delayedTooltip.nut")
+let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
 {

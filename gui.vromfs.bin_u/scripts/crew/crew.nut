@@ -1,8 +1,8 @@
-let stdMath = require("std/math.nut")
-let { getSkillValue } = require("scripts/crew/crewSkills.nut")
-let { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { eachBlock } = require("std/datablock.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
+let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 

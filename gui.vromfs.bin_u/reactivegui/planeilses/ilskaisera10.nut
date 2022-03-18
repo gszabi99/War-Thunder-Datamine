@@ -1,14 +1,14 @@
 let {IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
-      BombingMode } = require("reactiveGui/planeState/planeToolsState.nut")
+      BombingMode } = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth, metrToFeet, mpsToKnots, metrToMile, GuidanceLockResult} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkShim} = require("ilsCompasses.nut")
-let {Tangage, BarAltitude, Altitude, Speed, Roll} = require("reactiveGui/planeState/planeFlyState.nut");
-let {round, cos, sin, PI} = require("std/math.nut")
+let {Tangage, BarAltitude, Altitude, Speed, Roll} = require("%rGui/planeState/planeFlyState.nut");
+let {round, cos, sin, PI} = require("%sqstd/math.nut")
 let {cvt} = require("dagor.math")
-let {GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("reactiveGui/rocketAamAimState.nut")
-let {ShellCnt}  = require("reactiveGui/planeState/planeWeaponState.nut");
+let {GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
+let {ShellCnt}  = require("%rGui/planeState/planeWeaponState.nut");
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let a10Speed = @() {

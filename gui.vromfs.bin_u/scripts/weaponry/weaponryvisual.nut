@@ -1,12 +1,12 @@
-let modUpgradeElem = require("scripts/weaponry/elems/modUpgradeElem.nut")
+let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
   getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
-} = require("scripts/weaponry/itemInfo.nut")
-let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("scripts/weaponry/bulletsInfo.nut")
-let { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
-let { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
+} = require("%scripts/weaponry/itemInfo.nut")
+let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
+let { weaponItemTplPath } = require("%scripts/weaponry/getWeaponItemTplPath.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
-let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("scripts/weaponry/weaponryTooltips.nut")
+let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 
 ::dagui_propid.add_name_id("_iconBulletName")
 

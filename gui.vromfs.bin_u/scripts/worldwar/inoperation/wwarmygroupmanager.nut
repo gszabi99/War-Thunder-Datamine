@@ -1,4 +1,4 @@
-let { request_nick_by_uid_batch } = require("scripts/matching/requests.nut")
+let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 
 local armyManagersNames = {}
 local currentOperationID = 0

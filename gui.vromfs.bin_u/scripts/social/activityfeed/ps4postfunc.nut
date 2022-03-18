@@ -1,6 +1,6 @@
-let psn = require("sonyLib/webApi.nut")
+let psn = require("%sonyLib/webApi.nut")
 let statsd = require("statsd")
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let requestsTable = {
   player = "$USER_NAME_OR_ID",

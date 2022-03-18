@@ -1,6 +1,6 @@
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode} = require("reactiveGui/planeState/planeToolsState.nut")
-let {Speed, Roll} = require("reactiveGui/planeState/planeFlyState.nut");
+       BombingMode} = require("%rGui/planeState/planeToolsState.nut")
+let {Speed, Roll} = require("%rGui/planeState/planeFlyState.nut");
 let {mpsToKnots, baseLineWidth} = require("ilsConstants.nut")
 let {cvt} = require("dagor.math")
 

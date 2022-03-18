@@ -1,4 +1,4 @@
-let unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
+let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
 ::gui_handlers.WwOperationDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
 {

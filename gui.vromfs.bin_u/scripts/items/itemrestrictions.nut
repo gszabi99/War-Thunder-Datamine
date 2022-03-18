@@ -1,5 +1,5 @@
-let { isString } = require("sqStdLibs/helpers/u.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { isString } = require("%sqStdLibs/helpers/u.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() ::Watched(false))
 let isPurchaseAllowed = persist("isPurchaseAllowed", @() ::Watched(true))

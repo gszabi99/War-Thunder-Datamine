@@ -1,6 +1,6 @@
-let fontsState = require("reactiveGui/style/fontsState.nut")
-let colors = require("reactiveGui/style/colors.nut")
-let {toIntegerSafe} = require("std/string.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
+let colors = require("%rGui/style/colors.nut")
+let {toIntegerSafe} = require("%sqstd/string.nut")
 
 let blockInterval = ::fpx(6)
 let headerMargin = 2*blockInterval

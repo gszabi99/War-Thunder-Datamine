@@ -1,13 +1,13 @@
-let wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
-let slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setCurPreset } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let wwHelpSlotbarGroupsModal = require("scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
-let { getBestPresetData, generatePreset } = require("scripts/slotbar/generatePreset.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
+let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
+let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getOperationById, getMapByName
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let getLockedCountryData = require("scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0"

@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let platformModule = require("scripts/clientState/platform.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 ::g_clan_log_type <- {
   types = []

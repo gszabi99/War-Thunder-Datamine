@@ -1,6 +1,6 @@
-let { getBestUnitForPreview } = require("scripts/customization/contentPreview.nut")
-let { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
+let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem
 {

@@ -1,7 +1,7 @@
 let { userstatUnlocks, userstatDescList, userstatStats, receiveUnlockRewards
-} = require("scripts/userstat/userstat.nut")
-let { showRewardWnd, canGetRewards } = require("scripts/userstat/userstatItemsRewards.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+} = require("%scripts/userstat/userstat.nut")
+let { showRewardWnd, canGetRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 let rewardsInProgress = Watched({})
 

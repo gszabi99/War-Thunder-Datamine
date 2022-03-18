@@ -1,9 +1,9 @@
-let globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
-let WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-let { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let globalBattlesListData = require("%scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
+let WwGlobalBattle = require("%scripts/worldWar/operations/model/wwGlobalBattle.nut")
+let { openBattlesFilterMenu, isMatchFilterMask } = require("%scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 

@@ -1,9 +1,9 @@
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode, RadarTargetDist} = require("reactiveGui/planeState/planeToolsState.nut")
+       BombingMode, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")
-let {cos, sin, PI} = require("std/math.nut")
+let {cos, sin, PI} = require("%sqstd/math.nut")
 let {cvt} = require("dagor.math")
-let {Roll} = require("reactiveGui/planeState/planeFlyState.nut")
+let {Roll} = require("%rGui/planeState/planeFlyState.nut")
 
 let LCOSSRollMark = @() {
   watch = IlsColor

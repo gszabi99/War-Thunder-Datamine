@@ -1,7 +1,7 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { createBatchTrainCrewRequestBlk } = require("scripts/crew/crewActions.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { fillUserNick, getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { fillUserNick, getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 

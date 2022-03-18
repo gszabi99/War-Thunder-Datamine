@@ -11,10 +11,10 @@
   applyDescConfig(config) - direct used atm, but better to exchange them on events
 */
 
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-let { getMissionRewardsMarkup, getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
-let { getTutorialFirstCompletRewardData } = require("scripts/tutorials/tutorialsData.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
+let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 
 ::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

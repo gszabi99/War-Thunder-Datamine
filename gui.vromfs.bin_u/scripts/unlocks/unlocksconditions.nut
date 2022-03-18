@@ -23,11 +23,11 @@
 */
 
 
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-let { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
-let { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 let missionModesList = [
   "missionsWon",

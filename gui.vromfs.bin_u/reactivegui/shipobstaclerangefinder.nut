@@ -1,6 +1,6 @@
 let {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
 let {alert} = require("style/colors.nut").hud.damageModule
-let {abs} = require("std/math.nut")
+let {abs} = require("%sqstd/math.nut")
 
 let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
 

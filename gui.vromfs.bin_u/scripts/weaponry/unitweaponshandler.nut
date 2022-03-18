@@ -1,11 +1,11 @@
 let { updateModItem,
         createModItemLayout,
-        updateItemBulletsSlider } = require("scripts/weaponry/weaponryVisual.nut")
+        updateItemBulletsSlider } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
-        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+        isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
 ::gui_handlers.unitWeaponsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

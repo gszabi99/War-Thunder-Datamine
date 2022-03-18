@@ -1,6 +1,6 @@
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
-let { getParamsFromSlotbarConfig } = require("scripts/slotbar/selectUnitHandler.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
+let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
 
 let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
 {

@@ -1,6 +1,6 @@
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 
 ::g_invites_classes.SessionRoom <- class extends ::BaseInvite
 {

@@ -1,5 +1,5 @@
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 
 ::WwBattleJoinProcess <- class
 {

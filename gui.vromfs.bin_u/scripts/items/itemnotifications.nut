@@ -1,4 +1,4 @@
-let workshop = require("scripts/items/workshop/workshop.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 

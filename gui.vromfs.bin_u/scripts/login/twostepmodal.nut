@@ -1,7 +1,7 @@
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let time = require("scripts/time.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let time = require("%scripts/time.nut")
 let statsd = require("statsd")
-let exitGame = require("scripts/utils/exitGame.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 local authDataByTypes = {
   mail = {text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email.tga"}

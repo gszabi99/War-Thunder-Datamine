@@ -1,22 +1,22 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let time = require("scripts/time.nut")
-let systemMsg = require("scripts/utils/systemMsg.nut")
-let seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
-let crossplayModule = require("scripts/social/crossplay.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let time = require("%scripts/time.nut")
+let systemMsg = require("%scripts/utils/systemMsg.nut")
+let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
+let crossplayModule = require("%scripts/social/crossplay.nut")
 let { getPlayerName,
         isPlatformSony,
         isPlatformXboxOne,
-        isPlatformPC } = require("scripts/clientState/platform.nut")
-let stdMath = require("std/math.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let { getFeaturePack } = require("scripts/user/features.nut")
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isCompatibiliyMode } = require("scripts/options/systemOptions.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+        isPlatformPC } = require("%scripts/clientState/platform.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getFeaturePack } = require("%scripts/user/features.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isCompatibiliyMode } = require("%scripts/options/systemOptions.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"

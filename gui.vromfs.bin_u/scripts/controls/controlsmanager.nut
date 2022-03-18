@@ -1,10 +1,10 @@
-::g_script_reloader.loadOnce("scripts/controls/controlsPreset.nut")
-::g_script_reloader.loadOnce("scripts/controls/controlsGlobals.nut")
-::g_script_reloader.loadOnce("scripts/controls/controlsCompatibility.nut")
+::g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
+::g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
+::g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
 
-let shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { eachBlock } = require("std/datablock.nut")
+let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::g_controls_manager <- {

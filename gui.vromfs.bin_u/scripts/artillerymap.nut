@@ -1,7 +1,7 @@
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-let { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-let { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
 local { EII_ARTILLERY_TARGET } = ::require_native("hudActionBarConst")
 

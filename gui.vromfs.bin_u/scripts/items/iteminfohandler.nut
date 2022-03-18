@@ -1,4 +1,4 @@
-let { fillItemDescr } = require("scripts/items/itemVisual.nut")
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
 local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 {

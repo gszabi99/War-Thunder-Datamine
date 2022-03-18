@@ -1,5 +1,5 @@
-let { secondsToMilliseconds, minutesToSeconds } = require("scripts/time.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"

@@ -1,4 +1,4 @@
-let extWatched = require("reactiveGui/globals/extWatched.nut")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let debugRowHeight = 14 /* Height of on-screen debug text (fps, build, etc) */
 

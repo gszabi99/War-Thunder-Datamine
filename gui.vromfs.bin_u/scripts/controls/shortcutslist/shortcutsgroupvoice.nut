@@ -1,4 +1,4 @@
-let { getFavoriteVoiceMessagesVariants } = require("scripts/wheelmenu/voiceMessages.nut")
+let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
 
 let MAX_VOICE_MESSAGE_BUTTONS = 8
 

@@ -6,12 +6,12 @@ let {
   steamPostfixNameRegexp,
   epicPostfixNameRegexp,
   cutPlayerNamePrefix,
-  cutPlayerNamePostfix } = require("scripts/user/nickTools.nut")
+  cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
 
 let {
   isXbox,
   isSony,
-  isPC } = require("std/platform.nut")
+  isPC } = require("%sqstd/platform.nut")
 
 let PC_ICON = "⋆"
 let TV_ICON = "⋇"

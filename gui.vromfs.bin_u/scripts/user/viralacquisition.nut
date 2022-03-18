@@ -1,4 +1,4 @@
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]

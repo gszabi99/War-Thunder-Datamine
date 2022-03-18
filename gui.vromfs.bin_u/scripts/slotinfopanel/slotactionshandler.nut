@@ -1,6 +1,6 @@
-let protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
-let { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
+let protectionAnalysis = require("%scripts/dmViewer/protectionAnalysis.nut")
+let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let slotActionsHandler = class extends ::gui_handlers.BaseGuiHandlerWT
 {

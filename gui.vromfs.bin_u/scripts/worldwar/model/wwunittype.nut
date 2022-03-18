@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 
 let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2

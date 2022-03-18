@@ -10,7 +10,7 @@ These functions also has very poor API:
 !!!!
 */
 
-let timeBase = require("std/time.nut")
+let timeBase = require("%sqstd/time.nut")
 let stdStr = require("string")
 let math = require("math")
 

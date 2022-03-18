@@ -1,4 +1,4 @@
-let shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
+let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 
 ::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys
 {

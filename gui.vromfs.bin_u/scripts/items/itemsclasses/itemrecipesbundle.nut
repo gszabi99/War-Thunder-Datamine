@@ -1,6 +1,6 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 
 ::items_classes.RecipesBundle <- class extends ::items_classes.Chest {
   static iType = itemType.RECIPES_BUNDLE

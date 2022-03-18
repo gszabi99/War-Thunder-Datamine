@@ -1,6 +1,6 @@
-let { getRoleText, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-let { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::g_unit_limit_classes <- {
 }

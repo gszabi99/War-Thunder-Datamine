@@ -1,8 +1,8 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let guidParser = require("scripts/guidParser.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { showedUnit, getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null

@@ -1,16 +1,16 @@
-let { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { eachBlock } = require("std/datablock.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { AMMO,
         getAmmoCost,
         getAmmoAmount,
         checkAmmoAmount,
-        getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
-let { saclosMissileBeaconIRSourceBand } = require("scripts/weaponry/weaponsParams.nut")
-let { getMissionEditSlotbarBlk } = require("scripts/slotbar/slotbarOverride.nut")
+        getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
+let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
+let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getTierIdxBySlot, getUnitPresets, getWeaponsByTypes, getWeaponsByPresetName
-} = require("scripts/weaponry/weaponryPresets.nut")
+} = require("%scripts/weaponry/weaponryPresets.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1

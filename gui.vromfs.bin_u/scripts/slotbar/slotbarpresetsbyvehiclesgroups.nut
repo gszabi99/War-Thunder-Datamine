@@ -1,5 +1,5 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 local curPreset = {
   groupsList = {} //groups config by country

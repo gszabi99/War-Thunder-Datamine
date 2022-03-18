@@ -1,11 +1,11 @@
-let { calcPercent } = require("std/math.nut")
+let { calcPercent } = require("%sqstd/math.nut")
 
 let psnStore = require("sony.store")
 let psnUser = require("sony.user")
 let statsd = require("statsd")
-let { serviceLabel } = require("sonyLib/webApi.nut")
+let { serviceLabel } = require("%sonyLib/webApi.nut")
 let { subscribe } = require("eventbus")
-let { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let IMAGE_TYPE = "TAM_JACKET"
 let BQ_DEFAULT_ACTION_ERROR = -1

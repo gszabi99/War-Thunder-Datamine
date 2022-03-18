@@ -1,9 +1,9 @@
-let tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-let unitActions = require("scripts/unit/unitActions.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler
 {

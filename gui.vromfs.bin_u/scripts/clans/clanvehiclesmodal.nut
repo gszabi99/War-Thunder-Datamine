@@ -1,7 +1,7 @@
-let vehiclesModal = require("scripts/unit/vehiclesModal.nut")
-let unitActions = require("scripts/unit/unitActions.nut")
-let squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass
 {

@@ -1,5 +1,5 @@
-let { getTimestampFromStringUtc } = require("scripts/time.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 local baseCustomizationArray = null
 

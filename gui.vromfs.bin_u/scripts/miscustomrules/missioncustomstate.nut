@@ -7,7 +7,7 @@ foreach (fn in [
                  "ruleNumSpawnsByUnitType.nut"
                  "ruleUnitsDeck.nut"
                ])
-  ::g_script_reloader.loadOnce("scripts/misCustomRules/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
+  ::g_script_reloader.loadOnce("%scripts/misCustomRules/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
 ::on_custom_mission_state_changed <- function on_custom_mission_state_changed()
 {

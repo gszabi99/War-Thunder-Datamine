@@ -1,6 +1,6 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { isWeaponAux, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && ::canResearchUnit(unit)

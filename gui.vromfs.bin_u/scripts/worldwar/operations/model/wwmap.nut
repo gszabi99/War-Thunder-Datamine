@@ -1,11 +1,11 @@
-let time = require("scripts/time.nut")
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let time = require("%scripts/time.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getQueueByMapName, getOperationGroupByMapId
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::WwMap <- class
 {

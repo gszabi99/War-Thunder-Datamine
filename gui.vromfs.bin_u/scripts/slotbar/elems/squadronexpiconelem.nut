@@ -1,9 +1,9 @@
-let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-let { isAllVehiclesResearched } = require("scripts/unit/squadronUnitAction.nut")
-let { subscribe } = require("scripts/seen/seenListEvents.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { isAllVehiclesResearched } = require("%scripts/unit/squadronUnitAction.nut")
+let { subscribe } = require("%scripts/seen/seenListEvents.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
 
 elemModelType.addTypes({

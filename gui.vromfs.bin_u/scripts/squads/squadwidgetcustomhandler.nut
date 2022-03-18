@@ -1,7 +1,7 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 

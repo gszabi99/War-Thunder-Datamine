@@ -1,8 +1,8 @@
 let {IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
-      RocketMode, CannonMode} = require("reactiveGui/planeState/planeToolsState.nut")
+      RocketMode, CannonMode} = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth} = require("ilsConstants.nut")
-let {Aos, Tangage, Roll, BarAltitude} = require("reactiveGui/planeState/planeFlyState.nut")
+let {Aos, Tangage, Roll, BarAltitude} = require("%rGui/planeState/planeFlyState.nut")
 
 let function flyDirection(width, height, isLockedFlyPath = false) {
   return @() {

@@ -1,18 +1,18 @@
 let { CHAPTER_ORDER, CHAPTER_FAVORITE_IDX,
   sortPresetLists, setFavoritePresets, getWeaponryByPresetInfo
-} = require("scripts/weaponry/weaponryPresetsParams.nut")
+} = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { getLastWeapon, setLastWeapon,
-  getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
-let { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
-let { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
+  getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
+let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
-} = require("scripts/weaponry/weaponryTooltipPkg.nut")
-let { weaponsPurchase, canBuyItem } = require("scripts/weaponry/weaponsPurchase.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
-let { appendOnce } = require("sqStdLibs/helpers/u.nut")
-let { TIERS_NUMBER } = require("scripts/weaponry/weaponryPresets.nut")
+} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
+let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { TIERS_NUMBER } = require("%scripts/weaponry/weaponryPresets.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]

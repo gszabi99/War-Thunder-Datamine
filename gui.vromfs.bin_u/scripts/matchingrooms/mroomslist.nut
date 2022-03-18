@@ -1,6 +1,6 @@
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let u = require("std/underscore.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let u = require("%sqstd/underscore.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms

@@ -1,6 +1,6 @@
-let { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
-let { appendOnce, isEmpty } = require("sqStdLibs/helpers/u.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
 let lastUpdate = persist("lastUpdate", @() ::Watched(0))

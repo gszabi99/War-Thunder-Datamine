@@ -2,7 +2,7 @@ let state = require("battleLogState.nut")
 let scrollableData = require("components/scrollableData.nut")
 let hudLog = require("components/hudLog.nut")
 let teamColors = require("style/teamColors.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 
 let logEntryComponent = function (log_entry) {
   return function () {

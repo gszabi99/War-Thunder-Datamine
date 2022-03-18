@@ -1,8 +1,8 @@
 let globalEnv = require("globalEnv")
-let controlsOperations = require("scripts/controls/controlsOperations.nut")
-let { unitClassType } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let controlsOperations = require("%scripts/controls/controlsOperations.nut")
+let { unitClassType } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()

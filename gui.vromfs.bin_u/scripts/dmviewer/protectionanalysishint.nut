@@ -1,4 +1,4 @@
-let results = require("scripts/dmViewer/protectionAnalysisHintResults.nut")
+let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
 ::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT

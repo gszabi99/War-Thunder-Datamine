@@ -1,4 +1,4 @@
-let { getTitleLogo } = require("scripts/viewUtils/getTitleLogo.nut")
+let { getTitleLogo } = require("%scripts/viewUtils/getTitleLogo.nut")
 
 return function(scene = null, logoHeight = -1)
 {

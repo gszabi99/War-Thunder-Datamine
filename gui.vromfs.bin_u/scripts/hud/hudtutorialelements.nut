@@ -1,6 +1,6 @@
-let { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let hudElementsAabb = require("scripts/hud/hudElementsAabb.nut")
+let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]

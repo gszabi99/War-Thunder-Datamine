@@ -1,11 +1,11 @@
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisual.nut")
-let wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
-let { getMaxFlyTime } = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
-let wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
+let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
+let { getMaxFlyTime } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
+let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [

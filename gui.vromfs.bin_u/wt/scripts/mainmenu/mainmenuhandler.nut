@@ -1,13 +1,13 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let contentStateModule = require("scripts/clientState/contentState.nut")
-let topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let { tryOpenTutorialRewardHandler } = require("scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime } = require("scripts/crew/crewInfo.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let contentStateModule = require("%scripts/clientState/contentState.nut")
+let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
+let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination
 {

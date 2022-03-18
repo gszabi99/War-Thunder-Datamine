@@ -1,7 +1,7 @@
-let time = require("scripts/time.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
-let { hasFeature } = require("scripts/user/features.nut")
+let time = require("%scripts/time.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 /**

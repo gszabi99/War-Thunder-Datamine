@@ -1,5 +1,5 @@
-let wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
-let airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
+let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 ::WwAirfield <- class
 {

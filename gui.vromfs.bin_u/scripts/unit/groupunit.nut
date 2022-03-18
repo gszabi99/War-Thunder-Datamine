@@ -1,4 +1,4 @@
-let { UNIT_GROUP } = require("scripts/utils/genericTooltipTypes.nut")
+let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
 
 local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   let params = {

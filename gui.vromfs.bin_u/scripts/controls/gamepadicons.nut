@@ -1,4 +1,4 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
 let SVG_EXT = ".svg"

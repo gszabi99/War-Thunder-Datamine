@@ -1,8 +1,8 @@
 let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety} = require("reactiveGui/planeState/planeToolsState.nut")
-let {Speed, Roll, Aoa, ClimbSpeed, Altitude, Tangage} = require("reactiveGui/planeState/planeFlyState.nut");
+       AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety} = require("%rGui/planeState/planeToolsState.nut")
+let {Speed, Roll, Aoa, ClimbSpeed, Altitude, Tangage} = require("%rGui/planeState/planeFlyState.nut");
 let {mpsToKnots, mpsToFpm, metrToFeet, baseLineWidth, GuidanceLockResult} = require("ilsConstants.nut")
-let {GuidanceLockState} = require("reactiveGui/rocketAamAimState.nut")
+let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
 let {cvt} = require("dagor.math")
 let {compassWrap, generateCompassMarkSUM} = require("ilsCompasses.nut")
 let {yawIndicator, angleTxt, bombFallingLine} = require("commonElements.nut")

@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
+let time = require("%scripts/time.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null)
 {

@@ -1,4 +1,4 @@
-let {round, PI, cos, sin} = require("std/math.nut")
+let {round, PI, cos, sin} = require("%sqstd/math.nut")
 let {
   IsMachineGunEmpty, GunOverheatState, GunDirectionX, IsCannonEmpty, isAllCannonsEmpty,
   GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
@@ -7,7 +7,7 @@ let {
   IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, Agm,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime} = require("airState.nut")
-let { TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 
 let { backgroundColor } = require("style/airHudStyle.nut")
 let { LaserPoint, HaveLaserPoint } = require("planeState/planeWeaponState.nut")

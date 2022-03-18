@@ -1,5 +1,5 @@
-let fontsState = require("reactiveGui/style/fontsState.nut")
-let colors = require("reactiveGui/style/colors.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
+let colors = require("%rGui/style/colors.nut")
 
 let shortcutsParamsByPlace = @() {
   defaultP = { shortcutAxis = [::shHud(6), ::shHud(6)]

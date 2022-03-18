@@ -1,4 +1,4 @@
-let { startLogout } = require("scripts/login/logout.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
 
 // -------------------------------------------------------
 // Clusters managment

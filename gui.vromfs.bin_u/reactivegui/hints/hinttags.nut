@@ -1,5 +1,5 @@
 let shortcuts = require("shortcuts.nut")
-let colors = require("reactiveGui/style/colors.nut")
+let colors = require("%rGui/style/colors.nut")
 
 let hintTags = {
   shortcut = function(config, override){

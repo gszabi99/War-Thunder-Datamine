@@ -1,6 +1,6 @@
-let time = require("scripts/time.nut")
-let { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let time = require("%scripts/time.nut")
+let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 ::uploadLimit <- 3
 ::on_screenshot_saved <- null

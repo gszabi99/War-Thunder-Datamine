@@ -1,5 +1,5 @@
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
 let MIN_SAVE_TIMEOUT = 5000

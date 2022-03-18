@@ -1,11 +1,12 @@
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let { getShopItem, openIngameStore, canUseIngameShop } = require("scripts/onlineShop/entitlementsStore.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getShopItem, openIngameStore, canUseIngameShop } = require("%scripts/onlineShop/entitlementsStore.nut")
 
-let callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
-let { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
+let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
+let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -341,7 +342,7 @@ OnlineShopModel.doBrowserPurchase <- function doBrowserPurchase(goodsName)
 OnlineShopModel.doBrowserPurchaseByGuid <- function doBrowserPurchaseByGuid(guid, dbgGoodsName = "")
 {
   let isSteam = ::steam_is_running() &&
-                  (::g_user_utils.haveTag("steam") || ::has_feature("AllowSteamAccountLinking")) //temporary use old code pass for steam
+                  (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")) //temporary use old code pass for steam
 
   // COMPATIBILITY: native pre-auth blocks login in embedded-to-external browser case, but we want this
   //                fixed on production without version bump.
@@ -519,7 +520,7 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
   if (::isInArray(chapter, [null, ""]))
   {
     local webStoreUrl = ::loc("url/webstore", "")
-    if (::steam_is_running() && (::g_user_utils.haveTag("steam") || ::has_feature("AllowSteamAccountLinking")))
+    if (::steam_is_running() && (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")))
       webStoreUrl = ::format(::loc("url/webstore/steam"), ::steam_get_my_id())
 
     if (webStoreUrl != "")

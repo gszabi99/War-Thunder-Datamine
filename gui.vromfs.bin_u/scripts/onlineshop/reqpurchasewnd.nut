@@ -1,4 +1,4 @@
-let { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 /*
   config {
     purchaseData = (OnlineShopModel.getPurchaseData) //required

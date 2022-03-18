@@ -1,8 +1,8 @@
-let seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
-let { getUnitClassTypesByEsUnitType } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
-let { getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
+let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
+let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
 /*
 my_stats API

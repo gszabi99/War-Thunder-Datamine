@@ -1,11 +1,11 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let unitStatus = require("scripts/unit/unitStatus.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
-} = require("scripts/unit/unitInfoTexts.nut")
-let { checkUnitWeapons, getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
+} = require("%scripts/unit/unitInfoTexts.nut")
+let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitShopPriceText } = require("unitCardPkg.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let { hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 
 let sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 

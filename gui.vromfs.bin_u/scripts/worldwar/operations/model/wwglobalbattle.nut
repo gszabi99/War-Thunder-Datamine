@@ -1,7 +1,7 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local WwGlobalBattle = class extends ::WwBattle
 {

@@ -1,11 +1,11 @@
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 let { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
   getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
-} = require("scripts/tutorials/tutorialsData.nut")
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+} = require("%scripts/tutorials/tutorialsData.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 

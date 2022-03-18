@@ -1,12 +1,12 @@
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
-  isModificationInTree } = require("scripts/weaponry/modsTree.nut")
-let tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-let prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+  isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
+let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
-  getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+  getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { getItemAmount,
         getItemCost,
         getAllModsCost,
@@ -15,13 +15,13 @@ let { getItemAmount,
         isCanBeDisabled,
         isModInResearch,
         getBundleCurItem,
-        canResearchItem } = require("scripts/weaponry/itemInfo.nut")
+        canResearchItem } = require("%scripts/weaponry/itemInfo.nut")
 let { getModItemName, getReqModsText, getBulletsListHeader
-} = require("scripts/weaponry/weaponryDescription.nut")
-let { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
+} = require("%scripts/weaponry/weaponryDescription.nut")
+let { updateModItem, createModItem, createModBundle } = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
+  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG,
         getLastWeapon,
         validateLastWeapon,
@@ -32,12 +32,12 @@ let { WEAPON_TAG,
         getPrimaryWeaponsList,
         getSecondaryWeaponsList,
         isUnitHaveAnyWeaponsTags,
-        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
-} = require("scripts/viewUtils/objectTextUpdate.nut")
-let { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
-let { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
+} = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16

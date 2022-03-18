@@ -2,17 +2,17 @@ let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
         isPlatformXboxOne,
-        isPlayerFromPS4 } = require("scripts/clientState/platform.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
-let externalIDsService = require("scripts/user/externalIdsService.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
+        isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let externalIDsService = require("%scripts/user/externalIdsService.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
-let { RESET_ID, openPopupFilter } = require("scripts/popups/popupFilter.nut")
-let { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-let { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
-let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
+let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {

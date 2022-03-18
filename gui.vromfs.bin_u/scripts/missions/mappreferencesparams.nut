@@ -1,7 +1,7 @@
 let mapPreferences = require("mapPreferences")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let mapsListByEvent = {}
 

@@ -1,8 +1,8 @@
-let { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
-let { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
-let actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { bombNbr, hasCountermeasures } = require("%scripts/unit/unitStatus.nut")
+let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
+let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getCdBaseDifficulty } = ::require_native("guiOptions")
 local { getActionBarUnitName } = ::require_native("hudActionBar")
 

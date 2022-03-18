@@ -1,7 +1,7 @@
-let protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
-let protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
-let { hasFeature } = require("scripts/user/features.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
+let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
 let { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")

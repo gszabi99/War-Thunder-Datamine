@@ -1,5 +1,5 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
 ::gui_handlers.wwObjective <- class extends ::BaseGuiHandler

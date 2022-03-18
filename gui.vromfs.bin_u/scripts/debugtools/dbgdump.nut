@@ -74,7 +74,7 @@
  *      @return {anything} - The original global function or variable.
  */
 
-let datablockConverter = require("scripts/utils/datablockConverter.nut")
+let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 
 let persistent = {
   backup = null

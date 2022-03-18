@@ -1,7 +1,7 @@
 let { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC,
-        canSpendRealMoney } = require("scripts/clientState/platform.nut")
+        canSpendRealMoney } = require("%scripts/clientState/platform.nut")
 
 let {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
@@ -15,9 +15,9 @@ let {
   haveDiscount = @() false,
   openIngameStore = @(...) false,
   canUseIngameShop = @(...) false
-} = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
-  : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
-  : ::epic_is_running() ? require("scripts/onlineShop/epicShop.nut")
+} = isPlatformSony? require("%scripts/onlineShop/ps4Shop.nut")
+  : isPlatformXboxOne? require("%scripts/onlineShop/xboxShop.nut")
+  : ::epic_is_running() ? require("%scripts/onlineShop/epicShop.nut")
   : null
 
 return {

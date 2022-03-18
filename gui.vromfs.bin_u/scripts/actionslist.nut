@@ -26,7 +26,7 @@
       }
 
 */
-let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
 ::gui_handlers.ActionsList <- class extends ::BaseGuiHandler
 {

@@ -1,5 +1,5 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 ::items_classes.CraftProcess <- class extends ItemExternal {
   static iType = itemType.CRAFT_PROCESS

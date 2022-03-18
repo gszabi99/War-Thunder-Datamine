@@ -1,5 +1,5 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {

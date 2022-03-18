@@ -1,5 +1,5 @@
-let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-let time = require("scripts/time.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let time = require("%scripts/time.nut")
 
 elemViewType.addTypes({
   COPYRIGHT_TEXT = {

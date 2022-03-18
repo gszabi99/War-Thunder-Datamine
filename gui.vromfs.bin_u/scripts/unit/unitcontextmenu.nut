@@ -1,21 +1,21 @@
 let { getShopItem,
         canUseIngameShop,
-        getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let unitActions = require("scripts/unit/unitActions.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
-let selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
-let selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
-let crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroups.nut")
-let { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+        getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
+let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
+let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
+let crewModalByVehiclesGroups = require("%scripts/crew/crewModalByVehiclesGroups.nut")
+let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
-        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
+        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,

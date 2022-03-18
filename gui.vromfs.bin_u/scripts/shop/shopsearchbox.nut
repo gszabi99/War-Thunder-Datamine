@@ -1,5 +1,5 @@
-let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-let shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
+let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
 ::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

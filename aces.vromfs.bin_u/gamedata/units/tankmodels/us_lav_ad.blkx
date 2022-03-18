@@ -33,6 +33,12 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "waterBreakerAnimVar": "screw_rotate:CRS"
+  },
+  {
+    "waterBreakerToggleTime": 2.0
+  },
+  {
     "autoSightDistanceCorrection": true
   },
   {
@@ -219,7 +225,7 @@
         "crouchDelta": [0.0,0.0,0.0]
       },
       {
-        "suffix": "4"
+        "suffix": "2"
       },
       {
         "dmName": "gunner_dm"
@@ -295,7 +301,7 @@
         "crouchDelta": [0.0,0.0,0.0]
       },
       {
-        "suffix": "2"
+        "suffix": "3"
       },
       {
         "dmName": "commander_dm"
@@ -489,6 +495,10 @@
           "armorThickness": 15.0
         },
         "composite_armor_hull_01_dm": {
+          "armorThickness": 8.0,
+          "hidableInXrayViewer": true
+        },
+        "composite_armor_hull_02_dm": {
           "armorThickness": 8.0,
           "hidableInXrayViewer": true
         }
@@ -2568,15 +2578,16 @@
           "fireConeAngle": 5.0,
           "ChainfireTime": 3.0,
           "DelayAfterShoot": 1.0,
-          "accuracyAir": 0.01,
+          "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 40.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 5.0,
-          "errTargettingOn100kmph": 5.0,
-          "errTargetting": 15.0,
-          "errExplTime": 0.02,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
@@ -2825,22 +2836,25 @@
             "errMeasureVel": 0.0
           },
           {
-            "errMeasureVelFast": 40.0
+            "errMeasureVelFast": 0.0
           },
           {
-            "errMeasureVelFwdShift": 1.0
+            "errMeasureVelFwdShift": 0.0
           },
           {
-            "errMeasureVelDir": 5.0
+            "errMeasureVelDir": 0.0
           },
           {
-            "errTargettingOn100kmph": 5.0
+            "errTargettingOn100kmph": 0.0
           },
           {
-            "errTargetting": 15.0
+            "errTargetting": 3.0
           },
           {
-            "errExplTime": 0.02
+            "errExplTime": 0.0
+          },
+          {
+            "forestallTime": 0.1
           },
           {
             "turret": {
@@ -2907,54 +2921,48 @@
       "mechanics": {
         "maxBrakeForce": 80000.0,
         "driveGearRadius": 0.45,
-        "mainGearRatio": 7.0,
+        "mainGearRatio": 4.75,
         "sideGearRatio": 1.0,
         "tracked": false,
         "gearRatios": [
           {
-            "ratio": -5.03
+            "ratio": -5.674
           },
           {
-            "ratio": -7.5
+            "ratio": -11.348
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 6.25
+            "ratio": 16.09
           },
           {
-            "ratio": 3.49
+            "ratio": 8.045
           },
           {
-            "ratio": 2.43
+            "ratio": 5.814
           },
           {
-            "ratio": 1.91
+            "ratio": 3.583
           },
           {
-            "ratio": 1.63
+            "ratio": 2.838
           },
           {
-            "ratio": 1.41
+            "ratio": 2.093
           },
           {
-            "ratio": 1.15
+            "ratio": 1.74
+          },
+          {
+            "ratio": 1.387
+          },
+          {
+            "ratio": 1.1935
           },
           {
             "ratio": 1.0
-          },
-          {
-            "ratio": 0.88
-          },
-          {
-            "ratio": 0.75
-          },
-          {
-            "ratio": 0.7
-          },
-          {
-            "ratio": 0.65
           }
         ]
       },
@@ -3890,15 +3898,16 @@
                 "fireConeAngle": 5.0,
                 "ChainfireTime": 3.0,
                 "DelayAfterShoot": 1.0,
-                "accuracyAir": 0.01,
+                "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 40.0,
-                "errMeasureVelFwdShift": 1.0,
-                "errMeasureVelDir": 5.0,
-                "errTargettingOn100kmph": 5.0,
-                "errTargetting": 15.0,
-                "errExplTime": 0.02,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_turret",
                   "gun": "bone_gun",
@@ -4282,22 +4291,25 @@
                   "errMeasureVel": 0.0
                 },
                 {
-                  "errMeasureVelFast": 40.0
+                  "errMeasureVelFast": 0.0
                 },
                 {
-                  "errMeasureVelFwdShift": 1.0
+                  "errMeasureVelFwdShift": 0.0
                 },
                 {
-                  "errMeasureVelDir": 5.0
+                  "errMeasureVelDir": 0.0
                 },
                 {
-                  "errTargettingOn100kmph": 5.0
+                  "errTargettingOn100kmph": 0.0
                 },
                 {
-                  "errTargetting": 15.0
+                  "errTargetting": 3.0
                 },
                 {
-                  "errExplTime": 0.02
+                  "errExplTime": 0.0
+                },
+                {
+                  "forestallTime": 0.1
                 },
                 {
                   "turret": {
@@ -4316,23 +4328,23 @@
           ],
           "hideNodes": [
             {
-              "node": "gun_mask_04_dm"
+              "node": "turret_cable_stinger"
             },
             {
-              "node": "gun_add_stinger"
+              "node": "cls_gun_02"
             },
             {
-              "node": "cls_gun_01"
+              "node": "gun_barrel_02"
             }
           ]
         },
         "disableModEffects": {
           "hideNodes": [
             {
-              "node": "gun_mask_03_dm"
+              "node": "turret_cable_hydra"
             },
             {
-              "node": "gun_add_hydra"
+              "node": "gun_barrel_03"
             },
             {
               "node": "cls_gun_03"

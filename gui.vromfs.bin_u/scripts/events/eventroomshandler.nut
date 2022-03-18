@@ -1,11 +1,11 @@
-let stdMath = require("std/math.nut")
-let { cutPrefix } = require("std/string.nut")
-let clustersModule = require("scripts/clusterSelect.nut")
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let stdMath = require("%sqstd/math.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
+let clustersModule = require("%scripts/clusterSelect.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting

@@ -1,4 +1,4 @@
-let airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 ::WwOperationModel <- class
 {

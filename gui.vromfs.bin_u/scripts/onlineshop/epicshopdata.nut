@@ -1,13 +1,13 @@
-let stdLog = require("std/log.nut")()
+let stdLog = require("%sqstd/log.nut")()
 const LOG_PREFIX = "[EpicStore] "
 let log = stdLog.with_prefix(LOG_PREFIX)
 let logerr = stdLog.logerr
 
 let statsd = require("statsd")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
-let EpicShopPurchasableItem = require("scripts/onlineShop/EpicShopPurchasableItem.nut")
+let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
 
 let canUseIngameShop = ::epic_is_running
 

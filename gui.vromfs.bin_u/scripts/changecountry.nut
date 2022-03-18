@@ -1,4 +1,4 @@
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 /**
  * Action to perform after change country window closes.

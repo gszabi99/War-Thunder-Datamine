@@ -1,6 +1,6 @@
-let { getSlotItem, getCurPreset, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 {

@@ -1,12 +1,12 @@
-let protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
+let protectionAnalysis = require("%scripts/dmViewer/protectionAnalysis.nut")
 let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
-} = require("scripts/crew/crewSkills.nut")
-let { getSkillCategoryName } = require("scripts/crew/crewSkillsView.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
+} = require("%scripts/crew/crewSkills.nut")
+let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+let { SKILL_CATEGORY } = require("%scripts/utils/genericTooltipTypes.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 

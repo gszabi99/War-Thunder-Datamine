@@ -1,10 +1,10 @@
-let RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
+let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isCrossPlayEnabled,
-        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-let { getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
+        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
 
 ::featured_modes <- [

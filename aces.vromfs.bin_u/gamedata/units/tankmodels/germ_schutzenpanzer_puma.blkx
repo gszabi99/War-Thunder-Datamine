@@ -2461,7 +2461,12 @@
             "barrel": "bone_gun_barrel",
             "gunnerDm": "gunner_dm",
             "secondGunnerDm": "commander_dm",
-            "rotatedTurret": "bone_turret"
+            "rotatedTurret": "bone_turret",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_roll",
+              "verLimits": [-10.0,45.0],
+              "verOriginLimits": [-10.0,45.0]
+            }
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -3364,36 +3369,22 @@
   },
   {
     "ammoStowages": {
-      "ammo1": [
-        {
-          "weaponTrigger": "gunner0"
-        },
-        {
-          "removeLoadedAmmo": false
-        },
-        {
-          "fatalFire": true
-        },
-        {
-          "fatalExplosion": true
-        },
-        {
-          "shells": {
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "ammo_turret_01_dm": {
-              "count": 200
-            }
-          }
-        },
-        {
-          "shells": {
-            "ammo_body_01_dm": {
-              "count": 200
-            }
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_body_01_dm": {
+            "count": 200
+          },
+          "ammo_turret_01_dm": {
+            "count": 200
           }
         }
-      ]
+      }
     }
   },
   {
@@ -3476,7 +3467,12 @@
                   "barrel": "bone_gun_barrel",
                   "gunnerDm": "gunner_dm",
                   "secondGunnerDm": "commander_dm",
-                  "rotatedTurret": "bone_turret"
+                  "rotatedTurret": "bone_turret",
+                  "linkedAnimPart": {
+                    "verNode": "bone_camera_roll",
+                    "verLimits": [-10.0,45.0],
+                    "verOriginLimits": [-10.0,45.0]
+                  }
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],

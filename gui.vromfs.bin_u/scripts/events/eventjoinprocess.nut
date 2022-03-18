@@ -1,8 +1,8 @@
-let stdMath = require("std/math.nut")
-let antiCheat = require("scripts/penitentiary/antiCheat.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let stdMath = require("%sqstd/math.nut")
+let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 
 ::EventJoinProcess <- class
 {

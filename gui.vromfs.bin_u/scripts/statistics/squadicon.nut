@@ -2,6 +2,7 @@ let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1}
 local topSquads = {}
 let playersInfo = persist("playersInfo", @() Watched({}))
+let { getRealName } = require("scripts/user/nameMapping.nut")
 
 let getPlayersInfo = @() playersInfo.value
 let function updateIconPlayersInfo()
@@ -76,7 +77,7 @@ let function getSquadInfoByMemberName(name)
     return null
 
   foreach(uid, member in getPlayersInfo())
-    if (member.name == name)
+    if (member.name == name || member.name == getRealName(name))
       return getSquadInfo(member.squad)
 
   return null

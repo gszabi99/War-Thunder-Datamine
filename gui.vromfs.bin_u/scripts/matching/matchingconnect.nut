@@ -1,5 +1,5 @@
-let { canLogout, startLogout } = require("scripts/login/logout.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
+let { canLogout, startLogout } = require("%scripts/login/logout.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 

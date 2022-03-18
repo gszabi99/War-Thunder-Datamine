@@ -1,8 +1,8 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-let time = require("scripts/time.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
-let ItemLifetimeModifier = require("scripts/items/itemLifetimeModifier.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let time = require("%scripts/time.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
+let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 
 let collection = {}
 

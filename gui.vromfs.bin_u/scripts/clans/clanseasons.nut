@@ -1,6 +1,6 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 global enum CLAN_SEASON_MEDAL_TYPE
 {

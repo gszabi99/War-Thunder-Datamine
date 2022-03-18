@@ -1,8 +1,8 @@
-let { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText,
-        getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { cutPostfix } = require("std/string.nut")
+        getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { cutPostfix } = require("%sqstd/string.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner()
 {

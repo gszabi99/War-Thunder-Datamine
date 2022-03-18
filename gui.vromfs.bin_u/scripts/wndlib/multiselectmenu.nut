@@ -20,7 +20,7 @@
     ]
   }
 */
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config)
 {

@@ -1,6 +1,6 @@
-let colors = require("reactiveGui/style/colors.nut")
+let colors = require("%rGui/style/colors.nut")
 let scrollbar = require("scrollbar.nut")
-let { cursorVisible } = require("reactiveGui/ctrlsState.nut")
+let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
 let logContainer = @() {
   size = [flex(), SIZE_TO_CONTENT]

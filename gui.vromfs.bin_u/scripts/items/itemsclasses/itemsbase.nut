@@ -40,10 +40,10 @@
 */
 
 
-let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
-let { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
-let lottie = require("scripts/utils/lottie.nut")
-let { checkLegalRestrictions } = require("scripts/items/itemRestrictions.nut")
+let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
+let lottie = require("%scripts/utils/lottie.nut")
+let { checkLegalRestrictions } = require("%scripts/items/itemRestrictions.nut")
 
 const ITEM_SOON_EXPIRE_SEC = 14400
 const ITEM_VERY_SOON_EXPIRE_SEC = 3600

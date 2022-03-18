@@ -1,8 +1,8 @@
-let time = require("scripts/time.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
-let { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let time = require("%scripts/time.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::dagui_propid.add_name_id("_queueTableGenCode")
 

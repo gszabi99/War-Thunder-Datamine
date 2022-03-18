@@ -1,8 +1,8 @@
-let screenInfo = require("scripts/options/screenInfo.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
+let screenInfo = require("%scripts/options/screenInfo.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let sony = require("sony")
 let { is_stereo_mode } = ::require_native("vr")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]

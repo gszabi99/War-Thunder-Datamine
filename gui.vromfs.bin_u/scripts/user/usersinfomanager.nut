@@ -1,4 +1,4 @@
-let avatars = require("scripts/user/avatars.nut")
+let avatars = require("%scripts/user/avatars.nut")
 
 /**
   client api:

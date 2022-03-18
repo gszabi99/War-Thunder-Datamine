@@ -1,4 +1,4 @@
-let squadsListData = require("scripts/squads/clanSquadsList.nut")
+let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 
 ::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

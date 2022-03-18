@@ -1,6 +1,6 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
 let template = "%gui/items/trophyDesc"
 let singleItemIconLayer = "item_place_single"

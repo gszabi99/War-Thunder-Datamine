@@ -105,17 +105,17 @@
   return
 }
 
-::dagor.includeOnce("scripts/dynamic/headtohead.nut");
-::dagor.includeOnce("scripts/dynamic/combat_patrol.nut");
-::dagor.includeOnce("scripts/dynamic/bombing.nut");
-::dagor.includeOnce("scripts/dynamic/freeflight.nut");
-::dagor.includeOnce("scripts/dynamic/waypointflight.nut");
-::dagor.includeOnce("scripts/dynamic/bombing_intercept.nut");
-::dagor.includeOnce("scripts/dynamic/cover_bombers.nut");
-::dagor.includeOnce("scripts/dynamic/bombing_defense.nut");
-::dagor.includeOnce("scripts/dynamic/assault_defense.nut");
-::dagor.includeOnce("scripts/dynamic/assault.nut");
-::dagor.includeOnce("scripts/dynamic/cover_assault.nut");
+::dagor.includeOnce("%scripts/dynamic/headtohead.nut");
+::dagor.includeOnce("%scripts/dynamic/combat_patrol.nut");
+::dagor.includeOnce("%scripts/dynamic/bombing.nut");
+::dagor.includeOnce("%scripts/dynamic/freeflight.nut");
+::dagor.includeOnce("%scripts/dynamic/waypointflight.nut");
+::dagor.includeOnce("%scripts/dynamic/bombing_intercept.nut");
+::dagor.includeOnce("%scripts/dynamic/cover_bombers.nut");
+::dagor.includeOnce("%scripts/dynamic/bombing_defense.nut");
+::dagor.includeOnce("%scripts/dynamic/assault_defense.nut");
+::dagor.includeOnce("%scripts/dynamic/assault.nut");
+::dagor.includeOnce("%scripts/dynamic/cover_assault.nut");
 
 ::currentMissionNo <- 0;
 

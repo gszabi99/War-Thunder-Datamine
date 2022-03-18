@@ -1,19 +1,19 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let time = require("scripts/time.nut")
-let operationPreloader = require("scripts/worldWar/externalServices/wwOperationPreloader.nut")
-let seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwArmyGroupManager = require("scripts/worldWar/inOperation/wwArmyGroupManager.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let time = require("%scripts/time.nut")
+let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
+let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { getNearestMapToBattleShort,
   hasAvailableMapToBattle,
   hasAvailableMapToBattleShort,
   getOperationById,
   getOperationFromShortStatusById
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"

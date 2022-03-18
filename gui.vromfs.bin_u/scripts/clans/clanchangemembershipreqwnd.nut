@@ -1,5 +1,5 @@
-let clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

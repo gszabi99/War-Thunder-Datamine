@@ -1,4 +1,4 @@
-let editContactsList = require("scripts/contacts/editContacts.nut")
+let editContactsList = require("%scripts/contacts/editContacts.nut")
 
 ::no_dump_facebook_friends <- {}
 

@@ -1,6 +1,6 @@
 let { ActiveProtectionSystemModulesCount, activeProtectionSystemModules } = require("tankState.nut")
-let colors = require("reactiveGui/style/colors.nut")
-let { PI, cos, sin } = require("std/math.nut")
+let colors = require("%rGui/style/colors.nut")
+let { PI, cos, sin } = require("%sqstd/math.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 

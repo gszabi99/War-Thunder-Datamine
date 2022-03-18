@@ -1,4 +1,4 @@
-let extWatched = require("reactiveGui/globals/extWatched.nut")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let versions = extWatched("changelogsVersions", ::cross_call.changelog.getVersions)
 let chosenPatchnoteContent = extWatched("chosenPatchnoteContent",

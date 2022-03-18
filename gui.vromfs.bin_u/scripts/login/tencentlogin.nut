@@ -1,8 +1,8 @@
 let statsd = require("statsd")
-let { clearBorderSymbols } = require("std/string.nut")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::gui_handlers.LoginWndHandlerTencent <- class extends ::BaseGuiHandler
 {

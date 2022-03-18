@@ -1,6 +1,6 @@
-let { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
-let { getPromoHandlerUpdateConfigs } = require("scripts/promo/promoButtonsConfig.nut")
+let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
+let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {

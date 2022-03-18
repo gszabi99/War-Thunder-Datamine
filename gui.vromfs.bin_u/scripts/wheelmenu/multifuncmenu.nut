@@ -1,5 +1,5 @@
-let { openMfm, getMfmSectionTitle, getMfmHandler } = require("scripts/wheelmenu/multifuncMenuTools.nut")
-let cfg = require("scripts/wheelmenu/multifuncmenuCfg.nut")
+let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
+let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 local { emulateShortcut } = ::require_native("controls")
 
 //--------------------------------------------------------------------------------------------------

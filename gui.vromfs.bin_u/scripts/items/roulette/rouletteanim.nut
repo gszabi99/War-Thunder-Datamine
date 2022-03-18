@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let stdMath = require("std/math.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
 
 let CHANCE_TO_STOP_ON_BORDER = 0.5
 

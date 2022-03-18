@@ -1,5 +1,5 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
 local ModificationBase = class extends ::BaseItem
 {

@@ -1,12 +1,12 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let localDevoice = require("scripts/penitentiary/localDevoice.nut")
-let crossplayModule = require("scripts/social/crossplay.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnabled, attemptShowOverlayMessage,
-  isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
-let { updateContactsStatusByContacts } = require("scripts/contacts/updateContactsStatus.nut")
+  isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 
-let { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
 //-----------------------------
 // params keys:

@@ -1,14 +1,14 @@
-let { round_by_value } = require("std/math.nut")
-let { secondsToString } = require("scripts/time.nut")
-let { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
+let { round_by_value } = require("%sqstd/math.nut")
+let { secondsToString } = require("%scripts/time.nut")
+let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
   getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon,
   getWeaponExtendedInfo
-} = require("scripts/weaponry/weaponryInfo.nut")
-let { getBulletsSetData, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
-let { reloadCooldownTimeByCaliber } = require("scripts/weaponry/weaponsParams.nut")
-let { getWeaponsByPresetName } = require("scripts/weaponry/weaponryPresets.nut")
+} = require("%scripts/weaponry/weaponryInfo.nut")
+let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
+let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.nut")
+let { getWeaponsByPresetName } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
 let function getReloadTimeByCaliber(caliber, ediff = null)

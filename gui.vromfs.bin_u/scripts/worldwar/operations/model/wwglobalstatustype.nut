@@ -1,16 +1,16 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let { refreshGlobalStatusData,
   getValidGlobalStatusListMask,
   setValidGlobalStatusListMask,
   getGlobalStatusData
-} = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+} = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 local {
   refreshShortGlobalStatusData,
   getValidShortGlobalStatusListMask,
   setValidShortGlobalStatusListMask,
   getShortGlobalStatusData
-} = require("scripts/worldWar/operations/model/wwShortGlobalStatus.nut")
+} = require("%scripts/worldWar/operations/model/wwShortGlobalStatus.nut")
 
 const MAPS_OUT_OF_DATE_DAYS = 1
 

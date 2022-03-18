@@ -6,7 +6,7 @@ let {
   TargetRadius,
   TargetAge,
   TargetX,
-  TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+  TargetY } = require("%rGui/hud/targetTrackerState.nut")
 
 
 let hl = 20

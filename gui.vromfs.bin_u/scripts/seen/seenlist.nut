@@ -1,6 +1,6 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let seenListEvents = require("scripts/seen/seenListEvents.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let time = require("%scripts/time.nut")
+let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
 let activeSeenLists = {}
 

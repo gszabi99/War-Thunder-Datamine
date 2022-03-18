@@ -1,4 +1,4 @@
-let { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 
 ::items_classes.Discount <- class extends ::BaseItem
 {

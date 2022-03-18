@@ -1,4 +1,4 @@
-let { isGameModeCoop, isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal

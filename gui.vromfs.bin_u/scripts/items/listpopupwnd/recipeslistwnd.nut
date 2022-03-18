@@ -1,8 +1,8 @@
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let stdMath = require("std/math.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
-let { findChildIndex } = require("sqDagui/daguiUtil.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let stdMath = require("%sqstd/math.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 

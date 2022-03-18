@@ -1,5 +1,5 @@
-let { getSlotbarOverrideData, isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
-let { updateShopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
+let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::g_crews_list <- {
   crewsList = !::g_login.isLoggedIn() ? [] : ::get_crew_info()

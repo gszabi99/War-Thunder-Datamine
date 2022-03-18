@@ -1,5 +1,5 @@
-let focusFrame = require("sqDagui/focusFrame/focusFrame.nut")
-let stdMath = require("std/math.nut")
+let focusFrame = require("%sqDagui/focusFrame/focusFrame.nut")
+let stdMath = require("%sqstd/math.nut")
 
 let sizeProps = [
   ["width-base", "width-end"],

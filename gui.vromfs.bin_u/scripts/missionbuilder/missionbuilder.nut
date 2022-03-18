@@ -1,4 +1,4 @@
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::gui_start_builder <- function gui_start_builder(params = {})

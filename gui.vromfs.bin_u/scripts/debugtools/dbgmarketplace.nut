@@ -8,8 +8,8 @@
 
 ::debug_show_workshop_event_preview <- function debug_show_workshop_event_preview(id)
 {
-  let workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
-  let workshop = require("scripts/items/workshop/workshop.nut")
+  let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
+  let workshop = require("%scripts/items/workshop/workshop.nut")
   let ws = workshop.getSetById(id)
   if (!ws)
     return "Workshop set not found"

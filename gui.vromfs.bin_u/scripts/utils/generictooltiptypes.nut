@@ -1,15 +1,15 @@
-let { addTypes } = require("sqStdLibs/helpers/enums.nut")
-let workshop = require("scripts/items/workshop/workshop.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
-let { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
-let { getChallengeView } = require("scripts/battlePass/challenges.nut")
+let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getSkillCategoryByName } = require("%scripts/crew/crewSkills.nut")
+let { getSkillCategoryTooltipContent } = require("%scripts/crew/crewSkillsView.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
+let { getChallengeView } = require("%scripts/battlePass/challenges.nut")
 let { fillItemDescr, fillDescTextAboutDiv,
-  fillItemDescUnderTable } = require("scripts/items/itemVisual.nut")
-let { getUnlockLocName } = require("scripts/unlocks/unlocksViewModule.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+  fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
+let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 let tooltipTypes = {
   types = []

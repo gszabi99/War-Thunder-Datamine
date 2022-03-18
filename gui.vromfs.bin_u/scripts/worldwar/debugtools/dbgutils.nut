@@ -1,5 +1,5 @@
 // warning disable: -file:forbidden-function
-let { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 ::dbg_ww_destroy_cur_operation <- function dbg_ww_destroy_cur_operation()
 {

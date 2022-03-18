@@ -9,7 +9,7 @@
  * GUI scene is opened from HUD, where mouse pointer was invisible.
  */
 
-let { isMouseCursorVisible } = require("scripts/controls/mousePointerVisibility.nut")
+let { isMouseCursorVisible } = require("%scripts/controls/mousePointerVisibility.nut")
 
 const MOUSE_POINTER_SHOWN_RECENTLY_MS = 250
 

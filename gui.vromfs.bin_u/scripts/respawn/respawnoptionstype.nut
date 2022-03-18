@@ -1,7 +1,7 @@
-let enums = require("sqStdlibs/helpers/enums.nut")
-let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
-let { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
-let { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { bombNbr, hasCountermeasures } = require("%scripts/unit/unitStatus.nut")
+let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 
 let options = {
   types = []

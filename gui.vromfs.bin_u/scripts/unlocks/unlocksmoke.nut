@@ -1,5 +1,5 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
 let aeroSmokesList    = persist("aeroSmokesList", @() ::Watched([]))
 let buyableSmokesList = persist("buyableSmokesList", @() ::Watched([]))

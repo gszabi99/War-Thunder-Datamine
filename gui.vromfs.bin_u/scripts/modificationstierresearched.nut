@@ -1,4 +1,4 @@
-let activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
 {

@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
 
 global enum LB_MODE
 {

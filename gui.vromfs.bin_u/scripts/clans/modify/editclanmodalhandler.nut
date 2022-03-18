@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let time = require("%scripts/time.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_handlers.EditClanModalhandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {

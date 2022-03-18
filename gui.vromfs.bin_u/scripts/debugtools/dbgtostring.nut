@@ -1,8 +1,8 @@
 // warning disable: -file:forbidden-function
 
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let sqdebugger = require_optional("sqdebugger")
-let { isDataBlock } = require("std/underscore.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 
 ::dlog <- function dlog(...)
 {
@@ -21,7 +21,7 @@ let { isDataBlock } = require("std/underscore.nut")
 
 let function initEventBroadcastLogging()
 {
-  let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+  let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   subscriptions.setDebugLoggingParams(::dagor.debug, ::dagor.getCurTime, ::toString)
   ::debug_event_logging <- subscriptions.debugLoggingEnable
 }

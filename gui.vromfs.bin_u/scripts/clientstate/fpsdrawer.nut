@@ -1,5 +1,5 @@
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let { hasFeature } = require("scripts/user/features.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
 
 ::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {

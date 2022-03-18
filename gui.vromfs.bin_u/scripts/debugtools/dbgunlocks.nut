@@ -1,5 +1,5 @@
 // warning disable: -file:forbidden-function
-let { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
+let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {

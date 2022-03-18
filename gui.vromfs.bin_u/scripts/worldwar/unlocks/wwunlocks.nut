@@ -1,4 +1,4 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const CHAPTER_NAME = "worldwar"
 

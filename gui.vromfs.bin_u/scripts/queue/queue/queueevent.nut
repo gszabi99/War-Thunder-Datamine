@@ -1,4 +1,4 @@
-let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base
 {

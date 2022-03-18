@@ -1,6 +1,6 @@
-let colors = require("reactiveGui/style/colors.nut")
+let colors = require("%rGui/style/colors.nut")
 let voiceChatState = require("voiceChatState.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 
 let voiceChatElements = function() {
   let children = []

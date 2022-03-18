@@ -1,4 +1,4 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { set_restricted_downloads_mode } = require("hangarEventCommand")
 
 addListenersWithoutEnv({

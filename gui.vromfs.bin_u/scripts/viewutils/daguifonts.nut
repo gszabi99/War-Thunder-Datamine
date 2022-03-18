@@ -1,5 +1,5 @@
 let fonts = require("fonts")
-let u = require("sqStdLibs/helpers/u.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let fontsList = {
   defaults = [

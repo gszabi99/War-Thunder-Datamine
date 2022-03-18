@@ -1,9 +1,9 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getByCurBundle } = require("scripts/weaponry/itemInfo.nut")
-let { canBuyMod } = require("scripts/weaponry/modificationInfo.nut")
-let { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
+let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::g_weaponry_types <- {
   types = []

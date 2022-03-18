@@ -1,4 +1,4 @@
-let topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
+let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 
 ::gui_start_credits <- function gui_start_credits()
 {

@@ -1,5 +1,5 @@
-let { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::mission_rules.SharedPool <- class extends ::mission_rules.Base
 {

@@ -1,8 +1,8 @@
-let fileCheck = require("scripts/clientState/fileCheck.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let { getCurLoadingBgData, removeLoadingBgFromLists } = require("scripts/loading/loadingBgData.nut")
-let { isLoadingScreenBanned } = require("scripts/options/preloaderOptions.nut")
+let fileCheck = require("%scripts/clientState/fileCheck.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { getCurLoadingBgData, removeLoadingBgFromLists } = require("%scripts/loading/loadingBgData.nut")
+let { isLoadingScreenBanned } = require("%scripts/options/preloaderOptions.nut")
 
 const MODIFY_UNKNOWN = -1
 const MODIFY_NO_FILE = -2

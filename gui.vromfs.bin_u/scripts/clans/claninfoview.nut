@@ -1,4 +1,4 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let function getClanRequirementsText(membershipRequirements)
 {

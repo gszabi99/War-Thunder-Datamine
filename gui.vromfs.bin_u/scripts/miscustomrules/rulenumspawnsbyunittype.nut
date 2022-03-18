@@ -1,5 +1,5 @@
-let { unitClassType } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { unitClassType } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base
 {

@@ -1,4 +1,4 @@
-let { isInBattleState } = require("scripts/clientState/clientStates.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 ::g_user_presence <- {
   inited = false

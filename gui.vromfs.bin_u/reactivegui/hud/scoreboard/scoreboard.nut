@@ -1,6 +1,6 @@
-let { gameType, useDeathmatchHUD, timeLeft, timeLimitWarn } = require("reactiveGui/missionState.nut")
-let { safeAreaSizeHud } = require("reactiveGui/style/screenState.nut")
-let { secondsToTimeSimpleString } = require("std/time.nut")
+let { gameType, useDeathmatchHUD, timeLeft, timeLimitWarn } = require("%rGui/missionState.nut")
+let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let football = require("football.ui.nut")
 let deathmatch = require("deathmatch.ui.nut")
 

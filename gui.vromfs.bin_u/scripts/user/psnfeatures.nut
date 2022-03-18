@@ -1,7 +1,7 @@
 let { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
-let { isPlatformPS5 } = require("scripts/clientState/platform.nut")
+let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { suggest_psplus } = require("sony.store")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { subscribe } = require("eventbus")
 
 

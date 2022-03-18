@@ -1,5 +1,5 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"

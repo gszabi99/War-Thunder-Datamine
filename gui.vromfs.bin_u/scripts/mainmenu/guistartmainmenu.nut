@@ -1,5 +1,5 @@
-let onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
-let { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
+let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 
 local dbgStartCheck = 0
 

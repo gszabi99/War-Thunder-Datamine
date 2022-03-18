@@ -1,8 +1,8 @@
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::SlotbarPresetsTutorial <- class
 {

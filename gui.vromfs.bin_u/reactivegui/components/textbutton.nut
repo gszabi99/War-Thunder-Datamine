@@ -1,5 +1,5 @@
 let textButton = require("textButtonBase.nut")
-let fontsState = require("reactiveGui/style/fontsState.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 let textButtonTextCtor = require("textButtonTextCtor.nut")
 
 let commonButtonStyle = {

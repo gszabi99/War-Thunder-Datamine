@@ -1,5 +1,5 @@
 let scrollbarBase = require("%darg/components/scrollbar.nut")
-let colors = require("reactiveGui/style/colors.nut")
+let colors = require("%rGui/style/colors.nut")
 
 
 let styling = {

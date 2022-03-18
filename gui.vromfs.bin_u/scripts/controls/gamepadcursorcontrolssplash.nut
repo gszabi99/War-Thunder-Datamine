@@ -1,4 +1,4 @@
-let { isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
+let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 

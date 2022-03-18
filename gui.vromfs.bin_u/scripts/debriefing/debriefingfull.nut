@@ -1,9 +1,9 @@
-let mpChatModel = require("scripts/chat/mpChatModel.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("scripts/debriefing/rewardSources.nut")
-let { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
-let { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { money_type } = require("scripts/money.nut")
+let mpChatModel = require("%scripts/chat/mpChatModel.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("%scripts/debriefing/rewardSources.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
+let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { money_type } = require("%scripts/money.nut")
 
 global enum debrState {
   init

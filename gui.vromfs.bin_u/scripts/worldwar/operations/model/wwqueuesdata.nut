@@ -1,4 +1,4 @@
-let { secondsToMilliseconds } = require("scripts/time.nut")
+let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 2 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2

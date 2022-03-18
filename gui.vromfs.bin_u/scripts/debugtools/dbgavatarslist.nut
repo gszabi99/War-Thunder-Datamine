@@ -1,9 +1,9 @@
-let bhvAvatar = require("scripts/user/bhvAvatar.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let stdPath = require("std/path.nut")
-let avatars = require("scripts/user/avatars.nut")
+let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let stdPath = require("%sqstd/path.nut")
+let avatars = require("%scripts/user/avatars.nut")
 let dagor_fs = require("dagor.fs")
-let stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
 enum avatarPlace { //higher index has more priority to show icon when same icons in the different places
   IN_GAME         = 0x01

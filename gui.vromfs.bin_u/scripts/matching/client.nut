@@ -1,4 +1,4 @@
-let exitGame = require("scripts/utils/exitGame.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::on_online_unavailable <- function on_online_unavailable()
 {

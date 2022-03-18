@@ -1,6 +1,6 @@
-let stdMath = require("std/math.nut")
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+let stdMath = require("%sqstd/math.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
 ::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy)
 {

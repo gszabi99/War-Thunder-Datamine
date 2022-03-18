@@ -1,6 +1,6 @@
 let globalEnv = require("globalEnv")
-let avatars = require("scripts/user/avatars.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)

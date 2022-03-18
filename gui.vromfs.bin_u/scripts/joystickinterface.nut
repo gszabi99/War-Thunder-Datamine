@@ -1,5 +1,5 @@
 let { is_stereo_mode } = ::require_native("vr")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 1.0

@@ -1,6 +1,6 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 

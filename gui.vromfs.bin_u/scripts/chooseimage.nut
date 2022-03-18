@@ -1,6 +1,6 @@
-let bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-let seenList = require("scripts/seen/seenList.nut")
-let stdMath = require("std/math.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let seenList = require("%scripts/seen/seenList.nut")
+let stdMath = require("%sqstd/math.nut")
 
 /*
   config = {

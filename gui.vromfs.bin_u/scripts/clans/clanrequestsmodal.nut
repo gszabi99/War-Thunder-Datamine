@@ -1,4 +1,4 @@
-let clanContextMenu = require("scripts/clans/clanContextMenu.nut")
+let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {

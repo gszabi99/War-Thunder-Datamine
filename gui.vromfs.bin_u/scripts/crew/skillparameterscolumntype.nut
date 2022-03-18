@@ -1,5 +1,5 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("scripts/crew/crewSkills.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 
 enum skillColumnOrder {
   TOTAL

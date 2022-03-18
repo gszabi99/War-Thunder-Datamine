@@ -1,7 +1,7 @@
-let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

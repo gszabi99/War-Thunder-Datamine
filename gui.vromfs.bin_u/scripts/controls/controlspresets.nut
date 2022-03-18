@@ -1,5 +1,5 @@
-let controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 /**
  * Functions to work with controls presets
  */

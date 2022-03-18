@@ -3,7 +3,7 @@
 //   int - image size on 1080p big fonts
 //   null - various image sizes
 //   string - daguiConstant
-let g_path = require("std/path.nut")
+let g_path = require("%sqstd/path.nut")
 let dagor_fs = require("dagor.fs")
 
 ::debug_svg <- function debug_svg(image, size = null, bgColor = "#808080")

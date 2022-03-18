@@ -1,35 +1,35 @@
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
   selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer } = require_native("guiRespawn")
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let statsd = require("statsd")
-let time = require("scripts/time.nut")
-let respawnBases = require("scripts/respawn/respawnBases.nut")
-let respawnOptions = require("scripts/respawn/respawnOptionsType.nut")
-let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-let contentPreset = require("scripts/customization/contentPreset.nut")
-let actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+let time = require("%scripts/time.nut")
+let respawnBases = require("%scripts/respawn/respawnBases.nut")
+let respawnOptions = require("%scripts/respawn/respawnOptionsType.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let contentPreset = require("%scripts/customization/contentPreset.nut")
+let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
         isWeaponVisible,
-        getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
-let { getModificationName, getUnitLastBullets } = require("scripts/weaponry/bulletsInfo.nut")
+        getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getModificationName, getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
         getAmmoAmount,
         getAmmoMaxAmountInSession,
-        getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
-let { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-let { getEventSlotbarHint } = require("scripts/events/eventInfo.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { showedUnit, setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+        getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkInRoomMembers } = require("%scripts/contacts/updateContactsStatus.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { getEventSlotbarHint } = require("%scripts/events/eventInfo.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { showedUnit, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { guiStartMPStatScreenFromGame,
-  guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+  guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 local { onSpectatorMode, switchSpectatorTarget } = require_native("guiSpectator")
 
 ::last_ca_aircraft <- null

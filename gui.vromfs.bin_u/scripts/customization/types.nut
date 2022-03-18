@@ -1,10 +1,10 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let guidParser = require("scripts/guidParser.nut")
-let time = require("scripts/time.nut")
-let skinLocations = require("scripts/customization/skinLocations.nut")
-let memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
-let { isPlatformSony } = require("scripts/clientState/platform.nut")
-let { updateDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let time = require("%scripts/time.nut")
+let skinLocations = require("%scripts/customization/skinLocations.nut")
+let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.

@@ -1,7 +1,7 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
-let { getUnitClassTypesFromCodeMask } = require("scripts/unit/unitClassType.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getUnitClassTypesFromCodeMask } = require("%scripts/unit/unitClassType.nut")
 
 
 ::g_order_type <- {

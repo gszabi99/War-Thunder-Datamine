@@ -1,7 +1,7 @@
 let penalty = require("penalty")
 let stdStr = require("string")
-let time = require("std/time.nut")
-let timeLocTable = require("reactiveGui/timeLocTable.nut")
+let time = require("%sqstd/time.nut")
+let timeLocTable = require("%rGui/timeLocTable.nut")
 
 let currentPenaltyDesc = Watched({})
 

@@ -1,9 +1,9 @@
 let { getCurLoadingBgData,
         getLoadingBgName,
-        getLoadingBgTooltip } = require("scripts/loading/loadingBgData.nut")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
+        getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { isLoadingScreenBanned,
-        toggleLoadingScreenBan } = require("scripts/options/preloaderOptions.nut")
+        toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 {

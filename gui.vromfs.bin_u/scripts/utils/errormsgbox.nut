@@ -1,4 +1,4 @@
-let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 ::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message=null)
 {

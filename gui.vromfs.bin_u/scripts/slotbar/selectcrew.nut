@@ -1,8 +1,8 @@
-let slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let tutorAction = require("scripts/tutorials/tutorialActions.nut")
-let { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { getSafearea } = require("scripts/options/safeAreaMenu.nut")
+let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config)
 {

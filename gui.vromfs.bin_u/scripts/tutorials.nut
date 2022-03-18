@@ -1,6 +1,6 @@
-let { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
-let { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
-let { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
+let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
+let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::getReserveAircraftName <- function getReserveAircraftName(paramsTable)
 {

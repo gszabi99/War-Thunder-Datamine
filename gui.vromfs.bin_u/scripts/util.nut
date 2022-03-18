@@ -1,15 +1,15 @@
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let penalty = require("penalty")
-let { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
-let stdMath = require("std/math.nut")
-let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-let { startLogout } = require("scripts/login/logout.nut")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+let { isPlatformSony, getPlayerName } = require("%scripts/clientState/platform.nut")
+let stdMath = require("%sqstd/math.nut")
+let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
+let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
+let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
@@ -287,7 +287,7 @@ foreach (i, v in ::cssColorsMapDark)
   ::handlersManager.clearScene()
   ::handlersManager.loadHandler(::gui_handlers.Hud)
 
-  require("scripts/chat/mpChatModel.nut").init()
+  require("%scripts/chat/mpChatModel.nut").init()
 }
 
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1)

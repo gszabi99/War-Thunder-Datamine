@@ -1,4 +1,4 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::condition_text_functions <- {
   leaderboardCondition = function (rewardBlk, progress = null)
   {

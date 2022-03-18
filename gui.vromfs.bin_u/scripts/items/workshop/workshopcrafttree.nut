@@ -1,5 +1,5 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let { appendOnce } = require("sqStdLibs/helpers/u.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 let DEFAULT_BRANCH_CONFIG = {
   locId = ""
@@ -156,8 +156,11 @@ let function generateRows(branchBlk, treeRows, treeBlk)
         notFoundReqForItems[reqItemId] <- (notFoundReqForItems?[reqItemId] ?? []).append(itemConfig)
     }
 
-    if (treeRows[bodyIdx].len() < posY)
-      treeRows[bodyIdx].resize(posY, array(posX, null))
+    if (treeRows[bodyIdx].len() < posY) {
+      let rowsCount = treeRows[bodyIdx].len()
+      for (local k = rowsCount; k < posY; k++)
+        treeRows[bodyIdx].append(array(posX, null))
+    }
 
     if (treeRows[bodyIdx][posY-1].len() < posX)
       treeRows[bodyIdx][posY-1].resize(posX, null)

@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
+let time = require("%scripts/time.nut")
+let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 
 enum BATTLE_LOG_FILTER
 {

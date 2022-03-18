@@ -1,5 +1,5 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 
 let isMarketplaceEnabled = @() ::has_feature("Marketplace")
   && ::has_feature("AllowExternalLink") && inventoryClient.getMarketplaceBaseUrl() != null

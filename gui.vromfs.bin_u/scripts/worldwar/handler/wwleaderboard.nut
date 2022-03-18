@@ -1,9 +1,9 @@
-let wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let wwRewards = require("scripts/worldWar/handler/wwRewards.nut")
-let time = require("scripts/time.nut")
+let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
+let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
+let time = require("%scripts/time.nut")
 let { getSeparateLeaderboardPlatformName,
-        getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
-let { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
+        getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
+let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK

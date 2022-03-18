@@ -1,6 +1,6 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 let buttons = {
   types = []

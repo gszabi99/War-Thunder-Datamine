@@ -1,5 +1,5 @@
 local { getOperationById, getOperationGroupByMapId
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 ::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

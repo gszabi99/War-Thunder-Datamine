@@ -1,5 +1,5 @@
-let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::items_classes.Ticket <- class extends ::BaseItem
 {

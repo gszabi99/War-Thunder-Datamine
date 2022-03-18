@@ -1,10 +1,10 @@
-let { getBulletsListHeader } = require("scripts/weaponry/weaponryDescription.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setUnitLastBullets,
-        getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
+        getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
         getAmmoAmount,
-        isAmmoFree } = require("scripts/weaponry/ammoInfo.nut")
+        isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
 local { clearUnitOption } = ::require_native("guiOptions")
 
 ::BulletGroup <- class

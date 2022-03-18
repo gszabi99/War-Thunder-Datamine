@@ -1,4 +1,4 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let AMMO = {
   PRIMARY      = 0, //bullets, modifications

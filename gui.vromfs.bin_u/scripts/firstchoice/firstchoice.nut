@@ -1,5 +1,5 @@
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getPlayerName, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
 {

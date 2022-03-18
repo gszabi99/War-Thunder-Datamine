@@ -1,6 +1,6 @@
-let stdMath = require("std/math.nut")
-let { getSkillDescriptionView } = require("scripts/crew/crewSkillParameters.nut")
-let { getSkillValue } = require("scripts/crew/crewSkills.nut")
+let stdMath = require("%sqstd/math.nut")
+let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
+let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
 
 local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 {

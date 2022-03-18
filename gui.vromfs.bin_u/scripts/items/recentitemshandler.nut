@@ -1,6 +1,6 @@
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { updateExpireAlarmIcon } = require("scripts/items/itemVisual.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
 ::gui_handlers.RecentItemsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

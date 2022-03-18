@@ -1,4 +1,4 @@
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let userstatRewardTitleLocId = "battlePass/rewardsTitle"
 let userstatItemsListLocId = "mainmenu/rewardsList"

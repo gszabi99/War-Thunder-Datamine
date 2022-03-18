@@ -1,4 +1,4 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 
 ::items_classes.Order <- class extends ::BaseItem

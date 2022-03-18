@@ -1,5 +1,5 @@
-let u = require("sqStdLibs/helpers/u.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 /*
 ItemsRoulette API:
@@ -22,8 +22,8 @@ ItemsRoulette API:
 const MIN_ITEMS_OFFSET = 0.1
 const MAX_ITEMS_OFFSET = 0.4
 
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let rouletteAnim = require("scripts/items/roulette/rouletteAnim.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
 
 let ROULETTE_PARAMS_DEFAULTS = {
   rouletteObj = null

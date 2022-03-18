@@ -1,6 +1,6 @@
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-let { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {

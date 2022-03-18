@@ -1,6 +1,6 @@
-let { isMouseCursorVisible } = require("scripts/controls/mousePointerVisibility.nut")
-let { isHudVisible } = require("scripts/hud/hudVisibility.nut")
-let { isInBattleState } = require("scripts/clientState/clientStates.nut")
+let { isMouseCursorVisible } = require("%scripts/controls/mousePointerVisibility.nut")
+let { isHudVisible } = require("%scripts/hud/hudVisibility.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 let guiSceneCursorVisible = keepref(::Computed(@() (isHudVisible.value || !isInBattleState.value)
   && isMouseCursorVisible.value))

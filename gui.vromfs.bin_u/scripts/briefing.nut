@@ -1,7 +1,7 @@
-let contentPreset = require("scripts/customization/contentPreset.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+let contentPreset = require("%scripts/customization/contentPreset.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
 let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::back_from_briefing <- ::gui_start_mainmenu

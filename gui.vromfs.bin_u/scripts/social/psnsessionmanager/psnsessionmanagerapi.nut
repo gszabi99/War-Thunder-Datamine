@@ -1,5 +1,5 @@
-let { isEqual } = require("sqStdLibs/helpers/u.nut")
-let psn = require("sonyLib/webApi.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let psn = require("%sonyLib/webApi.nut")
 let statsd = require("statsd")
 
 let create = @(data, onFinishCb) psn.send(

@@ -1,7 +1,7 @@
 let statsd = require("statsd")
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let eventbus = require("eventbus")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
 const ContentUpdaterEventId = "contentupdater.modal.event"
 

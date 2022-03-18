@@ -1,12 +1,12 @@
-let { isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { TIME_HOUR_IN_SECONDS } = require("std/time.nut")
-let { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
+let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
+let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
 let steamRateGameWnd = require("steamRateGameWnd.nut")
-let { debriefingRows } = require("scripts/debriefing/debriefingFull.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
-let log = require("std/log.nut")().with_prefix("[UserUtils] ")
+let log = require("%sqstd/log.nut")().with_prefix("[UserUtils] ")
 
 let needShowRateWnd = persist("needShowRateWnd", @() ::Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
 

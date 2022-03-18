@@ -1,7 +1,7 @@
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
-let squadsListData = require("scripts/squads/clanSquadsList.nut")
-let squadApplications = require("scripts/squads/squadApplications.nut")
+let squadsListData = require("%scripts/squads/clanSquadsList.nut")
+let squadApplications = require("%scripts/squads/squadApplications.nut")
 ::dagui_propid.add_name_id("leaderUid")
 
 ::gui_handlers.MyClanSquadsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT

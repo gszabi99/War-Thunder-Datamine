@@ -1,4 +1,4 @@
-let { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
+let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 ::g_hud_tank_debuffs <- {
   scene    = null

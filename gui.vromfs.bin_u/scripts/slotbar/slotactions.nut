@@ -1,5 +1,5 @@
-let unitStatus = require("scripts/unit/unitStatus.nut")
-let unitActions = require("scripts/unit/unitActions.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0

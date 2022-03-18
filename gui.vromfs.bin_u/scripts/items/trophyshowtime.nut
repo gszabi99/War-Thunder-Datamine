@@ -1,7 +1,7 @@
 from "dagor.workcycle" import setTimeout, clearTimer
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
-let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("scripts/time.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
+let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 
 local trophies = []
 

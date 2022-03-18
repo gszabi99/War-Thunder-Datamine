@@ -1,11 +1,11 @@
-let {Speed, Altitude, ClimbSpeed, Tangage, Roll} = require("reactiveGui/planeState/planeFlyState.nut");
+let {Speed, Altitude, ClimbSpeed, Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut");
 let {compassWrap, generateCompassMark} = require("ilsCompasses.nut")
 let {flyDirection, angleTxt, yawIndicator, cancelBombing,
       lowerSolutionCue, bombFallingLine, aimMark} = require("commonElements.nut")
 let {IlsColor, TargetPos, DistToSafety, IlsLineScale,
-        IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked} = require("reactiveGui/planeState/planeToolsState.nut")
+        IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked} = require("%rGui/planeState/planeToolsState.nut")
 let {mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth} = require("ilsConstants.nut")
-let {floor} = require("std/math.nut")
+let {floor} = require("%sqstd/math.nut")
 
 let function speedometer(width, height) {
   let grid = @() {

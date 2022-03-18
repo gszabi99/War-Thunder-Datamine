@@ -1,6 +1,6 @@
-let { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
-let personalDiscount = require("scripts/discounts/personalDiscount.nut")
-let { eachBlock } = require("std/datablock.nut")
+let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, idx = 0)

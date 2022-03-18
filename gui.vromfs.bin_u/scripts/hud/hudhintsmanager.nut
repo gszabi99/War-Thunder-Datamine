@@ -1,5 +1,5 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let DaguiSceneTimers = require("sqDagui/timer/daguiSceneTimers.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 

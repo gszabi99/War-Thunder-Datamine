@@ -1,5 +1,5 @@
-let time = require("scripts/time.nut")
-let stdpath = require("std/path.nut")
+let time = require("%scripts/time.nut")
+let stdpath = require("%sqstd/path.nut")
 
 ::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

@@ -1,15 +1,15 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let stdMath = require("std/math.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
-  getLastPrimaryWeapon, getPrimaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
-let { AMMO, getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+  getLastPrimaryWeapon, getPrimaryWeaponsList } = require("%scripts/weaponry/weaponryInfo.nut")
+let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
 let { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
-} = require("scripts/weaponry/modificationInfo.nut")
-let { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+} = require("%scripts/weaponry/modificationInfo.nut")
+let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { getGuiOptionsMode } = ::require_native("guiOptions")
-let { unique } = require("std/underscore.nut")
-let { getWeaponsByPresetName, getUnitWeapons } = require("scripts/weaponry/weaponryPresets.nut")
+let { unique } = require("%sqstd/underscore.nut")
+let { getWeaponsByPresetName, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"

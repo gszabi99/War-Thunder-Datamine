@@ -1,6 +1,6 @@
-let clustersModule = require("scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let clustersModule = require("%scripts/clusterSelect.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 global enum queueStates
 {
@@ -32,7 +32,7 @@ foreach (fn in [
                  "queueInfo/qiViewUtils.nut"
                  "queueTable.nut"
                ])
-  ::g_script_reloader.loadOnce("scripts/queue/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
+  ::g_script_reloader.loadOnce("%scripts/queue/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
 ::matching_rpc_subscribe("mkeeper.notify_service_started", function(params){
   if (params?.service != "match" || ::queues.lastQueueReqParams == null)

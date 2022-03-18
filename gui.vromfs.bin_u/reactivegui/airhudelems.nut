@@ -1,4 +1,4 @@
-let {floor, round_by_value} = require("std/math.nut")
+let {floor, round_by_value} = require("%sqstd/math.nut")
 
 let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
@@ -23,8 +23,8 @@ let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
 
 let {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor, isColorOrWhite} = require("style/airHudStyle.nut")
 
-let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
-let { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
+let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
+let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
 let { isInitializedMeasureUnits } = require("options/optionsMeasureUnits.nut")
 

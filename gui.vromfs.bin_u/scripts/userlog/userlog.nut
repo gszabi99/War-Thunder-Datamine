@@ -1,4 +1,4 @@
-let { actionByLogType, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
+let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::hidden_userlogs <- [

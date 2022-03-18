@@ -1,8 +1,8 @@
 // TEST: gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? close_cur_wheelmenu() })
 
-let { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
-let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 const ITEMS_PER_PAGE = 8
 

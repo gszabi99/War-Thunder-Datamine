@@ -1,10 +1,10 @@
-let time = require("scripts/time.nut")
-let ingame_chat = require("scripts/chat/mpChatModel.nut")
-let penalties = require("scripts/penitentiary/penalties.nut")
-let platformModule = require("scripts/clientState/platform.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
-let { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let time = require("%scripts/time.nut")
+let ingame_chat = require("%scripts/chat/mpChatModel.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
+let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 
 ::game_chat_handler <- null
 

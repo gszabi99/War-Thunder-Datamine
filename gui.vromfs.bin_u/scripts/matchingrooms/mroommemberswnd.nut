@@ -1,5 +1,5 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
 
 
 ::gui_handlers.MRoomMembersWnd <- class extends ::gui_handlers.BaseGuiHandlerWT

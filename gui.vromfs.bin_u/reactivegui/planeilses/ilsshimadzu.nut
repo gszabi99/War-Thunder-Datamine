@@ -1,11 +1,11 @@
-let {Speed, Roll, Mach, Overload, Aos} = require("reactiveGui/planeState/planeFlyState.nut");
+let {Speed, Roll, Mach, Overload, Aos} = require("%rGui/planeState/planeFlyState.nut");
 let {IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode} = require("reactiveGui/planeState/planeToolsState.nut")
+        IlsLineScale, RocketMode, CannonMode} = require("%rGui/planeState/planeToolsState.nut")
 let {baseLineWidth, mpsToKnots} = require("ilsConstants.nut")
 let {compassWrap, generateCompassMarkShim} = require("ilsCompasses.nut")
 let {flyDirection, angleTxt, cancelBombing, lowerSolutionCue,
       bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt} = require("commonElements.nut")
-let {floor} = require("std/math.nut")
+let {floor} = require("%sqstd/math.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 

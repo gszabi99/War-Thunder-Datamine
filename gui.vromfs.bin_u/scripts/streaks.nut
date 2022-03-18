@@ -1,4 +1,4 @@
-let platformModule = require("scripts/clientState/platform.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5

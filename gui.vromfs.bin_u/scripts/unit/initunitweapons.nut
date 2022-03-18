@@ -1,6 +1,6 @@
-let { eachBlock, eachParam } = require("std/datablock.nut")
-let { isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
-let { isDataBlock, isString } = require("sqStdLibs/helpers/u.nut")
+let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
+let { isDataBlock, isString } = require("%sqStdLibs/helpers/u.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",

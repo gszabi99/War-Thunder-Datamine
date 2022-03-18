@@ -1,6 +1,6 @@
-let { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-let { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
+let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 

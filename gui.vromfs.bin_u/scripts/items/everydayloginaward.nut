@@ -1,8 +1,8 @@
-let time = require("scripts/time.nut")
-let { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { todayLoginExp,loginStreak, getExpRangeTextOfLoginStreak } = require("scripts/battlePass/seasonState.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let time = require("%scripts/time.nut")
+let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { todayLoginExp,loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::gui_start_show_login_award <- function gui_start_show_login_award(blk)
 {

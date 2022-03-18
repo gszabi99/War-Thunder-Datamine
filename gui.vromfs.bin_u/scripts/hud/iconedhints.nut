@@ -1,5 +1,5 @@
 let { getRollIndicator = @() null, getIsVisibleRollIndicator = @() ::Watched(false) } = require("hudTankStates")
-let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let iconedHintsConfig = [{
   id = "roll_indicator"

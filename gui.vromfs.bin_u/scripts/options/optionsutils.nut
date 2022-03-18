@@ -1,6 +1,6 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)

@@ -1,9 +1,9 @@
-let unitActions = require("scripts/unit/unitActions.nut")
-let { getModItemName } = require("scripts/weaponry/weaponryDescription.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getItemCost,
         getAllModsCost,
         getItemStatusTbl,
-        getItemUnlockCost } = require("scripts/weaponry/itemInfo.nut")
+        getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null

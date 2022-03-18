@@ -1,6 +1,6 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::g_qi_view_utils <- {
   function getQueueInfo(queue, txt = null) {

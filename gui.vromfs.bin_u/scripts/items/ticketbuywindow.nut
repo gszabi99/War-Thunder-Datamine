@@ -1,4 +1,4 @@
-let { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

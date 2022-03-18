@@ -1,9 +1,9 @@
-let { speedValue, speedUnits, machineSpeed } = require("reactiveGui/hud/shipStateView.nut")
-let { safeAreaSizeHud, rh } = require("reactiveGui/style/screenState.nut")
-let { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
-let { isMultiplayer } = require("reactiveGui/networkState.nut")
+let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
+let { safeAreaSizeHud, rh } = require("%rGui/style/screenState.nut")
+let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { isMultiplayer } = require("%rGui/networkState.nut")
 let { mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
-} = require("reactiveGui/hud/hudTouchButton.nut")
+} = require("%rGui/hud/hudTouchButton.nut")
 
 let speedHeight = 2.5*touchButtonMargin
 let bottomLeftBlockHeigh = 2*bigTouchButtonSize + speedHeight

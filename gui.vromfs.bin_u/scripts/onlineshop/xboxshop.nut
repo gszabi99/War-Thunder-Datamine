@@ -1,9 +1,9 @@
-require("scripts/onlineShop/ingameConsoleStore.nut")
+require("%scripts/onlineShop/ingameConsoleStore.nut")
 
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-let shopData = require("scripts/onlineShop/xboxShopData.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+let shopData = require("%scripts/onlineShop/xboxShopData.nut")
 let statsd = require("statsd")
-let xboxSetPurchCb = require("scripts/onlineShop/xboxPurchaseCallback.nut")
+let xboxSetPurchCb = require("%scripts/onlineShop/xboxPurchaseCallback.nut")
 
 
 let sheetsArray = [

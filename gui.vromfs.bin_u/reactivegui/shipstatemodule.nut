@@ -3,14 +3,14 @@ let { brokenEnginesCount, enginesInCooldown, enginesCount,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
   steering, sightAngle, fwdAngle, hasAiGunners, fov
 } = require("shipState.nut")
-let { speedValue, speedUnits, machineSpeed } = require("reactiveGui/hud/shipStateView.nut")
+let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
 let { isVisibleDmgIndicator } = require("hudState.nut")
 let dmModule = require("dmModule.nut")
 let {damageModule, shipSteeringGauge, hudLogBgColor} = require("style/colors.nut").hud
 
-let {lerp, sin} = require("std/math.nut")
+let {lerp, sin} = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54

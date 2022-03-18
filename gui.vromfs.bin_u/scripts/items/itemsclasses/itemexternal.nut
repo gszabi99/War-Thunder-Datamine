@@ -1,14 +1,14 @@
-let inventoryClient = require("scripts/inventory/inventoryClient.nut")
-let ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-let guidParser = require("scripts/guidParser.nut")
-let itemRarity = require("scripts/items/itemRarity.nut")
-let time = require("scripts/time.nut")
-let chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
-let recipesListWnd = require("scripts/items/listPopupWnd/recipesListWnd.nut")
-let itemTransfer = require("scripts/items/itemsTransfer.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let guidParser = require("%scripts/guidParser.nut")
+let itemRarity = require("%scripts/items/itemRarity.nut")
+let time = require("%scripts/time.nut")
+let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
+let recipesListWnd = require("%scripts/items/listPopupWnd/recipesListWnd.nut")
+let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let { getMarkingPresetsById, getCustomLocalizationPresets,
-  getEffectOnOpenChestPresetById } = require("scripts/items/workshop/workshop.nut")
+  getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
 
 let emptyBlk = ::DataBlock()
 
@@ -1156,6 +1156,7 @@ local ItemExternal = class extends ::BaseItem
   showAllowableRecipesOnly = @() itemDef?.tags?.showAllowableRecipesOnly ?? false
   canRecraftFromRewardWnd = @() itemDef?.tags?.allowRecraftFromRewardWnd ?? false
   getQuality = @() itemDef?.tags?.quality ?? "common"
+  getExpireType = @() null
 }
 
 return ItemExternal

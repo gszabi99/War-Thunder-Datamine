@@ -1,20 +1,20 @@
-let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-let { eachBlock } = require("std/datablock.nut")
-let { isDataBlock, isString, isArray, isTable, isFunction, isEmpty } = require("sqStdLibs/helpers/u.nut")
-let time = require("scripts/time.nut")
-let contentPreview = require("scripts/customization/contentPreview.nut")
-let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-let stdMath = require("std/math.nut")
-let platform = require("scripts/clientState/platform.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
+let { isDataBlock, isString, isArray, isTable, isFunction, isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let time = require("%scripts/time.nut")
+let contentPreview = require("%scripts/customization/contentPreview.nut")
+let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let stdMath = require("%sqstd/math.nut")
+let platform = require("%scripts/clientState/platform.nut")
 let { getLastWeapon,
         isWeaponEnabled,
-        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
-let { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { GUI } = require("scripts/utils/configs.nut")
-let { getWeaponsByPresetName, getDefaultPresetId } = require("scripts/weaponry/weaponryPresets.nut")
+        isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+let { getWeaponsByPresetName, getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
-} = require("scripts/unit/initUnitWeapons.nut")
+} = require("%scripts/unit/initUnitWeapons.nut")
 
 let MOD_TIERS_COUNT = 4
 

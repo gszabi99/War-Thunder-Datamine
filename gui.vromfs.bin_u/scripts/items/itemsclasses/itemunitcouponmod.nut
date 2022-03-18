@@ -1,4 +1,4 @@
-let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
 ::items_classes.ItemUnitCouponMod <- class extends ItemExternal {
   static iType = itemType.UNIT_COUPON_MOD

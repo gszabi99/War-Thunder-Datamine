@@ -1,15 +1,15 @@
-let time = require("scripts/time.nut")
-let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-let { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("scripts/onlineShop/entitlements.nut")
+let time = require("%scripts/time.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let { isCrossPlayEnabled,
         getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-let activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { boosterEffectType } = require("scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
-let { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
-let { money_type } = require("scripts/money.nut")
+        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
+let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
+let { money_type } = require("%scripts/money.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "

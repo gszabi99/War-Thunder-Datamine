@@ -1,3 +1,5 @@
+let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+
 ::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params)
 {
   if (!params?.okFunc)
@@ -25,6 +27,7 @@
   label = ""
   leftAlignedLabel = false
   editboxWarningTooltip = ""
+  okBtnText = ""
   canCancel = true
   allowEmpty = true
   validateFunc = null //function(value)  return true if valid
@@ -64,6 +67,9 @@
 
     if (!canCancel && !cancelFunc)
       showSceneBtn("btn_back", false)
+
+    if (okBtnText != "")
+      setColoredDoubleTextToButton(scene, "btn_ok", okBtnText)
 
     if (isEnabled)
     {

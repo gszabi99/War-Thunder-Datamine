@@ -1,10 +1,10 @@
-let time = require("scripts/time.nut")
-let { hasAllFeatures } = require("scripts/user/features.nut")
-let promoConditions = require("scripts/promo/promoConditions.nut")
-let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-let { getPromoAction, isVisiblePromoByAction } = require("scripts/promo/promoActions.nut")
-let { getPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { GUI } = require("scripts/utils/configs.nut")
+let time = require("%scripts/time.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let promoConditions = require("%scripts/promo/promoConditions.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoActions.nut")
+let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {

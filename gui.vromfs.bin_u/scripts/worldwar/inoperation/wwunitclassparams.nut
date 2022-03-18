@@ -1,4 +1,4 @@
-let { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
+let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let sortIdxByExpClass = {
   fighter = 0

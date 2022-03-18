@@ -1,5 +1,5 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 let function clearInfo(scene)
 {

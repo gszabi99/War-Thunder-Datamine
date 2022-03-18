@@ -1,15 +1,15 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let time = require("scripts/time.nut")
-let stdMath = require("std/math.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
-  getFullUnitRoleText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
-let { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+  getFullUnitRoleText, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
+let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
+let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux,
         getLastWeapon,
-        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
+        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let UNIT_INFO_ARMY_TYPE  = {
   AIR        = unitTypes.AIRCRAFT.bit

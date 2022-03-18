@@ -1,4 +1,4 @@
-let { animBgLoad } = require("scripts/loading/animBg.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
 ::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler
 {

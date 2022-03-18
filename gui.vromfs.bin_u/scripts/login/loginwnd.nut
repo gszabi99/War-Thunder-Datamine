@@ -1,13 +1,14 @@
 let statsd = require("statsd")
-let { animBgLoad } = require("scripts/loading/animBg.nut")
-let showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-let { openUrl } = require("scripts/onlineShop/url.nut")
-let { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-let twoStepModal = require("scripts/login/twoStepModal.nut")
-let exitGame = require("scripts/utils/exitGame.nut")
-let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
-let loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let twoStepModal = require("%scripts/login/twoStepModal.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
+let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
+let { havePlayerTag } = require("scripts/user/userUtils.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -491,7 +492,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       case ::YU2_OK:
         if (::steam_is_running()
             && !::has_feature("AllowSteamAccountLinking")
-            && !::g_user_utils.haveTag("steam"))
+            && !havePlayerTag("steam"))
         {
           msgBox("steam_relogin_request",
             ::loc("mainmenu/login/steamRelogin"),

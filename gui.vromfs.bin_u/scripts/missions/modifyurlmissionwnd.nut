@@ -1,5 +1,5 @@
-let { clearBorderSymbols } = require("std/string.nut")
-let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
 ::gui_handlers.modifyUrlMissionWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {

@@ -1,9 +1,9 @@
-let { getMarkerUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
-let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqualSimple } = require("%sqstd/underscore.nut")
-let { getBitStatus } = require("scripts/unit/unitStatus.nut")
-let seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
+let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings

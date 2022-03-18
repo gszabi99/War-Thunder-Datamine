@@ -1,4 +1,4 @@
-let weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
+let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
 ::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
 {

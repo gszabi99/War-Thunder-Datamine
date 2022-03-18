@@ -1,5 +1,5 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let extContactsService = require("scripts/contacts/externalContactsService.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let extContactsService = require("%scripts/contacts/externalContactsService.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}

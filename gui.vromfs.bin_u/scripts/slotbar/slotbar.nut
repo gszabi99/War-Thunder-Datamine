@@ -1,22 +1,22 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let unitStatus = require("scripts/unit/unitStatus.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole,
         getUnitRoleIcon,
         getUnitItemStatusText,
-        getUnitRarity } = require("scripts/unit/unitInfoTexts.nut")
+        getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getLastWeapon,
         checkUnitWeapons,
-        getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
-let { getUnitLastBullets } = require("scripts/weaponry/bulletsInfo.nut")
-let unitTypes = require("scripts/unit/unitTypesList.nut")
-let { getUnitShopPriceText } = require("scripts/shop/unitCardPkg.nut")
-let { batchTrainCrew } = require("scripts/crew/crewActions.nut")
-let { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
-let { RANDOM_UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-let { getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { isNeedFirstCountryChoice } = require("scripts/firstChoice/firstChoice.nut")
+        getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsData.nut")
+let { RANDOM_UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 
 /*
 if need - put commented in array above

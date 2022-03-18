@@ -1,7 +1,7 @@
-let enums = require("sqStdLibs/helpers/enums.nut")
-let callback = require("sqStdLibs/helpers/callback.nut")
-let u = require("sqStdLibs/helpers/u.nut")
-let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let callback = require("%sqStdLibs/helpers/callback.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let netAssertsList = []
 ::script_net_assert_once <- function script_net_assert_once(id, msg)

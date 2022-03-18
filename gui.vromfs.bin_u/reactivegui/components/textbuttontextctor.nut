@@ -1,7 +1,7 @@
 let getGamepadHotkeys = require("getGamepadHotkeys.nut")
 let { mkImageCompByDargKey } = require("gamepadImgByKey.nut")
-let { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
-let focusBorder = require("reactiveGui/components/focusBorder.nut")
+let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
+let focusBorder = require("%rGui/components/focusBorder.nut")
 
 let gap = ::scrn_tgt(0.005)
 return function(textComp, params, handler, group, sf){

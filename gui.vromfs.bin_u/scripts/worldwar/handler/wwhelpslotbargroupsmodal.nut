@@ -1,4 +1,4 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 

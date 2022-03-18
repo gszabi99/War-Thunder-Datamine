@@ -1,7 +1,7 @@
-let xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
-let { getPlayerName } = require("scripts/clientState/platform.nut")
-let { isEqual } = require("sqStdLibs/helpers/u.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -64,7 +64,7 @@ let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
   }
 }
 
-let editContactsList = require("scripts/contacts/editContacts.nut")
+let editContactsList = require("%scripts/contacts/editContacts.nut")
 
 foreach (fn in [
     "contactPresence.nut"
@@ -73,7 +73,7 @@ foreach (fn in [
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-::g_script_reloader.loadOnce("scripts/contacts/" + fn)
+::g_script_reloader.loadOnce("%scripts/contacts/" + fn)
 
 g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params)
 {

@@ -1,6 +1,6 @@
-let { addPromoAction } = require("scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 
 let function getWorldWarPromoText(isWwEnabled = null) {
   local text = ::loc("mainmenu/btnWorldwar")

@@ -1,5 +1,5 @@
-let seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
-let { PRICE } = require("scripts/utils/configs.nut")
+let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+let { PRICE } = require("%scripts/utils/configs.nut")
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28

@@ -1,9 +1,9 @@
-let { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
-let { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-let { getFakeBulletsModByName, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-let { getSingleBulletParamToDesc } = require("scripts/weaponry/bulletsVisual.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { getFakeBulletsModByName, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
-} = require("scripts/weaponry/weaponryTooltipPkg.nut")
+} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
 local infoUnit = null

@@ -1,4 +1,4 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 /*
   config = [
     {

@@ -1,8 +1,8 @@
-let { ceil, floor} = require("std/math.nut")
+let { ceil, floor} = require("%sqstd/math.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
-  deathPenaltyMul, ctaDeathTicketPenalty } = require("reactiveGui/missionState.nut")
-let teamColors = require("reactiveGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("std/time.nut")
+  deathPenaltyMul, ctaDeathTicketPenalty } = require("%rGui/missionState.nut")
+let teamColors = require("%rGui/style/teamColors.nut")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
 let scoresForOneKill = ::Computed(@() deathPenaltyMul.value * ctaDeathTicketPenalty.value)
 let countKillsToWin = ::Computed(@() scoresForOneKill.value == 0

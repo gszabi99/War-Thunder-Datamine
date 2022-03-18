@@ -1,10 +1,10 @@
-let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-let time = require("scripts/time.nut")
-let { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-let { setShowUnit } = require("scripts/slotbar/playerCurUnit.nut")
-let { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
-let { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
-let { checkUnlockMarkers } = require("scripts/unlocks/unlockMarkers.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
+let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 
 local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT

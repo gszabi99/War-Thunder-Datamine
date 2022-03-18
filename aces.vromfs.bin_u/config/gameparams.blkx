@@ -1,4 +1,5 @@
 {
+  "grassAlphaSuffix": "_a",
   "enableRiExplosionDamage": true,
   "simpleSinking": false,
   "volsmokeDafxInjector": true,
@@ -4466,7 +4467,7 @@
       "staticCascadeDepthBiasFlip": 0.001,
       "renderHeightmap": true,
       "useOcclusion": false,
-      "fom_enabled": false
+      "fom_enabled": true
     },
     "ultrahigh": {
       "cascadeWidth": 1200,
@@ -4477,8 +4478,8 @@
       "tpsPowWeight": 0.99,
       "cockpitShadowDist": 1500.0,
       "cockpitPowWeight": 0.9991,
-      "tanksShadowDist": 500.0,
-      "tanksPowWeight": 0.95,
+      "tanksShadowDist": 450.0,
+      "tanksPowWeight": 0.96,
       "shipsShadowDist": 380.0,
       "shipsPowWeight": 0.94,
       "bigShipsShadowDist": 400.0,
@@ -4490,7 +4491,7 @@
       "staticCascadeRegMul": 7.0,
       "staticCascadeTexWidth": 4096,
       "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 3,
+      "staticCascadeStarting": 4,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDualPass": true,
       "staticCascadeForceLod0": true,
@@ -4498,7 +4499,7 @@
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
-      "fom_enabled": false
+      "fom_enabled": true
     }
   },
   "ambShadows": {
@@ -10326,6 +10327,18 @@
     "aps_sensor_02_dm": {
       "completely": true
     },
+    "aps_launcher_01_dm": {
+      "completely": true
+    },
+    "aps_launcher_02_dm": {
+      "completely": true
+    },
+    "aps_launcher_03_dm": {
+      "completely": true
+    },
+    "aps_launcher_04_dm": {
+      "completely": true
+    },
     "commander_panoramic_sight": {
       "my": "0.9",
       "completely": true
@@ -10366,25 +10379,16 @@
         "p": "armor_belt"
       },
       {
-        "p": "armor_belt_l"
-      },
-      {
-        "p": "armor_belt_r"
-      },
-      {
         "p": "coal_bunker"
       },
       {
         "p": "armor_cit"
       },
       {
-        "p": "armor_cit_l"
-      },
-      {
-        "p": "armor_cit_r"
-      },
-      {
         "p": "aps_sensor_"
+      },
+      {
+        "p": "aps_launcher_"
       },
       {
         "p": "ex_era_hull_"
@@ -10526,6 +10530,9 @@
         "p": "aps_sensor_"
       },
       {
+        "p": "aps_launcher_"
+      },
+      {
         "p": "driver_"
       },
       {
@@ -10659,12 +10666,6 @@
       },
       {
         "p": "handling_room_"
-      },
-      {
-        "p": "armor_belt_r_"
-      },
-      {
-        "p": "armor_belt_l_"
       },
       {
         "p": {
@@ -10873,30 +10874,6 @@
       {
         "p": {
           "name": "elevator",
-          "unit": "ship"
-        }
-      },
-      {
-        "p": {
-          "name": "armor_belt_l",
-          "unit": "ship"
-        }
-      },
-      {
-        "p": {
-          "name": "armor_belt_r",
-          "unit": "ship"
-        }
-      },
-      {
-        "p": {
-          "name": "armor_cit_l",
-          "unit": "ship"
-        }
-      },
-      {
-        "p": {
-          "name": "armor_cit_r",
           "unit": "ship"
         }
       }
@@ -13601,6 +13578,9 @@
         "p": "aps_sensor_"
       },
       {
+        "p": "aps_launcher_"
+      },
+      {
         "p": {
           "name": "optic_"
         }
@@ -13956,7 +13936,7 @@
       },
       {
         "p": {
-          "name": "armor_cit_r",
+          "name": "armor_cit_l",
           "unit": "ship",
           "hideIfDead": true
         }
@@ -17675,9 +17655,14 @@
   "windEffects": {
     "isBlastEffectActivated": true,
     "isStaticWindActivated": true,
+    "limBlastPowerExplosivMassForShell": [25.0,3000.0],
+    "limBlastPowerForShell": [0.1,1.0],
+    "limBlastPowerExplosivMassForBullet": [3.0,30.0],
+    "limBlastPowerForBullet": [0.1,0.6],
     "rendinstRadiusMultForBlast": 1.5,
     "rendinstMinRadiusForBlast": 1.5,
     "particlesForceMul": 100.0,
+    "lengthCamRendinstEffectActivation": 30.0,
     "clusterWindCascades": {
       "tank": {
         "cascade0": {

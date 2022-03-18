@@ -1,16 +1,16 @@
-let time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 let { getPlayerName,
         isPlayerFromPS4,
         isPlayerFromXboxOne,
         isPlatformSony,
-        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-let playerContextMenu = require("scripts/user/playerContextMenu.nut")
-let vehiclesModal = require("scripts/unit/vehiclesModal.nut")
-let wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
-let clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
-let clanInfoView = require("scripts/clans/clanInfoView.nut")
-let { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
+        isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
+let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
+let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
+let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
+let clanInfoView = require("%scripts/clans/clanInfoView.nut")
+let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 
 let clan_member_list = [
   {id = "onlineStatus", lbDataType = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}

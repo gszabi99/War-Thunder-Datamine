@@ -1,5 +1,5 @@
-let platformModule = require("scripts/clientState/platform.nut")
-let { clearBorderSymbolsMultiline } = require("std/string.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null)
 {

@@ -1,4 +1,4 @@
-let itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {

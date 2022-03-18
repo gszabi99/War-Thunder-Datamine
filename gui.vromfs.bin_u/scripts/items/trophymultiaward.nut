@@ -1,7 +1,7 @@
-let { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-let { isDataBlock } = require("std/underscore.nut")
-let { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
 let class TrophyMultiAward
 {
