@@ -4,7 +4,7 @@ hintDiv { modalPos:t='left'; hintText {}}
 navLeft {
   <<#left>>
   <<#button>>
-  include "gui/commonParts/button"
+  include "%gui/commonParts/button"
   <</button>>
   <<#textField>>
   activeText {
@@ -20,7 +20,7 @@ navLeft {
 navMiddle {
   <<#middle>>
   <<#button>>
-  include "gui/commonParts/button"
+  include "%gui/commonParts/button"
   <</button>>
   <<#textField>>
   activeText {
@@ -36,7 +36,7 @@ navMiddle {
 navRight {
   <<#right>>
   <<#button>>
-  include "gui/commonParts/button"
+  include "%gui/commonParts/button"
   <</button>>
   <<#textField>>
   activeText {

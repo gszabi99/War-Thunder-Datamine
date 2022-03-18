@@ -1,19 +1,19 @@
-local minWindowWidthScale = 1.33  //1.33@sf
+let minWindowWidthScale = 1.33  //1.33@sf
 
-class ::gui_handlers.WorkshopPreview extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WorkshopPreview <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/items/workshopPreview"
+  sceneTplName = "%gui/items/workshopPreview"
 
   wSet = null
 
   function getSceneTplView()
   {
-    local blk = wSet.previewBlk
-    local infoBlocks = []
+    let blk = wSet.previewBlk
+    let infoBlocks = []
     for ( local i = 0; i < blk.paramCount(); i++ )
     {
-      local name = blk.getParamName(i)
+      let name = blk.getParamName(i)
       if (name == "image" || name == "space")
         infoBlocks.append({
           [name] = blk.getParamValue(i)
@@ -26,7 +26,7 @@ class ::gui_handlers.WorkshopPreview extends ::gui_handlers.BaseGuiHandlerWT
         infoBlocks[infoBlocks.len() - 1][name] <- blk.getParamValue(i)
     }
 
-    local mainImageScale = blk?.main_image_scale ?? minWindowWidthScale
+    let mainImageScale = blk?.main_image_scale ?? minWindowWidthScale
     return {
       headerText = ::loc(blk?.main_header ?? "items/workshop")
       bgImage = blk?.main_image

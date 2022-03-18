@@ -1,15 +1,15 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let time = require("scripts/time.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::g_qi_view_utils <- {
   function getQueueInfo(queue, txt = null) {
     if (!queue)
       return ""
     // Add new line of extended text about wait time if it is not default message text.
-    local addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
+    let addLine = txt ? $"\n{::loc("yn1/waiting_time")}" : ""
     local msg = txt ? txt : ::loc("yn1/wait_for_session")
-    local waitTime = queue ? queue.getActiveTime().tointeger() : 0
+    let waitTime = queue ? queue.getActiveTime().tointeger() : 0
     if (waitTime > 0)
       msg = "".concat(msg, addLine, ::loc("ui/colon"), time.secondsToString(waitTime, false))
     return msg
@@ -18,9 +18,9 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event)
 {
-  local needRankInfo = ::events.needRankInfoInQueue(event)
-  local headerColumns = []
-  local view = {
+  let needRankInfo = ::events.needRankInfoInQueue(event)
+  let headerColumns = []
+  let view = {
     rows = [
       {
         rowParam = "queueTableIconRow"
@@ -43,9 +43,9 @@ g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj,
     })
 
   //fillrank rows
-  local myCountry = ::queues.getQueueCountry(queue)
-  local myRank = ::queues.getMyRankInQueue(queue)
-  local countriesSets = ::events.getAllCountriesSets(event)
+  let myCountry = ::queues.getQueueCountry(queue)
+  let myRank = ::queues.getMyRankInQueue(queue)
+  let countriesSets = ::events.getAllCountriesSets(event)
   local canMeetCountries = {}
   foreach(cSet in countriesSets)
     if (myCountry in cSet.allCountries)
@@ -56,7 +56,7 @@ g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj,
     headerColumns.insert(0, { text = "#sm_era" })
     for(local rank = 1; rank <= ::max_country_rank; ++rank)
     {
-      local row = {
+      let row = {
         rowParam = "queueTableRow"
         columns = [{ text = ::get_roman_numeral(rank) }]
         isEven = rank % 2 == 0
@@ -75,40 +75,40 @@ g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj,
     }
   }
 
-  local markup = ::handyman.renderCached("gui/queue/queueTableByCountries", view)
+  let markup = ::handyman.renderCached("%gui/queue/queueTableByCountries", view)
   nestObj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
 }
 
 g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj, queue, curCluster)
 {
-  local queueStats = queue && queue.queueStats
+  let queueStats = queue && queue.queueStats
   if (!queueStats)
     return
 
-  local event = ::queues.getQueueEvent(queue)
+  let event = ::queues.getQueueEvent(queue)
   if (::events.needRankInfoInQueue(event))
   {
-    local countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
-    local countryOption = ::get_option(::USEROPT_COUNTRY)
+    let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
+    let countryOption = ::get_option(::USEROPT_COUNTRY)
     foreach(countryName in countryOption.values)
     {
       if (!::events.isCountryAvailable(event, countryName))
         continue
 
-      local ranksQueueTable = countriesQueueTable?[countryName]
+      let ranksQueueTable = countriesQueueTable?[countryName]
       for(local rank = 1; rank <= ::max_country_rank; ++rank)
       {
-        local tdTextObj = nestObj.findObject(countryName + "_" + rank)
+        let tdTextObj = nestObj.findObject(countryName + "_" + rank)
         if (!::check_obj(tdTextObj))
           continue
-        local val = ranksQueueTable?[rank.tostring()] ?? 0
+        let val = ranksQueueTable?[rank.tostring()] ?? 0
         tdTextObj.setValue(val.tostring())
       }
     }
   }
   else
   {
-    local totalTextObj = nestObj.findObject("total_in_queue")
+    let totalTextObj = nestObj.findObject("total_in_queue")
     if (::check_obj(totalTextObj))
       totalTextObj.setValue(::loc("multiplayer/playersInQueue") + ::loc("ui/colon")
         + queueStats.getPlayersCountOfAllRanks())
@@ -121,7 +121,7 @@ g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, 
   if (!::check_obj(timerObj))
     return
   SecondsUpdater(timerObj, (@(textObj, iconObj) function(obj, p) {
-    local queue = ::queues.findQueue({}) //first active queue
+    let queue = ::queues.findQueue({}) //first active queue
     if (::check_obj(textObj))
       textObj.setValue(::g_qi_view_utils.getQueueInfo(queue, txt))
     if (::check_obj(iconObj))

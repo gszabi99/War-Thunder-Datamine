@@ -1,7 +1,7 @@
-local fontsState = require("reactiveGui/style/fontsState.nut")
-local colors = require("reactiveGui/style/colors.nut")
+let fontsState = require("reactiveGui/style/fontsState.nut")
+let colors = require("reactiveGui/style/colors.nut")
 
-local shortcutsParamsByPlace = @() {
+let shortcutsParamsByPlace = @() {
   defaultP = { shortcutAxis = [::shHud(6), ::shHud(6)]
     gamepadButtonSize = [::shHud(4), ::shHud(4)]
     keyboardButtonSize = [SIZE_TO_CONTENT, ::shHud(4)]
@@ -28,12 +28,12 @@ local shortcutsParamsByPlace = @() {
   }
 }
 
-local hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
+let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
-local function gamepadButton(shortcutConfig, override, isAxis = true) {
-  local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
-  local buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
+let function gamepadButton(shortcutConfig, override, isAxis = true) {
+  let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+  let buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
   image = image.slice(0, 1) == "#" ? $"!{image.slice(1, image.len())}" : image
   return {
@@ -44,8 +44,8 @@ local function gamepadButton(shortcutConfig, override, isAxis = true) {
   }
 }
 
-local function keyboardButton(shortcutConfig, override) {
-  local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+let function keyboardButton(shortcutConfig, override) {
+  let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
   return {
     size = sizeParam.keyboardButtonSize
     minWidth = sizeParam.keyboardButtonMinWidth
@@ -64,9 +64,9 @@ local function keyboardButton(shortcutConfig, override) {
   }
 }
 
-local function arrowImg(direction, override) {
+let function arrowImg(direction, override) {
 
-  local img = direction == 0 ? "ui/gameuiskin#cursor_size_hor" : "ui/gameuiskin#cursor_size_vert"
+  let img = direction == 0 ? "ui/gameuiskin#cursor_size_hor.svg" : "ui/gameuiskin#cursor_size_vert.svg"
   return {
     rendObj = ROBJ_IMAGE
     size = [::fpx(30), ::fpx(30)]
@@ -77,7 +77,7 @@ local function arrowImg(direction, override) {
 
 local getShortcut = @(shortcutConfig, override) null
 
-local shortcutByInputName = {
+let shortcutByInputName = {
   axis = @(shortcutConfig, override) hasImage(shortcutConfig)
       ? gamepadButton(shortcutConfig, override)
       : keyboardButton(shortcutConfig, override)
@@ -87,9 +87,9 @@ local shortcutByInputName = {
       : keyboardButton(shortcutConfig, override)
 
   combination = function(shortcutConfig, override) {
-    local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
-    local elmementsCount = shortcutConfig.elements.len()
-    local sortcutsCombination = []
+    let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+    let elmementsCount = shortcutConfig.elements.len()
+    let sortcutsCombination = []
     foreach(idx, element in shortcutConfig.elements) {
       sortcutsCombination.append(getShortcut(element, override))
       if(idx < elmementsCount-1)
@@ -117,8 +117,8 @@ local shortcutByInputName = {
   inputBase = @(shortcutConfig, override) null
 
   keyboardAxis = function(shortcutConfig, override) {
-    local needArrows = shortcutConfig?.needArrows ?? false
-    local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+    let needArrows = shortcutConfig?.needArrows ?? false
+    let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
     return {
       size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL

@@ -8,22 +8,22 @@
 
 */
 
-local {get_time_msec} = require("dagor.time")
-local {add_cycle_action} = require("dagor.workcycle")
+let {get_time_msec} = require("dagor.time")
+let {add_cycle_action} = require("dagor.workcycle")
 
-local delayedActionsList = persist("delayedActionsList", @() [])
+let delayedActionsList = persist("delayedActionsList", @() [])
 local instantActionsList = persist("instantActionsList", @() [])
 
-local function runDelayedActions() {
+let function runDelayedActions() {
   if (delayedActionsList.len() == 0)
     return
 
-  local curTime = get_time_msec()
-  local callActions = []
+  let curTime = get_time_msec()
+  let callActions = []
 
   // actions is sorted by call time from last to first
   for (local i = delayedActionsList.len() - 1; i >= 0; --i) {
-    local elem = delayedActionsList[i]
+    let elem = delayedActionsList[i]
     if (elem.time <= curTime) {
       callActions.append(elem.action)
       delayedActionsList.pop()
@@ -36,20 +36,20 @@ local function runDelayedActions() {
     action()
 }
 
-local function runInstantActions() {
+let function runInstantActions() {
   if (instantActionsList.len() == 0)
     return
 
-  local actions = instantActionsList
+  let actions = instantActionsList
   instantActionsList = []
 
   foreach (action in actions)
     action()
 }
 
-local function addDelayedAction(action, delay_ms) {
+let function addDelayedAction(action, delay_ms) {
   if (delay_ms > 0) {
-    local callTime = get_time_msec() + delay_ms
+    let callTime = get_time_msec() + delay_ms
     delayedActionsList.append({action = action, time = callTime})
     delayedActionsList.sort(function (a, b) {
       return (b.time - a.time).tointeger()

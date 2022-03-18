@@ -3,7 +3,7 @@ return function(config, customFeedParams) {
     foreach(name in customFeedParams.requireLocalization)
       customFeedParams[name] <- ::loc(customFeedParams[name])
 
-  local locId = ::getTblValue("locId", config, "")
+  let locId = ::getTblValue("locId", config, "")
   if (locId == "")
   {
     ::dagor.debug("facebookPostActivityFeed, Not found locId in config")
@@ -12,9 +12,9 @@ return function(config, customFeedParams) {
   }
 
   customFeedParams.player <- ::my_user_name
-  local message = ::loc("activityFeed/" + locId, customFeedParams)
-  local link = ::getTblValue("link", customFeedParams, "")
-  local backgroundPost = ::getTblValue("backgroundPost", config, false)
+  let message = ::loc("activityFeed/" + locId, customFeedParams)
+  let link = ::getTblValue("link", customFeedParams, "")
+  let backgroundPost = ::getTblValue("backgroundPost", config, false)
   ::make_facebook_login_and_do((@(link, message, backgroundPost) function() {
                  if (!backgroundPost)
                   ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)

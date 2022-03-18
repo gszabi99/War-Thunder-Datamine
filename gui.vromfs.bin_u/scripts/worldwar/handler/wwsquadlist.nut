@@ -1,10 +1,10 @@
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+let playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
-class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwSquadList <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "gui/worldWar/wwBattleSquadList"
+  sceneTplName = "%gui/worldWar/wwBattleSquadList"
 
   country = null
   remainUnits = null
@@ -26,14 +26,14 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSquadInfoPanel()
   {
-    local squadMembers = ::g_squad_manager.getMembers()
+    let squadMembers = ::g_squad_manager.getMembers()
     local memberIdx = 0
     foreach (memberData in squadMembers)
     {
       if (!memberData.online)
         continue
 
-      local memberObj = squadListObj.getChild(memberIdx)
+      let memberObj = squadListObj.getChild(memberIdx)
       if (!::check_obj(memberObj))
         break
 
@@ -43,7 +43,7 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 
     for (local i = memberIdx; i < squadListObj.childrenCount(); i++)
     {
-      local memberObj = squadListObj.getChild(i)
+      let memberObj = squadListObj.getChild(i)
       if (::check_obj(memberObj))
         updateSquadMember(null, memberObj)
     }
@@ -58,7 +58,7 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
     memberObj.uid = memberData.uid
     memberObj.findObject("is_ready_icon").isReady =
       memberData.isReady ? "yes" : "no"
-    local memberUnitsData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
+    let memberUnitsData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
       memberData, remainUnits, country)
     memberObj.findObject("has_vehicles_icon").isReady =
       memberUnitsData.joinStatus == memberStatus.READY ? "yes" : "no"
@@ -84,7 +84,7 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
     memberObj.findObject("cant_join_text").setValue(alertText)
     memberObj.findObject("member_name").setValue(memberData.name)
 
-    local alertIconObj =  memberObj.findObject("alert_icon")
+    let alertIconObj =  memberObj.findObject("alert_icon")
     if (!::check_obj(alertIconObj))
       return
 
@@ -106,15 +106,15 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onMemberRClick()
   {
-    local curMemberIdx = squadListObj.getValue()
+    let curMemberIdx = squadListObj.getValue()
     if (curMemberIdx < 0 || curMemberIdx >= squadListObj.childrenCount())
       return
 
-    local curMemberObj = squadListObj.getChild(curMemberIdx)
+    let curMemberObj = squadListObj.getChild(curMemberIdx)
     if (!::check_obj(curMemberObj) || !curMemberObj?.uid)
       return
 
-    local position = curMemberObj.getPosRC()
+    let position = curMemberObj.getPosRC()
     position[1] += curMemberObj.getSize()[1]
 
     playerContextMenu.showMenu(null, this, {

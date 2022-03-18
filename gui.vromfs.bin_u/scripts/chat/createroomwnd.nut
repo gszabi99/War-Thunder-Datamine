@@ -1,9 +1,9 @@
-local { clearBorderSymbols } = require("std/string.nut")
+let { clearBorderSymbols } = require("std/string.nut")
 
-class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.CreateRoomWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/chat/createChatroom.blk"
+  sceneBlkName = "%gui/chat/createChatroom.blk"
 
   static fullTabsList = [
     {
@@ -48,7 +48,7 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
     }
     switchTab(0)
 
-    local roomNameBoxObj = scene.findObject("room_name")
+    let roomNameBoxObj = scene.findObject("room_name")
     roomNameBoxObj["max-len"] = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
 
     scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
@@ -67,7 +67,7 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillTabs()
   {
-    local view = {
+    let view = {
       tabs = []
     }
     foreach(idx, tab in tabsList)
@@ -76,8 +76,8 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
         navImagesText = ::get_navigation_images_text(idx, tabsList.len())
       })
 
-    local tabsObj = showSceneBtn("tabs_list", true)
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    let tabsObj = showSceneBtn("tabs_list", true)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
@@ -87,11 +87,11 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (idx == curTabIdx || !(idx in tabsList))
       return
 
-    local curTab = tabsList[idx]
+    let curTab = tabsList[idx]
     curTabIdx = idx
     roomType = curTab.roomType
 
-    local curTabBlock = curTab.tabBlockName
+    let curTabBlock = curTab.tabBlockName
     foreach(blockName in tabBlocksList)
       showSceneBtn(blockName, blockName == curTabBlock)
 
@@ -100,16 +100,16 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function initCategories()
   {
-    local show = ::g_chat_categories.isEnabled()
+    let show = ::g_chat_categories.isEnabled()
     showSceneBtn("thread_category_header", show)
-    local cListObj = showSceneBtn("categories_list", show)
+    let cListObj = showSceneBtn("categories_list", show)
     if (show)
       ::g_chat_categories.fillCategoriesListObj(cListObj, ::g_chat_categories.defaultCategoryName, this)
   }
 
   function getSelThreadCategoryName()
   {
-    local cListObj = scene.findObject("categories_list")
+    let cListObj = scene.findObject("categories_list")
     return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, ::g_chat_categories.defaultCategoryName)
   }
 
@@ -125,7 +125,7 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
     else
     {
       isValuesValid = !::is_chat_message_empty(curName)
-      local onlyDigits = regexp2(@"\D").replace("", curName)
+      let onlyDigits = regexp2(@"\D").replace("", curName)
       isValuesValid = isValuesValid && onlyDigits.len() <= ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
     }
 
@@ -134,8 +134,8 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeRoomName(obj)
   {
-    local value = obj.getValue()
-    local validValue = ::g_chat.validateRoomName(value)
+    let value = obj.getValue()
+    let validValue = ::g_chat.validateRoomName(value)
     if (value != validValue)
     {
       obj.setValue(validValue)
@@ -168,11 +168,11 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function createChatRoom()
   {
-    local name = "#" + clearBorderSymbols(curName, [" "])
+    let name = "#" + clearBorderSymbols(curName, [" "])
     local pass = scene.findObject("room_password").getValue()
     if(pass != "")
       pass = clearBorderSymbols(pass, [" "])
-    local invitationsOnly = guiScene["room_invitation"].getValue()
+    let invitationsOnly = guiScene["room_invitation"].getValue()
     if (::menu_chat_handler)
     {
       ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, (@(name, invitationsOnly) function () {

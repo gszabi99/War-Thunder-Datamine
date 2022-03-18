@@ -1,12 +1,12 @@
-local { getVoiceMessageNames, getCategoryLoc } = require("scripts/wheelmenu/voiceMessages.nut")
+let { getVoiceMessageNames, getCategoryLoc } = require("scripts/wheelmenu/voiceMessages.nut")
 
 ::gui_start_voicemenu <- function gui_start_voicemenu(config)
 {
   if (::isPlayerDedicatedSpectator())
     return null
 
-  local joyParams = ::joystick_get_cur_settings()
-  local params = {
+  let joyParams = ::joystick_get_cur_settings()
+  let params = {
     menu         = config?.menu ?? []
     callbackFunc = ::getTblValue("callbackFunc", config)
     squadMsg     = ::getTblValue("squadMsg", config, false)
@@ -25,12 +25,12 @@ local { getVoiceMessageNames, getCategoryLoc } = require("scripts/wheelmenu/voic
 
 ::close_cur_voicemenu <- function close_cur_voicemenu()
 {
-  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.voiceMenuHandler)
+  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.voiceMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }
 
-class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
+::gui_handlers.voiceMenuHandler <- class extends ::gui_handlers.wheelMenuHandler
 {
   wndType = handlerType.CUSTOM
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
@@ -53,7 +53,7 @@ class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
 
   function updateChannelInfo()
   {
-    local objTitle = scene.findObject("wheel_menu_category")
+    let objTitle = scene.findObject("wheel_menu_category")
     if (::checkObj(objTitle))
     {
       local text = ::loc(squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
@@ -65,7 +65,7 @@ class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
       objTitle.setValue(text)
     }
 
-    local canUseButtons = mouseEnabled || ::show_console_buttons
+    let canUseButtons = mouseEnabled || ::show_console_buttons
     showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
   }
 
@@ -77,28 +77,28 @@ class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
   function updateFastVoiceMessagesTable()
   {
     showSceneBtn("fast_shortcuts_block", true)
-    local isConsoleMode = ::get_is_console_mode_enabled()
-    local textRawParam = ::format("chatMode:t='%s'; padding-left:t='1@bw'", getChatMode())
-    local messagesArray = []
+    let isConsoleMode = ::get_is_console_mode_enabled()
+    let textRawParam = ::format("chatMode:t='%s'; padding-left:t='1@bw'", getChatMode())
+    let messagesArray = []
     for (local i = 0; i < ::NUM_FAST_VOICE_MESSAGES; i++)
     {
-      local messageIndex = ::get_option_favorite_voice_message(i)
+      let messageIndex = ::get_option_favorite_voice_message(i)
       if (messageIndex < 0)
         continue
 
-      local fastShortcutId = "ID_FAST_VOICE_MESSAGE_" + (i + 1)
+      let fastShortcutId = "ID_FAST_VOICE_MESSAGE_" + (i + 1)
 
-      local shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(fastShortcutId)
+      let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(fastShortcutId)
       if (!shortcutType.isAssigned(fastShortcutId))
         continue
 
-      local cells = [
+      let cells = [
         {id = "name", textType = "text", textRawParam = textRawParam,
          text = ::format(::loc(getVoiceMessageNames()[messageIndex].name + "_0"),
                          ::loc("voice_message_target_placeholder"))}
       ]
 
-      local shortcutInputs = shortcutType.getInputs({ shortcutId = fastShortcutId})
+      let shortcutInputs = shortcutType.getInputs({ shortcutId = fastShortcutId})
       local shortcutInput = null
       foreach(idx, input in shortcutInputs)
       {
@@ -126,8 +126,8 @@ class ::gui_handlers.voiceMenuHandler extends ::gui_handlers.wheelMenuHandler
     }
 
     showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
-    local data = ::g_string.implode(messagesArray, "\n")
-    local tblObj = scene.findObject("fast_voice_messages_table")
+    let data = ::g_string.implode(messagesArray, "\n")
+    let tblObj = scene.findObject("fast_voice_messages_table")
     if (::checkObj(tblObj))
       guiScene.replaceContentFromText(tblObj, data, data.len(), this)
   }

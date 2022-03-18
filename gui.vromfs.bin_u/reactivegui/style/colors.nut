@@ -1,4 +1,4 @@
-local colors = {
+let colors = {
   transparent = Color(0, 0, 0, 0)
   white = Color(255, 255, 255)
   green = Color(0, 255, 0)
@@ -56,8 +56,8 @@ colors.hud <- {
   chatTextPrivateColor = Color(222, 187, 255)
 }
 
-local inactiveDMColor = Color(45, 55, 63, 80)
-local alertDMColor = Color(221, 17, 17)
+let inactiveDMColor = Color(45, 55, 63, 80)
+let alertDMColor = Color(221, 17, 17)
 colors.hud.damageModule <- {
   active = Color(255, 255, 255)
   alert = alertDMColor

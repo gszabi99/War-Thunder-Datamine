@@ -26,6 +26,7 @@
   dislikedMissions = null
   craftsInfoByUnitsGroups = null
   isEacInited = false
+  fakeName = false
 
   isWaiting = true
   isInvite = false
@@ -37,7 +38,7 @@
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
-                       "craftsInfoByUnitsGroups", "isEacInited"]
+                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName"]
 
   constructor(_uid, _isInvite = false, _isApplication = false)
   {
@@ -48,7 +49,7 @@
 
     initUniqueInstanceValues()
 
-    local contact = ::getContact(uid)
+    let contact = ::getContact(uid)
     if (contact)
       update(contact)
   }
@@ -104,7 +105,7 @@
 
   function getData()
   {
-    local result = {uid = uid}
+    let result = {uid = uid}
     foreach(idx, property in updatedProperties)
       if (!::u.isEmpty(this[property]))
         result[property] <- this[property]

@@ -1,5 +1,5 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("scripts/crew/crewSkills.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
+let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("scripts/crew/crewSkills.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -53,13 +53,13 @@ g_skill_parameters_column_type._createValueItem <- function _createValueItem(
   prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
 {
   local itemText = getDiffText(prevValue, curValue, sign, measureType, textColor)
-  local selectedDiffText = getDiffText(prevSelectedValue - prevValue,
+  let selectedDiffText = getDiffText(prevSelectedValue - prevValue,
     curSelectedValue - curValue, sign, measureType, "userlogColoredText", true)
   itemText += selectedDiffText
 
   if (addMeasureUnits)
     itemText += ::format(" %s", ::colorize(textColor, measureType.getMeasureUnitsName()))
-  local valueItem = {
+  let valueItem = {
     itemText = itemText
   }
   return valueItem
@@ -67,7 +67,7 @@ g_skill_parameters_column_type._createValueItem <- function _createValueItem(
 
 g_skill_parameters_column_type._getDiffText <- function _getDiffText(prevValue, curValue, sign, measureType, colorName, isAdditionalText = false)
 {
-  local diffAbsValue = ::fabs(curValue - prevValue)
+  let diffAbsValue = ::fabs(curValue - prevValue)
   if (isAdditionalText && !diffAbsValue)
     return ""
 
@@ -150,7 +150,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     previousParametersRequestType = ::g_skill_parameters_request_type.BASE_VALUES
     currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
     textColor = "goodTextColor"
-    imageName = "#ui/gameuiskin#skill_star"
+    imageName = "#ui/gameuiskin#skill_star_1.svg"
     imageSize = 27
 
     checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
@@ -207,24 +207,24 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
 
     getHeaderText = function ()
     {
-      local unitName = ::getUnitName(::g_crew_short_cache.unit)
-      local pad = "    "
+      let unitName = ::getUnitName(::g_crew_short_cache.unit)
+      let pad = "    "
       return pad + ::loc("crew/forUnit", { unitName = unitName }) + pad
     }
 
     createValueItem = function (prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
     {
-      local crewId = ::g_crew_short_cache.cacheCrewid
-      local unit = ::g_crew_short_cache.unit
-      local isUnitCompatible = unit && unit.unitType.hasAiGunners &&
+      let crewId = ::g_crew_short_cache.cacheCrewid
+      let unit = ::g_crew_short_cache.unit
+      let isUnitCompatible = unit && unit.unitType.hasAiGunners &&
         checkCrewUnitType(unit.unitType.crewUnitType)
-      local unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
-      local crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
-      local curGunners = ::min(crewExpGunners, unitTotalGunners)
+      let unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
+      let crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
+      let curGunners = ::min(crewExpGunners, unitTotalGunners)
       local text = curGunners + ::loc("ui/slash") + unitTotalGunners
       if (isUnitCompatible)
       {
-        local color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
+        let color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
         text = ::colorize(color, text)
       }
       return {
@@ -242,7 +242,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     previousParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_LEADERSHIP
     currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES
     textColor = "badTextColor"
-    imageName = "#ui/gameuiskin#gunnerBonus"
+    imageName = "#ui/gameuiskin#gunnerBonus.svg"
     imageSize = 27
 
     checkSkill = function (memberName, skillName)

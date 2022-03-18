@@ -1,4 +1,4 @@
-local { startLogout } = require("scripts/login/logout.nut")
+let { startLogout } = require("scripts/login/logout.nut")
 
 // -------------------------------------------------------
 // Clusters managment
@@ -20,7 +20,7 @@ local { startLogout } = require("scripts/login/logout.nut")
     dagor.debug("[MM] clusters loaded")
     debugTableData(params)
 
-    local clusters = ::getTblValue("clusters", params)
+    let clusters = ::getTblValue("clusters", params)
     if (!::u.isArray(clusters))
       return false
 

@@ -1,9 +1,9 @@
-local fieldEditText = require("components/apFieldEditText.nut")
-local fieldBoolCheckbox = require("components/apFieldBoolCheckbox.nut")
+let fieldEditText = require("components/apFieldEditText.nut")
+let fieldBoolCheckbox = require("components/apFieldBoolCheckbox.nut")
 
-local perCompEdits = {}
+let perCompEdits = {}
 
-local perSqTypeCtors = {
+let perSqTypeCtors = {
   string  = fieldEditText
   integer = fieldEditText
   float   = fieldEditText
@@ -17,14 +17,14 @@ local perSqTypeCtors = {
   bool    = fieldBoolCheckbox
 }
 
-local function registerPerCompPropEdit(compName, ctor) {
+let function registerPerCompPropEdit(compName, ctor) {
   perCompEdits[compName] <- ctor
 }
 
-local function registerPerSqTypePropEdit(compName, ctor) {
+let function registerPerSqTypePropEdit(compName, ctor) {
   perSqTypeCtors[compName] <- ctor
 }
-local getCompNamePropEdit = @(compName) perCompEdits?[compName]
-local getCompSqTypePropEdit = @(typ) perSqTypeCtors?[typ]
+let getCompNamePropEdit = @(compName) perCompEdits?[compName]
+let getCompSqTypePropEdit = @(typ) perSqTypeCtors?[typ]
 
 return {registerPerCompPropEdit, registerPerSqTypePropEdit, getCompSqTypePropEdit, getCompNamePropEdit}

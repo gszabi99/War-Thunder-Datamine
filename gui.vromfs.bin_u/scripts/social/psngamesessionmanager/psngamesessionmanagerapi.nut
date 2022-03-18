@@ -1,8 +1,8 @@
-local { isEqual } = require("sqStdLibs/helpers/u.nut")
-local psn = require("sonyLib/webApi.nut")
-local statsd = require("statsd")
+let { isEqual } = require("sqStdLibs/helpers/u.nut")
+let psn = require("sonyLib/webApi.nut")
+let statsd = require("statsd")
 
-local create = @(data, onFinishCb) psn.send(
+let create = @(data, onFinishCb) psn.send(
   psn.gameSessionManager.create(data),
   function(response, err) {
     ::dagor.debug($"[PSGSM] Game Sessions: Create: Response: {::toString(response, 4)}")
@@ -18,7 +18,7 @@ local create = @(data, onFinishCb) psn.send(
   }
 )
 
-local updateInfo = function(sessionId, curData, newData, onFinishCb) {
+let updateInfo = function(sessionId, curData, newData, onFinishCb) {
   if (isEqual(curData, newData))
     return
 
@@ -26,7 +26,7 @@ local updateInfo = function(sessionId, curData, newData, onFinishCb) {
     if (curData != null && isEqual(val, newData[key]))
       continue
 
-    local pair = {[key] = newData[key]}
+    let pair = {[key] = newData[key]}
     psn.send(
       psn.gameSessionManager.update(
         sessionId,
@@ -47,7 +47,7 @@ local updateInfo = function(sessionId, curData, newData, onFinishCb) {
   }
 }
 
-local destroy = function(sessionId, onFinishCb = psn.noOpCb) {
+let destroy = function(sessionId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.gameSessionManager.leave(sessionId),
     function(response, err) {
@@ -64,7 +64,7 @@ local destroy = function(sessionId, onFinishCb = psn.noOpCb) {
   )
 }
 
-local joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
+let joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.gameSessionManager.joinAsPlayer(sessionId, sessionData),
     function(response, err) {
@@ -82,7 +82,7 @@ local joinAsPlayer = function(sessionId, sessionData, pushContextId, onFinishCb 
   )
 }
 
-local joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
+let joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb = psn.noOpCb) {
   psn.send(
     psn.gameSessionManager.joinAsSpectator(sessionId, sessionData),
     function(response, err) {

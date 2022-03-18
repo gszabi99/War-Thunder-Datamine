@@ -1,4 +1,4 @@
-local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
+let clanContextMenu = require("scripts/clans/clanContextMenu.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -11,10 +11,10 @@ local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
     ::g_clans.markClanCandidatesAsViewed()
 }
 
-class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanRequestsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/clans/clanRequests.blk";
+  sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;
   rowTexts = [];
   candidatesData = null;
@@ -30,7 +30,7 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
   {
     myRights = ::g_clans.getMyClanRights()
     memListModified = false
-    local isMyClan = !::my_clan_info ? false : (::my_clan_info.id == clanId ? true : false)
+    let isMyClan = !::my_clan_info ? false : (::my_clan_info.id == clanId ? true : false)
     clanId = isMyClan ? "-1" : clanId
     fillRequestList()
   }
@@ -42,10 +42,10 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(candidate in candidatesData)
     {
-      local rowTemp = {};
+      let rowTemp = {};
       foreach(item in ::clan_candidate_list)
       {
-        local value = item.id in candidate ? candidate[item.id] : 0
+        let value = item.id in candidate ? candidate[item.id] : 0
         rowTemp[item.id] <- {value = value, text = item.type.getShortTextByValue(value)}
       }
       candidatesList.append({nick = candidate.nick, uid = candidate.uid });
@@ -65,13 +65,13 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (curPage > 0 && rowTexts.len() <= curPage * rowsPerPage)
       curPage--
 
-    local tblObj = scene.findObject("candidatesList");
+    let tblObj = scene.findObject("candidatesList");
     local data = "";
 
-    local headerRow = [];
+    let headerRow = [];
     foreach(item in ::clan_candidate_list)
     {
-      local name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
+      let name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
       headerRow.append({
         id = item.id,
         text = name,
@@ -81,12 +81,12 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     data = buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
-    local startIdx = curPage * rowsPerPage
-    local lastIdx = min((curPage + 1) * rowsPerPage, rowTexts.len())
+    let startIdx = curPage * rowsPerPage
+    let lastIdx = min((curPage + 1) * rowsPerPage, rowTexts.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
-      local rowName = "row_"+i;
-      local rowData = [];
+      let rowName = "row_"+i;
+      let rowData = [];
 
       foreach(item in ::clan_candidate_list)
       {
@@ -103,7 +103,7 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
 
     for(local i=startIdx; i < lastIdx; i++)
     {
-      local row = rowTexts[i]
+      let row = rowTexts[i]
       foreach(item, itemValue in row)
         tblObj.findObject("row_"+i).findObject("txt_"+item).setValue(itemValue.text);
     }
@@ -127,8 +127,8 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     curCandidate = null;
     if (candidatesList && candidatesList.len()>0)
     {
-      local objTbl = scene.findObject("candidatesList");
-      local index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
+      let objTbl = scene.findObject("candidatesList");
+      let index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
       if (index in candidatesList)
         curCandidate = candidatesList[index];
     }
@@ -150,15 +150,15 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserAction()
   {
-    local table = scene.findObject("candidatesList")
+    let table = scene.findObject("candidatesList")
     if (!::checkObj(table))
       return
 
-    local index = table.getValue()
+    let index = table.getValue()
     if (index < 0 || index >= table.childrenCount())
       return
 
-    local position = table.getChild(index).getPosRC()
+    let position = table.getChild(index).getPosRC()
     openUserPopupMenu(position)
   }
 
@@ -167,7 +167,7 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!curCandidate)
       return
 
-    local menu = clanContextMenu.getRequestActions(clanId, curCandidate.uid, curCandidate?.nick, this)
+    let menu = clanContextMenu.getRequestActions(clanId, curCandidate.uid, curCandidate?.nick, this)
     ::gui_right_click_menu(menu, this, position)
   }
 
@@ -221,8 +221,8 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventClanCandidatesListChanged(p)
   {
-    local uid = p?.userId
-    local candidate = ::u.search(candidatesList, @(candidate) candidate.uid == uid )
+    let uid = p?.userId
+    let candidate = ::u.search(candidatesList, @(candidate) candidate.uid == uid )
     hideCandidateByName(candidate?.nick)
   }
 }

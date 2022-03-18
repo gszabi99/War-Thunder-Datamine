@@ -1,25 +1,25 @@
-local time = require("scripts/time.nut")
+let time = require("scripts/time.nut")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
-class ::gui_handlers.WwHelpSlotbarGroupsModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwHelpSlotbarGroupsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/help/helpWndCustom.blk"
+  sceneBlkName = "%gui/help/helpWndCustom.blk"
 
   function initScreen()
   {
-    local title = " ".concat(::loc("hotkeys/ID_HELP"), ::loc("ui/mdash"), ::loc("worldwar/vehicleGroups"))
+    let title = " ".concat(::loc("hotkeys/ID_HELP"), ::loc("ui/mdash"), ::loc("worldwar/vehicleGroups"))
     scene.findObject("wnd_title").setValue(title)
 
-    guiScene.replaceContent(scene.findObject("wnd_content"), "gui/help/wwarSlotbarGroups.blk", this)
+    guiScene.replaceContent(scene.findObject("wnd_content"), "%gui/help/wwarSlotbarGroups.blk", this)
     fillLinkLines()
   }
 
   function fillLinkLines()
   {
-    local linkContainer = scene.findObject("wnd_content")
-    local linkLinesConfig = {
+    let linkContainer = scene.findObject("wnd_content")
+    let linkLinesConfig = {
       startObjContainer = linkContainer
       endObjContainer = linkContainer
       lineInterval = "@helpLineInterval"
@@ -37,8 +37,8 @@ class ::gui_handlers.WwHelpSlotbarGroupsModal extends ::gui_handlers.BaseGuiHand
       ]
     }
 
-    local markup = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
-    local obj = scene.findObject("link_lines_block")
+    let markup = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
+    let obj = scene.findObject("link_lines_block")
     obj.show(true)
     guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
@@ -46,12 +46,12 @@ class ::gui_handlers.WwHelpSlotbarGroupsModal extends ::gui_handlers.BaseGuiHand
 
 local lastSeen = null
 
-local function isUnseen() {
+let function isUnseen() {
   lastSeen = lastSeen ?? ::load_local_account_settings(LAST_SEEN_SAVE_ID, 0)
   return lastSeen < ::get_charserver_time_sec() - (4 * time.TIME_WEEK_IN_SECONDS)
 }
 
-local function open() {
+let function open() {
   lastSeen = ::get_charserver_time_sec()
   ::save_local_account_settings(LAST_SEEN_SAVE_ID, lastSeen)
   ::handlersManager.loadHandler(::gui_handlers.WwHelpSlotbarGroupsModal)

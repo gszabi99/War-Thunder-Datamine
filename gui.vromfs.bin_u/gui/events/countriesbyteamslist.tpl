@@ -5,7 +5,7 @@ tdiv {
   tdiv {
     id:t='countries1';
     pos:t='0, 50%ph-50%h'; position:t='relative'
-    include "gui/countriesList"
+    include "%gui/countriesList"
   }
   <</teamA>>
   <<#teamB>>
@@ -20,7 +20,7 @@ tdiv {
   tdiv {
     id:t='countries2';
     pos:t='0, 50%ph-50%h'; position:t='relative'
-    include "gui/countriesList"
+    include "%gui/countriesList"
   }
   <</teamB>>
 <</isCentered>>
@@ -38,7 +38,7 @@ tdiv {
     tdiv {
       id:t='countries1';
       pos:t='-w - 1@blockInterval, 50%ph-50%h'; position:t='absolute'
-      include "gui/countriesList"
+      include "%gui/countriesList"
     }
     <</teamA>>
 
@@ -46,7 +46,7 @@ tdiv {
     tdiv {
       id:t='countries2';
       pos:t='pw + 1@blockInterval, 50%ph-50%h'; position:t='absolute'
-      include "gui/countriesList"
+      include "%gui/countriesList"
     }
     <</teamB>>
   }

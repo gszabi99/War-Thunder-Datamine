@@ -1,11 +1,9 @@
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local { getTextWithCrossplayIcon,
+let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-local { checkAndShowMultiplayerPrivilegeWarning,
-        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
+let { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
-class ::g_invites_classes.TournamentBattle extends ::BaseInvite
+::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   battleId = ""
@@ -68,10 +66,10 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
   {
     local needSave = false
 
-    local total = ::get_user_logs_count()
+    let total = ::get_user_logs_count()
     for (local i = total-1; i >= 0; i--)
     {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
 
       if ( (blk.type == ::EULT_INVITE_TO_TOURNAMENT) &&
@@ -84,7 +82,7 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
   function remove()
   {
-    local needSave = disableCurInviteUserlog()
+    let needSave = disableCurInviteUserlog()
 
     base.remove()
 
@@ -97,7 +95,7 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
   function haveRestrictions()
   {
-    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated() || !isMultiplayerPrivilegeAvailable()
+    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated()
   }
 
   function getRestrictionText()
@@ -107,8 +105,6 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
     if (isOutdated())
       return ::loc("multiplayer/invite_is_overtimed")
-    if (!isMultiplayerPrivilegeAvailable())
-      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
 
@@ -124,9 +120,6 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
-      return
-
-    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     if (!isAvailableByCrossPlay())

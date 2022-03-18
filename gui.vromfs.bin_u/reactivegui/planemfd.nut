@@ -1,16 +1,16 @@
-local {mkRadarForMfd} = require("radarComponent.nut")
-local {MfdRadarColor, MfdRadarEnabled} = require("radarState.nut")
-local {IsMfdEnabled, MfdOpticAtgmSightVis, MfdSightPosSize, RwrScale, MfdRadarWithNavVis, MfdRadarNavPosSize} = require("planeState.nut")
-local tws = require("tws.nut")
-local opticAtgmSight = require("opticAtgmSight.nut")
-local {RwrForMfd, RwrPosSize} = require("airState.nut")
-local mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut");
+let {mkRadarForMfd} = require("radarComponent.nut")
+let {MfdRadarColor, MfdRadarEnabled} = require("radarState.nut")
+let {IsMfdEnabled, MfdOpticAtgmSightVis, MfdSightPosSize, RwrScale, MfdRadarWithNavVis, MfdRadarNavPosSize} = require("planeState/planeToolsState.nut")
+let tws = require("tws.nut")
+let opticAtgmSight = require("opticAtgmSight.nut")
+let {RwrForMfd, RwrPosSize} = require("airState.nut")
+let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut");
 
-local twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
+let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
-local twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
+let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
 
-local planeMFD = @() {
+let planeMFD = @() {
   watch = [MfdRadarEnabled, RwrForMfd, MfdOpticAtgmSightVis, RwrScale, MfdRadarWithNavVis]
   size = flex()
   children = [
@@ -29,7 +29,7 @@ local planeMFD = @() {
   ]
 }
 
-local Root = @() {
+let Root = @() {
   watch = IsMfdEnabled
   halign = ALIGN_LEFT
   valign = ALIGN_TOP

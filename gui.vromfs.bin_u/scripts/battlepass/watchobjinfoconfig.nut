@@ -1,12 +1,12 @@
-local { seasonLevel, todayLoginExp, hasBattlePassReward,
+let { seasonLevel, todayLoginExp, hasBattlePassReward,
   loginStreak, tomorowLoginExp, levelExp
 } = require("scripts/battlePass/seasonState.nut")
-local { mainChallengeOfSeason, hasChallengesReward } = require("scripts/battlePass/challenges.nut")
-local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
-local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
-local { number_of_set_bits } = require("std/math.nut")
+let { mainChallengeOfSeason, hasChallengesReward } = require("scripts/battlePass/challenges.nut")
+let { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
+let { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
+let { number_of_set_bits } = require("std/math.nut")
 
-local seasonLvlWatchObj = [{
+let seasonLvlWatchObj = [{
   watch = seasonLevel
   updateFunc = function(obj, value) {
     obj.findObject("flag_text").setValue(value.tostring())
@@ -19,11 +19,11 @@ local seasonLvlWatchObj = [{
   }
 }]
 
-local levelExpWatchObj = {
+let levelExpWatchObj = {
   watch = levelExp
   updateFunc = function(obj, value) {
-    local { curLevelExp, expForLevel } = value
-    local progressValue = (curLevelExp.tofloat() / (expForLevel == 0 ? 1 : expForLevel)) * 1000.0
+    let { curLevelExp, expForLevel } = value
+    let progressValue = (curLevelExp.tofloat() / (expForLevel == 0 ? 1 : expForLevel)) * 1000.0
     local stateObj = obj.findObject("progress_bar")
     if (::check_obj(stateObj))
       stateObj.setValue(progressValue)
@@ -33,7 +33,7 @@ local levelExpWatchObj = {
   }
 }
 
-local todayLoginExpWatchObj = {
+let todayLoginExpWatchObj = {
   watch = todayLoginExp
   updateFunc = function(obj, value) {
     obj.findObject("text").setValue(::loc("battlePass/info/today_login_exp",
@@ -41,7 +41,7 @@ local todayLoginExpWatchObj = {
   }
 }
 
-local loginStreakWatchObj = {
+let loginStreakWatchObj = {
   watch = loginStreak
   updateFunc = function(obj, value) {
     obj.findObject("text").setValue(::loc("battlePass/info/login_streak",
@@ -49,7 +49,7 @@ local loginStreakWatchObj = {
   }
 }
 
-local tomorowLoginExpWatchObj = {
+let tomorowLoginExpWatchObj = {
   watch = tomorowLoginExp
   updateFunc = function(obj, value) {
     obj.findObject("text").setValue(::loc("battlePass/info/tomorow_login_exp",
@@ -57,35 +57,35 @@ local tomorowLoginExpWatchObj = {
   }
 }
 
-local easyDailyTaskProgressWatchObj = {
+let easyDailyTaskProgressWatchObj = {
   watch = ::g_battle_tasks.isCompleteEasyTask
   updateFunc = function(obj, value) {
-    local statusText = ::loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
+    let statusText = ::loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
     obj.status = value ? "done" : "notDone"
     obj.findObject("text").setValue(::loc("battlePass/info/easy_daily_task_progress",
       { status = statusText }))
-    local imgObj = obj.findObject("task_img")
+    let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
       imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
         ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"))
   }
 }
 
-local mediumDailyTaskProgressWatchObj = {
+let mediumDailyTaskProgressWatchObj = {
   watch = ::g_battle_tasks.isCompleteMediumTask
   updateFunc = function(obj, value) {
-    local statusText = ::loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
+    let statusText = ::loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
     obj.status = value ? "done" : "notDone"
     obj.findObject("text").setValue(::loc("battlePass/info/medium_daily_task_progress",
       { status = statusText }))
-    local imgObj = obj.findObject("task_img")
+    let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
       imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
         ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Medium"))
   }
 }
 
-local seasonTasksProgressWatchObj = {
+let seasonTasksProgressWatchObj = {
   watch = mainChallengeOfSeason
   updateFunc = function(obj, challenge) {
     local unlockConfig = null
@@ -94,12 +94,12 @@ local seasonTasksProgressWatchObj = {
       ::build_unlock_desc(unlockConfig)
     }
     local { curVal = 0, maxVal = 0 } = unlockConfig
-    local isVisible = maxVal > 0
+    let isVisible = maxVal > 0
     obj.show(isVisible)
     if (!isVisible)
       return
 
-    local isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+    let isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
     if (isBitMode) {
       curVal = number_of_set_bits(curVal)
       maxVal = number_of_set_bits(maxVal)
@@ -111,29 +111,29 @@ local seasonTasksProgressWatchObj = {
   }
 }
 
-local leftSpecialTasksBoughtCountWatchObj = {
+let leftSpecialTasksBoughtCountWatchObj = {
   watch = leftSpecialTasksBoughtCount
   updateFunc = function(obj, value) {
-    local isVisible = value >= 0
+    let isVisible = value >= 0
     obj.show(isVisible)
     if (!isVisible)
       return
 
     obj.findObject("text").setValue(::loc("battlePass/info/available_special_tasks",
       { tasksNum = ::colorize("@goodTextColor", value) }))
-    local imgObj = obj.findObject("task_img")
+    let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
       imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
         ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Hard"))
   }
 }
 
-local hasBattlePassRewardWatchObj = {
+let hasBattlePassRewardWatchObj = {
   watch = hasBattlePassReward
   updateFunc = @(obj, value) obj.show(value)
 }
 
-local hasChallengesRewardWatchObj = {
+let hasChallengesRewardWatchObj = {
   watch = hasChallengesReward
   updateFunc = @(obj, value) obj.show(value)
 }

@@ -1,22 +1,22 @@
 require("ingameConsoleStore.nut")
-local statsd = require("statsd")
-local psnStore = require("sony.store")
-local psnSystem = require("sony.sys")
+let statsd = require("statsd")
+let psnStore = require("sony.store")
+let psnSystem = require("sony.sys")
 
-local seenEnumId = SEEN.EXT_PS4_SHOP
+let seenEnumId = SEEN.EXT_PS4_SHOP
 
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
-local shopData = require("scripts/onlineShop/ps4ShopData.nut")
-local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
+let shopData = require("scripts/onlineShop/ps4ShopData.nut")
+let { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
 
-local persistent = {
+let persistent = {
   sheetsArray = []
 }
 ::g_script_reloader.registerPersistentData("PS4Shop", persistent, ["sheetsArray"])
 
 
-local defaultsSheetData = {
+let defaultsSheetData = {
   WARTHUNDEREAGLES = {
     sortParams = [
       {param = "releaseDate", asc = false}
@@ -40,7 +40,7 @@ local defaultsSheetData = {
   }
 }
 
-local fillSheetsArray = function(bcEventParams = {}) {
+let fillSheetsArray = function(bcEventParams = {}) {
   if (!shopData.getData().blockCount())
   {
     ::dagor.debug("PS4: Ingame Shop: Don't init sheets. CategoriesData is empty")
@@ -51,8 +51,8 @@ local fillSheetsArray = function(bcEventParams = {}) {
   {
     for (local i = 0; i < shopData.getData().blockCount(); i++)
     {
-      local block = shopData.getData().getBlock(i)
-      local categoryId = block.getBlockName()
+      let block = shopData.getData().getBlock(i)
+      let categoryId = block.getBlockName()
 
       persistent.sheetsArray.append({
         id = $"sheet_{categoryId}"
@@ -68,15 +68,15 @@ local fillSheetsArray = function(bcEventParams = {}) {
 
   foreach (sh in persistent.sheetsArray)
   {
-    local sheet = sh
+    let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), function()
     {
-      local res = []
-      local productsList = shopData.getData()?[sheet.categoryId].links ?? ::DataBlock()
+      let res = []
+      let productsList = shopData.getData()?[sheet.categoryId].links ?? ::DataBlock()
       for (local i = 0; i < productsList.blockCount(); i++)
       {
-        local blockName = productsList.getBlock(i).getBlockName()
-        local item = shopData.getShopItem(blockName)
+        let blockName = productsList.getBlock(i).getBlockName()
+        let item = shopData.getShopItem(blockName)
         if (!item)
           continue
 
@@ -94,7 +94,7 @@ subscriptions.addListenersWithoutEnv({
   Ps4ShopDataUpdated = fillSheetsArray
 })
 
-class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
+::gui_handlers.Ps4Shop <- class extends ::gui_handlers.IngameConsoleStore
 {
   needWaitIcon = true
   isLoadingInProgress = false
@@ -116,11 +116,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   function loadCurSheetItemsList()
   {
     itemsList = []
-    local itemsLinks = shopData.getData().getBlockByName(curSheet.categoryId)?.links ?? ::DataBlock()
+    let itemsLinks = shopData.getData().getBlockByName(curSheet.categoryId)?.links ?? ::DataBlock()
     for (local i = 0; i < itemsLinks.blockCount(); i++)
     {
-      local itemId = itemsLinks.getBlock(i).getBlockName()
-      local block = shopData.getShopItem(itemId)
+      let itemId = itemsLinks.getBlock(i).getBlockName()
+      let block = shopData.getShopItem(itemId)
       if (block)
         itemsList.append(block)
       else
@@ -138,7 +138,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
 
   function canDisplayStoreContents()
   {
-    local isStoreEmpty = !isLoadingInProgress && !itemsCatalog.len()
+    let isStoreEmpty = !isLoadingInProgress && !itemsCatalog.len()
     if (isStoreEmpty)
       psnSystem.show_message(psnSystem.Message.EMPTY_STORE, "", {})
     return !isStoreEmpty
@@ -164,7 +164,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   function onEventPS4IngameShopUpdate(p)
   {
     curItem = getCurItem()
-    local wasBought = curItem?.isBought
+    let wasBought = curItem?.isBought
     curItem?.updateIsBoughtStatus()
     if (wasBought != curItem?.isBought)
       ENTITLEMENTS_PRICE.checkUpdate()
@@ -180,7 +180,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   }
 }
 
-local openIngameStore = ::kwarg(
+let openIngameStore = ::kwarg(
   function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false
@@ -188,7 +188,7 @@ local openIngameStore = ::kwarg(
     if (shopData.canUseIngameShop())
     {
       statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
-      local item = shopData.getShopItem(curItemId)
+      let item = shopData.getShopItem(curItemId)
       ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
         itemsCatalog = shopData.getShopItemsTable()
         isLoadingInProgress = !shopData.isItemsUpdated()
@@ -211,12 +211,12 @@ local openIngameStore = ::kwarg(
         function() {
           if (chapter == null || chapter == "")
           {
-            local res = ::ps4_open_store("WARTHUNDERAPACKS", false)
+            let res = ::ps4_open_store("WARTHUNDERAPACKS", false)
             ::update_purchases_return_mainmenu(afterCloseFunc, res)
           }
           else if (chapter == "eagles")
           {
-            local res = ::ps4_open_store("WARTHUNDEREAGLES", false)
+            let res = ::ps4_open_store("WARTHUNDEREAGLES", false)
             ::update_purchases_return_mainmenu(afterCloseFunc, res)
           }
         }

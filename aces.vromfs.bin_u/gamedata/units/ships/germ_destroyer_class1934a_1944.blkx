@@ -4511,6 +4511,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -4583,6 +4585,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_02",
@@ -4650,6 +4654,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "turret": {
             "head": "main_caliber_turret_03",
             "gun": "main_caliber_gun_03",
@@ -4717,6 +4723,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "turret": {
             "head": "main_caliber_turret_04",
             "gun": "main_caliber_gun_04",
@@ -7826,19 +7834,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -60000.0,
+      "waterMassMult": 90.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 9000000.0,
-      "additionalWaterShouldDiePercent": 0.38,
+      "additionalWaterShouldDiePercent": 0.3,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 35.0,
       "maxHeelingTime": 8.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 3.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.45
+      "sideCenterOfMassOffsetPercent": 0.3
     }
   },
   {
@@ -7846,14 +7854,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.21,
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.45,
+          "weight": 0.9,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -7891,7 +7899,7 @@
           "innerParts": {
             "part": {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.6
             }
           }
         }
@@ -7899,7 +7907,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.68,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -7912,26 +7920,26 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.27,
+          "weight": 0.7,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.37,
+          "weight": 0.5,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -7940,7 +7948,7 @@
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.37,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -7979,7 +7987,7 @@
       {
         "cover": {
           "part": "cover_08_dm",
-          "weight": 0.2,
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       }

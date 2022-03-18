@@ -1,7 +1,7 @@
 const ITEM_RARITY_DEFAULT = 1
 const ITEM_RARITY_COLOR_DEFAULT = "f1f1d6"
 
-local collection = {}
+let collection = {}
 
 local Rarity = class {
   isRare = false
@@ -33,7 +33,7 @@ local get = function(value = null, color = null) {
   return collection[value]
 }
 
-local onGameLocalizationChanged = function() {
+let onGameLocalizationChanged = function() {
   foreach (r in collection)
     r.updateTag()
 }

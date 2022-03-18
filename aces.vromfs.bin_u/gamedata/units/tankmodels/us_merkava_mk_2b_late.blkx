@@ -355,7 +355,7 @@
           "armorThickness": 65.0
         },
         "turret_07_bottom_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 30.0
         },
         "turret_08_side_dm": {
           "armorThickness": 35.0
@@ -459,7 +459,8 @@
         "ex_armor_body_03_dm": [],
         "ex_armor_body_04_dm": [],
         "ex_armor_body_07_dm": [],
-        "ex_armor_body_06_dm": []
+        "ex_armor_body_06_dm": [],
+        "turret_09_bottom_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -564,12 +565,10 @@
         "wheel_r_top_03_dm": [],
         "wheel_r_top_04_dm": [],
         "wheel_r_top_05_dm": [],
-        "wheel_support_dm": {
-          "armorThickness": 60.0
-        },
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
-          "armorThickness": 30.0,
+          "armorThickness": 20.0,
           "hp": 400.0,
           "ex_armor_05_dm": [],
           "ex_armor_06_dm": [],
@@ -2641,13 +2640,12 @@
             },
             "ammo_turret_06_dm": {
               "count": 1
-            },
-            "ammo_turret_07_dm": {
-              "count": 1
-            },
-            "ammo_turret_08_dm": {
-              "count": 1
-            },
+            }
+          }
+        },
+        {
+          "shells": {
+            "reloadTimeMult": 1.28,
             "ammo_body_01_dm": {
               "count": 1
             },
@@ -2665,12 +2663,7 @@
             },
             "ammo_body_06_dm": {
               "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "reloadTimeMult": 1.28,
+            },
             "ammo_body_07_dm": {
               "count": 1
             },
@@ -2813,6 +2806,12 @@
               "count": 1
             },
             "ammo_body_54_dm": {
+              "count": 1
+            },
+            "ammo_body_55_dm": {
+              "count": 1
+            },
+            "ammo_body_56_dm": {
               "count": 1
             }
           }
@@ -3109,12 +3108,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 0.0,
-          "errMeasureVelFwdShift": 0.0,
-          "errMeasureVelDir": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
+          "errMeasureVelFast": 40.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 5.0,
+          "errTargettingOn100kmph": 5.0,
+          "errTargetting": 15.0,
+          "errExplTime": 0.02,
           "turret": {
             "head": "bone_mg_aa_h",
             "gun": "bone_mg_aa_v",
@@ -3149,12 +3148,12 @@
           "accuracyAir": 1.5,
           "accuracyGnd": 0.0,
           "errMeasureVel": 0.0,
-          "errMeasureVelFast": 0.0,
-          "errMeasureVelFwdShift": 0.0,
-          "errMeasureVelDir": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
+          "errMeasureVelFast": 40.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 5.0,
+          "errTargettingOn100kmph": 5.0,
+          "errTargetting": 15.0,
+          "errExplTime": 0.02,
           "turret": {
             "head": "bone_mg_h_01",
             "gun": "bone_mg_v_01",
@@ -4428,12 +4427,12 @@
                 "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
+                "errMeasureVelFast": 40.0,
+                "errMeasureVelFwdShift": 1.0,
+                "errMeasureVelDir": 5.0,
+                "errTargettingOn100kmph": 5.0,
+                "errTargetting": 15.0,
+                "errExplTime": 0.02,
                 "turret": {
                   "head": "bone_mg_aa_h",
                   "gun": "bone_mg_aa_v",
@@ -4468,12 +4467,12 @@
                 "accuracyAir": 1.5,
                 "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
+                "errMeasureVelFast": 40.0,
+                "errMeasureVelFwdShift": 1.0,
+                "errMeasureVelDir": 5.0,
+                "errTargettingOn100kmph": 5.0,
+                "errTargetting": 15.0,
+                "errExplTime": 0.02,
                 "turret": {
                   "head": "bone_mg_h_01",
                   "gun": "bone_mg_v_01",
@@ -4666,7 +4665,7 @@
       "descLocId": "skin/winter/desc",
       "replace_tex": {
         "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

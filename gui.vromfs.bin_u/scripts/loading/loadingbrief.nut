@@ -1,8 +1,8 @@
-local { clearBorderSymbolsMultiline } = require("std/string.nut")
-local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local changeStartMission = require("scripts/missions/changeStartMission.nut")
-local { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let { clearBorderSymbolsMultiline } = require("std/string.nut")
+let { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+let changeStartMission = require("scripts/missions/changeStartMission.nut")
+let { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -12,10 +12,10 @@ const MIN_SLIDE_TIME = 2.0
   ::loading_stop_music()
 })
 
-class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.LoadingBrief <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/loading/loadingCamp.blk"
-  sceneNavBlkName = "gui/loading/loadingNav.blk"
+  sceneBlkName = "%gui/loading/loadingCamp.blk"
+  sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
   gm = 0
   gt = 0
@@ -28,16 +28,16 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     ::set_presence_to_player("loading")
     setHelpTextOnLoading(scene.findObject("scene-help"))
 
-    local blk = ::dgs_get_game_params()
+    let blk = ::dgs_get_game_params()
     if ("loading" in blk && "numTips" in blk.loading)
     numTips = blk.loading.numTips
 
-    local cutObj = guiScene["cutscene_update"]
+    let cutObj = guiScene["cutscene_update"]
     if (::checkObj(cutObj)) cutObj.setUserData(this)
 
     setDoubleTextToButton(scene, "btn_select", ::loc("hints/cutsc_skip"))
 
-    local missionBlk = ::DataBlock()
+    let missionBlk = ::DataBlock()
     local country = ""
     if (::current_campaign_mission || ::is_mplayer_peer())
     {
@@ -65,9 +65,9 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     partsList = []
     if (briefing)
     {
-      local guiBlk = GUI.get()
-      local exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
-      local excludeArray = exclBlock? (exclBlock % "name") : []
+      let guiBlk = GUI.get()
+      let exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
+      let excludeArray = exclBlock? (exclBlock % "name") : []
 
       local sceneInfo = ""
       if (::current_campaign_mission)
@@ -88,10 +88,10 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 
       for (local i = 0; i < briefing.blockCount(); i++)
       {
-        local partBlock = briefing.getBlock(i);
+        let partBlock = briefing.getBlock(i);
         if (partBlock.getBlockName() == "part")
         {
-          local part =
+          let part =
           {
             subtitles = ::loc(partBlock.getStr("event", ""))
             slides = []
@@ -107,10 +107,10 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
           dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
-          local freeTimeSlides = []
+          let freeTimeSlides = []
           foreach(slideBlock in partBlock % "slide")
           {
-            local image = slideBlock.getStr("picture", "")
+            let image = slideBlock.getStr("picture", "")
             if (image != "")
             {
               if (::find_in_array(excludeArray, image, -1) >= 0)
@@ -119,7 +119,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
                 continue
               }
             }
-            local slide = {
+            let slide = {
               time = (slideBlock?.minTime ?? 0).tofloat()
               image = image
               map = slideBlock.getBool("map", false)
@@ -151,13 +151,13 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
           {
             if (freeTimeSlides.len())
             {
-              local slideTimeDiff = (part.voiceLen - totalSlidesTime) / freeTimeSlides.len()
+              let slideTimeDiff = (part.voiceLen - totalSlidesTime) / freeTimeSlides.len()
               foreach(slide in freeTimeSlides)
                 slide.time += slideTimeDiff
             }
             else if (totalSlidesTime)
             {
-              local slideTimeMul = part.voiceLen / totalSlidesTime
+              let slideTimeMul = part.voiceLen / totalSlidesTime
               foreach(slide in part.slides)
                 slide.time *= slideTimeMul
             }
@@ -175,19 +175,19 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 
     if (gt & ::GT_VERSUS)
     {
-      local missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
-      local haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
+      let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
+      let haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
 
-      local helpBtnObj = showSceneBtn("btn_help", haveHelp)
+      let helpBtnObj = showSceneBtn("btn_help", haveHelp)
       if (helpBtnObj && !::show_console_buttons)
         helpBtnObj.setValue(::loc("flightmenu/btnControlsHelp") + ::loc("ui/parentheses/space", { text = "F1" }))
 
       if (haveHelp)
       {
-        local parts = ::split(missionHelpPath, "/.")
-        local helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
-        local cfgPath = "seen/help_mission_type/" + helpId
-        local isSeen = ::loadLocalByAccount(cfgPath, 0)
+        let parts = ::split(missionHelpPath, "/.")
+        let helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
+        let cfgPath = "seen/help_mission_type/" + helpId
+        let isSeen = ::loadLocalByAccount(cfgPath, 0)
         if (!isSeen)
         {
           onHelp()
@@ -199,7 +199,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 
   function count_misObj_add(blk)
   {
-    local res = []
+    let res = []
 
     local m_aircraft = blk.getStr("player_class", "")
     local m_weapon = blk.getStr("player_weapons", "")
@@ -222,13 +222,13 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!(gt & ::GT_VERSUS))
       {
-        local m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
+        let m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
         if (m_location != "")
           m_condition += ::loc("location/" + m_location)
-        local m_time = blk.getStr("time", blk.getStr("environment", ""))
+        let m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
           m_condition += (m_condition != "" ? "; " : "") + ::get_mission_time_text(m_time)
-        local m_weather = blk.getStr("weather", "")
+        let m_weather = blk.getStr("weather", "")
         if (m_weather != "")
           m_condition += (m_condition != "" ? "; " : "") + ::loc("options/weather" + m_weather)
       }
@@ -255,7 +255,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     if (applyReady != ::loading_is_finished())
     {
       applyReady = ::loading_is_finished()
-      local showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
+      let showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
       if ((applyReady && !showStart) || finished)
         finishLoading()
       else
@@ -303,7 +303,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkNextSlide()
   {
-    local isLastSlideInPart = slideIdx >= partsList[partIdx].slides.len() - 1
+    let isLastSlideInPart = slideIdx >= partsList[partIdx].slides.len() - 1
     if (isLastSlideInPart && ::loading_is_voice_playing())
       return
 
@@ -337,7 +337,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //next Slide show
-    local curSlide = partsList[partIdx].slides[slideIdx]
+    let curSlide = partsList[partIdx].slides[slideIdx]
 
     slideTime = curSlide.time
 
@@ -386,7 +386,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
   {
     showProjectorGlow(true)
     showProjectorSmallGlow(false)
-    local place = guiScene["slide-place"]
+    let place = guiScene["slide-place"]
     place.animShow = "show"
     guiScene.playSound("slide_out")
     hideSoundPlayed = false
@@ -458,7 +458,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
         guiScene["darkscreen"].animShow = "show"
       setSceneInfo("")
 
-      local obj = guiScene?["tactical-map"]
+      let obj = guiScene?["tactical-map"]
       if (obj)
       {
         if (obj?.animShow != "show")
@@ -481,8 +481,8 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 
   function safeSetValue(objName, value)
   {
-    local show = (value != null)&&(value != "")
-    local obj = guiScene[objName]
+    let show = (value != null)&&(value != "")
+    let obj = guiScene[objName]
     if (obj)
     {
       if (show)

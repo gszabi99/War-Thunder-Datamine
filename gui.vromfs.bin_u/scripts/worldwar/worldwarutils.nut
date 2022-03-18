@@ -1,22 +1,19 @@
-local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-local time = require("scripts/time.nut")
-local operationPreloader = require("scripts/worldWar/externalServices/wwOperationPreloader.nut")
-local seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local wwArmyGroupManager = require("scripts/worldWar/inOperation/wwArmyGroupManager.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-local { getNearestMapToBattleShort,
+let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let time = require("scripts/time.nut")
+let operationPreloader = require("scripts/worldWar/externalServices/wwOperationPreloader.nut")
+let seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
+let wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwArmyGroupManager = require("scripts/worldWar/inOperation/wwArmyGroupManager.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+let { getNearestMapToBattleShort,
   hasAvailableMapToBattle,
   hasAvailableMapToBattleShort,
   getOperationById,
   getOperationFromShortStatusById
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
-local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
-local {
-  checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+let { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -92,16 +89,16 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   function getPlayedOperationText(needMapName = true)
   {
-    local operation = getLastPlayedOperation()
+    let operation = getLastPlayedOperation()
     if (operation != null)
       return operation.getMapText()
 
 
-    local nearestAvailableMapToBattle = getNearestMapToBattleShort()
+    let nearestAvailableMapToBattle = getNearestMapToBattleShort()
     if(!nearestAvailableMapToBattle)
       return null
 
-    local name = needMapName ? nearestAvailableMapToBattle.getNameText() : ::loc("mainmenu/btnWorldwar")
+    let name = needMapName ? nearestAvailableMapToBattle.getNameText() : ::loc("mainmenu/btnWorldwar")
     if (nearestAvailableMapToBattle.isActive())
       return ::loc("worldwar/operation/isNow", { name = name })
 
@@ -114,11 +111,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     if (getLastPlayedOperation() != null)
       return false
 
-    local nearestAvailableMapToBattle = getNearestMapToBattleShort()
+    let nearestAvailableMapToBattle = getNearestMapToBattleShort()
     if (!nearestAvailableMapToBattle)
       return false
 
-    local lastVisibleAvailableMap = ::load_local_account_settings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH)
+    let lastVisibleAvailableMap = ::load_local_account_settings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH)
     if (lastVisibleAvailableMap?.id == nearestAvailableMapToBattle.getId()
       && lastVisibleAvailableMap?.changeStateTime == nearestAvailableMapToBattle.getChangeStateTime())
       return false
@@ -136,11 +133,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   isWWSeasonActiveShort = @() hasAvailableMapToBattleShort()
 
   function updateCurOperationStatusInGlobalStatus() {
-    local operationId = ::ww_get_operation_id()
+    let operationId = ::ww_get_operation_id()
     if (operationId == -1)
       return
 
-    local operation = getOperationById(operationId)
+    let operation = getOperationById(operationId)
     operation?.setFinishedStatus(isCurrentOperationFinished())
   }
 }
@@ -154,14 +151,11 @@ g_world_war.getSetting <- function getSetting(settingName, defaultValue)
 
 g_world_war.canPlayWorldwar <- function canPlayWorldwar()
 {
-  if (!isMultiplayerPrivilegeAvailable())
-    return false
-
   if (!isCrossPlayEnabled())
     return false
 
-  local minRankRequired = getSetting("minCraftRank", 0)
-  local unit = ::u.search(::all_units, @(unit)
+  let minRankRequired = getSetting("minCraftRank", 0)
+  let unit = ::u.search(::all_units, @(unit)
     unit.canUseByPlayer() && unit.rank >= minRankRequired
   )
 
@@ -175,15 +169,12 @@ g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle()
 
 g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText(fullText = false)
 {
-  if (!isMultiplayerPrivilegeAvailable())
-    return ::loc("xbox/noMultiplayer")
-
   if (!isCrossPlayEnabled())
     return fullText
       ? ::loc("xbox/actionNotAvailableCrossNetworkPlay")
       : ::loc("xbox/crossPlayRequired")
 
-  local rankText = ::colorize("@unlockHeaderColor",
+  let rankText = ::colorize("@unlockHeaderColor",
     ::get_roman_numeral(getSetting("minCraftRank", 0)))
   return ::loc("worldWar/playCondition", {rank = rankText})
 }
@@ -200,7 +191,7 @@ g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false)
 
   if (!forceOpenMainMenu && ::g_world_war.lastPlayedOperationId)
   {
-    local operation = getOperationById(::g_world_war.lastPlayedOperationId)
+    let operation = getOperationById(::g_world_war.lastPlayedOperationId)
     if (operation)
     {
       joinOperationById(lastPlayedOperationId, lastPlayedOperationCountry)
@@ -213,7 +204,7 @@ g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false)
 
 g_world_war.openWarMap <- function openWarMap()
 {
-  local operationId = ::ww_get_operation_id()
+  let operationId = ::ww_get_operation_id()
   subscribeOperationNotifyOnce(
     operationId,
     null,
@@ -237,9 +228,6 @@ g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess()
 
   if (!canPlayWorldwar())
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return false
-
     if (!::xbox_try_show_crossnetwork_message())
       ::showInfoMsgBox(getPlayWorldwarConditionText(true))
     return false
@@ -264,7 +252,7 @@ g_world_war.openOperationsOrQueues <- function openOperationsOrQueues(needToOpen
 
 g_world_war.joinOperationById <- function joinOperationById(operationId, country = null, isSilence = false, onSuccess = null)
 {
-  local operation = getOperationById(operationId)
+  let operation = getOperationById(operationId)
   if (!operation)
   {
     if (!isSilence)
@@ -282,7 +270,7 @@ g_world_war.joinOperationById <- function joinOperationById(operationId, country
 
 g_world_war.onJoinOperationSuccess <- function onJoinOperationSuccess(operationId, country, isSilence, onSuccess)
 {
-  local operation = getOperationById(operationId)
+  let operation = getOperationById(operationId)
   local sideSelectSuccess = false
   if (operation)
   {
@@ -319,7 +307,7 @@ g_world_war.openJoinOperationByIdWnd <- function openJoinOperationByIdWnd()
     charMask="1234567890"
     allowEmpty = false
     okFunc = function(value) {
-      local operationId = ::to_integer_safe(value)
+      let operationId = ::to_integer_safe(value)
       joinOperationById(operationId)
     }
     owner = this
@@ -332,9 +320,9 @@ g_world_war.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
     return
 
   ::g_squad_manager.cancelWwBattlePrepare()
-  local missionRules = ::g_mis_custom_state.getCurMissionRules()
+  let missionRules = ::g_mis_custom_state.getCurMissionRules()
   isLastFlightWasWwBattle = missionRules.isWorldWar
-  local operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
+  let operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
   if (operationId == null)
     return
 
@@ -403,7 +391,7 @@ g_world_war.leaveWWBattleQueues <- function leaveWWBattleQueues(battle = null)
 
   if (battle)
   {
-    local queue = ::queues.findQueueByName(battle.getQueueId())
+    let queue = ::queues.findQueueByName(battle.getQueueId())
     ::queues.leaveQueue(queue)
   }
   else
@@ -467,18 +455,18 @@ g_world_war.updateArmyGroups <- function updateArmyGroups()
 
   armyGroups.clear()
 
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_army_groups_info(blk)
 
   if (!("armyGroups" in blk))
     return
 
-  local itemCount = blk.armyGroups.blockCount()
+  let itemCount = blk.armyGroups.blockCount()
 
   for (local i = 0; i < itemCount; i++)
   {
-    local itemBlk = blk.armyGroups.getBlock(i)
-    local group   = ::WwArmyGroup(itemBlk)
+    let itemBlk = blk.armyGroups.getBlock(i)
+    let group   = ::WwArmyGroup(itemBlk)
 
     if (group.isValid())
       armyGroups.append(group)
@@ -488,10 +476,10 @@ g_world_war.updateArmyGroups <- function updateArmyGroups()
 
 g_world_war.getArtilleryUnitParamsByBlk <- function getArtilleryUnitParamsByBlk(blk)
 {
-  local artillery = getArtilleryUnits()
+  let artillery = getArtilleryUnits()
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    local wwUnitName = blk.getBlock(i).getBlockName()
+    let wwUnitName = blk.getBlock(i).getBlockName()
     if (wwUnitName in artillery)
       return artillery[wwUnitName]
   }
@@ -501,13 +489,13 @@ g_world_war.getArtilleryUnitParamsByBlk <- function getArtilleryUnitParamsByBlk(
 
 g_world_war.updateRearZones <- function updateRearZones()
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_rear_zones(blk)
 
   rearZones = {}
   foreach (zoneName, zoneOwner in blk)
   {
-    local sideName = ::ww_side_val_to_name(zoneOwner)
+    let sideName = ::ww_side_val_to_name(zoneOwner)
     if (!(sideName in rearZones))
       rearZones[sideName] <- []
 
@@ -548,31 +536,31 @@ g_world_war.getSelectedArmies <- function getSelectedArmies()
 
 g_world_war.getSidesStrenghtInfo <- function getSidesStrenghtInfo()
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_sides_info(blk)
 
-  local unitsStrenghtBySide = {}
+  let unitsStrenghtBySide = {}
   foreach(side in getCommonSidesOrder())
     unitsStrenghtBySide[side] <- []
 
-  local sidesBlk = blk?["sides"]
+  let sidesBlk = blk?["sides"]
   if (sidesBlk == null)
     return unitsStrenghtBySide
 
   for (local i = 0; i < sidesBlk.blockCount(); ++i)
   {
-    local wwUnitsList = []
-    local sideBlk = sidesBlk.getBlock(i)
-    local unitsBlk = sideBlk["units"]
+    let wwUnitsList = []
+    let sideBlk = sidesBlk.getBlock(i)
+    let unitsBlk = sideBlk["units"]
 
     for (local j = 0; j < unitsBlk.blockCount(); ++j)
     {
-      local unitsTypeBlk = unitsBlk.getBlock(j)
-      local unitTypeBlk = unitsTypeBlk?["units"]
+      let unitsTypeBlk = unitsBlk.getBlock(j)
+      let unitTypeBlk = unitsTypeBlk?["units"]
       wwUnitsList.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitTypeBlk))
     }
 
-    local collectedWwUnits = ::u.values(::g_world_war.collectUnitsData(wwUnitsList))
+    let collectedWwUnits = ::u.values(::g_world_war.collectUnitsData(wwUnitsList))
     collectedWwUnits.sort(::g_world_war.sortUnitsBySortCodeAndCount)
     unitsStrenghtBySide[sideBlk.getBlockName().tointeger()] = collectedWwUnits
   }
@@ -582,15 +570,15 @@ g_world_war.getSidesStrenghtInfo <- function getSidesStrenghtInfo()
 
 g_world_war.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
 {
-  local allOperationUnits = {}
-  local blk = ::DataBlock()
+  let allOperationUnits = {}
+  let blk = ::DataBlock()
   ::ww_get_sides_info(blk)
 
-  local sidesBlk = blk?["sides"]
+  let sidesBlk = blk?["sides"]
   if (sidesBlk == null)
     return allOperationUnits
 
-  local sideBlk = sidesBlk?[side.tostring()]
+  let sideBlk = sidesBlk?[side.tostring()]
   if (sideBlk == null)
     return allOperationUnits
 
@@ -608,13 +596,13 @@ g_world_war.filterArmiesByManagementAccess <- function filterArmiesByManagementA
 
 g_world_war.haveManagementAccessForSelectedArmies <- function haveManagementAccessForSelectedArmies()
 {
-  local armiesArray = getSelectedArmies()
+  let armiesArray = getSelectedArmies()
   return filterArmiesByManagementAccess(armiesArray).len() > 0
 }
 
 g_world_war.getMyAccessLevelListForCurrentBattle <- function getMyAccessLevelListForCurrentBattle()
 {
-  local list = {}
+  let list = {}
   if (!::ww_is_player_on_war())
     return list
 
@@ -651,7 +639,7 @@ g_world_war.isGroupAvailable <- function isGroupAvailable(group, accessList = nu
   if (!accessList)
     accessList = getMyAccessLevelListForCurrentBattle()
 
-  local access = ::getTblValue(group.owner.armyGroupIdx, accessList, WW_BATTLE_ACCESS.NONE)
+  let access = ::getTblValue(group.owner.armyGroupIdx, accessList, WW_BATTLE_ACCESS.NONE)
   return !!(access & WW_BATTLE_ACCESS.MANAGER)
 }
 
@@ -707,8 +695,8 @@ g_world_war.getArmyByName <- function getArmyByName(armyName)
 
 g_world_war.getArmyByArmyGroup <- function getArmyByArmyGroup(armyGroup)
 {
-  local armyName = ::u.search(::ww_get_armies_names(), (@(armyGroup) function(armyName) {
-      local army = ::g_world_war.getArmyByName(armyName)
+  let armyName = ::u.search(::ww_get_armies_names(), (@(armyGroup) function(armyName) {
+      let army = ::g_world_war.getArmyByName(armyName)
       return armyGroup.isMyArmy(army)
     })(armyGroup))
 
@@ -719,7 +707,7 @@ g_world_war.getArmyByArmyGroup <- function getArmyByArmyGroup(armyGroup)
 
 g_world_war.getBattleById <- function getBattleById(battleId)
 {
-  local battles = getBattles(
+  let battles = getBattles(
       (@(battleId) function(checkedBattle) {
         return checkedBattle.id == battleId
       })(battleId)
@@ -742,11 +730,11 @@ g_world_war.getAirfieldsCount <- function getAirfieldsCount()
 
 g_world_war.getAirfieldsArrayBySide <- function getAirfieldsArrayBySide(side, filterType = "ANY")
 {
-  local res = []
+  let res = []
   for (local index = 0; index < getAirfieldsCount(); index++)
   {
-    local field = getAirfieldByIndex(index)
-    local airfieldType = field.airfieldType
+    let field = getAirfieldByIndex(index)
+    let airfieldType = field.airfieldType
     if (field.isMySide(side) && (filterType == "ANY" || filterType == airfieldType))
       res.append(field)
   }
@@ -787,18 +775,18 @@ g_world_war.updateBattles <- function updateBattles(forced = false)
 
   battles.clear()
 
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_battles_info(blk)
 
   if (!("battles" in blk))
     return
 
-  local itemCount = blk.battles.blockCount()
+  let itemCount = blk.battles.blockCount()
 
   for (local i = 0; i < itemCount; i++)
   {
-    local itemBlk = blk.battles.getBlock(i)
-    local battle   = ::WwBattle(itemBlk)
+    let itemBlk = blk.battles.getBlock(i)
+    let battle   = ::WwBattle(itemBlk)
 
     if (battle.isValid())
       battles.append(battle)
@@ -809,7 +797,7 @@ g_world_war.updateBattles <- function updateBattles(forced = false)
 g_world_war.updateConfigurableValues <- function updateConfigurableValues()
 {
   clearUnitsLists()
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_configurable_values(blk)
   configurableValues = blk
   // ----- FIX ME: Weapon masks data should be received from char -----
@@ -827,7 +815,7 @@ g_world_war.updateConfigurableValues <- function updateConfigurableValues()
   // ------------------------------------------------------------------
 
   local fighterToAssaultWeaponMask = 0
-  local fighterCountAsAssault = configurableValues.fighterCountAsAssault
+  let fighterCountAsAssault = configurableValues.fighterCountAsAssault
   for (local i = 0; i < fighterCountAsAssault.paramCount(); i++)
     if (fighterCountAsAssault.getParamValue(i))
       fighterToAssaultWeaponMask = fighterToAssaultWeaponMask | (1 << i)
@@ -854,7 +842,7 @@ g_world_war.getWWConfigurableValue <- function getWWConfigurableValue(paramPath,
 
 g_world_war.getOperationObjectives <- function getOperationObjectives()
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_operation_objectives(blk)
   return blk
 }
@@ -869,22 +857,22 @@ g_world_war.isCurrentOperationFinished <- function isCurrentOperationFinished()
 
 g_world_war.getReinforcementsInfo <- function getReinforcementsInfo()
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   ::ww_get_reinforcements_info(blk)
   return blk
 }
 
 g_world_war.getReinforcementsArrayBySide <- function getReinforcementsArrayBySide(side)
 {
-  local reinforcementsInfo = getReinforcementsInfo()
+  let reinforcementsInfo = getReinforcementsInfo()
   if (reinforcementsInfo?.reinforcements == null)
     return []
 
-  local res = []
+  let res = []
   for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++)
   {
-    local reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
-    local wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
+    let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
+    let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
     if (::has_feature("worldWarMaster") ||
          (wwReinforcementArmy.isMySide(side)
          && wwReinforcementArmy.hasManageAccess())
@@ -928,7 +916,7 @@ g_world_war.getReinforcementByName <- function getReinforcementByName(name, blk 
 
   for (local i = 0; i < blk.reinforcements.blockCount(); i++)
   {
-    local reinforcement = blk.reinforcements.getBlock(i)
+    let reinforcement = blk.reinforcements.getBlock(i)
     if (!reinforcement)
       continue
 
@@ -941,7 +929,7 @@ g_world_war.getReinforcementByName <- function getReinforcementByName(name, blk 
 
 g_world_war.sendReinforcementRequest <- function sendReinforcementRequest(cellIdx, name)
 {
-  local params = ::DataBlock()
+  let params = ::DataBlock()
   params.setInt("cellIdx", cellIdx)
   params.setStr("name", name)
   return ::ww_send_operation_request("cln_ww_emplace_reinforcement", params)
@@ -954,18 +942,18 @@ g_world_war.isArmySelected <- function isArmySelected(armyName)
 
 g_world_war.moveSelectedArmyToCell <- function moveSelectedArmyToCell(cellIdx, params = {})
 {
-  local army = ::getTblValue("army", params)
+  let army = ::getTblValue("army", params)
   if (!army)
     return
 
   local moveType = "EMT_ATTACK" //default move type
-  local targetAirfieldIdx = ::getTblValue("targetAirfieldIdx", params, -1)
-  local target = ::getTblValue("target", params)
+  let targetAirfieldIdx = ::getTblValue("targetAirfieldIdx", params, -1)
+  let target = ::getTblValue("target", params)
 
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   if (targetAirfieldIdx >= 0)
   {
-    local airfield = ::g_world_war.getAirfieldByIndex(targetAirfieldIdx)
+    let airfield = ::g_world_war.getAirfieldByIndex(targetAirfieldIdx)
     if (::g_ww_unit_type.isAir(army.unitType) && army.isMySide(airfield.side))
     {
       moveType = "EMT_BACK_TO_AIRFIELD"
@@ -977,7 +965,7 @@ g_world_war.moveSelectedArmyToCell <- function moveSelectedArmyToCell(cellIdx, p
   blk.setStr("army", army.name)
   blk.setInt("targetCellIdx", cellIdx)
 
-  local appendToPath = ::getTblValue("appendToPath", params, false)
+  let appendToPath = ::getTblValue("appendToPath", params, false)
   if (appendToPath)
     blk.setBool("appendToPath", appendToPath)
   if (target)
@@ -985,7 +973,7 @@ g_world_war.moveSelectedArmyToCell <- function moveSelectedArmyToCell(cellIdx, p
 
   playArmyActionSound("moveSound", army)
 
-  local taskId = ::ww_send_operation_request("cln_ww_move_army_to", blk)
+  let taskId = ::ww_send_operation_request("cln_ww_move_army_to", blk)
   ::g_tasker.addTask(taskId, null, @() null,
     function (errorCode) {
       ::g_world_war.popupCharErrorMsg("move_army_error")
@@ -1001,7 +989,7 @@ g_world_war.moveSelectedArmiesToCell <- function moveSelectedArmiesToCell(cellId
   if (cellIdx < 0  || armies.len() == 0)
     return
 
-  local params = ::DataBlock()
+  let params = ::DataBlock()
   for (local i = 0; i < armies.len(); i++)
   {
     params.addStr("army" + i, armies[i].name)
@@ -1023,9 +1011,9 @@ g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy)
   if (!wwArmy || !wwArmy.isValid())
     return
 
-  local unitTypeCode = wwArmy.getOverrideUnitType() ||
+  let unitTypeCode = wwArmy.getOverrideUnitType() ||
                        wwArmy.getUnitType()
-  local armyType = ::g_ww_unit_type.getUnitTypeByCode(unitTypeCode)
+  let armyType = ::g_ww_unit_type.getUnitTypeByCode(unitTypeCode)
   ::get_cur_gui_scene()?.playSound(armyType[soundId])
 }
 
@@ -1064,18 +1052,18 @@ g_world_war.moveSelectedArmes <- function moveSelectedArmes(toX, toY, target = n
 
 g_world_war.requestMoveSelectedArmies <- function requestMoveSelectedArmies(toX, toY, target, append)
 {
-  local groundArmies = []
-  local selectedArmies = ::ww_get_selected_armies_names()
+  let groundArmies = []
+  let selectedArmies = ::ww_get_selected_armies_names()
   for (local i = selectedArmies.len() - 1; i >=0 ; i--)
   {
-    local army = ::g_world_war.getArmyByName(selectedArmies.remove(i))
+    let army = ::g_world_war.getArmyByName(selectedArmies.remove(i))
     if (!army.isValid())
       continue
 
     if (::g_ww_unit_type.isAir(army.unitType))
     {
-      local cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
-      local targetAirfieldIdx = ::ww_find_airfield_by_coordinates(toX, toY)
+      let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
+      let targetAirfieldIdx = ::ww_find_airfield_by_coordinates(toX, toY)
       ::g_world_war.moveSelectedArmyToCell(cellIdx, {
         army = army
         target = target
@@ -1090,7 +1078,7 @@ g_world_war.requestMoveSelectedArmies <- function requestMoveSelectedArmies(toX,
 
   if (groundArmies.len())
   {
-    local cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
+    let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
     moveSelectedArmiesToCell(cellIdx, groundArmies, target, append)
   }
 }
@@ -1100,7 +1088,7 @@ g_world_war.hasEntrenchedInList <- function hasEntrenchedInList(armyNamesList)
 {
   for (local i = 0; i < armyNamesList.len(); i++)
   {
-    local army = getArmyByName(armyNamesList[i])
+    let army = getArmyByName(armyNamesList[i])
     if (army && army.isEntrenched())
       return true
   }
@@ -1110,11 +1098,11 @@ g_world_war.hasEntrenchedInList <- function hasEntrenchedInList(armyNamesList)
 
 g_world_war.stopSelectedArmy <- function stopSelectedArmy()
 {
-  local filteredArray = filterArmiesByManagementAccess(getSelectedArmies())
+  let filteredArray = filterArmiesByManagementAccess(getSelectedArmies())
   if (!filteredArray.len())
     return
 
-  local params = ::DataBlock()
+  let params = ::DataBlock()
   foreach(idx, army in filteredArray)
     params.addStr("army" + idx, army.name)
   ::ww_send_operation_request("cln_ww_stop_armies", params)
@@ -1122,15 +1110,15 @@ g_world_war.stopSelectedArmy <- function stopSelectedArmy()
 
 g_world_war.entrenchSelectedArmy <- function entrenchSelectedArmy()
 {
-  local filteredArray = filterArmiesByManagementAccess(getSelectedArmies())
+  let filteredArray = filterArmiesByManagementAccess(getSelectedArmies())
   if (!filteredArray.len())
     return
 
-  local entrenchedArmies = ::u.filter(filteredArray, function(army) { return !army.isEntrenched() })
+  let entrenchedArmies = ::u.filter(filteredArray, function(army) { return !army.isEntrenched() })
   if (!entrenchedArmies.len())
     return
 
-  local params = ::DataBlock()
+  let params = ::DataBlock()
   foreach(idx, army in entrenchedArmies)
     params.addStr("army" + idx, army.name)
   ::get_cur_gui_scene()?.playSound("ww_unit_entrench")
@@ -1145,8 +1133,8 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
   if (unitsList.len() == 0)
     return -1
 
-  local params = ::DataBlock()
-  local airfieldIdx = ::ww_get_selected_airfield()
+  let params = ::DataBlock()
+  let airfieldIdx = ::ww_get_selected_airfield()
   params.addInt("targetCellIdx", cellIdx)
   params.addInt("airfield", airfieldIdx)
   params.addStr("side", ::ww_side_val_to_name(owner.side))
@@ -1168,7 +1156,7 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
   if (target)
     params.addStr("targetName", target)
 
-  local airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
+  let airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
   ::get_cur_gui_scene()?.playSound(airfield.airfieldType.flyoutSound)
 
   return ::ww_send_operation_request("cln_ww_move_army_to", params)
@@ -1176,8 +1164,8 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
 
 g_world_war.sortUnitsByTypeAndCount <- function sortUnitsByTypeAndCount(a, b)
 {
-  local aType = a.wwUnitType.code
-  local bType = b.wwUnitType.code
+  let aType = a.wwUnitType.code
+  let bType = b.wwUnitType.code
   if (aType != bType)
     return aType - bType
   return a.count - b.count
@@ -1185,13 +1173,13 @@ g_world_war.sortUnitsByTypeAndCount <- function sortUnitsByTypeAndCount(a, b)
 
 g_world_war.sortUnitsBySortCodeAndCount <- function sortUnitsBySortCodeAndCount(a, b)
 {
-  local aSortCode = a.wwUnitType.sortCode
-  local bSortCode = b.wwUnitType.sortCode
+  let aSortCode = a.wwUnitType.sortCode
+  let bSortCode = b.wwUnitType.sortCode
   if (aSortCode != bSortCode)
     return aSortCode - bSortCode
 
-  local aCount = a.count
-  local bCount = b.count
+  let aCount = a.count
+  let bCount = b.count
   return aCount.tointeger() - bCount.tointeger()
 }
 
@@ -1202,11 +1190,11 @@ g_world_war.getOperationTimeSec <- function getOperationTimeSec()
 
 g_world_war.requestLogs <- function requestLogs(loadAmount, useLogMark, cb, errorCb)
 {
-  local logMark = useLogMark ? ::g_ww_logs.lastMark : ""
-  local reqBlk = DataBlock()
+  let logMark = useLogMark ? ::g_ww_logs.lastMark : ""
+  let reqBlk = DataBlock()
   reqBlk.setInt("count", loadAmount)
   reqBlk.setStr("last", logMark)
-  local taskId = ::ww_operation_request_log(reqBlk)
+  let taskId = ::ww_operation_request_log(reqBlk)
 
   if (taskId < 0) // taskId == -1 means request result is ready
     cb()
@@ -1223,7 +1211,7 @@ g_world_war.getSidesOrder <- function getSidesOrder(battle = null)
   if (playerSide == ::SIDE_NONE)
     playerSide = ::SIDE_1
 
-  local enemySide  = ::g_world_war.getOppositeSide(playerSide)
+  let enemySide  = ::g_world_war.getOppositeSide(playerSide)
   return [ playerSide, enemySide ]
 }
 
@@ -1239,16 +1227,17 @@ g_world_war.getOppositeSide <- function getOppositeSide(side)
 
 g_world_war.get_last_weapon_preset <- function get_last_weapon_preset(unitName)
 {
-  local unit = ::getAircraftByName(unitName)
+  let unit = ::getAircraftByName(unitName)
   if (!unit)
     return ""
 
-  local weaponName = ::loadLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, "")
-  foreach(weapon in unit.weapons)
+  let weaponName = ::loadLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, "")
+  let weapons = unit.getWeapons()
+  foreach(weapon in weapons)
     if (weapon.name == weaponName)
       return weaponName
 
-  return unit.weapons.len() ? unit.weapons[0].name : ""
+  return weapons?[0].name ?? ""
 }
 
 g_world_war.set_last_weapon_preset <- function set_last_weapon_preset(unitName, weaponName)
@@ -1258,10 +1247,10 @@ g_world_war.set_last_weapon_preset <- function set_last_weapon_preset(unitName, 
 
 g_world_war.collectUnitsData <- function collectUnitsData(unitsArray, isViewStrengthList = true)
 {
-  local collectedUnits = {}
+  let collectedUnits = {}
   foreach(wwUnit in unitsArray)
   {
-    local id = isViewStrengthList ? wwUnit.stengthGroupExpClass : wwUnit.expClass
+    let id = isViewStrengthList ? wwUnit.stengthGroupExpClass : wwUnit.expClass
     if (!(id in collectedUnits))
       collectedUnits[id] <- wwUnit
     else
@@ -1281,7 +1270,7 @@ g_world_war.addOperationInvite <- function addOperationInvite(operationId, clanI
 
   if (operationId >= 0 && operationId != ::ww_get_operation_id())
     actionWithGlobalStatusRequest("cln_ww_global_status", null, null, function() {
-      local operation = getOperationById(operationId)
+      let operation = getOperationById(operationId)
       if (operation && operation.isAvailableToJoin())
         ::g_invites.addInvite( ::g_invites_classes.WwOperation,
           { operationId = operationId,
@@ -1294,9 +1283,9 @@ g_world_war.addOperationInvite <- function addOperationInvite(operationId, clanI
 
 g_world_war.addSquadInviteToWWBattle <- function addSquadInviteToWWBattle(params)
 {
-  local squadronId = params?.squadronId
-  local operationId = params?.battle?.operationId
-  local battleId = params?.battle?.battleId
+  let squadronId = params?.squadronId
+  let operationId = params?.battle?.operationId
+  let battleId = params?.battle?.battleId
   if (!squadronId || !operationId || !battleId)
     return
 
@@ -1320,7 +1309,7 @@ g_world_war.updateUserlogsAccess <- function updateUserlogsAccess()
   if (!::is_worldwar_enabled())
     return
 
-  local wwUserLogTypes = [::EULT_WW_START_OPERATION,
+  let wwUserLogTypes = [::EULT_WW_START_OPERATION,
                           ::EULT_WW_CREATE_OPERATION,
                           ::EULT_WW_END_OPERATION]
   for (local i = ::hidden_userlogs.len() - 1; i >= 0; i--)
@@ -1349,7 +1338,7 @@ g_world_war.popupCharErrorMsg <- function popupCharErrorMsg(groupName = null, ti
   if (errorMsgId == "WRONG_REINFORCEMENT_NAME")
     return
 
-  local popupText = ::loc("worldwar/charError/" + errorMsgId,
+  let popupText = ::loc("worldwar/charError/" + errorMsgId,
     ::loc("worldwar/charError/defaultError", ""))
   if (popupText.len() || titleText.len())
     ::g_popups.add(titleText, popupText, null, null, null, groupName)
@@ -1357,27 +1346,27 @@ g_world_war.popupCharErrorMsg <- function popupCharErrorMsg(groupName = null, ti
 
 g_world_war.getCurMissionWWBattleName <- function getCurMissionWWBattleName()
 {
-  local misBlk = ::DataBlock()
+  let misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
 
-  local battleId = misBlk?.customRules?.battleId
+  let battleId = misBlk?.customRules?.battleId
   if (!battleId)
     return ""
 
-  local battle = getBattleById(battleId)
+  let battle = getBattleById(battleId)
   return battle ? battle.getView().getBattleName() : ""
 }
 
 g_world_war.getCurMissionWWOperationName <- function getCurMissionWWOperationName()
 {
-  local misBlk = ::DataBlock()
+  let misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
 
-  local operationId = misBlk?.customRules?.operationId
+  let operationId = misBlk?.customRules?.operationId
   if (!operationId)
     return ""
 
-  local operation = getOperationById(operationId.tointeger())
+  let operation = getOperationById(operationId.tointeger())
   return operation ? operation.getNameText() : ""
 }
 

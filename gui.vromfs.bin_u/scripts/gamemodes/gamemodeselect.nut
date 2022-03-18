@@ -1,20 +1,17 @@
-local mapPreferencesModal = require("scripts/missions/mapPreferencesModal.nut")
-local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
-local clustersModule = require("scripts/clusterSelect.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local u = require("sqStdLibs/helpers/u.nut")
-local Callback = require("sqStdLibs/helpers/callback.nut").Callback
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local {
-  checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let mapPreferencesModal = require("scripts/missions/mapPreferencesModal.nut")
+let mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+let clustersModule = require("scripts/clusterSelect.nut")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let u = require("sqStdLibs/helpers/u.nut")
+let Callback = require("sqStdLibs/helpers/callback.nut").Callback
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
-class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.GameModeSelect <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneTplName = "gui/gameModeSelect/gameModeSelect"
+  sceneTplName = "%gui/gameModeSelect/gameModeSelect"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
 
@@ -62,6 +59,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     backSceneFunc = ::gui_start_mainmenu
+    showBtn("cluster_select_button", true)
     updateContent()
   }
 
@@ -71,7 +69,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (cat in categories)
     {
-      local modes = this[cat.modesGenFunc]()
+      let modes = this[cat.modesGenFunc]()
       if (modes.len() == 0)
       {
         filledGameModes.append({
@@ -87,11 +85,11 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       filledGameModes.extend(modes)
     }
 
-    local placeObj = scene.findObject("general_game_modes")
+    let placeObj = scene.findObject("general_game_modes")
     if (!::check_obj(placeObj))
       return
 
-    local data = ::handyman.renderCached("gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
+    let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
     setGameModesTimer()
@@ -114,15 +112,15 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSelection()
   {
-    local curGM = ::game_mode_manager.getCurrentGameMode()
+    let curGM = ::game_mode_manager.getCurrentGameMode()
     if (curGM == null)
       return
 
-    local curGameModeObj = scene.findObject("general_game_modes")
+    let curGameModeObj = scene.findObject("general_game_modes")
     if (!::check_obj(curGameModeObj))
       return
 
-    local index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
+    let index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
     ::move_mouse_on_child(curGameModeObj, index)
   }
@@ -134,11 +132,11 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       if (!gameMode.isMode || !gameMode?.hasContent)
         continue
 
-      local widgetObj = scene.findObject(getWidgetId(gameMode.id))
+      let widgetObj = scene.findObject(getWidgetId(gameMode.id))
       if (!::check_obj(widgetObj))
         continue
 
-      local widget = NewIconWidget(guiScene, widgetObj)
+      let widget = NewIconWidget(guiScene, widgetObj)
       newIconWidgetsByGameModeID[gameMode.id] <- widget
       widget.setWidgetVisible(!::game_mode_manager.isSeen(gameMode.id))
     }
@@ -146,7 +144,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function createFeaturedModesView()
   {
-    local view = []
+    let view = []
     view.extend(getViewArray(::game_mode_manager.getPveBattlesGameModes()))
     view.extend(getViewArray(::game_mode_manager.getFeaturedGameModes()))
     view.extend(createFeaturedLinksView())
@@ -156,20 +154,20 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function getViewArray(gameModesArray)
   {
-    local view = []
+    let view = []
     // First go all wide featured game modes then - non-wide.
     local numNonWideGameModes = 0
     foreach (isWide in [ true, false ])
     {
       while (true)
       {
-        local gameMode = getGameModeByCondition(gameModesArray,
+        let gameMode = getGameModeByCondition(gameModesArray,
           @(gameMode) gameMode.displayWide == isWide) // warning disable: -iterator-in-lambda
         if (gameMode == null)
           break
         if (!isWide)
           ++numNonWideGameModes
-        local index = ::find_in_array(gameModesArray, gameMode)
+        let index = ::find_in_array(gameModesArray, gameMode)
         gameModesArray.remove(index)
         view.append(createGameModeView(gameMode))
       }
@@ -188,8 +186,8 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       {
         if(b.isWide != a.isWide)
           return b.isWide <=> a.isWide
-        local isAContainsType = a.gameMode.unitTypes.indexof(unitType.esUnitType) != null
-        local isBContainsType = b.gameMode.unitTypes.indexof(unitType.esUnitType) != null
+        let isAContainsType = a.gameMode.unitTypes.indexof(unitType.esUnitType) != null
+        let isBContainsType = b.gameMode.unitTypes.indexof(unitType.esUnitType) != null
         if( ! isAContainsType && ! isBContainsType)
           continue
         return isBContainsType <=> isAContainsType
@@ -201,8 +199,8 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function createDebugGameModesView()
   {
-    local view = []
-    local debugGameModes = ::game_mode_manager.getDebugGameModes()
+    let view = []
+    let debugGameModes = ::game_mode_manager.getDebugGameModes()
     foreach (gameMode in debugGameModes)
       view.append(createGameModeView(gameMode))
     return view
@@ -210,15 +208,15 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function createFeaturedLinksView()
   {
-    local res = []
+    let res = []
     foreach (idx, mode in ::featured_modes)
     {
       if (!mode.isVisible())
         continue
 
-      local id = ::game_mode_manager.getGameModeItemId(mode.modeId)
-      local hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
-      local newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+      let id = ::game_mode_manager.getGameModeItemId(mode.modeId)
+      let hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
+      let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
       res.append({
         id = id
@@ -252,11 +250,11 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function createGameModesView()
   {
-    local gameModesView = []
-    local partitions = ::game_mode_manager.getGameModesPartitions()
+    let gameModesView = []
+    let partitions = ::game_mode_manager.getGameModesPartitions()
     foreach (partition in partitions)
     {
-      local partitionView = createGameModesPartitionView(partition)
+      let partitionView = createGameModesPartitionView(partition)
       if (partitionView)
         gameModesView.extend(partitionView)
     }
@@ -272,17 +270,16 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
         isMode = true
       }
 
-    local countries = createGameModeCountriesView(gameMode)
-    local isLink = gameMode.displayType.showInEventsWindow
-    local event = ::game_mode_manager.getGameModeEvent(gameMode)
-    local trophyName = ::events.getEventPVETrophyName(event)
+    let countries = createGameModeCountriesView(gameMode)
+    let isLink = gameMode.displayType.showInEventsWindow
+    let event = ::game_mode_manager.getGameModeEvent(gameMode)
+    let trophyName = ::events.getEventPVETrophyName(event)
 
-    local id = ::game_mode_manager.getGameModeItemId(gameMode.id)
-    local hasNewIconWidget = !::game_mode_manager.isSeen(id)
-    local newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+    let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
+    let hasNewIconWidget = !::game_mode_manager.isSeen(id)
+    let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
-    local crossPlayRestricted = isMultiplayerPrivilegeAvailable() && !isCrossPlayEventAvailable(event)
-    local inactiveColor = !isMultiplayerPrivilegeAvailable() || crossPlayRestricted
+    let crossPlayRestricted = !isCrossPlayEventAvailable(event)
     if (gameMode?.updateByTimeFunc)
       gameModesWithTimer[id] <- mode.updateByTimeFunc
 
@@ -312,7 +309,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       onHover = "markGameModeSeen"
       // Used to easily backtrack corresponding game mode.
       gameMode = gameMode
-      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
+      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || crossPlayRestricted
       crossPlayRestricted = crossPlayRestricted
       crossplayTooltip = getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
@@ -326,9 +323,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRestrictionTooltipText(event)
   {
-    if (!isMultiplayerPrivilegeAvailable())
-      return ::loc("xbox/noMultiplayer")
-
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
 
@@ -361,7 +355,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     if (::u.isEmpty(trophyName))
       return null
 
-    local trophyItem = ::ItemsManager.findItemById(trophyName, itemType.TROPHY)
+    let trophyItem = ::ItemsManager.findItemById(trophyName, itemType.TROPHY)
     if (!trophyItem)
       return null
 
@@ -370,7 +364,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function createGameModeCountriesView(gameMode)
   {
-    local res = []
+    let res = []
     local countries = gameMode.countries
     if (!countries.len() || countries.len() >= ::g_crews_list.get().len())
       return res
@@ -378,10 +372,10 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     local needShowLocked = false
     if (countries.len() >= 0.7 * ::g_crews_list.get().len())
     {
-      local lockedCountries = []
+      let lockedCountries = []
       foreach(countryData in ::g_crews_list.get())
       {
-        local country = countryData.country
+        let country = countryData.country
         if (!::isInArray(country, countries))
           lockedCountries.append(country)
       }
@@ -400,12 +394,12 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     if (partition.gameModes.len() == 0)
       return null
 
-    local gameModes = partition.gameModes
-    local needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
-    local view = []
+    let gameModes = partition.gameModes
+    let needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
+    let view = []
     foreach (idx, esUnitType in basePanelConfig)
     {
-      local gameMode = chooseGameModeEsUnitType(gameModes, esUnitType, basePanelConfig)
+      let gameMode = chooseGameModeEsUnitType(gameModes, esUnitType, basePanelConfig)
       if (gameMode)
         view.append(createGameModeView(gameMode, false, true))
       else if (needEmptyGameModeBlocks)
@@ -433,11 +427,8 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function onGameModeSelect(obj)
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
-
     markGameModeSeen(obj)
-    local gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
+    let gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
     performGameModeSelect(gameModeView.gameMode)
   }
 
@@ -447,7 +438,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
         !::check_package_and_ask_download("pkg_main"))
       return
 
-    local event = ::game_mode_manager.getGameModeEvent(gameMode)
+    let event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event && !isCrossPlayEventAvailable(event))
     {
       if (!::xbox_try_show_crossnetwork_message())
@@ -474,7 +465,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj?.id || ::game_mode_manager.isSeen(obj.id))
       return
 
-    local widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
+    let widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
     if (!widget)
       return
 
@@ -484,12 +475,12 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function onGameModeGamepadSelect(obj)
   {
-    local val = obj.getValue()
+    let val = obj.getValue()
     if (val < 0 || val >= obj.childrenCount())
       return
 
-    local gmView = filledGameModes[val]
-    local modeObj = scene.findObject(gmView.id)
+    let gmView = filledGameModes[val]
+    let modeObj = scene.findObject(gmView.id)
 
     markGameModeSeen(modeObj)
     updateEventDescriptionConsoleButton(gmView.gameMode)
@@ -507,21 +498,20 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateClusters()
   {
-    local clustersObj = showBtn("cluster_select_button", isMultiplayerPrivilegeAvailable())
-    clustersModule.updateClusters(clustersObj.findObject("cluster_select_button_text"))
+    clustersModule.updateClusters(scene.findObject("cluster_select_button_text"))
   }
 
   function onClusterSelectActivate(obj)
   {
-    local value = obj.getValue()
-    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    let value = obj.getValue()
+    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (::checkObj(childObj))
       onOpenClusterSelect(childObj)
   }
 
   function onGameModeActivate(obj)
   {
-    local value = ::get_obj_valid_index(obj)
+    let value = ::get_obj_valid_index(obj)
     if (value < 0)
       return
 
@@ -535,11 +525,11 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function onGamepadEventDescription(obj)
   {
-    local gameModesObject = getObj("general_game_modes")
+    let gameModesObject = getObj("general_game_modes")
     if (!::checkObj(gameModesObject))
       return
 
-    local value = gameModesObject.getValue()
+    let value = gameModesObject.getValue()
     if (value < 0)
       return
 
@@ -548,7 +538,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function openEventDescription(gameMode)
   {
-    local event = ::game_mode_manager.getGameModeEvent(gameMode)
+    let event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event != null)
     {
       restoreFromModal = true
@@ -561,10 +551,9 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
       && ::show_console_buttons
-      && isMultiplayerPrivilegeAvailable()
     )
 
-    local prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
+    let prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
       && ::show_console_buttons)
 
     if (!::check_obj(prefObj))
@@ -588,7 +577,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function setGameModesTimer()
   {
-    local timerObj = scene.findObject("game_modes_timer")
+    let timerObj = scene.findObject("game_modes_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(gameModesWithTimer.len()? this : null)
   }
@@ -604,14 +593,13 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
   function isShowMapPreferences(curEvent)
   {
     return ::has_feature("MapPreferences") && !::is_me_newbie()
-      && isMultiplayerPrivilegeAvailable()
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
   }
 
   function onMapPreferences(obj)
   {
-    local curEvent = obj?.modeId != null
+    let curEvent = obj?.modeId != null
       ? ::game_mode_manager.getGameModeById(obj.modeId)?.getEvent()
       : ::game_mode_manager.getCurrentGameMode()?.getEvent()
     ::g_squad_utils.checkSquadUnreadyAndDo(

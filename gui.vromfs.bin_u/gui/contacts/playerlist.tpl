@@ -195,7 +195,19 @@ buttonPlayer {
 }
 <</playerButton>>
 
-<<#searchAdvice>>
+<<#totalContacts>>
+textareaNoTab {
+  width:t='pw'
+  padding:t='0, 12@sf/@pf, 6@sf/@pf, 0'
+  text:t='<<totalContacts>>'
+  smallFont:t='yes'
+  color:t='@commonTextColor'
+  color-factor:t='180'
+  talign:t='right'
+}
+<</totalContacts>>
+
+<<#searchAdviceID>>
 textarea {
   id:t='<<searchAdviceID>>';
   text:t='#contacts/search_advice';
@@ -203,4 +215,4 @@ textarea {
   width:t='pw';
   removeParagraphIndent:t='yes';
 }
-<</searchAdvice>>
+<</searchAdviceID>>

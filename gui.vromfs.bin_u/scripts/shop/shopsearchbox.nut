@@ -1,10 +1,10 @@
-local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-local shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
+let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
+let shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
 
-class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/shop/shopSearchBox.blk"
+  sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
   curCountry = ""
   curEsUnitType = ::ES_UNIT_TYPE_INVALID
@@ -29,7 +29,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (id in [ "search_btn_start", "search_btn_close" ])
     {
-      local obj = scene.findObject(id)
+      let obj = scene.findObject(id)
       if (::check_obj(obj))
         obj["tooltip"] += ::colorize("hotkeyColor",
         ::loc("ui/parentheses/space", { text = ::loc(obj?["hotkeyLoc"] ?? "") }))
@@ -46,7 +46,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
     prevIsClear = true
     isClear = true
 
-    local obj = scene.findObject("search_edit_box")
+    let obj = scene.findObject("search_edit_box")
     if (::check_obj(obj))
       obj.setValue("")
     updateHint(isClear, 0, 0)
@@ -67,7 +67,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
     //With IME window with all variants wil be open automatically
     if (countGlobal > countLocal)
       hintText += "\n" + ::loc("shop/search/global/found", { count = countGlobal })
-    local obj = scene.findObject("search_hint_text")
+    let obj = scene.findObject("search_hint_text")
     if (::check_obj(obj))
       obj.setValue(hintText)
   }
@@ -87,11 +87,11 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
 
     prevIsClear = isClear
     prevSearchResult = units
-    local countGlobal = units.len()
-    local countryId = curCountry
-    local unitType = curEsUnitType
+    let countGlobal = units.len()
+    let countryId = curCountry
+    let unitType = curEsUnitType
     units = units.filter(@(unit) ::getUnitCountry(unit) == countryId && unitType == ::get_es_unit_type(unit))
-    local countLocal = units.len()
+    let countLocal = units.len()
 
     updateHint(isClear, countGlobal, countLocal)
     cbOwnerSearchHighlight(units, isClear)
@@ -115,7 +115,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
     obj = obj || scene.findObject("search_edit_box")
     if (!::check_obj(obj))
       return
-    local searchStr = ::g_string.trim(obj.getValue())
+    let searchStr = ::g_string.trim(obj.getValue())
     if (searchStr != "")
       if (shopSearchWnd.open(searchStr, cbOwnerShowUnit, getEdiffFunc))
         searchClear()

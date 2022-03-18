@@ -1,6 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 
-local results = {
+let results = {
   types = []
 }
 

@@ -1,4 +1,4 @@
-class ::Input.InputImage extends ::Input.InputBase
+::Input.InputImage <- class extends ::Input.InputBase
 {
   image = ""
   constructor(imageName)
@@ -8,14 +8,14 @@ class ::Input.InputImage extends ::Input.InputBase
 
   function getMarkup()
   {
-    local data = getMarkupData()
+    let data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
     return {
-      template = "gui/gamepadButton"
+      template = "%gui/gamepadButton"
       view = { buttonImage = image }
     }
   }

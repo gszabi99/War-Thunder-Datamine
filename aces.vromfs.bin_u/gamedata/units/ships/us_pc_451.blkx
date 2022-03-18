@@ -2464,6 +2464,8 @@
           "bullets": 100,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.07,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -3744,18 +3746,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -18000.0,
+      "waterMassMult": 140.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 820000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterDeathThreshold": 900000.0,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.25
     }
   },
   {
@@ -3763,7 +3765,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.85,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       },
@@ -3783,19 +3785,19 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.7,
+          "weight": 0.75,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.6
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.6
+                "critWaterLevel": 0.5
               }
             },
             {
@@ -3872,7 +3874,7 @@
             "fatalExplosion": true,
             "fireEvent": "ammo_fire_1",
             "explosionEvent": "ammo_explosion_1",
-            "ammunition_storage_01_dm": {
+            "ammunition_storage_02_dm": {
               "count": 80
             }
           }
@@ -3897,7 +3899,7 @@
             "fatalExplosion": true,
             "fireEvent": "ammo_fire_2",
             "explosionEvent": "ammo_explosion_2",
-            "ammunition_storage_02_dm": {
+            "ammunition_storage_01_dm": {
               "count": 10800
             }
           }

@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local aamAimState = {
+let aamAimState = {
   GimbalX = Watched(0.0)
   GimbalY = Watched(0.0)
   GimbalSize = Watched(0.0)

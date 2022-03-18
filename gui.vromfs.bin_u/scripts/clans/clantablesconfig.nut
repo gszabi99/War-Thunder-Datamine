@@ -1,24 +1,24 @@
-local clanInfoView = require("scripts/clans/clanInfoView.nut")
+let clanInfoView = require("scripts/clans/clanInfoView.nut")
 
-local function isFitsRequirements(clanData) {
-  local requirements = clanData?.membership_req
+let function isFitsRequirements(clanData) {
+  let requirements = clanData?.membership_req
   if (requirements == null ||
     (requirements.blockCount() == 0 && requirements.paramCount() == 0))
     return true
 
-  local resultBlk = ::DataBlock()
+  let resultBlk = ::DataBlock()
   clan_evaluate_membership_requirements(requirements, resultBlk)
   return resultBlk?.result
 }
 
-local clanTableFieldsByPage = {
+let clanTableFieldsByPage = {
   clans_search = [
     { id = "fits_requirements", icon = "#ui/gameuiskin#lb_fits_requirements.svg",
       type = ::g_lb_data_type.TEXT, sort = false, byDifficulty = false
       getCellImage = @(clanData) isFitsRequirements(clanData) ? "#ui/gameuiskin#favorite"
         : "#ui/gameuiskin#icon_primary_fail.svg"
       getCellTooltipText = function(clanData) {
-        local reqText = clanInfoView.getClanRequirementsText(clanData?.membership_req)
+        let reqText = clanInfoView.getClanRequirementsText(clanData?.membership_req)
         return reqText != "" ? reqText : ::loc("clan/no_requirements")
       }
     }
@@ -61,7 +61,7 @@ foreach (page in clanTableFieldsByPage)
       category.getIcon <- @(diffCode) icon
   }
 
-local helpLinksByPage = {
+let helpLinksByPage = {
   clans_search = [
     { obj = "img_fits_requirements"
       msgId = "hint_fits_requirements" }
@@ -90,19 +90,19 @@ local helpLinksByPage = {
   ]
 }
 
-local function getClanTableSortFields() {
+let function getClanTableSortFields() {
   return {
     clans_leaderboards = clanTableFieldsByPage.clans_leaderboards.findvalue(@(f) f.id == ::ranked_column_prefix)
     clans_search = clanTableFieldsByPage.clans_search.findvalue(@(f) f.id == "activity")
   }
 }
 
-local function getClanTableFieldsByPage(page) {
+let function getClanTableFieldsByPage(page) {
   return clanTableFieldsByPage[page].filter(@(f) ("diffCode" not in f)
     || ::get_show_in_squadron_statistics(::g_difficulty.getDifficultyByDiffCode(f.diffCode)))
 }
 
-local function getClanTableHelpLinksByPage(page) {
+let function getClanTableHelpLinksByPage(page) {
   return helpLinksByPage[page]
 }
 

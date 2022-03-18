@@ -4,11 +4,11 @@ enum HangarModelLoadState
   LOADED
 }
 
-local isLoading = persist("isLoading", @() ::Watched(false))
+let isLoading = persist("isLoading", @() ::Watched(false))
 
-local hangarUnitName = ::Watched(::hangar_get_current_unit_name())
+let hangarUnitName = ::Watched(::hangar_get_current_unit_name())
 
-local function getLoadState() {
+let function getLoadState() {
   // First check covers case when model was loaded from within C++.
   // Flag "isLoading" covers model loading from Squirrel.
   return ::hangar_get_loaded_unit_name() == "" || isLoading.value
@@ -16,7 +16,7 @@ local function getLoadState() {
     : HangarModelLoadState.LOADED
 }
 
-local function loadModel(modelName) {
+let function loadModel(modelName) {
   if (modelName == "" || modelName == ::hangar_get_current_unit_name())
     return
   isLoading(true)
@@ -24,8 +24,8 @@ local function loadModel(modelName) {
   ::broadcastEvent("HangarModelLoading", { modelName })
 }
 
-local function onHangarModelLoaded() {
-  local modelName = ::hangar_get_current_unit_name()
+let function onHangarModelLoaded() {
+  let modelName = ::hangar_get_current_unit_name()
   if (::hangar_get_loaded_unit_name() == modelName) {
     isLoading(false)
     hangarUnitName(modelName)

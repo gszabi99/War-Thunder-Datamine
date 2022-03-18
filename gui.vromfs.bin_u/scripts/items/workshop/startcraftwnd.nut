@@ -1,7 +1,7 @@
-local class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT
+let class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/emptyFrame.blk"
+  sceneBlkName = "%gui/emptyFrame.blk"
 
   showImage = ""
   imageRatio = 1
@@ -9,12 +9,12 @@ local class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local fObj = scene.findObject("wnd_frame")
-    local startCraftImgWidth = $"{imageRatio}@startCraftImgHeight"
+    let fObj = scene.findObject("wnd_frame")
+    let startCraftImgWidth = $"{imageRatio}@startCraftImgHeight"
     fObj.width = $"{startCraftImgWidth} + 2@framePadding"
 
-    local contentObj = fObj.findObject("wnd_content")
-    local data = " ".join(["img {", $"size:t='{startCraftImgWidth}, 1@startCraftImgHeight'; background-image:t='{showImage}'", "}"])
+    let contentObj = fObj.findObject("wnd_content")
+    let data = " ".join(["img {", $"size:t='{startCraftImgWidth}, 1@startCraftImgHeight'; background-image:t='{showImage}'", "}"])
     guiScene.replaceContentFromText(contentObj, data, data.len(), this)
 
     if (showTimeSec > 0)

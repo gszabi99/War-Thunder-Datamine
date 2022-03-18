@@ -1,8 +1,8 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/debugTools/dbgLongestUnitTooltips"
+  sceneTplName = "%gui/debugTools/dbgLongestUnitTooltips"
   unitsByType = null
   displayableUnitTypes = null
   maxUnits = null
@@ -22,9 +22,9 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     maxUnits = {}
 
     foreach (id in [].extend(displayableUnitTypes.map(@(t) t.typeName), ["sample_type"])) {
-      local contentObj = scene.findObject(id)
+      let contentObj = scene.findObject(id)
       if (::check_obj(contentObj)) {
-        guiScene.replaceContent(contentObj, "gui/airTooltip.blk", this)
+        guiScene.replaceContent(contentObj, "%gui/airTooltip.blk", this)
         contentObj.show(false)
       }
     }
@@ -36,7 +36,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     local passedLastType = null
     local unitsList = []
     for (local i = 0; i < unitTypes.types.len(); i++) {
-      local uType = unitTypes.types[i]
+      let uType = unitTypes.types[i]
       unitsList = unitsByType?[uType.typeName] ?? []
       if (unitsList.len() != 0)
         break
@@ -53,7 +53,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     }
 
     guiScene.performDelayed(this, function() {
-      local unit = unitsList.remove(0)
+      let unit = unitsList.remove(0)
       ::dlog($"DBG: Check: left {unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") // warning disable: -forbidden-function
 
       checkLongestUnitTooltip(unit)
@@ -68,9 +68,9 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     if (!::check_obj(scene))
       return
 
-    local unitInfoObj = scene.findObject("sample_type")
-    local height = unitInfoObj?.getSize()[1] ?? 0
-    local { typeName } = unit.unitType
+    let unitInfoObj = scene.findObject("sample_type")
+    let height = unitInfoObj?.getSize()[1] ?? 0
+    let { typeName } = unit.unitType
     if ((maxUnits?[typeName].height ?? -1) < height) {
       maxUnits[typeName] <- { height, unit }
       fillUnitInfo(unit)
@@ -78,7 +78,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   }
 
   getUnits = @() ::all_units.reduce(function(res, unit) {
-    local { typeName } = unit.unitType
+    let { typeName } = unit.unitType
     if (unit.isVisibleInShop())
       res[typeName] <- (res?[typeName] ?? []).append(unit)
     return res
@@ -88,7 +88,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     if (!unit || !::check_obj(scene))
       return
 
-    local contentObj = scene.findObject(isTesting? "sample_type" : unit.unitType.typeName)
+    let contentObj = scene.findObject(isTesting? "sample_type" : unit.unitType.typeName)
     contentObj.show(true)
     ::showAirInfo(unit, true, contentObj.findObject("air_info_tooltip"), this, {
       showLocalState = false
@@ -100,7 +100,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   }
 
   function onEventUnitModsRecount(params) {
-    local { unit = null } = params
+    let { unit = null } = params
     if (!unit)
       return
 

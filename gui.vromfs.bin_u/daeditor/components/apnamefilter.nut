@@ -1,4 +1,5 @@
-local nameFilter = require("nameFilter.nut")
+let nameFilter = require("nameFilter.nut")
+let {set_kb_focus} = require("daRg")
 
 return @(filterString, selectedCompName) nameFilter(filterString, {
   placeholder = "Filter by name"
@@ -13,7 +14,10 @@ return @(filterString, selectedCompName) nameFilter(filterString, {
   }
 
   function onEscape() {
-//    state.filterString.update("")
+    if (filterString.value != "")
+      filterString("")
+    else
+      set_kb_focus(null)
   }
 })
 

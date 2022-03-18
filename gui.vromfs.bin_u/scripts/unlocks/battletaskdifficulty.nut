@@ -1,5 +1,5 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local time = require("scripts/time.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
+let time = require("scripts/time.nut")
 
 ::g_battle_task_difficulty <- {
   types = []
@@ -11,15 +11,15 @@ local time = require("scripts/time.nut")
   }
 }
 
-local function _getTimeLeft(task)
+let function _getTimeLeft(task)
 {
-  local expireTime = expireTimeByGen?[::g_battle_tasks.getGenerationIdInt(task)] ?? lastGenExpireTime
+  let expireTime = expireTimeByGen?[::g_battle_tasks.getGenerationIdInt(task)] ?? lastGenExpireTime
   return expireTime - ::get_charserver_time_sec()
 }
 
 g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task)
 {
-  local timeLeft = getTimeLeft(task)
+  let timeLeft = getTimeLeft(task)
   if (timeLeft < 0)
     return ""
 
@@ -53,7 +53,7 @@ g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task)
 
   expireProcessed = null
   notifyTimeExpired = function(task) {
-    local generationId = ::g_battle_tasks.getGenerationIdInt(task)
+    let generationId = ::g_battle_tasks.getGenerationIdInt(task)
     if (expireProcessed?[generationId] ?? false)
       return
 
@@ -136,9 +136,9 @@ g_battle_task_difficulty.getDifficultyTypeById <- function getDifficultyTypeById
   if (taskId in cache.byId)
     return getDifficultyTypeByName(cache.byId[taskId])
 
-  local res = types.findvalue(function(v) {
-    local n = v.name.tolower()
-    local m = taskId.slice(0, n.len()).tolower()
+  let res = types.findvalue(function(v) {
+    let n = v.name.tolower()
+    let m = taskId.slice(0, n.len()).tolower()
     return n == m
   })
 
@@ -157,15 +157,15 @@ g_battle_task_difficulty.getRequiredDifficultyTypeDone <- function getRequiredDi
 
 g_battle_task_difficulty.getRefreshTimeForAllTypes <- function getRefreshTimeForAllTypes(tasksArray, overrideStatus = false)
 {
-  local processedTimeParamIds = []
+  let processedTimeParamIds = []
   if (!overrideStatus)
     foreach(task in tasksArray)
     {
-      local t = getDifficultyTypeByTask(task)
+      let t = getDifficultyTypeByTask(task)
       ::u.appendOnce(t.timeParamId, processedTimeParamIds)
     }
 
-  local resultArray = []
+  let resultArray = []
   foreach(t in types)
   {
     if (::isInArray(t.timeParamId, processedTimeParamIds))
@@ -173,7 +173,7 @@ g_battle_task_difficulty.getRefreshTimeForAllTypes <- function getRefreshTimeFor
 
     processedTimeParamIds.append(t.timeParamId)
 
-    local timeText = t.getTimeLeftText(null)
+    let timeText = t.getTimeLeftText(null)
     if (timeText != "")
       resultArray.append(t.getLocName() + ::loc("ui/parentheses/space", {text = timeText}))
   }
@@ -186,13 +186,13 @@ g_battle_task_difficulty.canPlayerInteractWithDifficulty <- function canPlayerIn
   if (overrideStatus)
     return true
 
-  local reqDiffDone = getRequiredDifficultyTypeDone(diff)
+  let reqDiffDone = getRequiredDifficultyTypeDone(diff)
   if (reqDiffDone == ::g_battle_task_difficulty.UNKNOWN)
     return true
 
   foreach(task in tasksArray)
   {
-    local taskDifficulty = getDifficultyTypeByTask(task)
+    let taskDifficulty = getDifficultyTypeByTask(task)
     if (taskDifficulty != reqDiffDone)
       continue
 
@@ -244,7 +244,7 @@ g_battle_task_difficulty.checkAvailabilityByProgress <- function checkAvailabili
     !getDifficultyTypeByTask(task).showAtPositiveProgress)
     return true
 
-  local progress = ::get_unlock_progress(task.id, -1)
+  let progress = ::get_unlock_progress(task.id, -1)
   return ::getTblValue("curVal", progress, 0) > 0
 }
 

@@ -1,4 +1,4 @@
-local imageSource = "#ui/gameuiskin#render{lottie:t={image};canvasWidth:i={width};canvasHeight:i={height};loop:b={loop};play:b={play};}.render"
+let imageSource = "#ui/gameuiskin#render{lottie:t={image};canvasWidth:i={width};canvasHeight:i={height};loop:b={loop};play:b={play};}.render"
 
 local getLottieImage = ::kwarg(function getLottieImage(image, width, height = null, loop = true, play = true) {
   width = ::to_pixels(width)

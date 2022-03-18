@@ -32,7 +32,7 @@ tdiv {
         margin:t='1@headerIndent, 1@framePadding'
         flow:t='vertical'
 
-        include "gui/worldWar/worldWarMapArmyItem"
+        include "%gui/worldWar/worldWarMapArmyItem"
       }
     }
   <</groups>>
@@ -59,7 +59,7 @@ tdiv {
     flow-align:t='center'
     flow:t='h-flow'
     <<#groups>>
-      include "gui/worldWar/worldWarMapArmyItem"
+      include "%gui/worldWar/worldWarMapArmyItem"
     <</groups>>
   }
 }

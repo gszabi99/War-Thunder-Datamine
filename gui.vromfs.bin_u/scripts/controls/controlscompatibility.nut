@@ -8,12 +8,12 @@
   if (preset == null)
     preset = ::g_controls_manager.getCurPreset()
 
-  local result = []
+  let result = []
   foreach (name in list)
   {
-    local eventData = []
+    let eventData = []
 
-    local hotkey = preset.getHotkey(name)
+    let hotkey = preset.getHotkey(name)
     foreach (shortcut in hotkey)
     {
       local shortcutData = {dev = [], btn = []}
@@ -37,12 +37,12 @@
 
   foreach (i, name in nameList)
   {
-    local hotkey = []
+    let hotkey = []
     foreach (shortcut in shortcutList[i])
     {
-      local shortcutData = []
+      let shortcutData = []
 
-      local numButtons = ::min(shortcut.dev.len(), shortcut.btn.len())
+      let numButtons = ::min(shortcut.dev.len(), shortcut.btn.len())
       for (local j = 0; j < numButtons; j++)
         shortcutData.append({
           deviceId = shortcut.dev[j]
@@ -59,11 +59,11 @@
 }
 
 
-local joystick_params_template = {
+let joystick_params_template = {
   getAxis = function(idx)
   {
-    local curPreset = ::g_controls_manager.getCurPreset()
-    local name = ::get_axis_name(idx)
+    let curPreset = ::g_controls_manager.getCurPreset()
+    let name = ::get_axis_name(idx)
     return name != null ? curPreset.getAxis(name) : curPreset.getDefaultAxis()
   }
 
@@ -71,7 +71,7 @@ local joystick_params_template = {
     if (idx < 0)
       return ""
 
-    local curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = ::g_controls_manager.getCurPreset()
     foreach (axisName, axis in curPreset.axes)
       if (::getTblValue("mouseAxisId", axis, -1) == idx)
         return axisName
@@ -83,7 +83,7 @@ local joystick_params_template = {
     if (idx < 0)
       return
 
-    local curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = ::g_controls_manager.getCurPreset()
     foreach (axisName, axis in curPreset.axes)
       if (::getTblValue("mouseAxisId", axis, -1) == idx)
         axis["mouseAxisId"] <- -1
@@ -91,14 +91,14 @@ local joystick_params_template = {
     if (name == "")
       return
 
-    local axis = curPreset.getAxis(name)
+    let axis = curPreset.getAxis(name)
     axis.mouseAxisId <- idx
   }
 
   resetAxis = function(idx)
   {
-    local curPreset = ::g_controls_manager.getCurPreset()
-    local name = ::get_axis_name(idx)
+    let curPreset = ::g_controls_manager.getCurPreset()
+    let name = ::get_axis_name(idx)
     if (name != null)
       curPreset.resetAxis(name)
     ::g_controls_manager.commitControls()
@@ -109,8 +109,8 @@ local joystick_params_template = {
   }
 
   bindAxis = function(idx, realAxisIdx) {
-    local name = ::get_axis_name(idx)
-    local axis = ::g_controls_manager.getCurPreset().getAxis(name)
+    let name = ::get_axis_name(idx)
+    let axis = ::g_controls_manager.getCurPreset().getAxis(name)
     axis.axisId = realAxisIdx
     ::g_controls_manager.commitControls()
   }
@@ -130,7 +130,7 @@ local joystick_params_template = {
 
 ::joystick_get_cur_settings <- function joystick_get_cur_settings()
 {
-  local result = JoystickParams()
+  let result = JoystickParams()
   ::u.extend(result, ::g_controls_manager.getCurPreset().params)
   return result
 }
@@ -138,7 +138,7 @@ local joystick_params_template = {
 
 ::joystick_set_cur_settings <- function joystick_set_cur_settings(other)
 {
-  local params = ::g_controls_manager.getCurPreset().params
+  let params = ::g_controls_manager.getCurPreset().params
   foreach(name, value in other)
     if (!::u.isFunction(value))
       params[name] <- value

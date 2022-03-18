@@ -1476,6 +1476,11 @@
           "armorClass": "ship_STS",
           "armorThickness": 19.0,
           "hp": 1000.0
+        },
+        "armor_belt_02_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 19.0,
+          "hp": 250.0
         }
       },
       "turret_armor": {
@@ -1522,6 +1527,9 @@
         },
         "turret_07_dm": {
           "hp": 250.0
+        },
+        "turret_08_dm": {
+          "hp": 250.0
         }
       },
       "gun_masks": {
@@ -1555,10 +1563,10 @@
           "hp": 50.0
         },
         "aa_turret_03_dm": {
-          "hp": 61.0
+          "hp": 80.0
         },
         "aa_turret_04_dm": {
-          "hp": 53.0
+          "hp": 80.0
         }
       },
       "gun_main_caliber": {
@@ -2779,6 +2787,8 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.07,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -4384,11 +4394,11 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 40.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -20000.0,
+      "waterMassMult": 300.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 640000.0,
+      "additionalWaterDeathThreshold": 600000.0,
       "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
@@ -4396,7 +4406,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -4404,7 +4414,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.9,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4417,7 +4427,7 @@
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.6,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       },
@@ -4430,19 +4440,19 @@
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.65
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.65
+                "critWaterLevel": 0.7
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.65
+                "critWaterLevel": 0.9
               }
             }
           ]
@@ -4451,7 +4461,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.8,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

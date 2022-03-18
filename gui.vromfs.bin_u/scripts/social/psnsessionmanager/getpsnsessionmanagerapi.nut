@@ -1,12 +1,12 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-local {
+let {
   getPreferredVersion = @() -1
 } = isPlatformSony
   ? require("sonyLib/webApi.nut")
   : null
 
-local {
+let {
   onPsnInvitation = @(...) null,
   invite = @(...) null,
   checkInvitesAfterFlight = @() null

@@ -1,12 +1,11 @@
-local { hasAnyFeature } = require("scripts/user/features.nut")
-local squadApplications = require("scripts/squads/squadApplications.nut")
-local platformModule = require("scripts/clientState/platform.nut")
-local battleRating = require("scripts/battleRating.nut")
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
-local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-local { getMyStateData } = require("scripts/user/userUtils.nut")
+let { hasAnyFeature } = require("scripts/user/features.nut")
+let squadApplications = require("scripts/squads/squadApplications.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let battleRating = require("scripts/battleRating.nut")
+let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
 enum squadEvent
 {
@@ -32,18 +31,18 @@ const DEFAULT_SQUADS_VERSION = 1
 global const SQUADS_VERSION = 2
 const SQUAD_REQEST_TIMEOUT = 45000
 
-local DEFAULT_SQUAD_PROPERTIES = {
+let DEFAULT_SQUAD_PROPERTIES = {
   maxMembers = 4
   isApplicationsEnabled = true
 }
 
-local SQUAD_SIZE_FEATURES_CHECK = {
+let SQUAD_SIZE_FEATURES_CHECK = {
   squad = ["Squad"]
   platoon = ["Clans", "WorldWar"]
   battleGroup = ["WorldWar"]
 }
 
-local DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
+let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 
 ::g_squad_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["squadData", "meReady", "isMyCrewsReady", "lastUpdateStatus", "state",
@@ -96,11 +95,11 @@ local DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     squadData.leaderGameModeId = newLeaderGameModeId
     if (isSquadMember())
     {
-      local event = ::events.getEvent(getLeaderGameModeId())
+      let event = ::events.getEvent(getLeaderGameModeId())
       if (isMeReady() && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
         setReadyFlag(false)
-      updateMyMemberData(getMyStateData())
+      updateMyMemberData(::g_user_utils.getMyStateData())
     }
   }
 
@@ -140,9 +139,9 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
     return
 
   if (data == null)
-    data = getMyStateData()
+    data = ::g_user_utils.getMyStateData()
 
-  local isWorldwarEnabled = ::is_worldwar_enabled()
+  let isWorldwarEnabled = ::is_worldwar_enabled()
   data.__update({
     isReady = isMeReady()
     isCrewsReady = isMyCrewsReady
@@ -152,7 +151,7 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
     squadsVersion = SQUADS_VERSION
     platform = platformModule.targetPlatform
   })
-  local wwOperations = []
+  let wwOperations = []
   if (isWorldwarEnabled) {
     data.canPlayWorldWar = ::g_world_war.canPlayWorldwar()
     foreach (wwOperation in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getShortStatusList())
@@ -160,7 +159,7 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
       if (!wwOperation.isValid())
         continue
 
-      local country = wwOperation.getMyAssignCountry() || wwOperation.getMyClanCountry()
+      let country = wwOperation.getMyAssignCountry() || wwOperation.getMyClanCountry()
       if (country != null)
         wwOperations.append({
           id = wwOperation.id
@@ -267,7 +266,7 @@ g_squad_manager.getLeaderNick <- function getLeaderNick()
   if (!isInSquad())
     return ""
 
-  local leaderData = getSquadLeaderData()
+  let leaderData = getSquadLeaderData()
   if (leaderData == null)
     return ""
 
@@ -326,7 +325,7 @@ g_squad_manager.isSquadMember <- function isSquadMember()
 
 g_squad_manager.isMemberReady <- function isMemberReady(uid)
 {
-  local memberData = getMemberData(uid)
+  let memberData = getMemberData(uid)
   return memberData ? memberData.isReady : false
 }
 
@@ -376,7 +375,7 @@ g_squad_manager.canManageSquad <- function canManageSquad()
 
 g_squad_manager.canInviteMemberByPlatform <- function canInviteMemberByPlatform(name)
 {
-  local platformInfo = getPlatformInfo()
+  let platformInfo = getPlatformInfo()
   if (!::has_feature("Ps4XboxOneInteraction")
       && ((platformModule.isPS4PlayerName(name) && ::isInArray("xboxOne", platformInfo))
          || (platformModule.isXBoxPlayerName(name) && ::isInArray("ps4", platformInfo))))
@@ -434,19 +433,19 @@ g_squad_manager.setSquadSize <- function setSquadSize(newSize)
 g_squad_manager.initSquadSizes <- function initSquadSizes()
 {
   squadSizesList.clear()
-  local sizesBlk = ::get_game_settings_blk()?.squad?.sizes
+  let sizesBlk = ::get_game_settings_blk()?.squad?.sizes
   if (!::u.isDataBlock(sizesBlk))
     return
 
   local maxSize = 0
   for (local i = 0; i < sizesBlk.paramCount(); i++)
   {
-    local name = sizesBlk.getParamName(i)
-    local needAddSize = hasAnyFeature(SQUAD_SIZE_FEATURES_CHECK?[name] ?? [])
+    let name = sizesBlk.getParamName(i)
+    let needAddSize = hasAnyFeature(SQUAD_SIZE_FEATURES_CHECK?[name] ?? [])
     if (!needAddSize)
       continue
 
-    local size = sizesBlk.getParamValue(i)
+    let size = sizesBlk.getParamValue(i)
     squadSizesList.append({
       name = name
       value = size
@@ -492,7 +491,7 @@ g_squad_manager.getPlayerStatusInMySquad <- function getPlayerStatusInMySquad(ui
   if (!isInSquad())
     return squadMemberState.NOT_IN_SQUAD
 
-  local memberData = getMemberData(uid)
+  let memberData = getMemberData(uid)
   if (memberData == null)
     return squadMemberState.NOT_IN_SQUAD
 
@@ -535,11 +534,11 @@ g_squad_manager.crewsReadyCheck <- function crewsReadyCheck()
 
 g_squad_manager.getDiffCrossPlayConditionMembers <- function getDiffCrossPlayConditionMembers()
 {
-  local res = []
+  let res = []
   if (!isInSquad())
     return res
 
-  local leaderCondition = squadData.members[getLeaderUid()].crossplay
+  let leaderCondition = squadData.members[getLeaderUid()].crossplay
   foreach (uid, memberData in squadData.members)
     if (leaderCondition != memberData.crossplay)
       res.append(memberData)
@@ -559,7 +558,7 @@ g_squad_manager.getOnlineMembers <- function getOnlineMembers()
 
 g_squad_manager.getMembersByOnline <- function getMembersByOnline(online = true)
 {
-  local res = []
+  let res = []
   if (!isInSquad())
     return res
 
@@ -583,12 +582,12 @@ g_squad_manager.getOnlineMembersCount <- function getOnlineMembersCount()
 
 g_squad_manager.setReadyFlag <- function setReadyFlag(ready = null, needUpdateMemberData = true)
 {
-  local isLeader = isSquadLeader()
+  let isLeader = isSquadLeader()
   if (isLeader && ready != true)
     return
 
-  local isSetNoReady = (ready == false || (ready == null && isMeReady() == true))
-  local event = ::events.getEvent(getLeaderGameModeId())
+  let isSetNoReady = (ready == false || (ready == null && isMeReady() == true))
+  let event = ::events.getEvent(getLeaderGameModeId())
   if (!isLeader && !isSetNoReady
     && (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event)))
     return
@@ -610,14 +609,14 @@ g_squad_manager.setReadyFlag <- function setReadyFlag(ready = null, needUpdateMe
     isMyCrewsReady = false
 
   if (needUpdateMemberData)
-    updateMyMemberData(getMyStateData())
+    updateMyMemberData(::g_user_utils.getMyStateData())
 
   ::broadcastEvent(squadEvent.SET_READY)
 }
 
 g_squad_manager.setCrewsReadyFlag <- function setCrewsReadyFlag(ready = null, needUpdateMemberData = true)
 {
-  local isLeader = isSquadLeader()
+  let isLeader = isSquadLeader()
   if (isLeader && ready != true)
     return
 
@@ -629,7 +628,7 @@ g_squad_manager.setCrewsReadyFlag <- function setCrewsReadyFlag(ready = null, ne
     return
 
   if (needUpdateMemberData)
-    updateMyMemberData(getMyStateData())
+    updateMyMemberData(::g_user_utils.getMyStateData())
 }
 
 g_squad_manager.createSquad <- function createSquad(callback)
@@ -658,7 +657,7 @@ g_squad_manager.joinSquadChatRoom <- function joinSquadChatRoom()
   if (roomCreateInProgress)
     return
 
-  local name = getSquadRoomName()
+  let name = getSquadRoomName()
   local password = getSquadRoomPassword()
   local callback = null
 
@@ -685,7 +684,7 @@ g_squad_manager.joinSquadChatRoom <- function joinSquadChatRoom()
 
 g_squad_manager.updateSquadData <- function updateSquadData()
 {
-  local data = {}
+  let data = {}
   data.chatInfo <- { name = getSquadRoomName(), password = getSquadRoomPassword() }
   data.wwOperationInfo <- {
     id = getWwOperationId()
@@ -723,7 +722,7 @@ g_squad_manager.checkForSquad <- function checkForSquad()
   if (!::g_login.isLoggedIn())
     return
 
-  local callback = function(response) {
+  let callback = function(response) {
                      if (::getTblValue("error_id", response, null) != msquadErrorId.NOT_SQUAD_MEMBER)
                        if (!::checkMatchingError(response))
                          return
@@ -735,12 +734,12 @@ g_squad_manager.checkForSquad <- function checkForSquad()
                        if (::g_squad_manager.getSquadSize(true) == 1)
                          ::g_squad_manager.disbandSquad()
                        else
-                         ::g_squad_manager.updateMyMemberData(getMyStateData())
+                         ::g_squad_manager.updateMyMemberData(::g_user_utils.getMyStateData())
 
                       ::broadcastEvent(squadEvent.STATUS_CHANGED)
                      }
 
-                     local invites = ::getTblValue("invites", response, null)
+                     let invites = ::getTblValue("invites", response, null)
                      if (invites != null)
                        foreach (squadId in invites)
                          ::g_invites.addInviteToSquad(squadId, squadId.tostring())
@@ -753,7 +752,7 @@ g_squad_manager.checkForSquad <- function checkForSquad()
 
 g_squad_manager.requestSquadData <- function requestSquadData(callback = null)
 {
-  local fullCallback = (@(callback) function(response) {
+  let fullCallback = (@(callback) function(response) {
                          if ("squad" in response)
                          {
                            ::g_squad_manager.onSquadDataChanged(response)
@@ -803,7 +802,7 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
 
   local isInvitingPsnPlayer = false
   if (platformModule.isPS4PlayerName(name)) {
-    local contact = ::getContact(uid, name)
+    let contact = ::getContact(uid, name)
     isInvitingPsnPlayer = true
     if (u.isEmpty(::g_squad_manager.getPsnSessionId()))
       contact.updatePSNIdAndDo(function() {
@@ -811,9 +810,9 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
       })
   }
 
-  local callback = function(response) {
+  let callback = function(response) {
     if (isInvitingPsnPlayer && u.isEmpty(::g_squad_manager.delayedInvites)) {
-      local contact = ::getContact(uid, name)
+      let contact = ::getContact(uid, name)
       contact.updatePSNIdAndDo(function() {
         invite(::g_squad_manager.getPsnSessionId(), contact.psnId)
       })
@@ -845,7 +844,7 @@ g_squad_manager.revokeAllInvites <- function revokeAllInvites(callback)
   local fullCallback = null
   if (callback != null)
   {
-    local counterTbl = { invitesLeft = ::g_squad_manager.getInvitedPlayers().len() }
+    let counterTbl = { invitesLeft = ::g_squad_manager.getInvitedPlayers().len() }
     fullCallback = (@(callback, counterTbl) function() {
                      if (!--counterTbl.invitesLeft)
                        callback()
@@ -861,7 +860,7 @@ g_squad_manager.revokeSquadInvite <- function revokeSquadInvite(uid, callback = 
   if (!isSquadLeader())
     return
 
-  local fullCallback = @(response) ::g_squad_manager.requestSquadData(function() {
+  let fullCallback = @(response) ::g_squad_manager.requestSquadData(function() {
                          if (callback)
                            callback()
                        }.bindenv(this))
@@ -871,14 +870,14 @@ g_squad_manager.revokeSquadInvite <- function revokeSquadInvite(uid, callback = 
 
 g_squad_manager.membershipAplication <- function membershipAplication(sid)
 {
-  local callback = ::Callback(@(response) squadApplications.addApplication(sid, sid), this)
-  local cb = function()
+  let callback = ::Callback(@(response) squadApplications.addApplication(sid, sid), this)
+  let cb = function()
   {
     ::request_matching("msquad.request_membership",
       callback,
       null, {squadId = sid}, null)
   }
-  local canJoin = ::g_squad_utils.canJoinFlightMsgBox(
+  let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
     { allowWhenAlone = false, msgId = "squad/leave_squad_for_application" },
     cb)
 
@@ -902,7 +901,7 @@ g_squad_manager.acceptMembershipAplication <- function acceptMembershipAplicatio
   if (isSquadFull())
     return ::g_popups.add(null, ::loc("matching/SQUAD_FULL"))
 
-  local callback = ::Callback(@(response) addMember(uid.tostring()), this)
+  let callback = ::Callback(@(response) addMember(uid.tostring()), this)
   ::request_matching("msquad.accept_membership", callback, null,{userId = uid}, null)
 }
 
@@ -936,7 +935,7 @@ g_squad_manager.dismissFromSquadByName <- function dismissFromSquadByName(name)
   if (!isSquadLeader())
     return
 
-  local memberData = _getSquadMemberByName(name)
+  let memberData = _getSquadMemberByName(name)
   if (memberData == null)
     return
 
@@ -973,7 +972,7 @@ g_squad_manager.canTransferLeadership <- function canTransferLeadership(uid)
   if (!isSquadLeader())
     return false
 
-  local memberData = getMemberData(uid)
+  let memberData = getMemberData(uid)
   if (memberData == null || memberData.isInvite)
     return false
 
@@ -1023,33 +1022,33 @@ g_squad_manager.rejectSquadInvite <- function rejectSquadInvite(sid)
 
 g_squad_manager.requestMemberData <- function requestMemberData(uid)
 {
-  local memberData = ::getTblValue(uid, ::g_squad_manager.squadData.members, null)
+  let memberData = ::getTblValue(uid, ::g_squad_manager.squadData.members, null)
   if (memberData)
   {
     memberData.isWaiting = true
     ::broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
-  local callback = @(response) ::g_squad_manager.requestMemberDataCallback(uid, response)
+  let callback = @(response) ::g_squad_manager.requestMemberDataCallback(uid, response)
   ::msquad.requestMemberData(uid, callback)
 }
 
 g_squad_manager.requestMemberDataCallback <- function requestMemberDataCallback(uid, response)
 {
-  local receivedData = response?.data
+  let receivedData = response?.data
   if (receivedData == null)
     return
 
-  local memberData = ::g_squad_manager.getMemberData(uid)
+  let memberData = ::g_squad_manager.getMemberData(uid)
   if (memberData == null)
     return
 
-  local currentMemberData = memberData.getData()
-  local receivedMemberData = receivedData?.data
-  local isMemberDataChanged = memberData.update(receivedMemberData)
-  local isMemberDataVehicleChanged = isMemberDataChanged
+  let currentMemberData = memberData.getData()
+  let receivedMemberData = receivedData?.data
+  let isMemberDataChanged = memberData.update(receivedMemberData)
+  let isMemberDataVehicleChanged = isMemberDataChanged
     && ::g_squad_manager.isMemberDataVehicleChanged(currentMemberData, memberData)
-  local contact = ::getContact(memberData.uid, memberData.name)
+  let contact = ::getContact(memberData.uid, memberData.name)
   contact.online = response.online
   memberData.online = response.online
   if (!response.online)
@@ -1072,13 +1071,13 @@ g_squad_manager.requestMemberDataCallback <- function requestMemberDataCallback(
   if (isMemberDataVehicleChanged)
     ::broadcastEvent("SquadMemberVehiclesChanged")
 
-  local memberSquadsVersion = receivedMemberData?.squadsVersion ?? DEFAULT_SQUADS_VERSION
+  let memberSquadsVersion = receivedMemberData?.squadsVersion ?? DEFAULT_SQUADS_VERSION
   ::g_squad_utils.checkSquadsVersion(memberSquadsVersion)
 }
 
 g_squad_manager.setMemberOnlineStatus <- function setMemberOnlineStatus(uid, isOnline)
 {
-  local memberData = getMemberData(uid)
+  let memberData = getMemberData(uid)
   if (memberData == null)
     return
 
@@ -1121,7 +1120,7 @@ g_squad_manager.getSameCyberCafeMembersNum <- function getSameCyberCafeMembersNu
   local num = 0
   if (isInSquad() && squadData.members && ::get_cyber_cafe_level() > 0)
   {
-    local myCyberCafeId = ::get_cyber_cafe_id()
+    let myCyberCafeId = ::get_cyber_cafe_id()
     foreach (uid, memberData in squadData.members)
       if (myCyberCafeId == memberData.cyberCafeId)
         num++
@@ -1154,7 +1153,7 @@ g_squad_manager.reset <- function reset()
   cyberCafeSquadMembersNum = -1
 
   squadData.id = ""
-  local contactsUpdatedList = []
+  let contactsUpdatedList = []
   foreach(id, memberData in squadData.members)
     contactsUpdatedList.append(memberData.getData())
 
@@ -1184,13 +1183,13 @@ g_squad_manager.reset <- function reset()
 
 g_squad_manager.updateInvitedData <- function updateInvitedData(invites)
 {
-  local newInvitedData = {}
+  let newInvitedData = {}
   foreach(uidInt64 in invites)
   {
     if (!::is_numeric(uidInt64))
       continue
 
-    local uid = uidInt64.tostring()
+    let uid = uidInt64.tostring()
     if (uid in squadData.invitedPlayers)
       newInvitedData[uid] <- squadData.invitedPlayers[uid]
     else
@@ -1228,7 +1227,7 @@ g_squad_manager.removeInvitedPlayers <- function removeInvitedPlayers(uid)
 
 g_squad_manager.updateApplications <- function updateApplications(applications)
 {
-  local newApplicationsData = {}
+  let newApplicationsData = {}
   foreach(uid in applications)
   {
     if (uid in squadData.applications)
@@ -1294,7 +1293,7 @@ g_squad_manager.markAllApplicationsSeen <- function markAllApplicationsSeen()
 
 g_squad_manager.checkNewApplications <- function checkNewApplications()
 {
-  local curHasNewApplication = hasNewApplication
+  let curHasNewApplication = hasNewApplication
   hasNewApplication = false
   foreach (application in squadData.applications)
     if (application.isNewApplication == true)
@@ -1309,7 +1308,7 @@ g_squad_manager.checkNewApplications <- function checkNewApplications()
 g_squad_manager.addMember <- function addMember(uid)
 {
   removeInvitedPlayers(uid)
-  local memberData = SquadMember(uid)
+  let memberData = SquadMember(uid)
   squadData.members[uid] <- memberData
   removeApplication(uid.tointeger())
   requestMemberData(uid)
@@ -1320,7 +1319,7 @@ g_squad_manager.addMember <- function addMember(uid)
 
 g_squad_manager.removeMember <- function removeMember(uid)
 {
-  local memberData = getMemberData(uid)
+  let memberData = getMemberData(uid)
   if (memberData == null)
     return
 
@@ -1333,8 +1332,8 @@ g_squad_manager.removeMember <- function removeMember(uid)
 
 g_squad_manager.updatePlatformInfo <- function updatePlatformInfo()
 {
-  local playerPlatforms = []
-  local checksArray = [getMembers(), getInvitedPlayers(), getApplicationsToSquad()]
+  let playerPlatforms = []
+  let checksArray = [getMembers(), getInvitedPlayers(), getApplicationsToSquad()]
   foreach (idx, membersArray in checksArray)
     foreach (uid, member in membersArray)
     {
@@ -1351,10 +1350,10 @@ g_squad_manager.updatePlatformInfo <- function updatePlatformInfo()
 
 g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
 {
-  local alreadyInSquad = isInSquad()
-  local resSquadData = ::getTblValue("squad", data)
+  let alreadyInSquad = isInSquad()
+  let resSquadData = ::getTblValue("squad", data)
 
-  local newSquadId = ::getTblValue("id", resSquadData)
+  let newSquadId = ::getTblValue("id", resSquadData)
   if (::is_numeric(newSquadId)) //bad squad data
     squadData.id = newSquadId.tostring() //!!FIX ME: why this convertion to string?
   else if (!alreadyInSquad)
@@ -1365,14 +1364,14 @@ g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
     return
   }
 
-  local resMembers = ::getTblValue("members", resSquadData, [])
-  local newMembersData = {}
+  let resMembers = ::getTblValue("members", resSquadData, [])
+  let newMembersData = {}
   foreach(uidInt64 in resMembers)
   {
     if (!::is_numeric(uidInt64))
       continue
 
-    local uid = uidInt64.tostring()
+    let uid = uidInt64.tostring()
     if (uid in squadData.members)
       newMembersData[uid] <- squadData.members[uid]
     else
@@ -1391,16 +1390,16 @@ g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
 
   cyberCafeSquadMembersNum = getSameCyberCafeMembersNum()
   _parseCustomSquadData(::getTblValue("data", resSquadData, null))
-  local chatInfo = ::getTblValue("chat", resSquadData, null)
+  let chatInfo = ::getTblValue("chat", resSquadData, null)
   if (chatInfo != null)
   {
-    local chatName = ::getTblValue("id", chatInfo, "")
+    let chatName = ::getTblValue("id", chatInfo, "")
     if (!::u.isEmpty(chatName))
       squadData.chatInfo.name = chatName
   }
 
   if (setState(squadState.IN_SQUAD)) {
-    updateMyMemberData(getMyStateData())
+    updateMyMemberData(::g_user_utils.getMyStateData())
     if (isSquadLeader()) {
       updatePresenceSquad()
       updateSquadData()
@@ -1423,32 +1422,32 @@ g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
 
   ::broadcastEvent(squadEvent.DATA_UPDATED)
 
-  local lastReadyness = isMeReady()
-  local currentReadyness = lastReadyness || isSquadLeader()
+  let lastReadyness = isMeReady()
+  let currentReadyness = lastReadyness || isSquadLeader()
   if (lastReadyness != currentReadyness || !alreadyInSquad)
     setReadyFlag(currentReadyness)
 
-  local lastCrewsReadyness = isMyCrewsReady
-  local currentCrewsReadyness = lastCrewsReadyness || isSquadLeader()
+  let lastCrewsReadyness = isMyCrewsReady
+  let currentCrewsReadyness = lastCrewsReadyness || isSquadLeader()
   if (lastCrewsReadyness != currentCrewsReadyness || !alreadyInSquad)
     setCrewsReadyFlag(currentCrewsReadyness)
 }
 
 g_squad_manager._parseCustomSquadData <- function _parseCustomSquadData(data)
 {
-  local chatInfo = ::getTblValue("chatInfo", data, null)
+  let chatInfo = ::getTblValue("chatInfo", data, null)
   if (chatInfo != null)
     squadData.chatInfo = chatInfo
   else
     squadData.chatInfo = {name = "", password = ""}
 
-  local wwOperationInfo = ::getTblValue("wwOperationInfo", data, null)
+  let wwOperationInfo = ::getTblValue("wwOperationInfo", data, null)
   if (wwOperationInfo != null)
     squadData.wwOperationInfo = wwOperationInfo
   else
     squadData.wwOperationInfo = { id = -1, country = "", battle = null }
 
-  local properties = ::getTblValue("properties", data)
+  let properties = ::getTblValue("properties", data)
   local property = null
   local isPropertyChange = false
   if (::u.isTable(properties))
@@ -1469,7 +1468,7 @@ g_squad_manager._parseCustomSquadData <- function _parseCustomSquadData(data)
 
 g_squad_manager.checkMembersPkg <- function checkMembersPkg(pack) //return list of members dont have this pack
 {
-  local res = []
+  let res = []
   if (!isInSquad())
     return res
 
@@ -1482,7 +1481,7 @@ g_squad_manager.checkMembersPkg <- function checkMembersPkg(pack) //return list 
 
 g_squad_manager.getSquadMembersDataForContact <- function getSquadMembersDataForContact()
 {
-  local contactsData = []
+  let contactsData = []
 
   if (isInSquad())
   {
@@ -1513,8 +1512,8 @@ g_squad_manager.updatePresenceSquad <- function updatePresenceSquad(shouldUpdate
   if (!isSquadLeader())
     return
 
-  local presence = ::g_presence_type.getCurrent()
-  local presenceParams = presence.getParams()
+  let presence = ::g_presence_type.getCurrent()
+  let presenceParams = presence.getParams()
   if (!::u.isEqual(squadData.presence, presenceParams))
   {
     squadData.presence = presenceParams
@@ -1645,11 +1644,11 @@ g_squad_manager.updateCurrentWWOperation <- function updateCurrentWWOperation()
   if (!isSquadLeader() || !::is_worldwar_enabled())
     return
 
-  local wwOperationId = ::ww_get_operation_id()
+  let wwOperationId = ::ww_get_operation_id()
   local country = ::get_profile_country_sq()
   if (wwOperationId > -1)
   {
-    local wwOperation = ::g_ww_global_status_actions.getOperationById(wwOperationId)
+    let wwOperation = ::g_ww_global_status_actions.getOperationById(wwOperationId)
     if (wwOperation)
       country = wwOperation.getMyAssignCountry() || country
   }
@@ -1710,8 +1709,8 @@ g_squad_manager.onEventQueueChangeState <- function onEventQueueChangeState(para
 
 g_squad_manager.isMemberDataVehicleChanged <- function isMemberDataVehicleChanged(currentData, receivedData)
 {
-  local currentCountry = currentData?.country ?? ""
-  local receivedCountry = receivedData?.country ?? ""
+  let currentCountry = currentData?.country ?? ""
+  let receivedCountry = receivedData?.country ?? ""
   if (currentCountry != receivedCountry)
     return true
 
@@ -1744,11 +1743,11 @@ g_squad_manager.setLeaderData <- function setLeaderData(isActualBR = true)
   if (!isSquadLeader())
     return
 
-  local currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
+  let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
   if (!isActualBR && squadData.leaderGameModeId == currentGameModeId)
     return
 
-  local data = clone squadData
+  let data = clone squadData
   data.leaderBattleRating = isActualBR ? battleRating.recentBR.value : 0
   data.leaderGameModeId = isActualBR ? battleRating.recentBrGameModeId.value : currentGameModeId
   setSquadData(data)
@@ -1756,7 +1755,7 @@ g_squad_manager.setLeaderData <- function setLeaderData(isActualBR = true)
 
 g_squad_manager.getMembersNotAllowedInWorldWar <- function getMembersNotAllowedInWorldWar()
 {
-  local res = []
+  let res = []
   foreach (uid, member in getMembers())
     if (!member.isWorldWarAvailable)
       res.append(member)

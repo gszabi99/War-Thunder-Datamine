@@ -1,13 +1,13 @@
-local statsd = require("statsd")
-local psn = require("webApi.nut")
-local datablock = require("DataBlock")
-local stdLog = require("%sqstd/log.nut")()
-local log = stdLog.with_prefix("[PSN: Shop Data: V1] ")
-local logerr = stdLog.logerr
+let statsd = require("statsd")
+let psn = require("webApi.nut")
+let datablock = require("DataBlock")
+let stdLog = require("%sqstd/log.nut")()
+let log = stdLog.with_prefix("[PSN: Shop Data: V1] ")
+let logerr = stdLog.logerr
 
-local { fillBlock } = require("%sqstd/datablock.nut")
+let { fillBlock } = require("%sqstd/datablock.nut")
 
-local STORE_REQUEST_ADDITIONAL_FLAGS = {
+let STORE_REQUEST_ADDITIONAL_FLAGS = {
   flag = "discounts"
   useCurrencySymbol = "false"
   useFree = "true"
@@ -16,23 +16,23 @@ local STORE_REQUEST_ADDITIONAL_FLAGS = {
   size = 100 //TODO: rework on lazy load through, e.g. watched
 }
 
-local categoriesData = datablock()
+let categoriesData = datablock()
 
 local onFinishCollectData = @(...) null
 local onFilterCollectData = @(...) null
 
-local finalizeCollectData = function() {
+let finalizeCollectData = function() {
   onFinishCollectData(categoriesData)
   onFinishCollectData = @(...) null
   onFilterCollectData = @(...) null
 }
 
 // Return next category, after passed, for request info
-local getNextCategoryName = function(lastCategory = "") {
+let getNextCategoryName = function(lastCategory = "") {
   local needRequestCategory = lastCategory == ""
 
   for (local i = 0; i < categoriesData.blockCount(); i++) {
-    local newCat = categoriesData.getBlock(i).getBlockName()
+    let newCat = categoriesData.getBlock(i).getBlockName()
     if (needRequestCategory)
       return newCat
 
@@ -42,8 +42,8 @@ local getNextCategoryName = function(lastCategory = "") {
   return null
 }
 
-local makeRequestForNextCategory = function(onFoundCb, onFinishCb = @() null, lastCategory = "") {
-  local newCategoryRequest = getNextCategoryName(lastCategory)
+let makeRequestForNextCategory = function(onFoundCb, onFinishCb = @() null, lastCategory = "") {
+  let newCategoryRequest = getNextCategoryName(lastCategory)
   if (newCategoryRequest)
     onFoundCb(newCategoryRequest)
   else
@@ -52,19 +52,19 @@ local makeRequestForNextCategory = function(onFoundCb, onFinishCb = @() null, la
 
 // Send requests on skus extended info, per category separatly.
 local requestLinksFullInfo = @(category) null
-local fillLinkFullInfo = @(category = "") makeRequestForNextCategory(
+let fillLinkFullInfo = @(category = "") makeRequestForNextCategory(
   requestLinksFullInfo,
   finalizeCollectData,
   category
 )
 
-local onReceivedResponeOnFullInfo = function(response, category, linksList) {
+let onReceivedResponeOnFullInfo = function(response, category, linksList) {
   if (!(category in categoriesData))
     return
 
   if (response != null)
     response.each(function(linkBlock, idx) {
-      local label = linkBlock.label
+      let label = linkBlock.label
 
       // Received full info, we don't need short
       categoriesData[category].links.removeBlock(label)
@@ -72,7 +72,7 @@ local onReceivedResponeOnFullInfo = function(response, category, linksList) {
       fillBlock(label, categoriesData[category].links, linkBlock)
       categoriesData[category].links[label].setStr("category", category)
 
-      local linkIdx = linksList.findindex(@(p) p == label)
+      let linkIdx = linksList.findindex(@(p) p == label)
       if (linkIdx != null)
         linksList.remove(linkIdx)
     })
@@ -84,16 +84,16 @@ local onReceivedResponeOnFullInfo = function(response, category, linksList) {
 }
 
 requestLinksFullInfo = function(category) {
-  local categoryBlock = categoriesData.getBlockByName(category)
+  let categoryBlock = categoriesData.getBlockByName(category)
   if (!categoryBlock) {
     log("requestLinksFullInfo: no block found for category ", category)
     fillLinkFullInfo(category)
     return
   }
 
-  local linksList = []
+  let linksList = []
   for (local i = categoryBlock.links.blockCount() - 1; i >= 0; i--) {
-    local linkId = categoryBlock.links.getBlock(i).getBlockName()
+    let linkId = categoryBlock.links.getBlock(i).getBlockName()
     if (onFilterCollectData(linkId)) {
       categoriesData[category].links.removeBlock(linkId)
       continue
@@ -179,9 +179,9 @@ collectCategories = function(response, err = null) {
   statsd.send_counter("sq.ingame_store.request", 1,
     {status = "success", request = "dig_category"})
 
-  local categories = []
+  let categories = []
   foreach (data in response) {
-    local products = []
+    let products = []
 
     foreach (link in data.links) {
       if (link.container_type == "category")
@@ -205,7 +205,7 @@ collectCategories = function(response, err = null) {
 }
 
 // Start make requests for categories info
-local collectCategoriesAndItems = @() psn.send(
+let collectCategoriesAndItems = @() psn.send(
   psn.commerce.listCategory(""),
   function(response, err) {
     categoriesData.reset()
@@ -227,7 +227,7 @@ local collectCategoriesAndItems = @() psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
+let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
   psn.send(psn.commerce.detail(idsArray, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {
@@ -241,14 +241,14 @@ local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, 
       statsd.send_counter("sq.ingame_store.request", 1,
         {status = "success", request = "update_specific_item_info"})
 
-      local res = []
+      let res = []
       foreach (idx, itemData in response) {
-        local itemId = idsArray[idx]
+        let itemId = idsArray[idx]
         local category = ""
         local linksBlock = null
 
         for (local i = 0; i < categoriesData.blockCount(); i++) {
-          local catInfo = categoriesData.getBlock(i)
+          let catInfo = categoriesData.getBlock(i)
           if (itemId in catInfo.links) {
             linksBlock = catInfo.links
             category = catInfo.getBlockName()

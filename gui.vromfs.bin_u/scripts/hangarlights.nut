@@ -1,4 +1,4 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::lights <- []
 
 ::light_lerp <- function light_lerp(t1, t2, v)
@@ -14,13 +14,13 @@ local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
     return
 
   ::lights_inited = true
-  local blk = blkFromPath( "levels/hangar_winter_airfield_lights.blk" )
-  local list = blk?.lights ?? ::DataBlock()
+  let blk = blkFromPath( "levels/hangar_winter_airfield_lights.blk" )
+  let list = blk?.lights ?? ::DataBlock()
   for ( local i = 0 ; i < list.blockCount() ; ++i )
   {
-    local src = list.getBlock( i )
+    let src = list.getBlock( i )
 
-    local light =
+    let light =
     {
       id = 0
       pos = src.pos
@@ -44,10 +44,10 @@ local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
     return
 
   ::lights_inited = false
-  local cnt = ::lights.len()
+  let cnt = ::lights.len()
   for ( local i = 0 ; i < cnt ; ++i )
   {
-    local l = ::lights[i]
+    let l = ::lights[i]
     ::destroy_light( l.id )
   }
   ::lights.clear()
@@ -69,11 +69,11 @@ local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
     local col = light_lerp( l.col0, l.col1, ::math.frnd() )
     col *= light_lerp( l.pow0, l.pow1, ::math.frnd() )
 
-    local rad = l.rad + l.rad_range * ::math.frnd()
+    let rad = l.rad + l.rad_range * ::math.frnd()
 
-    local dir = ::Point3(::math.frnd(), ::math.frnd(), ::math.frnd())
+    let dir = ::Point3(::math.frnd(), ::math.frnd(), ::math.frnd())
     dir.normalize()
-    local pos = l.pos + dir * l.pos_range * ::math.frnd()
+    let pos = l.pos + dir * l.pos_range * ::math.frnd()
 
     ::set_light_col( l.id, col )
     ::set_light_pos( l.id, pos )

@@ -1,4 +1,4 @@
-local buttons = ::Watched([])
+let buttons = ::Watched([])
 
 return {
   slotInfoPanelButtons = buttons

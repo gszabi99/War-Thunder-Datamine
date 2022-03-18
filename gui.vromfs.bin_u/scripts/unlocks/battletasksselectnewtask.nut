@@ -6,11 +6,11 @@
   ::gui_start_modal_wnd(::gui_handlers.BattleTasksSelectNewTaskWnd, {battleTasksArray = battleTasksArray})
 }
 
-class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.BattleTasksSelectNewTaskWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
-  sceneTplName = "gui/unlocks/battleTasksSelectNewTask"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneTplName = "%gui/unlocks/battleTasksSelectNewTask"
 
   battleTasksArray = null
   battleTasksConfigsArray = null
@@ -35,11 +35,11 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function initScreen()
   {
-    local listObj = getConfigsListObj()
+    let listObj = getConfigsListObj()
     if (listObj)
     {
-      local currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
-      local filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(battleTasksArray, currentGameModeId)
+      let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
+      let filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(battleTasksArray, currentGameModeId)
 
       local index = 0
       if (filteredTasksArray.len())
@@ -51,7 +51,7 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function getCurrentConfig()
   {
-    local listObj = getConfigsListObj()
+    let listObj = getConfigsListObj()
     if (listObj)
       return battleTasksConfigsArray[listObj.getValue()]
 
@@ -60,8 +60,8 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function onSelectTask(obj)
   {
-    local config = getCurrentConfig()
-    local taskObj = getCurrentTaskObj()
+    let config = getCurrentConfig()
+    let taskObj = getCurrentTaskObj()
 
     ::showBtn("btn_reroll", false, taskObj)
     showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
@@ -69,15 +69,15 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function onSelect(obj)
   {
-    local config = getCurrentConfig()
+    let config = getCurrentConfig()
     if (!config)
       return
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.addStr("mode", "accept")
     blk.addStr("unlockName", config.id)
 
-    local taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
+    let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
     ::g_tasker.addTask(taskId,
       {showProgressBox = true},
       ::Callback(function() {
@@ -94,11 +94,11 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function onViewBattleTaskRequirements()
   {
-    local config = getCurrentConfig()
+    let config = getCurrentConfig()
     if (!isConfigHaveConditions(config))
       return
 
-    local awardsList = ::u.map(config.names,
+    let awardsList = ::u.map(config.names,
       @(id) ::build_log_unlock_data(
         ::build_conditions_config(
           ::g_unlocks.getUnlockById(id)
@@ -121,11 +121,11 @@ class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiH
 
   function getCurrentTaskObj()
   {
-    local listObj = getConfigsListObj()
+    let listObj = getConfigsListObj()
     if (!::checkObj(listObj))
       return null
 
-    local value = listObj.getValue()
+    let value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return null
 

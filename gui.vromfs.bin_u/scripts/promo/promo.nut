@@ -1,10 +1,10 @@
-local time = require("scripts/time.nut")
-local { hasAllFeatures } = require("scripts/user/features.nut")
-local promoConditions = require("scripts/promo/promoConditions.nut")
-local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-local { getPromoAction, isVisiblePromoByAction } = require("scripts/promo/promoActions.nut")
-local { getPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let time = require("scripts/time.nut")
+let { hasAllFeatures } = require("scripts/user/features.nut")
+let promoConditions = require("scripts/promo/promoConditions.nut")
+let { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+let { getPromoAction, isVisiblePromoByAction } = require("scripts/promo/promoActions.nut")
+let { getPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
@@ -52,24 +52,24 @@ local { GUI } = require("scripts/utils/configs.nut")
 
 g_promo.checkOldRecordsOnInit <- function checkOldRecordsOnInit()
 {
-  local blk = ::loadLocalByAccount("seen")
+  let blk = ::loadLocalByAccount("seen")
   if (!blk)
     return
 
   foreach (blockName, convertTimeFunc in oldRecordsCheckTable)
   {
-    local newBlk = ::DataBlock()
-    local checkBlock = blk.getBlockByName(blockName)
+    let newBlk = ::DataBlock()
+    let checkBlock = blk.getBlockByName(blockName)
     if (!checkBlock)
       continue
 
     for (local i = 0; i < checkBlock.paramCount(); i++)
     {
-      local id = checkBlock.getParamName(i)
-      local lastTimeSeen = checkBlock.getParamValue(i)
-      local days = convertTimeFunc(lastTimeSeen)
+      let id = checkBlock.getParamName(i)
+      let lastTimeSeen = checkBlock.getParamValue(i)
+      let days = convertTimeFunc(lastTimeSeen)
 
-      local minDay = time.getUtcDays() - BUTTON_OUT_OF_DATE_DAYS
+      let minDay = time.getUtcDays() - BUTTON_OUT_OF_DATE_DAYS
       if (days > minDay)
         continue
 
@@ -84,25 +84,25 @@ g_promo.recievePromoBlk <- function recievePromoBlk()
   local customPromoBlk = ::get_gui_regional_blk()?.promo_block
   if (!::u.isDataBlock(customPromoBlk)) //compatibility with not exist or old gui_regional
   {
-    local blk = ::get_game_settings_blk()
+    let blk = ::get_game_settings_blk()
     customPromoBlk = blk?.promo_block
     if (!::u.isDataBlock(customPromoBlk))
       customPromoBlk = ::DataBlock()
   }
-  local showAllPromo = ::g_promo.getShowAllPromoBlocks()
+  let showAllPromo = ::g_promo.getShowAllPromoBlocks()
 
-  local promoBlk = ::u.copy(customPromoBlk)
-  local guiBlk = GUI.get()
-  local staticPromoBlk = guiBlk?.static_promo_block
+  let promoBlk = ::u.copy(customPromoBlk)
+  let guiBlk = GUI.get()
+  let staticPromoBlk = guiBlk?.static_promo_block
 
   if (!::u.isEmpty(staticPromoBlk))
   {
     //---Check on non-unique block names-----
     for (local i = 0; i < staticPromoBlk.blockCount(); i++)
     {
-      local block = staticPromoBlk.getBlock(i)
-      local blockName = block.getBlockName()
-      local haveDouble = blockName in promoBlk
+      let block = staticPromoBlk.getBlock(i)
+      let blockName = block.getBlockName()
+      let haveDouble = blockName in promoBlk
       if (!haveDouble || showAllPromo)
         promoBlk[blockName] <- ::u.copy(block)
     }
@@ -115,7 +115,7 @@ g_promo.recievePromoBlk <- function recievePromoBlk()
 
 g_promo.requestUpdate <- function requestUpdate()
 {
-  local promoBlk = ::g_promo.recievePromoBlk()
+  let promoBlk = ::g_promo.recievePromoBlk()
   if (::u.isEmpty(promoBlk))
     return false
 
@@ -141,10 +141,10 @@ g_promo.needUpdate <- function needUpdate(newData)
   local reqForceUpdate = false
   for (local i = 0; i < newData.blockCount(); i++)
   {
-    local block = newData.getBlock(i)
-    local id = block.getBlockName()
+    let block = newData.getBlock(i)
+    let id = block.getBlockName()
 
-    local show = checkBlockVisibility(block)
+    let show = checkBlockVisibility(block)
     if (::getTblValue(id, visibilityStatuses) != show)
     {
       visibilityStatuses[id] <- show
@@ -165,11 +165,11 @@ g_promo.createActionParamsData <- function createActionParamsData(actionName, pa
 
 g_promo.gatherActionParamsData <- function gatherActionParamsData(block)
 {
-  local actionStr = ::getTblValue("action", block)
+  let actionStr = ::getTblValue("action", block)
   if (::u.isEmpty(actionStr))
     return null
 
-  local params = ::g_string.split(actionStr, paramsSeparator)
+  let params = ::g_string.split(actionStr, paramsSeparator)
   local action = params.remove(0)
   return createActionParamsData(action, params)
 }
@@ -189,53 +189,53 @@ g_promo.getActionParamsData <- function getActionParamsData(blockId)
 
 g_promo.generateBlockView <- function generateBlockView(block)
 {
-  local id = block.getBlockName()
-  local view = ::buildTableFromBlk(block)
-  local promoButtonConfig = getPromoButtonConfig(id)
+  let id = block.getBlockName()
+  let view = ::buildTableFromBlk(block)
+  let promoButtonConfig = getPromoButtonConfig(id)
   view.id <- id
   view.type <- ::g_promo.getType(block)
   view.collapsed <- ::g_promo.isCollapsed(id)? "yes" : "no"
   view.fillBlocks <- []
   view.h_ratio <- 1 / (block?.aspect_ratio ?? 1.0)
 
-  local unseenIcon = promoButtonConfig?.getCustomSeenId()
+  let unseenIcon = promoButtonConfig?.getCustomSeenId()
   if (unseenIcon)
     view.unseenIcon <- unseenIcon
   view.notifyNew <- !unseenIcon && (view?.notifyNew ?? true)
 
-  local isDebugModeEnabled = getShowAllPromoBlocks()
-  local blocksCount = block.blockCount()
-  local isMultiblock = block?.multiple ?? false
+  let isDebugModeEnabled = getShowAllPromoBlocks()
+  let blocksCount = block.blockCount()
+  let isMultiblock = block?.multiple ?? false
   view.isMultiblock <- isMultiblock
 
   view.radiobuttons <- []
   if (isMultiblock)
   {
-    local value = ::to_integer_safe(multiblockData?[id]?.value ?? 0)
-    local switchVal = ::to_integer_safe(block?.switch_time_sec || DEFAULT_TIME_SWITCH_SEC)
-    local mSwitchVal = ::to_integer_safe(block?.manual_switch_time_multiplayer || DEFAULT_MANUAL_SWITCH_TIME_MULTIPLAYER)
-    local lifeTimeVal = multiblockData?[id]?.life_time ?? switchVal
+    let value = ::to_integer_safe(multiblockData?[id]?.value ?? 0)
+    let switchVal = ::to_integer_safe(block?.switch_time_sec || DEFAULT_TIME_SWITCH_SEC)
+    let mSwitchVal = ::to_integer_safe(block?.manual_switch_time_multiplayer || DEFAULT_MANUAL_SWITCH_TIME_MULTIPLAYER)
+    let lifeTimeVal = multiblockData?[id]?.life_time ?? switchVal
     multiblockData[id] <- { value = value,
                             switch_time_sec = switchVal,
                             manual_switch_time_multiplayer = mSwitchVal,
                             life_time = lifeTimeVal}
   }
 
-  local requiredBlocks = isMultiblock? blocksCount : 1
+  let requiredBlocks = isMultiblock? blocksCount : 1
   local hasImage = isMultiblock
   for (local i = 0; i < requiredBlocks; i++)
   {
-    local blockId = view.id + (isMultiblock? ("_" + i) : "")
-    local actionParamsKey = getActionParamsKey(blockId)
+    let blockId = view.id + (isMultiblock? ("_" + i) : "")
+    let actionParamsKey = getActionParamsKey(blockId)
 
-    local checkBlock = isMultiblock? block.getBlock(i) : block
-    local fillBlock = ::buildTableFromBlk(checkBlock)
+    let checkBlock = isMultiblock? block.getBlock(i) : block
+    let fillBlock = ::buildTableFromBlk(checkBlock)
     fillBlock.blockId <- actionParamsKey
 
-    local actionData = gatherActionParamsData(fillBlock) || gatherActionParamsData(block)
+    let actionData = gatherActionParamsData(fillBlock) || gatherActionParamsData(block)
     if (actionData)
     {
-      local action = actionData.action
+      let action = actionData.action
       if (action == "url" && actionData.paramsArray.len())
         fillBlock.link <- validateLink(actionData.paramsArray[0])
 
@@ -255,7 +255,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
       view.collapsedAction <- PERFORM_ACTON_NAME
     }
 
-    local image = getImage(fillBlock)
+    let image = getImage(fillBlock)
     if (image != "")
     {
       fillBlock.image <- image
@@ -269,10 +269,10 @@ g_promo.generateBlockView <- function generateBlockView(block)
     fillBlock.needAutoScroll <- getStringWidthPx(text, "fontNormal")
       > ::to_pixels("1@arrowButtonWidth-2@blockInterval") ? "yes" : "no"
 
-    local showTextShade = !::is_chat_message_empty(text) || isDebugModeEnabled
+    let showTextShade = !::is_chat_message_empty(text) || isDebugModeEnabled
     fillBlock.showTextShade <- showTextShade
 
-    local isBlockSelected = isValueCurrentInMultiBlock(id, i)
+    let isBlockSelected = isValueCurrentInMultiBlock(id, i)
     local show = checkBlockVisibility(checkBlock) && isBlockSelected
     if (view.type == PROMO_BUTTON_TYPE.ARROW && !showTextShade)
       show = false
@@ -300,7 +300,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
 g_promo.getCollapsedIcon <- function getCollapsedIcon(view, promoButtonId)
 {
   local result = ""
-  local icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
+  let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
   if (icon)
     result = ::getTblValue(icon, view, icon) //can be set as param
   else
@@ -312,7 +312,7 @@ g_promo.getCollapsedIcon <- function getCollapsedIcon(view, promoButtonId)
 g_promo.getCollapsedText <- function getCollapsedText(view, promoButtonId)
 {
   local result = ""
-  local text = getPromoButtonConfig(promoButtonId)?.collapsedText
+  let text = getPromoButtonConfig(promoButtonId)?.collapsedText
   if (text)
     result = ::getTblValue(text, view, defaultCollapsedText) //can be set as param
   else
@@ -348,13 +348,13 @@ g_promo.getImage <- function getImage(view)
 
 g_promo.checkBlockTime <- function checkBlockTime(block)
 {
-  local utcTime = ::get_charserver_time_sec()
+  let utcTime = ::get_charserver_time_sec()
 
-  local startTime = getUTCTimeFromBlock(block, "startTime")
+  let startTime = getUTCTimeFromBlock(block, "startTime")
   if (startTime > 0 && startTime >= utcTime)
     return false
 
-  local endTime = getUTCTimeFromBlock(block, "endTime")
+  let endTime = getUTCTimeFromBlock(block, "endTime")
   if (endTime > 0 && utcTime >= endTime)
     return false
 
@@ -383,7 +383,7 @@ g_promo.checkBlockUnlock <- function checkBlockUnlock(block)
 
 g_promo.isVisibleByAction <- function isVisibleByAction(block)
 {
-  local actionData = gatherActionParamsData(block)
+  let actionData = gatherActionParamsData(block)
   if (!actionData)
     return true
 
@@ -420,7 +420,7 @@ g_promo.isLinkVisible <- function isLinkVisible(block)
 
 g_promo.getUTCTimeFromBlock <- function getUTCTimeFromBlock(block, timeProperty)
 {
-  local timeText = ::getTblValue(timeProperty, block, null)
+  let timeText = ::getTblValue(timeProperty, block, null)
   if (!::u.isString(timeText) || timeText.len() == 0)
     return -1
   return time.getTimestampFromStringUtc(timeText)
@@ -458,7 +458,7 @@ g_promo.setButtonText <- function setButtonText(buttonObj, id, text = "")
   if (!::checkObj(buttonObj))
     return
 
-  local obj = buttonObj.findObject(id + "_text")
+  let obj = buttonObj.findObject(id + "_text")
   if (::check_obj(obj))
   {
     obj.setValue(text)
@@ -479,7 +479,7 @@ g_promo.initNewWidget <- function initNewWidget(id, obj, widgetsWithCounter = []
     return null
 
   local newIconWidget = null
-  local widgetContainer = obj.findObject(id + "_new_icon_widget_container")
+  let widgetContainer = obj.findObject(id + "_new_icon_widget_container")
   if (::checkObj(widgetContainer))
     newIconWidget = NewIconWidget(obj.getScene(), widgetContainer)
   return newIconWidget
@@ -487,7 +487,7 @@ g_promo.initNewWidget <- function initNewWidget(id, obj, widgetsWithCounter = []
 
 g_promo.isWidgetSeenById <- function isWidgetSeenById(id)
 {
-  local blk = ::loadLocalByAccount("seen/promo")
+  let blk = ::loadLocalByAccount("seen/promo")
   return id in blk
 }
 
@@ -496,8 +496,8 @@ g_promo.setSimpleWidgetData <- function setSimpleWidgetData(widgetsTable, id, wi
   if (::isInArray(id, widgetsWithCounter))
     return
 
-  local blk = ::loadLocalByAccount("seen/promo")
-  local table = ::buildTableFromBlk(blk)
+  let blk = ::loadLocalByAccount("seen/promo")
+  let table = ::buildTableFromBlk(blk)
 
   if (!(id in table))
     table[id] <- time.getUtcDays()
@@ -510,9 +510,9 @@ g_promo.setSimpleWidgetData <- function setSimpleWidgetData(widgetsTable, id, wi
 
 g_promo.updateSimpleWidgetsData <- function updateSimpleWidgetsData(table)
 {
-  local minDay = time.getUtcDays() - BUTTON_OUT_OF_DATE_DAYS
-  local idOnRemoveArray = []
-  local blk = ::DataBlock()
+  let minDay = time.getUtcDays() - BUTTON_OUT_OF_DATE_DAYS
+  let idOnRemoveArray = []
+  let blk = ::DataBlock()
   foreach(id, day in table)
   {
     if (day < minDay)
@@ -535,8 +535,8 @@ g_promo.performAction <- function performAction(handler, obj)
   if (!::checkObj(obj))
     return false
 
-  local key = obj?.id
-  local actionData = getActionParamsData(key)
+  let key = obj?.id
+  let actionData = getActionParamsData(key)
   if (!actionData)
   {
     ::dagor.assertf(false, "Promo: Not found action params by key " + (key ?? "NULL"))
@@ -548,8 +548,8 @@ g_promo.performAction <- function performAction(handler, obj)
 
 g_promo.launchAction <- function launchAction(actionData, handler, obj)
 {
-  local action = actionData.action
-  local actionFunc = getPromoAction(action)
+  let action = actionData.action
+  let actionFunc = getPromoAction(action)
   if (!actionFunc)
   {
     ::dagor.assert(false, "Promo: Not found action in actions table. Action " + action)
@@ -592,9 +592,9 @@ g_promo.setShowAllPromoBlocks <- function setShowAllPromoBlocks(value)
 
 g_promo.toggleItem <- function toggleItem(toggleButtonObj)
 {
-  local promoButtonObj = toggleButtonObj.getParent()
-  local toggled = isCollapsed(promoButtonObj.id)
-  local newVal = changeToggleStatus(promoButtonObj.id, toggled)
+  let promoButtonObj = toggleButtonObj.getParent()
+  let toggled = isCollapsed(promoButtonObj.id)
+  let newVal = changeToggleStatus(promoButtonObj.id, toggled)
   promoButtonObj.collapsed = newVal? "yes" : "no"
   toggleButtonObj.getScene().applyPendingChanges(false)
   ::move_mouse_on_obj(toggleButtonObj)
@@ -602,14 +602,14 @@ g_promo.toggleItem <- function toggleItem(toggleButtonObj)
 
 g_promo.isCollapsed <- function isCollapsed(id)
 {
-  local blk = ::loadLocalByAccount("seen/promo_collapsed")
+  let blk = ::loadLocalByAccount("seen/promo_collapsed")
   return blk?[id] ?? false
 }
 
 g_promo.changeToggleStatus <- function changeToggleStatus(id, value)
 {
-  local newValue = !value
-  local blk = ::loadLocalByAccount("seen/promo_collapsed") || ::DataBlock()
+  let newValue = !value
+  let blk = ::loadLocalByAccount("seen/promo_collapsed") || ::DataBlock()
   blk[id] = newValue
 
   ::saveLocalByAccount("seen/promo_collapsed", blk)
@@ -618,11 +618,11 @@ g_promo.changeToggleStatus <- function changeToggleStatus(id, value)
 
 g_promo.updateCollapseStatuses <- function updateCollapseStatuses(arr)
 {
-  local blk = ::loadLocalByAccount("seen/promo_collapsed")
+  let blk = ::loadLocalByAccount("seen/promo_collapsed")
   if (!blk)
     return
 
-  local clearedBlk = ::DataBlock()
+  let clearedBlk = ::DataBlock()
   foreach(id, status in blk)
   {
     if (::isInArray(id, arr))
@@ -646,21 +646,21 @@ g_promo.switchBlock <- function switchBlock(obj, promoHolderObj)
   if (obj?.blockId == null || multiblockData?[obj.blockId] == null)
     return
 
-  local promoButtonObj = promoHolderObj.findObject(obj.blockId)
-  local value = obj.getValue()
-  local prevValue = multiblockData[promoButtonObj.id].value
+  let promoButtonObj = promoHolderObj.findObject(obj.blockId)
+  let value = obj.getValue()
+  let prevValue = multiblockData[promoButtonObj.id].value
   if (prevValue >= 0)
   {
-    local prevObj = promoButtonObj.findObject(::g_promo.getActionParamsKey(promoButtonObj.id + "_" + prevValue))
+    let prevObj = promoButtonObj.findObject(::g_promo.getActionParamsKey(promoButtonObj.id + "_" + prevValue))
     prevObj.animation = "hide"
   }
 
-  local searchId = ::g_promo.getActionParamsKey(promoButtonObj.id + "_" + value)
-  local curObj = promoButtonObj.findObject(searchId)
+  let searchId = ::g_promo.getActionParamsKey(promoButtonObj.id + "_" + value)
+  let curObj = promoButtonObj.findObject(searchId)
   curObj.animation = "show"
   multiblockData[promoButtonObj.id].value = value
 
-  local curListObj = curObj.findObject("multiblock_radiobuttons_list")
+  let curListObj = curObj.findObject("multiblock_radiobuttons_list")
   if (!::check_obj(curListObj))
       return
 
@@ -672,7 +672,7 @@ g_promo.manualSwitchBlock <- function manualSwitchBlock(obj, promoHolderObj)
   if (!::check_obj(promoHolderObj))
     return
 
-  local pId = obj.blockId
+  let pId = obj.blockId
 
   multiblockData[pId].life_time = multiblockData[pId].manual_switch_time_multiplayer * multiblockData[pId].switch_time_sec
 
@@ -690,11 +690,11 @@ g_promo.selectNextBlock <- function selectNextBlock(obj, dt)
 
   multiblockData[obj.id].life_time = multiblockData[obj.id].switch_time_sec
 
-  local listObj = obj.findObject("multiblock_radiobuttons_list")
+  let listObj = obj.findObject("multiblock_radiobuttons_list")
   if (!::check_obj(listObj))
     return
 
-  local curVal = listObj.getValue()
+  let curVal = listObj.getValue()
   local nextVal = curVal + 1
   if (nextVal >= listObj.childrenCount())
     nextVal = 0

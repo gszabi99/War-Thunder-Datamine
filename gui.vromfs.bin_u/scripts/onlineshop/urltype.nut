@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
 
 enum URL_CHECK_ORDER
@@ -31,14 +31,14 @@ enum URL_CHECK_ORDER
 
   applyCurLang = function(url)
   {
-    local langKey = getCurLangKey();
+    let langKey = getCurLangKey();
     return langKey ? applyLangKey(url, langKey) : url
   }
   getCurLangKey = function()
   {
     if (!supportedLangs)
       return null
-    local curLang = ::g_language.getShortName()
+    let curLang = ::g_language.getShortName()
     if (::isInArray(curLang, supportedLangs))
       return curLang
     return null
@@ -83,12 +83,12 @@ enums.addTypesByGlobalName("g_url_type", {
     ]
     applyLangKey = function(url, langKey)
     {
-      local keyBeforeLang = ".com/"
-      local idx = url.indexof(keyBeforeLang)
+      let keyBeforeLang = ".com/"
+      let idx = url.indexof(keyBeforeLang)
       if (idx == null)
         return url + "/" + langKey
 
-      local insertIdx = idx + keyBeforeLang.len()
+      let insertIdx = idx + keyBeforeLang.len()
       local afterLangIdx = url.indexof("/", insertIdx)
       if (afterLangIdx == null || !::isInArray(url.slice(insertIdx, afterLangIdx), supportedLangs))
         afterLangIdx = insertIdx

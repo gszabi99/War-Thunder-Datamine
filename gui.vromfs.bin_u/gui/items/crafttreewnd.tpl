@@ -25,7 +25,7 @@ root {
       scrollbarShortcuts:t='yes'
       tdiv {
         id:t='craft_header'
-        include "gui/items/craftTreeHeader"
+        include "%gui/items/craftTreeHeader"
       }
 
       craftBranchBody {
@@ -45,7 +45,7 @@ root {
         on_hold_start:t='::gcb.delayedTooltipListHoldStart'
         on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
 
-        include "gui/items/craftTreeBody"
+        include "%gui/items/craftTreeBody"
       }
     }
   }

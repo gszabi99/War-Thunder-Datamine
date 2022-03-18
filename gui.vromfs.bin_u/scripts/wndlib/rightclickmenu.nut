@@ -1,4 +1,4 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 /*
   config = [
     {
@@ -32,10 +32,10 @@ global enum RCLICK_MENU_ORIENT
   })
 }
 
-class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
+::gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/rightClickMenu"
+  sceneTplName = "%gui/rightClickMenu"
   needVoiceChat = false
 
   owner        = null
@@ -53,7 +53,7 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
 
   function getSceneTplView()
   {
-    local view = {
+    let view = {
       actions = []
     }
 
@@ -73,7 +73,7 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
                   ? item.enabled.call(owner)
                   : item.enabled
 
-      local text = item?.text
+      let text = item?.text
       actionData = {
         id = idPrefix + idx.tostring()
         text = text
@@ -98,16 +98,16 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
       return goBack()
 
     timeOpen = ::dagor.getCurTime()
-    local listObj = scene.findObject("rclick_menu_div")
+    let listObj = scene.findObject("rclick_menu_div")
 
     guiScene.setUpdatesEnabled(false, false)
     initTimers(listObj, config.actions)
     guiScene.setUpdatesEnabled(true, true)
 
-    local rootSize = guiScene.getRoot().getSize()
-    local cursorPos = position ? position : ::get_dagui_mouse_cursor_pos_RC()
-    local menuSize = listObj.getSize()
-    local menuPos =  [cursorPos[0], cursorPos[1]]
+    let rootSize = guiScene.getRoot().getSize()
+    let cursorPos = position ? position : ::get_dagui_mouse_cursor_pos_RC()
+    let menuSize = listObj.getSize()
+    let menuPos =  [cursorPos[0], cursorPos[1]]
     for(local i = 0; i < 2; i++)
       if (menuPos[i] + menuSize[i] > rootSize[i])
         if (menuPos[i] > menuSize[i])
@@ -115,7 +115,7 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
         else
           menuPos[i] = ((rootSize[i] - menuSize[i]) / 2).tointeger()
 
-    local shift = orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
+    let shift = orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
     listObj.pos = menuPos[0] - shift + ", " + menuPos[1]
     listObj.width = listObj.getSize()[0]
     guiScene.applyPendingChanges(false)
@@ -126,17 +126,17 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
   {
     foreach(idx, item in actions)
     {
-      local onUpdateButton = ::getTblValue("onUpdateButton", item)
+      let onUpdateButton = ::getTblValue("onUpdateButton", item)
       if (!::u.isFunction(onUpdateButton))
         continue
 
-      local btnObj = listObj.findObject(idPrefix + idx.tostring())
+      let btnObj = listObj.findObject(idPrefix + idx.tostring())
       if (!::check_obj(btnObj))
         continue
 
       SecondsUpdater(btnObj, function(obj, params)
       {
-        local data = onUpdateButton(params)
+        let data = onUpdateButton(params)
         updateBtnByTable(obj, data)
         return data?.stopUpdate ?? false
       }.bindenv(this))
@@ -145,14 +145,14 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
 
   function updateBtnByTable(btnObj, data)
   {
-    local text = ::getTblValue("text", data)
+    let text = ::getTblValue("text", data)
     if (!::u.isEmpty(text))
     {
       btnObj.setValue(::g_dagui_utils.removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 
-    local enable = ::getTblValue("enable", data)
+    let enable = ::getTblValue("enable", data)
     if (::u.isBool(enable))
       btnObj.enable(enable)
   }
@@ -177,7 +177,7 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
   function afterModalDestroy()
   {
     if (choosenValue in config.actions) {
-      local applyFunc = ::getTblValue("action", config.actions[choosenValue])
+      let applyFunc = ::getTblValue("action", config.actions[choosenValue])
       ::call_for_handler(owner, applyFunc)
     }
     onClose?()

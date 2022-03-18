@@ -2349,9 +2349,6 @@
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 40.0,
-          "speedPitch": 34.0,
-          "bullets": 1500,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2368,6 +2365,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 40.0,
+          "speedPitch": 30.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -2414,9 +2415,6 @@
           "breechDP": "main_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 40.0,
-          "speedPitch": 34.0,
-          "bullets": 1500,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2433,6 +2431,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 40.0,
+          "speedPitch": 30.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_02",
@@ -3320,7 +3322,7 @@
             "fireEvent": "ammo_fire_1",
             "explosionEvent": "ammo_explosion_1",
             "ammunition_storage_02_dm": {
-              "count": 3000
+              "count": 4000
             }
           }
         }
@@ -3329,19 +3331,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 40.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -13000.0,
+      "waterMassMult": 80.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 640000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterDeathThreshold": 400000.0,
+      "additionalWaterShouldDiePercent": 0.55,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
       "maxHeelingTime": 10.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -3349,7 +3351,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.7,
+          "weight": 0.9,
           "maxWaterAlive": 1.0
         }
       },

@@ -1,6 +1,6 @@
-local clustersModule = require("scripts/clusterSelect.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let clustersModule = require("scripts/clusterSelect.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 global enum queueStates
 {
@@ -11,7 +11,7 @@ global enum queueStates
   IN_QUEUE
 }
 
-local hiddenMatchingError = {
+let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true
 }
 
@@ -74,7 +74,7 @@ foreach (fn in [
 
   function createQueue(params, needModifyParamsByType = false)
   {
-    local queueType = ::g_queue_type.getQueueTypeByParams(params)
+    let queueType = ::g_queue_type.getQueueTypeByParams(params)
 
     if (needModifyParamsByType)
       params = queueType.prepareQueueParams(params)
@@ -132,7 +132,7 @@ foreach (fn in [
 
   function findAllQueues(params, typeMask = -1)
   {
-    local res = []
+    let res = []
     foreach(q in queuesList)
       if (typeMask < 0 || (typeMask & q.typeBit))
         if (isEqual(params, q.params))
@@ -158,7 +158,7 @@ foreach (fn in [
 
   function getActiveQueueTypes()
   {
-    local res = []
+    let res = []
     foreach(queue in queuesList)
       if (isQueueActive(queue))
          ::u.appendOnce(queue.queueType, res)
@@ -217,7 +217,7 @@ foreach (fn in [
     if (queue.state == queueState)
       return
 
-    local wasAnyActive = isAnyQueuesActive()
+    let wasAnyActive = isAnyQueuesActive()
 
     queue.state = queueState
     queue.activateTime = isQueueActive(queue)? ::dagor.getCurTime() : -1
@@ -283,9 +283,8 @@ foreach (fn in [
 
     isLeaveDelayed = false
     lastQueueReqParams = clone params
-
     ::broadcastEvent("BeforeJoinQueue")
-    local queue = createQueue(params, true)
+    let queue = createQueue(params, true)
     queue.join(
       ::Callback(function(response) {
         afterJoinQueue(queue)
@@ -309,7 +308,7 @@ foreach (fn in [
   {
     if (params)
     {
-      local list = findAllQueues(params)
+      let list = findAllQueues(params)
       foreach(q in list)
         leaveQueue(q)
       return
@@ -320,7 +319,7 @@ foreach (fn in [
 
     showProgressBox(true, "wait/queueLeave")
 
-    local callback = _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
+    let callback = _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
     foreach(queueType in getActiveQueueTypes())
       queueType.leaveAllQueues(callback, callback, false)
 
@@ -433,7 +432,7 @@ foreach (fn in [
   //handles all queus, matches with @params
   function afterLeaveQueues(params)
   {
-    local list = findAllQueues(params)
+    let list = findAllQueues(params)
     foreach(q in list)
       if (q.removeQueueByParams(params))
       {
@@ -487,7 +486,7 @@ foreach (fn in [
     foreach(q in queuesList)
       if (isQueueActive(q))
       {
-        local event = getQueueEvent(q)
+        let event = getQueueEvent(q)
         if (event && !::events.isEventMultiSlotEnabled(event))
           return false
       }
@@ -496,7 +495,7 @@ foreach (fn in [
 
   function isClanQueue(queue)
   {
-    local event = ::events.getEvent(queue.name)
+    let event = ::events.getEvent(queue.name)
     if (event == null)
       return false
     return ::events.isEventForClan(event)
@@ -539,11 +538,11 @@ foreach (fn in [
 
   function getMyRankInQueue(queue)
   {
-    local event = getQueueEvent(queue)
+    let event = getQueueEvent(queue)
     if (!event)
       return -1
 
-    local country = getQueueCountry(queue)
+    let country = getQueueCountry(queue)
     return ::events.getSlotbarRank(event,
                                    country,
                                    ::getTblValue(country, getQueueSlots(queue), 0)
@@ -581,8 +580,8 @@ foreach (fn in [
 
   function getQueuePreferredViewClass(queue)
   {
-    local defaultHandler = ::gui_handlers.QiHandlerByTeams
-    local event = getQueueEvent(queue)
+    let defaultHandler = ::gui_handlers.QiHandlerByTeams
+    let event = getQueueEvent(queue)
     if (!event)
       return defaultHandler
     if (!::events.isEventForClan(event) && ::events.isEventSymmetricTeams(event))
@@ -600,7 +599,7 @@ foreach (fn in [
 
   function applyQueueInfo(info, statsClass)
   {
-    local queue = ("queueId" in info) ? findQueueByQueueUid(info.queueId)
+    let queue = ("queueId" in info) ? findQueueByQueueUid(info.queueId)
                   : ("name" in info)  ? findQueueByName(info.name)
                                       : null
     if (!queue)
@@ -615,7 +614,7 @@ foreach (fn in [
   function onEventQueueInfoRecived(params)
   {
     local haveChanges = false
-    local queueInfo = ::getTblValue("queue_info", params)
+    let queueInfo = ::getTblValue("queue_info", params)
 
     if (::u.isTable(queueInfo))
       haveChanges = applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
@@ -633,7 +632,7 @@ foreach (fn in [
     if (delayedInfoUpdateEventtTime > 0 && ::dagor.getCurTime() - delayedInfoUpdateEventtTime < 1000)
       return
 
-    local guiScene = ::get_gui_scene()
+    let guiScene = ::get_gui_scene()
     if (!guiScene)
       return
 

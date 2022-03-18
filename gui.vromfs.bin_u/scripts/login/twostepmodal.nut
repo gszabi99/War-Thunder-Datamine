@@ -1,7 +1,7 @@
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local time = require("scripts/time.nut")
-local statsd = require("statsd")
-local exitGame = require("scripts/utils/exitGame.nut")
+let daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+let time = require("scripts/time.nut")
+let statsd = require("statsd")
+let exitGame = require("scripts/utils/exitGame.nut")
 
 local authDataByTypes = {
   mail = {text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email.tga"}
@@ -10,18 +10,18 @@ local authDataByTypes = {
   unknown = {text = "#mainmenu/2step/confirmUnknown", img = ""}
 }
 
-class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
+::gui_handlers.twoStepModal <- class extends ::BaseGuiHandler
 {
   wndType              = handlerType.MODAL
-  sceneTplName         = "gui/login/twoStepModal"
+  sceneTplName         = "%gui/login/twoStepModal"
   loginScene           = null
   continueLogin        = null
   curTimeTimer         = null
 
   function getSceneTplView()
   {
-    local isExt2StepAllowed = ::is_external_app_2step_allowed()
-    local data = !isExt2StepAllowed && ::is_has_email_two_step_type_sync() ? authDataByTypes.mail
+    let isExt2StepAllowed = ::is_external_app_2step_allowed()
+    let data = !isExt2StepAllowed && ::is_has_email_two_step_type_sync() ? authDataByTypes.mail
       : isExt2StepAllowed && ::is_has_wtassistant_two_step_type_sync() ? authDataByTypes.ga
       : isExt2StepAllowed && ::is_has_gaijin_pass_two_step_type_sync() ? authDataByTypes.gp
       : authDataByTypes.unknown
@@ -44,11 +44,11 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
   function reinitCurTimeTimer()
   {
     curTimeTimer = null
-    local timerObj = scene.findObject("currTimeText")
+    let timerObj = scene.findObject("currTimeText")
     if (!::check_obj(timerObj))
       return
 
-    local timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
+    let timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
     curTimeTimer = ::Timer(timerObj, 1, timerCb, this, true)
     timerCb()
   }
@@ -58,7 +58,7 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
     ::dagor.debug("Login: check_login_pass")
-    local result = ::check_login_pass(
+    let result = ::check_login_pass(
       ::get_object_value(loginScene, "loginbox_username",""),
       ::get_object_value(loginScene, "loginbox_password", ""), "",
       ::get_object_value(scene, "loginbox_code", ""),
@@ -69,12 +69,12 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
 
   function showErrorMsg()
   {
-    local txtObj = scene.findObject("verStatus")
+    let txtObj = scene.findObject("verStatus")
     if (!::check_obj(txtObj))
       return
 
-    local errorText = "".concat(::loc("mainmenu/2step/wrongCode"), ::loc("ui/colon"))
-    local errorTimerCb = @() txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
+    let errorText = "".concat(::loc("mainmenu/2step/wrongCode"), ::loc("ui/colon"))
+    let errorTimerCb = @() txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
         time.buildTimeStr(::get_charserver_time_sec(), true))))
     ::Timer(txtObj, 1, errorTimerCb, this, true)
     errorTimerCb()

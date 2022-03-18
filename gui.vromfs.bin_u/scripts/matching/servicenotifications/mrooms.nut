@@ -1,6 +1,6 @@
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local string = require("string")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let string = require("string")
 
 local MRoomsHandlers = class {
   [PERSISTENT_DATA_PARAMS] = [
@@ -97,7 +97,7 @@ local MRoomsHandlers = class {
       hostId = member.userId
     }
 
-    local curMember = __getRoomMember(member.userId)
+    let curMember = __getRoomMember(member.userId)
     if (curMember == null)
       roomMembers.append(member)
     __updateMemberAttributes(member, curMember)
@@ -163,7 +163,7 @@ local MRoomsHandlers = class {
     }
     else if (is_my_userid(member.userId))
     {
-      local readyStatus = member?.public.ready
+      let readyStatus = member?.public.ready
       if (readyStatus == true)
         __onSelfReady()
       else if (readyStatus == false)
@@ -173,7 +173,7 @@ local MRoomsHandlers = class {
 
   function __mergeAttribs(attr_from, attr_to)
   {
-    local updateAttribs = function(upd_data, attribs)
+    let updateAttribs = function(upd_data, attribs)
     {
       foreach (key, value in upd_data)
       {
@@ -184,8 +184,8 @@ local MRoomsHandlers = class {
       }
     }
 
-    local pub = getTblValue("public", attr_from)
-    local priv = getTblValue("private", attr_from)
+    let pub = getTblValue("public", attr_from)
+    let priv = getTblValue("private", attr_from)
 
     if (typeof priv == "table")
     {
@@ -215,30 +215,30 @@ local MRoomsHandlers = class {
     if (!hasSession())
       return
 
-    local host = __getRoomMember(hostId)
+    let host = __getRoomMember(hostId)
     if (!host)
     {
       dagor.debug("__connectToHost failed: host is not in the room")
       return
     }
 
-    local me = __getMyRoomMember()
+    let me = __getMyRoomMember()
     if (!me)
     {
       dagor.debug("__connectToHost failed: player is not in the room")
       return
     }
 
-    local hostPub = host.public
-    local roomPub = room.public
+    let hostPub = host.public
+    let roomPub = room.public
 
     if (!("room_key" in roomPub))
     {
-      local mePub = ::toString(me?.public, 3)          // warning disable: -declared-never-used
-      local mePrivate = ::toString(me?.private, 3)     // warning disable: -declared-never-used
-      local meStr = ::toString(me, 3)                  // warning disable: -declared-never-used
-      local roomStr = ::toString(roomPub, 3)           // warning disable: -declared-never-used
-      local roomMission = ::toString(roomPub?.mission) // warning disable: -declared-never-used
+      let mePub = ::toString(me?.public, 3)          // warning disable: -declared-never-used
+      let mePrivate = ::toString(me?.private, 3)     // warning disable: -declared-never-used
+      let meStr = ::toString(me, 3)                  // warning disable: -declared-never-used
+      let roomStr = ::toString(roomPub, 3)           // warning disable: -declared-never-used
+      let roomMission = ::toString(roomPub?.mission) // warning disable: -declared-never-used
       ::script_net_assert("missing room_key in room")
 
       ::send_error_log("missing room_key in room", false, "log")
@@ -250,8 +250,8 @@ local MRoomsHandlers = class {
       serverUrls = hostPub.serverURLs
     else if ("ip" in hostPub && "port" in hostPub)
     {
-      local ip = hostPub.ip
-      local ipStr = string.format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
+      let ip = hostPub.ip
+      let ipStr = string.format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
       serverUrls.append(ipStr)
     }
 
@@ -443,7 +443,7 @@ local MRoomsHandlers = class {
 
 ::leave_room <- function leave_room(params, cb)
 {
-  local oldRoomId = g_mrooms_handlers.getRoomId()
+  let oldRoomId = g_mrooms_handlers.getRoomId()
   g_mrooms_handlers.isLeaving = true
 
   matching_api_func("mrooms.leave_room",
@@ -511,7 +511,7 @@ local MRoomsHandlers = class {
                       {
                         foreach (room in getTblValue("digest", resp, []))
                         {
-                          local hasPassword = room?.public.hasPassword
+                          let hasPassword = room?.public.hasPassword
                           if (hasPassword != null)
                             room.hasPassword <- hasPassword
                         }
@@ -523,7 +523,7 @@ local MRoomsHandlers = class {
 
 ::serialize_dyncampaign <- function serialize_dyncampaign(params, cb)
 {
-  local priv = {
+  let priv = {
     dyncamp = {
       data = get_dyncampaign_b64blk()
     }

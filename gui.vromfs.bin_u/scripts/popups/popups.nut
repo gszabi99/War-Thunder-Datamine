@@ -72,12 +72,12 @@ g_popups.removeByHandler <- function removeByHandler(handler)
 //********** PRIVATE **********//
 g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan()
 {
-  local curTime = ::dagor.getCurTime()
+  let curTime = ::dagor.getCurTime()
   if (curTime - lastPerformDelayedCallTime < LOST_DELAYED_ACTION_MSEC)
     return
 
   lastPerformDelayedCallTime = curTime
-  local guiScene = ::get_cur_gui_scene()
+  let guiScene = ::get_cur_gui_scene()
   guiScene.performDelayed(
     this,
     function() {
@@ -89,7 +89,7 @@ g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfC
 
       for(local i = suspendedPopupsList.len()-1; i >= 0; i--)
       {
-        local popup = suspendedPopupsList[i]
+        let popup = suspendedPopupsList[i]
         if (canShowPopup())
         {
           ::u.removeFrom(suspendedPopupsList, popup)
@@ -104,14 +104,14 @@ g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfC
 
 g_popups.show <- function show(popup)
 {
-  local popupByGroup = getByGroup(popup)
+  let popupByGroup = getByGroup(popup)
   if (popupByGroup)
   {
     popupByGroup.destroy(true)
     remove(popupByGroup, false)
   }
 
-  local popupNestObj = ::get_active_gc_popup_nest_obj()
+  let popupNestObj = ::get_active_gc_popup_nest_obj()
   popup.show(popupNestObj)
   popupsList.append(popup)
 }
@@ -125,7 +125,7 @@ g_popups.remove <- function remove(popup, needFlushSuspended = true)
 {
   for(local i = 0; i < popupsList.len(); i++)
   {
-    local checkedPopup = popupsList[i]
+    let checkedPopup = popupsList[i]
     if (checkedPopup == popup)
     {
       popupsList.remove(i)
@@ -162,7 +162,7 @@ g_popups.savePopup <- function savePopup(newPopup)
 
 g_popups.canShowPopup <- function canShowPopup()
 {
-  local popupNestObj = ::get_active_gc_popup_nest_obj()
+  let popupNestObj = ::get_active_gc_popup_nest_obj()
   if (!::check_obj(popupNestObj))
     return false
 

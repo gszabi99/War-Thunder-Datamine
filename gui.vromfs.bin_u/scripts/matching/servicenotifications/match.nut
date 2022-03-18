@@ -1,5 +1,5 @@
-local crossplayModule = require("scripts/social/crossplay.nut")
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 ::notify_clusters_changed <- function notify_clusters_changed(params)
 {
@@ -7,12 +7,12 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
   ::g_clusters.onClustersChanged(params)
 }
 
-local changedGameModes = {
+let changedGameModes = {
   paramsArray = []
 }
 ::g_script_reloader.registerPersistentData("changedGameModes", changedGameModes, [ "paramsArray" ])
 
-local clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
+let clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
 
 ::notify_game_modes_changed <- function notify_game_modes_changed(params)
 {
@@ -49,8 +49,8 @@ subscriptions.addListenersWithoutEnv({
 
 ::notify_game_modes_changed_rnd_delay <- function notify_game_modes_changed_rnd_delay(params)
 {
-  local maxFetchDelaySec = 60
-  local rndDelaySec = ::math.rnd() % maxFetchDelaySec
+  let maxFetchDelaySec = 60
+  let rndDelaySec = ::math.rnd() % maxFetchDelaySec
   dagor.debug("notify_game_modes_changed_rnd_delay " + rndDelaySec)
   g_delayed_actions.add((@(params) function() { notify_game_modes_changed(params) })(params),
                         rndDelaySec * 1000)
@@ -63,7 +63,7 @@ subscriptions.addListenersWithoutEnv({
 
 ::notify_queue_join <- function notify_queue_join(params)
 {
-  local queue = ::queues.createQueue(params)
+  let queue = ::queues.createQueue(params)
   ::queues.afterJoinQueue(queue)
 }
 
@@ -94,7 +94,7 @@ subscriptions.addListenersWithoutEnv({
 
 ::enqueue_in_session <- function enqueue_in_session(params, cb)
 {
-  local missionName = get_forced_network_mission()
+  let missionName = get_forced_network_mission()
   if (missionName.len() > 0)
     params["forced_network_mission"] <- missionName
 

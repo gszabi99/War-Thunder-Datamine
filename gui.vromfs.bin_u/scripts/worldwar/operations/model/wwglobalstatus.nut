@@ -1,22 +1,22 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { secondsToMilliseconds } = require("scripts/time.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { secondsToMilliseconds } = require("scripts/time.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-local curData = persist("curData", @() ::Watched(null))
-local validListsMask = persist("validListsMask", @() ::Watched(0))
-local lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
-local lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
+let curData = persist("curData", @() ::Watched(null))
+let validListsMask = persist("validListsMask", @() ::Watched(0))
+let lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
+let lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
 
-local function reset() {
+let function reset() {
   curData(null)
   validListsMask(0)
   lastUpdatetTime(-1)
   lastRequestTime(-1)
 }
 
-local function pushStatusChangedEvent(changedListsMask) {
+let function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("GlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
@@ -24,9 +24,9 @@ local function canRefreshData(refreshDelay = null) {
   if (!::has_feature("WorldWar"))
     return false
   refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshGlobalStatusTimeSec", refreshMinTimeSec)
-  local refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
+  let refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
   refreshDelay = refreshDelay ?? refreshMinTime
-  local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
+  let requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
       && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
     return false
@@ -35,7 +35,7 @@ local function canRefreshData(refreshDelay = null) {
   return true
 }
 
-local function onGlobalStatusReceived(newData, wasRequestTime) {
+let function onGlobalStatusReceived(newData, wasRequestTime) {
   lastUpdatetTime(::dagor.getCurTime())
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
@@ -57,8 +57,8 @@ local function onGlobalStatusReceived(newData, wasRequestTime) {
 //special actions with global status in successCb
 local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions = null, onSuccessCb = null, onErrorCb = null) {
   lastRequestTime(::dagor.getCurTime())
-  local wasRequestTime = lastRequestTime.value
-  local cb = ::Callback(function(data) {
+  let wasRequestTime = lastRequestTime.value
+  let cb = ::Callback(function(data) {
     onGlobalStatusReceived(data, wasRequestTime)
     if (onSuccessCb)
       onSuccessCb()
@@ -72,7 +72,7 @@ local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions
   ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb, onErrorCb)
 }
 
-local function onEventMyClanIdChanged(p) {
+let function onEventMyClanIdChanged(p) {
   foreach(op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList())
     op.resetCache()
   foreach(q in ::g_ww_global_status_type.QUEUE.getList())
@@ -88,7 +88,7 @@ subscriptions.addListenersWithoutEnv({
   MyClanIdChanged = onEventMyClanIdChanged
 })
 
-local function refreshGlobalStatusData(refreshDelay = null) {
+let function refreshGlobalStatusData(refreshDelay = null) {
   if (canRefreshData(refreshDelay))
     actionWithGlobalStatusRequest("cln_ww_global_status", null)
 }

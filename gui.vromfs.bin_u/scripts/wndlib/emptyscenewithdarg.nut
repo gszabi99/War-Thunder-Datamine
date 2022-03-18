@@ -1,7 +1,7 @@
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
-local class emptySceneWithDarg extends ::BaseGuiHandler {
-  sceneBlkName = "gui/wndLib/emptySceneWithDarg.blk"
+let class emptySceneWithDarg extends ::BaseGuiHandler {
+  sceneBlkName = "%gui/wndLib/emptySceneWithDarg.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   widgetId = null
 

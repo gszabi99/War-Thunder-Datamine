@@ -1,4 +1,4 @@
-class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanModalHandler
+::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
   owner = null
 
@@ -24,7 +24,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
     updateDescription()
     updateAnnouncement()
     scene.findObject("newclan_description").setValue(clanData.desc)
-    local newClanTagObj = scene.findObject("newclan_tag")
+    let newClanTagObj = scene.findObject("newclan_tag")
     newClanTagObj.setValue(::g_clans.stripClanTagDecorators(clanData.tag))
     ::select_editbox(newClanTagObj)
     onFocus(newClanTagObj)
@@ -36,7 +36,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
   // Override.
   function updateSubmitButtonText()
   {
-    local cost = clanData.getClanUpgradeCost()
+    let cost = clanData.getClanUpgradeCost()
     setSubmitButtonText(::loc("clan/clan_upgrade/button"), cost)
   }
 
@@ -50,12 +50,12 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
   {
     if(!prepareClanData())
       return
-    local upgradeCost = clanData.getClanUpgradeCost()
+    let upgradeCost = clanData.getClanUpgradeCost()
     if (upgradeCost <= ::zero_money)
       upgradeClan()
     else if (::check_balance_msgBox(upgradeCost))
     {
-      local msgText = ::warningIfGold(
+      let msgText = ::warningIfGold(
         ::format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
@@ -68,8 +68,8 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
   {
     if (isObsceneWord())
       return
-    local clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
-    local params = ::g_clans.prepareUpgradeRequest(
+    let clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
+    let params = ::g_clans.prepareUpgradeRequest(
       newClanType,
       newClanTag,
       newClanDescription,

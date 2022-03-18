@@ -1,6 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 
-local template = {
+let template = {
   //id - add in generation
   type = CONTROL_TYPE.SHORTCUT
 
@@ -13,13 +13,12 @@ local template = {
   shortcutId = -1
 }
 
-local function definitionFunc(shArray, shEnum)
+let function definitionFunc(shArray, shEnum)
 {
-  foreach (idx, sh in shArray)
+  foreach (idx, shSrc in shArray)
   {
     //Fill required params before it will be used below
-    if (typeof sh == "string")
-      sh = {id = sh}
+    let sh = (typeof shSrc == "string") ? {id = shSrc} : clone shSrc
 
     if (!("type" in sh))
       sh.type <- template.type
@@ -43,6 +42,6 @@ local function definitionFunc(shArray, shEnum)
 }
 
 return {
-  template = template
-  definitionFunc = definitionFunc
+  template
+  definitionFunc
 }

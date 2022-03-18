@@ -1,4 +1,4 @@
-local {
+let {
   HasTargetTracker,
   IsSightLocked,
   IsTargetTracked,
@@ -9,16 +9,16 @@ local {
   TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
 
 
-local hl = 20
-local vl = 20
+let hl = 20
+let vl = 20
 
-local styleLineForeground = {
+let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH)
 }
 
 
-local function lockSight(colorWatched, width, height, posX, posY) {
+let function lockSight(colorWatched, width, height, posX, posY) {
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [width, height]
@@ -37,15 +37,15 @@ local function lockSight(colorWatched, width, height, posX, posY) {
   })
 }
 
-local targetSize = @(colorWatched, width, height, is_static_pos) function() {
-  local hd = 5
-  local vd = 5
-  local posX = is_static_pos ? 50 : (TargetX.value / sw(100) * 100)
-  local posY = is_static_pos ? 50 : (TargetY.value / sh(100) * 100)
+let targetSize = @(colorWatched, width, height, is_static_pos) function() {
+  let hd = 5
+  let vd = 5
+  let posX = is_static_pos ? 50 : (TargetX.value / sw(100) * 100)
+  let posY = is_static_pos ? 50 : (TargetY.value / sh(100) * 100)
 
-  local target_radius = TargetRadius.value
+  let target_radius = TargetRadius.value
 
-  local getAimCorrectionCommands = [
+  let getAimCorrectionCommands = [
       [
         VECTOR_RECTANGLE,
         posX - target_radius / width * 100,
@@ -62,7 +62,7 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
       ]
     ]
 
-  local getTargetTrackedCommands = [
+  let getTargetTrackedCommands = [
       [
         VECTOR_RECTANGLE,
         posX - target_radius / width * 100,
@@ -72,7 +72,7 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
       ]
     ]
 
-  local getTargetUntrackedCommands = [
+  let getTargetUntrackedCommands = [
       [
         VECTOR_LINE,
         posX - target_radius / width * 100,
@@ -144,10 +144,10 @@ local targetSize = @(colorWatched, width, height, is_static_pos) function() {
   })
 }
 
-local targetSizeTrigger = {}
+let targetSizeTrigger = {}
 TargetAge.subscribe(@(v) v >= 0.2 ? ::anim_start(targetSizeTrigger) : ::anim_request_stop(targetSizeTrigger))
 
-local function targetSizeComponent(
+let function targetSizeComponent(
   colorWatched,
   width,
   height,

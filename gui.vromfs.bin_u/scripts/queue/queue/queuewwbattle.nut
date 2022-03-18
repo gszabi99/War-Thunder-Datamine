@@ -1,6 +1,6 @@
-local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 
-class ::queue_classes.WwBattle extends ::queue_classes.Base
+::queue_classes.WwBattle <- class extends ::queue_classes.Base
 {
   function init()
   {
@@ -51,7 +51,7 @@ class ::queue_classes.WwBattle extends ::queue_classes.Base
   getQueueWwOperationId = @() params?.operationId ?? -1
 
   function getQueryParams() {
-    local qp = {
+    let qp = {
       clusters     = params.clusters
       operationId  = params.operationId
       battleId     = params.battleId
@@ -62,7 +62,7 @@ class ::queue_classes.WwBattle extends ::queue_classes.Base
     if (!(params?.isBattleByUnitsGroup ?? false))
       return qp
 
-    local queueMembersParams = ::g_squad_manager.isSquadLeader()
+    let queueMembersParams = ::g_squad_manager.isSquadLeader()
       ? ::g_squad_utils.getMembersFlyoutDataByUnitsGroups()
       : {
         [::my_user_id_str] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
@@ -77,10 +77,10 @@ class ::queue_classes.WwBattle extends ::queue_classes.Base
   }
 
   function createCraftsInfoConfig(craftsInfo) {
-    local res = []
+    let res = []
     foreach(idx, unitName in craftsInfo)
     {
-      local unit = ::getAircraftByName(unitName)
+      let unit = ::getAircraftByName(unitName)
       if (unit == null)
         continue
 

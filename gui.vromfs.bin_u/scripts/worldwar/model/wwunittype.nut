@@ -1,7 +1,7 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
+let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 
-local fakeInfantryUnitName = "fake_infantry"
+let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2
 const WW_TRANSPORT_CODE = -3
 const WW_HELICOPTER_CODE = -4
@@ -161,11 +161,11 @@ g_ww_unit_type.getUnitTypeByEsUnitCode <- function getUnitTypeByEsUnitCode(esUni
 
 g_ww_unit_type.getUnitTypeByWwUnit <- function getUnitTypeByWwUnit(wwUnit)
 {
-  local name = wwUnit.name
+  let name = wwUnit.name
   if (name in cache.byName)
     return cache.byName[name]
 
-  local esUnitType = ::get_es_unit_type(wwUnit.unit)
+  let esUnitType = ::get_es_unit_type(wwUnit.unit)
   if (esUnitType != ::ES_UNIT_TYPE_INVALID)
     return ::g_ww_unit_type.getUnitTypeByEsUnitCode(esUnitType)
   else if (name == fakeInfantryUnitName || name in ::g_world_war.getInfantryUnits())

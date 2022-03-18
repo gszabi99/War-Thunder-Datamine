@@ -1,4 +1,4 @@
-local time = require("scripts/time.nut")
+let time = require("scripts/time.nut")
 
 
 ::g_partner_unlocks <- {
@@ -18,7 +18,7 @@ g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
     return
 
   lastRequestTime = ::dagor.getCurTime()
-  local successCb = function(result)
+  let successCb = function(result)
   {
     ::g_partner_unlocks.lastUpdateTime = ::dagor.getCurTime()
     if (!::g_partner_unlocks.applyNewPartnerUnlockData(result))
@@ -27,7 +27,7 @@ g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
     ::broadcastEvent("PartnerUnlocksUpdated")
   }
 
-  local requestBlk = ::DataBlock()
+  let requestBlk = ::DataBlock()
   ::g_tasker.charRequestBlk("cln_get_partner_executed_unlocks",
                             requestBlk,
                             { showErrorMessageBox = false },
@@ -64,7 +64,7 @@ g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockDat
   if (!::u.isDataBlock(result))
     return false
 
-  local newPartnerUnlocks = ::buildTableFromBlk(result)
+  let newPartnerUnlocks = ::buildTableFromBlk(result)
   if (::u.isEqual(partnerExectutedUnlocks, newPartnerUnlocks))
     return false
 
@@ -76,7 +76,7 @@ g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(
 {
   if (!unlockId)
     return true
-  local startSec = getPartnerUnlockTime(unlockId)
+  let startSec = getPartnerUnlockTime(unlockId)
   if (!startSec)
     return false
   if (!durationMin)
@@ -84,8 +84,8 @@ g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(
   if (!::is_numeric(durationMin))
     return false
 
-  local durationSec = time.minutesToSeconds(durationMin)
-  local endSec = startSec + durationSec
+  let durationSec = time.minutesToSeconds(durationMin)
+  let endSec = startSec + durationSec
   return endSec > ::get_charserver_time_sec()
 }
 

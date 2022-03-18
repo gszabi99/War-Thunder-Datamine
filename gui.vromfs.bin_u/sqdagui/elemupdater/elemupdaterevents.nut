@@ -1,22 +1,22 @@
-local stdSubscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local function isArray(v) {return type(v)=="array"}
+let stdSubscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let function isArray(v) {return type(v)=="array"}
 
 const SUBSCRPTIONS_LIST_ID = -123
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
 
-local subscriptions = {} //<listId> = { [SUBSCRPTIONS_LIST_ID] = array of subsctiptions
+let subscriptions = {} //<listId> = { [SUBSCRPTIONS_LIST_ID] = array of subsctiptions
                          //             <subListId> = table of same subscriptions }
 
 local eventId = 0
 
-local function getSubList(subs, key)
+let function getSubList(subs, key)
 {
   if (!(key in subs))
     subs[key] <- {}
   return subs[key]
 }
 
-local function getSubscriptions(pathArray)
+let function getSubscriptions(pathArray)
 {
   local res = subscriptions
   foreach(key in pathArray)
@@ -24,24 +24,24 @@ local function getSubscriptions(pathArray)
   return res
 }
 
-local function validateSubscriptionsArray(subArr)
+let function validateSubscriptionsArray(subArr)
 {
   for(local i = subArr.len() - 1; i >= 0; i--)
     if (!subArr[i].isValid())
       subArr.remove(i)
 }
 
-local function addSubscription(subs, cb)
+let function addSubscription(subs, cb)
 {
   if (!(SUBSCRPTIONS_LIST_ID in subs))
     subs[SUBSCRPTIONS_LIST_ID] <- []
-  local subArr = subs[SUBSCRPTIONS_LIST_ID]
+  let subArr = subs[SUBSCRPTIONS_LIST_ID]
   subArr.append(cb)
   if (subArr.len() % SUBSCRIPTIONS_TO_CHECK_CLEAR == 0)
     validateSubscriptionsArray(subArr)
 }
 
-local function subscribe(pathArray, cb)
+let function subscribe(pathArray, cb)
 {
   if (!isArray(pathArray.top()))
   {
@@ -49,20 +49,20 @@ local function subscribe(pathArray, cb)
     return
   }
 
-  local basePath = clone pathArray
+  let basePath = clone pathArray
   basePath.remove(basePath.len() - 1)
-  local subs = getSubscriptions(basePath)
-  local keys = pathArray.top()
+  let subs = getSubscriptions(basePath)
+  let keys = pathArray.top()
   foreach(key in keys)
     addSubscription(getSubList(subs, key), cb)
 }
 
-local fireCb = function(subs)
+let fireCb = function(subs)
 {
   if (!(SUBSCRPTIONS_LIST_ID in subs))
     return
 
-  local list = subs[SUBSCRPTIONS_LIST_ID]
+  let list = subs[SUBSCRPTIONS_LIST_ID]
   for(local i = list.len() - 1; i >= 0; i--)
     if (list[i].isValid())
       list[i](eventId)
@@ -79,7 +79,7 @@ fireAllCb = function(subs) //this function will never remove from memory, but ca
       fireAllCb(list)
 }
 
-local function notifyChanged(pathArray)
+let function notifyChanged(pathArray)
 {
   eventId++
   local subList = subscriptions

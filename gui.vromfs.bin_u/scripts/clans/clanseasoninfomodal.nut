@@ -1,5 +1,5 @@
-local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {
@@ -9,10 +9,10 @@ local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
   )
 }
 
-class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanSeasonInfoModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneBlkName = "gui/clans/clanSeasonInfoModal.blk"
+  sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
   difficulty = null
 
@@ -35,19 +35,19 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillRewardsList()
   {
-    local view = getRewardsView(difficulty)
-    local markup = ::handyman.renderCached("gui/clans/clanSeasonInfoListItem", view)
+    let view = getRewardsView(difficulty)
+    let markup = ::handyman.renderCached("%gui/clans/clanSeasonInfoListItem", view)
     guiScene.appendWithBlk(rewardsListObj, markup, this)
   }
 
   function getRewardsView(diff)
   {
-    local view = { rewardsList = [] }
-    local rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
+    let view = { rewardsList = [] }
+    let rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
     if (::u.isEmpty(rewards))
       return view
 
-    local seasonName = ::g_clan_seasons.getSeasonName()
+    let seasonName = ::g_clan_seasons.getSeasonName()
     foreach(reward in rewards)
     {
       local title = ""
@@ -67,7 +67,7 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
           medal = reward.rating + "rating"
           break
       }
-      local medalIconMarkup = ::LayersIcon.getIconData(::format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
+      let medalIconMarkup = ::LayersIcon.getIconData(::format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
 
       local condition = ""
@@ -81,26 +81,26 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
       local gold = ""
       if (reward.gold)
       {
-        local value = reward.goldMin ?
+        let value = reward.goldMin ?
           (::Cost(0, reward.goldMin).tostring() + ::loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
           ::Cost(0, reward.gold).tostring()
         gold = ::loc("charServer/chapter/eagles") + ::loc("ui/colon") + value
       }
 
-      local prizesList = {}
-      local prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
-      local limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
+      let prizesList = {}
+      let prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
+      let limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
       foreach (prize in prizes)
       {
-        local prizeType = prize.type
-        local collection = []
+        let prizeType = prize.type
+        let collection = []
 
         if (prizeType == "clanTag")
         {
-          local myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
-          local tagTxt = ::u.isEmpty(myClanTagUndecorated) ? ::loc("clan/clan_tag/short") : myClanTagUndecorated
-          local tooltipBase = ::loc("clan/clan_tag_decoration") + ::loc("ui/colon")
-          local tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
+          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
+          let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? ::loc("clan/clan_tag/short") : myClanTagUndecorated
+          let tooltipBase = ::loc("clan/clan_tag_decoration") + ::loc("ui/colon")
+          let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
           foreach (decorator in tagDecorators)
             collection.append({
               start = decorator.start
@@ -111,10 +111,10 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
         }
         else if (prizeType == "decal")
         {
-          local decorType = ::g_decorator_type.DECALS
+          let decorType = ::g_decorator_type.DECALS
           foreach (decalId in prize.list)
           {
-            local decal = ::g_decorator.getDecorator(decalId, decorType)
+            let decal = ::g_decorator.getDecorator(decalId, decorType)
             collection.append({
               id = decalId
               image = decorType.getImage(decal)
@@ -124,8 +124,8 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
           }
         }
 
-        local uniqueCount = ::getTblValue(prizeType, limits, 0) || collection.len()
-        local splitList = {
+        let uniqueCount = ::getTblValue(prizeType, limits, 0) || collection.len()
+        let splitList = {
           unique = []
           bonus  = []
         }
@@ -134,10 +134,10 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
         prizesList[prizeType] <- splitList
       }
 
-      local uniqueClantags = prizesList?.clanTag.unique ?? []
-      local uniqueDecals   = prizesList?.decal.unique ?? []
-      local bonusClantags  = prizesList?.clanTag.bonus ?? []
-      local bonusDecals    = prizesList?.decal.bonus ?? []
+      let uniqueClantags = prizesList?.clanTag.unique ?? []
+      let uniqueDecals   = prizesList?.decal.unique ?? []
+      let bonusClantags  = prizesList?.clanTag.bonus ?? []
+      let bonusDecals    = prizesList?.decal.bonus ?? []
 
       view.rewardsList.append({
         title      = title
@@ -163,10 +163,10 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onShowBonuses(obj)
   {
-    local bonusesObj = ::checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
+    let bonusesObj = ::checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
     if (!::checkObj(bonusesObj))
       return
-    local isShow = bonusesObj["toggled"] != "yes"
+    let isShow = bonusesObj["toggled"] != "yes"
     bonusesObj["toggled"] = isShow ? "yes" : "no"
     bonusesObj.show(isShow)
 
@@ -188,14 +188,14 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelect(obj)
   {
-    local listChildrenCount = rewardsListObj.childrenCount()
-    local index = obj.getValue()
+    let listChildrenCount = rewardsListObj.childrenCount()
+    let index = obj.getValue()
     selectedIndex = (index >= 0 && index < listChildrenCount) ? index : 0
   }
 
   function showBonusesByActivateItem(obj)
   {
-    local btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
+    let btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
     if (btnObj?.isValid())
       onShowBonuses(btnObj)
   }

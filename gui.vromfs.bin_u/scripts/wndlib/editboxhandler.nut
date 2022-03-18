@@ -1,5 +1,3 @@
-local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-
 ::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params)
 {
   if (!params?.okFunc)
@@ -8,10 +6,10 @@ local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUp
   ::gui_start_modal_wnd(::gui_handlers.EditBoxHandler, params)
 }
 
-class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
+::gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/editBoxWindow.blk"
+  sceneBlkName = "%gui/editBoxWindow.blk"
   okFunc = null
   cancelFunc = null
   owner = null
@@ -27,7 +25,6 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   label = ""
   leftAlignedLabel = false
   editboxWarningTooltip = ""
-  okBtnText = ""
   canCancel = true
   allowEmpty = true
   validateFunc = null //function(value)  return true if valid
@@ -45,7 +42,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
     showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
 
-    local isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
+    let isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)
     if (editBoxTextOnDisable)
       editBoxObj["edit-hint"] = isEnabled? "" : editBoxTextOnDisable
@@ -68,9 +65,6 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
     if (!canCancel && !cancelFunc)
       showSceneBtn("btn_back", false)
 
-    if (okBtnText != "")
-      setColoredDoubleTextToButton(scene, "btn_ok", okBtnText)
-
     if (isEnabled)
     {
       guiScene.applyPendingChanges(false)
@@ -80,10 +74,10 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 
   function onChangeValue(obj)
   {
-    local curVal = obj.getValue() || ""
+    let curVal = obj.getValue() || ""
     if (validateFunc)
     {
-      local newVal = validateFunc(curVal)
+      let newVal = validateFunc(curVal)
       if (newVal != curVal)
         return obj.setValue(newVal)
     }
@@ -103,7 +97,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   }
 
   function updateWarningByValue(obj, curVal) {
-    local res = !checkWarningFunc(curVal)
+    let res = !checkWarningFunc(curVal)
     obj.warning = res? "yes" : "no"
     obj.warningText = res? "yes" : "no"
     obj.tooltip = res? editboxWarningTooltip : ""

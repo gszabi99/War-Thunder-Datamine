@@ -1,6 +1,9 @@
+#default:no-func-decl-sugar
+#default:no-class-decl-sugar
+
 require("globalScripts/ui_globals.nut")
 
-local __string = require("string")
+let __string = require("string")
 foreach (name, func in require("dagor.localize"))
   ::dagor[name] <- func
 
@@ -8,12 +11,12 @@ foreach (name, func in require("dagor.localize"))
 ::split <-__string.split
 ::format <-__string.format
 ::strip<-__string.strip
-local __math = require("math")
+let __math = require("math")
 ::fabs<-__math.fabs
 ::kwarg <- require("std/functools.nut").kwarg
 ::memoize <- require("std/functools.nut").memoize
 
-local frp = require("frp")
+let frp = require("frp")
 ::Watched <- frp.Watched
 ::Computed <-frp.Computed
 
@@ -24,7 +27,7 @@ require("globalScripts/sqModuleHelpers.nut")
 require("sqStdLibs/helpers/backCompatibility.nut")
 require("scripts/compatibility.nut")
 require("scripts/clientState/errorHandling.nut")
-local { get_local_unixtime } = require("dagor.time")
+let { get_local_unixtime } = require("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
@@ -169,6 +172,7 @@ global enum itemType { //bit values for easy multitype search
   BATTLE_PASS     = 0x0008000000
   RENTED_UNIT     = 0x0010000000
   UNIT_COUPON_MOD = 0x0020000000
+  PROFILE_ICON    = 0x0040000000
 
   //workshop
   CRAFT_PART      = 0x1000000000
@@ -258,7 +262,7 @@ global enum COLOR_TAG {
   TEAM_BLUE = "tb"
   TEAM_RED = "tr"
 }
-local colorTagToColors = {
+let colorTagToColors = {
   [COLOR_TAG.ACTIVE] = "activeTextColor",
   [COLOR_TAG.USERLOG] = "userlogColoredText",
   [COLOR_TAG.TEAM_BLUE] = "teamBlueColor",
@@ -343,7 +347,7 @@ randomize()
 ::u <- require("sqStdLibs/helpers/u.nut") //put u to roottable
 ::Callback <- require("sqStdLibs/helpers/callback.nut").Callback
 
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- {
   DEFAULT = 0
   DEFAULT_HANDLER = 1
@@ -360,14 +364,22 @@ subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
 ::has_feature <- require("scripts/user/features.nut").hasFeature
 
+let guiOptions = require("guiOptions")
+foreach(name in [
+  "get_gui_option", "set_gui_option", "get_unit_option", "set_unit_option",
+  "get_cd_preset", "set_cd_preset"
+])
+  if (name not in ::getroottable())
+    ::getroottable()[name] <- guiOptions[name]
+
 foreach(fn in [
   "scripts/debugTools/dbgToString.nut"
   "sqDagui/framework/framework.nut"
 ])
   require(fn)
 
-local { getShortAppName } = ::require_native("app")
-local game = getShortAppName()
+let { getShortAppName } = ::require_native("app")
+let game = getShortAppName()
 ::dagor.debug($"LOAD GAME SCRIPTS: {game}")
 require_optional($"{game}/scripts/onScriptLoad.nut")
 
@@ -460,6 +472,9 @@ foreach (fn in [
 
   //used for SSO login
   "scripts/onlineShop/browserWnd.nut"
+
+  //used in login process for check profile tag
+  "scripts/user/userUtils.nut"
 ])
 {
   ::g_script_reloader.loadOnce(fn)
@@ -486,13 +501,13 @@ require("scripts/clientState/elems/copyrightText.nut")
 require("sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
   // end of Independent Modules
 
-local platform = require("scripts/clientState/platform.nut")
+let platform = require("scripts/clientState/platform.nut")
 ::cross_call_api.platform <- {
   getPlayerName = platform.getPlayerName
   is_pc = @() platform.isPlatformPC
 }
 
-local { is_stereo_mode } = ::require_native("vr")
+let { is_stereo_mode } = ::require_native("vr")
 ::cross_call_api.isInVr <- @() is_stereo_mode()
 
 //------- ^^^ files before login ^^^ ----------
@@ -546,7 +561,7 @@ local isFullScriptsLoaded = false
 
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu
 {
-  local shouldDisableMenu = (::disable_network() && ::getFromSettingsBlk("debug/disableMenu", false))
+  let shouldDisableMenu = (::disable_network() && ::getFromSettingsBlk("debug/disableMenu", false))
     || ::getFromSettingsBlk("benchmarkMode", false)
     || ::getFromSettingsBlk("viewReplay", false)
 

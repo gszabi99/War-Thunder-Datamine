@@ -1,11 +1,11 @@
-local squadsListData = require("scripts/squads/clanSquadsList.nut")
+let squadsListData = require("scripts/squads/clanSquadsList.nut")
 
-class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
-  sceneBlkName   = "gui/clans/clanSquadInfo.blk"
+  sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
   needVoiceChat = false
-  memberTplName = "gui/squads/squadMembers"
+  memberTplName = "%gui/squads/squadMembers"
   membersObj = null
   align = ALIGN.BOTTOM
 
@@ -20,7 +20,7 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(alignObj))
       return null
 
-    local params = {
+    let params = {
       alignObj = alignObj
       squad = squad
     }
@@ -31,7 +31,7 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     membersObj = scene.findObject("members")
-    local viewBlk = ::handyman.renderCached(memberTplName,
+    let viewBlk = ::handyman.renderCached(memberTplName,
       {members = array(squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null)})
     guiScene.replaceContentFromText(membersObj, viewBlk, viewBlk.len(), this)
     scene.findObject("squad_info_update").setUserData(this)
@@ -43,7 +43,7 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshList()
   {
-    local leader = squad?.leader
+    let leader = squad?.leader
     local memberViewIndex = 0
     if (leader == selectedMember)
       selectedIndex = memberViewIndex
@@ -66,15 +66,15 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateMemberView(mebmerObjIndex, memberUid)
   {
-    local isVisible = memberUid != null
-    local memberObj = getSquadObj(mebmerObjIndex)
+    let isVisible = memberUid != null
+    let memberObj = getSquadObj(mebmerObjIndex)
     memberObj.show(isVisible)
     memberObj.enable(isVisible)
     if (!isVisible || !::checkObj(memberObj))
       return
 
-    local memeberUidStr = memberUid.tostring()
-    local contact = getContact(memeberUidStr)
+    let memeberUidStr = memberUid.tostring()
+    let contact = getContact(memeberUidStr)
     if (!contact)
       ::g_users_info_manager.requestInfo([memeberUidStr])
     memberObj["id"] = "member_" + memeberUidStr
@@ -83,10 +83,10 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
     memberObj.findObject("contactName").setValue(contact? contact.getName(): "")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
     memberObj.findObject("not_member_data").show(contact? false : true)
-    local statusObj = memberObj.findObject("statusImg")
+    let statusObj = memberObj.findObject("statusImg")
     if (::checkObj(statusObj))
     {
-      local presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
+      let presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
       statusObj["background-image"] = presence.getIcon()
       statusObj["background-color"] = presence.getIconColor()
       statusObj["tooltip"] = presence.getText()
@@ -120,18 +120,18 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!memberUid || !::checkObj(obj))
       return
 
-    local position = obj.getPosRC()
+    let position = obj.getPosRC()
     position[1] += obj.getSize()[1]
-    local contact = ::getContact(memberUid.tostring())
+    let contact = ::getContact(memberUid.tostring())
     if (!contact)
       return
-    local memberName = contact? contact.getName(): ""
+    let memberName = contact? contact.getName(): ""
     ::g_chat.showPlayerRClickMenu(memberName, null, contact, position)
   }
 
   function onItemSelect(obj)
   {
-    local countListItem = (squad?.members ?? []).len()
+    let countListItem = (squad?.members ?? []).len()
     if (countListItem <= 0)
       {
         selectedMember = null
@@ -139,15 +139,15 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
         return
       }
 
-    local index = obj.getValue()
+    let index = obj.getValue()
     selectedMember = getMemberUidByObj(obj.getChild(index))
     selectedIndex = selectedMember ? index : -1
   }
 
   function onEventClanSquadsListChanged(params)
   {
-    local leader = squad.leader
-    local newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
+    let leader = squad.leader
+    let newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
     if (!newSquad)
     {
       goBack()

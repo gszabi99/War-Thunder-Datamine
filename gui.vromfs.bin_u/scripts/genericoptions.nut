@@ -1,12 +1,13 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+from "soundOptions" import *
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
+let { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/options/genericOptions.blk"
-  sceneNavBlkName = "gui/options/navOptionsBack.blk"
+  sceneBlkName = "%gui/options/genericOptions.blk"
+  sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   currentContainerName = "generic_options"
@@ -38,11 +39,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function loadOptions(opt, optId)
   {
-    local optListObj = scene.findObject("optionslist")
+    let optListObj = scene.findObject("optionslist")
     if (!::checkObj(optListObj))
       return ::dagor.assertf(false, "Error: cant load options when no optionslist object.")
 
-    local container = ::create_options_container(optId, opt, true, columnsRatio, true, optionsConfig)
+    let container = ::create_options_container(optId, opt, true, columnsRatio, true, optionsConfig)
     guiScene.setUpdatesEnabled(false, false);
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
@@ -72,7 +73,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach (container in optionsContainers)
     {
-      local objTbl = getObj(container.name)
+      let objTbl = getObj(container.name)
       if (objTbl == null)
         continue
 
@@ -82,7 +83,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
            option.controlType == optionControlType.BUTTON)
           continue
 
-        local obj = getObj(option.id)
+        let obj = getObj(option.id)
         if (!::checkObj(obj))
         {
           ::script_net_assert_once("Bad option",
@@ -124,7 +125,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function onApplyOffline(obj)
   {
-    local coopObj = getObj("coop_mode")
+    let coopObj = getObj("coop_mode")
     if (coopObj) coopObj.setValue(2)
     applyOptions()
   }
@@ -165,7 +166,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function setOptionValueByControlObj(obj)
   {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (option)
       ::set_option(option.type, obj.getValue(), option)
     return option
@@ -188,7 +189,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       foreach(idx, option in container.data)
         if (option.type == optionType)
         {
-          local newOption = ::get_option(optionType, optionsConfig)
+          let newOption = ::get_option(optionType, optionsConfig)
           container.data[idx] = newOption
           updateOptionImpl(newOption)
         }
@@ -196,14 +197,14 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateOptionImpl(option)
   {
-    local obj = scene.findObject(option.id)
+    let obj = scene.findObject(option.id)
     if (!::check_obj(obj))
       return
 
     isOptionInUpdate = true
     if (option.controlType == optionControlType.LIST)
     {
-      local markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      let markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
       guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     } else
       obj.setValue(option.value)
@@ -211,7 +212,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onEventQueueChangeState(p) {
-    local opt = findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
+    let opt = findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
     if (opt == null)
       return
 
@@ -232,18 +233,18 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function showOptionRow(option, show) {
-    local obj = getOptionObj(option)
+    let obj = getOptionObj(option)
     if (obj == null)
       return false
 
-    local isInactive = !show || option.controlType == optionControlType.HEADER
+    let isInactive = !show || option.controlType == optionControlType.HEADER
     obj.show(show)
     obj.inactive = isInactive ? "yes" : null
     return true
   }
 
   function enableOptionRow(option, status) {
-    local obj = getOptionObj(option)
+    let obj = getOptionObj(option)
     if (obj == null)
       return
 
@@ -254,11 +255,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (obj != null)
     {
-      local numPlayers = obj.getValue() + 2
-      local objPriv = getObj("numPrivateSlots")
+      let numPlayers = obj.getValue() + 2
+      let objPriv = getObj("numPrivateSlots")
       if (objPriv != null)
       {
-        local numPriv = objPriv.getValue()
+        let numPriv = objPriv.getValue()
         if (numPriv >= numPlayers)
           objPriv.setValue(numPlayers - 1)
       }
@@ -269,11 +270,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (obj != null)
     {
-      local numPriv = obj.getValue()
-      local objPlayers = getObj("numPlayers")
+      let numPriv = obj.getValue()
+      let objPlayers = getObj("numPlayers")
       if (objPlayers != null)
       {
-        local numPlayers = objPlayers.getValue() + 2
+        let numPlayers = objPlayers.getValue() + 2
         if (numPriv >= numPlayers)
           obj.setValue(numPlayers - 1)
       }
@@ -283,29 +284,29 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   function onVolumeChange(obj)
   {
     if (obj.id == "volume_music")
-      ::set_sound_volume(::SND_TYPE_MUSIC, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_MUSIC, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_menu_music")
-      ::set_sound_volume(::SND_TYPE_MENU_MUSIC, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_MENU_MUSIC, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_sfx")
-      ::set_sound_volume(::SND_TYPE_SFX, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_SFX, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_radio")
-      ::set_sound_volume(::SND_TYPE_RADIO, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_RADIO, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_engine")
-      ::set_sound_volume(::SND_TYPE_ENGINE, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_ENGINE, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_my_engine")
-      ::set_sound_volume(::SND_TYPE_MY_ENGINE, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_MY_ENGINE, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_dialogs")
-      ::set_sound_volume(::SND_TYPE_DIALOGS, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_DIALOGS, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_voice_in")
-      ::set_sound_volume(::SND_TYPE_VOICE_IN, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_VOICE_IN, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_voice_out")
-      ::set_sound_volume(::SND_TYPE_VOICE_OUT, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_VOICE_OUT, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_master")
-      ::set_sound_volume(::SND_TYPE_MASTER, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_MASTER, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_guns")
-      ::set_sound_volume(::SND_TYPE_GUNS, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_GUNS, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_tinnitus")
-      ::set_sound_volume(::SND_TYPE_TINNITUS, obj.getValue() / 100.0, false)
+      set_sound_volume(SND_TYPE_TINNITUS, obj.getValue() / 100.0, false)
     updateOptionValueTextByObj(obj)
   }
 
@@ -336,12 +337,12 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isOptionInUpdate)
       return
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (option && option.values[obj.getValue()] == TANK_ALT_CROSSHAIR_ADD_NEW)
     {
-      local unit = getPlayerCurUnit()
-      local success = ::add_tank_alt_crosshair_template()
-      local message = success && unit ? ::format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
+      let unit = getPlayerCurUnit()
+      let success = ::add_tank_alt_crosshair_template()
+      let message = success && unit ? ::format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
 
       guiScene.performDelayed(this, function()
       {
@@ -356,24 +357,24 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onChangeCrossPlay(obj) {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (!option)
       return
 
-    local val = obj.getValue()
+    let val = obj.getValue()
     if (val == false)
     {
       ::set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
       updateOption(::USEROPT_PS4_ONLY_LEADERBOARD)
     }
-    local opt = findOptionInContainers(::USEROPT_PS4_ONLY_LEADERBOARD)
+    let opt = findOptionInContainers(::USEROPT_PS4_ONLY_LEADERBOARD)
     if (opt != null)
       enableOptionRow(opt, val)
   }
 
   function onChangeCrossNetworkChat(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value == true)
     {
       //Just send notification that value changed
@@ -404,17 +405,17 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
       if (value == false) //Turn off voice if we turn off crossnetwork opt
       {
-        local voiceOpt = ::get_option(::USEROPT_VOICE_CHAT)
+        let voiceOpt = ::get_option(::USEROPT_VOICE_CHAT)
         if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
           this[voiceOpt.cb](null)
         else
           ::set_option(::USEROPT_VOICE_CHAT, false)
       }
 
-      local listObj = scene.findObject("groups_list")
+      let listObj = scene.findObject("groups_list")
       if (::check_obj(listObj))
       {
-        local voiceTabObj = listObj.findObject("voicechat")
+        let voiceTabObj = listObj.findObject("voicechat")
         if (::check_obj(voiceTabObj))
           voiceTabObj.inactive = value? "no" : "yes"
       }
@@ -433,7 +434,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function find_options_in_containers(optTypeList)
   {
-    local res = []
+    let res = []
     if (!optionsContainers)
       return res
     foreach (container in optionsContainers)
@@ -449,7 +450,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       return null
     foreach (container in optionsContainers)
     {
-      local option = ::u.search(container.data, @(o) o.type == optionType)
+      let option = ::u.search(container.data, @(o) o.type == optionType)
       if (option)
         return option
     }
@@ -458,11 +459,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneOptValue(optName)
   {
-    local option = get_option_by_id(optName) || ::get_option(optName)
+    let option = get_option_by_id(optName) || ::get_option(optName)
     if (option.values.len() == 0)
       return null
-    local obj = scene.findObject(option.id)
-    local value = obj? obj.getValue() : option.value
+    let obj = scene.findObject(option.id)
+    let value = obj? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]
     return option.values[option.value]
@@ -470,7 +471,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function onGammaChange(obj)
   {
-    local gamma = obj.getValue() / 100.0
+    let gamma = obj.getValue() / 100.0
     ::set_option_gamma(gamma, false)
   }
 
@@ -486,27 +487,27 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function onLayoutChange(obj)
   {
-    local countryOption = get_option(::USEROPT_MP_TEAM_COUNTRY);
-    local cobj = getObj(countryOption.id);
+    let countryOption = get_option(::USEROPT_MP_TEAM_COUNTRY);
+    let cobj = getObj(countryOption.id);
     local country = ""
     if(::checkObj(cobj))
     {
       country = get_country_by_team(cobj.getValue())
       ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    local yearOption = get_option(::USEROPT_YEAR)
-    local unitsByYears = get_number_of_units_by_years(country, yearOption.valuesInt)
-    local yearObj = getObj(yearOption.id)
+    let yearOption = get_option(::USEROPT_YEAR)
+    let unitsByYears = get_number_of_units_by_years(country, yearOption.valuesInt)
+    let yearObj = getObj(yearOption.id)
     if (!yearObj)
       return;
 
     dagor.assert(yearObj.childrenCount() == yearOption.values.len())
     for (local i = 0; i < yearObj.childrenCount(); i++)
     {
-      local line = yearObj.getChild(i);
+      let line = yearObj.getChild(i);
       if (!line)
         continue;
-      local text = line.findObject("option_text");
+      let text = line.findObject("option_text");
       if (!text)
         continue;
 
@@ -514,11 +515,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       local tooltip = ""
       if (::current_campaign && country!="")
       {
-        local yearId = $"{country}_{yearOption.values[i]}"
-        local unlockBlk = ::g_unlocks.getUnlockById(yearId)
+        let yearId = $"{country}_{yearOption.values[i]}"
+        let unlockBlk = ::g_unlocks.getUnlockById(yearId)
         if (unlockBlk)
         {
-          local blk = build_conditions_config(unlockBlk)
+          let blk = build_conditions_config(unlockBlk)
           ::build_unlock_desc(blk)
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_YEAR, yearId)
           tooltip = enabled? "" : blk.text
@@ -527,22 +528,22 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
       line.enable(enabled)
       line.tooltip = tooltip
-      local year = yearOption.valuesInt[i]
+      let year = yearOption.valuesInt[i]
       text.setValue(format(::loc("options/year_text"), year,
         unitsByYears[$"year{year}"], unitsByYears[$"beforeyear{year}"]))
     }
 
-    local value = yearObj.getValue();
+    let value = yearObj.getValue();
     yearObj.setValue(value >= 0 ? value : 0);
   }
 
   function getOptValue(optName, return_default_when_no_obj = true)
   {
-    local option = ::get_option(optName)
-    local obj = scene.findObject(option.id)
+    let option = ::get_option(optName)
+    let obj = scene.findObject(option.id)
     if (!obj && !return_default_when_no_obj)
       return null
-    local value = obj? obj.getValue() : option.value
+    let value = obj? obj.getValue() : option.value
     if (option.controlType == optionControlType.LIST)
       return option.values[value]
     return value
@@ -550,7 +551,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function update_internet_radio(obj)
   {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
@@ -569,14 +570,14 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (::getTblValue("isEventRoom", optionsConfig, false))
       return
 
-    local optList = find_options_in_containers([::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
+    let optList = find_options_in_containers([::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
     if (!optList.len())
       return
 
-    local countriesType = getOptValue(::USEROPT_MISSION_COUNTRIES_TYPE)
+    let countriesType = getOptValue(::USEROPT_MISSION_COUNTRIES_TYPE)
     foreach(option in optList)
     {
-      local show = countriesType == misCountries.CUSTOM
+      let show = countriesType == misCountries.CUSTOM
                    || (countriesType == misCountries.SYMMETRIC && option.type == ::USEROPT_BIT_COUNTRIES_TEAM_A)
       showOptionRow(option, show)
     }
@@ -589,31 +590,31 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkAllowedUnitTypes()
   {
-    local option = findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
+    let option = findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
     if (!option)
       return
-    local optionTrObj = getObj(option.getTrId())
+    let optionTrObj = getObj(option.getTrId())
     if (!::check_obj(optionTrObj))
       return
 
-    local missionBlk = ::get_mission_meta_info(optionsConfig?.missionName ?? "")
-    local useKillStreaks = missionBlk && ::is_skirmish_with_killstreaks(missionBlk) &&
+    let missionBlk = ::get_mission_meta_info(optionsConfig?.missionName ?? "")
+    let useKillStreaks = missionBlk && ::is_skirmish_with_killstreaks(missionBlk) &&
       getOptValue(::USEROPT_USE_KILLSTREAKS, false)
-    local allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
+    let allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
 
     foreach (unitType in unitTypes.types)
     {
       if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
         continue
-      local isShow = !!(allowedUnitTypesMask & unitType.bit)
-      local itemObj = optionTrObj.findObject("bit_" + unitType.tag)
+      let isShow = !!(allowedUnitTypesMask & unitType.bit)
+      let itemObj = optionTrObj.findObject("bit_" + unitType.tag)
       if (!::check_obj(itemObj))
         continue
       itemObj.show(isShow)
       itemObj.enable(isShow)
     }
 
-    local itemObj = optionTrObj.findObject("text_after")
+    let itemObj = optionTrObj.findObject("text_after")
       if (::check_obj(itemObj))
         itemObj.show(useKillStreaks)
   }
@@ -625,11 +626,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkBotsOption()
   {
-    local isBotsAllowed = getOptValue(::USEROPT_IS_BOTS_ALLOWED, false)
+    let isBotsAllowed = getOptValue(::USEROPT_IS_BOTS_ALLOWED, false)
     if (isBotsAllowed == null) //no such option in current options list
       return
 
-    local optList = find_options_in_containers([::USEROPT_USE_TANK_BOTS,
+    let optList = find_options_in_containers([::USEROPT_USE_TANK_BOTS,
       ::USEROPT_USE_SHIP_BOTS])
     foreach(option in optList)
       showOptionRow(option, isBotsAllowed)
@@ -637,14 +638,14 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateOptionValueTextByObj(obj) //dagui scene callback
   {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (option)
       updateOptionValueText(option, obj.getValue())
   }
 
   function updateOptionValueText(option, value)
   {
-    local obj = scene.findObject("value_" + option.id)
+    let obj = scene.findObject("value_" + option.id)
     if (::check_obj(obj))
       obj.setValue(option.getValueLocText(value))
   }
@@ -658,11 +659,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   function onDifficultyChange(obj) {}
 }
 
-class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
+::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/genericOptionsModal.blk"
-  sceneNavBlkName = "gui/options/navOptionsBack.blk"
+  sceneBlkName = "%gui/options/genericOptionsModal.blk"
+  sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   multipleInstances = true
 
   applyAtClose = true
@@ -683,7 +684,7 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
 
   function initNavigation()
   {
-    local handler = ::handlersManager.loadHandler(
+    let handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene = scene.findObject("control_navigation")
         onSelectCb = ::Callback(doNavigateToSection, this)
@@ -697,7 +698,7 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
 
   function doNavigateToSection(navItem)
   {
-    local objTbl = scene.findObject(currentContainerName)
+    let objTbl = scene.findObject(currentContainerName)
     if ( ! ::check_obj(objTbl))
       return
 
@@ -716,7 +717,7 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
     if(::u.isEmpty(trId))
       return
 
-    local rowObj = objTbl.findObject(trId)
+    let rowObj = objTbl.findObject(trId)
     if (::check_obj(rowObj))
       rowObj.scrollToView(true)
   }
@@ -734,22 +735,22 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
     if (::show_console_buttons)
       return
 
-    local option = getSelectedOption()
+    let option = getSelectedOption()
     if (option.controlType == optionControlType.EDITBOX)
       ::select_editbox(getObj(option.id))
   }
 
   function checkCurrentNavigationSection()
   {
-    local navItems = navigationHandlerWeak.getNavItems()
+    let navItems = navigationHandlerWeak.getNavItems()
     if(navItems.len() < 2)
       return
 
-    local currentOption = getSelectedOption()
+    let currentOption = getSelectedOption()
     if( ! currentOption)
       return
 
-    local currentHeader = getOptionHeader(currentOption)
+    let currentHeader = getOptionHeader(currentOption)
     if( ! currentHeader)
       return
 
@@ -765,15 +766,15 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
 
   function getSelectedOption()
   {
-    local objTbl = scene.findObject(currentContainerName)
+    let objTbl = scene.findObject(currentContainerName)
     if (!::check_obj(objTbl))
       return null
 
-    local idx = objTbl.getValue()
+    let idx = objTbl.getValue()
     if (idx < 0 || objTbl.childrenCount() <= idx)
       return null
 
-    local activeOptionsList = getCurrentOptionsList()
+    let activeOptionsList = getCurrentOptionsList()
       .filter(@(option) option.controlType != optionControlType.HEADER)
     return activeOptionsList?[idx]
   }
@@ -788,15 +789,15 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
 
   function getCurrentOptionsList()
   {
-    local containerName = currentContainerName
-    local container = ::u.search(optionsContainers, @(c) c.name == containerName)
+    let containerName = currentContainerName
+    let container = ::u.search(optionsContainers, @(c) c.name == containerName)
     return ::getTblValue("data", container, [])
   }
 
   function setNavigationItems()
   {
     headersToOptionsList.clear();
-    local headersItems = []
+    let headersItems = []
     local lastHeader = null
     foreach(option in getCurrentOptionsList())
     {

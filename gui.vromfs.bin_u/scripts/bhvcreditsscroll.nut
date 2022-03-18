@@ -1,17 +1,17 @@
-local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 
 const timeToShowAll = 500.0
 
-class ::gui_bhv.CreditsScroll
+::gui_bhv.CreditsScroll <- class
 {
   function onTimer(obj, dt)
   {
     local curOffs = obj.cur_slide_offs.tofloat()
 
-    local pos = obj.getPos()
-    local size = obj.getSize()
-    local parentSize = obj.getParent().getSize()
-    local speedCreditsScroll = (size[1] / parentSize[1] ) / timeToShowAll
+    let pos = obj.getPos()
+    let size = obj.getSize()
+    let parentSize = obj.getParent().getSize()
+    let speedCreditsScroll = (size[1] / parentSize[1] ) / timeToShowAll
 
     if (pos[1]+size[1] < 0)
     {

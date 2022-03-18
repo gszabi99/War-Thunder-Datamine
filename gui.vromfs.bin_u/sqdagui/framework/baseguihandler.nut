@@ -1,7 +1,7 @@
-class ::BaseGuiHandler
+::BaseGuiHandler <- class
 {
   wndType = handlerType.BASE
-  sceneBlkName = "gui/emptyScene.blk"
+  sceneBlkName = "%gui/emptyScene.blk"
   sceneNavBlkName = null
   sceneTplName = null //load scene tpl when sceneBlkNmae == null. only work with custom handlers yet.
   keepLoaded = false
@@ -65,15 +65,15 @@ class ::BaseGuiHandler
     if (!sceneTplName)
       return false
 
-    local obj = getSceneTplContainerObj()
+    let obj = getSceneTplContainerObj()
     if (!obj?.isValid())
       return false
 
-    local view = getSceneTplView()
+    let view = getSceneTplView()
     if (!view)
       return false
 
-    local data = ::handyman.renderCached(sceneTplName, view)
+    let data = ::handyman.renderCached(sceneTplName, view)
 
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     return true
@@ -97,10 +97,10 @@ class ::BaseGuiHandler
 
   function loadNavBar()
   {
-    local markup = getNavbarMarkup()
+    let markup = getNavbarMarkup()
     if(!markup && !sceneNavBlkName)
       return
-    local obj = scene.findObject("nav-help")
+    let obj = scene.findObject("nav-help")
     if (!::check_obj(obj))
       return
 
@@ -134,14 +134,14 @@ class ::BaseGuiHandler
     if (wndType != handlerType.ROOT)
       return
 
-    local handler = getCurActiveContentHandler()
+    let handler = getCurActiveContentHandler()
     if (handler)
       onNewContentLoaded(handler)
   }
 
   function getCurActiveContentHandler()
   {
-    local handler = ::handlersManager.getActiveBaseHandler()
+    let handler = ::handlersManager.getActiveBaseHandler()
     return (handler && handler.rootHandlerClass == getclass()) ? handler : null
   }
   //************** end of only for wndType == handlerType.ROOT *****************//
@@ -248,7 +248,7 @@ class ::BaseGuiHandler
       if (!checkActiveForDelayedAction())
         break
 
-      local action = delayedActions.remove(0)
+      let action = delayedActions.remove(0)
       if (typeof(action) == "string" && action in this)
         this[action]()
       else if (typeof(action) == "function")
@@ -279,7 +279,7 @@ class ::BaseGuiHandler
   {
     ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
-    local prevIdx = delayedActions.indexof(funcName)
+    let prevIdx = delayedActions.indexof(funcName)
     if (prevIdx != null)
       delayedActions.remove(prevIdx)
     delayedActions.append(funcName)

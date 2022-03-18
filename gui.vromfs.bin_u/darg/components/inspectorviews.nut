@@ -1,18 +1,18 @@
 from "%darg/ui_imports.nut" import *
 
-local fieldsMapHorAlign = {
+let fieldsMapHorAlign = {
   [ALIGN_LEFT] = "ALIGN_LEFT",
   [ALIGN_CENTER] = "ALIGN_CENTER",
   [ALIGN_RIGHT] = "ALIGN_RIGHT",
 }
 
-local fieldsMapVerAlign = {
+let fieldsMapVerAlign = {
   [ALIGN_TOP] = "ALIGN_TOP",
   [ALIGN_CENTER] = "ALIGN_CENTER",
   [ALIGN_BOTTOM] = "ALIGN_BOTTOM",
 }
 
-local fieldsMap = {
+let fieldsMap = {
   rendObj = {
     [ROBJ_IMAGE] = "ROBJ_IMAGE",
     [ROBJ_STEXT] = "ROBJ_STEXT",

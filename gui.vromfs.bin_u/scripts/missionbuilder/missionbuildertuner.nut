@@ -1,19 +1,19 @@
-local { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
-local { getWeaponInfoText,
+let { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
+let { getWeaponInfoText,
         getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { cutPostfix } = require("std/string.nut")
+let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { cutPostfix } = require("std/string.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner()
 {
   ::gui_start_modal_wnd(::gui_handlers.MissionBuilderTuner)
 }
 
-class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.MissionBuilderTuner <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/genericOptionsMap.blk"
-  sceneNavBlkName = "gui/options/navOptionsBack.blk"
+  sceneBlkName = "%gui/options/genericOptionsMap.blk"
+  sceneNavBlkName = "%gui/options/navOptionsBack.blk"
 
   unitsBlk = null
   listA = null
@@ -41,8 +41,8 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     unitsBlk = DataBlock()
     ::dynamic_get_units(::mission_settings.missionFull, unitsBlk)
 
-    local list = createOptions()
-    local listObj = scene.findObject("optionslist")
+    let list = createOptions()
+    let listObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
     //mission preview
@@ -59,8 +59,8 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildAircraftOption(id, units, selUnitId)
   {
-    local value = units.indexof(selUnitId) ?? 0
-    local items = units.map(@(unitId) {
+    let value = units.indexof(selUnitId) ?? 0
+    let items = units.map(@(unitId) {
       text = $"#{unitId}_shop"
       image = ::image_for_air(unitId)
     })
@@ -79,7 +79,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
       weapons = getWeaponsList(unitId)
     }
 
-    local value = weapons.values.indexof(selWeapon) ?? 0
+    let value = weapons.values.indexof(selWeapon) ?? 0
     return {
       markup = ::create_option_combobox(id, weapons.items, value, null, isFull)
       values = weapons.values
@@ -88,8 +88,8 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildSkinOption(id, unitId, selSkin, isFull = true)
   {
-    local skins = ::g_decorator.getSkinsOption(unitId)
-    local value = skins.values.indexof(selSkin) ?? 0
+    let skins = ::g_decorator.getSkinsOption(unitId)
+    let value = skins.values.indexof(selSkin) ?? 0
     return {
       markup = ::create_option_combobox(id, skins.items, value, null, isFull)
       values = skins.values
@@ -98,10 +98,10 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildCountOption(id, minCount, maxCount, selCount)
   {
-    local values = []
+    let values = []
     for (local i = minCount; i <= maxCount; i++)
       values.append(i)
-    local value = values.indexof(selCount) ?? 0
+    let value = values.indexof(selCount) ?? 0
     return {
       markup = ::create_option_combobox(id, values.map(@(v) v.tostring()), value, null, true)
       values
@@ -129,7 +129,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSuitableUnits(excludeTag, fmTags, weapTags)
   {
-    local suitableUnits = []
+    let suitableUnits = []
     foreach(unit in ::all_units)
     {
       if (isInArray(excludeTag, unit.tags))
@@ -163,13 +163,13 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     defaultW = {}
     defaultS = {}
 
-    local rowsView = []
+    let rowsView = []
 
-    local isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
+    let isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
 
     for (local i = 0; i < unitsBlk.blockCount(); i++)
     {
-      local armada = unitsBlk.getBlock(i)
+      let armada = unitsBlk.getBlock(i)
 
       // Player's squad units
       if (armada?.isPlayer ?? false)
@@ -185,18 +185,18 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
         continue
       }
 
-      local name = armada.getStr("name","")
-      local aircraft = armada.getStr("unit_class", "");
+      let name = armada.getStr("name","")
+      let aircraft = armada.getStr("unit_class", "");
       local weapon = armada.getStr("weapons", "");
       local skin = armada.getStr("skin", "");
-      local count = armada.getInt("count", commonSquadSize);
-      local army = armada.getInt("army", 1); //1-ally, 2-enemy
-      local isBomber = armada.getBool("mustBeBomber", false);
-      local isFighter = armada.getBool("mustBeFighter", false);
-      local isAssault = armada.getBool("mustBeAssault", false);
-      local minCount = armada.getInt("minCount", 1);
-      local maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
-      local excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
+      let count = armada.getInt("count", commonSquadSize);
+      let army = armada.getInt("army", 1); //1-ally, 2-enemy
+      let isBomber = armada.getBool("mustBeBomber", false);
+      let isFighter = armada.getBool("mustBeFighter", false);
+      let isAssault = armada.getBool("mustBeAssault", false);
+      let minCount = armada.getInt("minCount", 1);
+      let maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
+      let excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
 
       if ((name == "") || (aircraft == ""))
         break;
@@ -208,18 +208,18 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
         skin = ::g_decorator.getLastSkin(playerUnitId)
       }
 
-      local adesc = armada.description
-      local fmTags = adesc % "needFmTag"
-      local weapTags = adesc % "weaponOrTag"
+      let adesc = armada.description
+      let fmTags = adesc % "needFmTag"
+      let weapTags = adesc % "weaponOrTag"
 
-      local aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
+      let aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
       // make sure that aircraft exists in aircrafts array
       ::u.appendOnce(aircraft, aircrafts)
 
       aircrafts.sort()
 
       //aircraft type
-      local trId = "".concat(
+      let trId = "".concat(
         (army == (unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
         (isBomber ? "Bomber" : isFighter ? "Fighter" : isAssault ? "Assault" : ""))
 
@@ -229,7 +229,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
       defaultW[aircraft] <- weapon
       defaultS[aircraft] <- skin
 
-      local airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
+      let airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
 
       // Aircraft
       option = buildAircraftOption($"{i}_a", aircrafts, aircraft)
@@ -252,7 +252,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
       listC.append(option.values)
     }
 
-    return ::handyman.renderCached("gui/options/optionsContainer", {
+    return ::handyman.renderCached("%gui/options/optionsContainer", {
       id = "tuner_options"
       topPos = "(ph-h)/2"
       position = "absolute"
@@ -263,11 +263,11 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeAircraft(obj)
   {
-    local i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
+    let i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
     if (listA?[i] == null)
       return
 
-    local unitId = listA[i][obj.getValue()]
+    let unitId = listA[i][obj.getValue()]
     local option
     local optObj
 
@@ -294,8 +294,8 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
     for (local i = 0; i < listA.len(); i++)
     {
-      local isPlayer = i == playerIdx
-      local armada = unitsBlk.getBlock(i)
+      let isPlayer = i == playerIdx
+      let armada = unitsBlk.getBlock(i)
       armada.setStr("unit_class", listA[i][isPlayer ? 0 : scene.findObject($"{i}_a").getValue()])
       armada.setStr("weapons",    listW[i][isPlayer ? 0 : scene.findObject($"{i}_w").getValue()])
       armada.setStr("skin",       listS[i][isPlayer ? 0 : scene.findObject($"{i}_s").getValue()])
@@ -310,7 +310,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
     ::set_context_to_player("difficulty", ::get_mission_difficulty())
 
-    local appFunc = function()
+    let appFunc = function()
     {
       ::broadcastEvent("BeforeStartMissionBuilder")
       if (::SessionLobby.isInRoom())
@@ -336,7 +336,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function hasWeaponsChoice(unit, weapTags)
   {
-    foreach (weapon in unit.weapons)
+    foreach (weapon in unit.getWeapons())
       if (isWeaponVisible(unit, weapon, false, weapTags))
         return true
     return false
@@ -344,18 +344,18 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function getWeaponsList(aircraft, weapTags = null)
   {
-    local descr = {
+    let descr = {
       items = []
       values = []
     }
 
-    local unit = ::getAircraftByName(aircraft)
+    let unit = ::getAircraftByName(aircraft)
     if (!unit)
       return descr
 
-    foreach(weapNo, weapon in unit.weapons)
+    foreach(weapNo, weapon in unit.getWeapons())
     {
-      local weaponName = weapon.name
+      let weaponName = weapon.name
       if (!isWeaponVisible(unit, weapon, false, weapTags))
         continue
 

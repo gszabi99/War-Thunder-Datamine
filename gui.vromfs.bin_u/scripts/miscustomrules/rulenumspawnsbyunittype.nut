@@ -1,7 +1,7 @@
-local { unitClassType } = require("scripts/unit/unitClassType.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
+let { unitClassType } = require("scripts/unit/unitClassType.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
 
-class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
+::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base
 {
   needLeftRespawnOnSlots = true
   customUnitRespawnsAllyListHeaderLocId  = "multiplayer/personalUnitsLeftHeader"
@@ -44,7 +44,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
   function getSpecialCantRespawnMessage(unit)
   {
-    local leftRespawns = getUnitLeftRespawns(unit)
+    let leftRespawns = getUnitLeftRespawns(unit)
     if (leftRespawns)
       return null
 
@@ -64,7 +64,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
         name = unit.expClass.getName()
         break
       case "type_and_class":
-        local needType = getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
+        let needType = getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
           getUnitLeftRespawnsByRestrictionRule(unit, "class")
         icon = needType ? unit.unitType.fontIcon         : unit.expClass.getFontIcon()
         name = needType ? unit.unitType.getArmyLocName() : unit.expClass.getName()
@@ -84,8 +84,8 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
     if (!getLeftRespawns())
       return res
 
-    local crewsList = ::get_crews_list_by_country(::get_local_player_country())
-    local myStateBlk = getMyStateBlk()
+    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
+    let myStateBlk = getMyStateBlk()
     if (!myStateBlk)
       return (1 << crewsList.len()) - 1
 
@@ -102,7 +102,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
   function getRespawnInfoTextForUnitInfo(unit)
   {
-    local cantRespawnMsg = getSpecialCantRespawnMessage(unit)
+    let cantRespawnMsg = getSpecialCantRespawnMessage(unit)
     return cantRespawnMsg ? ::colorize("@badTextColor", cantRespawnMsg) :
       ::loc("multiplayer/leftTeamUnit", { num = getUnitLeftRespawns(unit) })
   }
@@ -114,48 +114,48 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
     switch(getRestrictionRule())
     {
       case "type":
-        local res = []
+        let res = []
         foreach(unitType in getAllowedUnitTypes())
         {
           if (unit && unit.esUnitType != unitType.esUnitType)
             continue
 
-          local resp = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+          let resp = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
           res.append(unitType.fontIcon + resp)
         }
         return ::colorize("@activeTextColor", ::g_string.implode(res, ::loc("ui/comma")))
 
       case "class":
-        local res = []
+        let res = []
         foreach(classType in getAllowedUnitClasses())
         {
           if (unit && unit.expClass != classType)
             continue
 
-          local resp = getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+          let resp = getUnitClassLeftRespawns(classType.getExpClass(), stateData)
           res.append(classType.getFontIcon() + resp)
         }
         return ::colorize("@activeTextColor", ::g_string.implode(res, ::loc("ui/comma")))
 
       case "type_and_class":
-        local res = []
+        let res = []
         foreach(unitType in getKnownUnitTypes())
         {
           if (unit && unit.esUnitType != unitType.esUnitType)
             continue
 
-          local typeResp = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+          let typeResp = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
           if (!typeResp)
             continue
 
           local classesText = []
-          local classTypes = ::u.filter(getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
+          let classTypes = ::u.filter(getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
           foreach (classType in classTypes)
           {
             if (unit && unit.expClass != classType)
               continue
 
-            local classResp = getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+            let classResp = getUnitClassLeftRespawns(classType.getExpClass(), stateData)
             classesText.append(classType.getFontIcon() + classResp)
           }
           classesText = ::g_string.implode(classesText, ::loc("ui/comma"))
@@ -177,13 +177,13 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
   function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) //stateData is a table or blk
   {
-    local respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
+    let respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
     return ::max(0, respawns) //dont have unlimited respawns
   }
 
   function getUnitClassLeftRespawns(expClass, stateData) //stateData is a table or blk
   {
-    local respawns = stateData?[expClass] ?? 0
+    let respawns = stateData?[expClass] ?? 0
     return ::max(0, respawns) //dont have unlimited respawns
   }
 
@@ -194,7 +194,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
   function getEventDescByRulesTbl(rulesTbl)
   {
-    local baseRules = rulesTbl?.ruleSet ?? {}
+    let baseRules = rulesTbl?.ruleSet ?? {}
     getRestrictionRule(baseRules)
     collectAllowedTypeAndClasses(baseRules)
     return ::loc("multiplayer/flyouts") + ::loc("ui/colon") + getRespawnInfoText(null, baseRules)
@@ -202,29 +202,29 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
   function calcFullUnitLimitsData(isTeamMine = true)
   {
-    local res = base.calcFullUnitLimitsData()
+    let res = base.calcFullUnitLimitsData()
 
     local stateData = getMyStateBlk()
     if (::u.isEmpty(stateData))
       stateData = getCustomRulesBlk()?.ruleSet
 
-    local needUnitTypes   = getAllowedUnitTypes().len()   != 0
-    local needUnitClasses = getAllowedUnitClasses().len() != 0
+    let needUnitTypes   = getAllowedUnitTypes().len()   != 0
+    let needUnitClasses = getAllowedUnitClasses().len() != 0
 
     foreach(unitType in getKnownUnitTypes())
     {
       if (needUnitTypes)
       {
-        local respLeft  = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+        let respLeft  = getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
       }
 
       if (needUnitClasses)
       {
-        local classTypes = ::u.filter(getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
+        let classTypes = ::u.filter(getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
         foreach(classType in classTypes)
         {
-          local expClassName = classType.getExpClass()
+          let expClassName = classType.getExpClass()
           local respLeft  = getUnitClassLeftRespawns(expClassName, stateData)
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, respLeft))
         }
@@ -239,8 +239,8 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
     if (!restrictionRule)
     {
       baseRules = baseRules || getCustomRulesBlk()?.ruleSet
-      local value = baseRules?.restriction_rule ?? "type"
-      local validValues = [ "type", "class", "type_and_class" ]
+      let value = baseRules?.restriction_rule ?? "type"
+      let validValues = [ "type", "class", "type_and_class" ]
       restrictionRule = ::isInArray(value, validValues) ? value : "type"
     }
     return restrictionRule
@@ -270,22 +270,22 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
   function collectAllowedTypeAndClasses(baseRules = null)
   {
     baseRules  = baseRules || getCustomRulesBlk()?.ruleSet
-    local rule = getRestrictionRule()
-    local needUnitTypes   = ::isInArray(rule, [ "type",  "type_and_class" ])
-    local needUnitClasses = ::isInArray(rule, [ "class", "type_and_class" ])
+    let rule = getRestrictionRule()
+    let needUnitTypes   = ::isInArray(rule, [ "type",  "type_and_class" ])
+    let needUnitClasses = ::isInArray(rule, [ "class", "type_and_class" ])
 
     knownUnitTypesList     = []
     allowedUnitTypesList   = []
     allowedUnitClassesList = []
 
-    local checkedDsUnitTypes = []
+    let checkedDsUnitTypes = []
 
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
-      local dsUnitType = ::get_ds_ut_name_unit_type(unitType.esUnitType)
+      let dsUnitType = ::get_ds_ut_name_unit_type(unitType.esUnitType)
       if (::isInArray(dsUnitType, checkedDsUnitTypes))
         continue
       checkedDsUnitTypes.append(dsUnitType)
@@ -299,7 +299,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
       if (needUnitClasses)
       {
-        local unitTypeClassTypes = ::u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
+        let unitTypeClassTypes = ::u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
         foreach(classType in unitTypeClassTypes)
           if (getUnitClassLeftRespawns(classType.getExpClass(), baseRules) > 0)
           {

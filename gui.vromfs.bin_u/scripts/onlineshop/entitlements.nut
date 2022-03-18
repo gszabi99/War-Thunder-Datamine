@@ -1,13 +1,13 @@
-local { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
+let { bundlesShopInfo } = require("scripts/onlineShop/entitlementsInfo.nut")
 
-local function getEntitlementConfig(name)
+let function getEntitlementConfig(name)
 {
   if (!name || name == "")
     return null
 
-  local res = { name = name }
+  let res = { name = name }
 
-  local pblk = ::OnlineShopModel.getPriceBlk()
+  let pblk = ::OnlineShopModel.getPriceBlk()
   if (pblk?[name] == null)
     return null
 
@@ -27,7 +27,7 @@ local function getEntitlementConfig(name)
 
   for (local i = 0; i < pblk[name].paramCount(); i++)
   {
-    local paramName = pblk[name].getParamName(i)
+    let paramName = pblk[name].getParamName(i)
     if (!(paramName in res))
       res[paramName] <- pblk[name].getParamValue(i)
   }
@@ -35,12 +35,12 @@ local function getEntitlementConfig(name)
   return res
 }
 
-local function getEntitlementLocId(item)
+let function getEntitlementLocId(item)
 {
   return ("alias" in item) ? item.alias : ("group" in item) ? item.group : (item?.name ?? "unknown")
 }
 
-local function getEntitlementAmount(item)
+let function getEntitlementAmount(item)
 {
   if ("httl" in item)
     return item.httl.tofloat() / 24.0
@@ -52,7 +52,7 @@ local function getEntitlementAmount(item)
   return 1
 }
 
-local function getEntitlementTimeText(item)
+let function getEntitlementTimeText(item)
 {
   if ("ttl" in item)
     return item.ttl + ::loc("measureUnits/days")
@@ -61,13 +61,13 @@ local function getEntitlementTimeText(item)
   return ""
 }
 
-local function getEntitlementName(item)
+let function getEntitlementName(item)
 {
   local name = ""
   if (("useGroupAmount" in item) && item.useGroupAmount && ("group" in item))
   {
     name = ::loc("charServer/entitlement/" + item.group)
-    local amountStr = ::g_language.decimalFormat(getEntitlementAmount(item))
+    let amountStr = ::g_language.decimalFormat(getEntitlementAmount(item))
     if(name.indexof("%d") != null)
       name = ::stringReplace(name, "%d", amountStr)
     else
@@ -76,13 +76,13 @@ local function getEntitlementName(item)
   else
     name = ::loc("charServer/entitlement/" + getEntitlementLocId(item))
 
-  local timeText = getEntitlementTimeText(item)
+  let timeText = getEntitlementTimeText(item)
   if (timeText!="")
     name += " " + timeText
   return name
 }
 
-local function getFirstPurchaseAdditionalAmount(item)
+let function getFirstPurchaseAdditionalAmount(item)
 {
   if (!::has_entitlement(item.name))
     return ::getTblValue("goldIncomeFirstBuy", item, 0)
@@ -90,20 +90,20 @@ local function getFirstPurchaseAdditionalAmount(item)
   return 0
 }
 
-local function getEntitlementPrice(item)
+let function getEntitlementPrice(item)
 {
   if (item?.onlinePurchase ?? false) {
-    local info = bundlesShopInfo.value?[item.name]
+    let info = bundlesShopInfo.value?[item.name]
     if (info)
       return ::loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
 
-    local priceText = ::loc("price/" + item.name, "")
+    let priceText = ::loc("price/" + item.name, "")
     if (priceText == "")
       return ""
 
-    local markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
+    let markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
-    local discount = ::g_discount.getEntitlementDiscount(item.name)
+    let discount = ::g_discount.getEntitlementDiscount(item.name)
     if (discount)
       totalPrice -= totalPrice * discount * 0.01
 

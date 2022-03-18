@@ -1,6 +1,6 @@
-class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
+::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase
 {
-  sceneBlkName   = "gui/events/eventQueueByCountries.blk"
+  sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
 
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
@@ -26,7 +26,7 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
   function updateStats()
   {
     ::g_qi_view_utils.updateViewByCountries(statsObj, queue, curClusterName)
-    local countrySets = ::events.getAllCountriesSets(event)
+    let countrySets = ::events.getAllCountriesSets(event)
     if (!::u.isEqual(visibleCountrySets, countrySets))
       fillCountrySets(countrySets)
     updateCustomModeCheckbox()
@@ -38,21 +38,21 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
     if (countrySets.len() < 2)
       return
 
-    local myCountry = ::queues.getQueueCountry(queue)
-    local sortedSets = clone countrySets
+    let myCountry = ::queues.getQueueCountry(queue)
+    let sortedSets = clone countrySets
     sortedSets.sort((@(myCountry) function(a, b) {
-      local countryDiff = (myCountry in a.allCountries ? 0 : 1) - (myCountry in b.allCountries ? 0 : 1)
+      let countryDiff = (myCountry in a.allCountries ? 0 : 1) - (myCountry in b.allCountries ? 0 : 1)
       if (countryDiff)
         return countryDiff
       return a.gameModeIds[0] - b.gameModeIds[0]
     })(myCountry))
 
-    local view = {
+    let view = {
       isCentered = true
       countriesSets = ::u.map(sortedSets, function(cSet)
       {
-        local res = {}
-        local teams = ::g_team.getTeams()
+        let res = {}
+        let teams = ::g_team.getTeams()
         foreach(idx, team in teams)
           if (idx in cSet.countries)
           {
@@ -68,22 +68,22 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
       })
     }
 
-    local markup = ::handyman.renderCached("gui/events/countriesByTeamsList", view)
-    local nestObj = scene.findObject("countries_sets")
+    let markup = ::handyman.renderCached("%gui/events/countriesByTeamsList", view)
+    let nestObj = scene.findObject("countries_sets")
     guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
     showSceneBtn("countries_sets_header", true)
   }
 
   function updateCustomModeCheckbox()
   {
-    local isVisible = queue && queue.hasCustomMode()
+    let isVisible = queue && queue.hasCustomMode()
     showSceneBtn("custom_mode_header", isVisible)
-    local obj = showSceneBtn("custom_mode_checkbox", isVisible)
+    let obj = showSceneBtn("custom_mode_checkbox", isVisible)
     if (!isVisible)
       return
 
     obj.enable(queue.isAllowedToSwitchCustomMode())
-    local value = getCustomModeCheckboxValue()
+    let value = getCustomModeCheckboxValue()
     if (value != obj.getValue())
       obj.setValue(value)
   }
@@ -111,7 +111,7 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
 
   function createClustersList()
   {
-    local clustersObj = scene.findObject("clusters_list")
+    let clustersObj = scene.findObject("clusters_list")
     if (::events.isMultiCluster(event))
     {
       clustersObj.show(false)
@@ -119,14 +119,14 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
       return
     }
 
-    local view = { tabs = [] }
+    let view = { tabs = [] }
     foreach (clusterName in ::queues.getQueueClusters(queue))
       view.tabs.append({
         id = clusterName
         tabName = ::g_clusters.getClusterLocName(clusterName)
       })
 
-    local markup = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    let markup = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(clustersObj, markup, markup.len(), this)
     if (view.tabs.len())
     {
@@ -137,7 +137,7 @@ class ::gui_handlers.QiHandlerByCountries extends ::gui_handlers.QiHandlerBase
 
   function onClusterChange(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 

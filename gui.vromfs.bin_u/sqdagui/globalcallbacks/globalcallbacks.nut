@@ -1,10 +1,10 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+let enums = require("sqStdlibs/helpers/enums.nut")
 
-local callbacks = {
+let callbacks = {
   types = []
 }
 
-local cbTbl = {}
+let cbTbl = {}
 
 callbacks.template <- {
   id = "" //filled automatically by typeName

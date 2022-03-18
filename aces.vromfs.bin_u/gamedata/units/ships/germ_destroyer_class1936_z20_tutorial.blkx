@@ -2383,22 +2383,28 @@
         "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1490.0
+          "hp": 1500.0
         },
         "cover_02_dm": {
-          "hp": 1500.0
+          "hp": 1255.0
         },
         "cover_03_dm": {
           "hp": 1500.0
         },
         "cover_04_dm": {
-          "hp": 1500.0
+          "hp": 1000.0
         },
         "cover_05_dm": {
           "hp": 1000.0
         },
         "cover_06_dm": {
-          "hp": 1162.0
+          "hp": 1000.0
+        },
+        "cover_07_dm": {
+          "hp": 1068.0
+        },
+        "cover_08_dm": {
+          "hp": 1000.0
         }
       },
       "superstructures": {
@@ -2455,18 +2461,6 @@
           "hp": 7000.0
         },
         "bulkhead_07_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_08_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_09_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_10_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_11_dm": {
           "hp": 7000.0
         }
       },
@@ -3914,6 +3908,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3988,6 +3984,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4055,6 +4053,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4127,6 +4127,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4194,6 +4196,8 @@
           "bullets": 120,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4267,6 +4271,8 @@
           "speedPitch": 15.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4340,6 +4346,8 @@
           "speedPitch": 15.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4408,6 +4416,8 @@
           "speedPitch": 15.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4481,6 +4491,8 @@
           "speedPitch": 15.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -6871,19 +6883,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -60000.0,
+      "waterMassMult": 90.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 9000000.0,
-      "additionalWaterShouldDiePercent": 0.38,
+      "additionalWaterShouldDiePercent": 0.3,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 35.0,
       "maxHeelingTime": 8.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 3.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.45
+      "sideCenterOfMassOffsetPercent": 0.3
     }
   },
   {
@@ -6891,14 +6903,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.21,
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.45,
+          "weight": 0.9,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -6924,12 +6936,6 @@
                 "partNo": "ammunition_storage_charges_02_dm",
                 "critWaterLevel": 0.3
               }
-            },
-            {
-              "part": {
-                "partNo": "ammunition_storage_aux_01_dm",
-                "critWaterLevel": 0.85
-              }
             }
           ]
         }
@@ -6939,47 +6945,57 @@
           "part": "cover_03_dm",
           "weight": 1.0,
           "maxWaterAlive": 1.0,
-          "innerParts": [
-            {
-              "part": {
-                "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.5
-              }
-            },
-            {
-              "part": {
-                "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.5
-              }
+          "innerParts": {
+            "part": {
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.5
             }
-          ]
+          }
         }
       },
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.68,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
-          "innerParts": [
-            {
-              "part": {
-                "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.5
-              }
-            },
-            {
-              "part": {
-                "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.5
-              }
+          "innerParts": {
+            "part": {
+              "partNo": "engine_room_02_dm",
+              "critWaterLevel": 0.5
             }
-          ]
+          }
         }
       },
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.27,
+          "weight": 0.7,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.5
+            }
+          }
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_06_dm",
+          "weight": 0.5,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.5
+            }
+          }
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_07_dm",
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -7023,8 +7039,8 @@
       },
       {
         "cover": {
-          "part": "cover_06_dm",
-          "weight": 0.37,
+          "part": "cover_08_dm",
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       }

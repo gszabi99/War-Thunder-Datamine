@@ -1,10 +1,10 @@
-local { clearBorderSymbols } = require("std/string.nut")
-local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
+let { clearBorderSymbols } = require("std/string.nut")
+let { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
-class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.modifyUrlMissionWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/missions/modifyUrlMission.blk"
+  sceneBlkName = "%gui/missions/modifyUrlMission.blk"
 
   validateNameRegexp = regexp2(@"[""'*/\\\^`~]")
 
@@ -21,7 +21,7 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local title = urlMission ? ::loc("urlMissions/modify") : ::loc("urlMissions/add")
+    let title = urlMission ? ::loc("urlMissions/modify") : ::loc("urlMissions/add")
     scene.findObject("title").setValue(title)
 
     if (urlMission)
@@ -40,7 +40,7 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     curName = obj.getValue() || ""
-    local validatedName = getValidatedCurName()
+    let validatedName = getValidatedCurName()
 
     if (curName != validatedName)
     {
@@ -74,8 +74,8 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
       return ::showInfoMsgBox(::loc("msg/allFieldsMustBeFilled"))
 
     local res = true
-    local name = clearBorderSymbols(curName, [" "])
-    local url = clearBorderSymbols(curUrl, [" "])
+    let name = clearBorderSymbols(curName, [" "])
+    let url = clearBorderSymbols(curUrl, [" "])
     if (urlMission)
       res = ::g_url_missions.modifyMission(urlMission, name, url)
     else

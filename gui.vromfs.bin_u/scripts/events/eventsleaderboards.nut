@@ -1,4 +1,4 @@
-local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
+let { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -48,7 +48,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     requestData = validateRequestData(requestData)
 
-    local cachedData = getCachedLbResult(requestData, "leaderboards")
+    let cachedData = getCachedLbResult(requestData, "leaderboards")
 
     //trigging callback if data is lready here
     if (cachedData)
@@ -79,7 +79,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     requestData = validateRequestData(requestData)
 
-    local cachedData = getCachedLbResult(requestData, "selfRow")
+    let cachedData = getCachedLbResult(requestData, "selfRow")
 
     //trigging callback if data is lready here
     if (cachedData)
@@ -97,7 +97,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function updateEventLbInternal(requestData, id, requestFunc, handleFunc)
   {
-    local requestAction = ::Callback(function() {
+    let requestAction = ::Callback(function() {
       requestFunc(
         requestData,
         ::Callback(function(successData) {
@@ -141,7 +141,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
    */
   function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.event = requestData.economicName
     blk.sortField = requestData.lbField
     blk.start = requestData.pos
@@ -154,9 +154,9 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     if (blk.start == null || blk.start < 0)
     {
-      local event = blk.event  // warning disable: -declared-never-used
-      local start = blk.start  // warning disable: -declared-never-used
-      local count = blk.count  // warning disable: -declared-never-used
+      let event = blk.event  // warning disable: -declared-never-used
+      let start = blk.start  // warning disable: -declared-never-used
+      let count = blk.count  // warning disable: -declared-never-used
       ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
       ::dagor.debug($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
 
@@ -164,16 +164,16 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     }
     if (blk.count == null || blk.count <= 0)
     {
-      local event = blk.event  // warning disable: -declared-never-used
-      local count = blk.count  // warning disable: -declared-never-used
-      local start = blk.start  // warning disable: -declared-never-used
+      let event = blk.event  // warning disable: -declared-never-used
+      let count = blk.count  // warning disable: -declared-never-used
+      let start = blk.start  // warning disable: -declared-never-used
       ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
       ::dagor.debug($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
 
       blk.count = 49  // unusual value indicate problem
     }
 
-    local event = ::events.getEvent(requestData.economicName)
+    let event = ::events.getEvent(requestData.economicName)
     if (requestData.tournament || ::events.isRaceEvent(event))
       blk.tournamentMode = requestData.tournament_mode
 
@@ -186,7 +186,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
    */
   function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.event = requestData.economicName
     blk.sortField = requestData.lbField
     blk.start = -1
@@ -198,7 +198,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
     blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
-    local event = ::events.getEvent(requestData.economicName)
+    let event = ::events.getEvent(requestData.economicName)
     if (requestData.tournament || ::events.isRaceEvent(event))
       blk.tournamentMode = requestData.tournament_mode
 
@@ -222,7 +222,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function handleLbRequest(requestData, id, requestResult)
   {
-    local lbData = getLbDataFromBlk(requestResult, requestData)
+    let lbData = getLbDataFromBlk(requestResult, requestData)
 
     if (!(requestData.economicName in __cache.leaderboards))
       __cache.leaderboards[requestData.economicName] <- {}
@@ -246,7 +246,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function handleLbSelfRowRequest(requestData, id, requestResult)
   {
-    local lbData = getSelfRowDataFromBlk(requestResult, requestData)
+    let lbData = getSelfRowDataFromBlk(requestResult, requestData)
 
     if (!(requestData.economicName in __cache.selfRow))
       __cache.selfRow[requestData.economicName] <- {}
@@ -276,7 +276,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     if (!(request_data.economicName in __cache[storage_name]))
       return null
 
-    local hash = hashLbRequest(request_data)
+    let hash = hashLbRequest(request_data)
     if (!(hash in __cache[storage_name][request_data.economicName]))
       return null
 
@@ -290,7 +290,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function getMainLbRequest(event)
   {
-    local newRequest = {}
+    let newRequest = {}
     foreach (name, item in shortLbrequest)
       newRequest[name] <- (name in this) ? this[name] : item
 
@@ -302,8 +302,8 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     newRequest.tournament_mode <- ::events.getEventTournamentMode(event)
     newRequest.forClans <- isClanLeaderboard(event)
 
-    local sortLeaderboard = ::getTblValue("sort_leaderboard", event, null)
-    local shortRow = (sortLeaderboard != null)
+    let sortLeaderboard = ::getTblValue("sort_leaderboard", event, null)
+    let shortRow = (sortLeaderboard != null)
                       ? ::g_lb_category.getTypeByField(sortLeaderboard)
                       : ::events.getTableConfigShortRowByEvent(event)
     newRequest.inverse = shortRow.inverse
@@ -341,7 +341,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function dropLbCache(event)
   {
-    local economicName = ::events.getEventEconomicName(event)
+    let economicName = ::events.getEventEconomicName(event)
 
     if (economicName in __cache.leaderboards)
       __cache.leaderboards.rawdelete(economicName)
@@ -354,17 +354,17 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function getLbDataFromBlk(blk, requestData)
   {
-    local lbRows = lbBlkToArray(blk)
+    let lbRows = lbBlkToArray(blk)
     if (isClanLbRequest(requestData))
       foreach(lbRow in lbRows)
         postProcessClanLbRow(lbRow)
 
-    local superiorityBattlesThreshold = blk.getInt("superiorityBattlesThreshold", 0)
+    let superiorityBattlesThreshold = blk.getInt("superiorityBattlesThreshold", 0)
     if (superiorityBattlesThreshold > 0)
       foreach(lbRow in lbRows)
         lbRow["superiorityBattlesThreshold"] <- superiorityBattlesThreshold
 
-    local res = {}
+    let res = {}
     res["rows"] <- lbRows
     res["updateTime"] <- blk.getStr("lastUpdateTime", "0").tointeger()
     return res
@@ -372,7 +372,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function getSelfRowDataFromBlk(blk, requestData)
   {
-    local res = lbBlkToArray(blk)
+    let res = lbBlkToArray(blk)
     if (isClanLbRequest(requestData))
       foreach(lbRow in res)
         postProcessClanLbRow(lbRow)
@@ -381,10 +381,10 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function lbBlkToArray(blk)
   {
-    local res = []
+    let res = []
     foreach (row in blk % "event")
     {
-      local table = {}
+      let table = {}
       for(local i = 0; i < row.paramCount(); i++)
         table[row.getParamName(i)] <- row.getParamValue(i)
       res.append(table)
@@ -405,7 +405,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     //new leaderboards name param is in forma  "<tag> <name>"
     //old only "<name>"
     //but even with old leaderboards we need something to write in tag for short lb
-    local name = ::getTblValue("name", lbRow)
+    let name = ::getTblValue("name", lbRow)
     if (!::u.isString(name) || !name.len())
       return
 

@@ -9,20 +9,20 @@ local function isUltraWide(sw = null, sh = null)
 {
   sw = sw ?? ::screen_width()
   sh = sh ?? ::screen_height()
-  local ratio = 1.0 * sw / sh
+  let ratio = 1.0 * sw / sh
   return !isTripleHead(sw, sh) && ratio >= 2.5
 }
 
-local function getHudWidthLimit()
+let function getHudWidthLimit()
 {
-  local sw = ::screen_width()
-  local sh = ::screen_height()
+  let sw = ::screen_width()
+  let sh = ::screen_height()
   return isTripleHead(sw, sh) ? (1.0 / 3)
     : isUltraWide(sw, sh) ? (1.0 * sh * 16 / 9 / sw)
     : 1.0
 }
 
-local function getMenuWidthLimit()
+let function getMenuWidthLimit()
 {
   return isTripleHead() ? (1.0 / 3) : 1.0
 }
@@ -43,10 +43,10 @@ local function getMainScreenSizePx(sw = null, sh = null)
   return [ sw, sh ]
 }
 
-local function getScreenHeightForFonts(sw, sh)
+let function getScreenHeightForFonts(sw, sh)
 {
-  local scr = getMainScreenSizePx(sw, sh)
-  local height = ::min(0.75 * ::max(scr[0], scr[1]), ::min(scr[1], scr[0]))
+  let scr = getMainScreenSizePx(sw, sh)
+  let height = ::min(0.75 * ::max(scr[0], scr[1]), ::min(scr[1], scr[0]))
   return ::round(height).tointeger()
 }
 

@@ -1,6 +1,6 @@
-local shortcutsListModule = require("scripts/controls/shortcutsList/shortcutsList.nut")
+let shortcutsListModule = require("scripts/controls/shortcutsList/shortcutsList.nut")
 
-local getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
+let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 
 return {
   getShortcutById

@@ -1,8 +1,8 @@
-local time = require("scripts/time.nut")
-local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
-local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+let time = require("scripts/time.nut")
+let { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
+let { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
-class ::items_classes.Booster extends ::BaseItem
+::items_classes.Booster <- class extends ::BaseItem
 {
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
@@ -64,7 +64,7 @@ class ::items_classes.Booster extends ::BaseItem
 
     spentInSessionTimeMin = blk?.spentInSessionTimeMin ?? 0
 
-    local event = blk?.event
+    let event = blk?.event
     if (event != null)
     {
       eventType = event?.type
@@ -91,20 +91,20 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getBoostersEffectsDiffByItem()
   {
-    local effects = getEffectTypes()
+    let effects = getEffectTypes()
     if (!effects.len())
       return 0
 
-    local effectsArray = []
-    local items = getAllActiveSameBoosters()
-    local effect = effects[0] //!!we do not cmpare boosters with multieffects atm.
+    let effectsArray = []
+    let items = getAllActiveSameBoosters()
+    let effect = effects[0] //!!we do not cmpare boosters with multieffects atm.
 
     foreach(item in items)
     {
-      local value = effect.getValue(item)
+      let value = effect.getValue(item)
       if (value <= 0)
         continue
-      local amount = item.getAmount()
+      let amount = item.getAmount()
       if (amount > 1)
         effectsArray.extend(array(amount, value))
       else
@@ -112,10 +112,10 @@ class ::items_classes.Booster extends ::BaseItem
     }
 
     effectsArray.sort(@(a, b) b <=> a)
-    local effectsVal = getDiffEffect(effectsArray)
+    let effectsVal = getDiffEffect(effectsArray)
     effectsArray.append(effect.getValue(this))
     effectsArray.sort(@(a, b) b <=> a)
-    local newEffectsVal = getDiffEffect(effectsArray)
+    let newEffectsVal = getDiffEffect(effectsArray)
 
     return newEffectsVal - effectsVal
   }
@@ -139,7 +139,7 @@ class ::items_classes.Booster extends ::BaseItem
       return false
 
     local res = false
-    local total = ::get_current_booster_count(INVALID_USER_ID)
+    let total = ::get_current_booster_count(INVALID_USER_ID)
     for (local i = 0; i < total; i++)
       if (::isInArray(::get_current_booster_uid(INVALID_USER_ID, i), uids))
       {
@@ -155,7 +155,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive())
@@ -168,7 +168,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function doMainAction(cb, handler, params = null)
   {
-    local baseResult = base.doMainAction(cb, handler, params)
+    let baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return activate(cb, handler)
     return false
@@ -179,7 +179,7 @@ class ::items_classes.Booster extends ::BaseItem
     if (!uids || !uids.len())
       return -1
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.setStr("name", uids[0])
 
     return ::char_send_blk("cln_set_current_booster", blk)
@@ -187,7 +187,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function activate(cb, handler = null)
   {
-    local checkParams = {
+    let checkParams = {
       checkActive = true // Check if player already has active booster.
       checkIsInFlight = true // Check if player is in flight and booster will take effect in next battle.
     }
@@ -207,12 +207,12 @@ class ::items_classes.Booster extends ::BaseItem
 
   function showPenaltyBoosterMessageBox(handler, checkParams = null)
   {
-    local effectsDiff = getBoostersEffectsDiffByItem()
-    local bodyText = ::loc("msgbox/existingBoosters", {
+    let effectsDiff = getBoostersEffectsDiffByItem()
+    let bodyText = ::loc("msgbox/existingBoosters", {
                         newBooster = getName(),
                         newBoosterEffect = getDiffEffectText(::format("%.02f", effectsDiff).tofloat())
                       })
-    local savedThis = this
+    let savedThis = this
     handler.msgBox("activate_additional_booster", bodyText, [
       [
         "yes", (@(handler, savedThis, checkParams) function () {
@@ -225,8 +225,8 @@ class ::items_classes.Booster extends ::BaseItem
 
   function showIsInFlightAlertMessageBox(handler, checkParams = null)
   {
-    local bodyText = ::loc("msgbox/isInFlightBooster")
-    local savedThis = this
+    let bodyText = ::loc("msgbox/isInFlightBooster")
+    let savedThis = this
     handler.msgBox("activate_in_flight_booster", bodyText, [[
       "yes", (@(handler, savedThis, checkParams) function () {
           savedThis._activate(null, handler, checkParams)
@@ -253,7 +253,7 @@ class ::items_classes.Booster extends ::BaseItem
     if (!handler)
       handler = ::get_cur_base_gui_handler()
 
-    local checkIsInFlight = ::getTblValue("checkIsInFlight", checkParams, false)
+    let checkIsInFlight = ::getTblValue("checkIsInFlight", checkParams, false)
     if (checkIsInFlight && ::is_in_flight())
     {
       if (cb)
@@ -267,7 +267,7 @@ class ::items_classes.Booster extends ::BaseItem
       return false
     }
 
-    local checkActive = ::getTblValue("checkActive", checkParams, false)
+    let checkActive = ::getTblValue("checkActive", checkParams, false)
     if (checkActive && haveActiveBoosters())
     {
       if (cb)
@@ -303,7 +303,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getAllActiveSameBoosters()
   {
-    local effects = getEffectTypes()
+    let effects = getEffectTypes()
     return ::ItemsManager.getInventoryList(itemType.BOOSTER,
              (@(effects) function (_item) {
                if (!_item.isActive(true) || _item.personal != personal)
@@ -348,24 +348,24 @@ class ::items_classes.Booster extends ::BaseItem
 
   function _getMulIconCfg()
   {
-    local layersArray = []
-    local mul = ::max(wpRate, xpRate)
-    local numsArray = ::getArrayFromInt(mul)
+    let layersArray = []
+    let mul = ::max(wpRate, xpRate)
+    let numsArray = ::getArrayFromInt(mul)
     if (numsArray.len() > 0)
     {
-      local plusLayer = ::LayersIcon.findLayerCfg("item_plus")
+      let plusLayer = ::LayersIcon.findLayerCfg("item_plus")
       if (plusLayer)
         layersArray.append(clone plusLayer)
 
       foreach(idx, int in numsArray)
       {
-        local layer = ::LayersIcon.findLayerCfg("item_num_" + int)
+        let layer = ::LayersIcon.findLayerCfg("item_num_" + int)
         if (!layer)
           continue
         layersArray.append(clone layer)
       }
 
-      local percentLayer = ::LayersIcon.findLayerCfg("item_percent")
+      let percentLayer = ::LayersIcon.findLayerCfg("item_percent")
       if (percentLayer)
         layersArray.append(clone percentLayer)
 
@@ -396,7 +396,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getEffectText(wpRateNum = 0, xpRateNum = 0, colored = true)
   {
-    local text = []
+    let text = []
     if (wpRateNum > 0.0)
       if (colored)
         text.append(_formatEffectText(wpRateNum, ::loc("warpoints/short/colored")))
@@ -415,10 +415,10 @@ class ::items_classes.Booster extends ::BaseItem
   function getDescription()
   {
     local desc = ""
-    local locString = eventConditions == null
+    let locString = eventConditions == null
       ? "items/booster/description/uponActivation/withoutConditions"
       : "items/booster/description/uponActivation/withConditions"
-    local locParams = {
+    let locParams = {
       effectDesc = getEffectDesc()
     }
     if (wpRate != 0 || xpRate != 0)
@@ -428,7 +428,7 @@ class ::items_classes.Booster extends ::BaseItem
 
     desc += "\n"
 
-    local expireText = getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       desc += "\n" + expireText
     if (stopConditions != null)
@@ -436,10 +436,10 @@ class ::items_classes.Booster extends ::BaseItem
 
     if (isActive(true))
     {
-      local effectTypes = getEffectTypes()
+      let effectTypes = getEffectTypes()
       foreach(t in effectTypes)
       {
-        local usingBoostersArray = getActiveBoostersArray(t)
+        let usingBoostersArray = getActiveBoostersArray(t)
         desc = $"{desc}\n\n{getActiveBoostersDescription(usingBoostersArray, t, this)}"
       }
     }
@@ -471,7 +471,7 @@ class ::items_classes.Booster extends ::BaseItem
   {
     if (_totalStopSessions < 0)
     {
-      local mainCondition = ::UnlockConditions.getMainProgressCondition(stopConditions)
+      let mainCondition = ::UnlockConditions.getMainProgressCondition(stopConditions)
       _totalStopSessions = ::getTblValue("num", mainCondition, 0)
     }
     return _totalStopSessions
@@ -500,10 +500,10 @@ class ::items_classes.Booster extends ::BaseItem
     if (!stopConditions)
       return ""
 
-    local textsList = []
+    let textsList = []
     // Shows progress as count down 6, 5, 4, ... instead of 0/6, 1/6, ...
-    local curValue = getLeftStopSessions()
-    local params = { locEnding = isActive() ? "/inverted" : "/activeFor" }
+    let curValue = getLeftStopSessions()
+    let params = { locEnding = isActive() ? "/inverted" : "/activeFor" }
     textsList.append(::UnlockConditions.getConditionsText(stopConditions, null, curValue, params))
 
     if (spentInSessionTimeMin)
@@ -514,7 +514,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getEffectTypes()
   {
-    local effectTypes = []
+    let effectTypes = []
     foreach (effectType in boosterEffectType)
     {
       if (effectType.checkBooster(this))
@@ -525,7 +525,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function getContentIconData()
   {
-    local icon = getEventTypeIcon()
+    let icon = getEventTypeIcon()
     return icon ? { contentIcon = icon } : null
   }
 
@@ -548,15 +548,15 @@ class ::items_classes.Booster extends ::BaseItem
   {
     foreach (efType in boosterEffectType)
     {
-      local value = efType.getValue(this)
+      let value = efType.getValue(this)
       if (!value)
         continue
 
-      local efTypeName = efType.name
-      local valTbl = ::getTblValue(efTypeName, stackParams, {})
-      local minVal = ::getTblValue("min", valTbl)
+      let efTypeName = efType.name
+      let valTbl = ::getTblValue(efTypeName, stackParams, {})
+      let minVal = ::getTblValue("min", valTbl)
       valTbl.min <- minVal ? ::min(minVal, value) : value
-      local maxVal = ::getTblValue("max", valTbl)
+      let maxVal = ::getTblValue("max", valTbl)
       valTbl.max <- maxVal ? ::max(maxVal, value) : value
       stackParams[efTypeName] <- valTbl
     }
@@ -565,14 +565,14 @@ class ::items_classes.Booster extends ::BaseItem
   function getStackName(stackParams)
   {
     local res = ::colorize("activeTextColor", ::loc("item/" + defaultLocId))
-    local effects = []
+    let effects = []
     foreach (efType in boosterEffectType)
     {
-      local valTbl = ::getTblValue(efType.name, stackParams)
+      let valTbl = ::getTblValue(efType.name, stackParams)
       if (!valTbl || (!("min" in valTbl)))
         continue
 
-      local minText = _formatEffectText(valTbl.min, efType.currencyMark)
+      let minText = _formatEffectText(valTbl.min, efType.currencyMark)
       if (valTbl.min == valTbl.max)
         effects.append(minText)
       else
@@ -589,7 +589,7 @@ class ::items_classes.Booster extends ::BaseItem
   }
 }
 
-class ::items_classes.FakeBooster extends ::items_classes.Booster
+::items_classes.FakeBooster <- class extends ::items_classes.Booster
 {
   static iType = itemType.FAKE_BOOSTER
   showBoosterInSeparateList = true
@@ -616,13 +616,13 @@ class ::items_classes.FakeBooster extends ::items_classes.Booster
     if (!isInventoryItem)
       return desc
 
-    local bonusArray = []
+    let bonusArray = []
     foreach(effect in boosterEffectType)
     {
-      local value = ::get_squad_bonus_for_same_cyber_cafe(effect)
+      let value = ::get_squad_bonus_for_same_cyber_cafe(effect)
       if (value <= 0)
         continue
-      local percent = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value, false)
+      let percent = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value, false)
       bonusArray.append(effect.getText(_formatEffectText(percent, ""), true, false))
     }
 

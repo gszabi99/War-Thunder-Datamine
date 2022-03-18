@@ -1,6 +1,6 @@
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-class ::WwArmyGroup
+::WwArmyGroup <- class
 {
   clanId               = ""
   name                 = ""
@@ -120,7 +120,7 @@ class ::WwArmyGroup
 
   function isBelongsToMyClan()
   {
-    local myClanId = ::clan_get_my_clan_id()
+    let myClanId = ::clan_get_my_clan_id()
     if (myClanId && myClanId == getClanId())
       return true
 
@@ -145,14 +145,14 @@ class ::WwArmyGroup
 
   function hasManageAccess()
   {
-    local accessLevel = getAccessLevel()
+    let accessLevel = getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
   }
 
   function hasObserverAccess()
   {
-    local accessLevel = getAccessLevel()
+    let accessLevel = getAccessLevel()
     return accessLevel == WW_BATTLE_ACCESS.OBSERVER ||
            accessLevel == WW_BATTLE_ACCESS.MANAGER ||
            accessLevel == WW_BATTLE_ACCESS.SUPREME
@@ -160,7 +160,7 @@ class ::WwArmyGroup
 
   function getArmyManagers(blk)
   {
-    local managers = []
+    let managers = []
     if (!blk)
       return managers
 
@@ -178,7 +178,7 @@ class ::WwArmyGroup
 
   function updateManagerStat(armyManagersNames)
   {
-    local total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
+    let total = armyManagers.map(@(m) m.actionsCount).reduce(@(res, value) res + value, 0).tofloat()
     foreach(armyManager in armyManagers) {
       armyManager.activity = total > 0
         ? ::round(100 * armyManager.actionsCount / total).tointeger()

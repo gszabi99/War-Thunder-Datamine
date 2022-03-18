@@ -35,7 +35,7 @@ table {
         size:t='@cIco, @cIco';
         position:t='relative';
         pos:t='0.5pw - 0.5w, 0';
-        background-image:t='#ui/gameuiskin#unit_amount_icon';
+        background-image:t='#ui/gameuiskin#unit_amount_icon.svg';
         background-svg-size:t='@cIco, @cIco';
       }
     }
@@ -58,7 +58,7 @@ table {
         size:t='@cIco, @cIco';
         position:t='relative';
         pos:t='0.5pw - 0.5w, 0';
-        background-image:t='#ui/gameuiskin#item_icon_elite';
+        background-image:t='#ui/gameuiskin#item_icon_elite.svg';
         background-svg-size:t='@cIco, @cIco';
       }
     }

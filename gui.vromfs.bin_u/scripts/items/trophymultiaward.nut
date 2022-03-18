@@ -1,9 +1,9 @@
-local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { isDataBlock } = require("std/underscore.nut")
-local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+let { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { isDataBlock } = require("std/underscore.nut")
+let { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
-::TrophyMultiAward <- class
+let class TrophyMultiAward
 {
   blk = null
   trophyWeak = null //req to generate tooltip id, and search trophy by award
@@ -53,8 +53,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getName()
   {
-    local awardType = getAwardsType()
-    local showCount = haveCount()
+    let awardType = getAwardsType()
+    let showCount = haveCount()
     local key = ""
     if (showCount)
       key = (awardType == "") ? "multiAward/name/count" : "multiAward/name/count/singleType"
@@ -70,7 +70,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getDescription(useBoldAsSmaller = false)
   {
-    local resDesc = getResultDescription()
+    let resDesc = getResultDescription()
     if (resDesc != "")
       return resDesc
 
@@ -83,12 +83,12 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       header += "\n" + text
     }
 
-    local textList = []
-    local skipUnconditional = getAwardsType() != ""
-    local count = blk.blockCount()
+    let textList = []
+    let skipUnconditional = getAwardsType() != ""
+    let count = blk.blockCount()
     for(local i = 0; i < count; i++)
     {
-      local text = getAwardText(blk.getBlock(i), skipUnconditional, useBoldAsSmaller)
+      let text = getAwardText(blk.getBlock(i), skipUnconditional, useBoldAsSmaller)
       if (text.len())
         textList.append(text)
     }
@@ -110,7 +110,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       if (skipUnconditional)
         return ""
 
-      local uTypes = ::u.map(awardBlk % "type",
+      let uTypes = ::u.map(awardBlk % "type",
                                  function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
       return ::g_string.implode(uTypes, listDiv)
     }
@@ -130,7 +130,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       if (skipUnconditional)
         return ""
 
-      local uTypes = ::u.map(awardBlk % "resourceType",
+      let uTypes = ::u.map(awardBlk % "resourceType",
                                  function(t) { return ::colorize(goodsColor, ::loc("multiAward/type/" + t)) }.bindenv(this))
       return ::g_string.implode(uTypes, listDiv)
     }
@@ -138,7 +138,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     local res = ""
     if (!skipUnconditional && haveCount())
     {
-      local count = awardBlk?.count ?? 1
+      let count = awardBlk?.count ?? 1
       res = "".concat(
         ::colorize(goodsColor, ::loc("multiAward/type/" + curAwardType)),
         ::colorize(condColor, " x" + count))
@@ -158,7 +158,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getConditionsText(awardBlk)
   {
-    local condList = []
+    let condList = []
     _addCondSpecialization(awardBlk, condList)
     _addCondCountries(awardBlk, condList)
     _addCondRanks(awardBlk, condList)
@@ -178,7 +178,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     if ((awardBlk?.specAce ?? false) == (awardBlk?.aceExpert ?? false))
       return
 
-    local text = ::loc(blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
+    let text = ::loc(blk?.specAce ? "crew/qualification/1" : "crew/qualification/2")
     condList.append(::colorize(condColor, text))
   }
 
@@ -207,11 +207,11 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
                           if (typeof(val) != "instance" || !(val instanceof ::Point2))
                             return ""
 
-                          local res = ::colorize(condColor, ::get_roman_numeral(val.x))
+                          let res = ::colorize(condColor, ::get_roman_numeral(val.x))
                           if (val.x == val.y)
                             return res
 
-                          local div = (val.y - val.x == 1) ? ", " : "-"
+                          let div = (val.y - val.x == 1) ? ", " : "-"
                           return res + div + ::colorize(condColor, ::get_roman_numeral(val.y))
                         }.bindenv(this))
 
@@ -241,7 +241,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getResultDescription()
   {
-    local resList = getResultPrizesList()
+    let resList = getResultPrizesList()
     if (!resList || !resList.len())
       return ""
 
@@ -250,8 +250,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getResultPrizesList()
   {
-    local res = []
-    local resBlk = blk?.result
+    let res = []
+    let resBlk = blk?.result
     if (!isDataBlock(resBlk))
       return res
 
@@ -266,13 +266,13 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _addResUnlocks(resBlk, resList)
   {
-    local unlocksBlk = resBlk?.unlocks
+    let unlocksBlk = resBlk?.unlocks
     if (!isDataBlock(unlocksBlk))
       return
 
     for(local i = 0; ; i++)
     {
-      local unlockName = unlocksBlk?["unlock" + i]
+      let unlockName = unlocksBlk?["unlock" + i]
       if (!unlockName)
         break
 
@@ -296,8 +296,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
     for(local i = 0; ; i++)
     {
-      local unitName = resModBlk?["unit" + i]
-      local modName = resModBlk?["mod" + i]
+      let unitName = resModBlk?["unit" + i]
+      let modName = resModBlk?["mod" + i]
       if (!unitName || !modName)
         break
 
@@ -311,14 +311,14 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _addResSpare(resBlk, resList)
   {
-    local spareBlk = resBlk?.spare
+    let spareBlk = resBlk?.spare
     if (!isDataBlock(spareBlk))
       return
 
     local list = []
     for(local i = 0; ; i++)
     {
-      local unitName = spareBlk?["unit" + i]
+      let unitName = spareBlk?["unit" + i]
       if (!unitName)
         break
 
@@ -341,22 +341,22 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
   //we need to support old userlogs at least month after new will come.
   function getSpareListFromOldUserlogFormat(spareBlk)
   {
-    local list = []
-    local namesMap = {} //for faster search
-    local count = spareBlk.paramCount()
+    let list = []
+    let namesMap = {} //for faster search
+    let count = spareBlk.paramCount()
     for (local i = 0; i < count; i++)
     {
-      local name = spareBlk.getParamName(i)
-      local gold = spareBlk.getParamValue(i)
+      let name = spareBlk.getParamName(i)
+      let gold = spareBlk.getParamValue(i)
       if (name in namesMap)
       {
-        local data = namesMap[name]
+        let data = namesMap[name]
         data.count++
         data.gold += gold
         continue
       }
 
-      local data = {
+      let data = {
         spare = name
         gold = gold
         count = 1
@@ -369,21 +369,21 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _addResSpecialization(resBlk, resList)
   {
-    local qBlk = resBlk?.specialization
+    let qBlk = resBlk?.specialization
     if (!isDataBlock(qBlk))
       return
 
-    local list = {}
+    let list = {}
     for(local i = 0; ; i++)
     {
-      local unitName = qBlk?["unit" + i]
+      let unitName = qBlk?["unit" + i]
       if (!unitName)
         break
-      local unit = ::getAircraftByName(unitName)
+      let unit = ::getAircraftByName(unitName)
       if (!unit)
         continue
 
-      local country = unit.shopCountry
+      let country = unit.shopCountry
       if (!(country in list))
         list[country] <- []
 
@@ -400,7 +400,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
       if (!(country in list))
         continue
 
-      local prizesList = list[country]
+      let prizesList = list[country]
       prizesList.sort(_resSpecializationSort)
       foreach(data in prizesList)
         resList.append(::DataBlockAdapter(data))
@@ -420,7 +420,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _addResUCurrency(resBlk, resList)
   {
-    local gold = blk?.gold //not mistake, it in the root now.
+    let gold = blk?.gold //not mistake, it in the root now.
     if (!gold)
       return
     resList.append(::DataBlockAdapter({ gold = gold }))
@@ -428,13 +428,13 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _addResResources(resBlk, resList)
   {
-    local resourcesBlk = resBlk?.resource
+    let resourcesBlk = resBlk?.resource
     if (!isDataBlock(resourcesBlk))
       return
 
     for(local i = 0; ; i++)
     {
-      local resName = resourcesBlk?["resource" + i]
+      let resName = resourcesBlk?["resource" + i]
       if (!resName)
         break
 
@@ -472,13 +472,13 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function initParams()
   {
-    local count = blk.blockCount()
+    let count = blk.blockCount()
     local multiType = false
-    local needCount = haveCount()
+    let needCount = haveCount()
     local awardsCount = 0
     for(local i = 0; i < count; i++)  //country
     {
-      local awardBlk = blk.getBlock(i)
+      let awardBlk = blk.getBlock(i)
       local awardType = awardBlk.getBlockName()
       if (!(awardType in typesBlocks))
         continue
@@ -493,8 +493,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
       if (awardType == "unlocks" || awardType == "resource")
       {
-        local typesKey = (awardType == "resource") ?  "resourceType" : "type"
-        local uTypes = awardBlk % typesKey
+        let typesKey = (awardType == "resource") ?  "resourceType" : "type"
+        let uTypes = awardBlk % typesKey
         if (uTypes.len() == 1)
           awardType = uTypes[0]
         else if (uTypes.len() > 1)
@@ -526,19 +526,19 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     if (_awardType && _awardType != "") //to not force recount awardType if it not counted yet.
       return [_awardType]
 
-    local res = []
-    local count = blk.blockCount()
+    let res = []
+    let count = blk.blockCount()
     for(local i = 0; i < count; i++)  //country
     {
-      local awardBlk = blk.getBlock(i)
-      local awardType = awardBlk.getBlockName()
+      let awardBlk = blk.getBlock(i)
+      let awardType = awardBlk.getBlockName()
       if (!(awardType in typesBlocks))
         continue
 
       if (awardType == "unlocks" || awardType == "resource")
       {
-        local typesKey = (awardType == "resource") ?  "resourceType" : "type"
-        local uTypes = awardBlk % typesKey
+        let typesKey = (awardType == "resource") ?  "resourceType" : "type"
+        let uTypes = awardBlk % typesKey
         foreach(uType in uTypes)
           ::u.appendOnce(uType, res)
         continue
@@ -551,7 +551,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getTypeIcon()
   {
-    local awardType = getAwardsType()
+    let awardType = getAwardsType()
     if (awardType == "decal")
       return "#ui/gameuiskin#item_type_decal"
     if (awardType == "skin")
@@ -569,8 +569,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function getAvailRouletteIcons()
   {
-    local res = []
-    local typesList = getFullTypesList()
+    let res = []
+    let typesList = getFullTypesList()
     foreach(t in typesList)
       if (t in rouletteIcons)
         res.extend(rouletteIcons[t])
@@ -586,8 +586,8 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _chooseIconsForLayer(iconsList, total)
   {
-    local res = []
-    local totalIcons = iconsList.len()
+    let res = []
+    let totalIcons = iconsList.len()
     for(local i=0; i < total; i++)
       if (iconsList.len())
         res.append(iconsList.remove(::math.rnd() % iconsList.len()))
@@ -598,18 +598,18 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _getIconsLayer()
   {
-    local awardsType = getAwardsType()
-    local iconsList = getAvailRouletteIcons()
+    let awardsType = getAwardsType()
+    let iconsList = getAvailRouletteIcons()
     if (!iconsList.len())
       return ""
 
     local res = ""
-    local singleType = awardsType != ""
-    local layerName = singleType ? "item_multiaward_single" : "item_multiaward"
-    local chosen = _chooseIconsForLayer(iconsList, singleType ? maxRouletteIconsSingleType : maxRouletteIcons)
+    let singleType = awardsType != ""
+    let layerName = singleType ? "item_multiaward_single" : "item_multiaward"
+    let chosen = _chooseIconsForLayer(iconsList, singleType ? maxRouletteIconsSingleType : maxRouletteIcons)
     for(local idx = chosen.len() - 1; idx >= 0; idx--)
     {
-      local layerCfg = ::LayersIcon.findLayerCfg(layerName + idx)
+      let layerCfg = ::LayersIcon.findLayerCfg(layerName + idx)
       if (!layerCfg)
         continue
 
@@ -621,7 +621,7 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
   function _getTextLayer()
   {
-    local layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
+    let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""
 
@@ -629,3 +629,5 @@ local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
     return ::LayersIcon.getTextDataFromLayer(layerCfg)
   }
 }
+
+return TrophyMultiAward

@@ -1,22 +1,22 @@
-local { seasonLevel, season, seasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
-local { seasonStages, getStageViewData, doubleWidthStagesIcon } = require("scripts/battlePass/seasonStages.nut")
-local { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unlocks/userstatUnlocksState.nut")
-local { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
+let { seasonLevel, season, seasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
+let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("scripts/battlePass/seasonStages.nut")
+let { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unlocks/userstatUnlocksState.nut")
+let { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
 } = require("scripts/battlePass/challenges.nut")
-local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-local { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
+let { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   tomorowLoginExpWatchObj, easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, seasonTasksProgressWatchObj,
   leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj, hasChallengesRewardWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
-local { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
-local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { number_of_set_bits } = require("std/math.nut")
+let { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
+let { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
+let { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { addPromoAction } = require("scripts/promo/promoActions.nut")
+let { number_of_set_bits } = require("std/math.nut")
 require("scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
-local watchObjInfoConfig = {
+let watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj
   level_exp = levelExpWatchObj
   today_login_exp = todayLoginExpWatchObj
@@ -25,7 +25,7 @@ local watchObjInfoConfig = {
   season_tasks_progress = seasonTasksProgressWatchObj
 }
 
-local watchObjInfoBattleTasksConfig = {
+let watchObjInfoBattleTasksConfig = {
   easy_daily_task_progress = easyDailyTaskProgressWatchObj
   medium_daily_task_progress = mediumDailyTaskProgressWatchObj
   left_special_tasks_bought_count = leftSpecialTasksBoughtCountWatchObj
@@ -33,7 +33,7 @@ local watchObjInfoBattleTasksConfig = {
 
 local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
-  sceneBlkName     = "gui/battlePass/battlePassWnd.blk"
+  sceneBlkName     = "%gui/battlePass/battlePassWnd.blk"
 
   stageIndexOffset = 0
   stageIndexOffsetAddedByPages = null
@@ -50,7 +50,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   {
     objId = "challenges_sheet"
     text = "#mainmenu/btnUnlockChallenge"
-    tabImage = "#ui/gameuiskin#new_reward_icon"
+    tabImage = "#ui/gameuiskin#new_reward_icon.svg"
     getTabImageParam = @() $"behaviour:t='bhvUpdateByWatched'; value:t='{stashBhvValueConfig(hasChallengesRewardWatchObj)}'"
     fillFunc = "fillChallengesSheet"
   }]
@@ -82,8 +82,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (stagesPerPage >= 1)
       return
 
-    local wndObj = scene.findObject("wnd_battlePass")
-    local sizes = ::g_dagui_utils.adjustWindowSize(wndObj, scene.findObject("battle_pass_sheet"),
+    let wndObj = scene.findObject("wnd_battlePass")
+    let sizes = ::g_dagui_utils.adjustWindowSize(wndObj, scene.findObject("battle_pass_sheet"),
       "@battlePassStageWidth", "@battlePassStageHeight", "@battlePassStageMargin",
       "@battlePassStageMargin", { windowSizeY = 0 })
     stagesPerPage = sizes.itemsCountX
@@ -93,14 +93,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function calculateCurPage() {
     stageIndexOffsetAddedByPages = {}
-    local stagesList = seasonStages.value
-    local curStageIdx = stagesList.findindex(@(stageData) stageData.prizeStatus == "available"
+    let stagesList = seasonStages.value
+    let curStageIdx = stagesList.findindex(@(stageData) stageData.prizeStatus == "available"
       || stageData.stage >= seasonLevel.value) ?? 0
-    local middleIdx = ::ceil(stagesPerPage.tofloat()/2) - 1
-    local doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
+    let middleIdx = ::ceil(stagesPerPage.tofloat()/2) - 1
+    let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
     stageIndexOffset = curStageIdx <= middleIdx ? 0
       : ((curStageIdx % stagesPerPage) - middleIdx + doubleStagesCount)
-    local pageOffset = stageIndexOffset > 0 ? 0 : -1
+    let pageOffset = stageIndexOffset > 0 ? 0 : -1
     curPage = curStageIdx <= middleIdx ? 0
       : ::ceil((curStageIdx.tofloat() - stageIndexOffset)/ stagesPerPage).tointeger() + pageOffset
   }
@@ -126,10 +126,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       calculateCurPage()
       needCalculateCurPage = false
     }
-    local view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
-    local curPageOffset = stageIndexOffset > 0 ? -1 : 0
+    let view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
+    let curPageOffset = stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = ::max((curPage + curPageOffset) * stagesPerPage  + stageIndexOffset, 0)
-    local doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
+    let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
     pageStartIndex = ::max(pageStartIndex - doubleStagesCount, 0)
     local pageEndIndex = ::min(pageStartIndex + stagesPerPage, stagesList.len())
     foreach (stage in doubleWidthStagesIcon.value) {
@@ -152,7 +152,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local isChangesRewards = false
     local idxOnPage = 0
     for(local i=pageStartIndex; i < pageEndIndex; i++) {
-      local stageView = getStageViewData(stagesList[i], idxOnPage)
+      let stageView = getStageViewData(stagesList[i], idxOnPage)
       view.battlePassStage.append(stageView)
       isChangesRewards = isChangesRewards
         || !isEqualStageReward(curPageStagesList?[idxOnPage], stageView)
@@ -160,13 +160,13 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     curPageStagesList = view.battlePassStage
-    local stagesObj = scene.findObject("battlePassStages")
+    let stagesObj = scene.findObject("battlePassStages")
     if (isChangesRewards || forceUpdate) {
-      local data = ::handyman.renderCached("gui/battlePass/battlePassStage", view)
+      let data = ::handyman.renderCached("%gui/battlePass/battlePassStage", view)
       guiScene.replaceContentFromText(stagesObj, data, data.len(), this)
     } else {
       foreach (idx, stage in view.battlePassStage) {
-        local stageObj = stagesObj.getChild(idx)
+        let stageObj = stagesObj.getChild(idx)
         stageObj.stageStatus = stage.stageStatus
         stageObj.prizeStatus = stage.prizeStatus
       }
@@ -183,11 +183,11 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     && curStage?.rewardId == newStage.rewardId
 
   function onReceiveRewards(obj) {
-    local { holderId = null, stage = null } = obj
+    let { holderId = null, stage = null } = obj
     if (holderId == null || stage == null)
       return
 
-    local { lastRewardedStage = null } = unlockProgress.value?[holderId]
+    let { lastRewardedStage = null } = unlockProgress.value?[holderId]
     if (lastRewardedStage == null
       || (lastRewardedStage + 1) != stage.tointeger())
       return
@@ -249,8 +249,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   onBattleTask = @() ::gui_start_battle_tasks_wnd()
 
   function updateMainPrizeData(mainPrizesValue) {
-    local countMainPrizes = mainPrizesValue.len()
-    local mainPrizeImage = mainPrizeData?.mainPrizeImage
+    let countMainPrizes = mainPrizesValue.len()
+    let mainPrizeImage = mainPrizeData?.mainPrizeImage
     if (countMainPrizes == 0 || (mainPrizeImage != null && mainPrizesValue.findvalue(
         @(v) v?.mainPrizeImage == mainPrizeImage) != null)) //main prize is already showed
       return
@@ -260,7 +260,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function fillPromoBlock() {
-    local promoImage = mainPrizeData?.mainPrizeImage
+    let promoImage = mainPrizeData?.mainPrizeImage
     if (promoImage != null)
       scene.findObject("promo_img")["background-image"] = promoImage
 
@@ -276,7 +276,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getHandlerRestoreData() {
-    local data = {
+    let data = {
       openData = {
         mainPrizeData = mainPrizeData
       }
@@ -304,7 +304,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initSheets() {
-    local view = {tabs = []}
+    let view = {tabs = []}
     foreach (idx, sheetData in sheetsList)
     {
       view.tabs.append({
@@ -315,16 +315,16 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       })
     }
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
-    local sheetsListObj = scene.findObject("sheet_list")
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    let sheetsListObj = scene.findObject("sheet_list")
     guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(0)
   }
 
   function onSheetChange(obj) {
-    local curId = obj.getValue()
+    let curId = obj.getValue()
     foreach (idx, sheetData in sheetsList) {
-      local isVisible = curId == idx
+      let isVisible = curId == idx
       showSceneBtn(sheetData.objId, isVisible)
       if (isVisible)
         this[sheetData.fillFunc]()
@@ -363,32 +363,32 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (getCurSheetObjId() != "challenges_sheet")
       return
 
-    local view = { items = challenges.map(
+    let view = { items = challenges.map(
       @(config) getChallengeView(config, { hoverAction = "onChallengeHover" })) }
-    local challengesObj = scene.findObject("challenges_list")
-    local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", view)
+    let challengesObj = scene.findObject("challenges_list")
+    let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem", view)
     guiScene.replaceContentFromText(challengesObj, data, data.len(), this)
 
-    local challengeId = curChallengeId
-    local curChallengeIdx = challenges.findindex(@(challenge) challenge.id == challengeId) ?? 0
+    let challengeId = curChallengeId
+    let curChallengeIdx = challenges.findindex(@(challenge) challenge.id == challengeId) ?? 0
     isFillingChallengesList = true
     challengesObj.setValue(curChallengeIdx)
     isFillingChallengesList = false
 
 
-    local mainChallengeOfSeason = challenges.findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value)
-    local hasMainChallenge = mainChallengeOfSeason != null
-    local mainChallengeProgressObj = ::showBtn("main_challenge_progress", hasMainChallenge, obj)
+    let mainChallengeOfSeason = challenges.findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value)
+    let hasMainChallenge = mainChallengeOfSeason != null
+    let mainChallengeProgressObj = ::showBtn("main_challenge_progress", hasMainChallenge, obj)
     if (!hasMainChallenge)
       return
 
-    local unlockConfig = ::build_conditions_config(mainChallengeOfSeason)
+    let unlockConfig = ::build_conditions_config(mainChallengeOfSeason)
     ::build_unlock_desc(unlockConfig)
 
     local curValue = unlockConfig.curVal
     local maxValue = unlockConfig.maxVal
 
-    local isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+    let isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
     if (isBitMode) {
       curValue = number_of_set_bits(curValue)
       maxValue = number_of_set_bits(maxValue)
@@ -407,16 +407,16 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (getCurSheetObjId() != "challenges_sheet")
       return
 
-    local listBoxObj = scene.findObject("challenges_list")
+    let listBoxObj = scene.findObject("challenges_list")
     if (!listBoxObj.isValid())
       return
 
     for (local i = 0; i < listBoxObj.childrenCount(); i++)
     {
-      local challengeObj = listBoxObj.getChild(i)
+      let challengeObj = listBoxObj.getChild(i)
       if(params.changedId == challengeObj?.id)
       {
-        local cbObj = challengeObj.findObject("checkbox_favorites")
+        let cbObj = challengeObj.findObject("checkbox_favorites")
         if(cbObj.isValid())
           cbObj.setValue(params.value)
       }
@@ -432,8 +432,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
   function expandHoverChallenge()
   {
-    local listBoxObj = scene.findObject("challenges_list")
-    local total = listBoxObj.childrenCount()
+    let listBoxObj = scene.findObject("challenges_list")
+    let total = listBoxObj.childrenCount()
     if (total == 0)
       return
 
@@ -445,7 +445,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function challengeToFavoritesByActivateItem(obj)
   {
     curChallengeId = getSelectedChildId(obj)
-    local checkBoxObj = obj.findObject(curChallengeId)?.findObject("checkbox_favorites")
+    let checkBoxObj = obj.findObject(curChallengeId)?.findObject("checkbox_favorites")
     if (checkBoxObj?.isValid())
       checkBoxObj.setValue(!checkBoxObj.getValue())
   }
@@ -454,18 +454,18 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     ? challengeToFavoritesByActivateItem(obj) : expandHoverChallenge()
 
   function getCurrentConfig() {
-    local listBoxObj = scene.findObject("challenges_list")
+    let listBoxObj = scene.findObject("challenges_list")
     if (!::check_obj(listBoxObj))
       return null
 
-    local unlockConfig = ::build_conditions_config(
+    let unlockConfig = ::build_conditions_config(
       curSeasonChallenges.value?[listBoxObj.getValue()])
     ::build_unlock_desc(unlockConfig)
     return unlockConfig
   }
 
   function onViewBattleTaskRequirements() {
-    local awardsList = []
+    let awardsList = []
     foreach(id in getCurrentConfig()?.names ?? [])
       awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
 
@@ -496,7 +496,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.BattlePassWnd <- BattlePassWnd
 
-local function openBattlePassWnd() {
+let function openBattlePassWnd() {
   if (isUserstatMissingData.value) {
     ::showInfoMsgBox(::loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return

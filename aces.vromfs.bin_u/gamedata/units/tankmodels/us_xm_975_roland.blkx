@@ -478,7 +478,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -509,7 +509,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2350,6 +2350,38 @@
     }
   },
   {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_03"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_hatch_turret_03"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_04"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_hatch_turret_01"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "class_tags": []
   },
   {
@@ -2424,6 +2456,12 @@
         },
         {
           "node": "antenna_target_tagging_mount"
+        },
+        {
+          "node": "bone_gun"
+        },
+        {
+          "node": "bone_gun_01"
         }
       ]
     }

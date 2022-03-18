@@ -1,12 +1,12 @@
-local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let shopSearchCore = require("scripts/shop/shopSearchCore.nut")
+let { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/shop/shopSearchWnd"
+  sceneTplName = "%gui/shop/shopSearchWnd"
 
   searchString = ""
   units = []
@@ -19,8 +19,8 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneTplView()
   {
-    local unitsData = prepareUnitsData()
-    local countriesView = getCountriesView(unitsData)
+    let unitsData = prepareUnitsData()
+    let countriesView = getCountriesView(unitsData)
 
     return {
       windowTitle = wndTitle ?? (::loc("shop/search/results") + ::loc("ui/colon") + searchString)
@@ -34,7 +34,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isUseUnitPlates)
     {
-      local contentObj = scene.findObject("contentBlock")
+      let contentObj = scene.findObject("contentBlock")
       foreach (u in units)
         ::fill_unit_item_timers(contentObj.findObject(u.name), u)
     }
@@ -42,18 +42,18 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function prepareUnitsData()
   {
-    local data = {}
-    local ediff = getEdiffFunc()
+    let data = {}
+    let ediff = getEdiffFunc()
     foreach (countryId in shopCountriesList)
     {
-      local countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
+      let countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
         continue
 
       data[countryId] <- {}
       foreach (unitType in unitTypes.types)
       {
-        local armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
+        let armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
         if (!armyUnits.len())
           continue
 
@@ -66,8 +66,8 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCountriesView(unitsData)
   {
-    local view = []
-    local ediff = getEdiffFunc()
+    let view = []
+    let ediff = getEdiffFunc()
     isUseUnitPlates = getIsUseUnitPlates(unitsData)
 
     foreach (countryId in shopCountriesList)
@@ -75,18 +75,18 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
       if (!unitsData?[countryId])
         continue
 
-      local countryView = {
+      let countryView = {
         countryIcon = ::get_country_icon(countryId)
         armyTypes = []
       }
 
       foreach (unitType in unitTypes.types)
       {
-        local unitsList = unitsData[countryId]?[unitType.armyId]
+        let unitsList = unitsData[countryId]?[unitType.armyId]
         if (!unitsList)
           continue
 
-        local armyView = {
+        let armyView = {
           armyName = ::colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = isUseUnitPlates ? [] : null
           units      = isUseUnitPlates ? null : []
@@ -144,9 +144,9 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getIsUseUnitPlates(unitsData)
   {
-    local visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
+    let visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
       "-@cIco -6@blockInterval -0.02@sf)")
-    local slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
+    let slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
     foreach (countryUnits in unitsData)
     {
@@ -162,7 +162,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 return {
   open = function(searchString, cbOwnerShowUnit, getEdiffFunc, params = null)
   {
-    local units = params?.units ?? shopSearchCore.findUnitsByLocName(searchString)
+    let units = params?.units ?? shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false
     ::handlersManager.loadHandler(::gui_handlers.ShopSearchWnd, {

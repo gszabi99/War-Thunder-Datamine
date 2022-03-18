@@ -1,14 +1,14 @@
-local { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
-local awardRanks = [3, 4, 7]
-local awardVesselsRanks = [3, 4, 5]
-local awards = [[70000, 0], [300000, 100], [0, 2500]]
+let awardRanks = [3, 4, 7]
+let awardVesselsRanks = [3, 4, 5]
+let awards = [[70000, 0], [300000, 100], [0, 2500]]
 
-local getLinkString = @() ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+let getLinkString = @() ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
 
 local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   locId = "/".concat(locId, "separatedVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks
-  local desc = ::loc(locId, {
+  let desc = ::loc(locId, {
     firstAwardRank = ::get_roman_numeral(awardRanks[0]),
     secondAwardRank = ::get_roman_numeral(awardRanks[1]),
     thirdAwardRank = ::get_roman_numeral(awardRanks[2]),
@@ -23,22 +23,22 @@ local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   return desc
 }
 
-local function showViralAcquisitionWnd() {
+let function showViralAcquisitionWnd() {
   if (!::has_feature("Invites"))
     return
 
   ::copy_to_clipboard(getLinkString())
 
-  local formatImg = "ui/images/%s.jpg?P1"
+  let formatImg = "ui/images/%s.jpg?P1"
   local image = ::format(formatImg, "facebook_invite")
   local height = 400
-  local guiBlk = GUI.get()
+  let guiBlk = GUI.get()
 
   if (guiBlk?.invites_notification_window_images
       && guiBlk.invites_notification_window_images.paramCount() > 0) {
-    local paramNum = ::math.rnd() % guiBlk.invites_notification_window_images.paramCount()
-    local newHeight = guiBlk.invites_notification_window_images.getParamName(paramNum)
-    local newImage = ::format(formatImg, guiBlk.invites_notification_window_images.getParamValue(paramNum))
+    let paramNum = ::math.rnd() % guiBlk.invites_notification_window_images.paramCount()
+    let newHeight = guiBlk.invites_notification_window_images.getParamName(paramNum)
+    let newImage = ::format(formatImg, guiBlk.invites_notification_window_images.getParamValue(paramNum))
     if (!regexp2(@"\D+").match(newHeight))
     {
       height = newHeight
@@ -46,7 +46,7 @@ local function showViralAcquisitionWnd() {
     }
   }
 
-  local config = {
+  let config = {
     name = ::loc("mainmenu/getLinkTitle")
     desc = getViralAcquisitionDesc()
     descAlign = "center"

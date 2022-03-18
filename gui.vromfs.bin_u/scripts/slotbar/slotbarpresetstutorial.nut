@@ -1,8 +1,8 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+let tutorAction = require("scripts/tutorials/tutorialActions.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
 ::SlotbarPresetsTutorial <- class
 {
@@ -55,7 +55,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     if (preset == null)
       return false
-    local currentPresetIndex = ::getTblValue(currentCountry, ::slotbarPresets.selected, -1)
+    let currentPresetIndex = ::getTblValue(currentCountry, ::slotbarPresets.selected, -1)
     validPresetIndex = getPresetIndex(preset)
     if (currentPresetIndex == validPresetIndex)
       if (isNewUnitTypeToBattleTutorial)
@@ -65,7 +65,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     presetsList = currentHandler.getSlotbarPresetsList()
     if (presetsList == null)
       return false
-    local presetObj = presetsList.getListChildByPresetIdx(validPresetIndex)
+    let presetObj = presetsList.getListChildByPresetIdx(validPresetIndex)
     local steps
     if (presetObj && presetObj.isVisible()) // Preset is in slotbar presets list.
     {
@@ -81,7 +81,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     }
     else
     {
-      local presetsButtonObj = presetsList.getPresetsButtonObj()
+      let presetsButtonObj = presetsList.getPresetsButtonObj()
       if (presetsButtonObj == null)
         return false
       currentStepsName = "openSlotbarPresetWnd"
@@ -107,7 +107,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     if (checkCurrentTutorialCanceled())
       return
     ::add_event_listener("SlotbarPresetLoaded", onEventSlotbarPresetLoaded, this)
-    local listObj = presetsList.getListObj()
+    let listObj = presetsList.getListObj()
     if (listObj != null)
       listObj.setValue(validPresetIndex)
   }
@@ -120,14 +120,14 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     chooseSlotbarPresetIndex = ::find_in_array(::slotbarPresets.presets[currentCountry], preset)
     if (chooseSlotbarPresetIndex == -1)
       return
-    local itemsListObj = chooseSlotbarPresetHandler.scene.findObject("items_list")
-    local presetObj = itemsListObj.getChild(chooseSlotbarPresetIndex)
+    let itemsListObj = chooseSlotbarPresetHandler.scene.findObject("items_list")
+    let presetObj = itemsListObj.getChild(chooseSlotbarPresetIndex)
     if (!::checkObj(presetObj))
       return
-    local applyButtonObj = chooseSlotbarPresetHandler.scene.findObject("btn_preset_load")
+    let applyButtonObj = chooseSlotbarPresetHandler.scene.findObject("btn_preset_load")
     if (!::checkObj(applyButtonObj))
       return
-    local steps = [{
+    let steps = [{
       obj = [presetObj]
       text = createMessageWhithUnitType()
       actionType = tutorAction.OBJ_CLICK
@@ -150,7 +150,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (checkCurrentTutorialCanceled(false))
       return
-    local itemsListObj = chooseSlotbarPresetHandler.scene.findObject("items_list")
+    let itemsListObj = chooseSlotbarPresetHandler.scene.findObject("items_list")
     itemsListObj.setValue(chooseSlotbarPresetIndex)
     chooseSlotbarPresetHandler.onItemSelect(null)
   }
@@ -175,7 +175,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
     // This update shows player that preset was
     // actually changed behind tutorial dim.
-    local slotbar = topMenuHandler.value.getSlotbar()
+    let slotbar = topMenuHandler.value.getSlotbar()
     if (slotbar)
       slotbar.forceUpdate()
 
@@ -196,9 +196,9 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function createMessageWhithUnitType(partLocId = "selectPreset")
   {
-    local types = ::game_mode_manager.getRequiredUnitTypes(tutorialGameMode)
-    local unitType = unitTypes.getByEsUnitType(::u.max(types))
-    local unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
+    let types = ::game_mode_manager.getRequiredUnitTypes(tutorialGameMode)
+    let unitType = unitTypes.getByEsUnitType(::u.max(types))
+    let unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
     return ::loc("slotbarPresetsTutorial/" + partLocId, { unitType = ::loc(unitTypeLocId) })
   }
 
@@ -210,7 +210,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function getPresetIndex(prst)
   {
-    local presets = ::getTblValue(currentCountry, ::slotbarPresets.presets, null)
+    let presets = ::getTblValue(currentCountry, ::slotbarPresets.presets, null)
     return ::find_in_array(presets, prst, -1)
   }
 
@@ -220,25 +220,25 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
    */
   function startUnitSelectStep()
   {
-    local slotbarHandler = currentHandler.getSlotbar()
+    let slotbarHandler = currentHandler.getSlotbar()
     if (!slotbarHandler)
       return false
     if (::game_mode_manager.isUnitAllowedForGameMode(showedUnit.value))
       return false
-    local currentPreset = ::slotbarPresets.getCurrentPreset(currentCountry)
+    let currentPreset = ::slotbarPresets.getCurrentPreset(currentCountry)
     if (currentPreset == null)
       return false
-    local index = getAllowedUnitIndexByPreset(currentPreset)
-    local crews = ::getTblValue("crews", currentPreset, null)
-    local crewId = ::getTblValue(index, crews, -1)
+    let index = getAllowedUnitIndexByPreset(currentPreset)
+    let crews = ::getTblValue("crews", currentPreset, null)
+    let crewId = ::getTblValue(index, crews, -1)
     if (crewId == -1)
       return false
-    local crew = ::get_crew_by_id(crewId)
+    let crew = ::get_crew_by_id(crewId)
     if (!crew)
       return false
 
     crewIdInCountry = crew.idInCountry
-    local steps = [{
+    let steps = [{
       obj = ::get_slot_obj(slotbarHandler.scene, crew.idCountry, crew.idInCountry)
       text = ::loc("slotbarPresetsTutorial/selectUnit")
       actionType = tutorAction.OBJ_CLICK
@@ -255,7 +255,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (checkCurrentTutorialCanceled())
       return
-    local slotbar = currentHandler.getSlotbar()
+    let slotbar = currentHandler.getSlotbar()
     slotbar.selectCrew(crewIdInCountry)
     if (!startOpenGameModeSelectStep())
       startPressToBattleButtonStep()
@@ -266,12 +266,12 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
    */
   function getAllowedUnitIndexByPreset(prst)
   {
-    local units = prst?.units
+    let units = prst?.units
     if (units == null)
       return -1
     for (local i = 0; i < units.len(); ++i)
     {
-      local unit = ::getAircraftByName(units[i])
+      let unit = ::getAircraftByName(units[i])
       if (::game_mode_manager.isUnitAllowedForGameMode(unit))
         return i
     }
@@ -282,11 +282,11 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (checkCurrentTutorialCanceled())
       return
-    local objs = [
+    let objs = [
       topMenuHandler.value.scene.findObject("to_battle_button"),
       topMenuHandler.value.getObj("to_battle_console_image")
     ]
-    local steps = [{
+    let steps = [{
       obj = [objs]
       text = createMessage_pressToBattleButton()
       actionType = tutorAction.OBJ_CLICK
@@ -301,13 +301,13 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (!isNewUnitTypeToBattleTutorial)
       return false
-    local currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
     if (currentGameMode == tutorialGameMode)
       return false
-    local gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
+    let gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
     if (!::check_obj(gameModeChangeButtonObj))
       return false
-    local steps = [{
+    let steps = [{
       obj = [gameModeChangeButtonObj]
       text = ::loc("slotbarPresetsTutorial/openGameModeSelect")
       actionType = tutorAction.OBJ_CLICK
@@ -324,7 +324,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (checkCurrentTutorialCanceled())
       return
-    local gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
+    let gameModeChangeButtonObj = currentHandler?.gameModeChangeButtonObj
     if (!::check_obj(gameModeChangeButtonObj))
       return
     ::add_event_listener("GamercardDrawerOpened", onEventGamercardDrawerOpened, this)
@@ -344,15 +344,15 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
   {
     if (checkCurrentTutorialCanceled())
       return
-    local gameModeSelectHandler = currentHandler?.gameModeSelectHandler
+    let gameModeSelectHandler = currentHandler?.gameModeSelectHandler
     if (!gameModeSelectHandler)
       return
-    local gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
-    local gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
+    let gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
+    let gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
     if (!::check_obj(gameModeObj))
       return
 
-    local steps = [{
+    let steps = [{
       obj = [gameModeObj]
       text = createMessageWhithUnitType("selectGameMode")
       actionType = tutorAction.OBJ_CLICK
@@ -369,11 +369,11 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
     if (checkCurrentTutorialCanceled())
       return
     ::add_event_listener("CurrentGameModeIdChanged", onEventCurrentGameModeIdChanged, this)
-    local gameModeSelectHandler = currentHandler?.gameModeSelectHandler
+    let gameModeSelectHandler = currentHandler?.gameModeSelectHandler
     if (!gameModeSelectHandler)
       return
-    local gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
-    local gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
+    let gameModeItemId = ::game_mode_manager.getGameModeItemId(tutorialGameMode.id)
+    let gameModeObj = gameModeSelectHandler.scene.findObject(gameModeItemId)
     if (!::check_obj(gameModeObj))
       return
     gameModeSelectHandler.onGameModeSelect(gameModeObj)
@@ -397,7 +397,7 @@ local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
    */
   function checkCurrentTutorialCanceled(removeCurrentTutorial = true)
   {
-    local canceled = ::getTblValue("canceled", currentTutorial, false)
+    let canceled = ::getTblValue("canceled", currentTutorial, false)
     if (removeCurrentTutorial)
       currentTutorial = null
     if (canceled)

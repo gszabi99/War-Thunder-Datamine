@@ -1,9 +1,9 @@
-local { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
+let { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
 
-class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/empty.blk"
+  sceneBlkName = "%gui/empty.blk"
   crew = null
   crewLevel = null
   units = null
@@ -27,18 +27,18 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
     loadSceneTpl()
     updateDiscounts()
 
-    local totalRows = scene.childrenCount()
+    let totalRows = scene.childrenCount()
     if (totalRows > 0 && totalRows <= scene.getValue())
       scene.setValue(0)
   }
 
   function loadSceneTpl()
   {
-    local rows = []
+    let rows = []
     foreach(i, unit in units)
       rows.append(getSpecRowConfig(i))
 
-    local data = ::handyman.renderCached("gui/crew/crewAirRow", { rows = rows })
+    local data = ::handyman.renderCached("%gui/crew/crewAirRow", { rows = rows })
     guiScene.replaceContentFromText(scene, data, data.len(), this)
   }
 
@@ -54,8 +54,8 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!::checkObj(scene))
         return
-      local idx = scene.getValue()
-      local rowObj = scene.getChild(idx)
+      let idx = scene.getValue()
+      let rowObj = scene.getChild(idx)
       if (!::checkObj(rowObj))
         return
       obj = rowObj.findObject("buttonRowApply")
@@ -64,8 +64,8 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    local rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    local rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
+    let rowUnit = ::getTblValue(rowIndex, units)
     if (rowUnit == null)
       return
 
@@ -86,8 +86,8 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function increaseSpec(nextSpecType, obj = null)
   {
-    local rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
-    local rowUnit = ::getTblValue(rowIndex, units)
+    let rowIndex = ::g_crew.getButtonRow(obj, scene, scene)
+    let rowUnit = ::getTblValue(rowIndex, units)
     if (rowUnit)
       ::g_crew.upgradeUnitSpec(crew, rowUnit, null, nextSpecType)
   }
@@ -104,21 +104,21 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSpecRowConfig(idx)
   {
-    local unit = units?[idx]
+    let unit = units?[idx]
     if (!unit)
       return null
 
-    local specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-    local hasNextType = specType.hasNextType()
-    local nextType = specType.getNextType()
-    local reqLevel = hasNextType ? nextType.getReqCrewLevel(unit) : 0
-    local isRecrutedCrew = isRecrutedCurCrew()
-    local needToTrainUnit = specType == ::g_crew_spec_type.UNKNOWN
-    local isUsableUnit = unit.isUsable()
-    local canCrewTrainUnit = isRecrutedCrew && needToTrainUnit
+    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+    let hasNextType = specType.hasNextType()
+    let nextType = specType.getNextType()
+    let reqLevel = hasNextType ? nextType.getReqCrewLevel(unit) : 0
+    let isRecrutedCrew = isRecrutedCurCrew()
+    let needToTrainUnit = specType == ::g_crew_spec_type.UNKNOWN
+    let isUsableUnit = unit.isUsable()
+    let canCrewTrainUnit = isRecrutedCrew && needToTrainUnit
       && isUsableUnit
-    local enableForBuy = !needToTrainUnit && reqLevel <= crewLevel
-    local isProgressBarVisible = specType.needShowExpUpgrade(crew, unit)
+    let enableForBuy = !needToTrainUnit && reqLevel <= crewLevel
+    let isProgressBarVisible = specType.needShowExpUpgrade(crew, unit)
     local progressBarValue = 0
     if (isProgressBarVisible)
       progressBarValue = 1000 * specType.getExpLeftByCrewAndUnit(crew, unit)
@@ -160,7 +160,7 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRowSpecButtonConfig(specType, crewLvl, unit, curSpecType)
   {
-    local icon = specType.getIcon(curSpecType.code, crewLvl, unit)
+    let icon = specType.getIcon(curSpecType.code, crewLvl, unit)
     return {
       id = specType.code
       icon = icon
@@ -173,12 +173,12 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(idx, unit in units)
     {
-      local rowObj = scene.findObject(getRowName(idx))
+      let rowObj = scene.findObject(getRowName(idx))
       if (!::checkObj(rowObj))
         return
 
-      local specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-      local discObj = rowObj.findObject("buy-discount")
+      let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+      let discObj = rowObj.findObject("buy-discount")
       if (specType.hasNextType())
         ::showAirDiscount(discObj, unit.name, "specialization", specType.getNextType().specName)
       else

@@ -1,12 +1,11 @@
-local stdMath = require("std/math.nut")
-local { cutPrefix } = require("std/string.nut")
-local clustersModule = require("scripts/clusterSelect.nut")
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
-local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
-local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let stdMath = require("std/math.nut")
+let { cutPrefix } = require("std/string.nut")
+let clustersModule = require("scripts/clusterSelect.nut")
+let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -32,10 +31,10 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "gui/events/eventsModal.blk"
+  sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
 
   event = null
@@ -102,7 +101,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
     eventDescription = ::create_event_description(scene)
     showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
-    local obj = showSceneBtn("only_available_rooms", true)
+    let obj = showSceneBtn("only_available_rooms", true)
     obj.setValue(showOnlyAvailableRooms)
     refreshList()
     fillRoomsList()
@@ -123,17 +122,17 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initFrameOverEventsWnd()
   {
-    local frameObj = scene.findObject("wnd_frame")
+    let frameObj = scene.findObject("wnd_frame")
     frameObj.width = "1@slotbarWidthFull - 6@framePadding"
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
 
-    local roomsListBtn = showSceneBtn("btn_rooms_list", true)
+    let roomsListBtn = showSceneBtn("btn_rooms_list", true)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
     guiScene.applyPendingChanges(false)
 
-    local pos = roomsListBtn.getPosRC()
+    let pos = roomsListBtn.getPosRC()
     roomsListBtn.noMargin = "yes"
     pos[0] -= guiScene.calcString("3@framePadding", null)
     pos[1] += guiScene.calcString("1@frameFooterHeight", null)
@@ -155,15 +154,15 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelectAction()
   {
-    local selItemIdx = roomsListObj.getValue()
+    let selItemIdx = roomsListObj.getValue()
     if (selItemIdx < 0 || selItemIdx >= roomsListObj.childrenCount())
       return
-    local selItemObj = roomsListObj.getChild(selItemIdx)
+    let selItemObj = roomsListObj.getChild(selItemIdx)
     if (!::check_obj(selItemObj) || !selItemObj?.id)
       return
 
-    local selChapterId = getChapterNameByObjId(selItemObj.id)
-    local selRoomId = getRoomIdByObjId(selItemObj.id)
+    let selChapterId = getChapterNameByObjId(selItemObj.id)
+    let selRoomId = getRoomIdByObjId(selItemObj.id)
 
     if (!isSelectedRoomDataChanged && selChapterId == curChapterId && selRoomId == curRoomId)
       return
@@ -195,10 +194,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
 
-    local configForStatistic = {
+    let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
       economicName = ::events.getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
@@ -271,23 +268,23 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local hasRoom = curRoomId.len() != 0
+    let hasRoom = curRoomId.len() != 0
 
-    local isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
+    let isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
     showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
 
-    local reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
+    let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = ::loc("multiplayer/no_room_selected")
 
-    local roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
-    local isReady = ::g_squad_manager.isMeReady()
-    local isSquadMember = ::g_squad_manager.isSquadMember()
+    let roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
+    let isReady = ::g_squad_manager.isMeReady()
+    let isSquadMember = ::g_squad_manager.isSquadMember()
 
-    local joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
+    let joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
-    local availTeams = ::events.getAvailableTeams(roomMGM)
+    let availTeams = ::events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
       startText = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
@@ -297,21 +294,21 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     else
       startText = ::loc("events/join_event")
 
-    local battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
+    let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
       startText += ::format(" (%s)", battlePriceText)
 
     setColoredDoubleTextToButton(scene, "btn_join_event", startText)
-    local reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
+    let reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 
     showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
 
-    local isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
-    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
+    let isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
+    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
-      local isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
+      let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
       startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
@@ -329,8 +326,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false)
   {
-    local roomsList = roomsListData.getList()
-    local isFlagsUpdated = updateRoomsFlags(roomsList)
+    let roomsList = roomsListData.getList()
+    let isFlagsUpdated = updateRoomsFlags(roomsList)
     if (isUpdateOnlyWhenFlagsChanged && !isFlagsUpdated)
       return
 
@@ -348,7 +345,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getMGameModeFlags(mGameMode, room, isMultiSlot)
   {
     local res = eRoomFlags.NONE
-    local teams = ::events.getAvailableTeams(mGameMode)
+    let teams = ::events.getAvailableTeams(mGameMode)
     if (teams.len() == 0)
       return res
     res = res | eRoomFlags.HAS_COUNTRY
@@ -369,7 +366,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
 
     if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader()) {
-      local membersTeams = ::events.getMembersTeamsData(event, room, teams)
+      let membersTeams = ::events.getMembersTeamsData(event, room, teams)
       if (!(membersTeams?.haveRestrictions ?? false))
         res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
     }
@@ -382,29 +379,29 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateRoomsFlags(roomsList)
   {
     local hasChanges = false
-    local isMultiSlot = ::events.isEventMultiSlotEnabled(event)
-    local needCheckAvailable = ::events.checkPlayersCrafts(event)
-    local teamSize = ::events.getMaxTeamSize(event)
+    let isMultiSlot = ::events.isEventMultiSlotEnabled(event)
+    let needCheckAvailable = ::events.checkPlayersCrafts(event)
+    let teamSize = ::events.getMaxTeamSize(event)
     foreach(room in roomsList)
     {
-      local wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      let wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
-      local mGameMode = ::events.getMGameMode(event, room)
+      let mGameMode = ::events.getMGameMode(event, room)
 
-      local countTbl = ::SessionLobby.getMembersCountByTeams(room)
+      let countTbl = ::SessionLobby.getMembersCountByTeams(room)
       if (countTbl.total < 2 * teamSize)
       {
         flags = flags | eRoomFlags.HAS_PLACES
-        local availTeams = ::events.getAvailableTeams(mGameMode)
+        let availTeams = ::events.getAvailableTeams(mGameMode)
         if (availTeams.len() > 1 || (availTeams.len() && countTbl[availTeams[0]] < teamSize))
           flags = flags | eRoomFlags.HAS_PLACES_IN_MY_TEAM
       }
 
-      local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+      let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
       if (reqUnits)
         foreach(rule in reqUnits)
         {
-          local tier = ::events.getTierNumByRule(rule)
+          let tier = ::events.getTierNumByRule(rule)
           if (tier > 0)
           {
             flags = flags | (eRoomFlags.ROOM_TIER >> (::min(tier, 5) - 1))
@@ -425,7 +422,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function isLockedByMask(flags) {
-    local mustHaveMask = eRoomFlags.HAS_COUNTRY
+    let mustHaveMask = eRoomFlags.HAS_COUNTRY
                        | eRoomFlags.HAS_AVAILABLE_UNITS | eRoomFlags.HAS_REQUIRED_UNIT
                        | eRoomFlags.HAS_PLACES | eRoomFlags.HAS_PLACES_IN_MY_TEAM
                        | eRoomFlags.IS_ALLOWED_BY_BALANCE | eRoomFlags.AVAILABLE_FOR_SQUAD
@@ -435,20 +432,20 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRoomNameView(room)
   {
-    local roomFlags = room[EROOM_FLAGS_KEY_NAME]
-    local isLocked = isLockedByMask(roomFlags)
+    let roomFlags = room[EROOM_FLAGS_KEY_NAME]
+    let isLocked = isLockedByMask(roomFlags)
 
     local text = ::SessionLobby.getMissionNameLoc(room)
-    local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
     if (reqUnits)
     {
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
 
-      local rankText = ::events.getTierTextByRules(reqUnits)
-      local ruleTexts = ::u.map(reqUnits, getRuleText)
-      local rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
+      let rankText = ::events.getTierTextByRules(reqUnits)
+      let ruleTexts = ::u.map(reqUnits, getRuleText)
+      let rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
 
       text = ::colorize(color, rankText) + " " + text
       if (rulesText.len())
@@ -470,7 +467,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateListInfo(visibleRoomsAmount)
   {
-    local needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
+    let needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
     scene.findObject("items_list_wait_icon").show(needWaitIcon)
 
     local infoText = ""
@@ -483,7 +480,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentEdiff()
   {
-    local ediff = ::events.getEDiffByEvent(event)
+    let ediff = ::events.getEDiffByEvent(event)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
@@ -498,17 +495,17 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     chaptersTree.clear()
     foreach (idx, room in roomsList)
     {
-      local chapterGameMode = ::SessionLobby.getMGameMode(room, true)
-      local isCustomMode = ::events.isCustomGameMode(chapterGameMode)
-      local isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
-      local itemView = {
+      let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
+      let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
+      let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
+      let itemView = {
         itemText = isSeparateCustomRoomsList
           ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
           : null
       }
       local name = ""
       foreach(side in ::events.getSidesList(chapterGameMode)) {
-        local countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
+        let countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
@@ -517,7 +514,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         }
       }
 
-      local foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
+      let foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
       if (foundChapter == null)
       {
         chaptersTree.append({
@@ -546,18 +543,18 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateChaptersTree(roomsList)
 
     selectedIdx = 1 //select first room by default
-    local view = { items = [] }
+    let view = { items = [] }
 
     foreach (idx, chapter in chaptersTree)
     {
-      local haveRooms = chapter.rooms.len() > 0
+      let haveRooms = chapter.rooms.len() > 0
       if (!haveRooms || (showOnlyAvailableRooms && isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
         continue
 
       if (chapter.name == curChapterId)
         selectedIdx = view.items.len()
 
-      local listRow = {
+      let listRow = {
         id = chapter.name
         isCollapsable = true
         isNeedOnHover = ::show_console_buttons
@@ -569,7 +566,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (showOnlyAvailableRooms && isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
           continue
 
-        local roomId = room.roomId
+        let roomId = room.roomId
         if (roomId == curRoomId || roomId == roomIdToSelect)
         {
           selectedIdx = view.items.len()
@@ -577,7 +574,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
             curRoomId = roomIdToSelect
         }
 
-        local nameView = getRoomNameView(room)
+        let nameView = getRoomNameView(room)
 
         view.items.append({
           id = chapter.name + ROOM_ID_SPLIT + roomId
@@ -593,9 +590,9 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
       return updateWindow()
 
     viewRoomList = view
-    local data = ::handyman.renderCached("gui/events/eventRoomsList", view)
+    let data = ::handyman.renderCached("%gui/events/eventRoomsList", view)
     guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
-    local roomsCount = roomsListObj.childrenCount()
+    let roomsCount = roomsListObj.childrenCount()
     for (local i = 0; i < roomsCount; i++)
       roomsListObj.getChild(i).setIntProp(listIdxPID, i)
 
@@ -638,14 +635,14 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj)
       return
 
-    local id = obj.id
+    let id = obj.id
     if (id.len() <= 4 || id.slice(0, 4) != "btn_")
       return
 
-    local listItemCount = roomsListObj.childrenCount()
+    let listItemCount = roomsListObj.childrenCount()
     for (local i = 0; i < listItemCount; i++)
     {
-      local listItemId = roomsListObj.getChild(i).id
+      let listItemId = roomsListObj.getChild(i).id
       if (listItemId == id.slice(4))
       {
         collapse(listItemId)
@@ -662,10 +659,10 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
     {
-      local obj = roomsListObj.getChild(i)
-      local chapterName = getChapterNameByObjId(obj.id)
+      let obj = roomsListObj.getChild(i)
+      let chapterName = getChapterNameByObjId(obj.id)
 
-      local isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
+      let isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
       if (!isCollapsedChapter)
         continue
 
@@ -681,8 +678,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCollapseChapterStatus(chapterObj)
   {
-    local index = ::find_in_array(collapsedChapterNamesArray, chapterObj.id)
-    local isCollapse = index < 0
+    let index = ::find_in_array(collapsedChapterNamesArray, chapterObj.id)
+    let isCollapse = index < 0
     if (isCollapse)
       collapsedChapterNamesArray.append(chapterObj.id)
     else
@@ -696,13 +693,13 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(roomsListObj))
       return
 
-    local chapterId = itemName && getChapterNameByObjId(itemName)
+    let chapterId = itemName && getChapterNameByObjId(itemName)
     local newValue = -1
 
     guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
     {
-      local obj = roomsListObj.getChild(i)
+      let obj = roomsListObj.getChild(i)
       if (obj.id == itemName) //is chapter block, can collapse
       {
         updateCollapseChapterStatus(obj)
@@ -710,11 +707,11 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         continue
       }
 
-      local iChapter = getChapterNameByObjId(obj.id)
+      let iChapter = getChapterNameByObjId(obj.id)
       if (iChapter != chapterId)
         continue
 
-      local show = !::isInArray(iChapter, collapsedChapterNamesArray)
+      let show = !::isInArray(iChapter, collapsedChapterNamesArray)
       obj.enable(show)
       obj.show(show)
     }
@@ -731,7 +728,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRoomIdByObjId(id)
   {
-    local result = ROOM_REGEXP.replace("", id)
+    let result = ROOM_REGEXP.replace("", id)
     if (result == id)
       return ""
     return result
@@ -792,9 +789,9 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         !showMsgboxIfSoundModsNotAllowed(event))
       return
 
-    local diffCode = ::events.getEventDiffCode(event)
-    local unitTypeMask = ::events.getEventUnitTypesMask(event)
-    local checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
+    let diffCode = ::events.getEventDiffCode(event)
+    let unitTypeMask = ::events.getEventUnitTypesMask(event)
+    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if(checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
@@ -816,8 +813,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local isHover = obj.isHovered()
-    local idx = obj.getIntProp(listIdxPID, -1)
+    let isHover = obj.isHovered()
+    let idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredIdx == idx))
       return
     hoveredIdx = isHover ? idx : -1
@@ -844,7 +841,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onQueueOptions() {}
 
   function onShowOnlyAvailableRooms(obj) {
-    local newValue = obj.getValue()
+    let newValue = obj.getValue()
     if (newValue == showOnlyAvailableRooms)
       return
 

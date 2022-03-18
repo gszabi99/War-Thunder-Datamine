@@ -1,7 +1,7 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { createBatchTrainCrewRequestBlk } = require("scripts/crew/crewActions.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { fillUserNick, getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { createBatchTrainCrewRequestBlk } = require("scripts/crew/crewActions.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { fillUserNick, getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -16,10 +16,10 @@ enum CChoiceState {
   ::handlersManager.loadHandler(::gui_handlers.CountryChoiceHandler)
 }
 
-class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.CountryChoiceHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/firstChoice/countryChoice.blk"
+  sceneBlkName = "%gui/firstChoice/countryChoice.blk"
   wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
 
   countries = null
@@ -37,7 +37,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
   function initScreen()
   {
     unitTypesList = []
-    local visibleCountries = {}
+    let visibleCountries = {}
     foreach(unitType in unitTypes.types)
     {
       local isAvailable = false
@@ -96,7 +96,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function checkSelection(country, unitType)
   {
-    local availData = get_unit_types_in_countries()
+    let availData = get_unit_types_in_countries()
     return ::getTblValue(unitType.esUnitType, ::getTblValue(country, availData), false)
   }
 
@@ -115,7 +115,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     if (!unitType.isAvailableForFirstChoice(country))
       return false
 
-    local countryData = ::getTblValue(country, countriesUnits)
+    let countryData = ::getTblValue(country, countriesUnits)
     return ::getTblValue(unitType.esUnitType, countryData)
   }
 
@@ -126,17 +126,17 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     columns = ::min(columns < 4 ? 2 : columns, unitTypesList.len())//Just cause 3 columns look weird here
     setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
 
-    local view = {
+    let view = {
       unitTypeItems = function ()
       {
-        local items = []
+        let items = []
         foreach(unitType in unitTypesList)
         {
-          local uType = unitType
-          local countriesList = countries.filter(function(c) {
+          let uType = unitType
+          let countriesList = countries.filter(function(c) {
             return isCountryAvailable(c, uType)}.bindenv(this)
           ).map(@(c) ::loc("unlockTag/" + c))
-          local armyName = unitType.armyId
+          let armyName = unitType.armyId
 
           items.append({
             backgroundImage = $"#ui/images/first_{armyName}.jpg?P1"
@@ -156,9 +156,9 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       }.bindenv(this)
     }
 
-    local data = ::handyman.renderCached("gui/firstChoice/unitTypeChoice", view)
+    let data = ::handyman.renderCached("%gui/firstChoice/unitTypeChoice", view)
     if (selectedUnitType == null) {
-      local preselectUnits = [unitTypes.AIRCRAFT, unitTypes.TANK]
+      let preselectUnits = [unitTypes.AIRCRAFT, unitTypes.TANK]
       selectedUnitType = preselectUnits[::math.rnd() % preselectUnits.len()]
     }
 
@@ -170,15 +170,15 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     if (data == "")
       return
 
-    local headerObj = scene.findObject("choice_header")
+    let headerObj = scene.findObject("choice_header")
     if (::checkObj(headerObj))
       headerObj.setValue(::loc("mainmenu/" + headerLocId))
     fillUserNick(scene.findObject("usernick_place"))
 
-    local listObj = scene.findObject("first_choices_block")
+    let listObj = scene.findObject("first_choices_block")
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
-    local listBoxObj = listObj.getChild(0)
+    let listBoxObj = listObj.getChild(0)
     if (focusItemNum != null) {
       listBoxObj.setValue(focusItemNum)
       ::move_mouse_on_child(listBoxObj, focusItemNum)
@@ -187,7 +187,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function getNotAvailableCountryMsg(country)
   {
-    local availUnitTypes = []
+    let availUnitTypes = []
     foreach(unitType in unitTypes.types)
       if (unitType.isAvailableForFirstChoice(country)
         && ::isInArray(country, getCountriesByUnitType(unitType.esUnitType)))
@@ -205,9 +205,9 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function getMaxSizeInItems()
   {
-    local freeWidth = guiScene.calcString("1@rw", null)
-    local freeHeight = guiScene.calcString("1@firstChoiceAvailableHeight", null)
-    local singleItemSizeTable = countSize({w = 1, h = 1})
+    let freeWidth = guiScene.calcString("1@rw", null)
+    let freeHeight = guiScene.calcString("1@firstChoiceAvailableHeight", null)
+    let singleItemSizeTable = countSize({w = 1, h = 1})
 
     return {
       inRow = freeWidth / singleItemSizeTable.width,
@@ -217,15 +217,15 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function updateScreenSize()
   {
-    local maxAvailRatio = getMaxSizeInItems()
-    local maxItemsInColumn = maxAvailRatio.inColumn
+    let maxAvailRatio = getMaxSizeInItems()
+    let maxItemsInColumn = maxAvailRatio.inColumn
 
     local itemsInRow = maxAvailRatio.inRow
     local itemsInColumn = maxItemsInColumn
 
     for (local row = MIN_ITEMS_IN_ROW; row <= maxAvailRatio.inRow ; row++)
     {
-      local column = countries.len() / row
+      let column = countries.len() / row
       if (column <= maxItemsInColumn && ((column * row) >= countries.len()))
       {
         itemsInColumn = column
@@ -239,27 +239,27 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function createPrefferedUnitTypeCountries()
   {
-    local screenSize = updateScreenSize()
+    let screenSize = updateScreenSize()
     setFrameWidth(screenSize.width)
 
-    local availCountries = selectedUnitType ? getCountriesByUnitType(selectedUnitType.esUnitType) : countries
+    let availCountries = selectedUnitType ? getCountriesByUnitType(selectedUnitType.esUnitType) : countries
     for (local i = availCountries.len() - 1; i >= 0; i--)
       if (!isCountryAvailable(availCountries[i], selectedUnitType))
         availCountries.remove(i)
 
     local data = ""
-    local view = {
+    let view = {
       width = screenSize.width
       countries = function () {
-        local res = []
-        local curArmyName = selectedUnitType ? selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
+        let res = []
+        let curArmyName = selectedUnitType ? selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
         foreach(country in countries)
         {
           local image = ::get_country_flag_img($"first_choice_{country}_{curArmyName}")
           if (image == "")
             image = ::get_country_flag_img($"first_choice_{country}_{unitTypes.AIRCRAFT.armyId}")
 
-          local cData = {
+          let cData = {
             countryName = ::loc(country)
             backgroundImage = image
             desription = ::loc($"{country}/choiseDescription", "")
@@ -275,11 +275,11 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       }.bindenv(this)
     }
 
-    data = ::handyman.renderCached("gui/firstChoice/countryFirstChoiceItem", view)
+    data = ::handyman.renderCached("%gui/firstChoice/countryFirstChoiceItem", view)
 
     if (!availCountries.len())
     {
-      local message = ::format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
+      let message = ::format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
                                ::my_user_id_str,
                                selectedUnitType.name,
                                ::toString(countries),
@@ -295,7 +295,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       selectedCountry = availCountries[rndC]
     }
 
-    local selectId = ::find_in_array(countries, selectedCountry, 0)
+    let selectId = ::find_in_array(countries, selectedCountry, 0)
     fillChoiceScene(data, selectId, "firstCountry")
   }
 
@@ -316,7 +316,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function onSelectCountry(obj)
   {
-    local newCountry = ::getTblValue(obj.getValue(), countries)
+    let newCountry = ::getTblValue(obj.getValue(), countries)
     if (newCountry)
       selectedCountry = newCountry
   }
@@ -333,8 +333,8 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
    */
   function createReserveTasksData(country, unitType, checkCurrentCrewAircrafts = true, ignoreSlotbarCheck = false)
   {
-    local tasksData = []
-    local usedUnits = []
+    let tasksData = []
+    let usedUnits = []
     foreach(c in ::g_crews_list.get())
     {
       if (c.country != country)
@@ -344,7 +344,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
         local unitName = ""
         if (checkCurrentCrewAircrafts)
         {
-          local trainedUnit = ::g_crew.getCrewUnit(crewBlock)
+          let trainedUnit = ::g_crew.getCrewUnit(crewBlock)
           if (trainedUnit && trainedUnit.unitType == unitType)
             unitName = trainedUnit.name
         }
@@ -373,18 +373,18 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
    */
   function createNewbiePresetsData()
   {
-    local presetDataItems = []
+    let presetDataItems = []
     local selEsUnitType = ::ES_UNIT_TYPE_INVALID
     foreach (crewData in ::g_crews_list.get())
     {
-      local country = crewData.country
+      let country = crewData.country
       foreach(unitType in unitTypes.types)
       {
         if (!unitType.isAvailable()
             || !getCountriesByUnitType(unitType.esUnitType).len())
           continue
 
-        local tasksData = createReserveTasksData(country, unitType, false, true)
+        let tasksData = createReserveTasksData(country, unitType, false, true)
         // Used for not creating empty presets.
         local hasUnits = false
         foreach (taskData in tasksData)
@@ -418,7 +418,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function createBatchRequestByPresetsData(presetsData)
   {
-    local requestData = []
+    let requestData = []
     foreach (presetDataItem in presetsData.presetDataItems)
       if (presetDataItem.unitType == presetsData.selectedUnitType)
         foreach (taskData in presetDataItem.tasksData)
@@ -428,7 +428,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function clnSetStartingInfo(presetsData, onComplete)
   {
-    local blk = createBatchRequestByPresetsData(presetsData)
+    let blk = createBatchRequestByPresetsData(presetsData)
     blk.setStr("country", presetsData.selectedCountry)
     blk.setInt("unitType", presetsData.selectedUnitType)
 
@@ -444,9 +444,9 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       if (selectedUnitType.firstChosenTypeUnlockName)
         blk.unlock <- selectedUnitType.firstChosenTypeUnlockName
 
-    local taskCallback = ::Callback(onComplete, this)
-    local taskId = ::char_send_blk("cln_set_starting_info", blk)
-    local taskOptions = {
+    let taskCallback = ::Callback(onComplete, this)
+    let taskId = ::char_send_blk("cln_set_starting_info", blk)
+    let taskOptions = {
       showProgressBox = true
       progressBoxDelayedButtons = 90
     }
@@ -455,8 +455,8 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function goBack()
   {
-    local presetsData = createNewbiePresetsData()
-    local handler = this
+    let presetsData = createNewbiePresetsData()
+    let handler = this
     clnSetStartingInfo(presetsData, (@(presetsData, handler) function () {
         // This call won't procude any additional char-requests
         // as all units are already set previously as a single
@@ -476,7 +476,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function setFrameWidth(width)
   {
-    local frameObj = scene.findObject("country_choice_block")
+    let frameObj = scene.findObject("country_choice_block")
     if (::checkObj(frameObj))
       frameObj.width = width
   }
@@ -491,7 +491,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function getCountriesByUnitType(unitType)
   {
-    local res = []
+    let res = []
     foreach (countryName, countryData in ::get_unit_types_in_countries())
       if (::getTblValue(unitType, countryData))
         res.append(countryName)

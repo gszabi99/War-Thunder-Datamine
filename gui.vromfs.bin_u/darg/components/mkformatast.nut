@@ -37,8 +37,8 @@ from "%darg/ui_imports.nut" import *
   ])
 
 */
-local unknownTag = @(...) {rendObj=ROBJ_SOLID opacity=0.2 size=[flex(), hdpx(2)], margin=[0, hdpx(5)], color = Color(255,120,120)}
-local function defTextArea(params, formatAstFunc, style={}){
+let unknownTag = @(...) {rendObj=ROBJ_SOLID opacity=0.2 size=[flex(), hdpx(2)], margin=[0, hdpx(5)], color = Color(255,120,120)}
+let function defTextArea(params, formatAstFunc, style={}){
   return {
     rendObj = ROBJ_TEXTAREA
     text = params?.v
@@ -48,23 +48,23 @@ local function defTextArea(params, formatAstFunc, style={}){
   }.__update(params)
 }
 
-local defFormatters = {
+let defFormatters = {
   string = @(text, formatAstFunc, style={}) defTextArea({v=text}, formatAstFunc, style)
   def = defTextArea
 }
 
-local defStyle = {
+let defStyle = {
   lineGaps = hdpx(5)
 }
 
-local mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, filter = @(obj) false, style = defStyle){
+let mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, filter = @(obj) false, style = defStyle){
   if (formatters != defFormatters)
     formatters=defFormatters.__merge(formatters)
   if (style != defStyle)
     style = defStyle.__merge(style)
 
   return function formatAst(object, params={}){
-    local formatAstFunc = callee()
+    let formatAstFunc = callee()
     if (type(object) == "string")
       return formatters["string"](object, formatAstFunc, style)
     if (object==null)
@@ -74,7 +74,7 @@ local mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, f
       if (filter(object))
         return null
 
-      local tag = object?.t ?? object?.tag
+      let tag = object?.t ?? object?.tag
       if (!("v" in object))
         object = object.__merge({v=null})
 
@@ -84,7 +84,7 @@ local mkFormatAst = kwarg(function mkFormatAstImpl(formatters = defFormatters, f
         return formatters[tag](object, formatAstFunc, style)
       return unknownTag(object)
     }
-    local ret = []
+    let ret = []
     if (type(object) == "array") {
       foreach (t in object)
         ret.append(formatAstFunc(t))

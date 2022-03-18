@@ -1,6 +1,6 @@
-local rouletteAnim = require("rouletteAnim.nut")
+let rouletteAnim = require("rouletteAnim.nut")
 
-local BhvRoulette = class
+let BhvRoulette = class
 {
   eventMask    = ::EV_ON_CMD | ::EV_TIMER
   valuePID     = ::dagui_propid.add_name_id("value")
@@ -23,7 +23,7 @@ local BhvRoulette = class
 
   function setValue(obj, value)
   {
-    local config = rouletteAnim.calcAnimConfig(obj, value, obj.getUserData())
+    let config = rouletteAnim.calcAnimConfig(obj, value, obj.getUserData())
     if (!config)
       return
 
@@ -38,11 +38,11 @@ local BhvRoulette = class
 
   function onTimer(obj, dt)
   {
-    local config = obj.getUserData()
+    let config = obj.getUserData()
     if (!config)
       return
 
-    local prevTime = config.time
+    let prevTime = config.time
     config.time += dt
     obj.left = (config.animFunc(config.time) + 0.5).tointeger()
 

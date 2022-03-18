@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local state = persist("networkState", @(){
+let state = persist("networkState", @(){
   isMultiplayer = Watched(false)
 })
 

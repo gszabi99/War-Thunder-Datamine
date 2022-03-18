@@ -1,6 +1,6 @@
-local interopGet = require("interopGen.nut")
+let interopGet = require("interopGen.nut")
 
-local shellState = {
+let shellState = {
   altitude = Watched(0)
   remainingDist = Watched(-1)
   isAimCamera = Watched(false)

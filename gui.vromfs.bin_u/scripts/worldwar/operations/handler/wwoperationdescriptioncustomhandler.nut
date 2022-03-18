@@ -1,9 +1,9 @@
-local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
+let unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 
-class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.WwMapDescription
+::gui_handlers.WwOperationDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
 {
-  sceneTplTeamStrenght = "gui/worldWar/wwOperationDescriptionSideStrenght"
-  sceneTplTeamArmyGroups = "gui/worldWar/wwOperationDescriptionSideArmyGroups"
+  sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght"
+  sceneTplTeamArmyGroups = "%gui/worldWar/wwOperationDescriptionSideArmyGroups"
 
   slotbarActions = [ "sec_weapons", "weapons", "repair", "info" ]
 
@@ -17,7 +17,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
 
   function updateView()
   {
-    local isShow = isVisible()
+    let isShow = isVisible()
     updateVisibilities(isShow)
     if (!isShow)
       return
@@ -45,7 +45,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
 
   function fillOperationBackground()
   {
-    local operationBgObj = scene.findObject("operation_background")
+    let operationBgObj = scene.findObject("operation_background")
     if (!::check_obj(operationBgObj))
       return
 
@@ -54,7 +54,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
 
   function updateDescription()
   {
-    local desctObj = scene.findObject("item_desc")
+    let desctObj = scene.findObject("item_desc")
     if (::check_obj(desctObj))
       desctObj.setValue(map.getDescription(false))
   }
@@ -69,26 +69,26 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
 
     ::g_world_war_render.setPreviewCategories()
 
-    local mapNestObj = scene.findObject("map_nest_obj")
+    let mapNestObj = scene.findObject("map_nest_obj")
     if (!::checkObj(mapNestObj))
       return
 
-    local descObj = scene.findObject("item_desc")
-    local itemDescHeight = ::checkObj(descObj) ? descObj.getSize()[1] : 0
-    local startDataObj = scene.findObject("operation_start_date")
-    local operationDescText = scene.findObject("operation_short_info_text")
-    local statusTextHeight = (::checkObj(startDataObj) ? startDataObj.getSize()[1] : 0)
+    let descObj = scene.findObject("item_desc")
+    let itemDescHeight = ::checkObj(descObj) ? descObj.getSize()[1] : 0
+    let startDataObj = scene.findObject("operation_start_date")
+    let operationDescText = scene.findObject("operation_short_info_text")
+    let statusTextHeight = (::checkObj(startDataObj) ? startDataObj.getSize()[1] : 0)
       + (::checkObj(operationDescText) ? operationDescText.getSize()[1] : 0)
 
-    local maxHeight = guiScene.calcString("ph-2@blockInterval", mapNestObj) - itemDescHeight - statusTextHeight
+    let maxHeight = guiScene.calcString("ph-2@blockInterval", mapNestObj) - itemDescHeight - statusTextHeight
     local minSize = maxHeight
-    local top = guiScene.calcString("2@blockInterval", mapNestObj) + itemDescHeight
+    let top = guiScene.calcString("2@blockInterval", mapNestObj) + itemDescHeight
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
-      local sideStrenghtObj = scene.findObject("strenght_" + ::ww_side_val_to_name(side))
+      let sideStrenghtObj = scene.findObject("strenght_" + ::ww_side_val_to_name(side))
       if (::checkObj(sideStrenghtObj))
       {
-        local curWidth = ::g_dagui_utils.toPixels(
+        let curWidth = ::g_dagui_utils.toPixels(
           guiScene,
           "pw-2*(" + sideStrenghtObj.getSize()[0] + "+1@blockInterval+2@framePadding)",
           mapNestObj
@@ -115,16 +115,16 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
     if (!descItem)
       return
 
-    local startDateObj = scene.findObject("operation_start_date")
+    let startDateObj = scene.findObject("operation_start_date")
     if (::checkObj(startDateObj))
       startDateObj.setValue(
         ::loc("worldwar/operation/started", { date = descItem.getStartDateTxt() })
       )
 
-    local activeBattlesCountObj = scene.findObject("operation_short_info_text")
+    let activeBattlesCountObj = scene.findObject("operation_short_info_text")
     if (::checkObj(activeBattlesCountObj))
     {
-      local battlesCount = ::g_world_war.getBattles(
+      let battlesCount = ::g_world_war.getBattles(
         function(wwBattle) {
           return wwBattle.isActive()
         },
@@ -138,7 +138,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
       )
     }
 
-    local isClanParticipateObj = scene.findObject("is_clan_participate_text")
+    let isClanParticipateObj = scene.findObject("is_clan_participate_text")
     if (::checkObj(isClanParticipateObj))
     {
       local isMyClanParticipateText = ""
@@ -160,33 +160,33 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
   {
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
-      local sideName = ::ww_side_val_to_name(side)
-      local isInvert = side == ::SIDE_2
+      let sideName = ::ww_side_val_to_name(side)
+      let isInvert = side == ::SIDE_2
 
-      local unitListObjPlace = scene.findObject("team_" + sideName + "_unit_info")
-      local unitListBlk = ::handyman.renderCached(sceneTplTeamStrenght, getUnitsListViewBySide(side, isInvert))
+      let unitListObjPlace = scene.findObject("team_" + sideName + "_unit_info")
+      let unitListBlk = ::handyman.renderCached(sceneTplTeamStrenght, getUnitsListViewBySide(side, isInvert))
       guiScene.replaceContentFromText(unitListObjPlace, unitListBlk, unitListBlk.len(), this)
 
-      local armyGroupObjPlace = scene.findObject("team_" + sideName + "_army_group_info")
-      local armyGroupViewData = getClanListViewDataBySide(side, isInvert, armyGroupObjPlace)
-      local armyGroupsBlk = ::handyman.renderCached(sceneTplTeamArmyGroups, armyGroupViewData)
+      let armyGroupObjPlace = scene.findObject("team_" + sideName + "_army_group_info")
+      let armyGroupViewData = getClanListViewDataBySide(side, isInvert, armyGroupObjPlace)
+      let armyGroupsBlk = ::handyman.renderCached(sceneTplTeamArmyGroups, armyGroupViewData)
       guiScene.replaceContentFromText(armyGroupObjPlace, armyGroupsBlk, armyGroupsBlk.len(), this)
 
-      local clanBlockTextObj = armyGroupObjPlace.findObject("clan_block_text")
+      let clanBlockTextObj = armyGroupObjPlace.findObject("clan_block_text")
       if (::check_obj(clanBlockTextObj))
         clanBlockTextObj.setValue(descItem ?
           ::loc("worldwar/operation/participating_clans") :
           map.getClansConditionText(true))
 
-      local countryesObjPlace = scene.findObject("team_" + sideName + "_countryes_info")
-      local countryesMarkUpData = map.getCountriesViewBySide(side)
+      let countryesObjPlace = scene.findObject("team_" + sideName + "_countryes_info")
+      let countryesMarkUpData = map.getCountriesViewBySide(side)
       guiScene.replaceContentFromText(countryesObjPlace, countryesMarkUpData, countryesMarkUpData.len(), this)
     }
   }
 
   function getUnitsListViewBySide(side, isInvert)
   {
-    local unitsListView = map.getUnitsViewBySide(side)
+    let unitsListView = map.getUnitsViewBySide(side)
     if (unitsListView.len() == 0)
       return {}
 
@@ -199,7 +199,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
 
   function getClanListViewDataBySide(side, isInvert, parentObj)
   {
-    local viewData = {
+    let viewData = {
         columns = []
         isInvert = isInvert
         isSingleColumn = false
@@ -208,8 +208,8 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
     if (!descItem)
       return viewData
 
-    local armyGroups = ::g_world_war.getArmyGroupsBySide(side)
-    local clansPerColumn = ::g_dagui_utils.countSizeInItems(parentObj, 1, "@leaderboardTrHeight",
+    let armyGroups = ::g_world_war.getArmyGroupsBySide(side)
+    let clansPerColumn = ::g_dagui_utils.countSizeInItems(parentObj, 1, "@leaderboardTrHeight",
       0, 0, 0, "2@wwWindowListBackgroundPadding").itemsCountY
 
     local armyGroupNames = null
@@ -218,7 +218,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
       if (i % clansPerColumn == 0)
       {
         armyGroupNames = []
-        local groupView = armyGroups[i].getView()
+        let groupView = armyGroups[i].getView()
         if (groupView == null)
           continue
 

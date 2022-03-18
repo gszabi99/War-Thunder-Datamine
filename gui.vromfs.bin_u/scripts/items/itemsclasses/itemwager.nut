@@ -1,6 +1,6 @@
-local chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
+let chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
 
-class ::items_classes.Wager extends ::BaseItem
+::items_classes.Wager <- class extends ::BaseItem
 {
   static iType = itemType.WAGER
   static defaultLocId = "wager"
@@ -147,8 +147,8 @@ class ::items_classes.Wager extends ::BaseItem
     {
       if (text != "")
         text += ", "
-      local rewardDataType = getRewardDataTypeByName(rewardDataTypeName)
-      local rewardValue = getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
+      let rewardDataType = getRewardDataTypeByName(rewardDataTypeName)
+      let rewardValue = getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
       text += ::g_language.decimalFormat(rewardValue) + ::loc(rewardDataType.icon)
     }
     return text
@@ -157,12 +157,12 @@ class ::items_classes.Wager extends ::BaseItem
   /** Creates array with reward data objects sorted by param value. */
   function createWinParamsData(blk)
   {
-    local res = []
+    let res = []
     if (blk == null)
       return res
     foreach (reward in blk % "reward")
     {
-      local rewData = createRewardData(reward)
+      let rewData = createRewardData(reward)
       // No need to add empty rewards.
       if (!rewData.isEmpty)
         res.append(rewData)
@@ -184,7 +184,7 @@ class ::items_classes.Wager extends ::BaseItem
     local res = null
     for (local i = 0; i < winParams.len(); ++i)
     {
-      local nextRewardData = winParams[i]
+      let nextRewardData = winParams[i]
       if (nextRewardData.winCount > winCount)
         break
       res = nextRewardData
@@ -197,15 +197,15 @@ class ::items_classes.Wager extends ::BaseItem
   {
     if (blk == null || ::getTblValue("param", blk, 0) == 0)
       return {}
-    local res = {
+    let res = {
       winCount = blk.param
       rewardParamsTable = {}
       isEmpty = true
     }
     foreach (rewardDataType in rewardDataTypes)
     {
-      local rewardDataTypeName = rewardDataType.name
-      local p3 = ::getTblValue(rewardDataTypeName, blk, null)
+      let rewardDataTypeName = rewardDataType.name
+      let p3 = ::getTblValue(rewardDataTypeName, blk, null)
       if (typeof(p3) != "instance" || !(p3 instanceof ::Point3))
         continue
       if (p3.x == 0 && p3.y == 0 && p3.z == 0)
@@ -234,10 +234,10 @@ class ::items_classes.Wager extends ::BaseItem
     local iconName = winBlk?.type
     for(local i = 0; i < winBlk.paramCount(); i++)
     {
-      local paramName = winBlk.getParamName(i)
+      let paramName = winBlk.getParamName(i)
       if (paramName != "unlock")
         continue
-      local paramValue = winBlk.getParamValue(i)
+      let paramValue = winBlk.getParamValue(i)
       if (!::LayersIcon.findLayerCfg(getBasePartOfLayerId(false) + "_" + paramValue))
         continue
 
@@ -263,7 +263,7 @@ class ::items_classes.Wager extends ::BaseItem
     local layersData = ::LayersIcon.genDataFromLayer(_getBestRewardImage(small))
     layersData += _getWinIconData(small)
 
-    local mainLayerCfg = _getBackground(small)
+    let mainLayerCfg = _getBackground(small)
     return ::LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
   }
 
@@ -282,12 +282,12 @@ class ::items_classes.Wager extends ::BaseItem
     if (!winIcon)
       return ""
 
-    local layers = []
+    let layers = []
 
     if (reqWinsNum && reqWinsNum > 1)
     {
-      local textLayerId = getBasePartOfLayerId(small) + "_" + defaultTextType
-      local textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
+      let textLayerId = getBasePartOfLayerId(small) + "_" + defaultTextType
+      let textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
       if (textLayerCfg)
       {
         textLayerCfg.id <- textLayerId
@@ -334,7 +334,7 @@ class ::items_classes.Wager extends ::BaseItem
   function getDescription(customParams = {})
   {
     local desc = ""
-    local customNumWins = ::getTblValue("numWins", customParams, numWins)
+    let customNumWins = ::getTblValue("numWins", customParams, numWins)
 
     if (isActive())
       desc += ::loc("items/wager/numWins", { numWins = customNumWins, maxWins = maxWins })
@@ -348,7 +348,7 @@ class ::items_classes.Wager extends ::BaseItem
         desc += ::loc("items/wager/maxFails", { maxFails = maxFails })
       else
       {
-        local customNumFails = ::getTblValue("numFails", customParams, numBattles - customNumWins)
+        let customNumFails = ::getTblValue("numFails", customParams, numBattles - customNumWins)
         desc += ::loc("items/wager/numFails", {
           numFails = customNumFails
           maxFails = maxFails
@@ -358,7 +358,7 @@ class ::items_classes.Wager extends ::BaseItem
     }
 
     local stakeText
-    local costParam = {isWpAlwaysShown = true}
+    let costParam = {isWpAlwaysShown = true}
     if (isActive())
       stakeText =::Cost(curWager).toStringWithParams(costParam)
     else if (maxWager == 0)
@@ -372,7 +372,7 @@ class ::items_classes.Wager extends ::BaseItem
     if (stakeText != "")
       desc += ::loc("items/wager/stake", { stakeText = stakeText }) + "\n"
 
-    local expireText = getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       desc += "\n" + expireText
 
@@ -397,8 +397,8 @@ class ::items_classes.Wager extends ::BaseItem
 
     if (winConditions)
     {
-      local mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
-      local modeType = mainCond && mainCond.modeType
+      let mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
+      let modeType = mainCond && mainCond.modeType
       _needLongMarkup = (modeType == "unlocks" || modeType == "char_unlocks")
                         && ::getTblValue("typeLocIDWithoutValue", mainCond) == null
     } else
@@ -413,11 +413,11 @@ class ::items_classes.Wager extends ::BaseItem
 
   function _getMainCondViewData(mainCond)
   {
-    local modeType = mainCond.modeType
+    let modeType = mainCond.modeType
     if (modeType != "unlocks" && modeType != "char_unlocks")
       return { text = ::UnlockConditions._genMainConditionText(mainCond, null, null, winCondParams) }
 
-    local values = mainCond.values
+    let values = mainCond.values
 
     if (values.len() == 1)
       return {
@@ -425,10 +425,10 @@ class ::items_classes.Wager extends ::BaseItem
         tooltipId = ::g_tooltip.getIdUnlock(values[0])
       }
 
-    local res = { subTexts = [] }
+    let res = { subTexts = [] }
     res.subTexts.append({ text = ::UnlockConditions._genMainConditionText(mainCond, "", null, winCondParams) + ::loc("ui/colon") })
 
-    local locValues = ::UnlockConditions.getLocForBitValues(modeType, values)
+    let locValues = ::UnlockConditions.getLocForBitValues(modeType, values)
     foreach(idx, value in locValues)
       res.subTexts.append({
         text = ::colorize("unlockActiveColor", value) + ((idx < values.len() - 1) ? ::loc("ui/comma") : "")
@@ -443,18 +443,18 @@ class ::items_classes.Wager extends ::BaseItem
     if (!isNeedLongMarkup())
       return ""
 
-    local view = { rows = [] }
+    let view = { rows = [] }
 
     view.rows.append({ text = ::colorize("grayOptionColor", ::loc("items/wager/winConditions")) })
 
-    local mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
+    let mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
     if (mainCond)
       view.rows.append(_getMainCondViewData(mainCond))
 
-    local usualCond = ::UnlockConditions.getConditionsText(winConditions, null, null, { withMainCondition = false })
+    let usualCond = ::UnlockConditions.getConditionsText(winConditions, null, null, { withMainCondition = false })
     view.rows.append({ text = usualCond })
     view.rows.append({ text = ::colorize("grayOptionColor", ::loc("items/wager/winConditions/caption")) })
-    return ::handyman.renderCached("gui/items/conditionsTexts", view)
+    return ::handyman.renderCached("%gui/items/conditionsTexts", view)
   }
 
   function getDescriptionAboveTable()
@@ -476,7 +476,7 @@ class ::items_classes.Wager extends ::BaseItem
 
   function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive() && curWager >= 0)
@@ -491,7 +491,7 @@ class ::items_classes.Wager extends ::BaseItem
 
   function doMainAction(cb, handler, params = null)
   {
-    local baseResult = base.doMainAction(cb, handler, params)
+    let baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !isInventoryItem)
       return true
 
@@ -502,7 +502,7 @@ class ::items_classes.Wager extends ::BaseItem
       activate(minWager, cb)
     else
     {
-      local item = this
+      let item = this
       chooseAmountWnd.open({
         parentObj = params?.obj
         align = params?.align ?? "bottom"
@@ -541,7 +541,7 @@ class ::items_classes.Wager extends ::BaseItem
 
     local bodyText = ::format(::loc("msgbox/conflictingWager"), getWagerDescriptionForMessageBox(uids[0]))
     bodyText += "\n" + getWagerDescriptionForMessageBox(::get_current_wager_uid())
-    local item = this
+    let item = this
     ::scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [
         [ "continue", @() item.activateImpl(wagerValue, cb) ],
@@ -553,12 +553,12 @@ class ::items_classes.Wager extends ::BaseItem
 
   function sendTaskActivate(wagerValue, cb)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.setStr("name", uids[0])
     blk.setInt("wager", wagerValue)
-    local taskId = ::char_send_blk("cln_set_current_wager", blk)
+    let taskId = ::char_send_blk("cln_set_current_wager", blk)
 
-    local isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
+    let isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
       @() cb({ success = true }), @(res) cb({ success = false }))
     if (!isTaskSend)
       cb({success=false})
@@ -572,12 +572,12 @@ class ::items_classes.Wager extends ::BaseItem
       return
     }
 
-    local activateLocId = wagerValue > 0 ? "msgbox/wagerActivate/withCost" : "msgbox/wagerActivate"
-    local bodyText = ::loc(activateLocId, {
+    let activateLocId = wagerValue > 0 ? "msgbox/wagerActivate/withCost" : "msgbox/wagerActivate"
+    let bodyText = ::loc(activateLocId, {
       name = getWagerDescriptionForMessageBox(uids[0])
       cost = getWagerCost(wagerValue)
     })
-    local item = this
+    let item = this
     ::scene_msg_box("activate_wager_message_box", null, bodyText,
       [
         [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
@@ -588,7 +588,7 @@ class ::items_classes.Wager extends ::BaseItem
 
   function getWagerDescriptionForMessageBox(uid)
   {
-    local wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
+    let wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
     return wager == null ? "" : wager.getShortDescription()
   }
 
@@ -596,7 +596,7 @@ class ::items_classes.Wager extends ::BaseItem
   {
     local bodyTextLocString = "msgbox/notEnoughMoneyWager/"
     bodyTextLocString += isGoldWager ? "gold" : "wp"
-    local bodyText = ::loc(bodyTextLocString)
+    let bodyText = ::loc(bodyTextLocString)
     ::scene_msg_box("not_enough_money_message_box", null, bodyText,
       [["ok", @() cb({success=false}) ]],
       "ok")
@@ -605,7 +605,7 @@ class ::items_classes.Wager extends ::BaseItem
   function getShortDescription(colored = true)
   {
     local desc = getName(colored)
-    local descVars = []
+    let descVars = []
     if (isActive())
       descVars.append(numWins + "/" + maxWins)
 
@@ -632,17 +632,17 @@ class ::items_classes.Wager extends ::BaseItem
   {
     if (winParamsData == null || winParamsData.len() == 0)
       return null
-    local view = createTableDataView(winParamsData, numWins)
-    return ::handyman.renderCached("gui/items/wagerRewardsTable", view)
+    let view = createTableDataView(winParamsData, numWins)
+    return ::handyman.renderCached("%gui/items/wagerRewardsTable", view)
   }
 
   function createTableDataView(winParams, winsNum)
   {
-    local view = {
+    let view = {
       rows = []
     }
 
-    local headerView = clone tableRowTypeByName.header
+    let headerView = clone tableRowTypeByName.header
     headerView.winCount <- ::loc("items/wager/table/winCount")
     if (minWager == maxWager || isActive())
       headerView.rewardText <- ::loc("items/wager/table/reward")
@@ -655,18 +655,18 @@ class ::items_classes.Wager extends ::BaseItem
 
     local previousRewardData = null
     local activeRowPlaced = false
-    local needActiveRow = isActive() && winsNum != 0
+    let needActiveRow = isActive() && winsNum != 0
     for (local i = 0; i < winParams.len(); ++i)
     {
-      local rewData = winParams[i]
+      let rewData = winParams[i]
       if (rewData.winCount > winsNum && !activeRowPlaced && needActiveRow)
       {
         activeRowPlaced = true
-        local activeRewardData = getRewardDataByParam(winsNum, winParams)
+        let activeRewardData = getRewardDataByParam(winsNum, winParams)
         view.rows.append(createRewardView("selected", activeRewardData, winsNum))
         previousRewardData = activeRewardData
       }
-      local isMeActive = rewData.winCount == winsNum && !activeRowPlaced && needActiveRow
+      let isMeActive = rewData.winCount == winsNum && !activeRowPlaced && needActiveRow
       // Skipping rows with equal reward data.
       if (!isMeActive && compareRewardData(previousRewardData, rewData))
         continue
@@ -680,14 +680,14 @@ class ::items_classes.Wager extends ::BaseItem
         rowTypeName = "regular"
 
       previousRewardData = rewData
-      local rewardView = createRewardView(rowTypeName, rewData)
+      let rewardView = createRewardView(rowTypeName, rewData)
       view.rows.append(rewardView)
       if (isMeActive)
         activeRowPlaced = true
     }
     if (!activeRowPlaced && needActiveRow)
     {
-      local activeRewardData = getRewardDataByParam(winsNum, winParams)
+      let activeRewardData = getRewardDataByParam(winsNum, winParams)
       view.rows.append(createRewardView("selected", activeRewardData, winsNum))
     }
     return view
@@ -697,8 +697,8 @@ class ::items_classes.Wager extends ::BaseItem
   {
     foreach (rewardDataType in rewardDataTypes)
     {
-      local rp1 = rd1?.rewardParamsTable[rewardDataType.name]
-      local rp2 = rd2?.rewardParamsTable[rewardDataType.name]
+      let rp1 = rd1?.rewardParamsTable[rewardDataType.name]
+      let rp2 = rd2?.rewardParamsTable[rewardDataType.name]
       if (rp1 == rp2)
         continue
       if (!rp1 || !rp2)
@@ -716,7 +716,7 @@ class ::items_classes.Wager extends ::BaseItem
   {
     if (winsNum == -1)
       winsNum = rewData?.winCount ?? 0
-    local view = (rowTypeName in tableRowTypeByName)
+    let view = (rowTypeName in tableRowTypeByName)
       ? clone tableRowTypeByName[rowTypeName]
       : {}
     view.winCount <- winsNum.tostring()

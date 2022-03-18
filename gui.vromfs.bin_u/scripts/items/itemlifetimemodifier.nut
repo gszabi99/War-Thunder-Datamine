@@ -13,13 +13,13 @@ local ItemLifetimeModifier = class {
     if (dependenciesRe?.multiExtract == null)
       return
 
-    local parsedDependencies = dependenciesRe.multiExtract("\\1", formulaStr)
+    let parsedDependencies = dependenciesRe.multiExtract("\\1", formulaStr)
     dependencies = []
     foreach (dependencyStr in parsedDependencies)
     {
       dependencies.append(dependencyStr.tointeger())
     }
-    local body = "return @(s) (" + formulaStr + ")"
+    let body = "return @(s) (" + formulaStr + ")"
     modifierFunction = compilestring(body)()
   }
 
@@ -28,7 +28,7 @@ local ItemLifetimeModifier = class {
     if (modifierFunction == null)
       return 1.0
 
-    local params = {}
+    let params = {}
     foreach (dependency in dependencies)
     {
       params["count_" + dependency.tostring()] <- ::ItemsManager.getRawInventoryItemAmount(dependency)

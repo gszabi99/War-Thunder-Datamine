@@ -1,11 +1,11 @@
-local { markObjShortcutOnHover } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 /*
 work same as OptionsNavigator focus N child in current child
 but have 2 axis navigation as posNavigator by real size and positions of self childs
 */
 
-class ::gui_bhv.PosOptionsNavigator extends ::gui_bhv.posNavigator
+::gui_bhv.PosOptionsNavigator <- class extends ::gui_bhv.posNavigator
 {
   bhvId = "PosOptionsNavigator"
   canChooseByMClick = false
@@ -28,7 +28,7 @@ class ::gui_bhv.PosOptionsNavigator extends ::gui_bhv.posNavigator
     local idx = 0
     for(local i = 0; i < obj.childrenCount(); i++)
     {
-      local rowObj = obj.getChild(i)
+      let rowObj = obj.getChild(i)
       if (!rowObj.isValid())
         continue
       if (isInteractiveObj(rowObj)) {
@@ -40,7 +40,7 @@ class ::gui_bhv.PosOptionsNavigator extends ::gui_bhv.posNavigator
       }
       for(local j = 0; j < rowObj.childrenCount(); j++)
       {
-        local cellObj = rowObj.getChild(j)
+        let cellObj = rowObj.getChild(j)
         if (isInteractiveObj(cellObj)) {
           if (cellObj.isEnabled() && cellObj.isVisible())
             if (handler(cellObj, idx))
@@ -51,7 +51,7 @@ class ::gui_bhv.PosOptionsNavigator extends ::gui_bhv.posNavigator
 
         for(local k = 0; k < cellObj.childrenCount(); k++)
         {
-          local elem = cellObj.getChild(k)
+          let elem = cellObj.getChild(k)
           if (isInteractiveObj(elem)) {
             if (elem.isEnabled() && elem.isVisible())
               if (handler(elem, idx))

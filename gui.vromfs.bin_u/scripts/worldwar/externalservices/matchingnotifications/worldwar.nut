@@ -1,17 +1,17 @@
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local { subscribeOperationNotify, unsubscribeOperationNotify } = require("scripts/worldWar/services/wwService.nut")
+let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { subscribeOperationNotify, unsubscribeOperationNotify } = require("scripts/worldWar/services/wwService.nut")
 
 foreach (notificationName, callback in
   {
     ["worldwar.on_join_to_battle"] = function(params)
       {
-        local operationId = params?.operationId ?? ""
-        local team = params?.team ?? ::SIDE_1
-        local country = params?.country ?? ""
-        local battleIds = ::getTblValue("battleIds", params, [])
+        let operationId = params?.operationId ?? ""
+        let team = params?.team ?? ::SIDE_1
+        let country = params?.country ?? ""
+        let battleIds = ::getTblValue("battleIds", params, [])
         foreach (battleId in battleIds)
         {
-          local queue = ::queues.createQueue({
+          let queue = ::queues.createQueue({
               operationId = operationId
               battleId = battleId
               country = country
@@ -23,13 +23,13 @@ foreach (notificationName, callback in
       },
     ["worldwar.on_leave_from_battle"] = function(params)
       {
-        local queue = ::queues.findQueueByName(::queue_classes.WwBattle.getName(params))
+        let queue = ::queues.findQueueByName(::queue_classes.WwBattle.getName(params))
         if (!queue)
           return
 
-        local reason = params?.reason ?? ""
-        local isBattleStarted = reason == "battle-started"
-        local msgText = !isBattleStarted
+        let reason = params?.reason ?? ""
+        let isBattleStarted = reason == "battle-started"
+        let msgText = !isBattleStarted
           ? ::loc("worldWar/leaveBattle/" + reason, "")
           : ""
 
@@ -39,7 +39,7 @@ foreach (notificationName, callback in
       },
     ["worldwar.notify"] = function(params)
       {
-        local messageType = params?.type
+        let messageType = params?.type
         if (!messageType)
           return
 
@@ -52,15 +52,15 @@ foreach (notificationName, callback in
         if (!::is_in_flight())
           return
 
-        local operationId = params?.operationId
+        let operationId = params?.operationId
         if (!operationId || operationId != ::ww_get_operation_id())
           return
 
-        local isOwnSide = (::get_local_player_country() == params?.activeSideCountry)
+        let isOwnSide = (::get_local_player_country() == params?.activeSideCountry)
         local text = ""
         if (messageType == "operation_finished")
         {
-          local operation = getOperationById(operationId)
+          let operation = getOperationById(operationId)
           text = operation ? ::loc("worldwar/operation_complete_battle_results_ignored_full_text",
             {operationInfo = operation.getNameText()})
                            : ::loc("worldwar/operation_complete_battle_results_ignored")
@@ -73,7 +73,7 @@ foreach (notificationName, callback in
         }
         else if (messageType == "reinforcements_arrived")
         {
-          local misBlk = ::DataBlock()
+          let misBlk = ::DataBlock()
           ::get_current_mission_desc(misBlk)
           if (params?.customParam == misBlk?.customRules.battleId)
             text = ::loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
@@ -97,7 +97,7 @@ foreach (notificationName, callback in
   {
     ["worldwar_forced_subscribe"] = function(params)
       {
-        local operationId = params?.id
+        let operationId = params?.id
         if (!operationId)
           return
 

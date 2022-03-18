@@ -1,9 +1,9 @@
-local colors = require("reactiveGui/style/colors.nut")
-local JB = require("reactiveGui/control/gui_buttons.nut")
+let colors = require("reactiveGui/style/colors.nut")
+let JB = require("reactiveGui/control/gui_buttons.nut")
 
-local closeButtonHeight = ::scrn_tgt(0.045)
-local function closeBtn(override) {
-  local stateFlags = ::Watched(0)
+let closeButtonHeight = ::scrn_tgt(0.045)
+let function closeBtn(override) {
+  let stateFlags = ::Watched(0)
   return @() {
     size = [closeButtonHeight, closeButtonHeight]
     rendObj = ROBJ_SOLID

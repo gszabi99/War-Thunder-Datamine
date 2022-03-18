@@ -1,21 +1,21 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
-local { isProgressVisible } = require("hudState")
-local safeAreaHud = require("scripts/options/safeAreaHud.nut")
-local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-local { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
-local { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
-local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { initIconedHints } = require("scripts/hud/iconedHints.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-local { setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
-local { getActionBarItems } = ::require_native("hudActionBar")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let time = require("scripts/time.nut")
+let { isProgressVisible } = require("hudState")
+let safeAreaHud = require("scripts/options/safeAreaHud.nut")
+let globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+let { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
+let { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
+let { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
+let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { initIconedHints } = require("scripts/hud/iconedHints.nut")
+let { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+let { setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
+let { getActionBarItems } = ::require_native("hudActionBar")
 
 ::dagui_propid.add_name_id("fontSize")
 
-local UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
-local getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
+let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
+let getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
 ::air_hud_actions <- {
@@ -53,9 +53,9 @@ globalCallbacks.addTypes({
   }
 })
 
-class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName         = "gui/hud/hud.blk"
+  sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
 
@@ -132,7 +132,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     loadGameChat()
 
     scene.findObject("hud_update").setUserData(this)
-    local gm = ::get_game_mode()
+    let gm = ::get_game_mode()
     showSceneBtn("stats", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
     showSceneBtn("voice", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
 
@@ -147,7 +147,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function initDargWidgetsList() {
-    local hudWidgetId = useTouchscreen ? DargWidgets.HUD_TOUCH : DargWidgets.HUD
+    let hudWidgetId = useTouchscreen ? DargWidgets.HUD_TOUCH : DargWidgets.HUD
     widgetsList = [
       { widgetId = hudWidgetId }
       { widgetId = DargWidgets.SCOREBOARD }
@@ -182,7 +182,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       curChatData = null
     }
     if (::is_multiplayer())
-      curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "gui/chat/gameChat.blk", this,
+      curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
                           { selfHideInput = true, selfHideLog = true })
   }
 
@@ -252,7 +252,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       isXinput = ::is_xinput_device()
     }
 
-    local hudObj = scene.findObject("hud_obj")
+    let hudObj = scene.findObject("hud_obj")
     if (!::checkObj(hudObj))
       return false
 
@@ -309,14 +309,14 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateObjectsSize(params = null)
   {
-    local actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
+    let actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
     if (actionBarItemsAmount)
     {
-      local actionBarSize = ::to_pixels("1@hudActionBarItemSize")
-      local actionBarOffset = ::to_pixels("1@hudActionBarItemOffset")
-      local screenWidth = ::to_pixels("sw")
-      local borderWidth = ::to_pixels("1@bwHud")
-      local actionBarWidth = actionBarItemsAmount * actionBarSize + (actionBarItemsAmount + 1) * actionBarOffset
+      let actionBarSize = ::to_pixels("1@hudActionBarItemSize")
+      let actionBarOffset = ::to_pixels("1@hudActionBarItemOffset")
+      let screenWidth = ::to_pixels("sw")
+      let borderWidth = ::to_pixels("1@bwHud")
+      let actionBarWidth = actionBarItemsAmount * actionBarSize + (actionBarItemsAmount + 1) * actionBarOffset
 
       sideBlockMaxWidth = (screenWidth - actionBarWidth) / 2 - borderWidth - ::to_pixels("1@blockInterval")
     }
@@ -340,11 +340,11 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       return HUD_TYPE.FREECAM
     else
     {
-      local unit = getPlayerCurUnit()
+      let unit = getPlayerCurUnit()
       if (unit?.isHelicopter?())
         return HUD_TYPE.HELICOPTER
 
-      local unitType = ::get_es_unit_type(unit)
+      let unitType = ::get_es_unit_type(unit)
       if (unitType == ::ES_UNIT_TYPE_AIRCRAFT)
         return HUD_TYPE.AIR
       else if (unitType == ::ES_UNIT_TYPE_TANK)
@@ -357,15 +357,15 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateHudVisMode(forceUpdate = false)
   {
-    local visMode = ::g_hud_vis_mode.getCurMode()
+    let visMode = ::g_hud_vis_mode.getCurMode()
     if (!forceUpdate && visMode == curHudVisMode)
       return
     curHudVisMode = visMode
 
-    local isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
+    let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
       ::is_tank_damage_indicator_visible()
 
-    local objsToShow = {
+    let objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
@@ -398,7 +398,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (spectatorMode || !::is_hud_visible())
       return
 
-    local unmapped = ::getUnmappedControlsForCurrentMission()
+    let unmapped = ::getUnmappedControlsForCurrentMission()
 
     if (!unmapped.len())
     {
@@ -414,12 +414,12 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (::u.isEqual(unmapped, ucPrevList))
       return
 
-    local warningObj = scene.findObject("unmapped_shortcuts_warning")
+    let warningObj = scene.findObject("unmapped_shortcuts_warning")
     if (!::checkObj(warningObj))
       return
 
-    local unmappedLocalized = ::u.map(unmapped, ::loc)
-    local text = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" + ::g_string.implode(unmappedLocalized, ::loc("ui/comma"))
+    let unmappedLocalized = ::u.map(unmapped, ::loc)
+    let text = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" + ::g_string.implode(unmappedLocalized, ::loc("ui/comma"))
     warningObj.setValue(text)
     warningObj.show(true)
     warningObj.wink = "yes"
@@ -436,13 +436,13 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (!ucWarningActive)
       return
 
-    local winkingOld = ucWarningTimeShow > ucNoWinkTime
+    let winkingOld = ucWarningTimeShow > ucNoWinkTime
     ucWarningTimeShow -= dt
-    local winkingNew = ucWarningTimeShow > ucNoWinkTime
+    let winkingNew = ucWarningTimeShow > ucNoWinkTime
 
     if (ucWarningTimeShow <= 0 || winkingOld != winkingNew)
     {
-      local warningObj = scene.findObject("unmapped_shortcuts_warning")
+      let warningObj = scene.findObject("unmapped_shortcuts_warning")
       if (!::checkObj(warningObj))
         return
 
@@ -461,7 +461,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (spectatorMode || !::is_hud_visible())
       return
 
-    local isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
+    let isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
     if (isShow == isLowQualityWarningVisible)
       return
 
@@ -471,7 +471,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventHudIndicatorChangedSize(params)
   {
-    local option = ::getTblValue("option", params, -1)
+    let option = ::getTblValue("option", params, -1)
     if (option < 0)
       return
 
@@ -480,24 +480,24 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function changeObjectsSize(optionNum)
   {
-    local option = ::get_option(optionNum)
-    local value = (option && option.value != null) ? option.value : 0
-    local vMax   = (option?.max ?? 0) != 0 ? option.max : 2
-    local size = 1.0 + 0.333 * value / vMax
+    let option = ::get_option(optionNum)
+    let value = (option && option.value != null) ? option.value : 0
+    let vMax   = (option?.max ?? 0) != 0 ? option.max : 2
+    let size = 1.0 + 0.333 * value / vMax
 
-    local table = ::getTblValue(optionNum, objectsTable, {})
+    let table = ::getTblValue(optionNum, objectsTable, {})
     foreach (id, cssConst in ::getTblValue("objectsToScale", table, {}))
     {
-      local obj = scene.findObject(id)
+      let obj = scene.findObject(id)
       if (!::checkObj(obj))
         continue
 
-      local objWidth = ::format("%.3f*%s", size, cssConst)
-      local objWidthValue = ::to_pixels(objWidth)
-      local canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
+      let objWidth = ::format("%.3f*%s", size, cssConst)
+      let objWidthValue = ::to_pixels(objWidth)
+      let canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
                                   !sideBlockMaxWidth ||
                                   objWidthValue <= sideBlockMaxWidth
-      local fontSize = table?.fontSizeByScale[id][value]
+      let fontSize = table?.fontSizeByScale[id][value]
       if (fontSize != null)
         obj.fontSize = canApplyOptionValue ? fontSize : defaultFontSize
       obj.size = canApplyOptionValue
@@ -508,7 +508,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       if (optionNum == ::USEROPT_TACTICAL_MAP_SIZE)
         curTacticalMapObj = obj
 
-      local func = ::getTblValue("onChangedFunc", table)
+      let func = ::getTblValue("onChangedFunc", table)
       if (func)
         func.call(this, obj)
     }
@@ -541,14 +541,14 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAFKTimeKickText(sec)
   {
-    local timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
+    let timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
     if (!::checkObj(timeToKickAlertObj) || timeToKickAlertObj.getModalCounter() != 0)
       return
 
     updateAFKTimeKick()
-    local showAlertText = ::get_in_battle_time_to_kick_show_alert() >= afkTimeToKick
-    local showTimerText = ::get_in_battle_time_to_kick_show_timer() >= afkTimeToKick
-    local showMessage = afkTimeToKick >= 0 && (showTimerText || showAlertText)
+    let showAlertText = ::get_in_battle_time_to_kick_show_alert() >= afkTimeToKick
+    let showTimerText = ::get_in_battle_time_to_kick_show_timer() >= afkTimeToKick
+    let showMessage = afkTimeToKick >= 0 && (showTimerText || showAlertText)
     timeToKickAlertObj.show(showMessage)
     if (!showMessage)
       return
@@ -559,9 +559,9 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
         ? ::loc("inBattle/timeToKick", {timeToKick = time.secondsToString(afkTimeToKick, true, true)})
         : "")
 
-      local curTime = ::dagor.getCurTime()
-      local prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
-      local currSeconds = (curTime / 1000).tointeger()
+      let curTime = ::dagor.getCurTime()
+      let prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
+      let currSeconds = (curTime / 1000).tointeger()
 
       if (currSeconds != prevSeconds)
       {
@@ -580,7 +580,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventServerMessage(params)
   {
-    local serverMessageTimerObject = scene.findObject("server_message_timer")
+    let serverMessageTimerObject = scene.findObject("server_message_timer")
     if (::checkObj(serverMessageTimerObject))
     {
       SecondsUpdater(serverMessageTimerObject, (@(scene) function (obj, params) {
@@ -592,7 +592,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   function updateMissionProgressPlace()
   {
     if (getHudType() == HUD_TYPE.SHIP) {
-      local missionProgressHeight = isProgressVisible() ? ::to_pixels("@missionProgressHeight") : 0;
+      let missionProgressHeight = isProgressVisible() ? ::to_pixels("@missionProgressHeight") : 0;
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = [0, 0], pos = [0, 0],
         padding = [0, 0, missionProgressHeight, 0]
@@ -604,7 +604,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj?.isValid())
       return
 
-    local isVisible = isProgressVisible()
+    let isVisible = isProgressVisible()
     if (obj.isVisible() == isVisible)
       return
 
@@ -612,7 +612,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.applyPendingChanges(false)
     currentHud?.updateChatOffset()
 
-    obj = scene.findObject("xray_render_dmg_indicator")
+    obj = scene.findObject("hud_tank_damage_indicator")
     if (obj?.isValid())
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = obj.getSize(), pos = obj.getPos(),
@@ -623,7 +623,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
 ::HudCutscene <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "gui/hud/hudCutscene.blk"
+  sceneBlkName = "%gui/hud/hudCutscene.blk"
 
   function initScreen()
   {
@@ -637,7 +637,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
 ::HudAir <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "gui/hud/hudAir.blk"
+  sceneBlkName = "%gui/hud/hudAir.blk"
 
   function initScreen()
   {
@@ -669,7 +669,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTacticalMapVisibility()
   {
-    local isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
+    let isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
                          && !is_replay_playing() && (::get_game_type() & ::GT_RACE)
     showSceneBtn("hud_air_tactical_map", isVisible)
   }
@@ -688,12 +688,12 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isDmgIndicatorVisible())
     {
-      local dmgIndObj = scene.findObject("xray_render_dmg_indicator")
+      let dmgIndObj = scene.findObject("xray_render_dmg_indicator")
       if (::check_obj(dmgIndObj))
         return guiScene.calcString("sh - 1@bhHud", null) - dmgIndObj.getPosRC()[1]
     }
 
-    local obj = scene.findObject("mission_progress_place")
+    let obj = scene.findObject("mission_progress_place")
     if (obj?.isValid() && obj.isVisible())
       return guiScene.calcString("sh - 1@bhHud - @hudPadding", null) - obj.getPosRC()[1]
 
@@ -703,11 +703,11 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   _chatOffset = -1
   function updateChatOffset()
   {
-    local chatObj = scene.findObject("chatPlace")
+    let chatObj = scene.findObject("chatPlace")
     if (!::check_obj(chatObj))
       return
 
-    local offset = getChatOffset()
+    let offset = getChatOffset()
     if (_chatOffset == offset)
       return
 
@@ -719,7 +719,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 ::HudTouchAir <- class extends ::HudAir
 {
   scene        = null
-  sceneBlkName = "gui/hud/hudTouchAir.blk"
+  sceneBlkName = "%gui/hud/hudTouchAir.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -736,16 +736,16 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillAirButtons()
   {
-    local actionsObj = scene.findObject("hud_air_actions")
+    let actionsObj = scene.findObject("hud_air_actions")
     if (!::checkObj(actionsObj))
       return
 
-    local view = {
+    let view = {
       actionFunction = "onAirHudAction"
       items = function ()
       {
-        local res = []
-        local availActionsList = ::get_aircraft_available_actions()
+        let res = []
+        let availActionsList = ::get_aircraft_available_actions()
         foreach (name,  action in ::air_hud_actions)
           if (::isInArray(name, availActionsList))
             res.append(action)
@@ -753,7 +753,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local blk = ::handyman.renderCached(("gui/hud/hudAirActions"), view)
+    let blk = ::handyman.renderCached(("%gui/hud/hudAirActions"), view)
     guiScene.replaceContentFromText(actionsObj, blk, blk.len(), this)
   }
 }
@@ -801,8 +801,8 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDamageIndicatorBackground()
   {
-    local visMode = ::g_hud_vis_mode.getCurMode()
-    local isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
+    let visMode = ::g_hud_vis_mode.getCurMode()
+    let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
     ::showBtn("tank_background", isDmgPanelVisible, scene)
   }
 
@@ -812,7 +812,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function updateDmgIndicatorSize() {
-    local obj = scene.findObject("xray_render_dmg_indicator")
+    let obj = scene.findObject("hud_tank_damage_indicator")
     if (obj?.isValid())
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = obj.getSize(), pos = obj.getPos(),
@@ -824,7 +824,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
 ::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "gui/hud/hudHelicopter.blk"
+  sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen()
   {
@@ -844,7 +844,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 ::HudTouchTank <- class extends ::HudTank
 {
   scene        = null
-  sceneBlkName = "gui/hud/hudTouchTank.blk"
+  sceneBlkName = "%gui/hud/hudTouchTank.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -875,7 +875,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function setupTankControlStick()
   {
-    local stickObj = scene.findObject("tank_stick")
+    let stickObj = scene.findObject("tank_stick")
     if (!::checkObj(stickObj))
       return
 
@@ -884,7 +884,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventArtilleryTarget(p)
   {
-    local active = ::getTblValue("active", p, false)
+    let active = ::getTblValue("active", p, false)
     for(local i = 1; i <= 2; i++)
     {
       showSceneBtn("touch_fire_" + i, !active)
@@ -894,7 +894,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function showTankRepairButton(show)
   {
-    local repairButtonObj = scene.findObject("repair_tank")
+    let repairButtonObj = scene.findObject("repair_tank")
     if (::checkObj(repairButtonObj))
     {
       repairButtonObj.show(show)
@@ -905,7 +905,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
 ::HudShip <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "gui/hud/hudShip.blk"
+  sceneBlkName = "%gui/hud/hudShip.blk"
   widgetsList = [
     {
       widgetId = DargWidgets.SHIP_OBSTACLE_RF
@@ -935,7 +935,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 ::HudTouchShip <- class extends ::HudShip
 {
   scene        = null
-  sceneBlkName = "gui/hud/hudTouchShip.blk"
+  sceneBlkName = "%gui/hud/hudTouchShip.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -952,7 +952,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function updateMissionProgressPlace() {
-    local obj = scene.findObject("movement_controls")
+    let obj = scene.findObject("movement_controls")
     if (!obj?.isValid())
       return
 
@@ -963,7 +963,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 ::HudTouchFreecam <- class extends ::gui_handlers.BaseUnitHud
 {
   scene        = null
-  sceneBlkName = "gui/hud/hudTouchFreecam.blk"
+  sceneBlkName = "%gui/hud/hudTouchFreecam.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()

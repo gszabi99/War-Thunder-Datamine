@@ -1,11 +1,11 @@
-local {strip, startswith} = require("string")
+let {strip, startswith} = require("string")
 
-local function parse(hotkey){
+let function parse(hotkey){
   local hotkeys_list = hotkey.replace("^", "").split("|")
   hotkeys_list = hotkeys_list.map(@(v) strip(v))
-  local gamepadUiBtns = hotkeys_list.filter(@(v) startswith(v,"J:"))
-  local dainputBtns = hotkeys_list.filter(@(v) startswith(v,"@"))
-  local kbdUiBtns = hotkeys_list.filter(@(v) !(startswith(v,"J:") || startswith(v,"@")))
+  let gamepadUiBtns = hotkeys_list.filter(@(v) startswith(v,"J:"))
+  let dainputBtns = hotkeys_list.filter(@(v) startswith(v,"@"))
+  let kbdUiBtns = hotkeys_list.filter(@(v) !(startswith(v,"J:") || startswith(v,"@")))
   return {gamepad = gamepadUiBtns, dainput = dainputBtns, kbd = kbdUiBtns}
 }
 

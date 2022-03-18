@@ -67,6 +67,7 @@ weaponry_item[status=unlocked] > weaponBody statusImg {
   border-color:@checkboxBorderColor;
   foreground-image:#ui/gameuiskin#check.svg;
   foreground-svg-size:@modStatusCheckboxHeight, @modStatusCheckboxHeight;
+  background-svg-size:@modStatusCheckboxHeight, @modStatusCheckboxHeight;
   foreground-repeat:aspect-ratio;
   foreground-position:0, -0.33h, -0.33w, 0;
   foreground-color:@transparent;
@@ -98,7 +99,7 @@ statusImg[_isCheckboxvisual=yes]:disabled
   { foreground-color:@checkboxCheckDisabledColor; }
 
 weaponry_item[status=locked] > weaponBody statusImg {
-  background-image:#ui/gameuiskin#locked;
+  background-image:#ui/gameuiskin#locked.svg;
   background-color:@shopItemLocked;
 }
 weaponry_item[status=locked] > weaponBody:hover statusImg {
@@ -141,7 +142,8 @@ modIcon > warningIcon{
   size:@cIco, @cIco;
   pos:pw-w-2@sf/@pf_outdated, 3@sf/@pf_outdated;
   position:absolute;
-  background-image:#ui/gameuiskin#new_icon;
+  background-image:#ui/gameuiskin#new_icon.svg;
+  background-svg-size:@cIco, @cIco;
   background-color:@white;
   input-transparent:yes;
 }
@@ -332,6 +334,7 @@ upgradeImg{
   width: @cIco;
   height: @cIco;
   background-color: @white;
+  background-svg-size:@cIco, @cIco;
 }
 
 upgradeImg[upgradeStatus=""] {
@@ -339,15 +342,15 @@ upgradeImg[upgradeStatus=""] {
 }
 
 upgradeImg[upgradeStatus = full]{
-  background-image: #ui/gameuiskin#weapon_upgrade;
+  background-image: #ui/gameuiskin#weapon_upgrade.svg;
 }
 
 upgradeImg[upgradeStatus = part]{
-  background-image: #ui/gameuiskin#weapon_upgrade_inactive;
+  background-image: #ui/gameuiskin#weapon_upgrade_inactive.svg;
 }
 
 upgradeImg[upgradeStatus = mod]{
-  background-image: #ui/gameuiskin#weapon_required_mod;
+  background-image: #ui/gameuiskin#weapon_required_mod.svg;
 }
 
 modUpgradeImg {

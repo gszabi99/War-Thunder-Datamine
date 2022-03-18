@@ -1,4 +1,4 @@
-local MISSION_GROUP = {
+let MISSION_GROUP = {
   TOURNAMENT       = 0x00001
   DOMINATION       = 0x00002
   BATTLE           = 0x00004
@@ -19,7 +19,7 @@ local MISSION_GROUP = {
   OTHER            = 0x20000
 }
 
-local chapterToGroup = {
+let chapterToGroup = {
   tournament           = MISSION_GROUP.TOURNAMENT
   airfield_dom         = MISSION_GROUP.DOMINATION
   air_ground_Dom       = MISSION_GROUP.DOMINATION
@@ -46,7 +46,7 @@ local chapterToGroup = {
   bomb_cover           = MISSION_GROUP.BOMB_COVER
 }
 
-local missionGroupToLocKey =
+let missionGroupToLocKey =
 {
   [MISSION_GROUP.TOURNAMENT]       = "tournament",
   [MISSION_GROUP.DOMINATION]       = "dom",
@@ -68,11 +68,11 @@ local missionGroupToLocKey =
   [MISSION_GROUP.OTHER]            = "other",
 }
 
-local getMissionGroupByChapter = @(missionChapter) chapterToGroup?[missionChapter] ?? MISSION_GROUP.OTHER
-local getMissionGroupName = @(missionGroup) ::loc($"chapters/{missionGroupToLocKey[missionGroup]}")
+let getMissionGroupByChapter = @(missionChapter) chapterToGroup?[missionChapter] ?? MISSION_GROUP.OTHER
+let getMissionGroupName = @(missionGroup) ::loc($"chapters/{missionGroupToLocKey[missionGroup]}")
 
-local function getMissionGroup(mission) {
-  local group = getMissionGroupByChapter(mission.chapter)
+let function getMissionGroup(mission) {
+  let group = getMissionGroupByChapter(mission.chapter)
   if (group != MISSION_GROUP.OTHER)
     return group
 

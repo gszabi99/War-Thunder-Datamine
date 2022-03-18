@@ -1,7 +1,7 @@
-local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+let ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 
-class ::items_classes.Key extends ItemExternal {
+::items_classes.Key <- class extends ItemExternal {
   static iType = itemType.KEY
   static defaultLocId = "key"
   static typeIcon = "#ui/gameuiskin#item_type_key"

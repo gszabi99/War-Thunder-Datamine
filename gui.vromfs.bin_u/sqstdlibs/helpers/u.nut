@@ -2,9 +2,9 @@
  * u is a set of utility functions, trashbin
   it also provide export for underscore.nut for legacy reasons
  */
-local { DataBlock } = require("datablockWrapper.nut")
-local underscore = require("std/underscore.nut")
-local functools = require("std/functools.nut")
+let { DataBlock } = require("datablockWrapper.nut")
+let underscore = require("%sqstd/underscore.nut")
+let functools = require("%sqstd/functools.nut")
 local {isTable, isArray, isDataBlock } = underscore
 
 local rootTable = getroottable()

@@ -1,16 +1,16 @@
 from "%darg/ui_imports.nut" import *
 
-local defStyle = require("select.style.nut")
+let defStyle = require("select.style.nut")
 
-local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor = null, style=null) elemCtor==null ? function selItem(p, idx, list){
-  local stateFlags = Watched(0)
+let mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor = null, style=null) elemCtor==null ? function selItem(p, idx, list){
+  let stateFlags = Watched(0)
   isCurrent = isCurrent ?? @(p, idx) p==state.value
-  local onClick = onClickCtor!=null ? onClickCtor(p, idx) : @() state(p)
-  local text = textCtor != null ? textCtor(p, idx, stateFlags) : p
-  local {textCommonColor, textActiveColor, textHoverColor, borderColor, borderRadius, borderWidth,
+  let onClick = onClickCtor!=null ? onClickCtor(p, idx) : @() state(p)
+  let text = textCtor != null ? textCtor(p, idx, stateFlags) : p
+  let {textCommonColor, textActiveColor, textHoverColor, borderColor, borderRadius, borderWidth,
         bkgActiveColor, bkgHoverColor, bkgNormalColor, padding} = defStyle.elemStyle.__merge(style ?? {})
   return function(){
-    local selected = isCurrent(p, idx)
+    let selected = isCurrent(p, idx)
     local nBw = borderWidth
     if (list.len() > 2) {
       if (idx != list.len()-1 && idx != 0)
@@ -25,7 +25,7 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
       behavior = Behaviors.Button
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
-      padding = padding
+      padding
       stopHover = true
       watch = [stateFlags, state]
       children = {
@@ -37,8 +37,8 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
             : textCommonColor,
         padding = borderRadius
       }
-      onClick = onClick
-      borderColor = borderColor
+      onClick
+      borderColor
       borderWidth = nBw
       borderRadius = list.len()==1 || (borderRadius ?? 0)==0
         ? borderRadius
@@ -57,8 +57,8 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
   }
 }  : elemCtor
 
-local select = kwarg(function selectImpl(state, options, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor=null, elem_style=null, root_style=null, flow = FLOW_HORIZONTAL){
-  local selItem = mkSelItem(state, onClickCtor, isCurrent, textCtor, elemCtor, elem_style)
+let select = kwarg(function selectImpl(state, options, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor=null, elem_style=null, root_style=null, flow = FLOW_HORIZONTAL){
+  let selItem = mkSelItem(state, onClickCtor, isCurrent, textCtor, elemCtor, elem_style)
   return function(){
     return {
       size = SIZE_TO_CONTENT

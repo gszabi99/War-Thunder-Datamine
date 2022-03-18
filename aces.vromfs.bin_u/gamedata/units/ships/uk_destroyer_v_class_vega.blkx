@@ -1058,13 +1058,13 @@
         "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1000.0
+          "hp": 1313.0
         },
         "cover_02_dm": {
-          "hp": 1000.0
+          "hp": 1412.0
         },
         "cover_03_dm": {
-          "hp": 1500.0
+          "hp": 1000.0
         },
         "cover_04_dm": {
           "hp": 1000.0
@@ -1073,13 +1073,7 @@
           "hp": 1000.0
         },
         "cover_06_dm": {
-          "hp": 1000.0
-        },
-        "cover_07_dm": {
-          "hp": 1000.0
-        },
-        "cover_08_dm": {
-          "hp": 1000.0
+          "hp": 1132.0
         }
       },
       "superstructures": {
@@ -1117,19 +1111,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 14.5,
         "fireDamageMult": 0.1,
-        "bulkhead_01_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_02_dm": {
-          "hp": 7000.0
-        },
         "bulkhead_03_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_04_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_05_dm": {
           "hp": 7000.0
         },
         "bulkhead_06_dm": {
@@ -1141,16 +1123,7 @@
         "bulkhead_08_dm": {
           "hp": 7000.0
         },
-        "bulkhead_09_dm": {
-          "hp": 7000.0
-        },
         "bulkhead_10_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_11_dm": {
-          "hp": 7000.0
-        },
-        "bulkhead_12_dm": {
           "hp": 7000.0
         }
       },
@@ -1185,10 +1158,10 @@
         "explosionDamageMult": 1.2,
         "armorThrough": 150.0,
         "transmission_01_dm": {
-          "hp": 2749.0
+          "hp": 2570.0
         },
         "transmission_02_dm": {
-          "hp": 2742.0
+          "hp": 2564.0
         }
       },
       "funnels": {
@@ -1698,7 +1671,7 @@
       "sailor10": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
-        "crew": 21
+        "crew": 20
       },
       "sailor11": {
         "dmPart": "transmission_02_dm",
@@ -1708,7 +1681,7 @@
       "sailor12": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 3
+        "crew": 4
       },
       "sailor13": {
         "dmPart": "fire_director_01_dm",
@@ -2791,6 +2764,12 @@
             "fireConeAngle": 1.0
           },
           {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.025
+          },
+          {
             "allowableDelta": 2.0
           },
           {
@@ -2947,6 +2926,12 @@
             "fireConeAngle": 1.0
           },
           {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.025
+          },
+          {
             "allowableDelta": 2.0
           },
           {
@@ -3096,6 +3081,12 @@
           },
           {
             "fireConeAngle": 1.0
+          },
+          {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.025
           },
           {
             "allowableDelta": 2.0
@@ -3258,6 +3249,12 @@
           },
           {
             "fireConeAngle": 1.0
+          },
+          {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.025
           },
           {
             "allowableDelta": 2.0
@@ -5009,9 +5006,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -60000.0,
+      "waterMassMult": 100.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 7000000.0,
       "additionalWaterShouldDiePercent": 0.3,
@@ -5037,13 +5034,6 @@
         "cover": {
           "part": "cover_02_dm",
           "weight": 0.6,
-          "maxWaterAlive": 1.0
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_03_dm",
-          "weight": 0.6,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -5055,8 +5045,8 @@
       },
       {
         "cover": {
-          "part": "cover_04_dm",
-          "weight": 1.0,
+          "part": "cover_03_dm",
+          "weight": 0.75,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -5068,7 +5058,7 @@
       },
       {
         "cover": {
-          "part": "cover_05_dm",
+          "part": "cover_04_dm",
           "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": {
@@ -5081,20 +5071,20 @@
       },
       {
         "cover": {
-          "part": "cover_06_dm",
-          "weight": 0.3,
+          "part": "cover_05_dm",
+          "weight": 0.85,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.55
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.55
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -5102,15 +5092,8 @@
       },
       {
         "cover": {
-          "part": "cover_07_dm",
-          "weight": 0.2,
-          "maxWaterAlive": 1.0
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_08_dm",
-          "weight": 0.1,
+          "part": "cover_06_dm",
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

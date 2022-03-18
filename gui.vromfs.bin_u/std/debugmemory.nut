@@ -1,11 +1,11 @@
 const bytes_per_allocation = 16
 const bytes_per_object = 16
 
-local function calculate_allocated_memory(obj) {
+let function calculate_allocated_memory(obj) {
   local sum = 0
   local items = 0
 
-  local typeName = type(obj)
+  let typeName = type(obj)
 
   if (typeName == "table" || typeName == "class" || typeName == "array")
     foreach (k, v in obj) {

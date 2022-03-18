@@ -12,6 +12,6 @@ optionsList {
   <</onClick>>
 
   <<#row>>
-  include "gui/commonParts/tableRow"
+  include "%gui/commonParts/tableRow"
   <</row>>
 }

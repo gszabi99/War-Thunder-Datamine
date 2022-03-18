@@ -1,18 +1,18 @@
-local time = require("scripts/time.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
+let time = require("scripts/time.nut")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
+let QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::dagui_propid.add_name_id("_queueTableGenCode")
 
-local FULL_CIRCLE_GRAD = 360
+let FULL_CIRCLE_GRAD = 360
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
-class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.QueueTable <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/queue/queueTable.blk"
+  sceneBlkName = "%gui/queue/queueTable.blk"
 
   queueMask = QUEUE_TYPE_BIT.UNKNOWN
 
@@ -52,7 +52,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurCountry()
   {
-    local queue = getCurQueue()
+    let queue = getCurQueue()
     return queue != null ? ::queues.getQueueCountry(queue) : ""
   }
 
@@ -86,7 +86,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTip()
   {
-    local tipObj = getObj("queue_tip")
+    let tipObj = getObj("queue_tip")
     if (!tipObj)
       return
 
@@ -103,18 +103,18 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   function fillQueueInfo()
   {
     local txtPlayersWaiting = ""
-    local queueStats = getCurQueue()?.queueStats
+    let queueStats = getCurQueue()?.queueStats
     if (queueStats)
     {
-      local playersOfMyRank = queueStats?.isClanStats
+      let playersOfMyRank = queueStats?.isClanStats
         ? queueStats.getClansCount()
         : queueStats.getPlayersCountOfMyRank()
       txtPlayersWaiting = ::loc("multiplayer/playersInQueue") + ::loc("ui/colon") + playersOfMyRank
     }
     scene.findObject("queue_players_total").setValue(txtPlayersWaiting)
 
-    local params = getCurQueue().params
-    local hasMrank = "mrank" in params
+    let params = getCurQueue().params
+    let hasMrank = "mrank" in params
     scene.findObject("battle_rating").setValue(
       hasMrank ? format("%.1f", ::calc_battle_rating_from_rank(params.mrank)) : "")
     scene.findObject("battle_rating_label").setValue(
@@ -126,11 +126,11 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   function updateWaitTime()
   {
     local txtWaitTime = ""
-    local waitTime = getCurQueue()?.getActiveTime() ?? 0
+    let waitTime = getCurQueue()?.getActiveTime() ?? 0
     if (waitTime > 0)
     {
-      local minutes = time.secondsToMinutes(waitTime).tointeger()
-      local seconds = waitTime - time.minutesToSeconds(minutes)
+      let minutes = time.secondsToMinutes(waitTime).tointeger()
+      let seconds = waitTime - time.minutesToSeconds(minutes)
       txtWaitTime = ::format("%d:%02d", minutes, seconds)
     }
 
@@ -147,8 +147,8 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAvailableCountries()
   {
-    local queue = getCurQueue()
-    local availCountriesObj = scene.findObject("available_countries")
+    let queue = getCurQueue()
+    let availCountriesObj = scene.findObject("available_countries")
 
     if (!queue)
     {
@@ -156,17 +156,17 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local event = ::events.getEvent(queue.name)
-    local countriesList = ::events.getAvailableCountriesByEvent(event)
+    let event = ::events.getEvent(queue.name)
+    let countriesList = ::events.getAvailableCountriesByEvent(event)
 
     if (countriesList.len() == 0)
       availCountriesObj.show(false)
     else
     {
-      local blk = ::handyman.renderCached("gui/countriesList",
+      let blk = ::handyman.renderCached("%gui/countriesList",
                                           {
                                             countries = (@(countriesList) function () {
-                                              local res = []
+                                              let res = []
                                               foreach (country in countriesList)
                                                 res.append({
                                                   countryName = country
@@ -176,7 +176,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
                                             })(countriesList)
                                           })
 
-      local iconsObj = availCountriesObj.findObject("countries_icons")
+      let iconsObj = availCountriesObj.findObject("countries_icons")
       availCountriesObj.show(true)
       guiScene.replaceContentFromText(iconsObj, blk, blk.len(), this)
     }
@@ -187,11 +187,11 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local queueTblObj = scene.findObject("queue_table")
+    let queueTblObj = scene.findObject("queue_table")
     if (!::checkObj(queueTblObj))
       return
 
-    local showQueueTbl = ::queues.isQueueActive(getCurQueue())
+    let showQueueTbl = ::queues.isQueueActive(getCurQueue())
     setShowQueueTable(showQueueTbl)
     if (!showQueueTbl)
       return
@@ -209,20 +209,20 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     if (!queue || !build_IA_shop_filters)
       return
 
-    local clustersListObj = scene.findObject("ia_table_clusters_list")
+    let clustersListObj = scene.findObject("ia_table_clusters_list")
     if (!::checkObj(clustersListObj))
       return
 
     build_IA_shop_filters = false
 
-    local data = createClustersFiltersData(queue)
+    let data = createClustersFiltersData(queue)
     guiScene.replaceContentFromText(clustersListObj, data, data.len(), this)
     clustersListObj.setValue(0)
   }
 
   function createClustersFiltersData(queue)
   {
-    local view = { tabs = [] }
+    let view = { tabs = [] }
     view.tabs.append({ tabName = "#multiplayer/currentWaitTime" })
 
     if (::queues.isClanQueue(queue))
@@ -236,23 +236,23 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
         })
     }
 
-    return ::handyman.renderCached("gui/frameHeaderTabs", view)
+    return ::handyman.renderCached("%gui/frameHeaderTabs", view)
   }
 
   function fillQueueTable()
   {
-    local queue = getCurQueue()
+    let queue = getCurQueue()
     updateTabs(queue)
 
-    local event = ::queues.getQueueEvent(queue)
+    let event = ::queues.getQueueEvent(queue)
     if (!event)
       return
 
-    local nestObj = scene.findObject("ia_tooltip")
+    let nestObj = scene.findObject("ia_tooltip")
     if (!::checkObj(nestObj))
       return
 
-    local genCode = event.name + "_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
+    let genCode = event.name + "_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
     if (nestObj?._queueTableGenCode == genCode)
     {
       updateTabContent()
@@ -268,15 +268,15 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     // Forces table to refill.
     updateTabContent()
 
-    local obj = getObj("inQueue-topmenu-text")
+    let obj = getObj("inQueue-topmenu-text")
     if (obj != null)
       obj.wink = (getCurQueue() != null) ? "yes" : "no"
   }
 
   function createQueueTableClan(nestObj)
   {
-    local queueBoxObj = nestObj.findObject("queue_box_container")
-    guiScene.replaceContent(queueBoxObj, "gui/events/eventQueue.blk", this)
+    let queueBoxObj = nestObj.findObject("queue_box_container")
+    guiScene.replaceContent(queueBoxObj, "%gui/events/eventQueue.blk", this)
 
     foreach(team in ::events.getSidesList())
       queueBoxObj.findObject(team + "_block").show(team == Team.A) //clan queue always symmetric
@@ -286,20 +286,20 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(scene))
       return
-    local queue = getCurQueue()
+    let queue = getCurQueue()
     if (!queue)
       return
 
-    local clustersListBoxObj = scene.findObject("ia_table_clusters_list")
+    let clustersListBoxObj = scene.findObject("ia_table_clusters_list")
     if (!::checkObj(clustersListBoxObj))
       return
 
-    local value = ::max(0, clustersListBoxObj.getValue())
-    local timerObj = scene.findObject("waiting_time")
-    local tableObj = scene.findObject("ia_tooltip_table")
-    local clanTableObj = scene.findObject("queue_box_container")
-    local isClanQueue = ::queues.isClanQueue(queue)
-    local isQueueTableVisible = value > 0
+    let value = ::max(0, clustersListBoxObj.getValue())
+    let timerObj = scene.findObject("waiting_time")
+    let tableObj = scene.findObject("ia_tooltip_table")
+    let clanTableObj = scene.findObject("queue_box_container")
+    let isClanQueue = ::queues.isClanQueue(queue)
+    let isQueueTableVisible = value > 0
     timerObj.show(!isQueueTableVisible)
     tableObj.show(isQueueTableVisible && !isClanQueue)
     clanTableObj.show(isQueueTableVisible && isClanQueue)
@@ -313,28 +313,28 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
       if (clustersListBoxObj.childrenCount() <= value)
         return
 
-      local listBoxObjItemObj = clustersListBoxObj.getChild(value)
-      local curCluster = listBoxObjItemObj.id
+      let listBoxObjItemObj = clustersListBoxObj.getChild(value)
+      let curCluster = listBoxObjItemObj.id
       ::g_qi_view_utils.updateViewByCountries(tableObj, getCurQueue(), curCluster)
     }
   }
 
   function updateClanQueueTable()
   {
-    local tblObj = scene.findObject("queue_box")
+    let tblObj = scene.findObject("queue_box")
     if (!::checkObj(tblObj))
       return
     tblObj.show(true)
 
-    local queue = getCurQueue()
-    local queueStats = queue && queue.queueStats
+    let queue = getCurQueue()
+    let queueStats = queue && queue.queueStats
     if (!queueStats)
       return
 
-    local statsObj = tblObj.findObject(Team.A + "_block")
-    local teamData = ::events.getTeamData(::queues.getQueueEvent(queue), Team.A)
-    local playersCountText = ::loc("events/clans_count") + ::loc("ui/colon") + queueStats.getClansCount()
-    local tableMarkup = getClanQueueTableMarkup(queueStats)
+    let statsObj = tblObj.findObject(Team.A + "_block")
+    let teamData = ::events.getTeamData(::queues.getQueueEvent(queue), Team.A)
+    let playersCountText = ::loc("events/clans_count") + ::loc("ui/colon") + queueStats.getClansCount()
+    let tableMarkup = getClanQueueTableMarkup(queueStats)
 
     fillQueueTeam(statsObj, teamData, tableMarkup, playersCountText)
   }
@@ -351,7 +351,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
-    local queueTableObj = teamObj.findObject("table_queue_stat")
+    let queueTableObj = teamObj.findObject("table_queue_stat")
     if (!::checkObj(queueTableObj))
       return
     guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
@@ -360,35 +360,35 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   //!!FIX ME copypaste from events handler
   function getClanQueueTableMarkup(queueStats)
   {
-    local totalClans = queueStats.getClansCount()
+    let totalClans = queueStats.getClansCount()
     if (!totalClans)
       return ""
 
     local res = buildQueueStatsHeader()
-    local rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
-    local myClanQueueTable = queueStats.getMyClanQueueTable()
+    let myClanQueueTable = queueStats.getMyClanQueueTable()
     if (myClanQueueTable)
     {
-      local headerData = [{
+      let headerData = [{
         text = ::loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
         textRawParam = "pare-text:t='no'"
       }]
       res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-      local rowData = buildQueueStatsRowData(myClanQueueTable)
+      let rowData = buildQueueStatsRowData(myClanQueueTable)
       res += ::buildTableRow("", rowData, null, rowParams, "0")
     }
 
-    local headerData = [{
+    let headerData = [{
       text = ::loc("multiplayer/clansInQueue")
       width = "0.1@sf"
       textRawParam = "pare-text:t='no'"
     }]
     res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-    local rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
+    let rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
     res += ::buildTableRow("", rowData, null, rowParams, "0")
     return res
   }
@@ -396,7 +396,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   //!!FIX ME copypaste from events handler
   function buildQueueStatsRowData(queueStatData, clusterNameLoc = "")
   {
-    local params = []
+    let params = []
     params.append({
                     text = clusterNameLoc
                     tdalign = "center"
@@ -415,7 +415,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   //!!FIX ME copypaste from events handler
   function buildQueueStatsHeader()
   {
-    local headerData = []
+    let headerData = []
     for(local i = 0; i <= ::max_country_rank; i++)
     {
       headerData.append({
@@ -432,7 +432,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventQueueChangeState(p)
   {
-    local _queue = p?.queue
+    let _queue = p?.queue
     if (!::queues.checkQueueType(_queue, queueMask))
       return
 
@@ -479,7 +479,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventGamercardDrawerOpened(params)
   {
-    local target = params.target
+    let target = params.target
     if (target != null && target.id == scene.id)
       ::move_mouse_on_child_by_value(getObj("ia_table_clusters_list"))
   }
@@ -496,8 +496,8 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurEsUnitTypesList(needRequiredOnly = false)
   {
-    local gameModeId = ::game_mode_manager.getCurrentGameModeId()
-    local gameMode = ::game_mode_manager.getGameModeById(gameModeId)
+    let gameModeId = ::game_mode_manager.getCurrentGameModeId()
+    let gameMode = ::game_mode_manager.getGameModeById(gameModeId)
     return ::game_mode_manager._getUnitTypesByGameMode(gameMode, true, needRequiredOnly)
   }
 
@@ -505,20 +505,20 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::check_obj(scene))
       return
-    local obj = scene.findObject("queue_wait_icon_block")
+    let obj = scene.findObject("queue_wait_icon_block")
     if (!::check_obj(obj))
       return
 
-    local esUnitTypes = getCurEsUnitTypesList()
-    local esUnitTypesOrder = [
+    let esUnitTypes = getCurEsUnitTypesList()
+    let esUnitTypesOrder = [
       ::ES_UNIT_TYPE_SHIP
       ::ES_UNIT_TYPE_TANK
       ::ES_UNIT_TYPE_HELICOPTER
       ::ES_UNIT_TYPE_AIRCRAFT
     ]
 
-    local view = { icons = [] }
-    local rotationStart = ::math.rnd() % FULL_CIRCLE_GRAD
+    let view = { icons = [] }
+    let rotationStart = ::math.rnd() % FULL_CIRCLE_GRAD
     foreach (esUnitType in esUnitTypesOrder)
       if (::isInArray(esUnitType, esUnitTypes))
         view.icons.append({
@@ -526,11 +526,11 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
           rotation = rotationStart
         })
 
-    local circlesCount = view.icons.len()
+    let circlesCount = view.icons.len()
     if (circlesCount)
       foreach (idx, icon in view.icons)
         icon.rotation = (rotationStart + idx * FULL_CIRCLE_GRAD / circlesCount) % FULL_CIRCLE_GRAD
-    local markup = ::handyman.renderCached("gui/queue/queueWaitingIcon", view)
+    let markup = ::handyman.renderCached("%gui/queue/queueWaitingIcon", view)
     guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 }

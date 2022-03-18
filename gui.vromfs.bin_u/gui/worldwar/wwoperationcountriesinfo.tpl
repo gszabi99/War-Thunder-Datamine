@@ -22,7 +22,7 @@ tdiv {
       total-input-transparent:t='yes'
       <<#sides>>
       wwConflictSideBlock {
-        include "gui/worldWar/countriesListWithQueue"
+        include "%gui/worldWar/countriesListWithQueue"
       }
       <</sides>>
     }

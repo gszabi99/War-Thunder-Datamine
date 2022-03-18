@@ -1,14 +1,14 @@
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-local getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
-local getMfmSectionTitle = @(section) section?.getTitle() ?? ::loc(section?.title ?? id)
+let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
+let getMfmSectionTitle = @(section) section?.getTitle() ?? ::loc(section?.title ?? "")
 
 local isDebugMode = false
 
 ::debug_multifunc_menu <- @(enable) isDebugMode = enable
 
 
-local function isEnabledByUnit(config, c, unitId)
+let function isEnabledByUnit(config, c, unitId)
 {
   if (c == null)
     return false
@@ -16,7 +16,7 @@ local function isEnabledByUnit(config, c, unitId)
     return c.enable(unitId)
   if (c?.section)
   {
-    local sect = config[c.section]
+    let sect = config[c.section]
     if (sect?.enable)
       return sect.enable(unitId)
     foreach (cc in sect.items)
@@ -28,7 +28,7 @@ local function isEnabledByUnit(config, c, unitId)
 }
 
 
-local function handleWheelMenuApply(idx)
+let function handleWheelMenuApply(idx)
 {
   if (idx < 0)
     getMfmHandler()?.gotoPrevMenuOrQuit()
@@ -41,21 +41,20 @@ local function handleWheelMenuApply(idx)
 }
 
 
-local function makeMfmSection(cfg, id, unit)
+let function makeMfmSection(cfg, id, unit)
 {
-  local allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unit.unitType }).map(@(s) s.id)
-  local unitId = unit?.name
-  local sectionConfig = cfg[id]
+  let allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unit.unitType }).map(@(s) s.id)
+  let unitId = unit?.name
+  let sectionConfig = cfg[id]
 
-  local menu = []
-  foreach (idx, c in sectionConfig.items)
+  let menu = []
+  foreach (idx, item in sectionConfig.items)
   {
-    if (::u.isFunction(c))
-      c = c()
+    let c = ::u.isFunction(item) ? item() : item
 
-    local isShortcut = "shortcut" in c
-    local isSection  = "section"  in c
-    local isAction   = "action"   in c
+    let isShortcut = "shortcut" in c
+    let isSection  = "section"  in c
+    let isAction   = "action"   in c
 
     local shortcutId = null
     local sectionId = null
@@ -72,7 +71,7 @@ local function makeMfmSection(cfg, id, unit)
     else if (isSection)
     {
       sectionId = c.section
-      local title = getMfmSectionTitle(cfg[sectionId])
+      let title = getMfmSectionTitle(cfg[sectionId])
       label = "".concat(title, ::loc("ui/ellipsis"))
       isEnabled = isEnabledByUnit(cfg, c, unitId)
     }
@@ -93,7 +92,7 @@ local function makeMfmSection(cfg, id, unit)
       color = isEnabled ? "fadedTextColor" : color
     }
 
-    local isEmpty = label == ""
+    let isEmpty = label == ""
 
     local shortcutText = ""
     if (!isEmpty && ::is_platform_pc)
@@ -106,9 +105,9 @@ local function makeMfmSection(cfg, id, unit)
       })
 
     menu.append(isEmpty ? null : {
-      sectionId  = sectionId
-      shortcutId = shortcutId
-      action = action
+      sectionId
+      shortcutId
+      action
       name = ::colorize(color, label)
       shortcutText = shortcutText != "" ? shortcutText : null
       wheelmenuEnabled = isEnabled
@@ -121,8 +120,8 @@ local function makeMfmSection(cfg, id, unit)
 
 local function openMfm(cfg, curSectionId = null, isForward = true)
 {
-  local unit = getPlayerCurUnit()
-  local unitType = unit?.unitType
+  let unit = getPlayerCurUnit()
+  let unitType = unit?.unitType
   if (!unitType)
     return false
 
@@ -130,8 +129,8 @@ local function openMfm(cfg, curSectionId = null, isForward = true)
   if (cfg?[curSectionId] == null)
     return false
 
-  local joyParams = ::joystick_get_cur_settings()
-  local params = {
+  let joyParams = ::joystick_get_cur_settings()
+  let params = {
     menu = makeMfmSection(cfg, curSectionId, unit)
     callbackFunc = handleWheelMenuApply
     curSectionId = curSectionId
@@ -141,7 +140,7 @@ local function openMfm(cfg, curSectionId = null, isForward = true)
     mfmDescription = cfg
   }
 
-  local handler = getMfmHandler()
+  let handler = getMfmHandler()
   if (handler)
     handler.reinitScreen(params)
   else

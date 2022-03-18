@@ -387,7 +387,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -418,7 +418,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2242,7 +2242,7 @@
           "triggerGroup": "primary",
           "blk": "gameData/Weapons/groundModels_weapons/47mm_Ansaldo_47_40_M38_user_cannon.blk",
           "emitter": "bone_gun_barrel",
-          "flash": "emtr_gun_flame",
+          "flash": "emtr_gun_flame_01",
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2277,6 +2277,11 @@
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-10.0,20.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-160.0,-6.0,20.0],
+            "lim2": [-160.0,160.0,-10.0,20.0],
+            "lim3": [160.0,180.0,-6.0,20.0]
           }
         }
       },

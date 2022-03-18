@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 ::g_player_state <- {
   types = []
   cache = {
@@ -16,8 +16,8 @@ local enums = require("sqStdLibs/helpers/enums.nut")
     isSpectator = @(playerInfo) ::getTblValue("spectator", playerInfo, false)
     getText = function(playerInfo = {})
     {
-      local stateLoc = stateText.len() ? ::loc("multiplayer/state/" + stateText) : ""
-      local roleLoc = isSpectator(playerInfo) ? ::loc("multiplayer/state/player_referee") : ""
+      let stateLoc = stateText.len() ? ::loc("multiplayer/state/" + stateText) : ""
+      let roleLoc = isSpectator(playerInfo) ? ::loc("multiplayer/state/player_referee") : ""
       return ::g_string.implode([ roleLoc, stateLoc ], ::loc("ui/semicolon"))
     }
   }

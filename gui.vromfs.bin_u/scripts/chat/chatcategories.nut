@@ -1,4 +1,4 @@
-local { GUI } = require("scripts/utils/configs.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
@@ -28,17 +28,17 @@ g_chat_categories.initThreadCategories <- function initThreadCategories()
   searchCategories.clear()
   defaultCategoryName = ""
 
-  local guiBlk = GUI.get()
-  local listBlk = guiBlk?.chat_categories
+  let guiBlk = GUI.get()
+  let listBlk = guiBlk?.chat_categories
   if (!::u.isDataBlock(listBlk))
     return
 
-  local total = listBlk.blockCount()
+  let total = listBlk.blockCount()
   for(local i = 0; i < total; i++)
   {
-    local cBlk = listBlk.getBlock(i)
-    local name = cBlk.getBlockName()
-    local category = ::buildTableFromBlk(cBlk)
+    let cBlk = listBlk.getBlock(i)
+    let name = cBlk.getBlockName()
+    let category = ::buildTableFromBlk(cBlk)
     category.id <- name
     list[name] <- category
     listSorted.append(category)
@@ -52,7 +52,7 @@ g_chat_categories.initThreadCategories <- function initThreadCategories()
 
 g_chat_categories.loadSearchCategories <- function loadSearchCategories()
 {
-  local blk = ::load_local_account_settings(SEARCH_CATEGORIES_SAVE_ID)
+  let blk = ::load_local_account_settings(SEARCH_CATEGORIES_SAVE_ID)
   if (::u.isDataBlock(blk))
   {
     foreach(cat in listSorted)
@@ -95,14 +95,14 @@ g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listOb
   if (!::checkObj(listObj))
     return
 
-  local view = {
+  let view = {
     optionTag = "option"
     options= []
   }
   local selIdx = -1
   foreach(idx, category in listSorted)
   {
-    local name = category.id
+    let name = category.id
     if (name == selCategoryName)
       selIdx = idx
 
@@ -112,7 +112,7 @@ g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listOb
     })
   }
 
-  local data = ::handyman.renderCached(("gui/options/spinnerOptions"), view)
+  let data = ::handyman.renderCached(("%gui/options/spinnerOptions"), view)
   listObj.getScene().replaceContentFromText(listObj, data, data.len(), handler)
 
   if (selIdx >= 0)
@@ -124,7 +124,7 @@ g_chat_categories.getSelCategoryNameByListObj <- function getSelCategoryNameByLi
   if (!::checkObj(listObj))
     return defValue
 
-  local category = ::getTblValue(listObj.getValue(), listSorted)
+  let category = ::getTblValue(listObj.getValue(), listSorted)
   if (category)
     return category.id
   return defValue
@@ -135,8 +135,8 @@ g_chat_categories.openChooseCategoriesMenu <- function openChooseCategoriesMenu(
   if (!isEnabled())
     return
 
-  local optionsList = []
-  local curCategories = getSearchCategoriesLList()
+  let optionsList = []
+  let curCategories = getSearchCategoriesLList()
   foreach(cat in listSorted)
     optionsList.append({
       text = getCategoryNameText(cat.id)

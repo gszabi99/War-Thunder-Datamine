@@ -1,8 +1,8 @@
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
 
-class ::g_invites_classes.WwOperation extends ::BaseInvite
+::g_invites_classes.WwOperation <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   operationId = ""
@@ -67,10 +67,10 @@ class ::g_invites_classes.WwOperation extends ::BaseInvite
 
   function getInviteText()
   {
-    local operation = getOperation()
-    local locId = isStarted ? "worldWar/userlog/startOperation"
+    let operation = getOperation()
+    let locId = isStarted ? "worldWar/userlog/startOperation"
                             : "worldWar/userlog/createOperation"
-    local params = {
+    let params = {
       clan = ::colorize(inviteActiveColor, clanName)
       operation = ::colorize(inviteActiveColor, operation ? operation.getNameText() : operationId)
     }

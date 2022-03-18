@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
   REGULAR
@@ -25,8 +25,8 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = "@"
     getViewSlices = function(tagName, params)
     {
-      local total = (::getTblValue("time", params, 0) + 0.5).tointeger()
-      local offset = ::getTblValue("timeoffset", params, 0)
+      let total = (::getTblValue("time", params, 0) + 0.5).tointeger()
+      let offset = ::getTblValue("timeoffset", params, 0)
       return [{
                timer = {
                  incFactor = total ? 360.0 / total : 0
@@ -46,20 +46,20 @@ enums.addTypesByGlobalName("g_hint_tag", {
 
     getViewSlices = function(tagName, params) //tagName == shortcutId
     {
-      local slices = []
-      local needConfig = params?.needConfig ?? false
-      local expanded = ::g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
-      local showShortcutsNameIfNotAssign = params?.showShortcutsNameIfNotAssign ?? false
-      local shortcutsCount = expanded.len()
+      let slices = []
+      let needConfig = params?.needConfig ?? false
+      let expanded = ::g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
+      let showShortcutsNameIfNotAssign = params?.showShortcutsNameIfNotAssign ?? false
+      let shortcutsCount = expanded.len()
       foreach (i, expandedShortcut in expanded)
       {
-        local shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
-        local shortcutId = expandedShortcut
+        let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
+        let shortcutId = expandedShortcut
         slices.append({
           shortcut = needConfig
             ? shortcutType.getFirstInput(shortcutId).getConfig()
             : function() {
-              local input = shortcutType.getFirstInput(shortcutId, null, showShortcutsNameIfNotAssign)
+              let input = shortcutType.getFirstInput(shortcutId, null, showShortcutsNameIfNotAssign)
               return input.getMarkup()
             }
         })
@@ -79,8 +79,8 @@ enums.addTypesByGlobalName("g_hint_tag", {
     delimiter = " "
     getViewSlices = function(tagName, params)
     {
-      local paramsList = ::split(tagName, delimiter)
-      local res = {
+      let paramsList = ::split(tagName, delimiter)
+      let res = {
         image = ::g_string.cutPrefix(paramsList[0], typeName,  "")
         color = null
         sizeStyle = null
@@ -106,12 +106,12 @@ enums.addTypesByGlobalName("g_hint_tag", {
     checkTag = function(tagName) { return ::g_string.startsWith(tagName, typeName) }
     getViewSlices = function(tagName, params)
     {
-      local attempts = ::get_num_attempts_left()
+      let attempts = ::get_num_attempts_left()
       local attemptsText = attempts < 0 ? ::loc("options/attemptsUnlimited") : attempts
 
       if (tagName.len() > typeName.len() + 1) //{{attempts_left=locId}}
       {
-        local locId = tagName.slice(typeName.len() + 1)
+        let locId = tagName.slice(typeName.len() + 1)
         attemptsText = ::loc(locId, {
           attemptsText = attemptsText
           attempts = attempts
@@ -131,12 +131,12 @@ enums.addTypesByGlobalName("g_hint_tag", {
 
     getViewSlices = function(tagName, params) //tagName == shortcutId
     {
-      local paramsList = ::split(tagName, delimiter)
-      local shortcut = ::SHORTCUT?[paramsList?[1]]
+      let paramsList = ::split(tagName, delimiter)
+      let shortcut = ::SHORTCUT?[paramsList?[1]]
       if (!u.isTable(shortcut))
         return []
 
-      local input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])
+      let input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])
       return [{
         shortcut = params?.needConfig ?? false
          ? input.getConfig()

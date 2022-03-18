@@ -3968,7 +3968,6 @@
         "sensor": {
           "blk": "gameData/sensors/naval/su_foot_n.blk",
           "designationFromBody": true,
-          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -3976,6 +3975,20 @@
         "sensor": {
           "blk": "gameData/sensors/naval/ship_optical_sight.blk",
           "dmPart": "antenna_target_tagging_01_dm"
+        }
+      },
+      {
+        "fireDirecting": {
+          "dmPartMain": "bridge_dm",
+          "measureAccuracy": 1.0,
+          "targetLockTime": 8.0,
+          "calcTime": 4.0,
+          "rotationSpeed": 20.0,
+          "triggerGroupUse": {
+            "primary": true,
+            "secondary": false,
+            "machinegun": false
+          }
         }
       }
     ]
@@ -4681,19 +4694,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 45.0,
-      "waterMassVel": -500000.0,
-      "waterMassMult": 200.0,
-      "sizeToRepair": [0.01,4.0,15.0,600.0],
-      "additionalWaterDeathThreshold": 23500000.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -30000.0,
+      "waterMassMult": 70.0,
+      "sizeToRepair": [0.01,4.0,10.0,450.0],
+      "additionalWaterDeathThreshold": 3000000.0,
       "additionalWaterShouldDiePercent": 0.3,
-      "fatalBreachDrownTime": 45.0,
+      "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
-      "maxHeelingTime": 40.0,
+      "maxHeelingTime": 10.0,
       "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 1.0,
+      "maxCriticalHeelingTime": 3.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.4
     }
   },
   {
@@ -4701,14 +4714,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.81,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.72,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4721,13 +4734,20 @@
       {
         "cover": {
           "part": "cover_03_dm",
+          "weight": 0.6,
+          "maxWaterAlive": 1.0
+        }
+      },
+      {
+        "cover": {
+          "part": "cover_04_dm",
           "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.6
+                "critWaterLevel": 0.4
               }
             },
             {
@@ -4739,13 +4759,13 @@
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.4
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.4
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -4753,41 +4773,36 @@
       },
       {
         "cover": {
-          "part": "cover_04_dm",
-          "weight": 0.7,
-          "maxWaterAlive": 1.0,
-          "innerParts": {
-            "part": {
-              "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.5
-            }
-          }
-        }
-      },
-      {
-        "cover": {
           "part": "cover_05_dm",
-          "weight": 0.49,
+          "weight": 0.8,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.38,
+          "weight": 0.5,
           "maxWaterAlive": 1.0,
-          "innerParts": {
-            "part": {
-              "partNo": "ammunition_storage_02_dm",
-              "critWaterLevel": 0.5
+          "innerParts": [
+            {
+              "part": {
+                "partNo": "ammunition_storage_02_dm",
+                "critWaterLevel": 0.5
+              }
+            },
+            {
+              "part": {
+                "partNo": "ammunition_storage_03_dm",
+                "critWaterLevel": 0.5
+              }
             }
-          }
+          ]
         }
       },
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.38,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       }

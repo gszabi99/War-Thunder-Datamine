@@ -1,10 +1,8 @@
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkAndShowMultiplayerPrivilegeWarning,
-        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+let antiCheat = require("scripts/penitentiary/antiCheat.nut")
+let { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+let { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
-class ::g_invites_classes.SessionRoom extends ::BaseInvite
+::g_invites_classes.SessionRoom <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   roomId = ""
@@ -74,10 +72,10 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
     if (!activeColor)
       activeColor = inviteActiveColor
 
-    local room = ::g_mroom_info.get(roomId).getFullRoomData()
-    local event = room ? ::SessionLobby.getRoomEvent(room) : null
+    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let event = room ? ::SessionLobby.getRoomEvent(room) : null
     local modeId = "skirmish"
-    local params = { player = ::colorize(activeColor, getInviterName()) }
+    let params = { player = ::colorize(activeColor, getInviterName()) }
     if (event)
     {
       modeId = "event"
@@ -109,12 +107,11 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
     return !::isInMenu()
       || !isMissionAvailable()
       || !isAvailableByCrossPlay()
-      || !isMultiplayerPrivilegeAvailable()
   }
 
   function isMissionAvailable()
   {
-    local room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(roomId).getFullRoomData()
     return !::SessionLobby.isUrlMission(room) || ::ps4_is_ugc_enabled()
   }
 
@@ -122,8 +119,6 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
   {
     if (haveRestrictions())
     {
-      if (!isMultiplayerPrivilegeAvailable())
-        return ::loc("xbox/noMultiplayer")
       if (!isAvailableByCrossPlay())
         return ::loc("xbox/crossPlayRequired")
       if (!isMissionAvailable())
@@ -147,10 +142,7 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
-
-    local room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let room = ::g_mroom_info.get(roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))
       return
 
@@ -162,13 +154,13 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
     if (!::check_gamemode_pkg(::GM_SKIRMISH))
       return
 
-    local room = ::g_mroom_info.get(roomId).getFullRoomData()
-    local event = room ? ::SessionLobby.getRoomEvent(room) : null
+    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event != null && (!antiCheat.showMsgboxIfEacInactive(event)||
                           !showMsgboxIfSoundModsNotAllowed(event)))
       return
 
-    local canJoin = ignoreCheckSquad
+    let canJoin = ignoreCheckSquad
                     ||  ::g_squad_utils.canJoinFlightMsgBox(
                           { isLeaderCanJoin = true }, ::Callback(_implAccept, this))
     if (canJoin)
@@ -180,8 +172,8 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
     if (isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    local room = ::g_mroom_info.get(roomId).getFullRoomData()
-    local event = room ? ::SessionLobby.getRoomEvent(room) : null
+    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event)
       ::gui_handlers.EventRoomsHandler.open(event, false, roomId)
     else

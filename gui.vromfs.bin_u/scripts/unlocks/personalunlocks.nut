@@ -1,10 +1,10 @@
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-local battleTaskUnlocks = []
-local markerUnlocks = []
+let battleTaskUnlocks = []
+let markerUnlocks = []
 local isCacheValid = false
 
-local function update() {
+let function update() {
   if (!::g_login.isLoggedIn())
     return
 
@@ -21,21 +21,21 @@ local function update() {
   isCacheValid = true
 }
 
-local function getBattleTaskUnlocks() {
+let function getBattleTaskUnlocks() {
   if (!isCacheValid)
     update()
 
   return battleTaskUnlocks
 }
 
-local function getMarkerUnlocks() {
+let function getMarkerUnlocks() {
   if (!isCacheValid)
     update()
 
   return markerUnlocks
 }
 
-local function invalidateCache() {
+let function invalidateCache() {
   if (!isCacheValid)
     return
 

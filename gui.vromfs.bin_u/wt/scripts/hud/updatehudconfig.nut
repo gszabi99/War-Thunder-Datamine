@@ -1,4 +1,4 @@
-local { hudTankMovementStatesVisible } =  require("scripts/hud/hudConfigByGame.nut")
+let { hudTankMovementStatesVisible } =  require("scripts/hud/hudConfigByGame.nut")
 
 hudTankMovementStatesVisible({
   gear = true

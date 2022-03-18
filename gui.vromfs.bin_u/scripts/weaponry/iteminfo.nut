@@ -1,48 +1,48 @@
-local { isBullets,
+let { isBullets,
         getBulletGroupIndex } = require("scripts/weaponry/bulletsInfo.nut")
-local { AMMO,
+let { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount,
         getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-local { getLastWeapon,
+let { getLastWeapon,
         isWeaponEnabled,
         isWeaponUnlocked,
         getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
+let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
   getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 
-local function getItemAmount(unit, item)
+let function getItemAmount(unit, item)
 {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(unit, item)
 }
 
-local function isResearchableItem(item)
+let function isResearchableItem(item)
 {
   return item.type == weaponsItem.modification
 }
 
-local function canBeResearched(unit, item, checkCurrent = true)
+let function canBeResearched(unit, item, checkCurrent = true)
 {
   if (isResearchableItem(item))
     return canResearchMod(unit, item, checkCurrent)
   return false
 }
 
-local function canResearchItem(unit, item, checkCurrent = true)
+let function canResearchItem(unit, item, checkCurrent = true)
 {
   return item.type == weaponsItem.modification &&
          canBeResearched(unit, item, checkCurrent)
 }
 
-local function getItemCost(unit, item)
+let function getItemCost(unit, item)
 {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
 }
 
-local function getItemStatusTbl(unit, item)
+let function getItemStatusTbl(unit, item)
 {
-  local isOwn = ::isUnitUsable(unit)
-  local res = {
+  let isOwn = ::isUnitUsable(unit)
+  let res = {
     amount = getItemAmount(unit, item)
     maxAmount = 0
     amountWarningValue = 0
@@ -86,11 +86,11 @@ local function getItemStatusTbl(unit, item)
   }
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables)
   {
-    local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
+    let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
     if (groupDef >= 0) //default bullets, always bought.
     {
       res.unlocked = isOwn
-      local currBullet = ::get_last_bullets(unit.name, groupDef)
+      let currBullet = ::get_last_bullets(unit.name, groupDef)
       res.equipped = !currBullet || currBullet == "" || currBullet == item.name
       res.showPrice = false
     }
@@ -130,10 +130,10 @@ local function getItemStatusTbl(unit, item)
       {
         res.equipped = false
         res.showMaxAmount = res.maxAmount > 1
-        local id = getBulletGroupIndex(unit.name, item.name)
+        let id = getBulletGroupIndex(unit.name, item.name)
         if (id >= 0)
         {
-          local currBullet = ::get_last_bullets(unit.name, id)
+          let currBullet = ::get_last_bullets(unit.name, id)
           res.equipped = res.amount && (currBullet == item.name)
         }
       }
@@ -151,14 +151,14 @@ local function getItemStatusTbl(unit, item)
   return res
 }
 
-local function getBundleCurItem(unit, bundle)
+let function getBundleCurItem(unit, bundle)
 {
   if (!("itemsType" in bundle))
     return null
 
   if (bundle.itemsType == weaponsItem.weapon)
   {
-    local curWeapon = getLastWeapon(unit.name)
+    let curWeapon = getLastWeapon(unit.name)
     foreach(item in bundle.itemsList)
       if (curWeapon == item.name)
         return item
@@ -166,7 +166,7 @@ local function getBundleCurItem(unit, bundle)
   }
   else if (bundle.itemsType == weaponsItem.bullets)
   {
-    local curName = ::get_last_bullets(unit.name, bundle?.subType ?? 0)
+    let curName = ::get_last_bullets(unit.name, bundle?.subType ?? 0)
     local def = null
     foreach(item in bundle.itemsList)
       if (curName == item.name)
@@ -178,7 +178,7 @@ local function getBundleCurItem(unit, bundle)
   }
   else if (bundle.itemsType == weaponsItem.primaryWeapon)
   {
-    local curPrimaryWeaponName = getLastPrimaryWeapon(unit)
+    let curPrimaryWeaponName = getLastPrimaryWeapon(unit)
     foreach (item in bundle.itemsList)
       if(item.name == curPrimaryWeaponName)
         return item
@@ -186,34 +186,34 @@ local function getBundleCurItem(unit, bundle)
   return null
 }
 
-local function getByCurBundle(unit, bundle, func, defValue = "")
+let function getByCurBundle(unit, bundle, func, defValue = "")
 {
-  local cur = getBundleCurItem(unit, bundle)
+  let cur = getBundleCurItem(unit, bundle)
   return cur? func(unit, cur) : defValue
 }
 
-local function getItemUnlockCost(unit, item)
+let function getItemUnlockCost(unit, item)
 {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getUnlockCost(unit, item)
 }
 
-local function isCanBeDisabled(item)
+let function isCanBeDisabled(item)
 {
   return (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) &&
          (!("deactivationIsAllowed" in item) || item.deactivationIsAllowed) &&
          !isBullets(item)
 }
 
-local function isModInResearch(unit, item)
+let function isModInResearch(unit, item)
 {
   if (item.name == "" || !("type" in item) || item.type != weaponsItem.modification)
     return false
 
-  local status = ::shop_get_module_research_status(unit.name, item.name)
+  let status = ::shop_get_module_research_status(unit.name, item.name)
   return status == ::ES_ITEM_STATUS_IN_RESEARCH
 }
 
-local function getItemUpgradesList(item)
+let function getItemUpgradesList(item)
 {
   if ("weaponUpgrades" in item)
     return item.weaponUpgrades
@@ -222,11 +222,11 @@ local function getItemUpgradesList(item)
   return null
 }
 
-local function countWeaponsUpgrade(unit, item)
+let function countWeaponsUpgrade(unit, item)
 {
   local upgradesTotal = 0
   local upgraded = 0
-  local upgrades = getItemUpgradesList(item)
+  let upgrades = getItemUpgradesList(item)
 
   if (!upgrades)
     return null
@@ -248,20 +248,20 @@ local function countWeaponsUpgrade(unit, item)
   return [upgraded, upgradesTotal]
 }
 
-local function getItemUpgradesStatus(unit, item)
+let function getItemUpgradesStatus(unit, item)
 {
   if (item.type == weaponsItem.primaryWeapon)
   {
-    local countData = countWeaponsUpgrade(unit, item)
+    let countData = countWeaponsUpgrade(unit, item)
     return !countData?[1] ? ""
       : countData[0] >= countData[1] ? "full"
       : "part"
   }
   if (item.type == weaponsItem.modification)
   {
-    local curPrimWeaponName = getLastPrimaryWeapon(unit)
-    local weapMod = getModificationByName(unit, curPrimWeaponName)
-    local upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
+    let curPrimWeaponName = getLastPrimaryWeapon(unit)
+    let weapMod = getModificationByName(unit, curPrimWeaponName)
+    let upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
     if (upgradesList)
       foreach(list in upgradesList)
         if (::isInArray(item.name, list))
@@ -270,27 +270,27 @@ local function getItemUpgradesStatus(unit, item)
   return ""
 }
 
-local function getRepairCostCoef(item)
+let function getRepairCostCoef(item)
 {
-  local modeName = ::get_current_shop_difficulty().getEgdName(true)
+  let modeName = ::get_current_shop_difficulty().getEgdName(true)
   return item?["repairCostCoef" + modeName] ?? item?.repairCostCoef ?? 0
 }
 
-local function getDiscountPath(unit, item, discountType)
+let function getDiscountPath(unit, item, discountType)
 {
-  local discountPath = ["aircrafts", unit.name, item.name]
+  let discountPath = ["aircrafts", unit.name, item.name]
   if (item.type != weaponsItem.spare)
     discountPath.insert(2, discountType)
 
   return discountPath
 }
 
-local function getAllModsCost(unit, open = false)
+let function getAllModsCost(unit, open = false)
 {
   local modsCost = ::Cost()
   foreach(modification in (unit?.modifications ?? {}))
   {
-    local statusTbl = getItemStatusTbl(unit, modification)
+    let statusTbl = getItemStatusTbl(unit, modification)
     if (statusTbl.maxAmount == statusTbl.amount)
       continue
 
@@ -299,14 +299,14 @@ local function getAllModsCost(unit, open = false)
 
     if (open)
     {
-      local openCost = getItemUnlockCost(unit, modification)
+      let openCost = getItemUnlockCost(unit, modification)
       if (!openCost.isZero())
         _modCost = openCost
     }
 
     if (canBuyMod(unit, modification))
     {
-      local modificationCost = getItemCost(unit, modification)
+      let modificationCost = getItemCost(unit, modification)
       if (!modificationCost.isZero())
       {
         skipSummary = statusTbl.maxAmount > 1

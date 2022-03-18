@@ -1,17 +1,17 @@
 local savedAirfields = {}
 
-local function reset()
+let function reset()
 {
   savedAirfields = {}
 }
 
-local function updateMapIcons()
+let function updateMapIcons()
 {
   if (!::g_world_war.haveManagementAccessForAnyGroup())
     return
 
-  local curAirfields = {}
-  local airfields = ::g_world_war.getAirfieldsArrayBySide(::ww_get_player_side())
+  let curAirfields = {}
+  let airfields = ::g_world_war.getAirfieldsArrayBySide(::ww_get_player_side())
   foreach (airfield in airfields)
     if (airfield.isValid())
       curAirfields[airfield.getIndex()] <- {
@@ -23,11 +23,11 @@ local function updateMapIcons()
 
   foreach (idx, airfield in curAirfields)
   {
-    local lastAirfield = savedAirfields?[idx] ?? {}
+    let lastAirfield = savedAirfields?[idx] ?? {}
     if (::u.isEqual(airfield, lastAirfield))
       continue
 
-    local spriteType = airfield.spriteType
+    let spriteType = airfield.spriteType
     if ((airfield.hasUnitsToFly && airfield.hasUnitsToFly != lastAirfield?.hasUnitsToFly)
          || (airfield.unitsAmount > (lastAirfield?.unitsAmount ?? 0)))
       ::ww_turn_on_sector_sprites(spriteType, [airfield.zoneName], 5000)
@@ -39,6 +39,6 @@ local function updateMapIcons()
 }
 
 return {
-  reset = reset
-  updateMapIcons = updateMapIcons
+  reset
+  updateMapIcons
 }

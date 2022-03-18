@@ -1,4 +1,4 @@
-local u = require("u.nut")
+let u = require("u.nut")
 /**
  * Callback - wrapper for regular callback functions with context validation.
  *

@@ -1,29 +1,29 @@
-local { mkRadar} = require("radarComponent.nut")
-local aamAim = require("rocketAamAim.nut")
-local agmAim = require("agmAim.nut")
-local tws = require("tws.nut")
-local {IsMlwsLwsHudVisible} = require("twsState.nut")
-local sightIndicators = require("hud/tankSightIndicators.nut")
-local activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.nut")
-local { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
-local { IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
-local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
-local { bw, bh, rw, rh } = require("style/screenState.nut")
+let { mkRadar} = require("radarComponent.nut")
+let aamAim = require("rocketAamAim.nut")
+let agmAim = require("agmAim.nut")
+let tws = require("tws.nut")
+let {IsMlwsLwsHudVisible} = require("twsState.nut")
+let sightIndicators = require("hud/tankSightIndicators.nut")
+let activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.nut")
+let { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
+let { IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
+let { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
+let { bw, bh, rw, rh } = require("style/screenState.nut")
 
-local greenColor = Color(10, 202, 10, 250)
-local redColor = Color(255, 35, 30, 255)
+let greenColor = Color(10, 202, 10, 250)
+let redColor = Color(255, 35, 30, 255)
 
-local styleAamAim = {
+let styleAamAim = {
   color = greenColor
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(2.0)
 }
 
-local radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03 * rh.value])
+let radarPosComputed = Computed(@() [bw.value + 0.06 * rw.value, bh.value + 0.03 * rh.value])
 
-local function Root() {
-  local colorWacthed = Watched(greenColor)
-  local colorAlertWatched = Watched(redColor)
+let function Root() {
+  let colorWacthed = Watched(greenColor)
+  let colorAlertWatched = Watched(redColor)
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
@@ -46,27 +46,56 @@ local function Root() {
   }
 }
 
-
-local function tankDmgIndicator() {
-  return function() {
-    local colorWacthed = Watched(greenColor)
-    local children = [activeProtectionSystem]
-    if (IsMlwsLwsHudVisible.value)
-      children.append(tws({
-        colorWatched = colorWacthed,
-        posWatched = Watched([0, 0]),
-        sizeWatched = Watched([pw(80), ph(80)]),
-        relativCircleSize = 49,
-        needDrawCentralIcon = false
-      }))
-    return {
-      size = dmgIndicatorStates.value.size
-      pos = dmgIndicatorStates.value.pos
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      watch = [ isVisibleDmgIndicator, IsMlwsLwsHudVisible, dmgIndicatorStates ]
-      children = isVisibleDmgIndicator.value ? children : null
+let tankXrayIndicator = @() {
+  rendObj = ROBJ_XRAYDOLL
+  rotateWithCamera = true
+  size = [pw(62), ph(62)]
+  behavior = Behaviors.RecalcHandler
+  function onRecalcLayout(initial, elem) {
+    if (elem.getWidth() > 1 && elem.getHeight() > 1) {
+      ::cross_call.update_damage_panel_state({
+        pos = [elem.getScreenPosX(), elem.getScreenPosY()]
+        size = [elem.getWidth(), elem.getHeight()]
+        visible = true
+      })
     }
+  }
+}
+
+let xraydoll = {
+  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+  size = [1, 1]
+}
+
+let function tankDmgIndicator() {
+  if(!isVisibleDmgIndicator.value)
+    return {
+      watch = isVisibleDmgIndicator
+      children = xraydoll
+    }
+
+  let colorWacthed = Watched(greenColor)
+  let children = [
+    tankXrayIndicator,
+    activeProtectionSystem,
+  ]
+  if (IsMlwsLwsHudVisible.value)
+    children.append(tws({
+      colorWatched = colorWacthed,
+      posWatched = Watched([0, 0]),
+      sizeWatched = Watched([pw(80), ph(80)]),
+      relativCircleSize = 49,
+      needDrawCentralIcon = false
+    }))
+  return {
+    rendObj = ROBJ_IMAGE
+    watch = [ IsMlwsLwsHudVisible, isVisibleDmgIndicator, dmgIndicatorStates ]
+    pos = dmgIndicatorStates.value.pos
+    size = dmgIndicatorStates.value.size
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    image = ::Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}" )
+    children
   }
 }
 

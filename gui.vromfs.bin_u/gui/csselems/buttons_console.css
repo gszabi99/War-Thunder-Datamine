@@ -2349,8 +2349,24 @@ Button_text.image[_isButtonWithText=yes] {
   text-align:left;
 }
 
+Button_text[visualStyle=tournament] {
+  padding-left: 0.5h;
+  padding-right: 0.5h;
+}
+Button_text[visualStyle=tournament][pc_style=no][btnName] {
+  padding-left: 1.5h;
+}
+
+Button_text.image[visualStyle=tournament][_isButtonWithText=yes] {
+  padding-left: 0.5h + 0.7@eSItemIcoSize;
+}
+
 Button_text.image[pc_style=no][btnName][_isButtonWithText=yes] {
   padding-left: 2h + 1@buttonTextPadding;
+}
+
+Button_text.image[visualStyle=tournament][pc_style=no][btnName][_isButtonWithText=yes] {
+  padding-left: 1.5h + 0.7@eSItemIcoSize;
 }
 
 Button_text.image[pc_style=no][btnName][_isButtonWithText=yes][showButtonImageOnConsole=no] {
@@ -2440,6 +2456,16 @@ Button_text[visualStyle=noBgr] {
   background-color: @transparent;
   border-color:@transparent;
   reduceMinimalWidth:yes;
+}
+
+Button_text[visualStyle=borderNoBgr] {
+  background-color: @transparent;
+  border-color:@buttonBorderColor;
+}
+
+Button_text[visualStyle=borderNoBgr]:hover {
+  border-color:@white;
+  color:@white;
 }
 
 Button_text[visualStyle=noBgr] > ButtonImg{
@@ -2539,6 +2565,29 @@ wwConflictSideBlock > Button_text {
   needFocusBorder:yes;
 }
 [show_console_buttons=yes] Button_text[visualStyle=noBgr] {   needFocusBorder:no;
+}
+
+Button_text[visualStyle=tournament] {
+  height:1@eSItemButtonHeight;
+  background-color:@transparent;
+  border-color:@buttonFontColor;
+}
+Button_text.image[visualStyle=tournament] > img {
+  size:1@eSItemIcoSize, 1@eSItemIcoSize;
+  background-svg-size:1@eSItemIcoSize, 1@eSItemIcoSize;
+}
+Button_text[visualStyle=tournament][bigFont=yes] {
+  font:@fontBigBold;
+}
+Button_text[visualStyle=tournament]:disabled {
+  border-color: @buttonFontColorDisabled;
+}
+Button_text.image[visualStyle=tournament]:hover > img {
+  background-color:@white;
+}
+Button_text[visualStyle=tournament]:hover {
+  color:@white;
+  border-color:@white;
 }
 
 Button_text[parentWidth=yes] {

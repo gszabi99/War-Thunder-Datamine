@@ -646,7 +646,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -677,7 +677,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2390,6 +2390,22 @@
     }
   },
   {
+    "chainIK": {
+      "points": [
+        {
+          "point": {
+            "nameTemplate": "bone_mount_barrel_01"
+          }
+        },
+        {
+          "point": {
+            "nameTemplate": "bone_mount_barrel_02"
+          }
+        }
+      ]
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_m1",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -2444,31 +2460,11 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "turret": [
-          {
-            "head": "bone_turret"
-          },
-          {
-            "gun": "bone_gun"
-          },
-          {
-            "barrel": "bone_gun_barrel"
-          },
-          {
-            "linkedAnimPart": {
-              "verNode": "bone_mount_barrel_01",
-              "verLimits": [-3.0,110.0],
-              "verOriginLimits": [-3.0,85.0]
-            }
-          },
-          {
-            "linkedAnimPart": {
-              "verNode": "bone_mount_barrel_02",
-              "verLimits": [-1.0,15.0],
-              "verOriginLimits": [-3.0,85.0]
-            }
-          }
-        ],
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel"
+        },
         "limits": {
           "yaw": [-180.0,180.0],
           "pitch": [-6.0,87.0]

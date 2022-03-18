@@ -1,7 +1,7 @@
-local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+let { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
+let { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
 
-class ::WwUnit
+::WwUnit <- class
 {
   name  = ""
   unit = null
@@ -82,21 +82,21 @@ class ::WwUnit
   getShortStringView = ::kwarg(function getShortStringViewImpl(
     addIcon = true, addPreset = true, hideZeroCount = true, needShopInfo = false, hasIndent = false)
   {
-    local presetData = ::getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
-    local presetText = !addPreset || weaponPreset == "" ? "" :
+    let presetData = ::getWeaponTypeIcoByWeapon(name, addPreset ? weaponPreset : "")
+    let presetText = !addPreset || weaponPreset == "" ? "" :
       getWeaponInfoText(unit,
         { isPrimary = false, weaponPreset = weaponPreset, detail = INFO_DETAIL.SHORT, needTextWhenNoWeapons = false })
 
     local nameText = getName()
     if (needShopInfo && unit && !isControlledByAI() && !unit.canUseByPlayer())
     {
-      local nameColor = ::isUnitSpecial(unit) ? "@hotkeyColor" : "@weaponWarning"
+      let nameColor = ::isUnitSpecial(unit) ? "@hotkeyColor" : "@weaponWarning"
       nameText = ::colorize(nameColor, nameText)
     }
 
-    local activeCount = getActiveCount()
-    local totalCount = getCount()
-    local res = {
+    let activeCount = getActiveCount()
+    let totalCount = getCount()
+    let res = {
       id = name
       isShow = count > 0 || !hideZeroCount
       unitType = getUnitTypeText()

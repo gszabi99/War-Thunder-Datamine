@@ -1,7 +1,7 @@
-local time = require("scripts/time.nut")
+let time = require("scripts/time.nut")
 
 
-class ::WwOperationLogView
+::WwOperationLogView <- class
 {
   logBlk = null
   logId = 0
@@ -43,7 +43,7 @@ class ::WwOperationLogView
     else if (logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
     {
       logEndKey = logBlk.type + getEndToKey()
-      local statBlk = ::g_ww_logs.objectivesStaticBlk.getBlockByName(logBlk.id)
+      let statBlk = ::g_ww_logs.objectivesStaticBlk.getBlockByName(logBlk.id)
       if (statBlk)
       {
         detailedInfoText = getObjectiveName(statBlk)
@@ -58,7 +58,7 @@ class ::WwOperationLogView
     if ("army" in logBlk)
     {
       wwArmyId = ::g_ww_logs.getLogArmyId(logId, logBlk.army)
-      local wwArmy = ::g_ww_logs.logsArmies[wwArmyId]
+      let wwArmy = ::g_ww_logs.logsArmies[wwArmyId]
       wwArmy.getView().setId(wwArmyId)
       armyData = getArmyViewBasicData()
       armyData.army.append(wwArmy.getView())
@@ -66,7 +66,7 @@ class ::WwOperationLogView
 
     if ("battle" in logBlk)
     {
-      local wwBattle = ::g_ww_logs.logsBattles[logBlk.battle.id].battle
+      let wwBattle = ::g_ww_logs.logsBattles[logBlk.battle.id].battle
       detailedInfoText = wwBattle.getLocName()
       battleData = {
         battleView = {
@@ -80,11 +80,11 @@ class ::WwOperationLogView
       for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
         foreach (army in logBlk.battle.teams.getBlock(i).armyNames % "item")
         {
-          local wwBattleArmyId = ::g_ww_logs.getLogArmyId(logBlk.thisLogId, army)
+          let wwBattleArmyId = ::g_ww_logs.getLogArmyId(logBlk.thisLogId, army)
           if (wwBattleArmyId == wwArmyId)
             continue
 
-          local wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
+          let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
           wwArmy.getView().setId(wwBattleArmyId)
           if (i == 0)
             battleData.armySide1View.army.append(wwArmy.getView())
@@ -98,8 +98,8 @@ class ::WwOperationLogView
       dmgArmiesData = []
       foreach (army in logBlk.damagedArmies)
       {
-        local wwBattleArmyId = ::g_ww_logs.getLogArmyId(logId, army.getBlockName())
-        local wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
+        let wwBattleArmyId = ::g_ww_logs.getLogArmyId(logId, army.getBlockName())
+        let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
         wwArmy.getView().setId(wwBattleArmyId)
         dmgArmiesData.append({
           armyName = wwBattleArmyId
@@ -170,11 +170,11 @@ class ::WwOperationLogView
   {
     if ("army" in logBlk)
     {
-      local wwArmy = ::g_ww_logs.logsArmies[::g_ww_logs.getLogArmyId(logBlk.thisLogId, logBlk.army)]
+      let wwArmy = ::g_ww_logs.logsArmies[::g_ww_logs.getLogArmyId(logBlk.thisLogId, logBlk.army)]
       if (!wwArmy)
         return WW_LOG_COLORS.NEUTRAL_EVENT
 
-      local isMySideArmy = wwArmy.isMySide(::ww_get_player_side())
+      let isMySideArmy = wwArmy.isMySide(::ww_get_player_side())
       switch (logBlk.type)
       {
         case WW_LOG_TYPES.ZONE_CAPTURED:
@@ -206,8 +206,8 @@ class ::WwOperationLogView
 
   function getObjectiveName(statBlk)
   {
-    local mySideName = ::ww_side_val_to_name(::ww_get_player_side())
-    local objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
+    let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
+    let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
     return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
   }
 
@@ -218,7 +218,7 @@ class ::WwOperationLogView
 
   function isYourZone()
   {
-    local zoneOwner = logBlk?.zoneInfo.ownedSide
+    let zoneOwner = logBlk?.zoneInfo.ownedSide
     if (!zoneOwner)
       return false
 

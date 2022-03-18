@@ -1,19 +1,19 @@
-local stdLog = require("std/log.nut")()
+let stdLog = require("std/log.nut")()
 const LOG_PREFIX = "[EpicStore] "
-local log = stdLog.with_prefix(LOG_PREFIX)
-local logerr = stdLog.logerr
+let log = stdLog.with_prefix(LOG_PREFIX)
+let logerr = stdLog.logerr
 
-local statsd = require("statsd")
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
+let statsd = require("statsd")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
-local EpicShopPurchasableItem = require("scripts/onlineShop/EpicShopPurchasableItem.nut")
+let EpicShopPurchasableItem = require("scripts/onlineShop/EpicShopPurchasableItem.nut")
 
-local canUseIngameShop = ::epic_is_running
+let canUseIngameShop = ::epic_is_running
 
-local shopItemsQueryResult = persist("shopItemsQueryResult", @() ::Watched(null)) //DataBlock
-local isLoadingInProgress = ::Watched(false)
-local isInitedOnce = ::Watched(false)
+let shopItemsQueryResult = persist("shopItemsQueryResult", @() ::Watched(null)) //DataBlock
+let isLoadingInProgress = ::Watched(false)
+let isInitedOnce = ::Watched(false)
 
 local onItemsReceivedCb = null
 
@@ -21,7 +21,7 @@ isLoadingInProgress.subscribe(@(val)
   ::broadcastEvent("EpicShopDataUpdated", {isLoadingInProgress = val})
 )
 
-local function requestData(cb = null) {
+let function requestData(cb = null) {
   log($"Requested store info: cb = {cb}")
   isLoadingInProgress(true)
 
@@ -48,14 +48,14 @@ shopItemsQueryResult.subscribe(function(v) {
   }
 })
 
-local epicCatalog = ::Computed(function() {
+let epicCatalog = ::Computed(function() {
   if (!shopItemsQueryResult.value)
     return {}
 
-  local res = {}
+  let res = {}
   for (local i = 0; i < shopItemsQueryResult.value.blockCount(); i++) {
-    local itemBlk = shopItemsQueryResult.value.getBlock(i)
-    local item = EpicShopPurchasableItem(itemBlk)
+    let itemBlk = shopItemsQueryResult.value.getBlock(i)
+    let item = EpicShopPurchasableItem(itemBlk)
     if (!(item.mediaItemType in res))
       res[item.mediaItemType] <- []
     res[item.mediaItemType].append(item)
@@ -63,8 +63,8 @@ local epicCatalog = ::Computed(function() {
   return res
 })
 
-local epicItems = ::Computed(function() {
-  local res = {}
+let epicItems = ::Computed(function() {
+  let res = {}
   epicCatalog.value.each(@(itemsList, m) itemsList.each(@(item, idx) res[item.id] <- item))
   return res
 })
@@ -78,8 +78,8 @@ epicItems.subscribe(function(_) {
   seenList.onListChanged()
 })
 
-local visibleSeenIds = ::Computed(function() {
-  local res = []
+let visibleSeenIds = ::Computed(function() {
+  let res = []
   epicCatalog.value.each(@(itemsList, m)
     res.extend(itemsList.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   )
@@ -89,22 +89,22 @@ local visibleSeenIds = ::Computed(function() {
 
 seenList.setListGetter(@() visibleSeenIds.value )
 
-local function invaldateCache() {
+let function invaldateCache() {
   isInitedOnce(false)
 }
 
-local function updateSpecificItemInfo(itemId) {
+let function updateSpecificItemInfo(itemId) {
   if (!itemId)
     return
 
   ::epic_get_shop_item_async(itemId)
 }
 
-local function onUpdateItemCb(blk) {
+let function onUpdateItemCb(blk) {
   ::epic_update_purchases_on_auth()
   ::g_tasker.addTask( ::update_entitlements_limited(true) )
 
-  local itemId = blk.id
+  let itemId = blk.id
   if (!epicItems.value?[itemId]) {
     logerr($"{LOG_PREFIX}onUpdateItemCb: item {itemId} not in items list")
     return
@@ -114,13 +114,13 @@ local function onUpdateItemCb(blk) {
   ::broadcastEvent("EpicShopItemUpdated", {item = epicItems.value[itemId]})
 }
 
-local haveAnyItemWithDiscount = ::Computed(@()
+let haveAnyItemWithDiscount = ::Computed(@()
   epicItems.value.findindex(@(v) v.haveDiscount()) != null
 )
 
-local initItemsListAfterLogin = @() isInitedOnce(true)
+let initItemsListAfterLogin = @() isInitedOnce(true)
 
-local function haveDiscount() {
+let function haveDiscount() {
   if (!canUseIngameShop())
     return false
 

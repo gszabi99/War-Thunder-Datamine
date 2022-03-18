@@ -1,8 +1,8 @@
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
-class ::gui_handlers.fxOptions extends ::BaseGuiHandler
+::gui_handlers.fxOptions <- class extends ::BaseGuiHandler
 {
-  sceneTplName = "gui/options/fxOptions"
+  sceneTplName = "%gui/options/fxOptions"
   headerText = "#mainmenu/btnHdrSettings"
 
   LOCAL_PATH_SHOWED_ON_START = null
@@ -18,7 +18,7 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
 
   function getSceneTplView()
   {
-    local view = {
+    let view = {
       headerText = headerText
       rows = []
     }
@@ -58,7 +58,7 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
     if (!::check_obj(obj))
       return
 
-    local curSetting = settings.findvalue(@(s) s.id == obj.id)
+    let curSetting = settings.findvalue(@(s) s.id == obj.id)
     if (!curSetting)
       return
 
@@ -87,14 +87,14 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
 
   function updateSliderValue(name, value)
   {
-    local valueObj = scene.findObject(name)
+    let valueObj = scene.findObject(name)
     if (::check_obj(valueObj))
       valueObj.setValue(value)
   }
 
   function updateSliderTextValue(name, value)
   {
-    local valueObj = scene.findObject($"value_{name}")
+    let valueObj = scene.findObject($"value_{name}")
     if (::check_obj(valueObj))
       valueObj.setValue(value.tostring())
   }

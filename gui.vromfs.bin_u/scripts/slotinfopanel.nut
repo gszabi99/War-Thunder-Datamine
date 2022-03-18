@@ -1,12 +1,12 @@
-local protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
-local { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
+let protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
+let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
 } = require("scripts/crew/crewSkills.nut")
-local { getSkillCategoryName } = require("scripts/crew/crewSkillsView.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-local { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
+let { getSkillCategoryName } = require("scripts/crew/crewSkillsView.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+let { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { getShowedUnit, getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -14,10 +14,10 @@ const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 {
   if (!::check_obj(parent_scene))
     return null
-  local containerObj = parent_scene.findObject("slot_info")
+  let containerObj = parent_scene.findObject("slot_info")
   if (!::check_obj(containerObj))
     return null
-  local params = {
+  let params = {
     scene = containerObj
     showTabs = show_tabs
     configSavePath = SLOT_INFO_CFG_SAVE_PATH + "/" + configSaveId
@@ -25,14 +25,14 @@ const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
   return ::handlersManager.loadHandler(::gui_handlers.SlotInfoPanel, params)
 }
 
-local function getSkillCategoryView(crewData, unit) {
-  local unitType = unit?.unitType ?? unitTypes.INVALID
-  local crewUnitType = unitType.crewUnitType
-  local unitName = unit?.name ?? ""
-  local view = []
+let function getSkillCategoryView(crewData, unit) {
+  let unitType = unit?.unitType ?? unitTypes.INVALID
+  let crewUnitType = unitType.crewUnitType
+  let unitName = unit?.name ?? ""
+  let view = []
   foreach (skillCategory in getSkillCategories())
   {
-    local isSupported = (skillCategory.crewUnitTypeMask & (1 << crewUnitType)) != 0
+    let isSupported = (skillCategory.crewUnitTypeMask & (1 << crewUnitType)) != 0
       && (unit.gunnersCount > 0 || categoryHasNonGunnerSkills(skillCategory))
     if (!isSupported)
       continue
@@ -46,10 +46,10 @@ local function getSkillCategoryView(crewData, unit) {
   return view
 }
 
-class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.SlotInfoPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/slotInfoPanel.blk"
+  sceneBlkName = "%gui/slotInfoPanel.blk"
   showTabs = false
   configSavePath = ""
   isSceneVisibilityAllowed = true
@@ -96,10 +96,10 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     ::dmViewer.init(this)
 
     //Must be before replace fill tabs
-    local buttonsPlace = scene.findObject("buttons_place")
+    let buttonsPlace = scene.findObject("buttons_place")
     if (::check_obj(buttonsPlace))
     {
-      local data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("gui/commonParts/button", view)))
+      let data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("%gui/commonParts/button", view)))
       guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
 
@@ -107,12 +107,12 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       if (tabsInfo[i].reqFeature != "" && !::has_feature(tabsInfo[i].reqFeature))
         tabsInfo.remove(i)
 
-    local showTabsCount = showTabs ? tabsInfo.len() : 1
+    let showTabsCount = showTabs ? tabsInfo.len() : 1
 
     listboxObj = scene.findObject("slot_info_listbox")
     if (::checkObj(listboxObj))
     {
-      local view = { items = [] }
+      let view = { items = [] }
       for(local i = 0; i < showTabsCount; i++)
       {
         view.items.append({
@@ -122,13 +122,13 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
           discountId = tabsInfo[i].discountId
         })
       }
-      local data = ::handyman.renderCached("gui/SlotInfoTabItem", view)
+      let data = ::handyman.renderCached("%gui/SlotInfoTabItem", view)
       guiScene.replaceContentFromText(listboxObj, data, data.len(), this)
 
-      local unit = getCurShowUnit()
+      let unit = getCurShowUnit()
       updateUnitIcon(unit)
 
-      local savedIndex = ::g_login.isProfileReceived() ?
+      let savedIndex = ::g_login.isProfileReceived() ?
         ::load_local_account_settings(configSavePath, 0) : 0
       listboxObj.setValue(::min(savedIndex, showTabsCount - 1))
       updateContentVisibility()
@@ -136,11 +136,11 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       listboxObj.show(view.items.len() > 1)
     }
 
-    local unitInfoObj = scene.findObject("air_info_content_info")
+    let unitInfoObj = scene.findObject("air_info_content_info")
     if (::checkObj(unitInfoObj))
     {
-      local handler = ::handlersManager.getActiveBaseHandler()
-      local hasSlotbar = handler?.getSlotbar()
+      let handler = ::handlersManager.getActiveBaseHandler()
+      let hasSlotbar = handler?.getSlotbar()
       unitInfoObj["max-height"] = unitInfoObj[hasSlotbar ? "maxHeightWithSlotbar" : "maxHeightWithoutSlotbar"]
     }
 
@@ -162,7 +162,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitInfoTestDrive()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
@@ -171,7 +171,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAirInfoWeapons()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
@@ -180,7 +180,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onProtectionAnalysis()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     checkedCrewModify(
       @() ::handlersManager.animatedSwitchScene(@() protectionAnalysis.open(unit)))
   }
@@ -215,9 +215,9 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateContentVisibility(obj = null)
   {
-    local currentIndex = listboxObj.getValue()
-    local isPanelHidden = currentIndex == -1
-    local collapseBtnContainer = scene.findObject("slot_collapse")
+    let currentIndex = listboxObj.getValue()
+    let isPanelHidden = currentIndex == -1
+    let collapseBtnContainer = scene.findObject("slot_collapse")
     if(::checkObj(collapseBtnContainer))
       collapseBtnContainer.collapsed = isPanelHidden ? "yes" : "no"
     showSceneBtn("slot_info_content", ! isPanelHidden)
@@ -230,17 +230,17 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isSceneForceHidden || !::check_obj(listboxObj))
       return
-    local currentIndex = listboxObj.getValue()
-    local isPanelHidden = currentIndex == -1
+    let currentIndex = listboxObj.getValue()
+    let isPanelHidden = currentIndex == -1
     foreach(index, tabInfo in tabsInfo)
     {
-      local discountObj = listboxObj.findObject(tabInfo.discountId)
+      let discountObj = listboxObj.findObject(tabInfo.discountId)
       if (::check_obj(discountObj))
         discountObj.type = isPanelHidden ? "box_left" : "box_up"
       if(isPanelHidden)
         continue
 
-      local isActive = index == currentIndex
+      let isActive = index == currentIndex
       if (isTabSwitch)
         showSceneBtn(tabInfo.contentId, isActive)
       if(isActive)
@@ -250,7 +250,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateHeader(text, isPremium = false)
   {
-    local header = scene.findObject("header_background")
+    let header = scene.findObject("header_background")
     if(!::check_obj(header))
       return
 
@@ -262,10 +262,10 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAirInfo(force = false)
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     updateUnitIcon(unit)
 
-    local contentObj = scene.findObject("air_info_content")
+    let contentObj = scene.findObject("air_info_content")
     if ( !::checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
       return
 
@@ -278,11 +278,11 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkUpdateAirInfo()
   {
-    local unit = getCurShowUnit()
+    let unit = getCurShowUnit()
     if (!unit)
       return
 
-    local isAirInfoValid = ::check_unit_mods_update(unit)
+    let isAirInfoValid = ::check_unit_mods_update(unit)
                            && ::check_secondary_weapon_mods_recount(unit)
     if (!isAirInfoValid)
       doWhenActiveOnce("updateAirInfo")
@@ -295,7 +295,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSceneVisibility()
   {
-    local canShow = canShowScene()
+    let canShow = canShowScene()
     if (isSceneVisibilityAllowed == canShow)
       return
     isSceneVisibilityAllowed = canShow
@@ -344,14 +344,14 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitModsRecount(params)
   {
-    local unit = ::getTblValue("unit", params)
+    let unit = ::getTblValue("unit", params)
     if (unit && unit.name == getCurShowUnitName())
       doWhenActiveOnce("updateAirInfo")
   }
 
   function onEventSecondWeaponModsUpdated(params)
   {
-    local unit = ::getTblValue("unit", params)
+    let unit = ::getTblValue("unit", params)
     if (unit && unit.name == getCurShowUnitName())
       doWhenActiveOnce("updateAirInfo")
   }
@@ -373,29 +373,29 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCrewInfo(force = false)
   {
-    local contentObj = scene.findObject("crew_info_content")
+    let contentObj = scene.findObject("crew_info_content")
     if ( !::checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
       return
 
-    local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
-    local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
-    local crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
+    let crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
+    let crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
+    let crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
     if (crewData == null)
       return
 
-    local unitName = ::getTblValue("aircraft", crewData, null)
-    local unit = ::getAircraftByName(unitName)
+    let unitName = ::getTblValue("aircraft", crewData, null)
+    let unit = ::getAircraftByName(unitName)
     if (unit == null)
       return
 
-    local discountInfo = ::g_crew.getDiscountInfo(crewCountryId, crewIdInCountry)
-    local maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo)
-    local discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
-    local discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo)
+    let discountInfo = ::g_crew.getDiscountInfo(crewCountryId, crewIdInCountry)
+    let maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo)
+    let discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
+    let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo)
 
     if (::checkObj(listboxObj))
     {
-      local obj = listboxObj.findObject("crew_lb_discount")
+      let obj = listboxObj.findObject("crew_lb_discount")
       if (::checkObj(obj))
       {
         obj.setValue(discountText)
@@ -403,17 +403,17 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local crewUnitType = unit.getCrewUnitType()
-    local country  = ::getUnitCountry(unit)
-    local specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crewData, unit)
-    local isMaxLevel = ::g_crew.isCrewMaxLevel(crewData, unit, country, crewUnitType)
+    let crewUnitType = unit.getCrewUnitType()
+    let country  = ::getUnitCountry(unit)
+    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crewData, unit)
+    let isMaxLevel = ::g_crew.isCrewMaxLevel(crewData, unit, country, crewUnitType)
     local crewLevelText = ::g_crew.getCrewLevel(crewData, unit, crewUnitType)
     if (isMaxLevel)
       crewLevelText += ::colorize("@commonTextColor",
                                   ::loc("ui/parentheses/space", { text = ::loc("options/quality_max") }))
-    local needCurPoints = !isMaxLevel
+    let needCurPoints = !isMaxLevel
 
-    local view = {
+    let view = {
       crewName   = ::g_crew.getCrewName(crewData)
       crewLevelText  = crewLevelText
       needCurPoints = needCurPoints
@@ -426,7 +426,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
       discountText = discountText
       discountTooltip = discountTooltip
     }
-    local blk = ::handyman.renderCached("gui/crew/crewInfo", view)
+    let blk = ::handyman.renderCached("%gui/crew/crewInfo", view)
     guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
     showSceneBtn("crew_name", false)
     updateHeader(::g_crew.getCrewName(crewData))
@@ -436,7 +436,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   {
     if( ! favUnlocksHandlerWeak)
     {
-      local contentObj = scene.findObject("favorite_unlocks_placeholder")
+      let contentObj = scene.findObject("favorite_unlocks_placeholder")
       if(! ::checkObj(contentObj))
         return
       favUnlocksHandlerWeak = ::handlersManager.loadHandler(
@@ -446,8 +446,8 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     else
       favUnlocksHandlerWeak.onSceneActivate(true)
 
-    local cur = ::g_unlocks.getTotalFavoriteCount()
-    local text = ::loc("mainmenu/btnFavoritesUnlockAchievement") + ::loc("ui/parentheses/space", {
+    let cur = ::g_unlocks.getTotalFavoriteCount()
+    let text = ::loc("mainmenu/btnFavoritesUnlockAchievement") + ::loc("ui/parentheses/space", {
       text = ::colorize(::g_unlocks.canAddFavorite()? "" : "warningTextColor", cur + ::loc("ui/slash") + ::g_unlocks.favoriteUnlocksLimit)
     })
 
@@ -476,14 +476,14 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit)
       return
 
-    local iconObj = scene.findObject("slot_info_vehicle_icon")
+    let iconObj = scene.findObject("slot_info_vehicle_icon")
     if (::checkObj(iconObj))
       iconObj["background-image"] = unit.unitType.testFlightIcon
   }
 
   function updateTestDriveButtonText(unit)
   {
-    local obj = scene.findObject("btnTestdrive")
+    let obj = scene.findObject("btnTestdrive")
     if (!::check_obj(obj))
       return
 
@@ -492,15 +492,15 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWeaponryDiscounts(unit)
   {
-    local discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
-    local discountObj = scene.findObject("btnAirInfoWeaponry_discount")
+    let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
+    let discountObj = scene.findObject("btnAirInfoWeaponry_discount")
     ::showCurBonus(discountObj, discount, "mods", true, true)
     if (::check_obj(discountObj))
       discountObj.show(discount > 0)
 
     if (::checkObj(listboxObj))
     {
-      local obj = listboxObj.findObject("unit_lb_discount")
+      let obj = listboxObj.findObject("unit_lb_discount")
       if (::checkObj(obj))
       {
         obj.setValue(discount > 0? ("-" + discount + "%") : "")
@@ -511,8 +511,8 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCrewButtonClicked(obj)
   {
-    local crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
-    local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
+    let crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
+    let crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
     if (crewCountryId != -1 && crewIdInCountry != -1)
       ::gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
   }

@@ -1,7 +1,8 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { research } = require("scripts/unit/unitActions.nut")
-local { isEqual } = require("sqStdLibs/helpers/u.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let unitTypes = require("scripts/unit/unitTypesList.nut")
+let { research } = require("scripts/unit/unitActions.nut")
+let { isEqual } = require("sqStdLibs/helpers/u.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { isCountryHaveUnitType } = require("scripts/shop/shopUnitsInfo.nut")
 
 enum windowState
 {
@@ -20,10 +21,10 @@ enum windowState
   ::gui_start_modal_wnd(::gui_handlers.ConvertExpHandler, {unit = unit})
 }
 
-class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ConvertExpHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType         = handlerType.MODAL
-  sceneBlkName    = "gui/convertExp/convertExp.blk"
+  sceneBlkName    = "%gui/convertExp/convertExp.blk"
 
   expPerGold      = 1
   maxGoldForAir   = 0
@@ -106,7 +107,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
           && !unitForList.isSquadronVehicle()
           && ::get_es_unit_type(unitForList) == unitType)
         unitList.append(unitForList)
-    local ediff = ::get_current_ediff()
+    let ediff = ::get_current_ediff()
     unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
   }
 
@@ -120,7 +121,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCountryResearchUnit(countryName, unitType)
   {
-    local unitName = ::shop_get_researchable_unit_name(countryName, unitType)
+    let unitName = ::shop_get_researchable_unit_name(countryName, unitType)
     return ::getAircraftByName(unitName)
   }
 
@@ -130,7 +131,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     local curValue = 0
     country = ::get_profile_country_sq()
 
-    local view = { items = [] }
+    let view = { items = [] }
     foreach(idx, countryItem in shopCountriesList)
     {
       view.items.append({
@@ -145,8 +146,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
         curValue = idx
     }
 
-    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
-    local countriesObj = scene.findObject("countries_list")
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
+    let countriesObj = scene.findObject("countries_list")
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
 
@@ -156,8 +157,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitList()
   {
-    local isShow = unitList.len() > 1
-    local nestObj = scene.findObject("choose_unit_list")
+    let isShow = unitList.len() > 1
+    let nestObj = scene.findObject("choose_unit_list")
     nestObj.show(isShow)
     local unitListBlk = []
     foreach(unitForResearch in unitList)
@@ -171,7 +172,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWindow()
   {
-    local oldState = currentState
+    let oldState = currentState
     if (!unit)
       currentState = windowState.noUnit
     else if (::canBuyUnit(unit) || ::isUnitResearched(unit))
@@ -196,8 +197,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit)
       return goBack()
 
-    local unitBlk = ::build_aircraft_item(unit.name, unit)
-    local unitNest = scene.findObject("unit_nest")
+    let unitBlk = ::build_aircraft_item(unit.name, unit)
+    let unitNest = scene.findObject("unit_nest")
     guiScene.replaceContentFromText(unitNest, unitBlk, unitBlk.len(), this)
     ::fill_unit_item_timers(unitNest.findObject(unit.name), unit)
   }
@@ -209,12 +210,15 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initUnitTypes()
   {
-    local listObj = scene.findObject("unit_types_list")
+    let listObj = scene.findObject("unit_types_list")
     if (!::check_obj(listObj))
       return
 
-    unitTypesList = ::u.filter(unitTypes.types, @(unitType) unitType.isVisibleInShop())
-    local view = { items = [] }
+    unitTypesList = unitTypes.types
+      .filter(@(t) t.isVisibleInShop())
+      .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
+
+    let view = { items = [] }
     foreach (idx, unitType in unitTypesList)
       view.items.append({
         id = unitType.armyId
@@ -222,25 +226,25 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
         tooltip = unitType.canSpendGold() ? null : ::loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
-    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
   function updateUnitTypesList()
   {
-    local listObj = scene.findObject("unit_types_list")
+    let listObj = scene.findObject("unit_types_list")
     if (!::check_obj(listObj))
       return
 
     local curIdx = 0
     foreach (idx, unitType in unitTypesList)
     {
-      local isShow = unitType.haveAnyUnitInCountry(country)
-      local selected = isShow && listType == unitType.esUnitType
+      let isShow = unitType.haveAnyUnitInCountry(country)
+      let selected = isShow && listType == unitType.esUnitType
       if (selected)
         curIdx = idx
 
-      local btnObj = ::showBtn(unitType.armyId, isShow, listObj)
+      let btnObj = ::showBtn(unitType.armyId, isShow, listObj)
       if (btnObj)
       {
         btnObj.inactive = getCountryResearchUnit(country, unitType.esUnitType)? "no" : "yes"
@@ -253,28 +257,28 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillSlider()
   {
-    local sliderDivObj = scene.findObject("exp_slider_nest")
+    let sliderDivObj = scene.findObject("exp_slider_nest")
     if (!::checkObj(sliderDivObj))
       return
 
-    local is_enough_availExp = availableExp > 0
-    local is_need_to_convert = (unitReqExp - unitExpGranted) > 0
+    let is_enough_availExp = availableExp > 0
+    let is_need_to_convert = (unitReqExp - unitExpGranted) > 0
 
-    local showExpSlider = is_enough_availExp && is_need_to_convert
+    let showExpSlider = is_enough_availExp && is_need_to_convert
     sliderDivObj.show(showExpSlider)
 
     if (showExpSlider)
     {
-      local sliderObj     = sliderDivObj.findObject("convert_slider")
-      local oldProgressOb = sliderDivObj.findObject("old_exp_progress")
-      local newProgressOb = sliderDivObj.findObject("new_exp_progress")
+      let sliderObj     = sliderDivObj.findObject("convert_slider")
+      let oldProgressOb = sliderDivObj.findObject("old_exp_progress")
+      let newProgressOb = sliderDivObj.findObject("new_exp_progress")
 
-      local diffExp = unitReqExp - unitExpGranted
-      local maxGoldDiff = ::ceil(diffExp.tofloat() / expPerGold).tointeger()
+      let diffExp = unitReqExp - unitExpGranted
+      let maxGoldDiff = ::ceil(diffExp.tofloat() / expPerGold).tointeger()
       minGoldValue  = (unitExpGranted.tofloat() / expPerGold).tointeger()
       maxGoldForAir = minGoldValue + maxGoldDiff
 
-      local goldLimitByExp  = (availableExp >= diffExp) ? maxGoldDiff : (availableExp.tofloat() / expPerGold).tointeger()
+      let goldLimitByExp  = (availableExp >= diffExp) ? maxGoldDiff : (availableExp.tofloat() / expPerGold).tointeger()
       maxGoldValue = minGoldValue + min(goldLimitByExp, playersGold)
       curGoldValue = maxGoldValue
 
@@ -289,18 +293,18 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitResearchedContent()
   {
-    local noExpObj = scene.findObject("buy_unit_cost")
+    let noExpObj = scene.findObject("buy_unit_cost")
     if (!::checkObj(noExpObj))
       return
 
-    local unitCost = ::wp_get_cost(unit.name)
+    let unitCost = ::wp_get_cost(unit.name)
     noExpObj.setValue(::getPriceAccordingToPlayersCurrency(unitCost, 0, true))
   }
 
   function updateSlider()
   {
-    local sliderObj = scene.findObject("convert_slider")
-    local newProgressOb = scene.findObject("new_exp_progress")
+    let sliderObj = scene.findObject("convert_slider")
+    let newProgressOb = scene.findObject("new_exp_progress")
     newProgressOb.setValue(curGoldValue)
     sliderObj.setValue(curGoldValue)
 
@@ -316,8 +320,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("unit_researched_nest").show(currentState == windowState.canBuy)
     scene.findObject("unit_nest").show(currentState != windowState.noUnit)
 
-    local noUnitMsgObj = scene.findObject("no_unit_nest")
-    local needNoUnitText = currentState == windowState.noUnit
+    let noUnitMsgObj = scene.findObject("no_unit_nest")
+    let needNoUnitText = currentState == windowState.noUnit
     noUnitMsgObj.show(needNoUnitText)
     if (needNoUnitText)
       noUnitMsgObj.setValue(::loc(getAvailableUnitForConversion() != null ? ::loc("pr_conversion/no_unit") : ::loc("pr_conversion/all_units_researched")))
@@ -353,27 +357,27 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSliderText()
   {
-    local sliderTextObj = scene.findObject("convert_slider_text")
-    local strGrantedExp = ::Cost().setRp(unitExpGranted).tostring()
-    local expToBuy = getCurExpValue()
-    local strWantToBuyExp = expToBuy > 0
+    let sliderTextObj = scene.findObject("convert_slider_text")
+    let strGrantedExp = ::Cost().setRp(unitExpGranted).tostring()
+    let expToBuy = getCurExpValue()
+    let strWantToBuyExp = expToBuy > 0
                             ? format("<color=@activeTextColor> +%s</color>", ::Cost().setFrp(expToBuy).tostring())
                             : ""
-    local strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(unit))
-    local sliderText = ::format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
+    let strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(unit))
+    let sliderText = ::format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
 
   function fillCostGold()
   {
-    local costGoldObj = scene.findObject("convertion_cost")
+    let costGoldObj = scene.findObject("convertion_cost")
     costGoldObj.setValue(::g_language.decimalFormat(curGoldValue-minGoldValue))
   }
 
   function updateButtons()
   {
-    local isMinSet = curGoldValue == minGoldValue
-    local isMaxSet = curGoldValue == maxGoldValue
+    let isMinSet = curGoldValue == minGoldValue
+    let isMaxSet = curGoldValue == maxGoldValue
 
     showSceneBtn("btn_apply", currentState == windowState.research)
     showSceneBtn("btn_buy_unit", currentState == windowState.canBuy)
@@ -387,21 +391,21 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateExpTextPosition()
   {
     guiScene.setUpdatesEnabled(true, true)
-    local textObj     = scene.findObject("convert_slider_text")
-    local boxObj      = scene.findObject("exp_slider_nest")
-    local textNestObj = scene.findObject("slider_button")
+    let textObj     = scene.findObject("convert_slider_text")
+    let boxObj      = scene.findObject("exp_slider_nest")
+    let textNestObj = scene.findObject("slider_button")
 
-    local boxPosX      = boxObj.getPos()[0]
-    local boxSizeX     = boxObj.getSize()[0]
+    let boxPosX      = boxObj.getPos()[0]
+    let boxSizeX     = boxObj.getSize()[0]
 
-    local textSizeX     = textObj.getSize()[0]
+    let textSizeX     = textObj.getSize()[0]
 
-    local textNestPosX  = textNestObj.getPos()[0]
-    local textNestSizeX = textNestObj.getSize()[0]
+    let textNestPosX  = textNestObj.getPos()[0]
+    let textNestSizeX = textNestObj.getSize()[0]
 
-    local overdraft = (textNestPosX + (textSizeX + textNestSizeX) / 2) - (boxPosX + boxSizeX)
+    let overdraft = (textNestPosX + (textSizeX + textNestSizeX) / 2) - (boxPosX + boxSizeX)
 
-    local leftEdge = textNestPosX - 0.5*textSizeX
+    let leftEdge = textNestPosX - 0.5*textSizeX
 
     local newLeft = textObj.base_left
     if (leftEdge < boxPosX)
@@ -423,7 +427,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   //----CONTROLLER----//
   function onCountrySelect()
   {
-    local c = scene.findObject("countries_list").getValue()
+    let c = scene.findObject("countries_list").getValue()
     if (!(c in shopCountriesList))
       return
 
@@ -447,9 +451,9 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (value < 0 || value >= obj.childrenCount())
       value = 0
 
-    local selObj = obj.getChild(value)
+    let selObj = obj.getChild(value)
 
-    local unitType = unitTypes.getByArmyId(selObj?.id)
+    let unitType = unitTypes.getByArmyId(selObj?.id)
     updateUnitList(unitType.esUnitType)
   }
 
@@ -464,10 +468,10 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitSelect(obj)
   {
-    local newUnit = unitList[obj.getValue()]
-    local isNewUnitInResearch = ::isUnitInResearch(newUnit)
-    local isNewUnitResearched = ::isUnitResearched(newUnit)
-    local hasChangedUnit = !isEqual(newUnit, unit)
+    let newUnit = unitList[obj.getValue()]
+    let isNewUnitInResearch = ::isUnitInResearch(newUnit)
+    let isNewUnitResearched = ::isUnitResearched(newUnit)
+    let hasChangedUnit = !isEqual(newUnit, unit)
     if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))
       return
 
@@ -477,7 +481,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local cb = function() {
+    let cb = function() {
       unit = newUnit
       updateWindow()
     }
@@ -493,11 +497,11 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local newUnit = null
     //try to get unit of same type as previous unit is
-    if (::isCountryHaveUnitType(country, ::get_es_unit_type(unit)))
+    if (isCountryHaveUnitType(country, ::get_es_unit_type(unit)))
       newUnit = getCountryResearchUnit(country, ::get_es_unit_type(unit))
     if (!newUnit)
     {
-      foreach (unitType in unitTypes.types)
+      foreach (unitType in unitTypesList)
       {
         if (!unitType.canSpendGold())
           continue
@@ -514,7 +518,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onConvertChanged(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (curGoldValue == value)
       return
     curGoldValue = min(max(minGoldValue, value), maxGoldValue)
@@ -523,14 +527,14 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onButtonDec()
   {
-    local value = curGoldValue - 1
+    let value = curGoldValue - 1
     curGoldValue = min(max(minGoldValue, value), maxGoldValue)
     updateObjects()
   }
 
   function onButtonInc()
   {
-    local value = curGoldValue + 1
+    let value = curGoldValue + 1
     curGoldValue = min(max(minGoldValue, value), maxGoldValue)
     updateObjects()
   }
@@ -546,16 +550,16 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::get_gui_balance().gold <= 0)
       return ::check_balance_msgBox(::Cost(0, curGoldValue), ::Callback(updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
-    local curGold = curGoldValue - minGoldValue
+    let curGold = curGoldValue - minGoldValue
     if (curGold == 0)
       return ::showInfoMsgBox(::loc("exp/convert/noGold"), "no_exp_msgbox")
 
     if (availableExp < expPerGold)
       return ::showInfoMsgBox(::loc("msgbox/no_rp"), "no_rp_msgbox")
 
-    local curExp = getCurExpValue()
-    local cost = ::Cost(0, curGold)
-    local msgText = warningIfGold(::loc("exp/convert/needMoneyQuestion",
+    let curExp = getCurExpValue()
+    let cost = ::Cost(0, curGold)
+    let msgText = warningIfGold(::loc("exp/convert/needMoneyQuestion",
         {exp = ::Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance()}),
       cost)
     msgBox("need_money", msgText,
@@ -597,7 +601,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitResearch(p)
   {
-    local newUnit = ::getAircraftByName(p?.unitName)
+    let newUnit = ::getAircraftByName(p?.unitName)
     if (newUnit == unit)
       return
     if (!newUnit || newUnit.shopCountry != country || ::get_es_unit_type(newUnit) != listType)
@@ -609,12 +613,12 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitBought(params)
   {
-    local unitName = ::getTblValue("unitName", params)
+    let unitName = ::getTblValue("unitName", params)
     if (!unitName || unit?.name != unitName)
       return
 
-    local handler = this
-    local config = {
+    let handler = this
+    let config = {
       unit = unit
       unitObj = scene.findObject("unit_nest").findObject(unitName)
       cellClass = "slotbarClone"

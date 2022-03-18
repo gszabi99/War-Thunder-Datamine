@@ -1,7 +1,4 @@
-local extContactsService = require("scripts/contacts/externalContactsService.nut")
-local { isMultiplayerPrivilegeAvailable,
-        checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
-
+let extContactsService = require("scripts/contacts/externalContactsService.nut")
 local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
 ::g_xbox_squad_manager <- {
@@ -25,17 +22,6 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
   {
     if (!::is_platform_xbox)
       return
-
-    if (!isMultiplayerPrivilegeAvailable()) {
-      ignoreSystemInvite(true) //It is called after update
-      invalidateCache()
-
-      //updateSquadList was called from script,
-      //so no need to wait xbox_on_invite_accepted call
-      if (isScriptCall)
-        checkAndDisplayInviteRestiction()
-      return
-    }
 
     if (!::isInMenu() || !::g_login.isLoggedIn())
     {
@@ -90,7 +76,7 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     {
       if (member.isMe())
         continue
-      local contact = ::getContact(member.uid)
+      let contact = ::getContact(member.uid)
       if (::isInArray(contact?.xboxId, xboxIdsList)) //other xbox squad member in my squad already
         return true
     }
@@ -168,8 +154,8 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
   function acceptExistingInvite(playerUid)
   {
-    local inviteUid = ::g_invites_classes.Squad.getUidByParams({squadId = playerUid})
-    local invite = ::g_invites.findInviteByUid(inviteUid)
+    let inviteUid = ::g_invites_classes.Squad.getUidByParams({squadId = playerUid})
+    let invite = ::g_invites.findInviteByUid(inviteUid)
     if (!invite)
       return false
 
@@ -179,11 +165,11 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
   function checkSquadInvites(xboxIdsList)
   {
-    local idsArray = []
+    let idsArray = []
     squadExistCheckArray.clear()
     foreach (xboxId in xboxIdsList)
     {
-      local contact = ::findContactByXboxId(xboxId)
+      let contact = ::findContactByXboxId(xboxId)
       if (contact)
       {
         if (contact.isMe())
@@ -225,7 +211,7 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
       return
     }
 
-    local cb = ::Callback(proceedExistedSquadsInfo, this)
+    let cb = ::Callback(proceedExistedSquadsInfo, this)
     matching_api_func("msquad.get_squads", cb, {players = squadExistCheckArray})
   }
 
@@ -234,14 +220,14 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     if (!::checkMatchingError(params))
       return
 
-    local squads = params?.squads ?? []
+    let squads = params?.squads ?? []
     if (!squads.len())
       return
 
     foreach (squad in squads)
     {
-      local membersCount = (squad?.members ?? []).len()
-      local maxMembers = squad?.data?.properties?.maxMembers ?? 0
+      let membersCount = (squad?.members ?? []).len()
+      let maxMembers = squad?.data?.properties?.maxMembers ?? 0
       if (membersCount != 0 && membersCount >= maxMembers)
       {
         ::g_popups.add(null, ::loc("matching/SQUAD_FULL"))
@@ -255,7 +241,7 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     //Check, if player not in system lobby already.
     //Because, no need to send system invitation if he is there already.
 
-    local contact = ::getContact(uid, name)
+    let contact = ::getContact(uid, name)
     if (contact.needCheckXboxId())
       contact.getXboxId(::Callback(function() {
         if (!::isInArray(contact.xboxId, currentUsersListCache))
@@ -273,10 +259,10 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     if (!notFoundIds.len())
       return
 
-    local isLeader = isMeLeader(currentUsersListCache)
+    let isLeader = isMeLeader(currentUsersListCache)
     foreach(uid, data in p)
     {
-      local contact = ::getContact(uid, data.nick)
+      let contact = ::getContact(uid, data.nick)
       if (isLeader && !proceedContact(contact))
         ::dagor.debug("XBOX_SQUAD_MANAGER: Not found xboxId " + data.id + " after charServer call")
 
@@ -317,12 +303,8 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     if (!ignoreSystemInvite.value)
       return false
 
-    ::dagor.debug($"XBOX SQUAD MANAGER: show invite warning restriction, {isMultiplayerPrivilegeAvailable()}")
     ignoreSystemInvite(false)
-
-    if (checkAndShowMultiplayerPrivilegeWarning())
-      ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
-
+    ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
     return true
   }
 

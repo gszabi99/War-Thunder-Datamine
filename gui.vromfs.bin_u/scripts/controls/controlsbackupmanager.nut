@@ -1,7 +1,7 @@
-local DataBlock = require("DataBlock")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let DataBlock = require("DataBlock")
+let { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
+::gui_handlers.ControlsBackupManager <- class extends ::gui_handlers.SaveDataDialog
 {
   function initScreen()
   {
@@ -16,11 +16,11 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
   function doSave(descr)
   {
     showWaitAnimation(true)
-    local blk = DataBlock()
+    let blk = DataBlock()
     blk.comment = descr.comment
     blk.path = descr.path
 
-    local cb = ::Callback(onBackupSaved, this)
+    let cb = ::Callback(onBackupSaved, this)
     ::request_save_controls_backup(@(result) cb(result), blk)
   }
 
@@ -37,11 +37,11 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
   function doLoad(descr)
   {
     showWaitAnimation(true)
-    local blk = DataBlock()
+    let blk = DataBlock()
     blk.path = descr.path
     blk.comment = descr.comment
 
-    local cb = ::Callback(onBackupLoaded, this)
+    let cb = ::Callback(onBackupLoaded, this)
     ::request_load_controls_backup(@(result) cb(result), blk)
   }
 
@@ -63,11 +63,11 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
   function doDelete(descr)
   {
     showWaitAnimation(true)
-    local blk = DataBlock()
+    let blk = DataBlock()
     blk.path = descr.path
     blk.comment = descr.comment
 
-    local cb = ::Callback(onBackupDeleted, this)
+    let cb = ::Callback(onBackupDeleted, this)
     ::request_delete_controls_backup(@(result) cb(result), blk)
   }
 

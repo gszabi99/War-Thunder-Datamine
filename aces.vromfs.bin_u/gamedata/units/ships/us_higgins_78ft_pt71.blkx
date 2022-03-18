@@ -2099,9 +2099,6 @@
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 80.0,
-          "speedPitch": 80.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2118,6 +2115,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "bone_turret_h_01",
@@ -2171,9 +2171,6 @@
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 80.0,
-          "speedPitch": 80.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2190,6 +2187,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "bone_turret_h_01",
@@ -2243,9 +2243,6 @@
           "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 80.0,
-          "speedPitch": 80.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2262,6 +2259,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "bone_turret_h_02",
@@ -2315,9 +2315,6 @@
           "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 80.0,
-          "speedPitch": 80.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2334,6 +2331,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "bone_turret_h_02",
@@ -2387,9 +2387,6 @@
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 75.0,
-          "speedPitch": 75.0,
-          "bullets": 1200,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2406,6 +2403,9 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 75.0,
+          "speedPitch": 65.0,
+          "bullets": 1800,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_01",
@@ -3263,9 +3263,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 40.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -12000.0,
+      "waterMassMult": 140.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
       "additionalWaterDeathThreshold": 360000.0,
       "additionalWaterShouldDiePercent": 0.45,
@@ -3275,7 +3275,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -3283,7 +3283,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.55,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3302,19 +3302,19 @@
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.4
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.4
+                "critWaterLevel": 0.7
               }
             },
             {
               "part": {
                 "partNo": "engine_03_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.9
               }
             }
           ]
@@ -3323,7 +3323,7 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.65,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3372,7 +3372,7 @@
           "fireEvent": "ammo_fire_2",
           "explosionEvent": "ammo_explosion_2",
           "ammunition_storage_02_dm": {
-            "count": 1200
+            "count": 1800
           }
         }
       }

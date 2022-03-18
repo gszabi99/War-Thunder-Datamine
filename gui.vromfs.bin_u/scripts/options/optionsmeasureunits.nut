@@ -1,10 +1,10 @@
-local persistent = {
+let persistent = {
   unitsCfg = null
 }
 ::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
-local optionsByIndex = [
+let optionsByIndex = [
   { useroptId = ::USEROPT_MEASUREUNITS_SPEED,                 optId = "speed" },
   { useroptId = ::USEROPT_MEASUREUNITS_ALT,                   optId = "alt" },
   { useroptId = ::USEROPT_MEASUREUNITS_DIST,                  optId = "dist" },
@@ -14,25 +14,25 @@ local optionsByIndex = [
   { useroptId = ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, optId = "power_to_weight_ratio" },
 ]
 
-local function isInitialized()
+let function isInitialized()
 {
   return (persistent.unitsCfg?.len() ?? 0) != 0
 }
 
-local function init()
+let function init()
 {
   persistent.unitsCfg = []
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   blk.load("config/measureUnits.blk")
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    local blkUnits = blk.getBlock(i)
-    local units = []
+    let blkUnits = blk.getBlock(i)
+    let units = []
     for (local j = 0; j < blkUnits.blockCount(); j++)
     {
-      local blkUnit = blkUnits.getBlock(j)
-      local roundAfter = blkUnit.getPoint2("roundAfter", ::Point2(0, 0))
-      local unit = {
+      let blkUnit = blkUnits.getBlock(j)
+      let roundAfter = blkUnit.getPoint2("roundAfter", ::Point2(0, 0))
+      let unit = {
         name = blkUnit.getBlockName()
         round = blkUnit.getInt("round", 0)
         koef = blkUnit.getReal("koef", 1.0)
@@ -46,12 +46,12 @@ local function init()
   ::call_darg("updateExtWatched", { isInitializedMeasureUnits = isInitialized()})
 }
 
-local function getOption(useroptId)
+let function getOption(useroptId)
 {
-  local unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
-  local option = optionsByIndex[unitNo]
-  local units = persistent.unitsCfg[unitNo]
-  local unitName = ::get_option_unit_type(unitNo)
+  let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
+  let option = optionsByIndex[unitNo]
+  let units = persistent.unitsCfg[unitNo]
+  let unitName = ::get_option_unit_type(unitNo)
 
   return {
     id     = $"measure_units_{option.optId}"
@@ -61,15 +61,15 @@ local function getOption(useroptId)
   }
 }
 
-local function getMeasureCfg(unitNo)
+let function getMeasureCfg(unitNo)
 {
-  local unitName = ::get_option_unit_type(unitNo)
+  let unitName = ::get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
 local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
 {
-  local unit = getMeasureCfg(unitNo)
+  let unit = getMeasureCfg(unitNo)
   if (!unit)
     return ""
 
@@ -79,13 +79,13 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   foreach (val in value)
     if (maxValue == null || maxValue < val)
       maxValue = val
-  local shouldRoundValue = !forceMaxPrecise &&
+  let shouldRoundValue = !forceMaxPrecise &&
     (unit.roundAfterBy > 0 && (maxValue * unit.koef) > unit.roundAfterVal)
   local valuesList = value.map(function(val) {
     val = val * unit.koef
     if (shouldRoundValue && isPresize)
       return ::format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
-    local roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
+    let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
     return ::g_string.floatToStringRounded(val, roundPrecision)
   })
   local result = separator.join(valuesList)
@@ -94,9 +94,9 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   return result
 }
 
-local function isMetricSystem(unitNo)
+let function isMetricSystem(unitNo)
 {
-  local unitName = ::get_option_unit_type(unitNo)
+  let unitName = ::get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 

@@ -1,7 +1,7 @@
 ::Popup <- class
 {
-  static POPUP_BLK = "gui/popup/popup.blk"
-  static POPUP_BUTTON_BLK = "gui/popup/popupButton.blk"
+  static POPUP_BLK = "%gui/popup/popup.blk"
+  static POPUP_BUTTON_BLK = "%gui/popup/popupButton.blk"
 
   title = ""
   message = ""
@@ -34,7 +34,7 @@
   {
     popupNestObj.setUserData(this)
 
-    local popupGuiScene = ::get_cur_gui_scene()
+    let popupGuiScene = ::get_cur_gui_scene()
     selfObj = popupGuiScene.createElementByObject(popupNestObj, POPUP_BLK, "popup", this)
 
     if(!::u.isEmpty(title))
@@ -44,10 +44,10 @@
 
     selfObj.findObject("msg").setValue(message)
 
-    local obj = selfObj.findObject("popup_buttons_place")
+    let obj = selfObj.findObject("popup_buttons_place")
     foreach (button in buttons)
     {
-      local buttonObj = popupGuiScene.createElementByObject(obj, POPUP_BUTTON_BLK, "Button_text", this)
+      let buttonObj = popupGuiScene.createElementByObject(obj, POPUP_BUTTON_BLK, "Button_text", this)
       buttonObj.id = button.id
       buttonObj.setValue(button.text)
     }
@@ -99,8 +99,8 @@
 
   function onPopupButtonClick(obj)
   {
-    local id = obj?.id
-    local button = buttons.findvalue(@(b) b.id == id)
+    let id = obj?.id
+    let button = buttons.findvalue(@(b) b.id == id)
     obj.getScene().performDelayed(this, function() {
       if (!isValidView())
         return

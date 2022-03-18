@@ -1,9 +1,9 @@
-local protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
-local protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
-local { hasFeature } = require("scripts/user/features.nut")
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local controllerState = require("controllerState")
-local { hangar_protection_map_update, set_protection_analysis_editing,
+let protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
+let protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
+let { hasFeature } = require("scripts/user/features.nut")
+let SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+let controllerState = require("controllerState")
+let { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")
 
 
@@ -12,11 +12,11 @@ local allow_cutting = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
-class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ProtectionAnalysis <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.BASE
-  sceneBlkName = "gui/dmViewer/protectionAnalysis.blk"
-  sceneTplName = "gui/options/verticalOptions"
+  sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
+  sceneTplName = "%gui/options/verticalOptions"
 
   protectionAnalysisMode = ::DM_VIEWER_PROTECTION
   hintHandler = null
@@ -27,7 +27,7 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
   {
     protectionAnalysisOptions.setParams(unit)
 
-    local view = { rows = [] }
+    let view = { rows = [] }
     foreach (o in protectionAnalysisOptions.types)
       if (o.isVisible())
         view.rows.append({
@@ -65,20 +65,20 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
     scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
-    local isShowProtectionMapOptions = hasFeature("ProtectionMap") && unit.isTank()
+    let isShowProtectionMapOptions = hasFeature("ProtectionMap") && unit.isTank()
     ::showBtn("btnProtectionMap", isShowProtectionMapOptions)
-    local cbVerticalAngleObj = ::showBtn("checkboxVerticalAngle", isShowProtectionMapOptions)
+    let cbVerticalAngleObj = ::showBtn("checkboxVerticalAngle", isShowProtectionMapOptions)
     ::showBtn("rowSeparator", isShowProtectionMapOptions)
     if (isShowProtectionMapOptions)
     {
-      local value = ::load_local_account_settings(CB_VERTICAL_ANGLE, true)
+      let value = ::load_local_account_settings(CB_VERTICAL_ANGLE, true)
       cbVerticalAngleObj.setValue(value)
       if (!value)//Need change because y_nulling value is true by default
         set_protection_map_y_nulling(!value)
     }
 
-    local isSimulationEnabled = unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
-    local obj = showSceneBtn("switch_damage", isSimulationEnabled)
+    let isSimulationEnabled = unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
+    let obj = showSceneBtn("switch_damage", isSimulationEnabled)
     if (isSimulationEnabled)
       onAllowSimulation(obj)
 
@@ -103,9 +103,9 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::check_obj(obj))
       return
-    local optionId = ::g_string.cutPrefix(obj.getParent().id, "container_", "")
-    local option = protectionAnalysisOptions.get(optionId)
-    local value = option.value + (isIncrement ? option.step : - option.step)
+    let optionId = ::g_string.cutPrefix(obj.getParent().id, "container_", "")
+    let option = protectionAnalysisOptions.get(optionId)
+    let value = option.value + (isIncrement ? option.step : - option.step)
     scene.findObject(option.id).setValue(value)
   }
 
@@ -151,17 +151,17 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUpdateActionsHint()
   {
-    local showHints = ::has_feature("HangarHitcamera")
-    local hObj = showSceneBtn("analysis_hint", showHints)
+    let showHints = ::has_feature("HangarHitcamera")
+    let hObj = showSceneBtn("analysis_hint", showHints)
     if (!showHints || !::check_obj(hObj))
       return
 
     //hint for simulate shot
-    local showHint = ::has_feature("HangarHitcamera")
-    local bObj = showSceneBtn("analysis_hint_shot", showHint)
+    let showHint = ::has_feature("HangarHitcamera")
+    let bObj = showSceneBtn("analysis_hint_shot", showHint)
     if (showHint && ::check_obj(bObj))
     {
-      local shortcuts = []
+      let shortcuts = []
       if (::show_console_buttons)
         shortcuts.append(::loc("xinp/R2"))
       if (controllerState?.is_mouse_connected())
@@ -172,8 +172,8 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildProtectionMap()
   {
-    local waitTextObj = scene.findObject("pa_wait_text")
-    local cbVerticalAngleObj = scene.findObject("checkboxVerticalAngle")
+    let waitTextObj = scene.findObject("pa_wait_text")
+    let cbVerticalAngleObj = scene.findObject("checkboxVerticalAngle")
     if (!waitTextObj?.isValid() || !cbVerticalAngleObj?.isValid())
       return
 
@@ -181,7 +181,7 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
     ::showBtn("pa_info_block", true)
     hangar_protection_map_update()
     SecondsUpdater(waitTextObj, function(timerObj, p) {
-        local progress = get_protection_map_progress()
+        let progress = get_protection_map_progress()
         if (progress < 100)
           timerObj.setValue($"{progress.tostring()}%")
         else {
@@ -193,7 +193,7 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
   onProtectionMap = @() buildProtectionMap()
   onConsiderVerticalAngle = function(obj) {
-    local value = obj.getValue()
+    let value = obj.getValue()
     ::save_local_account_settings(CB_VERTICAL_ANGLE, value)
     set_protection_map_y_nulling(!value)
   }

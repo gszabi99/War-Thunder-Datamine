@@ -1,117 +1,117 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
 const NUM_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 const NUM_TURRETS_MAX = 10
 
-local IndicatorsVisible = Watched(false)
-local CurrentTime = Watched(false)
+let IndicatorsVisible = Watched(false)
+let CurrentTime = Watched(false)
 
-local DistanceToGround = Watched(0.0)
-local VerticalSpeed = Watched(0.0)
+let DistanceToGround = Watched(0.0)
+let VerticalSpeed = Watched(0.0)
 
-local RocketAimX = Watched(0.0)
-local RocketAimY = Watched(0.0)
-local RocketAimVisible = Watched(false)
-local RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
+let RocketAimX = Watched(0.0)
+let RocketAimY = Watched(0.0)
+let RocketAimVisible = Watched(false)
+let RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
 
-local TATargetVisible = Watched(false)
+let TATargetVisible = Watched(false)
 
-local GunDirectionX = Watched(0.0)
-local GunDirectionY = Watched(0.0)
-local GunDirectionVisible = Watched(false)
-local GunInDeadZone = Watched(false)
-local GunSightMode = Watched(0)
+let GunDirectionX = Watched(0.0)
+let GunDirectionY = Watched(0.0)
+let GunDirectionVisible = Watched(false)
+let GunInDeadZone = Watched(false)
+let GunSightMode = Watched(0)
 
-local HorAngle = Watched(0.0)
+let HorAngle = Watched(0.0)
 
-local TurretYaw   = Watched(0.0)
-local TurretPitch = Watched(0.0)
-local FovYaw    = Watched(0.0)
-local FovPitch  = Watched(0.0)
+let TurretYaw   = Watched(0.0)
+let TurretPitch = Watched(0.0)
+let FovYaw    = Watched(0.0)
+let FovPitch  = Watched(0.0)
 
-local IsAgmLaunchZoneVisible       = Watched(false)
-local IsZoomedAgmLaunchZoneVisible = Watched(false)
-local AgmLaunchZoneYawMin          = Watched(0.0)
-local AgmLaunchZoneYawMax          = Watched(0.0)
-local AgmLaunchZonePitchMin        = Watched(0.0)
-local AgmLaunchZonePitchMax        = Watched(0.0)
-local AgmRotatedLaunchZoneYawMax   = Watched(0.0)
-local AgmRotatedLaunchZoneYawMin   = Watched(0.0)
-local AgmRotatedLaunchZonePitchMax = Watched(0.0)
-local AgmRotatedLaunchZonePitchMin = Watched(0.0)
-local AgmLaunchZoneDistMin         = Watched(0.0)
-local AgmLaunchZoneDistMax         = Watched(0.0)
+let IsAgmLaunchZoneVisible       = Watched(false)
+let IsZoomedAgmLaunchZoneVisible = Watched(false)
+let AgmLaunchZoneYawMin          = Watched(0.0)
+let AgmLaunchZoneYawMax          = Watched(0.0)
+let AgmLaunchZonePitchMin        = Watched(0.0)
+let AgmLaunchZonePitchMax        = Watched(0.0)
+let AgmRotatedLaunchZoneYawMax   = Watched(0.0)
+let AgmRotatedLaunchZoneYawMin   = Watched(0.0)
+let AgmRotatedLaunchZonePitchMax = Watched(0.0)
+let AgmRotatedLaunchZonePitchMin = Watched(0.0)
+let AgmLaunchZoneDistMin         = Watched(0.0)
+let AgmLaunchZoneDistMax         = Watched(0.0)
 
-local IRCMState                    = Watched(0)
+let IRCMState                    = Watched(0)
 
-local IsInsideLaunchZoneYawPitch = Watched(false)
-local IsInsideLaunchZoneDist = Watched(false)
+let IsInsideLaunchZoneYawPitch = Watched(false)
+let IsInsideLaunchZoneDist = Watched(false)
 
-local IsLaserDesignatorEnabled = Watched(false)
-local IsATGMOutOfTrackerSector = Watched(false)
-local NoLosToATGM = Watched(false)
-local AtgmTrackerRadius = Watched(0.0)
+let IsLaserDesignatorEnabled = Watched(false)
+let IsATGMOutOfTrackerSector = Watched(false)
+let NoLosToATGM = Watched(false)
+let AtgmTrackerRadius = Watched(0.0)
 
-local MainMask = Watched(0)
-local SecondaryMask = Watched(0)
-local SightMask = Watched(0)
-local IlsMask = Watched(0)
-local MfdSightMask = Watched(0)
-local EmptyMask = Watched(0)
-local TargetPodMask = Watched(0)
+let MainMask = Watched(0)
+let SecondaryMask = Watched(0)
+let SightMask = Watched(0)
+let IlsMask = Watched(0)
+let MfdSightMask = Watched(0)
+let EmptyMask = Watched(0)
+let TargetPodMask = Watched(0)
 
-local HudColor = Watched(Color(71, 232, 39, 240))
-local HudParamColor = Watched(Color(240, 240, 240, 240))
-local AlertColorLow = Watched(Color(220, 220, 220, 240))
-local AlertColorMedium = Watched(Color(220, 120, 120, 240))
-local AlertColorHigh = Watched(Color(230, 0, 0, 240))
-local MfdColor = Watched(Color(71, 232, 39, 240))
-local PassivColor = Watched(Color(160, 160, 160, 240))
-local TargetPodHudColor = Watched(Color(71, 232, 39, 240))
+let HudColor = Watched(Color(71, 232, 39, 240))
+let HudParamColor = Watched(Color(240, 240, 240, 240))
+let AlertColorLow = Watched(Color(220, 220, 220, 240))
+let AlertColorMedium = Watched(Color(220, 120, 120, 240))
+let AlertColorHigh = Watched(Color(230, 0, 0, 240))
+let MfdColor = Watched(Color(71, 232, 39, 240))
+let PassivColor = Watched(Color(160, 160, 160, 240))
+let TargetPodHudColor = Watched(Color(71, 232, 39, 240))
 
-local TrtMode = []
-local Trt = []
-local IsEnginesControled = Watched(false)
-local isEngineControled = []
-local ThrottleState = []
+let TrtMode = []
+let Trt = []
+let IsEnginesControled = Watched(false)
+let isEngineControled = []
+let ThrottleState = []
 
-local Rpm = Watched(0)
-local Spd = Watched(0)
-local Mach = Watched(0)
-local CritMach = Watched(false)
-local Ias = Watched(0)
-local CritIas = Watched(false)
+let Rpm = Watched(0)
+let Spd = Watched(0)
+let Mach = Watched(0)
+let CritMach = Watched(false)
+let Ias = Watched(0)
+let CritIas = Watched(false)
 
-local CannonCount = []
-local CannonReloadTime = []
-local IsCannonEmpty = Watched(array(NUM_CANNONS_MAX, false))
-local isAllCannonsEmpty = Computed(@() !IsCannonEmpty.value.contains(false))
-local CannonMode = Watched(0)
-local CannonSelected = Watched(false)
+let CannonCount = []
+let CannonReloadTime = []
+let IsCannonEmpty = Watched(array(NUM_CANNONS_MAX, false))
+let isAllCannonsEmpty = Computed(@() !IsCannonEmpty.value.contains(false))
+let CannonMode = Watched(0)
+let CannonSelected = Watched(false)
 
-local InstructorState = Watched(0)
-local InstructorForced = Watched(false)
+let InstructorState = Watched(0)
+let InstructorForced = Watched(false)
 
-local StaminaValue  = Watched(0.0)
-local StaminaState = Watched(0)
+let StaminaValue  = Watched(0.0)
+let StaminaState = Watched(0)
 
-local MachineGuns = {
+let MachineGuns = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
   selected = Watched(false)
 }
 
-local CannonsAdditional = {
+let CannonsAdditional = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
   selected = Watched(false)
 }
 
-local Rockets = {
+let Rockets = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
@@ -121,7 +121,7 @@ local Rockets = {
   actualCount = Watched(-1)
 }
 
-local Agm = {
+let Agm = {
   count = Watched(0)
   seconds = Watched(-1)
   timeToHit = Watched(-1)
@@ -131,7 +131,7 @@ local Agm = {
   actualCount = Watched(-1)
 }
 
-local Aam = {
+let Aam = {
   count = Watched(0)
   seconds = Watched(-1)
   selected = Watched(false)
@@ -139,7 +139,7 @@ local Aam = {
   actualCount = Watched(-1)
 }
 
-local GuidedBombs = {
+let GuidedBombs = {
   seconds = Watched(-1)
   count = Watched(0)
   mode = Watched(0)
@@ -148,7 +148,7 @@ local GuidedBombs = {
   actualCount = Watched(-1)
 }
 
-local Bombs = {
+let Bombs = {
   seconds = Watched(-1)
   count = Watched(0)
   mode = Watched(0)
@@ -158,89 +158,89 @@ local Bombs = {
   actualCount = Watched(-1)
 }
 
-local Flares = {
+let Flares = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
   selected = Watched(false)
 }
 
-local Chaffs = {
+let Chaffs = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
   selected = Watched(false)
 }
 
-local IsMachineGunEmpty = Watched(false)
-local IsCanAdditionalEmpty = Watched(false)
-local IsRktEmpty = Watched(false)
-local IsAgmEmpty = Watched(false)
-local IsAamEmpty = Watched(false)
-local IsGuidedBmbEmpty = Watched(false)
-local IsBmbEmpty = Watched(false)
-local IsFlrEmpty = Watched(false)
-local IsChaffsEmpty = Watched(false)
+let IsMachineGunEmpty = Watched(false)
+let IsCanAdditionalEmpty = Watched(false)
+let IsRktEmpty = Watched(false)
+let IsAgmEmpty = Watched(false)
+let IsAamEmpty = Watched(false)
+let IsGuidedBmbEmpty = Watched(false)
+let IsBmbEmpty = Watched(false)
+let IsFlrEmpty = Watched(false)
+let IsChaffsEmpty = Watched(false)
 
-local IsHighRateOfFire = Watched(false)
+let IsHighRateOfFire = Watched(false)
 
-local IsRpmCritical = Watched(false)
+let IsRpmCritical = Watched(false)
 
-local FixedGunDirectionX = Watched(-100)
-local FixedGunDirectionY = Watched(-100)
-local FixedGunDirectionVisible = Watched(false)
-local FixedGunSightMode = Watched(0)
-local FixedGunOverheat = Watched(0.0)
+let FixedGunDirectionX = Watched(-100)
+let FixedGunDirectionY = Watched(-100)
+let FixedGunDirectionVisible = Watched(false)
+let FixedGunSightMode = Watched(0)
+let FixedGunOverheat = Watched(0.0)
 
-local IsRangefinderEnabled = Watched(false)
-local RangefinderDist = Watched(0)
+let IsRangefinderEnabled = Watched(false)
+let RangefinderDist = Watched(0)
 
-local TurretsDirectionX = []
-local TurretsDirectionY = []
-local TurretsOverheat= []
-local TurretsReloading = []
-local TurretsEmpty = []
-local TurretsVisible = []
+let TurretsDirectionX = []
+let TurretsDirectionY = []
+let TurretsOverheat= []
+let TurretsReloading = []
+let TurretsEmpty = []
+let TurretsVisible = []
 
-local OilTemperature = []
-local WaterTemperature = []
-local EngineTemperature = []
+let OilTemperature = []
+let WaterTemperature = []
+let EngineTemperature = []
 
-local OilState = []
-local WaterState = []
-local EngineState = []
-local TransmissionOilState = []
-local Fuel = Watched(-1)
-local FuelState = Watched(0)
+let OilState = []
+let WaterState = []
+let EngineState = []
+let TransmissionOilState = []
+let Fuel = Watched(-1)
+let FuelState = Watched(0)
 
-local OilAlert = []
-local WaterAlert = []
-local EngineAlert = []
-local IsTransmissionOilAlert = []
+let OilAlert = []
+let WaterAlert = []
+let EngineAlert = []
+let IsTransmissionOilAlert = []
 
-local IsMainHudVisible = Watched(false)
-local IsSightHudVisible = Watched(false)
-local IsPilotHudVisible = Watched(false)
-local IsWeaponHudVisible = Watched(false)
-local IsGunnerHudVisible = Watched(false)
-local IsBomberViewHudVisible = Watched(false)
-local IsArbiterHudVisible = Watched(false)
-local IsMfdEnabled = Watched(false)
-local IsIlsEnabled = Watched(false)
-local IsMfdSightHudVisible = Watched(false)
-local RwrForMfd = Watched(false)
-local RwrPosSize = Watched([0, 0, 20, 20])
-local MlwsLwsForMfd = Watched(false)
-local MfdSightPosSize = [0, 0, 0, 0]
-local IlsPosSize = [0, 0, 0, 0]
-local DetectAllyProgress = Watched(-1)
-local DetectAllyState = Watched(false)
+let IsMainHudVisible = Watched(false)
+let IsSightHudVisible = Watched(false)
+let IsPilotHudVisible = Watched(false)
+let IsWeaponHudVisible = Watched(false)
+let IsGunnerHudVisible = Watched(false)
+let IsBomberViewHudVisible = Watched(false)
+let IsArbiterHudVisible = Watched(false)
+let IsMfdEnabled = Watched(false)
+let IsIlsEnabled = Watched(false)
+let IsMfdSightHudVisible = Watched(false)
+let RwrForMfd = Watched(false)
+let RwrPosSize = Watched([0, 0, 20, 20])
+let MlwsLwsForMfd = Watched(false)
+let MfdSightPosSize = [0, 0, 0, 0]
+let IlsPosSize = [0, 0, 0, 0]
+let DetectAllyProgress = Watched(-1)
+let DetectAllyState = Watched(false)
 
-local GunOverheatState = Watched(0)
+let GunOverheatState = Watched(0)
 
-local IsCompassVisible = Watched(false)
+let IsCompassVisible = Watched(false)
 
-local helicopterState = {
+let helicopterState = {
 
   IndicatorsVisible,
   CurrentTime,

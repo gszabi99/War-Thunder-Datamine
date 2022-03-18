@@ -1,9 +1,9 @@
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
-local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
-local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { getCdBaseDifficulty } = ::require_native("guiOptions")
+let { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+let { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
+let { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+let actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
+let { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getCdBaseDifficulty } = ::require_native("guiOptions")
 local { getActionBarUnitName } = ::require_native("hudActionBar")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
@@ -21,11 +21,11 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     blk[idx] = val
 }
 
-class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
+::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/genericOptionsModal.blk"
-  sceneNavBlkName = "gui/navTestflight.blk"
+  sceneBlkName = "%gui/options/genericOptionsModal.blk"
+  sceneNavBlkName = "%gui/navTestflight.blk"
   multipleInstances = false
   wndGameMode = ::GM_TEST_FLIGHT
   wndOptionsMode = ::OPTIONS_MODE_TRAINING
@@ -48,7 +48,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
-    local btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
+    let btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
     if (hasMissionBuilder)
       btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
     showSceneBtn("btn_select", true)
@@ -56,7 +56,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
     {
-      local frameObj = scene.findObject("wnd_frame")
+      let frameObj = scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
       frameObj.pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
       frameObj.withSlotbar = "yes"
@@ -79,10 +79,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     }
     else
     {
-      local unitNestObj = scene.findObject("unit_nest")
+      let unitNestObj = scene.findObject("unit_nest")
       if (::checkObj(unitNestObj))
       {
-        local airData = ::build_aircraft_item(unit.name, unit)
+        let airData = ::build_aircraft_item(unit.name, unit)
         guiScene.appendWithBlk(unitNestObj, airData, this)
         ::fill_unit_item_timers(unitNestObj.findObject(unit.name), unit)
       }
@@ -116,11 +116,11 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   {
     if (typeof(::aircraft_for_weapons) != "string")
       return
-    local air = ::getAircraftByName(::aircraft_for_weapons)
+    let air = ::getAircraftByName(::aircraft_for_weapons)
     if (!air)
       return
 
-    local bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
+    let bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
     foreach(idx, bulGroup in bulletGroups)
       showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
@@ -133,9 +133,9 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       return
     }
 
-    local weaponryObj = scene.findObject("unit_weapons_selector")
+    let weaponryObj = scene.findObject("unit_weapons_selector")
 
-    local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
+    let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = unit
       canChangeBulletsAmount = true
@@ -163,7 +163,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       options.append([::USEROPT_LIMITED_AMMO, "spinner"])
     }
 
-    local skin_options = [
+    let skin_options = [
       [::USEROPT_SKIN, "spinner"]
     ]
     if (::has_feature("UserSkins"))
@@ -214,18 +214,18 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     updateButtons()
     updateWeaponsSelector()
 
-    local showOptions = isTestFlightAvailable()
+    let showOptions = isTestFlightAvailable()
 
-    local optListObj = scene.findObject("optionslist")
-    local textObj = scene.findObject("no_options_textarea")
+    let optListObj = scene.findObject("optionslist")
+    let textObj = scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions? "" : getCantFlyText(unit))
 
-    local hObj = scene.findObject("header_name")
+    let hObj = scene.findObject("header_name")
     if (!::checkObj(hObj))
       return
 
-    local headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
+    let headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
     hObj.setValue(headerText)
 
     if (!showOptions)
@@ -238,7 +238,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     ::aircraft_for_weapons = unit.name
     ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    local container = create_options_container("testflight_options", options, true, 0.5)
+    let container = create_options_container("testflight_options", options, true, 0.5)
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers = [container.descr]
@@ -296,7 +296,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function onApply(obj)
   {
-    local bulletsManager = weaponsSelectorWeak?.bulletsManager
+    let bulletsManager = weaponsSelectorWeak?.bulletsManager
     if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
       return
 
@@ -345,8 +345,8 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function startTestFlight()
   {
-    local misName = getTestFlightMisName(unit.testFlight)
-    local misBlk = ::get_mission_meta_info(misName)
+    let misName = getTestFlightMisName(unit.testFlight)
+    let misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
       return ::dagor.assertf(false, "Error: wrong testflight mission " + misName)
 
@@ -374,7 +374,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function getTestFlightMisName(misName)
   {
-    local lang = ::g_language.getLanguageName()
+    let lang = ::g_language.getLanguageName()
     return ::get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
   }
 
@@ -383,14 +383,14 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!unit)
       return
 
-    local dif = ::get_option(::USEROPT_DIFFICULTY)
-    local difValue = dif.values[dif.value]
+    let dif = ::get_option(::USEROPT_DIFFICULTY)
+    let difValue = dif.values[dif.value]
 
-    local skin = ::get_option(::USEROPT_SKIN)
-    local skinValue = skin.values[skin.value]
-    local fuelValue = getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
-    local limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
-    local limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
+    let skin = ::get_option(::USEROPT_SKIN)
+    let skinValue = skin.values[skin.value]
+    let fuelValue = getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
+    let limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
+    let limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
 
     ::aircraft_for_weapons = unit.name
 
@@ -410,7 +410,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function updateBulletCountOptions(updUnit) {
     local bulIdx = 0
-    local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
+    let bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
     foreach(idx, bulGroup in bulletGroups) {
       bulIdx = idx
       local name = ""
@@ -438,7 +438,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     updateVerticalTargetingOption()
     updateSceneDifficulty()
 
-    local diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
+    let diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
     ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
     ::set_option(::USEROPT_BOMB_ACTIVATION_TIME, ::get_option(
@@ -451,10 +451,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (getSlotbar())
       getSlotbar().updateDifficulty()
 
-    local unitNestObj = unit ? scene.findObject("unit_nest") : null
+    let unitNestObj = unit ? scene.findObject("unit_nest") : null
     if (::checkObj(unitNestObj))
     {
-      local obj = unitNestObj.findObject("rank_text")
+      let obj = unitNestObj.findObject("rank_text")
       if (::checkObj(obj))
         obj.setValue(::get_unit_rank_text(unit, null, true, getCurrentEdiff()))
     }
@@ -462,13 +462,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function getCurrentEdiff()
   {
-    local diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
-    local difficulty = (diffValue == "custom") ?
+    let diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
+    let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1)
     {
-      local battleType = ::get_battle_type_by_unit(unit)
+      let battleType = ::get_battle_type_by_unit(unit)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()
@@ -495,7 +495,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!needSlotbar)
       return
 
-    local crewUnit = ::get_cur_slotbar_unit()
+    let crewUnit = ::get_cur_slotbar_unit()
     if (crewUnit == unit || crewUnit == null)
     {
       updateButtons()
@@ -514,7 +514,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   }
 
   function onUserModificationsUpdate(obj) {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (!option)
       return
 
@@ -531,7 +531,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function onMyWeaponOptionUpdate(obj)
   {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
@@ -545,7 +545,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function onTripleAerobaticsSmokeSelected(obj)
   {
-    local option = get_option_by_id(obj?.id)
+    let option = get_option_by_id(obj?.id)
     if (!option)
       return
 
@@ -555,7 +555,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function checkRocketDisctanceFuseRow()
   {
-    local option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
+    let option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
     if (!option)
       return
 
@@ -564,7 +564,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function checkBombActivationTimeRow()
   {
-    local option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
+    let option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -573,7 +573,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function checkBombSeriesRow()
   {
-    local option = findOptionInContainers(::USEROPT_BOMB_SERIES)
+    let option = findOptionInContainers(::USEROPT_BOMB_SERIES)
     if (!option)
       return
 
@@ -584,28 +584,28 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function checkCountermeasurePeriodsRow()
   {
-    local option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesRow()
   {
-    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesPeriodsRow()
   {
-    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkDepthChargeActivationTimeRow()
   {
-    local option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    let option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -615,7 +615,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function updateTripleAerobaticsSmokeOptions()
   {
-    local aerobaticsSmokeOptions = find_options_in_containers([
+    let aerobaticsSmokeOptions = find_options_in_containers([
       ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
@@ -624,13 +624,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!aerobaticsSmokeOptions.len())
       return
 
-    local show = isTripleColorSmokeAvailable()
+    let show = isTripleColorSmokeAvailable()
     foreach(option in aerobaticsSmokeOptions)
       showOptionRow(option, show)
   }
 
   function updateTorpedoDiveDepth() {
-    local option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
+    let option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
     if (!option)
       return
 
@@ -641,10 +641,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function updateVerticalTargetingOption()
   {
-    local optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
+    let optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
     if (!optList.len())
       return
-    local diffName = getOptValue(::USEROPT_DIFFICULTY, false)
+    let diffName = getOptValue(::USEROPT_DIFFICULTY, false)
     if (diffName == null) //no such option in current options list
       return
 

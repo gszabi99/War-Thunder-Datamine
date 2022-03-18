@@ -1,10 +1,10 @@
-local platformModule = require("scripts/clientState/platform.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let crossplayModule = require("scripts/social/crossplay.nut")
+let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 ::g_invites_classes <- {}
 
-class ::BaseInvite
+::BaseInvite <- class
 {
   static lifeTimeMsec = 3600000
   static chatLinkPrefix = "INV_"
@@ -174,7 +174,7 @@ class ::BaseInvite
     msg = [::colorize(inviteColor, msg)]
     msg.append(getRestrictionText())
 
-    local buttons = []
+    let buttons = []
     if (!haveRestrictions())
     {
       buttons.append(
@@ -209,7 +209,7 @@ class ::BaseInvite
 
   function showInviterMenu(position = null)
   {
-    local contact = inviterUid && ::getContact(inviterUid, inviterName)
+    let contact = inviterUid && ::getContact(inviterUid, inviterName)
     ::g_chat.showPlayerRClickMenu(inviterName, null, contact, position)
   }
 

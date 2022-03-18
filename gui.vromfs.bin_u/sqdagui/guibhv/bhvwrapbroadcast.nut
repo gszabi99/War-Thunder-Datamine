@@ -1,10 +1,10 @@
-local mkWrap = @(notifyId) function(obj, is_down) {
+let mkWrap = @(notifyId) function(obj, is_down) {
   if (is_down && !obj.sendSceneEvent(notifyId))
     ::set_dirpad_event_processed(false)
   return ::RETCODE_HALT
 }
 
-class gui_bhv.wrapBroadcast
+::gui_bhv.wrapBroadcast <- class
 {
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS
 

@@ -1,6 +1,6 @@
-local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+let { saveProfile } = require("scripts/clientState/saveProfile.nut")
 
-class ::gui_handlers.WeaponWarningHandler extends ::gui_handlers.SkipableMsgBox
+::gui_handlers.WeaponWarningHandler <- class extends ::gui_handlers.SkipableMsgBox
 {
   skipOption = ::USEROPT_SKIP_WEAPON_WARNING
   showCheckBoxBullets = true
@@ -9,7 +9,7 @@ class ::gui_handlers.WeaponWarningHandler extends ::gui_handlers.SkipableMsgBox
   {
     base.initScreen()
 
-    local bltCheckBoxObj = scene.findObject("slots-autoweapon")
+    let bltCheckBoxObj = scene.findObject("slots-autoweapon")
     if (!::check_obj(bltCheckBoxObj))
       return
 

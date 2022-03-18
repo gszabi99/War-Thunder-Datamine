@@ -99,28 +99,44 @@ class CreateTemplateAnnotation : AstStructureAnnotation
   def override finish ( var st:StructurePtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
     if !is_entity_mgr_exists()
       return true
-    if is_in_aot() || find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
+    if is_in_aot() //|| find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
       st.fields |> clear()
       return true
     var parents:array<string>
+    var tags:array<uint>
     defer_delete(parents)
     var hadErrors = false
     for a in args
       if a.name == "extends"
         if a.basicType != Type tString
-          errors := "{errors}\nextends argument has to be of string type"
+          errors := "{errors}\nextends argument {a} has to be of string type"
           hadErrors = true
         else
           parents |> emplace(string(a.sValue))
+      elif a.name == "tag"
+        if a.basicType != Type tString
+          errors := "{errors}\tag argument {a} has to be of string type"
+          hadErrors = true
+        else
+          tags |> emplace(ecs_hash(string(a.sValue)))
     createTemplate2(group, ecs_hash(string(st.at.fileInfo.name)), string(st.name), parents) <| $(var cmp:CreatingTemplate)
+      for tag in tags
+        cmp |> creating_template_addTag(tag)
       for field in st.fields
+        let fieldName = string(field.name)
+        for a in field.annotation
+          if a.name == "tag"
+            if a.basicType != Type tString
+              errors := "{errors}\tag argument {a} has to be of string type"
+              hadErrors = true
+            else
+              cmp |> creating_template_addCompTag(ecs_hash(fieldName), ecs_hash(string(a.sValue)))
         //filter out
         //if field.annotation |> each |> map ( @(a) : bool => a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(cmp, a.sValue)) |> any//map-reduce is a bit slower
-        if find_index_if(each(field.annotation), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag_templ(cmp, a.sValue);}) != -1
-          continue
+        // if find_index_if(each(field.annotation), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag_templ(cmp, a.sValue);}) != -1
+        //   continue
         let f = template_flags(field.annotation)
         let undefType = is_undef(field.annotation)
-        let fieldName = string(field.name) |> replace("_dot_", ".") // ugly, but works
         if undefType
           set_undef(cmp, f, fieldName, string(field._type.alias))
         else

@@ -1,6 +1,6 @@
-class ::gui_handlers.TournamentRewardReceivedWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
   /**
@@ -16,7 +16,7 @@ class ::gui_handlers.TournamentRewardReceivedWnd extends ::gui_handlers.BaseGuiH
 
   static function open(config)
   {
-    local params = {
+    let params = {
       rewardBlk = config
       eventEconomicName = config.eventId
     }
@@ -25,15 +25,15 @@ class ::gui_handlers.TournamentRewardReceivedWnd extends ::gui_handlers.BaseGuiH
 
   function initScreen()
   {
-    local event = ::events.getEventByEconomicName(eventEconomicName)
-    local nextReward = ::EventRewards.getNext(rewardBlk, event)
+    let event = ::events.getEventByEconomicName(eventEconomicName)
+    let nextReward = ::EventRewards.getNext(rewardBlk, event)
 
-    local rewardDescriptionData = {
+    let rewardDescriptionData = {
       tournamentName = ::colorize("userlogColoredText", ::events.getNameByEconomicName(eventEconomicName))
     }
 
-    local mainConditionId = ::EventRewards.getRewardConditionId(rewardBlk)
-    local view = {
+    let mainConditionId = ::EventRewards.getRewardConditionId(rewardBlk)
+    let view = {
       rewardDescription = ::loc("tournaments/reward/description", rewardDescriptionData)
       conditionText     = ::EventRewards.getConditionText(rewardBlk)
       conditionIcon     = ::EventRewards.getConditionIcon(::EventRewards.getCondition(mainConditionId))
@@ -48,7 +48,7 @@ class ::gui_handlers.TournamentRewardReceivedWnd extends ::gui_handlers.BaseGuiH
         rewardIcon    = ::EventRewards.getRewardIcon(nextReward)
         rewardText    = ::EventRewards.getRewardDescText(nextReward)
       }
-    local blk = ::handyman.renderCached("gui/tournamentRewardReceived", view)
+    let blk = ::handyman.renderCached("%gui/tournamentRewardReceived", view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), blk, blk.len(), this)
 
     ::show_facebook_screenshot_button(scene)

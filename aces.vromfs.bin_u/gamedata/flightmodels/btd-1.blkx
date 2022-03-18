@@ -2266,15 +2266,12 @@
     {
       "preset": {
         "name": "btd_1_default",
-        "blk": "gameData/FlightModels/weaponPresets/btd_1_6x250lbs.blk",
-        "tags": {
-          "free": true
-        }
+        "blk": "gameData/FlightModels/weaponPresets/btd_1_default.blk"
       }
     },
     {
       "preset": {
-        "name": "btd_1_2x500lbs_2x250lbs",
+        "name": "btd_1_2x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/btd_1_2x500lbs.blk",
         "reqModification": "btd_sbc"
       }
@@ -2318,9 +2315,19 @@
     },
     {
       "preset": {
-        "name": "btd_1_1x2000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/btd_1_1x2000lbs.blk",
-        "reqModification": "btd_lbc"
+        "name": "btd_1_1x16000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/btd_1_1x16000lbs.blk",
+        "reqModification": "btd_lbc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_heavy",
+            "tier": {
+              "idx": 6
+            }
+          }
+        }
       }
     },
     {

@@ -13,11 +13,11 @@
 */
 
 
-class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "gui/mpLobby/playersList"
+  sceneTplName = "%gui/mpLobby/playersList"
 
   teams = null
   room = null
@@ -46,19 +46,19 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
 
   function getSceneTplView()
   {
-    local view = {
+    let view = {
       teamsAmount = teams.len()
       teams = []
     }
 
-    local markupData = {
+    let markupData = {
       tr_size = "pw, @baseTrHeight"
       trOnHover = "onPlayerHover"
       columns = {
         name = { width = "fw" }
       }
     }
-    local maxRows = ::SessionLobby.getMaxMembersCount(room)
+    let maxRows = ::SessionLobby.getMaxMembersCount(room)
     foreach(idx, team in teams)
     {
       markupData.invert <- idx == 0  && teams.len() == 2
@@ -86,20 +86,20 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
 
   function getSelectedPlayer()
   {
-    local objTbl = getFocusedTeamTableObj()
+    let objTbl = getFocusedTeamTableObj()
     return objTbl && ::getTblValue(objTbl.getValue(), ::getTblValue(focusedTeam, playersInTeamTables))
   }
 
   function getSelectedRowPos()
   {
-    local objTbl = getFocusedTeamTableObj()
+    let objTbl = getFocusedTeamTableObj()
     if(!objTbl)
       return null
-    local rowNum = objTbl.getValue()
+    let rowNum = objTbl.getValue()
     if (rowNum < 0 || rowNum >= objTbl.childrenCount())
       return null
-    local rowObj = objTbl.getChild(rowNum)
-    local topLeftCorner = rowObj.getPosRC()
+    let rowObj = objTbl.getChild(rowNum)
+    let topLeftCorner = rowObj.getPosRC()
     return [topLeftCorner[0], topLeftCorner[1] + rowObj.getSize()[1]]
   }
 
@@ -117,7 +117,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   function updatePlayersTbl()
   {
     isTablesInUpdate = true
-    local playersList = ::SessionLobby.getMembersInfoList(room)
+    let playersList = ::SessionLobby.getMembersInfoList(room)
     foreach(team in teams)
       updateTeamPlayersTbl(team, playersList)
     isTablesInUpdate = false
@@ -126,12 +126,12 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
 
   function updateTeamPlayersTbl(team, playersList)
   {
-    local objTbl = scene.findObject(getTeamTableId(team))
+    let objTbl = scene.findObject(getTeamTableId(team))
     if (!::checkObj(objTbl))
       return
 
-    local totalRows = objTbl.childrenCount()
-    local teamList = team == ::g_team.ANY ? playersList
+    let totalRows = objTbl.childrenCount()
+    let teamList = team == ::g_team.ANY ? playersList
       : ::u.filter(playersList, @(p) p.team.tointeger() == team.code)
     ::set_mp_table(objTbl, teamList, { max_rows = totalRows })
     ::update_team_css_label(objTbl)
@@ -143,8 +143,8 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
     //update cur value
     if (teamList.len())
     {
-      local curValue = objTbl.getValue()
-      local validValue = ::clamp(curValue, 0, teamList.len())
+      let curValue = objTbl.getValue()
+      let validValue = ::clamp(curValue, 0, teamList.len())
       if (curValue != validValue)
         objTbl.setValue(validValue)
     }
@@ -188,8 +188,8 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   {
     if (!::check_obj(obj) || !obj.isHovered())
       return
-    local value = ::to_integer_safe(obj?.rowIdx, -1, false)
-    local listObj = obj.getParent()
+    let value = ::to_integer_safe(obj?.rowIdx, -1, false)
+    let listObj = obj.getParent()
     if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
       listObj.setValue(value)
   }
@@ -213,7 +213,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   {
     if (!room)
       return
-    local fullRoom = ::g_mroom_info.get(room.roomId).getFullRoomData()
+    let fullRoom = ::g_mroom_info.get(room.roomId).getFullRoomData()
     if (fullRoom)
       room = fullRoom
   }

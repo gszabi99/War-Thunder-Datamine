@@ -4148,6 +4148,8 @@
           "bullets": 240,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4248,6 +4250,12 @@
           },
           {
             "fireConeAngle": 1.0
+          },
+          {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.08
           },
           {
             "allowableDelta": 2.0
@@ -4376,6 +4384,8 @@
           "bullets": 240,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4447,6 +4457,8 @@
           "bullets": 240,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.08,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -5579,12 +5591,12 @@
   },
   {
     "breaches": {
-      "repairSpeed": 25.0,
-      "waterMassVel": -150000.0,
-      "waterMassMult": 160.0,
+      "repairSpeed": 35.0,
+      "waterMassVel": -46000.0,
+      "waterMassMult": 180.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 5500000.0,
-      "additionalWaterShouldDiePercent": 0.38,
+      "additionalWaterShouldDiePercent": 0.3,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 40.0,
       "maxHeelingTime": 10.0,
@@ -5599,14 +5611,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.57,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.52,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -5619,19 +5631,19 @@
       {
         "cover": {
           "part": "cover_03_dm",
-          "weight": 0.74,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -5640,19 +5652,19 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.82,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_03_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_room_04_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -5667,13 +5679,13 @@
             {
               "part": {
                 "partNo": "transmission_01_dm",
-                "critWaterLevel": 0.45
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "transmission_02_dm",
-                "critWaterLevel": 0.45
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -5682,7 +5694,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.63,
+          "weight": 0.6,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -5703,7 +5715,7 @@
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.33,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       }

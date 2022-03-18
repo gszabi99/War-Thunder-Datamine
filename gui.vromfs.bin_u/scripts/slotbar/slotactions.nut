@@ -1,14 +1,14 @@
-local unitStatus = require("scripts/unit/unitStatus.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
+let unitStatus = require("scripts/unit/unitStatus.nut")
+let unitActions = require("scripts/unit/unitActions.nut")
 
-local ACTION_FUNCTION_PARAMS = {
+let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
   isSquadronResearchMode = false
   setResearchManually = false
   needChosenResearchOfSquadron = false
 }
 
-local MAIN_FUNC_PARAMS = {
+let MAIN_FUNC_PARAMS = {
   onSpendExcessExp = null
   onTakeParams = {}
   availableFlushExp = 0
@@ -31,9 +31,9 @@ local function getSlotActionFunctionName(unit, params)
   if (::canBuyUnit(unit) || ::canBuyUnitOnline(unit))
     return "mainmenu/btnOrder"
 
-  local isSquadronVehicle = unit.isSquadronVehicle()
-  local isInResearch = ::isUnitInResearch(unit)
-  local canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
+  let isSquadronVehicle = unit.isSquadronVehicle()
+  let isInResearch = ::isUnitInResearch(unit)
+  let canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
     && min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) > 0
   if ((params.availableFlushExp > 0 || !params.setResearchManually
       || (params.isSquadronResearchMode && params.needChosenResearchOfSquadron)
@@ -70,9 +70,9 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS)
   if (::canBuyUnit(unit))
     return unitActions.buy(unit, "slotAction")
 
-  local isSquadronVehicle = unit.isSquadronVehicle()
-  local isInResearch = ::isUnitInResearch(unit)
-  local canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
+  let isSquadronVehicle = unit.isSquadronVehicle()
+  let isInResearch = ::isUnitInResearch(unit)
+  let canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
     && ::min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) > 0
   if (( params.availableFlushExp > 0
       || !params.setResearchManually

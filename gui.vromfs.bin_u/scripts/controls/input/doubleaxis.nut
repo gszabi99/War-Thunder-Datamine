@@ -1,6 +1,6 @@
-local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+let gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 
-class ::Input.DoubleAxis extends ::Input.InputBase
+::Input.DoubleAxis <- class extends ::Input.InputBase
 {
   //bit mask array of axis ids from ::JoystickParams().getAxis()
   axisIds = null
@@ -9,18 +9,18 @@ class ::Input.DoubleAxis extends ::Input.InputBase
 
   function getMarkup()
   {
-    local data = getMarkupData()
+    let data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
-    local data = {
-      template = "gui/shortcutAxis"
+    let data = {
+      template = "%gui/shortcutAxis"
       view = {}
     }
 
-    local image = getImage()
+    let image = getImage()
     if (image)
       data.view.buttonImage <- image
 

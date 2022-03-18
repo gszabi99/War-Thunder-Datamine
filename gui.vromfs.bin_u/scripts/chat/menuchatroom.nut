@@ -1,5 +1,5 @@
-local platformModule = require("scripts/clientState/platform.nut")
-local { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -8,13 +8,13 @@ enum MESSAGE_TYPE {
   CUSTOM      = "custom"
 }
 
-local persistent = {
+let persistent = {
   lastCreatedMessageIndex = 0
 }
 
-local privateColor = "@chatTextPrivateColor"
-local blockedColor = "@chatTextBlockedColor"
-local systemColor = "@chatInfoColor"
+let privateColor = "@chatTextPrivateColor"
+let blockedColor = "@chatTextBlockedColor"
+let systemColor = "@chatInfoColor"
 
 ::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
@@ -27,7 +27,7 @@ local function localizeSystemMsg(msg)
       continue
 
     localized = true
-    local locText = ::loc(ending, "")
+    let locText = ::loc(ending, "")
     local playerName = ::g_string.slice(msg, 0, -ending.len() - 1)
     playerName = platformModule.getPlayerName(playerName)
     if (locText != "")
@@ -51,20 +51,20 @@ local function colorMyNameInText(msg)
 
   while (counter+::my_user_name.len() <= msg.len())
   {
-    local nameStartPos = msg.indexof(::my_user_name, counter);
+    let nameStartPos = msg.indexof(::my_user_name, counter);
     if (nameStartPos == null)
       break;
 
-    local nameEndPos = nameStartPos + ::my_user_name.len();
+    let nameEndPos = nameStartPos + ::my_user_name.len();
     counter = nameEndPos;
 
     if (::isInArray(msg.slice(nameStartPos-1, nameStartPos), ::punctuation_list) &&
         ::isInArray(msg.slice(nameEndPos, nameEndPos+1),     ::punctuation_list))
     {
-      local msgStart = msg.slice(0, nameStartPos);
-      local msgEnd = msg.slice(nameEndPos);
-      local msgName = msg.slice(nameStartPos, nameEndPos);
-      local msgProcessedPart = msgStart + ::colorize(::g_chat.color.senderMe[false], msgName)
+      let msgStart = msg.slice(0, nameStartPos);
+      let msgEnd = msg.slice(nameEndPos);
+      let msgName = msg.slice(nameStartPos, nameEndPos);
+      let msgProcessedPart = msgStart + ::colorize(::g_chat.color.senderMe[false], msgName)
       msg = msgProcessedPart + msgEnd;
       counter = msgProcessedPart.len();
     }
@@ -76,13 +76,13 @@ local function colorMyNameInText(msg)
 
 local function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
     important = false, needCensore = false) {
-  local text = ""
+  let text = ""
   local clanTag = ""
   local uid = null
   local messageType = ""
   local msgColor = ""
   local userColor = ""
-  local msgSrc = msg
+  let msgSrc = msg
 
   //from can be as string - Player nick, and as table - player contact.
   //after getting type, and acting accordingly, name must be string and mean name of player
@@ -95,7 +95,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     from = from.name
   }
 
-  local needMarkDirectAsPersonal = ::get_gui_option_in_mode(::USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
+  let needMarkDirectAsPersonal = ::get_gui_option_in_mode(::USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
     ::OPTIONS_MODE_GAMEPLAY)
   if (needMarkDirectAsPersonal && ::my_user_name != "" && from != ::my_user_name
     && msg.indexof(::my_user_name) != null
@@ -104,7 +104,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 
   if (myPrivate)
     from = ::my_user_name
-  local myself = from == ::my_user_name
+  let myself = from == ::my_user_name
 
   if (::g_chat.isSystemUserName(from)) {
     from = ""
@@ -177,7 +177,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 }
 
 ::newRoom <- function newRoom(id, customScene = null, ownerHandler = null) {
-  local rType = ::g_chat_room_type.getRoomType(id)
+  let rType = ::g_chat_room_type.getRoomType(id)
   local r = {
     id = id
 
@@ -219,7 +219,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
         mBlock.clanTag = ""
 
       if (mBlock.text == "" && mBlock.from != "") {
-          local pLink = ::g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
+          let pLink = ::g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
           mBlock.text = ::format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
             mBlock.fullName)
       }
@@ -247,7 +247,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     }
 
     function getLogForBanhammer() {
-      local log = mBlocks.map(@(mBlock) {
+      let log = mBlocks.map(@(mBlock) {
         from = mBlock.from
         userColor = mBlock.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(mBlock.userColor, "@")) : ""
         fromUid = mBlock.uid
@@ -266,12 +266,12 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 }
 
 ::initChatMessageListOn <- function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
-  local messages = []
+  let messages = []
   for (local i = 0; i < ::g_chat.getMaxRoomMsgAmount(); i++) {
     messages.append({ childIndex = i });
   }
-  local view = { messages = messages, customRoomId = customRoomId }
-  local messageListView = ::handyman.renderCached("gui/chat/chatMessageList", view)
+  let view = { messages = messages, customRoomId = customRoomId }
+  let messageListView = ::handyman.renderCached("%gui/chat/chatMessageList", view)
   sceneObject.getScene().replaceContentFromText(sceneObject,
     messageListView, messageListView.len(), handler)
 }

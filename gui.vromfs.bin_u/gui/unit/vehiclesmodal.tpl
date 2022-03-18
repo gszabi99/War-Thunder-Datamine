@@ -56,7 +56,7 @@ root {
 
     <<#navBar>>
     navBar {
-      include "gui/commonParts/navBar"
+      include "%gui/commonParts/navBar"
     }
     <</navBar>>
   }

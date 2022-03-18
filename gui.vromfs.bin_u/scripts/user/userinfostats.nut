@@ -1,12 +1,12 @@
-local time = require("scripts/time.nut")
-local avatars = require("scripts/user/avatars.nut")
-local { hasAllFeatures } = require("scripts/user/features.nut")
-local { eachParam, eachBlock } = require("std/datablock.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let time = require("scripts/time.nut")
+let avatars = require("scripts/user/avatars.nut")
+let { hasAllFeatures } = require("scripts/user/features.nut")
+let { eachParam, eachBlock } = require("std/datablock.nut")
+let { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-local statsFm = ["fighter", "bomber", "assault"]
-local statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
-local statsShips = [
+let statsFm = ["fighter", "bomber", "assault"]
+let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
+let statsShips = [
   "torpedo_boat"
   "gun_boat"
   "torpedo_gun_boat"
@@ -15,11 +15,11 @@ local statsShips = [
   "naval_ferry_barge"
   "cruiser"
 ]
-local statsHelicopters = ["helicopter"]
+let statsHelicopters = ["helicopter"]
 statsFm.extend(statsHelicopters)
 statsFm.extend(statsTanks)
 statsFm.extend(statsShips)
-local statsConfig = [
+let statsConfig = [
   {
     name = "mainmenu/titleVersus"
     header = true
@@ -106,7 +106,7 @@ local statsConfig = [
   }
 ]
 
-local defaultSummaryItem = {
+let defaultSummaryItem = {
   id = ""
   name = ""
   mode = null
@@ -121,17 +121,17 @@ foreach(idx, stat in statsConfig)
     if (!(param in stat))
       statsConfig[idx][param] <- value
 
-local function getAirsStatsFromBlk(blk) {
-  local res = {}
+let function getAirsStatsFromBlk(blk) {
+  let res = {}
   eachBlock(blk, function(diffBlk, diffName) {
 
-    local diffData = {}
+    let diffData = {}
     eachBlock(diffBlk, function(typeBlk, typeName) {
 
-      local typeData = []
+      let typeData = []
       eachBlock(typeBlk, function(airBlk, airName) {
 
-        local airData = { name = airName }
+        let airData = { name = airName }
         foreach(stat in ::air_stats_list)
         {
           if ("reqFeature" in stat && !hasAllFeatures(stat.reqFeature))
@@ -153,18 +153,17 @@ local function getAirsStatsFromBlk(blk) {
   return res
 }
 
-local function buildProfileSummaryRowData(config, summary, diffCode, textId = "")
+let function buildProfileSummaryRowData(config, summary, diffCode, textId = "")
 {
-  local row = [{ id = textId, text = "#" + config.name, tdalign = "left" }]
-  local modeList = (typeof config.mode == "array") ? config.mode : [config.mode]
-  local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+  let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
   if (diff == ::g_difficulty.UNKNOWN)
-    return
+    return null
 
+  let modeList = (typeof config.mode == "array") ? config.mode : [config.mode]
   local value = 0
   foreach(mode in modeList)
   {
-    local sumData = summary?[mode]?[diff.name]
+    let sumData = summary?[mode]?[diff.name]
     if (!sumData)
       continue
 
@@ -180,19 +179,29 @@ local function buildProfileSummaryRowData(config, summary, diffCode, textId = ""
       if ((config.fm in sumData) && (config.id in sumData[config.fm]))
         value += sumData[config.fm][config.id]
   }
-  local s = config.timeFormat? time.hoursToString(time.secondsToHours(value), false) : value
-  local tooltip = diff.getLocName()
-  row.append({text = s.tostring(), tooltip = tooltip})
+
+  if (config.fm != null && config.id == "timePlayed" && value < time.TIME_MINUTE_IN_SECONDS)
+    return null
+
+  let s = config.timeFormat
+    ? time.hoursToString(time.secondsToHours(value), false)
+    : value.tostring()
+
+  let row = [
+    { id = textId, text = "#" + config.name, tdalign = "left" },
+    { text = s, tooltip = diff.getLocName() }
+  ]
+
   return buildTableRowNoPad("", row)
 }
 
-local function fillProfileSummary(sObj, summary, diff) {
+let function fillProfileSummary(sObj, summary, diff) {
   if (!::checkObj(sObj))
     return
 
-  local guiScene = sObj.getScene()
+  let guiScene = sObj.getScene()
   local data = ""
-  local textsToSet = {}
+  let textsToSet = {}
   foreach(idx, item in statsConfig)
   {
     if (!hasAllFeatures(item.reqFeature))
@@ -209,13 +218,20 @@ local function fillProfileSummary(sObj, summary, diff) {
         if (::isInArray(statsFm[i], statsShips) && !::has_feature("Ships"))
           continue
 
-        local rowId = "row_" + idx + "_" + i
+        let rowId = "row_" + idx + "_" + i
         item.fm = statsFm[i]
-        data += buildProfileSummaryRowData(item, summary, diff, rowId)
+        let row = buildProfileSummaryRowData(item, summary, diff, rowId)
+        if (!row)
+          continue
+
+        data += row
         textsToSet["txt_" + rowId] <- ::loc(item.name) + " (" + ::loc("mainmenu/type_"+ statsFm[i].tolower()) +")"
       }
-    else
-      data += buildProfileSummaryRowData(item, summary, diff)
+    else {
+      let row = buildProfileSummaryRowData(item, summary, diff)
+      if (row)
+        data += row
+    }
   }
 
   guiScene.replaceContentFromText(sObj, data, data.len(), this)
@@ -223,11 +239,11 @@ local function fillProfileSummary(sObj, summary, diff) {
     sObj.findObject(id).setValue(text)
 }
 
-local function getCountryMedals(countryId, profileData = null)
+let function getCountryMedals(countryId, profileData = null)
 {
-  local res = []
-  local medalsList = profileData?.unlocks?.medal ?? []
-  local unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
+  let res = []
+  let medalsList = profileData?.unlocks?.medal ?? []
+  let unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
   foreach (cb in unlocks)
     if (cb?.country == countryId)
       if ((!profileData && ::is_unlocked_scripted(::UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
@@ -235,8 +251,8 @@ local function getCountryMedals(countryId, profileData = null)
   return res
 }
 
-local function getPlayerStatsFromBlk(blk) {
-  local player = {
+let function getPlayerStatsFromBlk(blk) {
+  let player = {
     name = blk?.nick
     lastDay = blk?.lastDay
     registerDay = blk?.registerDay
@@ -275,7 +291,7 @@ local function getPlayerStatsFromBlk(blk) {
 
   //unlocks
   eachBlock(blk?.unlocks, function(uBlk, unlock) {
-    local uType = uBlk?.type
+    let uType = uBlk?.type
     if (!uType)
       return
 
@@ -286,7 +302,7 @@ local function getPlayerStatsFromBlk(blk) {
 
   foreach(i, country in shopCountriesList)
   {
-    local cData = {
+    let cData = {
       medalsCount = getCountryMedals(country, player).len()
       unitsCount = 0
       eliteUnitsCount = 0
@@ -307,7 +323,7 @@ local function getPlayerStatsFromBlk(blk) {
 
   //same with ::g_crews_list.get()
   eachBlock(blk?.slots, function(crewBlk, country) {
-    local countryData = { country, crews = [] }
+    let countryData = { country, crews = [] }
     eachParam(crewBlk, @(_, aircraft) countryData.crews.append({ aircraft }))
     player.crews.append(countryData)
   })

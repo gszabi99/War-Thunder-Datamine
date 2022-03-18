@@ -164,10 +164,10 @@
                 "point": "t2_fighters_area"
               },
               {
-                "point": "t1_airfield01_start"
+                "point": "t1_airfield"
               },
               {
-                "point": "t1_airfield01_start"
+                "point": "t1_airfield"
               }
             ]
           },
@@ -183,7 +183,7 @@
                 "point": "t2_bombers_area"
               },
               {
-                "point": "t1_airfield01_start"
+                "point": "t1_airfield"
               }
             ]
           },
@@ -210,7 +210,7 @@
             "icon": {
               "icontype": "airfield",
               "side": "ally",
-              "target": "t1_airfield01_start"
+              "target": "t1_airfield"
             }
           },
           {
@@ -218,7 +218,7 @@
               "icontype": "fighter",
               "side": "enemy",
               "target": "t2_fighters_area",
-              "lookAt": "t1_airfield01_start"
+              "lookAt": "t1_airfield"
             }
           },
           {
@@ -226,7 +226,7 @@
               "icontype": "bomber",
               "side": "enemy",
               "target": "t2_bombers_area",
-              "lookAt": "t1_airfield01_start"
+              "lookAt": "t1_airfield"
             }
           },
           {
@@ -280,6 +280,22 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/rb_air_spawns_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -299,9 +315,15 @@
       "conditions": [],
       "actions": [
         {
+          "varSetBool": {
+            "value": true,
+            "var": "force_air_spawn"
+          }
+        },
+        {
           "addAirfield": [
             {
-              "runwayStart": "t1_airfield01_start"
+              "runwayStart": "t1_airfield"
             },
             {
               "runwayEnd": "t1_airfield01_end"
@@ -366,86 +388,6 @@
           ]
         },
         {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/bombers_spawn",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "target": "t2_bombers_spawn",
-            "team": "B",
-            "tags": {
-              "type_bomber": true,
-              "carrier_take_off": false,
-              "tank": false
-            }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/bombers_spawn",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "target": "t1_bombers_spawn",
-            "team": "A",
-            "offset": [-200.0,1200.0,-200.0],
-            "tags": {
-              "type_bomber": true,
-              "type_hydroplane": true,
-              "carrier_take_off": false,
-              "tank": false
-            }
-          }
-        },
-        {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/fighters_spawn",
-            "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "target": "t2_fighters_spawn",
-            "team": "B",
-            "tags": {
-              "type_bomber": false,
-              "carrier_take_off": false,
-              "tank": false
-            }
-          }
-        },
-        {
           "missionMarkAsRespawnPoint": [
             {
               "loc_name": "missions/carriers_spawn"
@@ -494,6 +436,9 @@
             },
             {
               "replaceAreas": false
+            },
+            {
+              "ignoreTeamsOnReuse": false
             },
             {
               "target": "t2_carrier_01"
@@ -525,31 +470,6 @@
           ]
         },
         {
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "missions/airfield_spawn1",
-            "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "target": "t1_airfield01_start",
-            "team": "A",
-            "tags": {
-              "type_hydroplane": false,
-              "tank": false
-            }
-          }
-        },
-        {
           "missionMarkAsRespawnPoint": [
             {
               "loc_name": "missions/carriers_spawn"
@@ -598,6 +518,9 @@
             },
             {
               "replaceAreas": false
+            },
+            {
+              "ignoreTeamsOnReuse": false
             },
             {
               "target": "t1_carrier_01"
@@ -645,7 +568,7 @@
             "hp": 30000.0,
             "use_variable": true,
             "var_value": "airfield_hp",
-            "airfield": "t1_airfield01_start"
+            "airfield": "t1_airfield"
           }
         },
         {
@@ -2066,6 +1989,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2184,6 +2108,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2302,6 +2227,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2356,6 +2282,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2473,6 +2400,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2574,6 +2502,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2675,6 +2604,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2776,6 +2706,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2877,6 +2808,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2978,6 +2910,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3079,6 +3012,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3180,6 +3114,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3282,6 +3217,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3368,6 +3304,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3454,6 +3391,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3540,6 +3478,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3626,6 +3565,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3712,6 +3652,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3798,6 +3739,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3884,6 +3826,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3970,6 +3913,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4056,6 +4000,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4142,6 +4087,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4260,6 +4206,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4377,6 +4324,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4478,6 +4426,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4579,6 +4528,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4680,6 +4630,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4781,6 +4732,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4883,6 +4835,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4969,6 +4922,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5055,6 +5009,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5141,6 +5096,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5227,6 +5183,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5313,6 +5270,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5399,6 +5357,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5485,6 +5444,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5571,6 +5531,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5657,6 +5618,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5743,6 +5705,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5783,6 +5746,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5822,6 +5786,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5861,6 +5826,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5900,6 +5866,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5939,6 +5906,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5978,6 +5946,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6017,6 +5986,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6056,6 +6026,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6095,6 +6066,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6134,6 +6106,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6173,6 +6146,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6212,6 +6186,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6249,6 +6224,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6286,6 +6262,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6323,6 +6300,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6360,6 +6338,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6397,6 +6376,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6434,6 +6414,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6471,6 +6452,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6508,6 +6490,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6545,6 +6528,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6582,6 +6566,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6629,6 +6614,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -6677,6 +6663,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -6725,6 +6712,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -6773,6 +6761,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -6821,6 +6810,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6858,6 +6848,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6895,6 +6886,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6932,6 +6924,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6969,6 +6962,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7006,6 +7000,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7043,6 +7038,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7080,6 +7076,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7117,6 +7114,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7154,6 +7152,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7191,6 +7190,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7228,6 +7228,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7265,6 +7266,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7302,6 +7304,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7339,6 +7342,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7354,7 +7358,7 @@
     }
   ],
   "areas": {
-    "t1_bombers_spawn": {
+    "t1_main_bomber_spawn": {
       "type": "Sphere",
       "tm": [
         [-212.132,0.0,212.132],
@@ -7387,7 +7391,7 @@
       "objLayer": 4,
       "props": []
     },
-    "t2_fighters_spawn": {
+    "t2_common_fighters_spawn": {
       "type": "Sphere",
       "tm": [
         [245.746,0.0,-172.073],
@@ -7398,7 +7402,7 @@
       "objLayer": 0,
       "props": []
     },
-    "t2_bombers_spawn": {
+    "t2_main_bomber_spawn": {
       "type": "Sphere",
       "tm": [
         [13.0858,0.0,-299.714],
@@ -7475,7 +7479,7 @@
       "objLayer": 4,
       "props": []
     },
-    "t1_airfield01_start": {
+    "t1_airfield": {
       "type": "Sphere",
       "tm": [
         [6.57587e-06,0.0,87.1],
@@ -7669,6 +7673,28 @@
         [0.0,20.0,0.0],
         [-19.981,0.0,-0.872386],
         [1991.05,16.6004,-2612.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "center_area": {
+      "type": "Sphere",
+      "tm": [
+        [43722.5,0.0,23207.7],
+        [0.0,49500.0,0.0],
+        [-23207.7,0.0,43722.5],
+        [-5336.92,300.0,8737.93]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_common_fighters_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [-122.746,0.0,273.74],
+        [0.0,300.0,0.0],
+        [-273.74,0.0,-122.746],
+        [6268.99,300.0,-13119.4]
       ],
       "objLayer": 0,
       "props": []

@@ -92,6 +92,36 @@
     },
     {
       "land_micro_details_uv_scale": 0.71
+    },
+    {
+      "microdetail_stone_a_tex_n*": {
+        "coloring": 0.1
+      }
+    },
+    {
+      "microdetail_generic_granules_a_tex_n*": {
+        "coloring": 0.1
+      }
+    },
+    {
+      "microdetail_scan_gravel_a_tex_n*": {
+        "coloring": 0.1
+      }
+    },
+    {
+      "microdetail_soil_a_tex_n*": {
+        "coloring": 0.3
+      }
+    },
+    {
+      "microdetail_sand_a_tex_n*": {
+        "coloring": 0.7
+      }
+    },
+    {
+      "microdetail_sand_c_tex_n*": {
+        "coloring": 0.7
+      }
     }
   ],
   "earth": {
@@ -196,6 +226,76 @@
     },
     {
       "poland_fields_b": "poland_fields_b_mask"
+    },
+    {
+      "small_grass": {
+        "grass_grid_size": 0.75,
+        "grass_distance": 200.0,
+        "hor_size_mul": 2.0,
+        "alphaSuffix": "_a",
+        "grass_types": {
+          "generic_grass_tall_a": {
+            "diffuse": "grass_generic_grass_tall_a_tex_d",
+            "normal": "grass_generic_grass_tall_a_tex_n",
+            "variations": 1,
+            "height": 0.25,
+            "height_rnd_add": 0.1,
+            "hor_size": 0.2,
+            "hor_size_rnd_add": 0.0625,
+            "color_mask_r_from": "#4c642b5a",
+            "color_mask_r_to": "#8270565a",
+            "color_mask_g_from": "#1f1f1f5a",
+            "color_mask_g_to": "#7988555a",
+            "color_mask_b_from": "#4d5d325a",
+            "color_mask_b_to": "#6f6e2c5a",
+            "height_from_weight_mul": 0.3,
+            "height_from_weight_add": 0.7,
+            "density_from_weight_mul": 0.2,
+            "density_from_weight_add": 0.4,
+            "vertical_angle_add": 0.1,
+            "vertical_angle_mul": 0.5,
+            "ht_rnd_add": 0.15
+          },
+          "generic_grass_tall_b": {
+            "diffuse": "grass_generic_grass_tall_b_tex_d",
+            "normal": "grass_generic_grass_tall_b_tex_n",
+            "variations": 1,
+            "height": 0.25,
+            "height_rnd_add": 0.1,
+            "hor_size": 0.2,
+            "hor_size_rnd_add": 0.0625,
+            "color_mask_r_from": "#6b7d2c5a",
+            "color_mask_r_to": "#837a475a",
+            "color_mask_g_from": "#4343435a",
+            "color_mask_g_to": "#8c9d675a",
+            "color_mask_b_from": "#646d245a",
+            "color_mask_b_to": "#9873535a",
+            "height_from_weight_mul": 0.3,
+            "height_from_weight_add": 0.7,
+            "density_from_weight_mul": 0.2,
+            "density_from_weight_add": 0.4,
+            "vertical_angle_add": 0.1,
+            "vertical_angle_mul": 0.5,
+            "ht_rnd_add": 0.15
+          },
+          "nograss": {
+            "density_from_weight_mul": 0.0,
+            "density_from_weight_add": 0.0
+          }
+        },
+        "decals": {
+          "field_grass": {
+            "id": 1,
+            "generic_grass_tall_a": 1.0,
+            "generic_grass_tall_b": 2.0
+          },
+          "meadow_grass": {
+            "id": 2,
+            "generic_grass_tall_a": 2.0,
+            "generic_grass_tall_b": 1.0
+          }
+        }
+      }
     },
     {
       "layer": {

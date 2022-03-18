@@ -1,11 +1,11 @@
-local { turretAngles } = require("airHudElems.nut")
-local lineWidth = hdpx(LINE_WIDTH)
-local { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt } = require("planeState.nut")
-local { GuidanceLockState } = require("agmAimState.nut")
-local {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+let { turretAngles } = require("airHudElems.nut")
+let lineWidth = hdpx(LINE_WIDTH)
+let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt } = require("planeState/planeWeaponState.nut")
+let { GuidanceLockState } = require("agmAimState.nut")
+let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
 
-local crosshair = @() {
+let crosshair = @() {
   size = [ph(10), ph(10)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -20,7 +20,7 @@ local crosshair = @() {
   ]
 }
 
-local status = @() {
+let status = @() {
   size = flex()
   pos = [pw(2), ph(5)]
   flow = FLOW_HORIZONTAL
@@ -75,7 +75,7 @@ local status = @() {
   ]
 }
 
-local hints = @() {
+let hints = @() {
   size = flex()
   children = [
     @() {
@@ -91,7 +91,7 @@ local hints = @() {
   ]
 }
 
-local function Root(width, height) {
+let function Root(width, height) {
   return {
     size = [width, height]
     children = [

@@ -71,3 +71,45 @@ struct EventOnStartBurn
 struct EventOnStopSingleBurn
   fireId: int
   initiatorId: uint
+
+[cpp_event(broadcast)]
+struct EventOnPlayerConnected
+  userId : uint64
+
+[cpp_event(broadcast)]
+struct EventOnPlayerDisconnected
+  userId : uint64
+
+[cpp_event(broadcast)]
+struct EventOnSessionEnd
+  winnerTeam : int
+
+[cpp_event(broadcast)]
+struct EventOnPlayerSpawn
+  userId : uint64
+  unitId: int
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventFinishAssist
+{}
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventTeamKill
+{}
+
+[cpp_event(unicast, with_scheme)]
+struct EventGunShot
+  noise: float
+
+[cpp_event(unicast)]
+struct CmdDisableMove
+  uid: int
+  name: string
+
+[cpp_event(broadcast, with_scheme)]
+struct EventOnSupportUnitSpawn
+{}
+
+[cpp_event(broadcast, with_scheme)]
+struct EventFlightStart
+{}

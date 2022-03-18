@@ -17,6 +17,7 @@
   "bulletsCluster": 1,
   "fxType": "muzzle_ground_40mm_slow",
   "fxGroundDust": "",
+  "fxGrassDust": "",
   "fxSandDust": "",
   "fxSnowDust": "",
   "fxConcreteDust": "",
@@ -32,9 +33,13 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 300,
-    "mass": 0.141,
+    "mass": 0.124,
     "caliber": 0.02,
+    "damageMass": 0.05,
+    "ballisticCaliber": 0.02,
+    "damageCaliber": 0.011,
     "speed": 1400.0,
+    "Cx": 0.3219,
     "maxDistance": 7000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apcr",
@@ -66,18 +71,14 @@
       "HitPower1000m": [0.9,0.0],
       "HitPower10000m": [0.8,10000.0]
     },
-    "armorpower": {
-      "ArmorPower0m": [95.0,10.0],
-      "ArmorPower100m": [94.0,100.0],
-      "ArmorPower250m": [80.0,250.0],
-      "ArmorPower500m": [66.0,500.0],
-      "ArmorPower750m": [52.0,750.0],
-      "ArmorPower1000m": [38.0,1000.0],
-      "ArmorPower1250m": [24.0,1250.0],
-      "ArmorPower1500m": [15.0,1500.0],
-      "ArmorPower2000m": [8.0,2000.0],
-      "ArmorPower2500m": [5.0,2500.0],
-      "ArmorPower7000m": [0.0,10000.0]
+    "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.65,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
     },
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
@@ -169,9 +170,13 @@
   "28_20mm_APCR": {
     "bullet": {
       "bulletCount": 300,
-      "mass": 0.141,
+      "mass": 0.124,
       "caliber": 0.02,
+      "damageMass": 0.05,
+      "ballisticCaliber": 0.02,
+      "damageCaliber": 0.011,
       "speed": 1400.0,
+      "Cx": 0.3219,
       "maxDistance": 7000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
@@ -203,18 +208,14 @@
         "HitPower1000m": [0.9,0.0],
         "HitPower10000m": [0.8,10000.0]
       },
-      "armorpower": {
-        "ArmorPower0m": [95.0,10.0],
-        "ArmorPower100m": [94.0,100.0],
-        "ArmorPower250m": [80.0,250.0],
-        "ArmorPower500m": [66.0,500.0],
-        "ArmorPower750m": [52.0,750.0],
-        "ArmorPower1000m": [38.0,1000.0],
-        "ArmorPower1250m": [24.0,1250.0],
-        "ArmorPower1500m": [15.0,1500.0],
-        "ArmorPower2000m": [8.0,2000.0],
-        "ArmorPower2500m": [5.0,2500.0],
-        "ArmorPower7000m": [0.0,10000.0]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.65,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],

@@ -1,10 +1,10 @@
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
-local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-local time = require("scripts/time.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local ItemLifetimeModifier = require("scripts/items/itemLifetimeModifier.nut")
+let inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+let time = require("scripts/time.nut")
+let workshop = require("scripts/items/workshop/workshop.nut")
+let ItemLifetimeModifier = require("scripts/items/itemLifetimeModifier.nut")
 
-local collection = {}
+let collection = {}
 
 local ItemGenerator = class {
   id = -1
@@ -32,7 +32,7 @@ local ItemGenerator = class {
     tags     = itemDefDesc?.tags
     timestamp = itemDefDesc?.Timestamp ?? ""
     rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
-    local lifetimeModifierText = itemDefDesc?.lifetime_modifier
+    let lifetimeModifierText = itemDefDesc?.lifetime_modifier
     if (!u.isEmpty(lifetimeModifierText))
       lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
@@ -45,7 +45,7 @@ local ItemGenerator = class {
     local result = rawCraftTime
     if (lifetimeModifier != null)
     {
-      local mul = lifetimeModifier.calculate()
+      let mul = lifetimeModifier.calculate()
       result = max(1, round(result * mul))
     }
     return result
@@ -56,14 +56,14 @@ local ItemGenerator = class {
     if (!_exchangeRecipes
       || (needUpdateRecipesList && _exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime))
     {
-      local generatorId = id
-      local generatorCraftTime = getCraftTime()
-      local parsedRecipes = inventoryClient.parseRecipesString(exchange)
-      local isDisassemble = tags?.isDisassemble ?? false
-      local localizationPresetName = tags?.customLocalizationPreset
-      local effectOnStartCraftPresetName = tags?.effectOnStartCraft
-      local allowableComponents = getAllowableRecipeComponents()
-      local showRecipeAsProduct = tags?.showRecipeAsProduct
+      let generatorId = id
+      let generatorCraftTime = getCraftTime()
+      let parsedRecipes = inventoryClient.parseRecipesString(exchange)
+      let isDisassemble = tags?.isDisassemble ?? false
+      let localizationPresetName = tags?.customLocalizationPreset
+      let effectOnStartCraftPresetName = tags?.effectOnStartCraft
+      let allowableComponents = getAllowableRecipeComponents()
+      let showRecipeAsProduct = tags?.showRecipeAsProduct
       _exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
@@ -83,8 +83,8 @@ local ItemGenerator = class {
           foreach (itemdefId in itemBlk % paramName)
           {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
-            local gen = collection?[itemdefId]
-            local additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
+            let gen = collection?[itemdefId]
+            let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
             _exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
               parsedRecipe = pr
               generatorId = gen.id
@@ -116,8 +116,8 @@ local ItemGenerator = class {
   }
 
   function getUsableRecipes() {
-    local showAllowableRecipesOnly = tags?.showAllowableRecipesOnly ?? false
-    local recipes = getRecipes() ?? []
+    let showAllowableRecipesOnly = tags?.showAllowableRecipesOnly ?? false
+    let recipes = getRecipes() ?? []
     if (!showAllowableRecipesOnly)
       return recipes
 
@@ -126,7 +126,7 @@ local ItemGenerator = class {
     foreach (recipe in recipes) {
       if (!recipe.isUsable)
         continue
-      local multiComponentCount = recipe.components.filter(@(c) c.curQuantity > c.reqQuantity).len()
+      let multiComponentCount = recipe.components.filter(@(c) c.curQuantity > c.reqQuantity).len()
       if (multiComponentCount < maxMultiComponentCount)
         continue
       if (multiComponentCount == maxMultiComponentCount) {
@@ -148,18 +148,18 @@ local ItemGenerator = class {
   function _unpackContent(contentRank = null)
   {
     _contentUnpacked = []
-    local parsedBundles = inventoryClient.parseRecipesString(bundle)
-    local trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
-    local trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
+    let parsedBundles = inventoryClient.parseRecipesString(bundle)
+    let trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
+    let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
       foreach (cfg in set.components)
       {
-        local item = ::ItemsManager.findItemById(cfg.itemdefid)
-        local generator = !item ? collection?[cfg.itemdefid] : null
-        local rank = contentRank != null ? ::min(cfg.quantity, contentRank) : cfg.quantity
+        let item = ::ItemsManager.findItemById(cfg.itemdefid)
+        let generator = !item ? collection?[cfg.itemdefid] : null
+        let rank = contentRank != null ? ::min(cfg.quantity, contentRank) : cfg.quantity
         if (item)
         {
-          local b = ::DataBlock()
+          let b = ::DataBlock()
           b.item =  item.id
           b.rank = rank
           if (tags?.showFreq)
@@ -167,21 +167,21 @@ local ItemGenerator = class {
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
             && rank <= trophyWeightsBlockCount)
           {
-            local weightBlock = trophyWeightsBlk.getBlock(rank - 1)
+            let weightBlock = trophyWeightsBlk.getBlock(rank - 1)
             b.weight = weightBlock.getBlockName()
           }
           _contentUnpacked.append(b)
         }
         else if (generator)
         {
-          local content = generator.getContent(rank)
+          let content = generator.getContent(rank)
           hasHiddenItems = hasHiddenItems || generator.hasHiddenItems
           hiddenTopPrizeParams = hiddenTopPrizeParams || generator.hiddenTopPrizeParams
           _contentUnpacked.extend(content)
         }
       }
 
-    local isBundleHidden = !_contentUnpacked.len()
+    let isBundleHidden = !_contentUnpacked.len()
     hasHiddenItems = hasHiddenItems || isBundleHidden
     hiddenTopPrizeParams = isBundleHidden ? tags : hiddenTopPrizeParams
   }
@@ -195,7 +195,7 @@ local ItemGenerator = class {
 
   function isHiddenTopPrize(prize)
   {
-    local content = getContent()
+    let content = getContent()
     if (!hasHiddenItems || !prize?.item)
       return false
     foreach (v in content)
@@ -211,11 +211,11 @@ local ItemGenerator = class {
 
   function markAllRecipes()
   {
-    local recipes = getRecipes()
+    let recipes = getRecipes()
     if (!ExchangeRecipes.hasFakeRecipes(recipes))
       return
 
-    local markedRecipes = []
+    let markedRecipes = []
     foreach(recipe in recipes)
       if (recipe.markRecipe(false, false))
         markedRecipes.append(recipe.uid)
@@ -227,11 +227,11 @@ local ItemGenerator = class {
   getContentNoRecursion = @() getContent()
 
   function getAllowableRecipeComponents() {
-    local allowableItemsForRecipes = tags?.allowableItemsForRecipes
+    let allowableItemsForRecipes = tags?.allowableItemsForRecipes
     if (allowableItemsForRecipes == null)
       return null
 
-    local allowableItems = {}
+    let allowableItems = {}
     foreach (itemId in ::split(allowableItemsForRecipes, "_"))
       allowableItems[::to_integer_safe(itemId, itemId, false)] <- true
 
@@ -239,17 +239,17 @@ local ItemGenerator = class {
   }
 }
 
-local get = function(itemdefId) {
+let get = function(itemdefId) {
   ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
   return collection?[itemdefId]
 }
 
-local add = function(itemDefDesc) {
+let add = function(itemDefDesc) {
   if (itemDefDesc?.Timestamp != collection?[itemDefDesc.itemdefid]?.timestamp)
     collection[itemDefDesc.itemdefid] <- ItemGenerator(itemDefDesc)
 }
 
-local findGenByReceptUid = @(recipeUid)
+let findGenByReceptUid = @(recipeUid)
   ::u.search(collection, @(gen) ::u.search(gen.getRecipes(false),
     @(recipe) recipe.uid == recipeUid
      && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) //!!!FIX ME There should be no two recipes with the same uid.

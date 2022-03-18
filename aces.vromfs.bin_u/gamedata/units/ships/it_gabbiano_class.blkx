@@ -2728,6 +2728,12 @@
             "fireConeAngle": 1.0
           },
           {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.08
+          },
+          {
             "allowableDelta": 2.0
           },
           {
@@ -4557,18 +4563,35 @@
     ]
   },
   {
+    "breaches": {
+      "repairSpeed": 21.0,
+      "waterMassVel": -29000.0,
+      "waterMassMult": 300.0,
+      "sizeToRepair": [0.01,3.0,10.0,370.0],
+      "additionalWaterDeathThreshold": 2200000.0,
+      "additionalWaterShouldDiePercent": 0.35,
+      "fatalBreachDrownTime": 35.0,
+      "maxHeelingAngle": 37.0,
+      "maxHeelingTime": 9.0,
+      "criticalHeelingAnglePercent": 0.5,
+      "maxCriticalHeelingTime": 2.0,
+      "heelingDeathHeightOffsetMult": 1.0,
+      "sideCenterOfMassOffsetPercent": 0.25
+    }
+  },
+  {
     "shipCover": [
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.65,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 1.0,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4589,7 +4612,7 @@
       {
         "cover": {
           "part": "cover_03_dm",
-          "weight": 0.88,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4602,7 +4625,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.7,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4623,7 +4646,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.65,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4636,28 +4659,11 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.45,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       }
     ]
-  },
-  {
-    "breaches": {
-      "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
-      "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 3600000.0,
-      "additionalWaterShouldDiePercent": 0.45,
-      "fatalBreachDrownTime": 35.0,
-      "maxHeelingAngle": 37.0,
-      "maxHeelingTime": 9.0,
-      "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 2.0,
-      "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
-    }
   },
   {
     "winch": {

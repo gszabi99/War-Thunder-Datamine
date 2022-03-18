@@ -1,4 +1,4 @@
-local { canUseIngameShop,
+let { canUseIngameShop,
         getShopItemsTable,
         getEntStoreLocId,
         getEntStoreIcon,
@@ -6,33 +6,31 @@ local { canUseIngameShop,
         getEntStoreUnseenIcon,
         needEntStoreDiscountIcon,
         openEntStoreTopMenuFunc } = require("scripts/onlineShop/entitlementsStore.nut")
-local contentStateModule = require("scripts/clientState/contentState.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local { isPlatformSony,
+let contentStateModule = require("scripts/clientState/contentState.nut")
+let workshop = require("scripts/items/workshop/workshop.nut")
+let { isPlatformSony,
         isPlatformPC,
         consoleRevision,
         targetPlatform } = require("scripts/clientState/platform.nut")
-local encyclopedia = require("scripts/encyclopedia.nut")
-local { openChangelog } = require("scripts/changelog/changeLogState.nut")
-local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
-local { openUrlByObj } = require("scripts/onlineShop/url.nut")
-local openQrWindow = require("scripts/wndLib/qrWindow.nut")
-local { getTextWithCrossplayIcon,
+let encyclopedia = require("scripts/encyclopedia.nut")
+let { openChangelog } = require("scripts/changelog/changeLogState.nut")
+let openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
+let { openUrlByObj } = require("scripts/onlineShop/url.nut")
+let openQrWindow = require("scripts/wndLib/qrWindow.nut")
+let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo,
         isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
-local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
-local { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
-local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local {
-  checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
-local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+let { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
+let topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
+let { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
+let { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
+let exitGame = require("scripts/utils/exitGame.nut")
+let { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+let { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+let { openESportListWnd } = require("scripts/events/eSportModal.nut")
 
-local template = {
+let template = {
   id = ""
   text = @() ""
   tooltip = @() ""
@@ -56,7 +54,7 @@ local template = {
   funcName = @() isButton()? "onClick" : checkbox()? "onChangeCheckboxValue" : null
 }
 
-local list = {
+let list = {
   UNKNOWN = {}
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
@@ -65,9 +63,6 @@ local list = {
       if (!::is_custom_battles_enabled())
         return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(::GM_SKIRMISH))
-        return
-
-      if (!checkAndShowMultiplayerPrivilegeWarning())
         return
 
       ::queues.checkAndStart(
@@ -79,12 +74,6 @@ local list = {
 
     isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
-    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable()
-    tooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable())
-        return ::loc("xbox/noMultiplayer")
-      return ""
-    }
   }
   WORLDWAR = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("mainmenu/btnWorldwar"))
@@ -144,6 +133,12 @@ local list = {
     }
     isHidden = @(...) !::has_feature("HistoricalCampaign")
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
+    isInactiveInQueue = true
+  }
+  TOURNAMENTS = {
+    text = @() "#mainmenu/btnTournament"
+    onClickFunc = @(obj, handler) openESportListWnd()
+    isHidden = @(...) !::has_feature("ESport")
     isInactiveInQueue = true
   }
   BENCHMARK = {
@@ -231,9 +226,7 @@ local list = {
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
     onClickFunc = function(obj, handler) {
-      if (checkAndShowMultiplayerPrivilegeWarning() &&
-          (!needShowCrossPlayInfo() || isCrossPlayEnabled())
-         )
+      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
       else if (!::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
@@ -280,28 +273,28 @@ local list = {
     onClickFunc = @(obj, handler) ::has_feature("EnableGoldPurchase")
       ? handler.startOnlineShop("eagles", null, "topmenu")
       : ::showInfoMsgBox(::loc("msgbox/notAvailbleGoldPurchase"))
-    image = @() "#ui/gameuiskin#shop_warpoints_premium"
+    image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
     isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
     onClickFunc = @(obj, handler) handler.startOnlineShop("premium")
-    image = @() "#ui/gameuiskin#sub_premiumaccount"
+    image = @() "#ui/gameuiskin#sub_premiumaccount.svg"
     needDiscountIcon = true
     isHidden = @(...) !::has_feature("EnablePremiumPurchase") || !::isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
     onClickFunc = @(obj, handler) handler.startOnlineShop("warpoints")
-    image = @() "#ui/gameuiskin#shop_warpoints"
+    image = @() "#ui/gameuiskin#shop_warpoints.svg"
     needDiscountIcon = true
     isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   INVENTORY = {
     text = @() "#items/inventory"
     onClickFunc = @(...) ::gui_start_inventory()
-    image = @() "#ui/gameuiskin#inventory_icon"
+    image = @() "#ui/gameuiskin#inventory_icon.svg"
     isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu()
     unseenIcon = @() SEEN.INVENTORY
   }
@@ -406,14 +399,14 @@ local list = {
   DEBUG_PS4_SHOP_DATA = {
     text = @() "Debug PS4 Data" //intentionally without localization
     onClickFunc = function(obj, handler) {
-      local itemInfo = []
+      let itemInfo = []
       foreach (id, item in getShopItemsTable())
       {
         itemInfo.append(item.id)
         itemInfo.append(item.imagePath)
         itemInfo.append(item.getDescription())
       }
-      local data = ::g_string.implode(itemInfo, "\n")
+      let data = ::g_string.implode(itemInfo, "\n")
       ::dagor.debug(data)
       ::script_net_assert("PS4 Internal debug shop data")
     }
@@ -427,7 +420,7 @@ local list = {
   }
 }
 
-local fillButtonConfig = function(buttonCfg, name) {
+let fillButtonConfig = function(buttonCfg, name) {
   return template.__merge(buttonCfg.__merge({
     id = name.tolower()
     typeName = name

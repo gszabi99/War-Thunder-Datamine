@@ -1,6 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local platformModule = require("scripts/clientState/platform.nut")
-local { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let enums = require("sqStdLibs/helpers/enums.nut")
+let platformModule = require("scripts/clientState/platform.nut")
+let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -39,7 +39,7 @@ enum chatRoomTabOrder {
   {
     if (roomNameLocId)
       return ::loc(roomNameLocId)
-    local roomName = roomId.slice(1)
+    let roomName = roomId.slice(1)
     return ::loc("chat/channel/" + roomName, roomName)
   }
   getTooltip = @(roomId) getRoomName(roomId, true)
@@ -60,7 +60,7 @@ enum chatRoomTabOrder {
   inviteLocIdFull = "chat/receiveInvite"
   inviteIcon = "#ui/gameuiskin#chat.svg"
   getInviteClickNameText = function(roomId) {
-    local locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
+    let locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
     return ::format(::loc(locId), getRoomName(roomId))
   }
 
@@ -131,7 +131,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
     getRoomName = function(roomId, isColored = false, isFull = false)
     {
-      local isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
+      let isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
       local res = !isFull || isMySquadRoom ? ::loc(roomNameLocId) : ::loc("squad/disbanded/name")
       if (isColored && isMySquadRoom)
         res = ::colorize(::g_chat.color.senderSquad[true], res)
@@ -187,7 +187,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       foreach(r in ::global_chat_rooms)
         if (roomId.indexof(r.name + "_", 1) == 1)
         {
-          local lang = ::g_string.slice(roomId, r.name.len() + 2)
+          let lang = ::g_string.slice(roomId, r.name.len() + 2)
           local langsList = ::getTblValue("langs", r, ::langs_list)
           return ::isInArray(lang, langsList)
         }
@@ -202,7 +202,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         if (r.name != roomName)
           continue
 
-        local langsList = ::getTblValue("langs", r, ::langs_list)
+        let langsList = ::getTblValue("langs", r, ::langs_list)
         if (!::isInArray(lang, langsList))
           lang = langsList[0]
         return ::format("#%s_%s", roomName, lang)
@@ -223,13 +223,13 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     threadNameLen = 15
     getRoomName = function(roomId, isColored = false)
     {
-      local threadInfo = ::g_chat.getThreadInfo(roomId)
+      let threadInfo = ::g_chat.getThreadInfo(roomId)
       if (!threadInfo)
         return ::loc(roomNameLocId)
 
       local title = threadInfo.getTitle()
       //use text only before first linebreak
-      local idx = title.indexof("\n")
+      let idx = title.indexof("\n")
       if (idx)
         title = title.slice(0, idx)
 
@@ -239,7 +239,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     }
     getTooltip = function(roomId)
     {
-      local threadInfo = ::g_chat.getThreadInfo(roomId)
+      let threadInfo = ::g_chat.getThreadInfo(roomId)
       return threadInfo ? threadInfo.getRoomTooltipText() : ""
     }
 
@@ -248,7 +248,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     hasChatHeader = true
     fillChatHeader = function(obj, roomData)
     {
-      local handler = ::handlersManager.loadHandler(::gui_handlers.ChatThreadHeader,
+      let handler = ::handlersManager.loadHandler(::gui_handlers.ChatThreadHeader,
                                                     {
                                                       scene = obj
                                                       roomId = roomData.id
@@ -257,7 +257,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     }
     updateChatHeader = function(obj, roomData)
     {
-      local ud = obj.getUserData()
+      let ud = obj.getUserData()
       if ("onSceneShow" in ud)
         ud.onSceneShow()
     }

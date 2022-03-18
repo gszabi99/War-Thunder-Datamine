@@ -1,6 +1,6 @@
-local { cutPrefix } = require("std/string.nut")
+let { cutPrefix } = require("std/string.nut")
 
-local dargJKeysToImage = {
+let dargJKeysToImage = {
   "J:D.Up"          : "dpad_up",
   "J:D.Down"        : "dpad_down",
   "J:D.Left"        : "dpad_left",
@@ -75,12 +75,12 @@ local dargJKeysToImage = {
 
 const PRESSED_POSTFIX = "_pressed"
 
-local defHeight = ::dp(2) + ::fpx(36)
+let defHeight = ::dp(2) + ::fpx(36)
 
-local function mkImageComp(text, params = {}) {
+let function mkImageComp(text, params = {}) {
   if (text==null || text=="")
     return null
-  local height = (params?.height ?? defHeight).tointeger()
+  let height = (params?.height ?? defHeight).tointeger()
   return {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -91,16 +91,16 @@ local function mkImageComp(text, params = {}) {
   }.__merge(params)
 }
 
-local getTexture = @(textureId) cutPrefix(::cross_call.getTextureName(textureId), "#")
+let getTexture = @(textureId) cutPrefix(::cross_call.getTextureName(textureId), "#")
 
 local function mkImageCompByDargKey(key, sf = null, params={}) {
   if (sf != null && (sf & S_HOVER) != 0)
     key = "J:A"
-  local textureId = dargJKeysToImage?[key]
+  let textureId = dargJKeysToImage?[key]
   if (textureId == null)
     return null
 
-  local isPressed = sf != null && (sf & S_ACTIVE) != 0
+  let isPressed = sf != null && (sf & S_ACTIVE) != 0
   local textureName = isPressed ? getTexture($"{textureId}{PRESSED_POSTFIX}") : ""
   if (textureName == "")
     textureName = getTexture(textureId)

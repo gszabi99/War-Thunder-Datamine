@@ -1,7 +1,7 @@
-local { isDataBlock } = require("sqStdLibs/helpers/u.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { isDataBlock } = require("sqStdLibs/helpers/u.nut")
+let { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-local defaults = ::Watched({  //def value when feature not found in game_settings.blk
+let defaults = ::Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false
   SpendGold = true
   SpendFreeRP = true
@@ -283,12 +283,12 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   BattleChatModeSquad = true
 })
 
-local override = ::Watched({})
-local cache = {}
+let override = ::Watched({})
+let cache = {}
 
 defaults.subscribe(@(v) cache.clear())
 
-local function hasFeatureBasic(name)
+let function hasFeatureBasic(name)
 {
   local res = override.value?[name] ?? cache?[name]
   if (res != null)
@@ -302,16 +302,16 @@ local function hasFeatureBasic(name)
   return res
 }
 
-local function getFeaturePack(name)
+let function getFeaturePack(name)
 {
-  local sBlk = ::get_game_settings_blk()
-  local featureBlk = sBlk?.features[name]
+  let sBlk = ::get_game_settings_blk()
+  let featureBlk = sBlk?.features[name]
   if (!isDataBlock(featureBlk))
     return null
   return featureBlk?.reqPack
 }
 
-local function hasFeature(name)
+let function hasFeature(name)
 {
   if (name in cache)
     return cache[name]
@@ -323,12 +323,12 @@ local function hasFeature(name)
     confirmingResult = false
     baseName = name.slice(1, name.len())
   }
-  local res = hasFeatureBasic(baseName) == confirmingResult
+  let res = hasFeatureBasic(baseName) == confirmingResult
   cache[name] <- res
   return res
 }
 
-local function hasAllFeatures(arr)
+let function hasAllFeatures(arr)
 {
   if (arr == null || arr.len() <= 0)
     return true
@@ -340,7 +340,7 @@ local function hasAllFeatures(arr)
   return true
 }
 
-local function hasAnyFeature(arr)
+let function hasAnyFeature(arr)
 {
   if (arr == null || arr.len() <= 0)
     return true

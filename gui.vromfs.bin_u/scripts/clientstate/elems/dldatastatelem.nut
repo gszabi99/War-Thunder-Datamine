@@ -1,5 +1,5 @@
-local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
 
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10
@@ -25,8 +25,8 @@ elemModelType.addTypes({
 
       if (curStat?.filesInFlight == 0)
       {
-        local delayed = curStat?.filesDelayed ?? 0
-        local displayStatTimeSec = ((curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0) > 0) && delayed > 0
+        let delayed = curStat?.filesDelayed ?? 0
+        let displayStatTimeSec = ((curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0) > 0) && delayed > 0
           ? HIDE_STAT_WITH_FAILED_TIME_SEC
           : HIDE_STAT_TIME_SEC
         refreshDisplayStat(displayStatTimeSec)
@@ -40,12 +40,12 @@ elemModelType.addTypes({
       if (statText)
         return statText
 
-      local inFlightText = ::loc("loadDlDataStat/inFlight",
+      let inFlightText = ::loc("loadDlDataStat/inFlight",
         { filesInFlight = curStat?.filesInFlight ?? 0
           filesInFlightSizeKB = curStat?.filesInFlightSizeKB ?? 0 })
 
       local delayedText = ""
-      local filesDelayed = curStat?.filesDelayed ?? 0
+      let filesDelayed = curStat?.filesDelayed ?? 0
       if (filesDelayed > 0)
         delayedText = ::loc("ui/comma") +
           ::colorize("newTextBrightColor", ::loc("loadDlDataStat/delayed",
@@ -54,8 +54,8 @@ elemModelType.addTypes({
 
 
       local failedText = ""
-      local filesFailed = (curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0)
-      local filesFailedSizeKB = (curStat?.filesFailedSizeKB ?? 0) - (prevStat?.filesFailedSizeKB ?? 0)
+      let filesFailed = (curStat?.filesFailed ?? 0) - (prevStat?.filesFailed ?? 0)
+      let filesFailedSizeKB = (curStat?.filesFailedSizeKB ?? 0) - (prevStat?.filesFailedSizeKB ?? 0)
       if (filesFailed > 0)
         failedText = ::loc("ui/comma") +
           ::colorize("badTextColor", ::loc("loadDlDataStat/failed",
@@ -99,8 +99,8 @@ elemViewType.addTypes({
 
     updateView = function(obj, params)
     {
-      local needShowStat = model.needShowStat()
-      local objAnimText = obj.getChild(0)
+      let needShowStat = model.needShowStat()
+      let objAnimText = obj.getChild(0)
       objAnimText.fade = needShowStat ? "in" : "out"
 
       if (!needShowStat)

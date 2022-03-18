@@ -1,9 +1,9 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { GUI } = require("scripts/utils/configs.nut")
 
-local cache = persist("cache", @() {})
-local function clearCache() {
+let cache = persist("cache", @() {})
+let function clearCache() {
   cache.clear()
   foreach (id in ["guid", "xbox", ps4RegionName(), "epic"])
   {
@@ -13,7 +13,7 @@ local function clearCache() {
 }
 clearCache()
 
-local function getBundlesList(blockName) {
+let function getBundlesList(blockName) {
   if (!cache[blockName].len())
   {
     if (!(blockName in cache))
@@ -22,7 +22,7 @@ local function getBundlesList(blockName) {
       return ""
     }
 
-    local guiBlk = GUI.get()?.bundles
+    let guiBlk = GUI.get()?.bundles
     if (!guiBlk)
       return ""
 
@@ -32,23 +32,23 @@ local function getBundlesList(blockName) {
   return cache[blockName]
 }
 
-local function getCachedBundleId(blockName, entName) {
-  local list = getBundlesList(blockName)
-  local res = list?[entName] ?? ""
+let function getCachedBundleId(blockName, entName) {
+  let list = getBundlesList(blockName)
+  let res = list?[entName] ?? ""
   ::dagor.debug($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
   return res
 }
 
-local function getCachedEntitlementId(blockName, bundleName) {
+let function getCachedEntitlementId(blockName, bundleName) {
   if (!bundleName || bundleName == "")
     return ""
 
-  local invBlockName = $"inv_{blockName}"
+  let invBlockName = $"inv_{blockName}"
 
   if (!(bundleName in cache[invBlockName]))
   {
     cache[invBlockName][bundleName] <- ""
-    local list = getBundlesList(blockName)
+    let list = getBundlesList(blockName)
     foreach (entId, bndlId in list)
       if (bndlId == bundleName)
       {
@@ -65,7 +65,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(p) clearCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-local getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
+let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
   : isPlatformXboxOne ? "xbox"
   : ::epic_is_running() ? "epic"
   : "guid"

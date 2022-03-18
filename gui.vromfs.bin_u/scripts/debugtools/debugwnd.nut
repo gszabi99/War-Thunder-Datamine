@@ -3,9 +3,9 @@
   ::gui_start_modal_wnd(::gui_handlers.debugWndHandler, { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
 }
 
-class ::gui_handlers.debugWndHandler extends ::BaseGuiHandler
+::gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler
 {
-  sceneBlkName = "gui/debugFrame.blk"
+  sceneBlkName = "%gui/debugFrame.blk"
   wndType = handlerType.MODAL
 
   isExist = false
@@ -29,8 +29,8 @@ class ::gui_handlers.debugWndHandler extends ::BaseGuiHandler
 
   function reinitScreen(params)
   {
-    local _blkName = ::getTblValue("blkName", params, blkName)
-    local _tplParams = ::getTblValue("tplParams", params, tplParams)
+    let _blkName = ::getTblValue("blkName", params, blkName)
+    let _tplParams = ::getTblValue("tplParams", params, tplParams)
     if (_blkName == blkName && ::u.isEqual(_tplParams, tplParams))
       return
 
@@ -48,21 +48,21 @@ class ::gui_handlers.debugWndHandler extends ::BaseGuiHandler
     if (!::checkObj(scene))
       return
 
-    local obj = scene.findObject("debug_wnd_content_box")
+    let obj = scene.findObject("debug_wnd_content_box")
     if (!isExist)
     {
-      local txt = (blkName == null ? "No file specified." :
+      let txt = (blkName == null ? "No file specified." :
         ("File not found: \"" + ::colorize("userlogColoredText", blkName) + "\""))
         + "~nUsage examples:"
-        + "~ndebug_wnd(\"gui/debriefing/debriefing.blk\")"
-        + "~ndebug_wnd(\"gui/menuButton.tpl\", {buttonText=\"Test\"})" // warning disable: -forgot-subst
-      local data = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='" + txt + "' }"
+        + "~ndebug_wnd(\"%gui/debriefing/debriefing.blk\")"
+        + "~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})" // warning disable: -forgot-subst
+      let data = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='" + txt + "' }"
       return guiScene.replaceContentFromText(obj, data, data.len(), callbacksContext)
     }
 
     if (tplName)
     {
-      local data = ::handyman.render(::load_template_text(tplName), tplParams)
+      let data = ::handyman.render(::load_template_text(tplName), tplParams)
       guiScene.replaceContentFromText(obj, data, data.len(), callbacksContext)
     }
     else
@@ -76,7 +76,7 @@ class ::gui_handlers.debugWndHandler extends ::BaseGuiHandler
   {
     if (!isExist)
       return
-    local modified = ::get_file_modify_time_sec(blkName)
+    let modified = ::get_file_modify_time_sec(blkName)
     if (modified < 0)
       return
 

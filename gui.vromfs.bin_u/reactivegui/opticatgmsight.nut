@@ -1,14 +1,15 @@
-local {Roll, TurretYaw, TurretPitch} = require("planeState.nut")
-local agmAimState = require("agmAimState.nut")
-local AgmTrackerVisible = agmAimState.TrackerVisible
-local AgmTrackerAngle = agmAimState.TrackerAngle
-local guidedBombsAimState = require("guidedBombsAimState.nut")
-local GuidedBombsTrackerVisible = guidedBombsAimState.TrackerVisible
-local GuidedBombsTrackerAngle = guidedBombsAimState.TrackerAngle
-local lineWidth = hdpx(LINE_WIDTH)
+let {TurretYaw, TurretPitch} = require("planeState/planeWeaponState.nut")
+let {Roll} = require("planeState/planeFlyState.nut")
+let agmAimState = require("agmAimState.nut")
+let AgmTrackerVisible = agmAimState.TrackerVisible
+let AgmTrackerAngle = agmAimState.TrackerAngle
+let guidedBombsAimState = require("guidedBombsAimState.nut")
+let GuidedBombsTrackerVisible = guidedBombsAimState.TrackerVisible
+let GuidedBombsTrackerAngle = guidedBombsAimState.TrackerAngle
+let lineWidth = hdpx(LINE_WIDTH)
 
-local opticColor = Color(255, 255, 255)
-local crosshair = @() {
+let opticColor = Color(255, 255, 255)
+let crosshair = @() {
   watch = [ AgmTrackerVisible, GuidedBombsTrackerVisible ]
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
@@ -25,7 +26,7 @@ local crosshair = @() {
   ]
 }
 
-local rollIndicator = @() {
+let rollIndicator = @() {
   size = [ph(15), ph(15)]
   pos = [0, ph(85)]
   children = [
@@ -69,8 +70,8 @@ local rollIndicator = @() {
   ]
 }
 
-local lockZoneVisible = Computed(@() AgmTrackerAngle.value != 0.0 || GuidedBombsTrackerAngle.value != 0.0)
-local lockZone = @() {
+let lockZoneVisible = Computed(@() AgmTrackerAngle.value != 0.0 || GuidedBombsTrackerAngle.value != 0.0)
+let lockZone = @() {
   size = flex()
   watch = lockZoneVisible
   children = [ lockZoneVisible.value ?
@@ -92,7 +93,7 @@ local lockZone = @() {
   ]
 }
 
-local function Root(width, height, posX = 0, posY = 0) {
+let function Root(width, height, posX = 0, posY = 0) {
   return {
     pos = [posX, posY]
     size = [width, height]

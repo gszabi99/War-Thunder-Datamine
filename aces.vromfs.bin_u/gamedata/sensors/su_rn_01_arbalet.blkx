@@ -205,12 +205,20 @@
               "fsm": "mode",
               "active": true
             }
+          },
+          {
+            "setCueEnabled": {
+              "value": true
+            }
           }
         ],
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -306,6 +314,18 @@
             "setNextDetectedTargetActive": []
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": []
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": []
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -318,6 +338,11 @@
             "designateActiveDetectedTarget": {
               "type": 0,
               "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "sensorIndex": 1,
+              "selectTarget": true
             }
           }
         }

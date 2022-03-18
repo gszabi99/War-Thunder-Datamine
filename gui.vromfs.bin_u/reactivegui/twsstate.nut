@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local warningSystemState = {
+let warningSystemState = {
   IsMlwsLwsHudVisible = Watched(false),
   LastTargetAge = Watched(1.0),
   CurrentTime = Watched(0.0),

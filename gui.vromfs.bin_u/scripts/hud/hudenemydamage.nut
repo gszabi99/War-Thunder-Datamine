@@ -1,4 +1,4 @@
-local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+let { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
   thresholdShowHealthBelow = 0.25
@@ -153,9 +153,9 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
     local markup = ""
     foreach (sectionIdx, section in partsOrder)
     {
-      local isStatus = ::getTblValue("isStatus", section, false)
+      let isStatus = ::getTblValue("isStatus", section, false)
       foreach (partId in section.parts)
-        markup += ::handyman.renderCached(("gui/hud/hudEnemyDamage"), {
+        markup += ::handyman.renderCached(("%gui/hud/hudEnemyDamage"), {
           id = partId
           text = isStatus ? "" : ::loc("dmg_msg_short/" + partId)
         })
@@ -199,8 +199,8 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
     }
     */
 
-    local targetId = ::getTblValue("unitId", data)
-    local targetVersion = ::getTblValue("unitVersion", data)
+    let targetId = ::getTblValue("unitId", data)
+    let targetVersion = ::getTblValue("unitVersion", data)
     if (targetId != lastTargetId || targetVersion != lastTargetVersion)
     {
       if (!isAllAnimationsFinished())
@@ -217,15 +217,15 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
       lastTargetKilled = ::getTblValue("unitKilled", data, lastTargetKilled)
     }
 
-    local partName = ::getTblValue("partName", data)
+    let partName = ::getTblValue("partName", data)
     if (partName && (partName in partsConfig))
     {
-      local cfg = partsConfig[partName]
+      let cfg = partsConfig[partName]
       if (!(data.partDmName in cfg.dmParts))
         cfg.dmParts[data.partDmName] <- data
       else
       {
-        local prevData = cfg.dmParts[data.partDmName]
+        let prevData = cfg.dmParts[data.partDmName]
         foreach (i, v in data)
           prevData[i] <- v
       }
@@ -233,32 +233,32 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
       local showHp = 1.0
       foreach(dmPart in cfg.dmParts)
       {
-        local partDead   = ::getTblValue("partDead", dmPart, false)
-        local partKilled = ::getTblValue("partKilled", dmPart, false)
-        local partHpCur  = ::getTblValue("partHpCur", dmPart, 1.0)
+        let partDead   = ::getTblValue("partDead", dmPart, false)
+        let partKilled = ::getTblValue("partKilled", dmPart, false)
+        let partHpCur  = ::getTblValue("partHpCur", dmPart, 1.0)
         dmPart.partHp <- (partDead || partKilled) ? 0.0 : partHpCur
         showHp = min(showHp, dmPart.partHp)
       }
 
-      local partKilled = ::getTblValue("partKilled", data, false)
-      local partDmg = ::getTblValue("partDmg", data, 0.0)
-      local isHit = partKilled || partDmg > 0
+      let partKilled = ::getTblValue("partKilled", data, false)
+      let partDmg = ::getTblValue("partDmg", data, 0.0)
+      let isHit = partKilled || partDmg > 0
       cfg.show = isHit && showHp < thresholdShowHealthBelow
 
       if (cfg.show)
       {
-        local value = 1.0 / thresholdShowHealthBelow * showHp
-        local hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
-        local brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
-        local color = ::format("#%s", ::get_color_from_hsv(hue, 1, brightness))
+        let value = 1.0 / thresholdShowHealthBelow * showHp
+        let hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
+        let brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
+        let color = ::format("#%s", ::get_color_from_hsv(hue, 1, brightness))
         showPart(partName, color, !showHp)
       }
 
       minAliveCrewCount = ::getTblValue("crewAliveMin", data, minAliveCrewCount)
-      local crewCount = ::getTblValue("crewAliveCount", data, -1)
-      local crewCountTotal = ::getTblValue("crewTotalCount", data, -1)
-      local isCrewChanged = crewCount != -1 && lastTargetCrew != crewCount
-      local isShowCrew = !lastTargetKilled && isCrewChanged
+      let crewCount = ::getTblValue("crewAliveCount", data, -1)
+      let crewCountTotal = ::getTblValue("crewTotalCount", data, -1)
+      let isCrewChanged = crewCount != -1 && lastTargetCrew != crewCount
+      let isShowCrew = !lastTargetKilled && isCrewChanged
         && (lastTargetType == ::ES_UNIT_TYPE_SHIP
           || (!::has_feature("HitCameraTargetStateIconsTank") && cfg.section == "crew" && cfg.show && partKilled))
 
@@ -267,7 +267,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
         lastTargetCrew = crewCount
 
         showPart("crew_count", "#FFFFFF", true)
-        local obj = listObj.findObject("crew_count")
+        let obj = listObj.findObject("crew_count")
         if (::check_obj(obj))
         {
           local text = ::colorize("commonTextColor", ::loc("mainmenu/btnCrew") + ::loc("ui/colon")) +
@@ -288,8 +288,8 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
     if (::is_multiplayer() || lastTargetKilled)
       return
 
-    local unitId      = ::getTblValue("unitId", params)
-    local unitVersion = ::getTblValue("unitVersion", params)
+    let unitId      = ::getTblValue("unitId", params)
+    let unitVersion = ::getTblValue("unitVersion", params)
     if (unitId == null || unitId != lastTargetId || unitVersion != lastTargetVersion)
       return
 
@@ -305,7 +305,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
   {
     if (!::checkObj(listObj))
       return
-    local obj = listObj.findObject(partId)
+    let obj = listObj.findObject(partId)
     if (!::checkObj(obj))
       return
     obj.color = color
@@ -317,7 +317,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
   {
     if (!::checkObj(listObj))
       return
-    local obj = listObj.findObject(partId)
+    let obj = listObj.findObject(partId)
     if (::checkObj(obj) && obj?._blink != "no")
       obj._blink = "no"
   }
@@ -329,7 +329,7 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
     if (!(obj?.id in partsConfig))
       return
 
-    local cfg = partsConfig[obj.id]
+    let cfg = partsConfig[obj.id]
     cfg.show = false
   }
 
@@ -343,10 +343,10 @@ local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
 
   function getMinAliveCrewCount()
   {
-    local diffCode = ::get_mission_difficulty_int()
-    local settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
-    local path = "difficulty_settings/baseDifficulty/" + settingsName + "/changeCrewTime"
-    local changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
+    let diffCode = ::get_mission_difficulty_int()
+    let settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
+    let path = "difficulty_settings/baseDifficulty/" + settingsName + "/changeCrewTime"
+    let changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
     return changeCrewTime != null ? 1 : 2
   }
 }

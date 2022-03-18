@@ -1,4 +1,4 @@
-local getNearestMap = function(mapsList) {
+let getNearestMap = function(mapsList) {
   local nearestMap = null
   foreach(map in mapsList)
     if (map.isAnnounceAndNotDebug(false)) {
@@ -13,50 +13,50 @@ local getNearestMap = function(mapsList) {
   return nearestMap
 }
 
-local getFirstAvailableMap = @(mapsList)
+let getFirstAvailableMap = @(mapsList)
   mapsList.findvalue(@(map) map.isAnnounceAndNotDebug(false))
 
-local hasAvailableMapToBattleShort = @()
+let hasAvailableMapToBattleShort = @()
   getFirstAvailableMap(::g_ww_global_status_type.MAPS.getShortStatusList()) != null
 
-local getNearestMapToBattleShort = @()
+let getNearestMapToBattleShort = @()
   getNearestMap(::g_ww_global_status_type.MAPS.getShortStatusList())
 
-local hasAvailableMapToBattle = @()
+let hasAvailableMapToBattle = @()
   getFirstAvailableMap(::g_ww_global_status_type.MAPS.getList()) != null
 
-local getNearestMapToBattle = @()
+let getNearestMapToBattle = @()
   getNearestMap(::g_ww_global_status_type.MAPS.getList())
 
-local isRecievedGlobalStatusMaps = @() ::g_ww_global_status_type.MAPS.getList().len() > 0
+let isRecievedGlobalStatusMaps = @() ::g_ww_global_status_type.MAPS.getList().len() > 0
 
-local function getOperationById(operationId) {
+let function getOperationById(operationId) {
   return ::u.search(::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(),
     @(o) o.id == operationId)
 }
 
-local function getOperationFromShortStatusById(operationId) {
+let function getOperationFromShortStatusById(operationId) {
   return ::u.search(::g_ww_global_status_type.ACTIVE_OPERATIONS.getShortStatusList(),
     @(o) o.id == operationId)
 }
 
-local function getMyClanOperation() {
+let function getMyClanOperation() {
   return ::u.search(::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(),
     @(o) o.isMyClanParticipate())
 }
 
-local getMapByName = @(mapName) ::g_ww_global_status_type.MAPS.getList()?[mapName]
+let getMapByName = @(mapName) ::g_ww_global_status_type.MAPS.getList()?[mapName]
 
-local getMapFromShortStatusByName = @(mapName) ::g_ww_global_status_type.MAPS.getShortStatusList()?[mapName]
+let getMapFromShortStatusByName = @(mapName) ::g_ww_global_status_type.MAPS.getShortStatusList()?[mapName]
 
 //always return queue. do not return null
-local getQueueByMapName = @(mapName) ::g_ww_global_status_type.QUEUE.getList()?[mapName] ?? ::WwQueue(mapName)
+let getQueueByMapName = @(mapName) ::g_ww_global_status_type.QUEUE.getList()?[mapName] ?? ::WwQueue(mapName)
 
-local getOperationGroupByMapId = @(mapId)
+let getOperationGroupByMapId = @(mapId)
   ::u.search(::g_ww_global_status_type.OPERATIONS_GROUPS.getList(), @(og) og.mapId == mapId)
     ?? ::WwOperationsGroup(mapId)
 
-local isMyClanInQueue = @() ::is_in_clan()
+let isMyClanInQueue = @() ::is_in_clan()
   && ::u.search(::g_ww_global_status_type.QUEUE.getList(), @(q) q.isMyClanJoined()) != null
 
 ::g_ww_global_status_actions <- {   //!!!FIX ME: This global table used in main scripts. It is necessary to remove use of world war scripts from the main scripts and delete this table

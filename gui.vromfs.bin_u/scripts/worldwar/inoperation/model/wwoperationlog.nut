@@ -123,7 +123,7 @@ global const WW_LOG_MAX_DISPLAY_AMOUNT = 40
 
 g_ww_logs.getObjectivesBlk <- function getObjectivesBlk()
 {
-  local objectivesBlk = ::g_world_war.getOperationObjectives()
+  let objectivesBlk = ::g_world_war.getOperationObjectives()
   return objectivesBlk ? ::u.copy(objectivesBlk?.data) : ::DataBlock()
 }
 
@@ -133,11 +133,11 @@ g_ww_logs.requestNewLogs <- function requestNewLogs(loadAmount, useLogMark, hand
     return
 
   ::g_ww_logs.changeLogsLoadStatus(true)
-  local cb = ::Callback(function() {
+  let cb = ::Callback(function() {
     loadNewLogs(useLogMark, handler)
     changeLogsLoadStatus()
   }, this)
-  local errorCb = ::Callback(changeLogsLoadStatus, this)
+  let errorCb = ::Callback(changeLogsLoadStatus, this)
   ::g_world_war.requestLogs(loadAmount, useLogMark, cb, errorCb)
 }
 
@@ -148,7 +148,7 @@ g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = 
 
 g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler)
 {
-  local logsBlk = ::ww_operation_get_log()
+  let logsBlk = ::ww_operation_get_log()
   if (useLogMark)
     ::g_ww_logs.lastMark = logsBlk?.lastMark ?? ""
 
@@ -166,25 +166,25 @@ g_ww_logs.saveLoadedLogs <- function saveLoadedLogs(loadedLogsBlk, useLogMark, h
   if (!loadedLogsBlk)
     return
 
-  local freshLogs = []
-  local firstLogId = ::g_ww_logs.loaded.len() ?
+  let freshLogs = []
+  let firstLogId = ::g_ww_logs.loaded.len() ?
     ::g_ww_logs.loaded[::g_ww_logs.loaded.len() - 1].id : ""
 
   local isStrengthUpdateNeeded = false
   local isToBattleUpdateNeeded = false
-  local unknownLogType = ::g_ww_log_type.getLogTypeByName(WW_LOG_TYPES.UNKNOWN)
+  let unknownLogType = ::g_ww_log_type.getLogTypeByName(WW_LOG_TYPES.UNKNOWN)
   for (local i = 0; i < loadedLogsBlk.blockCount(); i++)
   {
-    local logBlk = loadedLogsBlk.getBlock(i)
+    let logBlk = loadedLogsBlk.getBlock(i)
 
     if (!useLogMark && logBlk?.thisLogId == firstLogId)
       break
 
-    local logType = ::g_ww_log_type.getLogTypeByName(logBlk?.type)
+    let logType = ::g_ww_log_type.getLogTypeByName(logBlk?.type)
     if (logType == unknownLogType)
       continue
 
-    local logTable = {
+    let logTable = {
       id = logBlk?.thisLogId
       blk = ::u.copy(logBlk)
       time = logBlk?.time ?? -1
@@ -257,9 +257,9 @@ g_ww_logs.saveLogBattle <- function saveLogBattle(blk)
 {
   if (!blk?.battle)
     return
-  local savedData = ::getTblValue(blk.battle?.id, logsBattles)
-  local savedDataTime = savedData?.time ?? -1
-  local logTime = blk?.time ?? -1
+  let savedData = ::getTblValue(blk.battle?.id, logsBattles)
+  let savedDataTime = savedData?.time ?? -1
+  let logTime = blk?.time ?? -1
   if (savedDataTime > -1 && savedDataTime >= logTime)
     return
 
@@ -275,7 +275,7 @@ g_ww_logs.saveLogArmies <- function saveLogArmies(blk, logId)
   if ("armies" in blk)
     foreach (armyBlk in blk.armies)
     {
-      local armyId = getLogArmyId(logId, armyBlk?.name)
+      let armyId = getLogArmyId(logId, armyBlk?.name)
       if (!(armyId in logsArmies))
         logsArmies[armyId] <- ::WwArmy(armyBlk?.name, armyBlk)
     }
@@ -320,13 +320,13 @@ g_ww_logs.playLogSound <- function playLogSound(logBlk)
   switch (logBlk?.type)
   {
     case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
-      local wwArmy = getLogArmy(logBlk)
+      let wwArmy = getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
         ::get_cur_gui_scene()?.playSound("ww_artillery_enemy")
       break
 
     case WW_LOG_TYPES.ARMY_FLYOUT:
-      local wwArmy = getLogArmy(logBlk)
+      let wwArmy = getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
         ::get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
       break
@@ -344,7 +344,7 @@ g_ww_logs.playLogSound <- function playLogSound(logBlk)
 
 g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk)
 {
-  local mySideName = ::ww_side_val_to_name(::ww_get_player_side())
+  let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
   if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
     for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
       if (logBlk.battle.teams.getBlock(i).side == mySideName)
@@ -355,7 +355,7 @@ g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk)
 
 g_ww_logs.getLogArmy <- function getLogArmy(logBlk)
 {
-  local wwArmyId = getLogArmyId(logBlk?.thisLogId, logBlk?.army)
+  let wwArmyId = getLogArmyId(logBlk?.thisLogId, logBlk?.army)
   return ::getTblValue(wwArmyId, logsArmies)
 }
 

@@ -19,7 +19,7 @@
 ::NewIconWidget <- class
 {
   widgetContainerTag = "newIconWidget"
-  defaultIcon = "#ui/gameuiskin#new_icon"
+  defaultIcon = "#ui/gameuiskin#new_icon.svg"
 
   _guiScene = null
   _containerObj = null
@@ -39,12 +39,12 @@
 
   static function createLayout(params = {})
   {
-    local view = {
+    let view = {
       needContainer = ::getTblValue("needContainer", params, true)
       icon = ::getTblValue("icon", params, ::NewIconWidget.defaultIcon)
       tooltip = ::getTblValue("tooltip", params, "")
     }
-    return ::handyman.renderCached("gui/newIconWidget", view)
+    return ::handyman.renderCached("%gui/newIconWidget", view)
   }
 
   function setContainer(containerObj)
@@ -76,8 +76,8 @@
     if (isValidContainerData())
       return
 
-    local needContainer = _containerObj?.tag != widgetContainerTag
-    local data = createLayout({
+    let needContainer = _containerObj?.tag != widgetContainerTag
+    let data = createLayout({
                                 needContainer = needContainer
                                 icon = icon || defaultIcon
                               })
@@ -114,7 +114,7 @@
 
     if (::check_obj(_textObj))
     {
-      local newText = (currentValue > 0) ? currentValue.tostring() : ""
+      let newText = (currentValue > 0) ? currentValue.tostring() : ""
       if (::check_obj(_containerObj))
       {
          _containerObj.widgetClass = (newText == "") ? "" : "text"
@@ -136,7 +136,7 @@
   {
     if (!::check_obj(_containerObj))
       return null
-    local obj = _containerObj.findObject("new_icon_widget_text")
+    let obj = _containerObj.findObject("new_icon_widget_text")
     if (!::check_obj(obj))
       return null
     return obj
@@ -146,7 +146,7 @@
   {
     if (!::check_obj(_containerObj))
       return null
-    local obj = _containerObj.findObject("new_icon_widget_icon")
+    let obj = _containerObj.findObject("new_icon_widget_icon")
     return ::check_obj(obj) ? obj : null
   }
 
@@ -154,7 +154,7 @@
   {
     if (!::check_obj(obj))
       return null
-    local widget = obj.getUserData()
+    let widget = obj.getUserData()
     if (widget == null)
       return null
     if (widget instanceof NewIconWidget)
