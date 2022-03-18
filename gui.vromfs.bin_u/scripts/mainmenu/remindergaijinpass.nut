@@ -1,9 +1,10 @@
 local reminderGaijinPassModal = require("scripts/mainmenu/reminderGaijinPassModal.nut")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
 
 local function checkGaijinPassReminder()
 {
-  local haveGP = ::g_user_utils.haveTag("GaijinPass")
-  local have2Step = ::g_user_utils.haveTag("2step")
+  local haveGP = havePlayerTag("GaijinPass")
+  local have2Step = havePlayerTag("2step")
   if (!::is_platform_pc || ::steam_is_running() || ::is_me_newbie() || !have2Step || haveGP
     || !::has_feature("CheckGaijinPass")
     || ::load_local_account_settings("skipped_msg/gaijinPassDontShowThisAgain", false))

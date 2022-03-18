@@ -39,8 +39,8 @@ local getPlayerName = function(name)
 local isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
 local isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 
-local isMePS4Player = @() ::g_user_utils.haveTag("ps4")
-local isMeXBOXPlayer = @() ::g_user_utils.haveTag("xbone")
+local isMePS4Player = @() ::get_player_tags().indexof("ps4") != null
+local isMeXBOXPlayer = @() ::get_player_tags().indexof("xbone") != null
 
 local canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
 

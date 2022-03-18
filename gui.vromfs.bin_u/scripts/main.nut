@@ -459,10 +459,7 @@ foreach (fn in [
   "scripts/social/xboxSquadManager.nut"
 
   //used for SSO login
-  "scripts/onlineshop/browserWnd.nut"
-
-  //used in login process for check profile tag
-  "scripts/user/userUtils.nut"
+  "scripts/onlineShop/browserWnd.nut"
 ])
 {
   ::g_script_reloader.loadOnce(fn)

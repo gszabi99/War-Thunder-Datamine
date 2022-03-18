@@ -6,6 +6,7 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+local { getMyStateData } = require("scripts/user/userUtils.nut")
 
 enum squadEvent
 {
@@ -99,7 +100,7 @@ local DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
       if (isMeReady() && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
         setReadyFlag(false)
-      updateMyMemberData(::g_user_utils.getMyStateData())
+      updateMyMemberData(getMyStateData())
     }
   }
 
@@ -139,7 +140,7 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
     return
 
   if (data == null)
-    data = ::g_user_utils.getMyStateData()
+    data = getMyStateData()
 
   local isWorldwarEnabled = ::is_worldwar_enabled()
   data.__update({
@@ -609,7 +610,7 @@ g_squad_manager.setReadyFlag <- function setReadyFlag(ready = null, needUpdateMe
     isMyCrewsReady = false
 
   if (needUpdateMemberData)
-    updateMyMemberData(::g_user_utils.getMyStateData())
+    updateMyMemberData(getMyStateData())
 
   ::broadcastEvent(squadEvent.SET_READY)
 }
@@ -628,7 +629,7 @@ g_squad_manager.setCrewsReadyFlag <- function setCrewsReadyFlag(ready = null, ne
     return
 
   if (needUpdateMemberData)
-    updateMyMemberData(::g_user_utils.getMyStateData())
+    updateMyMemberData(getMyStateData())
 }
 
 g_squad_manager.createSquad <- function createSquad(callback)
@@ -734,7 +735,7 @@ g_squad_manager.checkForSquad <- function checkForSquad()
                        if (::g_squad_manager.getSquadSize(true) == 1)
                          ::g_squad_manager.disbandSquad()
                        else
-                         ::g_squad_manager.updateMyMemberData(::g_user_utils.getMyStateData())
+                         ::g_squad_manager.updateMyMemberData(getMyStateData())
 
                       ::broadcastEvent(squadEvent.STATUS_CHANGED)
                      }
@@ -1399,7 +1400,7 @@ g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
   }
 
   if (setState(squadState.IN_SQUAD)) {
-    updateMyMemberData(::g_user_utils.getMyStateData())
+    updateMyMemberData(getMyStateData())
     if (isSquadLeader()) {
       updatePresenceSquad()
       updateSquadData()

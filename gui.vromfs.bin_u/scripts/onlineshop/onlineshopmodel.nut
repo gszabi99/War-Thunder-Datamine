@@ -6,6 +6,7 @@ local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -341,7 +342,7 @@ OnlineShopModel.doBrowserPurchase <- function doBrowserPurchase(goodsName)
 OnlineShopModel.doBrowserPurchaseByGuid <- function doBrowserPurchaseByGuid(guid, dbgGoodsName = "")
 {
   local isSteam = ::steam_is_running() &&
-                  (::g_user_utils.haveTag("steam") || ::has_feature("AllowSteamAccountLinking")) //temporary use old code pass for steam
+                  (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")) //temporary use old code pass for steam
   local url = isSteam
             ? ::format(::loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), ::steam_get_my_id())
             : ::get_authenticated_url_for_purchase(guid)
@@ -513,7 +514,7 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
   if (::isInArray(chapter, [null, ""]))
   {
     local webStoreUrl = ::loc("url/webstore", "")
-    if (::steam_is_running() && (::g_user_utils.haveTag("steam") || ::has_feature("AllowSteamAccountLinking")))
+    if (::steam_is_running() && (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")))
       webStoreUrl = ::format(::loc("url/webstore/steam"), ::steam_get_my_id())
 
     if (webStoreUrl != "")

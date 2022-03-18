@@ -5,6 +5,7 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local { recentBR, getBRDataByMrankDiff } = require("scripts/battleRating.nut")
+local { getMyStateData } = require("scripts/user/userUtils.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -215,7 +216,7 @@ g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, ca
 
 g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true)
 {
-  local memberData = ::g_user_utils.getMyStateData()
+  local memberData = getMyStateData()
   ::g_squad_manager.updateMyMemberData(memberData)
 
   //Update Skirmish Lobby info

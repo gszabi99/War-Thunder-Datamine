@@ -7,6 +7,7 @@ local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.n
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
+local { getMyStateData } = require("scripts/user/userUtils.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -465,7 +466,7 @@ class ::WwBattle
 
     local remainUnits = getUnitsRequiredForJoin(team, side)
     local myCheckingData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
-      ::g_user_utils.getMyStateData(), remainUnits, team.country)
+      getMyStateData(), remainUnits, team.country)
     if (myCheckingData.joinStatus != memberStatus.READY)
     {
       res.code = WW_BATTLE_CANT_JOIN_REASON.UNITS_NOT_ENOUGH_AVAILABLE

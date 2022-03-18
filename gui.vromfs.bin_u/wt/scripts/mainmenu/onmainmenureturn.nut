@@ -12,6 +12,9 @@ local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 local { checkShowRateWnd } = require("scripts/user/suggestionRateGame.nut")
+local { checkAutoShowPS4EmailRegistration, checkAutoShowSteamEmailRegistration,
+  checkForceSuggestionEmailRegistration
+} = require("scripts/user/suggestionEmailRegistration.nut")
 
 //called after all first mainmenu actions
 local function onMainMenuReturn(handler, isAfterLogin) {
@@ -52,6 +55,8 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() ::g_xbox_squad_manager.checkAfterFlight() )
     handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
+    if (isAfterLogin)
+      handler.doWhenActive(@() checkForceSuggestionEmailRegistration())
   }
 
   if(isAllowPopups && ::has_feature("Invites") && !guiScene.hasModalObject())
@@ -90,8 +95,8 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   if (!guiScene.hasModalObject() && isAllowPopups)
   {
-    handler.doWhenActive(@() ::g_user_utils.checkAutoShowPS4EmailRegistration())
-    handler.doWhenActive(@() ::g_user_utils.checkAutoShowSteamEmailRegistration())
+    handler.doWhenActive(@() checkAutoShowPS4EmailRegistration())
+    handler.doWhenActive(@() checkAutoShowSteamEmailRegistration())
   }
 
   if (isAllowPopups && !guiScene.hasModalObject() && !isPlatformSony && ::has_feature("Facebook"))

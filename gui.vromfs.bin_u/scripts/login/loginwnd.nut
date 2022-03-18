@@ -8,6 +8,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
 local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 local loginWndBlkPath = require("scripts/login/loginWndBlkPath.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -491,7 +492,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       case ::YU2_OK:
         if (::steam_is_running()
             && !::has_feature("AllowSteamAccountLinking")
-            && !::g_user_utils.haveTag("steam"))
+            && !havePlayerTag("steam"))
         {
           msgBox("steam_relogin_request",
             ::loc("mainmenu/login/steamRelogin"),

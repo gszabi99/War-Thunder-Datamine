@@ -1,4 +1,5 @@
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getMyStateData } = require("scripts/user/userUtils.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
@@ -137,7 +138,7 @@ local function getUserData() {
   }
   else
   {
-    local data = ::g_user_utils.getMyStateData()
+    local data = getMyStateData()
     if(data.country == "")
       return null
 

@@ -23,6 +23,9 @@ local { getUnlockIds, getUnitListByUnlockId } = require("scripts/unlocks/unlockM
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 local shopSearchWnd  = require("scripts/shop/shopSearchWnd.nut")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
+local { launchPS4EmailRegistration, launchSteamEmailRegistration, launchXboxEmailRegistration
+} = require("scripts/user/suggestionEmailRegistration.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -327,10 +330,10 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
       btn_codeApp = isPlatformPC && ::has_feature("AllowExternalLink") &&
-        !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
+        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened &&
           !::is_vendor_tencent()
-      btn_ps4Registration = isProfileOpened && isPlatformSony && ::g_user_utils.haveTag("psnlogin")
-      btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
+      btn_ps4Registration = isProfileOpened && isPlatformSony && havePlayerTag("psnlogin")
+      btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && havePlayerTag("steamlogin")
       btn_xboxRegistration = isProfileOpened && isPlatformXboxOne && ::has_feature("AllowXboxAccountLinking")
       paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
@@ -1677,19 +1680,19 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onBindPS4Email()
   {
-    ::g_user_utils.launchPS4EmailRegistration()
+    launchPS4EmailRegistration()
     doWhenActiveOnce("updateButtons")
   }
 
   function onBindSteamEmail()
   {
-    ::g_user_utils.launchSteamEmailRegistration()
+    launchSteamEmailRegistration()
     doWhenActiveOnce("updateButtons")
   }
 
   function onBindXboxEmail()
   {
-    ::g_user_utils.launchXboxEmailRegistration()
+    launchXboxEmailRegistration()
     doWhenActiveOnce("updateButtons")
   }
 
