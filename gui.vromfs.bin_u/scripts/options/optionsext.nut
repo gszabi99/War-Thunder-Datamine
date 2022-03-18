@@ -1423,9 +1423,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         if (name.indexof("keyboard") != null)
           imageName = "mouse_keyboard.svg"
         else if (name.indexof("xinput") != null || name.indexof("xboxone") != null)
-          imageName = "gamepad"
+          imageName = "gamepad.svg"
         else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
-          imageName = "ps4"
+          imageName = "ps4.svg"
         else if (name == "custom")
         {
           imageName = name

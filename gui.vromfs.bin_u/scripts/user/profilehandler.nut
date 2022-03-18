@@ -736,7 +736,7 @@ let selMedalIdx = {}
       itemsView.append({
         id = decorator.id
         itemText = comma.concat(::getUnitName(unitId), decorator.getName())
-        itemIcon = decorator.isUnlocked() ? "#ui/gameuiskin#unlocked" : "#ui/gameuiskin#locked.svg"
+        itemIcon = decorator.isUnlocked() ? "#ui/gameuiskin#unlocked.svg" : "#ui/gameuiskin#locked.svg"
       })
     }
     return itemsView.sort(@(a, b) a.itemText <=> b.itemText)

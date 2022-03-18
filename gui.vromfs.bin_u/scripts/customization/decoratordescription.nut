@@ -101,7 +101,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local iconName = isDefaultSkin ? ""
     : isAllowed ? "favorite"
-    : "locked"
+    : "locked.svg"
 
   let canShowProgress = !isTrophyContent && !isReceivedPrizes
   local conditionsText = canShowProgress && config ?
