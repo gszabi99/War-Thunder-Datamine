@@ -8,28 +8,28 @@ from "string" import regexp, split
 
     - replace editor in enlisted with this component (it should be already suitable)
 */
-let rexInt = regexp(@"[\+\-]?[0-9]+")
-let function isStringInt(str){
+local rexInt = regexp(@"[\+\-]?[0-9]+")
+local function isStringInt(str){
   return rexInt.match(str) //better use one from string.nut
 }
 
-let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-let function isStringFloat(str){
+local rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
+local function isStringFloat(str){
   return rexFloat.match(str) //better use one from string.nut
 }
 
-let rexEng = regexp(@"[a-z,A-Z]*")
-let function isStringEng(str){
+local rexEng = regexp(@"[a-z,A-Z]*")
+local function isStringEng(str){
   return rexEng.match(str)
 }
-let function isStringLikelyEmail(str, verbose=true) {
-// this check is not rfc fully compatible. We check that @ exist and correctly used, and that let and domain parts exist and they are correct length.
+local function isStringLikelyEmail(str, verbose=true) {
+// this check is not rfc fully compatible. We check that @ exist and correctly used, and that local and domain parts exist and they are correct length.
 // Domain part also have at least one period and main domain at least 2 symbols
 // also come correct emails on google are against RFC, for example a.a.a@gmail.com.
 
   if (type(str)!="string")
     return false
-  let splitted = split(str,"@")
+  local splitted = split(str,"@")
   if (splitted.len()<2)
     return false
   local locpart = splitted[0]
@@ -37,10 +37,10 @@ let function isStringLikelyEmail(str, verbose=true) {
     locpart = "@".join(splitted.slice(0,-1))
   if (locpart.len()>64)
     return false
-  let dompart = splitted[splitted.len()-1]
+  local dompart = splitted[splitted.len()-1]
   if (dompart.len()>253 || dompart.len()<4) //RFC + domain should be at least x.xx
     return false
-  let quotes = locpart.indexof("\"")
+  local quotes = locpart.indexof("\"")
   if (quotes && quotes!=0)
     return false //quotes only at the begining
   if (quotes==null && locpart.indexof("@")!=null)
@@ -50,7 +50,7 @@ let function isStringLikelyEmail(str, verbose=true) {
   return true
 }
 
-let function defaultFrame(inputObj, group, sf) {
+local function defaultFrame(inputObj, group, sf) {
   return {
     rendObj = ROBJ_FRAME
     borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
@@ -70,7 +70,7 @@ let function defaultFrame(inputObj, group, sf) {
   }
 }
 
-let function isValidStrByType(str, inputType) {
+local function isValidStrByType(str, inputType) {
   if (str=="")
     return true
   if (inputType=="mail")
@@ -86,7 +86,7 @@ let function isValidStrByType(str, inputType) {
   return true
 }
 
-let defaultColors = {
+local defaultColors = {
   placeHolderColor = Color(80, 80, 80, 80)
   textColor = Color(255,255,255)
   backGroundColor = Color(28, 28, 28, 150)
@@ -94,7 +94,7 @@ let defaultColors = {
 }
 
 
-let failAnim = @(trigger) {
+local failAnim = @(trigger) {
   prop = AnimProp.color
   from = defaultColors.highlightFailure
   easing = OutCubic
@@ -102,56 +102,51 @@ let failAnim = @(trigger) {
   trigger = trigger
 }
 
-let interactiveValidTypes = ["num","lat","integer","float"]
+local interactiveValidTypes = ["num","lat","integer","float"]
 
-let function textInput(text_state, options={}, frameCtor=defaultFrame) {
-  let group = ElemGroup()
-  let {
+local function textInput(text_state, options={}, frameCtor=defaultFrame) {
+  local group = ElemGroup()
+  local {
     setValue = @(v) text_state(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
-    title = null, font = null, fontSize = null, hotkeys = null,
+    title = null, font = null, fontSize = null, colors = {}, hotkeys = null,
     size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
     margin = [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null,
 
     //handlers
-    onBlur = null, onReturn = null,
+    isValidResult = null, isValidChange = null, onBlur = null, onReturn = null,
     onEscape = @() set_kb_focus(null), onChange = null, onFocus = null, onAttach = null,
     onHover = null, onImeFinish = null
   } = options
-
-  local {
-    isValidResult = null, isValidChange = null
-  } = options
-
-  let colors = defaultColors.__merge(options?.colors ?? {})
+  colors = defaultColors.__merge(colors)
 
   isValidResult = isValidResult ?? @(new_value) isValidStrByType(new_value, inputType)
   isValidChange = isValidChange
     ?? @(new_value) interactiveValidTypes.indexof(inputType) == null
       || isValidStrByType(new_value, inputType)
 
-  let stateFlags = Watched(0)
+  local stateFlags = Watched(0)
 
-  let function onBlurExt() {
+  local function onBlurExt() {
     if (!isValidResult(text_state.value))
       anim_start(text_state)
     onBlur?()
   }
 
-  let function onReturnExt(){
+  local function onReturnExt(){
     if (!isValidResult(text_state.value))
       anim_start(text_state)
     onReturn?()
   }
 
-  let function onEscapeExt(){
+  local function onEscapeExt(){
     if (!isValidResult(text_state.value))
       anim_start(text_state)
     onEscape()
   }
 
-  let function onChangeExt(new_val) {
+  local function onChangeExt(new_val) {
     onChange?(new_val)
     if (!isValidChange(new_val))
       anim_start(text_state)
@@ -161,7 +156,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
   local placeholderObj = null
   if (placeholder != null) {
-    let phBase = {
+    local phBase = {
       text = placeholder
       rendObj = ROBJ_DTEXT
       font
@@ -175,7 +170,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
       : phBase
   }
 
-  let inputObj = @() {
+  local inputObj = @() {
     watch = [text_state, stateFlags]
     rendObj = ROBJ_DTEXT
     behavior = Behaviors.TextInput
@@ -229,7 +224,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
     borderRadius
     clipChildren = true
     size = [flex(), SIZE_TO_CONTENT]
-    group
+    group = group
     animations = [failAnim(text_state)]
     valign
 
@@ -238,7 +233,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
 }
 
 
-let export = class{
+local export = class{
   defaultColors = defaultColors
   _call = @(self, text_state, options = {}, frameCtor = defaultFrame) textInput(text_state, options, frameCtor)
 }()

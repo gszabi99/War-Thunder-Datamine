@@ -1,8 +1,8 @@
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 local shouldCheckAutoConsume = false
 
-let failedAutoConsumeItems = {}
+local failedAutoConsumeItems = {}
 
 local isAutoConsumeInProgress = false
 
@@ -11,7 +11,7 @@ autoConsumeItems = function() {
   if (isAutoConsumeInProgress)
     return
 
-  let onConsumeFinish = function(p = {}) {
+  local onConsumeFinish = function(p = {}) {
     if (!(p?.success ?? true) && p?.itemId != null)
       failedAutoConsumeItems[p.itemId] <- true
     isAutoConsumeInProgress = false
@@ -27,7 +27,7 @@ autoConsumeItems = function() {
     }
 }
 
-let function checkAutoConsume() {
+local function checkAutoConsume() {
   if (!shouldCheckAutoConsume)
     return
   shouldCheckAutoConsume = false

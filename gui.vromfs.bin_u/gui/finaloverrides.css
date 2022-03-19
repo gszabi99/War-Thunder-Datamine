@@ -64,6 +64,15 @@ dmgIndicatorNest[fontSize=medium] text {
   transp-cycled:yes;
   display:show;
 }
+[wink=veryfast] {
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:40;
+  transp-time:500;
+  transp-func:sin;
+  transp-cycled:yes;
+  display:show;
+}
 [wink=yes] {
   behaviour:basicTransparency;
   transp-base:255;
@@ -178,6 +187,13 @@ hoverPopup:hover {
 
 [flow=h-flow], [flow=v-flow] {
   behaviour:flow;
+}
+
+img[isUrgentWarningIcon=yes],
+cardImg[isUrgentWarningIcon=yes],
+optionImg[isUrgentWarningIcon=yes],
+shopFilterImg[isUrgentWarningIcon=yes] {
+  background-color:@badTextColor;
 }
 
 

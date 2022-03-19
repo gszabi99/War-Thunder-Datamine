@@ -1,8 +1,8 @@
-let time = require("%scripts/time.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { todayLoginExp,loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local time = require("scripts/time.nut")
+local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { todayLoginExp,loginStreak, getExpRangeTextOfLoginStreak } = require("scripts/battlePass/seasonState.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::gui_start_show_login_award <- function gui_start_show_login_award(blk)
 {
@@ -15,10 +15,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
   ::gui_start_modal_wnd(::gui_handlers.EveryDayLoginAward, {userlog = blk})
 }
 
-::gui_handlers.EveryDayLoginAward <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/items/everyDayLoginAward.blk"
+  sceneBlkName = "gui/items/everyDayLoginAward.blk"
   needVoiceChat = false
 
   lastSavedDay = 0
@@ -55,22 +55,22 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateHeader()
   {
-    let titleObj = scene.findObject("award_type_title")
+    local titleObj = scene.findObject("award_type_title")
 
     if (!::checkObj(titleObj))
       return
 
     local text = ::loc(userlog.body.rewardType+"/name")
 
-    let itemId = getTrophyIdName(getAwardName())
-    let item = ::ItemsManager.findItemById(itemId)
+    local itemId = getTrophyIdName(getAwardName())
+    local item = ::ItemsManager.findItemById(itemId)
     if (item)
       text += ::loc("ui/colon") + item.getName(false)
 
-    let periodAward = getPeriodAwardConfig()
+    local periodAward = getPeriodAwardConfig()
     if (periodAward)
     {
-      let period = ::getTblValue("periodicDays", periodAward)
+      local period = ::getTblValue("periodicDays", periodAward)
       if (periodAward)
         text += " " + ::loc("keysPlus") + " " + ::loc("EveryDayLoginAward/periodAward", {period = period})
     }
@@ -80,12 +80,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateGuiBlkData()
   {
-    let guiBlk = GUI.get()
-    let data = guiBlk?.every_day_login_award
+    local guiBlk = GUI.get()
+    local data = guiBlk?.every_day_login_award
     if (!data)
       return
     local imageSectionName = "image"
-    let imageSectionNameAlt = "tencent_image"
+    local imageSectionNameAlt = "tencent_image"
     if (::is_vendor_tencent() && ::u.isDataBlock(data[imageSectionNameAlt]))
       imageSectionName = imageSectionNameAlt
 
@@ -97,8 +97,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
                                param = "background-color",
                                tooltipFunc = function(paramsTable)
                                {
-                                 let obj = ::getTblValue("obj", paramsTable)
-                                 let weeks = ::getTblValue("week", paramsTable, 0)
+                                 local obj = ::getTblValue("obj", paramsTable)
+                                 local weeks = ::getTblValue("week", paramsTable, 0)
                                  if (!::checkObj(obj) || weeks <= 0)
                                   return
 
@@ -125,25 +125,25 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateObjectByData(data, params = {})
   {
-    let objId = ::getTblValue("objId", params, "")
-    let obj = scene.findObject(objId)
+    local objId = ::getTblValue("objId", params, "")
+    local obj = scene.findObject(objId)
     if (!::checkObj(obj))
       return
 
-    let name = ::getTblValue("name", params, "")
-    let block = data[name]
-    let blockLen = block? block.paramCount() : 0
+    local name = ::getTblValue("name", params, "")
+    local block = data[name]
+    local blockLen = block? block.paramCount() : 0
     if (blockLen <= 0)
       return
 
-    let loopLen = ::to_integer_safe(::getTblValue("loopLenght", userlog.body, 1))
-    let progress = ::to_integer_safe(::getTblValue("progress", userlog.body, 1)) - 1
-    let weeksInARow = progress / loopLen
+    local loopLen = ::to_integer_safe(::getTblValue("loopLenght", userlog.body, 1))
+    local progress = ::to_integer_safe(::getTblValue("progress", userlog.body, 1)) - 1
+    local weeksInARow = progress / loopLen
 
-    let week = weeksInARow % blockLen
+    local week = weeksInARow % blockLen
 
-    let value = block[week.tostring()]
-    let checkFunc = ::getTblValue("checkFunc", params)
+    local value = block[week.tostring()]
+    local checkFunc = ::getTblValue("checkFunc", params)
     if (checkFunc && !checkFunc(value))
     {
       ::dagor.debug("Every Day Login Award: wrong name " + name)
@@ -151,11 +151,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
       return
     }
 
-    let tooltipFunc = ::getTblValue("tooltipFunc", params)
+    local tooltipFunc = ::getTblValue("tooltipFunc", params)
     if (tooltipFunc)
       tooltipFunc({obj = obj, week = weeksInARow})
 
-    let param = ::getTblValue("param", params, "")
+    local param = ::getTblValue("param", params, "")
     obj[param] = value
   }
 
@@ -174,7 +174,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateRewardImage()
   {
-    let awObj = scene.findObject("award_recieved")
+    local awObj = scene.findObject("award_recieved")
     if (!::checkObj(awObj))
       return
 
@@ -190,14 +190,14 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getChestLayersData()
   {
-    let id = getTrophyIdName(getAwardName())
-    let item = ::ItemsManager.findItemById(id)
+    local id = getTrophyIdName(getAwardName())
+    local item = ::ItemsManager.findItemById(id)
     if (item)
     {
       if (isOpened)
         return item.getOpenedBigIcon()
 
-      return ::handyman.renderCached("%gui/items/item", {
+      return ::handyman.renderCached("gui/items/item", {
         items = item.getViewData({
           enableBackground = false,
           showAction = false,
@@ -216,11 +216,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRewardsArray(awardName)
   {
-    let userlogConfig = []
-    let total = ::get_user_logs_count()
+    local userlogConfig = []
+    local total = ::get_user_logs_count()
     for (local i = total-1; i >= 0; i--)
     {
-      let blk = ::DataBlock()
+      local blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
 
       if (blk.id == userlog.id)
@@ -262,7 +262,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     curPeriodicAwardData = ::DataBlock()
     if (!guiBlkEDLAdata)
     {
-      let guiBlk = GUI.get()
+      local guiBlk = GUI.get()
       guiBlkEDLAdata = guiBlk?.every_day_login_award
     }
 
@@ -275,9 +275,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updatePeriodRewardImage()
   {
-    let pawObj = scene.findObject("periodic_reward_recieved")
-    let cfg = getPeriodAwardConfig()
-    let period = ::getTblValue("periodicDays", cfg, 0)
+    local pawObj = scene.findObject("periodic_reward_recieved")
+    local cfg = getPeriodAwardConfig()
+    local period = ::getTblValue("periodicDays", cfg, 0)
 
     local isDefault = false
     local curentRewardData = curPeriodicAwardData.getBlockByName(period.tostring())
@@ -290,7 +290,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!::checkObj(pawObj) || !curentRewardData || !isOpened)
       return
 
-    let bgImage = curentRewardData?.trophy
+    local bgImage = curentRewardData?.trophy
     if (::u.isEmpty(bgImage))
     {
       ::dagor.assertf(isDefault, "Every Day Login Award: empty trophy param for config for period " + period)
@@ -298,14 +298,14 @@ let { GUI } = require("%scripts/utils/configs.nut")
       return
     }
 
-    let imgObj = pawObj.findObject("periodic_image")
+    local imgObj = pawObj.findObject("periodic_image")
     if (!::check_obj(imgObj))
       return
 
     imgObj["background-image"] = "@!" + bgImage
     pawObj.show(true)
 
-    let animObj = pawObj.findObject("periodic_reward_animation")
+    local animObj = pawObj.findObject("periodic_reward_animation")
     if (::checkObj(animObj))
     {
       animObj.animation = "show"
@@ -315,8 +315,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getTrophyIdName(name = "")
   {
-    let prefix = "trophy/"
-    let pLen = prefix.len()
+    local prefix = "trophy/"
+    local pLen = prefix.len()
     return (name.len() > pLen && name.slice(0, pLen) == prefix) ? name.slice(pLen) : name
   }
 
@@ -340,7 +340,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (rouletteAnimationFinished)
       return
 
-    let obj = scene.findObject("rewards_list")
+    local obj = scene.findObject("rewards_list")
     ItemsRoulette.skipAnimation(obj)
     onOpenAnimFinish()
     fillOpenedChest()
@@ -351,7 +351,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!isOpened || !rouletteAnimationFinished)
       return
 
-    let arr = []
+    local arr = []
     arr.extend(rewardsArray)
     arr.extend(periodicRewardsArray)
 
@@ -366,15 +366,15 @@ let { GUI } = require("%scripts/utils/configs.nut")
       useSingleAnimation = false
 
     updateButtons()
-    let animId = useSingleAnimation? "open_chest_animation" : "reward_roullete"
-    let animObj = scene.findObject(animId)
+    local animId = useSingleAnimation? "open_chest_animation" : "reward_roullete"
+    local animObj = scene.findObject(animId)
     if (::checkObj(animObj))
     {
       animObj.animation = "show"
       if (useSingleAnimation)
       {
         guiScene.playSound("chest_open")
-        let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
+        local delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, fillOpenedChest, this)
       }
     }
@@ -429,8 +429,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!curUnit || !::check_obj(obj))
       return
 
-    let params = {hasActions = true}
-    let unitData = ::build_aircraft_item(curUnit.name, curUnit, params)
+    local params = {hasActions = true}
+    local unitData = ::build_aircraft_item(curUnit.name, curUnit, params)
     guiScene.replaceContentFromText(obj, unitData, unitData.len(), this)
     ::fill_unit_item_timers(obj.findObject(curUnit.name), curUnit, params)
   }
@@ -439,7 +439,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   {
     foreach(reward in rewardsArray)
     {
-      let rewardType = ::trophyReward.getType(reward)
+      local rewardType = ::trophyReward.getType(reward)
       haveItems = haveItems || ::trophyReward.isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit")
@@ -448,7 +448,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     foreach(reward in periodicRewardsArray)
     {
-      let rewardType = ::trophyReward.getType(reward)
+      local rewardType = ::trophyReward.getType(reward)
       haveItems = haveItems || ::trophyReward.isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit")
@@ -458,30 +458,30 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateReward()
   {
-    let haveUnit = unit != null || periodUnit != null
-    let withoutUnitObj = showSceneBtn("block_without_unit", !haveUnit && isOpened)
+    local haveUnit = unit != null || periodUnit != null
+    local withoutUnitObj = showSceneBtn("block_without_unit", !haveUnit && isOpened)
 
-    let withUnitObj = showSceneBtn("block_with_unit", haveUnit && isOpened)
+    local withUnitObj = showSceneBtn("block_with_unit", haveUnit && isOpened)
     showSceneBtn("reward_join_img", periodicRewardsArray.len() > 0)
 
     if (!isOpened)
       return
 
-    let placeObj = haveUnit? withUnitObj : withoutUnitObj
+    local placeObj = haveUnit? withUnitObj : withoutUnitObj
     if (!::check_obj(placeObj))
       return
 
-    let gotTextObj = scene.findObject("got_text")
+    local gotTextObj = scene.findObject("got_text")
     if (::checkObj(gotTextObj))
       gotTextObj.setValue(::loc("reward") + ::loc("ui/colon"))
 
-    let reward = unit? getRentUnitText(unit) : ::trophyReward.getReward(rewardsArray)
-    let rewardTextObj = placeObj.findObject("reward_text")
+    local reward = unit? getRentUnitText(unit) : ::trophyReward.getReward(rewardsArray)
+    local rewardTextObj = placeObj.findObject("reward_text")
     if (::checkObj(rewardTextObj))
       rewardTextObj.setValue(reward)
 
-    let periodReward = periodUnit? getRentUnitText(periodUnit) : ::trophyReward.getReward(periodicRewardsArray)
-    let pRewardTextObj = placeObj.findObject("period_reward_text")
+    local periodReward = periodUnit? getRentUnitText(periodUnit) : ::trophyReward.getReward(periodicRewardsArray)
+    local pRewardTextObj = placeObj.findObject("period_reward_text")
     if (::checkObj(pRewardTextObj))
       pRewardTextObj.setValue(periodReward)
 
@@ -494,23 +494,23 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!curUnit || !curUnit.isRented())
       return ""
 
-    let totalRentTime = curUnit.getRentTimeleft()
-    let timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
+    local totalRentTime = curUnit.getRentTimeleft()
+    local timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
 
-    let rentText = ::loc("shop/rentFor", {time = timeText})
+    local rentText = ::loc("shop/rentFor", {time = timeText})
     return ::colorize("activeTextColor", rentText)
   }
 
   function updateAwards()
   {
-    let view = { items = [] }
-    let loopLen = ::getTblValue("loopLenght", userlog.body, 0)
-    let dayInLoop = ::getTblValue("dayInLoop", userlog.body)
-    let progress = ::getTblValue("progress", userlog.body, 0)
+    local view = { items = [] }
+    local loopLen = ::getTblValue("loopLenght", userlog.body, 0)
+    local dayInLoop = ::getTblValue("dayInLoop", userlog.body)
+    local progress = ::getTblValue("progress", userlog.body, 0)
 
     for (local i = 0; i < loopLen; i++)
     {
-      let offset = ::getTblValue("daysForStat" + i, userlog.body)
+      local offset = ::getTblValue("daysForStat" + i, userlog.body)
       if (offset == null) //can be 0
         break
 
@@ -520,12 +520,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
       else if (day > loopLen)
         day = day - loopLen
 
-      let today = offset == 0
-      let tomorrow = offset == 1
-      let previousAwards = offset < 0
-      let periodRewardDays = ::getTblValue("awardPeriodStat" + i, userlog.body, -1)
+      local today = offset == 0
+      local tomorrow = offset == 1
+      local previousAwards = offset < 0
+      local periodRewardDays = ::getTblValue("awardPeriodStat" + i, userlog.body, -1)
 
-      let item = prepairViewItem({
+      local item = prepairViewItem({
         type = userlog.type,
         itemId = ::getTblValue("awardTrophyStat" + i, userlog.body),
         today = today,
@@ -545,10 +545,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
       view.items.append(item)
     }
 
-    let awardsObj = scene.findObject("awards_line")
+    local awardsObj = scene.findObject("awards_line")
     if (view.items.len() > 0 && ::checkObj(awardsObj))
     {
-      let data = ::handyman.renderCached(("%gui/items/awardItem"), view)
+      local data = ::handyman.renderCached(("gui/items/awardItem"), view)
       guiScene.replaceContentFromText(awardsObj, data, data.len(), this)
     }
 
@@ -557,7 +557,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function prepairViewItem(viewItemConfig)
   {
-    let today = ::getTblValue("today", viewItemConfig, false)
+    local today = ::getTblValue("today", viewItemConfig, false)
 
     local weekDayText = ""
     if (today)
@@ -565,9 +565,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
     else if (::getTblValue("tomorrow", viewItemConfig, false))
       weekDayText = ::loc("ui/parentheses", {text = ::loc("day/tomorrow")})
 
-    let period = viewItemConfig.periodRewardDays
-    let recentRewardData = curPeriodicAwardData.getBlockByName(period.tostring())
-    let periodicRewImage = recentRewardData ? ::getTblValue("trophy", recentRewardData) : null
+    local period = viewItemConfig.periodRewardDays
+    local recentRewardData = curPeriodicAwardData.getBlockByName(period.tostring())
+    local periodicRewImage = recentRewardData ? ::getTblValue("trophy", recentRewardData) : null
 
     return {
       award_day_text = ::loc("enumerated_day", {number = ::getTblValue("dayNum", viewItemConfig)})
@@ -592,7 +592,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     for (local i = 1; i < daysDiff; i++)
       view.items.append({
-        item = ::handyman.renderCached("%gui/items/item", {
+        item = ::handyman.renderCached("gui/items/item", {
           items = [{
             enableBackground = true
             skipNavigation = true
@@ -606,29 +606,29 @@ let { GUI } = require("%scripts/utils/configs.nut")
   {
     local value = ::getTblValue("dayInLoop", userlog.body, -1)
     local maxVal = ::getTblValue("loopLenght", userlog.body, -1)
-    let progress = ::getTblValue("progress", userlog.body, -1)
+    local progress = ::getTblValue("progress", userlog.body, -1)
     if (value < 0 || maxVal < 0)
     {
       value = progress
       maxVal = ::getTblValue("daysForLast", userlog.body, 0) + value
     }
 
-    let blockObj = scene.findObject("reward_progress_box")
+    local blockObj = scene.findObject("reward_progress_box")
     if (!::checkObj(blockObj))
       return
 
-    let textNestObj = blockObj.findObject("filled_reward_progress")
+    local textNestObj = blockObj.findObject("filled_reward_progress")
 
-    let singleDayLength = blockObj.getSize()[0] * (1.0 / maxVal)
+    local singleDayLength = blockObj.getSize()[0] * (1.0 / maxVal)
 
-    let filledBoxWidth = ::to_integer_safe(singleDayLength * value)
+    local filledBoxWidth = ::to_integer_safe(singleDayLength * value)
     textNestObj.width = filledBoxWidth
     guiScene.setUpdatesEnabled(true, true)
 
-    let view = { item = [] }
+    local view = { item = [] }
     for (local i = 0; i < maxVal; i++)
     {
-      let param = "awardPeriodLin" + i
+      local param = "awardPeriodLin" + i
       if (!(param in userlog.body) || (value != progress && value == maxVal))
         continue
 
@@ -636,7 +636,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
         continue
 
       local isDefault = false
-      let period = userlog.body[param]
+      local period = userlog.body[param]
       local rewardConfig = curPeriodicAwardData.getBlockByName(period.tostring())
       if (!rewardConfig)
       {
@@ -647,7 +647,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       if (!rewardConfig)
         continue
 
-      let progressImage = rewardConfig.progress
+      local progressImage = rewardConfig.progress
       if (::u.isEmpty(progressImage))
       {
         ::dagor.assertf(isDefault, "Every Day Login Award: empty progress param for config for period = " + period)
@@ -655,14 +655,14 @@ let { GUI } = require("%scripts/utils/configs.nut")
         continue
       }
 
-      let itemNum = i
+      local itemNum = i
       local imgColor = "@commonImageColor"
       if (itemNum == value)
         imgColor = "@activeImageColor"
       else if (i < value)
         imgColor = "@fadedImageColor"
 
-      let posX = (singleDayLength * itemNum - 0.5*singleDayLength).tointeger()
+      local posX = (singleDayLength * itemNum - 0.5*singleDayLength).tointeger()
       view.item.append({
         image = progressImage
         posX = posX.tostring()
@@ -674,7 +674,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!view.item.len())
       return
 
-    let data = ::handyman.renderCached("%gui/items/edlaProgressBarRewardIcon", view)
+    local data = ::handyman.renderCached("gui/items/edlaProgressBarRewardIcon", view)
     guiScene.appendWithBlk(blockObj, data, this)
   }
 
@@ -685,7 +685,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function sendOpenTrophyStatistic(obj)
   {
-    let objId = obj?.id
+    local objId = obj?.id
     ::add_big_query_record("daily_trophy_screen",
       objId == "btn_open" ? "main_get_reward"
         : objId == "btn_nav_open" ? "navbar_get_reward"
@@ -715,7 +715,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 
   function updateTodayLoginExp(obj, value) {
-    let isVisible = value > 0 && !isOpened
+    local isVisible = value > 0 && !isOpened
     obj.show(isVisible)
     if (!isVisible)
       return
@@ -725,13 +725,13 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 
   function updateLoginStreakExp(obj, value) {
-    let isVisible = value > 0
+    local isVisible = value > 0
       && (rouletteAnimationFinished || (isOpened && useSingleAnimation))
     obj.show(isVisible)
     if (!isVisible)
       return
 
-    let rangeExpText = ::loc("ui/parentheses/space", {
+    local rangeExpText = ::loc("ui/parentheses/space", {
       text = getExpRangeTextOfLoginStreak() })
     obj.findObject("text").setValue("".concat(::loc("battlePass/seasonLoginStreak",
       { amount = value }), rangeExpText))

@@ -1,6 +1,6 @@
-let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
+local chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
 
-::items_classes.Wager <- class extends ::BaseItem
+class ::items_classes.Wager extends ::BaseItem
 {
   static iType = itemType.WAGER
   static defaultLocId = "wager"
@@ -147,8 +147,8 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     {
       if (text != "")
         text += ", "
-      let rewardDataType = getRewardDataTypeByName(rewardDataTypeName)
-      let rewardValue = getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
+      local rewardDataType = getRewardDataTypeByName(rewardDataTypeName)
+      local rewardValue = getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
       text += ::g_language.decimalFormat(rewardValue) + ::loc(rewardDataType.icon)
     }
     return text
@@ -157,12 +157,12 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   /** Creates array with reward data objects sorted by param value. */
   function createWinParamsData(blk)
   {
-    let res = []
+    local res = []
     if (blk == null)
       return res
     foreach (reward in blk % "reward")
     {
-      let rewData = createRewardData(reward)
+      local rewData = createRewardData(reward)
       // No need to add empty rewards.
       if (!rewData.isEmpty)
         res.append(rewData)
@@ -184,7 +184,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     local res = null
     for (local i = 0; i < winParams.len(); ++i)
     {
-      let nextRewardData = winParams[i]
+      local nextRewardData = winParams[i]
       if (nextRewardData.winCount > winCount)
         break
       res = nextRewardData
@@ -197,15 +197,15 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   {
     if (blk == null || ::getTblValue("param", blk, 0) == 0)
       return {}
-    let res = {
+    local res = {
       winCount = blk.param
       rewardParamsTable = {}
       isEmpty = true
     }
     foreach (rewardDataType in rewardDataTypes)
     {
-      let rewardDataTypeName = rewardDataType.name
-      let p3 = ::getTblValue(rewardDataTypeName, blk, null)
+      local rewardDataTypeName = rewardDataType.name
+      local p3 = ::getTblValue(rewardDataTypeName, blk, null)
       if (typeof(p3) != "instance" || !(p3 instanceof ::Point3))
         continue
       if (p3.x == 0 && p3.y == 0 && p3.z == 0)
@@ -234,10 +234,10 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     local iconName = winBlk?.type
     for(local i = 0; i < winBlk.paramCount(); i++)
     {
-      let paramName = winBlk.getParamName(i)
+      local paramName = winBlk.getParamName(i)
       if (paramName != "unlock")
         continue
-      let paramValue = winBlk.getParamValue(i)
+      local paramValue = winBlk.getParamValue(i)
       if (!::LayersIcon.findLayerCfg(getBasePartOfLayerId(false) + "_" + paramValue))
         continue
 
@@ -263,7 +263,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     local layersData = ::LayersIcon.genDataFromLayer(_getBestRewardImage(small))
     layersData += _getWinIconData(small)
 
-    let mainLayerCfg = _getBackground(small)
+    local mainLayerCfg = _getBackground(small)
     return ::LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
   }
 
@@ -282,12 +282,12 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     if (!winIcon)
       return ""
 
-    let layers = []
+    local layers = []
 
     if (reqWinsNum && reqWinsNum > 1)
     {
-      let textLayerId = getBasePartOfLayerId(small) + "_" + defaultTextType
-      let textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
+      local textLayerId = getBasePartOfLayerId(small) + "_" + defaultTextType
+      local textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
       if (textLayerCfg)
       {
         textLayerCfg.id <- textLayerId
@@ -334,7 +334,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   function getDescription(customParams = {})
   {
     local desc = ""
-    let customNumWins = ::getTblValue("numWins", customParams, numWins)
+    local customNumWins = ::getTblValue("numWins", customParams, numWins)
 
     if (isActive())
       desc += ::loc("items/wager/numWins", { numWins = customNumWins, maxWins = maxWins })
@@ -348,7 +348,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
         desc += ::loc("items/wager/maxFails", { maxFails = maxFails })
       else
       {
-        let customNumFails = ::getTblValue("numFails", customParams, numBattles - customNumWins)
+        local customNumFails = ::getTblValue("numFails", customParams, numBattles - customNumWins)
         desc += ::loc("items/wager/numFails", {
           numFails = customNumFails
           maxFails = maxFails
@@ -358,7 +358,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     }
 
     local stakeText
-    let costParam = {isWpAlwaysShown = true}
+    local costParam = {isWpAlwaysShown = true}
     if (isActive())
       stakeText =::Cost(curWager).toStringWithParams(costParam)
     else if (maxWager == 0)
@@ -372,7 +372,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     if (stakeText != "")
       desc += ::loc("items/wager/stake", { stakeText = stakeText }) + "\n"
 
-    let expireText = getCurExpireTimeText()
+    local expireText = getCurExpireTimeText()
     if (expireText != "")
       desc += "\n" + expireText
 
@@ -397,8 +397,8 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
     if (winConditions)
     {
-      let mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
-      let modeType = mainCond && mainCond.modeType
+      local mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
+      local modeType = mainCond && mainCond.modeType
       _needLongMarkup = (modeType == "unlocks" || modeType == "char_unlocks")
                         && ::getTblValue("typeLocIDWithoutValue", mainCond) == null
     } else
@@ -413,11 +413,11 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
   function _getMainCondViewData(mainCond)
   {
-    let modeType = mainCond.modeType
+    local modeType = mainCond.modeType
     if (modeType != "unlocks" && modeType != "char_unlocks")
       return { text = ::UnlockConditions._genMainConditionText(mainCond, null, null, winCondParams) }
 
-    let values = mainCond.values
+    local values = mainCond.values
 
     if (values.len() == 1)
       return {
@@ -425,10 +425,10 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
         tooltipId = ::g_tooltip.getIdUnlock(values[0])
       }
 
-    let res = { subTexts = [] }
+    local res = { subTexts = [] }
     res.subTexts.append({ text = ::UnlockConditions._genMainConditionText(mainCond, "", null, winCondParams) + ::loc("ui/colon") })
 
-    let locValues = ::UnlockConditions.getLocForBitValues(modeType, values)
+    local locValues = ::UnlockConditions.getLocForBitValues(modeType, values)
     foreach(idx, value in locValues)
       res.subTexts.append({
         text = ::colorize("unlockActiveColor", value) + ((idx < values.len() - 1) ? ::loc("ui/comma") : "")
@@ -443,18 +443,18 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     if (!isNeedLongMarkup())
       return ""
 
-    let view = { rows = [] }
+    local view = { rows = [] }
 
     view.rows.append({ text = ::colorize("grayOptionColor", ::loc("items/wager/winConditions")) })
 
-    let mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
+    local mainCond = ::UnlockConditions.getMainProgressCondition(winConditions)
     if (mainCond)
       view.rows.append(_getMainCondViewData(mainCond))
 
-    let usualCond = ::UnlockConditions.getConditionsText(winConditions, null, null, { withMainCondition = false })
+    local usualCond = ::UnlockConditions.getConditionsText(winConditions, null, null, { withMainCondition = false })
     view.rows.append({ text = usualCond })
     view.rows.append({ text = ::colorize("grayOptionColor", ::loc("items/wager/winConditions/caption")) })
-    return ::handyman.renderCached("%gui/items/conditionsTexts", view)
+    return ::handyman.renderCached("gui/items/conditionsTexts", view)
   }
 
   function getDescriptionAboveTable()
@@ -476,7 +476,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
   function getMainActionData(isShort = false, params = {})
   {
-    let res = base.getMainActionData(isShort, params)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive() && curWager >= 0)
@@ -491,7 +491,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
   function doMainAction(cb, handler, params = null)
   {
-    let baseResult = base.doMainAction(cb, handler, params)
+    local baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !isInventoryItem)
       return true
 
@@ -502,7 +502,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
       activate(minWager, cb)
     else
     {
-      let item = this
+      local item = this
       chooseAmountWnd.open({
         parentObj = params?.obj
         align = params?.align ?? "bottom"
@@ -541,7 +541,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
     local bodyText = ::format(::loc("msgbox/conflictingWager"), getWagerDescriptionForMessageBox(uids[0]))
     bodyText += "\n" + getWagerDescriptionForMessageBox(::get_current_wager_uid())
-    let item = this
+    local item = this
     ::scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [
         [ "continue", @() item.activateImpl(wagerValue, cb) ],
@@ -553,12 +553,12 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
   function sendTaskActivate(wagerValue, cb)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk.setStr("name", uids[0])
     blk.setInt("wager", wagerValue)
-    let taskId = ::char_send_blk("cln_set_current_wager", blk)
+    local taskId = ::char_send_blk("cln_set_current_wager", blk)
 
-    let isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
+    local isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
       @() cb({ success = true }), @(res) cb({ success = false }))
     if (!isTaskSend)
       cb({success=false})
@@ -572,12 +572,12 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
       return
     }
 
-    let activateLocId = wagerValue > 0 ? "msgbox/wagerActivate/withCost" : "msgbox/wagerActivate"
-    let bodyText = ::loc(activateLocId, {
+    local activateLocId = wagerValue > 0 ? "msgbox/wagerActivate/withCost" : "msgbox/wagerActivate"
+    local bodyText = ::loc(activateLocId, {
       name = getWagerDescriptionForMessageBox(uids[0])
       cost = getWagerCost(wagerValue)
     })
-    let item = this
+    local item = this
     ::scene_msg_box("activate_wager_message_box", null, bodyText,
       [
         [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
@@ -588,7 +588,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
   function getWagerDescriptionForMessageBox(uid)
   {
-    let wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
+    local wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
     return wager == null ? "" : wager.getShortDescription()
   }
 
@@ -596,7 +596,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   {
     local bodyTextLocString = "msgbox/notEnoughMoneyWager/"
     bodyTextLocString += isGoldWager ? "gold" : "wp"
-    let bodyText = ::loc(bodyTextLocString)
+    local bodyText = ::loc(bodyTextLocString)
     ::scene_msg_box("not_enough_money_message_box", null, bodyText,
       [["ok", @() cb({success=false}) ]],
       "ok")
@@ -605,7 +605,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   function getShortDescription(colored = true)
   {
     local desc = getName(colored)
-    let descVars = []
+    local descVars = []
     if (isActive())
       descVars.append(numWins + "/" + maxWins)
 
@@ -632,17 +632,17 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   {
     if (winParamsData == null || winParamsData.len() == 0)
       return null
-    let view = createTableDataView(winParamsData, numWins)
-    return ::handyman.renderCached("%gui/items/wagerRewardsTable", view)
+    local view = createTableDataView(winParamsData, numWins)
+    return ::handyman.renderCached("gui/items/wagerRewardsTable", view)
   }
 
   function createTableDataView(winParams, winsNum)
   {
-    let view = {
+    local view = {
       rows = []
     }
 
-    let headerView = clone tableRowTypeByName.header
+    local headerView = clone tableRowTypeByName.header
     headerView.winCount <- ::loc("items/wager/table/winCount")
     if (minWager == maxWager || isActive())
       headerView.rewardText <- ::loc("items/wager/table/reward")
@@ -655,18 +655,18 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
     local previousRewardData = null
     local activeRowPlaced = false
-    let needActiveRow = isActive() && winsNum != 0
+    local needActiveRow = isActive() && winsNum != 0
     for (local i = 0; i < winParams.len(); ++i)
     {
-      let rewData = winParams[i]
+      local rewData = winParams[i]
       if (rewData.winCount > winsNum && !activeRowPlaced && needActiveRow)
       {
         activeRowPlaced = true
-        let activeRewardData = getRewardDataByParam(winsNum, winParams)
+        local activeRewardData = getRewardDataByParam(winsNum, winParams)
         view.rows.append(createRewardView("selected", activeRewardData, winsNum))
         previousRewardData = activeRewardData
       }
-      let isMeActive = rewData.winCount == winsNum && !activeRowPlaced && needActiveRow
+      local isMeActive = rewData.winCount == winsNum && !activeRowPlaced && needActiveRow
       // Skipping rows with equal reward data.
       if (!isMeActive && compareRewardData(previousRewardData, rewData))
         continue
@@ -680,14 +680,14 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
         rowTypeName = "regular"
 
       previousRewardData = rewData
-      let rewardView = createRewardView(rowTypeName, rewData)
+      local rewardView = createRewardView(rowTypeName, rewData)
       view.rows.append(rewardView)
       if (isMeActive)
         activeRowPlaced = true
     }
     if (!activeRowPlaced && needActiveRow)
     {
-      let activeRewardData = getRewardDataByParam(winsNum, winParams)
+      local activeRewardData = getRewardDataByParam(winsNum, winParams)
       view.rows.append(createRewardView("selected", activeRewardData, winsNum))
     }
     return view
@@ -697,8 +697,8 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   {
     foreach (rewardDataType in rewardDataTypes)
     {
-      let rp1 = rd1?.rewardParamsTable[rewardDataType.name]
-      let rp2 = rd2?.rewardParamsTable[rewardDataType.name]
+      local rp1 = rd1?.rewardParamsTable[rewardDataType.name]
+      local rp2 = rd2?.rewardParamsTable[rewardDataType.name]
       if (rp1 == rp2)
         continue
       if (!rp1 || !rp2)
@@ -716,7 +716,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   {
     if (winsNum == -1)
       winsNum = rewData?.winCount ?? 0
-    let view = (rowTypeName in tableRowTypeByName)
+    local view = (rowTypeName in tableRowTypeByName)
       ? clone tableRowTypeByName[rowTypeName]
       : {}
     view.winCount <- winsNum.tostring()

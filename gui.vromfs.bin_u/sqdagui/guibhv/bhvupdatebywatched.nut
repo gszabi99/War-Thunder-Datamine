@@ -1,5 +1,5 @@
-let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
+local { popBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { isTable, isArray } = require("sqStdLibs/helpers/u.nut")
 
 /*
   behaviour config params it is table or array of tables with value pairs:
@@ -11,7 +11,7 @@ local function assertOnce(uniqId, errorText) {
   throw(errorText)
 }
 
-let bhvUpdateByWatched = class {
+local bhvUpdateByWatched = class {
   eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
@@ -32,7 +32,7 @@ let bhvUpdateByWatched = class {
   }
 
   function removeSubscriptions(obj) {
-    let subscriptions = obj.getUserData()
+    local subscriptions = obj.getUserData()
     if ((subscriptions?.len() ?? 0) == 0)
       return
 
@@ -41,7 +41,7 @@ let bhvUpdateByWatched = class {
   }
 
   function updateSubscriptions(obj, value) {
-    let subscriptions = []
+    local subscriptions = []
     local configs = popBhvValueConfig(value)
     if (configs == null)
       return
@@ -55,12 +55,12 @@ let bhvUpdateByWatched = class {
       configs = [configs]
 
     foreach (config in configs) {
-      let watch = config?.watch
-      let updateFunc = config?.updateFunc
+      local watch = config?.watch
+      local updateFunc = config?.updateFunc
       if (watch == null || updateFunc == null)
         continue
 
-      let updateObjectFunc = @(watchValue) updateFunc(obj, watchValue)
+      local updateObjectFunc = @(watchValue) updateFunc(obj, watchValue)
       updateObjectFunc(watch.value)
       watch.subscribe(updateObjectFunc)
       subscriptions.append({
@@ -76,5 +76,5 @@ let bhvUpdateByWatched = class {
 ::replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
 
 return {
-  setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText) // warning disable: -trying-to-modify
+  setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText)
 }

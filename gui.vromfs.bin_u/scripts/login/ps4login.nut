@@ -1,14 +1,14 @@
-let statsd = require("statsd")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { requestPackageUpdateStatus } = require("sony")
+local statsd = require("statsd")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { targetPlatform } = require("scripts/clientState/platform.nut")
+local { requestPackageUpdateStatus } = require("sony")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 
-::gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler
+class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/loginBoxSimple.blk"
+  sceneBlkName = "gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
   isAutologin = false
@@ -23,7 +23,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
     isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 
-    let data = ::handyman.renderCached("%gui/commonParts/button", {
+    local data = ::handyman.renderCached("gui/commonParts/button", {
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "A"
@@ -46,7 +46,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
   function updateButtons(isUpdateAvailable = false) {
     showSceneBtn("authorization_button", !isAutologin)
-    let text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
+    local text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
       ::loc("ps4/reqInstantConnection")
     ], true)
     scene.findObject("user_notify_text").setValue(text)
@@ -71,7 +71,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       loginStatus = ::ps4_login();
       if (loginStatus >= 0)
       {
-        let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        local cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
         ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
           {

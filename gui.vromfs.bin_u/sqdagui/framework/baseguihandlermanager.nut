@@ -1,4 +1,4 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
@@ -61,18 +61,18 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     _loadHandlerRecursionLevel++
 
-    let hType = getHandlerType(handlerClass)
+    local hType = getHandlerType(handlerClass)
     beforeLoadHandler(hType)
 
-    let restoreData = restoreDataOnLoadHandler?[handlerClass]
+    local restoreData = restoreDataOnLoadHandler?[handlerClass]
     if (restoreData)
       delete restoreDataOnLoadHandler[handlerClass]
 
     if (restoreData?.openData)
       params = ::u.extend({}, params, restoreData.openData)
 
-    let startTime = ::dagor.getCurTime()
-    let dbgName = onLoadHandlerDebug(handlerClass, params)
+    local startTime = ::dagor.getCurTime()
+    local dbgName = onLoadHandlerDebug(handlerClass, params)
 
     local handler = null
     if (hType == handlerType.MODAL)
@@ -110,7 +110,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function getHandlerClassDebugName(handlerClass)
   {
-    let className = getHandlerClassName(handlerClass)
+    local className = getHandlerClassName(handlerClass)
     if (className)
       return "::gui_handlers." + className
     return " sceneBlk = " + (handlerClass?.sceneBlkName ?? "null")
@@ -118,7 +118,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function onLoadHandlerDebug(handlerClass, params)
   {
-    let handlerName = getHandlerClassDebugName(handlerClass)
+    local handlerName = getHandlerClassDebugName(handlerClass)
     ::dagor.debug("GuiManager: load handler " + handlerName)
 
     lastLoadedHandlerName = handlerName
@@ -137,10 +137,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     }
     catch (errorMessage)
     {
-      let handlerName = getHandlerClassDebugName(handler)
-      let message = ::format("Error on init handler %s:\n%s", handlerName, errorMessage)
+      local handlerName = getHandlerClassDebugName(handler)
+      local message = ::format("Error on init handler %s:\n%s", handlerName, errorMessage)
       ::script_net_assert_once(handlerName, message)
-      let hType = getHandlerType(handler.getclass())
+      local hType = getHandlerType(handler.getclass())
       if (hType == handlerType.MODAL)
       {
         if (::check_obj(handler.scene))
@@ -183,17 +183,17 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function loadBaseHandler(handlerClass, params = {})
   {
-    let guiScene = ::get_gui_scene()
+    local guiScene = ::get_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
       ::script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
       return null
     }
 
-    let reloadScene = updatePostLoadCss() || needReloadScene()
-    let reload = !handlerClass.keepLoaded || reloadScene
+    local reloadScene = updatePostLoadCss() || needReloadScene()
+    local reload = !handlerClass.keepLoaded || reloadScene
     if (!reload)
     {
-      let handler = findAndReinitHandler(handlerClass, params)
+      local handler = findAndReinitHandler(handlerClass, params)
       if (handler)
       {
         setLastBaseHandlerStartFuncByHandler(handlerClass, params)
@@ -205,8 +205,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     if (reloadScene)
       clearScene()
 
-    let handler = createHandler(handlerClass, guiScene, params)
-    let newLoadedRootHandler = loadHandlerScene(handler)
+    local handler = createHandler(handlerClass, guiScene, params)
+    local newLoadedRootHandler = loadHandlerScene(handler)
     switchBaseHandler(handler)
 
     local initResult = true
@@ -233,10 +233,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return null
     }
 
-    let id = "root_scene_" + ++sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
+    local id = "root_scene_" + ++sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
     if (!handler.rootHandlerClass || getHandlerType(handler) != handlerType.BASE)
     {
-      let rootObj = handler.guiScene.getRoot()
+      local rootObj = handler.guiScene.getRoot()
       handler.scene = handler.guiScene.createElementByObject(rootObj, handler.sceneBlkName, "rootScene", handler)
       handler.initHandlerSceneTpl()
       handler.scene.id = id
@@ -244,7 +244,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     }
 
     local newLoadedRootHandler = null
-    let guiScene = ::get_cur_gui_scene()
+    local guiScene = ::get_cur_gui_scene()
     local rootHandler = findHandlerClassInScene(handler.rootHandlerClass)
     if (!isHandlerValid(rootHandler, true))
     {
@@ -255,7 +255,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       newLoadedRootHandler = rootHandler
     }
 
-    let rootObj = rootHandler.getBaseHandlersContainer() || guiScene.getRoot()
+    local rootObj = rootHandler.getBaseHandlersContainer() || guiScene.getRoot()
     handler.scene = guiScene.createElementByObject(rootObj, handler.sceneBlkName, "rootScene", handler)
     handler.scene.id = id
     handler.rootHandlerWeak = rootHandler.weakref()
@@ -277,16 +277,16 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return handler
     }
 
-    let guiScene = ::get_gui_scene()
+    local guiScene = ::get_gui_scene()
     handler = createHandler(handlerClass, guiScene, params)
     handlers[handlerType.MODAL].append(handler.weakref())
 
-    let scene = guiScene.loadModal("", handler.sceneBlkName || "%gui/emptyScene.blk", "rootScene", handler)
+    local scene = guiScene.loadModal("", handler.sceneBlkName || "gui/emptyScene.blk", "rootScene", handler)
     scene.id = "modal_wnd_" + ++sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
     handler.scene = scene
 
     handler.initHandlerSceneTpl()
-    let initResult = initHandler(handler)
+    local initResult = initHandler(handler)
     if (!initResult)
       return null
 
@@ -295,8 +295,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function loadCustomHandler(handlerClass, params = {})
   {
-    let guiScene = ::get_gui_scene()
-    let handler = createHandler(handlerClass, guiScene, params)
+    local guiScene = ::get_gui_scene()
+    local handler = createHandler(handlerClass, guiScene, params)
     if (!handler.sceneBlkName && !handler.sceneTplName)
     {
       callstack()
@@ -306,7 +306,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     if (!handler.initCustomHandlerScene())
       loadHandlerScene(handler)
-    let initResult = initHandler(handler)
+    local initResult = initHandler(handler)
     if (!initResult)
       return null
 
@@ -316,21 +316,21 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function createHandler(handlerClass, guiScene, params)
   {
-    let handler = handlerClass(guiScene, params)
+    local handler = handlerClass(guiScene, params)
     subscriptions.subscribeHandler(handler)
     return handler
   }
 
   function findAndReinitHandler(handlerClass, params)
   {
-    let curHandler = getActiveBaseHandler()
+    local curHandler = getActiveBaseHandler()
     if (curHandler && curHandler.getclass() == handlerClass)
     {
       reinitHandler(curHandler, params)
       return curHandler
     }
 
-    let handler = findHandlerClassInScene(handlerClass)
+    local handler = findHandlerClassInScene(handlerClass)
     if (!handler)
       return null
 
@@ -341,10 +341,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function switchBaseHandler(handler)
   {
-    let guiScene = ::get_cur_gui_scene()
+    local guiScene = ::get_cur_gui_scene()
     closeAllModals(guiScene)
 
-    let curHandler = getActiveBaseHandler()
+    local curHandler = getActiveBaseHandler()
     showBaseHandler(curHandler, false)
     onBaseHandlerSwitch()
     if (handler)
@@ -370,7 +370,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function switchRootHandlerChecked(rootHandlerClass)
   {
-    let curRootHandler = getActiveRootHandler()
+    local curRootHandler = getActiveRootHandler()
     if ((!curRootHandler && !rootHandlerClass)
         || (curRootHandler && curRootHandler.getclass() == rootHandlerClass))
       return
@@ -380,7 +380,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     removeHandlerFromListByGuiScene(activeRootHandlers, ::get_cur_gui_scene())
 
-    let newRootHandler = rootHandlerClass && findHandlerClassInScene(rootHandlerClass)
+    local newRootHandler = rootHandlerClass && findHandlerClassInScene(rootHandlerClass)
     if (newRootHandler)
     {
       activeRootHandlers.append(newRootHandler)
@@ -392,7 +392,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     for(local i = list.len()-1; i >= 0; i--)
     {
-      let h = list[i]
+      local h = list[i]
       if (!h || !h.guiScene || guiScene.isEqual(h.guiScene))
         list.remove(i)
     }
@@ -421,7 +421,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       handler.onSceneActivate(show)
   }
 
-  getRootScreenBlkPath = @() "%gui/rootScreen.blk"
+  getRootScreenBlkPath = @() "gui/rootScreen.blk"
 
   //if guiScene == null, will be used current scene
   function clearScene(guiScene = null)
@@ -442,7 +442,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     updateCssParams(guiScene)
     setGuiRootOptions(guiScene, false)
     startActionsDelay()
-    guiScene.initCursor("%gui/cursor.blk", "normal")
+    guiScene.initCursor("gui/cursor.blk", "normal")
     if (!guiScene.isEqual(::get_cur_gui_scene()))
     {
       onClearScene(guiScene)
@@ -462,7 +462,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function updateLoadingFlag()
   {
-    let oldVal = isInLoading
+    local oldVal = isInLoading
     isInLoading = !isMainGuiSceneActive()
                   || (!getActiveBaseHandler() && !getActiveRootHandler())//empty screen count as loading too
 
@@ -491,7 +491,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function setGuiRootOptions(guiScene, forceUpdate = true)
   {
-    let rootObj = guiScene.getRoot()
+    local rootObj = guiScene.getRoot()
 
     rootObj["show_console_buttons"] = ::show_console_buttons ? "yes" : "no" //should to force box buttons in WoP?
     if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
@@ -531,7 +531,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     if (!needReloadOnActivateHandlerToo)
       return
 
-    let handler = ::handlersManager.getActiveBaseHandler()
+    local handler = ::handlersManager.getActiveBaseHandler()
     if (handler)
       handler.doWhenActiveOnce("fullReloadScene")
   }
@@ -539,12 +539,12 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function onEventScriptsReloaded(p)
   {
     markfullReloadOnSwitchScene(false)
-    let startData = findLastBaseHandlerStartData(::get_gui_scene())
+    local startData = findLastBaseHandlerStartData(::get_gui_scene())
     if (!startData)
       return
 
-    let startFunc = startData.startFunc
-    let backSceneFunc = getActiveBaseHandler()?.backSceneFunc
+    local startFunc = startData.startFunc
+    local backSceneFunc = getActiveBaseHandler()?.backSceneFunc
     if (backSceneFunc)
       startData.startFunc = backSceneFunc
     activeBaseHandlers.clear()
@@ -560,7 +560,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!needCheckPostLoadCss && !isForced)
       return false
-    let handler = ::handlersManager.getActiveBaseHandler()
+    local handler = ::handlersManager.getActiveBaseHandler()
     if (!handler || !handler.isSceneActiveNoModals())
       return false
 
@@ -616,10 +616,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     ::destroy_all_msg_boxes(guiScene)
 
-    let group = handlers[handlerType.MODAL]
+    local group = handlers[handlerType.MODAL]
     for(local i = group.len()-1; i >= 0; i--)
     {
-      let handler = group[i]
+      local handler = group[i]
       if (guiScene && handler && !guiScene.isEqual(handler.guiScene))
         continue
 
@@ -648,7 +648,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function findHandlerClassInScene(searchClass, checkGuiScene = true)
   {
-    let searchType = getHandlerType(searchClass)
+    local searchType = getHandlerType(searchClass)
     if (searchType in handlers)
       foreach(handler in handlers[searchType])
         if (!searchClass || (handler && handler.getclass() == searchClass))
@@ -669,7 +669,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function getActiveBaseHandler()
   {
-    let curGuiScene = ::get_cur_gui_scene()
+    local curGuiScene = ::get_cur_gui_scene()
     foreach(handler in activeBaseHandlers)
       if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && isHandlerValid(handler, false))
         return handler
@@ -678,7 +678,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function getActiveRootHandler()
   {
-    let curGuiScene = ::get_cur_gui_scene()
+    local curGuiScene = ::get_cur_gui_scene()
     foreach(handler in activeRootHandlers)
       if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && isHandlerValid(handler, false))
         return handler
@@ -712,7 +712,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
    */
   function requestHandlerRestore(restoreHandler, triggerHandlerClass = null)
   {
-    let restoreData = restoreHandler.getHandlerRestoreData()
+    local restoreData = restoreHandler.getHandlerRestoreData()
     if (restoreData == null) // Not implemented.
       return false
     restoreData.handlerClass <- restoreHandler.getclass()
@@ -737,15 +737,15 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
    */
   function restoreHandlers(triggerHandlerClass)
   {
-    let restoreData = restoreDataByTriggerHandler?[triggerHandlerClass]
+    local restoreData = restoreDataByTriggerHandler?[triggerHandlerClass]
     if (restoreData == null)
       return
     restoreDataByTriggerHandler[triggerHandlerClass] <- null
 
-    let openData = restoreData?.openData
-    let handler = loadHandler(restoreData.handlerClass, openData || {})
+    local openData = restoreData?.openData
+    local handler = loadHandler(restoreData.handlerClass, openData || {})
 
-    let stateData = restoreData?.stateData
+    local stateData = restoreData?.stateData
     if (stateData != null)
       handler.restoreHandler(stateData)
   }
@@ -782,9 +782,9 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function setLastBaseHandlerStartFuncByHandler(handlerClass, params)
   {
-    let handlerClassName = getHandlerClassName(handlerClass)
+    local handlerClassName = getHandlerClassName(handlerClass)
     setLastBaseHandlerStartFunc(function() {
-                                 let hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
+                                 local hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
                                  ::handlersManager.loadHandler(hClass, params)
                                }, null, handlerClass?.handlerLocId)
   }
@@ -792,7 +792,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false)
   {
     local isNewHandlerCreated = true
-    let prevHandler = findHandlerClassInScene(handlerClass)
+    local prevHandler = findHandlerClassInScene(handlerClass)
     if (prevHandler)
       if (!needDestroyIfAlreadyOnTop && prevHandler.scene.getModalCounter() == 0)
         isNewHandlerCreated = false
@@ -819,7 +819,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     delayedActionsGuiScene.performDelayed(this, function()
     {
       delayedActionsGuiScene = null
-      let actions = clone delayedActions
+      local actions = clone delayedActions
       delayedActions.clear()
       foreach(action in actions)
         action()

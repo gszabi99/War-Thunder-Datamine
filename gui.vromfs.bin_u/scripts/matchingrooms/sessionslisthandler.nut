@@ -1,10 +1,11 @@
-let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
-let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setGuiOptionsMode } = ::require_native("guiOptions")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+local { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBlkPath.nut")
+local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { setGuiOptionsMode } = ::require_native("guiOptions")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 ::match_search_gm <- -1
 
@@ -43,7 +44,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 ::build_check_table <- function build_check_table(session, gm=0)
 {
-  let ret = {}
+  local ret = {}
 
   if (session)
     gm = session.gameModeInt
@@ -71,10 +72,10 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   return ret
 }
 
-::gui_handlers.SessionsList <- class extends ::gui_handlers.GenericOptions
+class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 {
   sceneBlkName = sessionsListBlkPath.value
-  sceneNavBlkName = "%gui/navSessionsList.blk"
+  sceneNavBlkName = "gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
   isCoop = true
 
@@ -100,7 +101,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     isCoop = isGameModeCoop(::match_search_gm)
     scene.findObject("sessions_update").setUserData(this)
 
-    let head = scene.findObject("sessions_diff_header")
+    local head = scene.findObject("sessions_diff_header")
     if (::checkObj(head))
       head.setValue(isCoop? ::loc("multiplayer/difficultyShort") : ::loc("multiplayer/createModeShort"))
 
@@ -115,8 +116,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function initRoomsPerPage()
   {
-    let listHeight = sessionsListObj.getSize()[1]
-    let rowHeight = guiScene.calcString("@baseTrHeight", null)
+    local listHeight = sessionsListObj.getSize()[1]
+    local rowHeight = guiScene.calcString("@baseTrHeight", null)
     roomsPerPage = ::max((listHeight / rowHeight).tointeger(), 1)
   }
 
@@ -128,8 +129,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       if(::has_feature("ModeDynamic"))
       {
         showBtn("btn_dynamic", true)
-        let have_premium = ::havePremium()
-        let dynBtn = guiScene["btn_dynamic"]
+        local have_premium = ::havePremium()
+        local dynBtn = guiScene["btn_dynamic"]
         if(::checkObj(dynBtn))
         {
           dynBtn.inactiveColor = have_premium? "no" : "yes"
@@ -167,8 +168,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
     if (!options) return
 
-    let container = create_options_container(optionsContainer, options, false, 0.5, false)
-    let optObj = scene.findObject("session-options")
+    local container = create_options_container(optionsContainer, options, false, 0.5, false)
+    local optObj = scene.findObject("session-options")
     if (::check_obj(optObj))
       guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
 
@@ -178,8 +179,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   function onGamemodeChange(obj)
   {
     if (!obj) return
-    let value = obj.getValue()
-    let option = get_option(::USEROPT_SEARCH_GAMEMODE)
+    local value = obj.getValue()
+    local option = get_option(::USEROPT_SEARCH_GAMEMODE)
     if (!(value in option.values))
       return
 
@@ -191,12 +192,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (!::check_obj(obj))
       return
 
-    let value = obj.getValue()
-    let option = get_option(::USEROPT_SEARCH_DIFFICULTY)
+    local value = obj.getValue()
+    local option = get_option(::USEROPT_SEARCH_DIFFICULTY)
     if (!(value in option.values))
       return
 
-    let newDiff = option.idxValues[value]
+    local newDiff = option.idxValues[value]
     if (curDifficulty == newDiff)
       return
 
@@ -228,10 +229,10 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function updateSearchMsg()
   {
-    let infoText = guiScene["info-text"]
+    local infoText = guiScene["info-text"]
     if (::checkObj(infoText))
     {
-      let show = (type(roomsList) != "array") || (roomsList.len() == 0)
+      local show = (type(roomsList) != "array") || (roomsList.len() == 0)
       if (show)
         infoText.setValue(roomsListData.isNewest() ? ::loc("wait/sessionNone") : ::loc("wait/sessionSearch"))
       infoText.show(show)
@@ -249,7 +250,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     //but temporary better to sort work at least as it was before from matching
     foreach(room in roomsList)
     {
-      let size = ::SessionLobby.getRoomSize(room)
+      local size = ::SessionLobby.getRoomSize(room)
       room._players <- ::SessionLobby.getRoomMembersCnt(room)
       room._full <- room._players >= size
     }
@@ -294,8 +295,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       }
     }
 
-    let columnsOrder = getColumnsList()
-    let deletedArr = []
+    local columnsOrder = getColumnsList()
+    local deletedArr = []
     foreach (id, data in _roomsMarkUpData.columns)
       if (!::isInArray(id, columnsOrder))
         deletedArr.append(id)
@@ -311,11 +312,11 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function updateRoomsHeader()
   {
-    let headerObj = scene.findObject("sessions-header")
+    local headerObj = scene.findObject("sessions-header")
     if (!::checkObj(headerObj))
       return
 
-    let header = [{
+    local header = [{
       country = ""
       mission = "#options/mp_mission"
       numPlayers = "#multiplayer/numPlayers"
@@ -323,7 +324,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       difficultyStr = "#multiplayer/difficultyShort"
       name = "#multiplayer/game_host"
     }]
-    let headerData = ::build_mp_table(header, getRoomsListMarkUpData(), getColumnsList(), 1)
+    local headerData = ::build_mp_table(header, getRoomsListMarkUpData(), getColumnsList(), 1)
     guiScene.replaceContentFromText(headerObj, headerData, headerData.len(), this)
   }
 
@@ -342,18 +343,18 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (!::checkObj(sessionsListObj))
       return
 
-    let selectedRoom = getCurRoom()
+    local selectedRoom = getCurRoom()
     local selectedRow = -1
     curPageRoomsList.clear()
 
-    let maxPage = ::max((roomsList.len() - 1) / roomsPerPage, 0)
+    local maxPage = ::max((roomsList.len() - 1) / roomsPerPage, 0)
     curPage = ::clamp(curPage, 0, maxPage)
 
-    let start = curPage * roomsPerPage
-    let end = ::min(start + roomsPerPage, roomsList.len())
+    local start = curPage * roomsPerPage
+    local end = ::min(start + roomsPerPage, roomsList.len())
     for(local i = start; i < end; i++)
     {
-      let room = roomsList[i]
+      local room = roomsList[i]
       curPageRoomsList.append(room)
       if (selectedRow < 0 && ::u.isEqual(room, selectedRoom))
          selectedRow = curPageRoomsList.len() - 1
@@ -361,7 +362,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (selectedRow < 0 && curPageRoomsList.len())
       selectedRow = ::clamp(sessionsListObj.getValue(), 0, curPageRoomsList.len() - 1)
 
-    let data = ::build_mp_table(::SessionLobby.getRoomsInfoTbl(curPageRoomsList), getRoomsListMarkUpData(), getColumnsList(), 0)
+    local data = ::build_mp_table(::SessionLobby.getRoomsInfoTbl(curPageRoomsList), getRoomsListMarkUpData(), getColumnsList(), 0)
     sessionsListObj.deleteChildren()
     guiScene.appendWithBlk(sessionsListObj, data, this)
 
@@ -372,7 +373,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function updatePaginator(maxPage)
   {
-    let pagObj = scene.findObject("paginator_place")
+    local pagObj = scene.findObject("paginator_place")
     if (maxPage > 0)
       ::generatePaginator(pagObj, this, curPage, maxPage, null, true)
     else
@@ -390,7 +391,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (!::checkObj(sessionsListObj))
       return null
 
-    let curRow = sessionsListObj.getValue()
+    local curRow = sessionsListObj.getValue()
     if (curRow in curPageRoomsList)
       return curPageRoomsList[curRow]
     return null
@@ -398,11 +399,11 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function updateCurRoomInfo()
   {
-    let room = getCurRoom()
+    local room = getCurRoom()
     fillSessionInfo(scene, room?.public)
     ::update_vehicle_info_button(scene, room)
 
-    let btnObj = scene.findObject("btn_select")
+    local btnObj = scene.findObject("btn_select")
     if (::checkObj(btnObj))
       btnObj.inactiveColor = room ? "no" : "yes"
   }
@@ -423,7 +424,10 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    let room = getCurRoom()
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
+
+    local room = getCurRoom()
     if (!room)
       return msgBox("no_room_selected", ::loc("ui/nothing_selected"), [["ok"]], "ok")
 
@@ -457,7 +461,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   if (obj.childrenCount() != shopCountriesList.len())
   {
-    let view = {
+    local view = {
       countries = ::u.map(shopCountriesList, function (countryName) {
         return {
           countryName = countryName
@@ -465,7 +469,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
         }
       })
     }
-    let markup = ::handyman.renderCached("%gui/countriesList", view)
+    local markup = ::handyman.renderCached("gui/countriesList", view)
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
   }
 

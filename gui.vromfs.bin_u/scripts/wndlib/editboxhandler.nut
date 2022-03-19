@@ -1,4 +1,4 @@
-let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params)
 {
@@ -8,10 +8,10 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
   ::gui_start_modal_wnd(::gui_handlers.EditBoxHandler, params)
 }
 
-::gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler
+class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/editBoxWindow.blk"
+  sceneBlkName = "gui/editBoxWindow.blk"
   okFunc = null
   cancelFunc = null
   owner = null
@@ -45,7 +45,7 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
     showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
 
-    let isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
+    local isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)
     if (editBoxTextOnDisable)
       editBoxObj["edit-hint"] = isEnabled? "" : editBoxTextOnDisable
@@ -80,10 +80,10 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
 
   function onChangeValue(obj)
   {
-    let curVal = obj.getValue() || ""
+    local curVal = obj.getValue() || ""
     if (validateFunc)
     {
-      let newVal = validateFunc(curVal)
+      local newVal = validateFunc(curVal)
       if (newVal != curVal)
         return obj.setValue(newVal)
     }
@@ -103,7 +103,7 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
   }
 
   function updateWarningByValue(obj, curVal) {
-    let res = !checkWarningFunc(curVal)
+    local res = !checkWarningFunc(curVal)
     obj.warning = res? "yes" : "no"
     obj.warningText = res? "yes" : "no"
     obj.tooltip = res? editboxWarningTooltip : ""

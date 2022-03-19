@@ -1,33 +1,35 @@
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { recentBR } = require("%scripts/battleRating.nut")
-let clanVehiclesModal = require("%scripts/clans/clanVehiclesModal.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let changeStartMission = require("%scripts/missions/changeStartMission.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { needShowChangelog,
-  openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
-let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
-} = require("%scripts/hangar/backgroundModelHint.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local { recentBR } = require("scripts/battleRating.nut")
+local clanVehiclesModal = require("scripts/clans/clanVehiclesModal.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local changeStartMission = require("scripts/missions/changeStartMission.nut")
+local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getToBattleLocIdShort } = require("scripts/viewUtils/interfaceCustomization.nut")
+local { needShowChangelog,
+  openChangelog, requestAllPatchnotes } = require("scripts/changelog/changeLogState.nut")
+local { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
+local { getShowedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
+} = require("scripts/hangar/backgroundModelHint.nut")
 local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
-::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
   static keepLoaded = true
 
-  sceneBlkName = "%gui/mainmenu/instantAction.blk"
+  sceneBlkName = "gui/mainmenu/instantAction.blk"
 
   toBattleButtonObj = null
   gameModeChangeButtonObj = null
@@ -119,15 +121,15 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (::handlersManager.isHandlerValid(queueTableHandler))
       return
 
-    let drawer = getGamercardDrawerHandler()
+    local drawer = getGamercardDrawerHandler()
     if (drawer == null)
       return
 
-    let queueTableContainer = drawer.scene.findObject("queue_table_container")
+    local queueTableContainer = drawer.scene.findObject("queue_table_container")
     if (queueTableContainer == null)
       return
 
-    let params = {
+    local params = {
       scene = queueTableContainer
       queueMask = queueMask
     }
@@ -139,17 +141,17 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (topMenuHandler.value == null)
       return
 
-    let gamercardPanelCenterObject = topMenuHandler.value.scene.findObject("gamercard_panel_center")
+    local gamercardPanelCenterObject = topMenuHandler.value.scene.findObject("gamercard_panel_center")
     if (gamercardPanelCenterObject == null)
       return
     gamercardPanelCenterObject.show(true)
     gamercardPanelCenterObject.enable(true)
 
-    let gamercardDrawerContainer = topMenuHandler.value.scene.findObject("gamercard_drawer_container")
+    local gamercardDrawerContainer = topMenuHandler.value.scene.findObject("gamercard_drawer_container")
     if (gamercardDrawerContainer == null)
       return
 
-    let params = {
+    local params = {
       scene = gamercardDrawerContainer
     }
     gamercardDrawerHandler = ::handlersManager.loadHandler(::gui_handlers.GamercardDrawer, params)
@@ -161,15 +163,15 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!rootHandlerWeak)
       return
 
-    let centeredPlaceObj = ::showBtn("gamercard_center", true, rootHandlerWeak.scene)
+    local centeredPlaceObj = ::showBtn("gamercard_center", true, rootHandlerWeak.scene)
     if (!centeredPlaceObj)
       return
 
-    let toBattleNest = ::showBtn("gamercard_tobattle", true, rootHandlerWeak.scene)
+    local toBattleNest = ::showBtn("gamercard_tobattle", true, rootHandlerWeak.scene)
     if (toBattleNest)
     {
       rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton", {
+      local toBattleBlk = ::handyman.renderCached("gui/mainmenu/toBattleButton", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -192,7 +194,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   _lastGameModeId = null
   function setGameMode(modeId)
   {
-    let gameMode = ::game_mode_manager.getGameModeById(modeId)
+    local gameMode = ::game_mode_manager.getGameModeById(modeId)
     if (gameMode == null || modeId == _lastGameModeId)
       return
     _lastGameModeId = modeId
@@ -208,20 +210,24 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       return
 
     local name = ""
-    let gameMode = ::game_mode_manager.getCurrentGameMode()
-    let br = recentBR.value
-    name = gameMode && gameMode?.text != ""
-      ? gameMode.text + (br > 0 ? ::loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
+    if (isMultiplayerPrivilegeAvailable()) {
+      local gameMode = ::game_mode_manager.getCurrentGameMode()
+      local br = recentBR.value
+      name = gameMode && gameMode?.text != ""
+        ? gameMode.text + (br > 0 ? ::loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
 
-    if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-    {
-      let gameModeId = ::g_squad_manager.getLeaderGameModeId()
-      let leaderBR = ::g_squad_manager.getLeaderBattleRating()
-      if(gameModeId != "")
-        name = ::events.getEventNameText(::events.getEvent(gameModeId))
-      if(leaderBR > 0)
-        name += ::loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+      if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      {
+        local gameModeId = ::g_squad_manager.getLeaderGameModeId()
+        local leaderBR = ::g_squad_manager.getLeaderBattleRating()
+        if(gameModeId != "")
+          name = ::events.getEventNameText(::events.getEvent(gameModeId))
+        if(leaderBR > 0)
+          name += ::loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+      }
     }
+    else
+      name = ::loc("xbox/noMultiplayer")
 
     gameModeChangeButtonObj.findObject("game_mode_change_button_text").setValue(
       name != "" ? name : ::loc("mainmenu/gamemodesNotLoaded")
@@ -287,7 +293,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!::checkObj(scene))
       return
 
-    let obj = scene.findObject("update_avail")
+    local obj = scene.findObject("update_avail")
     if (!::checkObj(obj))
       return
 
@@ -306,7 +312,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function onEventQueueChangeState(p)
   {
-    let _queue = p?.queue
+    local _queue = p?.queue
     if (!::queues.checkQueueType(_queue, queueMask))
       return
     setCurQueue(::queues.isQueueActive(_queue) ? _queue : null)
@@ -340,25 +346,25 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     if (!::checkObj(scene))
       return
-    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    local currentGameMode = ::game_mode_manager.getCurrentGameMode()
     if (currentGameMode == null)
       return
-    let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+    local multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
     setCurCountry(::get_profile_country_sq())
-    let countryEnabled = ::isCountryAvailable(getCurCountry())
+    local countryEnabled = ::isCountryAvailable(getCurCountry())
       && ::events.isCountryAvailable(
           ::game_mode_manager.getGameModeEvent(currentGameMode),
           getCurCountry()
         )
-    let crewsGoodForMode = testCrewsForMode(getCurCountry())
-    let currentUnitGoodForMode = testCurrentUnitForMode(getCurCountry())
-    let requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
+    local crewsGoodForMode = testCrewsForMode(getCurCountry())
+    local currentUnitGoodForMode = testCurrentUnitForMode(getCurCountry())
+    local requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
     startEnabled = countryEnabled && requiredUnitsAvailable && ((!multiSlotEnabled && currentUnitGoodForMode) || (multiSlotEnabled && crewsGoodForMode))
   }
 
   function getQueueAircraft(country)
   {
-    let slots = getCurQueue() && ::queues.getQueueSlots(getCurQueue())
+    local slots = getCurQueue() && ::queues.getQueueSlots(getCurQueue())
     if (slots && (country in slots))
     {
       foreach(cIdx, c in ::g_crews_list.get())
@@ -396,14 +402,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     _isToBattleAccessKeyActive = value
     toBattleButtonObj.enable(value)
-    let consoleImageObj = toBattleButtonObj.findObject("to_battle_console_image")
+    local consoleImageObj = toBattleButtonObj.findObject("to_battle_console_image")
     if (::checkObj(consoleImageObj))
       consoleImageObj.show(value && ::show_console_buttons)
   }
 
   function startManualMission(manualMission)
   {
-    let missionBlk = ::DataBlock()
+    local missionBlk = ::DataBlock()
     missionBlk.setFrom(::get_mission_meta_info(manualMission.name))
     foreach(name, value in manualMission)
       if (name != "name")
@@ -416,6 +422,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function onStart()
   {
     if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     if (!::g_squad_manager.isMeReady())
@@ -431,7 +440,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     if (::g_squad_manager.isMeReady())
     {
-      let id = ::g_squad_manager.getLeaderGameModeId()
+      local id = ::g_squad_manager.getLeaderGameModeId()
       if(id == "" || id == ::game_mode_manager.getCurrentGameModeId())
         updateNoticeGMChanged()
       else
@@ -439,7 +448,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     }
     else
     {
-      let id = ::game_mode_manager.getUserGameModeId()
+      local id = ::game_mode_manager.getUserGameModeId()
       if (id && id != "")
         ::game_mode_manager.setCurrentGameModeById(id, true)
     }
@@ -460,8 +469,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (leaveCurQueue({ isLeaderCanJoin = true, isCanceledByPlayer = true}))
       return
 
-    let curGameMode = ::game_mode_manager.getCurrentGameMode()
-    let event = ::game_mode_manager.getGameModeEvent(curGameMode)
+    local curGameMode = ::game_mode_manager.getCurrentGameMode()
+    local event = ::game_mode_manager.getGameModeEvent(curGameMode)
     if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
 
@@ -475,7 +484,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if ("onBattleButtonClick" in curGameMode)
       return curGameMode.onBattleButtonClick()
 
-    let configForStatistic = {
+    local configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "hangar"
       economicName = ::events.getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
@@ -506,7 +515,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     if (!::is_online_available())
     {
-      let handler = this
+      local handler = this
       goForwardIfOnline((@(handler) function() {
           if (handler && ::checkObj(handler.scene))
             handler.onStartAction.call(handler)
@@ -517,19 +526,19 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
     {
       setCurCountry(::get_profile_country_sq())
-      let gameMode = ::game_mode_manager.getCurrentGameMode()
+      local gameMode = ::game_mode_manager.getCurrentGameMode()
       if (gameMode == null)
         return
       if (checkGameModeTutorial(gameMode))
         return
 
-      let event = ::game_mode_manager.getGameModeEvent(gameMode)
+      local event = ::game_mode_manager.getGameModeEvent(gameMode)
       if (!::events.checkEventFeature(event))
         return
 
-      let countryGoodForMode = ::events.isCountryAvailable(event, getCurCountry())
-      let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
-      let requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
+      local countryGoodForMode = ::events.isCountryAvailable(event, getCurCountry())
+      local multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+      local requiredUnitsAvailable = checkRequiredUnits(getCurCountry())
       if (countryGoodForMode && startEnabled)
         onCountryApply()
       else if (!requiredUnitsAvailable)
@@ -573,18 +582,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function getRequirementsMsgText()
   {
-    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    local gameMode = ::game_mode_manager.getCurrentGameMode()
     if (!gameMode || gameMode.type != RB_GM_TYPE.EVENT)
       return ""
 
     local requirements = []
-    let event = ::game_mode_manager.getGameModeEvent(gameMode)
+    local event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (!event)
       return ""
 
     foreach (team in ::events.getSidesList(event))
     {
-      let teamData = ::events.getTeamData(event, team)
+      local teamData = ::events.getTeamData(event, team)
       if (!teamData)
         continue
 
@@ -609,11 +618,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function showBadUnitMsgBox(msgText)
   {
-    let buttonsArray = []
+    local buttonsArray = []
 
     // "Change mode" button
-    let curUnitType = ::get_es_unit_type(::get_cur_slotbar_unit())
-    let gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
+    local curUnitType = ::get_es_unit_type(::get_cur_slotbar_unit())
+    local gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
     if (gameMode != null)
     {
       buttonsArray.append([
@@ -627,11 +636,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     }
 
     // "Change vehicle" button
-    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    local currentGameMode = ::game_mode_manager.getCurrentGameMode()
     local properUnitType = null
     if (currentGameMode.type == RB_GM_TYPE.EVENT)
     {
-      let event = ::game_mode_manager.getGameModeEvent(currentGameMode)
+      local event = ::game_mode_manager.getGameModeEvent(currentGameMode)
       foreach(unitType in unitTypes.types)
         if (::events.isUnitTypeRequired(event, unitType.esUnitType))
         {
@@ -659,7 +668,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function isCurrentGameModeMultiSlotEnabled()
   {
-    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    local gameMode = ::game_mode_manager.getCurrentGameMode()
     return ::events.isEventMultiSlotEnabled(::getTblValue("source", gameMode, null))
   }
 
@@ -675,7 +684,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function topMenuSetCountry(country)
   {
-    let slotbar = getSlotbar()
+    local slotbar = getSlotbar()
     if (slotbar)
       slotbar.setCountry(country)
   }
@@ -693,13 +702,13 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
                                               "cbt_tanks/forbidden/instant_action"))
       return
 
-    let multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
+    local multiSlotEnabled = isCurrentGameModeMultiSlotEnabled()
     if (!testCrewsForMode(getCurCountry()))
       return showNoSuitableVehiclesMsgBox()
     if (!multiSlotEnabled && !testCurrentUnitForMode(getCurCountry()))
       return showBadCurrentUnitMsgBox()
 
-    let gameMode   = ::game_mode_manager.getCurrentGameMode()
+    local gameMode   = ::game_mode_manager.getCurrentGameMode()
     if (gameMode == null)
       return
     if (::events.checkEventDisableSquads(this, gameMode.id))
@@ -714,8 +723,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function checkGameModeTutorial(gameMode)
   {
-    let checkTutorUnitType = (gameMode.unitTypes.len() == 1)? gameMode.unitTypes[0] : null
-    let diffCode = ::events.getEventDiffCode(::game_mode_manager.getGameModeEvent(gameMode))
+    local checkTutorUnitType = (gameMode.unitTypes.len() == 1)? gameMode.unitTypes[0] : null
+    local diffCode = ::events.getEventDiffCode(::game_mode_manager.getGameModeEvent(gameMode))
     return checkDiffTutorial(diffCode, checkTutorUnitType)
   }
 
@@ -724,9 +733,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!::checkObj(scene) || !::checkObj(toBattleButtonObj))
       return
 
-    let inQueue = getCurQueue() != null
-    let isSquadMember = ::g_squad_manager.isSquadMember()
-    let isReady = ::g_squad_manager.isMeReady()
+    local inQueue = getCurQueue() != null
+    local isSquadMember = ::g_squad_manager.isSquadMember()
+    local isReady = ::g_squad_manager.isMeReady()
 
     local txt = ""
     local isCancel = false
@@ -783,7 +792,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       modeName = event.name
     else
     {
-      let gameMode = ::game_mode_manager.getCurrentGameMode()
+      local gameMode = ::game_mode_manager.getCurrentGameMode()
       modeName = ::getTblValue("id", gameMode, "")
     }
     if (!query)
@@ -811,7 +820,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function leaveCurQueue(options = {})
   {
-    let queue = getCurQueue()
+    local queue = getCurQueue()
     if (!queue)
       return false
 
@@ -842,7 +851,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function restoreQueueParams()
   {
-    let tMsgBox = guiScene["req_tutorial_msgbox"]
+    local tMsgBox = guiScene["req_tutorial_msgbox"]
     if (::checkObj(tMsgBox))
       guiScene.destroyElement(tMsgBox)
   }
@@ -851,11 +860,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   {
     if (country == "country_0")
     {
-      let option = ::get_option(::USEROPT_COUNTRY)
+      local option = ::get_option(::USEROPT_COUNTRY)
       foreach(idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
         {
-          let unit = getQueueAircraft(optionCountryName)
+          local unit = getQueueAircraft(optionCountryName)
           if (!unit)
             continue
           if (::game_mode_manager.isUnitAllowedForGameMode(unit))
@@ -863,16 +872,16 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
         }
       return false
     }
-    let unit = ::getSelAircraftByCountry(country)
+    local unit = ::getSelAircraftByCountry(country)
     return ::game_mode_manager.isUnitAllowedForGameMode(unit)
   }
 
   function testCrewsForMode(country)
   {
-    let countryToCheckArr = []
+    local countryToCheckArr = []
     if (country == "country_0")
     {//fill countryToCheckArr with countries, allowed by game mode
-      let option = ::get_option(::USEROPT_COUNTRY)
+      local option = ::get_option(::USEROPT_COUNTRY)
       foreach(idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
           countryToCheckArr.append(optionCountryName)
@@ -889,7 +898,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       {
         if (!("aircraft" in crew))
           continue
-        let unit = ::getAircraftByName(crew.aircraft)
+        local unit = ::getAircraftByName(crew.aircraft)
         if (::game_mode_manager.isUnitAllowedForGameMode(unit))
           return true
       }
@@ -900,27 +909,27 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function checkRequiredUnits(country)
   {
-    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    local gameMode = ::game_mode_manager.getCurrentGameMode()
     return gameMode ? ::events.checkRequiredUnits(::game_mode_manager.getGameModeEvent(gameMode), null, country) : true
   }
 
   function getIaBlockSelObj(obj)
   {
-    let value = obj.getValue() || 0
+    local value = obj.getValue() || 0
     if (obj.childrenCount() <= value)
       return null
 
-    let id = ::getObjIdByPrefix(obj.getChild(value), "block_")
+    local id = ::getObjIdByPrefix(obj.getChild(value), "block_")
     if (!id)
       return null
 
-    let selObj = obj.findObject(id)
+    local selObj = obj.findObject(id)
     return ::checkObj(selObj)? selObj : null
   }
 
   function onIaBlockActivate(obj)
   {
-    let selObj = getIaBlockSelObj(obj)
+    local selObj = getIaBlockSelObj(obj)
     if (!selObj)
       return
 
@@ -934,18 +943,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     local isGold = false
     if (obj?.id == "btn_unlock_crew_gold")
       isGold = true
-    let unit = getShowedUnit()
+    local unit = getShowedUnit()
     if (!unit)
       return
 
-    let crewId = ::getCrewByAir(unit).id
-    let cost = ::Cost()
+    local crewId = ::getCrewByAir(unit).id
+    local cost = ::Cost()
     if (isGold)
       cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
     else
       cost.wp = ::shop_get_unlock_crew_cost(crewId)
 
-    let msg = ::format("%s %s?", ::loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
+    local msg = ::format("%s %s?", ::loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     msgBox("unlock_crew", msg, [
         ["yes", (@(crewId, isGold) function() {
           taskId = ::unlockCrew( crewId, isGold, cost )
@@ -986,25 +995,25 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function getCurrentCrewSlot()
   {
-    let slotbar = getSlotbar()
+    local slotbar = getSlotbar()
     return slotbar && slotbar.getCurrentCrewSlot()
   }
 
   function tryToStartUpgradeCrewTutorial()
   {
-    let curCrew = getCurCrew()
+    local curCrew = getCurCrew()
     if (curCrew == null || curCrew.isEmpty)
       return
 
-    let curCrewSlot = getCurrentCrewSlot()
+    local curCrewSlot = getCurrentCrewSlot()
     if (!curCrewSlot)
       return
 
-    let tutorialPageId = ::g_crew.getSkillPageIdToRunTutorial(curCrew)
+    local tutorialPageId = ::g_crew.getSkillPageIdToRunTutorial(curCrew)
     if (!tutorialPageId)
       return
 
-    let steps = [
+    local steps = [
       {
         obj = [curCrewSlot]
         text = ::loc("tutorials/upg_crew/skill_points_info") + " " + ::loc("tutorials/upg_crew/press_to_crew")
@@ -1040,8 +1049,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function toBattleTutor()
   {
-    let objs = [toBattleButtonObj, topMenuHandler.value.getObj("to_battle_console_image")]
-    let steps = [{
+    local objs = [toBattleButtonObj, topMenuHandler.value.getObj("to_battle_console_image")]
+    local steps = [{
       obj = [objs]
       text = ::loc("tutor/battleButton")
       actionType = tutorAction.OBJ_CLICK
@@ -1054,22 +1063,22 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function startSlotbarPresetsTutorial()
   {
-    let tutorialCounter = SlotbarPresetsTutorial.getCounter()
+    local tutorialCounter = SlotbarPresetsTutorial.getCounter()
     if (tutorialCounter >= SlotbarPresetsTutorial.MAX_TUTORIALS)
       return false
 
-    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    local currentGameMode = ::game_mode_manager.getCurrentGameMode()
     if (currentGameMode == null)
       return false
 
-    let missionCounter = ::stat_get_value_missions_completed(currentGameMode.diffCode, 1)
+    local missionCounter = ::stat_get_value_missions_completed(currentGameMode.diffCode, 1)
     if (missionCounter >= SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
     if (!::slotbarPresets.canEditCountryPresets(getCurCountry()))
       return false
 
-    let tutorial = SlotbarPresetsTutorial()
+    local tutorial = SlotbarPresetsTutorial()
     tutorial.currentCountry = getCurCountry()
     tutorial.tutorialGameMode = currentGameMode
     tutorial.currentHandler = this
@@ -1113,11 +1122,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function startNewUnitTypeToBattleTutorial()
   {
-    let currentGameMode = ::game_mode_manager.getCurrentGameMode()
+    local currentGameMode = ::game_mode_manager.getCurrentGameMode()
     if (!currentGameMode)
       return
 
-    let currentCountry = ::get_profile_country_sq()
+    local currentCountry = ::get_profile_country_sq()
     local gameModeForTutorial = null
     local validPreset = null
     local isNotFoundUnitTypeForTutorial = true
@@ -1158,7 +1167,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       [
         ["yes", function() {
           ::add_big_query_record("new_unit_type_to_battle_tutorial_msgbox_btn", "yes")
-          let tutorial = SlotbarPresetsTutorial()
+          local tutorial = SlotbarPresetsTutorial()
           tutorial.currentCountry = currentCountry
           tutorial.tutorialGameMode = gameModeForTutorial
           tutorial.isNewUnitTypeToBattleTutorial = true
@@ -1184,18 +1193,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       return
 
     local notice = null
-    let alertObj = scene.findObject("game_mode_notice")
+    local alertObj = scene.findObject("game_mode_notice")
     if(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
     {
-      let gameModeId = ::g_squad_manager.getLeaderGameModeId()
+      local gameModeId = ::g_squad_manager.getLeaderGameModeId()
       if(gameModeId && gameModeId != "")
         notice = ::loc("mainmenu/leader_gamemode_notice")
       alertObj.hideConsoleImage = "yes"
     }
     else
     {
-      let id = ::game_mode_manager.getUserGameModeId()
-      let gameMode = ::game_mode_manager.getGameModeById(id)
+      local id = ::game_mode_manager.getUserGameModeId()
+      local gameMode = ::game_mode_manager.getGameModeById(id)
       if((id != "" && gameMode && id != ::game_mode_manager.getCurrentGameModeId()))
         notice = format(::loc("mainmenu/gamemode_change_notice"), gameMode.text)
       alertObj.hideConsoleImage = "no"
@@ -1211,7 +1220,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       return
 
-    let id = ::game_mode_manager.getUserGameModeId()
+    local id = ::game_mode_manager.getUserGameModeId()
     if(id != "")
     {
       ::game_mode_manager.setCurrentGameModeById(id, true)
@@ -1241,7 +1250,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function onEventPartnerUnlocksUpdated(p)
   {
-    let hasModalObjectVal = guiScene.hasModalObject()
+    local hasModalObjectVal = guiScene.hasModalObject()
     doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
   }
 

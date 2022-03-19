@@ -415,6 +415,10 @@ shopFilterImg {
   input-transparent:yes;
 }
 
+shopFilter > shopFilterImg[isLeftAligned=yes] {
+  pos:0, 50%ph-50%h;
+}
+
 :hover > shopFilterImg {
   background-color:@listboxHoverTextColor;
 }
@@ -445,6 +449,7 @@ shopFilterImg {
 
 .countryChoice :hover shopFilterImg,
 .countries :hover shopFilterImg,
+:hover shopFilterImg[isColoredImg=yes],
 [type=transparent] > shopFilter:hover > shopFilterImg {
   background-color:@imageHoverCountryColor;
 }

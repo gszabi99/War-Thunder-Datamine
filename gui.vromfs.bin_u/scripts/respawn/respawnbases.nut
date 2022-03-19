@@ -1,5 +1,5 @@
-let { getAvailableRespawnBases } = require_native("guiRespawn")
-let RespawnBase = require("%scripts/respawn/respawnBase.nut")
+local { getAvailableRespawnBases } = require_native("guiRespawn")
+local RespawnBase = require("scripts/respawn/respawnBase.nut")
 
 local respawnBases = {
   MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
@@ -12,24 +12,24 @@ local respawnBases = {
 
   function getRespawnBasesData(unit)
   {
-    let res = {
+    local res = {
       hasRespawnBases = false
       canChooseRespawnBase = false
       basesList = []
       selBase = null
     }
 
-    let rbs = getAvailableRespawnBases(unit.tags)
+    local rbs = getAvailableRespawnBases(unit.tags)
     if (!rbs.len())
       return res
 
     res.hasRespawnBases = true
     res.canChooseRespawnBase = true
-    let lastSelectedBase = getSelectedBase()
+    local lastSelectedBase = getSelectedBase()
     local defaultBase = null
     foreach(idx, id in rbs)
     {
-      let rb = RespawnBase(id)
+      local rb = RespawnBase(id)
       res.basesList.append(rb)
       if (rb.isEqual(lastSelectedBase))
         res.selBase = rb
@@ -37,7 +37,7 @@ local respawnBases = {
         defaultBase = rb
     }
 
-    let autoSelectedBase = RespawnBase(defaultBase.id, true)
+    local autoSelectedBase = RespawnBase(defaultBase.id, true)
     res.basesList.insert(0, autoSelectedBase)
     if (!res.selBase)
       res.selBase = autoSelectedBase

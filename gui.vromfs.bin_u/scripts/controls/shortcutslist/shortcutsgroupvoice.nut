@@ -1,8 +1,8 @@
-let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
+local { getFavoriteVoiceMessagesVariants } = require("scripts/wheelmenu/voiceMessages.nut")
 
-let MAX_VOICE_MESSAGE_BUTTONS = 8
+local MAX_VOICE_MESSAGE_BUTTONS = 8
 
-let function getIdVoiceMessageOption(index) {
+local function getIdVoiceMessageOption(index) {
   return {
     id = "ID_VOICE_MESSAGE_" + index
     checkGroup = ctrlGroups.VOICE
@@ -10,7 +10,7 @@ let function getIdVoiceMessageOption(index) {
   }
 }
 
-let groupList = [
+local groupList = [
   {
     id = "ID_COMMON_VOICE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -38,7 +38,7 @@ groupList.append(
     type = CONTROL_TYPE.SWITCH_BOX
     value = @(joyParams) joyParams.useJoystickMouseForVoiceMessage
     setValue = function(joyParams, objValue) {
-      let old  = joyParams.useJoystickMouseForVoiceMessage
+      local old  = joyParams.useJoystickMouseForVoiceMessage
       joyParams.useJoystickMouseForVoiceMessage = objValue
       if (joyParams.useJoystickMouseForVoiceMessage != old)
         ::set_controls_preset("")
@@ -50,7 +50,7 @@ groupList.append(
     value = @(joyParams) joyParams.useMouseForVoiceMessage
     showFunc = @() ::has_feature("EnableMouse")
     setValue = function(joyParams, objValue) {
-      let old  = joyParams.useMouseForVoiceMessage
+      local old  = joyParams.useMouseForVoiceMessage
       joyParams.useMouseForVoiceMessage = objValue
       if (joyParams.useMouseForVoiceMessage != old)
         ::set_controls_preset("")
@@ -58,7 +58,7 @@ groupList.append(
   }
 )
 
-let function getFavoriteVoiceMessageOption(index) {
+local function getFavoriteVoiceMessageOption(index) {
   return {
     id = "favorite_voice_message_" + index
     type = CONTROL_TYPE.SPINNER
@@ -68,7 +68,7 @@ let function getFavoriteVoiceMessageOption(index) {
   }
 }
 
-let function getFastVoiceMessageOption(index) {
+local function getFastVoiceMessageOption(index) {
   return {
     id = "ID_FAST_VOICE_MESSAGE_" + index
     checkGroup = ctrlGroups.VOICE

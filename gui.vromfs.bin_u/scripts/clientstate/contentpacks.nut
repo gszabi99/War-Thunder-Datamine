@@ -1,10 +1,10 @@
-let contentStateModule = require("%scripts/clientState/contentState.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { is_fully_translated } = require_native("acesInfo")
+local contentStateModule = require("scripts/clientState/contentState.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { eachBlock } = require("std/datablock.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { is_fully_translated } = require_native("acesInfo")
 
 ::check_package_full <- function check_package_full(pack, silent = false)
 {
@@ -44,7 +44,7 @@ let { is_fully_translated } = require_native("acesInfo")
   if (::has_entitlement(ename) || ::has_feature(ename))
   {
     dagor.debug("[PACK] has entitlement "+ename+", checking for pack "+pack);
-    let status = ::package_get_status(pack)
+    local status = ::package_get_status(pack)
     if (status == ::PACKAGE_STATUS_NOT_EXIST)
       return pack
   }
@@ -78,7 +78,7 @@ let { is_fully_translated } = require_native("acesInfo")
 
   dagor.debug("[PACK] updateContentPacks called");
 
-  let reqPacksList = []
+  local reqPacksList = []
   for(local i = reqPacksList.len() - 1; i >= 0; i--)
     if (::have_package(reqPacksList[i]))
       reqPacksList.remove(i)
@@ -93,7 +93,7 @@ let { is_fully_translated } = require_native("acesInfo")
   ::u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 
   local text = ""
-  let langPack = "pkg_" + ::get_current_language()
+  local langPack = "pkg_" + ::get_current_language()
   if (!::have_package(langPack))
   {
     if (!reqPacksList.len())
@@ -101,7 +101,7 @@ let { is_fully_translated } = require_native("acesInfo")
     ::u.appendOnce(langPack, reqPacksList)
   }
 
-  let canceledBlk = ::loadLocalByAccount("canceledPacks")
+  local canceledBlk = ::loadLocalByAccount("canceledPacks")
   if (canceledBlk)
     for(local i = reqPacksList.len() - 1; i >= 0; i--)
       if (reqPacksList[i] in canceledBlk)
@@ -129,7 +129,7 @@ let { is_fully_translated } = require_native("acesInfo")
       })(reqPacksList)],
      ["cancel",
        (@(reqPacksList) function() {
-         let canceledPacks = ::loadLocalByAccount("canceledPacks") ?? ::DataBlock()
+         local canceledPacks = ::loadLocalByAccount("canceledPacks") ?? ::DataBlock()
          foreach(pack in reqPacksList)
            if (!(pack in canceledPacks))
              canceledPacks[pack] = true
@@ -154,7 +154,7 @@ let { is_fully_translated } = require_native("acesInfo")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
   if (::is_platform_windows)
   {
-    let exec = "launcher.exe -silentupdate";
+    local exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
   }
@@ -165,7 +165,7 @@ let { is_fully_translated } = require_native("acesInfo")
 ::asked_packages <- {}
 ::is_asked_pack <- function is_asked_pack(pack, askTag = null)
 {
-  let checkName = pack + (askTag? ("/" + askTag) : "")
+  local checkName = pack + (askTag? ("/" + askTag) : "")
   return checkName in ::asked_packages
 }
 ::set_asked_pack <- function set_asked_pack(pack, askTag = null)
@@ -192,7 +192,7 @@ let { is_fully_translated } = require_native("acesInfo")
   }
 
   local _msg = msg
-  let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
+  local isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
   if (isPlatformSony || isPlatformXboxOne)
   {
     if (!isFullClient)
@@ -213,7 +213,7 @@ let { is_fully_translated } = require_native("acesInfo")
   }
 
   local defButton = ::can_download_package()? "cancel" : "ok"
-  let buttons = [[defButton, (@(cancelFunc, owner) function() {
+  local buttons = [[defButton, (@(cancelFunc, owner) function() {
                      if (cancelFunc)
                        ::call_for_handler(owner, cancelFunc)
                    })(cancelFunc, owner)]
@@ -259,7 +259,7 @@ let { is_fully_translated } = require_native("acesInfo")
 
 ::check_members_pkg <- function check_members_pkg(pack)
 {
-  let members = ::g_squad_manager.checkMembersPkg(pack)
+  local members = ::g_squad_manager.checkMembersPkg(pack)
   if (!members.len())
     return true
 
@@ -276,15 +276,15 @@ let { is_fully_translated } = require_native("acesInfo")
 ::check_localization_package_and_ask_download <- function check_localization_package_and_ask_download(langId = null)
 {
   langId = langId || ::get_current_language()
-  let pack = "pkg_" + langId
+  local pack = "pkg_" + langId
   if (::have_package(pack) || !is_fully_translated(langId))
     return
 
   local params = null
   if (langId != "English")
   {
-    let messageEn = ::g_string.stripTags(::loc("yn1/have_new_content_lang/en"))
-    let buttonsEn = ::g_string.stripTags(::format("[%s] = %s, [%s] = %s",
+    local messageEn = ::g_string.stripTags(::loc("yn1/have_new_content_lang/en"))
+    local buttonsEn = ::g_string.stripTags(::format("[%s] = %s, [%s] = %s",
       ::loc("msgbox/btn_download"), ::loc("msgbox/btn_download/en"),
       ::loc("msgbox/btn_cancel"), ::loc("msgbox/btn_cancel/en")))
     params = {
@@ -299,14 +299,14 @@ let { is_fully_translated } = require_native("acesInfo")
 
 ::check_speech_country_unit_localization_package_and_ask_download <- function check_speech_country_unit_localization_package_and_ask_download()
 {
-  let reqPacksList = []
+  local reqPacksList = []
 
   foreach(langId, langData in ::g_language.langsById)
   {
     if (!langData.hasUnitSpeech)
       continue
 
-    let langPack = "pkg_" + langId
+    local langPack = "pkg_" + langId
     if (!::have_package(langPack))
       reqPacksList.append(langPack)
   }
@@ -343,7 +343,7 @@ let { is_fully_translated } = require_native("acesInfo")
     return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
   if (::is_platform_windows)
   {
-    let exec = "launcher.exe -silentupdate";
+    local exec = "launcher.exe -silentupdate";
 
     return ::quit_and_run_cmd(exec)
   }

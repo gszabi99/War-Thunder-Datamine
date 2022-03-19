@@ -1,13 +1,13 @@
-let { getModsTreeSize, generateModsTree, generateModsBgElems,
-  isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
-let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
+local { getModsTreeSize, generateModsTree, generateModsBgElems,
+  isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+local { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
-  getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
-let { getItemAmount,
+  getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
+local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+local { getItemAmount,
         getItemCost,
         getAllModsCost,
         getByCurBundle,
@@ -15,14 +15,14 @@ let { getItemAmount,
         isCanBeDisabled,
         isModInResearch,
         getBundleCurItem,
-        canResearchItem } = require("%scripts/weaponry/itemInfo.nut")
-let { getModItemName, getReqModsText, getBulletsListHeader
-} = require("%scripts/weaponry/weaponryDescription.nut")
-let { updateModItem, createModItem, createModBundle } = require("%scripts/weaponry/weaponryVisual.nut")
-let { isBullets, getBulletsList, setUnitLastBullets,
+        canResearchItem } = require("scripts/weaponry/itemInfo.nut")
+local { getModItemName, getReqModsText, getBulletsListHeader
+} = require("scripts/weaponry/weaponryDescription.nut")
+local { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
+local { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TAG,
+  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
+local { WEAPON_TAG,
         getLastWeapon,
         validateLastWeapon,
         setLastWeapon,
@@ -32,12 +32,12 @@ let { WEAPON_TAG,
         getPrimaryWeaponsList,
         getSecondaryWeaponsList,
         isUnitHaveAnyWeaponsTags,
-        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { setDoubleTextToButton, placePriceTextToButton
-} = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
+        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { setDoubleTextToButton, placePriceTextToButton
+} = require("scripts/viewUtils/objectTextUpdate.nut")
+local { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
+local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -50,7 +50,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   if ((modNames?.len() ?? 0) == 0)
     return
 
-  let db = ::DataBlock()
+  local db = ::DataBlock()
   db[unitName] <- ::DataBlock()
   foreach (modName in modNames)
     db[unitName][modName] <- enable
@@ -59,10 +59,10 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
 
 ::enable_current_modifications <- function enable_current_modifications(unitName)
 {
-  let db = ::DataBlock()
+  local db = ::DataBlock()
   db[unitName] <- ::DataBlock()
 
-  let air = getAircraftByName(unitName)
+  local air = getAircraftByName(unitName)
   foreach(mod in air.modifications)
     db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
 
@@ -77,13 +77,13 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
 }
 
-let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
+local getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
   ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name, params)
   : null
 
 local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
-::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   items = null
 
@@ -110,7 +110,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   guiScene = null
   scene = null
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/weaponry/weapons.blk"
+  sceneBlkName = "gui/weaponry/weapons.blk"
   tierIdPrefix = "tierLine_"
 
   tooltipOpenTime = -1
@@ -137,7 +137,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     premiumModsHeight = unitSlotCellHeight
       + ::to_pixels($"{researchMode ? 2 : 1}@buttonHeight +1@modCellHeight")
 
-    let imageBlock = scene.findObject("researchMode_image_block")
+    local imageBlock = scene.findObject("researchMode_image_block")
     if (imageBlock?.isValid())
     {
       imageBlock.height = $"{heightInModCell(premiumModsHeight)}@modCellHeight"
@@ -187,10 +187,10 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     updateWeaponsAndBulletsLists()
     updateWndWidth()
 
-    let frameObj =  scene.findObject("mods_frame")
+    local frameObj =  scene.findObject("mods_frame")
     if(frameObj?.isValid())
       frameObj.width = ::to_pixels($"{wndWidth}@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw")
-    let data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
+    local data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
     mainModsObj.setValue(-1)
     guiScene.replaceContentFromText(mainModsObj, data, data.len(), this)
     modsBgObj = mainModsObj.findObject("bg_elems")
@@ -221,10 +221,10 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     bulletsByGroupIndex = {}
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
     {
-      let bulletsList = getBulletsList(air.name, groupIndex, {
+      local bulletsList = getBulletsList(air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
-      let curBulletsName = ::get_last_bullets(air.name, groupIndex)
+      local curBulletsName = ::get_last_bullets(air.name, groupIndex)
       if (groupIndex < air.unitType.bulletSetsQuantity)
         lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
@@ -236,19 +236,19 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateWndWidth()
   {
-    let weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
+    local weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
       + (isUnitHaveSecondaryWeapons(air) ? 1 : 0)//Since we have secondary weapons own window
       + bulletsByGroupIndex.len()
       + expendablesArray.len()
-    let premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
+    local premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
     wndWidth = ::clamp(
       ::max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(air).guiPosX), 6, 7)
   }
 
   function onSlotbarSelect()
   {
-    let newCrew = getCurCrew()
-    let newUnit = newCrew ? ::g_crew.getCrewUnit(newCrew) : null
+    local newCrew = getCurCrew()
+    local newUnit = newCrew ? ::g_crew.getCrewUnit(newCrew) : null
     if (!newUnit || newUnit == air)
       return
 
@@ -267,13 +267,13 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     if (researchMode && !isAnyModuleInResearch())
     {
-      let modForResearch = findAnyNotResearchedMod(air)
+      local modForResearch = findAnyNotResearchedMod(air)
       if (modForResearch)
       {
         setModificatonOnResearch(modForResearch,
           (@(modForResearch) function() {
             updateAllItems()
-            let guiPosIdx = ::getTblValue("guiPosIdx", modForResearch, -1)
+            local guiPosIdx = ::getTblValue("guiPosIdx", modForResearch, -1)
             ::dagor.assertf(guiPosIdx >= 0, "missing guiPosIdx, mod - " + ::getTblValue("name", modForResearch, "none") + "; unit - " + air.name)
             selectResearchModule(guiPosIdx >= 0? guiPosIdx : 0)
           })(modForResearch))
@@ -286,7 +286,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     local modIdx = customPosIdx
     if (modIdx < 0)
     {
-      let finishedResearch = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      local finishedResearch = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       foreach(item in items)
         if (isModInResearch(air, item))
         {
@@ -303,14 +303,14 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateWindowTitle()
   {
-    let titleObj = scene.findObject("wnd_title")
+    local titleObj = scene.findObject("wnd_title")
     if (!::checkObj(titleObj))
       return
 
     local titleText = ::loc("mainmenu/btnWeapons") + " " + ::loc("ui/mdash") + " " + ::getUnitName(air)
     if (researchMode)
     {
-      let modifName = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      local modifName = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = ::loc("modifications/finishResearch",
         {modName = getModificationName(air, modifName)})
     }
@@ -319,20 +319,20 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateWindowHeightAndPos()
   {
-    let frameObj = scene.findObject("mods_frame")
+    local frameObj = scene.findObject("mods_frame")
     if (::check_obj(frameObj))
     {
-      let frameHeight = frameObj.getSize()[1]
-      let maxFrameHeight = ::g_dagui_utils.toPixels(guiScene, "@maxWeaponsWindowHeight")
+      local frameHeight = frameObj.getSize()[1]
+      local maxFrameHeight = ::g_dagui_utils.toPixels(guiScene, "@maxWeaponsWindowHeight")
 
       if (frameHeight > maxFrameHeight)
       {
-        let frameHeaderHeight = ::g_dagui_utils.toPixels(guiScene, "@frameHeaderHeight")
+        local frameHeaderHeight = ::g_dagui_utils.toPixels(guiScene, "@frameHeaderHeight")
         if (frameHeight - frameHeaderHeight < maxFrameHeight)
         {
           frameObj.isHeaderHidden = "yes"
           showSceneBtn("close_alt_btn", !researchMode)
-          let researchModeImgObj = scene.findObject("researchMode_image_block")
+          local researchModeImgObj = scene.findObject("researchMode_image_block")
           researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
         }
         else
@@ -351,17 +351,17 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
     tutorialModule.saveShowedTutorial("researchMod")
 
-    let finMod = ::getTblValue(::researchedModForCheck, researchBlock, "")
-    let newMod = ::shop_get_researchable_module_name(airName)
+    local finMod = ::getTblValue(::researchedModForCheck, researchBlock, "")
+    local newMod = ::shop_get_researchable_module_name(airName)
 
-    let finIdx = getItemIdxByName(finMod)
-    let newIdx = getItemIdxByName(newMod)
+    local finIdx = getItemIdxByName(finMod)
+    local newIdx = getItemIdxByName(newMod)
 
     if (finIdx < 0 || newIdx < 0)
       return
 
-    let newModName = getModificationName(air, items[newIdx].name, true)
-    let steps = [
+    local newModName = getModificationName(air, items[newIdx].name, true)
+    local steps = [
       {
         obj = ["item_" + newIdx]
         text = ::loc("help/newModification", {modName = newModName})
@@ -379,12 +379,12 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       }
     ]
 
-    let finItem = items[finIdx]
-    let balance = ::Cost()
+    local finItem = items[finIdx]
+    local balance = ::Cost()
     balance.setFromTbl(::get_balance())
     if (getItemAmount(air, finItem) < 1 && getItemCost(air, finItem) <= balance)
     {
-      let finModName = getModificationName(air, items[finIdx].name, true)
+      local finModName = getModificationName(air, items[finIdx].name, true)
       steps.insert(0,
         {
           obj = ["item_" + finIdx]
@@ -418,7 +418,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       return
 
     availableFlushExp = ::shop_get_unit_excess_exp(airName)
-    let freeRPObj = scene.findObject("available_free_exp_text")
+    local freeRPObj = scene.findObject("available_free_exp_text")
     if (::checkObj(freeRPObj))
       freeRPObj.setValue(::get_flush_exp_text(availableFlushExp))
   }
@@ -427,11 +427,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     showTaskProgressBox()
     availableFlushExp = ::shop_get_unit_excess_exp(airName)
-    let curResModuleName = ::shop_get_researchable_module_name(airName)
+    local curResModuleName = ::shop_get_researchable_module_name(airName)
 
     if(availableFlushExp <= 0 || curResModuleName == "")
     {
-      let afterDoneFunc = function() {
+      local afterDoneFunc = function() {
         destroyProgressBox()
         updateAllItems()
         goBack()
@@ -474,7 +474,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function onEventModificationPurchased(params)
   {
-    let modName = params?.modName
+    local modName = params?.modName
     if (modName)
       purchasedModifications.append(modName)
 
@@ -497,8 +497,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     }
 
     lastWeapon = getLastWeapon(airName)
-    let secondaryWeapons = getSecondaryWeaponsList(air)
-    let selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
+    local secondaryWeapons = getSecondaryWeaponsList(air)
+    local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
     if (selWeapon == null)
       return
 
@@ -522,7 +522,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function addItemToList(item, iType)
   {
-    let idx = items.len()
+    local idx = items.len()
 
     item.type <- iType
     item.guiPosIdx <- idx
@@ -533,12 +533,12 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function createItem(item, iType, holderObj, posX, posY)
   {
-    let id = addItemToList(item, iType)
+    local id = addItemToList(item, iType)
 
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    let currentEdiff = getCurrentEdiff()
+    local currentEdiff = getCurrentEdiff()
     return createModItem(id, air, item, iType, holderObj, this,
       { posX = posX, posY = posY, curEdiff = currentEdiff,
         tooltipId = getCustomTooltipId(air.name, item, {
@@ -557,8 +557,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function createUnitItemObj(id, item, holderObj, posX, posY)
   {
-    let blockObj = guiScene.createElementByObject(holderObj, "%gui/weaponry/nextUnitItem.blk", "weapon_item_unit", this)
-    let titleObj = blockObj.findObject("nextResearch_title")
+    local blockObj = guiScene.createElementByObject(holderObj, "gui/weaponry/nextUnitItem.blk", "weapon_item_unit", this)
+    local titleObj = blockObj.findObject("nextResearch_title")
     titleObj.setValue(researchMode? ::loc("mainmenu/nextResearch/title") : "")
 
     local position = (posX + 0.5).tostring() + "@modCellWidth-0.5w, " + (posY + 0.5).tostring() + "@modCellHeight-0.5h"
@@ -594,11 +594,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateItem(idx)
   {
-    let itemObj = getItemObj(idx)
+    local itemObj = getItemObj(idx)
     if (!::checkObj(itemObj) || !(idx in items))
       return
 
-    let item = items[idx]
+    local item = items[idx]
     if (isItemTypeUnit(item.type))
       return updateUnitItem(item, itemObj)
 
@@ -609,8 +609,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(air, visualItem)
 
-    let hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
-    let currentEdiff = getCurrentEdiff()
+    local hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
+    local currentEdiff = getCurrentEdiff()
     updateModItem(air, item, itemObj, true, this, {
       canShowResearch = availableFlushExp == 0 && setResearchManually
       flushExp = availableFlushExp
@@ -628,9 +628,9 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateBuyAllButton()
   {
-    let btnId = "btn_buyAll"
-    let cost = getAllModsCost(air, true)
-    let show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
+    local btnId = "btn_buyAll"
+    local cost = getAllModsCost(air, true)
+    local show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
     showSceneBtn(btnId, show)
     if (show)
       placePriceTextToButton(scene, btnId, ::loc("mainmenu/btnBuyAll"), cost)
@@ -644,7 +644,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     fillAvailableRPText()
     for(local i = 0; i < items.len(); i++)
       updateItem(i)
-    let treeSize = getModsTreeSize(air)
+    local treeSize = getModsTreeSize(air)
     updateTiersStatus(treeSize)
     updateButtons()
     updateBuyAllButton()
@@ -652,11 +652,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateButtons()
   {
-    let isAnyModInResearch = isAnyModuleInResearch()
+    local isAnyModInResearch = isAnyModuleInResearch()
     showSceneBtn("btn_exit", researchMode && (!isAnyModInResearch || availableFlushExp <= 0 || setResearchManually))
     showSceneBtn("btn_spendExcessExp", researchMode && isAnyModInResearch && availableFlushExp > 0)
 
-    let checkboxObj = scene.findObject("auto_purchase_mods")
+    local checkboxObj = scene.findObject("auto_purchase_mods")
     if (::checkObj(checkboxObj))
     {
       checkboxObj.show(isOwn)
@@ -667,11 +667,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateUnitItem(item, itemObj)
   {
-    let params = {
+    local params = {
       slotbarActions = airActions
       getEdiffFunc  = getCurrentEdiff.bindenv(this)
     }
-    let unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
+    local unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
     guiScene.replaceContentFromText(itemObj, unitBlk, unitBlk.len(), this)
     itemObj.tooltipId = ::g_tooltip.getIdUnit(item.unit.name, params)
     ::fill_unit_item_timers(itemObj.findObject("unit_item"), item.unit, params)
@@ -679,11 +679,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function isAnyModuleInResearch()
   {
-    let module = ::shop_get_researchable_module_name(airName)
+    local module = ::shop_get_researchable_module_name(airName)
     if (module == "")
       return false
 
-    let moduleData = getModificationByName(air, module)
+    local moduleData = getModificationByName(air, module)
     if (!moduleData || isModResearched(air, moduleData))
       return false
 
@@ -692,7 +692,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateItemBundle(item)
   {
-    let bundle = getItemBundle(item)
+    local bundle = getItemBundle(item)
     if (!bundle)
       updateItem(item.guiPosIdx)
     else
@@ -705,7 +705,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function createTreeItems(obj, branch, treeOffsetY = 0)
   {
-    let branchItems = collectBranchItems(branch, [])
+    local branchItems = collectBranchItems(branch, [])
     branchItems.sort(@(a,b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
     foreach(item in branchItems)
       createItem(item, weaponsItem.modification, obj, item.guiPosX, item.tier + treeOffsetY - 1)
@@ -723,8 +723,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "")
   {
-    let fullWidth = wndWidth - treeOffsetX
-    let view = {
+    local fullWidth = wndWidth - treeOffsetX
+    local view = {
       width = fullWidth
       height = height
       offsetX = treeOffsetX
@@ -746,15 +746,15 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       }
 
       //increase last column width to full window width
-      let widthDiff = fullWidth - headerWidth
+      local widthDiff = fullWidth - headerWidth
       if (widthDiff > 0)
         columnsList[columnsList.len() - 1].width += widthDiff
     }
 
-    let needTierArrows = blockIdPrefix != ""
+    local needTierArrows = blockIdPrefix != ""
     for(local i = 1; i <= height; i++)
     {
-      let row = {
+      local row = {
         width = fullWidth
         top = i - 1
       }
@@ -769,7 +769,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       view.rows.append(row)
     }
 
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryBg", view)
+    local data = ::handyman.renderCached("gui/weaponry/weaponryBg", view)
     if (data!="")
       guiScene.appendWithBlk(obj, data, this)
   }
@@ -779,7 +779,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     local data = ""
     foreach(idx, a in arrowsList)
     {
-      let id = "arrow_" + idx
+      local id = "arrow_" + idx
 
       if (a.from[0]!=a.to[0]) //hor arrow
         data += format("modArrow { id:t='%s'; type:t='right'; " +
@@ -802,12 +802,12 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function fillModsTree()
   {
-    let treeOffsetY = heightInModCell(::to_pixels("1@frameHeaderHeight") + premiumModsHeight)
-    let tree = generateModsTree(air)
+    local treeOffsetY = heightInModCell(::to_pixels("1@frameHeaderHeight") + premiumModsHeight)
+    local tree = generateModsTree(air)
     if (!tree)
       return
 
-    let treeSize = getModsTreeSize(air)
+    local treeSize = getModsTreeSize(air)
     if (treeSize.guiPosX > wndWidth)
       ::dagor.logerr($"Modifications: {air.name} too much modifications in a row")
 
@@ -816,7 +816,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (!(treeSize.tier > 0))
       return
 
-    let bgElems = generateModsBgElems(air)
+    local bgElems = generateModsBgElems(air)
     createTreeBlocks(modsBgObj, bgElems.blocks, treeSize.tier, 0, treeOffsetY, "unlocked", tierIdPrefix)
     createTreeArrows(modsBgObj, bgElems.arrows, treeOffsetY)
     createTreeItems(mainModsObj, tree, treeOffsetY)
@@ -826,7 +826,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateTiersStatus(size)
   {
-    let tiersArray = getResearchedModsArray(size.tier)
+    local tiersArray = getResearchedModsArray(size.tier)
     for(local i = 1; i <= size.tier; i++)
     {
       if (tiersArray[i-1] == null)
@@ -834,21 +834,21 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         ::dagor.assertf(false, ::format("No modification data for unit '%s' in tier %s.", air.name, i.tostring()))
         break
       }
-      let unlocked = isWeaponTierAvailable(air, i)
-      let owned = (tiersArray[i-1].notResearched == 0)
+      local unlocked = isWeaponTierAvailable(air, i)
+      local owned = (tiersArray[i-1].notResearched == 0)
       scene.findObject(tierIdPrefix + i).type = owned? "owned" : unlocked ? "unlocked" : "locked"
 
-      let jObj = scene.findObject(tierIdPrefix + (i+1).tostring())
+      local jObj = scene.findObject(tierIdPrefix + (i+1).tostring())
       if(::checkObj(jObj))
       {
-        let modsCountObj = jObj.findObject(tierIdPrefix + (i+1).tostring() + "_txt")
-        let countMods = tiersArray[i-1].researched
-        let reqMods = air.needBuyToOpenNextInTier[i-1]
+        local modsCountObj = jObj.findObject(tierIdPrefix + (i+1).tostring() + "_txt")
+        local countMods = tiersArray[i-1].researched
+        local reqMods = air.needBuyToOpenNextInTier[i-1]
         if(countMods >= reqMods)
           if(!unlocked)
           {
             modsCountObj.setValue(countMods.tostring() + ::loc("weapons_types/short/separator") + reqMods.tostring())
-            let tooltipText = "<color=@badTextColor>" + ::loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
+            local tooltipText = "<color=@badTextColor>" + ::loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
             modsCountObj.tooltip = ::loc("weaponry/unlockTier/countsBlock/startText") + "\n" +  tooltipText
             jObj.tooltip = tooltipText
           }
@@ -861,9 +861,9 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         else
         {
           modsCountObj.setValue(countMods.tostring() + ::loc("weapons_types/short/separator") + reqMods.tostring())
-          let req = reqMods - countMods
+          local req = reqMods - countMods
 
-          let tooltipText = ::loc("weaponry/unlockTier/tooltip",
+          local tooltipText = ::loc("weaponry/unlockTier/tooltip",
                                     { amount = req.tostring(), tier = ::get_roman_numeral(i+1) })
           jObj.tooltip = tooltipText
           modsCountObj.tooltip = ::loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
@@ -882,7 +882,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         if (!isModificationInTree(air, mod))
           continue
 
-        let idx = mod.tier-1
+        local idx = mod.tier-1
         tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
 
          if(isModResearched(air, mod))
@@ -899,8 +899,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (!::has_feature("SpendGold"))
       return
 
-    let offsetX = researchMode ? 0 : 1.0
-    let offsetY = researchMode
+    local offsetX = researchMode ? 0 : 1.0
+    local offsetY = researchMode
       ? heightInModCell(premiumModsHeight - ::to_pixels("1@modCellHeight + 1@blockInterval"))
       : 0
     local nextX = offsetX
@@ -912,7 +912,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (researchMode)
       return
 
-    let columnsList = [getWeaponsColumnData()]
+    local columnsList = [getWeaponsColumnData()]
     createTreeBlocks(modsBgObj, columnsList, 1, offsetX, offsetY)
   }
 
@@ -938,14 +938,14 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       return
 
     local offsetX = 0
-    let offsetY = heightInModCell(::to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
-    let columnsList = []
+    local offsetY = heightInModCell(::to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
+    local columnsList = []
     //add primary weapons bundle
-    let primaryWeaponsList = []
+    local primaryWeaponsList = []
     foreach(i, modName in getPrimaryWeaponsList(air))
     {
-      let mod = (modName=="")? null : getModificationByName(air, modName)
-      let item = { name = modName, weaponMod = mod }
+      local mod = (modName=="")? null : getModificationByName(air, modName)
+      local item = { name = modName, weaponMod = mod }
 
       if (mod)
       {
@@ -967,11 +967,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     //add secondary weapons
     if (isUnitHaveSecondaryWeapons(air))
     {
-      let secondaryWeapons = getSecondaryWeaponsList(air)
+      local secondaryWeapons = getSecondaryWeaponsList(air)
       lastWeapon = validateLastWeapon(airName) //real weapon or ..._default
       dagor.debug("initial set lastWeapon " + lastWeapon )
       if (needSecondaryWeaponsWnd(air)) {
-        let selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
+        local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
         if (selWeapon)
           createItem(selWeapon, weaponsItem.weapon, mainModsObj, offsetX, offsetY)
@@ -992,7 +992,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       createBundle(getBulletsItemsList(air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, mainModsObj, offsetX, offsetY)
 
-      let name = getBulletsListHeader(air, bulletsList)
+      local name = getBulletsListHeader(air, bulletsList)
       columnsList.append(getWeaponsColumnData(name).__merge(
         {
           haveWarning = checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY
@@ -1017,7 +1017,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateWeaponsWarning()
   {
-    let iconObj = scene.findObject("weapons_warning")
+    local iconObj = scene.findObject("weapons_warning")
     if (iconObj?.isValid())
       iconObj.display = (checkUnitSecondaryWeapons(air) != UNIT_WEAPONS_READY) ? "show" : "hide"
   }
@@ -1026,12 +1026,12 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
     {
-      let bulletsList = getBulletsList(air.name, groupIndex, {
+      local bulletsList = getBulletsList(air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false })
       if (!bulletsList.values.len() || bulletsList.duplicate)
         continue
 
-      let iconObj = scene.findObject($"bullets{groupIndex}_warning")
+      local iconObj = scene.findObject($"bullets{groupIndex}_warning")
         if (iconObj?.isValid())
           iconObj.display = (checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY)
             ? "show" : "hide"
@@ -1061,7 +1061,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       id = obj.id
     if (id.len() <= 5 || id.slice(0,5) != "item_")
       return -1
-    let idx = id.slice(5).tointeger()
+    local idx = id.slice(5).tointeger()
     return (idx in items)? idx : -1
   }
 
@@ -1078,14 +1078,14 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (!::checkObj(mainModsObj))
       return null
 
-    let val = mainModsObj.getValue() - 1
-    let itemObj = mainModsObj.findObject("item_" + val)
+    local val = mainModsObj.getValue() - 1
+    local itemObj = mainModsObj.findObject("item_" + val)
     return ::check_obj(itemObj) ? itemObj : null
   }
 
   function doCurrentItemAction()
   {
-    let itemObj = getCurItemObj()
+    local itemObj = getCurItemObj()
     if (itemObj)
       onModAction(itemObj, false)
   }
@@ -1094,7 +1094,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     if (researchMode)
     {
-      let idx = getItemIdxByObj(obj)
+      local idx = getItemIdxByObj(obj)
       if (idx >= 0)
         mainModsObj.setValue(items[idx].guiPosIdx+1)
       return
@@ -1122,16 +1122,16 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     if (!::checkObj(mainModsObj))
       return null
-    let item = getSelItemFromNavObj(mainModsObj)
+    local item = getSelItemFromNavObj(mainModsObj)
     return (item && isItemTypeUnit(item.type))? item : null
   }
 
   function getSelItemFromNavObj(obj)
   {
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return null
-    let idx = getItemIdxByObj(obj.getChild(value))
+    local idx = getItemIdxByObj(obj.getChild(value))
     if (idx < 0)
       return null
     return items[idx]
@@ -1172,7 +1172,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (!::checkObj(obj))
       return
 
-    let id = obj?.id
+    local id = obj?.id
     if (!id || id.len() <= 5 || id.slice(0,5) != "item_")
       return base.onStickDropDown(obj, show)
 
@@ -1216,7 +1216,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function onModAction(obj, fullAction = true, stickBundle = false)
   {
-    let idx = getItemIdxByObj(obj)
+    local idx = getItemIdxByObj(obj)
     if (idx < 0)
       return
 
@@ -1231,8 +1231,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function doItemAction(item, fullAction = true)
   {
-    let amount = getItemAmount(air, item)
-    let onlyBuy = !fullAction && !getItemBundle(item)
+    local amount = getItemAmount(air, item)
+    local onlyBuy = !fullAction && !getItemBundle(item)
 
     if (checkResearchOperation(item))
       return
@@ -1269,7 +1269,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     }
     else if (item.type == weaponsItem.modification)
     {
-      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
+      local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
       if (groupDef >= 0)
       {
         setLastBullets(item, groupDef)
@@ -1279,7 +1279,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       {
         if (getModificationBulletsGroup(item.name) != "")
         {
-          let id = getBulletGroupIndex(airName, item.name)
+          local id = getBulletGroupIndex(airName, item.name)
           local isChanged = false
           if (id >= 0)
             isChanged = setLastBullets(item, id)
@@ -1310,7 +1310,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     if (canResearchItem(air, item, availableFlushExp <= 0 && setResearchManually))
     {
-      let afterFuncDone = (@(item) function() {
+      local afterFuncDone = (@(item) function() {
         setModificatonOnResearch(item, function()
         {
           updateAllItems()
@@ -1331,7 +1331,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function setModificatonOnResearch(item, afterDoneFunc = null)
   {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
@@ -1368,7 +1368,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function _flushItemExp(modName, afterDoneFunc = null)
   {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
         setResearchManually = true
         if (afterDoneFunc)
           afterDoneFunc()
@@ -1396,11 +1396,11 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function onAltModAction(obj) //only buy atm before no research.
   {
-    let idx = getItemIdxByObj(obj)
+    local idx = getItemIdxByObj(obj)
     if (idx < 0)
       return
 
-    let item = items[idx]
+    local item = items[idx]
     if (item.type==weaponsItem.spare)
     {
       ::gui_handlers.UniversalSpareApplyWnd.open(air, getItemObj(idx))
@@ -1441,7 +1441,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     }
     else if (item.type==weaponsItem.modification || item.type==weaponsItem.expendables)
     {
-      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
+      local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
       if (groupDef>=0)
         return
 
@@ -1468,8 +1468,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (!(groupIdx in lastBullets))
       return false
 
-    let curBullets = ::get_last_bullets(airName, groupIdx)
-    let isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
+    local curBullets = ::get_last_bullets(airName, groupIdx)
+    local isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
     setUnitLastBullets(air, groupIdx, item.name)
     if (isChanged) {
       guiScene.playSound("check")
@@ -1480,8 +1480,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function checkAndBuyWeaponry(modItem, open = false)
   {
-    let listObj = mainModsObj
-    let curValue = mainModsObj.getValue()
+    local listObj = mainModsObj
+    local curValue = mainModsObj.getValue()
     checkSaveBulletsAndDo(::Callback(function() {
       weaponsPurchase(air, {
         modItem = modItem,
@@ -1493,17 +1493,17 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function setLastPrimary(item)
   {
-    let lastPrimary = getLastPrimaryWeapon(air)
+    local lastPrimary = getLastPrimaryWeapon(air)
     if (lastPrimary==item.name)
       return
-    let mod = getModificationByName(air, (item.name=="") ? lastPrimary : item.name)
+    local mod = getModificationByName(air, (item.name=="") ? lastPrimary : item.name)
     if (mod)
       switchMod(mod, false)
   }
 
   function switchMod(item, checkCanDisable = true)
   {
-    let equipped = ::shop_is_modification_enabled(airName, item.name)
+    local equipped = ::shop_is_modification_enabled(airName, item.name)
     if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
 
@@ -1514,12 +1514,12 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function doSwitchMod(item, equipped)
   {
-    let taskSuccessCallback = (@(air, item) function() {
+    local taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
       ::broadcastEvent("ModificationChanged")
     }) (air, item)
 
-    let taskId = enable_modifications(airName, [item.name], !equipped)
+    local taskId = enable_modifications(airName, [item.name], !equipped)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
   }
 
@@ -1527,7 +1527,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     doWhenActiveOnce("updateAllItems")
     doWhenActiveOnce("unstickCurBundle")
 
-    let curWeapon = validateLastWeapon(airName)
+    local curWeapon = validateLastWeapon(airName)
     if (curWeapon != lastWeapon)
       doWhenActiveOnce("onEventUnitWeaponChanged")
   }
@@ -1558,7 +1558,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (taskId >= 0 && func)
       {
-        let cb = ::u.isFunction(func) ? ::Callback(func, this) : func
+        local cb = ::u.isFunction(func) ? ::Callback(func, this) : func
         ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
       }
     }
@@ -1574,8 +1574,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function onChangeAutoPurchaseModsValue(obj)
   {
-    let value = obj.getValue()
-    let savedValue = getAutoPurchaseValue()
+    local value = obj.getValue()
+    local savedValue = getAutoPurchaseValue()
     if (value == savedValue)
       return
 
@@ -1590,7 +1590,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
     if (researchMode)
     {
-      let curResName = ::shop_get_researchable_module_name(airName)
+      local curResName = ::shop_get_researchable_module_name(airName)
       if (::getTblValue("name", lastResearchMod, "") != curResName)
         setModificatonOnResearch(getModificationByName(air, curResName))
     }
@@ -1640,8 +1640,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     if (p.unit != air)
       return
-    let modName = p.mod.name
-    let itemidx = items.findindex(@(item) item.name == modName)
+    local modName = p.mod.name
+    local itemidx = items.findindex(@(item) item.name == modName)
     if (itemidx != null)
       updateItem(itemidx)
   }
@@ -1670,7 +1670,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   }
 }
 
-::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 {
   curValue = 0
   minValue = 0
@@ -1689,7 +1689,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   someAction = true
   scene = null
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/multiplePurchase.blk"
+  sceneBlkName = "gui/multiplePurchase.blk"
 
   function initScreen()
   {
@@ -1700,7 +1700,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     }
 
     itemCost = getItemCost(unit, item)
-    let statusTbl = getItemStatusTbl(unit, item)
+    local statusTbl = getItemStatusTbl(unit, item)
     minValue = statusTbl.amount
     maxValue = statusTbl.maxAmount
     minUserValue = statusTbl.amount + 1
@@ -1713,7 +1713,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       canShowStatusImage = false
     })
 
-    let discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
+    local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)
 
     sceneUpdate()
@@ -1727,7 +1727,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
     if (curValue <= minValue)
     {
-      let balance = ::get_balance()
+      local balance = ::get_balance()
       local maxBuy = maxValue - minValue
       if (maxBuy * itemCost.gold > balance.gold && balance.gold >= 0)
         maxBuy = (balance.gold / itemCost.gold).tointeger()
@@ -1736,13 +1736,13 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       curValue = itemCost.gold > 0 ? minUserValue: minValue + max(maxBuy, 1)
     }
 
-    let sObj = scene.findObject("skillSlider")
+    local sObj = scene.findObject("skillSlider")
     sObj.max = maxValue
 
-    let oldObj = scene.findObject("oldSkillProgress")
+    local oldObj = scene.findObject("oldSkillProgress")
     oldObj.max = maxValue
 
-    let newObj = scene.findObject("newSkillProgress")
+    local newObj = scene.findObject("newSkillProgress")
     newObj.min = minValue
     newObj.max = maxValue
   }
@@ -1777,7 +1777,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     if (newValue < minUserValue)
       newValue = minUserValue
 
-    let value = clamp(newValue, minUserValue, maxUserValue)
+    local value = clamp(newValue, minUserValue, maxUserValue)
 
     curValue = value
     sceneUpdate()
@@ -1785,9 +1785,9 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
 
   function updateButtonPriceText()
   {
-    let buyValue = curValue - minValue
-    let wpCost = buyValue * itemCost.wp
-    let eaCost = buyValue * itemCost.gold
+    local buyValue = curValue - minValue
+    local wpCost = buyValue * itemCost.wp
+    local eaCost = buyValue * itemCost.gold
     placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
   }
 
@@ -1796,8 +1796,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     scene.findObject("skillSlider").setValue(curValue)
     scene.findObject("oldSkillProgress").setValue(minValue)
     scene.findObject("newSkillProgress").setValue(curValue)
-    let buyValue = curValue - minValue
-    let buyValueText = buyValue==0? "": ("+" + buyValue.tostring())
+    local buyValue = curValue - minValue
+    local buyValueText = buyValue==0? "": ("+" + buyValue.tostring())
     scene.findObject("text_buyingValue").setValue(buyValueText)
     scene.findObject("buttonInc").enable(curValue < maxUserValue)
     scene.findObject("buttonMax").enable(curValue != maxUserValue)

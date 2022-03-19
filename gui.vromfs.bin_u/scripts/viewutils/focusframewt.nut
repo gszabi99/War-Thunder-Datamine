@@ -1,25 +1,25 @@
-let focusFrame = require("%sqDagui/focusFrame/focusFrame.nut")
-let stdMath = require("%sqstd/math.nut")
+local focusFrame = require("sqDagui/focusFrame/focusFrame.nut")
+local stdMath = require("std/math.nut")
 
-let sizeProps = [
+local sizeProps = [
   ["width-base", "width-end"],
   ["height-base", "height-end"]
 ]
 
-let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+local animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
 
-let baseTransparency = "30"
+local baseTransparency = "30"
 focusFrame.setHideTgtImageTimeMsec(200)
 
 focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt)
 {
-  let offsetMax = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMax")
+  local offsetMax = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMax")
   local offset = offsetMax
   if (prevTgt)
   {
-    let offsetMin = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMin")
-    let sh = ::screen_height()
-    let minSh = 0.2 * sh
+    local offsetMin = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMin")
+    local sh = ::screen_height()
+    local minSh = 0.2 * sh
     local dist = ::max(::abs(prevTgt.pos[0] - curTgt.pos[0]), ::abs(prevTgt.pos[1] - curTgt.pos[1]))
     dist = ::clamp(dist, minSh, sh)
     offset = stdMath.lerp(minSh, sh, offsetMin, offsetMax, dist)

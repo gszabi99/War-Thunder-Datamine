@@ -186,7 +186,7 @@ tdiv {
           pos:t='0, ph/2-h/2'
           position:t='relative'
 
-          include "%gui/worldWar/worldWarArmyInfoUnitString"
+          include "gui/worldWar/worldWarArmyInfoUnitString"
         }
 
         <<#row>>

@@ -1,6 +1,6 @@
-let {floor, round_by_value} = require("%sqstd/math.nut")
+local {floor, round_by_value} = require("std/math.nut")
 
-let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
+local {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
   EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, FuelState, IsCompassVisible,
   MachineGuns, IsMachineGunEmpty, CannonsAdditional, IsCanAdditionalEmpty, Rockets,
@@ -21,23 +21,23 @@ let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   TargetPodHudColor
 } = require("airState.nut")
 
-let {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor, isColorOrWhite} = require("style/airHudStyle.nut")
+local {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor, isColorOrWhite} = require("style/airHudStyle.nut")
 
-let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
-let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
+local { IsTargetTracked, TargetAge, TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
 
-let { isInitializedMeasureUnits } = require("options/optionsMeasureUnits.nut")
+local { isInitializedMeasureUnits } = require("options/optionsMeasureUnits.nut")
 
-let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
-let agmGuidanceLockState =  require("agmAimState.nut").GuidanceLockState
-let guidedBombsGuidanceLockState =  require("guidedBombsAimState.nut").GuidanceLockState
-let compass = require("compass.nut")
+local aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
+local agmGuidanceLockState =  require("agmAimState.nut").GuidanceLockState
+local guidedBombsGuidanceLockState =  require("guidedBombsAimState.nut").GuidanceLockState
+local compass = require("compass.nut")
 
 const NUM_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 
-let styleText = {
+local styleText = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = max(1.5, hdpx(1) * (LINE_WIDTH + 1.5))
   font = Fonts.hud
@@ -47,7 +47,7 @@ let styleText = {
   fontSize = hudFontHgt
 }
 
-let styleLineForeground = {
+local styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH)
   font = Fonts.hud
@@ -66,7 +66,7 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-let verticalSpeedInd = function(height, isBackground, style, color) {
+local verticalSpeedInd = function(height, isBackground, style, color) {
   return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
@@ -78,9 +78,9 @@ let verticalSpeedInd = function(height, isBackground, style, color) {
   })
 }
 
-let verticalSpeedScale = function(width, height, isBackground, style, color) {
-  let part1_16 = 0.0625 * 100
-  let lineStart = 70
+local verticalSpeedScale = function(width, height, isBackground, style, color) {
+  local part1_16 = 0.0625 * 100
+  local lineStart = 70
 
   return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -109,9 +109,9 @@ let verticalSpeedScale = function(width, height, isBackground, style, color) {
   })
 }
 
-let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBackground, elemStyle = styleText) {
+local HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBackground, elemStyle = styleText) {
 
-  let relativeHeight = Computed( @() ::clamp(DistanceToGround.value * 2.0, 0, 100))
+  local relativeHeight = Computed( @() ::clamp(DistanceToGround.value * 2.0, 0, 100))
 
   return {
     pos = [posX, posY]
@@ -174,7 +174,7 @@ let HelicopterVertSpeed = function(scaleWidth, height, posX, posY, color, isBack
   }
 }
 
-let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount = 0) {
+local function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount = 0) {
   local txts = []
   if (seconds >= 0) {
     txts = [::string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
@@ -194,7 +194,7 @@ let function generateBulletsTextFunction(count, seconds, salvo = 0, actualCount 
   return "".join(txts)
 }
 
-let generateRpmTitleFunction = function(trtMode) {
+local generateRpmTitleFunction = function(trtMode) {
   local txts = []
   if (trtMode < AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
     txts = [::loc("HUD/PROP_RPM_SHORT")]
@@ -203,7 +203,7 @@ let generateRpmTitleFunction = function(trtMode) {
 }
 
 
-let generateRpmTextFunction = function(trtMode, rpmValue) {
+local generateRpmTextFunction = function(trtMode, rpmValue) {
   local txts = []
   if (trtMode < AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
     txts = [::string.format("%d %%", rpmValue)]
@@ -211,7 +211,7 @@ let generateRpmTextFunction = function(trtMode, rpmValue) {
   return "".join(txts)
 }
 
-let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, timeToWarning, actualCount = 0) {
+local generateAgmBulletsTextFunction = function(count, seconds, timeToHit, timeToWarning, actualCount = 0) {
   local txts = []
   if (seconds >= 0) {
     txts = [::string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
@@ -228,7 +228,7 @@ let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, timeToW
   return "".join(txts)
 }
 
-let generateTemperatureTextFunction = function(temperature, state) {
+local generateTemperatureTextFunction = function(temperature, state) {
   if (state == TemperatureState.OVERHEAT)
     return (temperature + ::cross_call.measureTypes.TEMPERATURE.getMeasureUnitsName())
   else if (state == TemperatureState.EMPTY_TANK)
@@ -243,7 +243,7 @@ let generateTemperatureTextFunction = function(temperature, state) {
   return ""
 }
 
-let generateTransmissionStateTextFunction = function(oilState) {
+local generateTransmissionStateTextFunction = function(oilState) {
   if(oilState > 0.01)
     return ::loc("HUD_FUEL_LEAK")
   else
@@ -251,7 +251,7 @@ let generateTransmissionStateTextFunction = function(oilState) {
   return ""
 }
 
-let function getThrottleText(mode, trt) {
+local function getThrottleText(mode, trt) {
   if ( mode == AirThrottleMode.DEFAULT_MODE
     || mode == AirThrottleMode.CLIMB
     || mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
@@ -266,8 +266,8 @@ let function getThrottleText(mode, trt) {
 }
 
 
-let function getThrottleCaption(mode, isControled, idx) {
-  let texts = []
+local function getThrottleCaption(mode, isControled, idx) {
+  local texts = []
   if (mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE
   || mode == AirThrottleMode.AIRCRAFT_WEP
   || mode == AirThrottleMode.AIRCRAFT_BRAKE)
@@ -281,8 +281,8 @@ let function getThrottleCaption(mode, isControled, idx) {
   return "".join(texts)
 }
 
-let function getAGCaption(guidanceLockState) {
-  let texts = []
+local function getAGCaption(guidanceLockState) {
+  local texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(::loc("HUD/TXT_AGM_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
@@ -298,8 +298,8 @@ let function getAGCaption(guidanceLockState) {
   return "".join(texts)
 }
 
-let function getAACaption(guidanceLockState) {
-  let texts = []
+local function getAACaption(guidanceLockState) {
+  local texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(::loc("HUD/TXT_AAM_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
@@ -315,8 +315,8 @@ let function getAACaption(guidanceLockState) {
   return "".join(texts)
 }
 
-let function getGBCaption(guidanceLockState) {
-  let texts = []
+local function getGBCaption(guidanceLockState) {
+  local texts = []
   if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
     texts.append(::loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
@@ -332,8 +332,8 @@ let function getGBCaption(guidanceLockState) {
   return "".join(texts)
 }
 
-let function getCountermeasuresCaption(isFlare ,mode) {
-  let texts = isFlare ? [::loc("HUD/FLARES_SHORT")," "] : [::loc("HUD/CHAFFS_SHORT")," "]
+local function getCountermeasuresCaption(isFlare ,mode) {
+  local texts = isFlare ? [::loc("HUD/FLARES_SHORT")," "] : [::loc("HUD/CHAFFS_SHORT")," "]
   if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
     texts.append(::loc("HUD/COUNTERMEASURE_PERIODIC"))
   if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
@@ -343,8 +343,8 @@ let function getCountermeasuresCaption(isFlare ,mode) {
   return "".join(texts)
 }
 
-let function getModeCaption(mode) {
-  let texts = []
+local function getModeCaption(mode) {
+  local texts = []
   if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
     texts.append(::loc("HUD/WEAPON_MODE_CCIP_CCRP"))
   else if (mode & (1 << WeaponMode.CCIP_MODE))
@@ -354,26 +354,26 @@ let function getModeCaption(mode) {
   return "".join(texts)
 }
 
-let function getMachineGunCaption(mode){
-  let texts = [::loc("HUD/MACHINE_GUNS_SHORT")," "]
+local function getMachineGunCaption(mode){
+  local texts = [::loc("HUD/MACHINE_GUNS_SHORT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getAdditionalCannonCaption(mode){
-  let texts = [::loc("HUD/ADDITIONAL_GUNS_SHORT")," "]
+local function getAdditionalCannonCaption(mode){
+  local texts = [::loc("HUD/ADDITIONAL_GUNS_SHORT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getRocketCaption(mode){
-  let texts = [::loc("HUD/RKT")," "]
+local function getRocketCaption(mode){
+  local texts = [::loc("HUD/RKT")," "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getBombCaption(mode){
-  let texts = [::loc("HUD/BOMBS_SHORT")," "]
+local function getBombCaption(mode){
+  local texts = [::loc("HUD/BOMBS_SHORT")," "]
   if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
     texts.append(::loc("HUD/WEAPON_MODE_CCIP_CCRP"))
   else if (mode & (1 << WeaponMode.CCIP_MODE))
@@ -382,7 +382,7 @@ let function getBombCaption(mode){
     texts.append(::loc("HUD/WEAPON_MODE_CCRP"))
 
   //check both ccip/rp and bombBay
-  let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
+  local ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
   if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
     texts.append("  ")
 
@@ -397,14 +397,14 @@ let function getBombCaption(mode){
   return "".join(texts)
 }
 
-let function getCannonsCaption(mode){
-  let texts = [::loc("HUD/CANNONS_SHORT"), " "]
+local function getCannonsCaption(mode){
+  local texts = [::loc("HUD/CANNONS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getIRCMCaption(state){
-  let texts = []
+local function getIRCMCaption(state){
+  local texts = []
   if (state == IRCMMode.IRCM_ENABLED)
     texts.append(::loc("controls/on"))
   else if (state == IRCMMode.IRCM_DAMAGED)
@@ -414,24 +414,24 @@ let function getIRCMCaption(state){
   return "".join(texts)
 }
 
-let function getInstructorCaption(isInstructorForced){
+local function getInstructorCaption(isInstructorForced){
   return isInstructorForced ? ::loc("HUD_INSTRUCTOR_FORCED") : ::loc("HUD_INSTRUCTOR")
 }
 
-let function getThrottleValueState(state, controled){
+local function getThrottleValueState(state, controled){
   return controled ? state : HudColorState.PASSIV
 }
 
-let function getThrottleState(controled){
+local function getThrottleState(controled){
   return controled ? HudColorState.ACTIV : HudColorState.PASSIV
 }
 
-let function getStaminaValue(stamina) {
+local function getStaminaValue(stamina) {
   return ::string.format("%d %%", stamina)
 }
 
-let function getFuelState(fuel, fuelState){
-  let texts = []
+local function getFuelState(fuel, fuelState){
+  local texts = []
   if (fuelState == TemperatureState.DEFAULT_TEMPERATURE ||
       fuelState == TemperatureState.OVERHEAT)
     texts.append(::string.format("%d:%02d", floor(fuel / 60), fuel % 60))
@@ -444,17 +444,17 @@ let function getFuelState(fuel, fuelState){
   return "".join(texts)
 }
 
-let function getFuelAlertState(fuelState){
+local function getFuelAlertState(fuelState){
   return fuelState >= TemperatureState.FUEL_LEAK ? HudColorState.HIGH_ALERT :
          fuelState == TemperatureState.OVERHEAT ? HudColorState.PASSIV :
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false, isTargetPodView = false) {
-  let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
+local function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false, isTargetPodView = false) {
+  local {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
 
-  let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor, targetPodColor) {
+  local selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor, targetPodColor) {
     return (state == HudColorState.PASSIV) ? passivColor
       : (state == HudColorState.LOW_ALERT) ? lowAlertColor
       : (state == HudColorState.MEDIUM_ALERT) ? mediumAlertColor
@@ -465,13 +465,13 @@ let function createParam(param, width, height, isBackground, style, needCaption 
       : activeColor
   }
 
-  let captionSizeX = @() ::calc_comp_size({rendObj = ROBJ_DTEXT, size = SIZE_TO_CONTENT, text = titleComputed.value, watch = titleComputed})[0]
-  let finalTitleSizeX = ::max(captionSizeX() + 0.1 * width, 0.4 * width)
+  local captionSizeX = @() ::calc_comp_size({rendObj = ROBJ_DTEXT, size = SIZE_TO_CONTENT, text = titleComputed.value, watch = titleComputed})[0]
+  local finalTitleSizeX = ::max(captionSizeX() + 0.1 * width, 0.4 * width)
 
-  let colorAlertCaptionW = Computed(@() selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
+  local colorAlertCaptionW = Computed(@() selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value))
 
-  let captionComponent = @() style.__merge({
+  local captionComponent = @() style.__merge({
     rendObj = ROBJ_DTEXT
     size = [finalTitleSizeX, height]
     watch = [titleComputed, colorAlertCaptionW]
@@ -479,7 +479,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     color = colorAlertCaptionW.value
   })
 
-  let selectedComponent = @() style.__merge({
+  local selectedComponent = @() style.__merge({
     rendObj = ROBJ_DTEXT
     size = [0.05*width, height]
     watch = [selectedComputed, colorAlertCaptionW]
@@ -487,9 +487,9 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     color = colorAlertCaptionW.value
   })
 
-  let valueSizeX = @() ::calc_comp_size({rendObj = ROBJ_DTEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
+  local valueSizeX = @() ::calc_comp_size({rendObj = ROBJ_DTEXT, size = SIZE_TO_CONTENT, text = valueComputed.value, watch = valueComputed})[0]
 
-  let valueComponent = @() style.__merge({
+  local valueComponent = @() style.__merge({
     color = for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
       AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value)
     rendObj = ROBJ_DTEXT
@@ -499,7 +499,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
     text = valueComputed.value
   })
 
-  let additionalComponent = @() style.__merge({
+  local additionalComponent = @() style.__merge({
     color = isBackground ? backgroundColor
       : HudParamColor.value
     rendObj = ROBJ_DTEXT
@@ -522,77 +522,77 @@ let function createParam(param, width, height, isBackground, style, needCaption 
 
 //thoses local values are used for direct subscription
 //Rpm
-let TrtModeForRpm = TrtMode[0]
+local TrtModeForRpm = TrtMode[0]
 
 //MachineGuns
-let MachineGunsCount = MachineGuns.count
-let MachineGunsMode = MachineGuns.mode
-let MachineGunsSeconds = MachineGuns.seconds
-let MachineGunsSelected = MachineGuns.selected
+local MachineGunsCount = MachineGuns.count
+local MachineGunsMode = MachineGuns.mode
+local MachineGunsSeconds = MachineGuns.seconds
+local MachineGunsSelected = MachineGuns.selected
 
 //additionalComputed Cannons
-let CannonsAdditionalCount = CannonsAdditional.count
-let CannonsAdditionalSeconds = CannonsAdditional.seconds
-let CannonsAdditionalMode = CannonsAdditional.mode
-let CannonsAdditionalSelected = CannonsAdditional.selected
+local CannonsAdditionalCount = CannonsAdditional.count
+local CannonsAdditionalSeconds = CannonsAdditional.seconds
+local CannonsAdditionalMode = CannonsAdditional.mode
+local CannonsAdditionalSelected = CannonsAdditional.selected
 
 //Rockets
-let RocketsCount = Rockets.count
-let RocketsSeconds = Rockets.seconds
-let RocketsActualCount = Rockets.actualCount
-let RocketsSalvo = Rockets.salvo
-let RocketsMode = Rockets.mode
-let RocketsName = Rockets.name
-let RocketsSelected = Rockets.selected
+local RocketsCount = Rockets.count
+local RocketsSeconds = Rockets.seconds
+local RocketsActualCount = Rockets.actualCount
+local RocketsSalvo = Rockets.salvo
+local RocketsMode = Rockets.mode
+local RocketsName = Rockets.name
+local RocketsSelected = Rockets.selected
 
 // Agm
-let AgmCount = Agm.count
-let AgmSeconds = Agm.seconds
-let AgmTimeToHit = Agm.timeToHit
-let AgmTimeToWarning = Agm.timeToWarning
-let AgmActualCount = Agm.actualCount
-let AgmName = Agm.name
-let AgmSelected = Agm.selected
+local AgmCount = Agm.count
+local AgmSeconds = Agm.seconds
+local AgmTimeToHit = Agm.timeToHit
+local AgmTimeToWarning = Agm.timeToWarning
+local AgmActualCount = Agm.actualCount
+local AgmName = Agm.name
+local AgmSelected = Agm.selected
 
 // Aam
-let AamCount = Aam.count
-let AamSeconds = Aam.seconds
-let AamActualCount = Aam.actualCount
-let AamName = Aam.name
-let AamSelected = Aam.selected
+local AamCount = Aam.count
+local AamSeconds = Aam.seconds
+local AamActualCount = Aam.actualCount
+local AamName = Aam.name
+local AamSelected = Aam.selected
 
 //Guided Bombs
-let GuidedBombsCount = GuidedBombs.count
-let GuidedBombsSeconds = GuidedBombs.seconds
-let GuidedBombsActualCount = GuidedBombs.actualCount
-let GuidedBombsName = GuidedBombs.name
-let GuidedBombsSelected = GuidedBombs.selected
+local GuidedBombsCount = GuidedBombs.count
+local GuidedBombsSeconds = GuidedBombs.seconds
+local GuidedBombsActualCount = GuidedBombs.actualCount
+local GuidedBombsName = GuidedBombs.name
+local GuidedBombsSelected = GuidedBombs.selected
 
 //Bombs
-let BombsCount = Bombs.count
-let BombsSeconds = Bombs.seconds
-let BombsActualCount = Bombs.actualCount
-let BombsSalvo = Bombs.salvo
-let BombsMode = Bombs.mode
-let BombsName = Bombs.name
-let BombsSelected = Bombs.selected
+local BombsCount = Bombs.count
+local BombsSeconds = Bombs.seconds
+local BombsActualCount = Bombs.actualCount
+local BombsSalvo = Bombs.salvo
+local BombsMode = Bombs.mode
+local BombsName = Bombs.name
+local BombsSelected = Bombs.selected
 
 //Flares
-let FlaresCount = Flares.count
-let FlaresSeconds = Flares.seconds
-let FlaresMode = Flares.mode
+local FlaresCount = Flares.count
+local FlaresSeconds = Flares.seconds
+local FlaresMode = Flares.mode
 
 //Chaffs
-let ChaffsCount = Chaffs.count
-let ChaffsSeconds = Chaffs.seconds
-let ChaffsMode = Chaffs.mode
+local ChaffsCount = Chaffs.count
+local ChaffsSeconds = Chaffs.seconds
+local ChaffsMode = Chaffs.mode
 
-let agmBlinkComputed = Computed(@() (IsSightHudVisible.value && IsAgmLaunchZoneVisible.value &&
+local agmBlinkComputed = Computed(@() (IsSightHudVisible.value && IsAgmLaunchZoneVisible.value &&
   (!IsInsideLaunchZoneYawPitch.value || (IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value))))
-let agmBlinkTrigger = {}
+local agmBlinkTrigger = {}
 agmBlinkComputed.subscribe(@(v) v ? ::anim_start(agmBlinkTrigger) : ::anim_request_stop(agmBlinkTrigger))
 
-let textParamsMapMain = {
+local textParamsMapMain = {
   [AirParamsMain.RPM] = {
     titleComputed = Computed (@() generateRpmTitleFunction(TrtModeForRpm.value))
     valueComputed = Computed (@() generateRpmTextFunction(TrtModeForRpm.value, Rpm.value))
@@ -732,11 +732,11 @@ let textParamsMapMain = {
 }
 
 foreach (i,value in isEngineControled) {
-  let trtModeComputed = TrtMode[i]
-  let trtComputed = Trt[i]
-  let isEngineControledComputed = isEngineControled[i]
-  let throttleStateComputed = ThrottleState[i]
-  let index = i
+  local trtModeComputed = TrtMode[i]
+  local trtComputed = Trt[i]
+  local isEngineControledComputed = isEngineControled[i]
+  local throttleStateComputed = ThrottleState[i]
+  local index = i
   textParamsMapMain[AirParamsMain.THROTTLE_1 + i] <- {
     titleComputed = Computed(@() getThrottleCaption(trtModeComputed.value, IsEnginesControled.value, index))
     valueComputed = Computed(@() getThrottleText(trtModeComputed.value, trtComputed.value))
@@ -748,11 +748,11 @@ foreach (i,value in isEngineControled) {
 }
 
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  let idx = i
-  let CannonAmmoCount = CannonCount[idx]
-  let CannonAmmoReloadTime = CannonReloadTime[idx]
-  let blinkComputed = Computed(@() GunInDeadZone.value)
-  let blinkTrigger = {}
+  local idx = i
+  local CannonAmmoCount = CannonCount[idx]
+  local CannonAmmoReloadTime = CannonReloadTime[idx]
+  local blinkComputed = Computed(@() GunInDeadZone.value)
+  local blinkTrigger = {}
   blinkComputed.subscribe(@(v) v ? ::anim_start(blinkTrigger) : ::anim_request_stop(blinkTrigger))
   textParamsMapMain[AirParamsMain.CANNON_1 + idx] <- {
     titleComputed = Computed(@() getCannonsCaption(CannonMode.value))
@@ -766,15 +766,15 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   }
 }
 
-let numParamPerEngine = 3
-let textParamsMapSecondary = {}
+local numParamPerEngine = 3
+local textParamsMapSecondary = {}
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
 
-  let indexStr = (i+1).tostring()
-  let oilStateComputed = OilState[i]
-  let oilTemperatureComputed = OilTemperature[i]
-  let oilAlertComputed = OilAlert[i]
+  local indexStr = (i+1).tostring()
+  local oilStateComputed = OilState[i]
+  local oilTemperatureComputed = OilTemperature[i]
+  local oilAlertComputed = OilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() ::loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value))
@@ -784,9 +784,9 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
     alertValueStateComputed = Computed (@() oilAlertComputed.value)
   }
 
-  let waterStateComputed = WaterState[i]
-  let waterTemperatureComputed = WaterTemperature[i]
-  let waterAlertComputed = WaterAlert[i]
+  local waterStateComputed = WaterState[i]
+  local waterTemperatureComputed = WaterTemperature[i]
+  local waterAlertComputed = WaterAlert[i]
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() ::loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value))
@@ -796,9 +796,9 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
     alertValueStateComputed = Computed (@() waterAlertComputed.value)
   }
 
-  let engineStateComputed = EngineState[i]
-  let engineTemperatureComputed = EngineTemperature[i]
-  let engineAlertComputed = EngineAlert[i]
+  local engineStateComputed = EngineState[i]
+  local engineTemperatureComputed = EngineTemperature[i]
+  local engineAlertComputed = EngineAlert[i]
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() ::loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value))
@@ -811,9 +811,9 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
 
 for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
 
-  let indexStr = (i+1).tostring();
-  let transmissionOilStateComputed = TransmissionOilState[i]
-  let isTransmissionAlertComputed = IsTransmissionOilAlert[i]
+  local indexStr = (i+1).tostring();
+  local transmissionOilStateComputed = TransmissionOilState[i]
+  local isTransmissionAlertComputed = IsTransmissionOilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.TRANSMISSION_1 + i] <- {
     titleComputed = Computed(@() ::loc($"HUD/TRANSMISSION_OIL_SHORT{indexStr}"))
    valueComputed = Computed(@() generateTransmissionStateTextFunction(transmissionOilStateComputed.value))
@@ -851,11 +851,11 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
   alertValueStateComputed = Computed(@() InstructorState.value)
 }
 
-let fuelKeyId = AirParamsSecondary.FUEL
+local fuelKeyId = AirParamsSecondary.FUEL
 
-let function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  let function getChildren(isBackground, style, isBomberView = false, isTargetPod = false) {
-    let children = []
+local function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
+  local function getChildren(isBackground, style, isBomberView = false, isTargetPod = false) {
+    local children = []
 
     foreach(key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
@@ -906,7 +906,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
   }
 }
 
-let function compassComponent(isBackground, size, pos) {
+local function compassComponent(isBackground, size, pos) {
   return @() {
     pos
     watch = [IsCompassVisible, HudColor]
@@ -914,7 +914,7 @@ let function compassComponent(isBackground, size, pos) {
   }
 }
 
-let airHorizonZeroLevel = function(elemStyle, height, isBackground, color) {
+local airHorizonZeroLevel = function(elemStyle, height, isBackground, color) {
   return elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
@@ -927,7 +927,7 @@ let airHorizonZeroLevel = function(elemStyle, height, isBackground, color) {
 }
 
 
-let airHorizon = function(elemStyle, height, isBackground, color) {
+local airHorizon = function(elemStyle, height, isBackground, color) {
   return @() elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [4*height, height]
@@ -944,7 +944,7 @@ let airHorizon = function(elemStyle, height, isBackground, color) {
 }
 
 
-let horizontalSpeedVector = function(elemStyle, height, isBackground, color) {
+local horizontalSpeedVector = function(elemStyle, height, isBackground, color) {
   return elemStyle.__merge({
     rendObj = ROBJ_HELICOPTER_HORIZONTAL_SPEED
     size = [height, height]
@@ -954,7 +954,7 @@ let horizontalSpeedVector = function(elemStyle, height, isBackground, color) {
   })
 }
 
-let HelicopterHorizontalSpeedComponent = function(isBackground, color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
+local HelicopterHorizontalSpeedComponent = function(isBackground, color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
   return function() {
     return {
       pos = [posX - 2* height, posY - height*0.5]
@@ -973,18 +973,18 @@ let HelicopterHorizontalSpeedComponent = function(isBackground, color, posX = sw
   }
 }
 
-let hl = 20
-let vl = 20
+local hl = 20
+local vl = 20
 
 const fullRangeMultInv = 0.7
 const outOfZoneLaunchShowTimeOut = 2.
 
-let function getAgmLaunchAngularRangeCommands(visible, yawMin, yawMax, pitchMin, pitchMax) {
+local function getAgmLaunchAngularRangeCommands(visible, yawMin, yawMax, pitchMin, pitchMax) {
 
-  let left  = max(0.0, yawMin) * 100.0
-  let right = min(1.0, yawMax) * 100.0
-  let lower = 100.0 - max(0.0, pitchMin) * 100.0
-  let upper = 100.0 - min(1.0, pitchMax) * 100.0
+  local left  = max(0.0, yawMin) * 100.0
+  local right = min(1.0, yawMax) * 100.0
+  local lower = 100.0 - max(0.0, pitchMin) * 100.0
+  local upper = 100.0 - min(1.0, pitchMax) * 100.0
   return [
     [VECTOR_LINE, left,  upper, right, upper],
     [VECTOR_LINE, right, upper, right, lower],
@@ -993,12 +993,12 @@ let function getAgmLaunchAngularRangeCommands(visible, yawMin, yawMax, pitchMin,
   ]
 }
 
-let function getAgmGuidanceRangeCommands(visible, yawMin, yawMax, pitchMin, pitchMax) {
+local function getAgmGuidanceRangeCommands(visible, yawMin, yawMax, pitchMin, pitchMax) {
 
-  let left  = max(0.0, yawMin) * 100.0
-  let right = min(1.0, yawMax) * 100.0
-  let lower = 100.0 - max(0.0, pitchMin) * 100.0
-  let upper = 100.0 - min(1.0, pitchMax) * 100.0
+  local left  = max(0.0, yawMin) * 100.0
+  local right = min(1.0, yawMax) * 100.0
+  local lower = 100.0 - max(0.0, pitchMin) * 100.0
+  local upper = 100.0 - min(1.0, pitchMax) * 100.0
   return [
     [VECTOR_LINE, left, lower, right, lower],
     [VECTOR_LINE, left, upper, right, upper],
@@ -1007,11 +1007,11 @@ let function getAgmGuidanceRangeCommands(visible, yawMin, yawMax, pitchMin, pitc
   ]
 }
 
-let function getAgmLaunchDistanceRangeCommands(visible, enabled, distMin, distMax, dist) {
+local function getAgmLaunchDistanceRangeCommands(visible, enabled, distMin, distMax, dist) {
 
-  let distanceRangeInv = fullRangeMultInv * 1.0 / (distMax - 0.0 + 1.0)
-  let distanceMinRel = (distMin - 0.0) * distanceRangeInv
-  let commands = [
+  local distanceRangeInv = fullRangeMultInv * 1.0 / (distMax - 0.0 + 1.0)
+  local distanceMinRel = (distMin - 0.0) * distanceRangeInv
+  local commands = [
     [VECTOR_LINE, 120, 0,   120, 100],
     [VECTOR_LINE, 120, 100, 125, 100],
     [VECTOR_LINE, 120, 0,   125, 0],
@@ -1019,7 +1019,7 @@ let function getAgmLaunchDistanceRangeCommands(visible, enabled, distMin, distMa
     [VECTOR_LINE, 120, 100 - (distanceMinRel * 100 - 1), 127, 100 - (distanceMinRel * 100 - 1)]
   ]
   if (enabled) {
-    let distanceRel = min((dist - 0.0) * distanceRangeInv, 1.0)
+    local distanceRel = min((dist - 0.0) * distanceRangeInv, 1.0)
     commands.append([VECTOR_RECTANGLE, 120, 100 - (distanceRel * 100 - 1),  10, 2])
   }
   return commands
@@ -1027,14 +1027,14 @@ let function getAgmLaunchDistanceRangeCommands(visible, enabled, distMin, distMa
 
 
 
-let function turretAngles(colorWatch, width, height, aspect, isBackground, blinkDuration = 0.5) {
+local function turretAngles(colorWatch, width, height, aspect, isBackground, blinkDuration = 0.5) {
 
-  let offset = 1.3
-  let crossL = 2
+  local offset = 1.3
+  local crossL = 2
 
-  let getTurretCommands = function(yaw, pitch) {
-    let px = yaw * 100.0
-    let py = 100 - pitch * 100.0
+  local getTurretCommands = function(yaw, pitch) {
+    local px = yaw * 100.0
+    local py = 100 - pitch * 100.0
     return [
       [VECTOR_LINE, px - crossL - offset, py, px - offset, py],
       [VECTOR_LINE, px + offset, py, px + crossL + offset, py],
@@ -1042,13 +1042,13 @@ let function turretAngles(colorWatch, width, height, aspect, isBackground, blink
       [VECTOR_LINE, px, py + crossL * aspect + offset * aspect, px, py + offset * aspect]
     ]
   }
-  let isAtgmGuidanceRangeVisible = Computed(@() IsAgmLaunchZoneVisible.value)
-  let isAtgmAngularRangeVisible = Computed(@() (IsAgmLaunchZoneVisible.value && AgmLaunchZoneYawMin.value > 0.0 && AgmLaunchZoneYawMax.value < 1.0 && AgmLaunchZonePitchMin.value > 0.0 && AgmLaunchZonePitchMax.value < 1.0))
-  let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
-  let atgmLaunchZoneTrigger = {}
+  local isAtgmGuidanceRangeVisible = Computed(@() IsAgmLaunchZoneVisible.value)
+  local isAtgmAngularRangeVisible = Computed(@() (IsAgmLaunchZoneVisible.value && AgmLaunchZoneYawMin.value > 0.0 && AgmLaunchZoneYawMax.value < 1.0 && AgmLaunchZonePitchMin.value > 0.0 && AgmLaunchZonePitchMax.value < 1.0))
+  local atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
+  local atgmLaunchZoneTrigger = {}
   atgmLaunchZoneBlinking.subscribe(@(v) v ? ::anim_start(atgmLaunchZoneTrigger) : ::anim_request_stop(atgmLaunchZoneTrigger))
-  let atgmLaunchDistanceblinking = Computed(@() IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value)
-  let atgmLaunchDistanceTrigger = {}
+  local atgmLaunchDistanceblinking = Computed(@() IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value)
+  local atgmLaunchDistanceTrigger = {}
   atgmLaunchDistanceblinking.subscribe(@(v) v ? ::anim_start(atgmLaunchDistanceTrigger) : ::anim_request_stop(atgmLaunchDistanceTrigger))
 
   return @() styleLineForeground.__merge({
@@ -1126,14 +1126,14 @@ let function turretAngles(colorWatch, width, height, aspect, isBackground, blink
   })
 }
 
-let lockSightComponent = function(colorWatch, width, height, posX, posY, is_background) {
-  let color = Computed(@() !is_background && IsAgmEmpty.value ? AlertColorHigh.value
+local lockSightComponent = function(colorWatch, width, height, posX, posY, is_background) {
+  local color = Computed(@() !is_background && IsAgmEmpty.value ? AlertColorHigh.value
     : is_background ? backgroundColor
     : colorWatch.value)
   return lockSight(color, width, height, posX, posY)
 }
 
-let function helicopterRocketSightMode(sightMode){
+local function helicopterRocketSightMode(sightMode){
 
   if (sightMode == 0) {
     return [
@@ -1168,9 +1168,9 @@ let function helicopterRocketSightMode(sightMode){
   ]
 }
 
-let helicopterRocketAim = @(width, height, isBackground, color, style = styleLineForeground) function() {
+local helicopterRocketAim = @(width, height, isBackground, color, style = styleLineForeground) function() {
 
-  let lines = helicopterRocketSightMode(RocketSightMode.value)
+  local lines = helicopterRocketSightMode(RocketSightMode.value)
 
   return style.__merge({
     halign = ALIGN_CENTER
@@ -1187,8 +1187,8 @@ let helicopterRocketAim = @(width, height, isBackground, color, style = styleLin
   })
 }
 
-let turretAnglesAspect = 2.0
-let turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBackground, blinkDuration = 0.5) {
+local turretAnglesAspect = 2.0
+local turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBackground, blinkDuration = 0.5) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
     size = SIZE_TO_CONTENT
@@ -1196,15 +1196,15 @@ let turretAnglesComponent = function(colorWatch, width, height, posX, posY, isBa
   }
 }
 
-let function agmLaunchZone(w, h, isBackground)  {
+local function agmLaunchZone(w, h, isBackground)  {
 
-  let function maxAngleBorder(){
-    let px = TurretYaw.value
-    let py = TurretPitch.value
-    let left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - px * 100.0 + 50.0
-    let right = min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - px * 100.0 + 50.0
-    let lower = 100.0 - max(0.0, AgmLaunchZonePitchMin.value) * 100.0 + py * 100.0 - 50
-    let upper = 100.0 - min(1.0, AgmLaunchZonePitchMax.value) * 100.0 + py * 100.0 - 50
+  local function maxAngleBorder(){
+    local px = TurretYaw.value
+    local py = TurretPitch.value
+    local left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - px * 100.0 + 50.0
+    local right = min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - px * 100.0 + 50.0
+    local lower = 100.0 - max(0.0, AgmLaunchZonePitchMin.value) * 100.0 + py * 100.0 - 50
+    local upper = 100.0 - min(1.0, AgmLaunchZonePitchMax.value) * 100.0 + py * 100.0 - 50
     if (IsAgmLaunchZoneVisible.value) {
       return [
         [VECTOR_LINE, left,  upper, right, upper],
@@ -1233,11 +1233,11 @@ let function agmLaunchZone(w, h, isBackground)  {
   })
 }
 
-let sight = function(colorWatch, height, isBackground) {
-  let longL = 22
-  let shortL = 10
-  let dash = 0.8
-  let centerOffset = 3
+local sight = function(colorWatch, height, isBackground) {
+  local longL = 22
+  local shortL = 10
+  local dash = 0.8
+  local centerOffset = 3
 
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1263,7 +1263,7 @@ let sight = function(colorWatch, height, isBackground) {
   })
 }
 
-let sightComponent = function(colorWatch, centerX, centerY, height, isBackground) {
+local sightComponent = function(colorWatch, centerX, centerY, height, isBackground) {
   return {
     pos = [centerX - height * 0.5, centerY - height * 0.5]
     size = SIZE_TO_CONTENT
@@ -1271,14 +1271,14 @@ let sightComponent = function(colorWatch, centerX, centerY, height, isBackground
   }
 }
 
-let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, isBackground) {
+local function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, isBackground) {
 
-  let getAgmLaunchDistanceMax = function() {
+  local getAgmLaunchDistanceMax = function() {
     return IsAgmLaunchZoneVisible.value ?
       ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.value) : ""
   }
 
-  let launchDistanceMax = @() styleText.__merge({
+  local launchDistanceMax = @() styleText.__merge({
     rendObj = ROBJ_DTEXT
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -1291,7 +1291,7 @@ let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, i
     ]
   })
 
-  let resCompoment = @() {
+  local resCompoment = @() {
     rendObj = ROBJ_VECTOR_CANVAS
     pos = [posX + 1.6 * turretAnglesAspect * width * 0.5, posY - height * fullRangeMultInv]
     halign = ALIGN_LEFT
@@ -1303,8 +1303,8 @@ let function launchDistanceMaxComponent(colorWatch, width, height, posX, posY, i
   return resCompoment
 }
 
-let function rangeFinderComponent(colorWatch, posX, posY, isBackground) {
-  let rangefinder = @() styleText.__merge({
+local function rangeFinderComponent(colorWatch, posX, posY, isBackground) {
+  local rangefinder = @() styleText.__merge({
     rendObj = ROBJ_DTEXT
     halign = ALIGN_CENTER
     text = ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.value)
@@ -1313,7 +1313,7 @@ let function rangeFinderComponent(colorWatch, posX, posY, isBackground) {
     watch = [RangefinderDist, IsRangefinderEnabled, colorWatch]
   })
 
-  let resCompoment = @() {
+  local resCompoment = @() {
     pos = [posX, posY]
     halign = ALIGN_CENTER
     size = [0, 0]
@@ -1323,11 +1323,11 @@ let function rangeFinderComponent(colorWatch, posX, posY, isBackground) {
   return resCompoment
 }
 
-let triggerTATarget = {}
+local triggerTATarget = {}
 TargetAge.subscribe(@(v) v < 0.2 ? ::anim_request_stop(triggerTATarget) : ::anim_start(triggerTATarget))
-let HelicopterTATarget = @(w, h, isBackground) function() {
+local HelicopterTATarget = @(w, h, isBackground) function() {
 
-  let res = {
+  local res = {
     watch = [TATargetVisible, TargetX, TargetY, IsTargetTracked,
       TargetAge, AlertColorHigh, IsLaserDesignatorEnabled]
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATarget}]
@@ -1338,7 +1338,7 @@ let HelicopterTATarget = @(w, h, isBackground) function() {
     return res
 
   // border
-  let taTargetcommands = [
+  local taTargetcommands = [
     [VECTOR_LINE, -10, -10, 10, -10],
     [VECTOR_LINE, 10, -10, 10, 10],
     [VECTOR_LINE, 10, 10, -10, 10],
@@ -1372,7 +1372,7 @@ let HelicopterTATarget = @(w, h, isBackground) function() {
   })
 }
 
-let targetSizeComponent = function(colorWatch, width, height) {
+local targetSizeComponent = function(colorWatch, width, height) {
   return @() {
     pos = [0, 0]
     size = SIZE_TO_CONTENT
@@ -1381,9 +1381,9 @@ let targetSizeComponent = function(colorWatch, width, height) {
   }
 }
 
-let detectAllyComponent = @(posX, posY, isBackground) function(){
+local detectAllyComponent = @(posX, posY, isBackground) function(){
 
-  let res = {watch = [DetectAllyProgress, DetectAllyState]}
+  local res = {watch = [DetectAllyProgress, DetectAllyState]}
   if (DetectAllyProgress.value < 1.0)
     return res
 

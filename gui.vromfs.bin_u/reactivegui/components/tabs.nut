@@ -1,15 +1,15 @@
-let tabsBase = require("%darg/components/tabs.nut")
-let colors = require("%rGui/style/colors.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
+local tabsBase = require("%darg/components/tabs.nut")
+local colors = require("reactiveGui/style/colors.nut")
+local fontsState = require("reactiveGui/style/fontsState.nut")
 
 
-let function tabCtor(tab, is_current, handler) {
-  let grp = ::ElemGroup()
-  let stateFlags = ::Watched(0)
+local function tabCtor(tab, is_current, handler) {
+  local grp = ::ElemGroup()
+  local stateFlags = ::Watched(0)
 
   return function() {
-    let isHover = (stateFlags.value & S_HOVER)
-    let isActive = (stateFlags.value & S_ACTIVE)
+    local isHover = (stateFlags.value & S_HOVER)
+    local isActive = (stateFlags.value & S_ACTIVE)
     local fillColor, textColor, borderColor
     if (is_current) {
       textColor = colors.menu.activeTextColor
@@ -54,7 +54,7 @@ let function tabCtor(tab, is_current, handler) {
 }
 
 
-let tabsHolder = @(params){
+local tabsHolder = @(params){
   rendObj = ROBJ_SOLID
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL

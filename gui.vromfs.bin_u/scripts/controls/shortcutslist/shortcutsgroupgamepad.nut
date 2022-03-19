@@ -1,4 +1,4 @@
-let controlsOperations = require("%scripts/controls/controlsOperations.nut")
+local controlsOperations = require("scripts/controls/controlsOperations.nut")
 
 return [
   {

@@ -1,4 +1,4 @@
-let { getAvailableRespawnBases } = require_native("guiRespawn")
+local { getAvailableRespawnBases } = require_native("guiRespawn")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -70,7 +70,7 @@ g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
   local hasRespBases = false
   foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
   {
-    let unit = ::g_crew.getCrewUnit(crew)
+    local unit = ::g_crew.getCrewUnit(crew)
     if (!unit)
       continue
 

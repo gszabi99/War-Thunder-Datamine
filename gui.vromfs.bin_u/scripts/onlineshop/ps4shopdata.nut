@@ -1,15 +1,15 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let datablock = require("DataBlock")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local datablock = require("DataBlock")
 
-let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
-let storeData = require("%sonyLib/storeData.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
+local storeData = require("sonyLib/storeData.nut")
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-let psnStoreItem = require("%scripts/onlineShop/psnStoreItem.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local psnStoreItem = require("scripts/onlineShop/psnStoreItem.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let persistent = {
+local persistent = {
   categoriesData = datablock() // Collect one time in a session, reset on relogin
   itemsList = {} //Updatable during game
 }
@@ -19,16 +19,16 @@ let persistent = {
 
 local isFinishedUpdateItems = false //Status of FULL update items till creating list of classes psnStoreItem
 local invalidateSeenList = false
-let visibleSeenIds = []
+local visibleSeenIds = []
 
-let getShopItem = @(id) persistent.itemsList?[id]
+local getShopItem = @(id) persistent.itemsList?[id]
 
-let canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
+local canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
 
 local haveItemDiscount = null
 
 // Calls on finish updating skus extended info
-let onFinishCollectData = function(_categoriesData = null)
+local onFinishCollectData = function(_categoriesData = null)
 {
   if (!canUseIngameShop())
     return
@@ -54,14 +54,14 @@ let onFinishCollectData = function(_categoriesData = null)
   ::broadcastEvent("Ps4ShopDataUpdated", {isLoadingInProgress = false})
 }
 
-let filterFunc = function(label) {
+local filterFunc = function(label) {
  //Check gui.blk for skippable items
-  let skipItemsList = GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
+  local skipItemsList = GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
   return label in skipItemsList
 }
 
 local isCategoriesInitedOnce = false
-let initPs4CategoriesAfterLogin = function()
+local initPs4CategoriesAfterLogin = function()
 {
   if (!isCategoriesInitedOnce && canUseIngameShop())
   {
@@ -77,16 +77,16 @@ let initPs4CategoriesAfterLogin = function()
 }
 
 
-let getVisibleSeenIds = function()
+local getVisibleSeenIds = function()
 {
   if (isFinishedUpdateItems && !visibleSeenIds.len() && persistent.categoriesData.blockCount() && persistent.itemsList.len())
   {
     for (local i = 0; i < persistent.categoriesData.blockCount(); i++)
     {
-      let productsList = persistent.categoriesData.getBlock(i).links
+      local productsList = persistent.categoriesData.getBlock(i).links
       for (local j = 0; j < productsList.blockCount(); j++)
       {
-        let item = getShopItem(productsList.getBlock(j).getBlockName())
+        local item = getShopItem(productsList.getBlock(j).getBlockName())
         if (!item)
           continue
 
@@ -100,7 +100,7 @@ let getVisibleSeenIds = function()
 
 seenList.setListGetter(getVisibleSeenIds)
 
-let haveAnyItemWithDiscount = function()
+local haveAnyItemWithDiscount = function()
 {
   if (!persistent.itemsList.len())
     return false
@@ -119,7 +119,7 @@ let haveAnyItemWithDiscount = function()
   return haveItemDiscount
 }
 
-let haveDiscount = function()
+local haveDiscount = function()
 {
   if (!canUseIngameShop())
     return false
@@ -136,11 +136,11 @@ let haveDiscount = function()
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-let function onSuccessCb(itemsArray) {
+local function onSuccessCb(itemsArray) {
   foreach (itemData in itemsArray)
   {
-    let itemId = itemData.label
-    let shopItem = getShopItem(itemId)
+    local itemId = itemData.label
+    local shopItem = getShopItem(itemId)
 
     shopItem.updateSkuInfo(itemData)
   }
@@ -149,7 +149,7 @@ let function onSuccessCb(itemsArray) {
   ::broadcastEvent("PS4IngameShopUpdate")
 }
 
-let updateSpecificItemInfo = function(id)
+local updateSpecificItemInfo = function(id)
 {
   storeData.updateSpecificItemInfo([id], onSuccessCb)
 }

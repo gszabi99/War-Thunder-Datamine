@@ -1,4 +1,4 @@
-let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
+local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -11,10 +11,10 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     ::g_clans.markClanCandidatesAsViewed()
 }
 
-::gui_handlers.clanRequestsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/clans/clanRequests.blk";
+  sceneBlkName = "gui/clans/clanRequests.blk";
   owner = null;
   rowTexts = [];
   candidatesData = null;
@@ -30,7 +30,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
   {
     myRights = ::g_clans.getMyClanRights()
     memListModified = false
-    let isMyClan = !::my_clan_info ? false : (::my_clan_info.id == clanId ? true : false)
+    local isMyClan = !::my_clan_info ? false : (::my_clan_info.id == clanId ? true : false)
     clanId = isMyClan ? "-1" : clanId
     fillRequestList()
   }
@@ -42,10 +42,10 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
     foreach(candidate in candidatesData)
     {
-      let rowTemp = {};
+      local rowTemp = {};
       foreach(item in ::clan_candidate_list)
       {
-        let value = item.id in candidate ? candidate[item.id] : 0
+        local value = item.id in candidate ? candidate[item.id] : 0
         rowTemp[item.id] <- {value = value, text = item.type.getShortTextByValue(value)}
       }
       candidatesList.append({nick = candidate.nick, uid = candidate.uid });
@@ -65,13 +65,13 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     if (curPage > 0 && rowTexts.len() <= curPage * rowsPerPage)
       curPage--
 
-    let tblObj = scene.findObject("candidatesList");
+    local tblObj = scene.findObject("candidatesList");
     local data = "";
 
-    let headerRow = [];
+    local headerRow = [];
     foreach(item in ::clan_candidate_list)
     {
-      let name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
+      local name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
       headerRow.append({
         id = item.id,
         text = name,
@@ -81,12 +81,12 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     data = buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
-    let startIdx = curPage * rowsPerPage
-    let lastIdx = min((curPage + 1) * rowsPerPage, rowTexts.len())
+    local startIdx = curPage * rowsPerPage
+    local lastIdx = min((curPage + 1) * rowsPerPage, rowTexts.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
-      let rowName = "row_"+i;
-      let rowData = [];
+      local rowName = "row_"+i;
+      local rowData = [];
 
       foreach(item in ::clan_candidate_list)
       {
@@ -103,7 +103,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
     for(local i=startIdx; i < lastIdx; i++)
     {
-      let row = rowTexts[i]
+      local row = rowTexts[i]
       foreach(item, itemValue in row)
         tblObj.findObject("row_"+i).findObject("txt_"+item).setValue(itemValue.text);
     }
@@ -127,8 +127,8 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     curCandidate = null;
     if (candidatesList && candidatesList.len()>0)
     {
-      let objTbl = scene.findObject("candidatesList");
-      let index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
+      local objTbl = scene.findObject("candidatesList");
+      local index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
       if (index in candidatesList)
         curCandidate = candidatesList[index];
     }
@@ -150,15 +150,15 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
   function onUserAction()
   {
-    let table = scene.findObject("candidatesList")
+    local table = scene.findObject("candidatesList")
     if (!::checkObj(table))
       return
 
-    let index = table.getValue()
+    local index = table.getValue()
     if (index < 0 || index >= table.childrenCount())
       return
 
-    let position = table.getChild(index).getPosRC()
+    local position = table.getChild(index).getPosRC()
     openUserPopupMenu(position)
   }
 
@@ -167,7 +167,7 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
     if (!curCandidate)
       return
 
-    let menu = clanContextMenu.getRequestActions(clanId, curCandidate.uid, curCandidate?.nick, this)
+    local menu = clanContextMenu.getRequestActions(clanId, curCandidate.uid, curCandidate?.nick, this)
     ::gui_right_click_menu(menu, this, position)
   }
 
@@ -221,8 +221,8 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 
   function onEventClanCandidatesListChanged(p)
   {
-    let uid = p?.userId
-    let candidate = ::u.search(candidatesList, @(candidate) candidate.uid == uid )
+    local uid = p?.userId
+    local candidate = ::u.search(candidatesList, @(candidate) candidate.uid == uid )
     hideCandidateByName(candidate?.nick)
   }
 }

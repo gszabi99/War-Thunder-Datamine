@@ -1277,6 +1277,9 @@
               "timeMultiplier": 1.0,
               "disableZone": false,
               "name_for_respawn_base": "",
+              "showBorderOnMap": false,
+              "borderWidthCoef": 1.0,
+              "borderTransparencyCoef": 1.0,
               "target": "@pt_generate_capture_area_name",
               "canCaptureOnGround": true,
               "playAirfieldSound": false,
@@ -1285,7 +1288,6 @@
               "onlyPlayersCanCapture": false,
               "useHUDMarkers": true,
               "captureNoPenalty": true,
-              "showBorderOnMap": false,
               "zoneDefenders": {
                 "defender": "@pt_generate_defenders_name"
               },
@@ -1339,6 +1341,9 @@
               "timeMultiplier": 1.0,
               "disableZone": false,
               "name_for_respawn_base": "",
+              "showBorderOnMap": false,
+              "borderWidthCoef": 1.0,
+              "borderTransparencyCoef": 1.0,
               "target": "@pt_generate_capture_area_name",
               "canCaptureOnGround": true,
               "playAirfieldSound": false,
@@ -1347,7 +1352,6 @@
               "onlyPlayersCanCapture": false,
               "useHUDMarkers": true,
               "captureNoPenalty": true,
-              "showBorderOnMap": false,
               "zoneDefenders": {
                 "defender": "@pt_generate_defenders_name"
               },
@@ -4950,7 +4954,6 @@
               "accuracy": 0.1,
               "effShootingRate": 0.1,
               "airEffShootingRate": 0.1,
-              "shipTurnRadius": 500.0,
               "enableShipCollisionAvoidance": true,
               "advancedCollisionAvoidance": true,
               "fireRandom": true,
@@ -5427,7 +5430,6 @@
               "accuracy": 0.1,
               "effShootingRate": 0.1,
               "airEffShootingRate": 0.1,
-              "shipTurnRadius": 500.0,
               "enableShipCollisionAvoidance": true,
               "advancedCollisionAvoidance": true,
               "fireRandom": true,
@@ -6966,12 +6968,8 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "object": "@pt_reinforcement_t1_squad_name",
-              "shipTurnRadius": 500.0,
               "enableShipCollisionAvoidance": true,
-              "advancedCollisionAvoidance": true,
-              "fireRandom": true,
-              "targetChangeInterval": 5.0,
-              "targetChangeProb": 0.25
+              "advancedCollisionAvoidance": true
             }
           },
           {
@@ -7097,6 +7095,16 @@
           {
             "__triggerEnable": {
               "target": "pt_reinforcement_t1_enemy_spawn_start"
+            }
+          },
+          {
+            "unitSetIndication": {
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "set": true,
+              "target": "@pt_reinforcement_t1_squad_name"
             }
           },
           {
@@ -7881,9 +7889,20 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "object": "@pt_reinforcement_t2_squad_name",
-              "shipTurnRadius": 500.0,
               "enableShipCollisionAvoidance": true,
-              "advancedCollisionAvoidance": true,
+              "advancedCollisionAvoidance": true
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@pt_reinforcement_t2_squad_name",
+              "accuracy": 0.1,
+              "effShootingRate": 0.1,
+              "airEffShootingRate": 0.1,
               "fireRandom": true,
               "targetChangeInterval": 5.0,
               "targetChangeProb": 0.25

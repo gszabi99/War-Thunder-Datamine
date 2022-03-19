@@ -1,4 +1,4 @@
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled()
 {

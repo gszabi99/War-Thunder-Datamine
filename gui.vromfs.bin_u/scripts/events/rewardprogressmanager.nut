@@ -16,8 +16,8 @@
 
   function requestProgress(event, field, callback, context = null)
   {
-    let cb = ::Callback(callback, context)
-    let eventEconomicName = ::events.getEventEconomicName(event)
+    local cb = ::Callback(callback, context)
+    local eventEconomicName = ::events.getEventEconomicName(event)
 
     //Try to get from cache
     if (eventEconomicName in __cache && __cache[eventEconomicName])
@@ -28,7 +28,7 @@
       return cb(::getTblValue(field, __cache[eventEconomicName]))
 
     //Try to get from leaderbords
-    let request = ::events.getMainLbRequest(event)
+    local request = ::events.getMainLbRequest(event)
     if (request.forClans)
       request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
 
@@ -41,7 +41,7 @@
         callback(selfRow[0][field])
       else
       {
-        let msgToSend = ::format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
+        local msgToSend = ::format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
                                    field, event.name, eventEconomicName)
         ::dagor.debug(msgToSend)
       }
@@ -50,14 +50,14 @@
 
   function onEventEventBattleEnded(params)
   {
-    let event = ::events.getEvent(::getTblValue("eventId", params))
+    local event = ::events.getEvent(::getTblValue("eventId", params))
     if (event)
       fetchRowFromUserlog(event)
   }
 
   function fetchRowFromUserlog(event)
   {
-    let userLogs = ::getUserLogsList({
+    local userLogs = ::getUserLogsList({
       show = [
         ::EULT_SESSION_RESULT
       ]
@@ -65,11 +65,11 @@
 
     foreach (log in userLogs)
     {
-      let eventEconomicName = ::events.getEventEconomicName(event)
+      local eventEconomicName = ::events.getEventEconomicName(event)
       if (::getTblValue("eventId", log) != eventEconomicName)
         continue
 
-      let leaderbordRow = log?.tournamentResult?.newStat
+      local leaderbordRow = log?.tournamentResult?.newStat
       if (!leaderbordRow)
         return false
 

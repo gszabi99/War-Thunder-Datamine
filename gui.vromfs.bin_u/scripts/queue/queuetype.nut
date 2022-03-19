@@ -1,7 +1,7 @@
-let clustersModule = require("%scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+local clustersModule = require("scripts/clusterSelect.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
   COMMON
   ANY_EVENT
@@ -68,8 +68,8 @@ enums.addTypesByGlobalName("g_queue_type",
       isParamsCorresponds = @(params) "battleId" in params
       prepareQueueParams = function(params)
       {
-        let wwBattle = params?.wwBattle
-        let side = params?.side ?? ::SIDE_1
+        local wwBattle = params?.wwBattle
+        local side = params?.side ?? ::SIDE_1
         return {
           clusters    = clustersModule.getCurrentClusters()
           operationId = params.operationId
@@ -87,8 +87,8 @@ enums.addTypesByGlobalName("g_queue_type",
         ::request_matching(
           "worldwar.get_queue_info",
           function(response) {
-            let queuesInfo = {}
-            let responseQueues = ::getTblValue("queues", response, [])
+            local queuesInfo = {}
+            local responseQueues = ::getTblValue("queues", response, [])
             foreach(battleQueueInfo in responseQueues)
               if (battleQueueInfo?.battleId)
                 queuesInfo[battleQueueInfo.battleId] <- battleQueueInfo

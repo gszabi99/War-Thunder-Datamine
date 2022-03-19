@@ -1,8 +1,8 @@
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local time = require("scripts/time.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 
-::WwReinforcementArmy <- class extends ::WwFormation
+class ::WwReinforcementArmy extends ::WwFormation
 {
   suppliesEndMillisec = 0
   entrenchEndMillisec = 0
@@ -21,7 +21,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     if (!reinforcementBlock)
       return
 
-    let armyBlock = reinforcementBlock.army
+    local armyBlock = reinforcementBlock.army
     name = armyBlock.name
     owner = ::WwArmyOwner(armyBlock.getBlockByName("owner"))
 
@@ -37,7 +37,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
     loadedArmies = ::build_blk_from_container(reinforcementBlock?.loadedArmies)
 
-    let armyArtilleryParams = hasArtilleryAbility ?
+    local armyArtilleryParams = hasArtilleryAbility ?
       ::g_world_war.getArtilleryUnitParamsByBlk(armyBlock.getBlockByName("units")) : null
     artilleryAmmo.setArtilleryParams(armyArtilleryParams)
     artilleryAmmo.update(name, armyBlock.getBlockByName("artilleryAmmo"))
@@ -68,20 +68,20 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getDescription()
   {
-    let desc = []
+    local desc = []
 
     if (morale >= 0)
       desc.append(::loc("worldwar/morale", {morale = (morale + 0.5).tointeger()}))
 
     if (suppliesEndMillisec > 0)
     {
-      let elapsed = ::max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
+      local elapsed = ::max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
 
       desc.append(::loc("worldwar/suppliesfinishedIn",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
     }
 
-    let elapsed = secondsLeftToEntrench();
+    local elapsed = secondsLeftToEntrench();
     if (elapsed == 0)
     {
       desc.append(::loc("worldwar/armyEntrenched"))
@@ -107,7 +107,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getArrivalStatusText()
   {
-    let arrivalTime = getArrivalTime()
+    local arrivalTime = getArrivalTime()
     if (arrivalTime == 0)
       return ::loc("worldwar/state/reinforcement_ready")
 

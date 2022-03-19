@@ -1,24 +1,24 @@
-let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
-let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
-let steamRateGameWnd = require("steamRateGameWnd.nut")
-let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local { isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { TIME_HOUR_IN_SECONDS } = require("std/time.nut")
+local { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
+local steamRateGameWnd = require("steamRateGameWnd.nut")
+local { debriefingRows } = require("scripts/debriefing/debriefingFull.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let log = require("%sqstd/log.nut")().with_prefix("[UserUtils] ")
+local log = require("std/log.nut")().with_prefix("[UserUtils] ")
 
-let needShowRateWnd = persist("needShowRateWnd", @() ::Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
+local needShowRateWnd = persist("needShowRateWnd", @() ::Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
 
-let winsInARow = persist("winsInARow", @() ::Watched(0))
-let haveMadeKills = persist("haveMadeKills", @() ::Watched(false))
-let havePurchasedSpecUnit = persist("havePurchasedSpecUnit", @() ::Watched(false))
-let havePurchasedPremium = persist("havePurchasedPremium", @() ::Watched(false))
+local winsInARow = persist("winsInARow", @() ::Watched(0))
+local haveMadeKills = persist("haveMadeKills", @() ::Watched(false))
+local havePurchasedSpecUnit = persist("havePurchasedSpecUnit", @() ::Watched(false))
+local havePurchasedPremium = persist("havePurchasedPremium", @() ::Watched(false))
 
 const RATE_WND_SAVE_ID = "seen/rateWnd"
 
 local isConfigInited = false
-let cfg = { // Overridden by gui.blk values
+local cfg = { // Overridden by gui.blk values
   totalPvpBattlesMin = 7
   totalPlayedHoursMax = 300
   minPlaceOnWin = 3
@@ -28,19 +28,19 @@ let cfg = { // Overridden by gui.blk values
   hideSteamRateLanguagesArray = []
 }
 
-let function initConfig() {
+local function initConfig() {
   if (isConfigInited)
     return
   isConfigInited = true
 
-  let guiBlk = GUI.get()
-  let cfgBlk = guiBlk?.suggestion_rate_game
+  local guiBlk = GUI.get()
+  local cfgBlk = guiBlk?.suggestion_rate_game
   foreach (k, v in cfg)
     cfg[k] = cfgBlk?[k] ?? cfg[k]
   cfg.hideSteamRateLanguagesArray = cfg.hideSteamRateLanguages.split(";")
 }
 
-let function setNeedShowRate(debriefingResult, myPlace) {
+local function setNeedShowRate(debriefingResult, myPlace) {
   //can be on any platform in future,
   //no need to specify platform in func name
   if ((!isPlatformXboxOne && !::steam_is_running()) || debriefingResult == null)
@@ -58,7 +58,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   if (!::my_stats.isStatsLoaded() || (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) // Old players
     return
 
-  let isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == ::GM_DOMINATION)
+  local isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == ::GM_DOMINATION)
   if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= cfg.minPlaceOnWin)) {
     log($"[ShowRate] Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
     needShowRateWnd(true)
@@ -88,7 +88,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 }
 
-let function tryOpenXboxRateReviewWnd() {
+local function tryOpenXboxRateReviewWnd() {
   if (isPlatformXboxOne && ::xbox_show_rate_and_review())
   {
     ::save_local_account_settings(RATE_WND_SAVE_ID, true)
@@ -96,7 +96,7 @@ let function tryOpenXboxRateReviewWnd() {
   }
 }
 
-let function tryOpenSteamRateReview(forceShow = false) {
+local function tryOpenSteamRateReview(forceShow = false) {
   if (!forceShow && (!::steam_is_running() || !::has_feature("SteamRateGame")))
     return
 
@@ -108,7 +108,7 @@ let function tryOpenSteamRateReview(forceShow = false) {
   steamRateGameWnd.open()
 }
 
-let function checkShowRateWnd() {
+local function checkShowRateWnd() {
   if (!needShowRateWnd.value || ::load_local_account_settings(RATE_WND_SAVE_ID, false))
     return
 
@@ -121,7 +121,7 @@ let function checkShowRateWnd() {
 
 addListenersWithoutEnv({
   UnitBought = function(p) {
-    let unit = ::getAircraftByName(p?.unitName)
+    local unit = ::getAircraftByName(p?.unitName)
     if (unit && ::isUnitSpecial(unit))
       havePurchasedSpecUnit(true)
   }

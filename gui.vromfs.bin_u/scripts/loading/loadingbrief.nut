@@ -1,8 +1,8 @@
-let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let changeStartMission = require("%scripts/missions/changeStartMission.nut")
-let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local { clearBorderSymbolsMultiline } = require("std/string.nut")
+local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local changeStartMission = require("scripts/missions/changeStartMission.nut")
+local { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -12,10 +12,10 @@ const MIN_SLIDE_TIME = 2.0
   ::loading_stop_music()
 })
 
-::gui_handlers.LoadingBrief <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/loading/loadingCamp.blk"
-  sceneNavBlkName = "%gui/loading/loadingNav.blk"
+  sceneBlkName = "gui/loading/loadingCamp.blk"
+  sceneNavBlkName = "gui/loading/loadingNav.blk"
 
   gm = 0
   gt = 0
@@ -28,16 +28,16 @@ const MIN_SLIDE_TIME = 2.0
     ::set_presence_to_player("loading")
     setHelpTextOnLoading(scene.findObject("scene-help"))
 
-    let blk = ::dgs_get_game_params()
+    local blk = ::dgs_get_game_params()
     if ("loading" in blk && "numTips" in blk.loading)
     numTips = blk.loading.numTips
 
-    let cutObj = guiScene["cutscene_update"]
+    local cutObj = guiScene["cutscene_update"]
     if (::checkObj(cutObj)) cutObj.setUserData(this)
 
     setDoubleTextToButton(scene, "btn_select", ::loc("hints/cutsc_skip"))
 
-    let missionBlk = ::DataBlock()
+    local missionBlk = ::DataBlock()
     local country = ""
     if (::current_campaign_mission || ::is_mplayer_peer())
     {
@@ -65,9 +65,9 @@ const MIN_SLIDE_TIME = 2.0
     partsList = []
     if (briefing)
     {
-      let guiBlk = GUI.get()
-      let exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
-      let excludeArray = exclBlock? (exclBlock % "name") : []
+      local guiBlk = GUI.get()
+      local exclBlock = guiBlk?.slides_exclude?[get_country_flags_preset()]
+      local excludeArray = exclBlock? (exclBlock % "name") : []
 
       local sceneInfo = ""
       if (::current_campaign_mission)
@@ -88,10 +88,10 @@ const MIN_SLIDE_TIME = 2.0
 
       for (local i = 0; i < briefing.blockCount(); i++)
       {
-        let partBlock = briefing.getBlock(i);
+        local partBlock = briefing.getBlock(i);
         if (partBlock.getBlockName() == "part")
         {
-          let part =
+          local part =
           {
             subtitles = ::loc(partBlock.getStr("event", ""))
             slides = []
@@ -107,10 +107,10 @@ const MIN_SLIDE_TIME = 2.0
           dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
-          let freeTimeSlides = []
+          local freeTimeSlides = []
           foreach(slideBlock in partBlock % "slide")
           {
-            let image = slideBlock.getStr("picture", "")
+            local image = slideBlock.getStr("picture", "")
             if (image != "")
             {
               if (::find_in_array(excludeArray, image, -1) >= 0)
@@ -119,7 +119,7 @@ const MIN_SLIDE_TIME = 2.0
                 continue
               }
             }
-            let slide = {
+            local slide = {
               time = (slideBlock?.minTime ?? 0).tofloat()
               image = image
               map = slideBlock.getBool("map", false)
@@ -151,13 +151,13 @@ const MIN_SLIDE_TIME = 2.0
           {
             if (freeTimeSlides.len())
             {
-              let slideTimeDiff = (part.voiceLen - totalSlidesTime) / freeTimeSlides.len()
+              local slideTimeDiff = (part.voiceLen - totalSlidesTime) / freeTimeSlides.len()
               foreach(slide in freeTimeSlides)
                 slide.time += slideTimeDiff
             }
             else if (totalSlidesTime)
             {
-              let slideTimeMul = part.voiceLen / totalSlidesTime
+              local slideTimeMul = part.voiceLen / totalSlidesTime
               foreach(slide in part.slides)
                 slide.time *= slideTimeMul
             }
@@ -175,19 +175,19 @@ const MIN_SLIDE_TIME = 2.0
 
     if (gt & ::GT_VERSUS)
     {
-      let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
-      let haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
+      local missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
+      local haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
 
-      let helpBtnObj = showSceneBtn("btn_help", haveHelp)
+      local helpBtnObj = showSceneBtn("btn_help", haveHelp)
       if (helpBtnObj && !::show_console_buttons)
         helpBtnObj.setValue(::loc("flightmenu/btnControlsHelp") + ::loc("ui/parentheses/space", { text = "F1" }))
 
       if (haveHelp)
       {
-        let parts = ::split(missionHelpPath, "/.")
-        let helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
-        let cfgPath = "seen/help_mission_type/" + helpId
-        let isSeen = ::loadLocalByAccount(cfgPath, 0)
+        local parts = ::split(missionHelpPath, "/.")
+        local helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
+        local cfgPath = "seen/help_mission_type/" + helpId
+        local isSeen = ::loadLocalByAccount(cfgPath, 0)
         if (!isSeen)
         {
           onHelp()
@@ -199,7 +199,7 @@ const MIN_SLIDE_TIME = 2.0
 
   function count_misObj_add(blk)
   {
-    let res = []
+    local res = []
 
     local m_aircraft = blk.getStr("player_class", "")
     local m_weapon = blk.getStr("player_weapons", "")
@@ -222,13 +222,13 @@ const MIN_SLIDE_TIME = 2.0
     {
       if (!(gt & ::GT_VERSUS))
       {
-        let m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
+        local m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
         if (m_location != "")
           m_condition += ::loc("location/" + m_location)
-        let m_time = blk.getStr("time", blk.getStr("environment", ""))
+        local m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
           m_condition += (m_condition != "" ? "; " : "") + ::get_mission_time_text(m_time)
-        let m_weather = blk.getStr("weather", "")
+        local m_weather = blk.getStr("weather", "")
         if (m_weather != "")
           m_condition += (m_condition != "" ? "; " : "") + ::loc("options/weather" + m_weather)
       }
@@ -255,7 +255,7 @@ const MIN_SLIDE_TIME = 2.0
     if (applyReady != ::loading_is_finished())
     {
       applyReady = ::loading_is_finished()
-      let showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
+      local showStart = !::is_multiplayer() && gm != ::GM_TRAINING && !changeStartMission
       if ((applyReady && !showStart) || finished)
         finishLoading()
       else
@@ -303,7 +303,7 @@ const MIN_SLIDE_TIME = 2.0
 
   function checkNextSlide()
   {
-    let isLastSlideInPart = slideIdx >= partsList[partIdx].slides.len() - 1
+    local isLastSlideInPart = slideIdx >= partsList[partIdx].slides.len() - 1
     if (isLastSlideInPart && ::loading_is_voice_playing())
       return
 
@@ -337,7 +337,7 @@ const MIN_SLIDE_TIME = 2.0
     }
 
     //next Slide show
-    let curSlide = partsList[partIdx].slides[slideIdx]
+    local curSlide = partsList[partIdx].slides[slideIdx]
 
     slideTime = curSlide.time
 
@@ -386,7 +386,7 @@ const MIN_SLIDE_TIME = 2.0
   {
     showProjectorGlow(true)
     showProjectorSmallGlow(false)
-    let place = guiScene["slide-place"]
+    local place = guiScene["slide-place"]
     place.animShow = "show"
     guiScene.playSound("slide_out")
     hideSoundPlayed = false
@@ -458,7 +458,7 @@ const MIN_SLIDE_TIME = 2.0
         guiScene["darkscreen"].animShow = "show"
       setSceneInfo("")
 
-      let obj = guiScene?["tactical-map"]
+      local obj = guiScene?["tactical-map"]
       if (obj)
       {
         if (obj?.animShow != "show")
@@ -481,8 +481,8 @@ const MIN_SLIDE_TIME = 2.0
 
   function safeSetValue(objName, value)
   {
-    let show = (value != null)&&(value != "")
-    let obj = guiScene[objName]
+    local show = (value != null)&&(value != "")
+    local obj = guiScene[objName]
     if (obj)
     {
       if (show)

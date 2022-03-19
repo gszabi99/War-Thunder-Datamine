@@ -1,4 +1,4 @@
-::gui_handlers.CreateEventRoomWnd <- class extends ::gui_handlers.GenericOptionsModal
+class ::gui_handlers.CreateEventRoomWnd extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
   sceneNavBlkName = null
@@ -37,7 +37,7 @@
 
   function initSizes()
   {
-    let frameObj = scene.findObject("wnd_frame")
+    local frameObj = scene.findObject("wnd_frame")
     frameObj.width = "1.3@sf"
     frameObj.height = "8@baseTrHeight + 1@frameTopPadding + 1@frameFooterHeightLarge"
   }
@@ -75,33 +75,33 @@
   function updateMissionsBtn()
   {
     local misBtnText = ""
-    let total = roomCreationContext.fullMissionsList.len()
+    local total = roomCreationContext.fullMissionsList.len()
     if (total > 1)
     {
-      let chosenAmount = roomCreationContext.chosenMissionsList.len()
+      local chosenAmount = roomCreationContext.chosenMissionsList.len()
       if (roomCreationContext.isAllMissionsSelected())
         misBtnText = ::loc("misList/allMissionsSelected")
       else if (chosenAmount == 1)
       {
-        let selMission = roomCreationContext.chosenMissionsList[0]
+        local selMission = roomCreationContext.chosenMissionsList[0]
         misBtnText = ::loc("misList/oneMissionSelected",
           { mission = roomCreationContext.misListType.getMissionNameText(selMission) })
       }
       else
         misBtnText = ::loc("misList/severalMissionsSelected", { amount = chosenAmount })
     }
-    let misBtn = showSceneBtn("btn_missions", misBtnText.len() > 0)
+    local misBtn = showSceneBtn("btn_missions", misBtnText.len() > 0)
     misBtn.setValue(misBtnText)
   }
 
   function updateApplyButton()
   {
-    let reasonData = roomCreationContext.getCantCreateReasonData()
+    local reasonData = roomCreationContext.getCantCreateReasonData()
 
-    let joinButtonObj = scene.findObject("btn_apply")
+    local joinButtonObj = scene.findObject("btn_apply")
     joinButtonObj.inactiveColor = reasonData.activeJoinButton ? "no" : "yes"
 
-    let reasonTextObj = showSceneBtn("cant_create_reason", reasonData.reasonText.len() > 0)
+    local reasonTextObj = showSceneBtn("cant_create_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
   }
 
@@ -123,7 +123,7 @@
 
   function getCurrentEdiff()
   {
-    let ediff = ::events.getEDiffByEvent(mGameMode)
+    local ediff = ::events.getEDiffByEvent(mGameMode)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 

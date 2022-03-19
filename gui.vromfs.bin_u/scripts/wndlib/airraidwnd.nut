@@ -1,8 +1,8 @@
-let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
-let { buildTimeStr } = require("%scripts/timeLoc.nut")
-let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
+local { secondsToTime, millisecondsToSecondsInt } = require("scripts/time.nut")
+local { buildTimeStr } = require("scripts/timeLoc.nut")
+local { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
-let exitGame = require("%scripts/utils/exitGame.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000
@@ -13,7 +13,7 @@ const TIME_TO_BACKGROUND_NUCLEAR_EVENT = 5000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT_END = 10000
 
 local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
-  sceneBlkName = "%gui/wndLib/airRaidTimerScene.blk"
+  sceneBlkName = "gui/wndLib/airRaidTimerScene.blk"
 
   countdownStartedTime = 0
   isExplosionStarted = false
@@ -34,7 +34,7 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initTimer() {
-    let timerObj = scene.findObject("nuclear_explosion_timer")
+    local timerObj = scene.findObject("nuclear_explosion_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
@@ -43,7 +43,7 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateNuclearExplosionTimer() {
-    let activeTime = ::dagor.getCurTime() - countdownStartedTime
+    local activeTime = ::dagor.getCurTime() - countdownStartedTime
 
     if (activeTime > TIME_TO_SERENA_ACTIVATION && !isSirenActive)
       isSirenActive = set_siren_state(true)
@@ -60,10 +60,10 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
         isExplosionStarted = true
       }
     } else {
-      let countdownSeconds = millisecondsToSecondsInt(TIME_TO_EXPLOSION - activeTime)
-      let countdownTime = secondsToTime(countdownSeconds)
+      local countdownSeconds = millisecondsToSecondsInt(TIME_TO_EXPLOSION - activeTime)
+      local countdownTime = secondsToTime(countdownSeconds)
 
-      let textObj = scene.findObject("nuclear_explosion_timer_text")
+      local textObj = scene.findObject("nuclear_explosion_timer_text")
       if (::check_obj(textObj)) {
         textObj.setValue(buildTimeStr({
             hour = countdownTime.hours,
@@ -86,7 +86,7 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
         "ok",
         { cancel_fn = @() exitGame() })
 
-    let timerObj = scene.findObject("nuclear_explosion_timer")
+    local timerObj = scene.findObject("nuclear_explosion_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(null)
   }

@@ -1,10 +1,10 @@
-let time = require("%scripts/time.nut")
-let mpChatModel = require("%scripts/chat/mpChatModel.nut")
-let avatars = require("%scripts/user/avatars.nut")
-let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
+local time = require("scripts/time.nut")
+local mpChatModel = require("scripts/chat/mpChatModel.nut")
+local avatars = require("scripts/user/avatars.nut")
+local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
+local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { updateListLabelsSquad, isShowSquad } = require("scripts/statistics/squadIcon.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -72,17 +72,17 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTimeToKickTimer()
   {
-    let timeToKickObj = getTimeToKickObj()
+    local timeToKickObj = getTimeToKickObj()
     if (!::checkObj(timeToKickObj))
       return
-    let timeToKickValue = ::get_mp_kick_countdown()
+    local timeToKickValue = ::get_mp_kick_countdown()
     // Already in battle or it's too early to show the message.
     if (timeToKickValue <= 0 || ::get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
     else
     {
-      let timeToKickText = time.secondsToString(timeToKickValue, true, true)
-      let locParams = {
+      local timeToKickText = time.secondsToString(timeToKickValue, true, true)
+      local locParams = {
         timeToKick = ::colorize("activeTextColor", timeToKickText)
       }
       timeToKickObj.setValue(::loc("respawn/timeToKick", locParams))
@@ -91,18 +91,18 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTimeToKickAlert(dt)
   {
-    let timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
+    local timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
     if (!::checkObj(timeToKickAlertObj))
       return
-    let timeToKickValue = ::get_mp_kick_countdown()
+    local timeToKickValue = ::get_mp_kick_countdown()
     if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || isSpectate)
       timeToKickAlertObj.show(false)
     else
     {
       timeToKickAlertObj.show(true)
-      let curTime = ::dagor.getCurTime()
-      let prevSeconds = ((curTime - 1000 * dt) / 1000).tointeger()
-      let currSeconds = (curTime / 1000).tointeger()
+      local curTime = ::dagor.getCurTime()
+      local prevSeconds = ((curTime - 1000 * dt) / 1000).tointeger()
+      local currSeconds = (curTime / 1000).tointeger()
       if (currSeconds != prevSeconds)
       {
         timeToKickAlertObj["_blink"] = "yes"
@@ -114,7 +114,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function onOrderTimerUpdate(obj, dt)
   {
     ::g_orders.updateActiveOrder()
-    let isOrderCanBeActivated = ::g_orders.orderCanBeActivated()
+    local isOrderCanBeActivated = ::g_orders.orderCanBeActivated()
     if (::checkObj(obj))
     {
       obj.text = ::g_orders.getActivateButtonLabel()
@@ -136,7 +136,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(teamObj))
       return
-    let teamImgObj = teamObj.findObject("team_img")
+    local teamImgObj = teamObj.findObject("team_img")
     if (::checkObj(teamImgObj))
       teamImgObj.show(teamIco != null)
     if (teamIco != null)
@@ -147,7 +147,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(teamObj))
       return
-    let textObj = teamObj.findObject("team_text")
+    local textObj = teamObj.findObject("team_text")
     if (::checkObj(textObj))
       textObj.setValue(text)
   }
@@ -162,7 +162,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       return
     foreach (countryName in shopCountriesList)
     {
-      let countryFlagObj = teamObj.findObject(countryName)
+      local countryFlagObj = teamObj.findObject(countryName)
       if (::checkObj(countryFlagObj))
         countryFlagObj.show(::isInArray(countryName, enabledCountryNames))
     }
@@ -172,7 +172,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(teamObj))
       return
 
-    let countryFlagObj = ::showBtn(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
+    local countryFlagObj = ::showBtn(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
     if (::check_obj(countryFlagObj))
       countryFlagObj["background-image"] = ::get_country_icon(countryIcon)
   }
@@ -185,10 +185,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(teamObj))
       return
-    let countriesBlock = teamObj.findObject("countries_block")
+    local countriesBlock = teamObj.findObject("countries_block")
     if (!::checkObj(countriesBlock))
       return
-    let view = {
+    local view = {
       countries = shopCountriesList
         .map(@(countryName) {
           countryName = countryName
@@ -199,13 +199,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
           countryIcon = ""
         })
     }
-    let result = ::handyman.renderCached("%gui/countriesList", view)
+    local result = ::handyman.renderCached("gui/countriesList", view)
     guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
   }
 
   function setInfo()
   {
-    let timeLeft = ::get_multiplayer_time_left()
+    local timeLeft = ::get_multiplayer_time_left()
     if (timeLeft < 0)
     {
       setGameEndStat(-1)
@@ -238,10 +238,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     initStatsMissionParams()
 
-    let playerTeam = getLocalTeam()
-    let friendlyTeam = ::get_player_army_for_hud()
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    local playerTeam = getLocalTeam()
+    local friendlyTeam = ::get_player_army_for_hud()
+    local teamObj1 = scene.findObject("team1_info")
+    local teamObj2 = scene.findObject("team2_info")
 
     if (!isTeamplay)
     {
@@ -290,15 +290,15 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function createKillsTbl(objTbl, tbl, tblConfig)
   {
-    let team = ::getTblValue("team", tblConfig, -1)
-    let num_rows = ::getTblValue("num_rows", tblConfig, numMaxPlayers)
-    let showUnits     = tblConfig?.showAircrafts ?? false
-    let showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
-    let invert = ::getTblValue("invert", tblConfig, false)
+    local team = ::getTblValue("team", tblConfig, -1)
+    local num_rows = ::getTblValue("num_rows", tblConfig, numMaxPlayers)
+    local showUnits     = tblConfig?.showAircrafts ?? false
+    local showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
+    local invert = ::getTblValue("invert", tblConfig, false)
 
     local tblData = [] // columns order
 
-    let markupData = {
+    local markupData = {
       tr_size = statTrSize
       invert = invert
       colorTeam = "blue"
@@ -316,7 +316,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      let sourceHeaders = gameType & ::GT_FOOTBALL ? footballRowHeaders
+      local sourceHeaders = gameType & ::GT_FOOTBALL ? footballRowHeaders
         : gameType & ::GT_RACE ? raceRowHeaders
         : defaultRowHeaders
 
@@ -334,21 +334,21 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
       if ("name" in markupData.columns)
       {
-        let col = markupData.columns["name"]
+        local col = markupData.columns["name"]
         if (isWideScreenStatTbl && ("widthInWideScreen" in col))
           col.width = col.widthInWideScreen
       }
 
       ::count_width_for_mptable(objTbl, markupData.columns)
 
-      let teamNum = (team==2)? 2 : 1
-      let tableObj = scene.findObject($"team_table_{teamNum}")
+      local teamNum = (team==2)? 2 : 1
+      local tableObj = scene.findObject($"team_table_{teamNum}")
       if (team == 2)
         markupData.colorTeam = "red"
       if (::checkObj(tableObj))
       {
-        let rowHeaderData = createHeaderRow(tableObj, tblData, markupData, teamNum)
-        let show = rowHeaderData != ""
+        local rowHeaderData = createHeaderRow(tableObj, tblData, markupData, teamNum)
+        local show = rowHeaderData != ""
         guiScene.replaceContentFromText(tableObj, rowHeaderData, rowHeaderData.len(), this)
         tableObj.show(show)
         tableObj.normalFont = ::is_low_width_screen() ? "yes" : "no"
@@ -365,7 +365,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (!isTeamplay)
         sortTable(tbl)
 
-      let data = ::build_mp_table(tbl, markupData, tblData, num_rows)
+      local data = ::build_mp_table(tbl, markupData, tblData, num_rows)
       guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
@@ -386,7 +386,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (customTbl)
     {
-      let idx = max(team-1, -1)
+      local idx = max(team-1, -1)
       if (idx in customTbl?.playersTbl)
         tbl = customTbl.playersTbl[idx]
     }
@@ -396,7 +396,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!isTeamplay)
       {
-        let commonTbl = getMplayersList(::GET_MPLAYERS_LIST)
+        local commonTbl = getMplayersList(::GET_MPLAYERS_LIST)
         sortTable(commonTbl)
         if (commonTbl.len() > 0)
         {
@@ -413,7 +413,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
             if (!(i in commonTbl))
               continue
 
-            let block = commonTbl.remove(i)
+            local block = commonTbl.remove(i)
             block.place <- (i+1).tostring()
             tbl.append(block)
           }
@@ -458,7 +458,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (team == 2)
         numRows = numRows2
 
-      let params = {
+      local params = {
                        max_rows = numRows,
                        showAirIcons = showAirIcons,
                        continueRowNum = minRow,
@@ -484,17 +484,17 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!needPlayersTbl)
       return
 
-    let tblObj1 = scene.findObject("table_kills_team1")
-    let tblObj2 = scene.findObject("table_kills_team2")
-    let team1Root = scene.findObject("team1-root")
+    local tblObj1 = scene.findObject("table_kills_team1")
+    local tblObj2 = scene.findObject("table_kills_team2")
+    local team1Root = scene.findObject("team1-root")
     updateNumMaxPlayers()
 
     if (!isTeamplay)
     {
-      let tbl1 = getMplayersList(::GET_MPLAYERS_LIST)
+      local tbl1 = getMplayersList(::GET_MPLAYERS_LIST)
       sortTable(tbl1)
 
-      let tbl2 = []
+      local tbl2 = []
       numRows1 = tbl1.len()
       numRows2 = 0
       if (tbl1.len() >= numMaxPlayers)
@@ -507,7 +507,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
           if (!(i in tbl1))
             continue
 
-          let block = tbl1.remove(i)
+          local block = tbl1.remove(i)
           block.place <- (i+1).tostring()
           tbl2.append(block)
         }
@@ -524,17 +524,17 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (showLocalTeamOnly)
       {
-        let playerTeam = getLocalTeam()
-        let tbl = getMplayersList(playerTeam)
+        local playerTeam = getLocalTeam()
+        local tbl = getMplayersList(playerTeam)
         numRows1 = numMaxPlayers
         numRows2 = 0
         createKillsTbl(tblObj1, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
       }
       else
       {
-        let tbl1 = getMplayersList(1)
-        let tbl2 = getMplayersList(2)
-        let num_in_one_row = ::global_max_players_versus / 2
+        local tbl1 = getMplayersList(1)
+        local tbl2 = getMplayersList(2)
+        local num_in_one_row = ::global_max_players_versus / 2
         if (tbl1.len() <= num_in_one_row && tbl2.len() <= num_in_one_row)
         {
           numRows1 = num_in_one_row
@@ -550,9 +550,9 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         if (numRows2 > numMaxPlayers)
           numRows2 = numMaxPlayers
 
-        let showEnemyAircrafts = isShowEnemyAirs()
-        let tblConfig1 = {tbl = tbl2, team = Team.A, num_rows = numRows2, showAircrafts = showAircrafts, invert = true}
-        let tblConfig2 = {tbl = tbl1, team = Team.B, num_rows = numRows1, showAircrafts = showEnemyAircrafts}
+        local showEnemyAircrafts = isShowEnemyAirs()
+        local tblConfig1 = {tbl = tbl2, team = Team.A, num_rows = numRows2, showAircrafts = showAircrafts, invert = true}
+        local tblConfig2 = {tbl = tbl1, team = Team.B, num_rows = numRows1, showAircrafts = showEnemyAircrafts}
 
         if (getLocalTeam() == Team.A)
         {
@@ -574,7 +574,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       numRows1 = (gameType & ::GT_COOPERATIVE)? ::global_max_players_coop : numMaxPlayers
       numRows2 = 0
-      let tbl = getMplayersList(::GET_MPLAYERS_LIST)
+      local tbl = getMplayersList(::GET_MPLAYERS_LIST)
       createKillsTbl(tblObj2, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
 
       tblObj1.show(false)
@@ -582,7 +582,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (::checkObj(team1Root))
         team1Root.show(false)
 
-      let headerObj = scene.findObject("team2_header")
+      local headerObj = scene.findObject("team2_header")
       if (::checkObj(headerObj))
         headerObj.show(false)
     }
@@ -593,18 +593,18 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!tbl)
       return
 
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    local teamObj1 = scene.findObject("team1_info")
+    local teamObj2 = scene.findObject("team2_info")
 
-    let playerTeamIdx = ::clamp(playerTeam - 1, 0, 1)
-    let teamTxt = ["", ""]
+    local playerTeamIdx = ::clamp(playerTeam - 1, 0, 1)
+    local teamTxt = ["", ""]
     switch (gameType & (::GT_MP_SCORE | ::GT_MP_TICKETS))
     {
       case ::GT_MP_SCORE:
         if (!needPlayersTbl)
           break
 
-        let scoreFormat = "%s" + ::loc("multiplayer/score") + ::loc("ui/colon") + "%d"
+        local scoreFormat = "%s" + ::loc("multiplayer/score") + ::loc("ui/colon") + "%d"
         if (tbl.len() > playerTeamIdx)
         {
           setTeamInfoText(teamObj1, ::format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
@@ -618,13 +618,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         break
 
       case ::GT_MP_TICKETS:
-        let rounds = ::get_mp_rounds()
-        let curRound = ::get_mp_current_round()
+        local rounds = ::get_mp_rounds()
+        local curRound = ::get_mp_current_round()
 
         if (needPlayersTbl)
         {
-          let scoreLoc = (rounds > 0) ? ::loc("multiplayer/rounds") : ::loc("multiplayer/airfields")
-          let scoreformat = "%s" + ::loc("multiplayer/tickets") + ::loc("ui/colon") + "%d" + ", " +
+          local scoreLoc = (rounds > 0) ? ::loc("multiplayer/rounds") : ::loc("multiplayer/airfields")
+          local scoreformat = "%s" + ::loc("multiplayer/tickets") + ::loc("ui/colon") + "%d" + ", " +
                                 scoreLoc + ::loc("ui/colon") + "%d"
 
           if (tbl.len() > playerTeamIdx)
@@ -639,7 +639,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
           }
         }
 
-        let statObj = scene.findObject("gc_mp_tickets_rounds")
+        local statObj = scene.findObject("gc_mp_tickets_rounds")
         if (::checkObj(statObj))
         {
           local text = ""
@@ -654,9 +654,9 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function updateStats(customTbl = null, customTblTeams = null, customFriendlyTeam = null)
   {
     local playerTeam   = getLocalTeam()
-    let friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
-    let tblObj1 = scene.findObject("table_kills_team1")
-    let tblObj2 = scene.findObject("table_kills_team2")
+    local friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
+    local tblObj1 = scene.findObject("table_kills_team1")
+    local tblObj2 = scene.findObject("table_kills_team2")
 
     if (needPlayersTbl)
     {
@@ -678,10 +678,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (checkRaceDataOnStart && ::is_race_started())
     {
-      let chObj = scene.findObject("gc_race_checkpoints")
+      local chObj = scene.findObject("gc_race_checkpoints")
       if (::checkObj(chObj))
       {
-        let totalCheckpointsAmount = ::get_race_checkpioints_count()
+        local totalCheckpointsAmount = ::get_race_checkpioints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
           text = ::getCompoundedText(::loc("multiplayer/totalCheckpoints") + ::loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
@@ -709,11 +709,11 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (isRespawn)
     {
-      let selectedObj = getSelectedTable()
+      local selectedObj = getSelectedTable()
       if (!isModeStat)
       {
-        let objTbl1 = scene.findObject("table_kills_team1")
-        let curRow = objTbl1.getValue()
+        local objTbl1 = scene.findObject("table_kills_team1")
+        local curRow = objTbl1.getValue()
         if (curRow < 0 || curRow >= objTbl1.childrenCount())
           objTbl1.setValue(0)
       }
@@ -740,15 +740,15 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         || !::checkObj(tableObj))
       return ""
 
-    let tblData = clone hdr
+    local tblData = clone hdr
 
     if (::getTblValue("invert", markupData, false))
       tblData.reverse()
 
-    let view = {cells = []}
+    local view = {cells = []}
     foreach(name in tblData)
     {
-      let value = markupData.columns?[name]
+      local value = markupData.columns?[name]
       if (!value || typeof value != "table")
         continue
 
@@ -760,10 +760,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    let tdData = ::handyman.renderCached(("%gui/statistics/statTableHeaderCell"), view)
-    let trId = "team-header" + teamNum
-    let trSize = ::getTblValue("tr_size", markupData, "0,0")
-    let trData = ::format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
+    local tdData = ::handyman.renderCached(("gui/statistics/statTableHeaderCell"), view)
+    local trId = "team-header" + teamNum
+    local trSize = ::getTblValue("tr_size", markupData, "0,0")
+    local trData = ::format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
     return trData
   }
 
@@ -771,7 +771,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserCard(obj)
   {
-    let player = getSelectedPlayer();
+    local player = getSelectedPlayer();
     if (!player || player.isBot || !isOnline)
       return;
 
@@ -786,25 +786,25 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserOptions(obj)
   {
-    let selectedTableObj = getSelectedTable()
+    local selectedTableObj = getSelectedTable()
     if (!::check_obj(selectedTableObj))
       return
 
     onStatsTblSelect(selectedTableObj)
-    let selectedPlayer = getSelectedPlayer()
-    let orientation = selectedTableObj.id == "table_kills_team1"? RCLICK_MENU_ORIENT.RIGHT : RCLICK_MENU_ORIENT.LEFT
+    local selectedPlayer = getSelectedPlayer()
+    local orientation = selectedTableObj.id == "table_kills_team1"? RCLICK_MENU_ORIENT.RIGHT : RCLICK_MENU_ORIENT.LEFT
     ::session_player_rmenu(this, selectedPlayer, getChatLog(), getSelectedRowPos(selectedTableObj, orientation), orientation)
   }
 
   function getSelectedRowPos(selectedTableObj, orientation)
   {
-    let rowNum = selectedTableObj.getValue()
+    local rowNum = selectedTableObj.getValue()
     if (rowNum >= selectedTableObj.childrenCount())
       return null
 
-    let rowObj = selectedTableObj.getChild(rowNum)
-    let rowSize = rowObj.getSize()
-    let rowPos = rowObj.getPosRC()
+    local rowObj = selectedTableObj.getChild(rowNum)
+    local rowSize = rowObj.getSize()
+    local rowPos = rowObj.getPosRC()
 
     local posX = rowPos[0]
     if (orientation == RCLICK_MENU_ORIENT.RIGHT)
@@ -828,19 +828,19 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     setPlayerInfo()
 
-    let player = getSelectedPlayer()
+    local player = getSelectedPlayer()
     showSceneBtn("btn_user_options", isOnline && player && !player.isBot && !isSpectate && ::show_console_buttons)
     updateListLabelsSquad()
   }
 
   function setPlayerInfo()
   {
-    let playerInfo = getSelectedPlayer()
-    let teamObj = scene.findObject("player_team")
+    local playerInfo = getSelectedPlayer()
+    local teamObj = scene.findObject("player_team")
     if (isTeam && ::checkObj(teamObj))
     {
       local teamTxt = ""
-      let team = playerInfo? playerInfo.team : Team.Any
+      local team = playerInfo? playerInfo.team : Team.Any
       if (team == Team.A)
         teamTxt = ::loc("multiplayer/teamA")
       else if (team == Team.B)
@@ -861,7 +861,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onComplain(obj)
   {
-    let pInfo = getSelectedPlayer()
+    local pInfo = getSelectedPlayer()
     if (!pInfo || pInfo.isBot || pInfo.isLocal)
       return
 
@@ -890,10 +890,10 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedTable()
   {
-    let objTbl1 = scene.findObject("table_kills_team1")
+    local objTbl1 = scene.findObject("table_kills_team1")
     if (objTbl1.getValue() >= 0)
       return objTbl1
-    let objTbl2 = scene.findObject("table_kills_team2")
+    local objTbl2 = scene.findObject("table_kills_team2")
     if (objTbl2.getValue() >= 0)
       return objTbl2
     return null
@@ -904,8 +904,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!needPlayersTbl)
       return
     if (obj.getValue() >= 0) {
-      let table_name = obj.id == "table_kills_team2" ? "table_kills_team1" : "table_kills_team2"
-      let tblObj = scene.findObject(table_name)
+      local table_name = obj.id == "table_kills_team2" ? "table_kills_team1" : "table_kills_team2"
+      local tblObj = scene.findObject(table_name)
       tblObj.setValue(-1)
     }
     updateListsButtons()
@@ -927,11 +927,11 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!needPlayersTbl)
       return false
-    let selectedObj = getSelectedTable()
+    local selectedObj = getSelectedTable()
     if (selectedObj)
       selectedObj.setValue(-1)
 
-    let tblObj = scene.findObject("table_kills_team" + (tblIdx + 1))
+    local tblObj = scene.findObject("table_kills_team" + (tblIdx + 1))
     if (!::check_obj(tblObj) || tblObj.childrenCount() <= playerIdx)
       return false
 
@@ -946,8 +946,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    let blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
-    let leftBlockObj = scene.findObject("mission_texts_block_left")
+    local blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
+    local leftBlockObj = scene.findObject("mission_texts_block_left")
     if (::checkObj(leftBlockObj))
     {
       local data = ""
@@ -957,7 +957,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
     }
 
-    let rightBlockObj = scene.findObject("mission_texts_block_right")
+    local rightBlockObj = scene.findObject("mission_texts_block_right")
     if (::checkObj(rightBlockObj))
     {
       local data = ""
@@ -974,17 +974,17 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
    */
   function updateCountryFlags()
   {
-    let playerTeam = getLocalTeam()
+    local playerTeam = getLocalTeam()
     if (!needPlayersTbl || playerTeam <= 0)
       return
-    let teamObj1 = scene.findObject("team1_info")
-    let teamObj2 = scene.findObject("team2_info")
+    local teamObj1 = scene.findObject("team1_info")
+    local teamObj2 = scene.findObject("team2_info")
     local countries
     local teamIco
 
     if (::checkObj(teamObj1))
     {
-      let teamOverrideCountryIcon = getOverrideCountryIconByTeam(playerTeam)
+      local teamOverrideCountryIcon = getOverrideCountryIconByTeam(playerTeam)
       countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
         ? getCountriesByTeam(playerTeam)
         : []
@@ -999,8 +999,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     if (!showLocalTeamOnly && ::checkObj(teamObj2))
     {
-      let opponentTeam = playerTeam == Team.A ? Team.B : Team.A
-      let teamOverrideCountryIcon = getOverrideCountryIconByTeam(opponentTeam)
+      local opponentTeam = playerTeam == Team.A ? Team.B : Team.A
+      local teamOverrideCountryIcon = getOverrideCountryIconByTeam(opponentTeam)
       countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
         ? getCountriesByTeam(opponentTeam)
         : []
@@ -1020,8 +1020,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
    */
   function getCountriesByTeam(team)
   {
-    let countries = []
-    let players = getMplayersList(team)
+    local countries = []
+    local players = getMplayersList(team)
     foreach (player in players)
     {
       local country = ::getTblValue("country", player, null)
@@ -1031,8 +1031,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       // Before spawn bots has wrong unit names.
       if (country == "country_0" && (!player.isDead || player.deaths > 0))
       {
-        let unitName = ::getTblValue("aircraftName", player, null)
-        let unit = ::getAircraftByName(unitName)
+        local unitName = ::getTblValue("aircraftName", player, null)
+        local unit = ::getAircraftByName(unitName)
         if (unit != null)
           country = ::getUnitCountry(unit)
       }
@@ -1058,8 +1058,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function setGameEndStat(timeLeft)
   {
-    let gameEndsObj = getEndTimeObj()
-    let scoreLimitTextObj = getScoreLimitObj()
+    local gameEndsObj = getEndTimeObj()
+    local scoreLimitTextObj = getScoreLimitObj()
 
     if (!(gameType & ::GT_VERSUS))
     {
@@ -1071,7 +1071,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::get_mp_rounds())
     {
-      let rl = ::get_mp_zone_countdown()
+      local rl = ::get_mp_zone_countdown()
       if (rl > 0)
         timeLeft = rl
     }
@@ -1081,7 +1081,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (!::checkObj(gameEndsObj))
         return
 
-      let val = gameEndsObj.getValue()
+      local val = gameEndsObj.getValue()
       if (typeof val == "string" && val.len() > 0)
         gameEndsObj.setValue("")
     }
@@ -1092,7 +1092,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
-      let mp_ffa_score_limit = ::get_mp_ffa_score_limit()
+      local mp_ffa_score_limit = ::get_mp_ffa_score_limit()
       if (!isTeamplay && mp_ffa_score_limit && ::checkObj(scoreLimitTextObj))
         scoreLimitTextObj.setValue(::getCompoundedText(::loc("options/scoreLimit") + ::loc("ui/colon"),
                                    mp_ffa_score_limit,
@@ -1106,7 +1106,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
      if (!::checkObj(tblObj1))
        return
 
-     let curValue = numMaxPlayers
+     local curValue = numMaxPlayers
      numMaxPlayers = ::ceil(tblObj1.getParent().getSize()[1]/(::to_pixels("1@rows16height") || 1)).tointeger()
      if (!shouldHideRows || curValue <= numMaxPlayers)
        return
@@ -1120,7 +1120,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function hideTableRows(tblObj, minRow, maxRow)
   {
-    let count = tblObj.childrenCount()
+    local count = tblObj.childrenCount()
     for (local i = minRow; i < maxRow; i++)
     {
       if (count <= i)

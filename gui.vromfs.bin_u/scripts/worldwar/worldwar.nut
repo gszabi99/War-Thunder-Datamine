@@ -207,10 +207,10 @@ foreach (fn in [
                  "worldWarUtils.nut"
                  "debugTools/dbgUtils.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/worldWar/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
+  ::g_script_reloader.loadOnce("scripts/worldWar/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
 // Independed Modules
-require("%scripts/worldWar/wwPromo.nut")
+require("scripts/worldWar/wwPromo.nut")
 
 foreach(bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)

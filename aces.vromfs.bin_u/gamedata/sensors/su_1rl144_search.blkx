@@ -83,10 +83,7 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-90.0,90.0],
-            "azimuthWidth": 7.0,
-            "distanceRange": [0.0,16000.0],
-            "distanceWidth": 1000.0,
-            "distanceRelWidthMin": 0.05
+            "distanceRange": [0.0,16000.0]
           }
         },
         "setStandbyMode": {
@@ -114,9 +111,6 @@
             "fsm": "search",
             "active": true
           },
-          "setCueEnabled": {
-            "value": true
-          },
           "setScanPattern": {
             "scanPattern": "search"
           },
@@ -129,9 +123,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         }
       },
@@ -245,18 +236,6 @@
             "setNextDetectedTargetActive": []
           }
         },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": []
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": []
-          }
-        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -267,10 +246,6 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
               "type": 0,
               "sensorIndex": 1
             }

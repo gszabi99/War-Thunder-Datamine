@@ -1,9 +1,9 @@
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::condition_text_functions <- {
   leaderboardCondition = function (rewardBlk, progress = null)
   {
-    let conditionId = ::EventRewards.getRewardConditionId(rewardBlk)
-    let value = ::EventRewards.getConditionValue(rewardBlk)
+    local conditionId = ::EventRewards.getRewardConditionId(rewardBlk)
+    local value = ::EventRewards.getConditionValue(rewardBlk)
     local res = ::loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = value})
 
     if (progress != null)
@@ -13,7 +13,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
   sequenceWins = function (rewardBlk, progress = null)
   {
-    let value = ::EventRewards.getConditionValue(rewardBlk)
+    local value = ::EventRewards.getConditionValue(rewardBlk)
     local res = ::loc("conditions/sequence_wins", {value = value})
 
     if (progress)
@@ -34,13 +34,13 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
     id = "reach_value"
     updateProgress = function (reward_blk, event, callback, context = null)
     {
-      let cb = ::Callback(callback, context)
+      local cb = ::Callback(callback, context)
       ::g_reward_progress_manager.requestProgress(event, reward_blk.fieldName,
         (@(reward_blk, cb) function (value) {
           local progress = "0"
           if (value != null)
           {
-            let { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
+            local { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)
@@ -64,7 +64,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
           if (value != null)
           {
             value = value % ::EventRewards.getConditionValue(reward_blk)
-            let { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
+            local { lbDataType } = ::g_lb_category.getTypeByField(reward_blk.fieldName)
             progress = lbDataType.getShortTextByValue(value)
           }
           cb(progress)
@@ -80,13 +80,13 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
     id = "position"
     updateProgress = function (reward_blk, event, callback, context = null)
     {
-      let request = ::events.getMainLbRequest(event)
+      local request = ::events.getMainLbRequest(event)
       if (request.forClans)
         request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
       request.lbField  <- reward_blk.fieldName
-      let cb = ::Callback(callback, context)
+      local cb = ::Callback(callback, context)
       ::events.requestSelfRow(request, (@(cb) function (self_row) {
-          let progress = self_row.len() ? ::getTblValue("pos", self_row[0]) : null
+          local progress = self_row.len() ? ::getTblValue("pos", self_row[0]) : null
           cb(progress)
         })(cb))
     }
@@ -107,7 +107,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
     id = "sequence_wins"
     updateProgress = function (rewardBlk, event, callback, context = null)
     {
-      let progress = ::getTblValue("sequenceWinCount", EventRewards.getTournamentInfoBlk(event), 0)
+      local progress = ::getTblValue("sequenceWinCount", EventRewards.getTournamentInfoBlk(event), 0)
       ::Callback(callback, context)(progress.tostring())
     }
     getText = ::condition_text_functions.sequenceWins
@@ -124,11 +124,11 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
     { id = "money"
       locId = ""
       getValue = function(blk) {
-        let cost = ::Cost().setFromTbl(blk)
+        local cost = ::Cost().setFromTbl(blk)
         return (cost > ::zero_money) ? cost : null
       }
       getIconStyle = function(value, blk) {
-        let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles" : "#ui/gameuiskin#items_warpoints"
+        local img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles" : "#ui/gameuiskin#items_warpoints"
         return ::LayersIcon.getIconData(null, img)
       }
       getRowIcon = function(value, blk) {
@@ -144,7 +144,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
       getValue = function(blk) {
         if ("trophyName" in blk)
         {
-          let trophy = ::ItemsManager.findItemById(blk.trophyName)
+          local trophy = ::ItemsManager.findItemById(blk.trophyName)
           if (trophy)
             return {
               trophy = trophy
@@ -172,7 +172,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
       getValue = function(blk) {
         if ("itemsName" in blk)
         {
-          let item = ::ItemsManager.findItemById(blk.itemsName)
+          local item = ::ItemsManager.findItemById(blk.itemsName)
           if (item)
             return {
               item = item
@@ -201,7 +201,7 @@ EventRewards.initConfigs <- function initConfigs()
 {
   foreach(cfg in _rewardsConfig)
   {
-    let id = cfg.id
+    local id = cfg.id
     if (!("locId" in cfg))
       cfg.locId = "reward/" + id
     if (!("getValue" in cfg))
@@ -219,14 +219,14 @@ EventRewards.getRewardsBlk <- function getRewardsBlk(event)
 
 EventRewards.getTournamentInfoBlk <- function getTournamentInfoBlk(event)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   ::get_tournament_info_blk(::events.getEventEconomicName(event), blk)
   return blk
 }
 
 EventRewards.haveRewards <- function haveRewards(event)
 {
-  let blk = getRewardsBlk(event)
+  local blk = getRewardsBlk(event)
   return blk != null && blk.blockCount() > 0
 }
 
@@ -246,7 +246,7 @@ EventRewards.getCondition <- function getCondition(condition_id)
 EventRewards.getRewardConditionId <- function getRewardConditionId(rewardBlk)
 {
                       //param name in tournament configs            //param name in userlogs configs
-  let conditionId = ::getTblValue("condition_type", rewardBlk) || ::getTblValue("awardType", rewardBlk)
+  local conditionId = ::getTblValue("condition_type", rewardBlk) || ::getTblValue("awardType", rewardBlk)
 
   foreach(cond in ::reward_conditions_list)
   {
@@ -266,25 +266,25 @@ EventRewards.getRewardCondition <- function getRewardCondition(reward_blk)
 
 EventRewards.getBaseVictoryReward <- function getBaseVictoryReward(event)
 {
-  let rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event))
+  local rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event))
   if (!rewardsBlk)
     return null
 
-  let wp = rewardsBlk?.baseWpAward ?? 0
-  let gold = rewardsBlk?.baseGoldAward ?? 0
+  local wp = rewardsBlk?.baseWpAward ?? 0
+  local gold = rewardsBlk?.baseGoldAward ?? 0
   return (wp || gold) ? ::Cost(wp, gold) : null
 }
 
 EventRewards.getSortedRewardsByConditions <- function getSortedRewardsByConditions(event)
 {
-  let res = {}
-  let rBlk = getRewardsBlk(event)
+  local res = {}
+  local rBlk = getRewardsBlk(event)
   if (!rBlk)
     return res
 
   foreach(blk in (rBlk % "pr"))
   {
-    let condName = getRewardConditionId(blk)
+    local condName = getRewardConditionId(blk)
 
     if (!condName)
       continue
@@ -298,8 +298,8 @@ EventRewards.getSortedRewardsByConditions <- function getSortedRewardsByConditio
   //sort rewards
   foreach(condName, typeData in res)
     typeData.sort((@(condName) function(a, b) {
-        let aValue = ::EventRewards.getConditionValue(a)
-        let bValue = ::EventRewards.getConditionValue(b)
+        local aValue = ::EventRewards.getConditionValue(a)
+        local bValue = ::EventRewards.getConditionValue(b)
         if (aValue != bValue)
           return (aValue > bValue) ? 1 : -1
         if (a?[condName] != b?[condName])
@@ -314,7 +314,7 @@ EventRewards.getRewardIcon <- function getRewardIcon(rewardBlk)
 {
   foreach(cfg in _rewardsConfig)
   {
-    let value = cfg.getValue(rewardBlk)
+    local value = cfg.getValue(rewardBlk)
     if (value == null)
       continue
 
@@ -327,7 +327,7 @@ EventRewards.getRewardRowIcon <- function getRewardRowIcon(rewardBlk)
 {
   foreach(cfg in _rewardsConfig)
   {
-    let value = cfg.getValue(rewardBlk)
+    local value = cfg.getValue(rewardBlk)
     if (value == null)
       continue
 
@@ -341,12 +341,12 @@ EventRewards.getRewardDescText <- function getRewardDescText(rewardBlk)
   local text = ""
   foreach(cfg in _rewardsConfig)
   {
-    let value = cfg.getValue(rewardBlk)
+    local value = cfg.getValue(rewardBlk)
     if (value == null)
       continue
 
-    let valueText = ("valueText" in cfg) ? cfg.valueText(value) : value.tostring()
-    let locText = cfg.locId.len() ? ::loc(cfg.locId) : ""
+    local valueText = ("valueText" in cfg) ? cfg.valueText(value) : value.tostring()
+    local locText = cfg.locId.len() ? ::loc(cfg.locId) : ""
     text = ::UnlockConditions.addToText(text, locText, valueText, "activeTextColor")
   }
   return text
@@ -356,7 +356,7 @@ EventRewards.getRewardTooltipId <- function getRewardTooltipId(reward_blk)
 {
   foreach(cfg in _rewardsConfig)
   {
-    let value = cfg.getValue(reward_blk)
+    local value = cfg.getValue(reward_blk)
     if (value != null)
       return cfg.getTooltipId(value)
   }
@@ -370,7 +370,7 @@ EventRewards.getTotalRewardDescText <- function getTotalRewardDescText(rewardsBl
   foreach(rewardBlk in rewardsBlksArray)
     foreach(cfg in _rewardsConfig)
     {
-      let value = cfg.getValue(rewardBlk)
+      local value = cfg.getValue(rewardBlk)
       if (value == null)
         continue
 
@@ -378,7 +378,7 @@ EventRewards.getTotalRewardDescText <- function getTotalRewardDescText(rewardsBl
         money += value
       else
       {
-        let val = ("valueText" in cfg)? cfg.valueText(value) : value
+        local val = ("valueText" in cfg)? cfg.valueText(value) : value
         text = ::UnlockConditions.addToText(text, "", val, "activeTextColor")
       }
     }
@@ -390,8 +390,8 @@ EventRewards.getTotalRewardDescText <- function getTotalRewardDescText(rewardsBl
 
 EventRewards.getConditionText <- function getConditionText(rewardBlk, progress = null)
 {
-  let conditionId = getRewardConditionId(rewardBlk)
-  let condition = getCondition(conditionId)
+  local conditionId = getRewardConditionId(rewardBlk)
+  local condition = getCondition(conditionId)
   if (!condition)
     return ""
 
@@ -428,11 +428,11 @@ EventRewards.getConditionLbField <- function getConditionLbField(condition)
 
 EventRewards.isRewardReceived <- function isRewardReceived(reward_blk, event)
 {
-  let infoBlk = ::EventRewards.getTournamentInfoBlk(event)
+  local infoBlk = ::EventRewards.getTournamentInfoBlk(event)
   if (!infoBlk?.awards)
     return false
 
-  let conditionId = getRewardConditionId(reward_blk)
+  local conditionId = getRewardConditionId(reward_blk)
   local ending = ""
 
   //field_number rewards does not contain condition name
@@ -451,8 +451,8 @@ EventRewards.isRewardReceived <- function isRewardReceived(reward_blk, event)
 
   for(local i = 0; i < infoBlk.awards.blockCount(); i++)
   {
-    let blk = infoBlk.awards.getBlock(i)
-    let name = blk.getBlockName()
+    local blk = infoBlk.awards.getBlock(i)
+    local name = blk.getBlockName()
 
     if (name && name.len() > ending.len() && name.slice(name.len() - ending.len()) == ending)
       return true
@@ -468,8 +468,8 @@ EventRewards.getNext <- function getNext(rewardBlk, event)
   if (!event || !haveRewards(event))
     return null
 
-  let conditionId = getRewardConditionId(rewardBlk)
-  let allRewards = getSortedRewardsByConditions(event)
+  local conditionId = getRewardConditionId(rewardBlk)
+  local allRewards = getSortedRewardsByConditions(event)
 
   if (!(conditionId in allRewards))
     return null

@@ -1,8 +1,8 @@
-let time = require("%scripts/time.nut")
-let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+local time = require("scripts/time.nut")
+local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
+local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
-::items_classes.Booster <- class extends ::BaseItem
+class ::items_classes.Booster extends ::BaseItem
 {
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
@@ -64,7 +64,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
     spentInSessionTimeMin = blk?.spentInSessionTimeMin ?? 0
 
-    let event = blk?.event
+    local event = blk?.event
     if (event != null)
     {
       eventType = event?.type
@@ -91,20 +91,20 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getBoostersEffectsDiffByItem()
   {
-    let effects = getEffectTypes()
+    local effects = getEffectTypes()
     if (!effects.len())
       return 0
 
-    let effectsArray = []
-    let items = getAllActiveSameBoosters()
-    let effect = effects[0] //!!we do not cmpare boosters with multieffects atm.
+    local effectsArray = []
+    local items = getAllActiveSameBoosters()
+    local effect = effects[0] //!!we do not cmpare boosters with multieffects atm.
 
     foreach(item in items)
     {
-      let value = effect.getValue(item)
+      local value = effect.getValue(item)
       if (value <= 0)
         continue
-      let amount = item.getAmount()
+      local amount = item.getAmount()
       if (amount > 1)
         effectsArray.extend(array(amount, value))
       else
@@ -112,10 +112,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     }
 
     effectsArray.sort(@(a, b) b <=> a)
-    let effectsVal = getDiffEffect(effectsArray)
+    local effectsVal = getDiffEffect(effectsArray)
     effectsArray.append(effect.getValue(this))
     effectsArray.sort(@(a, b) b <=> a)
-    let newEffectsVal = getDiffEffect(effectsArray)
+    local newEffectsVal = getDiffEffect(effectsArray)
 
     return newEffectsVal - effectsVal
   }
@@ -139,7 +139,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       return false
 
     local res = false
-    let total = ::get_current_booster_count(INVALID_USER_ID)
+    local total = ::get_current_booster_count(INVALID_USER_ID)
     for (local i = 0; i < total; i++)
       if (::isInArray(::get_current_booster_uid(INVALID_USER_ID, i), uids))
       {
@@ -155,7 +155,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getMainActionData(isShort = false, params = {})
   {
-    let res = base.getMainActionData(isShort, params)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive())
@@ -168,7 +168,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function doMainAction(cb, handler, params = null)
   {
-    let baseResult = base.doMainAction(cb, handler, params)
+    local baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return activate(cb, handler)
     return false
@@ -179,7 +179,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (!uids || !uids.len())
       return -1
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk.setStr("name", uids[0])
 
     return ::char_send_blk("cln_set_current_booster", blk)
@@ -187,7 +187,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function activate(cb, handler = null)
   {
-    let checkParams = {
+    local checkParams = {
       checkActive = true // Check if player already has active booster.
       checkIsInFlight = true // Check if player is in flight and booster will take effect in next battle.
     }
@@ -207,12 +207,12 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function showPenaltyBoosterMessageBox(handler, checkParams = null)
   {
-    let effectsDiff = getBoostersEffectsDiffByItem()
-    let bodyText = ::loc("msgbox/existingBoosters", {
+    local effectsDiff = getBoostersEffectsDiffByItem()
+    local bodyText = ::loc("msgbox/existingBoosters", {
                         newBooster = getName(),
                         newBoosterEffect = getDiffEffectText(::format("%.02f", effectsDiff).tofloat())
                       })
-    let savedThis = this
+    local savedThis = this
     handler.msgBox("activate_additional_booster", bodyText, [
       [
         "yes", (@(handler, savedThis, checkParams) function () {
@@ -225,8 +225,8 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function showIsInFlightAlertMessageBox(handler, checkParams = null)
   {
-    let bodyText = ::loc("msgbox/isInFlightBooster")
-    let savedThis = this
+    local bodyText = ::loc("msgbox/isInFlightBooster")
+    local savedThis = this
     handler.msgBox("activate_in_flight_booster", bodyText, [[
       "yes", (@(handler, savedThis, checkParams) function () {
           savedThis._activate(null, handler, checkParams)
@@ -253,7 +253,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (!handler)
       handler = ::get_cur_base_gui_handler()
 
-    let checkIsInFlight = ::getTblValue("checkIsInFlight", checkParams, false)
+    local checkIsInFlight = ::getTblValue("checkIsInFlight", checkParams, false)
     if (checkIsInFlight && ::is_in_flight())
     {
       if (cb)
@@ -267,7 +267,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       return false
     }
 
-    let checkActive = ::getTblValue("checkActive", checkParams, false)
+    local checkActive = ::getTblValue("checkActive", checkParams, false)
     if (checkActive && haveActiveBoosters())
     {
       if (cb)
@@ -303,7 +303,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getAllActiveSameBoosters()
   {
-    let effects = getEffectTypes()
+    local effects = getEffectTypes()
     return ::ItemsManager.getInventoryList(itemType.BOOSTER,
              (@(effects) function (_item) {
                if (!_item.isActive(true) || _item.personal != personal)
@@ -348,24 +348,24 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function _getMulIconCfg()
   {
-    let layersArray = []
-    let mul = ::max(wpRate, xpRate)
-    let numsArray = ::getArrayFromInt(mul)
+    local layersArray = []
+    local mul = ::max(wpRate, xpRate)
+    local numsArray = ::getArrayFromInt(mul)
     if (numsArray.len() > 0)
     {
-      let plusLayer = ::LayersIcon.findLayerCfg("item_plus")
+      local plusLayer = ::LayersIcon.findLayerCfg("item_plus")
       if (plusLayer)
         layersArray.append(clone plusLayer)
 
       foreach(idx, int in numsArray)
       {
-        let layer = ::LayersIcon.findLayerCfg("item_num_" + int)
+        local layer = ::LayersIcon.findLayerCfg("item_num_" + int)
         if (!layer)
           continue
         layersArray.append(clone layer)
       }
 
-      let percentLayer = ::LayersIcon.findLayerCfg("item_percent")
+      local percentLayer = ::LayersIcon.findLayerCfg("item_percent")
       if (percentLayer)
         layersArray.append(clone percentLayer)
 
@@ -396,7 +396,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getEffectText(wpRateNum = 0, xpRateNum = 0, colored = true)
   {
-    let text = []
+    local text = []
     if (wpRateNum > 0.0)
       if (colored)
         text.append(_formatEffectText(wpRateNum, ::loc("warpoints/short/colored")))
@@ -415,10 +415,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   function getDescription()
   {
     local desc = ""
-    let locString = eventConditions == null
+    local locString = eventConditions == null
       ? "items/booster/description/uponActivation/withoutConditions"
       : "items/booster/description/uponActivation/withConditions"
-    let locParams = {
+    local locParams = {
       effectDesc = getEffectDesc()
     }
     if (wpRate != 0 || xpRate != 0)
@@ -428,7 +428,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
     desc += "\n"
 
-    let expireText = getCurExpireTimeText()
+    local expireText = getCurExpireTimeText()
     if (expireText != "")
       desc += "\n" + expireText
     if (stopConditions != null)
@@ -436,10 +436,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
     if (isActive(true))
     {
-      let effectTypes = getEffectTypes()
+      local effectTypes = getEffectTypes()
       foreach(t in effectTypes)
       {
-        let usingBoostersArray = getActiveBoostersArray(t)
+        local usingBoostersArray = getActiveBoostersArray(t)
         desc = $"{desc}\n\n{getActiveBoostersDescription(usingBoostersArray, t, this)}"
       }
     }
@@ -471,7 +471,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   {
     if (_totalStopSessions < 0)
     {
-      let mainCondition = ::UnlockConditions.getMainProgressCondition(stopConditions)
+      local mainCondition = ::UnlockConditions.getMainProgressCondition(stopConditions)
       _totalStopSessions = ::getTblValue("num", mainCondition, 0)
     }
     return _totalStopSessions
@@ -500,10 +500,10 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (!stopConditions)
       return ""
 
-    let textsList = []
+    local textsList = []
     // Shows progress as count down 6, 5, 4, ... instead of 0/6, 1/6, ...
-    let curValue = getLeftStopSessions()
-    let params = { locEnding = isActive() ? "/inverted" : "/activeFor" }
+    local curValue = getLeftStopSessions()
+    local params = { locEnding = isActive() ? "/inverted" : "/activeFor" }
     textsList.append(::UnlockConditions.getConditionsText(stopConditions, null, curValue, params))
 
     if (spentInSessionTimeMin)
@@ -514,7 +514,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getEffectTypes()
   {
-    let effectTypes = []
+    local effectTypes = []
     foreach (effectType in boosterEffectType)
     {
       if (effectType.checkBooster(this))
@@ -525,7 +525,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
   function getContentIconData()
   {
-    let icon = getEventTypeIcon()
+    local icon = getEventTypeIcon()
     return icon ? { contentIcon = icon } : null
   }
 
@@ -548,15 +548,15 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   {
     foreach (efType in boosterEffectType)
     {
-      let value = efType.getValue(this)
+      local value = efType.getValue(this)
       if (!value)
         continue
 
-      let efTypeName = efType.name
-      let valTbl = ::getTblValue(efTypeName, stackParams, {})
-      let minVal = ::getTblValue("min", valTbl)
+      local efTypeName = efType.name
+      local valTbl = ::getTblValue(efTypeName, stackParams, {})
+      local minVal = ::getTblValue("min", valTbl)
       valTbl.min <- minVal ? ::min(minVal, value) : value
-      let maxVal = ::getTblValue("max", valTbl)
+      local maxVal = ::getTblValue("max", valTbl)
       valTbl.max <- maxVal ? ::max(maxVal, value) : value
       stackParams[efTypeName] <- valTbl
     }
@@ -565,14 +565,14 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   function getStackName(stackParams)
   {
     local res = ::colorize("activeTextColor", ::loc("item/" + defaultLocId))
-    let effects = []
+    local effects = []
     foreach (efType in boosterEffectType)
     {
-      let valTbl = ::getTblValue(efType.name, stackParams)
+      local valTbl = ::getTblValue(efType.name, stackParams)
       if (!valTbl || (!("min" in valTbl)))
         continue
 
-      let minText = _formatEffectText(valTbl.min, efType.currencyMark)
+      local minText = _formatEffectText(valTbl.min, efType.currencyMark)
       if (valTbl.min == valTbl.max)
         effects.append(minText)
       else
@@ -589,7 +589,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   }
 }
 
-::items_classes.FakeBooster <- class extends ::items_classes.Booster
+class ::items_classes.FakeBooster extends ::items_classes.Booster
 {
   static iType = itemType.FAKE_BOOSTER
   showBoosterInSeparateList = true
@@ -616,13 +616,13 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     if (!isInventoryItem)
       return desc
 
-    let bonusArray = []
+    local bonusArray = []
     foreach(effect in boosterEffectType)
     {
-      let value = ::get_squad_bonus_for_same_cyber_cafe(effect)
+      local value = ::get_squad_bonus_for_same_cyber_cafe(effect)
       if (value <= 0)
         continue
-      let percent = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value, false)
+      local percent = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value, false)
       bonusArray.append(effect.getText(_formatEffectText(percent, ""), true, false))
     }
 

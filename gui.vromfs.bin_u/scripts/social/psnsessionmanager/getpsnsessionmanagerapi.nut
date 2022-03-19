@@ -1,19 +1,19 @@
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-let {
+local {
   getPreferredVersion = @() -1
 } = isPlatformSony
-  ? require("%sonyLib/webApi.nut")
+  ? require("sonyLib/webApi.nut")
   : null
 
-let {
+local {
   onPsnInvitation = @(...) null,
   invite = @(...) null,
   checkInvitesAfterFlight = @() null
 } = isPlatformSony
   ? ( getPreferredVersion() == 2
-      ? require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
-      : require("%scripts/social/psnSessions.nut")
+      ? require("scripts/social/psnSessionManager/psnSessionManagerApi.nut")
+      : require("scripts/social/psnSessions.nut")
     )
   : null
 

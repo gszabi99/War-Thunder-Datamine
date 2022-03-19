@@ -1,4 +1,4 @@
-let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+local { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
 /*
   config {
     purchaseData = (OnlineShopModel.getPurchaseData) //required
@@ -10,10 +10,10 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
   }
 */
 
-::gui_handlers.ReqPurchaseWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ReqPurchaseWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/showUnlock.blk"
+  sceneBlkName = "gui/showUnlock.blk"
 
   purchaseData = null
   checkPackage = null
@@ -38,7 +38,7 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
     scene.findObject("award_desc").setValue(text)
 
     validateImageData()
-    let imgObj = scene.findObject("award_image")
+    local imgObj = scene.findObject("award_image")
     imgObj["background-image"] = image
     imgObj["height"] = imageRatioHeight + "w"
 
@@ -67,15 +67,15 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
       return
 
     image = "#ui/images/login_reward.jpg?P1"
-    let imgBlk = get_blk_by_path_array(["entitlementsAdvert", purchaseData.sourceEntitlement],
+    local imgBlk = get_blk_by_path_array(["entitlementsAdvert", purchaseData.sourceEntitlement],
                                            ::get_gui_regional_blk())
     if (!::u.isDataBlock(imgBlk))
       return
 
-    let rndImg = ::u.chooseRandom(imgBlk % "image")
+    local rndImg = ::u.chooseRandom(imgBlk % "image")
     if (::u.isString(rndImg))
     {
-      let country = ::get_profile_country_sq()
+      local country = ::get_profile_country_sq()
       image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
     }
     if (::is_numeric(imgBlk?.imageRatio))

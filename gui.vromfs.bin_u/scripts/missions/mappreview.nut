@@ -43,7 +43,7 @@ g_map_preview.setPreview <- function setPreview(previewType, mapObj, missionBlk,
 
 g_map_preview.createPreview <- function createPreview(previewType, missionBlk, mapObj, param)
 {
-  let preview = {
+  local preview = {
     type = previewType
     blk = missionBlk
     obj = mapObj
@@ -79,7 +79,7 @@ g_map_preview.hideCurPreview <- function hideCurPreview()
 g_map_preview.refreshCurPreview <- function refreshCurPreview(isForced = false)
 {
   validateList()
-  let newPreview = ::getTblValue(0, list)
+  local newPreview = ::getTblValue(0, list)
   if (!newPreview || !newPreview.isInCurGuiScene())
   {
     hideCurPreview()
@@ -116,8 +116,8 @@ g_map_preview.validateList <- function validateList()
 
 g_map_preview.getMissionBriefingConfig <- function getMissionBriefingConfig(mission)
 {
-  let config = ::DataBlock()
-  let blk = ::g_mislist_type.isUrlMission(mission)
+  local config = ::DataBlock()
+  local blk = ::g_mislist_type.isUrlMission(mission)
               ? mission.urlMission.getMetaInfo()
               : mission?.blk
   if (!blk)

@@ -1,4 +1,4 @@
-let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
+local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -8,10 +8,10 @@ let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurc
 ::g_script_reloader.registerPersistentData("finishedResearchesGlobals", ::getroottable(),
   ["researched_items_table", "abandoned_researched_items_for_session"])
 
-let isResearchForModification = @(research)
+local isResearchForModification = @(research)
   "name" in research && ::researchedModForCheck in research
 
-let getUnitNameFromResearchItem = @(research)
+local getUnitNameFromResearchItem = @(research)
   research?[isResearchForModification(research)? "name" : "unit"] ?? ""
 
 ::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null)
@@ -23,16 +23,16 @@ let getUnitNameFromResearchItem = @(research)
   }
   else
   {
-    let unit = ::getAircraftByName(getUnitNameFromResearchItem(researchBlock))
+    local unit = ::getAircraftByName(getUnitNameFromResearchItem(researchBlock))
     ::open_weapons_for_unit(unit, { researchMode = true, researchBlock = researchBlock })
   }
 }
 
-let function isResearchEqual(research1, research2)
+local function isResearchEqual(research1, research2)
 {
   foreach(key in ["name", ::researchedModForCheck, ::researchedUnitForCheck])
   {
-    let haveValue = key in research1
+    local haveValue = key in research1
     if (haveValue != (key in research2))
       return false
     if (haveValue && research1[key] != research2[key])
@@ -41,7 +41,7 @@ let function isResearchEqual(research1, research2)
   return true
 }
 
-let function isResearchAbandoned(research)
+local function isResearchAbandoned(research)
 {
   foreach(idx, abandoned in ::abandoned_researched_items_for_session)
     if (isResearchEqual(research, abandoned))
@@ -49,7 +49,7 @@ let function isResearchAbandoned(research)
   return false
 }
 
-let function isResearchLast(research, checkUnit = false)
+local function isResearchLast(research, checkUnit = false)
 {
   if (isResearchForModification(research))
     return ::getTblValue("mod", research, "") == ""
@@ -58,7 +58,7 @@ let function isResearchLast(research, checkUnit = false)
   return false
 }
 
-let function removeResearchBlock(researchBlock)
+local function removeResearchBlock(researchBlock)
 {
   if (!researchBlock)
     return
@@ -106,7 +106,7 @@ let function removeResearchBlock(researchBlock)
 
     if (isResearchForModification(research))
     {
-      let unit = ::getAircraftByName(getUnitNameFromResearchItem(research))
+      local unit = ::getAircraftByName(getUnitNameFromResearchItem(research))
       ::add_big_query_record("completed_new_research_modification",
         ::save_to_json({ unit = unit.name
           modification = research.name }))
@@ -130,7 +130,7 @@ let function removeResearchBlock(researchBlock)
 
   if (needResearchAction)
   {
-    let resBlock = ::researched_items_table[0]
+    local resBlock = ::researched_items_table[0]
     if (isResearchForModification(resBlock)
       && ::isHandlerInScene(::gui_handlers.WeaponsModalHandler))
       return true
@@ -145,10 +145,10 @@ let function removeResearchBlock(researchBlock)
   return true
 }
 
-::gui_handlers.researchUnitNotification <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.researchUnitNotification extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/researchedModifications.blk"
+  sceneBlkName = "gui/researchedModifications.blk"
 
   researchBlock = null
   unit = null
@@ -161,7 +161,7 @@ let function removeResearchBlock(researchBlock)
       return
     }
 
-    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
+    local unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
     unit = ::getAircraftByName(unitName)
     if (!unit)
     {
@@ -175,11 +175,11 @@ let function removeResearchBlock(researchBlock)
 
   function updateResearchedUnit()
   {
-    let placeObj = getUnitPlaceObj()
+    local placeObj = getUnitPlaceObj()
     if (!::checkObj(placeObj))
       return
 
-    let unit_blk = ::build_aircraft_item(unit.name, unit)
+    local unit_blk = ::build_aircraft_item(unit.name, unit)
     guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
     placeObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     ::fill_unit_item_timers(placeObj.findObject(unit.name), unit)
@@ -215,8 +215,8 @@ let function removeResearchBlock(researchBlock)
   {
     ::show_facebook_screenshot_button(scene)
 
-    let isBought = ::isUnitBought(unit)
-    let isUsable = ::isUnitUsable(unit)
+    local isBought = ::isUnitBought(unit)
+    local isUsable = ::isUnitUsable(unit)
 
     showSceneBtn("btn_buy", !isBought)
     showSceneBtn("btn_exit", isBought)

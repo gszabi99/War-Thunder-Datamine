@@ -1,4 +1,4 @@
-::mission_rules.EnduringConfrontation <- class extends ::mission_rules.Base
+class ::mission_rules.EnduringConfrontation extends ::mission_rules.Base
 {
   function isStayOnRespScreen()
   {

@@ -1,18 +1,19 @@
-let { isPlayerFromXboxOne,
+local { isPlayerFromXboxOne,
         isPlayerFromPS4,
         getPlayerName,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { getXboxChatEnableStatus,
+        isPlatformSony } = require("scripts/clientState/platform.nut")
+local { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
+local { getXboxChatEnableStatus,
         isChatEnabled,
-        isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
-let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
-let { subscribe } = require("eventbus")
+        isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+local { updateContacts } = require("scripts/contacts/contactsManager.nut")
+local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { isEmpty, isInteger } = require("sqStdLibs/helpers/u.nut")
+local { subscribe } = require("eventbus")
 
-let psnSocial = require("sony.social")
+local psnSocial = require("sony.social")
 
-let contactsByName = {}
+local contactsByName = {}
 
 subscribe("playerProfileDialogClosed", function(r) {
   if (r?.result.wasCanceled)
@@ -57,7 +58,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   constructor(contactData)
   {
-    let newName = contactData?["name"] ?? ""
+    local newName = contactData?["name"] ?? ""
     if (newName.len()
         && isEmpty(contactData?.clanTag)
         && ::clanUserTable?[newName])
@@ -122,7 +123,7 @@ subscribe("playerProfileDialogClosed", function(r) {
     if (presence == ::g_contact_presence.IN_QUEUE
         || presence == ::g_contact_presence.IN_GAME)
     {
-      let event = ::events.getEvent(::getTblValue("eventId", gameConfig))
+      local event = ::events.getEvent(::getTblValue("eventId", gameConfig))
       locParams = {
         gameMode = event ? ::events.getEventNameText(event) : ""
         country = ::loc(::getTblValue("country", gameConfig, ""))
@@ -189,7 +190,7 @@ subscribe("playerProfileDialogClosed", function(r) {
   function updatePSNIdAndDo(cb = null) {
     cb = cb ?? @() null
 
-    let finCb = function() {
+    local finCb = function() {
       verifyPsnId()
       cb()
     }
@@ -272,7 +273,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
     if (xboxId == "")
     {
-      let status = getXboxChatEnableStatus(needShowSystemMessage)
+      local status = getXboxChatEnableStatus(needShowSystemMessage)
       if (status == XBOX_COMMUNICATIONS_ONLY_FRIENDS && !isInFriendGroup())
         return XBOX_COMMUNICATIONS_BLOCKED
 
@@ -288,19 +289,25 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function canChat(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage && (!isCrossNetworkMessageAllowed(name) || isBlockedMe))
+    if (!needShowSystemMessage
+      && ((isMultiplayerPrivilegeAvailable() && !isCrossNetworkMessageAllowed(name))
+          || isBlockedMe)
+      )
       return false
 
-    let intSt = getInteractionStatus(needShowSystemMessage)
+    local intSt = getInteractionStatus(needShowSystemMessage)
     return intSt == XBOX_COMMUNICATIONS_ALLOWED
   }
 
   function canInvite(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage && !isCrossNetworkMessageAllowed(name))
+    if (!needShowSystemMessage
+      && (!isMultiplayerPrivilegeAvailable()
+          || !isCrossNetworkMessageAllowed(name))
+      )
       return false
 
-    let intSt = getInteractionStatus(needShowSystemMessage)
+    local intSt = getInteractionStatus(needShowSystemMessage)
     return intSt == XBOX_COMMUNICATIONS_ALLOWED || intSt == XBOX_COMMUNICATIONS_MUTED
   }
 
@@ -319,13 +326,13 @@ subscribe("playerProfileDialogClosed", function(r) {
     if (!isPlatformSony)
       return
 
-    let ircName = ::g_string.replace(name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
+    local ircName = ::g_string.replace(name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
     ::gchat_voice_mute_peer_by_name(isInBlockGroup() || isBlockedMe, ircName)
   }
 
   function isInGroup(groupName)
   {
-    let userId = uid
+    local userId = uid
     return (::contacts?[groupName] ?? []).findvalue(@(p) p.uid == userId ) != null
   }
 

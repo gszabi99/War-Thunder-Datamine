@@ -2209,9 +2209,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2220,7 +2220,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2231,9 +2231,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2242,9 +2242,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2253,9 +2253,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2264,7 +2264,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2275,9 +2275,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2286,9 +2286,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3457,9 +3457,9 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
-      "waterMassVel": -60000.0,
-      "waterMassMult": 100.0,
+      "repairSpeed": 25.0,
+      "waterMassVel": -150000.0,
+      "waterMassMult": 160.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],
       "additionalWaterDeathThreshold": 8200000.0,
       "additionalWaterShouldDiePercent": 0.3,
@@ -3477,14 +3477,14 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.2,
+          "weight": 0.17,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.5,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -3544,7 +3544,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.9,
+          "weight": 0.36,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3557,7 +3557,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.7,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3570,7 +3570,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.4,
+          "weight": 0.27,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -3591,7 +3591,7 @@
       {
         "cover": {
           "part": "cover_07_dm",
-          "weight": 0.2,
+          "weight": 0.09,
           "maxWaterAlive": 1.0
         }
       }
@@ -3775,6 +3775,7 @@
         "armorThickness": 16.0,
         "hidableInViewer": true,
         "genericDamageMult": 0.1,
+        "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
           "hp": 1000.0
@@ -3900,6 +3901,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 8.0,
         "genericDamageMult": 1.5,
+        "explosionDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
           "hp": 2000.0
@@ -4530,8 +4532,6 @@
           "bullets": 300,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.06,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4601,8 +4601,6 @@
           "bullets": 300,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.06,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4665,8 +4663,6 @@
           "bullets": 300,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.06,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4729,8 +4725,6 @@
           "bullets": 300,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.06,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4793,6 +4787,10 @@
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 25.0,
+          "bullets": 500,
+          "useGunnerTargetingQuality": false,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4809,13 +4807,6 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "speedYaw": 10.0,
-          "speedPitch": 15.0,
-          "bullets": 350,
-          "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.07,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
@@ -5373,7 +5364,7 @@
           "shells": {
             "damageEffect": "ammunition_storage_aux",
             "ammunition_storage_aux_01_dm": {
-              "count": 4430
+              "count": 4580
             }
           }
         }

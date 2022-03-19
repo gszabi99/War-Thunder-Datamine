@@ -1,21 +1,21 @@
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
-let { isProgressVisible } = require("hudState")
-let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
-let { mpTankHudBlkPath } = require("%scripts/hud/hudBlkPath.nut")
-let { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarItems } = ::require_native("hudActionBar")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local time = require("scripts/time.nut")
+local { isProgressVisible } = require("hudState")
+local safeAreaHud = require("scripts/options/safeAreaHud.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
+local { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
+local { isDmgIndicatorVisible } = ::require_native("gameplayBinding")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { initIconedHints } = require("scripts/hud/iconedHints.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems } = ::require_native("hudActionBar")
 
 ::dagui_propid.add_name_id("fontSize")
 
-let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
-let getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
+local UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
+local getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
 ::air_hud_actions <- {
@@ -53,9 +53,9 @@ globalCallbacks.addTypes({
   }
 })
 
-::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName         = "%gui/hud/hud.blk"
+  sceneBlkName         = "gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
 
@@ -132,7 +132,7 @@ globalCallbacks.addTypes({
     loadGameChat()
 
     scene.findObject("hud_update").setUserData(this)
-    let gm = ::get_game_mode()
+    local gm = ::get_game_mode()
     showSceneBtn("stats", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
     showSceneBtn("voice", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
 
@@ -147,7 +147,7 @@ globalCallbacks.addTypes({
   }
 
   function initDargWidgetsList() {
-    let hudWidgetId = useTouchscreen ? DargWidgets.HUD_TOUCH : DargWidgets.HUD
+    local hudWidgetId = useTouchscreen ? DargWidgets.HUD_TOUCH : DargWidgets.HUD
     widgetsList = [
       { widgetId = hudWidgetId }
       { widgetId = DargWidgets.SCOREBOARD }
@@ -182,7 +182,7 @@ globalCallbacks.addTypes({
       curChatData = null
     }
     if (::is_multiplayer())
-      curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
+      curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "gui/chat/gameChat.blk", this,
                           { selfHideInput = true, selfHideLog = true })
   }
 
@@ -252,7 +252,7 @@ globalCallbacks.addTypes({
       isXinput = ::is_xinput_device()
     }
 
-    let hudObj = scene.findObject("hud_obj")
+    local hudObj = scene.findObject("hud_obj")
     if (!::checkObj(hudObj))
       return false
 
@@ -309,14 +309,14 @@ globalCallbacks.addTypes({
 
   function updateObjectsSize(params = null)
   {
-    let actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
+    local actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
     if (actionBarItemsAmount)
     {
-      let actionBarSize = ::to_pixels("1@hudActionBarItemSize")
-      let actionBarOffset = ::to_pixels("1@hudActionBarItemOffset")
-      let screenWidth = ::to_pixels("sw")
-      let borderWidth = ::to_pixels("1@bwHud")
-      let actionBarWidth = actionBarItemsAmount * actionBarSize + (actionBarItemsAmount + 1) * actionBarOffset
+      local actionBarSize = ::to_pixels("1@hudActionBarItemSize")
+      local actionBarOffset = ::to_pixels("1@hudActionBarItemOffset")
+      local screenWidth = ::to_pixels("sw")
+      local borderWidth = ::to_pixels("1@bwHud")
+      local actionBarWidth = actionBarItemsAmount * actionBarSize + (actionBarItemsAmount + 1) * actionBarOffset
 
       sideBlockMaxWidth = (screenWidth - actionBarWidth) / 2 - borderWidth - ::to_pixels("1@blockInterval")
     }
@@ -340,11 +340,11 @@ globalCallbacks.addTypes({
       return HUD_TYPE.FREECAM
     else
     {
-      let unit = getPlayerCurUnit()
+      local unit = getPlayerCurUnit()
       if (unit?.isHelicopter?())
         return HUD_TYPE.HELICOPTER
 
-      let unitType = ::get_es_unit_type(unit)
+      local unitType = ::get_es_unit_type(unit)
       if (unitType == ::ES_UNIT_TYPE_AIRCRAFT)
         return HUD_TYPE.AIR
       else if (unitType == ::ES_UNIT_TYPE_TANK)
@@ -357,15 +357,15 @@ globalCallbacks.addTypes({
 
   function updateHudVisMode(forceUpdate = false)
   {
-    let visMode = ::g_hud_vis_mode.getCurMode()
+    local visMode = ::g_hud_vis_mode.getCurMode()
     if (!forceUpdate && visMode == curHudVisMode)
       return
     curHudVisMode = visMode
 
-    let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
+    local isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
       ::is_tank_damage_indicator_visible()
 
-    let objsToShow = {
+    local objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
@@ -398,7 +398,7 @@ globalCallbacks.addTypes({
     if (spectatorMode || !::is_hud_visible())
       return
 
-    let unmapped = ::getUnmappedControlsForCurrentMission()
+    local unmapped = ::getUnmappedControlsForCurrentMission()
 
     if (!unmapped.len())
     {
@@ -414,12 +414,12 @@ globalCallbacks.addTypes({
     if (::u.isEqual(unmapped, ucPrevList))
       return
 
-    let warningObj = scene.findObject("unmapped_shortcuts_warning")
+    local warningObj = scene.findObject("unmapped_shortcuts_warning")
     if (!::checkObj(warningObj))
       return
 
-    let unmappedLocalized = ::u.map(unmapped, ::loc)
-    let text = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" + ::g_string.implode(unmappedLocalized, ::loc("ui/comma"))
+    local unmappedLocalized = ::u.map(unmapped, ::loc)
+    local text = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" + ::g_string.implode(unmappedLocalized, ::loc("ui/comma"))
     warningObj.setValue(text)
     warningObj.show(true)
     warningObj.wink = "yes"
@@ -436,13 +436,13 @@ globalCallbacks.addTypes({
     if (!ucWarningActive)
       return
 
-    let winkingOld = ucWarningTimeShow > ucNoWinkTime
+    local winkingOld = ucWarningTimeShow > ucNoWinkTime
     ucWarningTimeShow -= dt
-    let winkingNew = ucWarningTimeShow > ucNoWinkTime
+    local winkingNew = ucWarningTimeShow > ucNoWinkTime
 
     if (ucWarningTimeShow <= 0 || winkingOld != winkingNew)
     {
-      let warningObj = scene.findObject("unmapped_shortcuts_warning")
+      local warningObj = scene.findObject("unmapped_shortcuts_warning")
       if (!::checkObj(warningObj))
         return
 
@@ -461,7 +461,7 @@ globalCallbacks.addTypes({
     if (spectatorMode || !::is_hud_visible())
       return
 
-    let isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
+    local isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
     if (isShow == isLowQualityWarningVisible)
       return
 
@@ -471,7 +471,7 @@ globalCallbacks.addTypes({
 
   function onEventHudIndicatorChangedSize(params)
   {
-    let option = ::getTblValue("option", params, -1)
+    local option = ::getTblValue("option", params, -1)
     if (option < 0)
       return
 
@@ -480,24 +480,24 @@ globalCallbacks.addTypes({
 
   function changeObjectsSize(optionNum)
   {
-    let option = ::get_option(optionNum)
-    let value = (option && option.value != null) ? option.value : 0
-    let vMax   = (option?.max ?? 0) != 0 ? option.max : 2
-    let size = 1.0 + 0.333 * value / vMax
+    local option = ::get_option(optionNum)
+    local value = (option && option.value != null) ? option.value : 0
+    local vMax   = (option?.max ?? 0) != 0 ? option.max : 2
+    local size = 1.0 + 0.333 * value / vMax
 
-    let table = ::getTblValue(optionNum, objectsTable, {})
+    local table = ::getTblValue(optionNum, objectsTable, {})
     foreach (id, cssConst in ::getTblValue("objectsToScale", table, {}))
     {
-      let obj = scene.findObject(id)
+      local obj = scene.findObject(id)
       if (!::checkObj(obj))
         continue
 
-      let objWidth = ::format("%.3f*%s", size, cssConst)
-      let objWidthValue = ::to_pixels(objWidth)
-      let canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
+      local objWidth = ::format("%.3f*%s", size, cssConst)
+      local objWidthValue = ::to_pixels(objWidth)
+      local canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
                                   !sideBlockMaxWidth ||
                                   objWidthValue <= sideBlockMaxWidth
-      let fontSize = table?.fontSizeByScale[id][value]
+      local fontSize = table?.fontSizeByScale[id][value]
       if (fontSize != null)
         obj.fontSize = canApplyOptionValue ? fontSize : defaultFontSize
       obj.size = canApplyOptionValue
@@ -508,7 +508,7 @@ globalCallbacks.addTypes({
       if (optionNum == ::USEROPT_TACTICAL_MAP_SIZE)
         curTacticalMapObj = obj
 
-      let func = ::getTblValue("onChangedFunc", table)
+      local func = ::getTblValue("onChangedFunc", table)
       if (func)
         func.call(this, obj)
     }
@@ -541,14 +541,14 @@ globalCallbacks.addTypes({
 
   function updateAFKTimeKickText(sec)
   {
-    let timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
+    local timeToKickAlertObj = scene.findObject("time_to_kick_alert_text")
     if (!::checkObj(timeToKickAlertObj) || timeToKickAlertObj.getModalCounter() != 0)
       return
 
     updateAFKTimeKick()
-    let showAlertText = ::get_in_battle_time_to_kick_show_alert() >= afkTimeToKick
-    let showTimerText = ::get_in_battle_time_to_kick_show_timer() >= afkTimeToKick
-    let showMessage = afkTimeToKick >= 0 && (showTimerText || showAlertText)
+    local showAlertText = ::get_in_battle_time_to_kick_show_alert() >= afkTimeToKick
+    local showTimerText = ::get_in_battle_time_to_kick_show_timer() >= afkTimeToKick
+    local showMessage = afkTimeToKick >= 0 && (showTimerText || showAlertText)
     timeToKickAlertObj.show(showMessage)
     if (!showMessage)
       return
@@ -559,9 +559,9 @@ globalCallbacks.addTypes({
         ? ::loc("inBattle/timeToKick", {timeToKick = time.secondsToString(afkTimeToKick, true, true)})
         : "")
 
-      let curTime = ::dagor.getCurTime()
-      let prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
-      let currSeconds = (curTime / 1000).tointeger()
+      local curTime = ::dagor.getCurTime()
+      local prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
+      local currSeconds = (curTime / 1000).tointeger()
 
       if (currSeconds != prevSeconds)
       {
@@ -580,7 +580,7 @@ globalCallbacks.addTypes({
 
   function onEventServerMessage(params)
   {
-    let serverMessageTimerObject = scene.findObject("server_message_timer")
+    local serverMessageTimerObject = scene.findObject("server_message_timer")
     if (::checkObj(serverMessageTimerObject))
     {
       SecondsUpdater(serverMessageTimerObject, (@(scene) function (obj, params) {
@@ -592,7 +592,7 @@ globalCallbacks.addTypes({
   function updateMissionProgressPlace()
   {
     if (getHudType() == HUD_TYPE.SHIP) {
-      let missionProgressHeight = isProgressVisible() ? ::to_pixels("@missionProgressHeight") : 0;
+      local missionProgressHeight = isProgressVisible() ? ::to_pixels("@missionProgressHeight") : 0;
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = [0, 0], pos = [0, 0],
         padding = [0, 0, missionProgressHeight, 0]
@@ -604,7 +604,7 @@ globalCallbacks.addTypes({
     if (!obj?.isValid())
       return
 
-    let isVisible = isProgressVisible()
+    local isVisible = isProgressVisible()
     if (obj.isVisible() == isVisible)
       return
 
@@ -612,7 +612,7 @@ globalCallbacks.addTypes({
     guiScene.applyPendingChanges(false)
     currentHud?.updateChatOffset()
 
-    obj = scene.findObject("hud_tank_damage_indicator")
+    obj = scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = obj.getSize(), pos = obj.getPos(),
@@ -623,7 +623,7 @@ globalCallbacks.addTypes({
 
 ::HudCutscene <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "%gui/hud/hudCutscene.blk"
+  sceneBlkName = "gui/hud/hudCutscene.blk"
 
   function initScreen()
   {
@@ -637,7 +637,7 @@ globalCallbacks.addTypes({
 
 ::HudAir <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "%gui/hud/hudAir.blk"
+  sceneBlkName = "gui/hud/hudAir.blk"
 
   function initScreen()
   {
@@ -669,7 +669,7 @@ globalCallbacks.addTypes({
 
   function updateTacticalMapVisibility()
   {
-    let isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
+    local isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
                          && !is_replay_playing() && (::get_game_type() & ::GT_RACE)
     showSceneBtn("hud_air_tactical_map", isVisible)
   }
@@ -688,12 +688,12 @@ globalCallbacks.addTypes({
   {
     if (isDmgIndicatorVisible())
     {
-      let dmgIndObj = scene.findObject("xray_render_dmg_indicator")
+      local dmgIndObj = scene.findObject("xray_render_dmg_indicator")
       if (::check_obj(dmgIndObj))
         return guiScene.calcString("sh - 1@bhHud", null) - dmgIndObj.getPosRC()[1]
     }
 
-    let obj = scene.findObject("mission_progress_place")
+    local obj = scene.findObject("mission_progress_place")
     if (obj?.isValid() && obj.isVisible())
       return guiScene.calcString("sh - 1@bhHud - @hudPadding", null) - obj.getPosRC()[1]
 
@@ -703,11 +703,11 @@ globalCallbacks.addTypes({
   _chatOffset = -1
   function updateChatOffset()
   {
-    let chatObj = scene.findObject("chatPlace")
+    local chatObj = scene.findObject("chatPlace")
     if (!::check_obj(chatObj))
       return
 
-    let offset = getChatOffset()
+    local offset = getChatOffset()
     if (_chatOffset == offset)
       return
 
@@ -719,7 +719,7 @@ globalCallbacks.addTypes({
 ::HudTouchAir <- class extends ::HudAir
 {
   scene        = null
-  sceneBlkName = "%gui/hud/hudTouchAir.blk"
+  sceneBlkName = "gui/hud/hudTouchAir.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -736,16 +736,16 @@ globalCallbacks.addTypes({
 
   function fillAirButtons()
   {
-    let actionsObj = scene.findObject("hud_air_actions")
+    local actionsObj = scene.findObject("hud_air_actions")
     if (!::checkObj(actionsObj))
       return
 
-    let view = {
+    local view = {
       actionFunction = "onAirHudAction"
       items = function ()
       {
-        let res = []
-        let availActionsList = ::get_aircraft_available_actions()
+        local res = []
+        local availActionsList = ::get_aircraft_available_actions()
         foreach (name,  action in ::air_hud_actions)
           if (::isInArray(name, availActionsList))
             res.append(action)
@@ -753,7 +753,7 @@ globalCallbacks.addTypes({
       }
     }
 
-    let blk = ::handyman.renderCached(("%gui/hud/hudAirActions"), view)
+    local blk = ::handyman.renderCached(("gui/hud/hudAirActions"), view)
     guiScene.replaceContentFromText(actionsObj, blk, blk.len(), this)
   }
 }
@@ -801,8 +801,8 @@ globalCallbacks.addTypes({
 
   function updateDamageIndicatorBackground()
   {
-    let visMode = ::g_hud_vis_mode.getCurMode()
-    let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
+    local visMode = ::g_hud_vis_mode.getCurMode()
+    local isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
     ::showBtn("tank_background", isDmgPanelVisible, scene)
   }
 
@@ -812,7 +812,7 @@ globalCallbacks.addTypes({
   }
 
   function updateDmgIndicatorSize() {
-    let obj = scene.findObject("hud_tank_damage_indicator")
+    local obj = scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
       ::call_darg("hudDmgIndicatorStatesUpdate", {
         size = obj.getSize(), pos = obj.getPos(),
@@ -824,7 +824,7 @@ globalCallbacks.addTypes({
 
 ::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "%gui/hud/hudHelicopter.blk"
+  sceneBlkName = "gui/hud/hudHelicopter.blk"
 
   function initScreen()
   {
@@ -844,7 +844,7 @@ globalCallbacks.addTypes({
 ::HudTouchTank <- class extends ::HudTank
 {
   scene        = null
-  sceneBlkName = "%gui/hud/hudTouchTank.blk"
+  sceneBlkName = "gui/hud/hudTouchTank.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -875,7 +875,7 @@ globalCallbacks.addTypes({
 
   function setupTankControlStick()
   {
-    let stickObj = scene.findObject("tank_stick")
+    local stickObj = scene.findObject("tank_stick")
     if (!::checkObj(stickObj))
       return
 
@@ -884,7 +884,7 @@ globalCallbacks.addTypes({
 
   function onEventArtilleryTarget(p)
   {
-    let active = ::getTblValue("active", p, false)
+    local active = ::getTblValue("active", p, false)
     for(local i = 1; i <= 2; i++)
     {
       showSceneBtn("touch_fire_" + i, !active)
@@ -894,7 +894,7 @@ globalCallbacks.addTypes({
 
   function showTankRepairButton(show)
   {
-    let repairButtonObj = scene.findObject("repair_tank")
+    local repairButtonObj = scene.findObject("repair_tank")
     if (::checkObj(repairButtonObj))
     {
       repairButtonObj.show(show)
@@ -905,7 +905,7 @@ globalCallbacks.addTypes({
 
 ::HudShip <- class extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = "%gui/hud/hudShip.blk"
+  sceneBlkName = "gui/hud/hudShip.blk"
   widgetsList = [
     {
       widgetId = DargWidgets.SHIP_OBSTACLE_RF
@@ -935,7 +935,7 @@ globalCallbacks.addTypes({
 ::HudTouchShip <- class extends ::HudShip
 {
   scene        = null
-  sceneBlkName = "%gui/hud/hudTouchShip.blk"
+  sceneBlkName = "gui/hud/hudTouchShip.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()
@@ -952,7 +952,7 @@ globalCallbacks.addTypes({
   }
 
   function updateMissionProgressPlace() {
-    let obj = scene.findObject("movement_controls")
+    local obj = scene.findObject("movement_controls")
     if (!obj?.isValid())
       return
 
@@ -963,7 +963,7 @@ globalCallbacks.addTypes({
 ::HudTouchFreecam <- class extends ::gui_handlers.BaseUnitHud
 {
   scene        = null
-  sceneBlkName = "%gui/hud/hudTouchFreecam.blk"
+  sceneBlkName = "gui/hud/hudTouchFreecam.blk"
   wndType      = handlerType.CUSTOM
 
   function initScreen()

@@ -1,39 +1,27 @@
 from "%darg/ui_imports.nut" import *
 from "ecs" import *
 
-let {ControlBg, ReadOnly, Interactive, Hover} = require("style.nut").colors
-let {setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")
-let entity_editor = require("entity_editor")
+local {ControlBg, Interactive, Hover} = require("style.nut").colors
+local {setValToObj, getValFromObj} = require("attrUtil.nut")
+local entity_editor = require("entity_editor")
 
-let getVal = @(eid, comp_name, path) path==null ? _dbg_get_comp_val_inspect(eid, comp_name) : getValFromObj(eid, comp_name, path)
-let function fieldBoolCheckbox(params = {}) {
-  let {eid, comp_name, path, rawComponentName=null} = params
-  local curRO = isCompReadOnly(eid, rawComponentName)
-  local curVal = getVal(eid, rawComponentName, path)
+local getVal = @(eid, comp_name, path) path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(eid, comp_name, path)
+local function fieldBoolCheckbox(params = {}) {
+  local {eid, comp_name, path} = params
+  local curVal = getVal(eid, comp_name, path)
   curVal = Watched(curVal)
 
-  let group = ElemGroup()
-  let stateFlags = Watched(0)
-
-  let function updateTextFromEcs() {
-    let val = getVal(eid, rawComponentName, path)
-    curVal.update(val)
-  }
-  let function onClick() {
-    if (curRO)
-      return
-    let val = !getVal(eid, rawComponentName, path)
+  local group = ElemGroup()
+  local stateFlags = Watched(0)
+  local function onClick() {
+    local val = !getVal(eid, comp_name, path)
     if (path!=null)
-      setValToObj(eid, rawComponentName, path, val)
+      setValToObj(eid, comp_name, path, val)
     else
       obsolete_dbg_set_comp_val(eid, comp_name, val)
-    entity_editor.save_component(eid, rawComponentName)
-    params?.onChange?()
-
+    entity_editor.save_component(eid, comp_name)
     curVal.update(val)
-    gui_scene.clearTimer(updateTextFromEcs)
-    gui_scene.setTimeout(0.1, updateTextFromEcs) //do this in case when some es changes components
-    return
+    params?.onChange?()
   }
 
 
@@ -42,7 +30,7 @@ let function fieldBoolCheckbox(params = {}) {
     if (curVal.value) {
       mark = {
         rendObj = ROBJ_SOLID
-        color = curRO ? ReadOnly : (stateFlags.value & S_HOVER) ? Hover : Interactive
+        color = (stateFlags.value & S_HOVER) ? Hover : Interactive
         group
         size = [pw(50), ph(50)]
         hplace = ALIGN_CENTER
@@ -52,28 +40,20 @@ let function fieldBoolCheckbox(params = {}) {
 
     return {
       key = comp_name
-      size = [flex(), fontH(100)]
-      halign = ALIGN_LEFT
-      valign = ALIGN_CENTER
+      size = [fontH(80), fontH(80)]
+      rendObj = ROBJ_SOLID
+      color = ControlBg
+
+      behavior = Behaviors.Button
+      group
 
       watch = [curVal, stateFlags]
 
-      children = {
-        size = [fontH(80), fontH(80)]
-        rendObj = ROBJ_SOLID
-        color = ControlBg
+      children = mark
 
-        behavior = Behaviors.Button
-        group
+      onElemState = @(sf) stateFlags.update(sf)
 
-        watch = [curVal, stateFlags]
-
-        children = mark
-
-        onElemState = @(sf) stateFlags.update(sf)
-
-        onClick
-      }
+      onClick
     }
   }
 }

@@ -1,6 +1,6 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let stdMath = require("%sqstd/math.nut")
-let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local stdMath = require("std/math.nut")
+local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
 
 ::g_hud_crew_member <- {
   types = []
@@ -19,7 +19,7 @@ g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconOb
   }
   else if (newStateData.state == "takingPlace" || newStateData.state == "healing")
   {
-    let timeBarObj = crewIconObj.findObject("transfere_indicatior")
+    local timeBarObj = crewIconObj.findObject("transfere_indicatior")
     ::g_time_bar.setPeriod(timeBarObj, newStateData.totalTakePlaceTime)
     ::g_time_bar.setCurrentTime(timeBarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
     crewIconObj.state = "transfere"
@@ -63,8 +63,8 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
     tooltip = "hud_tank_crew_distance"
 
     setCrewMemberState = function (iconObj, newStateData) {
-      let val = stdMath.roundToDigits(newStateData.distance, 2)
-      let cooldownObj = ::g_hud_crew_state.scene.findObject("cooldown")
+      local val = stdMath.roundToDigits(newStateData.distance, 2)
+      local cooldownObj = ::g_hud_crew_state.scene.findObject("cooldown")
       if (val == 1) {
         cooldownObj["sector-angle-2"] = 0
         iconObj.state = "ok"
@@ -89,7 +89,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       else
         iconObj.show(true)
 
-      let text = newStateData.current.tostring()
+      local text = newStateData.current.tostring()
       local textObj = iconObj.findObject("crew_count_text")
       textObj.setValue(text)
       textObj.overlayTextColor = newStateData.current <= MIN_CREW_COUNT_FOR_WARNING
@@ -112,7 +112,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       return
 
     guiScene = scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/hudCrewState",
+    local blk = ::handyman.renderCached("gui/hud/hudCrewState",
       { drivingDirectionModeValue = getConfigValueById("driving_direction_mode") })
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
 
@@ -120,7 +120,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
     {
       ::g_hud_event_manager.subscribe(crewMemberType.hudEventName,
         (@(crewMemberType) function (eventData) {
-          let crewObj = scene.findObject(crewMemberType.sceneId)
+          local crewObj = scene.findObject(crewMemberType.sceneId)
           if (::checkObj(crewObj))
             crewMemberType.setCrewMemberState(crewObj, eventData)
         })(crewMemberType), this)

@@ -1,5 +1,5 @@
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
-let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
+local contentSignKeys = require("scripts/inventory/inventoryContentSign.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -16,18 +16,18 @@ enum validationCheckBitMask {
 const INVENTORY_PROGRESS_MSG_ID = "INVENTORY_REQUEST"
 const WAR_THUNDER_EAGLES = "WTE"
 
-let function getPremultipliedAlphaIcon(icon) {
+local function getPremultipliedAlphaIcon(icon) {
   if (icon == "" || icon.slice(0,1) == "!")
     return icon
   return $"!{icon}"
 }
 
-let validateValueFunction = {
+local validateValueFunction = {
   icon_url = getPremultipliedAlphaIcon
   icon_url_large = getPremultipliedAlphaIcon
 }
 
-let requestInternal = function(requestData, data, callback, progressBoxData = null) {
+local requestInternal = function(requestData, data, callback, progressBoxData = null) {
   if (data) {
     requestData["data"] <- data;
   }
@@ -42,7 +42,7 @@ let requestInternal = function(requestData, data, callback, progressBoxData = nu
   })
 }
 
-let getErrorId = @(result) result.error.split(":")[0]
+local getErrorId = @(result) result.error.split(":")[0]
 
 local InventoryClient = class {
   items = {}
@@ -142,7 +142,7 @@ local InventoryClient = class {
   function request(action, headers, data, callback, progressBoxData = null)
   {
     headers.appid <- WT_APPID
-    let requestData = {
+    local requestData = {
       add_token = true,
       headers = headers,
       action = action
@@ -157,7 +157,7 @@ local InventoryClient = class {
       return request(action, headers, data, callback, progressBoxData)
 
     headers.appid <- WT_APPID
-    let requestData = {
+    local requestData = {
       content_sign_check = true,
       add_token = true,
       headers = headers,
@@ -169,13 +169,13 @@ local InventoryClient = class {
 
   function getResultData(result, name)
   {
-    let data = result?.response?[name]
+    local data = result?.response?[name]
     return _validate(data, name)
   }
 
   function _validate(data, name)
   {
-    let validation = validateResponseData?[name]
+    local validation = validateResponseData?[name]
     if (!data || !validation)
       return data
 
@@ -188,26 +188,26 @@ local InventoryClient = class {
 
     for (local i = data.len() - 1; i >= 0; i--)
     {
-      let item = data[i]
+      local item = data[i]
       local isItemValid = ::u.isTable(item)
       local itemErrors = 0
 
       foreach (checks, keys in validation)
       {
-        let shouldInvalidate     = (checks & validationCheckBitMask.INVALIDATE) != 0
-        let shouldCheckExistence = (checks & validationCheckBitMask.EXISTENCE) != 0
-        let shouldCheckType      = (checks & validationCheckBitMask.VARTYPE) != 0
-        let shouldValidateValue  = (checks & validationCheckBitMask.VALUE) != 0
+        local shouldInvalidate     = (checks & validationCheckBitMask.INVALIDATE) != 0
+        local shouldCheckExistence = (checks & validationCheckBitMask.EXISTENCE) != 0
+        local shouldCheckType      = (checks & validationCheckBitMask.VARTYPE) != 0
+        local shouldValidateValue  = (checks & validationCheckBitMask.VALUE) != 0
 
         if (isItemValid)
           foreach (key, defVal in keys)
           {
-            let isExist = (key in item)
-            let val = item?[key]
-            let isTypeCorrect = isExist && (type(val) == type(defVal) || ::is_numeric(val) == ::is_numeric(defVal))
+            local isExist = (key in item)
+            local val = item?[key]
+            local isTypeCorrect = isExist && (type(val) == type(defVal) || ::is_numeric(val) == ::is_numeric(defVal))
 
-            let isMissing   = shouldCheckExistence && !isExist
-            let isWrongType = shouldCheckType && isExist && !isTypeCorrect
+            local isMissing   = shouldCheckExistence && !isExist
+            local isWrongType = shouldCheckType && isExist && !isTypeCorrect
             if (isMissing || isWrongType)
             {
               itemErrors++
@@ -230,7 +230,7 @@ local InventoryClient = class {
 
       if (!isItemValid || itemErrors)
       {
-        let itemDebug = []
+        local itemDebug = []
         foreach (checks, keys in validation)
           if (checks & validationCheckBitMask.INVALIDATE)
             foreach (key, val in keys)
@@ -259,9 +259,9 @@ local InventoryClient = class {
 
   function getMarketplaceBaseUrl()
   {
-    let circuit = ::get_cur_circuit_name();
-    let networkBlock = ::get_network_block();
-    let url = networkBlock?[circuit]?.marketplaceURL ?? networkBlock?.marketplaceURL;
+    local circuit = ::get_cur_circuit_name();
+    local networkBlock = ::get_network_block();
+    local url = networkBlock?[circuit]?.marketplaceURL ?? networkBlock?.marketplaceURL;
     if (!url)
       return null
 
@@ -273,11 +273,11 @@ local InventoryClient = class {
 
   function getMarketplaceItemUrl(itemdefid, itemid = null)
   {
-    let marketplaceBaseUrl = getMarketplaceBaseUrl()
+    local marketplaceBaseUrl = getMarketplaceBaseUrl()
     if (!marketplaceBaseUrl)
       return null
 
-    let item = itemdefid && itemdefs?[itemdefid]
+    local item = itemdefid && itemdefs?[itemdefid]
     if ((item?.market_hash_name ?? "") != "")
       return marketplaceBaseUrl+ "&viewitem&n=" + ::encode_uri_component(item.market_hash_name)
 
@@ -286,8 +286,8 @@ local InventoryClient = class {
 
   function addInventoryItem(item)
   {
-    let itemdefid = item.itemdef
-    let shouldUpdateItemdDefs = addItemDefIdToRequest(itemdefid)
+    local itemdefid = item.itemdef
+    local shouldUpdateItemdDefs = addItemDefIdToRequest(itemdefid)
     item.itemdefid <- itemdefid
     item.itemdef = itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
     items[item.itemid] <- item
@@ -323,7 +323,7 @@ local InventoryClient = class {
     if (!canRefreshData())
       return
 
-    let wasWaitForInventory = isWaitForInventory()
+    local wasWaitForInventory = isWaitForInventory()
     lastRequestTime = ::dagor.getCurTime()
     requestInventory(function(result) {
       lastUpdateTime = ::dagor.getCurTime()
@@ -331,7 +331,7 @@ local InventoryClient = class {
       if (wasWaitForInventory)
         hasInventoryChanges = true //need event about we received inventory once, even if it empty.
 
-      let itemJson = getResultData(result, "item_json");
+      local itemJson = getResultData(result, "item_json");
       if (!itemJson)
       {
         if (wasWaitForInventory)
@@ -339,11 +339,11 @@ local InventoryClient = class {
         return
       }
 
-      let oldItems = items
+      local oldItems = items
       local shouldUpdateItemdefs = false
       items = {}
       foreach (item in itemJson) {
-        let oldItem = ::getTblValue(item.itemid, oldItems)
+        local oldItem = ::getTblValue(item.itemid, oldItems)
         if (oldItem) {
           if (oldItem.timestamp != item.timestamp) {
             hasInventoryChanges = true
@@ -414,13 +414,13 @@ local InventoryClient = class {
   function requestItemDefsImpl() {
     if (isItemdefRequestInProgress() || !pendingItemDefRequest)
       return
-    let requestData = pendingItemDefRequest
+    local requestData = pendingItemDefRequest
     pendingItemDefRequest = null
 
     if (requestData.shouldRefreshAll)
       itemdefidsRequested.clear()
 
-    let itemdefidsRequest = []
+    local itemdefidsRequest = []
     foreach(itemdefid, value in itemdefs)
     {
       if (!requestData.shouldRefreshAll && (!::u.isEmpty(value) || itemdefidsRequested?[itemdefid]))
@@ -433,15 +433,15 @@ local InventoryClient = class {
     if (!itemdefidsRequest.len())
       return requestData.fireCb()
 
-    let itemdefidsString = ::g_string.implode(itemdefidsRequest, ",")
+    local itemdefidsString = ::g_string.implode(itemdefidsRequest, ",")
     dagor.debug("Request itemdefs " + itemdefidsString)
 
     lastItemdefsRequestTime = ::dagor.getCurTime()
-    let steamLanguage = ::g_language.getCurrentSteamLanguage()
+    local steamLanguage = ::g_language.getCurrentSteamLanguage()
     requestWithSignCheck("GetItemDefsClient", {itemdefids = itemdefidsString, language = steamLanguage}, null,
       function(result) {
         lastItemdefsRequestTime = -1
-        let itemdef_json = getResultData(result, "itemdef_json");
+        local itemdef_json = getResultData(result, "itemdef_json");
         if (!itemdef_json || steamLanguage != ::g_language.getCurrentSteamLanguage())
         {
           requestData.fireCb()
@@ -451,7 +451,7 @@ local InventoryClient = class {
 
         local hasItemDefChanges = false
         foreach (itemdef in itemdef_json) {
-          let itemdefid = itemdef.itemdefid
+          local itemdefid = itemdef.itemdefid
           if (itemdefid in itemdefidsRequested)
             delete itemdefidsRequested[itemdefid]
           hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || ::u.isEmpty(itemdefs?[itemdefid])
@@ -502,7 +502,7 @@ local InventoryClient = class {
   }
 
   function addItemDef(itemdef) {
-    let originalItemDef = itemdefs?[itemdef.itemdefid] || {}
+    local originalItemDef = itemdefs?[itemdef.itemdefid] || {}
     originalItemDef.clear()
     originalItemDef.__update(itemdef)
     originalItemDef.tags = getTagsItemDef(originalItemDef)
@@ -511,15 +511,15 @@ local InventoryClient = class {
 
   function getTagsItemDef(itemdef)
   {
-    let tags = ::getTblValue("tags" , itemdef, null)
+    local tags = ::getTblValue("tags" , itemdef, null)
     if (!tags)
       return null
 
-    let parsedTags = ::DataBlock()
+    local parsedTags = ::DataBlock()
     foreach (pair in ::split(tags, ";")) {
-      let parsed = ::split(pair, ":")
+      local parsed = ::split(pair, ":")
       if (parsed.len() == 2) {
-        let v = parsed[1]
+        local v = parsed[1]
         parsedTags[parsed[0]] <- tagsValueRemap?[v] ?? v
       }
     }
@@ -528,10 +528,10 @@ local InventoryClient = class {
 
   function parseRecipesString(recipesStr)
   {
-    let recipes = []
+    local recipes = []
     foreach (recipe in ::split(recipesStr || "", ";"))
     {
-      let parsedRecipe = {
+      local parsedRecipe = {
         components = []
         reqItems = []
         requirement = null
@@ -539,15 +539,15 @@ local InventoryClient = class {
       }
       foreach (component in ::split(recipe, ","))
       {
-        let requirement = ::g_string.cutPrefix(component, "require=")
+        local requirement = ::g_string.cutPrefix(component, "require=")
         if (requirement != null) {
           parsedRecipe.requirement = requirement
           continue
         }
-        let reqItems = ::g_string.cutPrefix(component, "req_items=")
+        local reqItems = ::g_string.cutPrefix(component, "req_items=")
         if (reqItems != null) {
           foreach (reqItem in ::split(reqItems, "+")) {
-            let pair = ::split(reqItem, "x")
+            local pair = ::split(reqItem, "x")
             if (!pair.len())
               continue
             parsedRecipe.reqItems.append({
@@ -558,7 +558,7 @@ local InventoryClient = class {
           continue
         }
 
-        let pair = ::split(component, "x")
+        local pair = ::split(component, "x")
         if (!pair.len())
           continue
         parsedRecipe.components.append({
@@ -577,15 +577,15 @@ local InventoryClient = class {
       return
     }
 
-    let itemJson = getResultData(result, "item_json")
+    local itemJson = getResultData(result, "item_json")
     if (!itemJson)
       return
 
-    let newItems = []
+    local newItems = []
     local shouldUpdateItemdefs = false
     local hasInventoryChanges = false
     foreach (item in itemJson) {
-      let oldItem = ::getTblValue(item.itemid, items)
+      local oldItem = ::getTblValue(item.itemid, items)
       if (item.quantity == 0) {
         if (oldItem) {
           delete items[item.itemid]
@@ -631,7 +631,7 @@ local InventoryClient = class {
   }
 
   function exchangeViaChard(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
-    let json = {
+    local json = {
       outputitemdefid = outputItemDefId
       materials = materials
     }
@@ -640,10 +640,10 @@ local InventoryClient = class {
       json["permission"] <- requirement
     }
 
-    let internalCb = ::Callback((@(cb, shouldCheckInventory) function(data) {
+    local internalCb = ::Callback((@(cb, shouldCheckInventory) function(data) {
                                      handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
                                  })(cb, shouldCheckInventory), this)
-    let taskId = ::char_send_custom_action("cln_inventory_exchange_items",
+    local taskId = ::char_send_custom_action("cln_inventory_exchange_items",
                                              ::EATT_JSON_REQUEST,
                                              ::DataBlock(),
                                              ::json_to_string(json, false),
@@ -652,7 +652,7 @@ local InventoryClient = class {
   }
 
   function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {
-    let req = {
+    local req = {
         outputitemdefid = outputItemDefId,
         materials = materials
     }
@@ -681,13 +681,13 @@ local InventoryClient = class {
   }
 
   function getChestGeneratorItemdefIds(itemdefid) {
-    let usedToCreate = itemdefs?[itemdefid]?.used_to_create
-    let parsedRecipes = parseRecipesString(usedToCreate)
+    local usedToCreate = itemdefs?[itemdefid]?.used_to_create
+    local parsedRecipes = parseRecipesString(usedToCreate)
 
-    let res = []
+    local res = []
     foreach (recipeCfg in parsedRecipes)
     {
-      let id = ::to_integer_safe(recipeCfg.components?[0]?.itemdefid ?? "", -1)
+      local id = ::to_integer_safe(recipeCfg.components?[0]?.itemdefid ?? "", -1)
       if (id != -1)
         res.append(id)
     }
@@ -713,7 +713,7 @@ local InventoryClient = class {
       { currency = WAR_THUNDER_EAGLES },
       null,
       function(result) {
-        let itemPrices = result?.response?.itemPrices
+        local itemPrices = result?.response?.itemPrices
         if (!::u.isArray(itemPrices))
         {
           notifyPricesChanged()
@@ -724,7 +724,7 @@ local InventoryClient = class {
         local shouldRequestItemdefs = false
         foreach(data in itemPrices)
         {
-          let itemdefid = data?.itemdefid
+          local itemdefid = data?.itemdefid
           if (itemdefid == null)
             continue
           prices[itemdefid] <- ::Cost(0, data?.price)

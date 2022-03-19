@@ -1,10 +1,10 @@
-let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL;
-  sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
+  sceneBlkName = "gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
 
   owner = null;
@@ -45,7 +45,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function reinitScreen()
   {
-    let container = ::create_options_container("optionslist", optionItems, true, 0.5, false)
+    local container = ::create_options_container("optionslist", optionItems, true, 0.5, false)
     guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
@@ -60,7 +60,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     recalcMinRankCondTypeSwitchState()
 
-    let isMembershipAccptanceEnabled = clanMembershipAcceptance.getValue(clanData)
+    local isMembershipAccptanceEnabled = clanMembershipAcceptance.getValue(clanData)
     scene.findObject("membership_acceptance_checkbox").setValue(isMembershipAccptanceEnabled)
   }
 
@@ -69,32 +69,32 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let option = ::get_option(diff.clanReqOption)
-        let modeName = diff.getEgdName(false)
+        local option = ::get_option(diff.clanReqOption)
+        local modeName = diff.getEgdName(false)
         local battlesRequired = 0;
-        let req = rawClanMemberRequirementsBlk.getBlockByName(option.id)
+        local req = rawClanMemberRequirementsBlk.getBlockByName(option.id)
         if ( req  &&  (req.type == "battles")  &&  (req.difficulty == modeName) )
           battlesRequired = req.getInt("count", 0)
 
-        let optIdx = option.values.indexof(battlesRequired) ?? 0
+        local optIdx = option.values.indexof(battlesRequired) ?? 0
         scene.findObject(option.id).setValue(optIdx)
       }
   }
 
   function loadRequirementsRanks( rawClanMemberRequirementsBlk )
   {
-    let rawRanksCond = rawClanMemberRequirementsBlk.getBlockByName("ranks") || ::DataBlock()
+    local rawRanksCond = rawClanMemberRequirementsBlk.getBlockByName("ranks") || ::DataBlock()
     foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
-      let obj = scene.findObject("rankReq" + unitType.name)
+      local obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
       local ranksRequired = 0
-      let req = rawRanksCond.getBlockByName("rank_" + unitType.name)
+      local req = rawRanksCond.getBlockByName("rank_" + unitType.name)
       if (req?.type == "rank" && req?.unitType == unitType.name)
         ranksRequired = req.getInt("rank", 0)
 
@@ -112,11 +112,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       if (!unitType.isAvailable())
         continue
 
-      let obj = scene.findObject("rankReq" + unitType.name)
+      local obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
-      let ranksRequired = obj.getValue()
+      local ranksRequired = obj.getValue()
       if (ranksRequired > 0)
         nonEmptyRankReqCount++
     }
@@ -130,8 +130,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let option = ::get_option(diff.clanReqOption)
-        let optIdx = scene.findObject(option.id).getValue()
+        local option = ::get_option(diff.clanReqOption)
+        local optIdx = scene.findObject(option.id).getValue()
         if (optIdx > 0)
           nonEmptyBattlesReqCount++
       }
@@ -159,8 +159,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function onApply()
   {
-    let newRequirements = ::DataBlock()
-    let gotChanges = fillRequirements(newRequirements)
+    local newRequirements = ::DataBlock()
+    local gotChanges = fillRequirements(newRequirements)
 
     if (gotChanges)
       sendRequirementsToChar(newRequirements, autoAcceptMembershipObject.getValue())
@@ -178,16 +178,16 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     if ( ::u.isEqual(clanData.membershipRequirements, newRequirements) )
     {
-      let autoAccept = autoAcceptMembershipObject.getValue()
+      local autoAccept = autoAcceptMembershipObject.getValue()
       if ( clanData.autoAcceptMembership == autoAccept )
         return false;
     }
 
-    let validateResult = ::clan_validate_membership_requirements(newRequirements)
+    local validateResult = ::clan_validate_membership_requirements(newRequirements)
     if ( validateResult == "" )
       return true;
 
-    let errText = ::format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
+    local errText = ::format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
     callstack()
     ::script_net_assert_once("bad clan requirements", errText)
     return false
@@ -196,7 +196,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function appendRequirementsRanks( newRequirements )
   {
-    let rankCondType = minRankCondTypeObject.getValue() ? "and" : "or"
+    local rankCondType = minRankCondTypeObject.getValue() ? "and" : "or"
     local ranksSubBlk = null
 
     foreach (unitType in unitTypes.types)
@@ -204,11 +204,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       if (!unitType.isAvailable())
         continue
 
-      let obj = scene.findObject("rankReq" + unitType.name)
+      local obj = scene.findObject("rankReq" + unitType.name)
       if (!::check_obj(obj))
         continue
 
-      let rankVal = obj.getValue()
+      local rankVal = obj.getValue()
       if ( rankVal > 0 )
       {
         if ( !ranksSubBlk )
@@ -217,7 +217,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           ranksSubBlk.setStr( "type", rankCondType )
         }
 
-        let condBlk = ranksSubBlk.addNewBlock("rank_" + unitType.name)
+        local condBlk = ranksSubBlk.addNewBlock("rank_" + unitType.name)
         condBlk.setStr( "type", "rank" )
         condBlk.setInt( "rank", rankVal )
         condBlk.setInt( "count", 1 )
@@ -232,13 +232,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     foreach(diff in ::g_difficulty.types)
       if (diff.egdCode != ::EGD_NONE)
       {
-        let option = ::get_option(diff.clanReqOption)
-        let modeName = diff.getEgdName(false);
-        let battleReqVal = option.values[scene.findObject(option.id).getValue()];
+        local option = ::get_option(diff.clanReqOption)
+        local modeName = diff.getEgdName(false);
+        local battleReqVal = option.values[scene.findObject(option.id).getValue()];
 
         if ( battleReqVal > 0 )
         {
-          let condBlk = newRequirements.addNewBlock(option.id)
+          local condBlk = newRequirements.addNewBlock(option.id)
           condBlk.setStr( "type", "battles" )
           condBlk.setStr( "difficulty", modeName )
           condBlk.setInt( "count", battleReqVal )
@@ -249,7 +249,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function sendRequirementsToChar( newRequirements, autoAccept )
   {
-    let resultCB = ::Callback((@(newRequirements, autoAccept) function() {
+    local resultCB = ::Callback((@(newRequirements, autoAccept) function() {
       clanData.membershipRequirements = newRequirements;
       clanData.autoAcceptMembership = autoAccept;
 
@@ -260,7 +260,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       goBack()
     })(newRequirements, autoAccept), this )
 
-    let taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
+    local taskId = clan_request_set_membership_requirements(clanData.id, newRequirements, autoAccept)
 
     ::g_tasker.addTask(taskId, {showProgressBox = true}, resultCB)
   }

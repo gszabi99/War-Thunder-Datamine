@@ -1,27 +1,27 @@
 ::_generateCoverMission <- function _generateCoverMission(isFreeFlight, createGroundUnitsProc)
 {
-  let mission_preset_name = "cover_bombers_preset01";
+  local mission_preset_name = "cover_bombers_preset01";
   ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/"+mission_preset_name+".blk");
-  let playerSide = ::mgGetPlayerSide();
-  let enemySide = ::mgGetEnemySide();
-  let bombtargets = createGroundUnitsProc(enemySide);
+  local playerSide = ::mgGetPlayerSide();
+  local enemySide = ::mgGetEnemySide();
+  local bombtargets = createGroundUnitsProc(enemySide);
 
-  let enemy1Angle = ::rndRange(-90, 90);
-  let enemy2Angle = ::rndRange(-90, 90);
-  let evacAngle = ::rndRange(-10, 10);
+  local enemy1Angle = ::rndRange(-90, 90);
+  local enemy2Angle = ::rndRange(-90, 90);
+  local evacAngle = ::rndRange(-10, 10);
 
 //planes cost and warpoint ratio calculate
-  let ws = ::get_warpoints_blk();
-  let wpMax = ws.dynPlanesMaxCost;
-  let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
+  local ws = ::get_warpoints_blk();
+  local wpMax = ws.dynPlanesMaxCost;
+  local playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   local playerPlaneCost = ::getAircraftCost(playerFighterPlane);
   if (playerPlaneCost == 0){playerPlaneCost = 250}
 
-  let enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  local enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   local enemyPlaneCost = ::getAircraftCost(enemyFighterPlane);
   if (enemyPlaneCost == 0){enemyPlaneCost = 250}
 
-  let planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+  local planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
 
 //bombers count
   local bombersCount = 0;
@@ -29,12 +29,12 @@
 
   local ground_type = "";
   local squad_type = "";
-  let tanks_count = ::mgGetUnitsCount("#bomb_targets_tanks");
-  let light_count = ::mgGetUnitsCount("#bomb_targets_light");
-  let art_count = ::mgGetUnitsCount("#bomb_targets_art");
-  let ships_count = ::mgGetUnitsCount("#bomb_targets_ships");
-  let carrier_count = ::mgGetUnitsCount("#bomb_targets_carrier");
-  let bombTargets_count = ::mgGetUnitsCount("#bomb_target_buildings");
+  local tanks_count = ::mgGetUnitsCount("#bomb_targets_tanks");
+  local light_count = ::mgGetUnitsCount("#bomb_targets_light");
+  local art_count = ::mgGetUnitsCount("#bomb_targets_art");
+  local ships_count = ::mgGetUnitsCount("#bomb_targets_ships");
+  local carrier_count = ::mgGetUnitsCount("#bomb_targets_carrier");
+  local bombTargets_count = ::mgGetUnitsCount("#bomb_target_buildings");
 
   if (bombTargets_count > 0)
   {
@@ -111,8 +111,8 @@
 
 
 //fighters count calculate
-  let allyFighterCountMin = (bombersCount*0.5)/1.5*planeCost-4;
-  let allyFighterCountMax = (bombersCount)/1.5*planeCost-4;
+  local allyFighterCountMin = (bombersCount*0.5)/1.5*planeCost-4;
+  local allyFighterCountMax = (bombersCount)/1.5*planeCost-4;
   local allyFightersCount = ::rndRangeInt(allyFighterCountMin, allyFighterCountMax);
   if (allyFightersCount < 4)
     allyFightersCount = 0;
@@ -120,8 +120,8 @@
     allyFightersCount = 16;
 
 
-  let enemyTotalCountMin = (bombersCount*0.5+allyFightersCount+4)*0.5/planeCost;
-  let enemyTotalCountMax = (bombersCount+allyFightersCount+4)/planeCost;
+  local enemyTotalCountMin = (bombersCount*0.5+allyFightersCount+4)*0.5/planeCost;
+  local enemyTotalCountMax = (bombersCount+allyFightersCount+4)/planeCost;
   local enemyTotalCount = ::rndRangeInt(enemyTotalCountMin, enemyTotalCountMax);
   if (enemyTotalCount < 8)
     enemyTotalCount = 8;
@@ -157,9 +157,9 @@
   local enemyTotalCount_temp = enemyTotalCount;
   enemyWaveCount_temp = enemyWaveCount;
 
-  let enemyCount = enemyTotalCount;
+  local enemyCount = enemyTotalCount;
 
-  let enemyPlanesInWave = enemyTotalCount_temp/enemyWaveCount_temp;
+  local enemyPlanesInWave = enemyTotalCount_temp/enemyWaveCount_temp;
   local enemy1Count = 0;
   local enemy2Count = 0;
   local enemy3Count = 0;
@@ -194,23 +194,23 @@
   }
 
 //battle distance calculate
-  let rndHeight = ::rndRange(2000, 4000);
-  let playerSpeed = 300*1000/60;
-  let enemy1Speed = ::getDistancePerMinute(enemyFighterPlane);
-  let enemy2Speed = ::getDistancePerMinute(enemyFighterPlane);
-  let enemy3Speed = ::getDistancePerMinute(enemyFighterPlane);
+  local rndHeight = ::rndRange(2000, 4000);
+  local playerSpeed = 300*1000/60;
+  local enemy1Speed = ::getDistancePerMinute(enemyFighterPlane);
+  local enemy2Speed = ::getDistancePerMinute(enemyFighterPlane);
+  local enemy3Speed = ::getDistancePerMinute(enemyFighterPlane);
 
-  let timeToTarget = ::rndRange(120 + wave1*45 + wave2*45, 120 + wave1*60 + wave2*60)/60.0;
+  local timeToTarget = ::rndRange(120 + wave1*45 + wave2*45, 120 + wave1*60 + wave2*60)/60.0;
   local timeToEnemy1 = 0;
   if (wave1 == 1)
     timeToEnemy1 = ::rndRange(30, timeToTarget*60/4.0)/60.0;
-  let timeToEnemy2 = ::rndRange(30+timeToEnemy1*30, timeToTarget*60/4.0+timeToEnemy1*60)/60.0;
-  let timeToEnemy3 = ::rndRange(30, 60)/60.0;
+  local timeToEnemy2 = ::rndRange(30+timeToEnemy1*30, timeToTarget*60/4.0+timeToEnemy1*60)/60.0;
+  local timeToEnemy3 = ::rndRange(30, 60)/60.0;
 
 
   ::mgSetDistToAction(playerSpeed*timeToTarget);
   ::mgSetupAirfield(bombtargets, playerSpeed*timeToTarget);
-  let startLookAt = ::mgCreateStartLookAt();
+  local startLookAt = ::mgCreateStartLookAt();
 
 //points setup
   ::mgSetupArea("player_start", bombtargets, startLookAt, 180, playerSpeed*timeToTarget, rndHeight);
@@ -282,8 +282,8 @@
 
 
 //mission warpoint cost calculate
-  let mission_mult = ::sqrt(enemyTotalCount/20.0+0.05);
-  let missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount+bombersCount*0.5, enemyCount, planeCost,
+  local mission_mult = ::sqrt(enemyTotalCount/20.0+0.05);
+  local missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount+bombersCount*0.5, enemyCount, planeCost,
                                           playerFighterPlane, mission_mult);
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
 

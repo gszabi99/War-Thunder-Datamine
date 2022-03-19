@@ -1,16 +1,16 @@
-let squadronUnitAction = require("%scripts/unit/squadronUnitAction.nut")
+local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
 
-let function repairRequest(unit, price, onSuccessCb = null)
+local function repairRequest(unit, price, onSuccessCb = null)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk["name"] = unit.name
   blk["cost"] = price.wp
   blk["costGold"] = price.gold
 
-  let taskId = ::char_send_blk("cln_prepare_aircraft", blk)
+  local taskId = ::char_send_blk("cln_prepare_aircraft", blk)
 
-  let progBox = { showProgressBox = true }
-  let onTaskSuccess = function() {
+  local progBox = { showProgressBox = true }
+  local onTaskSuccess = function() {
     ::broadcastEvent("UnitRepaired", {unit = unit})
     if (onSuccessCb)
       onSuccessCb()
@@ -19,11 +19,11 @@ let function repairRequest(unit, price, onSuccessCb = null)
   ::g_tasker.addTask(taskId, progBox, onTaskSuccess)
 }
 
-let function repair(unit, onSuccessCb = null)
+local function repair(unit, onSuccessCb = null)
 {
   if (!unit)
     return
-  let price = unit.getRepairCost()
+  local price = unit.getRepairCost()
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
@@ -31,15 +31,15 @@ let function repair(unit, onSuccessCb = null)
     repairRequest(unit, price, onSuccessCb)
 }
 
-let function repairWithMsgBox(unit, onSuccessCb = null)
+local function repairWithMsgBox(unit, onSuccessCb = null)
 {
   if (!unit)
     return
-  let price = unit.getRepairCost()
+  local price = unit.getRepairCost()
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
-  let msgText = ::loc("msgbox/question_repair", { unitName = ::loc(::getUnitName(unit)), cost = price.tostring() })
+  local msgText = ::loc("msgbox/question_repair", { unitName = ::loc(::getUnitName(unit)), cost = price.tostring() })
   ::scene_msg_box("question_repair", null, msgText,
   [
     ["yes", function() { repair(unit, onSuccessCb) }],
@@ -47,12 +47,12 @@ let function repairWithMsgBox(unit, onSuccessCb = null)
   ], "no", { cancel_fn = function() {}})
 }
 
-let function flushSquadronExp(unit, params = {})
+local function flushSquadronExp(unit, params = {})
 {
   if (!unit)
     return
 
-  let afterDoneFunc = params?.afterDoneFunc
+  local afterDoneFunc = params?.afterDoneFunc
   ::scene_msg_box("ask_flush_squadron_exp",
     null,
     ::loc("squadronExp/invest/needMoneyQuestion",
@@ -75,7 +75,7 @@ let function flushSquadronExp(unit, params = {})
     "yes")
 }
 
-let function take(unit, params={})
+local function take(unit, params={})
 {
   if(!unit)
     return
@@ -95,7 +95,7 @@ let function take(unit, params={})
     null, "isCanModifyCrew", null)
 }
 
-let function buy(unit, metric)
+local function buy(unit, metric)
 {
   if (!unit)
     return
@@ -106,9 +106,9 @@ let function buy(unit, metric)
     ::buyUnit(unit)
 }
 
-let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
+local function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
 {
-  let unitName = unit.name
+  local unitName = unit.name
   ::add_big_query_record("choosed_new_research_unit", unitName)
   if (!::canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
     return
@@ -119,13 +119,13 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null)
   {
      prevUnitName = ::clan_get_researching_unit()
 
-     let blk = ::DataBlock()
+     local blk = ::DataBlock()
      blk.addStr("unit", unitName);
      taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   }
   else
     taskId = ::shop_set_researchable_unit(unitName, ::get_es_unit_type(unit))
-  let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
+  local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
   ::add_bg_task_cb(taskId, function() {
     ::destroyMsgBox(progressBox)
     if (afterDoneFunc)

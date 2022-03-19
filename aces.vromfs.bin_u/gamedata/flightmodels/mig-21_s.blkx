@@ -2054,10 +2054,6 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "targetingPodFov": [12.0,2.9],
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
-    "sightFov": 7.0,
     "headPos": [3.55,0.78,0.0],
     "headPosOnShooting": [3.55,0.78,0.0],
     "mirror": true,
@@ -2096,7 +2092,7 @@
       "g_meter": [-5.0,10.0],
       "g_meter_min": [-5.0,10.0],
       "g_meter_max": [-5.0,10.0],
-      "altitude_hour": [0.0,30000.0],
+      "altitude_hour": [0.0,20000.0],
       "altitude_min": [0.0,1000.0],
       "altitude1_hour": [0.0,20000.0],
       "altitude2_hour": [0.0,20000.0],
@@ -2117,39 +2113,18 @@
       "oil_temperature": [0.0,150.0],
       "water_temperature": [0.0,1000.0],
       "fuel_pressure": [0.0,15.0],
-      "fuel": [0.0,4200.0]
+      "fuel": [0.0,4500.0]
     },
-    "multifunctionDisplays": [
-      {
-        "display": {
-          "textureArea": [0.0,0.5,0.5,1.0],
-          "page": {
-            "type": "radar",
-            "radarScale": 1.0,
-            "radarColor": "#ff731bff"
-          }
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [0.0,0.5,0.5,1.0],
+        "page": {
+          "type": "radar",
+          "radarScale": 1.0,
+          "radarColor": "#ff731bff"
         }
-      },
-      {
-        "display": [
-          {
-            "textureArea": [0.5,0.5,1.0,1.0]
-          },
-          {
-            "page": {
-              "type": "night_vision",
-              "turretIdx": 0
-            }
-          },
-          {
-            "page": {
-              "type": "target_tracking",
-              "turretIdx": 0
-            }
-          }
-        ]
       }
-    ],
+    },
     "parts_holes_dmg": {
       "part": "fuse"
     },
@@ -2168,67 +2143,23 @@
       }
     ]
   },
-  "gunnerOpticFps": {
-    "pos": [0.3,-0.2,0.0],
-    "head": "optic1_turret",
-    "crosshairPreset": "test_crosshair",
-    "angularLimits": [-0.1,0.1,-0.1,0.1],
-    "opticType": "targeting",
-    "turretNo": 0
-  },
-  "nightVision": {
-    "sightIr": {
-      "resolution": [500.0,300.0],
-      "lightMult": 6.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
+  "commonWeapons": {
+    "hideNodes": {
+      "node": "flare2"
+    },
+    "Weapon": {
+      "trigger": "cannon",
+      "blk": "gameData/Weapons/cannonGSh_23L.blk",
+      "emitter": "flare1",
+      "flash": "flare1",
+      "dm": "cannon1_dm",
+      "bullets": 200,
+      "spread": 1.0,
+      "counterIndex": 1,
+      "gearLimit": [0.0,0.1],
+      "gearName": "gear_c"
     }
   },
-  "commonWeapons": [
-    {
-      "hideNodes": {
-        "node": "flare2"
-      }
-    },
-    {
-      "Weapon": {
-        "dummy": true,
-        "trigger": "gunner0",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "optic1_gun",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 25.0,
-        "speedPitch": 25.0,
-        "parkInDeadzone": false,
-        "aimForOperatedShell": true,
-        "turret": {
-          "head": "optic1_turret",
-          "gun": "optic1_gun",
-          "mainTurret": true
-        },
-        "limits": {
-          "yaw": [-0.1,0.1],
-          "pitch": [-0.1,0.1]
-        }
-      }
-    },
-    {
-      "Weapon": {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonGSh_23L.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 200,
-        "spread": 1.0,
-        "counterIndex": 1,
-        "gearLimit": [0.0,0.1],
-        "gearName": "gear_c"
-      }
-    }
-  ],
   "weapon_presets": [
     {
       "preset": {

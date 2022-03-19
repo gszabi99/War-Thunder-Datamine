@@ -1,9 +1,9 @@
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+local { fillItemDescr } = require("scripts/items/itemVisual.nut")
 
 local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "%gui/items/itemDesc.blk"
+  sceneBlkName = "gui/items/itemDesc.blk"
 
   currentItemId = null
   currentCategoryId = null
@@ -37,15 +37,15 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function openCategory(categoryId)
   {
-    let containerObj = scene.findObject("item_info_collapsable_prizes")
+    local containerObj = scene.findObject("item_info_collapsable_prizes")
     if (!::check_obj(containerObj))
       return
-    let total = containerObj.childrenCount()
+    local total = containerObj.childrenCount()
     local visible = false
     guiScene.setUpdatesEnabled(false, false)
     for(local i = 0; i < total; i++)
     {
-      let childObj = containerObj.getChild(i)
+      local childObj = containerObj.getChild(i)
       if (childObj.isCategory == "no")
       {
         childObj.enable(visible)

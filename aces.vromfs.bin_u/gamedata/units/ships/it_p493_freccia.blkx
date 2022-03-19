@@ -2653,6 +2653,7 @@
         "sensor": {
           "blk": "gameData/sensors/naval/naval_nav_radar.blk",
           "designationFromBody": true,
+          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -4270,18 +4271,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -15000.0,
-      "waterMassMult": 45.0,
+      "waterMassVel": -50000.0,
+      "waterMassMult": 120.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 800000.0,
-      "additionalWaterShouldDiePercent": 0.35,
+      "additionalWaterDeathThreshold": 700000.0,
+      "additionalWaterShouldDiePercent": 0.5,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 34.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.25
+      "sideCenterOfMassOffsetPercent": 0.31
     }
   },
   {
@@ -4289,7 +4290,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.65,
+          "weight": 0.2,
           "maxWaterAlive": 1.0
         }
       },
@@ -4309,19 +4310,19 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.85,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.5
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.6
               }
             },
             {
@@ -4336,7 +4337,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.6,
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

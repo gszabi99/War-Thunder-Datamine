@@ -2185,7 +2185,7 @@
     {
       "attacker": {
         "name": "fiat_g91_r1",
-        "weap": "fiat_g91_r1_2_75in_ffar_rockets",
+        "weap": "fiat_g91_2_75in_ffar_rockets",
         "rankRange": [19.0,50.0]
       }
     },
@@ -3124,11 +3124,6 @@
     "mouseAimDisableControlTreshold": 0.8,
     "disableMouseAimTime": 0.05,
     "enableMouseAimTime": 0.1,
-    "numSteps": 5,
-    "maxNumSteps": 30,
-    "predictionTime": [0.17,3.0,0.7],
-    "scoreTreshold": 0.0001,
-    "analyticalScore": 0.085,
     "angVelFactorMin": 1.42,
     "rollRateToAngVelFactor": 0.497,
     "localDirYawPitchRotYZMax0": 0.125,
@@ -3913,7 +3908,11 @@
     "allowStrongControlsRestrictions": true,
     "pseudoHingeMomentLimit": false,
     "setupWingSweepOnSpawn": true,
-    "clToCmAsForceArm": true,
+    "ufoHoverAlt": 15.0,
+    "ufoHoverOmegaKp": 2.0,
+    "ufoHoverOmegaKd": 0.0,
+    "ufoHoverClimbKp": 30.0,
+    "ufoHoverClimbKd": 10.0,
     "sceneMultiRayCast": true,
     "traceDownType": "cross",
     "impulseBasedAircraftToSceneCollisionWithCollisionObjects": false,
@@ -3932,8 +3931,6 @@
     "rollingFriction": 0.02,
     "selfSteeringWheelSideFrictionMult": 2.0,
     "treeImpulseTreshold": 80000.0,
-    "unitCollisionImpulseSpeedMax": 40.0,
-    "sinkRateMult": 1.0,
     "explosionImpulseVel": 15.0,
     "contactImpulseSpeedTreshold": 3.0,
     "collisionImpulseSpeedToDamage": 75.0,

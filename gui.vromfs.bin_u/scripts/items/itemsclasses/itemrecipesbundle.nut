@@ -1,8 +1,8 @@
-let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
+local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 
-::items_classes.RecipesBundle <- class extends ::items_classes.Chest {
+class ::items_classes.RecipesBundle extends ::items_classes.Chest {
   static iType = itemType.RECIPES_BUNDLE
   static defaultLocId = "recipes_bundle"
   static typeIcon = "#ui/gameuiskin#items_blueprint"
@@ -22,8 +22,8 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 
   function _getDescHeader(fixedAmount = 1)
   {
-    let locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"
-    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
+    local locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"
+    local headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
     return ::colorize("grayOptionColor", headerText)
   }
 
@@ -32,7 +32,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
     if (!isDisassemble())
       return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
 
-    let locId = totalAmount == 1 ? "item/disassemble_recipes/single" : "item/disassemble_recipes"
+    local locId = totalAmount == 1 ? "item/disassemble_recipes/single" : "item/disassemble_recipes"
     return ::loc(locId,
       {
         count = totalAmount

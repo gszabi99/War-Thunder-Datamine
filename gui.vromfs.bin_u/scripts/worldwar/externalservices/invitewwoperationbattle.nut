@@ -1,8 +1,8 @@
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
-::g_invites_classes.WwOperationBattle <- class extends ::BaseInvite
+class ::g_invites_classes.WwOperationBattle extends ::BaseInvite
 {
   squadronId = -1
   operationId = -1
@@ -55,7 +55,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
   function getInviteText()
   {
-    let operation = getOperation()
+    local operation = getOperation()
     return ::loc("worldwar/inviteSquadsText", {
       operation = ::colorize(inviteActiveColor, operation ? operation.getNameText() : operationId)
     })
@@ -89,7 +89,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
       ::Callback(function() {
         ::g_world_war.joinOperationById(operationId, null, false,
           ::Callback(function() {
-            let wwBattle = ::g_world_war.getBattleById(battleId)
+            local wwBattle = ::g_world_war.getBattleById(battleId)
             ::gui_handlers.WwBattleDescription.open(wwBattle)
           }, this))
       }, this),

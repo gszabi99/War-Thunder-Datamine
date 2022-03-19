@@ -1,3 +1,3 @@
-let loginWndBlkPath = ::Watched("%gui/loginBox.blk")
+local loginWndBlkPath = ::Watched("gui/loginBox.blk")
 
 return loginWndBlkPath

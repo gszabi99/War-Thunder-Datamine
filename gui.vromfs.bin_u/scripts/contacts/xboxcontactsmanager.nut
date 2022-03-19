@@ -1,18 +1,18 @@
-let platformModule = require("%scripts/clientState/platform.nut")
-let extContactsService = require("%scripts/contacts/externalContactsService.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local extContactsService = require("scripts/contacts/externalContactsService.nut")
 
-let persistent = { isInitedXboxContacts = false }
-let pendingXboxContactsToUpdate = {}
+local persistent = { isInitedXboxContacts = false }
+local pendingXboxContactsToUpdate = {}
 
 ::g_script_reloader.registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
 
-let updateContactXBoxPresence = function(xboxId, isAllowed)
+local updateContactXBoxPresence = function(xboxId, isAllowed)
 {
-  let contact = ::findContactByXboxId(xboxId)
+  local contact = ::findContactByXboxId(xboxId)
   if (!contact)
     return
 
-  let forceOffline = !isAllowed
+  local forceOffline = !isAllowed
   if (contact.forceOffline == forceOffline && contact.isForceOfflineChecked)
     return
 
@@ -23,7 +23,7 @@ let updateContactXBoxPresence = function(xboxId, isAllowed)
   })
 }
 
-let fetchContactsList = function()
+local fetchContactsList = function()
 {
   pendingXboxContactsToUpdate.clear()
   //No matter what will be done first,
@@ -32,7 +32,7 @@ let fetchContactsList = function()
   ::xbox_get_avoid_list_async()
 }
 
-let updateContacts = function(needIgnoreInitedFlag = false)
+local updateContacts = function(needIgnoreInitedFlag = false)
 {
   if (!::is_platform_xbox || !::isInMenu())
   {
@@ -48,7 +48,7 @@ let updateContacts = function(needIgnoreInitedFlag = false)
   fetchContactsList()
 }
 
-let tryUpdateContacts = function(contactsBlk)
+local tryUpdateContacts = function(contactsBlk)
 {
   local haveAnyUpdate = false
   foreach (group, usersList in contactsBlk)
@@ -60,14 +60,14 @@ let tryUpdateContacts = function(contactsBlk)
     return
   }
 
-  let result = ::request_edit_player_lists(contactsBlk, false)
+  local result = ::request_edit_player_lists(contactsBlk, false)
   if (result)
   {
     foreach(group, playersBlock in contactsBlk)
     {
       foreach (uid, isAdding in playersBlock)
       {
-        let contact = ::getContact(uid)
+        local contact = ::getContact(uid)
         if (!contact)
           continue
 
@@ -81,10 +81,10 @@ let tryUpdateContacts = function(contactsBlk)
   }
 }
 
-let xboxUpdateContactsList = function(usersTable)
+local xboxUpdateContactsList = function(usersTable)
 {
   //Create or update exist contacts
-  let contactsTable = {}
+  local contactsTable = {}
   foreach (uid, playerData in usersTable)
     contactsTable[playerData.id] <- ::updateContact({
       uid = uid
@@ -92,16 +92,16 @@ let xboxUpdateContactsList = function(usersTable)
       xboxId = playerData.id
     })
 
-  let contactsBlk = ::DataBlock()
+  local contactsBlk = ::DataBlock()
   contactsBlk[::EPL_FRIENDLIST] <- ::DataBlock()
   contactsBlk[::EPL_BLOCKLIST]  <- ::DataBlock()
 
   foreach (group, playersArray in pendingXboxContactsToUpdate)
   {
-    let existedXBoxContacts = ::get_contacts_array_by_filter_func(group, platformModule.isXBoxPlayerName)
+    local existedXBoxContacts = ::get_contacts_array_by_filter_func(group, platformModule.isXBoxPlayerName)
     foreach (xboxPlayerId in playersArray)
     {
-      let contact = contactsTable?[xboxPlayerId]
+      local contact = contactsTable?[xboxPlayerId]
       if (!contact)
         continue
 
@@ -148,20 +148,20 @@ let xboxUpdateContactsList = function(usersTable)
   pendingXboxContactsToUpdate.clear()
 }
 
-let proceedXboxPlayersList = function()
+local proceedXboxPlayersList = function()
 {
   if (!(::EPL_FRIENDLIST in pendingXboxContactsToUpdate)
       || !(::EPL_BLOCKLIST in pendingXboxContactsToUpdate))
     return
 
-  let playersList = []
+  local playersList = []
   foreach (group, usersArray in pendingXboxContactsToUpdate)
     playersList.extend(usersArray)
 
-  let knownUsers = {}
+  local knownUsers = {}
   for (local i = playersList.len() - 1; i >= 0; i--)
   {
-    let contact = ::findContactByXboxId(playersList[i])
+    local contact = ::findContactByXboxId(playersList[i])
     if (contact)
     {
       knownUsers[contact.uid] <- {
@@ -178,13 +178,13 @@ let proceedXboxPlayersList = function()
   )
 }
 
-let onReceivedXboxListCallback = function(playersList, group)
+local onReceivedXboxListCallback = function(playersList, group)
 {
   pendingXboxContactsToUpdate[group] <- playersList
   proceedXboxPlayersList()
 }
 
-let xboxOverlayContactClosedCallback = function(playerStatus)
+local xboxOverlayContactClosedCallback = function(playerStatus)
 {
   if (playerStatus == XBOX_PERSON_STATUS_CANCELED)
     return
@@ -208,7 +208,7 @@ let xboxOverlayContactClosedCallback = function(playerStatus)
   if (!::is_platform_xbox)
     return
 
-  let xboxContactsToCheck = ::u.filter(::contacts_players, @(contact) contact.needCheckForceOffline())
+  local xboxContactsToCheck = ::u.filter(::contacts_players, @(contact) contact.needCheckForceOffline())
   xboxContactsToCheck.each(function(contact) {
     if (contact.xboxId != "")
       ::can_view_target_presence(contact.xboxId)

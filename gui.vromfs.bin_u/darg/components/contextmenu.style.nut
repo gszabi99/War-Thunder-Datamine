@@ -1,11 +1,11 @@
 from "daRg" import *
 from "frp" import *
 
-let contextStyle = {
+local contextStyle = {
   menuBgColor = Color(20, 30, 36)
   listItem = function (text, action) {
-    let group = ElemGroup()
-    let stateFlags = Watched(0)
+    local group = ElemGroup()
+    local stateFlags = Watched(0)
 
     return @() {
       behavior = Behaviors.Button

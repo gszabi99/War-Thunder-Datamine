@@ -1,8 +1,8 @@
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
 
-::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler
+class ::gui_handlers.WaitForLoginWnd extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/login/waitForLoginWnd.blk"
+  sceneBlkName = "gui/login/waitForLoginWnd.blk"
   isInitialized = false
   isBgVisible = true
 
@@ -24,13 +24,13 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
   function updateVisibility()
   {
-    let isVisible = isSceneActiveNoModals()
+    local isVisible = isSceneActiveNoModals()
     scene.findObject("root-box").show(isVisible)
   }
 
   function updateBg()
   {
-    let shouldBgVisible = !(::g_login.curState & LOGIN_STATE.HANGAR_LOADED)
+    local shouldBgVisible = !(::g_login.curState & LOGIN_STATE.HANGAR_LOADED)
     if (isBgVisible == shouldBgVisible && isInitialized)
       return
 

@@ -1,9 +1,9 @@
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+local { clearBorderSymbols } = require("std/string.nut")
 
-::gui_handlers.CreateRoomWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/chat/createChatroom.blk"
+  sceneBlkName = "gui/chat/createChatroom.blk"
 
   static fullTabsList = [
     {
@@ -48,7 +48,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     }
     switchTab(0)
 
-    let roomNameBoxObj = scene.findObject("room_name")
+    local roomNameBoxObj = scene.findObject("room_name")
     roomNameBoxObj["max-len"] = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
 
     scene.findObject("thread_title_header").setValue(::loc("chat/threadTitle/limits",
@@ -67,7 +67,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 
   function fillTabs()
   {
-    let view = {
+    local view = {
       tabs = []
     }
     foreach(idx, tab in tabsList)
@@ -76,8 +76,8 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
         navImagesText = ::get_navigation_images_text(idx, tabsList.len())
       })
 
-    let tabsObj = showSceneBtn("tabs_list", true)
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    local tabsObj = showSceneBtn("tabs_list", true)
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
@@ -87,11 +87,11 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     if (idx == curTabIdx || !(idx in tabsList))
       return
 
-    let curTab = tabsList[idx]
+    local curTab = tabsList[idx]
     curTabIdx = idx
     roomType = curTab.roomType
 
-    let curTabBlock = curTab.tabBlockName
+    local curTabBlock = curTab.tabBlockName
     foreach(blockName in tabBlocksList)
       showSceneBtn(blockName, blockName == curTabBlock)
 
@@ -100,16 +100,16 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 
   function initCategories()
   {
-    let show = ::g_chat_categories.isEnabled()
+    local show = ::g_chat_categories.isEnabled()
     showSceneBtn("thread_category_header", show)
-    let cListObj = showSceneBtn("categories_list", show)
+    local cListObj = showSceneBtn("categories_list", show)
     if (show)
       ::g_chat_categories.fillCategoriesListObj(cListObj, ::g_chat_categories.defaultCategoryName, this)
   }
 
   function getSelThreadCategoryName()
   {
-    let cListObj = scene.findObject("categories_list")
+    local cListObj = scene.findObject("categories_list")
     return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, ::g_chat_categories.defaultCategoryName)
   }
 
@@ -125,7 +125,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     else
     {
       isValuesValid = !::is_chat_message_empty(curName)
-      let onlyDigits = regexp2(@"\D").replace("", curName)
+      local onlyDigits = regexp2(@"\D").replace("", curName)
       isValuesValid = isValuesValid && onlyDigits.len() <= ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
     }
 
@@ -134,8 +134,8 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 
   function onChangeRoomName(obj)
   {
-    let value = obj.getValue()
-    let validValue = ::g_chat.validateRoomName(value)
+    local value = obj.getValue()
+    local validValue = ::g_chat.validateRoomName(value)
     if (value != validValue)
     {
       obj.setValue(validValue)
@@ -168,11 +168,11 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 
   function createChatRoom()
   {
-    let name = "#" + clearBorderSymbols(curName, [" "])
+    local name = "#" + clearBorderSymbols(curName, [" "])
     local pass = scene.findObject("room_password").getValue()
     if(pass != "")
       pass = clearBorderSymbols(pass, [" "])
-    let invitationsOnly = guiScene["room_invitation"].getValue()
+    local invitationsOnly = guiScene["room_invitation"].getValue()
     if (::menu_chat_handler)
     {
       ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, (@(name, invitationsOnly) function () {

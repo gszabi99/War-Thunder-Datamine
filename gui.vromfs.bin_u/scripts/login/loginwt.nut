@@ -1,19 +1,19 @@
-let statsd = require("statsd")
-let penalties = require("%scripts/penitentiary/penalties.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let contentStateModule = require("%scripts/clientState/contentState.nut")
-let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
-let fxOptions = require("%scripts/options/fxOptions.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
-let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
-let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+local statsd = require("statsd")
+local penalties = require("scripts/penitentiary/penalties.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local contentStateModule = require("scripts/clientState/contentState.nut")
+local checkUnlocksByAbTest = require("scripts/unlocks/checkUnlocksByAbTest.nut")
+local fxOptions = require("scripts/options/fxOptions.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
+local { checkBadWeapons } = require("scripts/weaponry/weaponryInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { updatePlayerRankByCountries } = require("scripts/ranks.nut")
+local { PT_STEP_STATUS, startPseudoThread } = require("scripts/utils/pseudoThread.nut")
+local { PRICE, ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
+local { isNeedFirstCountryChoice } = require("scripts/firstChoice/firstChoice.nut")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -61,7 +61,7 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 
 ::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
 {
-  let urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
+  local urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
   openUrl(::get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
@@ -142,7 +142,7 @@ g_login.initConfigs <- function initConfigs(cb)
     }
     function() {
       ::ItemsManager.collectUserlogItemdefs()
-      let arr = []
+      local arr = []
       foreach(unit in ::all_units)
         if(unit.marketplaceItemdefId != null)
           arr.append(unit.marketplaceItemdefId)
@@ -180,10 +180,10 @@ g_login.initConfigs <- function initConfigs(cb)
     function()
     {
       // FIXME: it is better to get string from NDA text!
-      let versions = ["nda_version", "nda_version_tanks", "eula_version"]
+      local versions = ["nda_version", "nda_version_tanks", "eula_version"]
       foreach (sver in versions)
       {
-        let l = ::loc(sver, "-1")
+        local l = ::loc(sver, "-1")
         try { getroottable()[sver] = l.tointeger() }
         catch(e) { dagor.assertf(0, "can't convert '"+l+"' to version "+sver) }
       }
@@ -286,7 +286,7 @@ g_login.onLoggedInChanged <- function onLoggedInChanged()
 
 g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 {
-  let handler = ::gui_start_mainmenu(false)
+  local handler = ::gui_start_mainmenu(false)
   if (!handler)
     return //was error on load mainmenu, and was called signout on such error
 
@@ -304,7 +304,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
       setControlTypeByID("ct_xinput")
     else
     {
-      let onlyDevicesChoice = !::has_feature("Profile")
+      local onlyDevicesChoice = !::has_feature("Profile")
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
     }
   }
@@ -313,7 +313,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 
   if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable())
   {
-    let patchNoteText = ::g_controls_presets.getPatchNoteTextForCurrentPreset()
+    local patchNoteText = ::g_controls_presets.getPatchNoteTextForCurrentPreset()
     ::scene_msg_box("new_controls_version_msg_box", null,
       ::loc("mainmenu/new_controls_version_msg_box", { patchnote = patchNoteText }),
       [["yes", function () { ::g_controls_presets.setHighestVersionOfCurrentPreset() }],
@@ -386,7 +386,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
   {
     local anyUG = false
 
-    let mis_array = ::get_meta_missions_info(::GM_SINGLE_MISSION)
+    local mis_array = ::get_meta_missions_info(::GM_SINGLE_MISSION)
     foreach (misBlk in mis_array)
       if (::is_user_mission(misBlk))
       {
@@ -396,15 +396,15 @@ g_login.statsdOnLogin <- function statsdOnLogin()
         break
       }
 
-    let userSkins = ::get_user_skins_blk()
+    local userSkins = ::get_user_skins_blk()
     local haveUserSkin = false
     for (local i = 0; i < userSkins.blockCount(); i++)
     {
-      let air = userSkins.getBlock(i)
-      let skins = air % "skin"
+      local air = userSkins.getBlock(i)
+      local skins = air % "skin"
       foreach (skin in skins)
       {
-        let folder = skin.name
+        local folder = skin.name
         if (folder.indexof("template") == null)
         {
           haveUserSkin = true
@@ -419,10 +419,10 @@ g_login.statsdOnLogin <- function statsdOnLogin()
     if (haveUserSkin)
       statsd.send_counter("sq.ug.haveus", 1)
 
-    let cdb = ::get_user_skins_profile_blk()
+    local cdb = ::get_user_skins_profile_blk()
     for (local i = 0; i < cdb.paramCount(); i++)
     {
-      let skin = cdb.getParamValue(i)
+      local skin = cdb.getParamValue(i)
       if ((typeof(skin) == "string") && (skin != "") && (skin.indexof("template")==null))
       {
         anyUG = true
@@ -432,11 +432,11 @@ g_login.statsdOnLogin <- function statsdOnLogin()
       }
     }
 
-    let lcfg = DataBlock()
+    local lcfg = DataBlock()
     ::get_localization_blk_copy(lcfg)
     if (lcfg.locTable != null)
     {
-      let files = lcfg.locTable % "file"
+      local files = lcfg.locTable % "file"
       foreach (file in files)
         if (file.indexof("usr_") != null)
         {

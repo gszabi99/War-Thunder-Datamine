@@ -1,13 +1,13 @@
-let u = require("%sqStdLibs/helpers/u.nut")
-let time = require("%scripts/time.nut")
-let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let replayMetadata = require("%scripts/replays/replayMetadata.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarUnitName } = ::require_native("hudActionBar")
-let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local time = require("scripts/time.nut")
+local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
+local replayMetadata = require("scripts/replays/replayMetadata.nut")
+local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarUnitName } = ::require_native("hudActionBar")
+local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
 local { onSpectatorMode, switchSpectatorTargetById } = require_native("guiSpectator")
 
 enum SPECTATOR_MODE {
@@ -26,7 +26,7 @@ enum SPECTATOR_CHAT_TAB {
 ::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   scene  = null
-  sceneBlkName = "%gui/spectator.blk"
+  sceneBlkName = "gui/spectator.blk"
   wndType      = handlerType.CUSTOM
 
   debugMode = false
@@ -142,9 +142,9 @@ enum SPECTATOR_CHAT_TAB {
     ::g_script_reloader.registerPersistentData("Spectator", this, [ "debugMode" ])
 
     gameType = ::get_game_type()
-    let mplayerTable = ::get_local_mplayer() || {}
-    let isReplay = ::is_replay_playing()
-    let replayProps = ("get_replay_props" in getroottable()) ? ::get_replay_props() : {}
+    local mplayerTable = ::get_local_mplayer() || {}
+    local isReplay = ::is_replay_playing()
+    local replayProps = ("get_replay_props" in getroottable()) ? ::get_replay_props() : {}
 
     if (isReplay)
     {
@@ -175,7 +175,7 @@ enum SPECTATOR_CHAT_TAB {
           target_stats  = false
       })
 
-    let objReplayControls = scene.findObject("controls_div")
+    local objReplayControls = scene.findObject("controls_div")
     ::showBtnTable(objReplayControls, {
         ID_FLIGHTMENU               = useTouchscreen
         ID_MPSTATSCREEN             = mode != SPECTATOR_MODE.REPLAY
@@ -213,7 +213,7 @@ enum SPECTATOR_CHAT_TAB {
 
     for (local i = 0; i < objReplayControls.childrenCount(); i++)
     {
-      let obj = objReplayControls.getChild(i)
+      local obj = objReplayControls.getChild(i)
       if (obj?.is_shortcut && obj?.id)
       {
         local hotkeys = ::get_shortcut_text({
@@ -246,12 +246,12 @@ enum SPECTATOR_CHAT_TAB {
 
     if (mode == SPECTATOR_MODE.REPLAY)
     {
-      let timeSpeeds = ("get_time_speeds_list" in getroottable()) ? ::get_time_speeds_list() : [ ::get_time_speed() ]
+      local timeSpeeds = ("get_time_speeds_list" in getroottable()) ? ::get_time_speeds_list() : [ ::get_time_speed() ]
       replayTimeSpeedMin = timeSpeeds[0]
       replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
-      let info = ::current_replay.len() && get_replay_info(::current_replay)
-      let comments = info && ::getTblValue("comments", info)
+      local info = ::current_replay.len() && get_replay_info(::current_replay)
+      local comments = info && ::getTblValue("comments", info)
       if (comments)
       {
         replayAuthorUserId = ::getTblValue("authorUserId", comments, replayAuthorUserId)
@@ -259,7 +259,7 @@ enum SPECTATOR_CHAT_TAB {
         scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(replayTimeTotal))
       }
 
-      let replaySessionId = ::getTblValue("sessionId", replayProps, "")
+      local replaySessionId = ::getTblValue("sessionId", replayProps, "")
       scene.findObject("txt_replay_session_id").setValue(replaySessionId)
     }
 
@@ -299,7 +299,7 @@ enum SPECTATOR_CHAT_TAB {
 
   function fillTabs()
   {
-    let view = {
+    local view = {
       tabs = []
     }
     foreach(tab in tabsList)
@@ -307,13 +307,13 @@ enum SPECTATOR_CHAT_TAB {
         tabName = ::loc(tab.locId)
         id = tab.id
         alert = "no"
-        cornerImg = "#ui/gameuiskin#new_icon.svg"
+        cornerImg = "#ui/gameuiskin#new_icon"
         cornerImgId = "new_msgs"
         cornerImgTiny = true
       })
 
-    let tabsObj = showSceneBtn("tabs", true)
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    local tabsObj = showSceneBtn("tabs", true)
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
@@ -322,15 +322,15 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (isMultiplayer)
     {
-      chatData = ::loadGameChatToObj(scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
+      chatData = ::loadGameChatToObj(scene.findObject("chat_container"), "gui/chat/gameChatSpectator.blk", this,
                                      {selfHideInput = true, hiddenInput = !canSendChatMessages })
 
-      let objGameChat = scene.findObject("gamechat")
+      local objGameChat = scene.findObject("gamechat")
       ::showBtnTable(objGameChat, {
           chat_input_div         = canSendChatMessages
           chat_input_placeholder = canSendChatMessages
       })
-      let objChatLogDiv = objGameChat.findObject("chat_log_tdiv")
+      local objChatLogDiv = objGameChat.findObject("chat_log_tdiv")
       objChatLogDiv.size = canSendChatMessages ? objChatLogDiv.sizeWithInput : objChatLogDiv.sizeWithoutInput
 
       if (mode == SPECTATOR_MODE.SKIRMISH || mode == SPECTATOR_MODE.SUPERVISOR)
@@ -360,16 +360,16 @@ enum SPECTATOR_CHAT_TAB {
       return
 
     updateCooldown -= dt
-    let isUpdateByCooldown = updateCooldown <= 0.0
+    local isUpdateByCooldown = updateCooldown <= 0.0
 
-    let targetNick  = ::get_spectator_target_name()
-    let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
-    let isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
+    local targetNick  = ::get_spectator_target_name()
+    local hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
+    local isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
     lastTargetNick  = targetNick
     lastHudUnitType = hudUnitType
 
-    let friendlyTeam = ::get_player_army_for_hud()
-    let friendlyTeamSwitched = friendlyTeam != lastFriendlyTeam
+    local friendlyTeam = ::get_player_army_for_hud()
+    local friendlyTeamSwitched = friendlyTeam != lastFriendlyTeam
     lastFriendlyTeam = friendlyTeam
 
     if (isUpdateByCooldown || isTargetSwitched || friendlyTeamSwitched)
@@ -419,7 +419,7 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (player == null)
       return  ""
-    let name = ::g_contacts.getPlayerFullName(
+    local name = ::g_contacts.getPlayerFullName(
       getPlayerName(player.name), // can add platform icon
       needClanTag && !player.isBot ? player.clanTag : "")
     return needColored ? ::colorize(getPlayerColor(player), name) : name
@@ -445,8 +445,8 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (!player || !player.ingame || player.isDead)
       return ""
-    let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
-    let list = []
+    local briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
+    local list = []
     if (::getTblValue("isExtinguisherActive", player, false))
       list.append(::loc("fire_extinguished"))
     else if (::getTblValue("isBurning", player, false))
@@ -496,7 +496,7 @@ enum SPECTATOR_CHAT_TAB {
         ? teams[0].players[0]
         : null
 
-    let targetId = ::get_spectator_target_id()
+    local targetId = ::get_spectator_target_id()
     if (targetId >= 0)
       return getPlayer(targetId)
 
@@ -507,8 +507,8 @@ enum SPECTATOR_CHAT_TAB {
 
   function setTargetInfo(player)
   {
-    let infoObj = scene.findObject("target_info")
-    let waitingObj = scene.findObject("waiting_for_target_spawn")
+    local infoObj = scene.findObject("target_info")
+    local waitingObj = scene.findObject("waiting_for_target_spawn")
     if (!::checkObj(infoObj) || !::checkObj(waitingObj))
       return
 
@@ -522,7 +522,7 @@ enum SPECTATOR_CHAT_TAB {
 
     if (isMultiplayer)
     {
-      let statusObj = infoObj.findObject("target_state")
+      local statusObj = infoObj.findObject("target_state")
       statusObj.setValue(getPlayerStateDesc(player))
     }
 
@@ -531,7 +531,7 @@ enum SPECTATOR_CHAT_TAB {
 
   function updateTarget(targetSwitched = false, needFocusTargetTable = false)
   {
-    let player = getTargetPlayer()
+    local player = getTargetPlayer()
 
     if (targetSwitched)
     {
@@ -574,9 +574,9 @@ enum SPECTATOR_CHAT_TAB {
         replayMarkersEnabled = ::is_replay_markers_enabled()
         scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = replayMarkersEnabled ? "yes" : "no"
       }
-      let replayTimeCurrent = ::get_usefull_total_time()
+      local replayTimeCurrent = ::get_usefull_total_time()
       scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
-      let progress = (replayTimeTotal > 0) ? (1000 * replayTimeCurrent / replayTimeTotal).tointeger() : 0
+      local progress = (replayTimeTotal > 0) ? (1000 * replayTimeCurrent / replayTimeTotal).tointeger() : 0
       if (progress != replayTimeProgress)
       {
         replayTimeProgress = progress
@@ -597,13 +597,13 @@ enum SPECTATOR_CHAT_TAB {
 
     if (canControlCameras && targetSwitched)
     {
-      let player = getTargetPlayer()
-      let isValid = player != null
-      let isPlayer = player ? !player.isBot : false
-      let userId   = player ? ::getTblValue("userId", player, 0) : 0
-      let isAuthor = userId == replayAuthorUserId
-      let isAuthorUnknown = replayAuthorUserId == -1
-      let isAircraft = ::isInArray(lastHudUnitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])
+      local player = getTargetPlayer()
+      local isValid = player != null
+      local isPlayer = player ? !player.isBot : false
+      local userId   = player ? ::getTblValue("userId", player, 0) : 0
+      local isAuthor = userId == replayAuthorUserId
+      local isAuthorUnknown = replayAuthorUserId == -1
+      local isAircraft = ::isInArray(lastHudUnitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])
 
       ::enableBtnTable(scene, {
           ID_CAMERA_DEFAULT           = isValid
@@ -623,19 +623,19 @@ enum SPECTATOR_CHAT_TAB {
 
   function reinitDmgIndicator()
   {
-    let obj = scene.findObject("spectator_hud_damage")
+    local obj = scene.findObject("spectator_hud_damage")
     if (::check_obj(obj))
       obj.show(getTargetPlayer() != null)
   }
 
   function statTblGetSelectedPlayer(obj)
   {
-    let teamNum = ::getObjIdByPrefix(obj, "table_team")
+    local teamNum = ::getObjIdByPrefix(obj, "table_team")
     if (!teamNum || (teamNum != "1" && teamNum != "2"))
       return null
-    let teamIndex = teamNum.tointeger() - 1
-    let players =  teams[teamIndex].players
-    let value = obj.getValue()
+    local teamIndex = teamNum.tointeger() - 1
+    local players =  teams[teamIndex].players
+    local value = obj.getValue()
     if (value < 0 || value >= players.len())
       return null
 
@@ -661,7 +661,7 @@ enum SPECTATOR_CHAT_TAB {
 
   function onPlayerRClick(obj)
   {
-    let player = statTblGetSelectedPlayer(obj)
+    local player = statTblGetSelectedPlayer(obj)
     if (player)
       ::session_player_rmenu(
         this,
@@ -686,14 +686,14 @@ enum SPECTATOR_CHAT_TAB {
 
   function selectTargetTeamBlock()
   {
-    let player = getTargetPlayer()
+    local player = getTargetPlayer()
     if (!player)
       return false
 
     saveLastTargetPlayerData(player)
     statSelPlayerId[lastTargetData.team] = player.id
 
-    let tblObj = getTeamTableObj(player.team)
+    local tblObj = getTeamTableObj(player.team)
     if (!tblObj)
       return false
     ::move_mouse_on_child_by_value(tblObj)
@@ -711,15 +711,15 @@ enum SPECTATOR_CHAT_TAB {
     if (ignoreUiInput)
       return
 
-    let player = statTblGetSelectedPlayer(obj)
+    local player = statTblGetSelectedPlayer(obj)
     if (!player)
       return
 
-    let curPlayer = getTargetPlayer()
+    local curPlayer = getTargetPlayer()
     if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player))
     {
-      let selIndex = ::get_obj_valid_index(obj)
-      let selectedPlayerBlock = obj.getChild(selIndex >= 0? selIndex : 0)
+      local selIndex = ::get_obj_valid_index(obj)
+      local selectedPlayerBlock = obj.getChild(selIndex >= 0? selIndex : 0)
       ::session_player_rmenu(
         this,
         player,
@@ -753,21 +753,21 @@ enum SPECTATOR_CHAT_TAB {
 
   function onBtnShortcut(obj)
   {
-    let id = ::check_obj(obj) ? (obj?.id ?? "") : ""
+    local id = ::check_obj(obj) ? (obj?.id ?? "") : ""
     if (id.len() > 3 && id.slice(0, 3) == "ID_")
       toggleShortcut(id)
   }
 
   function onMapClick(obj = null)
   {
-    let mapLargePanelObj = scene.findObject("map_large_div")
+    local mapLargePanelObj = scene.findObject("map_large_div")
     if (!::checkObj(mapLargePanelObj))
       return
-    let mapLargeObj = mapLargePanelObj.findObject("tactical_map")
+    local mapLargeObj = mapLargePanelObj.findObject("tactical_map")
     if (!::checkObj(mapLargeObj))
       return
 
-    let toggle = !mapLargePanelObj.isVisible()
+    local toggle = !mapLargePanelObj.isVisible()
     mapLargePanelObj.show(toggle)
     mapLargeObj.show(toggle)
     mapLargeObj.enable(toggle)
@@ -777,11 +777,11 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (!::checkObj(obj) || !("toggleObj" in obj))
       return
-    let toggleObj = scene.findObject(obj?.toggleObj)
+    local toggleObj = scene.findObject(obj?.toggleObj)
     if (!::checkObj(toggleObj))
       return
 
-    let toggle = !toggleObj.isVisible()
+    local toggle = !toggleObj.isVisible()
     toggleObj.show(toggle)
     obj.toggled = toggle ? "yes" : "no"
 
@@ -800,7 +800,7 @@ enum SPECTATOR_CHAT_TAB {
 
   function getTableObj(index)
   {
-    let obj = scene.findObject($"table_team{index + 1}")
+    local obj = scene.findObject($"table_team{index + 1}")
     return ::check_obj(obj) ? obj : null
   }
 
@@ -811,10 +811,10 @@ enum SPECTATOR_CHAT_TAB {
 
   function getTeamPlayers(teamId)
   {
-    let tbl = (teamId != 0) ? ::get_mplayers_list(teamId, true) : [ ::get_local_mplayer() ]
+    local tbl = (teamId != 0) ? ::get_mplayers_list(teamId, true) : [ ::get_local_mplayer() ]
     for (local i = tbl.len() - 1; i >= 0; i--)
     {
-      let player = tbl[i]
+      local player = tbl[i]
       if (player.spectator
         || (mode == SPECTATOR_MODE.SKIRMISH
           && (player.state != ::PLAYER_IN_FLIGHT || player.isDead) && !player.deaths))
@@ -851,7 +851,7 @@ enum SPECTATOR_CHAT_TAB {
 
   function getTeamClanTag(players)
   {
-    let clanTag = players?[0]?.clanTag ?? ""
+    local clanTag = players?[0]?.clanTag ?? ""
     if (players.len() < 2 || clanTag == "")
       return ""
     foreach (p in players)
@@ -862,21 +862,21 @@ enum SPECTATOR_CHAT_TAB {
 
   function getPlayersData()
   {
-    let _teams = array(2, null)
-    let isMpMode = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
-    let isPvP = !!(gameType & ::GT_VERSUS)
-    let isTeamplay = isPvP && ::is_mode_with_teams(gameType)
+    local _teams = array(2, null)
+    local isMpMode = !!(gameType & ::GT_VERSUS) || !!(gameType & ::GT_COOPERATIVE)
+    local isPvP = !!(gameType & ::GT_VERSUS)
+    local isTeamplay = isPvP && ::is_mode_with_teams(gameType)
 
     if (isTeamplay || !canSeeOppositeTeam)
     {
-      let localTeam = ::get_mp_local_team() != 2 ? 1 : 2
-      let isMyTeamFriendly = localTeam == ::get_player_army_for_hud()
+      local localTeam = ::get_mp_local_team() != 2 ? 1 : 2
+      local isMyTeamFriendly = localTeam == ::get_player_army_for_hud()
 
       for (local i = 0; i < 2; i++)
       {
-        let teamId = ((i == 0) == (localTeam == 1)) ? Team.A : Team.B
-        let color = ((i == 0) == isMyTeamFriendly)? "blue" : "red"
-        let players = getTeamPlayers(teamId)
+        local teamId = ((i == 0) == (localTeam == 1)) ? Team.A : Team.B
+        local color = ((i == 0) == isMyTeamFriendly)? "blue" : "red"
+        local players = getTeamPlayers(teamId)
 
         _teams[i] = {
           active = true
@@ -890,9 +890,9 @@ enum SPECTATOR_CHAT_TAB {
     }
     else if (isMpMode)
     {
-      let teamId = isTeamplay ? ::get_mp_local_team() : ::GET_MPLAYERS_LIST
-      let color  = isTeamplay ? "blue" : "red"
-      let players = getTeamPlayers(teamId)
+      local teamId = isTeamplay ? ::get_mp_local_team() : ::GET_MPLAYERS_LIST
+      local color  = isTeamplay ? "blue" : "red"
+      local players = getTeamPlayers(teamId)
 
       _teams[0] = {
         active = true
@@ -913,9 +913,9 @@ enum SPECTATOR_CHAT_TAB {
     }
     else
     {
-      let teamId = 0
-      let color = "blue"
-      let players = getTeamPlayers(teamId)
+      local teamId = 0
+      local color = "blue"
+      local players = getTeamPlayers(teamId)
 
       _teams[0] = {
         active = false
@@ -938,20 +938,20 @@ enum SPECTATOR_CHAT_TAB {
     local length = 0
     foreach (info in _teams)
       length = max(length, info.players.len())
-    let maxNoScroll = ::global_max_players_versus / 2
+    local maxNoScroll = ::global_max_players_versus / 2
     statNumRows = min(maxNoScroll, length)
     return _teams
   }
 
   function updateStats()
   {
-    let _teams = getPlayersData()
+    local _teams = getPlayersData()
     foreach (idx, info in _teams)
     {
-      let tblObj = getTableObj(info.index)
+      local tblObj = getTableObj(info.index)
       if (tblObj)
       {
-        let infoPrev = ::getTblValue(idx, teams)
+        local infoPrev = ::getTblValue(idx, teams)
         if (info.active)
           statTblUpdateInfo(tblObj, info, infoPrev)
         if (info.active != ::getTblValue("active", infoPrev, true))
@@ -966,15 +966,15 @@ enum SPECTATOR_CHAT_TAB {
 
   function addPlayerRows(objTbl, teamInfo)
   {
-    let totalRows = objTbl.childrenCount()
-    let newRows = teamInfo.players.len() - totalRows
+    local totalRows = objTbl.childrenCount()
+    local newRows = teamInfo.players.len() - totalRows
     if (newRows <= 0)
       return totalRows
 
-    let view = { rows = array(newRows, 1)
+    local view = { rows = array(newRows, 1)
                    iconLeft = teamInfo.index == 0
                  }
-    let data = ::handyman.renderCached(("%gui/hud/spectatorTeamRow"), view)
+    local data = ::handyman.renderCached(("gui/hud/spectatorTeamRow"), view)
     guiScene.appendWithBlk(objTbl, data, this)
     return totalRows
   }
@@ -995,47 +995,47 @@ enum SPECTATOR_CHAT_TAB {
 
   function statTblUpdateInfo(objTbl, teamInfo, infoPrev = null)
   {
-    let players = ::getTblValue("players", teamInfo)
+    local players = ::getTblValue("players", teamInfo)
     if (!::checkObj(objTbl) || !players)
       return
 
     guiScene.setUpdatesEnabled(false, false)
 
-    let prevPlayers = ::getTblValue("players", infoPrev)
-    let wasRows = addPlayerRows(objTbl, teamInfo)
-    let totalRows = objTbl.childrenCount()
+    local prevPlayers = ::getTblValue("players", infoPrev)
+    local wasRows = addPlayerRows(objTbl, teamInfo)
+    local totalRows = objTbl.childrenCount()
 
-    let selPlayerId = getTblValue(teamInfo.index, statSelPlayerId)
+    local selPlayerId = getTblValue(teamInfo.index, statSelPlayerId)
     local selIndex = null
 
-    let needClanTags = (teamInfo?.clanTag ?? "") == ""
+    local needClanTags = (teamInfo?.clanTag ?? "") == ""
 
     for(local i = 0; i < totalRows; i++)
     {
-      let player = ::getTblValue(i, players)
+      local player = ::getTblValue(i, players)
       if (i < wasRows && !isPlayerChanged(player, ::getTblValue(i, prevPlayers)))
         continue
 
-      let obj = objTbl.getChild(i)
+      local obj = objTbl.getChild(i)
       obj.show(player != null)
       if (!player)
         continue
 
-      let nameObj = obj.findObject("name")
+      local nameObj = obj.findObject("name")
       if (!::checkObj(nameObj)) //some validation
         continue
 
-      let playerName = getPlayerNick(player)
-      let playerNameShort = needClanTags ? playerName : getPlayerNick(player, false, false)
+      local playerName = getPlayerNick(player)
+      local playerNameShort = needClanTags ? playerName : getPlayerNick(player, false, false)
       nameObj.setValue(playerNameShort)
 
-      let unitId = player.aircraftName != "" ? player.aircraftName : null
-      let iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
+      local unitId = player.aircraftName != "" ? player.aircraftName : null
+      local iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
         : unitId ? ::getUnitClassIco(unitId)
         : "#ui/gameuiskin#dead.svg"
-      let iconType = unitId ? getUnitRole(unitId) : ""
-      let stateDesc = getPlayerStateDesc(player)
-      let malfunctionDesc = getUnitMalfunctionDesc(player)
+      local iconType = unitId ? getUnitRole(unitId) : ""
+      local stateDesc = getPlayerStateDesc(player)
+      local malfunctionDesc = getUnitMalfunctionDesc(player)
 
       obj.hero = player.isLocal ? "yes" : "no"
       obj.squad = player.isInHeroSquad ? "yes" : "no"
@@ -1049,22 +1049,22 @@ enum SPECTATOR_CHAT_TAB {
       if (debugMode)
         obj.tooltip += "\n\n" + getPlayerDebugTooltipText(player)
 
-      let unitIcoObj = obj.findObject("unit-ico")
+      local unitIcoObj = obj.findObject("unit-ico")
       unitIcoObj["background-image"] = iconImg
       unitIcoObj.shopItemType = iconType
 
-      let briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
-      let weaponType = (unitId && ("weapon" in player)) ?
+      local briefMalfunctionState = ::getTblValue("briefMalfunctionState", player, 0)
+      local weaponType = (unitId && ("weapon" in player)) ?
           ::getWeaponTypeIcoByWeapon(unitId, player.weapon, true) : ::getWeaponTypeIcoByWeapon("", "")
 
       foreach (bit, w in weaponIcons)
       {
-        let weaponIcoObj = obj.findObject(w + "-ico")
+        local weaponIcoObj = obj.findObject(w + "-ico")
         weaponIcoObj.show(weaponType[w] != "")
         weaponIcoObj["reloading"] = (briefMalfunctionState & bit) ? "yes" : "no"
       }
 
-      let battleStateIconClass =
+      local battleStateIconClass =
         (!player.ingame || player.isDead)                     ? "" :
         ::getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
         ::getTblValue("isBurning", player, false)             ? "IsBurning" :
@@ -1089,7 +1089,7 @@ enum SPECTATOR_CHAT_TAB {
     if (objTbl.team != teamInfo.color)
       objTbl.team = teamInfo.color
 
-    let headerObj = objTbl.getParent().getParent().findObject("header")
+    local headerObj = objTbl.getParent().getParent().findObject("header")
     if (::check_obj(headerObj))
       headerObj.setValue(teamInfo.clanTag)
 
@@ -1100,13 +1100,14 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (!player)
       return ""
-    let extra = []
+    local extra = []
     foreach (i, v in player)
     {
       if (i == "uid")
         continue
-      let val = (i == "state") ? playerStateToString(v) : v
-      extra.append(i + " = " + val)
+      if (i == "state")
+        v = playerStateToString(v)
+      extra.append(i + " = " + v)
     }
     extra.sort()
     return ::g_string.implode(extra, "\n")
@@ -1132,7 +1133,7 @@ enum SPECTATOR_CHAT_TAB {
   function updateClientHudOffset()
   {
     guiScene.setUpdatesEnabled(true, true)
-    let obj = scene.findObject("stats_left")
+    local obj = scene.findObject("stats_left")
     ::spectator_air_hud_offset_x = (::checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
   }
 
@@ -1141,18 +1142,18 @@ enum SPECTATOR_CHAT_TAB {
     if (!::checkObj(obj))
       return
 
-    let tabIdx = obj.getValue()
+    local tabIdx = obj.getValue()
     if (tabIdx < 0 || tabIdx >= obj.childrenCount())
       return
 
-    let tabObj = obj.getChild(tabIdx)
-    let newTabId = tabObj?.id
+    local tabObj = obj.getChild(tabIdx)
+    local newTabId = tabObj?.id
     if (!newTabId || newTabId == curTabId)
       return
 
     foreach(tab in tabsList)
     {
-      let objContainer = scene.findObject(tab.containerId)
+      local objContainer = scene.findObject(tab.containerId)
       if (!::checkObj(objContainer))
         continue
 
@@ -1172,7 +1173,7 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (!scene.isValid() || tabId == curTabId)
       return
-    let obj = scene.findObject(tabId)
+    local obj = scene.findObject(tabId)
     if (::checkObj(obj))
       obj.findObject("new_msgs").show(true)
   }
@@ -1199,7 +1200,7 @@ enum SPECTATOR_CHAT_TAB {
       onToggleButtonClick(obj)
 
     obj = scene.findObject("tabs")
-    let chatTabId = SPECTATOR_CHAT_TAB.CHAT
+    local chatTabId = SPECTATOR_CHAT_TAB.CHAT
     if (::checkObj(obj) && curTabId != chatTabId)
       obj.setValue(tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
 
@@ -1214,8 +1215,8 @@ enum SPECTATOR_CHAT_TAB {
 
   function onPlayerRequestedArtillery(userId)
   {
-    let player = getPlayerByUserId(userId)
-    let color = isPlayerFriendly(player) ? "hudColorDarkBlue" : "hudColorDarkRed"
+    local player = getPlayerByUserId(userId)
+    local color = isPlayerFriendly(player) ? "hudColorDarkBlue" : "hudColorDarkRed"
     addHistroyLogMessage(::colorize(color, ::loc("artillery_strike/called_by_player", { player =  getPlayerNick(player, true) })))
   }
 
@@ -1238,7 +1239,7 @@ enum SPECTATOR_CHAT_TAB {
           return
     if (msg.id == -1 && msg.text != "")
     {
-      let skipDupTime = msg.time - historySkipDuplicatesSec
+      local skipDupTime = msg.time - historySkipDuplicatesSec
       for (local i = historyLog.len() - 1; i >= 0; i--)
       {
         if (historyLog[i].time < skipDupTime && msg.type != ::HUD_MSG_DEATH_REASON)
@@ -1281,7 +1282,7 @@ enum SPECTATOR_CHAT_TAB {
     if (!::checkObj(scene))
       return
 
-    let obj = scene.findObject("history_log")
+    local obj = scene.findObject("history_log")
     if (::checkObj(obj))
     {
       if (updateVisibility)
@@ -1291,44 +1292,44 @@ enum SPECTATOR_CHAT_TAB {
       foreach (msg in historyLog)
         msg.message <- buildHistoryLogMessage(msg)
 
-      let historyLogMessages = u.map(historyLog, @(msg) msg.message)
+      local historyLogMessages = u.map(historyLog, @(msg) msg.message)
       obj.setValue(obj.isVisible() ? ::g_string.implode(historyLogMessages, "\n") : "")
     }
   }
 
   function buildHistoryLogMessage(msg)
   {
-    let timestamp = time.secondsToString(msg.time, false) + " "
+    local timestamp = time.secondsToString(msg.time, false) + " "
     switch (msg.type)
     {
       // All players messages
       case ::HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
-        let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
-        let icon = ::HudBattleLog.getActionTextIconic(msg)
+        local text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
+        local icon = ::HudBattleLog.getActionTextIconic(msg)
         return timestamp + ::colorize("userlogColoredText", $"{icon} {text}")
         break
 
       case ::HUD_MSG_STREAK_EX: // Any player got streak
-        let text = ::HudBattleLog.msgStreakToText(msg, true)
+        local text = ::HudBattleLog.msgStreakToText(msg, true)
         return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
 
       case ::HUD_MSG_STREAK: // Any player got streak (deprecated)
         if (::HUD_MSG_STREAK_EX > 0) // compatibility
           return ""
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+        local text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
         return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
 
       // Mission objectives
       case ::HUD_MSG_OBJECTIVE: // Hero team mission objective
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+        local text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
         return timestamp + ::colorize("white", ::loc("sm_objective") + ::loc("ui/colon") + text)
         break
 
       // Team progress
       case ::HUD_MSG_DIALOG: // Hero team base capture events
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+        local text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
         return timestamp + ::colorize("commonTextColor", text)
         break
 
@@ -1340,7 +1341,7 @@ enum SPECTATOR_CHAT_TAB {
       case ::HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
       case ::HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
       case historyLogCustomMsgType: // Custom messages sent by script
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+        local text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
         return timestamp + ::colorize("commonTextColor", text)
         break
       default:
@@ -1353,17 +1354,17 @@ enum SPECTATOR_CHAT_TAB {
     if (::checkObj(scanObj))
       foreach (objId, keys in objects)
       {
-        let obj = scanObj.findObject(objId)
+        local obj = scanObj.findObject(objId)
         if (::checkObj(obj))
         {
           local hotkeys = ""
           if ("shortcuts" in keys)
           {
-            let shortcuts = ::get_shortcuts(keys.shortcuts)
-            let locNames = []
+            local shortcuts = ::get_shortcuts(keys.shortcuts)
+            local locNames = []
             foreach (idx, data in shortcuts)
             {
-              let shortcutsText = ::get_shortcut_text({
+              local shortcutsText = ::get_shortcut_text({
                 shortcuts = shortcuts,
                 shortcutId = idx,
                 strip_tags = true
@@ -1375,14 +1376,14 @@ enum SPECTATOR_CHAT_TAB {
           }
           else if ("keys" in keys)
           {
-            let keysLocalized = u.map(keys.keys, ::loc)
+            local keysLocalized = u.map(keys.keys, ::loc)
             hotkeys = ::g_string.implode(keysLocalized, ::loc("ui/comma"))
           }
 
           if (hotkeys != "")
           {
-            let tooltip = obj?.tooltip ?? ""
-            let add = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
+            local tooltip = obj?.tooltip ?? ""
+            local add = "<color=@hotkeyColor>" + ::loc("ui/parentheses/space", {text = hotkeys}) + "</color>"
             obj.tooltip = tooltip + add
           }
         }
@@ -1391,10 +1392,10 @@ enum SPECTATOR_CHAT_TAB {
 
   function recalculateLayout()
   {
-    let staticBoxes = []
+    local staticBoxes = []
     foreach (objId in staticWidgets)
     {
-      let obj = scene.findObject(objId)
+      local obj = scene.findObject(objId)
       if (!::checkObj(obj))
         continue
       if (obj.isVisible())
@@ -1403,7 +1404,7 @@ enum SPECTATOR_CHAT_TAB {
 
     foreach (objId, positions in movingWidgets)
     {
-      let obj = scene.findObject(objId)
+      local obj = scene.findObject(objId)
       if (!::checkObj(obj))
         continue
 
@@ -1415,16 +1416,16 @@ enum SPECTATOR_CHAT_TAB {
       }
 
       local posStr = "0, 0"
-      let size = obj.getSize()
+      local size = obj.getSize()
       foreach (p in positions)
       {
         posStr = p
-        let pos = ::split(posStr, ",")
+        local pos = ::split(posStr, ",")
         if (pos.len() != 2)
           break
         foreach (i, v in pos)
           pos[i] = guiScene.calcString(v, obj)
-        let b1 = ::GuiBox(pos[0], pos[1], pos[0] + size[0], pos[1] + size[1])
+        local b1 = ::GuiBox(pos[0], pos[1], pos[0] + size[0], pos[1] + size[1])
         local fits = true
         foreach(b2 in staticBoxes)
         {
@@ -1445,7 +1446,7 @@ enum SPECTATOR_CHAT_TAB {
 
 ::spectator_debug_mode <- function spectator_debug_mode()
 {
-  let handler = ::is_dev_version && ::handlersManager.findHandlerClassInScene(::Spectator)
+  local handler = ::is_dev_version && ::handlersManager.findHandlerClassInScene(::Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
@@ -1456,7 +1457,7 @@ enum SPECTATOR_CHAT_TAB {
 {
   if (name)
   {
-    let member = ::SessionLobby.isInRoom() ? ::SessionLobby.getMemberByName(name) : null
+    local member = ::SessionLobby.isInRoom() ? ::SessionLobby.getMemberByName(name) : null
     return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
   }
   return !!::getTblValue("spectator", ::get_local_mplayer() || {}, 0)
@@ -1471,14 +1472,14 @@ enum SPECTATOR_CHAT_TAB {
 
 ::on_player_requested_artillery <- function on_player_requested_artillery(userId) // called from client
 {
-  let handler = ::handlersManager.findHandlerClassInScene(::Spectator)
+  local handler = ::handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onPlayerRequestedArtillery(userId)
 }
 
 ::on_spectator_tactical_map_request <- function on_spectator_tactical_map_request() // called from client
 {
-  let handler = ::handlersManager.findHandlerClassInScene(::Spectator)
+  local handler = ::handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onMapClick()
 }

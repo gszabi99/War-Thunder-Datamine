@@ -213,18 +213,29 @@
             "tdiv": {
               "Button_text": {
                 "id": "cluster_select_button",
-                "width": "1@bigButtonWidth",
                 "on_click": "onOpenClusterSelect",
                 "btnName": "R3",
                 "refuseOpenHoverMenu": "no",
+                "class": "image",
+                "standardTextBtnWidth": "yes",
+                "isColoredImg": "yes",
+                "img": {
+                  "id": "cluster_select_button_icon",
+                  "margin-right": "3@sf/@pf",
+                  "background-image": "#ui/gameuiskin#new_icon_not_colored",
+                  "isUrgentWarningIcon": "yes",
+                  "wink": "no",
+                  "display": "hide"
+                },
                 "textarea": {
                   "id": "cluster_select_button_text",
                   "height": "ph",
-                  "width": "pw",
+                  "width": "fw",
                   "text": "#options/cluster",
                   "pare-text": "yes",
                   "input-transparent": "yes",
-                  "class": "buttonText"
+                  "class": "buttonText",
+                  "leftAligned": "no"
                 },
                 "ButtonImg": []
               }
@@ -706,8 +717,7 @@
                                 "pos": "0, 50%ph-50%h",
                                 "size": "22/720@sf, 22/720@sf",
                                 "background-color": "@white",
-                                "background-image": "#ui/gameuiskin#new_icon.svg",
-                                "background-svg-size": "22/720@sf, 22/720@sf"
+                                "background-image": "#ui/gameuiskin#new_icon"
                               },
                               "btnText": {
                                 "id": "gc_clanTag_name",
@@ -823,7 +833,7 @@
                             {
                               "img": {
                                 "isFirstLeft": "yes",
-                                "background-image": "#ui/gameuiskin#shop_warpoints.svg"
+                                "background-image": "#ui/gameuiskin#shop_warpoints"
                               }
                             },
                             {
@@ -858,7 +868,7 @@
                             "_on_click": "onOnlineShopEagles",
                             "img": {
                               "isFirstLeft": "yes",
-                              "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg"
+                              "background-image": "#ui/gameuiskin#shop_warpoints_premium"
                             },
                             "btnText": {
                               "id": "gc_gold",
@@ -892,7 +902,7 @@
                             },
                             {
                               "img": {
-                                "background-image": "#ui/gameuiskin#convert_xp.svg"
+                                "background-image": "#ui/gameuiskin#convert_xp"
                               }
                             },
                             {

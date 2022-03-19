@@ -1,4 +1,4 @@
-let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
+local focusTarget = require("sqDagui/focusFrame/bhvFocusFrameTarget.nut")
 
 //uses the first child to play anim.
 //set self position and size according to target
@@ -10,15 +10,15 @@ local unregisterFunc = null    //unregisterFunc(obj)
 local animFunc = null         //animFunc(animObj, curTargetObjData, prevTargetObjData), where objData = { obj, size, pos }
 local hideTgtImageTimeMsec = 0
 
-let minDiffForAnimPx = 10
+local minDiffForAnimPx = 10
 
 const SWITCH_OFF_TIME = 10000000
 
-let PROPID_TIMER_TIMENOW = ::dagui_propid.add_name_id("timer-timenow")
+local PROPID_TIMER_TIMENOW = ::dagui_propid.add_name_id("timer-timenow")
 ::dagui_propid.add_name_id("focusImageSource")
 ::dagui_propid.add_name_id("focusAnimColor")
 
-let bhvFocusFrameAnim = class
+local bhvFocusFrameAnim = class
 {
   eventMask = ::EV_TIMER
   imageParamsList = ["image", "position", "repeat", "svg-size", "rotation"]
@@ -43,12 +43,12 @@ let bhvFocusFrameAnim = class
     if (obj.childrenCount() < 1)
       return
 
-    let animObj = obj.getChild(0)
+    local animObj = obj.getChild(0)
     if (!::check_obj(animObj) || !::check_obj(targetObj))
       return
 
-    let prevData = obj.getUserData()
-    let curData = gatherObjData(targetObj)
+    local prevData = obj.getUserData()
+    local curData = gatherObjData(targetObj)
     if (!needAnim(curData, prevData))
     {
       if (::check_obj(curData?.obj))
@@ -59,8 +59,8 @@ let bhvFocusFrameAnim = class
     obj.setUserData(curData)
 
     //set image visual from target
-    let focusImageSource = targetObj.getFinalProp("focusImageSource")
-    let imagePrefixList = {
+    local focusImageSource = targetObj.getFinalProp("focusImageSource")
+    local imagePrefixList = {
       ["background-"] = focusImageSource != "foreground",
       ["foreground-"] = focusImageSource != "background"
     }
@@ -69,7 +69,7 @@ let bhvFocusFrameAnim = class
     foreach(prefix, isUsed in imagePrefixList) {
       animObj[$"{prefix}color"] = isUsed ? (targetObj.getFinalProp("focusAnimColor") ?? "") : ""
       foreach(key in imageParamsList) {
-        let fullKey = $"{prefix}{key}"
+        local fullKey = $"{prefix}{key}"
         animObj[fullKey] = isUsed ? targetObj.getFinalProp(fullKey) ?? "" : ""
       }
     }
@@ -101,7 +101,7 @@ let bhvFocusFrameAnim = class
 
   function restoreTargetImage(obj)
   {
-    let curData = obj.getUserData()
+    local curData = obj.getUserData()
     if (::check_obj(curData?.obj))
       focusTarget.unhideImage(curData.obj)
   }

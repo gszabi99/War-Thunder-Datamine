@@ -1,19 +1,19 @@
-let time = require("%scripts/time.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let mapAirfields = require("%scripts/worldWar/inOperation/model/wwMapAirfields.nut")
-let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+local time = require("scripts/time.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.nut")
+local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
-::gui_handlers.WwMap <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/worldWar/worldWarMap.blk"
+  sceneBlkName = "gui/worldWar/worldWarMap.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
-  operationStringTpl = "%gui/worldWar/operationString"
+  operationStringTpl = "gui/worldWar/operationString"
   handlerLocId = "mainmenu/operationsMap"
 
   UPDATE_ARMY_STRENGHT_DELAY = 60000
@@ -105,11 +105,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initMapName()
   {
-    let headerObj = scene.findObject("operation_name")
+    local headerObj = scene.findObject("operation_name")
     if (!::check_obj(headerObj))
       return
 
-    let curOperation = getOperationById(::ww_get_operation_id())
+    local curOperation = getOperationById(::ww_get_operation_id())
     headerObj.setValue(curOperation? curOperation.getNameText() : "")
   }
 
@@ -126,7 +126,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateGamercardType()
   {
-    let gamercardObj = scene.findObject("gamercard_div")
+    local gamercardObj = scene.findObject("gamercard_div")
     if (!::check_obj(gamercardObj))
       return
 
@@ -137,11 +137,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initPageSwitch(forceTabSwitch = null)
   {
-    let pagesObj = scene.findObject("pages_list")
+    local pagesObj = scene.findObject("pages_list")
     if (!::checkObj(pagesObj))
       return
 
-    let tabIndex = forceTabSwitch != null ? forceTabSwitch
+    local tabIndex = forceTabSwitch != null ? forceTabSwitch
       : currentOperationInfoTabType ? currentOperationInfoTabType.index : 0
 
     pagesObj.setValue(tabIndex)
@@ -172,18 +172,18 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initReinforcementPageSwitch()
   {
-    let tabsObj = scene.findObject("reinforcement_pages_list")
+    local tabsObj = scene.findObject("reinforcement_pages_list")
     if (!::check_obj(tabsObj))
       return
 
-    let show = ::g_world_war.haveManagementAccessForAnyGroup()
+    local show = ::g_world_war.haveManagementAccessForAnyGroup()
     showSceneBtn("reinforcements_block", show)
     showSceneBtn("armies_block", show)
 
     local defaultTabId = 0
     if (show)
     {
-      let reinforcement = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT
+      local reinforcement = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT
       updateSecondaryBlockTab(reinforcement)
       if (reinforcement.needAutoSwitch())
         defaultTabId = reinforcement.code
@@ -200,7 +200,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateMainBlock()
   {
-    let operationBlockObj = scene.findObject("selected_page_block")
+    local operationBlockObj = scene.findObject("selected_page_block")
     if (!::checkObj(operationBlockObj))
       return
 
@@ -221,7 +221,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateSecondaryBlockTabs()
   {
-    let blockObj = scene.findObject("reinforcement_pages_list")
+    local blockObj = scene.findObject("reinforcement_pages_list")
     if (!::checkObj(blockObj))
       return
 
@@ -235,8 +235,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!::checkObj(blockObj))
       return
 
-    let tabId = ::getTblValue("tabId", tab, "")
-    let tabObj = blockObj.findObject(tabId + "_text")
+    local tabId = ::getTblValue("tabId", tab, "")
+    local tabObj = blockObj.findObject(tabId + "_text")
     if (!::checkObj(tabObj))
       return
 
@@ -246,7 +246,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     tabObj.setValue(tabName + tab.getTabTextPostfix())
 
-    let tabAlertObj = blockObj.findObject(tabId + "_alert")
+    local tabAlertObj = blockObj.findObject(tabId + "_alert")
     if (!::check_obj(tabAlertObj))
       return
 
@@ -261,7 +261,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!currentReinforcementInfoTabType || !isSecondaryBlockVisible())
       return
 
-    let commandersObj = scene.findObject("reinforcement_block")
+    local commandersObj = scene.findObject("reinforcement_block")
     if (!::checkObj(commandersObj))
       return
 
@@ -272,34 +272,34 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function isSecondaryBlockVisible()
   {
-    let secondaryBlockObj = scene.findObject("content_block_2")
+    local secondaryBlockObj = scene.findObject("content_block_2")
     return ::check_obj(secondaryBlockObj) && secondaryBlockObj.isVisible()
   }
 
   function initGCBottomBar()
   {
-    let obj = scene.findObject("gamercard_bottom_navbar_place")
+    local obj = scene.findObject("gamercard_bottom_navbar_place")
     if (!::checkObj(obj))
       return
-    guiScene.replaceContent(obj, "%gui/worldWar/worldWarMapGCBottom.blk", this)
+    guiScene.replaceContent(obj, "gui/worldWar/worldWarMapGCBottom.blk", this)
   }
 
   function initArmyControlButtons()
   {
-    let obj = scene.findObject("ww_army_controls_place")
+    local obj = scene.findObject("ww_army_controls_place")
     if (!::checkObj(obj))
       return
 
     local markUp = ""
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
-      markUp += ::handyman.renderCached("%gui/commonParts/button", buttonView)
+      markUp += ::handyman.renderCached("gui/commonParts/button", buttonView)
 
     guiScene.replaceContentFromText(obj, markUp, markUp.len(), this)
   }
 
   function updateArmyActionButtons()
   {
-    let nestObj = scene.findObject("ww_army_controls_nest")
+    local nestObj = scene.findObject("ww_army_controls_nest")
     if (!::check_obj(nestObj))
       return
 
@@ -314,7 +314,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       hasAccess = true
     else if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
-      let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+      local airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
       if (airfield.getAvailableFormations().len())
         hasAccess = true
     }
@@ -322,15 +322,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
              currentSelectedObject == mapObjectSelect.LOG_ARMY)
       hasAccess = ::g_world_war.haveManagementAccessForSelectedArmies()
 
-    let btnBlockObj = scene.findObject("ww_army_controls_place")
+    local btnBlockObj = scene.findObject("ww_army_controls_place")
     if (!::check_obj(btnBlockObj))
       return
 
     local showAny = false
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
     {
-      let showButton = hasAccess && !buttonView.isHidden()
-      let buttonObj = ::showBtn(buttonView.id, showButton, btnBlockObj)
+      local showButton = hasAccess && !buttonView.isHidden()
+      local buttonObj = ::showBtn(buttonView.id, showButton, btnBlockObj)
       if (showButton && ::check_obj(buttonObj))
       {
         buttonObj.enable(buttonView.isEnabled())
@@ -341,18 +341,18 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     }
     btnBlockObj.show(showAny)
 
-    let warningTextObj = scene.findObject("ww_no_army_to_controls")
+    local warningTextObj = scene.findObject("ww_no_army_to_controls")
     if (::check_obj(warningTextObj))
       warningTextObj.show(!showAny)
   }
 
   function initToBattleButton()
   {
-    let toBattleNest = showSceneBtn("gamercard_tobattle", true)
+    local toBattleNest = showSceneBtn("gamercard_tobattle", true)
     if (toBattleNest)
     {
       scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton", {
+      local toBattleBlk = ::handyman.renderCached("gui/mainmenu/toBattleButton", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -364,17 +364,17 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateToBattleButton()
   {
-    let toBattleButtonObj = scene.findObject("to_battle_button")
+    local toBattleButtonObj = scene.findObject("to_battle_button")
     if (!::checkObj(scene) || !::checkObj(toBattleButtonObj))
       return
 
-    let isSquadMember = isOperationActive() && ::g_squad_manager.isSquadMember()
+    local isSquadMember = isOperationActive() && ::g_squad_manager.isSquadMember()
     local txt = ::loc("worldWar/btn_battles")
     local isCancel = false
 
     if (isSquadMember)
     {
-      let isReady = ::g_squad_manager.isMeReady()
+      local isReady = ::g_squad_manager.isMeReady()
       txt = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
       isCancel = isReady
     }
@@ -384,7 +384,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       isCancel = true
     }
 
-    let enable = isOperationActive() && hasBattlesToPlay()
+    local enable = isOperationActive() && hasBattlesToPlay()
     toBattleButtonObj.inactiveColor = enable? "no" : "yes"
     toBattleButtonObj.setValue(txt)
     toBattleButtonObj.findObject("to_battle_button_text").setValue(txt)
@@ -404,15 +404,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (::g_world_war.isCurrentOperationFinished())
       return ::showInfoMsgBox(::loc("worldwar/operation_complete"))
 
-    let isSquadMember = ::g_squad_manager.isSquadMember()
+    local isSquadMember = ::g_squad_manager.isSquadMember()
     if (isSquadMember)
       return ::g_squad_manager.setReadyFlag()
 
-    let isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+    local isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
     if (isInOperationQueue)
       return ::g_world_war.leaveWWBattleQueues()
 
-    let playerSide = ::ww_get_player_side()
+    local playerSide = ::ww_get_player_side()
     if (playerSide == ::SIDE_NONE)
       return ::showInfoMsgBox(::loc("msgbox/internal_error_header"))
 
@@ -449,7 +449,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onArmyMove(obj)
   {
-    let cursorPos = ::get_dagui_mouse_cursor_pos()
+    local cursorPos = ::get_dagui_mouse_cursor_pos()
 
     if (currentSelectedObject == mapObjectSelect.ARMY ||
         currentSelectedObject == mapObjectSelect.LOG_ARMY)
@@ -461,7 +461,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       })
     else if (currentSelectedObject == mapObjectSelect.AIRFIELD)
     {
-      let mapObj = scene.findObject("worldwar_map")
+      local mapObj = scene.findObject("worldwar_map")
       if (!::checkObj(mapObj))
         return
 
@@ -501,16 +501,16 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function collectArmyStrengthData()
   {
-    let result = {}
+    local result = {}
 
-    let currentStrenghtInfo = ::g_world_war.getSidesStrenghtInfo()
+    local currentStrenghtInfo = ::g_world_war.getSidesStrenghtInfo()
     for (local side = ::SIDE_NONE; side < ::SIDE_TOTAL; side++)
     {
       if (!(side in currentStrenghtInfo))
         continue
 
-      let sideName = ::ww_side_val_to_name(side)
-      let armyGroups = ::g_world_war.getArmyGroupsBySide(side)
+      local sideName = ::ww_side_val_to_name(side)
+      local armyGroups = ::g_world_war.getArmyGroupsBySide(side)
       if (!armyGroups.len())
         continue
 
@@ -522,7 +522,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
       foreach(group in armyGroups)
       {
-        let country = group.getArmyCountry()
+        local country = group.getArmyCountry()
         if (!::isInArray(country, result[sideName].country))
           result[sideName].country.append(country)
       }
@@ -535,7 +535,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function collectUnitsData(formationsArray)
   {
-    let unitsList = []
+    local unitsList = []
     foreach(formation in formationsArray)
       unitsList.extend(formation.getUnits())
 
@@ -544,28 +544,28 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function markMainObjectiveZones()
   {
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    local objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
-    let staticBlk = ::u.copy(objectivesBlk?.data) || ::DataBlock()
-    let dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
+    local staticBlk = ::u.copy(objectivesBlk?.data) || ::DataBlock()
+    local dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
 
     for (local i = 0; i < staticBlk.blockCount(); i++)
     {
-      let statBlk = staticBlk.getBlock(i)
+      local statBlk = staticBlk.getBlock(i)
       if (!statBlk?.mainObjective)
         continue
 
-      let oType = ::g_ww_objective_type.getTypeByTypeName(statBlk?.type)
+      local oType = ::g_ww_objective_type.getTypeByTypeName(statBlk?.type)
       if (oType != ::g_ww_objective_type.OT_CAPTURE_ZONE)
         continue
 
-      let dynBlock = dynamicBlk?[statBlk.getBlockName()]
+      local dynBlock = dynamicBlk?[statBlk.getBlockName()]
       if (!dynBlock)
         continue
 
-      let zones = oType.getUpdatableZonesParams(
+      local zones = oType.getUpdatableZonesParams(
         dynBlock, statBlk, ::ww_side_val_to_name(::ww_get_player_side())
       )
       if (!zones.len())
@@ -573,8 +573,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
       for (local j = WW_MAP_HIGHLIGHT.LAYER_0; j<= WW_MAP_HIGHLIGHT.LAYER_2; j++)
       {
-        let filteredZones = zones.filter(@(zone) zone.mapLayer == j)
-        let zonesArray = ::u.map(filteredZones, @(zone) zone.id)
+        local filteredZones = zones.filter(@(zone) zone.mapLayer == j)
+        local zonesArray = ::u.map(filteredZones, @(zone) zone.id)
         ::ww_highlight_zones_by_name(zonesArray, j)
       }
     }
@@ -582,19 +582,19 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function showSidesStrenght()
   {
-    let blockObj = scene.findObject("content_block_3")
-    let armyStrengthData = collectArmyStrengthData()
+    local blockObj = scene.findObject("content_block_3")
+    local armyStrengthData = collectArmyStrengthData()
 
-    let orderArray = ::g_world_war.getSidesOrder()
+    local orderArray = ::g_world_war.getSidesOrder()
 
-    let side1Name = ::ww_side_val_to_name(orderArray.len()? orderArray[0] : ::SIDE_NONE)
-    let side1Data = ::getTblValue(side1Name, armyStrengthData, {})
+    local side1Name = ::ww_side_val_to_name(orderArray.len()? orderArray[0] : ::SIDE_NONE)
+    local side1Data = ::getTblValue(side1Name, armyStrengthData, {})
 
-    let side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
-    let side2Data = ::getTblValue(side2Name, armyStrengthData, {})
+    local side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
+    local side2Data = ::getTblValue(side2Name, armyStrengthData, {})
 
-    let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
-    let view = {
+    local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    local view = {
       armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       side1TotalVehicle = 0
@@ -602,9 +602,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       unitString = []
     }
 
-    let armyStrengthsTable = {}
-    let armyStrengths = []
-    let totalVehicle = {
+    local armyStrengthsTable = {}
+    local armyStrengths = []
+    local totalVehicle = {
       [side1Name] = 0,
       [side2Name] = 0
     }
@@ -646,7 +646,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     view.side1TotalVehicle = totalVehicle[side1Name]
     view.side2TotalVehicle = totalVehicle[side2Name]
 
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapSidesStrenght", view)
+    local data = ::handyman.renderCached("gui/worldWar/worldWarMapSidesStrenght", view)
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     needUpdateSidesStrenghtView = false
@@ -654,19 +654,19 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function showSelectedArmy()
   {
-    let blockObj = scene.findObject("content_block_3")
-    let selectedArmyNames = ::ww_get_selected_armies_names()
+    local blockObj = scene.findObject("content_block_3")
+    local selectedArmyNames = ::ww_get_selected_armies_names()
     if (!selectedArmyNames.len())
       return
 
-    let selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
+    local selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
     if (!selectedArmy.isValid())
     {
       ::ww_event("MapClearSelection")
       return
     }
 
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", selectedArmy.getView())
+    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", selectedArmy.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     if (timerDescriptionHandler)
@@ -685,11 +685,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function showSelectedLogArmy(params)
   {
-    let blockObj = scene.findObject("content_block_3")
+    local blockObj = scene.findObject("content_block_3")
     if (!::check_obj(blockObj) || !("wwArmy" in params))
       return
 
-    local data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", params.wwArmy.getView())
+    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", params.wwArmy.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -699,10 +699,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!::check_obj(blockObj) || !selectedArmy)
       return
 
-    let armyView = selectedArmy.getView()
+    local armyView = selectedArmy.getView()
     foreach (fieldId, func in armyView.getRedrawArmyStatusData())
     {
-      let redrawFieldObj = blockObj.findObject(fieldId)
+      local redrawFieldObj = blockObj.findObject(fieldId)
       if (::check_obj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView))
     }
@@ -712,13 +712,13 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function showSelectedReinforcement(params)
   {
-    let blockObj = scene.findObject("content_block_3")
-    let reinforcement = ::g_world_war.getReinforcementByName(::getTblValue("name", params))
+    local blockObj = scene.findObject("content_block_3")
+    local reinforcement = ::g_world_war.getReinforcementByName(::getTblValue("name", params))
     if (!reinforcement)
       return
 
-    let reinfView = reinforcement.getView()
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", reinfView)
+    local reinfView = reinforcement.getView()
+    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", reinfView)
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -731,7 +731,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
         getTblValue("formationId", params, -1) < 0)
       return
 
-    let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+    local airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
     local formation = null
 
     if (params.formationType == "formation")
@@ -751,14 +751,14 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       return
     }
 
-    let blockObj = scene.findObject("content_block_3")
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo", formation.getView())
+    local blockObj = scene.findObject("content_block_3")
+    local data = ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfo", formation.getView())
     guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
   function setCurrentSelectedObject(value, params = {})
   {
-    let lastSelectedOject = currentSelectedObject
+    local lastSelectedOject = currentSelectedObject
     currentSelectedObject = value
     ::g_ww_map_controls_buttons.setSelectedObjectCode(currentSelectedObject)
 
@@ -795,25 +795,25 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateReinforcements()
   {
-    let hasUnseenIcon = updateRearZonesHighlight()
+    local hasUnseenIcon = updateRearZonesHighlight()
     updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.REINFORCEMENT, null, hasUnseenIcon)
     return ::g_world_war.hasSuspendedReinforcements()
   }
 
   function updateRearZonesHighlight()
   {
-    let emptySidesReinforcementList = {}
-    let rearZones = ::g_world_war.getRearZones()
+    local emptySidesReinforcementList = {}
+    local rearZones = ::g_world_war.getRearZones()
     foreach (sideName, zones in rearZones)
       emptySidesReinforcementList[::ww_side_name_to_val(sideName)] <- true
 
     local hasUnseenIcon = false
-    let arrivingReinforcementSides = {}
-    let reinforcements = ::g_world_war.getMyReadyReinforcementsArray()
+    local arrivingReinforcementSides = {}
+    local reinforcements = ::g_world_war.getMyReadyReinforcementsArray()
     foreach (reinforcement in reinforcements)
     {
-      let name = reinforcement?.name
-      let side = reinforcement?.armyGroup.owner.side
+      local name = reinforcement?.name
+      local side = reinforcement?.armyGroup.owner.side
       if (!side)
         continue
 
@@ -854,15 +854,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateAFKData()
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::ww_get_sides_info(blk)
-    let sidesBlk = blk?.sides
+    local sidesBlk = blk?.sides
     if (sidesBlk == null)
       return
-    let loseSide = sidesBlk[::SIDE_2.tostring()].afkLoseTimeMsec
+    local loseSide = sidesBlk[::SIDE_2.tostring()].afkLoseTimeMsec
       < sidesBlk[::SIDE_1.tostring()].afkLoseTimeMsec
         ? ::SIDE_2 : ::SIDE_1
-    let newLoseTime = sidesBlk[loseSide.tostring()].afkLoseTimeMsec
+    local newLoseTime = sidesBlk[loseSide.tostring()].afkLoseTimeMsec
     afkData.isNeedAFKTimer = afkData.loseSide != loseSide || afkData.afkLoseTimeMsec != newLoseTime
     afkData.loseSide = loseSide
     afkData.afkLoseTimeMsec = newLoseTime
@@ -900,24 +900,24 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function fillAFKTimer()
   {
     destroyAllAFKTimers()
-    let afkLostObj = scene.findObject("afk_lost")
+    local afkLostObj = scene.findObject("afk_lost")
     if(::check_obj(afkLostObj))
       afkLostObj.show(false)
-    let operStatObj = scene.findObject("wwmap_operation_status")
+    local operStatObj = scene.findObject("wwmap_operation_status")
     if(::check_obj(operStatObj))
       operStatObj.animation = "hide"
-    let afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
+    local afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
       / ::ww_get_speedup_factor()).tointeger()
-    let delayTime = ::max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
+    local delayTime = ::max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
       - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
     afkLostTimer = ::Timer(scene, delayTime,
       function()
       {
-        let needMsgWnd = afkData.haveAccess && afkData.isMeLost
-        let textColor = needMsgWnd ? "white" : afkData.isMeLost
+        local needMsgWnd = afkData.haveAccess && afkData.isMeLost
+        local textColor = needMsgWnd ? "white" : afkData.isMeLost
           ? "wwTeamEnemyColor" : "wwTeamAllyColor"
-        let msgLoc = "".concat(
+        local msgLoc = "".concat(
           ::loc(afkData.isMeLost
             ? "worldwar/operation/myTechnicalDefeatWarning"
             : "worldwar/operation/enemyTechnicalDefeatWarning"),
@@ -926,14 +926,14 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
         afkCountdownTimer = ::Timer(scene, 1,
           function()
           {
-            let afkObj = scene.findObject("afk_lost")
-            let statObj = scene.findObject("wwmap_operation_status")
-            let textObj = statObj.findObject("wwmap_operation_status_text")
-            let afkLoseTime = time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
+            local afkObj = scene.findObject("afk_lost")
+            local statObj = scene.findObject("wwmap_operation_status")
+            local textObj = statObj.findObject("wwmap_operation_status_text")
+            local afkLoseTime = time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
               - ::g_world_war.getOperationTimeSec()
             if(afkLoseTime <= 0)
               afkCountdownTimer?.destroy()
-            let txt = afkLoseTime > 0
+            local txt = afkLoseTime > 0
               ? "".concat(::colorize(textColor, msgLoc), time.secondsToString(afkLoseTime))
               : ::colorize(textColor, ::loc(afkData.isMeLost
                 ? "worldwar/operation/myTechnicalDefeat"
@@ -956,28 +956,28 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initOperationStatus(sendEvent = true)
   {
-    let objStartBox = scene.findObject("wwmap_operation_status")
+    local objStartBox = scene.findObject("wwmap_operation_status")
     if (!::check_obj(objStartBox))
       return
 
-    let objTarget = scene.findObject("operation_status")
+    local objTarget = scene.findObject("operation_status")
     if (!::check_obj(objTarget))
       return
 
-    let isFinished = ::g_world_war.isCurrentOperationFinished()
-    let isPaused = ::ww_is_operation_paused()
+    local isFinished = ::g_world_war.isCurrentOperationFinished()
+    local isPaused = ::ww_is_operation_paused()
     local statusText = ""
 
     if (isFinished)
     {
-      let isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
+      local isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
       statusText = ::loc(isVictory ? "debriefing/victory" : "debriefing/defeat")
       guiScene.playSound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
       objStartBox.show(true)
     }
     else if (isPaused)
     {
-      let activationTime = ::ww_get_operation_activation_time()
+      local activationTime = ::ww_get_operation_activation_time()
       objStartBox.show(true)
       if (activationTime)
       {
@@ -1001,11 +1001,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     objTarget.setValue(statusText)
     objTarget.show(false)
 
-    let copyObjTarget = scene.findObject("operation_status_hidden_copy")
+    local copyObjTarget = scene.findObject("operation_status_hidden_copy")
     if (::check_obj(copyObjTarget))
       copyObjTarget.setValue(statusText)
 
-    let objStart = objStartBox.findObject("wwmap_operation_status_text")
+    local objStart = objStartBox.findObject("wwmap_operation_status_text")
     if (!::check_obj(objStart))
     {
       objTarget.setValue(statusText)
@@ -1033,11 +1033,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function fullTimeToStartOperation()
   {
-    let activationTime = ::ww_get_operation_activation_time()
+    local activationTime = ::ww_get_operation_activation_time()
     if (activationTime)
       foreach (objName in ["operation_status", "wwmap_operation_status_text"])
       {
-        let obj = scene.findObject(objName)
+        local obj = scene.findObject(objName)
         if (::check_obj(obj))
           obj.setValue(getTimeToStartOperationText(activationTime))
       }
@@ -1050,15 +1050,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getTimeToStartOperationText(activationTime)
   {
-    let activationMillis = activationTime - get_charserver_time_millisec()
+    local activationMillis = activationTime - get_charserver_time_millisec()
     if (activationMillis <= 0)
       return ""
 
-    let activationSec = time.millisecondsToSecondsInt(activationMillis)
+    local activationSec = time.millisecondsToSecondsInt(activationMillis)
     if (activationSec == 0)
       return ::loc("debriefing/pause")
 
-    let timeToActivation = ::loc("worldwar/activationTime",
+    local timeToActivation = ::loc("worldwar/activationTime",
       {text = time.hoursToString(time.secondsToHours(activationSec), false, true)})
     return ::loc("debriefing/pause") + ::loc("ui/parentheses/space",
       {text = timeToActivation})
@@ -1081,7 +1081,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWMapAirfieldSelected(params)
   {
-    let tabsObj = scene.findObject("reinforcement_pages_list")
+    local tabsObj = scene.findObject("reinforcement_pages_list")
     if (tabsObj.getValue() != 2)
     {
       tabsObj.setValue(2)
@@ -1141,7 +1141,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWMapSelectedBattle(params)
   {
-    let wwBattle = ::getTblValue("battle", params, ::WwBattle())
+    local wwBattle = ::getTblValue("battle", params, ::WwBattle())
     openBattleDescriptionModal(wwBattle)
   }
 
@@ -1152,11 +1152,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWSelectedReinforcement(params)
   {
-    let mapObj = scene.findObject("worldwar_map")
+    local mapObj = scene.findObject("worldwar_map")
     if (!::checkObj(mapObj))
       return
 
-    let name = ::getTblValue("name", params, "")
+    local name = ::getTblValue("name", params, "")
     if (::u.isEmpty(name))
       return
 
@@ -1185,21 +1185,21 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onChangeInfoBlockVisibility(obj)
   {
-    let blockObj = getObj("ww-right-panel")
+    local blockObj = getObj("ww-right-panel")
     if (!::check_obj(blockObj))
       return
 
     isRightPanelVisible = !isRightPanelVisible
     blockObj.show(isRightPanelVisible)
 
-    let rootObj = obj.getParent()
+    local rootObj = obj.getParent()
     rootObj.collapsed = isRightPanelVisible ? "no" : "yes"
     updateGamercardType()
   }
 
   function onEventWWShowLogArmy(params)
   {
-    let mapObj = guiScene["worldwar_map"]
+    local mapObj = guiScene["worldwar_map"]
     if (::check_obj(mapObj))
       ::ww_gui_bhv.worldWarMapControls.selectArmy.call(
         ::ww_gui_bhv.worldWarMapControls, mapObj, params.wwArmy.getName(), true, mapObjectSelect.LOG_ARMY
@@ -1209,7 +1209,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWNewLogsDisplayed(params)
   {
-    let tabObj = getObj("operation_log_block_text")
+    local tabObj = getObj("operation_log_block_text")
     if (!::check_obj(tabObj))
       return
 
@@ -1221,17 +1221,17 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWMapArmiesByStatusUpdated(params)
   {
-    let armies = ::getTblValue("armies", params, [])
+    local armies = ::getTblValue("armies", params, [])
     if (armies.len() == 0)
       return
 
     updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.ARMIES)
 
-    let selectedArmyNames = ::ww_get_selected_armies_names()
+    local selectedArmyNames = ::ww_get_selected_armies_names()
     if (!selectedArmyNames.len())
       return
 
-    let army = armies[0]
+    local army = armies[0]
     if (army.name != selectedArmyNames[0])
       return
 
@@ -1240,15 +1240,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventWWShowRearZones(params)
   {
-    let reinforcement = ::g_world_war.getReinforcementByName(params?.name)
+    local reinforcement = ::g_world_war.getReinforcementByName(params?.name)
     if (!reinforcement)
       return
 
-    let reinforcementSide = reinforcement.getArmySide()
-    let reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
+    local reinforcementSide = reinforcement.getArmySide()
+    local reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
     local highlightedZones = []
     if (::g_ww_unit_type.isAir(reinforcementType)) {
-      let filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
+      local filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
       highlightedZones = ::u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
         function(airfield) {
           return ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
@@ -1296,12 +1296,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   {
     initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
 
-    let tabsObj = scene.findObject("reinforcement_pages_list")
+    local tabsObj = scene.findObject("reinforcement_pages_list")
     if (!::check_obj(tabsObj))
       return
 
-    let tabBlockId = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
-    let tabBlockObj = tabsObj.findObject(tabBlockId)
+    local tabBlockId = ::g_ww_map_reinforcement_tab_type.REINFORCEMENT.tabId
+    local tabBlockObj = tabsObj.findObject(tabBlockId)
     if (!::check_obj(tabBlockObj) || !tabBlockObj.isVisible())
       return
 
@@ -1311,12 +1311,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventMyClanIdChanged(p)
   {
-    let wwOperation = getOperationById(::ww_get_operation_id())
+    local wwOperation = getOperationById(::ww_get_operation_id())
     if (!wwOperation)
       return
 
-    let joinCountry = wwOperation.getMyAssignCountry()
-    let cantJoinReason = wwOperation.getCantJoinReasonData(joinCountry)
+    local joinCountry = wwOperation.getMyAssignCountry()
+    local cantJoinReason = wwOperation.getCantJoinReasonData(joinCountry)
 
     if (!cantJoinReason.canJoin)
     {
@@ -1329,18 +1329,18 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   {
     initPageSwitch(::g_ww_map_info_type.OBJECTIVE.index)
 
-    let objStartBox = scene.findObject("wwmap_operation_objective")
+    local objStartBox = scene.findObject("wwmap_operation_objective")
     if (!::check_obj(objStartBox))
       return
 
     local objTarget = null
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    local objectivesBlk = ::g_world_war.getOperationObjectives()
     foreach (dataBlk in objectivesBlk.data)
     {
       if (!dataBlk?.mainObjective)
         continue
 
-      let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
+      local oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
       objTarget = scene.findObject(oType.getNameId(dataBlk, ::ww_get_player_side()))
       if (objTarget)
         break
@@ -1352,10 +1352,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     objStartBox.show(true)
     objStartBox.animation = "show"
 
-    let objStart = ::showBtn("objective_anim_start_text", true, objStartBox)
+    local objStart = ::showBtn("objective_anim_start_text", true, objStartBox)
     objStart.setValue(objTarget.getValue())
 
-    let animationFunc = function() {
+    local animationFunc = function() {
       objStartBox.animation = "hide"
       ::create_ObjMoveToOBj(scene, objStart, objTarget,
         {time = 0.6, bhvFunc = "square", isTargetVisible = true})
@@ -1366,14 +1366,14 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getWndHelpConfig()
   {
-    let res = {
-      textsBlk = "%gui/worldWar/wwMapHelp.blk"
+    local res = {
+      textsBlk = "gui/worldWar/wwMapHelp.blk"
       objContainer = scene.findObject("root-box")
     }
 
-    let tab1 = currentOperationInfoTabType
-    let tab2 = currentReinforcementInfoTabType
-    let links = [
+    local tab1 = currentOperationInfoTabType
+    local tab2 = currentReinforcementInfoTabType
+    local links = [
       { obj = "topmenu_ww_menu_btn"
         msgId = "hint_topmenu_ww_menu_btn"
       },
@@ -1443,7 +1443,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateButtonsAfterSetMode(isEnabled)
   {
-    let cancelBtnObj = scene.findObject("cancel_action_mode")
+    local cancelBtnObj = scene.findObject("cancel_action_mode")
     if (::check_obj(cancelBtnObj))
       cancelBtnObj.enable(isEnabled)
   }

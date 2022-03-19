@@ -1,4 +1,4 @@
-let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
+local flightMenuButtonTypes = require("scripts/flightMenu/flightMenuButtonTypes.nut")
 
 flightMenuButtonTypes.types = [
   flightMenuButtonTypes.RESUME

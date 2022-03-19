@@ -1,13 +1,13 @@
-let guidParser = require("%scripts/guidParser.nut")
-let itemRarity = require("%scripts/items/itemRarity.nut")
-let contentPreview = require("%scripts/customization/contentPreview.nut")
-let skinLocations = require("%scripts/customization/skinLocations.nut")
-let stdMath = require("%sqstd/math.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
-let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local guidParser = require("scripts/guidParser.nut")
+local itemRarity = require("scripts/items/itemRarity.nut")
+local contentPreview = require("scripts/customization/contentPreview.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
+local stdMath = require("std/math.nut")
+local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
+local { copyParamsToTable, eachParam } = require("std/datablock.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::Decorator <- class
 {
@@ -61,7 +61,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     group = ::getTblValue("group", blk, "")
 
     // Only decorators from live.warthunder.com has GUID in id.
-    let slashPos = id.indexof("/")
+    local slashPos = id.indexof("/")
     isLive = guidParser.isGuid(slashPos == null ? id : id.slice(slashPos + 1))
 
     cost = decoratorType.getCost(id)
@@ -95,7 +95,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     {
       couponItemdefId = blk.marketplaceItemdefId
 
-      let couponItem = ::ItemsManager.findItemById(couponItemdefId)
+      local couponItem = ::ItemsManager.findItemById(couponItemdefId)
       if (couponItem)
         updateFromItemdef(couponItem.itemDef)
     }
@@ -106,7 +106,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getName()
   {
-    let name = decoratorType.getLocName(id)
+    local name = decoratorType.getLocName(id)
     return isRare() ? ::colorize(getRarityColor(), name) : name
   }
 
@@ -183,19 +183,19 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (decoratorType == ::g_decorator_type.SKINS)
       return ""
 
-    let important = []
-    let common    = []
+    local important = []
+    local common    = []
 
     if (!::u.isEmpty(units))
     {
-      let visUnits = ::u.filter(units, @(u) ::getAircraftByName(u)?.isInShop)
+      local visUnits = ::u.filter(units, @(u) ::getAircraftByName(u)?.isInShop)
       important.append(::loc("options/unit") + ::loc("ui/colon") +
         ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), ::loc("ui/comma")))
     }
 
     if (countries)
     {
-      let visCountries = ::u.filter(countries, @(c) ::isInArray(c, shopCountriesList))
+      local visCountries = ::u.filter(countries, @(c) ::isInArray(c, shopCountriesList))
       important.append(::loc("events/countres") + " " +
         ::g_string.implode(::u.map(visCountries, @(c) ::loc(c)), ::loc("ui/comma")))
     }
@@ -212,8 +212,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!decoratorType.hasLocations(id))
       return ""
 
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)
-    let locations = mask ? skinLocations.getLocationsLoc(mask) : []
+    local mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)
+    local locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (!locations.len())
       return ""
 
@@ -236,15 +236,15 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!unlockBlk)
       return ""
 
-    let config = ::build_conditions_config(unlockBlk)
+    local config = ::build_conditions_config(unlockBlk)
 
-    let showStages = (config?.stages ?? []).len() > 1
+    local showStages = (config?.stages ?? []).len() > 1
     if (!showStages && config.maxVal < 0)
       return ""
 
-    let descData = []
+    local descData = []
 
-    let isComplete = ::UnlockConditions.isBitModeType(config.type)
+    local isComplete = ::UnlockConditions.isBitModeType(config.type)
                          ? stdMath.number_of_set_bits(config.curVal) >= stdMath.number_of_set_bits(config.maxVal)
                          : config.curVal >= config.maxVal
 
@@ -254,7 +254,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
                            totalStages = ::colorize("unlockActiveColor", config.stages.len())
                          }))
 
-    let curVal = config.curVal < config.maxVal ? config.curVal : null
+    local curVal = config.curVal < config.maxVal ? config.curVal : null
     descData.append(::UnlockConditions.getConditionsText(config.conditions, curVal, config.maxVal))
 
     return ::g_string.implode(descData, "\n")
@@ -356,8 +356,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getTagsLoc()
   {
-    let res = rarity.tag ? [ rarity.tag ] : []
-    let tagsVisibleBlk = GUI.get()?.decorator_tags_visible
+    local res = rarity.tag ? [ rarity.tag ] : []
+    local tagsVisibleBlk = GUI.get()?.decorator_tags_visible
     if (tagsVisibleBlk && tags)
       foreach (tagBlk in tagsVisibleBlk % "i")
         if (tags?[tagBlk.tag])
@@ -413,10 +413,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (blk == null)
       return ""
 
-    let processedUnitTypes = processUnitTypeArray(blk % "unitType")
+    local processedUnitTypes = processUnitTypeArray(blk % "unitType")
     if (processedUnitTypes.len() == 0)
       return ""
-    let locUnitTypes = ::colorize("activeTextColor",
+    local locUnitTypes = ::colorize("activeTextColor",
       ::loc("ui/comma").join(
         processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
     return $"{::loc("mainmenu/btnUnits")}{::loc("ui/colon")}{locUnitTypes}"

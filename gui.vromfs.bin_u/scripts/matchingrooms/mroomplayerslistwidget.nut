@@ -13,11 +13,11 @@
 */
 
 
-::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/mpLobby/playersList"
+  sceneTplName = "gui/mpLobby/playersList"
 
   teams = null
   room = null
@@ -46,19 +46,19 @@
 
   function getSceneTplView()
   {
-    let view = {
+    local view = {
       teamsAmount = teams.len()
       teams = []
     }
 
-    let markupData = {
+    local markupData = {
       tr_size = "pw, @baseTrHeight"
       trOnHover = "onPlayerHover"
       columns = {
         name = { width = "fw" }
       }
     }
-    let maxRows = ::SessionLobby.getMaxMembersCount(room)
+    local maxRows = ::SessionLobby.getMaxMembersCount(room)
     foreach(idx, team in teams)
     {
       markupData.invert <- idx == 0  && teams.len() == 2
@@ -86,20 +86,20 @@
 
   function getSelectedPlayer()
   {
-    let objTbl = getFocusedTeamTableObj()
+    local objTbl = getFocusedTeamTableObj()
     return objTbl && ::getTblValue(objTbl.getValue(), ::getTblValue(focusedTeam, playersInTeamTables))
   }
 
   function getSelectedRowPos()
   {
-    let objTbl = getFocusedTeamTableObj()
+    local objTbl = getFocusedTeamTableObj()
     if(!objTbl)
       return null
-    let rowNum = objTbl.getValue()
+    local rowNum = objTbl.getValue()
     if (rowNum < 0 || rowNum >= objTbl.childrenCount())
       return null
-    let rowObj = objTbl.getChild(rowNum)
-    let topLeftCorner = rowObj.getPosRC()
+    local rowObj = objTbl.getChild(rowNum)
+    local topLeftCorner = rowObj.getPosRC()
     return [topLeftCorner[0], topLeftCorner[1] + rowObj.getSize()[1]]
   }
 
@@ -117,7 +117,7 @@
   function updatePlayersTbl()
   {
     isTablesInUpdate = true
-    let playersList = ::SessionLobby.getMembersInfoList(room)
+    local playersList = ::SessionLobby.getMembersInfoList(room)
     foreach(team in teams)
       updateTeamPlayersTbl(team, playersList)
     isTablesInUpdate = false
@@ -126,12 +126,12 @@
 
   function updateTeamPlayersTbl(team, playersList)
   {
-    let objTbl = scene.findObject(getTeamTableId(team))
+    local objTbl = scene.findObject(getTeamTableId(team))
     if (!::checkObj(objTbl))
       return
 
-    let totalRows = objTbl.childrenCount()
-    let teamList = team == ::g_team.ANY ? playersList
+    local totalRows = objTbl.childrenCount()
+    local teamList = team == ::g_team.ANY ? playersList
       : ::u.filter(playersList, @(p) p.team.tointeger() == team.code)
     ::set_mp_table(objTbl, teamList, { max_rows = totalRows })
     ::update_team_css_label(objTbl)
@@ -143,8 +143,8 @@
     //update cur value
     if (teamList.len())
     {
-      let curValue = objTbl.getValue()
-      let validValue = ::clamp(curValue, 0, teamList.len())
+      local curValue = objTbl.getValue()
+      local validValue = ::clamp(curValue, 0, teamList.len())
       if (curValue != validValue)
         objTbl.setValue(validValue)
     }
@@ -188,8 +188,8 @@
   {
     if (!::check_obj(obj) || !obj.isHovered())
       return
-    let value = ::to_integer_safe(obj?.rowIdx, -1, false)
-    let listObj = obj.getParent()
+    local value = ::to_integer_safe(obj?.rowIdx, -1, false)
+    local listObj = obj.getParent()
     if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
       listObj.setValue(value)
   }
@@ -213,7 +213,7 @@
   {
     if (!room)
       return
-    let fullRoom = ::g_mroom_info.get(room.roomId).getFullRoomData()
+    local fullRoom = ::g_mroom_info.get(room.roomId).getFullRoomData()
     if (fullRoom)
       room = fullRoom
   }

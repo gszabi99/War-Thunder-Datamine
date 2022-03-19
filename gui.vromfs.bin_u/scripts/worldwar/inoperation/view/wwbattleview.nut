@@ -1,9 +1,9 @@
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local time = require("scripts/time.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::WwBattleView <- class
+class ::WwBattleView
 {
   id = ""
   battle = null
@@ -20,7 +20,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   showBattleStatus = false
   hideDesc = false
 
-  sceneTplArmyViewsName = "%gui/worldWar/worldWarMapArmyItem"
+  sceneTplArmyViewsName = "gui/worldWar/worldWarMapArmyItem"
 
   isControlHelpCentered = true
   controlHelpDesc = @() hasControlTooltip()
@@ -104,35 +104,35 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getTeamsData(sides, iconSize, isInBattlePanel, param)
   {
-    let teams = []
+    local teams = []
     local maxSideArmiesNumber = 0
     local isVersusTextAdded = false
-    let hasArmyInfo = ::getTblValue("hasArmyInfo", param, true)
-    let hasVersusText = ::getTblValue("hasVersusText", param)
-    let canAlignRight = ::getTblValue("canAlignRight", param, true)
+    local hasArmyInfo = ::getTblValue("hasArmyInfo", param, true)
+    local hasVersusText = ::getTblValue("hasVersusText", param)
+    local canAlignRight = ::getTblValue("canAlignRight", param, true)
     foreach(sideIdx, side in sides)
     {
-      let team = battle.getTeamBySide(side)
+      local team = battle.getTeamBySide(side)
       if (!team)
         continue
 
-      let armies = {
+      local armies = {
         countryIcon = ""
         countryIconBig = ""
         armyViews = ""
         maxSideArmiesNumber = 0
       }
 
-      let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
-      let armyViews = []
+      local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+      local armyViews = []
       foreach (country, armiesArray in team.countries)
       {
-        let countryIcon = getCustomViewCountryData(country, mapName).icon
+        local countryIcon = getCustomViewCountryData(country, mapName).icon
         armies.countryIcon = countryIcon
         armies.countryIconBig = countryIcon
         foreach(army in armiesArray)
         {
-          let armyView = army.getView()
+          local armyView = army.getView()
           armyView.setSelectedSide(playerSide)
           armyViews.append(armyView)
         }
@@ -151,7 +151,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
       maxSideArmiesNumber = ::max(maxSideArmiesNumber, armyViews.len())
 
-      let view = {
+      local view = {
         army = armyViews
         delimetrRightPadding = hasArmyInfo ? "8*@sf/@pf_outdated" : 0
         reqUnitTypeIcon = true
@@ -165,10 +165,10 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       }
 
       armies.armyViews = ::handyman.renderCached(sceneTplArmyViewsName, view)
-      let invert = sideIdx != 0
+      local invert = sideIdx != 0
 
-      let avaliableUnits = []
-      let aiUnits = []
+      local avaliableUnits = []
+      local aiUnits = []
       foreach (unit in team.unitsRemain)
         if (unit.isControlledByAI())
           aiUnits.append(unit)
@@ -198,12 +198,12 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (battle.isAutoBattle())
       return ::loc("worldWar/unavailable_for_team")
 
-    let maxPlayers = ::getTblValue("maxPlayers", team)
+    local maxPlayers = ::getTblValue("maxPlayers", team)
     if (!maxPlayers)
       return ::loc("worldWar/unavailable_for_team")
 
-    let minPlayers = ::getTblValue("minPlayers", team)
-    let curPlayers = ::getTblValue("players", team)
+    local minPlayers = ::getTblValue("minPlayers", team)
+    local curPlayers = ::getTblValue("players", team)
     return battle.isConfirmed() && battle.getMyAssignCountry() ?
       ::loc("worldwar/battle/playersCurMax", { cur = curPlayers, max = maxPlayers }) :
       ::loc("worldwar/battle/playersMinMax", { min = minPlayers, max = maxPlayers })
@@ -211,7 +211,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function unitsList(wwUnits, isReflected, hasLineSpacing)
   {
-    let view = { infoSections = [{
+    local view = { infoSections = [{
       columns = [{unitString = wwActionsWithUnitsList.getUnitsListViewParams({
         wwUnits = wwUnits
         params = { needShopInfo = true }
@@ -221,7 +221,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       isShowTotalCount = true
       hasSpaceBetweenUnits = hasLineSpacing
     }]}
-    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList", view)
+    return ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfoUnitsList", view)
   }
 
   function isStarted()
@@ -241,7 +241,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getBattleDurationTime()
   {
-    let durationTime = battle.getBattleDurationTime()
+    local durationTime = battle.getBattleDurationTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 
@@ -250,7 +250,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getBattleActivateLeftTime()
   {
-    let durationTime = battle.getBattleActivateLeftTime()
+    local durationTime = battle.getBattleActivateLeftTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 
@@ -285,7 +285,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getAutoBattleWinChancePercentText()
   {
-    let percent = battle.getTeamBySide(playerSide)?.autoBattleWinChancePercent
+    local percent = battle.getTeamBySide(playerSide)?.autoBattleWinChancePercent
     return percent != null ? percent + ::loc("measureUnits/percent") : ""
   }
 
@@ -309,13 +309,13 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (playerSide == ::SIDE_NONE || ::g_squad_manager.isSquadMember())
       return ""
 
-    let currentBattleQueue = ::queues.findQueueByName(battle.getQueueId(), true)
+    local currentBattleQueue = ::queues.findQueueByName(battle.getQueueId(), true)
     local canJoinLocKey = ""
     if (currentBattleQueue != null)
       canJoinLocKey = "worldWar/canJoinStatus/in_queue"
     else if (battle.isStarted())
     {
-      let cantJoinReasonData = battle.getCantJoinReasonData(playerSide, false)
+      local cantJoinReasonData = battle.getCantJoinReasonData(playerSide, false)
       if (cantJoinReasonData.canJoin)
         canJoinLocKey = battle.isPlayerTeamFull()
           ? "worldWar/canJoinStatus/no_free_places"
@@ -330,7 +330,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   function getBattleStatusWithTimeText()
   {
     local text = getBattleStatusText()
-    let durationText = getBattleDurationTime()
+    local durationText = getBattleDurationTime()
     if (!::u.isEmpty(durationText))
       text += ::loc("ui/colon") + durationText
 
@@ -343,7 +343,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       return ""
 
     local text = getBattleStatusText()
-    let canJoinText = getCanJoinText()
+    local canJoinText = getCanJoinText()
     if (!::u.isEmpty(canJoinText))
       text += ::loc("ui/dot") + " " + canJoinText
 
@@ -374,7 +374,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   {
     if (battle.isStillInOperation())
     {
-      let status = getStatus()
+      local status = getStatus()
       if (status == "Active" || status == "Full")
         return true
     }
@@ -422,7 +422,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!battle.isWaiting())
       return ""
 
-    let durationTime = battle.getTimeStartAutoBattle()
+    local durationTime = battle.getTimeStartAutoBattle()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 

@@ -1043,6 +1043,7 @@
         "armorThickness": 16.0,
         "hidableInViewer": true,
         "genericDamageMult": 0.1,
+        "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
           "hp": 1500.0
@@ -1132,6 +1133,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 8.0,
         "genericDamageMult": 1.5,
+        "explosionDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
           "hp": 3000.0
@@ -2166,9 +2168,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2177,7 +2179,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2188,9 +2190,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2199,9 +2201,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2210,9 +2212,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2221,7 +2223,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2232,9 +2234,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2243,9 +2245,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2909,6 +2911,9 @@
           },
           {
             "designationFromBody": true
+          },
+          {
+            "designationTurretIndex": 1
           },
           {
             "dmPart": "antenna_target_location_01_dm"
@@ -4133,19 +4138,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 100.0,
-      "sizeToRepair": [0.01,4.0,10.0,450.0],
-      "additionalWaterDeathThreshold": 4700000.0,
+      "repairSpeed": 45.0,
+      "waterMassVel": -500000.0,
+      "waterMassMult": 200.0,
+      "sizeToRepair": [0.01,4.0,15.0,600.0],
+      "additionalWaterDeathThreshold": 8000000.0,
       "additionalWaterShouldDiePercent": 0.3,
-      "fatalBreachDrownTime": 35.0,
+      "fatalBreachDrownTime": 45.0,
       "maxHeelingAngle": 34.0,
-      "maxHeelingTime": 10.0,
+      "maxHeelingTime": 40.0,
       "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 3.0,
+      "maxCriticalHeelingTime": 1.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.4
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -4153,7 +4158,7 @@
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.3,
+          "weight": 0.1,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4166,7 +4171,7 @@
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 0.6,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       },
@@ -4186,7 +4191,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.9,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4199,7 +4204,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.5,
+          "weight": 0.35,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4212,7 +4217,7 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.3,
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       }

@@ -154,7 +154,6 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [-30.0,30.0],
-            "azimuthWidth": 7.5,
             "distanceRange": [0.0,20000.0]
           },
           "setScopeRangeSet": {
@@ -224,11 +223,6 @@
             "clearTargetsOfInterest": []
           },
           {
-            "setCueEnabled": {
-              "value": true
-            }
-          },
-          {
             "setCenterElevation": {
               "source": "constant",
               "value": 7.5
@@ -250,9 +244,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         },
         "setLockMode": {
@@ -263,7 +254,10 @@
             "value": true
           },
           "setCenterAzimuth": {
-            "source": "targetDesignation"
+            "source": "activeDetectedTarget"
+          },
+          "setCenterElevation": {
+            "source": "activeDetectedTarget"
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
@@ -445,11 +439,6 @@
           "actions": {
             "updateActiveDetectedTarget": [],
             "designateActiveDetectedTarget": {
-              "type": 0,
-              "self": true,
-              "sensorIndex": 0
-            },
-            "designateTargetUnderCue": {
               "type": 0,
               "self": true,
               "sensorIndex": 0
@@ -703,18 +692,6 @@
           "command": "switchTarget",
           "actions": {
             "setNextDetectedTargetActive": []
-          }
-        },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": []
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": []
           }
         }
       }

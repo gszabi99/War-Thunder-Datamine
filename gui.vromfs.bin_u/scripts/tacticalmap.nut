@@ -1,6 +1,6 @@
-let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryDescription.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
 {
@@ -13,9 +13,9 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   gui_start_tactical_map(true);
 }
 
-::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/tacticalMap.blk"
+  sceneBlkName = "gui/tacticalMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
@@ -56,7 +56,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     if ((restoreType != ::ERT_TACTICAL_CONTROL))
       isActiveTactical = false
 
-    let playerArr = [1]
+    local playerArr = [1]
     numUnits = ::get_player_group(units, playerArr)
     dagor.debug("numUnits = "+numUnits)
 
@@ -116,7 +116,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updateTitle()
   {
-    let gt = ::get_game_type()
+    local gt = ::get_game_type()
     local titleText = ::loc_current_mission_name()
     if (gt & ::GT_VERSUS)
       titleText = ::loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
@@ -144,7 +144,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     if (focus >= 0 && focus < numUnits)
     {
-      let isActive = ::is_aircraft_active(units[focus])
+      local isActive = ::is_aircraft_active(units[focus])
       if (!isActive)
       {
         scene.findObject("objectives_panel").show(false)
@@ -180,10 +180,10 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
         continue;
       }
 
-      let isActive = ::is_aircraft_active(units[i]);
+      local isActive = ::is_aircraft_active(units[i]);
       if (isActive != unitsActive[i])
       {
-        let trObj = scene.findObject("pilot_name" + i)
+        local trObj = scene.findObject("pilot_name" + i)
         trObj.enable = isActive ? "yes" : "no";
         trObj.inactive = isActive ? null : "yes"
         unitsActive[i] = isActive;
@@ -219,7 +219,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
         continue;
 
       local pilotFullName = ""
-      let pilotId = ::get_pilot_name(units[i], i)
+      local pilotId = ::get_pilot_name(units[i], i)
       if (pilotId != "")
       {
         if (::get_game_type() & ::GT_COOPERATIVE)
@@ -237,8 +237,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
 
       scene.findObject("pilot_text" + i).setValue(pilotFullName)
-      let objTr = scene.findObject("pilot_name" + i)
-      let isActive = ::is_aircraft_active(units[i])
+      local objTr = scene.findObject("pilot_name" + i)
+      local isActive = ::is_aircraft_active(units[i])
 
       objTr.mainPlayer = (wasPlayer == i)? "yes" : "no"
       objTr.enable = isActive ? "yes" : "no"
@@ -257,7 +257,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       data += format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}",
                      k, k)
 
-    let pilotsObj = scene.findObject("pilots_list")
+    local pilotsObj = scene.findObject("pilots_list")
     guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
     pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
   }
@@ -286,16 +286,16 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       }
 
   //    scene.findObject("dmg_hud").tag = "" + units[focus]
-      let obj = scene.findObject("pilot_name" + focus)
+      local obj = scene.findObject("pilot_name" + focus)
       if (obj)
         obj.scrollToView()
     }
 
-    let obj = scene.findObject("pilot_aircraft")
+    local obj = scene.findObject("pilot_aircraft")
     if (obj)
     {
-      let fm = ::get_player_unit_name()
-      let unit = ::getAircraftByName(fm)
+      local fm = ::get_player_unit_name()
+      local unit = ::getAircraftByName(fm)
       local text = ::getUnitName(fm)
       if (unit?.isAir() || unit?.isHelicopter?())
         text += ::loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
@@ -310,7 +310,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     if (!isActiveTactical)
       return
 
-    let wasFocus = focus
+    local wasFocus = focus
     focus++
     if (focus >= numUnits)
       focus = 0;
@@ -318,8 +318,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     local cur = focus
     for (local i = 0; i < numUnits; i++)
     {
-      let isActive = ::is_aircraft_active(units[cur])
-      let isDelayed = ::is_aircraft_delayed(units[cur])
+      local isActive = ::is_aircraft_active(units[cur])
+      local isDelayed = ::is_aircraft_delayed(units[cur])
       if (isActive && !isDelayed)
         break
 
@@ -344,7 +344,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     if (!isActiveTactical)
       return
 
-    let wasFocus = focus
+    local wasFocus = focus
     focus--
     if (focus < 0)
       focus = numUnits - 1;
@@ -352,8 +352,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     local cur = focus
     for (local i = 0; i < numUnits; i++)
     {
-      let isActive = ::is_aircraft_active(units[cur])
-      let isDelayed = ::is_aircraft_delayed(units[cur])
+      local isActive = ::is_aircraft_active(units[cur])
+      local isDelayed = ::is_aircraft_delayed(units[cur])
 
       if (isActive && !isDelayed)
         break
@@ -374,7 +374,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     if (restoreType != ::ERT_TACTICAL_CONTROL || !isActiveTactical)
       return
 
-    let newFocus = scene.findObject("pilots_list").getValue()
+    local newFocus = scene.findObject("pilots_list").getValue()
     if (focus == newFocus)
       return
 
@@ -384,7 +384,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   function doClose()
   {
-    let closeFn = base.goBack
+    local closeFn = base.goBack
     guiScene.performDelayed(this, function()
     {
       if (::is_in_flight())
@@ -419,7 +419,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::addHideToObjStringById <- function addHideToObjStringById(data, objId)
 {
-  let pos = data.indexof("id:t = '" + objId + "';")
+  local pos = data.indexof("id:t = '" + objId + "';")
   if (pos)
     return data.slice(0, pos) + "display:t='hide'; " + data.slice(pos)
   return data
@@ -429,7 +429,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 {
   if (!("TacticalMap" in ::gui_handlers))
     return false
-  let curHandler = ::handlersManager.getActiveBaseHandler()
+  local curHandler = ::handlersManager.getActiveBaseHandler()
   return curHandler != null &&  (curHandler instanceof ::gui_handlers.TacticalMap ||
     curHandler instanceof ::gui_handlers.ArtilleryMap || curHandler instanceof ::gui_handlers.RespawnHandler)
 }

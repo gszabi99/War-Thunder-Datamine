@@ -1,5 +1,5 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 
 ::g_clan_log_type <- {
   types = []
@@ -9,8 +9,8 @@ let platformModule = require("%scripts/clientState/platform.nut")
   byName = {}
 }
 
-let isSelfLog = @(logEntry) logEntry?.uN == logEntry?.nick
-let getColoredNick = @(logEntry)
+local isSelfLog = @(logEntry) logEntry?.uN == logEntry?.nick
+local getColoredNick = @(logEntry)
   "<Link=uid_" + logEntry.uid + ">" + ::colorize(
     logEntry.uid == ::my_user_id_str ? "mainPlayerColor" : "userlogColoredText",
     platformModule.getPlayerName(logEntry.nick)
@@ -26,7 +26,7 @@ let getColoredNick = @(logEntry)
 
   getLogDetailsCommonFields = function()
   {
-    let fields = ["admin"]
+    local fields = ["admin"]
     fields.extend(logDetailsCommonFields)
     return fields
   }
@@ -39,10 +39,10 @@ let getColoredNick = @(logEntry)
     if (!name)
       return null
 
-    let uId = logEntry?.uId ?? ""
+    local uId = logEntry?.uId ?? ""
 
-    let locId = logEntry?.admin ? "clan/log/initiated_by_admin" : "clan/log/initiated_by"
-    let color = logEntry?.uId == ::my_user_id_str ? "mainPlayerColor" : "userlogColoredText"
+    local locId = logEntry?.admin ? "clan/log/initiated_by_admin" : "clan/log/initiated_by"
+    local color = logEntry?.uId == ::my_user_id_str ? "mainPlayerColor" : "userlogColoredText"
 
     name = ::colorize(color, platformModule.getPlayerName(name))
     name = "<Link=uid_" + uId + ">" + name + "</Link>"
@@ -118,7 +118,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
     needDetails = @(logEntry) !isSelfLog(logEntry)
     function getLogHeader(logEntry)
     {
-      let locId = isSelfLog(logEntry) ? "clan/log/leave_member_log" :"clan/log/remove_member_log"
+      local locId = isSelfLog(logEntry) ? "clan/log/leave_member_log" :"clan/log/remove_member_log"
       return ::loc(locId, {nick = getColoredNick(logEntry) })
     }
   }

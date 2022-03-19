@@ -247,16 +247,7 @@
             "value": false
           }
         },
-        "setRadarCommon": {
-          "setTargetDesignationRange": {
-            "azimuthRange": [-30.0,30.0],
-            "distanceRange": [0.0,60000.0],
-            "azimuthWidth": 4.0,
-            "distanceWidth": 1000.0
-          }
-        },
         "setPulseModeCommon": {
-          "setRadarCommon": [],
           "setTransiver": {
             "transiver": "pulse"
           }
@@ -280,7 +271,6 @@
           }
         },
         "setPulseDopplerModeCommon": {
-          "setRadarCommon": [],
           "setTransiver": {
             "transiver": "MTI"
           },
@@ -294,12 +284,6 @@
           },
           "setSignal": {
             "signal": "OLS"
-          },
-          "setTargetDesignationRange": {
-            "azimuthRange": [-30.0,30.0],
-            "azimuthWidth": 2.5,
-            "elevationRange": [-30.0,30.0],
-            "elevatioonWidth": 2.5
           }
         },
         "setHighAltModeCommon": {
@@ -535,9 +519,6 @@
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setCueEnabled": {
-            "value": true
-          },
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
@@ -744,9 +725,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         },
         "resetLockMode": {
@@ -1021,7 +999,11 @@
             "stateTo": "BSVStandby",
             "actions": {
               "init": [],
-              "setBSVStandbyMode": []
+              "setBSVStandbyMode": [],
+              "setTargetDesignationRange": {
+                "azimuthRange": [-30.0,30.0],
+                "distanceRange": [0.0,60000.0]
+              }
             }
           }
         },
@@ -1456,11 +1438,6 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
               }
             }
           }
@@ -1598,11 +1575,6 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
               }
             }
           }
@@ -1665,11 +1637,6 @@
             "command": "selectTarget",
             "actions": {
               "designateActiveDetectedTarget": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
@@ -1738,11 +1705,6 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
               }
             }
           }
@@ -1808,11 +1770,6 @@
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
               }
             }
           }
@@ -1875,11 +1832,6 @@
             "command": "selectTarget",
             "actions": {
               "designateActiveDetectedTarget": {
-                "type": 0,
-                "self": true,
-                "sensorIndex": 0
-              },
-              "designateTargetUnderCue": {
                 "type": 0,
                 "self": true,
                 "sensorIndex": 0
@@ -2061,22 +2013,20 @@
             "setNextDetectedTargetActive": []
           }
         },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": []
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": []
-          }
-        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": []
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 0,
+              "self": true
+            }
           }
         }
       }

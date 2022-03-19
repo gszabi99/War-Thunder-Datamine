@@ -1,14 +1,14 @@
-let extWatched = require("%rGui/globals/extWatched.nut")
+local extWatched = require("reactiveGui/globals/extWatched.nut")
 
-let versions = extWatched("changelogsVersions", ::cross_call.changelog.getVersions)
-let chosenPatchnoteContent = extWatched("chosenPatchnoteContent",
+local versions = extWatched("changelogsVersions", ::cross_call.changelog.getVersions)
+local chosenPatchnoteContent = extWatched("chosenPatchnoteContent",
   ::cross_call.changelog.getChosenPatchnoteContent)
-let chosenPatchnoteLoaded = extWatched("chosenPatchnoteLoaded",
+local chosenPatchnoteLoaded = extWatched("chosenPatchnoteLoaded",
   ::cross_call.changelog.getChosenPatchnoteLoaded)
-let patchnotesReceived = extWatched("patchnotesReceived",
+local patchnotesReceived = extWatched("patchnotesReceived",
   ::cross_call.changelog.getPatchnotesReceived)
-let curPatchnote = extWatched("curPatchnote", ::cross_call.changelog.getCurPatchnote)
-let curPatchnoteIdx = extWatched("curPatchnoteIdx", ::cross_call.changelog.getCurPatchnoteIdx)
+local curPatchnote = extWatched("curPatchnote", ::cross_call.changelog.getCurPatchnote)
+local curPatchnoteIdx = extWatched("curPatchnoteIdx", ::cross_call.changelog.getCurPatchnoteIdx)
 
 return {
   versions

@@ -1,15 +1,15 @@
-let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
+local { isDataBlock, isEmpty, isEqual } = require("sqStdLibs/helpers/u.nut")
 
-let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
-let overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
-let userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
+local overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
+local userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
 
-let makeCrewsCountryData = @(country) { country = country, crews = [] }
+local makeCrewsCountryData = @(country) { country = country, crews = [] }
 
-let function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) {
+local function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) {
   countryData.crews.append({
     id = crewId
     idCountry = countryId
@@ -27,18 +27,18 @@ let function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) 
   })
 }
 
-let function getMissionEditSlotbarBlk(missionName) {
-  let misBlk = ::get_mission_meta_info(missionName)
-  let editSlotbar = misBlk?.editSlotbar
+local function getMissionEditSlotbarBlk(missionName) {
+  local misBlk = ::get_mission_meta_info(missionName)
+  local editSlotbar = misBlk?.editSlotbar
   //override slotbar does not support keepOwnUnits atm.
   if (!isDataBlock(editSlotbar) || editSlotbar.keepOwnUnits)
     return null
   return editSlotbar
 }
 
-let function calcSlotbarOverrideByMissionName(missionName) {
+local function calcSlotbarOverrideByMissionName(missionName) {
   local res = null
-  let editSlotbar = getMissionEditSlotbarBlk(missionName)
+  local editSlotbar = getMissionEditSlotbarBlk(missionName)
   if (!editSlotbar)
     return res
 
@@ -46,16 +46,16 @@ let function calcSlotbarOverrideByMissionName(missionName) {
   local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
   foreach(country in shopCountriesList)
   {
-    let countryBlk = editSlotbar?[country]
+    local countryBlk = editSlotbar?[country]
     if (!isDataBlock(countryBlk) || !countryBlk.blockCount()
       || !::is_country_available(country))
       continue
 
-    let countryData = makeCrewsCountryData(country)
+    local countryData = makeCrewsCountryData(country)
     res.append(countryData)
     for(local i = 0; i < countryBlk.blockCount(); i++)
     {
-      let crewBlk = countryBlk.getBlock(i)
+      local crewBlk = countryBlk.getBlock(i)
       addCrewToCountryData(countryData, crewId--, res.len() - 1, crewBlk.getBlockName())
     }
   }
@@ -64,15 +64,15 @@ let function calcSlotbarOverrideByMissionName(missionName) {
   return res
 }
 
-let function getSlotbarOverrideCountriesByMissionName(missionName) {
-  let res = []
-  let editSlotbar = getMissionEditSlotbarBlk(missionName)
+local function getSlotbarOverrideCountriesByMissionName(missionName) {
+  local res = []
+  local editSlotbar = getMissionEditSlotbarBlk(missionName)
   if (!editSlotbar)
     return res
 
   foreach(country in shopCountriesList)
   {
-    let countryBlk = editSlotbar?[country]
+    local countryBlk = editSlotbar?[country]
     if (isDataBlock(countryBlk) && countryBlk.blockCount()
       && ::is_country_available(country))
       res.append(country)
@@ -80,21 +80,21 @@ let function getSlotbarOverrideCountriesByMissionName(missionName) {
   return res
 }
 
-let function getSlotbarOverrideData(missionName = "") {
+local function getSlotbarOverrideData(missionName = "") {
   if (missionName == "" || missionName == overrrideSlotbarMissionName.value)
     return overrideSlotbar.value
 
   return calcSlotbarOverrideByMissionName(missionName)
 }
 
-let isSlotbarOverrided = @(missionName = "") getSlotbarOverrideData(missionName) != null
+local isSlotbarOverrided = @(missionName = "") getSlotbarOverrideData(missionName) != null
 
-let function updateOverrideSlotbar(missionName) {
+local function updateOverrideSlotbar(missionName) {
   if (missionName == overrrideSlotbarMissionName.value)
     return
   overrrideSlotbarMissionName(missionName)
 
-  let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName)
+  local newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName)
   if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
     return
 
@@ -103,7 +103,7 @@ let function updateOverrideSlotbar(missionName) {
   overrideSlotbar(newOverrideSlotbar)
 }
 
-let function resetSlotbarOverrided() {
+local function resetSlotbarOverrided() {
   overrrideSlotbarMissionName("")
   overrideSlotbar(null)
   if (userSlotbarCountry.value != "")

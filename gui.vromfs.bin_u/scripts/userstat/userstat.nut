@@ -1,27 +1,27 @@
-let { get_time_msec } = require("dagor.time")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+local { get_time_msec } = require("dagor.time")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
-let function doRequest(request, cb) {
+local function doRequest(request, cb) {
   ::userstat.request(request, @(result) cb(result))
 }
 
-let alwaysForceRefreshEvents = {
+local alwaysForceRefreshEvents = {
   LoginComplete = true
 }
 
-let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
-  let data = ::Watched(defValue)
-  let lastTime = ::Watched({ request = 0, update = 0 })
-  let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
+local function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
+  local data = ::Watched(defValue)
+  local lastTime = ::Watched({ request = 0, update = 0 })
+  local isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
-  let canRefresh = @() !isRequestInProgress()
+  local canRefresh = @() !isRequestInProgress()
     && (!lastTime.value.update || (lastTime.value.update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
-  let function processResult(result, cb) {
+  local function processResult(result, cb) {
     if (cb)
       cb(result)
 
@@ -32,11 +32,11 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     data(result?.response ?? defValue)
   }
 
-  let function prepareToRequest() {
+  local function prepareToRequest() {
     lastTime.mutate(@(v) v.request = get_time_msec())
   }
 
-  let function refresh(cb = null) {
+  local function refresh(cb = null) {
     if (!::g_login.isLoggedIn()) {
       data.update(defValue)
       if (cb)
@@ -53,12 +53,12 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     })
   }
 
-  let function forceRefresh(cb = null) {
+  local function forceRefresh(cb = null) {
     lastTime.mutate(@(v) v.__update({ update = 0, request = 0}))
     refresh(cb)
   }
 
-  let function invalidateConfig(p) {
+  local function invalidateConfig(p) {
     data(defValue)
     forceRefresh()
   }
@@ -82,7 +82,7 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
   }
 }
 
-let descListUpdatable = makeUpdatable("GetUserStatDescList",
+local descListUpdatable = makeUpdatable("GetUserStatDescList",
   @(cb) doRequest({
     add_token = true
     headers = {
@@ -94,7 +94,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
   {},
   { GameLocalizationChanged = true})
 
-let statsUpdatable = makeUpdatable("GetStats",
+local statsUpdatable = makeUpdatable("GetStats",
   @(cb) doRequest({
       add_token = true
       headers = { appid = ::WT_APPID }
@@ -102,7 +102,7 @@ let statsUpdatable = makeUpdatable("GetStats",
     }, cb),
   {})
 
-let unlocksUpdatable = makeUpdatable("GetUnlocks",
+local unlocksUpdatable = makeUpdatable("GetUnlocks",
   @(cb) doRequest({
       add_token = true
       headers = { appid = ::WT_APPID }
@@ -110,8 +110,8 @@ let unlocksUpdatable = makeUpdatable("GetUnlocks",
     }, cb),
   {})
 
-let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, taskOptions = {}) {
-  let resultCb = function(result) {
+local function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, taskOptions = {}) {
+  local resultCb = function(result) {
     if (result?.error) {
       if (cbError != null)
         cbError(result.error)
@@ -120,10 +120,10 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
     unlocksUpdatable.processResult(result, cb)
   }
 
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.addInt("appid", ::WT_APPID)
 
-  let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
+  local taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
     ::EATT_JSON_REQUEST, blk,
     ::json_to_string({ unlock = unlockName, stage = stage }, false),
     -1)
@@ -135,18 +135,18 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
   statsUpdatable.forceRefresh()
 }
 
-let userstatUnlocks = unlocksUpdatable.data
-let userstatDescList = descListUpdatable.data
-let userstatStats = statsUpdatable.data
+local userstatUnlocks = unlocksUpdatable.data
+local userstatDescList = descListUpdatable.data
+local userstatStats = statsUpdatable.data
 
-let isUserstatMissingData = ::Computed(@() userstatUnlocks.value.len() == 0
+local isUserstatMissingData = ::Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && ::has_feature("BattlePass") // userstat used only for battle pass.
+local canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && ::has_feature("BattlePass") // userstat used only for battle pass.
 
 local validateTaskTimer = -1
-let function validateUserstatData(dt = 0) {
+local function validateUserstatData(dt = 0) {
   if ( validateTaskTimer >= 0 ) {
     ::periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1

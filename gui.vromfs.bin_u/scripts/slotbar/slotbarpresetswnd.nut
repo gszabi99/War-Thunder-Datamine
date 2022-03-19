@@ -1,14 +1,14 @@
-let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
+local { markupTooltipHoldChild } = require("scripts/utils/delayedTooltip.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
 {
   return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
-::gui_handlers.ChooseSlotbarPreset <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/slotbar/slotbarChoosePreset.blk"
+  sceneBlkName = "gui/slotbar/slotbarChoosePreset.blk"
 
   ownerWeak = null
   presets = []
@@ -35,11 +35,11 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     chosenValue = showPreset != null ? showPreset : activePreset != null ? activePreset : -1
     hoveredValue = -1
 
-    let objPresets = scene.findObject("items_list")
+    local objPresets = scene.findObject("items_list")
     if (!::checkObj(objPresets))
       return
 
-    let view = { items = [] }
+    local view = { items = [] }
     foreach (idx, preset in presets)
     {
       local title = preset.title
@@ -55,7 +55,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
+    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(objPresets, data, data.len(), this)
     for (local i = 0; i < objPresets.childrenCount(); i++)
       objPresets.getChild(i).setIntProp(listIdxPID, i)
@@ -65,52 +65,52 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
   function updateDescription()
   {
-    let objDesc = scene.findObject("item_desc")
+    local objDesc = scene.findObject("item_desc")
     if (!::checkObj(objDesc))
       return
 
     if (chosenValue in presets)
     {
-      let preset = presets[chosenValue]
-      let perRow = 3
-      let unitItems = []
+      local preset = presets[chosenValue]
+      local perRow = 3
+      local unitItems = []
 
       local presetBattleRatingText = ""
       if (::has_feature("SlotbarShowBattleRating"))
       {
-        let ediff = getCurrentEdiff()
+        local ediff = getCurrentEdiff()
         local battleRatingMin = 0
         local battleRatingMax = 0
         foreach (unitId in preset.units)
         {
-          let unit = ::getAircraftByName(unitId)
-          let br = unit ? unit.getBattleRating(ediff) : 0.0
+          local unit = ::getAircraftByName(unitId)
+          local br = unit ? unit.getBattleRating(ediff) : 0.0
           battleRatingMin = !battleRatingMin ? br : ::min(battleRatingMin, br)
           battleRatingMax = !battleRatingMax ? br : ::max(battleRatingMax, br)
         }
-        let battleRatingRange = ::format("%.1f %s %.1f", battleRatingMin, ::loc("ui/mdash"), battleRatingMax)
+        local battleRatingRange = ::format("%.1f %s %.1f", battleRatingMin, ::loc("ui/mdash"), battleRatingMax)
         presetBattleRatingText = ::loc("shop/battle_rating") + ::loc("ui/colon") + battleRatingRange + "\n"
       }
 
-      let gameMode = ::game_mode_manager.getGameModeById(preset.gameModeId)??
+      local gameMode = ::game_mode_manager.getGameModeById(preset.gameModeId)??
                        ::game_mode_manager.getCurrentGameMode()
-      let presetGameMode = gameMode != null ? ::loc("options/mp_mode") +
+      local presetGameMode = gameMode != null ? ::loc("options/mp_mode") +
                                                 ::loc("ui/colon") + gameMode.text + "\n" : ""
 
-      let header = "".concat(::g_string.stripTags(presetBattleRatingText),
+      local header = "".concat(::g_string.stripTags(presetBattleRatingText),
         ::g_string.stripTags(presetGameMode),
         ::loc("shop/slotbarPresets/contents"),
         ::loc("ui/colon"))
-      let markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
+      local markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
 
-      let unitsMarkupList = []
-      let filteredUnits = preset.units.filter(@(u) u != "")
+      local unitsMarkupList = []
+      local filteredUnits = preset.units.filter(@(u) u != "")
       foreach(idx, unitId in filteredUnits)
       {
-        let unit = ::getAircraftByName(unitId)
+        local unit = ::getAircraftByName(unitId)
         if (!unit)
           continue
-        let params = {
+        local params = {
           hasActions = false
           status = unit.unitType.isAvailable() ? "owned" : "locked"
           showBR = ::has_feature("SlotbarShowBattleRating")
@@ -122,7 +122,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         unitsMarkupList.append(::build_aircraft_item(unitId, unit, params))
         unitItems.append({ id = unitId, unit = unit, params = params })
       }
-      let sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
+      local sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
         perRow, ::ceil(filteredUnits.len().tofloat() / perRow).tointeger())
       markupList.append("slotbarPresetsTable { {0} {1} {2} }"
         .subst(sizeStr, ::show_console_buttons ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
@@ -131,14 +131,14 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
           .subst(::colorize("badTextColor", ::g_string.stripTags(::loc("shop/slotbarPresets/forbidden/unitTypes")))))
 
-      let markup = "\n".join(markupList)
+      local markup = "\n".join(markupList)
       guiScene.replaceContentFromText(objDesc, markup, markup.len(), this)
       foreach (unitItem in unitItems)
         ::fill_unit_item_timers(objDesc.findObject(unitItem.id), unitItem.unit, unitItem.params)
     }
     else
     {
-      let data = ::format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(::loc("shop/slotbarPresets/presetUnknown")))
+      local data = ::format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(::loc("shop/slotbarPresets/presetUnknown")))
       guiScene.replaceContentFromText(objDesc, data, data.len(), this)
     }
 
@@ -147,7 +147,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
   function getCurrentEdiff()
   {
-    let slotbar = ownerWeak && ownerWeak.getSlotbar()
+    local slotbar = ownerWeak && ownerWeak.getSlotbar()
     return slotbar ? slotbar.getCurrentEdiff() : ::get_current_ediff()
   }
 
@@ -160,8 +160,8 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
   {
     if (::show_console_buttons)
     {
-      let isAnyPresetHovered = hoveredValue != -1
-      let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && hoveredValue == chosenValue)
+      local isAnyPresetHovered = hoveredValue != -1
+      local isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && hoveredValue == chosenValue)
       ::showBtnTable(scene, {
         btn_preset_rename   = isShowContextActions
         btn_preset_delete   = isShowContextActions
@@ -174,11 +174,11 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         return
     }
 
-    let isAnyPresetSelected = chosenValue != -1
-    let isCurrentPresetSelected = chosenValue == activePreset
-    let isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
-    let selectedPresetEnabled = isCurrentPresetSelected || ((chosenValue in presets) ? presets[chosenValue].enabled : false)
-    let canEdit = ::slotbarPresets.canEditCountryPresets(::get_profile_country_sq())
+    local isAnyPresetSelected = chosenValue != -1
+    local isCurrentPresetSelected = chosenValue == activePreset
+    local isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
+    local selectedPresetEnabled = isCurrentPresetSelected || ((chosenValue in presets) ? presets[chosenValue].enabled : false)
+    local canEdit = ::slotbarPresets.canEditCountryPresets(::get_profile_country_sq())
 
     ::enableBtnTable(scene, {
         btn_preset_create = canEdit
@@ -189,14 +189,14 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         btn_preset_move_dn= canEdit && isAnyPresetSelected && chosenValue < presets.len() - 1
     })
 
-    let objBtn = scene.findObject("btn_preset_load")
+    local objBtn = scene.findObject("btn_preset_load")
     if (::checkObj(objBtn))
       objBtn.text = ::loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose")
   }
 
   function onItemSelect(obj)
   {
-    let objPresets = scene.findObject("items_list")
+    local objPresets = scene.findObject("items_list")
     if (!::checkObj(objPresets))
       return
     chosenValue = objPresets.getValue()
@@ -209,7 +209,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
       ::slotbarPresets.create()
     else
     {
-      let reason = ::slotbarPresets.havePresetsReserve() ?
+      local reason = ::slotbarPresets.havePresetsReserve() ?
                               ::loc("shop/slotbarPresetsReserve",
                                 { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus],
                                   unitTypes = ::slotbarPresets.getPresetsReseveTypesText()})
@@ -225,10 +225,10 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     if (!::slotbarPresets.canErase() || !(chosenValue in presets))
       return
 
-    let preset = presets[chosenValue]
-    let msgText = ::loc("msgbox/genericRequestDelete", { item = preset.title })
+    local preset = presets[chosenValue]
+    local msgText = ::loc("msgbox/genericRequestDelete", { item = preset.title })
 
-    let unitNames = []
+    local unitNames = []
     foreach (unitId in preset.units)
       unitNames.append(::loc(unitId + "_shop"))
     local comment = "(" + ::loc("shop/slotbarPresets/contents") + ::loc("ui/colon") + ::g_string.implode(unitNames, ::loc("ui/comma")) + ")"
@@ -243,7 +243,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
   function onBtnPresetLoad(obj)
   {
-    let handler = this
+    local handler = this
     checkedCrewModify((@(handler, chosenValue) function () {
       if (::slotbarPresets.canLoad())
         if (chosenValue in presets)
@@ -279,8 +279,8 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
   {
     if (!::show_console_buttons)
       return
-    let isHover = obj.isHovered()
-    let idx = obj.getIntProp(listIdxPID, -1)
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredValue == idx))
       return
     hoveredValue = isHover ? idx : -1

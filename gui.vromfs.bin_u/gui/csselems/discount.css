@@ -14,7 +14,6 @@ discount {
   textShade:yes;
   background-image:#ui/gameuiskin#discount;
   background-color:@white;
-  background-svg-size:1.5h+2@discountBoxPadding, ph;
   input-transparent:yes;
 }
 
@@ -32,13 +31,13 @@ discount[type=new] {
   behaviour:textArea;
   re-type:textarea;
   color:@white;
-  background-image:#ui/gameuiskin#discount_box_bg.svg;
+  background-image:#ui/gameuiskin#discount_box_bg;
   background-color:@discountBGColor;
   pos:pw-w, ph-2*@sf/@pf_outdated;
   position:absolute;
   font:@fontSmall;
   padding:10*@sf/@pf_outdated, 1*@sf/@pf_outdated, 3*@sf/@pf_outdated, 1*@sf/@pf_outdated;
-  background-repeat:expand-svg;
+  background-repeat:expand;
   background-position:6,2,2,2;
 }
 
@@ -51,7 +50,7 @@ discount[type=inTab] {
 
 discount_notification {
   background-color:@discountBGColor;
-  background-repeat:expand-svg;
+  background-repeat:expand;
   input-transparent:yes;
   font:@fontSmall;
   color:@discountTextColor;
@@ -78,9 +77,8 @@ unlockUnitCellMarker:pushed {
 unlockMarker,
 squadronExpIcon {
   size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
-  background-image:#ui/gameuiskin#new_icon_not_colored.svg;
-  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
-  background-repeat:expand-svg;
+  background-image:#ui/gameuiskin#new_icon_not_colored;
+  background-repeat:expand;
   input-transparent:yes;
 }
 
@@ -115,8 +113,7 @@ squadronExpIcon[type=slotbarCountry] {
 
 unlockMarker[type=down],
 squadronExpIcon[type=down] {
-  background-image:#ui/gameuiskin#discount_icon_down.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-image:#ui/gameuiskin#discount_icon_down;
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   margin-right: 1@blockInterval;
   not-input-transparent:yes;
@@ -162,8 +159,7 @@ HorizontalListBox > shopFilter[selected=yes] > discount_notification {
 }
 
 discount_notification[type=down] {
-  background-image:#ui/gameuiskin#discount_icon_down.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-image:#ui/gameuiskin#discount_icon_down;
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   tooltip:"#discount/notification";
   margin-right: 1@blockInterval;
@@ -171,8 +167,7 @@ discount_notification[type=down] {
 }
 
 discount_notification[type=up] {
-  background-image:#ui/gameuiskin#discount_icon_up.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-image:#ui/gameuiskin#discount_icon_up;
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   pos:10%ph, ph;
   position:absolute;
@@ -182,10 +177,9 @@ discount_notification[type=up] {
 discountIcon[type=slotbarCountry],
 discount[type=weaponryItem] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_down_bg.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBoxDownHeight;
+  background-image:#ui/gameuiskin#discount_box_down_bg;
   background-color:@discountBGColor;
-  background-repeat:expand-svg;
+  background-repeat:expand;
   background-position:21,2,2,6;
   padding:1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
   height:1@discountBoxDownHeight;
@@ -195,8 +189,7 @@ discount[type=weaponryItem] {
 
 discount_notification[type=line] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_bg.svg;
-  background-svg-size:h, 1@discountBoxHeight+2@dp;
+  background-image:#ui/gameuiskin#discount_box_bg;
   background-position:7,7,3,3;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight+2@dp;
@@ -207,9 +200,8 @@ discount_notification[type=line] {
 
 discount_notification[type=lineText] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_bg.svg;
+  background-image:#ui/gameuiskin#discount_box_bg;
   background-position:7,7,3,3;
-  background-svg-size: 2h, 1@discountBoxHeight;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight;
   min-width:2h;
@@ -223,9 +215,8 @@ Button_text > discount_notification[type=lineText] {
 
 discount_notification[type=box_down] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_down_bg.svg;
+  background-image:#ui/gameuiskin#discount_box_down_bg;
   background-position:21,2,2,6;
-  background-svg-size: 2h, 1@discountBoxDownHeight;
   padding:1@discountBoxPadding,1@discountBoxPadding,1@discountBoxPadding,1@discountBoxDownArrowHeight;
   height:1@discountBoxDownHeight;
   left:pw-w-8*@sf/@pf;
@@ -235,8 +226,7 @@ discount_notification[type=box_down] {
 
 discount_notification[type=box_left] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_bg.svg;
-  background-svg-size: 2h, 1@discountBoxHeight+2@dp;
+  background-image:#ui/gameuiskin#discount_box_bg;
   background-position:7,7,3,3;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight+2@dp;
@@ -266,8 +256,7 @@ shopItem > markerContainer > discount_notification {
 
 discount_notification[type=box_up] {
   re-type:text;
-  background-image:#ui/gameuiskin#discount_box_up_bg.svg;
-  background-svg-size: , 1@discountBoxDownHeight;
+  background-image:#ui/gameuiskin#discount_box_up_bg;
   background-position:21,6,2,2;
   padding:1@discountBoxPadding, 1@discountBoxDownArrowHeight, 1@discountBoxPadding, 0;
   height:1@discountBoxDownHeight;

@@ -80,7 +80,7 @@ expandable[equipped=yes] statusImg {
   background-image:#ui/gameuiskin#ok;
 }
 expandable[status=locked] statusImg {
-  background-image:#ui/gameuiskin#locked.svg;
+  background-image:#ui/gameuiskin#locked;
 }
 
 expandable statusImg[background-image] {
@@ -183,7 +183,6 @@ promoButton[type=battleTask] statusImg,
 expandable statusImg,
 shortInfoBlock statusImg {
   size:1@modStatusHeight, 1@modStatusHeight;
-  background-svg-size:1@modStatusHeight, 1@modStatusHeight;
   background-color:@transparent;
   pos:0, 50%ph-50%h;
   position:relative;
@@ -222,13 +221,13 @@ tooltipObj > expandable[type=battleTask] hiddenDiv {
 promoButton[type=battleTask] [battleTaskStatus=complete] statusImg,
 expandable[battleTaskStatus=complete] statusImg,
 shortInfoBlock[battleTaskStatus=complete] statusImg {
-  background-image:#ui/gameuiskin#new_reward_icon.svg;
+  background-image:#ui/gameuiskin#new_reward_icon;
   background-color:@white;
 }
 
 promoButton[type=battleTask] [battleTaskStatus=done] statusImg,
 expandable[battleTaskStatus=done] statusImg {
-  background-image:#ui/gameuiskin#icon_primary_ok.svg;
+  background-image:#ui/gameuiskin#icon_primary_ok;
   background-color:@white;
 }
 

@@ -1,11 +1,11 @@
-let sonyUser = require("sony.user")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+local sonyUser = require("sony.user")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { havePlayerTag } = require("scripts/user/userUtils.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-let countriesWithRecommendEmailRegistration = {
+local countriesWithRecommendEmailRegistration = {
   AZ = "Azerbaijan"
   AM = "Armenia"
   BY = "Belarus"
@@ -23,13 +23,13 @@ let countriesWithRecommendEmailRegistration = {
   EE = "Estonia"
 }
 
-let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
+local canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
   : isPlatformXboxOne ? @() havePlayerTag("livelogin") && ::has_feature("AllowXboxAccountLinking")
   : ::steam_is_running() ? @() havePlayerTag("steamlogin") && ::has_feature("AllowSteamAccountLinking")
   : @() false
 
-let function launchSteamEmailRegistration() {
-  let token = ::get_steam_link_token()
+local function launchSteamEmailRegistration() {
+  local token = ::get_steam_link_token()
   if (token == "")
     return ::dagor.debug("Steam Email Registration: empty token")
 
@@ -41,7 +41,7 @@ let function launchSteamEmailRegistration() {
     false, false, "profile_page")
 }
 
-let function checkAutoShowSteamEmailRegistration() {
+local function checkAutoShowSteamEmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -61,10 +61,10 @@ let function checkAutoShowSteamEmailRegistration() {
   })
 }
 
-let launchPS4EmailRegistration = @()
+local launchPS4EmailRegistration = @()
   ::ps4_open_url_logged_in(::loc("url/ps4_bind_url"), ::loc("url/ps4_bind_redirect"))
 
-let function checkAutoShowPS4EmailRegistration() {
+local function checkAutoShowPS4EmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -82,7 +82,14 @@ let function checkAutoShowPS4EmailRegistration() {
   })
 }
 
-let function launchXboxEmailRegistration(override = {}) {
+local sendXboxEmailBind = @(val) ::xbox_link_email(val, function(status) {
+  ::g_popups.add("", ::colorize(
+    status == ::YU2_OK ? "activeTextColor" : "warningTextColor",
+    ::loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
+  ))
+})
+
+local function launchXboxEmailRegistration(override = {}) {
   ::gui_modal_editbox_wnd({
     leftAlignedLabel = true
     title = ::loc("mainmenu/XboxOneEmailRegistration")
@@ -93,24 +100,29 @@ let function launchXboxEmailRegistration(override = {}) {
     editBoxEnableFunc = canEmailRegistration
     editBoxTextOnDisable = ::loc("mainmenu/alreadyBinded")
     editboxWarningTooltip = ::loc("tooltip/invalidEmail/possibly")
-    okFunc = @(val) ::xbox_link_email(val, function(status) {
-      ::g_popups.add("", ::colorize(
-        status == ::YU2_OK? "activeTextColor" : "warningTextColor",
-        ::loc("mainmenu/XboxOneEmailRegistration/result/" + status)
-      ))
-    })
+    okFunc = @(val) sendXboxEmailBind(val)
   }.__update(override))
 }
 
-let getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper() ?? ::get_country_code()
+local getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper() ?? ::get_country_code()
   : @() ::get_country_code()
 
-let forceLauncheSuggestionEmailRegistration =
+local function reqUnlockForStartEmailBind() {
+  local unlockId = ::get_gui_regional_blk()?.unlockOnStartEmailBind
+  if (unlockId == null || ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, unlockId))
+    return
+  ::req_unlock_by_client(unlockId, true)
+}
+
+local forceLauncheSuggestionEmailRegistration =
   isPlatformSony ? function() {
-    let bindBtnId = "bind"
-    let msgBox = ::scene_msg_box("recommend_email_registration", null, ::loc("mainmenu/recommendEmailRegistration"),
+    local bindBtnId = "bind"
+    local msgBox = ::scene_msg_box("recommend_email_registration", null, ::loc("mainmenu/recommendEmailRegistration"),
         [
-          [bindBtnId, @() launchPS4EmailRegistration()],
+          [bindBtnId, function() {
+            reqUnlockForStartEmailBind()
+            launchPS4EmailRegistration()
+          }],
           ["later", function() {}]
         ], null)
       if (!(msgBox?.isValid() ?? false))
@@ -125,12 +137,14 @@ let forceLauncheSuggestionEmailRegistration =
       leftAlignedLabel = false
       label = ::loc("mainmenu/recommendEmailRegistration")
       okBtnText = ::loc("msgbox/bind_and_recieve")
+      okFunc = function(val) {
+        reqUnlockForStartEmailBind()
+        sendXboxEmailBind(val)
+      }
     })
   : @() null
 
-
-
-let function checkForceSuggestionEmailRegistration() {
+local function checkForceSuggestionEmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -139,15 +153,15 @@ let function checkForceSuggestionEmailRegistration() {
   forceLauncheSuggestionEmailRegistration()
 }
 
-let checkAutoShowEmailRegistration = isPlatformSony ? checkAutoShowPS4EmailRegistration
+local checkAutoShowEmailRegistration = isPlatformSony ? checkAutoShowPS4EmailRegistration
  : ::steam_is_running() ? checkAutoShowSteamEmailRegistration
  : @() null
 
-let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
+local emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
   : isPlatformXboxOne ? loc("mainmenu/XboxOneEmailRegistration/desc")
   : loc("mainmenu/SteamEmailRegistration/desc")
 
-let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
+local launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
   : isPlatformXboxOne ? launchXboxEmailRegistration
   : ::steam_is_running() ? launchSteamEmailRegistration
   : @() null

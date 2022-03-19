@@ -1,8 +1,8 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-let buttons = {
+local buttons = {
   types = []
 
   template = {
@@ -19,7 +19,7 @@ let buttons = {
   }
 }
 
-let function typeConstructor()
+local function typeConstructor()
 {
   buttonId = $"btn_{name.tolower()}"
   labelText = $"#flightmenu/btn{name}"
@@ -68,7 +68,7 @@ enums.addTypes(buttons, {
       if (!::is_multiplayer() && ::get_mission_restore_type() == ::ERT_ATTEMPTS)
       {
         local attemptsTxt
-        let numLeft = ::get_num_attempts_left()
+        local numLeft = ::get_num_attempts_left()
         if (numLeft < 0)
           attemptsTxt = ::loc("options/attemptsUnlimited")
         else

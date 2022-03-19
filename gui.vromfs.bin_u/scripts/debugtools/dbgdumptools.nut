@@ -1,13 +1,13 @@
 // warning disable: -file:forbidden-function
 
-let dbg_dump = require("%scripts/debugTools/dbgDump.nut")
-let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let g_path = require("%sqstd/path.nut")
-let dagor_fs = require("dagor.fs")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
-let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
-let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
+local dbg_dump = require("scripts/debugTools/dbgDump.nut")
+local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+local g_path = require("std/path.nut")
+local dagor_fs = require("dagor.fs")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getDebriefingResult, getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+local { getPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
+local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -16,16 +16,16 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
 ::debug_dump_debriefing_save <- function debug_dump_debriefing_save(filename = "debug_dump_debriefing.blk")
 {
-  let debriefingResult = getDebriefingResult()
+  local debriefingResult = getDebriefingResult()
   if (!debriefingResult || dbg_dump.isLoaded())
     return "IGNORED: No debriefingResult, or dump is loaded."
 
-  let list = [
+  local list = [
     { id = "stat_get_exp", value = ::getTblValue("expDump", debriefingResult, {}) }
     "get_game_type"
     "get_game_mode"
     "get_current_mission_info_cached"
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
     { id = "_fake_mplayers_list", value = ::getTblValue("mplayers_list", debriefingResult, []) }
     { id = "dynamic_apply_status", value = getDynamicResult() }
     { id = "get_mission_status", value = ::getTblValue("isSucceed", debriefingResult) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
@@ -68,12 +68,12 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     { id = "_fake_playersInfo", value = getPlayersInfo() }
   ]
 
-  let units = []
-  let mods  = []
-  let exp = ::getTblValue("expDump", debriefingResult, {})
+  local units = []
+  local mods  = []
+  local exp = ::getTblValue("expDump", debriefingResult, {})
   foreach (ut in unitTypes.types)
   {
-    let unitId = ::getTblValue("investUnitName" + ut.name, exp, "")
+    local unitId = ::getTblValue("investUnitName" + ut.name, exp, "")
     if (unitId != "")
       units.append([ unitId ])
   }
@@ -82,15 +82,15 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     if (!::getAircraftByName(unitId))
       continue
     units.append([ unitId ])
-    let modId = ::getTblValue("investModuleName", data, "")
+    local modId = ::getTblValue("investModuleName", data, "")
     if (modId != "")
       mods.append([ unitId, modId ])
   }
   foreach (tbl in ::shop_get_countries_list_with_autoset_units())
   {
-    let unitId = ::getTblValue("unit", tbl, "")
-    let unit = ::getAircraftByName(unitId)
-    let args = [ ::getUnitCountry(unit), ::get_es_unit_type(unit) ]
+    local unitId = ::getTblValue("unit", tbl, "")
+    local unit = ::getAircraftByName(unitId)
+    local args = [ ::getUnitCountry(unit), ::get_es_unit_type(unit) ]
     foreach (id in [ "shop_get_researchable_unit_name", "shop_get_country_excess_exp" ])
       list.append({ id = id, args = args })
     units.append([ unitId ])
@@ -128,7 +128,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     get_current_mission_desc = @(outBlk) outBlk.setFrom(
       ::getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
     get_mplayers_list = function(team, full) {
-      let res = []
+      local res = []
       foreach (v in ::_fake_mplayers_list)
         if (team == ::GET_MPLAYERS_LIST || v.team == team)
           res.append(v)
@@ -155,7 +155,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
   ::HudBattleLog.battleLog = ::_fake_battlelog
   initListLabelsSquad()
 
-  let _is_in_flight = ::is_in_flight
+  local _is_in_flight = ::is_in_flight
   ::is_in_flight = function() { return true }
   ::g_mis_custom_state.isCurRulesValid = false
   ::g_mis_custom_state.getCurMissionRules()
@@ -170,16 +170,16 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
 ::debug_dump_debriefing_batch_load <- function debug_dump_debriefing_batch_load()
 {
-  let skyquakePath = ::debug_get_skyquake_path()
-  let filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
+  local skyquakePath = ::debug_get_skyquake_path()
+  local filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
     files_suffix = "*.blk", recursive = false, vromfs=false, realfs = true
   }).filter(@(v) v.contains("debug_dump_debriefing") && !v.contains("_SKIP.blk"))
     .map(@(v) g_path.fileName(v)).sort().reverse()
-  let total = filesList.len()
-  let function loadNext() {
-    let count = filesList.len()
+  local total = filesList.len()
+  local function loadNext() {
+    local count = filesList.len()
     if (!count) return
-    let filename = filesList.pop()
+    local filename = filesList.pop()
     ::clog($"[{total - count + 1}/{total}] {filename}")
     ::copy_to_clipboard(filename)
     ::debug_dump_debriefing_load(filename, loadNext)
@@ -194,7 +194,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
   dbg_dump.save(filename, [
     { id = "_fake_mplayers_list", value = ::get_mplayers_list(::GET_MPLAYERS_LIST, true) }
     { id = "_fake_playersInfo", value = ::SessionLobby.playersInfo }
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
     "LAST_SESSION_DEBUG_INFO"
     "get_game_type"
     "get_game_mode"
@@ -244,16 +244,16 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
 ::debug_dump_respawn_save <- function debug_dump_respawn_save(filename = "debug_dump_respawn.blk")
 {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.RespawnHandler)
+  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.RespawnHandler)
   if (!handler || dbg_dump.isLoaded())
     return "IGNORED: Handler not found, or dump is loaded."
 
-  let list = [
+  local list = [
     { id = "_fake_mplayers_list", value = ::get_mplayers_list(::GET_MPLAYERS_LIST, true) }
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock();
+    { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
-    { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getLog() }
+    { id = "_fake_mpchat_log", value = require("scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_game_type"
     "get_game_mode"
@@ -306,7 +306,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
   foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
   {
-    let unit = ::g_crew.getCrewUnit(crew)
+    local unit = ::g_crew.getCrewUnit(crew)
     if (unit)
     {
       foreach (id in [ "get_last_weapon", "get_slot_delay", "get_unit_wp_to_respawn",
@@ -318,7 +318,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
       list.append({ id = "is_crew_slot_was_ready_at_host", args = [ crew.idInCountry, unit.name, false ] })
       list.append({ id = "get_aircraft_fuel_consumption", args = [ unit.name, ::get_mission_difficulty(), true ] })
 
-      foreach (weapon in unit.getWeapons())
+      foreach (weapon in unit.weapons)
       {
         foreach (id in [ "wp_get_cost2", "wp_get_cost_gold2", "shop_is_weapon_purchased",
           "shop_get_weapon_baseval" ])
@@ -352,7 +352,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
   initListLabelsSquad()
-  require("%scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
+  require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")
   ::broadcastEvent("BattleLogMessage")
@@ -363,9 +363,9 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
 ::debug_dump_userlogs_save <- function debug_dump_userlogs_save(filename = "debug_dump_userlogs.blk")
 {
-  let userlogs = []
+  local userlogs = []
   for (local i = 0; i < ::get_user_logs_count(); i++) {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
     userlogs.append(blk)
   }

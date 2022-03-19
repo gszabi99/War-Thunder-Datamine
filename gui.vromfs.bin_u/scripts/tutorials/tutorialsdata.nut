@@ -1,18 +1,18 @@
-let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
+local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
 
-let skipTutorialBitmaskId = "skip_tutorial_bitmask"
+local skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
-let function isTutorialComplete(tutorialName) {
-  let mainGameMode = ::get_mp_mode()
+local function isTutorialComplete(tutorialName) {
+  local mainGameMode = ::get_mp_mode()
   ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let progress = ::get_mission_progress($"tutorial/{tutorialName}")
+  local progress = ::get_mission_progress($"tutorial/{tutorialName}")
   ::set_mp_mode(mainGameMode)
   return progress >= 0 && progress < 3
 }
 
-let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
+local checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
   {
     id = "fighter"
     tutorial = "tutorialB_fighter"
@@ -56,23 +56,23 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
   }
 ]
 
-let reqTutorial = {
+local reqTutorial = {
   [::ES_UNIT_TYPE_AIRCRAFT] = "tutorialB_takeoff_and_landing",
   //[::ES_UNIT_TYPE_TANK] = "",
 }
 
-let getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
+local getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
 
-let tutorialRewardData = persist("tutorialRewardData", @() ::Watched(null))
-let clearTutorialRewardData = @() tutorialRewardData(null)
+local tutorialRewardData = persist("tutorialRewardData", @() ::Watched(null))
+local clearTutorialRewardData = @() tutorialRewardData(null)
 
-let launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() ::Watched(0))
-let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
+local launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() ::Watched(0))
+local setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
 
-let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
-  let { hasRewardImage = true, needVerticalAlign = false, highlighted = null,
+local function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
+  local { hasRewardImage = true, needVerticalAlign = false, highlighted = null,
     showFullReward = false, isMissionComplete = false } = params
-  let res = {
+  local res = {
     locId = "reward/tutorialFirstComplet"
     rewardMoney = ::Cost()
     isComplete = true
@@ -83,9 +83,9 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
     slotReward = ""
   }
 
-  let slot = misDataBlk?.slot
+  local slot = misDataBlk?.slot
   if (slot != null) {
-    let isRecieveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
+    local isRecieveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
     if (isRecieveSlot || !isMissionComplete) {
       res.isComplete = isRecieveSlot
       if (showFullReward || !isRecieveSlot) {
@@ -95,11 +95,11 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
     }
   }
 
-  let oneTimeAwardUnlockId = misDataBlk?.oneTimeAwardUnlock ?? ""
+  local oneTimeAwardUnlockId = misDataBlk?.oneTimeAwardUnlock ?? ""
   if (oneTimeAwardUnlockId == "")
     return res
 
-  let isCompleteAwardUnlock = ::is_unlocked_scripted(-1, oneTimeAwardUnlockId)
+  local isCompleteAwardUnlock = ::is_unlocked_scripted(-1, oneTimeAwardUnlockId)
   if (res.hasReward && !res.isComplete && isCompleteAwardUnlock)
     return res
 
@@ -108,7 +108,7 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
       && !isCompleteAwardUnlock)
     return res
 
-  let cost = ::g_unlocks.getUnlockCost(oneTimeAwardUnlockId)
+  local cost = ::g_unlocks.getUnlockCost(oneTimeAwardUnlockId)
   if (cost.isZero())
     return res
 
@@ -119,17 +119,17 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
   return res
 }
 
-let function saveTutorialToCheckReward(mission) {
-  let mainGameMode = ::get_mp_mode()
+local function saveTutorialToCheckReward(mission) {
+  local mainGameMode = ::get_mp_mode()
   ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(::GM_TRAINING)
-  let missionName = mission.name
-  let fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
-  let progress = ::get_mission_progress(fullMissionName)
-  let isComplete = progress >= 0 && progress < 3
+  local campId = ::get_game_mode_name(::GM_TRAINING)
+  local missionName = mission.name
+  local fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
+  local progress = ::get_mission_progress(fullMissionName)
+  local isComplete = progress >= 0 && progress < 3
 
   local presetFilename = ""
-  let preset = ::g_controls_presets.getCurrentPresetInfo()
+  local preset = ::g_controls_presets.getCurrentPresetInfo()
   if (preset.name.indexof("hotas4") != null
       && checkJoystickThustmasterHotas(false)
       && ! ::has_feature("DisableSwitchPresetOnTutorialForHotas4"))
@@ -138,12 +138,12 @@ let function saveTutorialToCheckReward(mission) {
       ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename("dualshock4"))
     }
 
-  let rBlk = ::get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
-  let misDataBlk = dataBlk?[missionName]
-  let resource = misDataBlk?.decal
-  let resourceType = "decal"
-  let isResourceUnlocked = ::g_decorator.getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
+  local rBlk = ::get_pve_awards_blk()
+  local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  local misDataBlk = dataBlk?[missionName]
+  local resource = misDataBlk?.decal
+  local resourceType = "decal"
+  local isResourceUnlocked = ::g_decorator.getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
 
   tutorialRewardData({
     missionName
@@ -163,10 +163,10 @@ let function saveTutorialToCheckReward(mission) {
   ::set_mp_mode(mainGameMode)
 }
 
-let isRequireFeature = @(data, featureId) (featureId in data) && !::has_feature(data[featureId])
+local isRequireFeature = @(data, featureId) (featureId in data) && !::has_feature(data[featureId])
 
-let function getTutorialsTblWithMissions (diff = -1, misName = null) {
-  let tutorialsTbl = checkTutorialsList
+local function getTutorialsTblWithMissions (diff = -1, misName = null) {
+  local tutorialsTbl = checkTutorialsList
     .reduce(@(res, v, idx) res
       .__update({ [v.tutorial] = {
           idx = idx
@@ -177,15 +177,15 @@ let function getTutorialsTblWithMissions (diff = -1, misName = null) {
       }),
     {})
 
-  let mainGameMode = ::get_mp_mode()
+  local mainGameMode = ::get_mp_mode()
   ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(::GM_TRAINING)
-  let chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
+  local campId = ::get_game_mode_name(::GM_TRAINING)
+  local chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
   foreach(chapter in chapters)
     foreach(m in chapter)
       if (m.name in tutorialsTbl && (misName == null || misName == m.name)) {
-        let fullMissionName = $"{m?.chapter ?? campId}/{m.name}"
-        let progress = ::get_mission_progress(fullMissionName)
+        local fullMissionName = $"{m?.chapter ?? campId}/{m.name}"
+        local progress = ::get_mission_progress(fullMissionName)
         if (!isRequireFeature(m, "reqFeature")
           && ((diff<0 && progress == 3) || (diff>=0 && (progress==3 || progress<diff)))) // 3 == unlocked, 0-2 - completed at difficulty
             tutorialsTbl[m.name].__update({ mission = m, progress = progress })
@@ -199,44 +199,44 @@ let function getTutorialsTblWithMissions (diff = -1, misName = null) {
   return tutorialsTbl
 }
 
-let function getTutorialRewardMarkup(tutorialData) {
+local function getTutorialRewardMarkup(tutorialData) {
   if (tutorialData.progress != 3) //tutorials have reward only once
     return ""
 
-  let rBlk = ::get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  local rBlk = ::get_pve_awards_blk()
+  local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
   if (dataBlk == null)
     return ""
 
-  let params = {
+  local params = {
     highlighted = true
     hasRewardImage = false
     needVerticalAlign = true
   }
-  let rewardsConfig = [params.__merge({ isBaseReward = true })]
-  let firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[tutorialData.mission.name], params)
+  local rewardsConfig = [params.__merge({ isBaseReward = true })]
+  local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[tutorialData.mission.name], params)
   if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
     rewardsConfig.append(firstCompletRewardData)
 
   return getMissionRewardsMarkup(dataBlk, tutorialData.mission.name, rewardsConfig)
 }
 
-let function getUncompletedTutorialData(misName, diff = -1) {
+local function getUncompletedTutorialData(misName, diff = -1) {
   if (!::has_feature("Tutorials"))
     return null
 
-  let tutorialData = getTutorialsTblWithMissions(diff, misName)?[misName]
+  local tutorialData = getTutorialsTblWithMissions(diff, misName)?[misName]
   if (tutorialData?.mission == null)
     return null
 
   return tutorialData
 }
 
-let function getSuitableUncompletedTutorialData(unit, diff = -1) {
+local function getSuitableUncompletedTutorialData(unit, diff = -1) {
   if (!::has_feature("Tutorials"))
     return null
 
-  let tutorialsTbl = getTutorialsTblWithMissions(diff)
+  local tutorialsTbl = getTutorialsTblWithMissions(diff)
   local tutorialData = null
   if (unit?.isTank() && ::has_feature("Tanks")
     && tutorialsTbl?.tutorial_tank_basics_arcade.mission != null)
@@ -260,30 +260,30 @@ let function getSuitableUncompletedTutorialData(unit, diff = -1) {
   return tutorialData
 }
 
-let function resetTutorialSkip() {
+local function resetTutorialSkip() {
   ::saveLocalByAccount(skipTutorialBitmaskId, 0)
 }
 
-let reqTimeInMode = 60 //req time in mode when no need check tutorial
-let function isDiffUnlocked(diff, checkUnitType) {
+local reqTimeInMode = 60 //req time in mode when no need check tutorial
+local function isDiffUnlocked(diff, checkUnitType) {
   //check played before
   for(local d = diff; d<3; d++)
     if (::my_stats.getTimePlayed(checkUnitType, d) >= reqTimeInMode)
       return true
 
-  let reqName = getReqTutorial(checkUnitType)
+  local reqName = getReqTutorial(checkUnitType)
   if (reqName == "")
     return true
 
-  let mainGameMode = ::get_mp_mode()
+  local mainGameMode = ::get_mp_mode()
   ::set_mp_mode(::GM_TRAINING)  //req to check progress
 
-  let chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
+  local chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
   foreach(chapter in chapters)
     foreach(m in chapter)
       if (reqName == m.name) {
-        let fullMissionName = m.getStr("chapter", ::get_game_mode_name(::GM_TRAINING)) + "/" + m.name
-        let progress = ::get_mission_progress(fullMissionName)
+        local fullMissionName = m.getStr("chapter", ::get_game_mode_name(::GM_TRAINING)) + "/" + m.name
+        local progress = ::get_mission_progress(fullMissionName)
         if (mainGameMode >= 0)
           ::set_mp_mode(mainGameMode)
         return (progress<3 && progress>=diff) // 3 == unlocked, 0-2 - completed at difficulty
@@ -293,7 +293,7 @@ let function isDiffUnlocked(diff, checkUnitType) {
   return true
 }
 
-let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
+local function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
   if (!::check_diff_pkg(diff, !needMsgBox))
     return true
   if (!::g_difficulty.getDifficultyByDiffCode(diff).needCheckTutorial)
@@ -304,8 +304,8 @@ let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = nul
   if (isDiffUnlocked(diff, unitType))
     return false
 
-  let reqName = getReqTutorial(unitType)
-  let mData = getUncompletedTutorialData(reqName, diff)
+  local reqName = getReqTutorial(unitType)
+  local mData = getUncompletedTutorialData(reqName, diff)
   if (!mData)
     return false
 

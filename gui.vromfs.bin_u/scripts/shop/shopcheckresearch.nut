@@ -1,15 +1,15 @@
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local unitActions = require("scripts/unit/unitActions.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
-::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler
+class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/shop/shopCheckResearch"
-  sceneNavBlkName = "%gui/shop/shopNav.blk"
+  sceneTplName = "gui/shop/shopCheckResearch"
+  sceneNavBlkName = "gui/shop/shopNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   canQuitByGoBack = false
 
@@ -31,7 +31,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function initScreen()
   {
-    let unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
+    local unitName = ::getTblValue(::researchedUnitForCheck, researchBlock)
     curAirName = unitName
     researchedUnit = ::getAircraftByName(unitName)
     unitCountry = researchBlock.country
@@ -83,23 +83,23 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     showRankLockedMsgBoxOnce = true
 
-    let rank = getMaxEraAvailableByCountry()
-    let nextRank = rank + 1
+    local rank = getMaxEraAvailableByCountry()
+    local nextRank = rank + 1
 
     if (nextRank > ::max_country_rank)
       return
 
-    let unitLockedByFeature = getNotResearchedUnitByFeature()
+    local unitLockedByFeature = getNotResearchedUnitByFeature()
     if (unitLockedByFeature && !::checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
       return
 
-    let ranksBlk = ::get_ranks_blk()
-    let unitsCount = boughtVehiclesCount[rank]
-    let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(unitCountry, unitType, rank, ranksBlk)
-    let reqUnits = max(0, unitsNeed - unitsCount)
+    local ranksBlk = ::get_ranks_blk()
+    local unitsCount = boughtVehiclesCount[rank]
+    local unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(unitCountry, unitType, rank, ranksBlk)
+    local reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0)
     {
-      let text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
+      local text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
                     + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
       msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
     }
@@ -107,11 +107,11 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updateHeaderText()
   {
-    let headerObj = scene.findObject("shop_header")
+    local headerObj = scene.findObject("shop_header")
     if (!::checkObj(headerObj))
       return
 
-    let expText = ::get_flush_exp_text(availableFlushExp)
+    local expText = ::get_flush_exp_text(availableFlushExp)
     local headerText = ::loc("mainmenu/nextResearch/title")
     if (expText != "")
       headerText += ::loc("ui/parentheses/space", {text = expText})
@@ -126,7 +126,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updateCurResearchingUnit()
   {
-    let curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
+    local curUnitName = ::shop_get_researchable_unit_name(unitCountry, unitType)
     if (curUnitName == ::getTblValue("name", curResearchingUnit, ""))
       return
 
@@ -184,7 +184,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     }
     else if (!curResearchingUnit || ::isUnitResearched(curResearchingUnit))
     {
-      let nextResearchingUnit = getMaxRankResearchingUnitByCountry()
+      local nextResearchingUnit = getMaxRankResearchingUnitByCountry()
       if (nextResearchingUnit)
         unit = nextResearchingUnit
       else
@@ -222,12 +222,12 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     tutorialModule.saveShowedTutorial("researchUnit")
 
-    let visibleObj = scene.findObject("shop_items_visible_div")
+    local visibleObj = scene.findObject("shop_items_visible_div")
     if (!visibleObj)
       return
 
-    let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
-    let unitsObj = []
+    local visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
+    local unitsObj = []
     foreach (newUnit in ::all_units)
       if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
         && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
@@ -238,17 +238,17 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
         else
           newUnitName = newUnit.name
 
-        let unitObj = scene.findObject(newUnitName)
+        local unitObj = scene.findObject(newUnitName)
         if (unitObj)
         {
-          let unitBox = ::GuiBox().setFromDaguiObj(unitObj)
+          local unitBox = ::GuiBox().setFromDaguiObj(unitObj)
           if (unitBox.isInside(visibleBox))
             unitsObj.append(unitObj)
         }
       }
     unitsObj.append("btn_spend_exp")
 
-    let steps = [
+    local steps = [
       {
         obj = unitsObj
         text = ::loc("tutorials/research_next_aircraft")
@@ -267,7 +267,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    let unitsList = ::getTblValue("airsGroup", unitGroup)
+    local unitsList = ::getTblValue("airsGroup", unitGroup)
     if (!unitsList)
       return null
 
@@ -292,21 +292,21 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     updateRepairAllButton()
     showSceneBtn("btn_back", curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
 
-    let unit = getCurAircraft(true, true)
+    local unit = getCurAircraft(true, true)
     if (!unit)
       return
 
     updateSpendExpBtn(unit)
 
-    let isFakeUnit = unit?.isFakeUnit ?? false
-    let canBuyIngame = !isFakeUnit && ::canBuyUnit(unit)
-    let canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
-    let showBuyUnit = canBuyIngame || canBuyOnline
+    local isFakeUnit = unit?.isFakeUnit ?? false
+    local canBuyIngame = !isFakeUnit && ::canBuyUnit(unit)
+    local canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
+    local showBuyUnit = canBuyIngame || canBuyOnline
     showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit)
     {
-      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
-      let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
+      local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      local unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
       placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
       placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
@@ -314,15 +314,15 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function updateSpendExpBtn(unit)
   {
-    let showSpendBtn = !::isUnitGroup(unit) && !unit?.isFakeUnit
+    local showSpendBtn = !::isUnitGroup(unit) && !unit?.isFakeUnit
                          && ::canResearchUnit(unit) && !unit.isSquadronVehicle()
     local coloredText = ""
     if (showSpendBtn)
     {
-      let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
-      let flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
-      let textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
-      let textValue = flushExp ? ::loc("ui/parentheses/space",
+      local reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+      local flushExp = reqExp < availableFlushExp ? reqExp : availableFlushExp
+      local textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
+      local textValue = flushExp ? ::loc("ui/parentheses/space",
         {text = ::Cost().setRp(flushExp).tostring()}) : ""
       coloredText = ::format(textSample, textValue)
     }
@@ -331,7 +331,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     {
       if (!::checkObj(navBar))
         continue
-      let spendExpBtn = navBar.findObject("btn_spend_exp")
+      local spendExpBtn = navBar.findObject("btn_spend_exp")
       if (!::checkObj(spendExpBtn))
         continue
 
@@ -354,7 +354,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       return
 
     hasSpendExpProcess = true
-    let unit = getCurAircraft(true, true)
+    local unit = getCurAircraft(true, true)
     flushItemExp(unit, @() setUnitOnResearch(unit, function() {
       hasSpendExpProcess = false
       ::add_big_query_record("choosed_new_research_unit", unit.name)
@@ -388,7 +388,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function setUnitOnResearch(unit = null, afterDoneFunc = null)
   {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    local executeAfterDoneFunc = (@(afterDoneFunc) function() {
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
@@ -411,7 +411,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function flushItemExp(unitOnResearch, afterDoneFunc = null)
   {
-    let executeAfterDoneFunc = (@(unitOnResearch, afterDoneFunc) function() {
+    local executeAfterDoneFunc = (@(unitOnResearch, afterDoneFunc) function() {
         if (!isValid())
           return
 
@@ -446,7 +446,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function onCloseShop()
   {
     destroyGroupChoose()
-    let curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
+    local curResName = ::shop_get_researchable_unit_name(unitCountry, unitType)
     if (::getTblValue("name", lastResearchUnit, "") != curResName)
       setUnitOnResearch(::getAircraftByName(curResName))
 
@@ -455,7 +455,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function onEventModalWndDestroy(params)
   {
-    let closedHandler = ::getTblValue("handler", params, null)
+    local closedHandler = ::getTblValue("handler", params, null)
     if (!closedHandler)
       return
 
@@ -482,11 +482,11 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::getSteamMarkUp <- function getSteamMarkUp()
 {
-  let blk = ::get_discounts_blk()
+  local blk = ::get_discounts_blk()
 
-  let blocksCount = blk.blockCount()
+  local blocksCount = blk.blockCount()
   for (local i = 0; i < blocksCount; i++) {
-    let block = blk.getBlock(i)
+    local block = blk.getBlock(i)
     if(block.getBlockName() == "steam_markup")
       return block.all
   }
@@ -497,27 +497,27 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 ::checkShopBlk <- function checkShopBlk()
 {
   local resText = ""
-  let shopBlk = ::get_shop_blk()
+  local shopBlk = ::get_shop_blk()
   for (local tree = 0; tree < shopBlk.blockCount(); tree++)
   {
-    let tblk = shopBlk.getBlock(tree)
-    let country = tblk.getBlockName()
+    local tblk = shopBlk.getBlock(tree)
+    local country = tblk.getBlockName()
 
     for (local page = 0; page < tblk.blockCount(); page++)
     {
-      let pblk = tblk.getBlock(page)
-      let groups = []
+      local pblk = tblk.getBlock(page)
+      local groups = []
       for (local range = 0; range < pblk.blockCount(); range++)
       {
-        let rblk = pblk.getBlock(range)
+        local rblk = pblk.getBlock(range)
         for (local a = 0; a < rblk.blockCount(); a++)
         {
-          let airBlk = rblk.getBlock(a)
-          let airName = airBlk.getBlockName()
+          local airBlk = rblk.getBlock(a)
+          local airName = airBlk.getBlockName()
           local air = getAircraftByName(airName)
           if (!air)
           {
-            let groupTotal = airBlk.blockCount()
+            local groupTotal = airBlk.blockCount()
             if (groupTotal == 0)
             {
               resText += ((resText!="")? "\n":"") + "Not found aircraft " + airName + " in " + country
@@ -526,7 +526,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
             groups.append(airName)
             for(local ga=0; ga<groupTotal; ga++)
             {
-              let gAirBlk = airBlk.getBlock(ga)
+              local gAirBlk = airBlk.getBlock(ga)
               air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 resText += ((resText!="")? "\n":"") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
@@ -534,7 +534,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
           } else
             if ((airBlk?.reqAir ?? "") != "")
             {
-              let reqAir = getAircraftByName(airBlk.reqAir)
+              local reqAir = getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
                 resText += ((resText!="")? "\n":"") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
             }

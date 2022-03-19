@@ -1,22 +1,22 @@
-let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isEqualSimple } = require("%sqstd/underscore.nut")
-let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
-let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+local { getMarkerUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { isEqualSimple } = require("%sqstd/underscore.nut")
+local { getBitStatus } = require("scripts/unit/unitStatus.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+local { getShopDiffCode } = require("scripts/shop/shopDifficulty.nut")
 
-let cacheByEdiff = {}
+local cacheByEdiff = {}
 local curUnlockIds = null // array of strings
 
-let isUnitUnlocked = @(u) (bit_unit_status.locked & getBitStatus(u)) == 0
+local isUnitUnlocked = @(u) (bit_unit_status.locked & getBitStatus(u)) == 0
 
-let function getUnitsByUnlock(unlockBlk, ediff) {
-  let modeBlk = unlockBlk?.mode
+local function getUnitsByUnlock(unlockBlk, ediff) {
+  local modeBlk = unlockBlk?.mode
   if (!modeBlk)
     return []
 
-  let conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
-  let unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
+  local conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
+  local unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (unitCond)
     return (unitCond % "class")
       .map(@(n) ::getAircraftByName(n))
@@ -24,37 +24,37 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
 
   local units = null
 
-  let countryCond = conditions.findvalue(@(c) c.type == "playerCountry")
+  local countryCond = conditions.findvalue(@(c) c.type == "playerCountry")
   if (countryCond) {
-    let countries = countryCond % "country"
+    local countries = countryCond % "country"
     units = ::all_units.filter(@(u) countries.contains(u.shopCountry))
   }
 
-  let typeCond = conditions.findvalue(@(c) ["playerType", "offenderType"].contains(c.type))
+  local typeCond = conditions.findvalue(@(c) ["playerType", "offenderType"].contains(c.type))
   if (typeCond) {
-    let types = typeCond % "unitType"
+    local types = typeCond % "unitType"
     units = (units ?? ::all_units).filter(@(u) types.contains(u.unitType.tag))
   }
 
-  let tagConds = conditions.filter(@(c) ["playerTag", "offenderTag"].contains(c.type))
+  local tagConds = conditions.filter(@(c) ["playerTag", "offenderTag"].contains(c.type))
   foreach (tagCond in tagConds) {
-    let tags = tagCond % "tag"
+    local tags = tagCond % "tag"
     units = (units ?? ::all_units).filter(@(u) u.tags.findindex(@(tag) tags.contains(tag)) != null)
   }
 
-  let rankCond = conditions.findvalue(@(c) ["playerUnitRank", "offenderUnitRank"].contains(c.type))
+  local rankCond = conditions.findvalue(@(c) ["playerUnitRank", "offenderUnitRank"].contains(c.type))
   if (rankCond) {
-    let minRank = rankCond?.minRank ?? 0
-    let maxRank = rankCond?.maxRank ?? 0
+    local minRank = rankCond?.minRank ?? 0
+    local maxRank = rankCond?.maxRank ?? 0
     units = (units ?? ::all_units).filter(@(u) u.rank >= minRank && (maxRank == 0 || u.rank <= maxRank))
   }
 
-  let mRankCond = conditions.findvalue(@(c) ["playerUnitMRank", "offenderUnitMRank"].contains(c.type))
+  local mRankCond = conditions.findvalue(@(c) ["playerUnitMRank", "offenderUnitMRank"].contains(c.type))
   if (mRankCond) {
-    let minMRank = mRankCond?.minMRank ?? 0
-    let maxMRank = mRankCond?.maxMRank ?? 0
+    local minMRank = mRankCond?.minMRank ?? 0
+    local maxMRank = mRankCond?.maxMRank ?? 0
     units = (units ?? ::all_units).filter(function(unit) {
-      let mRank = unit.getEconomicRank(ediff)
+      local mRank = unit.getEconomicRank(ediff)
       return mRank >= minMRank && (maxMRank == 0 || mRank <= maxMRank)
     })
   }
@@ -62,7 +62,7 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
   return units?.filter(@(u) isUnitUnlocked(u)) ?? []
 }
 
-let function invalidateCache() {
+local function invalidateCache() {
   if (!curUnlockIds)
     return
 
@@ -72,37 +72,37 @@ let function invalidateCache() {
   ::broadcastEvent("UnlockMarkersCacheInvalidate")
 }
 
-let function getDoableUnlocks() {
+local function getDoableUnlocks() {
   return getMarkerUnlocks().filter(@(u) ::g_unlocks.canDo(u))
 }
 
-let function checkUnlockMarkers() {
+local function checkUnlockMarkers() {
   if (!curUnlockIds)
     return
 
-  let unlockIds = getDoableUnlocks().map(@(u) u.id)
+  local unlockIds = getDoableUnlocks().map(@(u) u.id)
   if (isEqualSimple(unlockIds, curUnlockIds))
     return
 
   invalidateCache()
 }
 
-let function cache(ediff) {
+local function cache(ediff) {
   if (ediff == null)
     return null
 
   if (ediff in cacheByEdiff || !::g_login.isLoggedIn())
     return cacheByEdiff?[ediff]
 
-  let curCache = {
+  local curCache = {
     unlockIds = []
     unitNameToUnlockId = {}
     countries = {}
   }
 
-  let doableUnlocks = getDoableUnlocks()
+  local doableUnlocks = getDoableUnlocks()
   foreach (unlockBlk in doableUnlocks) {
-    let units = getUnitsByUnlock(unlockBlk, ediff)
+    local units = getUnitsByUnlock(unlockBlk, ediff)
     if (units.len() == 0)
       continue
 
@@ -114,14 +114,14 @@ let function cache(ediff) {
       if (unit.shopCountry not in curCache.countries)
         curCache.countries[unit.shopCountry] <- { unlockIds = [] }
 
-      let country = curCache.countries[unit.shopCountry]
+      local country = curCache.countries[unit.shopCountry]
       if (!country.unlockIds.contains(unlockBlk.id))
         country.unlockIds.append(unlockBlk.id)
 
       if (unit.unitType.armyId not in country)
         country[unit.unitType.armyId] <- []
 
-      let army = country[unit.unitType.armyId]
+      local army = country[unit.unitType.armyId]
       if (!army.contains(unlockBlk.id))
         army.append(unlockBlk.id)
     }
@@ -132,40 +132,40 @@ let function cache(ediff) {
   return curCache
 }
 
-let function hasActiveUnlock(unlockId, ediff) {
+local function hasActiveUnlock(unlockId, ediff) {
   return cache(ediff)?.unlockIds.contains(unlockId)
 }
 
-let function getUnitListByUnlockId(unlockId) {
-  let modeBlk = ::g_unlocks.getUnlockById(unlockId)?.mode
+local function getUnitListByUnlockId(unlockId) {
+  local modeBlk = ::g_unlocks.getUnlockById(unlockId)?.mode
   if (!modeBlk)
     return []
 
-  let conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
-  let unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
+  local conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
+  local unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (!unitCond)
     return []
 
   return (unitCond % "class").map(@(n) ::getAircraftByName(n))
 }
 
-let function hasMarkerByUnitName(unitName, ediff) {
+local function hasMarkerByUnitName(unitName, ediff) {
   return unitName in cache(ediff)?.unitNameToUnlockId
 }
 
-let function getUnlockIdByUnitName(unitName, ediff) {
+local function getUnlockIdByUnitName(unitName, ediff) {
   return cache(ediff)?.unitNameToUnlockId[unitName]
 }
 
-let function getUnlockIds(ediff) {
+local function getUnlockIds(ediff) {
   return cache(ediff)?.unlockIds ?? []
 }
 
-let function getUnlockIdsByCountry(country, ediff) {
+local function getUnlockIdsByCountry(country, ediff) {
   return cache(ediff)?.countries[country].unlockIds ?? []
 }
 
-let function getUnlockIdsByArmyId(country, armyId, ediff) {
+local function getUnlockIdsByArmyId(country, armyId, ediff) {
   return cache(ediff)?.countries[country][armyId] ?? []
 }
 

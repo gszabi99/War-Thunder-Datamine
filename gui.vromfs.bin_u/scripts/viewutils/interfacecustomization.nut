@@ -1,27 +1,27 @@
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local { getTimestampFromStringUtc } = require("scripts/time.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
 local baseCustomizationArray = null
 
-let activeConfig = ::Watched(null)
-let toBattleLocId = ::Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
-let toBattleLocIdShort = ::Computed(@() activeConfig.value?.toBattleLocIdShort ?? "mainmenu/toBattle/short")
+local activeConfig = ::Watched(null)
+local toBattleLocId = ::Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
+local toBattleLocIdShort = ::Computed(@() activeConfig.value?.toBattleLocIdShort ?? "mainmenu/toBattle/short")
 
 toBattleLocId.subscribe(@(_) ::broadcastEvent("ToBattleLocChanged"))
 toBattleLocIdShort.subscribe(@(_) ::broadcastEvent("ToBattleLocShortChanged"))
 
 local updateCustomizationConfigTask = -1
 
-let function initCustomConfigOnce() {
+local function initCustomConfigOnce() {
   if (baseCustomizationArray != null)
     return
 
   baseCustomizationArray = []
-  let customizationsBlk = GUI.get()?.interface_customization
+  local customizationsBlk = GUI.get()?.interface_customization
   if (customizationsBlk == null)
     return
 
-  let configsCount = customizationsBlk.blockCount()
+  local configsCount = customizationsBlk.blockCount()
   for(local i = 0; i < configsCount; i++)
     baseCustomizationArray.append(::buildTableFromBlk(customizationsBlk.getBlock(i)))
 }
@@ -35,25 +35,25 @@ updateActiveCustomConfig = function() {
   }
 
   local minUpdateTimeSec = null
-  let activeCustomizationConfig = {}
+  local activeCustomizationConfig = {}
   foreach(customization in baseCustomizationArray) {
-    let endTime = customization?.endDate != null
+    local endTime = customization?.endDate != null
       ? getTimestampFromStringUtc(customization.endDate)
       : null
-    let currentTime = ::get_charserver_time_sec()
+    local currentTime = ::get_charserver_time_sec()
     if (endTime == null || currentTime >= endTime)
       continue
 
-    let startTime = customization?.beginDate != null
+    local startTime = customization?.beginDate != null
       ? getTimestampFromStringUtc(customization.beginDate)
       : null
     if (startTime != null && currentTime < startTime) {
-      let updateTimeSec = startTime - currentTime
+      local updateTimeSec = startTime - currentTime
       minUpdateTimeSec = ::min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
       continue
     }
 
-    let updateTimeSec = endTime - currentTime
+    local updateTimeSec = endTime - currentTime
     minUpdateTimeSec = ::min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
     activeCustomizationConfig.__update(customization)
   }
@@ -64,17 +64,17 @@ updateActiveCustomConfig = function() {
       @(dt) updateActiveCustomConfig(), minUpdateTimeSec)
 }
 
-let function initActiveConfigeOnce() {
+local function initActiveConfigeOnce() {
   if (activeConfig.value == null)
     updateActiveCustomConfig()
 }
 
-let function getToBattleLocId() {
+local function getToBattleLocId() {
   initActiveConfigeOnce()
   return toBattleLocId.value
 }
 
-let function getToBattleLocIdShort() {
+local function getToBattleLocIdShort() {
   initActiveConfigeOnce()
   return toBattleLocIdShort.value
 }

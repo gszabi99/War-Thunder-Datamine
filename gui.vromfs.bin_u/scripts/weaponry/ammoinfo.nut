@@ -1,13 +1,13 @@
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-let AMMO = {
+local AMMO = {
   PRIMARY      = 0, //bullets, modifications
   MODIFICATION = 0,
   SECONDARY    = 1,  //weapon presets
   WEAPON       = 1
 }
 
-let function getAmmoAmount(unit, ammoName, ammoType)
+local function getAmmoAmount(unit, ammoName, ammoType)
 {
   if (!ammoName)
     return 0
@@ -16,9 +16,9 @@ let function getAmmoAmount(unit, ammoName, ammoType)
   return  ::shop_is_weapon_purchased(unit.name, ammoName)
 }
 
-let function getAmmoCost(unit, ammoName, ammoType)
+local function getAmmoCost(unit, ammoName, ammoType)
 {
-  let res = ::Cost()
+  local res = ::Cost()
   if (ammoType==AMMO.MODIFICATION)
   {
     res.wp = ::max(::wp_get_modification_cost(unit.name, ammoName), 0)
@@ -31,7 +31,7 @@ let function getAmmoCost(unit, ammoName, ammoType)
   return  res
 }
 
-let function getAmmoMaxAmount(unit, ammoName, ammoType)
+local function getAmmoMaxAmount(unit, ammoName, ammoType)
 {
   if (ammoType==AMMO.MODIFICATION)
   {
@@ -44,19 +44,19 @@ let function getAmmoMaxAmount(unit, ammoName, ammoType)
   return  ::wp_get_weapon_max_count(unit.name, ammoName)
 }
 
-let function getAmmoMaxAmountInSession(unit, ammoName, ammoType)
+local function getAmmoMaxAmountInSession(unit, ammoName, ammoType)
 {
   if (ammoType==AMMO.MODIFICATION)
     return ::shop_get_modification_baseval(unit.name, ammoName)
   return  ::shop_get_weapon_baseval(unit.name, ammoName)
 }
 
-let function isAmmoFree(unit, ammoName, ammoType)
+local function isAmmoFree(unit, ammoName, ammoType)
 {
   return getAmmoCost(unit, ammoName, ammoType) <= ::zero_money
 }
 
-let function getAmmoWarningMinimum(ammoType, unit, maxAmount)
+local function getAmmoWarningMinimum(ammoType, unit, maxAmount)
 {
   if (unit.unitType == unitTypes.SHIP || unit.unitType == unitTypes.BOAT)
     return max(1, maxAmount / 10)
@@ -64,19 +64,19 @@ let function getAmmoWarningMinimum(ammoType, unit, maxAmount)
     : ::weaponsWarningMinimumSecondary
 }
 
-let function getAmmoAmountData(unit, ammoName, ammoType)
+local function getAmmoAmountData(unit, ammoName, ammoType)
 {
-  let res = {text = "", warning = false, amount = 0, buyAmount = 0,
+  local res = {text = "", warning = false, amount = 0, buyAmount = 0,
                airName = unit.name, ammoName = ammoName, ammoType = ammoType }
 
   res.amount = getAmmoAmount(unit, ammoName, ammoType)
-  let maxAmount = getAmmoMaxAmount(unit, ammoName, ammoType)
-  let text = ::getAmountAndMaxAmountText(res.amount, maxAmount)
+  local maxAmount = getAmmoMaxAmount(unit, ammoName, ammoType)
+  local text = ::getAmountAndMaxAmountText(res.amount, maxAmount)
   if (text == "")
     return res
 
-  let fullText = "(" + text + ")"
-  let amountWarning = getAmmoWarningMinimum(ammoType, unit, maxAmount)
+  local fullText = "(" + text + ")"
+  local amountWarning = getAmmoWarningMinimum(ammoType, unit, maxAmount)
   if (res.amount < amountWarning)
   {
     res.text = "<color=@weaponWarning>" + fullText + "</color>"
@@ -88,19 +88,19 @@ let function getAmmoAmountData(unit, ammoName, ammoType)
   return res
 }
 
-let function checkAmmoAmount(unit, ammoName, ammoType)
+local function checkAmmoAmount(unit, ammoName, ammoType)
 {
-  let data = getAmmoAmountData(unit, ammoName, ammoType)
+  local data = getAmmoAmountData(unit, ammoName, ammoType)
   if (data.warning)
     return data.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
 
   return UNIT_WEAPONS_READY
 }
 
-let function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING)
+local function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING)
 {
-  let res = []
-  let addAmmoData = function(ammoData) {
+  local res = []
+  local addAmmoData = function(ammoData) {
     if (readyStatus == UNIT_WEAPONS_READY
         || (readyStatus == UNIT_WEAPONS_ZERO && !ammoData.amount)
         || (readyStatus == UNIT_WEAPONS_WARNING && ammoData.warning))
@@ -111,7 +111,7 @@ let function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPON
 
   for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
   {
-    let modifName = ::get_last_bullets(unit.name, i)
+    local modifName = ::get_last_bullets(unit.name, i)
     if (modifName && modifName != "")
       addAmmoData(getAmmoAmountData(unit, modifName, AMMO.MODIFICATION))
   }

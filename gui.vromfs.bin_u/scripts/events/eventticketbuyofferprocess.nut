@@ -1,5 +1,5 @@
-let time = require("%scripts/time.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+local time = require("scripts/time.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 
 ::g_event_ticket_buy_offer <- {
@@ -43,18 +43,18 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
     ::g_event_ticket_buy_offer.currentProcess = null
 
     // Array of tickets with valid limit data.
-    let availableTickets = []
+    local availableTickets = []
     foreach (ticket in _tickets)
       if (ticket.getLimitsCheckData().result)
         availableTickets.append(ticket)
 
-    let activeTicket = ::events.getEventActiveTicket(_event)
+    local activeTicket = ::events.getEventActiveTicket(_event)
     if (availableTickets.len() == 0)
     {
-      let msgArr = [::loc("events/wait_for_sessions_to_finish/main")]
+      local msgArr = [::loc("events/wait_for_sessions_to_finish/main")]
       if (activeTicket != null)
       {
-        let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(_event))
+        local tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(_event))
         msgArr.append(::loc("events/wait_for_sessions_to_finish/optional", {
           timeleft = time.secondsToString(tournamentData.timeToWait)
         }))
@@ -63,7 +63,7 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
     }
     else
     {
-      let windowParams = {
+      local windowParams = {
         event = _event
         tickets = availableTickets
         activeTicket = activeTicket

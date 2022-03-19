@@ -1,19 +1,18 @@
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
-let { getMissionLocIdsArray } = require("%scripts/missions/missionsUtilsModule.nut")
-let base64 = require("base64")
-let DataBlock = require("DataBlock")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
-  updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let joiningGameWaitBox = require("%scripts/matchingRooms/joiningGameWaitBox.nut")
-let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
-let { getCdBaseDifficulty } = ::require_native("guiOptions")
-let { updateIconPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
-let { getRealName } = require("%scripts/user/nameMapping.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.nut")
+local base64 = require("base64")
+local DataBlock = require("DataBlock")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
+  updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
+local joiningGameWaitBox = require("scripts/matchingRooms/joiningGameWaitBox.nut")
+local { isGameModeCoop } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+local { getMaxEconomicRank } = require("scripts/ranks_common_shared.nut")
+local { getCdBaseDifficulty } = ::require_native("guiOptions")
+local { updateIconPlayersInfo, initListLabelsSquad } = require("scripts/statistics/squadIcon.nut")
 
 /*
 SessionLobby API
@@ -39,10 +38,10 @@ SessionLobby API
 */
 
 
-let time = require("%scripts/time.nut")
-let ingame_chat = require("%scripts/chat/mpChatModel.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+local time = require("scripts/time.nut")
+local ingame_chat = require("scripts/chat/mpChatModel.nut")
+local penalties = require("scripts/penitentiary/penalties.nut")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
 
 const NET_SERVER_LOST = 0x82220002  //for hostCb
@@ -58,7 +57,7 @@ const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
 
 ::last_round <- true
 
-let allowed_mission_settings = { //only this settings are allowed in room
+local allowed_mission_settings = { //only this settings are allowed in room
                               //default params used only to check type atm
   name = null
   missionURL = null
@@ -133,8 +132,8 @@ let allowed_mission_settings = { //only this settings are allowed in room
     return false;
   }
 
-  let senderId = ("senderId" in params)? params.senderId : null
-  let password = ::getTblValue("password", params, null)
+  local senderId = ("senderId" in params)? params.senderId : null
+  local password = ::getTblValue("password", params, null)
   if (!senderId) //querry room
     ::SessionLobby.joinRoom(params.roomId, senderId, password)
   else
@@ -185,7 +184,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::notify_session_start <- function notify_session_start()
 {
-  let sessionId = ::get_mp_session_id()
+  local sessionId = ::get_mp_session_id()
   if (sessionId != "")
     ::LAST_SESSION_DEBUG_INFO = "sid:" + sessionId
 
@@ -287,8 +286,8 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
   function getDifficulty(room = null)
   {
-    let diffValue = getMissionData(room)?.difficulty
-    let difficulty = (diffValue == "custom")
+    local diffValue = getMissionData(room)?.difficulty
+    local difficulty = (diffValue == "custom")
       ? ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty())
       : ::g_difficulty.getDifficultyByName(diffValue)
     return difficulty
@@ -298,7 +297,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     if (crsSetTeamTo == Team.none)
       return null
 
-    let availableCountries = getTeamData(crsSetTeamTo)?.countries ?? []
+    local availableCountries = getTeamData(crsSetTeamTo)?.countries ?? []
     if (availableCountries.len() == 0)
       return null
 
@@ -312,7 +311,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   }
 
   function getMissionNameLocIdsArray(room = null) {
-    let misData = getMissionData(room)
+    local misData = getMissionData(room)
     if ("name" in misData)
       return getMissionLocIdsArray(::get_mission_meta_info(misData.name))
     return []
@@ -322,11 +321,11 @@ let allowed_mission_settings = { //only this settings are allowed in room
 SessionLobby.setIngamePresence <- function setIngamePresence(roomPublic, roomId)
 {
   local team = 0
-  let myPinfo = getMemberPlayerInfo(::my_user_id_int64)
+  local myPinfo = getMemberPlayerInfo(::my_user_id_int64)
   if (myPinfo != null)
     team = myPinfo.team
 
-  let inGamePresence = {
+  local inGamePresence = {
     gameModeId = ::getTblValue("game_mode_id", roomPublic)
     gameQueueId = ::getTblValue("game_queue_id", roomPublic)
     mission    = ::getTblValue("mission", roomPublic)
@@ -393,8 +392,8 @@ SessionLobby.validateMissionCountry <- function validateMissionCountry(country, 
 
 SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
 {
-  let _settings = {}
-  let mission = missionSettings.mission
+  local _settings = {}
+  local mission = missionSettings.mission
 
   foreach(key, v in allowed_mission_settings)
   {
@@ -422,7 +421,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   _settings.mission.originalMissionName <- ::getTblValue("name", _settings.mission, "")
   if ("postfix" in _settings.mission && _settings.mission.postfix)
   {
-    let ending = "_tm"
+    local ending = "_tm"
     local nameNoTm = _settings.mission.name
     if (nameNoTm.len() > ending.len() && nameNoTm.slice(nameNoTm.len()-ending.len())==ending)
       nameNoTm = nameNoTm.slice(0, nameNoTm.len()-ending.len())
@@ -441,7 +440,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
     _settings.mission.custDifficulty <- ::get_cd_preset(::DIFFICULTY_CUSTOM)
 
   //validate Countries
-  let countriesType = ::getTblValue("countriesType", missionSettings, misCountries.ALL)
+  local countriesType = ::getTblValue("countriesType", missionSettings, misCountries.ALL)
   local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
     fullCountriesList = clone shopCountriesList
@@ -459,13 +458,13 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
       }
     } else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM)
     {
-      let bitMaskKey = (countriesType == misCountries.SYMMETRIC)? "country_allies" : name
+      local bitMaskKey = (countriesType == misCountries.SYMMETRIC)? "country_allies" : name
       countries = ::get_array_by_bit_value(::getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), shopCountriesList)
     }
     _settings[name] <- (countries && countries.len())? countries : fullCountriesList
   }
 
-  let userAllowedUnitTypesMask = missionSettings?.userAllowedUnitTypesMask ?? 0
+  local userAllowedUnitTypesMask = missionSettings?.userAllowedUnitTypesMask ?? 0
   if (userAllowedUnitTypesMask)
     foreach (unitType in unitTypes.types)
       if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit) && unitType.isPresentOnMatching)
@@ -475,7 +474,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   local mrankMax = missionSettings?.mrankMax ?? getMaxEconomicRank()
   if (mrankMin > mrankMax)
   {
-    let temp = mrankMin
+    local temp = mrankMin
     mrankMin = mrankMax
     mrankMax = temp
   }
@@ -544,7 +543,7 @@ SessionLobby.setSettings <- function setSettings(_settings, notify = false, chec
   if (isInRoom())
     validateTeamAndReady()
 
-  let newGm = getGameMode()
+  local newGm = getGameMode()
   if (newGm >= 0)
     ::set_mp_mode(newGm)
 
@@ -567,7 +566,7 @@ SessionLobby.UpdatePlayersInfo <- function UpdatePlayersInfo()
   {
     if (k.indexof("pinfo_") != 0)
       continue
-    let uid = k.slice(6).tointeger()
+    local uid = k.slice(6).tointeger()
     if (pinfo == null)
     {
       if (uid in playersInfo)
@@ -584,9 +583,9 @@ SessionLobby.UpdatePlayersInfo <- function UpdatePlayersInfo()
 SessionLobby.UpdateCrsSettings <- function UpdateCrsSettings()
 {
   isSpectatorSelectLocked = false
-  let userInUidsList = function(list_name)
+  local userInUidsList = function(list_name)
   {
-    let ids = ::getTblValue(list_name, getSessionInfo())
+    local ids = ::getTblValue(list_name, getSessionInfo())
     if (::u.isArray(ids))
       return ::isInArray(::my_user_id_int64, ids)
     return false
@@ -601,7 +600,7 @@ SessionLobby.UpdateCrsSettings <- function UpdateCrsSettings()
   crsSetTeamTo = Team.none
   foreach (team in ::events.getSidesList())
   {
-    let players = getSessionInfo()?[::events.getTeamName(team)].players
+    local players = getSessionInfo()?[::events.getTeamName(team)].players
     if (!::u.isArray(players))
       continue
 
@@ -620,20 +619,20 @@ SessionLobby.UpdateCrsSettings <- function UpdateCrsSettings()
 SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
 {
   //!!fill simmetric teams data
-  let teamData = {}
+  local teamData = {}
   teamData.allowedCrafts <- []
 
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailableByMissionSettings(_settings.mission) && unitType.isPresentOnMatching)
     {
-      let rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }
+      local rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }
       if (_settings?.mranks)
         rule.mranks <- _settings.mranks
       teamData.allowedCrafts.append(rule)
     }
 
   //!!fill assymetric teamdata
-  let teamDataA = teamData
+  local teamDataA = teamData
   local teamDataB = clone teamData
 
   //in future better to comletely remove old countries selection, and use only countries in teamData
@@ -663,12 +662,12 @@ SessionLobby.checkDynamicSettings <- function checkDynamicSettings(silent = fals
     silent = true //no need to update when custom settings checked
 
   local changed = false
-  let wasHidden = ::getTblValue("hidden", _settings, false)
+  local wasHidden = ::getTblValue("hidden", _settings, false)
   _settings.hidden <- ::getTblValue("coop", _settings, false)
                       || (isRoomInSession && !::getTblValue("allowJIP", _settings, true))
   changed = changed || (wasHidden != _settings.hidden) // warning disable: -const-in-bool-expr
 
-  let wasPassword = ::getTblValue("hasPassword", _settings, false)
+  local wasPassword = ::getTblValue("hasPassword", _settings, false)
   _settings.hasPassword <- password != ""
   changed = changed || (wasPassword != _settings.hasPassword)
 
@@ -680,7 +679,7 @@ SessionLobby.onSettingsChanged <- function onSettingsChanged(p)
 {
   if (roomId!=p.roomId)
     return
-  let set = ::getTblValue("public", p)
+  local set = ::getTblValue("public", p)
   if (!set)
     return
 
@@ -690,7 +689,7 @@ SessionLobby.onSettingsChanged <- function onSettingsChanged(p)
     dagor.debug("last round " + ::last_round)
   }
 
-  let newSet = clone settings
+  local newSet = clone settings
   foreach (k, v in set)
     if (v == null)
     {
@@ -726,7 +725,7 @@ SessionLobby.isCoop <- function isCoop()
 
 SessionLobby.haveLobby <- function haveLobby()
 {
-  let gm = getGameMode()
+  local gm = getGameMode()
   if (gm == ::GM_SKIRMISH)
     return true
   if (gm == ::GM_DOMINATION)
@@ -741,17 +740,16 @@ SessionLobby.getSessionInfo <- function getSessionInfo()
 
 SessionLobby.getMissionName <- function getMissionName(isOriginalName = false, room = null)
 {
-  let misData = getMissionData(room)
-  let missionName = misData?.name ?? ""
-  return isOriginalName ? (misData?.originalMissionName ?? missionName) : missionName
+  local misData = getMissionData(room)
+  return isOriginalName ? (misData?.originalMissionName ?? "") : (misData?.name ?? "")
 }
 
 SessionLobby.getMissionNameLoc <- function getMissionNameLoc(room = null)
 {
-  let misData = getMissionData(room)
+  local misData = getMissionData(room)
   if ("name" in misData)
   {
-    let missionMetaInfo = ::get_mission_meta_info(misData.name)
+    local missionMetaInfo = ::get_mission_meta_info(misData.name)
     return ::get_combine_loc_name_mission(missionMetaInfo ? missionMetaInfo : misData)
   }
   return ""
@@ -774,7 +772,7 @@ SessionLobby.getGameMode <- function getGameMode(room = null)
 
 SessionLobby.getGameType <- function getGameType(room = null)
 {
-  let res = ::getTblValue("_gameType", getMissionData(room), 0)
+  local res = ::getTblValue("_gameType", getMissionData(room), 0)
   return ::u.isInteger(res) ? res : 0
 }
 
@@ -802,11 +800,11 @@ SessionLobby.getTimeLimit <- function getTimeLimit(room = null)
   if (timeLimit)
     return timeLimit
 
-  let missionName = getMissionName(true, room)
+  local missionName = getMissionName(true, room)
   if (!missionName)
     return timeLimit
 
-  let misData = ::get_meta_mission_info_by_name(missionName)
+  local misData = ::get_meta_mission_info_by_name(missionName)
   timeLimit = ::getTblValue("timeLimit", misData, 0)
   return timeLimit
 }
@@ -825,7 +823,7 @@ SessionLobby.getTeamData <- function getTeamData(teamCode, room = null)
 
 SessionLobby.getRequiredCrafts <- function getRequiredCrafts(teamCode = Team.A, room = null)
 {
-  let teamData = getTeamData(teamCode, room)
+  local teamData = getTeamData(teamCode, room)
   return ::events.getRequiredCrafts(teamData)
 }
 
@@ -849,14 +847,14 @@ SessionLobby.getNotAvailableUnitByBRText <- function getNotAvailableUnitByBRText
   if (!unit)
     return null
 
-  let mGameMode = getMGameMode(room)
+  local mGameMode = getMGameMode(room)
   if (!mGameMode)
     return null
 
-  let curBR = unit.getBattleRating(::is_in_flight()
+  local curBR = unit.getBattleRating(::is_in_flight()
     ? ::get_mission_difficulty_int()
     : ::get_current_shop_difficulty().diffCode)
-  let maxBR = (getBattleRatingParamByPlayerInfo(getMemberPlayerInfo(::my_user_id_int64),
+  local maxBR = (getBattleRatingParamByPlayerInfo(getMemberPlayerInfo(::my_user_id_int64),
     ::ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
   return (::events.isUnitTypeRequired(mGameMode, ::ES_UNIT_TYPE_SHIP)
     && unit.esUnitType == ::ES_UNIT_TYPE_AIRCRAFT
@@ -918,12 +916,12 @@ SessionLobby.getWwBattleId <- function getWwBattleId()
 
 SessionLobby.getTeamsCountries <- function getTeamsCountries(room = null)
 {
-  let res = []
+  local res = []
   local hasCountries = false
   foreach(t in [Team.A, Team.B])
   {
-    let teamData = getTeamData(t, room)
-    let countries = ::events.getCountries(teamData)
+    local teamData = getTeamData(t, room)
+    local countries = ::events.getCountries(teamData)
     res.append(countries)
     hasCountries = hasCountries || countries.len()
   }
@@ -931,11 +929,11 @@ SessionLobby.getTeamsCountries <- function getTeamsCountries(room = null)
   if (hasCountries)
     return res
   //!!FIX ME: is we need a code below? But better to do something with it only with a s.zvyagin
-  let mGameMode = getMGameMode(room)
+  local mGameMode = getMGameMode(room)
   if (mGameMode)
     return ::events.getCountriesByTeams(mGameMode)
 
-  let pData = getPublicData(room)
+  local pData = getPublicData(room)
   foreach(idx, name in ["country_allies", "country_axis"])
     if (name in pData)
       res[idx] = pData[name]
@@ -947,9 +945,9 @@ SessionLobby.switchStatus <- function switchStatus(_status)
   if (status == _status)
     return
 
-  let wasInRoom = isInRoom()
-  let wasStatus = status
-  let wasSessionInLobby = isEventRoom
+  local wasInRoom = isInRoom()
+  local wasStatus = status
+  local wasSessionInLobby = isEventRoom
   status = _status  //for easy notify other handlers about change status
   //dlog("GP: status changed to " + ::getEnumValName("lobbyStates", status))
   if (isInJoiningGame())
@@ -957,7 +955,7 @@ SessionLobby.switchStatus <- function switchStatus(_status)
   if (status == lobbyStates.IN_LOBBY)
   {
     //delay to allow current view handlers to catch room state change event before destroy
-    let guiScene = ::get_main_gui_scene()
+    local guiScene = ::get_main_gui_scene()
     if (guiScene)
       guiScene.performDelayed(this, ::gui_start_mp_lobby)
   }
@@ -1027,7 +1025,7 @@ SessionLobby.changePassword <- function changePassword(_password)
 
   if (isRoomOwner && status != lobbyStates.NOT_IN_ROOM && status != lobbyStates.CREATING_ROOM)
   {
-    let prevPass = password
+    local prevPass = password
     ::room_set_password({ roomId = roomId, password = _password },
       (@(prevPass) function(p) {
         if (!::checkMatchingError(p))
@@ -1079,16 +1077,16 @@ SessionLobby.uploadUserMission <- function uploadUserMission(afterDoneFunc = nul
     return
   }
 
-  let missionId = getMissionName()
-  let missionInfo = ::DataBlock()
+  local missionId = getMissionName()
+  local missionInfo = ::DataBlock()
   missionInfo.setFrom(::get_mission_meta_info(missionId))
-  let missionBlk = DataBlock()
+  local missionBlk = DataBlock()
   if (missionInfo)
     missionBlk.load(missionInfo.mis_file)
   //dlog("GP: upload mission!")
   //debugTableData(missionBlk)
 
-  let blkData = base64.encodeBlk(missionBlk)
+  local blkData = base64.encodeBlk(missionBlk)
   //dlog("GP: data = " + blkData)
   //debugTableData(blkData)
   if (!blkData || !("result" in blkData) || !blkData.result.len())
@@ -1166,7 +1164,7 @@ SessionLobby.onMemberInfoUpdate <- function onMemberInfoUpdate(params)
     isRoomOwner = isMemberOperator(member)
     isInLobbySession = isMemberInSession(member)
     initMyParamsByMemberInfo(member)
-    let ready = ::getTblValue("ready", ::getTblValue("public", member, {}), null)
+    local ready = ::getTblValue("ready", ::getTblValue("public", member, {}), null)
     if (!hasSessionInLobby() && ready != null && ready != isReady)
       updateReadyAndSyncMyInfo(ready)
     else if (needJoinSessionAfterMyInfoApply)
@@ -1183,7 +1181,7 @@ SessionLobby.initMyParamsByMemberInfo <- function initMyParamsByMemberInfo(me = 
   if (!me)
     return
 
-  let myTeam = getMemberPublicParam(me, "team")
+  local myTeam = getMemberPublicParam(me, "team")
   if (myTeam != Team.Any && myTeam != team)
     team = myTeam
 
@@ -1224,7 +1222,7 @@ SessionLobby.syncMyInfo <- function syncMyInfo(newInfo, reqUpdateMatchingSlots =
   if (::getTblValue("state", newInfo) == lobbyStates.IN_ROOM)
     syncData.spectator <- ::getTblValue("spectator", _syncedMyInfo, false)
 
-  let info = {
+  local info = {
     roomId = roomId
     public = syncData
   }
@@ -1239,8 +1237,8 @@ SessionLobby.syncMyInfo <- function syncMyInfo(newInfo, reqUpdateMatchingSlots =
 
 SessionLobby.syncAllInfo <- function syncAllInfo()
 {
-  let myInfo = get_profile_info()
-  let myStats = ::my_stats.getStats()
+  local myInfo = get_profile_info()
+  local myStats = ::my_stats.getStats()
 
   syncMyInfo({
     team = team
@@ -1280,8 +1278,8 @@ SessionLobby.getMemberInfo <- function getMemberInfo(member)
   if (!member)
     return null
 
-  let pub = ("public" in member)? member.public : {}
-  let res = {
+  local pub = ("public" in member)? member.public : {}
+  local res = {
     memberId = member.memberId
     userId = member.userId.tostring() //member info same format as get_mplayers_list
     name = member.name
@@ -1314,7 +1312,7 @@ SessionLobby.getMemberByName <- function getMemberByName(userName, room = null)
 
 SessionLobby.getMembersInfoList <- function getMembersInfoList(room = null)
 {
-  let res = []
+  local res = []
   foreach(member in getRoomMembers(room))
     res.append(getMemberInfo(member))
   return res
@@ -1332,7 +1330,7 @@ SessionLobby.updateMyState <- function updateMyState(silent = false)
   else if (status == lobbyStates.IN_DEBRIEFING)
     newState = ::PLAYER_IN_STATISTICS_BEFORE_LOBBY
 
-  let changed = myState!=newState
+  local changed = myState!=newState
   myState = newState
   if (!silent && changed)
     syncMyInfo({state = updateMyState(true)})
@@ -1368,7 +1366,7 @@ SessionLobby.setReady <- function setReady(ready, silent = false, forceRequest =
         return
       }
 
-      let wasReady = isReady
+      local wasReady = isReady
       local needUpdateState = !silent
       isReady = ready
 
@@ -1405,12 +1403,12 @@ SessionLobby.getAvailableTeam <- function getAvailableTeam()
   if (spectator)
     return (crsSetTeamTo == Team.none) ? Team.Any : crsSetTeamTo
 
-  let myCountry = ::get_profile_country_sq()
-  let aTeams = [crsSetTeamTo != Team.B, //Team.A or Team.none
+  local myCountry = ::get_profile_country_sq()
+  local aTeams = [crsSetTeamTo != Team.B, //Team.A or Team.none
                   crsSetTeamTo != Team.A
                  ]
 
-  let teamsCountries = getTeamsCountries()
+  local teamsCountries = getTeamsCountries()
   foreach(idx, value in aTeams)
     if (!::isInArray(myCountry, ::getTblValue(idx, teamsCountries, teamsCountries[0])))
       aTeams[idx] = false
@@ -1425,7 +1423,7 @@ SessionLobby.getAvailableTeam <- function getAvailableTeam()
 
 SessionLobby.checkMyTeam <- function checkMyTeam() //returns changed data
 {
-  let data = {}
+  local data = {}
 
   if (!haveLobby())
     return data
@@ -1441,8 +1439,8 @@ SessionLobby.checkMyTeam <- function checkMyTeam() //returns changed data
   if (setTeamTo != Team.none && setTeam(setTeamTo, true))
   {
     data.team <- team
-    let myCountry = ::get_profile_country_sq()
-    let availableCountries = getTeamData(team)?.countries ?? []
+    local myCountry = ::get_profile_country_sq()
+    local availableCountries = getTeamData(team)?.countries ?? []
     if (availableCountries.len() > 0 && !::isInArray(myCountry, availableCountries))
       ::switch_profile_country(availableCountries[0])
   }
@@ -1453,7 +1451,7 @@ SessionLobby.canChangeTeam <- function canChangeTeam()
 {
   if (!haveLobby() || isEventRoom)
     return false
-  let canPlayTeam = getAvailableTeam()
+  local canPlayTeam = getAvailableTeam()
   return canPlayTeam == Team.Any
 }
 
@@ -1472,7 +1470,7 @@ SessionLobby.switchTeam <- function switchTeam(skipTeamAny = false)
 SessionLobby.setTeam <- function setTeam(newTeam, silent = false) //return is team changed
 {
   local _team = newTeam
-  let canPlayTeam = getAvailableTeam()
+  local canPlayTeam = getAvailableTeam()
 
   if (canPlayTeam == Team.A || canPlayTeam == Team.B)
     _team = canPlayTeam
@@ -1522,7 +1520,7 @@ SessionLobby.setCountryData <- function setCountryData(data) //return is data ch
 {
   local changed = !countryData || !::u.isEqual(countryData, data)
   countryData = data
-  let teamDataChanges = checkMyTeam()
+  local teamDataChanges = checkMyTeam()
   changed = changed || teamDataChanges.len() > 0
   if (!changed)
     return false
@@ -1535,7 +1533,7 @@ SessionLobby.setCountryData <- function setCountryData(data) //return is data ch
 
 SessionLobby.validateTeamAndReady <- function validateTeamAndReady()
 {
-  let teamDataChanges = checkMyTeam()
+  local teamDataChanges = checkMyTeam()
   if (!teamDataChanges.len())
   {
     if (isReady && !canSetReady(true))
@@ -1550,11 +1548,11 @@ SessionLobby.canSetReady <- function canSetReady(silent)
   if (spectator)
     return true
 
-  let curCountry = ::getTblValue("country", countryData)
+  local curCountry = ::getTblValue("country", countryData)
   if (::tanksDriveGamemodeRestrictionMsgBox("TanksInCustomBattles", curCountry, null, "cbt_tanks/forbidden/skirmish"))
     return false
 
-  let availTeam = getAvailableTeam()
+  local availTeam = getAvailableTeam()
   if (availTeam == Team.none)
   {
     if (!silent)
@@ -1562,8 +1560,8 @@ SessionLobby.canSetReady <- function canSetReady(silent)
     return false
   }
 
-  let checkUnitsResult = checkUnitsInSlotbar(curCountry, availTeam)
-  let res = checkUnitsResult.isAvailable
+  local checkUnitsResult = checkUnitsInSlotbar(curCountry, availTeam)
+  local res = checkUnitsResult.isAvailable
   if (!res && !silent)
     ::showInfoMsgBox(checkUnitsResult.reasonText)
 
@@ -1629,13 +1627,13 @@ SessionLobby.createRoom <- function createRoom(missionSettings)
 
   prepareSettings(missionSettings)
 
-  let initParams = {
+  local initParams = {
     size = getMaxMembersCount()
     public = settings
   }
   if (password && password!="")
     initParams.password <- password
-  let blacklist = getContactsGroupUidList(::EPL_BLOCKLIST)
+  local blacklist = getContactsGroupUidList(::EPL_BLOCKLIST)
   if (blacklist.len())
     initParams.blacklist <- blacklist
 
@@ -1649,7 +1647,7 @@ SessionLobby.createEventRoom <- function createEventRoom(mGameMode, lobbyParams)
   if (status != lobbyStates.NOT_IN_ROOM)
     return false
 
-  let params = {
+  local params = {
     public = {
       game_mode_id = mGameMode.gameModeId
     }
@@ -1730,7 +1728,7 @@ SessionLobby.afterLeaveRoom <- function afterLeaveRoom(p)
 {
   roomId = INVALID_ROOM_ID
   switchStatus(lobbyStates.NOT_IN_ROOM)
-  let guiScene = ::get_main_gui_scene()
+  local guiScene = ::get_main_gui_scene()
   if (guiScene)
     guiScene.performDelayed(this, checkSessionReconnect) //notify room leave will be received soon
 }
@@ -1792,7 +1790,7 @@ SessionLobby.joinRoom <- function joinRoom(_roomId, senderId = "", _password = n
   if (_password && _password.len())
     changePassword(_password)
 
-  let joinParams = { roomId = _roomId }
+  local joinParams = { roomId = _roomId }
   if (password!="")
     joinParams.password <- password
 
@@ -1829,8 +1827,8 @@ SessionLobby.afterRoomJoining <- function afterRoomJoining(params)
 {
   if (params.error == SERVER_ERROR_ROOM_PASSWORD_MISMATCH)
   {
-    let joinRoomId = params.roomId //not_in_room status will clear room Id
-    let oldPass = params.password
+    local joinRoomId = params.roomId //not_in_room status will clear room Id
+    local oldPass = params.password
     switchStatus(lobbyStates.NOT_IN_ROOM)
     joinRoomWithPassword(joinRoomId, oldPass, oldPass != "")
     return
@@ -1846,12 +1844,12 @@ SessionLobby.afterRoomJoining <- function afterRoomJoining(params)
   ingame_chat.clearLog()
   ::g_squad_utils.updateMyCountryData()
 
-  let public = ::getTblValue("public", params, settings)
+  local public = ::getTblValue("public", params, settings)
   if (!isRoomOwner || ::u.isEmpty(settings))
   {
     setSettings(public)
 
-    let mGameMode = getMGameMode()
+    local mGameMode = getMGameMode()
     if (mGameMode)
     {
       setIngamePresence(public, roomId)
@@ -1879,7 +1877,7 @@ SessionLobby.afterRoomJoining <- function afterRoomJoining(params)
 
   checkSquadAutoInvite()
 
-  let event = ::SessionLobby.getRoomEvent()
+  local event = ::SessionLobby.getRoomEvent()
   if (event)
   {
     if (::events.isEventVisibleInEventsWindow(event))
@@ -1928,9 +1926,9 @@ SessionLobby.invitePlayer <- function invitePlayer(uid)
 {
   if (roomId == INVALID_ROOM_ID) // we are not in room. nothere to invite
   {
-    let is_in_room = isInRoom()                   // warning disable: -declared-never-used
-    let room_id = roomId                          // warning disable: -declared-never-used
-    let last_session = ::LAST_SESSION_DEBUG_INFO  // warning disable: -declared-never-used
+    local is_in_room = isInRoom()                   // warning disable: -declared-never-used
+    local room_id = roomId                          // warning disable: -declared-never-used
+    local last_session = ::LAST_SESSION_DEBUG_INFO  // warning disable: -declared-never-used
     ::script_net_assert("trying to invite into room without roomId")
     return
   }
@@ -1987,7 +1985,7 @@ SessionLobby.getMembersCount <- function getMembersCount(room = null)
 //we doesn't know full members info outside room atm, but still return the same data format.
 SessionLobby.getMembersCountByTeams <- function getMembersCountByTeams(room = null, needReadyOnly = false)
 {
-  let res = {
+  local res = {
     total = 0,
     participants = 0,
     spectators = 0,
@@ -1996,13 +1994,13 @@ SessionLobby.getMembersCountByTeams <- function getMembersCountByTeams(room = nu
     [Team.B] = 0
   }
 
-  let roomMembers = getRoomMembers(room)
+  local roomMembers = getRoomMembers(room)
   if (room && !roomMembers.len())
   {
-    let teamsCount = room?.session.teams
+    local teamsCount = room?.session.teams
     foreach(team in ::g_team.getTeams())
     {
-      let count = teamsCount?[team.id].players ?? 0
+      local count = teamsCount?[team.id].players ?? 0
       res[team.code] = count
       res.total += count
     }
@@ -2198,12 +2196,12 @@ SessionLobby.getRoomCreatorUid <- function getRoomCreatorUid(room)
 
 SessionLobby.getRoomsInfoTbl <- function getRoomsInfoTbl(roomsList)
 {
-  let res = []
+  local res = []
   foreach(room in roomsList)
   {
-    let public = room?.public
-    let misData = public?.mission ?? {}
-    let item = {
+    local public = room?.public
+    local misData = public?.mission ?? {}
+    local item = {
       hasPassword = public?.hasPassword ?? false
       numPlayers = getRoomMembersCnt(room)
       numPlayersTotal = getRoomSize(room)
@@ -2212,9 +2210,9 @@ SessionLobby.getRoomsInfoTbl <- function getRoomsInfoTbl(roomsList)
       item.mission <- public.roomName
     else if (isUrlMission(public))
     {
-      let url = getMissionUrl(public)
-      let urlMission =  ::g_url_missions.findMissionByUrl(url)
-      let missionName = urlMission ? urlMission.name : url
+      local url = getMissionUrl(public)
+      local urlMission =  ::g_url_missions.findMissionByUrl(url)
+      local missionName = urlMission ? urlMission.name : url
       item.mission <- missionName
     }
     else
@@ -2235,14 +2233,14 @@ SessionLobby.isRoomHavePassword <- function isRoomHavePassword(room)
 
 SessionLobby.getMembersReadyStatus <- function getMembersReadyStatus()
 {
-  let res = {
+  local res = {
     readyToStart = true
     ableToStart = false //can be not full ready, but able to start.
     haveNotReady = false
     statusText = ::loc("multiplayer/readyToGo")
   }
 
-  let teamsCount = {
+  local teamsCount = {
     [Team.Any] = 0,
     [Team.A] = 0,
     [Team.B] = 0
@@ -2250,9 +2248,9 @@ SessionLobby.getMembersReadyStatus <- function getMembersReadyStatus()
 
   foreach(idx, member in members)
   {
-    let ready = isMemberReady(member)
-    let spectator = getMemberPublicParam(member, "spectator")
-    let team = getMemberPublicParam(member, "team").tointeger()
+    local ready = isMemberReady(member)
+    local spectator = getMemberPublicParam(member, "spectator")
+    local team = getMemberPublicParam(member, "team").tointeger()
     res.haveNotReady = res.haveNotReady || (!ready && !spectator)
     res.ableToStart = res.ableToStart || !spectator
     if (ready && !spectator)
@@ -2268,13 +2266,13 @@ SessionLobby.getMembersReadyStatus <- function getMembersReadyStatus()
   if (res.haveNotReady)
     res.statusText = ::loc("multiplayer/not_all_ready")
 
-  let gt = getGameType()
-  let checkTeams = ::is_mode_with_teams(gt)
+  local gt = getGameType()
+  local checkTeams = ::is_mode_with_teams(gt)
   if (!checkTeams)
     return res
 
-  let haveBots = getMissionParam("isBotsAllowed", false)
-  let maxInTeam = (0.5*getMaxMembersCount() + 0.5).tointeger()
+  local haveBots = getMissionParam("isBotsAllowed", false)
+  local maxInTeam = (0.5*getMaxMembersCount() + 0.5).tointeger()
 
   if ((!haveBots && (::abs(teamsCount[Team.A] - teamsCount[Team.B]) - teamsCount[Team.Any] > 1))
       || teamsCount[Team.A] > maxInTeam || teamsCount[Team.B] > maxInTeam)
@@ -2283,13 +2281,13 @@ SessionLobby.getMembersReadyStatus <- function getMembersReadyStatus()
     res.statusText = ::loc("multiplayer/nonBalancedGame")
   }
 
-  let areAllowedEmptyTeams = getMissionParam("allowEmptyTeams", false)
+  local areAllowedEmptyTeams = getMissionParam("allowEmptyTeams", false)
   if (!res.ableToStart || (!haveBots && !areAllowedEmptyTeams))
   {
-    let minInTeam = 1
-    let teamAEnough = (teamsCount[Team.A] + teamsCount[Team.Any]) >= minInTeam
-    let teamBEnough = (teamsCount[Team.B] + teamsCount[Team.Any]) >= minInTeam
-    let teamsTotalEnough = teamsCount[Team.A] + teamsCount[Team.B] + teamsCount[Team.Any] >= minInTeam * 2
+    local minInTeam = 1
+    local teamAEnough = (teamsCount[Team.A] + teamsCount[Team.Any]) >= minInTeam
+    local teamBEnough = (teamsCount[Team.B] + teamsCount[Team.Any]) >= minInTeam
+    local teamsTotalEnough = teamsCount[Team.A] + teamsCount[Team.B] + teamsCount[Team.Any] >= minInTeam * 2
     if (!teamAEnough || !teamBEnough || !teamsTotalEnough)
     {
       res.readyToStart = false
@@ -2308,7 +2306,7 @@ SessionLobby.canInvitePlayer <- function canInvitePlayer(uid)
 
 SessionLobby.isPlayerInMyRoom <- function isPlayerInMyRoom(uid)
 {
-  let roomMembers = getRoomMembers()
+  local roomMembers = getRoomMembers()
   foreach (member in roomMembers)
     if (member.userId == uid.tointeger())
       return true
@@ -2326,7 +2324,7 @@ SessionLobby.checkSquadAutoInvite <- function checkSquadAutoInvite()
   if (!::g_squad_manager.isSquadLeader() || !needAutoInviteSquad())
     return
 
-  let sMembers = ::g_squad_manager.getMembers()
+  local sMembers = ::g_squad_manager.getMembers()
   foreach(uid, member in sMembers)
     if (member.online
         && member.isReady
@@ -2361,20 +2359,24 @@ SessionLobby.isMemberInMySquadByName <- function isMemberInMySquadByName(name)
   if (!::SessionLobby.isInRoom())
     return false
 
-  let myInfo = getMemberPlayerInfo(::my_user_id_int64)
-  if (myInfo != null && (myInfo.squad == INVALID_SQUAD_ID || myInfo.name == name))
-    return false
-
   local memberInfo = null
+  local myInfo = getMemberPlayerInfo(::my_user_id_int64)
+  if (myInfo != null)
+  {
+    if (myInfo.squad == INVALID_SQUAD_ID)
+      return false
+    if (myInfo.name == name)
+      return false
+  }
+
   foreach (uid, member in playersInfo)
   {
-    if (member.name == name || member.name == getRealName(name))
+    if (member.name == name)
     {
       memberInfo = member
       break
     }
   }
-
   if (memberInfo == null || myInfo == null)
     return false
 
@@ -2388,15 +2390,15 @@ SessionLobby.isEqualSquadId <- function isEqualSquadId(squadId1, squadId2)
 
 SessionLobby.getBattleRatingParamByPlayerInfo <- function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null)
 {
-  let craftsInfo = member?.crafts_info
+  local craftsInfo = member?.crafts_info
   if (craftsInfo == null)
     return null
-  let difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
-  let units = []
+  local difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+  local units = []
   foreach (unitInfo in craftsInfo)
   {
-    let unitName = unitInfo.name
-    let unit = ::getAircraftByName(unitName)
+    local unitName = unitInfo.name
+    local unit = ::getAircraftByName(unitName)
     if (esUnitTypeFilter != null && esUnitTypeFilter != unit.esUnitType)
       continue
 
@@ -2407,7 +2409,7 @@ SessionLobby.getBattleRatingParamByPlayerInfo <- function getBattleRatingParamBy
     })
   }
   units.sort(@(a,b) a.rankUnused <=> b.rankUnused || b.rating <=> a.rating)
-  let squad = member?.squad ?? INVALID_SQUAD_ID
+  local squad = member?.squad ?? INVALID_SQUAD_ID
   return { rank = member.mrank, squad = squad, units = units }
 }
 
@@ -2425,7 +2427,7 @@ SessionLobby.isUsedPlayersOwnUnit <- function isUsedPlayersOwnUnit(member, unitI
  */
 SessionLobby.getCountriesByTeamIndex <- function getCountriesByTeamIndex(teamIndex)
 {
-  let event = ::SessionLobby.getRoomEvent()
+  local event = ::SessionLobby.getRoomEvent()
   if (!event)
     return null
   return ::events.getCountries(::events.getTeamData(event, teamIndex))
@@ -2452,11 +2454,11 @@ SessionLobby.getTeamDataToCheckUnits <- function getTeamDataToCheckUnits()
  */
 SessionLobby.isUnitAllowed <- function isUnitAllowed(unit)
 {
-  let roomSpecialRules = getRoomSpecialRules()
+  local roomSpecialRules = getRoomSpecialRules()
   if (roomSpecialRules && !::events.isUnitMatchesRule(unit, roomSpecialRules, true, getCurRoomEdiff()))
     return false
 
-  let teamData = getTeamDataToCheckUnits()
+  local teamData = getTeamDataToCheckUnits()
   return !teamData || ::events.isUnitAllowedByTeamData(teamData, unit.name, getCurRoomEdiff())
 }
 
@@ -2467,7 +2469,7 @@ SessionLobby.hasUnitRequirements <- function hasUnitRequirements()
 
 SessionLobby.isUnitRequired <- function isUnitRequired(unit)
 {
-  let teamData = getTeamDataToCheckUnits()
+  local teamData = getTeamDataToCheckUnits()
   if (!teamData)
     return false
 
@@ -2483,7 +2485,7 @@ SessionLobby.isUnitRequired <- function isUnitRequired(unit)
  */
 SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, teamToCheck = null)
 {
-  let res = {
+  local res = {
     isAvailable = true
     reasonText = ""
   }
@@ -2502,22 +2504,22 @@ SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, te
   local hasUnitsInSlotbar = false
   local hasAnyAvailable = false
   local isCurUnitAvailable = false
-  let hasRespawns = getMaxRespawns() != 1
-  let ediff = getCurRoomEdiff()
-  let curUnit = getMyCurUnit()
-  let crews = ::get_crews_list_by_country(countryName)
+  local hasRespawns = getMaxRespawns() != 1
+  local ediff = getCurRoomEdiff()
+  local curUnit = getMyCurUnit()
+  local crews = ::get_crews_list_by_country(countryName)
 
   foreach (team in teamsToCheck)
   {
-    let teamName = ::events.getTeamName(team)
-    let teamData = ::getTblValue(teamName, getSessionInfo(), null)
+    local teamName = ::events.getTeamName(team)
+    local teamData = ::getTblValue(teamName, getSessionInfo(), null)
     if (teamData == null)
       continue
 
     hasTeamData = true
     foreach (crew in crews)
     {
-      let unit = ::g_crew.getCrewUnit(crew)
+      local unit = ::g_crew.getCrewUnit(crew)
       hasUnitsInSlotbar = hasUnitsInSlotbar || unit != null
       if (!unit || !::events.isUnitAllowedByTeamData(teamData, unit.name, ediff))
         continue
@@ -2547,12 +2549,12 @@ SessionLobby.checkUnitsInSlotbar <- function checkUnitsInSlotbar(countryName, te
  */
 SessionLobby.getRandomTeam <- function getRandomTeam()
 {
-  let curCountry = ::SessionLobby.countryData ? ::SessionLobby.countryData.country : null
-  let teams = []
-  let allTeams = ::events.getSidesList()
+  local curCountry = ::SessionLobby.countryData ? ::SessionLobby.countryData.country : null
+  local teams = []
+  local allTeams = ::events.getSidesList()
   foreach (team in allTeams)
   {
-    let checkTeamResult = checkUnitsInSlotbar(curCountry, team)
+    local checkTeamResult = checkUnitsInSlotbar(curCountry, team)
     if (checkTeamResult.isAvailable)
       teams.append(team)
   }
@@ -2560,13 +2562,13 @@ SessionLobby.getRandomTeam <- function getRandomTeam()
     teams.extend(allTeams)
   if (teams.len() == 1)
     return teams[0]
-  let randomIndex = ::floor(teams.len() * ::math.frnd())
+  local randomIndex = ::floor(teams.len() * ::math.frnd())
   return teams[randomIndex]
 }
 
 SessionLobby.getRankCalcMode <- function getRankCalcMode()
 {
-  let event = ::SessionLobby.getRoomEvent()
+  local event = ::SessionLobby.getRoomEvent()
   return ::events.getEventRankCalcMode(event)
 }
 
@@ -2574,7 +2576,7 @@ SessionLobby.rpcJoinBattle <- function rpcJoinBattle(params)
 {
   if (!::is_online_available())
     return "client not ready"
-  let battleId = params.battleId
+  local battleId = params.battleId
   if (typeof (battleId) != "string")
     return "bad battleId type"
   if (::g_squad_manager.getSquadSize() > 1)
@@ -2595,17 +2597,17 @@ SessionLobby.rpcJoinBattle <- function rpcJoinBattle(params)
 
 SessionLobby.getMGameMode <- function getMGameMode(room = null, isCustomGameModeAllowed = true)
 {
-  let mGameModeId = getMGameModeId(room)
+  local mGameModeId = getMGameModeId(room)
   if (mGameModeId == null)
     return null
 
   if (isCustomGameModeAllowed && (CUSTOM_GAMEMODE_KEY in room))
     return room._customGameMode
 
-  let mGameMode = ::g_matching_game_modes.getModeById(mGameModeId)
+  local mGameMode = ::g_matching_game_modes.getModeById(mGameModeId)
   if (isCustomGameModeAllowed && room && mGameMode && ::events.isCustomGameMode(mGameMode))
   {
-    let customGameMode = clone mGameMode
+    local customGameMode = clone mGameMode
     foreach(team in ::g_team.getTeams())
       customGameMode[team.name] <- getTeamData(team.code, room)
     customGameMode.isSymmetric <- false
@@ -2617,7 +2619,7 @@ SessionLobby.getMGameMode <- function getMGameMode(room = null, isCustomGameMode
 
 SessionLobby.getRoomEvent <- function getRoomEvent(room = null)
 {
-  let mGameMode = getMGameMode(room)
+  local mGameMode = getMGameMode(room)
   return mGameMode && ::events.getEvent(mGameMode.name)
 }
 
@@ -2673,11 +2675,11 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
   if (!reconnectData.inviteData || !reconnectData.sendResp)
     return
 
-  let inviteData = reconnectData.inviteData
-  let sendResp = reconnectData.sendResp
+  local inviteData = reconnectData.inviteData
+  local sendResp = reconnectData.sendResp
 
-  let applyInvite = function() {
-    let event = ::events.getEvent(inviteData?.attribs.game_mode_name)
+  local applyInvite = function() {
+    local event = ::events.getEvent(inviteData?.attribs.game_mode_name)
     if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
 
@@ -2685,7 +2687,7 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
     ::SessionLobby.joinRoom(inviteData.roomId)
   }
 
-  let rejectInvite = (@(sendResp) function() {
+  local rejectInvite = (@(sendResp) function() {
     sendResp({error_id="INVITE_REJECTED"})
   })(sendResp)
 
@@ -2701,18 +2703,18 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
 
 SessionLobby.getRoomActiveTimers <- function getRoomActiveTimers()
 {
-  let res = []
+  local res = []
   if (!isInRoom())
     return res
 
-  let curTime = ::get_matching_server_time()
+  local curTime = ::get_matching_server_time()
   foreach(timerId, cfg in roomTimers)
   {
-    let tgtTime = getPublicParam(cfg.publicKey, -1)
+    local tgtTime = getPublicParam(cfg.publicKey, -1)
     if (tgtTime == -1 || !::is_numeric(tgtTime) || tgtTime < curTime)
       continue
 
-    let timeLeft = tgtTime - curTime
+    local timeLeft = tgtTime - curTime
     res.append({
       id = timerId
       timeLeft = timeLeft

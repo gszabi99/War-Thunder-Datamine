@@ -98,8 +98,7 @@ tdiv {
       size:t='@cIco, @cIco'
       pos:t='0, ph/2-h/2'
       position:t='relative'
-      background-image:t='#ui/gameuiskin#new_icon.svg'
-      background-svg-size:t='@cIco, @cIco'
+      background-image:t='#ui/gameuiskin#new_icon'
       background-color:t='@white'
     }
     textareaNoTab {

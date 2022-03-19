@@ -2845,11 +2845,11 @@
   },
   {
     "breaches": {
-      "repairSpeed": 15.0,
-      "waterMassVel": -8000.0,
-      "waterMassMult": 150.0,
+      "repairSpeed": 20.0,
+      "waterMassVel": -14000.0,
+      "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 180000.0,
+      "additionalWaterDeathThreshold": 200000.0,
       "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
@@ -2857,7 +2857,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.35
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -2867,18 +2867,26 @@
           "part": "compartment_01_dm",
           "weight": 1.0,
           "maxWaterAlive": 1.0,
-          "innerParts": {
-            "part": {
-              "partNo": "ammunition_storage_01_dm",
-              "critWaterLevel": 0.85
+          "innerParts": [
+            {
+              "part": {
+                "partNo": "ammunition_storage_01_dm",
+                "critWaterLevel": 0.85
+              }
+            },
+            {
+              "part": {
+                "partNo": "radio_station_dm",
+                "critWaterLevel": 0.6
+              }
             }
-          }
+          ]
         }
       },
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.7,
+          "weight": 0.3,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -2905,7 +2913,7 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.65,
+          "weight": 0.2,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

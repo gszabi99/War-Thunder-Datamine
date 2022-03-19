@@ -1,11 +1,11 @@
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 
-::gui_handlers.IngameConsoleStore <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/items/itemsShop.blk"
+  sceneBlkName = "gui/items/itemsShop.blk"
 
   itemsCatalog = null
   chapter = null
@@ -47,10 +47,10 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   {
     updateMouseMode()
     updateShowItemButton()
-    let infoObj = scene.findObject("item_info")
-    guiScene.replaceContent(infoObj, "%gui/items/itemDesc.blk", this)
+    local infoObj = scene.findObject("item_info")
+    guiScene.replaceContent(infoObj, "gui/items/itemDesc.blk", this)
 
-    let titleObj = scene.findObject("wnd_title")
+    local titleObj = scene.findObject("wnd_title")
     titleObj.setValue(::loc(titleLocId))
 
     ::show_obj(getTabsListObj(), false)
@@ -103,12 +103,12 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (navigationHandlerWeak)
       navigationHandlerWeak.setNavItems(navItems)
 
-    let sheetIdx = sheetsArray.indexof(curSheet) ?? 0
+    local sheetIdx = sheetsArray.indexof(curSheet) ?? 0
     getSheetsListObj().setValue(sheetIdx)
 
     //Update this objects only once. No need to do it on each updateButtons
     showSceneBtn("btn_preview", false)
-    let warningTextObj = scene.findObject("warning_text")
+    local warningTextObj = scene.findObject("warning_text")
     if (::checkObj(warningTextObj))
       warningTextObj.setValue(::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax")))
 
@@ -117,7 +117,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function initNavigation()
   {
-    let handler = ::handlersManager.loadHandler(
+    local handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene                  = scene.findObject("control_navigation")
         onSelectCb             = ::Callback(doNavigateToSection, this)
@@ -137,7 +137,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
     markCurrentPageSeen()
 
-    let newSheet = sheetsArray?[obj.idx]
+    local newSheet = sheetsArray?[obj.idx]
     if (!newSheet)
       return
 
@@ -160,8 +160,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (!obj?.isCollapsable || !navigationHandlerWeak)
       return
 
-    let collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
-    let subsetId = curSubsetId
+    local collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
+    local subsetId = curSubsetId
     navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
       getSheetsListObj().setValue(//set selection on chapter item if not found item with subsetId just in case to avoid crash
@@ -181,7 +181,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     curPage = 0
     if (curItem)
     {
-      let lastIdx = itemsList.findindex(function(item) { return item.id == curItem.id}.bindenv(this)) ?? -1
+      local lastIdx = itemsList.findindex(function(item) { return item.id == curItem.id}.bindenv(this)) ?? -1
       if (lastIdx >= 0)
         curPage = (lastIdx / itemsPerPage).tointeger()
       else if (curPage * itemsPerPage > itemsCatalog.len())
@@ -192,15 +192,15 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function fillPage()
   {
-    let view = { items = [], hasFocusBorder = true, onHover = "onItemHover" }
+    local view = { items = [], hasFocusBorder = true, onHover = "onItemHover" }
 
     if (!isLoadingInProgress)
     {
-      let pageStartIndex = curPage * itemsPerPage
-      let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+      local pageStartIndex = curPage * itemsPerPage
+      local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
       for (local i=pageStartIndex; i < pageEndIndex; i++)
       {
-        let item = itemsList[i]
+        local item = itemsList[i]
         if (!item)
           continue
         view.items.append(item.getViewData({
@@ -210,22 +210,22 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
       }
     }
 
-    let listObj = getItemsListObj()
-    let prevValue = listObj.getValue()
-    let data = ::handyman.renderCached(("%gui/items/item"), view)
-    let isEmptyList = data.len() == 0 || isLoadingInProgress
+    local listObj = getItemsListObj()
+    local prevValue = listObj.getValue()
+    local data = ::handyman.renderCached(("gui/items/item"), view)
+    local isEmptyList = data.len() == 0 || isLoadingInProgress
 
     showSceneBtn("sorting_block", !isEmptyList)
     ::show_obj(listObj, !isEmptyList)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
-    let emptyListObj = scene.findObject("empty_items_list")
+    local emptyListObj = scene.findObject("empty_items_list")
     ::show_obj(emptyListObj, isEmptyList)
     ::show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && needWaitIcon && isLoadingInProgress)
 
     showSceneBtn("items_shop_to_marketplace_button", false)
     showSceneBtn("items_shop_to_shop_button", false)
-    let emptyListTextObj = scene.findObject("empty_items_list_text")
+    local emptyListTextObj = scene.findObject("empty_items_list_text")
     emptyListTextObj.setValue(::loc($"items/shop/emptyTab/default{isLoadingInProgress ? "/loading" : ""}"))
 
     updateItemInfo()
@@ -241,7 +241,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
     if (!isLoadingInProgress)
     {
-      let value = findLastValue(prevValue)
+      local value = findLastValue(prevValue)
       if (value >= 0)
         listObj.setValue(value)
     }
@@ -251,8 +251,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function findLastValue(prevValue)
   {
-    let offset = curPage * itemsPerPage
-    let total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
+    local offset = curPage * itemsPerPage
+    local total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
     if (!total)
       return 0
 
@@ -260,7 +260,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (curItem)
       for(local i = 0; i < total; i++)
       {
-        let item = itemsList[offset + i]
+        local item = itemsList[offset + i]
         if (curItem.id != item.id)
           continue
         res = i
@@ -277,10 +277,10 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function onItemAction(buttonObj)
   {
-    let id = buttonObj?.holderId
+    local id = buttonObj?.holderId
     if (id == null)
       return
-    let item = ::getTblValue(id.tointeger(), itemsList)
+    local item = ::getTblValue(id.tointeger(), itemsList)
     onShowDetails(item)
   }
 
@@ -291,7 +291,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function onAltAction(obj)
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (!item)
       return
 
@@ -315,20 +315,20 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function initItemsListSizeOnce()
   {
-    let listObj = getItemsListObj()
-    let emptyListObj = scene.findObject("empty_items_list")
-    let infoObj = scene.findObject("item_info_nest")
-    let collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
-    let leftPos = isNavCollapsed ? collapseBtnWidth : "0"
-    let nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
-    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
-    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@fontHeightMedium-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
-    let itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+    local listObj = getItemsListObj()
+    local emptyListObj = scene.findObject("empty_items_list")
+    local infoObj = scene.findObject("item_info_nest")
+    local collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
+    local leftPos = isNavCollapsed ? collapseBtnWidth : "0"
+    local nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
+    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    local mainBlockHeight = "@rh-2@frameHeaderHeight-1@fontHeightMedium-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
+    local itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = ::max(::to_pixels(mainBlockHeight)
+    local itemsCountY = ::max(::to_pixels(mainBlockHeight)
       / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
-    let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
     listObj.width = contentWidth
@@ -342,7 +342,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function onChangeSortParam(obj)
   {
-    let val = ::get_obj_valid_index(obj)
+    local val = ::get_obj_valid_index(obj)
     lastSorting = val < 0 ? 0 : val
     curPage = 0
     updateSorting()
@@ -351,12 +351,12 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function updateSortingList()
   {
-    let obj = scene.findObject("sorting_block_bg")
+    local obj = scene.findObject("sorting_block_bg")
     if (!::checkObj(obj))
       return
 
-    let curVal = lastSorting
-    let view = {
+    local curVal = lastSorting
+    local view = {
       id = sortBoxId
       btnName = "Y"
       funcName = "onChangeSortParam"
@@ -366,7 +366,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/comboBox", view)
+    local data = ::handyman.renderCached("gui/commonParts/comboBox", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     getSortListObj().setValue(curVal)
   }
@@ -376,9 +376,9 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (!curSheet)
       return
 
-    let sortParam = getSortParam()
-    let isAscendingSort = sortParam.asc
-    let sortSubParam = curSheet.sortSubParam
+    local sortParam = getSortParam()
+    local isAscendingSort = sortParam.asc
+    local sortSubParam = curSheet.sortSubParam
     itemsList.sort(function(a, b) {
       return sortOrder(a, b, isAscendingSort, sortParam.param, sortSubParam)
     }.bindenv(this))
@@ -399,9 +399,9 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (!itemsList)
       return
 
-    let pageStartIndex = curPage * itemsPerPage
-    let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
-    let list = []
+    local pageStartIndex = curPage * itemsPerPage
+    local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+    local list = []
     for (local i = pageStartIndex; i < pageEndIndex; ++i)
       list.append(itemsList[i].getSeenId())
 
@@ -410,7 +410,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function updateItemInfo()
   {
-    let item = getCurItem()
+    local item = getCurItem()
     fillItemInfo(item)
     showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     updateButtons()
@@ -424,7 +424,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function fillItemInfo(item)
   {
-    let descObj = scene.findObject("item_info")
+    local descObj = scene.findObject("item_info")
 
     local obj = null
 
@@ -432,16 +432,16 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     obj.setValue(item?.name ?? "")
 
     obj = descObj.findObject("item_desc_div")
-    let data = getPriceBlock(item)
+    local data = getPriceBlock(item)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     obj = descObj.findObject("item_desc_under_div")
     obj.setValue(item?.getDescription() ?? "")
 
     obj = descObj.findObject("item_icon")
-    let imageData = item?.getBigIcon() ?? item?.getIcon() ?? ""
+    local imageData = item?.getBigIcon() ?? item?.getIcon() ?? ""
     obj.wideSize = "yes"
-    let showImageBlock = imageData.len() != 0
+    local showImageBlock = imageData.len() != 0
     obj.show(showImageBlock)
     guiScene.replaceContentFromText(obj, imageData, imageData.len(), this)
   }
@@ -451,12 +451,12 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (item?.isBought)
       return ""
     //Generate price string as PSN requires and return blk format to replace it.
-    return handyman.renderCached("%gui/commonParts/discount", item)
+    return handyman.renderCached("gui/commonParts/discount", item)
   }
 
   function updateButtonsBar() {
-    let obj = getItemsListObj()
-    let isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
+    local obj = getItemsListObj()
+    local isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
@@ -466,16 +466,16 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (!updateButtonsBar())
       return
 
-    let item = getCurItem()
-    let showMainAction = item != null && !item.isBought
-    let buttonObj = showSceneBtn("btn_main_action", showMainAction)
+    local item = getCurItem()
+    local showMainAction = item != null && !item.isBought
+    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
     if (showMainAction)
     {
       buttonObj.visualStyle = "secondary"
       setColoredDoubleTextToButton(scene, "btn_main_action", ::loc(storeLocId))
     }
 
-    let showSecondAction = openStoreLocId != "" && (item?.isBought ?? false)
+    local showSecondAction = openStoreLocId != "" && (item?.isBought ?? false)
     showSceneBtn("btn_alt_action", showSecondAction)
     if (showSecondAction)
       setColoredDoubleTextToButton(scene, "btn_alt_action", ::loc(openStoreLocId))
@@ -494,7 +494,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (isLoadingInProgress)
       return null
 
-    let obj = getItemsListObj()
+    local obj = getItemsListObj()
     if (!::check_obj(obj))
       return null
 
@@ -503,8 +503,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   function getCurItemObj()
   {
-    let itemListObj = getItemsListObj()
-    let value = ::get_obj_valid_index(itemListObj)
+    local itemListObj = getItemsListObj()
+    local value = ::get_obj_valid_index(itemListObj)
     if (value < 0)
       return null
 
@@ -548,7 +548,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   {
     if (!::show_console_buttons)
       return
-    let containerObj = scene.findObject("item_info")
+    local containerObj = scene.findObject("item_info")
     if (::check_obj(containerObj) && containerObj.isHovered())
       ::move_mouse_on_obj(getCurItemObj())
     else
@@ -558,7 +558,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   function onItemHover(obj) {
     if (!::show_console_buttons)
       return
-    let wasMouseMode = isMouseMode
+    local wasMouseMode = isMouseMode
     updateMouseMode()
     if (wasMouseMode != isMouseMode)
       updateShowItemButton()
@@ -568,9 +568,9 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     if (obj.holderId == getCurItemObj()?.holderId)
       return
     hoverHoldAction(obj, function(focusObj) {
-      let idx = focusObj.holderId.tointeger()
-      let value = idx - curPage * itemsPerPage
-      let listObj = getItemsListObj()
+      local idx = focusObj.holderId.tointeger()
+      local value = idx - curPage * itemsPerPage
+      local listObj = getItemsListObj()
       if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
         listObj.setValue(value)
     }.bindenv(this))
@@ -578,7 +578,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
   updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
-    let listObj = getItemsListObj()
+    local listObj = getItemsListObj()
     if (listObj?.isValid())
       listObj.showItemButton = isMouseMode ? "yes" : "no"
   }

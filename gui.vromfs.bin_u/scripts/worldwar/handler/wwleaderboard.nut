@@ -1,9 +1,9 @@
-let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
-let time = require("%scripts/time.nut")
-let { getSeparateLeaderboardPlatformName,
-        getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
-let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
+local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
+local wwRewards = require("scripts/worldWar/handler/wwRewards.nut")
+local time = require("scripts/time.nut")
+local { getSeparateLeaderboardPlatformName,
+        getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
+local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -21,10 +21,10 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 ]
 
 
-::gui_handlers.WwLeaderboard <- class extends ::gui_handlers.LeaderboardWindow
+class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/leaderboard/leaderboard.blk"
+  sceneBlkName = "gui/leaderboard/leaderboard.blk"
 
   beginningMode = null
   needDayOpen = false
@@ -73,12 +73,12 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function fetchRewardsData()
   {
-    let requestBlk = ::DataBlock()
+    local requestBlk = ::DataBlock()
     requestBlk.configname = "ww_rewards"
     ::g_tasker.charRequestBlk("cmn_get_config_bin", requestBlk, null,
       ::Callback(function(res) {
         rewardsBlk = ::DataBlock()
-        let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
+        local curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
         if (curCircuitRewardsBlk)
           rewardsBlk.setFrom(curCircuitRewardsBlk)
         updateButtons()
@@ -91,17 +91,17 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function fetchRewardsTimeData()
   {
-    let userstatRequestData = {
+    local userstatRequestData = {
       add_token = true
       headers = { appid = "1134" }
       action = "GetTablesInfo"
     }
 
-    let callback = ::Callback(function(userstatTbl) {
+    local callback = ::Callback(function(userstatTbl) {
       rewardsTimeData = {}
       foreach (key, val in (userstatTbl?.response ?? userstatTbl))
       {
-        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
+        local rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
           val?.prevInterval?.end : val?.interval?.end
         rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
       }
@@ -124,7 +124,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     lbMode = null
     lbModesList = []
 
-    let isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
+    local isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
      || ::has_feature("ConsoleSeparateWWLeaderboards")
 
     local data = ""
@@ -138,26 +138,26 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
         continue
 
       lbModesList.append(modeData)
-      let optionText = ::g_string.stripTags(
+      local optionText = ::g_string.stripTags(
         ::loc($"worldwar/leaderboard/{modeData.mode}"))
       data += "option {text:t='{0}'}".subst(optionText)
     }
 
-    let curMod = beginningMode
-    let modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
+    local curMod = beginningMode
+    local modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
 
-    let modesObj = showSceneBtn("modes_list", true)
+    local modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(modeIdx)
   }
 
   function updateDaysComboBox(seasonDays)
   {
-    let seasonDay = wwLeaderboardData.getSeasonDay(seasonDays)
+    local seasonDay = wwLeaderboardData.getSeasonDay(seasonDays)
     lbDaysList = [null]
     for (local i = 0; i < seasonDay; i++)
     {
-      let dayNumber = seasonDay - i
+      local dayNumber = seasonDay - i
       if (::isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
         lbDaysList.append(dayNumber)
     }
@@ -165,12 +165,12 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     local data = ""
     foreach(day in lbDaysList)
     {
-      let optionText = ::g_string.stripTags(
+      local optionText = ::g_string.stripTags(
         day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let daysObj = showSceneBtn("days_list", lbModeData.hasDaysData)
+    local daysObj = showSceneBtn("days_list", lbModeData.hasDaysData)
     guiScene.replaceContentFromText(daysObj, data, data.len(), this)
 
     daysObj.setValue(needDayOpen && lbDaysList.len() > 1 ? 1 : 0)
@@ -183,18 +183,18 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     local data = ""
     foreach(wwMap in lbMapsList)
     {
-      let optionText = ::g_string.stripTags(
+      local optionText = ::g_string.stripTags(
         wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : ::loc("worldwar/allMaps"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let mapsObj = showSceneBtn("maps_list", lbMapsList.len() > 1)
+    local mapsObj = showSceneBtn("maps_list", lbMapsList.len() > 1)
     guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
 
     local mapObjValue = 0
     if (lbMap)
     {
-      let selectedMapId = lbMap.getId()
+      local selectedMapId = lbMap.getId()
       mapObjValue = lbMapsList.findindex(@(m) m && m.getId() == selectedMapId) ?? 0
     }
     lbMap = null
@@ -208,18 +208,18 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     local data = ""
     foreach(country in lbCountriesList)
     {
-      let optionText = ::g_string.stripTags(
+      local optionText = ::g_string.stripTags(
         country ? ::loc(country) : ::loc("worldwar/allCountries"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let countriesObj = showSceneBtn("countries_list", lbCountriesList.len() > 1)
+    local countriesObj = showSceneBtn("countries_list", lbCountriesList.len() > 1)
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
 
     local countryObjValue = 0
     if (lbCountry)
     {
-      let selectedCountry = lbCountry
+      local selectedCountry = lbCountry
       countryObjValue = lbCountriesList.findindex(@(c) c && c == selectedCountry) ?? 0
     }
     lbCountry = null
@@ -228,11 +228,11 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function fetchLbData(isForce = false)
   {
-    let newRequestData = getRequestData()
+    local newRequestData = getRequestData()
     if (!newRequestData)
       return
 
-    let isRequestDifferent = !::u.isEqual(requestData, newRequestData)
+    local isRequestDifferent = !::u.isEqual(requestData, newRequestData)
     if (!isRequestDifferent && !isForce)
       return
 
@@ -242,16 +242,16 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     lbField = curLbCategory.field
     requestData = newRequestData
 
-    let requestParams = {
+    local requestParams = {
       gameMode = requestData.modeName + requestData.modePostFix
       table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
       category = lbField
       platformFilter = requestData.platformFilter
     }
 
-    let cb = function(hasSelfRow = false)
+    local cb = function(hasSelfRow = false)
     {
-      let callback = ::Callback(
+      local callback = ::Callback(
         function(lbPageData) {
           if (!hasSelfRow)
             selfRowData = []
@@ -269,7 +269,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     if (isUsersLeaderboard() || (forClans && ::is_in_clan()))
     {
-      let callback = ::Callback(
+      local callback = ::Callback(
         function(lbSelfData) {
           selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbSelfData, isCountriesLeaderboard()).rows
           if(isRequestDifferent)
@@ -292,7 +292,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function onModeSelect(obj)
   {
-    let modeObjValue = obj.getValue()
+    local modeObjValue = obj.getValue()
     if (modeObjValue < 0 || modeObjValue >= lbModesList.len())
       return
 
@@ -303,7 +303,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     checkLbCategory()
 
-    let callback = ::Callback(
+    local callback = ::Callback(
       function(modesData) {
         updateModeDataByAvailableTables(modesData?.modes ?? [])
         updateModeComboBoxes(modesData?.tables)
@@ -333,7 +333,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function onDaySelect(obj)
   {
-    let dayObjValue = obj.getValue()
+    local dayObjValue = obj.getValue()
     if (dayObjValue < 0 || dayObjValue >= lbDaysList.len())
       return
 
@@ -345,7 +345,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function onMapSelect(obj)
   {
-    let mapObjValue = obj.getValue()
+    local mapObjValue = obj.getValue()
     if (mapObjValue < 0 || mapObjValue >= lbMapsList.len())
       return
 
@@ -360,7 +360,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function onCountrySelect(obj)
   {
-    let countryObjValue = obj.getValue()
+    local countryObjValue = obj.getValue()
     if (countryObjValue < 0 || countryObjValue >= lbCountriesList.len())
       return
 
@@ -384,8 +384,8 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (!lbModeData)
       return null
 
-    let mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
-    let countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
+    local mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
+    local countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
       ? "__" + lbCountry : ""
 
     return {
@@ -398,7 +398,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function getWwMaps()
   {
-    let maps = [null]
+    local maps = [null]
     foreach (map in availableMapsList)
       maps.append(map)
 
@@ -407,7 +407,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function getWwCountries(filterMap)
   {
-    let countrries = [null]
+    local countrries = [null]
     if (filterMap)
     {
       foreach (country in filterMap.getCountries())
@@ -417,7 +417,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       return countrries
     }
 
-    let countrriesData = {}
+    local countrriesData = {}
     foreach (map in availableMapsList)
       foreach (country in map.getCountries())
         if (!(country in countrriesData) && ::isInArray(country, availableCountriesList))
@@ -441,7 +441,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function onRewards()
   {
-    let curRewardsBlk = getCurModeAwards()
+    local curRewardsBlk = getCurModeAwards()
     if (!curRewardsBlk)
       return ::showInfoMsgBox(::loc("leaderboards/has_no_rewards"))
 
@@ -463,26 +463,26 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function updateWwRewardsButton()
   {
-    let curRewardsBlk = getCurModeAwards()
-    let rewardsBtn = showSceneBtn("btn_ww_rewards", true)
+    local curRewardsBlk = getCurModeAwards()
+    local rewardsBtn = showSceneBtn("btn_ww_rewards", true)
     rewardsBtn.inactiveColor = curRewardsBlk ? "no" : "yes"
   }
 
   function getCurModeAwards()
   {
-    let rewardTableName = wwLeaderboardData.getModeByName(lbMode)?.rewardsTableName
+    local rewardTableName = wwLeaderboardData.getModeByName(lbMode)?.rewardsTableName
     if (!rewardTableName || !rewardsBlk || !requestData)
       return null
 
-    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
-    let awardTableName = requestData.modeName + requestData.modePostFix
+    local day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
+    local awardTableName = requestData.modeName + requestData.modePostFix
 
     return rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
   }
 
   function getCurRewardsTime()
   {
-    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
+    local day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
     return rewardsTimeData?[day] ?? 0
   }
 
@@ -494,8 +494,8 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function getAvailableMapsList(modes)
   {
-    let mode = lbMode
-    let maps = []
+    local mode = lbMode
+    local maps = []
     foreach (map in wwMapsList)
       if(::u.search(modes, @(m) m.split(mode)?[1] && m.split(map.name)?[1]) != null)
         maps.append(map)
@@ -505,12 +505,12 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function getAvailableCountriesList(modes)
   {
-    let countries = []
+    local countries = []
     foreach (mode in modes)
       if(mode.split(lbMode)?[1] != null)
       {
-        let cName = mode.split("__country")?[1]
-        let country = cName == null ? cName : $"{"country"}{cName}"
+        local cName = mode.split("__country")?[1]
+        local country = cName == null ? cName : $"{"country"}{cName}"
         if(country != null && !::isInArray(country, countries))
           countries.append(country)
       }
@@ -522,8 +522,8 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (clansInfoList.len() == 0)
       return
 
-    let clansInfo = clansInfoList
-    let function updateClanTag(row) {
+    local clansInfo = clansInfoList
+    local function updateClanTag(row) {
       row.__update({
         clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
       })
@@ -536,7 +536,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (lbMode != "ww_users_manager")
       return
 
-    let clansInfoList = p?.clansInfoList ?? {}
+    local clansInfoList = p?.clansInfoList ?? {}
     updateClanTagRowsData(clansInfoList)
     addClanTagToNameInLeaderbord(scene.findObject("lb_table_nest"), clansInfoList)
   }

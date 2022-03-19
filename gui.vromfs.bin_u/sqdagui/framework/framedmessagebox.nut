@@ -1,4 +1,4 @@
-let u = require("%sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 /*
   FramedMessageBox is a message box, with visible frame.
@@ -16,10 +16,10 @@ let u = require("%sqStdLibs/helpers/u.nut")
   }
 */
 
-::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler
+class ::gui_handlers.FramedMessageBox extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/framedMessageBox"
+  sceneTplName = "gui/framedMessageBox"
 
   buttons = null
   title = ""
@@ -56,7 +56,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function initScreen()
   {
-    let obj = scene.findObject("framed_message_box")
+    local obj = scene.findObject("framed_message_box")
     if (!::checkObj(obj))
       return
 
@@ -65,7 +65,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     })
     obj.animation = "show"
 
-    let buttonsObj = scene.findObject("framed_message_box_buttons_place")
+    local buttonsObj = scene.findObject("framed_message_box_buttons_place")
     if (::check_obj(buttonsObj))
       buttonsObj.select()
 
@@ -75,7 +75,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function getDefaultPos()
   {
-    let buttonsObj = scene.findObject("framed_message_box_buttons_place")
+    local buttonsObj = scene.findObject("framed_message_box_buttons_place")
     if (!::check_obj(buttonsObj))
       return array(2, 0)
 

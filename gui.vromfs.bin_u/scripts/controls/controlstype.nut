@@ -1,7 +1,7 @@
-let globalEnv = require("globalEnv")
-let avatars = require("%scripts/user/avatars.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+local globalEnv = require("globalEnv")
+local avatars = require("scripts/user/avatars.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
@@ -11,10 +11,10 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   ::gui_start_modal_wnd(::gui_handlers.ControlType, {onlyDevicesChoice = onlyDevicesChoice})
 }
 
-::gui_handlers.ControlType <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/controlTypeChoice.blk"
+  sceneBlkName = "gui/controlTypeChoice.blk"
 
   controlsOptionsMode = 0
   onlyDevicesChoice = true
@@ -25,7 +25,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    let txt = scene.findObject("txt_icon")
+    local txt = scene.findObject("txt_icon")
     txt.show(!onlyDevicesChoice)
     showBtn("btn_pref_img", !onlyDevicesChoice)
     showBtn("btn_back", onlyDevicesChoice)
@@ -54,7 +54,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!::check_obj(scene))
       return
 
-    let obj = scene.findObject("prefIcon")
+    local obj = scene.findObject("prefIcon")
     if (::check_obj(obj))
     {
       obj.setValue(::get_profile_info().icon)
@@ -75,10 +75,10 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function onControlTypeApply()
   {
     local ct_id = "ct_mouse"
-    let obj = scene.findObject("controlType")
+    local obj = scene.findObject("controlType")
     if (::check_obj(obj))
     {
-      let value = obj.getValue()
+      local value = obj.getValue()
       if (value>=0 && value<obj.childrenCount())
         ct_id = obj.getChild(value).id
     }
@@ -89,8 +89,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
       return
     }
 
-    let text = ::loc("msgbox/controlPresetApply")
-    let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
+    local text = ::loc("msgbox/controlPresetApply")
+    local onOk = ::Callback(@() doControlTypeApply(ct_id), this)
     msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
@@ -109,7 +109,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id)
 {
-  let mainOptionsMode = getGuiOptionsMode()
+  local mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
   local ct_preset = ""
@@ -154,7 +154,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   if (isPlatformSony || isPlatformXboxOne)
   {
-    let presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
+    local presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
     ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
     //TODO: is it obsolete?
     if (ct_preset.name == "default" || ct_preset.name == "xboxone_simulator")

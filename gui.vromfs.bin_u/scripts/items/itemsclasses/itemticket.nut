@@ -1,7 +1,7 @@
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::items_classes.Ticket <- class extends ::BaseItem
+class ::items_classes.Ticket extends ::BaseItem
 {
   static iType = itemType.TICKET
   static defaultLocId = "ticket"
@@ -29,7 +29,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   {
     base.constructor(blk, invBlk, slotData)
 
-    let params = blk?.tournamentTicketParams
+    local params = blk?.tournamentTicketParams
     maxDefeatCount = params?.maxDefeatCount ?? 0
     maxSequenceDefeatCount = params?.maxSequenceDefeatCount ?? 0
     haveAwards = params?.awards ?? false
@@ -41,14 +41,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       ::dagor.debug("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + id)
     else
     {
-      let tournamentBlk = ::get_tournaments_blk()
+      local tournamentBlk = ::get_tournaments_blk()
       clanTournament = clanTournament || get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
       canBuy = canBuy && !get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
 
       if (isInventoryItem && !isActiveTicket)
       {
-        let tBlk = ::DataBlock()
+        local tBlk = ::DataBlock()
         ::get_tournament_info_blk(eventEconomicNamesArray[0], tBlk)
         isActiveTicket = ::isInArray(tBlk?.activeTicketUID, uids)
       }
@@ -91,8 +91,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     local iconTable = null
     foreach(eventId in eventEconomicNamesArray)
     {
-      let event = ::events.getEventByEconomicName(eventId)
-      let eventIconTable = getIconTableForEvent(event, eventId)
+      local event = ::events.getEventByEconomicName(eventId)
+      local eventIconTable = getIconTableForEvent(event, eventId)
       if (!iconTable)
         iconTable = eventIconTable
       else
@@ -107,8 +107,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if (!iconTable)
       iconTable = getIconTableForEvent(null)
 
-    let unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
-    let insertLayersArrayCfg = []
+    local unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
+    local insertLayersArrayCfg = []
     insertLayersArrayCfg.append(_getUnitTypeLayer(unitTypeLayer, small))
     insertLayersArrayCfg.append(_getDifficultyLayer(::getTblValue("diffCode", customLayers) || iconTable.diffCode, small))
     insertLayersArrayCfg.append(_getTournamentModeLayer(::getTblValue("mode", customLayers) || iconTable.mode, small))
@@ -133,7 +133,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if (!event)
       return null
 
-    let unitTypeMask = ::events.getEventUnitTypesMask(event)
+    local unitTypeMask = ::events.getEventUnitTypesMask(event)
 
     local unitsString = ""
     foreach(unitType in unitTypes.types)
@@ -211,7 +211,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if (!small || !text)
       return null
 
-    let layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
+    local layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
       return null
 
@@ -245,22 +245,22 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getTicketTournamentData(eventId)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_tournament_info_blk(eventId, blk)
-    let data = {}
+    local data = {}
     data.defCount <- blk?.ticketDefeatCount ?? 0
     data.sequenceDefeatCount <- blk?.ticketSequenceDefeatCount ?? 0
     data.battleCount <- blk?.battleCount ?? 0
     data.numUnfinishedSessions <- 0
     data.timeToWait <- 0
-    let curTime = ::get_charserver_time_sec()
-    let sessions = blk?.sessions
+    local curTime = ::get_charserver_time_sec()
+    local sessions = blk?.sessions
     if (sessions != null)
     {
       foreach (session in sessions % "data")
       {
-        let timeExpired = ::getTblValue("timeExpired", session, 0)
-        let timeDelta = timeExpired - curTime
+        local timeExpired = ::getTblValue("timeExpired", session, 0)
+        local timeDelta = timeExpired - curTime
         if (timeDelta <= 0)
           continue
         ++data.numUnfinishedSessions
@@ -270,10 +270,10 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
 
     // Check for total defeats count.
-    let checkTotalDefCount = _checkTicketDefCount(data.defCount, maxDefeatCount, data.numUnfinishedSessions)
+    local checkTotalDefCount = _checkTicketDefCount(data.defCount, maxDefeatCount, data.numUnfinishedSessions)
 
     // Check for sequence defeats count.
-    let checkSequenceDefCount = _checkTicketDefCount(data.sequenceDefeatCount, maxSequenceDefeatCount, data.numUnfinishedSessions)
+    local checkSequenceDefCount = _checkTicketDefCount(data.sequenceDefeatCount, maxSequenceDefeatCount, data.numUnfinishedSessions)
 
     // Player can't join ticket's tournament if number of
     // unfinished sessions exceeds number of possible defeats.
@@ -310,10 +310,10 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getAvailableDefeatsText(eventId, valueColor = "activeTextColor")
   {
-    let textParts = []
+    local textParts = []
     if (isActive())
     {
-      let ticketTournamentData = getTicketTournamentData(eventId)
+      local ticketTournamentData = getTicketTournamentData(eventId)
       textParts.append(getDefeatCountText(ticketTournamentData, valueColor))
       textParts.append(getSequenceDefeatCountText(ticketTournamentData, valueColor))
       textParts.append(getBattleCountText(ticketTournamentData, valueColor))
@@ -348,17 +348,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function getTournamentRewardsText(eventId)
   {
     local text = ""
-    let event = ::events.getEventByEconomicName(eventId)
+    local event = ::events.getEventByEconomicName(eventId)
     if (event)
     {
-      let baseReward = ::EventRewards.getBaseVictoryReward(event)
+      local baseReward = ::EventRewards.getBaseVictoryReward(event)
       if (baseReward)
         text += (text.len() ? "\n" : "") + ::loc("tournaments/reward/everyVictory",  {reward = baseReward})
 
       if (::EventRewards.haveRewards(event))
       {
         text += (text.len() ? "\n\n" : "") + ::loc("tournaments/specialRewards") + ::loc("ui/colon")
-        let specialRewards = ::EventRewards.getSortedRewardsByConditions(event)
+        local specialRewards = ::EventRewards.getSortedRewardsByConditions(event)
         foreach (conditionId, rewardsList in specialRewards)
           foreach (reward in rewardsList)
             text += "\n" + ::EventRewards.getConditionText(reward) + " - " + ::EventRewards.getRewardDescText(reward)
@@ -369,7 +369,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getDescription()
   {
-    let desc = []
+    local desc = []
     foreach(eventId in eventEconomicNamesArray)
     {
       if (desc.len())
@@ -386,7 +386,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getLongDescription()
   {
-    let desc = []
+    local desc = []
     foreach(eventId in eventEconomicNamesArray)
     {
       if (desc.len())

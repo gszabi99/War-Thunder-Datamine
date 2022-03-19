@@ -1,10 +1,10 @@
-let { getAvailableRespawnBases } = require_native("guiRespawn")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
-let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local { getAvailableRespawnBases } = require_native("guiRespawn")
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
+local { isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-::mission_rules.Base <- class
+class ::mission_rules.Base
 {
   missionParams = null
   isSpawnDelayEnabled = false
@@ -33,7 +33,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     missionParams = ::DataBlock()
     ::get_current_mission_desc(missionParams)
 
-    let isVersus = isGameModeVersus(::get_game_mode())
+    local isVersus = isGameModeVersus(::get_game_mode())
     isSpawnDelayEnabled = isVersus && ::getTblValue("useSpawnDelay", missionParams, false)
     isTeamScoreRespawnEnabled = isVersus && ::getTblValue("useTeamSpawnScore", missionParams, false)
     isScoreRespawnEnabled = isTeamScoreRespawnEnabled || (isVersus && ::getTblValue("useSpawnScore", missionParams, false))
@@ -80,16 +80,16 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getUnitLeftWeaponShortText(unit)
   {
-    let weaponsLimits = getWeaponsLimitsBlk()
-    let unitWeaponLimit = ::getTblValue(unit.name, weaponsLimits, null)
+    local weaponsLimits = getWeaponsLimitsBlk()
+    local unitWeaponLimit = ::getTblValue(unit.name, weaponsLimits, null)
     if (!unitWeaponLimit)
       return ""
 
-    let presetNumber = unitWeaponLimit.respawnsLeft
+    local presetNumber = unitWeaponLimit.respawnsLeft
     if (!presetNumber)
       return ""
 
-    let presetIconsText = ::get_weapon_icons_text(unit.name, unitWeaponLimit.name)
+    local presetIconsText = ::get_weapon_icons_text(unit.name, unitWeaponLimit.name)
     if (::u.isEmpty(presetIconsText))
       return ""
 
@@ -98,7 +98,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRespawnInfoTextForUnit(unit)
   {
-    let unitLeftRespawns = getUnitLeftRespawns(unit)
+    local unitLeftRespawns = getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED || isUnitAvailableBySpawnScore(unit))
       return ""
     return ::loc("respawn/leftTeamUnit", { num = unitLeftRespawns })
@@ -106,7 +106,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRespawnInfoTextForUnitInfo(unit)
   {
-    let unitLeftRespawns = getUnitLeftRespawns(unit)
+    local unitLeftRespawns = getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
       return ""
     return ::loc("unitInfo/team_left_respawns") + ::loc("ui/colon") + unitLeftRespawns
@@ -124,8 +124,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!hasCustomUnitRespawns() || !getLeftRespawns())
       return res
 
-    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
-    let myTeamDataBlk = getMyTeamDataBlk()
+    local crewsList = ::get_crews_list_by_country(::get_local_player_country())
+    local myTeamDataBlk = getMyTeamDataBlk()
     if (!myTeamDataBlk)
       return (1 << crewsList.len()) - 1
 
@@ -168,21 +168,21 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function isAnyUnitHaveRespawnBases()
   {
-    let country = ::get_local_player_country()
+    local country = ::get_local_player_country()
 
-    let crewsInfo = ::g_crews_list.get()
+    local crewsInfo = ::g_crews_list.get()
     foreach(crew in crewsInfo)
       if (crew.country == country)
         foreach (slot in crew.crews)
         {
-          let airName = ("aircraft" in slot) ? slot.aircraft : ""
-          let air = ::getAircraftByName(airName)
+          local airName = ("aircraft" in slot) ? slot.aircraft : ""
+          local air = ::getAircraftByName(airName)
           if (air
             && ::is_crew_available_in_session(slot.idInCountry, false)
             && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
             && isUnitEnabledBySessionRank(air)
           ) {
-            let respBases = getAvailableRespawnBases(air.tags)
+            local respBases = getAvailableRespawnBases(air.tags)
             if (respBases.len() != 0)
               return true
           }
@@ -208,20 +208,20 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!isScoreRespawnEnabled)
       return res
 
-    let crews = ::get_crews_list_by_country(::get_local_player_country())
+    local crews = ::get_crews_list_by_country(::get_local_player_country())
     if (!crews)
       return res
 
     foreach(crew in crews)
     {
-      let unit = ::g_crew.getCrewUnit(crew)
+      local unit = ::g_crew.getCrewUnit(crew)
       if (!unit
         || !::is_crew_available_in_session(crew.idInCountry, false)
         || !::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
         || !isUnitEnabledBySessionRank(unit))
         continue
 
-      let minScore = unit.getMinimumSpawnScore()
+      local minScore = unit.getMinimumSpawnScore()
       if (res < 0 || res > minScore)
         res = minScore
     }
@@ -239,7 +239,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   */
   function getAvailableToSpawnUnitsData()
   {
-    let res = []
+    local res = []
     if (!(::get_game_type() & (::GT_VERSUS | ::GT_COOPERATIVE)))
       return res
     if (::get_game_mode() == ::GM_SINGLE_MISSION || ::get_game_mode() == ::GM_DYNAMIC)
@@ -249,15 +249,15 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (getLeftRespawns() == 0)
       return res
 
-    let crews = ::get_crews_list_by_country(::get_local_player_country())
+    local crews = ::get_crews_list_by_country(::get_local_player_country())
     if (!crews)
       return res
 
-    let curSpawnScore = getCurSpawnScore()
+    local curSpawnScore = getCurSpawnScore()
     foreach (c in crews)
     {
       local comment = ""
-      let unit = ::g_crew.getCrewUnit(c)
+      local unit = ::g_crew.getCrewUnit(c)
       if (!unit)
         continue
 
@@ -289,7 +289,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getUnitFuelPercent(unitName) //return 0 when fuel amount not fixed
   {
-    let unitsFuelPercentList = ::getTblValue("unitsFuelPercentList", getCustomRulesBlk())
+    local unitsFuelPercentList = ::getTblValue("unitsFuelPercentList", getCustomRulesBlk())
     return ::getTblValue(unitName, unitsFuelPercentList, 0)
   }
 
@@ -305,7 +305,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getUnitWeaponRespawnsLeft(unit, weapon)
   {
-    let limitsBlk = getWeaponsLimitsBlk()
+    local limitsBlk = getWeaponsLimitsBlk()
     return limitsBlk ? getWeaponRespawnsLeftByLimitsBlk(unit, weapon, limitsBlk) : -1
   }
 
@@ -335,11 +335,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getTeamDataBlk(team, keyName)
   {
-    let teamsBlk = ::getTblValue(keyName, getMisStateBlk())
+    local teamsBlk = ::getTblValue(keyName, getMisStateBlk())
     if (!teamsBlk)
       return null
 
-    let res = ::getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
+    local res = ::getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
     return ::u.isDataBlock(res) ? res : null
   }
 
@@ -350,7 +350,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getEnemyTeamDataBlk(keyName = "teams")
   {
-    let opponentTeamCode = ::g_team.getTeamByCode(::get_mp_local_team()).opponentTeamCode
+    local opponentTeamCode = ::g_team.getTeamByCode(::get_mp_local_team()).opponentTeamCode
     if (opponentTeamCode == Team.none || opponentTeamCode == Team.Any)
       return null
 
@@ -399,7 +399,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRandomUnitsGroupName(unitName)
   {
-    let randomGroups = getMyStateBlk()?.random_units
+    local randomGroups = getMyStateBlk()?.random_units
     if (!randomGroups)
       return null
     foreach (unitsGroup in randomGroups)
@@ -412,8 +412,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRandomUnitsList(groupName)
   {
-    let unitsList = []
-    let randomUnitsGroup = getMyStateBlk()?.random_units?[groupName]
+    local unitsList = []
+    local randomUnitsGroup = getMyStateBlk()?.random_units?[groupName]
     if (!randomUnitsGroup)
       return unitsList
 
@@ -439,7 +439,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function isUnitEnabledByRandomGroups(unitName)
   {
-    let randomGroups = getMyStateBlk()?.random_units
+    local randomGroups = getMyStateBlk()?.random_units
     if (!randomGroups)
       return true
 
@@ -453,15 +453,15 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRandomUnitsGroupLocBattleRating(groupName)
   {
-    let randomGroups = getMyStateBlk()?.random_units?[groupName]
+    local randomGroups = getMyStateBlk()?.random_units?[groupName]
     if (!randomGroups)
       return ""
 
-    let ediff = ::get_mission_difficulty_int()
-    let getBR = @(unit) unit.getBattleRating(ediff)
-    let valueBR = getRandomUnitsGroupValueRange(randomGroups, getBR)
-    let minBR = valueBR.minValue
-    let maxBR = valueBR.maxValue
+    local ediff = ::get_mission_difficulty_int()
+    local getBR = @(unit) unit.getBattleRating(ediff)
+    local valueBR = getRandomUnitsGroupValueRange(randomGroups, getBR)
+    local minBR = valueBR.minValue
+    local maxBR = valueBR.maxValue
     return (minBR != maxBR ? ::format("%.1f-%.1f", minBR, maxBR) : ::format("%.1f", minBR))
   }
 
@@ -473,14 +473,14 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function getRandomUnitsGroupLocRank(groupName)
   {
-    let randomGroups = getMyStateBlk()?.random_units?[groupName]
+    local randomGroups = getMyStateBlk()?.random_units?[groupName]
     if (!randomGroups)
       return ""
 
-    let getRank = function(unit) {return unit.rank}
-    let valueRank = getRandomUnitsGroupValueRange(randomGroups, getRank)
-    let minRank = valueRank.minValue
-    let maxRank = valueRank.maxValue
+    local getRank = function(unit) {return unit.rank}
+    local valueRank = getRandomUnitsGroupValueRange(randomGroups, getRank)
+    local minRank = valueRank.minValue
+    local maxRank = valueRank.maxValue
     return ::get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + ::get_roman_numeral(maxRank) : "")
   }
 
@@ -490,12 +490,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
     local maxValue
     foreach(name, u in randomGroups)
     {
-      let unit = ::getAircraftByName(name)
+      local unit = ::getAircraftByName(name)
 
       if (!unit)
         continue
 
-      let value = getValue(unit)
+      local value = getValue(unit)
       minValue = (minValue == null) ? value : ::min(minValue, value)
       maxValue = (maxValue == null) ? value : ::max(maxValue, value)
     }
@@ -510,7 +510,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (getMyStateBlk()?.ownAvailableUnits[unitName] == true)
       return true
 
-    let missionUnitName = getMyStateBlk()?.userUnitToUnitGroup[unitName] ?? ""
+    local missionUnitName = getMyStateBlk()?.userUnitToUnitGroup[unitName] ?? ""
 
     return missionUnitName != "" && (getMyTeamDataBlk()?.limitedUnits[missionUnitName] ?? -1) >= 0
   }
@@ -545,12 +545,12 @@ let { GUI } = require("%scripts/utils/configs.nut")
   isMissionByUnitsGroups = @() missionParams?.unitGroups != null
 
   function getUnitsGroups() {
-    let fullGroupsList = {}
+    local fullGroupsList = {}
     foreach (countryBlk in (missionParams?.unitGroups ?? []))
       for (local i = 0; i < countryBlk.blockCount(); i++)
       {
-        let groupBlk = countryBlk.getBlock(i)
-        let unitList = groupBlk?.unitList
+        local groupBlk = countryBlk.getBlock(i)
+        local unitList = groupBlk?.unitList
         fullGroupsList[groupBlk.getBlockName()] <- {
           name = groupBlk?.name ?? ""
           defaultUnit = groupBlk?.defaultUnit ?? ""
@@ -562,7 +562,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 
   function getOverrideCountryIconByTeam(team) {
-    let icon = missionParams?[$"countryFlagTeam{team != Team.B ? "A" : "B"}"]
+    local icon = missionParams?[$"countryFlagTeam{team != Team.B ? "A" : "B"}"]
     return icon == "" ? null : icon
   }
 
@@ -575,6 +575,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
 }
 
 //just for case when empty rules will not the same as base
-::mission_rules.Empty <- class extends ::mission_rules.Base
+class ::mission_rules.Empty extends ::mission_rules.Base
 {
 }

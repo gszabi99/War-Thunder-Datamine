@@ -1,11 +1,11 @@
-let visibleConditionsList = {
+local visibleConditionsList = {
   isInClan = @() ::is_in_clan()
   isNotInClan = @() !::is_in_clan()
 }
 
-let function isVisibleByConditions(blk)
+local function isVisibleByConditions(blk)
 {
-  let visibleConditions = blk?.visibleConditions
+  local visibleConditions = blk?.visibleConditions
   if (visibleConditions == null)
     return true
 

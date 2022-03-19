@@ -1,9 +1,9 @@
-let function isGameModeCoop(gm)
+local function isGameModeCoop(gm)
 {
   return gm == -1 || gm == ::GM_SINGLE_MISSION || gm == ::GM_DYNAMIC || gm == ::GM_BUILDER
 }
 
-let function isGameModeVersus(gm)
+local function isGameModeVersus(gm)
 {
   return gm == -1 || gm == ::GM_SKIRMISH || gm == ::GM_DOMINATION
 }

@@ -12,13 +12,13 @@ For example: rendering a preview of a Markdown comment, recalculating a layout a
 */
 
 
-let function debounce(func, delay_s, delay_s_max = null){
-  let storage = { func = @() null }
-  let action = @() storage.func()
-  let function debounced(...) {
+local function debounce(func, delay_s, delay_s_max = null){
+  local storage = { func = @() null }
+  local action = @() storage.func()
+  local function debounced(...) {
     storage.func <- @() func.acall([null].extend(vargv))
     clearTimer(action)
-    let time = delay_s_max == null
+    local time = delay_s_max == null
       ? delay_s
       : min(delay_s, delay_s_max) + gfrnd() * abs(delay_s_max - delay_s)
     setTimeout(time, action)
@@ -30,10 +30,10 @@ let function debounce(func, delay_s, delay_s_max = null){
 Same as debounce but trigger the function on the leading instead of the trailing edge of the wait interval.
 Useful in circumstances like preventing accidental double-clicks on a "submit" button from firing a second time.
 */
-let function debounceImmediate(func, delay_s){
+local function debounceImmediate(func, delay_s){
   local isActionAllowed = true
-  let function allowAction() { isActionAllowed = true }
-  let function debounced(...) {
+  local function allowAction() { isActionAllowed = true }
+  local function debounced(...) {
     if (!isActionAllowed)
       return
     isActionAllowed = false
@@ -50,21 +50,21 @@ let function debounceImmediate(func, delay_s){
   By default, throttle will execute the function as soon as you call it for the first time, and, if you call it again any number of times during the wait period, as soon as that period is over.
   If you'd like to disable the leading-edge call, pass {leading: false}, and if you'd like to disable the execution on the trailing-edge, pass {trailing: false}.
 */
-let defThrottleOptions = {leading = true, trailing=false}
-let function throttle(func, delay_s, options=defThrottleOptions){
-  let leading = options?.leading ?? defThrottleOptions.leading
-  let trailing = options?.trailing ?? defThrottleOptions.trailing
+local defThrottleOptions = {leading = true, trailing=false}
+local function throttle(func, delay_s, options=defThrottleOptions){
+  local leading = options?.leading ?? defThrottleOptions.leading
+  local trailing = options?.trailing ?? defThrottleOptions.trailing
   local needCallByTimer = false //only for !trailing version
   assert(leading || trailing, "throttle should be called with at least one front call leading or trailing")
   local curAction = null
-  let function throttled(...){
-    let doWait = curAction != null
+  local function throttled(...){
+    local doWait = curAction != null
     curAction = @() func.acall([null].extend(vargv))
     if (doWait) {
       needCallByTimer = !trailing
       return
     }
-    let function clearThrottled(){
+    local function clearThrottled(){
       if (trailing)
         curAction()
       else if (needCallByTimer) {

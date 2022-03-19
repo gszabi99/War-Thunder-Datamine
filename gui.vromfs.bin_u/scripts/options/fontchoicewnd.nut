@@ -1,11 +1,11 @@
-let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
+local FONT_CHOICE_SAVE_ID = "tutor/fontChange"
 
 local wasOpened = false
 
-::gui_handlers.FontChoiceWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.FontChoiceWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/options/fontChoiceWnd"
+  sceneTplName = "gui/options/fontChoiceWnd"
 
   option = null
 
@@ -43,7 +43,7 @@ local wasOpened = false
 
   function onFontsChange(obj)
   {
-    let newValue = obj.getValue()
+    local newValue = obj.getValue()
     if (newValue == option.value)
       return
 

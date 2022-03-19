@@ -9,9 +9,14 @@ let
   HALF_PI = PI * 0.5
   SAFE_HALF_PI = HALF_PI - 1e-3f
 
+[generic]
+def get_indent_tm(): float3x4
+  var tm: float3x4
+  identity(tm)
+  return <- tm
 
 let
-  IDENT_TM = identity3x4()
+  IDENT_TM = get_indent_tm()
   VERY_SMALL_NUMBER = 4e-19
 
 [generic]
@@ -118,7 +123,3 @@ def scale_tm(scale: float): float3x4
 [generic]
 def scale_tm(tm: float3x4; scale: float): float3x4
   return <- tm * scale_tm(scale)
-
-[generic]
-def cvt(val: float; from: float2; to: float2): float
-  return cvt(val, from.x, from.y, to.x, to.y)

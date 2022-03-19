@@ -1,8 +1,8 @@
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 local countDefaultUnitsByCountry = null
 
-let function initCache() {
+local function initCache() {
   countDefaultUnitsByCountry = {}
   foreach (u in ::all_units) {
     if (u.isVisibleInShop() && ::isUnitDefault(u))
@@ -10,22 +10,15 @@ let function initCache() {
   }
 }
 
-let function invalidateCache() {
+local function invalidateCache() {
   countDefaultUnitsByCountry = null
 }
 
-let function hasDefaultUnitsInCountry(country) {
+local function hasDefaultUnitsInCountry(country) {
   if (countDefaultUnitsByCountry == null)
     initCache()
 
   return (countDefaultUnitsByCountry?[country] ?? 0) > 0
-}
-
-let function isCountryHaveUnitType(country, unitType) {
-  foreach(unit in ::all_units)
-    if (unit.shopCountry == country && unit.esUnitType == unitType && unit.isVisibleInShop())
-      return true
-  return false
 }
 
 addListenersWithoutEnv({
@@ -34,5 +27,4 @@ addListenersWithoutEnv({
 
 return {
   hasDefaultUnitsInCountry
-  isCountryHaveUnitType
 }

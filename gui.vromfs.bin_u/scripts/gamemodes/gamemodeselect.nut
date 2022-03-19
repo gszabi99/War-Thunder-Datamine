@@ -1,17 +1,20 @@
-let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
-let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+local mapPreferencesModal = require("scripts/missions/mapPreferencesModal.nut")
+local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+local clustersModule = require("scripts/clusterSelect.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local Callback = require("sqStdLibs/helpers/callback.nut").Callback
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local {
+  checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
-::gui_handlers.GameModeSelect <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneTplName = "%gui/gameModeSelect/gameModeSelect"
+  sceneTplName = "gui/gameModeSelect/gameModeSelect"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
 
@@ -59,7 +62,6 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function initScreen()
   {
     backSceneFunc = ::gui_start_mainmenu
-    showBtn("cluster_select_button", true)
     updateContent()
   }
 
@@ -69,7 +71,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     foreach (cat in categories)
     {
-      let modes = this[cat.modesGenFunc]()
+      local modes = this[cat.modesGenFunc]()
       if (modes.len() == 0)
       {
         filledGameModes.append({
@@ -85,11 +87,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       filledGameModes.extend(modes)
     }
 
-    let placeObj = scene.findObject("general_game_modes")
+    local placeObj = scene.findObject("general_game_modes")
     if (!::check_obj(placeObj))
       return
 
-    let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
+    local data = ::handyman.renderCached("gui/gameModeSelect/gameModeBlock", { block = filledGameModes })
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
     setGameModesTimer()
@@ -112,15 +114,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateSelection()
   {
-    let curGM = ::game_mode_manager.getCurrentGameMode()
+    local curGM = ::game_mode_manager.getCurrentGameMode()
     if (curGM == null)
       return
 
-    let curGameModeObj = scene.findObject("general_game_modes")
+    local curGameModeObj = scene.findObject("general_game_modes")
     if (!::check_obj(curGameModeObj))
       return
 
-    let index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
+    local index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
     ::move_mouse_on_child(curGameModeObj, index)
   }
@@ -132,11 +134,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       if (!gameMode.isMode || !gameMode?.hasContent)
         continue
 
-      let widgetObj = scene.findObject(getWidgetId(gameMode.id))
+      local widgetObj = scene.findObject(getWidgetId(gameMode.id))
       if (!::check_obj(widgetObj))
         continue
 
-      let widget = NewIconWidget(guiScene, widgetObj)
+      local widget = NewIconWidget(guiScene, widgetObj)
       newIconWidgetsByGameModeID[gameMode.id] <- widget
       widget.setWidgetVisible(!::game_mode_manager.isSeen(gameMode.id))
     }
@@ -144,7 +146,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function createFeaturedModesView()
   {
-    let view = []
+    local view = []
     view.extend(getViewArray(::game_mode_manager.getPveBattlesGameModes()))
     view.extend(getViewArray(::game_mode_manager.getFeaturedGameModes()))
     view.extend(createFeaturedLinksView())
@@ -154,20 +156,20 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getViewArray(gameModesArray)
   {
-    let view = []
+    local view = []
     // First go all wide featured game modes then - non-wide.
     local numNonWideGameModes = 0
     foreach (isWide in [ true, false ])
     {
       while (true)
       {
-        let gameMode = getGameModeByCondition(gameModesArray,
+        local gameMode = getGameModeByCondition(gameModesArray,
           @(gameMode) gameMode.displayWide == isWide) // warning disable: -iterator-in-lambda
         if (gameMode == null)
           break
         if (!isWide)
           ++numNonWideGameModes
-        let index = ::find_in_array(gameModesArray, gameMode)
+        local index = ::find_in_array(gameModesArray, gameMode)
         gameModesArray.remove(index)
         view.append(createGameModeView(gameMode))
       }
@@ -186,8 +188,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       {
         if(b.isWide != a.isWide)
           return b.isWide <=> a.isWide
-        let isAContainsType = a.gameMode.unitTypes.indexof(unitType.esUnitType) != null
-        let isBContainsType = b.gameMode.unitTypes.indexof(unitType.esUnitType) != null
+        local isAContainsType = a.gameMode.unitTypes.indexof(unitType.esUnitType) != null
+        local isBContainsType = b.gameMode.unitTypes.indexof(unitType.esUnitType) != null
         if( ! isAContainsType && ! isBContainsType)
           continue
         return isBContainsType <=> isAContainsType
@@ -199,8 +201,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function createDebugGameModesView()
   {
-    let view = []
-    let debugGameModes = ::game_mode_manager.getDebugGameModes()
+    local view = []
+    local debugGameModes = ::game_mode_manager.getDebugGameModes()
     foreach (gameMode in debugGameModes)
       view.append(createGameModeView(gameMode))
     return view
@@ -208,15 +210,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function createFeaturedLinksView()
   {
-    let res = []
+    local res = []
     foreach (idx, mode in ::featured_modes)
     {
       if (!mode.isVisible())
         continue
 
-      let id = ::game_mode_manager.getGameModeItemId(mode.modeId)
-      let hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
-      let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+      local id = ::game_mode_manager.getGameModeItemId(mode.modeId)
+      local hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
+      local newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
       res.append({
         id = id
@@ -250,11 +252,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function createGameModesView()
   {
-    let gameModesView = []
-    let partitions = ::game_mode_manager.getGameModesPartitions()
+    local gameModesView = []
+    local partitions = ::game_mode_manager.getGameModesPartitions()
     foreach (partition in partitions)
     {
-      let partitionView = createGameModesPartitionView(partition)
+      local partitionView = createGameModesPartitionView(partition)
       if (partitionView)
         gameModesView.extend(partitionView)
     }
@@ -270,16 +272,17 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
         isMode = true
       }
 
-    let countries = createGameModeCountriesView(gameMode)
-    let isLink = gameMode.displayType.showInEventsWindow
-    let event = ::game_mode_manager.getGameModeEvent(gameMode)
-    let trophyName = ::events.getEventPVETrophyName(event)
+    local countries = createGameModeCountriesView(gameMode)
+    local isLink = gameMode.displayType.showInEventsWindow
+    local event = ::game_mode_manager.getGameModeEvent(gameMode)
+    local trophyName = ::events.getEventPVETrophyName(event)
 
-    let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
-    let hasNewIconWidget = !::game_mode_manager.isSeen(id)
-    let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
+    local id = ::game_mode_manager.getGameModeItemId(gameMode.id)
+    local hasNewIconWidget = !::game_mode_manager.isSeen(id)
+    local newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
-    let crossPlayRestricted = !isCrossPlayEventAvailable(event)
+    local crossPlayRestricted = isMultiplayerPrivilegeAvailable() && !isCrossPlayEventAvailable(event)
+    local inactiveColor = !isMultiplayerPrivilegeAvailable() || crossPlayRestricted
     if (gameMode?.updateByTimeFunc)
       gameModesWithTimer[id] <- mode.updateByTimeFunc
 
@@ -309,7 +312,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       onHover = "markGameModeSeen"
       // Used to easily backtrack corresponding game mode.
       gameMode = gameMode
-      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || crossPlayRestricted
+      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
       crossplayTooltip = getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
@@ -323,6 +326,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getRestrictionTooltipText(event)
   {
+    if (!isMultiplayerPrivilegeAvailable())
+      return ::loc("xbox/noMultiplayer")
+
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
 
@@ -355,7 +361,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (::u.isEmpty(trophyName))
       return null
 
-    let trophyItem = ::ItemsManager.findItemById(trophyName, itemType.TROPHY)
+    local trophyItem = ::ItemsManager.findItemById(trophyName, itemType.TROPHY)
     if (!trophyItem)
       return null
 
@@ -364,7 +370,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function createGameModeCountriesView(gameMode)
   {
-    let res = []
+    local res = []
     local countries = gameMode.countries
     if (!countries.len() || countries.len() >= ::g_crews_list.get().len())
       return res
@@ -372,10 +378,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     local needShowLocked = false
     if (countries.len() >= 0.7 * ::g_crews_list.get().len())
     {
-      let lockedCountries = []
+      local lockedCountries = []
       foreach(countryData in ::g_crews_list.get())
       {
-        let country = countryData.country
+        local country = countryData.country
         if (!::isInArray(country, countries))
           lockedCountries.append(country)
       }
@@ -394,12 +400,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (partition.gameModes.len() == 0)
       return null
 
-    let gameModes = partition.gameModes
-    let needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
-    let view = []
+    local gameModes = partition.gameModes
+    local needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
+    local view = []
     foreach (idx, esUnitType in basePanelConfig)
     {
-      let gameMode = chooseGameModeEsUnitType(gameModes, esUnitType, basePanelConfig)
+      local gameMode = chooseGameModeEsUnitType(gameModes, esUnitType, basePanelConfig)
       if (gameMode)
         view.append(createGameModeView(gameMode, false, true))
       else if (needEmptyGameModeBlocks)
@@ -427,8 +433,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onGameModeSelect(obj)
   {
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
+
     markGameModeSeen(obj)
-    let gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
+    local gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
     performGameModeSelect(gameModeView.gameMode)
   }
 
@@ -438,7 +447,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
         !::check_package_and_ask_download("pkg_main"))
       return
 
-    let event = ::game_mode_manager.getGameModeEvent(gameMode)
+    local event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event && !isCrossPlayEventAvailable(event))
     {
       if (!::xbox_try_show_crossnetwork_message())
@@ -465,7 +474,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!obj?.id || ::game_mode_manager.isSeen(obj.id))
       return
 
-    let widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
+    local widget = ::getTblValue(obj.id, newIconWidgetsByGameModeID)
     if (!widget)
       return
 
@@ -475,12 +484,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onGameModeGamepadSelect(obj)
   {
-    let val = obj.getValue()
+    local val = obj.getValue()
     if (val < 0 || val >= obj.childrenCount())
       return
 
-    let gmView = filledGameModes[val]
-    let modeObj = scene.findObject(gmView.id)
+    local gmView = filledGameModes[val]
+    local modeObj = scene.findObject(gmView.id)
 
     markGameModeSeen(modeObj)
     updateEventDescriptionConsoleButton(gmView.gameMode)
@@ -498,20 +507,21 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateClusters()
   {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button_text"))
+    local clustersObj = showBtn("cluster_select_button", isMultiplayerPrivilegeAvailable())
+    clustersModule.updateClusters(clustersObj)
   }
 
   function onClusterSelectActivate(obj)
   {
-    let value = obj.getValue()
-    let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
+    local value = obj.getValue()
+    local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (::checkObj(childObj))
       onOpenClusterSelect(childObj)
   }
 
   function onGameModeActivate(obj)
   {
-    let value = ::get_obj_valid_index(obj)
+    local value = ::get_obj_valid_index(obj)
     if (value < 0)
       return
 
@@ -525,11 +535,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onGamepadEventDescription(obj)
   {
-    let gameModesObject = getObj("general_game_modes")
+    local gameModesObject = getObj("general_game_modes")
     if (!::checkObj(gameModesObject))
       return
 
-    let value = gameModesObject.getValue()
+    local value = gameModesObject.getValue()
     if (value < 0)
       return
 
@@ -538,7 +548,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function openEventDescription(gameMode)
   {
-    let event = ::game_mode_manager.getGameModeEvent(gameMode)
+    local event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event != null)
     {
       restoreFromModal = true
@@ -551,9 +561,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
       && ::show_console_buttons
+      && isMultiplayerPrivilegeAvailable()
     )
 
-    let prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
+    local prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
       && ::show_console_buttons)
 
     if (!::check_obj(prefObj))
@@ -577,7 +588,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function setGameModesTimer()
   {
-    let timerObj = scene.findObject("game_modes_timer")
+    local timerObj = scene.findObject("game_modes_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(gameModesWithTimer.len()? this : null)
   }
@@ -593,13 +604,14 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function isShowMapPreferences(curEvent)
   {
     return ::has_feature("MapPreferences") && !::is_me_newbie()
+      && isMultiplayerPrivilegeAvailable()
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
   }
 
   function onMapPreferences(obj)
   {
-    let curEvent = obj?.modeId != null
+    local curEvent = obj?.modeId != null
       ? ::game_mode_manager.getGameModeById(obj.modeId)?.getEvent()
       : ::game_mode_manager.getCurrentGameMode()?.getEvent()
     ::g_squad_utils.checkSquadUnreadyAndDo(

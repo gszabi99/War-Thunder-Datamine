@@ -1,10 +1,10 @@
-let { startLogout } = require("%scripts/login/logout.nut")
+local { startLogout } = require("scripts/login/logout.nut")
 
 // -------------------------------------------------------
 // Matching game modes managment
 // -------------------------------------------------------
 
-let requestedGameModesTimeOut = 10000 //ms
+local requestedGameModesTimeOut = 10000 //ms
 local lastRequestTimeMsec = - requestedGameModesTimeOut
 local requestedGameModes = []
 
@@ -40,7 +40,7 @@ local requestedGameModes = []
 
         __fetching = false
 
-        let canRetry = __fetch_counter < MAX_FETCH_RETRIES
+        local canRetry = __fetch_counter < MAX_FETCH_RETRIES
         if (::checkMatchingError(result, !canRetry))
         {
           __loadGameModesFromList(::getTblValue("modes", result, []))
@@ -70,13 +70,13 @@ local requestedGameModes = []
   function  onGameModesChangedNotify(added_list, removed_list, changed_list)
   {
     local needNotify = false
-    let needToFetchGmList = []
+    local needToFetchGmList = []
 
     if (removed_list)
     {
       foreach (modeInfo in removed_list)
       {
-        let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
+        local gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
         dagor.debug(format("matching game mode removed '%s' [%d]",
                             ::getTblValue("name", modeInfo, ""), gameModeId))
         __removeGameMode(gameModeId)
@@ -88,7 +88,7 @@ local requestedGameModes = []
     {
       foreach (modeInfo in added_list)
       {
-        let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
+        local gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
         dagor.debug(format("matching game mode added '%s' [%d]",
                             ::getTblValue("name", modeInfo, ""), gameModeId))
         needToFetchGmList.append(gameModeId)
@@ -99,14 +99,14 @@ local requestedGameModes = []
     {
       foreach (modeInfo in changed_list)
       {
-        let gameModeId = modeInfo?.gameModeId
+        local gameModeId = modeInfo?.gameModeId
         if (gameModeId == null)
           continue
 
-        let name     = modeInfo?.name ?? ""
-        let disabled = modeInfo?.disabled
-        let visible  = modeInfo?.visible
-        let active   = modeInfo?.active
+        local name     = modeInfo?.name ?? ""
+        local disabled = modeInfo?.disabled
+        local visible  = modeInfo?.visible
+        local active   = modeInfo?.active
 
         dagor.debug($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
@@ -124,7 +124,7 @@ local requestedGameModes = []
           continue
 
         needNotify = true
-        let fullModeInfo = __gameModes[gameModeId]
+        local fullModeInfo = __gameModes[gameModeId]
         fullModeInfo.disabled = disabled
         fullModeInfo.visible = visible
       }
@@ -140,7 +140,7 @@ local requestedGameModes = []
 // private section
   function __notifyGmChanged()
   {
-    let gameEventsOldFormat = {}
+    local gameEventsOldFormat = {}
     foreach (gm_id, modeInfo in __gameModes)
     {
       if (::events.isCustomGameMode(modeInfo))
@@ -162,8 +162,8 @@ local requestedGameModes = []
   {
     foreach (modeInfo in modes_list)
     {
-      let gameModeId = modeInfo.gameModeId
-      let idx = requestedGameModes.indexof(gameModeId)
+      local gameModeId = modeInfo.gameModeId
+      local idx = requestedGameModes.indexof(gameModeId)
       if (idx != null)
         requestedGameModes.remove(idx)
       dagor.debug(format("matching game mode fetched '%s' [%d]",
@@ -210,7 +210,7 @@ local requestedGameModes = []
 
   function requestGameModeById(gameModeId)
   {
-    let isRequested = ::isInArray(gameModeId, requestedGameModes)
+    local isRequested = ::isInArray(gameModeId, requestedGameModes)
     if (isRequested
       && (::dagor.getCurTime() - lastRequestTimeMsec <= requestedGameModesTimeOut))
       return
@@ -223,7 +223,7 @@ local requestedGameModes = []
 
   function getGameModeIdsByEconomicName(economicName)
   {
-    let res = []
+    local res = []
     foreach(id, gm in __gameModes)
       if (::events.getEventEconomicName(gm) == economicName)
         res.append(id)

@@ -1,8 +1,8 @@
-::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/promo/promoBlocks"
+  sceneTplName = "gui/promo/promoBlocks"
 
   blockId = "leftUnits"
 
@@ -27,7 +27,7 @@
     if (isSceneLoaded)
       return null
 
-    let view = {
+    local view = {
       promoButtons = [{
         id = blockId
         type = "autoSize"
@@ -56,16 +56,16 @@
 
   function getFullUnitsText()
   {
-    let data = missionRules.getFullUnitLimitsData()
-    let textsList = ::u.map(data.unitLimits, getRespTextByUnitLimit)
+    local data = missionRules.getFullUnitLimitsData()
+    local textsList = ::u.map(data.unitLimits, getRespTextByUnitLimit)
     textsList.insert(0, ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
     if (missionRules.isEnemyLimitedUnitsVisible())
     {
-      let enemyData = missionRules.getFullEnemyUnitLimitsData()
+      local enemyData = missionRules.getFullEnemyUnitLimitsData()
       if (enemyData.len())
       {
-        let enemyTextsList = ::u.map(enemyData.unitLimits, getRespTextByUnitLimit)
+        local enemyTextsList = ::u.map(enemyData.unitLimits, getRespTextByUnitLimit)
         textsList.append("\n" + ::colorize("activeTextColor", ::loc(missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }
@@ -88,21 +88,21 @@
   function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true)
   {
     collapsedInfoUnitLimit = unitLimit
-    let text = getRespTextByUnitLimit(unitLimit)
+    local text = getRespTextByUnitLimit(unitLimit)
     if (needAnim)
     {
       ::g_promo_view_utils.animSwitchCollapsedText(scene, blockId, text)
       return
     }
 
-    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(scene, blockId)
+    local obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(scene, blockId)
     if (::checkObj(obj))
       obj.setValue(text)
   }
 
   function setNewCollapsedInfo(needAnim = true)
   {
-    let data = missionRules.getFullUnitLimitsData()
+    local data = missionRules.getFullUnitLimitsData()
     local prevIdx = -1
     if (collapsedInfoUnitLimit)
       prevIdx = data.unitLimits.findindex(collapsedInfoUnitLimit.isSame.bindenv(collapsedInfoUnitLimit)) ?? -1
@@ -116,8 +116,8 @@
     if (isJustSwitched || !collapsedInfoUnitLimit)
       return setNewCollapsedInfo(!isJustSwitched)
 
-    let data = missionRules.getFullUnitLimitsData()
-    let newUnitLimit = ::u.search(data.unitLimits, collapsedInfoUnitLimit.isSame.bindenv(collapsedInfoUnitLimit))
+    local data = missionRules.getFullUnitLimitsData()
+    local newUnitLimit = ::u.search(data.unitLimits, collapsedInfoUnitLimit.isSame.bindenv(collapsedInfoUnitLimit))
     if (newUnitLimit)
       updateCollapsedInfoByUnitLimit(newUnitLimit, false)
     else

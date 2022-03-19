@@ -1,5 +1,5 @@
-let function getLockedCountryDataBySquad() {
-  let operationcountry = ::g_squad_manager.getWwOperationCountry()
+local function getLockedCountryDataBySquad() {
+  local operationcountry = ::g_squad_manager.getWwOperationCountry()
   if (operationcountry == "" || ::g_squad_manager.getWwOperationBattle() == null
     || ::g_squad_manager.getWwOperationId() < 0)
     return null
@@ -10,8 +10,8 @@ let function getLockedCountryDataBySquad() {
   }
 }
 
-let function getLockedCountryData() {
-  let curOperationCountry = ::g_world_war.curOperationCountry
+local function getLockedCountryData() {
+  local curOperationCountry = ::g_world_war.curOperationCountry
   if (curOperationCountry == null)
     return getLockedCountryDataBySquad()
 

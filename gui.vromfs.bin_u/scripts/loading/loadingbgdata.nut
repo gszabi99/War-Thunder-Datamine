@@ -56,38 +56,38 @@ loading_bg
 }
 */
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let createBgData = @() {
+local createBgData = @() {
   list = {}
   reserveBg = ""
 }
 
-let bgDataBeforeLogin = createBgData()
-let bgDataAfterLogin = createBgData()
+local bgDataBeforeLogin = createBgData()
+local bgDataAfterLogin = createBgData()
 
 local inited = false
 local bgUnlocks = null
 
-let RESERVE_BG_KEY = "reserveBg"
-let DEFAULT_VALUE_KEY = "default_chance"
-let BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
+local RESERVE_BG_KEY = "reserveBg"
+local DEFAULT_VALUE_KEY = "default_chance"
+local BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
 local LOADING_BG_PATH = "loading_bg"
 
-let function applyBlkToBgData(bgData, blk) {
-  let list = bgData.list
-  let defValue = blk?[DEFAULT_VALUE_KEY]
+local function applyBlkToBgData(bgData, blk) {
+  local list = bgData.list
+  local defValue = blk?[DEFAULT_VALUE_KEY]
   if (defValue != null)
     foreach (key, value in list)
       list[key] = defValue
 
-  let reserveBg = blk?[RESERVE_BG_KEY]
+  local reserveBg = blk?[RESERVE_BG_KEY]
   if (::u.isString(reserveBg))
     bgData.reserveBg = reserveBg
 
   for (local i = 0; i < blk.paramCount(); i++) {
-    let value = blk.getParamValue(i)
+    local value = blk.getParamValue(i)
     if (::is_numeric(value))
       list[blk.getParamName(i)] <- value
   }
@@ -97,17 +97,17 @@ let function applyBlkToBgData(bgData, blk) {
     delete list[DEFAULT_VALUE_KEY]
 }
 
-let function applyBlkToAllBgData(blk) {
+local function applyBlkToAllBgData(blk) {
   applyBlkToBgData(bgDataAfterLogin, blk)
   applyBlkToBgData(bgDataBeforeLogin, blk)
-  let beforeLoginBlk = blk?[BLOCK_BEFORE_LOGIN_KEY]
+  local beforeLoginBlk = blk?[BLOCK_BEFORE_LOGIN_KEY]
   if (::u.isDataBlock(beforeLoginBlk))
     applyBlkToBgData(bgDataBeforeLogin, beforeLoginBlk)
 }
 
-let function applyBlkByLang(langBlk, curLang) {
-  let langsInclude = langBlk?.langsInclude
-  let langsExclude = langBlk?.langsExclude
+local function applyBlkByLang(langBlk, curLang) {
+  local langsInclude = langBlk?.langsInclude
+  local langsExclude = langBlk?.langsExclude
   if (::u.isDataBlock(langsInclude)
       && !::isInArray(curLang, langsInclude % "lang"))
     return
@@ -115,8 +115,8 @@ let function applyBlkByLang(langBlk, curLang) {
       && ::isInArray(curLang, langsExclude % "lang"))
     return
 
-  let platformInclude = langBlk?.platformInclude
-  let platformExclude = langBlk?.platformExclude
+  local platformInclude = langBlk?.platformInclude
+  local platformExclude = langBlk?.platformExclude
   if (::u.isDataBlock(platformInclude)
       && !::isInArray(::target_platform, platformInclude % "platform"))
     return
@@ -130,11 +130,11 @@ let function applyBlkByLang(langBlk, curLang) {
   applyBlkToAllBgData(langBlk)
 }
 
-let function validateBgData(bgData) {
-  let list = bgData.list
-  let keys = ::u.keys(list)
+local function validateBgData(bgData) {
+  local list = bgData.list
+  local keys = ::u.keys(list)
   foreach (key in keys) {
-    let validValue = ::to_float_safe(list[key], 0)
+    local validValue = ::to_float_safe(list[key], 0)
     if (validValue > 0.0001)
       list[key] = validValue
     else
@@ -142,7 +142,7 @@ let function validateBgData(bgData) {
   }
 }
 
-let function initOnce() {
+local function initOnce() {
   if (inited)
     return
   inited = true
@@ -150,19 +150,19 @@ let function initOnce() {
   bgDataAfterLogin.list.clear()
   bgDataBeforeLogin.list.clear()
 
-  let blk = GUI.get()
-  let bgBlk = blk?[LOADING_BG_PATH]
+  local blk = GUI.get()
+  local bgBlk = blk?[LOADING_BG_PATH]
   if (!bgBlk)
     return
 
   applyBlkToAllBgData(bgBlk)
 
-  let curLang = ::g_language.getLanguageName()
+  local curLang = ::g_language.getLanguageName()
   foreach (langBlk in bgBlk % "language")
     if (::u.isDataBlock(langBlk))
       applyBlkByLang(langBlk, curLang)
 
-  let presetBlk = bgBlk?[::get_country_flags_preset()]
+  local presetBlk = bgBlk?[::get_country_flags_preset()]
   if (::u.isDataBlock(presetBlk))
     applyBlkToAllBgData(presetBlk)
 
@@ -173,7 +173,7 @@ let function initOnce() {
     bgUnlocks = ::buildTableFromBlk(bgBlk?.unlocks)
 }
 
-let function removeLoadingBgFromLists(name) {
+local function removeLoadingBgFromLists(name) {
   foreach (data in [bgDataAfterLogin, bgDataBeforeLogin]) {
     if (name in data.list)
       delete data.list[name]
@@ -182,8 +182,8 @@ let function removeLoadingBgFromLists(name) {
   }
 }
 
-let isBgUnlockable = @(id) id in bgUnlocks
-let isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
+local isBgUnlockable = @(id) id in bgUnlocks
+local isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
 
 local function filterLoadingBgData(bgData) {
   bgData = clone bgData
@@ -193,22 +193,22 @@ local function filterLoadingBgData(bgData) {
   return bgData
 }
 
-let function getCurLoadingBgData() {
+local function getCurLoadingBgData() {
   initOnce()
   return filterLoadingBgData(::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin)
 }
 
-let function getLoadingBgIdByUnlockId(unlockId) {
+local function getLoadingBgIdByUnlockId(unlockId) {
   initOnce()
   return bgUnlocks.findindex(@(v) unlockId == v)
 }
 
-let isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
-let getLoadingBgName = @(id) ::loc($"loading_bg/{id}")
-let getLoadingBgTooltip = @(id) ::loc($"loading_bg/{id}/desc", "")
+local isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
+local getLoadingBgName = @(id) ::loc($"loading_bg/{id}")
+local getLoadingBgTooltip = @(id) ::loc($"loading_bg/{id}/desc", "")
 
-let reset = @() inited = false
-let setLoadingBgPath = @(path) LOADING_BG_PATH = path
+local reset = @() inited = false
+local setLoadingBgPath = @(path) LOADING_BG_PATH = path
 
 subscriptions.addListenersWithoutEnv({
   GameLocalizationChanged = @(p) reset()

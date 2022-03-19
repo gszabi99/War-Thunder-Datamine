@@ -1,5 +1,5 @@
-let platformModule = require("%scripts/clientState/platform.nut")
-let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
+local platformModule = require("scripts/clientState/platform.nut")
+local { clearBorderSymbolsMultiline } = require("std/string.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null)
 {
@@ -14,7 +14,7 @@ let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
   ::handlersManager.loadHandler(::gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
 }
 
-let chatLogToString = function(chatLog)
+local chatLogToString = function(chatLog)
 {
   if(!::u.isTable(chatLog))
   {
@@ -35,9 +35,9 @@ let chatLogToString = function(chatLog)
   return res
 }
 
-::gui_handlers.BanHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.BanHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "%gui/complain.blk"
+  sceneBlkName = "gui/complain.blk"
   wndType = handlerType.MODAL
 
   player = null
@@ -61,20 +61,20 @@ let chatLogToString = function(chatLog)
       }
     }
 
-    let titleObj = scene.findObject("complaint_title")
+    local titleObj = scene.findObject("complaint_title")
     if (::checkObj(titleObj))
       titleObj.setValue(::loc("contacts/moderator_ban/title"))
 
-    let nameObj = scene.findObject("complain_text")
+    local nameObj = scene.findObject("complain_text")
     if (::checkObj(nameObj))
       nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
 
-    let clanTag = ::getTblValue("clanTag", player, "")
-    let targetObj = scene.findObject("complain_target")
+    local clanTag = ::getTblValue("clanTag", player, "")
+    local targetObj = scene.findObject("complain_target")
     if (::checkObj(targetObj))
       targetObj.setValue((clanTag.len() > 0? (clanTag + " ") : "") + platformModule.getPlayerName(playerName))
 
-    let options = [
+    local options = [
       ::USEROPT_COMPLAINT_CATEGORY,
       ::USEROPT_BAN_PENALTY,
       ::USEROPT_BAN_TIME
@@ -83,12 +83,12 @@ let chatLogToString = function(chatLog)
     foreach(o in options)
       optionsList.append(::get_option(o))
 
-    let optionsBox = scene.findObject("options_rows_div")
-    let objForClones = optionsBox.getChild(0)
+    local optionsBox = scene.findObject("options_rows_div")
+    local objForClones = optionsBox.getChild(0)
     for(local i=1; i<=optionsList.len(); i++)
     {
-      let idx = (i<optionsList.len())? i : 0
-      let opt = optionsList[idx]
+      local idx = (i<optionsList.len())? i : 0
+      local opt = optionsList[idx]
       local optRow = null
       if (idx==0)
         optRow = objForClones
@@ -96,8 +96,8 @@ let chatLogToString = function(chatLog)
         optRow = objForClones.getClone(optionsBox, this)
 
       optRow.findObject("option_name").setValue(::loc("options/" + opt.id))
-      let typeObj = optRow.findObject("option_list")
-      let data = create_option_list(opt.id, opt.items, opt.value, null, false)
+      local typeObj = optRow.findObject("option_list")
+      local data = create_option_list(opt.id, opt.items, opt.value, null, false)
       guiScene.replaceContentFromText(typeObj, data, data.len(), this)
       typeObj.id = opt.id
     }
@@ -121,7 +121,7 @@ let chatLogToString = function(chatLog)
 
   function updateButtons()
   {
-    let haveUid = ::getTblValue("uid", player) != null
+    local haveUid = ::getTblValue("uid", player) != null
     showSceneBtn("info_loading", !haveUid)
     showSceneBtn("btn_send", haveUid)
   }
@@ -143,7 +143,7 @@ let chatLogToString = function(chatLog)
     if (!canBan())
       return goBack()
 
-    let comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
+    local comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
     if (comment.len() < 10)
     {
       msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
@@ -151,19 +151,19 @@ let chatLogToString = function(chatLog)
       return
     }
 
-    let uid = ::getTblValue("uid", player)
+    local uid = ::getTblValue("uid", player)
     if (!uid)
       return
 
     foreach(opt in optionsList)
     {
-      let obj = scene.findObject(opt.id)
+      local obj = scene.findObject(opt.id)
       ::set_option(opt.type, obj.getValue(), opt)
     }
 
-    let duration = ::get_gui_option(::USEROPT_BAN_TIME)
-    let category = ::get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
-    let penalty =  ::get_gui_option(::USEROPT_BAN_PENALTY)
+    local duration = ::get_gui_option(::USEROPT_BAN_TIME)
+    local category = ::get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
+    local penalty =  ::get_gui_option(::USEROPT_BAN_PENALTY)
 
     dagor.debug(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, playerName, category, duration, comment))
@@ -183,7 +183,7 @@ let chatLogToString = function(chatLog)
   }
 }
 
-::gui_handlers.ComplainHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ComplainHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   optionsList = null
   location = ""
@@ -193,14 +193,14 @@ let chatLogToString = function(chatLog)
   scene = null
   task = ""
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/complain.blk"
+  sceneBlkName = "gui/complain.blk"
 
   function initScreen()
   {
     if (!scene || !pInfo || typeof(pInfo) != "table")
       return goBack()
 
-    let gameMode = "GameMode = " + ::loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
+    local gameMode = "GameMode = " + ::loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
     location = gameMode
     if (chatLog != null)
     {
@@ -216,7 +216,7 @@ let chatLogToString = function(chatLog)
     local clanTag
     if("clanData" in pInfo)
     {
-      let clanData = pInfo.clanData
+      local clanData = pInfo.clanData
       clanTag = ("tag" in clanData) ? clanData.tag : null
 
       clanInfo = ("id" in clanData ? "clan id = " + clanData.id + "\n" : "") +
@@ -228,23 +228,23 @@ let chatLogToString = function(chatLog)
     clanTag = clanTag || ( ("clanTag" in pInfo && pInfo.clanTag != "") ? pInfo.clanTag : null )
     pName = clanTag ? (clanTag + " " + pName) : pName
 
-    let titleObj = scene.findObject("complaint_title")
+    local titleObj = scene.findObject("complaint_title")
     if (::checkObj(titleObj))
       titleObj.setValue(::loc("mainmenu/btnComplain"))
 
-    let nameObj = scene.findObject("complain_text")
+    local nameObj = scene.findObject("complain_text")
     if (::checkObj(nameObj))
       nameObj.setValue(::loc("clan/nick") + ::loc("ui/colon"))
-    let targetObj = scene.findObject("complain_target")
+    local targetObj = scene.findObject("complain_target")
     if (::checkObj(targetObj))
       targetObj.setValue(pName)
 
-    let typeObj = scene.findObject("option_list")
+    local typeObj = scene.findObject("option_list")
 
     optionsList = []
-    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
+    local option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     optionsList.append(option)
-    let data = create_option_list(option.id, option.items, option.value, null, false)
+    local data = create_option_list(option.id, option.items, option.value, null, false)
     guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
@@ -255,7 +255,7 @@ let chatLogToString = function(chatLog)
 
   function collectThreadListForTribunal()
   {
-    let threads = []
+    local threads = []
     foreach( t in ::g_chat_latest_threads.getList())
     {
       threads.append({  tags      = t.getFullTagsString(),
@@ -268,7 +268,7 @@ let chatLogToString = function(chatLog)
 
   function collectUserDetailsForTribunal( src )
   {
-    let res = {};
+    local res = {};
 
     if ( src != null )
     {
@@ -287,7 +287,7 @@ let chatLogToString = function(chatLog)
     if (!isValid())
       return
 
-    let user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
+    local user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
     if (user_comment.len() < 10)
     {
       msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
@@ -295,10 +295,10 @@ let chatLogToString = function(chatLog)
       return
     }
 
-    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
-    let cValue = scene.findObject(option.id).getValue()
-    let category = (cValue in option.values)? option.values[cValue] : option.values[0]
-    let details = ::save_to_json({
+    local option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
+    local cValue = scene.findObject(option.id).getValue()
+    local category = (cValue in option.values)? option.values[cValue] : option.values[0]
+    local details = ::save_to_json({
       own      = collectUserDetailsForTribunal( ::get_local_mplayer() ),
       offender = collectUserDetailsForTribunal( pInfo ),
       chats    = collectThreadListForTribunal()
@@ -306,7 +306,7 @@ let chatLogToString = function(chatLog)
 
     chatLog.location <- location
     chatLog.clanInfo <- clanInfo
-    let strChatLog = chatLogToString(chatLog)
+    local strChatLog = chatLogToString(chatLog)
 
     dagor.debug("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
     dagor.debug("pInfo:")

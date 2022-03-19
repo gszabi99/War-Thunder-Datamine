@@ -1,5 +1,5 @@
 local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
-} = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+} = require("scripts/worldWar/wwGenericTooltipTypes.nut")
 
 global enum WW_MAP_TOOLTIP_TYPE
 {
@@ -11,7 +11,7 @@ global enum WW_MAP_TOOLTIP_TYPE
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-::gui_handlers.wwMapTooltip <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.wwMapTooltip extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   controllerScene = null
@@ -43,7 +43,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function onEventWWMapUpdateCursorByTimer(p)
   {
-    let newSpecs = getUpdatedSpecs(p)
+    local newSpecs = getUpdatedSpecs(p)
     if (::u.isEqual(specs, newSpecs))
       return
 
@@ -59,13 +59,13 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function getUpdatedSpecs(p = null)
   {
-    let res = {
+    local res = {
       currentType = WW_MAP_TOOLTIP_TYPE.NONE
       currentId = ""
     }
     for (local i = 0; i < WW_MAP_TOOLTIP_TYPE.TOTAL; i++)
     {
-      let key = ::getTblValue("paramsKey", specifyTypeOrder[i])
+      local key = ::getTblValue("paramsKey", specifyTypeOrder[i])
       if (key in p)
       {
         res.currentType = i
@@ -103,7 +103,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     if (!::checkObj(scene))
       return
 
-    let isShow = specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE && isSceneActiveNoModals()
+    local isShow = specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE && isSceneActiveNoModals()
 
     scene.show(isShow)
     if (!isShow)
@@ -119,7 +119,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
     {
-      let hoveredArmy = ::g_world_war.getArmyByName(specs.currentId)
+      local hoveredArmy = ::g_world_war.getArmyByName(specs.currentId)
       destroyDescriptionTimer()
 
       descriptionTimer = ::Timer(
@@ -129,20 +129,20 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
     {
-      let battleDescObj = scene.findObject("battle_desc")
+      local battleDescObj = scene.findObject("battle_desc")
       if (::checkObj(battleDescObj))
       {
         local maxTeamContentWidth = 0
         foreach(teamName in ["teamA", "teamB"])
         {
-          let teamInfoObj = scene.findObject(teamName)
+          local teamInfoObj = scene.findObject(teamName)
           if (::checkObj(teamInfoObj))
             maxTeamContentWidth = ::max(teamInfoObj.getSize()[0], maxTeamContentWidth)
         }
 
         battleDescObj.width = (2*maxTeamContentWidth) + "+4@framePadding"
 
-        let hoveredBattle = ::g_world_war.getBattleById(specs.currentId)
+        local hoveredBattle = ::g_world_war.getBattleById(specs.currentId)
         destroyDescriptionTimer()
 
         descriptionTimer = ::Timer(
@@ -168,10 +168,10 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       return
 
     hoveredArmy.update(hoveredArmy.name)
-    let armyView = hoveredArmy.getView()
+    local armyView = hoveredArmy.getView()
     foreach (fieldId, func in armyView.getRedrawArmyStatusData())
     {
-      let redrawFieldObj = scene.findObject(fieldId)
+      local redrawFieldObj = scene.findObject(fieldId)
       if (::check_obj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView))
     }
@@ -182,26 +182,26 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     if (!::checkObj(scene) || !hoveredBattle)
       return
 
-    let battleTimerObj = scene.findObject("battle_timer")
+    local battleTimerObj = scene.findObject("battle_timer")
     if (!::check_obj(battleTimerObj))
       return
-    let battleTimerDescObj = battleTimerObj.findObject("battle_timer_desc")
+    local battleTimerDescObj = battleTimerObj.findObject("battle_timer_desc")
     if (!::check_obj(battleTimerDescObj))
       return
-    let battleTimerValueObj = battleTimerObj.findObject("battle_timer_value")
+    local battleTimerValueObj = battleTimerObj.findObject("battle_timer_value")
     if (!::check_obj(battleTimerValueObj))
       return
 
-    let battleView = hoveredBattle.getView()
-    let hasDurationTime = battleView.hasBattleDurationTime()
-    let hasActivateLeftTime = battleView.hasBattleActivateLeftTime()
-    let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
+    local battleView = hoveredBattle.getView()
+    local hasDurationTime = battleView.hasBattleDurationTime()
+    local hasActivateLeftTime = battleView.hasBattleActivateLeftTime()
+    local timeStartAutoBattle = battleView.getTimeStartAutoBattle()
 
-    let descText = hasDurationTime ? ::loc("debriefing/BattleTime")
+    local descText = hasDurationTime ? ::loc("debriefing/BattleTime")
       : hasActivateLeftTime ? ::loc("worldWar/can_join_countdown")
       : timeStartAutoBattle != "" ? ::loc("worldWar/will_start_auto_battle")
       : ""
-    let descValue = hasDurationTime ? battleView.getBattleDurationTime()
+    local descValue = hasDurationTime ? battleView.getBattleDurationTime()
       : hasActivateLeftTime ? battleView.getBattleActivateLeftTime()
       : timeStartAutoBattle
 
@@ -209,16 +209,16 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     battleTimerValueObj.setValue(descValue)
     battleTimerObj.show(hasDurationTime || hasActivateLeftTime || timeStartAutoBattle != "")
 
-    let statusObj = scene.findObject("battle_status_text")
+    local statusObj = scene.findObject("battle_status_text")
     if (::check_obj(statusObj))
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
-    let needShowWinChance = battleView.needShowWinChance()
-    let winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
+    local needShowWinChance = battleView.needShowWinChance()
+    local winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
     if (!needShowWinChance || !winCahnceObj)
       return
-    let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
-    let percent = battleView.getAutoBattleWinChancePercentText()
+    local winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
+    local percent = battleView.getAutoBattleWinChancePercentText()
     if (::check_obj(winCahnceTextObj) && percent != "")
       winCahnceTextObj.setValue(percent)
     else
@@ -246,7 +246,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
   function updatePos()
   {
-    let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     cursorPos[0] = cursorPos[0]  + "+1@wwMapTooltipOffset"
     ::g_dagui_utils.setObjPosition(scene, cursorPos, ["@bw", "@bh"])
   }

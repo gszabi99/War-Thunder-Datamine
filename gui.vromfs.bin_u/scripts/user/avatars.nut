@@ -1,21 +1,21 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
-let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
-let { AVATARS } = require("%scripts/utils/configs.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local bhvAvatar = require("scripts/user/bhvAvatar.nut")
+local seenAvatars = require("scripts/seen/seenList.nut").get(SEEN.AVATARS)
+local { AVATARS } = require("scripts/utils/configs.nut")
 
-let DEFAULT_PILOT_ICON = "cardicon_default"
+local DEFAULT_PILOT_ICON = "cardicon_default"
 
 local icons = null
 local allowedIcons = null
 
-let function getIcons()
+local function getIcons()
 {
   if (!icons)
     icons = ::g_unlocks.getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
   return icons
 }
 
-let function getAllowedIcons()
+local function getAllowedIcons()
 {
   if (!allowedIcons)
     allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)
@@ -23,12 +23,12 @@ let function getAllowedIcons()
   return allowedIcons
 }
 
-let getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
+local getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
 
-let function openChangePilotIconWnd(cb, handler)
+local function openChangePilotIconWnd(cb, handler)
 {
-  let pilotsOpt = ::get_option(::USEROPT_PILOT)
-  let config = {
+  local pilotsOpt = ::get_option(::USEROPT_PILOT)
+  local config = {
     options = pilotsOpt.items
     value = pilotsOpt.value
   }
@@ -36,11 +36,11 @@ let function openChangePilotIconWnd(cb, handler)
   ::gui_choose_image(config, cb, handler)
 }
 
-let function invalidateIcons()
+local function invalidateIcons()
 {
   icons = null
   allowedIcons = null
-  let guiScene = ::get_cur_gui_scene()
+  local guiScene = ::get_cur_gui_scene()
   if (guiScene) //need all other configs invalidate too before push event
     guiScene.performDelayed(this, @() seenAvatars.onListChanged())
 }

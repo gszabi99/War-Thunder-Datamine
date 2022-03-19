@@ -1,4 +1,4 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 
 ::g_ww_map_reinforcement_tab_type <- {
   types = []
@@ -42,7 +42,7 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     tabText = "worldWar/Reinforcements"
     needAutoSwitch = @() ::g_world_war.getMyReadyReinforcementsArray().len() > 0
     getTabTextPostfix = function() {
-      let availReinf = ::g_world_war.getMyReadyReinforcementsArray().len()
+      local availReinf = ::g_world_war.getMyReadyReinforcementsArray().len()
       if (availReinf > 0)
         return ::loc("ui/parentheses/space", {text = availReinf})
       return ""
@@ -88,7 +88,7 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
         surroundedCount += (armiesData?.surrounded ?? []).len()
       }
 
-      let countText = commonCount.tostring() +
+      local countText = commonCount.tostring() +
         (surroundedCount > 0 ? "+" + ::colorize("armySurroundedColor", surroundedCount) : "")
 
       return ::loc("ui/parentheses/space", { text = countText })

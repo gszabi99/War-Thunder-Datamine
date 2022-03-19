@@ -1,6 +1,6 @@
-let interopGen = require("interopGen.nut")
+local interopGen = require("interopGen.nut")
 
-let modeNames =
+local modeNames =
 [
   "hud/standby",
   "hud/search",
@@ -41,122 +41,118 @@ let modeNames =
   "hud/ground_search"
 ]
 
-let radarState = {
+local radarState = {
   targetAspectEnabled = Watched(false)
   currentTime = Watched(0.0)
   selectedTargetBlinking = Watched(false)
   selectedTargetSpeedBlinking = Watched(false)
 }
 
-let targets = []
+local targets = []
 local screenTargets = {}
 local azimuthMarkers = {}
-let forestall = {
+local forestall = {
   x = 0.0
   y = 0.0
 }
-let selectedTarget = {
+local selectedTarget = {
   x = 0.0
   y = 0.0
 }
 
-let radarPosSize = Watched({
+local radarPosSize = Watched({
   x = 0.0
   y = 0.0
   w = 0.0
   h = 0.0
 })
 
-let IsRadarHudVisible = Watched(false)
-let IsNoiseSignaVisible = Watched(false)
-let MfdRadarEnabled = Watched(false)
-let MfdIlsEnabled = Watched(false)
-let MfdRadarColor = Watched(Color(10, 202, 10, 250))
+local IsRadarHudVisible = Watched(false)
+local IsNoiseSignaVisible = Watched(false)
+local MfdRadarEnabled = Watched(false)
+local MfdIlsEnabled = Watched(false)
+local MfdRadarColor = Watched(Color(10, 202, 10, 250))
 
-let Speed = Watched(0.0)
+local Speed = Watched(0.0)
 
   //radar 1
-let IsRadarVisible = Watched(false)
-let RadarModeNameId = Watched(-1)
-let Azimuth = Watched(0.0)
-let Elevation = Watched(0.0)
-let Distance = Watched(0.0)
-let AzimuthHalfWidth = Watched(0.0)
-let ElevationHalfWidth = Watched(0.0)
-let DistanceGateWidthRel = Watched(0.0)
-let NoiseSignal = Watched(0)
+local IsRadarVisible = Watched(false)
+local RadarModeNameId = Watched(-1)
+local Azimuth = Watched(0.0)
+local Elevation = Watched(0.0)
+local Distance = Watched(0.0)
+local AzimuthHalfWidth = Watched(0.0)
+local ElevationHalfWidth = Watched(0.0)
+local DistanceGateWidthRel = Watched(0.0)
+local NoiseSignal = Watched(0)
 
   //radar 2
-let IsRadar2Visible = Watched(false)
-let Radar2ModeNameId = Watched(-1)
-let Azimuth2 = Watched(0.0)
-let Elevation2 = Watched(0.0)
-let Distance2 = Watched(0.0)
-let AzimuthHalfWidth2 = Watched(0.0)
-let ElevationHalfWidth2 = Watched(0.0)
-let NoiseSignal2 = Watched(0)
+local IsRadar2Visible = Watched(false)
+local Radar2ModeNameId = Watched(-1)
+local Azimuth2 = Watched(0.0)
+local Elevation2 = Watched(0.0)
+local Distance2 = Watched(0.0)
+local AzimuthHalfWidth2 = Watched(0.0)
+local ElevationHalfWidth2 = Watched(0.0)
+local NoiseSignal2 = Watched(0)
 
-let AimAzimuth = Watched(0.0)
-let TurretAzimuth = Watched(0.0)
-let TargetRadarAzimuthWidth = Watched(0.0)
-let TargetRadarDist = Watched(0.0)
-let CueAzimuthHalfWidthRel = Watched(0.0)
-let CueDistWidthRel = Watched(0.0)
-let AzimuthMin = Watched(0)
-let AzimuthMax = Watched(0)
-let ElevationMin = Watched(0)
-let ElevationMax = Watched(0)
+local AimAzimuth = Watched(0.0)
+local TurretAzimuth = Watched(0.0)
+local TargetRadarAzimuthWidth = Watched(0.0)
+local TargetRadarDist = Watched(0.0)
+local AzimuthMin = Watched(0)
+local AzimuthMax = Watched(0)
+local ElevationMin = Watched(0)
+local ElevationMax = Watched(0)
 
-let IsBScopeVisible = Watched(false)
-let IsCScopeVisible = Watched(false)
-let ScanAzimuthMin = Watched(0)
-let ScanAzimuthMax = Watched(0)
-let ScanElevationMin = Watched(0)
-let ScanElevationMax = Watched(0)
+local IsBScopeVisible = Watched(false)
+local IsCScopeVisible = Watched(false)
+local ScanAzimuthMin = Watched(0)
+local ScanAzimuthMax = Watched(0)
+local ScanElevationMin = Watched(0)
+local ScanElevationMax = Watched(0)
 
-let CueVisible = Watched(false)
-let CueAzimuth = Watched(0)
-let CueDist = Watched(0)
+local TargetsTrigger = Watched(0)
+local ScreenTargetsTrigger = Watched(0)
+local ViewMode = Watched(0)
+local MfdViewMode = Watched(0)
+local HasAzimuthScale = Watched(0)
+local HasDistanceScale = Watched(0)
+local ScanPatternsMax = Watched(0)
+local DistanceMin = Watched(0)
+local DistanceMax = Watched(0)
+local DistanceScalesMax = Watched(0)
+local VelocitySearch = Watched(false)
+local AzimuthMarkersTrigger = Watched(0)
+local Irst = Watched(false)
+local RadarScale = Watched(1.0)
 
-let TargetsTrigger = Watched(0)
-let ScreenTargetsTrigger = Watched(0)
-let ViewMode = Watched(0)
-let MfdViewMode = Watched(0)
-let HasAzimuthScale = Watched(0)
-let HasDistanceScale = Watched(0)
-let ScanPatternsMax = Watched(0)
-let DistanceMin = Watched(0)
-let DistanceMax = Watched(0)
-let DistanceScalesMax = Watched(0)
-let VelocitySearch = Watched(false)
-let AzimuthMarkersTrigger = Watched(0)
-let Irst = Watched(false)
-let RadarScale = Watched(1.0)
+local MfdIlsHeight = Watched(0)
 
-let MfdIlsHeight = Watched(0)
+local IsForestallVisible = Watched(false)
 
-let IsForestallVisible = Watched(false)
+local UseLockZoneRotated = Watched(false)
+local FoV = Watched(0)
+local ScanZoneWatched = Watched({x0=0,x1=0,x2=0,x3=0,y0=0,y1=0,y2=0,y3=0})
+local LockZoneWatched = Watched({x0=0, y0=0, x1=0, y1=0, x2=0, y2=0, x3=0, y3=0})
+local IsScanZoneAzimuthVisible = Watched(false)
+local IsScanZoneElevationVisible = Watched(false)
+local IsLockZoneVisible = Watched(false)
+local LockDistMin = Watched(0)
+local LockDistMax = Watched(0)
 
-let UseLockZoneRotated = Watched(false)
-let FoV = Watched(0)
-let ScanZoneWatched = Watched({x0=0,x1=0,x2=0,x3=0,y0=0,y1=0,y2=0,y3=0})
-let LockZoneWatched = Watched({x0=0, y0=0, x1=0, y1=0, x2=0, y2=0, x3=0, y3=0})
-let IsScanZoneAzimuthVisible = Watched(false)
-let IsScanZoneElevationVisible = Watched(false)
-let IsLockZoneVisible = Watched(false)
-let LockDistMin = Watched(0)
-let LockDistMax = Watched(0)
+local IsAamLaunchZoneVisible = Watched(false)
+local AamLaunchZoneDist    = Watched(0.0)
+local AamLaunchZoneDistMin = Watched(0.0)
+local AamLaunchZoneDistMax = Watched(0.0)
 
-let IsAamLaunchZoneVisible = Watched(false)
-let AamLaunchZoneDist    = Watched(0.0)
-let AamLaunchZoneDistMin = Watched(0.0)
-let AamLaunchZoneDistMax = Watched(0.0)
+local AzimuthRange = Computed(@() ::max(0.0, AzimuthMax.value - AzimuthMin.value))
+local AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
+local ElevationRange = Computed(@() ::max(0.0, ElevationMax.value - ElevationMin.value))
+local ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
 
-let AzimuthRange = Computed(@() ::max(0.0, AzimuthMax.value - AzimuthMin.value))
-let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
-let ElevationRange = Computed(@() ::max(0.0, ElevationMax.value - ElevationMin.value))
-let ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
 
+local IndicationForCollapsedRadar = Watched(false)
 
 radarState.__update({
     modeNames, IsRadarHudVisible, IsNoiseSignaVisible, MfdRadarEnabled, MfdIlsEnabled, MfdRadarColor,
@@ -169,9 +165,9 @@ radarState.__update({
     //radar 2
     IsRadar2Visible, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
 
-    AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
+    AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
 
-    IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
+    IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax,
 
     targets, TargetsTrigger, screenTargets, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
     DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight,
@@ -183,7 +179,7 @@ radarState.__update({
 
     IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax,
 
-    VelocitySearch
+    IndicationForCollapsedRadar, VelocitySearch
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv
   }
@@ -218,9 +214,9 @@ radarState.__update({
   if (index >= targets.len())
     targets.resize(index + 1)
 
-  let cvt = @(val, vmin, vmax, omin, omax) omin + ((omax - omin) * (val - vmin)) / (vmax - vmin)
+  local cvt = @(val, vmin, vmax, omin, omax) omin + ((omax - omin) * (val - vmin)) / (vmax - vmin)
 
-  let signalRel = signal_rel < 0.05
+  local signalRel = signal_rel < 0.05
     ? 0.0
     : cvt(signal_rel, 0.05, 1.0, 0.3, 1.0)
 

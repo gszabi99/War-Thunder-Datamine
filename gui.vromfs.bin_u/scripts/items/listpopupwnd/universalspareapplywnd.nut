@@ -1,6 +1,6 @@
-::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
+class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndBase
 {
-  sceneTplName = "%gui/items/universalSpareApplyWnd"
+  sceneTplName = "gui/items/universalSpareApplyWnd"
 
   unit = null
 
@@ -48,12 +48,12 @@
 
   function updateAmountSlider()
   {
-    let itemsAmount = curItem.getAmount()
-    let availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(unit, null)  - ::g_weaponry_types.SPARE.getAmount(unit, null)
+    local itemsAmount = curItem.getAmount()
+    local availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(unit, null)  - ::g_weaponry_types.SPARE.getAmount(unit, null)
     maxAmount = ::min(itemsAmount, availableAmount)
     curAmount = 1
 
-    let canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
+    local canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
     showSceneBtn("slider_block", canChangeAmount)
     showSceneBtn("buttonMax", canChangeAmount)
     if (!canChangeAmount)
@@ -78,21 +78,21 @@
 
   function onTimer(obj, dt)
   {
-    let listObj = scene.findObject("items_list")
+    local listObj = scene.findObject("items_list")
     if (!listObj?.isValid())
       return
 
     for (local i = 0; i < itemsList.len(); ++i)
     {
-      let item = itemsList[i]
+      local item = itemsList[i]
       if (!item.hasTimer())
         continue
 
-      let itemObj = listObj.getChild(i)
+      local itemObj = listObj.getChild(i)
       if (!itemObj?.isValid())
         continue
 
-      let timeTxtObj = itemObj.findObject("expire_time")
+      local timeTxtObj = itemObj.findObject("expire_time")
       if (!timeTxtObj?.isValid())
         continue
 
@@ -123,12 +123,12 @@
 
   function onActivate()
   {
-    let text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
-    let goBackSaved = ::Callback(goBack, this)
-    let aUnit= unit
-    let item = curItem
-    let amount = curAmount
-    let onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
+    local text = ::loc("msgbox/wagerActivate", { name = curItem.getNameWithCount(true, curAmount) })
+    local goBackSaved = ::Callback(goBack, this)
+    local aUnit= unit
+    local item = curItem
+    local amount = curAmount
+    local onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
     ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn=@()null })
   }
 

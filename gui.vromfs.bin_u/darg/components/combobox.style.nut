@@ -1,11 +1,11 @@
 from "%darg/ui_imports.nut" import *
 
-let defHeight = calc_str_box("A")[1]
+local defHeight = calc_str_box("A")[1]
 
-let function listItem(text, action, is_current, params={}) {
-  let group = ElemGroup()
-  let stateFlags = Watched(0)
-  let xmbNode = XmbNode()
+local function listItem(text, action, is_current, params={}) {
+  local group = ElemGroup()
+  local stateFlags = Watched(0)
+  local xmbNode = XmbNode()
 
   return function() {
     local textColor
@@ -36,7 +36,7 @@ let function listItem(text, action, is_current, params={}) {
 }
 
 
-let function closeButton(action) {
+local function closeButton(action) {
   return {
     size = flex()
     behavior = Behaviors.Button
@@ -48,10 +48,10 @@ let function closeButton(action) {
 }
 
 
-let function boxCtor(params=null) {
-  let color = params?.disabled ? Color(160,160,160,255) : Color(255,255,255,255)
+local function boxCtor(params=null) {
+  local color = params?.disabled ? Color(160,160,160,255) : Color(255,255,255,255)
 
-  let labelText = {
+  local labelText = {
     group = params.group
     rendObj = ROBJ_DTEXT
     behavior = Behaviors.Marquee
@@ -63,7 +63,7 @@ let function boxCtor(params=null) {
   }
 
 
-  let function popupArrow() {
+  local function popupArrow() {
     return {
       rendObj = ROBJ_VECTOR_CANVAS
       size = [defHeight/3,defHeight/3]
@@ -88,7 +88,7 @@ let function boxCtor(params=null) {
 }
 
 
-let function onOpenDropDown(itemXmbNode) {
+local function onOpenDropDown(itemXmbNode) {
   gui_scene.setXmbFocus(null)
 }
 

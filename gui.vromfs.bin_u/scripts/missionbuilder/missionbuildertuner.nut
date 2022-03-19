@@ -1,19 +1,19 @@
-let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText,
-        getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { cutPostfix } = require("%sqstd/string.nut")
+local { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
+local { getWeaponInfoText,
+        getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { cutPostfix } = require("std/string.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner()
 {
   ::gui_start_modal_wnd(::gui_handlers.MissionBuilderTuner)
 }
 
-::gui_handlers.MissionBuilderTuner <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/options/genericOptionsMap.blk"
-  sceneNavBlkName = "%gui/options/navOptionsBack.blk"
+  sceneBlkName = "gui/options/genericOptionsMap.blk"
+  sceneNavBlkName = "gui/options/navOptionsBack.blk"
 
   unitsBlk = null
   listA = null
@@ -41,8 +41,8 @@ let { cutPostfix } = require("%sqstd/string.nut")
     unitsBlk = DataBlock()
     ::dynamic_get_units(::mission_settings.missionFull, unitsBlk)
 
-    let list = createOptions()
-    let listObj = scene.findObject("optionslist")
+    local list = createOptions()
+    local listObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
     //mission preview
@@ -59,8 +59,8 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function buildAircraftOption(id, units, selUnitId)
   {
-    let value = units.indexof(selUnitId) ?? 0
-    let items = units.map(@(unitId) {
+    local value = units.indexof(selUnitId) ?? 0
+    local items = units.map(@(unitId) {
       text = $"#{unitId}_shop"
       image = ::image_for_air(unitId)
     })
@@ -79,7 +79,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
       weapons = getWeaponsList(unitId)
     }
 
-    let value = weapons.values.indexof(selWeapon) ?? 0
+    local value = weapons.values.indexof(selWeapon) ?? 0
     return {
       markup = ::create_option_combobox(id, weapons.items, value, null, isFull)
       values = weapons.values
@@ -88,8 +88,8 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function buildSkinOption(id, unitId, selSkin, isFull = true)
   {
-    let skins = ::g_decorator.getSkinsOption(unitId)
-    let value = skins.values.indexof(selSkin) ?? 0
+    local skins = ::g_decorator.getSkinsOption(unitId)
+    local value = skins.values.indexof(selSkin) ?? 0
     return {
       markup = ::create_option_combobox(id, skins.items, value, null, isFull)
       values = skins.values
@@ -98,10 +98,10 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function buildCountOption(id, minCount, maxCount, selCount)
   {
-    let values = []
+    local values = []
     for (local i = minCount; i <= maxCount; i++)
       values.append(i)
-    let value = values.indexof(selCount) ?? 0
+    local value = values.indexof(selCount) ?? 0
     return {
       markup = ::create_option_combobox(id, values.map(@(v) v.tostring()), value, null, true)
       values
@@ -129,7 +129,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function getSuitableUnits(excludeTag, fmTags, weapTags)
   {
-    let suitableUnits = []
+    local suitableUnits = []
     foreach(unit in ::all_units)
     {
       if (isInArray(excludeTag, unit.tags))
@@ -163,13 +163,13 @@ let { cutPostfix } = require("%sqstd/string.nut")
     defaultW = {}
     defaultS = {}
 
-    let rowsView = []
+    local rowsView = []
 
-    let isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
+    local isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
 
     for (local i = 0; i < unitsBlk.blockCount(); i++)
     {
-      let armada = unitsBlk.getBlock(i)
+      local armada = unitsBlk.getBlock(i)
 
       // Player's squad units
       if (armada?.isPlayer ?? false)
@@ -185,18 +185,18 @@ let { cutPostfix } = require("%sqstd/string.nut")
         continue
       }
 
-      let name = armada.getStr("name","")
-      let aircraft = armada.getStr("unit_class", "");
+      local name = armada.getStr("name","")
+      local aircraft = armada.getStr("unit_class", "");
       local weapon = armada.getStr("weapons", "");
       local skin = armada.getStr("skin", "");
-      let count = armada.getInt("count", commonSquadSize);
-      let army = armada.getInt("army", 1); //1-ally, 2-enemy
-      let isBomber = armada.getBool("mustBeBomber", false);
-      let isFighter = armada.getBool("mustBeFighter", false);
-      let isAssault = armada.getBool("mustBeAssault", false);
-      let minCount = armada.getInt("minCount", 1);
-      let maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
-      let excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
+      local count = armada.getInt("count", commonSquadSize);
+      local army = armada.getInt("army", 1); //1-ally, 2-enemy
+      local isBomber = armada.getBool("mustBeBomber", false);
+      local isFighter = armada.getBool("mustBeFighter", false);
+      local isAssault = armada.getBool("mustBeAssault", false);
+      local minCount = armada.getInt("minCount", 1);
+      local maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
+      local excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
 
       if ((name == "") || (aircraft == ""))
         break;
@@ -208,18 +208,18 @@ let { cutPostfix } = require("%sqstd/string.nut")
         skin = ::g_decorator.getLastSkin(playerUnitId)
       }
 
-      let adesc = armada.description
-      let fmTags = adesc % "needFmTag"
-      let weapTags = adesc % "weaponOrTag"
+      local adesc = armada.description
+      local fmTags = adesc % "needFmTag"
+      local weapTags = adesc % "weaponOrTag"
 
-      let aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
+      local aircrafts = getSuitableUnits(excludeTag, fmTags, weapTags)
       // make sure that aircraft exists in aircrafts array
       ::u.appendOnce(aircraft, aircrafts)
 
       aircrafts.sort()
 
       //aircraft type
-      let trId = "".concat(
+      local trId = "".concat(
         (army == (unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
         (isBomber ? "Bomber" : isFighter ? "Fighter" : isAssault ? "Assault" : ""))
 
@@ -229,7 +229,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
       defaultW[aircraft] <- weapon
       defaultS[aircraft] <- skin
 
-      let airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
+      local airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
 
       // Aircraft
       option = buildAircraftOption($"{i}_a", aircrafts, aircraft)
@@ -252,7 +252,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
       listC.append(option.values)
     }
 
-    return ::handyman.renderCached("%gui/options/optionsContainer", {
+    return ::handyman.renderCached("gui/options/optionsContainer", {
       id = "tuner_options"
       topPos = "(ph-h)/2"
       position = "absolute"
@@ -263,11 +263,11 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function onChangeAircraft(obj)
   {
-    let i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
+    local i = ::to_integer_safe(cutPostfix(obj?.id ?? "", "_a", "-1"), -1)
     if (listA?[i] == null)
       return
 
-    let unitId = listA[i][obj.getValue()]
+    local unitId = listA[i][obj.getValue()]
     local option
     local optObj
 
@@ -294,8 +294,8 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
     for (local i = 0; i < listA.len(); i++)
     {
-      let isPlayer = i == playerIdx
-      let armada = unitsBlk.getBlock(i)
+      local isPlayer = i == playerIdx
+      local armada = unitsBlk.getBlock(i)
       armada.setStr("unit_class", listA[i][isPlayer ? 0 : scene.findObject($"{i}_a").getValue()])
       armada.setStr("weapons",    listW[i][isPlayer ? 0 : scene.findObject($"{i}_w").getValue()])
       armada.setStr("skin",       listS[i][isPlayer ? 0 : scene.findObject($"{i}_s").getValue()])
@@ -310,7 +310,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
     ::set_context_to_player("difficulty", ::get_mission_difficulty())
 
-    let appFunc = function()
+    local appFunc = function()
     {
       ::broadcastEvent("BeforeStartMissionBuilder")
       if (::SessionLobby.isInRoom())
@@ -336,7 +336,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function hasWeaponsChoice(unit, weapTags)
   {
-    foreach (weapon in unit.getWeapons())
+    foreach (weapon in unit.weapons)
       if (isWeaponVisible(unit, weapon, false, weapTags))
         return true
     return false
@@ -344,18 +344,18 @@ let { cutPostfix } = require("%sqstd/string.nut")
 
   function getWeaponsList(aircraft, weapTags = null)
   {
-    let descr = {
+    local descr = {
       items = []
       values = []
     }
 
-    let unit = ::getAircraftByName(aircraft)
+    local unit = ::getAircraftByName(aircraft)
     if (!unit)
       return descr
 
-    foreach(weapNo, weapon in unit.getWeapons())
+    foreach(weapNo, weapon in unit.weapons)
     {
-      let weaponName = weapon.name
+      local weaponName = weapon.name
       if (!isWeaponVisible(unit, weapon, false, weapTags))
         continue
 

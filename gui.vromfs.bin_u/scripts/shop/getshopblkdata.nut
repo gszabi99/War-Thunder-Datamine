@@ -1,22 +1,22 @@
 const COUNT_REQ_FOR_FAKE_UNIT = 2
 
-let fakeUnitConfig = {
+local fakeUnitConfig = {
   name = ""
   image = "!#ui/unitskin#random_unit"
   rank = 1
   isFakeUnit = true
 }
 
-let function genFakeUnitRanges(airBlk, country) {
-  let ranges = []
-  let fakeReqUnitsType = airBlk % "fakeReqUnitType"
-  let fakeReqUnitsImage = airBlk % "fakeReqUnitImage"
-  let fakeReqUnitsRank = airBlk % "fakeReqUnitRank"
-  let fakeReqUnitsPosXY = airBlk % "fakeReqUnitPosXY"
+local function genFakeUnitRanges(airBlk, country) {
+  local ranges = []
+  local fakeReqUnitsType = airBlk % "fakeReqUnitType"
+  local fakeReqUnitsImage = airBlk % "fakeReqUnitImage"
+  local fakeReqUnitsRank = airBlk % "fakeReqUnitRank"
+  local fakeReqUnitsPosXY = airBlk % "fakeReqUnitPosXY"
   foreach(idx, unitType in fakeReqUnitsType)
   {
-    let range = []
-    let fakeUnitParams = fakeUnitConfig.__merge({
+    local range = []
+    local fakeUnitParams = fakeUnitConfig.__merge({
       name = unitType
       image = fakeReqUnitsImage?[idx] ?? "!#ui/unitskin#random_unit"
       rank = fakeReqUnitsRank?[idx] ?? 2
@@ -26,13 +26,13 @@ let function genFakeUnitRanges(airBlk, country) {
       fakeUnitParams.rankPosXY <-fakeReqUnitsPosXY[idx]
     for(local i = 0; i < COUNT_REQ_FOR_FAKE_UNIT; i++)
     {
-      let reqForFakeUnitParams = fakeUnitConfig.__merge({
+      local reqForFakeUnitParams = fakeUnitConfig.__merge({
         name = fakeUnitParams.name + "_" + i
         image = fakeUnitParams.image
         rank = fakeUnitParams.rank - 1
         country = country
         isReqForFakeUnit = true })
-      let rankPosXY = fakeUnitParams?.rankPosXY
+      local rankPosXY = fakeUnitParams?.rankPosXY
       if (rankPosXY)
         reqForFakeUnitParams.rankPosXY <- Point2(rankPosXY.x + (rankPosXY.x < 3 ? -i : i), 1)
 
@@ -45,19 +45,19 @@ let function genFakeUnitRanges(airBlk, country) {
   return ranges
 }
 
-let function getShopBlkTable(selAirName = "") {
-  let shopData = []
+local function getShopBlkTable(selAirName = "") {
+  local shopData = []
   local curCountry = null
   local curPage = null
 
-  let blk = ::get_shop_blk()
+  local blk = ::get_shop_blk()
 
-  let totalCountries = blk.blockCount()
-  let selAir = ::getAircraftByName(selAirName)
+  local totalCountries = blk.blockCount()
+  local selAir = ::getAircraftByName(selAirName)
   for(local c = 0; c < totalCountries; c++)  //country
   {
-    let cblk = blk.getBlock(c)
-    let countryData = {
+    local cblk = blk.getBlock(c)
+    local countryData = {
       name = cblk.getBlockName()
       pages = []
     }
@@ -66,11 +66,11 @@ let function getShopBlkTable(selAirName = "") {
     if (selAir && selAir.shopCountry == countryData.name)
       curCountry = countryData.name
 
-    let totalPages = cblk.blockCount()
+    local totalPages = cblk.blockCount()
     for(local p = 0; p < totalPages; p++)
     {
-      let pblk = cblk.getBlock(p)
-      let pageData = {
+      local pblk = cblk.getBlock(p)
+      local pageData = {
         name = pblk.getBlockName()
         airList = []
         tree = null
@@ -81,17 +81,17 @@ let function getShopBlkTable(selAirName = "") {
       local hasFakeUnits =false
       local hasSquadronUnits =false
 
-      let totalRanges = pblk.blockCount()
+      local totalRanges = pblk.blockCount()
       for(local r = 0; r < totalRanges; r++)
       {
-        let rblk = pblk.getBlock(r)
-        let rangeData = []
-        let totalAirs = rblk.blockCount()
+        local rblk = pblk.getBlock(r)
+        local rangeData = []
+        local totalAirs = rblk.blockCount()
 
         for(local a = 0; a < totalAirs; a++)
         {
-          let airBlk = rblk.getBlock(a)
-          let airData = { name = airBlk.getBlockName() }
+          local airBlk = rblk.getBlock(a)
+          local airData = { name = airBlk.getBlockName() }
           local air = getAircraftByName(airBlk.getBlockName())
           if (air)
           {
@@ -107,10 +107,10 @@ let function getShopBlkTable(selAirName = "") {
           else  //aircraft group
           {
             airData.airsGroup <- []
-            let groupTotal = airBlk.blockCount()
+            local groupTotal = airBlk.blockCount()
             for(local ga = 0; ga < groupTotal; ga++)
             {
-              let gAirBlk = airBlk.getBlock(ga)
+              local gAirBlk = airBlk.getBlock(ga)
               air = getAircraftByName(gAirBlk.getBlockName())
               if (!air || !air.isVisibleInShop())
                 continue
@@ -141,7 +141,7 @@ let function getShopBlkTable(selAirName = "") {
           }
           if (airBlk?.fakeReqUnitType)
           {
-            let fakeUnitRanges = genFakeUnitRanges(airBlk, countryData.name)
+            local fakeUnitRanges = genFakeUnitRanges(airBlk, countryData.name)
             airData.fakeReqUnits <- fakeUnitRanges.map(@(range) (range.top()).name)
             pageData.airList = fakeUnitRanges.extend(pageData.airList)
             hasFakeUnits = true

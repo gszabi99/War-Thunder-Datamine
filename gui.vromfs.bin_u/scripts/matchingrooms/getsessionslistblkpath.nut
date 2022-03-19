@@ -1,4 +1,4 @@
-let sessionsListBlkPath = ::Watched("%gui/sessionsList.blk")
+local sessionsListBlkPath = ::Watched("gui/sessionsList.blk")
 
 return {
   sessionsListBlkPath = sessionsListBlkPath

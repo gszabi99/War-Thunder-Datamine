@@ -24,7 +24,7 @@ local ClanSquadsList = class
 
   function canRequestByTime()
   {
-    let checkTime = isInUpdate ? CLAN_SQUADS_LIST_REQUEST_TIME_OUT
+    local checkTime = isInUpdate ? CLAN_SQUADS_LIST_REQUEST_TIME_OUT
       : CLAN_SQUADS_LIST_REFRESH_MIN_TIME
     return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
   }
@@ -62,8 +62,8 @@ local ClanSquadsList = class
     isInUpdate = true
     lastRequestTimeMsec = ::dagor.getCurTime()
 
-    let requestClanId = ::clan_get_my_clan_id()
-    let cb = ::Callback(@(resp) requestListCb(resp, requestClanId), this)
+    local requestClanId = ::clan_get_my_clan_id()
+    local cb = ::Callback(@(resp) requestListCb(resp, requestClanId), this)
 
     matching_api_func("msquad.get_squads", cb, {players = getClanUidsList()})
     return true
@@ -75,10 +75,10 @@ local ClanSquadsList = class
 
   function getClanUidsList()
   {
-    let clanPlayersUid = []
+    local clanPlayersUid = []
     foreach (member in ::g_clans.getMyClanMembers())
     {
-      let memberUid = member?.uid
+      local memberUid = member?.uid
       if (memberUid)
        clanPlayersUid.append(memberUid.tointeger())
     }
@@ -90,7 +90,7 @@ local ClanSquadsList = class
     isInUpdate = false
     clanId = requestClanId
 
-    let squads = ::checkMatchingError(p, false) ? (p?.squads) : null
+    local squads = ::checkMatchingError(p, false) ? (p?.squads) : null
     if (!squads)
       return
 
@@ -103,7 +103,7 @@ local ClanSquadsList = class
   {
     if (squads.len() > MAX_SQUADS_LIST_LEN)
     {
-      let message = ::format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
+      local message = ::format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
                                 squads.len())
       ::script_net_assert_once("too long clan squads list", message)
 

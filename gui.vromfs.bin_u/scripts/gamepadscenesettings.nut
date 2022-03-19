@@ -1,4 +1,4 @@
-let config = ::get_cur_gui_scene()?.getSceneConfig()
+local config = ::get_cur_gui_scene()?.getSceneConfig()
 if (config)
 {
   config.gamepadCursorSpeed = 2.0

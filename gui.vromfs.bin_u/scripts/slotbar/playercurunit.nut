@@ -1,10 +1,10 @@
-let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local { loadModel } = require("scripts/hangarModelLoadManager.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local isFallbackUnitInHangar = null
-let hangarDefaultUnits = {}
+local hangarDefaultUnits = {}
 
-let function getCountryHangarDefaultUnit(countryId, esUnitType) {
+local function getCountryHangarDefaultUnit(countryId, esUnitType) {
   if (hangarDefaultUnits?[countryId] == null) {
     hangarDefaultUnits[countryId] <- {}
     foreach (needReserveUnit in [ true, false ]) {
@@ -21,16 +21,16 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
     ?? hangarDefaultUnits[countryId].findvalue(@(u) true)
 }
 
-let function getFallbackUnitForHangar(params) {
+local function getFallbackUnitForHangar(params) {
   // Trying a currently loaded hangar unit
-  let countryId = params?.country ?? ::get_profile_country_sq()
-  let curHangarUnit = ::getAircraftByName(::hangar_get_current_unit_name())
+  local countryId = params?.country ?? ::get_profile_country_sq()
+  local curHangarUnit = ::getAircraftByName(::hangar_get_current_unit_name())
   if (curHangarUnit?.shopCountry == countryId
       && (params?.slotbarUnits ?? []).indexof(curHangarUnit) != null)
     return curHangarUnit
 
   // Trying any other unit from country slotbar
-  let esUnitType = curHangarUnit?.esUnitType ?? ::ES_UNIT_TYPE_AIRCRAFT
+  local esUnitType = curHangarUnit?.esUnitType ?? ::ES_UNIT_TYPE_AIRCRAFT
   foreach (needCheckUnitType in [ true, false ])
     foreach (unit in (params?.slotbarUnits ?? []))
       if (!needCheckUnitType || unit.esUnitType == esUnitType)
@@ -40,15 +40,15 @@ let function getFallbackUnitForHangar(params) {
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 
-let showedUnit = persist("showedUnit", @() ::Watched(null))
+local showedUnit = persist("showedUnit", @() ::Watched(null))
 
-let getShowedUnitName = @() showedUnit.value?.name ??
+local getShowedUnitName = @() showedUnit.value?.name ??
   (isFallbackUnitInHangar ? "" : ::hangar_get_current_unit_name())
 
-let getShowedUnit = @() showedUnit.value ??
+local getShowedUnit = @() showedUnit.value ??
   (isFallbackUnitInHangar ? null : ::getAircraftByName(::hangar_get_current_unit_name()))
 
-let function setShowUnit(unit, params = null) {
+local function setShowUnit(unit, params = null) {
   showedUnit(unit)
   isFallbackUnitInHangar = unit == null
   loadModel(unit?.name ?? getFallbackUnitForHangar(params)?.name ?? "")
@@ -58,7 +58,7 @@ showedUnit.subscribe(function(v) {
   ::broadcastEvent("ShowedUnitChanged")
 })
 
-let function getPlayerCurUnit() {
+local function getPlayerCurUnit() {
   local unit = null
   if (::is_in_flight())
     unit = ::getAircraftByName(::get_player_unit_name())

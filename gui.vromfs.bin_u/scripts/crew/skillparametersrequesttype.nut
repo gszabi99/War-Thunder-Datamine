@@ -1,6 +1,6 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { calc_crew_parameters } = require("unitCalculcation")
-let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { calc_crew_parameters } = require("unitCalculcation")
+local { getMaxSkillValue } = require("scripts/crew/crewSkills.nut")
 
 
 ::g_skill_parameters_request_type <- {
@@ -12,12 +12,12 @@ g_skill_parameters_request_type._getParameters <- function _getParameters(crewId
   if (unit == null)
     return null
 
-  let cacheUid = getCachePrefix() + "Current"
+  local cacheUid = getCachePrefix() + "Current"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)
     return res
 
-  let values = getValues()
+  local values = getValues()
   res = calc_crew_parameters(crewId, values, unit.name)
   ::g_crew_short_cache.setData(crewId, unit, cacheUid,  res)
   return res
@@ -32,21 +32,21 @@ g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedP
 {
   if (unit == null)
     return null
-  let cacheUid = getCachePrefix() + "Selected"
+  local cacheUid = getCachePrefix() + "Selected"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)
     return res
 
-  let values = getValues()
+  local values = getValues()
   // Filling values request object with selected values if not set already.
   foreach (memberData in ::crew_skills)
   {
-    let valueMemberName = memberData.id
+    local valueMemberName = memberData.id
     if (!(valueMemberName in values))
         values[valueMemberName] <- {}
     foreach (skillData in memberData.items)
     {
-      let valueSkillName = skillData.name
+      local valueSkillName = skillData.name
       if (valueSkillName in values[valueMemberName])
         continue
 
@@ -79,12 +79,12 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   BASE_VALUES = {
     getValues = function ()
     {
-      let skillsBlk = ::get_skills_blk()
-      let calcBlk = skillsBlk?.crew_skills_calc
+      local skillsBlk = ::get_skills_blk()
+      local calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}
 
-      let values = {}
+      local values = {}
       foreach (valueMemberName, memberBlk in calcBlk)
       {
         values[valueMemberName] <- {}
@@ -140,22 +140,22 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   MAX_VALUES = {
     getValues = function ()
     {
-      let skillsBlk = ::get_skills_blk()
-      let calcBlk = skillsBlk?.crew_skills_calc
+      local skillsBlk = ::get_skills_blk()
+      local calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}
 
-      let values = {}
+      local values = {}
       foreach (valueMemberName, memberBlk in calcBlk)
       {
         values[valueMemberName] <- {}
         foreach (valueSkillName, skillBlk in memberBlk)
         {
-          let value = getMaxSkillValue(valueMemberName, valueSkillName)
+          local value = getMaxSkillValue(valueMemberName, valueSkillName)
           values[valueMemberName][valueSkillName] <- value
         }
       }
-      let maxSpecType = ::g_crew_spec_type.types.top().code
+      local maxSpecType = ::g_crew_spec_type.types.top().code
       values.specialization <- maxSpecType
       return values
     }

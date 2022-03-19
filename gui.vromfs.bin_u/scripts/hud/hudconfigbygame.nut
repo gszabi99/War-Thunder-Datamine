@@ -1,4 +1,4 @@
-let hudTankMovementStatesVisible = ::Watched({})
+local hudTankMovementStatesVisible = ::Watched({})
 
 return {
   hudTankMovementStatesVisible = hudTankMovementStatesVisible

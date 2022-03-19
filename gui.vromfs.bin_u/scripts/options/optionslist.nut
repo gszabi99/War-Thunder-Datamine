@@ -1,17 +1,17 @@
-let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
-let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let contentPreset = require("%scripts/customization/contentPreset.nut")
-let soundDevice = require("soundDevice")
-let { is_stereo_mode } = ::require_native("vr")
-let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
+local safeAreaHud = require("scripts/options/safeAreaHud.nut")
+local contentPreset = require("scripts/customization/contentPreset.nut")
+local soundDevice = require("soundDevice")
+local { is_stereo_mode } = ::require_native("vr")
+local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 //
 
 
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-let getSystemOptions = @() {
+local getSystemOptions = @() {
   name = "graphicsParameters"
   fillFuncName = "fillSystemOptions"
   onApplyHandler = @() onSystemOptionsApply()
@@ -20,14 +20,14 @@ let getSystemOptions = @() {
 
 local overrideMainOptionsFn = null
 
-let getMainOptions = function()
+local getMainOptions = function()
 {
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()
 
-  let isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
+  local isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
     (::current_campaign_mission == "tutorial01")
-  let canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
+  local canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
 
   return {
     name = ::is_in_flight() ? "main" : "mainParameters"
@@ -85,7 +85,6 @@ let getMainOptions = function()
       [::USEROPT_AUTO_AIMLOCK_ON_SHOOT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
-      [::USEROPT_RADAR_TARGET_CYCLING, "spinner", ::has_feature("RadarTargetCue")],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
@@ -114,7 +113,6 @@ let getMainOptions = function()
         ::has_feature("Tanks") && ( ! ::is_in_flight() || ! ::is_tank_gunner_camera_from_sight_available())],
       [::USEROPT_SHOW_DESTROYED_PARTS, "spinner", ::has_feature("Tanks")],
       [::USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN, "spinner", ::has_feature("Tanks")],
-      [::USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner", ::has_feature("Tanks")],
       [::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner", ::has_feature("Tanks")],
       [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
       [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
@@ -234,7 +232,7 @@ let getMainOptions = function()
 
 local overrideSoundOptionsFn = null
 
-let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
+local getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   name = "sound"
   options = [
     [::USEROPT_SOUND_ENABLE, "switchbox", ::is_platform_pc],
@@ -254,14 +252,13 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
     [::USEROPT_VOLUME_TINNITUS, "slider"],
     [::USEROPT_HANGAR_SOUND, "spinner"],
     [::USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", ::is_platform_pc],
-    [::USEROPT_ENABLE_SOUND_SPEED, "spinner", (! ::is_in_flight()) || (::get_mission_difficulty_int() != ::DIFFICULTY_HARDCORE) ],
-    [::USEROPT_SOUND_RESET_VOLUMES, "button"]
+    [::USEROPT_ENABLE_SOUND_SPEED, "spinner", (! ::is_in_flight()) || (::get_mission_difficulty_int() != ::DIFFICULTY_HARDCORE) ]
   ]
 }
 
-let getVoicechatOptions = function()
+local getVoicechatOptions = function()
 {
-  let voiceOptions = {
+  local voiceOptions = {
     name = "voicechat"
     fillFuncName = "fillVoiceChatOptions"
     options = [
@@ -281,13 +278,13 @@ let getVoicechatOptions = function()
   return voiceOptions
 }
 
-let getSocialOptions = @() {
+local getSocialOptions = @() {
   name = "social"
   fillFuncName = "fillSocialOptions"
   options = []
 }
 
-let getInternetRadioOptions = @() {
+local getInternetRadioOptions = @() {
   name = "internet_radio"
   fillFuncName = "fillInternetRadioOptions"
   options = [
@@ -296,8 +293,8 @@ let getInternetRadioOptions = @() {
   ]
 }
 
-let getOptionsList = function() {
-  let options = [ getMainOptions() ]
+local getOptionsList = function() {
+  local options = [ getMainOptions() ]
 
   if (canUseGraphicsOptions())
     options.append(getSystemOptions())

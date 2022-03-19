@@ -1,5 +1,5 @@
-let function setValInTblPath(table, path, value){
-  let pathLen = path.len()
+local function setValInTblPath(table, path, value){
+  local pathLen = path.len()
   local curTbl = table
   foreach (idx, pathPart in path){
     if (idx == pathLen-1)
@@ -25,9 +25,9 @@ local function getValInTblPath(table, path, startIdx=0){
   return curTbl
 }
 
-let function tryGetValInTblPath(table, path){
+local function tryGetValInTblPath(table, path){
   foreach (idx, _ in path) {
-    let val = getValInTblPath(table, path, idx)
+    local val = getValInTblPath(table, path, idx)
     if (val != null)
       return val
   }

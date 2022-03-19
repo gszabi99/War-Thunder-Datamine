@@ -3,13 +3,13 @@ if (!("gui_bhv" in ::getroottable()))
 
 ::dagui_propid.add_name_id("harmonizedImageId")
 
-::gui_bhv.HarmonizedImage <- class
+class ::gui_bhv.HarmonizedImage
 {
   eventMask = 0
 
   function onAttach(obj)
   {
-    let textureId = obj?.harmonizedImageId
+    local textureId = obj?.harmonizedImageId
     if (!::u.isEmpty(textureId))
       obj["background-image"] = ::get_country_flag_img(textureId)
     return ::RETCODE_NOTHING

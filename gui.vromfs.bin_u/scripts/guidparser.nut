@@ -1,12 +1,12 @@
-let guidRe = ::regexp2(@"^\{?[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}\}?$")
+local guidRe = ::regexp2(@"^\{?[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}\}?$")
 
 
-let isGuid = function (str) {
+local isGuid = function (str) {
   return guidRe.match(str)
 }
 
 
-let export = {
+local export = {
   isGuid = isGuid
 }
 

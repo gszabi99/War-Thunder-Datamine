@@ -2335,11 +2335,19 @@
       ]
     }
   ],
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apr_36.blk"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_36.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apq_126.blk",
+        "dmPart": "radar_dm"
+      }
     }
-  },
+  ],
   "gunnerOpticFps": {
     "pos": [0.3,-0.2,0.0],
     "head": "optic1_turret",
@@ -3967,198 +3975,6 @@
     },
     {
       "preset": {
-        "name": "a_7d_bomb_gbu8",
-        "blk": "gameData/FlightModels/weaponPresets/a_7d_bomb_gbu8.blk",
-        "reqModification": "us_gbu_8",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk"
-            },
-            {
-              "amountPerTier": 1.0
-            },
-            {
-              "iconType": "guided_bomb_yellow"
-            },
-            {
-              "tier": {
-                "idx": 4
-              }
-            },
-            {
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "tier": {
-                "idx": 8
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "preset": [
-        {
-          "name": "a_7d_bomb_gbu8_aim9e"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/a_7d_bomb_gbu8_aim9e.blk"
-        },
-        {
-          "reqModification": "us_gbu_8"
-        },
-        {
-          "reqModification": "us_aim_9e"
-        },
-        {
-          "weaponConfig": [
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
-                },
-                {
-                  "iconType": "missile_type_b_air_to_air"
-                },
-                {
-                  "amountPerTier": 1.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 7
-                  }
-                }
-              ]
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk"
-                },
-                {
-                  "amountPerTier": 1.0
-                },
-                {
-                  "iconType": "guided_bomb_yellow"
-                },
-                {
-                  "tier": {
-                    "idx": 3
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 4
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 8
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 9
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "preset": [
-        {
-          "name": "a_7d_bomb_gbu8_aim9j"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/a_7d_bomb_gbu8_aim9j.blk"
-        },
-        {
-          "reqModification": "us_gbu_8"
-        },
-        {
-          "reqModification": "us_aim_9j"
-        },
-        {
-          "weaponConfig": [
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/rocketGuns/us_aim9j_sidewinder.blk"
-                },
-                {
-                  "iconType": "missile_type_c_air_to_air"
-                },
-                {
-                  "amountPerTier": 1.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 7
-                  }
-                }
-              ]
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk"
-                },
-                {
-                  "amountPerTier": 1.0
-                },
-                {
-                  "iconType": "guided_bomb_yellow"
-                },
-                {
-                  "tier": {
-                    "idx": 3
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 4
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 8
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 9
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "preset": {
         "name": "a_7d_rockets_lau3",
         "blk": "gameData/FlightModels/weaponPresets/a_7d_rockets_lau3.blk",
         "reqModification": "us_2_75_in_ffar_lau_3a",
@@ -5255,11 +5071,6 @@
       "reqModification": "us_aim_9j",
       "tier": 4,
       "modClass": "weapon"
-    },
-    "us_gbu_8": {
-      "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "us_2000lb_mk84"
     }
   },
   "user_skin": [

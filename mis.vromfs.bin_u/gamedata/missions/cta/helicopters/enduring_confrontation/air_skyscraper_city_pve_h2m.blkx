@@ -457,6 +457,9 @@
               "target": "ft_armada"
             },
             {
+              "target": "lbt_battle_armada"
+            },
+            {
               "target": "at_armada"
             },
             {
@@ -515,11 +518,6 @@
           }
         },
         {
-          "comment": {
-            "value": "test triggers on"
-          }
-        },
-        {
           "varSetBool": {
             "value": true,
             "var": "cnv_is_launch_alowed"
@@ -539,13 +537,13 @@
         },
         {
           "varSetBool": {
-            "value": false,
+            "value": true,
             "var": "cnv_enable_scout"
           }
         },
         {
           "varSetBool": {
-            "value": false,
+            "value": true,
             "var": "at_is_detect_on"
           }
         },
@@ -565,6 +563,12 @@
           "varSetInt": {
             "value": 3,
             "var": "to_max_templates_to_launch"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 9,
+            "var": "cnv_max_roads"
           }
         },
         {
@@ -604,11 +608,6 @@
               "var": "flt_area_38_heat"
             }
           ]
-        },
-        {
-          "__triggerEnable": {
-            "target": "test_capture_zones_on"
-          }
         }
       ],
       "else_actions": []
@@ -623,7 +622,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 90.0
+          "time": 120.0
         }
       },
       "conditions": [],
@@ -649,9 +648,6 @@
           },
           {
             "var": "flt_area_12_state"
-          },
-          {
-            "var": "flt_area_17_state"
           }
         ],
         "triggerEnable": [
@@ -701,9 +697,6 @@
           },
           {
             "var": "flt_area_12_state"
-          },
-          {
-            "var": "flt_area_17_state"
           }
         ],
         "triggerEnable": [
@@ -745,7 +738,7 @@
           [-0.0317773,0.0,0.999495],
           [0.0,1.0,0.0],
           [-0.999495,0.0,-0.0317773],
-          [-4323.74,316.699,-8274.98]
+          [-7878.2,316.7,-4143.98]
         ],
         "unit_class": "mi_35m",
         "objLayer": 1,

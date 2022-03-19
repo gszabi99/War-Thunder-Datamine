@@ -1,7 +1,7 @@
-let time = require("%scripts/time.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { hasFeature } = require("%scripts/user/features.nut")
+local time = require("scripts/time.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
+local { hasFeature } = require("scripts/user/features.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -13,7 +13,7 @@ const AUTO_ACTIVATE_TIME = 60
   // Parameter 'orderId' comes as a string (e.g. "::g_orders.activeOrder.orderId")
   // this is a misleading naming. But 'winnerScoreDataByOrderId' uses actual
   // orderId so here is an assumption that order in 'g_orders' is still active.
-  let actualOrderId = ::g_orders.activeOrder.orderId
+  local actualOrderId = ::g_orders.activeOrder.orderId
   ::g_orders.winnerScoreDataByOrderId[actualOrderId] <- {
     playerId = player
     score = param
@@ -173,7 +173,7 @@ g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
   local label = ::loc("flightmenu/btnActivateOrder")
   if (cooldownTimeleft > 0)
   {
-    let timeText = time.secondsToString(::g_orders.cooldownTimeleft)
+    local timeText = time.secondsToString(::g_orders.cooldownTimeleft)
     label += ::format(" (%s)", timeText)
   }
   return label
@@ -189,10 +189,10 @@ g_orders.getWarningText <- function getWarningText(selectedOrderItem = null)
     return ::loc("items/order/activateOrderWarning/hasActiveOrder")
   if (!::g_orders.hasOrdersToActivate())
     return ::loc("items/order/noOrdersAvailable")
-  let timeleft = getCooldownTimeleft()
+  local timeleft = getCooldownTimeleft()
   if (timeleft > 0)
   {
-    let locParams = {cooldownTimeleftText = time.secondsToString(timeleft)}
+    local locParams = {cooldownTimeleftText = time.secondsToString(timeleft)}
     return ::loc("items/order/activateOrderWarning/cooldown", locParams)
   }
   if (!checkCurrentMission(selectedOrderItem))
@@ -205,7 +205,7 @@ g_orders.checkCurrentMission <- function checkCurrentMission(selectedOrderItem)
   if (selectedOrderItem == null)
     return true
 
-  let missionName = ::SessionLobby.getSessionInfo()?.mission.name
+  local missionName = ::SessionLobby.getSessionInfo()?.mission.name
   if (missionName == null)
     return true
 
@@ -294,12 +294,12 @@ g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, 
   local orderStatusChanged = false
 
   // See what's changed.
-  let orderObjective = getActiveOrderObjective()
+  local orderObjective = getActiveOrderObjective()
 
   // This means that there's active order but it
   // is not fully loaded yet. Better bail out and
   // update on next updateActiveOrder() call.
-  let starterId = ::getTblValue("starterId", orderObjective, -1)
+  local starterId = ::getTblValue("starterId", orderObjective, -1)
   if (starterId == -1 && orderObjective != null && !isForced)
     return
 
@@ -309,7 +309,7 @@ g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, 
     orderStatusChanged = true
 
   // Update active order model.
-  let oldActiveOrder = clone activeOrder
+  local oldActiveOrder = clone activeOrder
   activeOrder.orderId = getOrderId(orderObjective)
   activeOrder.orderObjective = orderObjective
   activeOrder.orderType = getOrderType(orderObjective)
@@ -317,14 +317,14 @@ g_orders.updateActiveOrder <- function updateActiveOrder(dispatchEvents = true, 
   activeOrder.orderItem = getOrderItem(orderObjective)
   activeOrder.timeToSwitchTarget = ::getTblValue("timeToSwitchTarget", orderObjective, -1)
 
-  let objectiveStarterId = ::getTblValue("starterId", orderObjective, -1)
-  let orderStartId = ::getTblValue("id", activeOrder.starterPlayer, -1)
+  local objectiveStarterId = ::getTblValue("starterId", orderObjective, -1)
+  local orderStartId = ::getTblValue("id", activeOrder.starterPlayer, -1)
   // Updating starterPlayer table only if it's really required as it's expensive.
   if (orderStartId != objectiveStarterId || activeOrder.starterPlayer == null)
     activeOrder.starterPlayer = getPlayerDataById(objectiveStarterId)
 
-  let objectiveTargetId = ::getTblValue("targetId", orderObjective, -1)
-  let orderTargetId = ::getTblValue("id", activeOrder.targetPlayer, -1)
+  local objectiveTargetId = ::getTblValue("targetId", orderObjective, -1)
+  local orderTargetId = ::getTblValue("id", activeOrder.targetPlayer, -1)
   // Same idea as started player.
   if (orderTargetId != objectiveTargetId || activeOrder.targetPlayer == null)
     activeOrder.targetPlayer = getPlayerDataById(objectiveTargetId)
@@ -388,7 +388,7 @@ g_orders.updateOrderVisibility <- function updateOrderVisibility()
   if (!::checkObj(ordersStatusObj))
     return
 
-  let ordersBlockObj = ordersStatusObj.findObject("orders_block")
+  local ordersBlockObj = ordersStatusObj.findObject("orders_block")
   if (::check_obj(ordersBlockObj))
     ordersBlockObj.show(!isOrdersHidden)
 }
@@ -398,19 +398,19 @@ g_orders.updateHideOrderBlock <- function updateHideOrderBlock()
   if (!::checkObj(ordersStatusObj))
     return
 
-  let isHideOrderBtnVisible = isOrderInfoVisible() && ::is_cursor_visible_in_gui()
+  local isHideOrderBtnVisible = isOrderInfoVisible() && ::is_cursor_visible_in_gui()
 
-  let hideOrderBlockObj = ordersStatusObj.findObject("hide_order_block")
+  local hideOrderBlockObj = ordersStatusObj.findObject("hide_order_block")
   if (!::check_obj(hideOrderBlockObj))
     return
 
   hideOrderBlockObj.collapsed = isOrdersHidden ? "yes" : "no"
 
-  let hideOrderBtnObj = hideOrderBlockObj.findObject("hide_order_btn")
+  local hideOrderBtnObj = hideOrderBlockObj.findObject("hide_order_btn")
   if (::check_obj(hideOrderBtnObj))
     hideOrderBtnObj.isHidden = isHideOrderBtnVisible ? "no" : "yes"
 
-  let hideOrderTextIconObj = hideOrderBlockObj.findObject("hide_order_text")
+  local hideOrderTextIconObj = hideOrderBlockObj.findObject("hide_order_text")
   if (::check_obj(hideOrderTextIconObj))
     hideOrderTextIconObj.show(isHideOrderBtnVisible && isOrdersHidden)
 }
@@ -426,7 +426,7 @@ g_orders.activateSoonExpiredOrder <- function activateSoonExpiredOrder()
 
   for (local i = 0; i < ordersToActivate.len(); i++)
   {
-    let order = ordersToActivate[i]
+    local order = ordersToActivate[i]
     if (order.isActivateBeforeExpired && order.hasExpireTimer()
       && order.expiredTimeSec - ::dagor.getCurTime() * 0.001 <= AUTO_ACTIVATE_TIME)
       {
@@ -452,7 +452,7 @@ g_orders.orderCanBeActivated <- function orderCanBeActivated()
 /** Returns true if orders can be used as a feature. */
 g_orders.ordersCanBeUsed <- function ordersCanBeUsed()
 {
-  let checkGameType = (::get_game_type() & ::GT_USE_ORDERS) != 0
+  local checkGameType = (::get_game_type() & ::GT_USE_ORDERS) != 0
   return checkGameType && ::is_in_flight() && ::has_feature("Orders")
 }
 
@@ -534,51 +534,51 @@ g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, 
   if (!::checkObj(statusObj))
     return
 
-  let orderObject = hasActiveOrder
+  local orderObject = hasActiveOrder
     ? activeOrder
     : prevActiveOrder
 
   if (fullUpdate)
   {
-    let statusContent = getStatusContent(orderObject, (statusObj?.isHalignRight ?? "no") == "yes")
-    let guiScene = statusObj.getScene()
+    local statusContent = getStatusContent(orderObject, (statusObj?.isHalignRight ?? "no") == "yes")
+    local guiScene = statusObj.getScene()
     guiScene.replaceContentFromText(statusObj, statusContent, statusContent.len(), this)
 
     // (Re)enable timer.
-    let orderTimerObj = statusObj.findObject("order_timer")
+    local orderTimerObj = statusObj.findObject("order_timer")
     if (::checkObj(orderTimerObj))
       orderTimerObj.setUserData(this)
   }
 
-  let waitingForCooldown = cooldownTimeleft > 0 && prevActiveOrder != null
+  local waitingForCooldown = cooldownTimeleft > 0 && prevActiveOrder != null
 
-  let showStatus = hasActiveOrder || waitingForCooldown
+  local showStatus = hasActiveOrder || waitingForCooldown
   setStatusObjVisibility(statusObj, showStatus)
   if (!showStatus)
     return
 
   // Updating order status text.
-  let statusTextObj = statusObj.findObject("status_text")
+  local statusTextObj = statusObj.findObject("status_text")
   if (::checkObj(statusTextObj))
     statusTextObj.setValue(getStatusText())
 
   // Updating order bottom status text.
-  let statusTextBottomObj = statusObj.findObject("status_text_bottom")
+  local statusTextBottomObj = statusObj.findObject("status_text_bottom")
   if (::checkObj(statusTextBottomObj))
     statusTextBottomObj.setValue(getStatusTextBottom())
 
   // Updating order score table.
-  let tableTexts = getScoreTableTexts()
-  let showTable = tableTexts != null && tableTexts.len()
-  let statusTableObj = statusObj.findObject("status_table")
-  let numScores = ::min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
+  local tableTexts = getScoreTableTexts()
+  local showTable = tableTexts != null && tableTexts.len()
+  local statusTableObj = statusObj.findObject("status_table")
+  local numScores = ::min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
   if (::checkObj(statusTableObj))
     statusTableObj.show(showTable)
   if (showTable)
   {
     for (local i = 0; i < numScores; ++i)
     {
-      let rowObj = getRowObjByIndex(i, statusObj)
+      local rowObj = getRowObjByIndex(i, statusObj)
       ::dagor.assertf(rowObj != null, "Error updating order status: Row object not found.")
       setRowObjTexts(rowObj, tableTexts[i].player, tableTexts[i].score, true)
     }
@@ -587,7 +587,7 @@ g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, 
   // Hiding rows without data.
   for (local i = numScores; i < maxRowsInScoreTable; ++i)
   {
-    let rowObj = getRowObjByIndex(i, statusObj)
+    local rowObj = getRowObjByIndex(i, statusObj)
     ::dagor.assertf(rowObj != null, "Error updating order status: Row object not found.")
     setRowObjTexts(rowObj, "", "", false)
   }
@@ -598,14 +598,14 @@ g_orders.setStatusObjVisibility <- function setStatusObjVisibility(statusObj, vi
   if (!::checkObj(statusObj))
     return
 
-  let ordersBlockObj = statusObj.findObject("orders_block")
+  local ordersBlockObj = statusObj.findObject("orders_block")
   if (::check_obj(ordersBlockObj))
     ordersBlockObj.show(visible && !isOrdersHidden)
 }
 
 g_orders.getRowObjByIndex <- function getRowObjByIndex(rowIndex, statusObj)
 {
-  let rowObj = statusObj.findObject("order_score_row_" + rowIndex)
+  local rowObj = statusObj.findObject("order_score_row_" + rowIndex)
   return ::checkObj(rowObj) ? rowObj : null
 }
 
@@ -613,13 +613,13 @@ g_orders.setRowObjTexts <- function setRowObjTexts(rowObj, nameText, scoreText, 
 {
   if (!::checkObj(rowObj))
     return
-  let playerNameTextObj = rowObj.findObject("order_score_player_name_text")
+  local playerNameTextObj = rowObj.findObject("order_score_player_name_text")
   if (::checkObj(playerNameTextObj))
     playerNameTextObj.setValue(nameText)
-  let playerScoreTextObj = rowObj.findObject("order_score_value_text")
+  local playerScoreTextObj = rowObj.findObject("order_score_value_text")
   if (::checkObj(playerScoreTextObj))
     playerScoreTextObj.setValue(scoreText)
-  let pilotIconObj = rowObj.findObject("order_score_pilot_icon")
+  local pilotIconObj = rowObj.findObject("order_score_pilot_icon")
   if (::checkObj(pilotIconObj))
     pilotIconObj.show(pilotIconVisible)
 }
@@ -627,16 +627,16 @@ g_orders.setRowObjTexts <- function setRowObjTexts(rowObj, nameText, scoreText, 
 
 g_orders.getScoreTableTexts <- function getScoreTableTexts()
 {
-  let showOrder = isOrderInfoVisible()
+  local showOrder = isOrderInfoVisible()
   if ( !showOrder )
     return []
-  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
-  let scoreData = getOrderScores(orderObject)
+  local orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
+  local scoreData = getOrderScores(orderObject)
   if (!scoreData)
     return []
   prepareStatusScores(scoreData, orderObject)
   return scoreData.map(function (item) {
-    let playerData = ::g_orders.getPlayerDataByScoreData(item)
+    local playerData = ::g_orders.getPlayerDataByScoreData(item)
     return {
       score = orderObject.orderType.formatScore(item.score)
       player = (::getTblValue("playerIndex", item, 0) + 1).tostring() + ". " + ::build_mplayer_name(playerData)
@@ -653,11 +653,11 @@ g_orders.isOrderInfoVisible <- function isOrderInfoVisible()
 
 g_orders.getStatusText <- function getStatusText()
 {
-  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
+  local orderObject = hasActiveOrder ? activeOrder : prevActiveOrder
   if (orderObject == null)
     return ""
   updateStatusTextView(orderObject, false)
-  let view = orderObject.statusTextView
+  local view = orderObject.statusTextView
   local result = ""
   if (!hasActiveOrder)
   {
@@ -703,7 +703,7 @@ g_orders.getStatusTextBottom <- function getStatusTextBottom()
 {
   if (hasActiveOrder || prevActiveOrder == null)
     return ""
-  let view = prevActiveOrder.statusTextView
+  local view = prevActiveOrder.statusTextView
   local result = ""
   result += ::colorize(statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel)
   result += ::colorize(statusColorScheme.parameterValueColor, view.cooldownTimeleft)
@@ -717,8 +717,8 @@ g_orders.showOrdersContainer <- function showOrdersContainer(isShown)
 
 g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRight = false)
 {
-  let orderType = orderObject == null ? g_order_type.UNKNOWN : orderObject.orderType
-  let view = {
+  local orderType = orderObject == null ? g_order_type.UNKNOWN : orderObject.orderType
+  local view = {
     rows = []
     playersHeaderText = ::loc("items/order/scoreTable/playersHeader")
     scoreHeaderText = orderType.getScoreHeaderText()
@@ -728,7 +728,7 @@ g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRigh
   }
   for (local i = 0; i < maxRowsInScoreTable; ++i)
     view.rows.append({ rowIndex = i })
-  return ::handyman.renderCached("%gui/items/orderStatus", view)
+  return ::handyman.renderCached("gui/items/orderStatus", view)
 }
 
 /**
@@ -737,11 +737,11 @@ g_orders.getStatusContent <- function getStatusContent(orderObject, isHalignRigh
  */
 g_orders.updateActiveLocalOrders <- function updateActiveLocalOrders()
 {
-  let starterUid = ::getTblValue("userId", activeOrder.starterPlayer, null)
-  let itemId = ::getTblValue("id", activeOrder.orderItem, null)
+  local starterUid = ::getTblValue("userId", activeOrder.starterPlayer, null)
+  local itemId = ::getTblValue("id", activeOrder.orderItem, null)
   for (local i = activeLocalOrderIds.len() - 1; i >= 0; --i)
   {
-    let id = activeLocalOrderIds[i]
+    local id = activeLocalOrderIds[i]
 
     // How? We don't know yet.
     // Added assertions for further investigation.
@@ -764,13 +764,13 @@ g_orders.updateActiveLocalOrders <- function updateActiveLocalOrders()
 
 g_orders.getActiveOrderObjective <- function getActiveOrderObjective()
 {
-  let objectives = get_objectives_list()
+  local objectives = get_objectives_list()
   foreach (objective in objectives)
   {
     if (::getTblValue("status", objective, 0) == 0)
       continue
 
-    let objectiveType = ::getTblValue("type", objective, -1)
+    local objectiveType = ::getTblValue("type", objective, -1)
     if (objectiveType == ::OBJECTIVE_TYPE_ORDER)
       return objective
   }
@@ -779,7 +779,7 @@ g_orders.getActiveOrderObjective <- function getActiveOrderObjective()
 
 g_orders.onOrderAccepted <- function onOrderAccepted(useResultCode, isSilent = false)
 {
-  let useResult = ::g_order_use_result.getOrderUseResultByCode(useResultCode)
+  local useResult = ::g_order_use_result.getOrderUseResultByCode(useResultCode)
   debugPrint("g_orders::onOrderAccepted: Activation complete. Result: "
     + ::toString(useResult))
   if (!isSilent)
@@ -824,13 +824,13 @@ g_orders.getOrderId <- function getOrderId(orderObjective)
  */
 g_orders.getOrderStatus <- function getOrderStatus(orderObjective)
 {
-  let statusCode = ::getTblValue("status", orderObjective, -1)
+  local statusCode = ::getTblValue("status", orderObjective, -1)
   return ::g_objective_status.getObjectiveStatusByCode(statusCode)
 }
 
 g_orders.getOrderType <- function getOrderType(orderObjective)
 {
-  let orderItem = getOrderItem(orderObjective)
+  local orderItem = getOrderItem(orderObjective)
   if (orderItem == null)
     return ::g_order_type.UNKNOWN
   return orderItem.orderType
@@ -838,7 +838,7 @@ g_orders.getOrderType <- function getOrderType(orderObjective)
 
 g_orders.getOrderItem <- function getOrderItem(orderObjective)
 {
-  let objectiveId = ::getTblValue("objectiveId", orderObjective, null)
+  local objectiveId = ::getTblValue("objectiveId", orderObjective, null)
   return ::ItemsManager.findItemById(objectiveId, itemType.ORDER)
 }
 
@@ -851,11 +851,11 @@ g_orders.updateCooldownTimeleft <- function updateCooldownTimeleft()
 g_orders.getCooldownTimeleft <- function getCooldownTimeleft()
 {
   // Returns 1 or 2 as team indices.
-  let playerTeam = ::get_mp_local_team()
+  local playerTeam = ::get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
-  let tblTeams = ::get_mp_tbl_teams()
-  let localTeamTbl = ::getTblValue(playerTeam - 1, tblTeams)
+  local tblTeams = ::get_mp_tbl_teams()
+  local localTeamTbl = ::getTblValue(playerTeam - 1, tblTeams)
   return ::getTblValue("orderCooldownLeft", localTeamTbl, 0)
 }
 
@@ -870,7 +870,7 @@ g_orders.updateStatusTextView <- function updateStatusTextView(orderObject, full
   if (orderObject == null)
     return
 
-  let view = orderObject.statusTextView
+  local view = orderObject.statusTextView
 
   if (fullUpdate)
   {
@@ -893,7 +893,7 @@ g_orders.updateStatusTextView <- function updateStatusTextView(orderObject, full
   }
 
   // Order description
-  let orderTypeParams = orderObject?.orderItem.typeParams
+  local orderTypeParams = orderObject?.orderItem.typeParams
   view.orderDescription <- orderTypeParams != null
     ? orderObject.orderType.getObjectiveDescription(orderTypeParams, statusColorScheme)
     : null
@@ -919,7 +919,7 @@ g_orders.getPlayerDataById <- function getPlayerDataById(playerId)
     debugPrint("g_orders::getPlayerDataById: Calling when orders are disabled.")
     ::callstack()
   }
-  let playerData = playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? emptyPlayerData
+  local playerData = playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? emptyPlayerData
   if (::is_replay_playing())
   {
     playerData.isLocal = spectatorWatchedHero.id == playerData.id
@@ -1022,13 +1022,13 @@ g_orders.getOrderScores <- function getOrderScores(orderObject)
     addLocalPlayerScoreData(scores)
   }
 
-  let winnerScoreData = ::getTblValue(orderObject.orderId, winnerScoreDataByOrderId, null)
+  local winnerScoreData = ::getTblValue(orderObject.orderId, winnerScoreDataByOrderId, null)
   if (scores == null || winnerScoreData == null)
     return scores
 
   for (local i = 0; i < scores.len(); ++i)
   {
-    let scoreData = scores[i]
+    local scoreData = scores[i]
     if (scoreData.playerId == winnerScoreData.playerId)
     {
       scores[i] = clone winnerScoreData
@@ -1046,7 +1046,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
   // Remove score data with not player data.
   for (local i = statusScores.len() - 1; i >= 0; --i)
   {
-    let playerData = getPlayerDataByScoreData(statusScores[i])
+    local playerData = getPlayerDataByScoreData(statusScores[i])
     if (playerData == null)
       statusScores.remove(i)
   }
@@ -1059,7 +1059,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
     if (localPlayerIndex >= 0)
       continue
 
-    let playerData = getPlayerDataByScoreData(score)
+    local playerData = getPlayerDataByScoreData(score)
     if (::getTblValue("userId", playerData) == ::my_user_id_str)
       localPlayerIndex = idx
   }
@@ -1082,7 +1082,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
  */
 g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores)
 {
-  let checkFunc = ::is_replay_playing() ?
+  local checkFunc = ::is_replay_playing() ?
     function(p) { return p.id == spectatorWatchedHero.id } :
     function(p) { return p.userId == ::my_user_id_str }
 
@@ -1107,11 +1107,11 @@ g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSi
   if (!::checkObj(ordersStatusObj))
     return
 
-  let frameObj = ordersStatusObj.findObject("order_status_frame")
+  local frameObj = ordersStatusObj.findObject("order_status_frame")
   if (!::checkObj(frameObj)) // Possible if not in spectator mode.
     return
 
-  let frameSize = frameObj.getSize()
+  local frameSize = frameObj.getSize()
 
   // Frame object has invalid size. This means it
   // was not rendered yet. Bail out then.
@@ -1121,7 +1121,7 @@ g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSi
   orderStatusSize = frameSize
 
   orderStatusPosition = frameObj.getPosRC()
-  let statusObjPosition = ordersStatusObj.getPosRC()
+  local statusObjPosition = ordersStatusObj.getPosRC()
 
   // Saving frame object position relative to parent.
   orderStatusPosition[0] -= statusObjPosition[0]

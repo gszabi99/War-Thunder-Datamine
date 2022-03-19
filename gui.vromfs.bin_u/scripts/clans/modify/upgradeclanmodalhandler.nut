@@ -1,4 +1,4 @@
-::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
+class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanModalHandler
 {
   owner = null
 
@@ -24,7 +24,7 @@
     updateDescription()
     updateAnnouncement()
     scene.findObject("newclan_description").setValue(clanData.desc)
-    let newClanTagObj = scene.findObject("newclan_tag")
+    local newClanTagObj = scene.findObject("newclan_tag")
     newClanTagObj.setValue(::g_clans.stripClanTagDecorators(clanData.tag))
     ::select_editbox(newClanTagObj)
     onFocus(newClanTagObj)
@@ -36,7 +36,7 @@
   // Override.
   function updateSubmitButtonText()
   {
-    let cost = clanData.getClanUpgradeCost()
+    local cost = clanData.getClanUpgradeCost()
     setSubmitButtonText(::loc("clan/clan_upgrade/button"), cost)
   }
 
@@ -50,12 +50,12 @@
   {
     if(!prepareClanData())
       return
-    let upgradeCost = clanData.getClanUpgradeCost()
+    local upgradeCost = clanData.getClanUpgradeCost()
     if (upgradeCost <= ::zero_money)
       upgradeClan()
     else if (::check_balance_msgBox(upgradeCost))
     {
-      let msgText = ::warningIfGold(
+      local msgText = ::warningIfGold(
         ::format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
@@ -68,8 +68,8 @@
   {
     if (isObsceneWord())
       return
-    let clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
-    let params = ::g_clans.prepareUpgradeRequest(
+    local clanId = (::my_clan_info != null && ::my_clan_info.id == clanData.id) ? "-1" : clanData.id
+    local params = ::g_clans.prepareUpgradeRequest(
       newClanType,
       newClanTag,
       newClanDescription,

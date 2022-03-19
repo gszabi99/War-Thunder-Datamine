@@ -1,4 +1,4 @@
-::ConfigBase <- class
+class ConfigBase
 {
   //main params to set in constructor
   id = ""
@@ -117,7 +117,7 @@
       return
     }
 
-    let taskId = requestUpdate()
+    local taskId = requestUpdate()
     if (taskId == -1)
     {
       ::update_entitlements_limited() //code sure that he better know about prices actuality, so need to update profile
@@ -128,8 +128,8 @@
     ::dagor.debug("Configs: request config update " + id + ". isActual = " + isActual())
     lastRequestTime = ::dagor.getCurTime()
     addCbToList(cb, onErrorCb)
-    let successCb = ::Callback(onUpdateComplete, this)
-    let errorCb = ::Callback(onUpdateError, this)
+    local successCb = ::Callback(onUpdateComplete, this)
+    local errorCb = ::Callback(onUpdateError, this)
     ::g_tasker.addTask(taskId, { showProgressBox = showProgressBox }, successCb, errorCb)
   }
 

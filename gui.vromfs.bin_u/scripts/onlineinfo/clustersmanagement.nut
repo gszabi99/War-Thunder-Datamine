@@ -1,4 +1,27 @@
-let { startLogout } = require("%scripts/login/logout.nut")
+local { startLogout } = require("scripts/login/logout.nut")
+local { isDataBlock, eachParam } = require("std/datablock.nut")
+
+local unstableClusters = null
+
+local function cacheUnstableClustersOnce() {
+  if (unstableClusters != null)
+    return
+  unstableClusters = []
+  local blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[::get_country_code()]
+  if (isDataBlock(blk))
+    eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
+}
+
+local function isClusterUnstable(clusterName)
+{
+  cacheUnstableClustersOnce()
+  return unstableClusters.contains(clusterName)
+}
+
+local mkCluster = @(name) {
+  name
+  isUnstable = isClusterUnstable(name)
+}
 
 // -------------------------------------------------------
 // Clusters managment
@@ -20,13 +43,13 @@ let { startLogout } = require("%scripts/login/logout.nut")
     dagor.debug("[MM] clusters loaded")
     debugTableData(params)
 
-    let clusters = ::getTblValue("clusters", params)
+    local clusters = ::getTblValue("clusters", params)
     if (!::u.isArray(clusters))
       return false
 
     clusters_info.clear()
     foreach (idx, val in params.clusters)
-      clusters_info.append({name = val})
+      clusters_info.append(mkCluster(val))
     //TODO: need to update clusters in GUI
 
     return clusters_info.len() > 0
@@ -49,7 +72,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
         }
         if (!found)
         {
-          clusters_info.append({name = cluster})
+          clusters_info.append(mkCluster(cluster))
           dagor.debug("[MM] cluster added " + cluster)
         }
       }
@@ -136,6 +159,8 @@ let { startLogout } = require("%scripts/login/logout.nut")
       return clusterName
     return ::loc("cluster/" + clusterName)
   }
+
+  isClusterUnstable
 }
 
 ::subscribe_handler(::g_clusters)

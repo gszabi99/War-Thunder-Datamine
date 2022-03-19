@@ -1,10 +1,10 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { is_stereo_mode } = ::require_native("vr")
-let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local { is_stereo_mode } = ::require_native("vr")
+local { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -22,8 +22,8 @@ enum FONT_SAVE_ID {
   SCALE = "scale"
 
   //wop_1_69_3_X
-  PX_COMPATIBILITY = "%gui/const/const_pxFonts.css"
-  SCALE_COMPATIBILITY = "%gui/const/const_fonts.css"
+  PX_COMPATIBILITY = "gui/const/const_pxFonts.css"
+  SCALE_COMPATIBILITY = "gui/const/const_fonts.css"
 }
 
 enum FONT_SIZE_ORDER {
@@ -37,14 +37,14 @@ enum FONT_SIZE_ORDER {
   HUGE
 }
 
-let getFontsSh = screenInfo.getScreenHeightForFonts
+local getFontsSh = screenInfo.getScreenHeightForFonts
 
 local appliedFontsSh = 0
 local appliedFontsScale = 0
 
-let function update_font_heights(font)
+local function update_font_heights(font)
 {
-  let fontsSh = getFontsSh(::screen_width(), ::screen_height())
+  local fontsSh = getFontsSh(::screen_width(), ::screen_height())
   if (appliedFontsSh == fontsSh && appliedFontsScale == font.sizeMultiplier)
     return font;
   ::dagor.debug("update_font_heights: screenHt={0} fontSzMul={1}".subst(fontsSh, font.sizeMultiplier))
@@ -77,30 +77,30 @@ let function update_font_heights(font)
   getPixelToPixelFontSizeOutdatedPx = @(sWidth, sHeight) 800 //!!TODO: remove this together with old fonts
   isLowWidthScreen = function()
   {
-    let sWidth = ::screen_width()
-    let sHeight = ::screen_height()
-    let mainScreenSize = screenInfo.getMainScreenSizePx(sWidth, sHeight)
-    let sf = getFontSizePx(sWidth, sHeight)
+    local sWidth = ::screen_width()
+    local sHeight = ::screen_height()
+    local mainScreenSize = screenInfo.getMainScreenSizePx(sWidth, sHeight)
+    local sf = getFontSizePx(sWidth, sHeight)
     return 10.0 / 16 * mainScreenSize[0] / sf < 0.99
   }
 
   genCssString = function()
   {
-    let sWidth = ::screen_width()
-    let sHeight = ::screen_height()
-    let config = {
+    local sWidth = ::screen_width()
+    local sHeight = ::screen_height()
+    local config = {
       set = fontGenId
       scrnTgt = getFontSizePx(sWidth, sHeight)
       isWide = isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
     if (config.scrnTgt <= 0) {
-      let configStr = ::toString(config) // warning disable: -declared-never-used
+      local configStr = ::toString(config) // warning disable: -declared-never-used
       ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
     foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
       config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{fontGenId}")
-    return ::handyman.renderCached("%gui/const/const_fonts_css", config)
+    return ::handyman.renderCached("gui/const/const_fonts_css", config)
   }
 
   //text visible in options
@@ -167,7 +167,7 @@ null,
 
 g_font.getAvailableFontBySaveId <- function getAvailableFontBySaveId(saveId)
 {
-  let res = enums.getCachedType("saveId", saveId, cache.bySaveId, this, null)
+  local res = enums.getCachedType("saveId", saveId, cache.bySaveId, this, null)
   if (res && res.isAvailable(::screen_width(), ::screen_height()))
     return res
 
@@ -182,8 +182,8 @@ g_font.getAvailableFontBySaveId <- function getAvailableFontBySaveId(saveId)
 
 g_font.getAvailableFonts <- function getAvailableFonts()
 {
-  let sWidth = ::screen_width()
-  let sHeight = ::screen_height()
+  local sWidth = ::screen_width()
+  local sHeight = ::screen_height()
   return ::u.filter(types, @(f) f.isAvailable(sWidth, sHeight))
 }
 
@@ -198,7 +198,7 @@ g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight)
 
 g_font.getFixedFont <- function getFixedFont() //return null if can change fonts
 {
-  let availableFonts = getAvailableFonts()
+  local availableFonts = getAvailableFonts()
   return availableFonts.len() == 1 ? availableFonts[0] : null
 }
 
@@ -209,7 +209,7 @@ g_font.canChange <- function canChange()
 
 g_font.getDefault <- function getDefault()
 {
-  let fixedFont = getFixedFont()
+  local fixedFont = getFixedFont()
   if (fixedFont)
     return fixedFont
 
@@ -219,12 +219,10 @@ g_font.getDefault <- function getDefault()
     return LARGE
   if (isSmallScreen)
     return HUGE
-  if (isPlatformSteamDeck)
-    return MEDIUM
 
-  let displayScale = ::display_scale()
-  let sWidth = ::screen_width()
-  let sHeight = ::screen_height()
+  local displayScale = ::display_scale()
+  local sWidth = ::screen_width()
+  local sHeight = ::screen_height()
   if (displayScale <= 1.2 && COMPACT.isAvailable(sWidth, sHeight))
     return COMPACT
   if (displayScale <= 1.4 && MEDIUM.isAvailable(sWidth, sHeight))
@@ -239,7 +237,7 @@ g_font.getCurrent <- function getCurrent()
 
   if (!::g_login.isProfileReceived())
   {
-    let fontSaveId = ::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
+    local fontSaveId = ::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
     return update_font_heights((fontSaveId && getAvailableFontBySaveId(fontSaveId))
       || getDefault())
   }
@@ -266,8 +264,8 @@ g_font.setCurrent <- function setCurrent(font)
   if (!canChange())
     return false
 
-  let fontSaveId = ::load_local_account_settings(FONTS_SAVE_PATH)
-  let isChanged = font.saveId != fontSaveId
+  local fontSaveId = ::load_local_account_settings(FONTS_SAVE_PATH)
+  local isChanged = font.saveId != fontSaveId
   if (isChanged)
     ::save_local_account_settings(FONTS_SAVE_PATH, font.saveId)
 
@@ -296,7 +294,7 @@ g_font.validateSavedConfigFonts <- function validateSavedConfigFonts()
 }
 
 ::cross_call_api.getCurrentFontParams <- function() {
-  let currentFont = ::g_font.getCurrent()
+  local currentFont = ::g_font.getCurrent()
   return {
     fontGenId = currentFont.fontGenId
     fontSizePx = currentFont.getFontSizePx(::screen_width(), ::screen_height())

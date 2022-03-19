@@ -4,7 +4,7 @@
 
 g_missions_manager.fastStartSkirmishMission <- function fastStartSkirmishMission(mission)
 {
-  let params = {
+  local params = {
     canSwitchMisListType = false
     showAllCampaigns = false
     mission = mission
@@ -18,14 +18,14 @@ g_missions_manager.fastStartSkirmishMission <- function fastStartSkirmishMission
 
 g_missions_manager.startRemoteMission <- function startRemoteMission(params)
 {
-  let url = params.url
-  let name = params.name || "remote_mission"
+  local url = params.url
+  local name = params.name || "remote_mission"
 
   if (!::isInMenu() || ::handlersManager.isAnyModalHandlerActive())
     return
 
-  let urlMission = UrlMission(name, url)
-  let mission = {
+  local urlMission = UrlMission(name, url)
+  local mission = {
     id = urlMission.name
     isHeader = false
     isCampaign = false
@@ -35,7 +35,7 @@ g_missions_manager.startRemoteMission <- function startRemoteMission(params)
   }
   mission.urlMission <- urlMission
 
-  let callback = function(success, mis) {
+  local callback = function(success, mis) {
                      if (!success)
                        return
 

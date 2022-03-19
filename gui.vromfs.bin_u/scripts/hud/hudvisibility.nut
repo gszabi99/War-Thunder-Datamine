@@ -1,4 +1,4 @@
-let isHudVisible = ::Watched(::is_hud_visible())
+local isHudVisible = ::Watched(::is_hud_visible())
 
 // Called from client
 ::on_show_hud <- function on_show_hud(show = true)

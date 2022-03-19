@@ -1,6 +1,6 @@
 local gestureInProgress = false
 
-::gui_bhv.ControlsInput <- class
+class gui_bhv.ControlsInput
 {
   eventMask = ::EV_MOUSE_L_BTN | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_EXT_BTN | ::EV_KBD_UP | ::EV_KBD_DOWN | ::EV_JOYSTICK | ::EV_GESTURE
 
@@ -35,7 +35,7 @@ local gestureInProgress = false
   {
     for (local i = 0; i < ::TOTAL_DEVICES; i++)
     {
-      let deviceId = $"device{i}"
+      local deviceId = $"device{i}"
       if (obj?[deviceId] && !obj[deviceId].len())
         return i
     }
@@ -45,7 +45,7 @@ local gestureInProgress = false
 
   function checkActive(obj)
   {
-    let isActive = ::is_app_active() && !::steam_is_overlay_active()
+    local isActive = ::is_app_active() && !::steam_is_overlay_active()
     if (!isActive)
     {
       local hasChanges = false
@@ -67,7 +67,7 @@ local gestureInProgress = false
       return
     if (!is_up)
     {
-      let btnIndex = getCurrentBtnIndex(obj)
+      local btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
         if (!isExistsShortcut(obj, ::STD_MOUSE_DEVICE_ID.tostring(), button))
@@ -102,7 +102,7 @@ local gestureInProgress = false
       return ::RETCODE_HALT
     if (event == ::EV_KBD_DOWN)
     {
-      let btnIndex = getCurrentBtnIndex(obj)
+      local btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
         if (!isExistsShortcut(obj, ::STD_KEYBOARD_DEVICE_ID.tostring(), btn_idx.tostring()))
@@ -124,7 +124,7 @@ local gestureInProgress = false
 
   function isAnalog(dev_id, btn_id)
   {
-    let button = ::get_button_name(dev_id, btn_id)
+    local button = ::get_button_name(dev_id, btn_id)
     return button == "LT" ||
       button == "RT" ||
       button == "LS.Right" ||
@@ -148,19 +148,19 @@ local gestureInProgress = false
 
     if (!is_up)
     {
-      let ignore = (btn_idx >= joy.getButtonCount()) //<-- ignore PoV hats for now
+      local ignore = (btn_idx >= joy.getButtonCount()) //<-- ignore PoV hats for now
       print("btn_idx " + btn_idx)
       if (!ignore)
       {
-        let id = ::JOYSTICK_DEVICE_0_ID
+        local id = ::JOYSTICK_DEVICE_0_ID
         if (id>=0)
         {
-          let btnIndex = getCurrentBtnIndex(obj)
+          local btnIndex = getCurrentBtnIndex(obj)
           if (btnIndex >= 0 && !obj["device" + btnIndex].len())
           {
             if (!isExistsShortcut(obj, id.tostring(), btn_idx.tostring()))
             {
-              let checkAnalog = obj?["check_analog"]
+              local checkAnalog = obj?["check_analog"]
               if (checkAnalog == null || checkAnalog.tointeger() == 0 ||
                 (obj["device0"] != "" && obj["button0"] != "") || !isAnalog(id, btn_idx))
               {
@@ -189,7 +189,7 @@ local gestureInProgress = false
     if (event == ::EV_GESTURE_START)
     {
       gestureInProgress = true
-      let btnIndex = getCurrentBtnIndex(obj)
+      local btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
         if (!isExistsShortcut(obj, ::STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))

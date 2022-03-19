@@ -1,6 +1,6 @@
-let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 
-::Input.Button <- class extends ::Input.InputBase
+class ::Input.Button extends ::Input.InputBase
 {
   deviceId = -1
   buttonId = -1
@@ -16,30 +16,30 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   function getMarkup()
   {
-    let data = getMarkupData()
+    local data = getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData()
   {
-    let data = {
+    local data = {
       template = ""
       view = {}
     }
 
     if (deviceId == ::JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(buttonId))
     {
-      data.template = "%gui/gamepadButton"
+      data.template = "gui/gamepadButton"
       data.view.buttonImage <- gamepadIcons.getTextureByButtonIdx(buttonId)
     }
     else if (deviceId == ::STD_MOUSE_DEVICE_ID && gamepadIcons.hasMouseTexture(buttonId))
     {
-      data.template = "%gui/gamepadButton"
+      data.template = "gui/gamepadButton"
       data.view.buttonImage <- gamepadIcons.getMouseTexture(buttonId)
     }
     else
     {
-      data.template = "%gui/keyboardButton"
+      data.template = "gui/keyboardButton"
       data.view.text <- getText()
     }
 

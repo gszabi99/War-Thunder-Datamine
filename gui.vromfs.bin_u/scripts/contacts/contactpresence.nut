@@ -1,4 +1,4 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 enum PRESENCE_SORT
 {
   UNKNOWN

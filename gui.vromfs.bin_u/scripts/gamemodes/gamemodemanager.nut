@@ -1,10 +1,12 @@
-let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isCrossPlayEnabled,
-        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
+local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local { isCrossPlayEnabled,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { getFirstChosenUnitType } = require("scripts/firstChoice/firstChoice.nut")
 
 
 ::featured_modes <- [
@@ -15,7 +17,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     startFunction = @() ::g_world_war.openMainWnd()
     isWide = @() ::is_me_newbie() || !::is_platform_pc
     image = function() {
-        let operation = ::g_world_war.getLastPlayedOperation()
+        local operation = ::g_world_war.getLastPlayedOperation()
         if (operation != null)
           return "#ui/images/game_modes_tiles/worldwar_active_" + (isWide() ? "wide" : "thin") + ".jpg?P1"
         else
@@ -25,10 +27,13 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     isVisible = @() ::is_worldwar_enabled()
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !::g_world_war.canPlayWorldwar()
-    crossPlayRestricted = @() !isCrossPlayEnabled()
+    crossPlayRestricted = @() isMultiplayerPrivilegeAvailable() && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -40,7 +45,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     }
     hasNewIconWidget = true
     updateByTimeFunc = function(scene, objId) {
-      let descObj = scene.findObject(objId + "_text_description")
+      local descObj = scene.findObject(objId + "_text_description")
       if (::check_obj(descObj))
         descObj.setValue(::g_world_war.getPlayedOperationText())
     }
@@ -53,7 +58,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(::loc("url/tss_all_tournaments"), false, false)
-      else if (!::xbox_try_show_crossnetwork_message())
+      else if (checkAndShowMultiplayerPrivilegeWarning() && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isWide = false
@@ -62,12 +67,17 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
+    inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
+                      || !isMultiplayerPrivilegeAvailable()
     crossPlayRestricted = @() needShowCrossPlayInfo()
+                           && isMultiplayerPrivilegeAvailable()
                            && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -83,7 +93,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     modeId = "tournaments_and_event_featured_game_mode"
     text = function ()
     {
-      let activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
+      local activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
       if (activeEventsNum <= 0)
         return ::loc("mainmenu/events/eventlist_btn_no_active_events")
       else
@@ -106,11 +116,24 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       return ::has_feature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
     }
     hasNewIconWidget = false
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable()
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   {
     /*custom battles*/
     modeId = "custom_battles_featured_game_mode"
-    startFunction = @() ::gui_start_skirmish()
+    startFunction = function ()
+    {
+      if (!checkAndShowMultiplayerPrivilegeWarning())
+        return
+
+      ::gui_start_skirmish()
+    }
     text = function ()
     {
       return ::loc("mainmenu/btnSkirmish")
@@ -128,6 +151,13 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     }
     hasNewIconWidget = false
     newIconWidgetId = ""
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable()
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   //{
     /*dynamic campaign*/
@@ -145,17 +175,17 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     type = ::g_event_display_type.REGULAR
     displayWide = true
     getEventId = function() {
-      let curUnit = ::get_cur_slotbar_unit()
-      let chapter = ::events.chapters.getChapter("simulation_battles")
-      let chapterEvents = chapter? chapter.getEvents() : []
+      local curUnit = ::get_cur_slotbar_unit()
+      local chapter = ::events.chapters.getChapter("simulation_battles")
+      local chapterEvents = chapter? chapter.getEvents() : []
 
       local openEventId = null
       if (chapterEvents.len())
       {
-        let lastPlayedEventId = ::events.getLastPlayedEvent()?.name
-        let lastPlayedEventRelevance = ::isInArray(lastPlayedEventId, chapterEvents) ?
+        local lastPlayedEventId = ::events.getLastPlayedEvent()?.name
+        local lastPlayedEventRelevance = ::isInArray(lastPlayedEventId, chapterEvents) ?
           ::events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
-        let relevanceList = ::u.map(chapterEvents, function(id) {
+        local relevanceList = ::u.map(chapterEvents, function(id) {
           return { eventId = id, relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) }
         })
         relevanceList.sort(@(a,b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
@@ -171,7 +201,10 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       onBattleButtonClick()
     }
     inactiveColor = function() {
-      let chapter = ::events.chapters.getChapter("simulation_battles")
+      if (!isMultiplayerPrivilegeAvailable())
+        return true
+
+      local chapter = ::events.chapters.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
     isVisible = function() {
@@ -299,7 +332,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
   {
     if (0 <= index || index < _gameModes.len())
     {
-      let gameMode = _gameModes[index]
+      local gameMode = _gameModes[index]
       _setCurrentGameModeId(gameMode.id, true, isUserSelected)
     }
   }
@@ -357,7 +390,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
   {
     if (unitType == ::ES_UNIT_TYPE_INVALID && filterFunc == null)
       return _gameModes
-    let gameModes = []
+    local gameModes = []
     foreach (gameMode in _gameModes)
     {
       if (filterFunc != null && !filterFunc(gameMode))
@@ -385,7 +418,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     {
       if (gameMode.displayType != ::g_event_display_type.RANDOM_BATTLE)
         continue
-      let checkedUnitTypes = getRequiredUnitTypes(gameMode)
+      local checkedUnitTypes = getRequiredUnitTypes(gameMode)
 
       if (!::isInArray(unitType, checkedUnitTypes))
         continue
@@ -434,15 +467,15 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
    */
   function isPresetValidForGameMode(preset, gameMode = null)
   {
-    let unitNames = ::getTblValue("units", preset, null)
+    local unitNames = ::getTblValue("units", preset, null)
     if (unitNames == null)
       return false
     if (gameMode == null)
       gameMode = getCurrentGameMode()
-    let checkedUnitTypes = ::game_mode_manager.getRequiredUnitTypes(gameMode)
+    local checkedUnitTypes = ::game_mode_manager.getRequiredUnitTypes(gameMode)
     foreach (unitName in unitNames)
     {
-      let unit = ::getAircraftByName(unitName)
+      local unit = ::getAircraftByName(unitName)
       if (::isInArray(unit?.esUnitType, checkedUnitTypes)
         && isUnitAllowedForGameMode(unit, gameMode))
         return true
@@ -452,7 +485,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
   function findPresetValidForGameMode(countryId, gameMode = null /* if null then current game mode*/)
   {
-    let presets = ::getTblValue(countryId, ::slotbarPresets.presets, null)
+    local presets = ::getTblValue(countryId, ::slotbarPresets.presets, null)
     if (presets == null)
       return null
     foreach (preset in presets)
@@ -473,7 +506,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
   function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -1)
   {
     //Step 0. Check current queue for gamemode.
-    let queue = ::queues.findQueue(null, queueMask, true)
+    local queue = ::queues.findQueue(null, queueMask, true)
     if (queue && (queue.name in _gameModeById))
       return queue.name
 
@@ -502,19 +535,19 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     }
 
     // Step 4. Attempting to retrieve current game mode id from newbie event.
-    let event = ::my_stats.getNextNewbieEvent(null, null, true)
-    let idFromEvent = ::getTblValue("name", event, null)
+    local event = ::my_stats.getNextNewbieEvent(null, null, true)
+    local idFromEvent = ::getTblValue("name", event, null)
     if (idFromEvent in _gameModeById)
       return idFromEvent
 
     // Step 5. Attempting to get unit type from currently selected unit.
-    let unit = ::get_cur_slotbar_unit()
+    local unit = ::get_cur_slotbar_unit()
     if (unitType == ::ES_UNIT_TYPE_INVALID && unit != null)
         unitType = ::get_es_unit_type(unit)
 
     // Step 6. Newbie event not found. If player is newbie and he has
     //         valid unit type we select easiest game mode.
-    let firstUnitType = getFirstChosenUnitType(::ES_UNIT_TYPE_INVALID)
+    local firstUnitType = getFirstChosenUnitType(::ES_UNIT_TYPE_INVALID)
     if (unitType == ::ES_UNIT_TYPE_INVALID
         && firstUnitType != ::ES_UNIT_TYPE_INVALID
         && ::my_stats.isMeNewbie())
@@ -526,7 +559,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       gameModeByUnitType = getGameModeByUnitType(unitType, preferredDiffCode, true)
     if (gameModeByUnitType == null)
       gameModeByUnitType = getGameModeByUnitType(unitType, -1, true)
-    let idFromUnitType = gameModeByUnitType != null ? gameModeByUnitType.id : null
+    local idFromUnitType = gameModeByUnitType != null ? gameModeByUnitType.id : null
     if (idFromUnitType != null)
       return idFromUnitType
 
@@ -600,11 +633,11 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     if (!event)
        return
 
-    let isForClan = ::events.isEventForClan(event)
+    local isForClan = ::events.isEventForClan(event)
     if (isForClan && !::has_feature("Clans"))
       return
 
-    let gameMode = {
+    local gameMode = {
       id = event.name
       source = event
       eventForSquad = null
@@ -624,7 +657,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       getEvent = function() { return (::g_squad_manager.isNotAloneOnline() && eventForSquad) || event }
       getTooltipText = function()
       {
-        let ev = getEvent()
+        local ev = getEvent()
         return ev ? ::events.getEventDescriptionText(ev, null, true) : ""
       }
       unitTypes = null
@@ -632,7 +665,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       inactiveColor = null
     }
     gameMode.unitTypes = _getUnitTypesByGameMode(gameMode, false)
-    let reqUnitTypes = _getUnitTypesByGameMode(gameMode, false, true)
+    local reqUnitTypes = _getUnitTypesByGameMode(gameMode, false, true)
     gameMode.reqUnitTypes = reqUnitTypes
     gameMode.inactiveColor = function() {
       local inactiveColor = !::events.checkEventFeature(event, true)
@@ -652,7 +685,7 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
   function _createCustomGameMode(gm)
   {
-    let gameMode = {
+    local gameMode = {
       id = gm.id
       source = null
       type = RB_GM_TYPE.CUSTOM
@@ -682,23 +715,23 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
   {
     _clearGameModes()
 
-    let newbieGmByUnitType = {}
+    local newbieGmByUnitType = {}
     foreach (unitType in unitTypes.types)
     {
-      let event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
+      local event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
       if (event)
         newbieGmByUnitType[unitType.esUnitType] <- _createEventGameMode(event)
     }
 
     for (local idx = 0; idx < ::custom_game_modes_battles.len(); idx++)
     {
-      let dm = ::custom_game_modes_battles[idx]
+      local dm = ::custom_game_modes_battles[idx]
       if (!("isVisible" in dm) || dm.isVisible())
             _createCustomGameMode(dm)
     }
 
     foreach (eventId in ::events.getEventsForGcDrawer()) {
-      let event = ::events.getEvent(eventId)
+      local event = ::events.getEvent(eventId)
       local skip = false
       foreach (unitType, newbieGm in newbieGmByUnitType) {
         if (::events.isUnitTypeAvailable(event, unitType) && ::events.isUnitTypeRequired(event, unitType, true)) {
@@ -718,11 +751,11 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
   function _updateCurrentGameModeId()
   {
-    let currentGameModeId = findCurrentGameModeId()
+    local currentGameModeId = findCurrentGameModeId()
     if (currentGameModeId != null)
     {
       // This activates saving to profile on first update after profile loaded.
-      let save = _currentGameModeId == null && ::events.eventsLoaded
+      local save = _currentGameModeId == null && ::events.eventsLoaded
       _setCurrentGameModeId(currentGameModeId, save)
     }
   }
@@ -732,12 +765,12 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     if (!gameMode)
       return []
 
-    let filteredUnitTypes = ::u.filter(unitTypes.types,
+    local filteredUnitTypes = ::u.filter(unitTypes.types,
       @(unitType) isOnlyAvailable ? unitType.isAvailable() : unitType)
     if (gameMode.type != RB_GM_TYPE.EVENT)
       return ::u.map(filteredUnitTypes, @(unitType) unitType.esUnitType)
 
-    let event = getGameModeEvent(gameMode)
+    local event = getGameModeEvent(gameMode)
     return ::u.map(
       ::u.filter(filteredUnitTypes,
         @(unitType) needReqUnitType ? ::events.isUnitTypeRequired(event, unitType.esUnitType)
@@ -748,19 +781,19 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
   function getGameModesPartitions()
   {
-    let partitions = []
+    local partitions = []
     foreach (partitionData in ::game_mode_select_partitions_data)
     {
-      let partition = {
+      local partition = {
         separator = partitionData.forClan
         gameModes = ::game_mode_manager.getGameModes(
           ::ES_UNIT_TYPE_INVALID,
           (@(partitionData) function (gameMode) {
-            let checkForClan = gameMode.forClan == partitionData.forClan
-            let checkDiffCode = partitionData.diffCode == -1 || gameMode.diffCode == partitionData.diffCode
-            let checkSkipFeatured = !partitionData.skipFeatured || gameMode.displayType != ::g_event_display_type.FEATURED
-            let isPVEBattle = gameMode.displayType == ::g_event_display_type.PVE_BATTLE
-            let checkSkipEnableOnDebug = !partitionData.skipEnableOnDebug || !gameMode.enableOnDebug
+            local checkForClan = gameMode.forClan == partitionData.forClan
+            local checkDiffCode = partitionData.diffCode == -1 || gameMode.diffCode == partitionData.diffCode
+            local checkSkipFeatured = !partitionData.skipFeatured || gameMode.displayType != ::g_event_display_type.FEATURED
+            local isPVEBattle = gameMode.displayType == ::g_event_display_type.PVE_BATTLE
+            local checkSkipEnableOnDebug = !partitionData.skipEnableOnDebug || !gameMode.enableOnDebug
             return checkForClan && checkDiffCode && checkSkipFeatured
               && checkSkipEnableOnDebug && !isPVEBattle && !gameMode.forClan
           })(partitionData)
@@ -828,10 +861,10 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     if (!::g_login.isLoggedIn())
       return false
 
-    let blk = ::loadLocalByAccount(SEEN_MODES_SAVE_PATH, ::DataBlock())
+    local blk = ::loadLocalByAccount(SEEN_MODES_SAVE_PATH, ::DataBlock())
     for (local i = 0; i < blk.paramCount(); i++)
     {
-      let id = blk.getParamName(i)
+      local id = blk.getParamName(i)
       isSeenByGameModeId[id] <- blk.getParamValue(i)
     }
 
@@ -877,17 +910,17 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     if (!seenShowingGameModesInited)
       return //data not loaded yet
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     foreach(gameMode in getAllVisibleGameModes())
     {
-      let id = getGameModeItemId(gameMode.id)
+      local id = getGameModeItemId(gameMode.id)
       if (id in isSeenByGameModeId)
         blk[id] = isSeenByGameModeId[id]
     }
 
     foreach (mode in ::featured_modes)
     {
-      let id = getGameModeItemId(mode.modeId)
+      local id = getGameModeItemId(mode.modeId)
       if (id in isSeenByGameModeId)
         blk[id] = isSeenByGameModeId[id]
     }
@@ -897,8 +930,8 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 
   function getAllVisibleGameModes()
   {
-    let gameModePartitions = ::game_mode_manager.getGameModesPartitions()
-    let gameModes = []
+    local gameModePartitions = ::game_mode_manager.getGameModesPartitions()
+    local gameModes = []
     foreach(partition in gameModePartitions)
       gameModes.extend(partition.gameModes)
 

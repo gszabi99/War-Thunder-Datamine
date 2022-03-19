@@ -1,10 +1,10 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local sendingList = {}
 
-let function updateSendingList()
+local function updateSendingList()
 {
-  let newList = ::inventory_get_transfer_items_by_state(INVENTORY_STATE_SENDING)
+  local newList = ::inventory_get_transfer_items_by_state(INVENTORY_STATE_SENDING)
 
   local isChanged = newList.len() != sendingList.len()
   if (!isChanged)

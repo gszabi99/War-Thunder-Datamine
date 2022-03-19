@@ -1,11 +1,12 @@
-let stdMath = require("%sqstd/math.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+local stdMath = require("std/math.nut")
+local { cutPrefix } = require("std/string.nut")
+local clustersModule = require("scripts/clusterSelect.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -31,10 +32,10 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "%gui/events/eventsModal.blk"
+  sceneBlkName   = "gui/events/eventsModal.blk"
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
 
   event = null
@@ -101,7 +102,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
     eventDescription = ::create_event_description(scene)
     showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
-    let obj = showSceneBtn("only_available_rooms", true)
+    local obj = showSceneBtn("only_available_rooms", true)
     obj.setValue(showOnlyAvailableRooms)
     refreshList()
     fillRoomsList()
@@ -122,17 +123,17 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function initFrameOverEventsWnd()
   {
-    let frameObj = scene.findObject("wnd_frame")
+    local frameObj = scene.findObject("wnd_frame")
     frameObj.width = "1@slotbarWidthFull - 6@framePadding"
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
 
-    let roomsListBtn = showSceneBtn("btn_rooms_list", true)
+    local roomsListBtn = showSceneBtn("btn_rooms_list", true)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
     guiScene.applyPendingChanges(false)
 
-    let pos = roomsListBtn.getPosRC()
+    local pos = roomsListBtn.getPosRC()
     roomsListBtn.noMargin = "yes"
     pos[0] -= guiScene.calcString("3@framePadding", null)
     pos[1] += guiScene.calcString("1@frameFooterHeight", null)
@@ -154,15 +155,15 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function onItemSelectAction()
   {
-    let selItemIdx = roomsListObj.getValue()
+    local selItemIdx = roomsListObj.getValue()
     if (selItemIdx < 0 || selItemIdx >= roomsListObj.childrenCount())
       return
-    let selItemObj = roomsListObj.getChild(selItemIdx)
+    local selItemObj = roomsListObj.getChild(selItemIdx)
     if (!::check_obj(selItemObj) || !selItemObj?.id)
       return
 
-    let selChapterId = getChapterNameByObjId(selItemObj.id)
-    let selRoomId = getRoomIdByObjId(selItemObj.id)
+    local selChapterId = getChapterNameByObjId(selItemObj.id)
+    local selRoomId = getRoomIdByObjId(selItemObj.id)
 
     if (!isSelectedRoomDataChanged && selChapterId == curChapterId && selRoomId == curRoomId)
       return
@@ -194,8 +195,10 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
 
-    let configForStatistic = {
+    local configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
       economicName = ::events.getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
@@ -243,7 +246,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateClusters()
   {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button_text"))
+    clustersModule.updateClusters(scene.findObject("cluster_select_button"))
   }
 
   function onEventSquadStatusChanged(params)
@@ -268,23 +271,23 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateButtons()
   {
-    let hasRoom = curRoomId.len() != 0
+    local hasRoom = curRoomId.len() != 0
 
-    let isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
+    local isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
     showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
 
-    let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
+    local reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = ::loc("multiplayer/no_room_selected")
 
-    let roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
-    let isReady = ::g_squad_manager.isMeReady()
-    let isSquadMember = ::g_squad_manager.isSquadMember()
+    local roomMGM = ::SessionLobby.getMGameMode(getCurRoom())
+    local isReady = ::g_squad_manager.isMeReady()
+    local isSquadMember = ::g_squad_manager.isSquadMember()
 
-    let joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
+    local joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
-    let availTeams = ::events.getAvailableTeams(roomMGM)
+    local availTeams = ::events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
       startText = ::loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
@@ -294,21 +297,21 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     else
       startText = ::loc("events/join_event")
 
-    let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
+    local battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
       startText += ::format(" (%s)", battlePriceText)
 
     setColoredDoubleTextToButton(scene, "btn_join_event", startText)
-    let reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
+    local reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 
     showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
 
-    let isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
-    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
+    local isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
+    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
-      let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
+      local isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
       startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
@@ -326,8 +329,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false)
   {
-    let roomsList = roomsListData.getList()
-    let isFlagsUpdated = updateRoomsFlags(roomsList)
+    local roomsList = roomsListData.getList()
+    local isFlagsUpdated = updateRoomsFlags(roomsList)
     if (isUpdateOnlyWhenFlagsChanged && !isFlagsUpdated)
       return
 
@@ -345,7 +348,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function getMGameModeFlags(mGameMode, room, isMultiSlot)
   {
     local res = eRoomFlags.NONE
-    let teams = ::events.getAvailableTeams(mGameMode)
+    local teams = ::events.getAvailableTeams(mGameMode)
     if (teams.len() == 0)
       return res
     res = res | eRoomFlags.HAS_COUNTRY
@@ -366,7 +369,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
 
     if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader()) {
-      let membersTeams = ::events.getMembersTeamsData(event, room, teams)
+      local membersTeams = ::events.getMembersTeamsData(event, room, teams)
       if (!(membersTeams?.haveRestrictions ?? false))
         res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
     }
@@ -379,29 +382,29 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function updateRoomsFlags(roomsList)
   {
     local hasChanges = false
-    let isMultiSlot = ::events.isEventMultiSlotEnabled(event)
-    let needCheckAvailable = ::events.checkPlayersCrafts(event)
-    let teamSize = ::events.getMaxTeamSize(event)
+    local isMultiSlot = ::events.isEventMultiSlotEnabled(event)
+    local needCheckAvailable = ::events.checkPlayersCrafts(event)
+    local teamSize = ::events.getMaxTeamSize(event)
     foreach(room in roomsList)
     {
-      let wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      local wasFlags = ::getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
-      let mGameMode = ::events.getMGameMode(event, room)
+      local mGameMode = ::events.getMGameMode(event, room)
 
-      let countTbl = ::SessionLobby.getMembersCountByTeams(room)
+      local countTbl = ::SessionLobby.getMembersCountByTeams(room)
       if (countTbl.total < 2 * teamSize)
       {
         flags = flags | eRoomFlags.HAS_PLACES
-        let availTeams = ::events.getAvailableTeams(mGameMode)
+        local availTeams = ::events.getAvailableTeams(mGameMode)
         if (availTeams.len() > 1 || (availTeams.len() && countTbl[availTeams[0]] < teamSize))
           flags = flags | eRoomFlags.HAS_PLACES_IN_MY_TEAM
       }
 
-      let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+      local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
       if (reqUnits)
         foreach(rule in reqUnits)
         {
-          let tier = ::events.getTierNumByRule(rule)
+          local tier = ::events.getTierNumByRule(rule)
           if (tier > 0)
           {
             flags = flags | (eRoomFlags.ROOM_TIER >> (::min(tier, 5) - 1))
@@ -422,7 +425,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function isLockedByMask(flags) {
-    let mustHaveMask = eRoomFlags.HAS_COUNTRY
+    local mustHaveMask = eRoomFlags.HAS_COUNTRY
                        | eRoomFlags.HAS_AVAILABLE_UNITS | eRoomFlags.HAS_REQUIRED_UNIT
                        | eRoomFlags.HAS_PLACES | eRoomFlags.HAS_PLACES_IN_MY_TEAM
                        | eRoomFlags.IS_ALLOWED_BY_BALANCE | eRoomFlags.AVAILABLE_FOR_SQUAD
@@ -432,20 +435,20 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function getRoomNameView(room)
   {
-    let roomFlags = room[EROOM_FLAGS_KEY_NAME]
-    let isLocked = isLockedByMask(roomFlags)
+    local roomFlags = room[EROOM_FLAGS_KEY_NAME]
+    local isLocked = isLockedByMask(roomFlags)
 
     local text = ::SessionLobby.getMissionNameLoc(room)
-    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+    local reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
     if (reqUnits)
     {
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
 
-      let rankText = ::events.getTierTextByRules(reqUnits)
-      let ruleTexts = ::u.map(reqUnits, getRuleText)
-      let rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
+      local rankText = ::events.getTierTextByRules(reqUnits)
+      local ruleTexts = ::u.map(reqUnits, getRuleText)
+      local rulesText = ::colorize(color, ::g_string.implode(ruleTexts, ::loc("ui/comma")))
 
       text = ::colorize(color, rankText) + " " + text
       if (rulesText.len())
@@ -467,7 +470,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateListInfo(visibleRoomsAmount)
   {
-    let needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
+    local needWaitIcon = !visibleRoomsAmount && roomsListData.isInUpdate
     scene.findObject("items_list_wait_icon").show(needWaitIcon)
 
     local infoText = ""
@@ -480,7 +483,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function getCurrentEdiff()
   {
-    let ediff = ::events.getEDiffByEvent(event)
+    local ediff = ::events.getEDiffByEvent(event)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
@@ -495,17 +498,17 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     chaptersTree.clear()
     foreach (idx, room in roomsList)
     {
-      let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
-      let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
-      let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
-      let itemView = {
+      local chapterGameMode = ::SessionLobby.getMGameMode(room, true)
+      local isCustomMode = ::events.isCustomGameMode(chapterGameMode)
+      local isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
+      local itemView = {
         itemText = isSeparateCustomRoomsList
           ? ::colorize("activeTextColor", ::loc("events/playersRooms"))
           : null
       }
       local name = ""
       foreach(side in ::events.getSidesList(chapterGameMode)) {
-        let countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
+        local countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
@@ -514,7 +517,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         }
       }
 
-      let foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
+      local foundChapter = chaptersTree.findvalue(@(chapter) chapter.name == name)
       if (foundChapter == null)
       {
         chaptersTree.append({
@@ -543,18 +546,18 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     updateChaptersTree(roomsList)
 
     selectedIdx = 1 //select first room by default
-    let view = { items = [] }
+    local view = { items = [] }
 
     foreach (idx, chapter in chaptersTree)
     {
-      let haveRooms = chapter.rooms.len() > 0
+      local haveRooms = chapter.rooms.len() > 0
       if (!haveRooms || (showOnlyAvailableRooms && isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
         continue
 
       if (chapter.name == curChapterId)
         selectedIdx = view.items.len()
 
-      let listRow = {
+      local listRow = {
         id = chapter.name
         isCollapsable = true
         isNeedOnHover = ::show_console_buttons
@@ -566,7 +569,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         if (showOnlyAvailableRooms && isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
           continue
 
-        let roomId = room.roomId
+        local roomId = room.roomId
         if (roomId == curRoomId || roomId == roomIdToSelect)
         {
           selectedIdx = view.items.len()
@@ -574,7 +577,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
             curRoomId = roomIdToSelect
         }
 
-        let nameView = getRoomNameView(room)
+        local nameView = getRoomNameView(room)
 
         view.items.append({
           id = chapter.name + ROOM_ID_SPLIT + roomId
@@ -590,9 +593,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       return updateWindow()
 
     viewRoomList = view
-    let data = ::handyman.renderCached("%gui/events/eventRoomsList", view)
+    local data = ::handyman.renderCached("gui/events/eventRoomsList", view)
     guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
-    let roomsCount = roomsListObj.childrenCount()
+    local roomsCount = roomsListObj.childrenCount()
     for (local i = 0; i < roomsCount; i++)
       roomsListObj.getChild(i).setIntProp(listIdxPID, i)
 
@@ -635,14 +638,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!obj)
       return
 
-    let id = obj.id
+    local id = obj.id
     if (id.len() <= 4 || id.slice(0, 4) != "btn_")
       return
 
-    let listItemCount = roomsListObj.childrenCount()
+    local listItemCount = roomsListObj.childrenCount()
     for (local i = 0; i < listItemCount; i++)
     {
-      let listItemId = roomsListObj.getChild(i).id
+      local listItemId = roomsListObj.getChild(i).id
       if (listItemId == id.slice(4))
       {
         collapse(listItemId)
@@ -659,10 +662,10 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
     {
-      let obj = roomsListObj.getChild(i)
-      let chapterName = getChapterNameByObjId(obj.id)
+      local obj = roomsListObj.getChild(i)
+      local chapterName = getChapterNameByObjId(obj.id)
 
-      let isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
+      local isCollapsedChapter = ::isInArray(chapterName, collapsedChapterNamesArray)
       if (!isCollapsedChapter)
         continue
 
@@ -678,8 +681,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function updateCollapseChapterStatus(chapterObj)
   {
-    let index = ::find_in_array(collapsedChapterNamesArray, chapterObj.id)
-    let isCollapse = index < 0
+    local index = ::find_in_array(collapsedChapterNamesArray, chapterObj.id)
+    local isCollapse = index < 0
     if (isCollapse)
       collapsedChapterNamesArray.append(chapterObj.id)
     else
@@ -693,13 +696,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (!::check_obj(roomsListObj))
       return
 
-    let chapterId = itemName && getChapterNameByObjId(itemName)
+    local chapterId = itemName && getChapterNameByObjId(itemName)
     local newValue = -1
 
     guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < roomsListObj.childrenCount(); i++)
     {
-      let obj = roomsListObj.getChild(i)
+      local obj = roomsListObj.getChild(i)
       if (obj.id == itemName) //is chapter block, can collapse
       {
         updateCollapseChapterStatus(obj)
@@ -707,11 +710,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         continue
       }
 
-      let iChapter = getChapterNameByObjId(obj.id)
+      local iChapter = getChapterNameByObjId(obj.id)
       if (iChapter != chapterId)
         continue
 
-      let show = !::isInArray(iChapter, collapsedChapterNamesArray)
+      local show = !::isInArray(iChapter, collapsedChapterNamesArray)
       obj.enable(show)
       obj.show(show)
     }
@@ -728,7 +731,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
   function getRoomIdByObjId(id)
   {
-    let result = ROOM_REGEXP.replace("", id)
+    local result = ROOM_REGEXP.replace("", id)
     if (result == id)
       return ""
     return result
@@ -789,9 +792,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         !showMsgboxIfSoundModsNotAllowed(event))
       return
 
-    let diffCode = ::events.getEventDiffCode(event)
-    let unitTypeMask = ::events.getEventUnitTypesMask(event)
-    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
+    local diffCode = ::events.getEventDiffCode(event)
+    local unitTypeMask = ::events.getEventUnitTypesMask(event)
+    local checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if(checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
@@ -813,8 +816,8 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   {
     if (!::show_console_buttons)
       return
-    let isHover = obj.isHovered()
-    let idx = obj.getIntProp(listIdxPID, -1)
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredIdx == idx))
       return
     hoveredIdx = isHover ? idx : -1
@@ -841,7 +844,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   function onQueueOptions() {}
 
   function onShowOnlyAvailableRooms(obj) {
-    let newValue = obj.getValue()
+    local newValue = obj.getValue()
     if (newValue == showOnlyAvailableRooms)
       return
 

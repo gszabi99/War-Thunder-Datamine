@@ -1,11 +1,11 @@
-let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::gui_handlers.WwObjectivesInfo <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WwObjectivesInfo extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/worldWar/objectivesInfoWindow"
+  sceneBlkName = "gui/modalSceneWithGamercard.blk"
+  sceneTplName = "gui/worldWar/objectivesInfoWindow"
 
   staticBlk = null
   dynamicBlk = null
@@ -40,18 +40,18 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function markSeenCurObjective()
   {
-    let curOperation = getOperationById(::ww_get_operation_id())
+    local curOperation = getOperationById(::ww_get_operation_id())
     if (curOperation)
       seenWWMapsObjective.markSeen(curOperation.getMapId())
   }
 
   function initSideBlock(side, objId)
   {
-    let operationBlockObj = scene.findObject(objId)
+    local operationBlockObj = scene.findObject(objId)
     if (!::checkObj(operationBlockObj))
       return
 
-    let objectiveHandler = ::handlersManager.loadHandler(::gui_handlers.wwObjective, {
+    local objectiveHandler = ::handlersManager.loadHandler(::gui_handlers.wwObjective, {
       scene = operationBlockObj,
       side = side,
       needShowOperationDesc = false,
@@ -68,8 +68,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function getTeamsData()
   {
-    let mySide = ::ww_get_player_side()
-    let teams = []
+    local mySide = ::ww_get_player_side()
+    local teams = []
     foreach (side in ::g_world_war.getSidesOrder())
     {
       teams.append({

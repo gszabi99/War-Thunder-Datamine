@@ -1,4 +1,4 @@
-let missionsListCampaignId = ::Watched(null)
+local missionsListCampaignId = ::Watched(null)
 
 return {
   missionsListCampaignId = missionsListCampaignId

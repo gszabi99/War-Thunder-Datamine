@@ -1,4 +1,4 @@
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -9,7 +9,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-::gui_handlers.ChangeCountry <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   currentCountry = null
@@ -22,7 +22,7 @@ enum ChangeCountryAction {
   function initScreen()
   {
     availableCountries = getAvailableCountries()
-    let view = {
+    local view = {
       headerText = hasUnlockedAvailableCountry()
         ? ::loc("mainmenu/coutryChoice")
         : ::loc("mainmenu/countryChoice/changeMode")
@@ -36,7 +36,7 @@ enum ChangeCountryAction {
       shopFilterItems = createShopFilterItems(availableCountries)
     }
 
-    let data = ::handyman.renderCached("%gui/changeCountry", view)
+    local data = ::handyman.renderCached("gui/changeCountry", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
 
     buttonObject = getObj("btn_apply")
@@ -45,7 +45,7 @@ enum ChangeCountryAction {
     if (buttonObject != null)
       buttonObject.enable(false)
 
-    let listObj = scene.findObject("countries_list")
+    local listObj = scene.findObject("countries_list")
     if (::checkObj(listObj))
     {
       listObj.setValue(getValueByCountry(currentCountry))
@@ -69,10 +69,10 @@ enum ChangeCountryAction {
 
   function onCountrySelect(obj)
   {
-    let country = getCountryByValue(obj.getValue())
+    local country = getCountryByValue(obj.getValue())
     if (country == null)
       return
-    let countryUnlocked = isCountryUnlocked(country)
+    local countryUnlocked = isCountryUnlocked(country)
     currentCountry = countryUnlocked ? country : null
     if (::checkObj(buttonObject))
       buttonObject.enable(countryUnlocked || !hasUnlockedAvailableCountry())
@@ -97,10 +97,10 @@ enum ChangeCountryAction {
 
   function createShopFilterItems(countries)
   {
-    let shopFilterItems = []
+    local shopFilterItems = []
     for (local i = 0; i < countries.len(); ++i)
     {
-      let country = countries[i]
+      local country = countries[i]
       shopFilterItems.append({
         shopFilterId = country
         shopFilterText = ::loc(country)
@@ -127,9 +127,9 @@ enum ChangeCountryAction {
    */
   function getAvailableCountries()
   {
-    let res = []
-    let currentMode = ::game_mode_manager.getCurrentGameMode()
-    let source = ::getTblValue("source", currentMode, {})
+    local res = []
+    local currentMode = ::game_mode_manager.getCurrentGameMode()
+    local source = ::getTblValue("source", currentMode, {})
     foreach (country in shopCountriesList)
     {
       if (::events.isCountryAvailable(source, country))

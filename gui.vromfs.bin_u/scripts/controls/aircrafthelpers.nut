@@ -1,4 +1,4 @@
-let globalEnv = require("globalEnv")
+local globalEnv = require("globalEnv")
 
 ::g_aircraft_helpers <- {
   /* PRIVATE */
@@ -20,7 +20,7 @@ let globalEnv = require("globalEnv")
   // Set option and call change handler if changed
   function setOptionValue(optionId, newValue)
   {
-    let oldValue = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
+    local oldValue = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
     if (oldValue == newValue)
       return
     ::set_gui_option_in_mode(optionId, newValue, ::OPTIONS_MODE_GAMEPLAY)
@@ -46,7 +46,7 @@ let globalEnv = require("globalEnv")
     isHelpersChangePerformed = true
 
     // Get current options values
-    let options = {}
+    local options = {}
     if (!forceUpdateFromPreset)
       foreach (name, optionId in controlHelpersOptions)
         options[name] <- ::get_gui_option_in_mode(
@@ -54,7 +54,7 @@ let globalEnv = require("globalEnv")
     else
       foreach (name, optionId in controlHelpersOptions)
         options[name] <- null
-    let prevOptions = clone options
+    local prevOptions = clone options
 
     // Synchronize mouseUsage and mouseUsageNoAim
     if (options.mouseUsage != AIR_MOUSE_USAGE.AIM)
@@ -155,7 +155,7 @@ let globalEnv = require("globalEnv")
   function getPresetMouseUsage()
   {
     // Load current mouse usage from used preset
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
 
     if (::getTblValue("mouseJoystick", curPreset.params))
       return AIR_MOUSE_USAGE.JOYSTICK
@@ -171,8 +171,8 @@ let globalEnv = require("globalEnv")
   // Update mouse usage in axes params according to helpers options
   function updatePresetMouseUsage()
   {
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let mouseUsageNoAim = ::get_gui_option_in_mode(
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local mouseUsageNoAim = ::get_gui_option_in_mode(
       ::USEROPT_MOUSE_USAGE_NO_AIM, ::OPTIONS_MODE_GAMEPLAY)
 
     // Do not update mouse usage if it not chagned

@@ -1,4 +1,4 @@
-::queue_stats_versions.StatsVer1 <- class extends ::queue_stats_versions.Base
+class ::queue_stats_versions.StatsVer1 extends ::queue_stats_versions.Base
 {
   queueWeak = null //need to able recalc some stats and convertion to countries list from teams list
 
@@ -22,11 +22,11 @@
     countriesQueueTable = {}
     maxClusterName = ""
     local playersOnMaxCluster = -1
-    let event = queueWeak && ::queues.getQueueEvent(queueWeak)
+    local event = queueWeak && ::queues.getQueueEvent(queueWeak)
 
     foreach(cluster, queueInfo in source)
     {
-      let infoByTeams = {}
+      local infoByTeams = {}
       local playersCount = 0
       foreach(teamName in teamNamesList)
       {
@@ -49,11 +49,11 @@
 
   function gatherTeamStats(queueInfoTeam)
   {
-    let res = { playersCount = 0 }
+    local res = { playersCount = 0 }
     if (!queueInfoTeam)
       return res
 
-    let tiers = ::getTblValue("tiers", queueInfoTeam)
+    local tiers = ::getTblValue("tiers", queueInfoTeam)
     if (tiers)
       foreach(rank, value in tiers)
         res[rank] <- value
@@ -73,12 +73,12 @@
 
   function gatherClansData(queueInfo)
   {
-    let teamInfo = ::getTblValue("teamA", queueInfo) //clans are symmetric, so all data in teamA
-    let clansList = ::getTblValue("clans", teamInfo)
+    local teamInfo = ::getTblValue("teamA", queueInfo) //clans are symmetric, so all data in teamA
+    local clansList = ::getTblValue("clans", teamInfo)
     if (!clansList)
       return false
 
-    let myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), clansList)
+    local myClanInfo = ::getTblValue(::clan_get_my_clan_tag(), clansList)
     if (myClanInfo)
       myClanQueueTable = clone myClanInfo
 
@@ -97,13 +97,13 @@
 
   function calcCountriesTableByQueueInfo(infoByTeams, event)
   {
-    let res = {}
+    local res = {}
     foreach(teamNum in ::events.getSidesList(event))
     {
-      let teamData = ::events.getTeamData(event, teamNum)
-      let teamCountries = ::events.getCountries(teamData)
-      let teamName = ::events.getTeamName(teamNum)
-      let teamTable = ::getTblValue(teamName, infoByTeams)
+      local teamData = ::events.getTeamData(event, teamNum)
+      local teamCountries = ::events.getCountries(teamData)
+      local teamName = ::events.getTeamName(teamNum)
+      local teamTable = ::getTblValue(teamName, infoByTeams)
 
       foreach(country in teamCountries)
       {

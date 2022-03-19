@@ -1,5 +1,5 @@
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::exportUnitInfo <- function exportUnitInfo(params)
 {
@@ -127,7 +127,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
   function getFullPath()
   {
-    let relPath = ::u.isEmpty(path) ? "" : (path + "/")
+    local relPath = ::u.isEmpty(path) ? "" : (path + "/")
     return ::format("%sunitInfo%s.blk", relPath, curLang)
   }
 
@@ -217,28 +217,28 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
         return check_unit_mods_update(curUnit)
     }
 
-    let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
+    local groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
 
-    let armyId = curUnit.unitType.armyId
+    local armyId = curUnit.unitType.armyId
 
-    let countryId = curUnit.shopCountry
+    local countryId = curUnit.shopCountry
 
     if(countryId == null || countryId == "")
       return true;
 
-    let rankId = curUnit.rank.tostring()
+    local rankId = curUnit.rank.tostring()
 
-    let unitBlk = ::DataBlock()
+    local unitBlk = ::DataBlock()
 
     foreach(infoType in ::g_unit_info_type.types)
     {
-      let blk = infoType.exportToDataBlock(curUnit)
+      local blk = infoType.exportToDataBlock(curUnit)
       if(blk?.hide ?? false)
         continue
       unitBlk[infoType.id] = blk
     }
 
-    let targetBlk = fBlk.addBlock(groupId).addBlock(armyId).addBlock(countryId).addBlock(rankId)
+    local targetBlk = fBlk.addBlock(groupId).addBlock(armyId).addBlock(countryId).addBlock(rankId)
     targetBlk[curUnit.name] = unitBlk
     return true
   }

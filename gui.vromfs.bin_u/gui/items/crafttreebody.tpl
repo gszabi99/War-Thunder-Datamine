@@ -69,9 +69,9 @@ crafBodyBackground {
   <</separatorPos>>
 <</separators>>
 
-include "%gui/items/craftTreeItemBlock"
+include "gui/items/craftTreeItemBlock"
 
 <<#buttons>>
-  include "%gui/commonParts/button"
+  include "gui/commonParts/button"
 <</buttons>>
 

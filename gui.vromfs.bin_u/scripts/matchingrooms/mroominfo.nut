@@ -45,7 +45,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
       return
 
     lastRequestTime = ::dagor.getCurTime()
-    let cb = ::Callback(onRefreshCb, this)
+    local cb = ::Callback(onRefreshCb, this)
     ::matching_api_func("mrooms.get_room",
       function(p) { cb(p) },
       { roomId = roomId }

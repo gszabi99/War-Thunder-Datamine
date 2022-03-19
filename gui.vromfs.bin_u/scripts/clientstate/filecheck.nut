@@ -1,8 +1,8 @@
-let removeImgPostfixRegexpList = [
+local removeImgPostfixRegexpList = [
   regexp2("\\?P1$")
   regexp2("\\?x1ac$")
 ]
-let removeImgPrefixRegexp = regexp2("^#")
+local removeImgPrefixRegexp = regexp2("^#")
 
 local function isImagePrefetched(img)
 {
@@ -26,7 +26,7 @@ local function isImagePrefetched(img)
   return res
 }
 
-let function isAllBlkImagesPrefetched(blk)
+local function isAllBlkImagesPrefetched(blk)
 {
   local res = true
   foreach(tag in ["background-image", "foreground-image"])
@@ -35,7 +35,7 @@ let function isAllBlkImagesPrefetched(blk)
         if (!isImagePrefetched(img))
           res = false
 
-  let totalBlocks = blk.blockCount()
+  local totalBlocks = blk.blockCount()
   for(local i = 0; i < totalBlocks; i++)
     if (!isAllBlkImagesPrefetched(blk.getBlock(i)))
       res = false

@@ -1,24 +1,24 @@
-let { warbondsShopLevelByStages, hasBattlePass, seasonLevel
-} = require("%scripts/battlePass/seasonState.nut")
-let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
-} = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
-let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { BATTLE_PASS_CHALLENGE, ITEM } = require("%scripts/utils/genericTooltipTypes.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+local { warbondsShopLevelByStages, hasBattlePass, seasonLevel
+} = require("scripts/battlePass/seasonState.nut")
+local { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
+} = require("scripts/battlePass/unlocksRewardsState.nut")
+local { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
+local { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
+local { BATTLE_PASS_CHALLENGE, ITEM } = require("scripts/utils/genericTooltipTypes.nut")
+local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
 
-let overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
-let doubleWidthStagesIcon = ::Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])
+local overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
+local doubleWidthStagesIcon = ::Computed(@() basicUnlock.value?.meta.doubleWidthStageIcon ?? [])
 
-let getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
+local getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
   : "future"
 
-let function getPrizeStatus(unlock, stageIdx) {
-  let stage = stageIdx + 1
-  let lastRewardedStage = unlock.lastRewardedStage
+local function getPrizeStatus(unlock, stageIdx) {
+  local stage = stageIdx + 1
+  local lastRewardedStage = unlock.lastRewardedStage
   if (stage <= lastRewardedStage)
     return "received"
 
@@ -29,14 +29,14 @@ let function getPrizeStatus(unlock, stageIdx) {
    : "notAvailable"
 }
 
-let function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
+local function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
   if (unlock == null)
     return
-  let curStage = getStageByIndex(unlock, stageIdx)
-  let unlockId = unlock?.name
-  let isChallengeStage = stageChallenge != null
+  local curStage = getStageByIndex(unlock, stageIdx)
+  local unlockId = unlock?.name
+  local isChallengeStage = stageChallenge != null
   if (((curStage?.rewards.len() ?? 0) > 0) || isChallengeStage) {
-    let stage = stageIdx + 1
+    local stage = stageIdx + 1
     stagesArray.append(curStage.__merge({
       unlockId = unlockId
       stage = stage
@@ -50,24 +50,24 @@ let function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stage
   }
 }
 
-let seasonStages = ::Computed(function() {
-  let stagesCount = ::max(basicUnlock.value?.stages?.len() ?? 0,
+local seasonStages = ::Computed(function() {
+  local stagesCount = ::max(basicUnlock.value?.stages?.len() ?? 0,
     premiumUnlock.value?.stages?.len() ?? 0,
     seasonLevel.value + COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES)
-  let res = []
+  local res = []
   for(local i=0; i < stagesCount; i++) {
-    let stageChallenge = curSeasonChallengesByStage.value?[i+1]
+    local stageChallenge = curSeasonChallengesByStage.value?[i+1]
     addStageConfigWithRewardToList(res, basicUnlock.value, i, stageChallenge)
     addStageConfigWithRewardToList(res, premiumUnlock.value, i)
   }
   return res
 })
 
-let function getPreviewBtnView(item) {
+local function getPreviewBtnView(item) {
   if (!item?.canPreview())
     return null
 
-  let gcb = globalCallbacks.ITEM_PREVIEW
+  local gcb = globalCallbacks.ITEM_PREVIEW
   return {
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
@@ -76,24 +76,24 @@ let function getPreviewBtnView(item) {
   }
 }
 
-let function getChallengeTooltipId(stage, stageChallenge) {
+local function getChallengeTooltipId(stage, stageChallenge) {
   if (stageChallenge == null)
     return null
 
-  let challenge = curSeasonChallengesByStage.value?[stage]
+  local challenge = curSeasonChallengesByStage.value?[stage]
   if (challenge == null)
     return null
 
   return BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
 }
 
-let function getStageViewData(stageData, idxOnPage) {
-  let { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
-  let overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
-  let itemId = rewards?.keys()[0]
-  let item = itemId != null ? ::ItemsManager.findItemById(itemId.tointeger()) : null
-  let currentWarbond = ::g_warbonds.getCurrentWarbond()
-  let isChallengeStage = stageChallenge != null
+local function getStageViewData(stageData, idxOnPage) {
+  local { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
+  local overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
+  local itemId = rewards?.keys()[0]
+  local item = itemId != null ? ::ItemsManager.findItemById(itemId.tointeger()) : null
+  local currentWarbond = ::g_warbonds.getCurrentWarbond()
+  local isChallengeStage = stageChallenge != null
   return {
     holderId = unlockId
     rewardId = itemId

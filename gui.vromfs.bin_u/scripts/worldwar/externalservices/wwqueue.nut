@@ -1,7 +1,7 @@
-let { getMyClanOperation, isMyClanInQueue
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local { getMyClanOperation, isMyClanInQueue
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::WwQueue <- class
 {
@@ -30,7 +30,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function isMyClanJoined(country = null)
   {
-    let countries = getMyClanCountries()
+    local countries = getMyClanCountries()
     return country ? ::isInArray(country, countries) : countries.len() != 0
   }
 
@@ -55,7 +55,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function gatherMyClanDataOnce()
   {
-    let myClanId = ::clan_get_my_clan_id().tointeger()
+    local myClanId = ::clan_get_my_clan_id().tointeger()
     if (myClanId == cachedClanId)
       return
 
@@ -66,8 +66,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     myClanCountries = []
     foreach(country in shopCountriesList)
     {
-      let groups = getArmyGroupsByCountry(country)
-      let myGroup = groups && ::u.search(groups, (@(myClanId) function(ag) { return ::getTblValue("clanId", ag) == myClanId })(myClanId) )
+      local groups = getArmyGroupsByCountry(country)
+      local myGroup = groups && ::u.search(groups, (@(myClanId) function(ag) { return ::getTblValue("clanId", ag) == myClanId })(myClanId) )
       if (myGroup)
       {
         myClanCountries.append(country)
@@ -84,10 +84,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getArmyGroupsAmountByCountries()
   {
-    let res = {}
+    local res = {}
     foreach(country in shopCountriesList)
     {
-      let groups = getArmyGroupsByCountry(country)
+      local groups = getArmyGroupsByCountry(country)
       res[country] <- groups ? groups.len() : 0
     }
     return res
@@ -95,15 +95,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getClansNumberInQueueText()
   {
-    let clansInQueue = {}
+    local clansInQueue = {}
     foreach(country in shopCountriesList)
     {
-      let groups = getArmyGroupsByCountry(country)
+      local groups = getArmyGroupsByCountry(country)
       if (groups)
         foreach (memberData in groups)
           clansInQueue[memberData.clanId] <- true
     }
-    let clansInQueueNumber = clansInQueue.len()
+    local clansInQueueNumber = clansInQueue.len()
     return !clansInQueueNumber ? "" :
       ::loc("worldwar/clansInQueueTotal", {number = clansInQueueNumber})
   }
@@ -113,7 +113,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     local res = 0
     foreach(country in shopCountriesList)
     {
-      let groups = getArmyGroupsByCountry(country)
+      local groups = getArmyGroupsByCountry(country)
       if (groups)
         res += groups.len()
     }
@@ -137,7 +137,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCantJoinQueueReasonData(country = null)
   {
-    let res = getCantJoinAnyQueuesReasonData()
+    local res = getCantJoinAnyQueuesReasonData()
     if (! res.canJoin)
       return res
 
@@ -153,7 +153,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   static function getCantJoinAnyQueuesReasonData()
   {
-    let res = {
+    local res = {
       canJoin = false
       reasonText = ""
       hasRestrictClanRegister = false
@@ -167,7 +167,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       res.reasonText = ::loc("worldWar/onlyLeaderCanQueue")
     else
     {
-      let myClanType = ::g_clans.getMyClanType()
+      local myClanType = ::g_clans.getMyClanType()
       if (!::clan_can_register_to_ww())
       {
         res.reasonText = ::loc("clan/wwar/lacksMembers", {
@@ -186,7 +186,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function joinQueue(country, isSilence = true)
   {
-    let cantJoinReason = getCantJoinQueueReasonData(country)
+    local cantJoinReason = getCantJoinQueueReasonData(country)
     if (!cantJoinReason.canJoin)
     {
       if (!isSilence)
@@ -199,7 +199,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function _joinQueue(country)
   {
-    let requestBlk = ::DataBlock()
+    local requestBlk = ::DataBlock()
     requestBlk.mapName = map.name
     requestBlk.country = country
     actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk, { showProgressBox = true })
@@ -207,7 +207,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCantLeaveQueueReasonData()
   {
-    let res = {
+    local res = {
       canLeave = false
       reasonText = ""
     }
@@ -224,7 +224,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function leaveQueue(isSilence = true)
   {
-    let cantLeaveReason = getCantLeaveQueueReasonData()
+    local cantLeaveReason = getCantLeaveQueueReasonData()
     if (!cantLeaveReason.canLeave)
     {
       if (!isSilence)
@@ -237,7 +237,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function _leaveQueue()
   {
-    let requestBlk = ::DataBlock()
+    local requestBlk = ::DataBlock()
     requestBlk.mapName = map.name
     actionWithGlobalStatusRequest("cln_clan_unregister_ww_army_group", requestBlk, { showProgressBox = true })
   }

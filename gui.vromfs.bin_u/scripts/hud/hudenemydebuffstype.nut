@@ -1,6 +1,6 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let stdMath = require("%sqstd/math.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local stdMath = require("std/math.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 enum PART_STATE
 {
@@ -20,7 +20,7 @@ enum PART_STATE
 
 // ----------------------------------------------------------------------------------------------
 
-let getStateByBrokenDmAny = function(unitInfo, partName, partsArray)
+local getStateByBrokenDmAny = function(unitInfo, partName, partsArray)
 {
   if (unitInfo.isKilled)
     return PART_STATE.KILLED
@@ -28,7 +28,7 @@ let getStateByBrokenDmAny = function(unitInfo, partName, partsArray)
     return PART_STATE.KILLED
   foreach (partId in partsArray)
   {
-    let dmParts = unitInfo.parts?[partId].dmParts ?? {}
+    local dmParts = unitInfo.parts?[partId].dmParts ?? {}
     foreach (dmPart in dmParts)
       if (dmPart._hp == 0)
         return PART_STATE.KILLED
@@ -36,7 +36,7 @@ let getStateByBrokenDmAny = function(unitInfo, partName, partsArray)
   return PART_STATE.OFF
 }
 
-let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArray)
+local getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArray)
 {
   if (unitInfo.isKilled)
     return PART_STATE.KILLED
@@ -44,9 +44,9 @@ let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArra
     return PART_STATE.OFF
   foreach (partId in partsArray)
   {
-    let dmParts = unitInfo.parts?[partId].dmParts ?? {}
-    let isSingleDm = dmParts.len() == 1
-    let mainDms = isSingleDm ? [] : mainDmArray
+    local dmParts = unitInfo.parts?[partId].dmParts ?? {}
+    local isSingleDm = dmParts.len() == 1
+    local mainDms = isSingleDm ? [] : mainDmArray
     foreach (dmPart in dmParts)
       if ((isSingleDm || ::isInArray(dmPart.partDmName, mainDms)) && dmPart._hp == 0)
         return PART_STATE.KILLED
@@ -54,12 +54,12 @@ let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArra
   return PART_STATE.OFF
 }
 
-let countPartsAlive = function(partsArray, partsCfg)
+local countPartsAlive = function(partsArray, partsCfg)
 {
   local count = 0
   foreach (partId in partsArray)
   {
-    let dmParts = partsCfg?[partId].dmParts ?? {}
+    local dmParts = partsCfg?[partId].dmParts ?? {}
     foreach (dmPart in dmParts)
       if (dmPart._hp > 0)
         count++
@@ -67,7 +67,7 @@ let countPartsAlive = function(partsArray, partsCfg)
   return count
 }
 
-let countPartsTotal = function(partsArray, partsCfg)
+local countPartsTotal = function(partsArray, partsCfg)
 {
   local count = 0
   foreach (partId in partsArray)
@@ -75,12 +75,12 @@ let countPartsTotal = function(partsArray, partsCfg)
   return count
 }
 
-let getPercentValueByCounts = function(alive, total, aliveMin)
+local getPercentValueByCounts = function(alive, total, aliveMin)
 {
   return ::clamp(stdMath.lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
 }
 
-let getStateByValue = function(cur, vMax, crit, vMin)
+local getStateByValue = function(cur, vMax, crit, vMin)
 {
   return cur < vMin ? PART_STATE.KILLED
        : cur < crit ? PART_STATE.CRITICAL
@@ -145,14 +145,14 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     parts    = [ "tank_commander", "tank_driver", "tank_gunner", "tank_loader", "tank_machine_gunner" ]
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("crewTotal", camInfo, 0)
+      local total = ::getTblValue("crewTotal", camInfo, 0)
       if (!total)
         return null
-      let alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
+      local alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
         : ::getTblValue("crewAlive", camInfo, 0)
-      let aliveMin = ::getTblValue("crewAliveMin", camInfo, 0)
+      local aliveMin = ::getTblValue("crewAliveMin", camInfo, 0)
 
-      let isKill = unitInfo.isKilled
+      local isKill = unitInfo.isKilled
       local totalText = ::loc("ui/slash") + total
       if (!isKill)
         totalText = ::colorize("hitCamFadedColor", totalText)
@@ -168,7 +168,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let value = ::getTblValue("buoyancy", camInfo)
+      local value = ::getTblValue("buoyancy", camInfo)
       if (value == null)
         return null
       if (value > 0.995)
@@ -185,17 +185,17 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     parts = [ "ship_compartment" ]
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("compartmentsTotal", camInfo, 0)
+      local total = ::getTblValue("compartmentsTotal", camInfo, 0)
       if (!total)
         return null
-      let canUpdateFromParts = dmgParams != null && countPartsTotal(parts, unitInfo.parts) == total
-      let alive = canUpdateFromParts ? countPartsAlive(parts, unitInfo.parts)
+      local canUpdateFromParts = dmgParams != null && countPartsTotal(parts, unitInfo.parts) == total
+      local alive = canUpdateFromParts ? countPartsAlive(parts, unitInfo.parts)
         : ::getTblValue("compartmentsAlive", camInfo, 0)
-      let aliveMin = ::getTblValue("compartmentsAliveMin", camInfo, 0)
+      local aliveMin = ::getTblValue("compartmentsAliveMin", camInfo, 0)
       if (aliveMin > total)
         return null
 
-      let value = getPercentValueByCounts(alive, total, aliveMin)
+      local value = getPercentValueByCounts(alive, total, aliveMin)
       return {
         state = getStateByValue(alive, total, aliveMin + 1, aliveMin)
         label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
@@ -208,16 +208,16 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
     isUpdateOnKnownPartKillsOnly = false
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
-      let total = ::getTblValue("crewTotal", camInfo, 0)
+      local total = ::getTblValue("crewTotal", camInfo, 0)
       if (!total)
         return null
-      let alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
+      local alive = dmgParams ? ::getTblValue("crewAliveCount", dmgParams, 0)
         : ::getTblValue("crewAlive", camInfo, 0)
-      let minCrewCount = camInfo?.crewAliveMin ?? 0
-      let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
+      local minCrewCount = camInfo?.crewAliveMin ?? 0
+      local bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
 
-      let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
-      let percent = ::clamp(stdMath.lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
+      local maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
+      local percent = ::clamp(stdMath.lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
         label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(percent)
@@ -233,8 +233,8 @@ g_hud_enemy_debuffs.getTypeById <- function getTypeById(id)
 
 g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType)
 {
-  let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
-  let list = []
+  local unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
+  local list = []
   foreach (item in types)
     if (unitTypeBit & item.unitTypesMask)
       list.append(item)
@@ -243,8 +243,8 @@ g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(
 
 g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType)
 {
-  let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
-  let list = []
+  local unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
+  local list = []
   foreach (item in types)
     if (unitTypeBit & item.unitTypesMask)
       foreach (partName in item.parts)

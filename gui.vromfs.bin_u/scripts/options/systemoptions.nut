@@ -1,8 +1,8 @@
-let { is_stereo_configured, configure_stereo } = ::require_native("vr")
-let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { get_primary_screen_info } = require("dagor.system")
-let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
+local { is_stereo_configured, configure_stereo } = ::require_native("vr")
+local applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
+local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { get_primary_screen_info } = require("dagor.system")
+local { eachBlock, eachParam } = require("std/datablock.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -11,7 +11,7 @@ local mSkipUI = false
 local mBlk = null
 local mHandler = null
 local mContainerObj = null
-let mCfgStartup = {}
+local mCfgStartup = {}
 local mCfgApplied = {}
 local mCfgInitial = {}
 local mCfgCurrent = {}
@@ -21,8 +21,8 @@ local mMaintainDone = false
 const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 //-------------------------------------------------------------------------------
-let mQualityPresets = ::DataBlock()
-mQualityPresets.load("%guiConfig/graphicsPresets.blk")
+local mQualityPresets = ::DataBlock()
+mQualityPresets.load("config/graphicsPresets.blk")
 
 /*
 compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
@@ -30,7 +30,7 @@ compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
 fullMode - When TRUE, Option is enabled in GUI when Compatibility Mode is OFF.
            Defaults to TRUE for both qualityPresetsOptions and standaloneOptions.
 */
-let compModeGraphicsOptions = {
+local compModeGraphicsOptions = {
   qualityPresetsOptions = {
     texQuality        = { compMode = true }
     anisotropy        = { compMode = true }
@@ -131,7 +131,7 @@ local mUiStruct = [
   }
 ]
 
-let perfValues = [
+local perfValues = [
   "off",
   "fps",
   "compact",
@@ -139,15 +139,15 @@ let perfValues = [
   // append new values to the end to keep original indexes consistent
 ]
 //------------------------------------------------------------------------------
-let getGuiValue = @(id, defVal=null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
+local getGuiValue = @(id, defVal=null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
 
-let function logError(from="", msg="") {
-  let fullMsg = $"[sysopt] ERROR {from}: {msg}"
+local function logError(from="", msg="") {
+  local fullMsg = $"[sysopt] ERROR {from}: {msg}"
   ::dagor.debug(fullMsg)
   return fullMsg
 }
 
-let function getOptionDesc(id) {
+local function getOptionDesc(id) {
   if (!(id in mSettings)) {
     logError("sysopt.getOptionDesc()", $"Option '{id}' is UNKNOWN. It must be added to sysopt.settings table.")
     return null
@@ -155,11 +155,11 @@ let function getOptionDesc(id) {
   return mSettings[id]
 }
 
-let function validateGuiValue(id, value) {
+local function validateGuiValue(id, value) {
   if (!::is_platform_pc)
     return value
 
-  let desc = getOptionDesc(id)
+  local desc = getOptionDesc(id)
   if (type(value) != desc.uiType) {
     logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value type is invalid.")
     return desc.def
@@ -191,14 +191,14 @@ let function validateGuiValue(id, value) {
   return value
 }
 
-let function getGuiWidget(id) {
+local function getGuiWidget(id) {
   if (!(id in mSettings)) {
     logError("sysopt.getGuiWidget()", $"Option '{id}' is UNKNOWN. It must be added to sysopt.settings table.")
     return null
   }
 
-  let widgetId = getOptionDesc(id)?.widgetId
-  let obj = (widgetId && ::check_obj(mContainerObj)) ? mContainerObj.findObject(widgetId) : null
+  local widgetId = getOptionDesc(id)?.widgetId
+  local obj = (widgetId && ::check_obj(mContainerObj)) ? mContainerObj.findObject(widgetId) : null
   return ::check_obj(obj) ? obj : null
 }
 
@@ -206,9 +206,9 @@ local function setGuiValue(id, value, skipUI=false) {
   value = validateGuiValue(id, value)
   mCfgCurrent[id] = value
 
-  let obj = (skipUI || mSkipUI) ? null : getGuiWidget(id)
+  local obj = (skipUI || mSkipUI) ? null : getGuiWidget(id)
   if (obj) {
-    let desc = getOptionDesc(id)
+    local desc = getOptionDesc(id)
     local raw = null
     switch (desc.widgetType)
     {
@@ -231,16 +231,16 @@ local function setGuiValue(id, value, skipUI=false) {
   }
 }
 
-let function enableGuiOption(id, state) {
+local function enableGuiOption(id, state) {
   if (mSkipUI)
     return
-  let rowObj = ::check_obj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
+  local rowObj = ::check_obj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
   if (::check_obj(rowObj))
     rowObj.enable(state)
 }
 
-let function checkChanges(config1, config2) {
-  let changes = {
+local function checkChanges(config1, config2) {
+  local changes = {
     needSave = false
     needClientRestart = false
     needEngineReload = false
@@ -248,16 +248,16 @@ let function checkChanges(config1, config2) {
 
   foreach (id, desc in mSettings)
   {
-    let value1 = config1[id]
-    let value2 = config2[id]
+    local value1 = config1[id]
+    local value2 = config2[id]
     if (value1 != value2)
     {
       changes.needSave = true
 
-      let needApply = id != "graphicsQuality"
+      local needApply = id != "graphicsQuality"
       if (needApply)
       {
-        let requiresRestart = ::getTblValue("restart", desc)
+        local requiresRestart = ::getTblValue("restart", desc)
         if (requiresRestart)
           changes.needClientRestart = true
         else
@@ -269,44 +269,44 @@ let function checkChanges(config1, config2) {
   return changes
 }
 
-let isClientRestartable = @() !::is_vendor_tencent()
+local isClientRestartable = @() !::is_vendor_tencent()
 
-let canRestartClient = @() isClientRestartable()
+local canRestartClient = @() isClientRestartable()
   && !(::is_in_loading_screen() || ::SessionLobby.isInRoom())
 
-let isRestartPending = @() checkChanges(mCfgStartup, mCfgCurrent).needClientRestart
+local isRestartPending = @() checkChanges(mCfgStartup, mCfgCurrent).needClientRestart
 
-let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineReload
+local isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineReload
 
-let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
+local isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 
-let function updateGuiNavbar(show=true) {
-  let scene = mHandler?.scene
+local function updateGuiNavbar(show=true) {
+  local scene = mHandler?.scene
   if (!::check_obj(scene))
     return
 
-  let showText = show && isRestartPending()
-  let showRestartButton = showText && canRestartClient()
-  let applyText = ::loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
+  local showText = show && isRestartPending()
+  local showRestartButton = showText && canRestartClient()
+  local applyText = ::loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
   mHandler.showSceneBtn("btn_reset", show && isSavePending())
 
-  let objNavbarRestartText = scene.findObject("restart_suggestion")
+  local objNavbarRestartText = scene.findObject("restart_suggestion")
   if (::check_obj(objNavbarRestartText))
     objNavbarRestartText.show(showText)
-  let objNavbarRestartButton = scene.findObject("btn_restart")
+  local objNavbarRestartButton = scene.findObject("btn_restart")
   if (::check_obj(objNavbarRestartButton))
     objNavbarRestartButton.show(showRestartButton)
-  let objNavbarApplyButton = scene.findObject("btn_apply")
+  local objNavbarApplyButton = scene.findObject("btn_apply")
   if (::check_obj(objNavbarApplyButton))
     objNavbarApplyButton.setValue(applyText)
 }
 
-let function pickQualityPreset() {
+local function pickQualityPreset() {
   local preset = "custom"
   mSkipUI = true
-  let _cfgCurrent = mCfgCurrent
-  let graphicsQualityDesc = getOptionDesc("graphicsQuality")
+  local _cfgCurrent = mCfgCurrent
+  local graphicsQualityDesc = getOptionDesc("graphicsQuality")
   foreach (presetId in graphicsQualityDesc.values) {
     if (presetId == "custom")
       continue
@@ -315,7 +315,7 @@ let function pickQualityPreset() {
       mCfgCurrent[id] <- value
     mCfgCurrent["graphicsQuality"] = presetId
     mShared.graphicsQualityClick(true)
-    let changes = checkChanges(mCfgCurrent, _cfgCurrent)
+    local changes = checkChanges(mCfgCurrent, _cfgCurrent)
     if (!changes.needClientRestart && !changes.needEngineReload) {
       preset = presetId
       break
@@ -327,7 +327,7 @@ let function pickQualityPreset() {
   return preset
 }
 
-let function localize(optionId, valueId) {
+local function localize(optionId, valueId) {
   switch (optionId) {
     case "resolution":
     {
@@ -351,14 +351,14 @@ let function localize(optionId, valueId) {
     case "dirtSubDiv":
       if (valueId == "none")
         return ::loc("options/none")
-      let txt = (valueId=="ultralow" || valueId=="min")? "ultra_low" : (valueId=="ultrahigh")? "ultra_high" : valueId
+      local txt = (valueId=="ultralow" || valueId=="min")? "ultra_low" : (valueId=="ultrahigh")? "ultra_high" : valueId
       return ::loc("options/quality_" + txt)
   }
   return ::loc(format("options/%s_%s", optionId, valueId), valueId)
 }
 
-let function parseResolution(resolution) {
-  let sides = resolution == "auto"
+local function parseResolution(resolution) {
+  local sides = resolution == "auto"
     ? [ 0, 0 ] // To be sorted first.
     : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
   return {
@@ -368,10 +368,10 @@ let function parseResolution(resolution) {
   }
 }
 
-let function getAvailableDlssModes()
+local function getAvailableDlssModes()
 {
-  let values = ["off"]
-  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  local values = ["off"]
+  local selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
   if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
     values.append("performance")
   if (::is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
@@ -382,8 +382,8 @@ let function getAvailableDlssModes()
   return values;
 }
 
-let function getAvailableLatencyModes() {
-  let values = ["off"]
+local function getAvailableLatencyModes() {
+  local values = ["off"]
   if (::is_low_latency_available(1))
     values.append("on")
   if (::is_low_latency_available(2))
@@ -392,12 +392,12 @@ let function getAvailableLatencyModes() {
   return values;
 }
 
-let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || ::is_perf_metrics_available(id))
+local getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || ::is_perf_metrics_available(id))
 
-let function getListOption(id, desc, cb, needCreateList = true) {
-  let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-  let customItems = ("items" in desc) ? desc.items : null
-  let items = []
+local function getListOption(id, desc, cb, needCreateList = true) {
+  local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+  local customItems = ("items" in desc) ? desc.items : null
+  local items = []
   foreach (index, valueId in desc.values)
     items.append(customItems ? customItems[index] : localize(id, valueId))
   return ::create_option_combobox(desc.widgetId, items, raw, cb, needCreateList)
@@ -407,7 +407,7 @@ let function getListOption(id, desc, cb, needCreateList = true) {
 mShared = {
   setQualityPreset = function(preset) {
     eachBlock(mQualityPresets, function(v, k) {
-      let value = v?[preset] ?? v?["medium"]
+      local value = v?[preset] ?? v?["medium"]
       if (value != null)
         setGuiValue(k, value)
     })
@@ -426,8 +426,8 @@ mShared = {
   }
 
   enableByCompMode = function(id, enable) {
-    let desc = getOptionDesc(id)
-    let enabled = enable && (desc?.enabled() ?? true)
+    local desc = getOptionDesc(id)
+    local enabled = enable && (desc?.enabled() ?? true)
     enableGuiOption(id, enabled)
   }
 
@@ -435,7 +435,7 @@ mShared = {
     if (getGuiValue("compatibilityMode")) {
       setGuiValue("backgroundScale",2)
       eachBlock(mQualityPresets, function(_, k) {
-        let enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
+        local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
         mShared.enableByCompMode(k, enabled)
       })
       foreach (id, v in compModeGraphicsOptions.standaloneOptions)
@@ -443,7 +443,7 @@ mShared = {
     }
     else {
       eachBlock(mQualityPresets, function(_, k) {
-        let enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].fullMode ?? true
+        local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].fullMode ?? true
         mShared.enableByCompMode(k, enabled)
       })
       foreach (id, v in compModeGraphicsOptions.standaloneOptions)
@@ -453,8 +453,8 @@ mShared = {
   }
 
   setLandquality = function() {
-    let lq = getGuiValue("landquality")
-    let cs = (lq==0)? 50 : (lq==4)? 150 : 100
+    local lq = getGuiValue("landquality")
+    local cs = (lq==0)? 50 : (lq==4)? 150 : 100
     setGuiValue("clipmapScale",cs)
   }
 
@@ -467,14 +467,14 @@ mShared = {
   }
 
   graphicsQualityClick = function(silent=false) {
-    let quality = getGuiValue("graphicsQuality", "high")
+    local quality = getGuiValue("graphicsQuality", "high")
     if (!silent && quality=="ultralow") {
-      let ok_func = function() {
+      local ok_func = function() {
         mShared.graphicsQualityClick(true)
         updateGuiNavbar(true)
       }
-      let cancel_func = function() {
-        let lowQuality = "low"
+      local cancel_func = function() {
+        local lowQuality = "low"
         setGuiValue("graphicsQuality", lowQuality)
         mShared.graphicsQualityClick()
         updateGuiNavbar(true)
@@ -488,23 +488,23 @@ mShared = {
   }
 
   presetCheck = function() {
-    let preset = pickQualityPreset()
+    local preset = pickQualityPreset()
     setGuiValue("graphicsQuality", preset)
   }
 
   resolutionClick = function() {
-    let id = "dlss"
-    let desc = getOptionDesc(id)
+    local id = "dlss"
+    local desc = getOptionDesc(id)
     if (!desc)
       return
 
     desc.init(null, desc) //list of dlss values depends only on resolution
     setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
-    let obj = getGuiWidget(id)
+    local obj = getGuiWidget(id)
     if (!::check_obj(obj))
       return
 
-    let markup = getListOption(id, desc, "onSystemOptionChanged", false)
+    local markup = getListOption(id, desc, "onSystemOptionChanged", false)
     mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
   }
 
@@ -514,7 +514,7 @@ mShared = {
   }
 
   latencyClick = function() {
-    let latencyMode = getGuiValue("latency", "off")
+    local latencyMode = getGuiValue("latency", "off")
     if (latencyMode == "on" || latencyMode == "boost") {
       setGuiValue("vsync", false)
     }
@@ -522,12 +522,12 @@ mShared = {
   }
 
   cloudsQualityClick = function() {
-    let cloudsQualityVal = getGuiValue("cloudsQuality", 1)
+    local cloudsQualityVal = getGuiValue("cloudsQuality", 1)
     setGuiValue("skyQuality", cloudsQualityVal == 0 ? 0 : 1)
   }
 
   grassClick = function() {
-    let grassRadiusMul = getGuiValue("grassRadiusMul", 100)
+    local grassRadiusMul = getGuiValue("grassRadiusMul", 100)
     setGuiValue("grass", (grassRadiusMul > 10))
   }
 
@@ -550,12 +550,12 @@ mShared = {
 
   ssaaClick = function() {
     if (getGuiValue("ssaa") == "4X") {
-      let okFunc = function() {
+      local okFunc = function() {
         setGuiValue("backgroundScale", 2)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancelFunc = function() {
+      local cancelFunc = function() {
         setGuiValue("ssaa", "none")
         mShared.presetCheck()
         updateGuiNavbar(true)
@@ -569,12 +569,12 @@ mShared = {
 
   fxResolutionClick = function() {
     if (getGuiValue("fxResolutionQuality") == "ultrahigh") {
-      let okFunc = function() {
+      local okFunc = function() {
         setGuiValue("fxResolutionQuality", "ultrahigh")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancelFunc = function() {
+      local cancelFunc = function() {
         setGuiValue("fxResolutionQuality", "high")
         mShared.presetCheck()
         updateGuiNavbar(true)
@@ -587,14 +587,14 @@ mShared = {
   }
 
   compatibilityModeClick = function() {
-    let isEnable = getGuiValue("compatibilityMode")
+    local isEnable = getGuiValue("compatibilityMode")
     if (isEnable) {
-      let ok_func = function() {
+      local ok_func = function() {
         mShared.setCompatibilityMode()
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancel_func = function() {
+      local cancel_func = function() {
         setGuiValue("compatibilityMode", false)
         mShared.setCompatibilityMode()
         mShared.presetCheck()
@@ -609,31 +609,31 @@ mShared = {
   }
 
   getVideoModes = function(curResolution = null, isNeedAuto = true) {
-    let minW = 1024
-    let minH = 720
+    local minW = 1024
+    local minH = 720
 
-    let list = ::get_video_modes()
-    let isListTruncated = list.len() <= 1
+    local list = ::get_video_modes()
+    local isListTruncated = list.len() <= 1
     if (isNeedAuto)
       list.append("auto")
     if (curResolution != null && list.indexof(curResolution) == null)
       list.append(curResolution)
 
-    let data = list.map(parseResolution).filter(@(r)
+    local data = list.map(parseResolution).filter(@(r)
       (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
 
-    let sortFunc = @(a,b) a.w <=> b.w  || a.h <=> b.h
+    local sortFunc = @(a,b) a.w <=> b.w  || a.h <=> b.h
     data.sort(sortFunc)
 
     // Fixing the truncated list when working via Remote Desktop (RDP).
     if (isListTruncated && ::is_platform_windows) {
-      let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
+      local resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
-      let psi = ::is_platform_windows ? get_primary_screen_info() : {}
-      let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
-      let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
+      local psi = ::is_platform_windows ? get_primary_screen_info() : {}
+      local maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
+      local maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
       ::u.appendOnce($"{maxW} x {maxH}", resolutions)
-      let bonus = resolutions.map(parseResolution).filter(@(r)
+      local bonus = resolutions.map(parseResolution).filter(@(r)
         (r.w <= maxW && r.h <= maxH) && !list.contains(r.resolution))
       data.extend(bonus)
       data.sort(sortFunc)
@@ -643,21 +643,21 @@ mShared = {
   }
 
   getCurResolution = function(blk, desc) {
-    let modes = mShared.getVideoModes(null)
-    let value = get_blk_value_by_path(blk, desc.blk, "")
+    local modes = mShared.getVideoModes(null)
+    local value = get_blk_value_by_path(blk, desc.blk, "")
 
-    let isListed = modes.indexof(value) != null
+    local isListed = modes.indexof(value) != null
     if (isListed) // Supported system.
       return value
 
-    let looksReliable = regexp2(@"^\d+ x \d+$").match(value)
+    local looksReliable = regexp2(@"^\d+ x \d+$").match(value)
     if (looksReliable) // Unsupported system. Or maybe altered by user, but somehow works.
       return value
 
     if (value == "auto")
       return value
 
-    let screen = format("%d x %d", ::screen_width(), ::screen_height())
+    local screen = format("%d x %d", ::screen_width(), ::screen_height())
     return screen // Value damaged by user. Screen size can be wrong, but anyway, i guess user understands why it's broken.
 
     /*
@@ -699,14 +699,14 @@ mShared = {
 mSettings = {
   resolution = { widgetType="list" def="1024 x 768" blk="video/resolution" restart=true
     init = function(blk, desc) {
-      let curResolution = mShared.getCurResolution(blk, desc)
+      local curResolution = mShared.getCurResolution(blk, desc)
       desc.values <- mShared.getVideoModes(curResolution)
       desc.def <- curResolution
       desc.restart <- !::is_platform_windows
     }
     onChanged = "resolutionClick"
   }
-  mode = { widgetType="list" def="fullscreenwindowed" blk="video/mode" restart=true
+  mode = { widgetType="list" def="fullscreen" blk="video/mode" restart=true
     init = function(blk, desc) {
       desc.values <- ["windowed"]
       if (::is_platform_windows)
@@ -723,8 +723,8 @@ mSettings = {
   }
   vsync = { widgetType="list" def="vsync_off" blk="video/vsync" restart=true
     getFromBlk = function(blk, desc) {
-      let vsync = get_blk_value_by_path(blk, "video/vsync", false)
-      let adaptive = ::is_gpu_nvidia() && get_blk_value_by_path(blk, "video/adaptive_vsync", true)
+      local vsync = get_blk_value_by_path(blk, "video/vsync", false)
+      local adaptive = ::is_gpu_nvidia() && get_blk_value_by_path(blk, "video/adaptive_vsync", true)
       return (vsync && adaptive)? "vsync_adaptive" : (vsync)? "vsync_on" : "vsync_off"
     }
     setToBlk = function(blk, desc, val) {
@@ -746,11 +746,11 @@ mSettings = {
     }
     onChanged = "dlssClick"
     getFromBlk = function(blk, desc) {
-      let quality = get_blk_value_by_path(blk, desc.blk, -1)
+      local quality = get_blk_value_by_path(blk, desc.blk, -1)
       return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : "off"
     }
     setToBlk = function(blk, desc, val) {
-      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
+      local quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
       set_blk_value_by_path(blk, desc.blk, quality)
     }
   }
@@ -760,22 +760,22 @@ mSettings = {
   anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getFromBlk = function(blk, desc) {
-      let anis = get_blk_value_by_path(blk, desc.blk, 2)
+      local anis = get_blk_value_by_path(blk, desc.blk, 2)
       return (anis==16)? "16X" : (anis==8)? "8X" : (anis==4)? "4X" : (anis==2)? "2X" : "off"
     }
     setToBlk = function(blk, desc, val) {
-      let anis = (val=="16X")? 16 : (val=="8X")? 8 : (val=="4X")? 4 : (val=="2X")? 2 : 1
+      local anis = (val=="16X")? 16 : (val=="8X")? 8 : (val=="4X")? 4 : (val=="2X")? 2 : 1
       set_blk_value_by_path(blk, desc.blk, anis)
     }
   }
   msaa = { widgetType="list" def="off" blk="directx/maxaa" restart=true
     values = [ "off", "on"]
     getFromBlk = function(blk, desc) {
-      let msaa = get_blk_value_by_path(blk, desc.blk, 0)
+      local msaa = get_blk_value_by_path(blk, desc.blk, 0)
       return (msaa>0)? "on" :"off"
     }
     setToBlk = function(blk, desc, val) {
-      let msaa = (val=="on")? 2 : 0
+      local msaa = (val=="on")? 2 : 0
       set_blk_value_by_path(blk, desc.blk, msaa)
     }
   }
@@ -794,11 +794,11 @@ mSettings = {
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
-      let val = get_blk_value_by_path(blk, desc.blk, 1.0)
+      local val = get_blk_value_by_path(blk, desc.blk, 1.0)
       return (val == 4.0) ? "4X" : "none"
     }
     setToBlk = function(blk, desc, val) {
-      let res = (val == "4X") ? 4.0 : 1.0
+      local res = (val == "4X") ? 4.0 : 1.0
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
@@ -808,11 +808,11 @@ mSettings = {
       desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = ::loc($"guiHints/latency_{value}") })
     }
     getFromBlk = function(blk, desc) {
-      let quality = get_blk_value_by_path(blk, desc.blk, -1)
+      local quality = get_blk_value_by_path(blk, desc.blk, -1)
       return (quality == 1) ? "on" : (quality == 2) ? "boost" : (quality == 4) ? "experimental" : "off"
     }
     setToBlk = function(blk, desc, val) {
-      let quality = (val == "on") ? 1 : (val == "boost") ? 2 : (val == "experimental") ? 4 : 0
+      local quality = (val == "on") ? 1 : (val == "boost") ? 2 : (val == "experimental") ? 4 : 0
       set_blk_value_by_path(blk, desc.blk, quality)
     }
     onChanged = "latencyClick"
@@ -824,7 +824,7 @@ mSettings = {
       desc.values <- getAvailablePerfMetricsModes()
     }
     function getFromBlk(blk, desc) {
-      let mode = get_blk_value_by_path(blk, desc.blk, -1)
+      local mode = get_blk_value_by_path(blk, desc.blk, -1)
       return perfValues?[mode] ?? desc.def
     }
     function setToBlk(blk, desc, val) {
@@ -834,14 +834,14 @@ mSettings = {
   }
   texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
     init = function(blk, desc) {
-      let dgsTQ = ::get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
-      let configTexQuality = desc.values.indexof(::getSystemConfigOption("graphics/texquality", "high")) ?? -1
-      let sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
+      local dgsTQ = ::get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
+      local configTexQuality = desc.values.indexof(::getSystemConfigOption("graphics/texquality", "high")) ?? -1
+      local sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
       if (sysTexQuality == configTexQuality)
         return
 
-      let restrictedValueName = localize("texQuality", desc.values[sysTexQuality])
-      let restrictedValueItem = {
+      local restrictedValueName = localize("texQuality", desc.values[sysTexQuality])
+      local restrictedValueItem = {
         text = ::colorize("badTextColor", restrictedValueName + " **")
         textStyle = "textStyle:t='textarea';"
       }
@@ -924,11 +924,11 @@ mSettings = {
   tireTracksQuality = { widgetType="list" def="none" blk="graphics/tireTracksQuality" restart=false
     values = [ "none", "medium", "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
-      let val = get_blk_value_by_path(blk, desc.blk, 0)
+      local val = get_blk_value_by_path(blk, desc.blk, 0)
       return ::getTblValue(val, desc.values, desc.def)
     }
     setToBlk = function(blk, desc, val) {
-      let res = desc.values.indexof(val) ?? 0
+      local res = desc.values.indexof(val) ?? 0
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
@@ -941,11 +941,11 @@ mSettings = {
   dirtSubDiv = { widgetType="list" def="high" blk="graphics/dirtSubDiv" restart=false
     values = [ "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
-      let val = get_blk_value_by_path(blk, desc.blk, 1)
+      local val = get_blk_value_by_path(blk, desc.blk, 1)
       return (val==2)? "ultrahigh" : "high"
     }
     setToBlk = function(blk, desc, val) {
-      let res = (val=="ultrahigh")? 2 : 1
+      local res = (val=="ultrahigh")? 2 : 1
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
@@ -1005,10 +1005,10 @@ mSettings = {
   }
 }
 //------------------------------------------------------------------------------
-let function validateInternalConfigs() {
-  let errorsList = []
+local function validateInternalConfigs() {
+  local errorsList = []
   foreach (id, desc in mSettings) {
-    let widgetType = ::getTblValue("widgetType", desc)
+    local widgetType = ::getTblValue("widgetType", desc)
     if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'widgetType' invalid or undefined."))
@@ -1019,12 +1019,12 @@ let function validateInternalConfigs() {
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'onChanged' function not found in sysopt.shared."))
 
-    let def = ::getTblValue("def", desc)
+    local def = ::getTblValue("def", desc)
     if (def == null)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Option '"+id+"' - 'def' undefined."))
 
-    let uiType = desc.uiType
+    local uiType = desc.uiType
     switch (widgetType)
     {
       case "checkbox":
@@ -1036,10 +1036,10 @@ let function validateInternalConfigs() {
         if (def != null && uiType != "integer")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'widgetType'/'def' conflict."))
-        let invalidVal = -1
-        let vMin = desc?.min ?? invalidVal
-        let vMax = desc?.max ?? invalidVal
-        let safeDef = (def != null) ? def : invalidVal
+        local invalidVal = -1
+        local vMin = desc?.min ?? invalidVal
+        local vMax = desc?.max ?? invalidVal
+        local safeDef = (def != null) ? def : invalidVal
         if (!("min" in desc) || !("max" in desc) || type(vMin) != uiType || type(vMax) != uiType
             || vMin > vMax || vMin > safeDef || safeDef > vMax )
           errorsList.append(logError("sysopt.validateInternalConfigs()",
@@ -1050,7 +1050,7 @@ let function validateInternalConfigs() {
         if (def != null && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'widgetType'/'def' conflict."))
-        let values = ::getTblValue("values", desc, [])
+        local values = ::getTblValue("values", desc, [])
         if (!values.len())
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'values' is empty or undefined."))
@@ -1062,7 +1062,7 @@ let function validateInternalConfigs() {
         if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
                                      "Option '"+id+"' - 'widgetType'/'def' conflict."))
-        let maxlength = ::getTblValue("maxlength", desc, -1)
+        local maxlength = ::getTblValue("maxlength", desc, -1)
         if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             "Option '"+id+"' - 'maxlength'/'def' conflict."))
@@ -1079,7 +1079,7 @@ let function validateInternalConfigs() {
         $"Quality presets - k='{k}' is not found in 'settings' table."))
     if (("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality))
     {
-      let qualityValues = mSettings.graphicsQuality.values
+      local qualityValues = mSettings.graphicsQuality.values
       eachParam(v, function(value, qualityId) {
         if (!isInArray(qualityId, qualityValues))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
@@ -1093,13 +1093,13 @@ let function validateInternalConfigs() {
 
   foreach (sectIndex, section in mUiStruct)
   {
-    let container = ::getTblValue("container", section)
-    let id = ::getTblValue("id", section)
-    let items = ::getTblValue("items", section)
+    local container = ::getTblValue("container", section)
+    local id = ::getTblValue("id", section)
+    local items = ::getTblValue("items", section)
     if (!container || (!id && !items))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         "Array uiStruct - Index "+sectIndex+" contains invalid data."))
-    let ids = items? items : id? [ id ] : []
+    local ids = items? items : id? [ id ] : []
     foreach (itemId in ids)
       if (!(itemId in mSettings))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
@@ -1110,19 +1110,19 @@ let function validateInternalConfigs() {
   if (::is_dev_version)
     mValidationError = ::g_string.implode(errorsList, "\n")
   if (!mScriptValid) {
-    let errorString = ::g_string.implode(errorsList, "\n") // warning disable: -declared-never-used
+    local errorString = ::g_string.implode(errorsList, "\n") // warning disable: -declared-never-used
     ::script_net_assert_once("system_options_not_valid", "not valid system option list")
   }
 }
 
-let function configRead() {
+local function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
   mBlk = blkOptFromPath(::get_config_name())
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(mBlk, desc)
-    let value = ("getFromBlk" in desc) ? desc.getFromBlk(mBlk, desc) : get_blk_value_by_path(mBlk, desc.blk, desc.def)
+    local value = ("getFromBlk" in desc) ? desc.getFromBlk(mBlk, desc) : get_blk_value_by_path(mBlk, desc.blk, desc.def)
     mCfgInitial[id] <- value
     mCfgCurrent[id] <- validateGuiValue(id, value)
   }
@@ -1136,16 +1136,16 @@ let function configRead() {
       mCfgApplied[id] <- value
 }
 
-let function configWrite() {
+local function configWrite() {
   if (! ::is_platform_pc)
     return;
   if (!mBlk) return
   ::dagor.debug("[sysopt] Saving config:")
   foreach (id, _ in mCfgCurrent) {
-    let value = getGuiValue(id)
+    local value = getGuiValue(id)
     if (mCfgInitial?[id] != value)
       ::dagor.debug("[sysopt] " + id + ": " + (mCfgInitial?[id] ?? "null") + " -> " + value)
-    let desc = getOptionDesc(id)
+    local desc = getOptionDesc(id)
     if ("setToBlk" in desc)
       desc.setToBlk(mBlk, desc, value)
     else
@@ -1155,14 +1155,14 @@ let function configWrite() {
   ::dagor.debug("[sysopt] Config saved.")
 }
 
-let function init() {
-  let blk = blkOptFromPath(::get_config_name())
+local function init() {
+  local blk = blkOptFromPath(::get_config_name())
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(blk, desc)
     if (("onChanged" in desc) && type(desc.onChanged)=="string")
       desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
-    let uiType = ("def" in desc) ? type(desc.def) : null
+    local uiType = ("def" in desc) ? type(desc.def) : null
     desc.uiType <- uiType
     desc.widgetId <- null
     desc.ignoreNextUiCallback <- false
@@ -1172,7 +1172,7 @@ let function init() {
   configRead()
 }
 
-let function configFree() {
+local function configFree() {
   mBlk = null
   mHandler = null
   mContainerObj = null
@@ -1180,14 +1180,14 @@ let function configFree() {
   mCfgCurrent = {}
 }
 
-let function resetGuiOptions() {
+local function resetGuiOptions() {
   foreach (id, value in mCfgInitial) {
     setGuiValue(id, value)
   }
   updateGuiNavbar()
 }
 
-let function onGuiLoaded() {
+local function onGuiLoaded() {
   if (!mScriptValid)
     return
 
@@ -1196,11 +1196,11 @@ let function onGuiLoaded() {
   updateGuiNavbar(true)
 }
 
-let function onGuiUnloaded() {
+local function onGuiUnloaded() {
   updateGuiNavbar(false)
 }
 
-let function configMaintain() {
+local function configMaintain() {
   if (mMaintainDone)
     return
   mMaintainDone = true
@@ -1211,7 +1211,7 @@ let function configMaintain() {
 
   if (::getSystemConfigOption("graphicsQuality", "high") == "user") // Need to reset
   {
-    let isCompatibilityMode = ::getSystemConfigOption("video/compatibilityMode", false)
+    local isCompatibilityMode = ::getSystemConfigOption("video/compatibilityMode", false)
     ::setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
   }
 
@@ -1228,7 +1228,7 @@ let function configMaintain() {
   configFree()
 }
 
-let function applyRestartClient(forced=false) {
+local function applyRestartClient(forced=false) {
   if (!isClientRestartable())
     return
 
@@ -1243,14 +1243,14 @@ let function applyRestartClient(forced=false) {
   ::restart_game(false)
 }
 
-let function applyRestartEngine(reloadScene = false) {
+local function applyRestartEngine(reloadScene = false) {
   mCfgApplied = {}
   foreach (id, value in mCfgCurrent)
     mCfgApplied[id] <- value
 
   local cb = null
   if (reloadScene) {
-    let params = {
+    local params = {
         resolution = mCfgCurrent.resolution
         screenMode = mCfgCurrent.mode
     }
@@ -1261,17 +1261,17 @@ let function applyRestartEngine(reloadScene = false) {
   applyRendererSettingsChange(reloadScene, true, cb)
 }
 
-let isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolution
+local isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolution
   || mCfgApplied.mode != mCfgCurrent.mode
   || mCfgApplied.enableVr != mCfgCurrent.enableVr
 
-let function onRestartClient() {
+local function onRestartClient() {
   configWrite()
   configFree()
   applyRestartClient()
 }
 
-let function onConfigApply() {
+local function onConfigApply() {
   if (!mScriptValid)
     return
   if (!::check_obj(mContainerObj))
@@ -1283,22 +1283,22 @@ let function onConfigApply() {
   if (isSavePending())
     configWrite()
 
-  let restartPending = isRestartPending()
+  local restartPending = isRestartPending()
   if (!restartPending && isHotReloadPending())
     applyRestartEngine(isReloadSceneRerquired())
 
-  let handler = mHandler
+  local handler = mHandler
   configFree()
 
   if (restartPending && isClientRestartable())
   {
-    let func_restart = function() {
+    local func_restart = function() {
       applyRestartClient()
     }
 
     if (canRestartClient())
     {
-      let message = ::loc("msgbox/client_restart_required") + "\n" + ::loc("msgbox/restart_now")
+      local message = ::loc("msgbox/client_restart_required") + "\n" + ::loc("msgbox/restart_now")
       handler.msgBox("sysopt_apply", message, [
           ["restart", func_restart],
           ["no"],
@@ -1306,7 +1306,7 @@ let function onConfigApply() {
     }
     else
     {
-      let message = ::loc("msgbox/client_restart_required")
+      local message = ::loc("msgbox/client_restart_required")
       handler.msgBox("sysopt_apply", message, [
           ["ok"],
         ], "ok", { cancel_fn = function(){} })
@@ -1314,20 +1314,20 @@ let function onConfigApply() {
   }
 }
 
-let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
+local isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
   ?? ::getSystemConfigOption("video/compatibilityMode", false)
 
-let function onGuiOptionChanged(obj) {
-  let widgetId = ::check_obj(obj) ? obj?.id : null
+local function onGuiOptionChanged(obj) {
+  local widgetId = ::check_obj(obj) ? obj?.id : null
   if (!widgetId)
     return
-  let id = widgetId.slice(("sysopt_").len())
+  local id = widgetId.slice(("sysopt_").len())
 
-  let desc = getOptionDesc(id)
+  local desc = getOptionDesc(id)
   if (!desc)
     return
 
-  let curValue = ::getTblValue(id, mCfgCurrent)
+  local curValue = ::getTblValue(id, mCfgCurrent)
   if (curValue == null)  //not inited or already cleared?
     return
 
@@ -1337,7 +1337,7 @@ let function onGuiOptionChanged(obj) {
   }
 
   local value = null
-  let raw = obj.getValue()
+  local raw = obj.getValue()
   switch (desc.widgetType)
   {
     case "checkbox":
@@ -1383,28 +1383,28 @@ let function onGuiOptionChanged(obj) {
   updateGuiNavbar(true)
 }
 
-let canUseGraphicsOptions = @() ::is_platform_pc && ::has_feature("GraphicsOptions")
+local canUseGraphicsOptions = @() ::is_platform_pc && ::has_feature("GraphicsOptions")
 
-let function fillGuiOptions(containerObj, handler) {
+local function fillGuiOptions(containerObj, handler) {
   if (!::check_obj(containerObj) || !handler)
     return
-  let guiScene = containerObj.getScene()
+  local guiScene = containerObj.getScene()
 
   if (!mScriptValid) {
-    let msg = ::loc("msgbox/internal_error_header") + "\n" + mValidationError
-    let data = ::format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
+    local msg = ::loc("msgbox/internal_error_header") + "\n" + mValidationError
+    local data = ::format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
     guiScene.replaceContentFromText(containerObj.id, data, data.len(), handler)
     return
   }
 
   guiScene.setUpdatesEnabled(false, false)
-  guiScene.replaceContent(containerObj, "%gui/options/systemOptions.blk", handler)
+  guiScene.replaceContent(containerObj, "gui/options/systemOptions.blk", handler)
   mContainerObj = containerObj
   mHandler = handler
 
   if (::get_video_modes().len() == 0 && !::is_platform_windows) // Hiding resolution, mode, vsync.
   {
-    let topBlockId = "sysopt_top"
+    local topBlockId = "sysopt_top"
     if (topBlockId in guiScene)
     {
       guiScene.replaceContentFromText(topBlockId, "", 0, handler)
@@ -1413,16 +1413,16 @@ let function fillGuiOptions(containerObj, handler) {
   }
 
   configRead()
-  let cb = "onSystemOptionChanged"
+  local cb = "onSystemOptionChanged"
   foreach (section in mUiStruct)
   {
     if (! guiScene[section.container]) continue
-    let isTable = ("items" in section)
-    let ids = isTable ? section.items : [ section.id ]
+    local isTable = ("items" in section)
+    local ids = isTable ? section.items : [ section.id ]
     local data = ""
     foreach (id in ids)
     {
-      let desc = getOptionDesc(id)
+      local desc = getOptionDesc(id)
       if (!(desc?.isVisible() ?? true))
         continue
 
@@ -1431,7 +1431,7 @@ let function fillGuiOptions(containerObj, handler) {
       switch (desc.widgetType)
       {
         case "checkbox":
-          let config = {
+          local config = {
             id = desc.widgetId
             value = mCfgCurrent[id]
             cb = cb
@@ -1446,8 +1446,8 @@ let function fillGuiOptions(containerObj, handler) {
           option = getListOption(id, desc, cb)
           break
         case "tabs":
-          let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-          let items = []
+          local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+          local items = []
           foreach (valueId in desc.values)
           {
             local warn = ::loc(format("options/%s_%s/comment", id, valueId), "")
@@ -1461,7 +1461,7 @@ let function fillGuiOptions(containerObj, handler) {
           option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
           break
         case "editbox":
-          let raw = mCfgCurrent[id].tostring()
+          local raw = mCfgCurrent[id].tostring()
           option = ::create_option_editbox({
             id = desc.widgetId,
             value = raw,
@@ -1472,12 +1472,12 @@ let function fillGuiOptions(containerObj, handler) {
 
       if (isTable)
       {
-        let enable = (desc?.enabled() ?? true) ? "yes" : "no"
-        let requiresRestart = ::getTblValue("restart", desc, false)
-        let tooltipExtra = desc?.tooltipExtra ?? ""
-        let optionName = ::loc($"options/{id}")
-        let label = ::g_string.stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
-        let tooltip = ::g_string.stripTags("\n".join(
+        local enable = (desc?.enabled() ?? true) ? "yes" : "no"
+        local requiresRestart = ::getTblValue("restart", desc, false)
+        local tooltipExtra = desc?.tooltipExtra ?? ""
+        local optionName = ::loc($"options/{id}")
+        local label = ::g_string.stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
+        local tooltip = ::g_string.stripTags("\n".join(
           [ ::loc($"guiHints/{id}", optionName),
             requiresRestart ? ::colorize("warningTextColor", ::loc("guiHints/restart_required")) : "",
             tooltipExtra

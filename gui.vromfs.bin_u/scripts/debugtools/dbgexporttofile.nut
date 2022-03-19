@@ -8,7 +8,7 @@
  *
 **/
 
-let EXPORT_PARAMS = { //const
+local EXPORT_PARAMS = { //const
   resultFilePath  = "export/file.blk" // Resulting blk filename to write results to.
   itemsPerFrame   = 1                 // Num of items to process per single frame.
   list            = []                // Array of items to process.
@@ -19,9 +19,9 @@ let EXPORT_PARAMS = { //const
   onFinish        = null              // Function to execute when finished, or null.
 }
 
-let function export_impl(params, resBlk, idx)
+local function export_impl(params, resBlk, idx)
 {
-  let exportImplFunc = ::callee()
+  local exportImplFunc = ::callee()
   for(local i = idx; i != params.list.len(); i++)
   {
     if (i != idx && !(i % params.itemsPerFrame)) //avoid freeze
@@ -31,8 +31,8 @@ let function export_impl(params, resBlk, idx)
       return
     }
 
-    let item = params.list[i]
-    let data = item && params.itemProcessFunc(params.list[i])
+    local item = params.list[i]
+    local data = item && params.itemProcessFunc(params.list[i])
     if (data)
       resBlk[data.key] <- data.value
   }

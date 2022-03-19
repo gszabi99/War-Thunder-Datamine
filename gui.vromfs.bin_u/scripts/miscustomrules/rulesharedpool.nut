@@ -1,7 +1,7 @@
-let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::mission_rules.SharedPool <- class extends ::mission_rules.Base
+class ::mission_rules.SharedPool extends ::mission_rules.Base
 {
   function getMaxRespawns()
   {
@@ -10,29 +10,29 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getLeftRespawns()
   {
-    let maxRespawns = getMaxRespawns()
+    local maxRespawns = getMaxRespawns()
     if (maxRespawns == ::RESPAWNS_UNLIMITED)
       return ::RESPAWNS_UNLIMITED
 
-    let spawnsBlk = ::getTblValue("spawns", getMisStateBlk())
-    let usedSpawns = ::getTblValue(::my_user_id_str, spawnsBlk, 0)
+    local spawnsBlk = ::getTblValue("spawns", getMisStateBlk())
+    local usedSpawns = ::getTblValue(::my_user_id_str, spawnsBlk, 0)
     return ::max(0, maxRespawns - usedSpawns)
   }
 
   function getRespawnInfoTextForUnit(unit)
   {
-    let res = base.getRespawnInfoTextForUnit(unit)
+    local res = base.getRespawnInfoTextForUnit(unit)
     if (!unit)
       return res
 
-    let limitText = getExpClassLimitTextByUnit(unit)
+    local limitText = getExpClassLimitTextByUnit(unit)
     return res + ((res.len() && limitText.len()) ? ::loc("ui/comma") : "") + limitText
   }
 
   function getSpecialCantRespawnMessage(unit)
   {
-    let expClassName = unit.expClass.getExpClass()
-    let activeAtOnce = getActiveAtOnceExpClass(expClassName)
+    local expClassName = unit.expClass.getExpClass()
+    local activeAtOnce = getActiveAtOnceExpClass(expClassName)
     if (activeAtOnce != ::RESPAWNS_UNLIMITED
         && activeAtOnce <= getCurActiveExpClassAmount(expClassName))
       return ::loc("multiplayer/cant_spawn/all_active_at_once",
@@ -41,7 +41,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
                      amountText = getExpClassLimitTextByUnit(unit)
                    })
 
-    let leftRespawns = getUnitLeftRespawns(unit)
+    local leftRespawns = getUnitLeftRespawns(unit)
     if (!leftRespawns)
       return ::loc("multiplayer/noTeamUnitLeft", { unitName = ::colorize("userlogColoredText", ::getUnitName(unit)) })
 
@@ -50,12 +50,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getExpClassLimitTextByUnit(unit)
   {
-    let expClassName = unit.expClass.getExpClass()
-    let activeAtOnce = getActiveAtOnceExpClass(expClassName)
+    local expClassName = unit.expClass.getExpClass()
+    local activeAtOnce = getActiveAtOnceExpClass(expClassName)
     if (activeAtOnce == ::RESPAWNS_UNLIMITED)
       return ""
 
-    let limit = ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
+    local limit = ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
                     expClassName,
                     activeAtOnce,
                     { distributed = getCurActiveExpClassAmount(expClassName) }
@@ -65,7 +65,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function hasCustomUnitRespawns()
   {
-    let myTeamDataBlk = getMyTeamDataBlk()
+    local myTeamDataBlk = getMyTeamDataBlk()
     return "limitedUnits" in myTeamDataBlk || "unlimitedUnits" in myTeamDataBlk
            || "limitedClasses" in myTeamDataBlk || "limitedTags" in myTeamDataBlk
            || "limitedActiveClasses" in myTeamDataBlk
@@ -77,14 +77,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       return 0
 
     local res = ::RESPAWNS_UNLIMITED
-    let limitedClasses = ::getTblValue("limitedClasses", teamDataBlk)
+    local limitedClasses = ::getTblValue("limitedClasses", teamDataBlk)
     if (::u.isDataBlock(limitedClasses))
     {
-      let total = limitedClasses.paramCount()
+      local total = limitedClasses.paramCount()
       for(local i = 0; i < total; i++)
       {
-        let expClassName = limitedClasses.getParamName(i)
-        let expClass = getUnitClassTypeByExpClass(expClassName)
+        local expClassName = limitedClasses.getParamName(i)
+        local expClass = getUnitClassTypeByExpClass(expClassName)
         if (expClass != unit.expClass)
           continue
 
@@ -93,22 +93,22 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       }
     }
 
-    let limitedTags = ::getTblValue("limitedTags", teamDataBlk)
+    local limitedTags = ::getTblValue("limitedTags", teamDataBlk)
     if (::u.isDataBlock(limitedTags))
     {
-      let total = limitedTags.paramCount()
+      local total = limitedTags.paramCount()
       for(local i = 0; i < total; i++)
         if (::isInArray(limitedTags.getParamName(i), unit.tags))
           res = minRespawns(res, limitedTags.getParamValue(i))
     }
 
-    let limitedUnits = ::getTblValue("limitedUnits", teamDataBlk)
+    local limitedUnits = ::getTblValue("limitedUnits", teamDataBlk)
     res = minRespawns(res, ::getTblValue(unit.name, limitedUnits, ::RESPAWNS_UNLIMITED))
 
     if (res != ::RESPAWNS_UNLIMITED)
       return res
 
-    let unlimitedUnits = ::getTblValue("unlimitedUnits", teamDataBlk)
+    local unlimitedUnits = ::getTblValue("unlimitedUnits", teamDataBlk)
     if (unlimitedUnits && !(unit.name in unlimitedUnits))
       res = 0
     return res
@@ -116,46 +116,46 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function calcFullUnitLimitsData(isTeamMine = true)
   {
-    let res = base.calcFullUnitLimitsData()
+    local res = base.calcFullUnitLimitsData()
 
-    let myTeamDataBlk = getMyTeamDataBlk()
+    local myTeamDataBlk = getMyTeamDataBlk()
     res.defaultUnitRespawnsLeft = "unlimitedUnits" in myTeamDataBlk ? 0 : ::RESPAWNS_UNLIMITED
 
-    let limitedClasses = ::getTblValue("limitedClasses", myTeamDataBlk)
+    local limitedClasses = ::getTblValue("limitedClasses", myTeamDataBlk)
     if (::u.isDataBlock(limitedClasses))
     {
-      let total = limitedClasses.paramCount()
+      local total = limitedClasses.paramCount()
       for(local i = 0; i < total; i++)
       {
-        let expClassName = limitedClasses.getParamName(i)
+        local expClassName = limitedClasses.getParamName(i)
         if (getUnitClassTypeByExpClass(expClassName).isValid())
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, limitedClasses.getParamValue(i)))
       }
     }
 
-    let limitedTags = ::getTblValue("limitedTags", myTeamDataBlk)
+    local limitedTags = ::getTblValue("limitedTags", myTeamDataBlk)
     if (::u.isDataBlock(limitedTags))
     {
-      let total = limitedTags.paramCount()
+      local total = limitedTags.paramCount()
       for(local i = 0; i < total; i++)
       {
-        let tag = limitedTags.getParamName(i)
-        let respLeft = limitedTags.getParamValue(i)
+        local tag = limitedTags.getParamName(i)
+        local respLeft = limitedTags.getParamValue(i)
 
-        let unitType = unitTypes.getByTag(tag)
+        local unitType = unitTypes.getByTag(tag)
         if (unitType != unitTypes.INVALID)
         {
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
           continue
         }
 
-        let role = ::g_string.cutPrefix(tag, "type_", null)
+        local role = ::g_string.cutPrefix(tag, "type_", null)
         if (role)
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitRole(role, respLeft))
       }
     }
 
-    let unitsGroups = getUnitsGroups()
+    local unitsGroups = getUnitsGroups()
     local blk = ::getTblValue("limitedUnits", myTeamDataBlk)
     if (::u.isDataBlock(blk))
       for(local i = 0; i < blk.paramCount(); i++)
@@ -168,11 +168,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
-    let activeLimitsBlk = ::getTblValue("limitedActiveClasses", myTeamDataBlk)
+    local activeLimitsBlk = ::getTblValue("limitedActiveClasses", myTeamDataBlk)
     if (::u.isDataBlock(activeLimitsBlk))
     {
-      let limitByExpClassName = {}
-      let total = activeLimitsBlk.paramCount()
+      local limitByExpClassName = {}
+      local total = activeLimitsBlk.paramCount()
       for(local i = 0; i < total; i++)
       {
         local value = activeLimitsBlk.getParamValue(i)
@@ -188,7 +188,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           limitByExpClassName[expClassName] <- value
       }
 
-      let activeBlk = ::getTblValue("activeClasses", myTeamDataBlk)
+      local activeBlk = ::getTblValue("activeClasses", myTeamDataBlk)
       foreach(expClassName, maxAmount in limitByExpClassName)
         res.unitLimits.append(
           ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
@@ -210,12 +210,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function getActiveAtOnceExpClass(expClassName)
   {
     local res = ::RESPAWNS_UNLIMITED
-    let activeLimitsBlk = ::getTblValue("limitedActiveClasses", getMyTeamDataBlk())
+    local activeLimitsBlk = ::getTblValue("limitedActiveClasses", getMyTeamDataBlk())
     if (!activeLimitsBlk)
       return res
 
     res = minRespawns(res, ::getTblValue(expClassName, activeLimitsBlk, ::RESPAWNS_UNLIMITED))
-    let percent = ::getTblValue(expClassName + "_perc", activeLimitsBlk, -1)
+    local percent = ::getTblValue(expClassName + "_perc", activeLimitsBlk, -1)
     if (percent >= 0)
       res = minRespawns(res, getAmountByTeamPercent(percent))
     return res
@@ -223,7 +223,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getCurActiveExpClassAmount(expClassName)
   {
-    let activeBlk = ::getTblValue("activeClasses", getMyTeamDataBlk())
+    local activeBlk = ::getTblValue("activeClasses", getMyTeamDataBlk())
     return ::getTblValue(expClassName, activeBlk, 0)
   }
 }

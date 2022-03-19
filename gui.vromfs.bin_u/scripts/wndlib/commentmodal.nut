@@ -9,7 +9,7 @@
   })
 }
 
-::gui_handlers.commentModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.commentModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   function initScreen()
   {
@@ -54,5 +54,5 @@
   callbackFunc = null
   owner = null
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/commentModal.blk"
+  sceneBlkName = "gui/commentModal.blk"
 }

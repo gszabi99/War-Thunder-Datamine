@@ -1,9 +1,9 @@
-let { calcPercent } = require("%sqstd/math.nut")
-let statsd = require("statsd")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
+local { calcPercent } = require("std/math.nut")
+local statsd = require("statsd")
+local { cutPrefix } = require("std/string.nut")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
+local XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
 local XboxShopPurchasableItem = class
 {
@@ -68,8 +68,8 @@ local XboxShopPurchasableItem = class
     if (isPurchasable)
       amount = getPriceText()
 
-    let xboxShopBlk = GUI.get()?.xbox_ingame_shop
-    let ingameShopImages = xboxShopBlk?.items
+    local xboxShopBlk = GUI.get()?.xbox_ingame_shop
+    local ingameShopImages = xboxShopBlk?.items
     if (ingameShopImages?[id] && xboxShopBlk?.mainPart && xboxShopBlk?.fileExtension)
       imagePath = "!" + xboxShopBlk.mainPart + id + xboxShopBlk.fileExtension
   }
@@ -78,8 +78,8 @@ local XboxShopPurchasableItem = class
     if (price == null)
       return ""
 
-    let color = haveDiscount()? "goodTextColor" : ""
-    let text = price == 0? ::loc("shop/free") : (price + " " + currencyCode)
+    local color = haveDiscount()? "goodTextColor" : ""
+    local text = price == 0? ::loc("shop/free") : (price + " " + currencyCode)
     return ::colorize(color, text)
   }
 

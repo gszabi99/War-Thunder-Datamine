@@ -1,15 +1,15 @@
-let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
+local { getMeasureTypeBySkillParameterName } = require("scripts/crew/crewSkills.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_skill_parameters_type <- {
   types = []
 }
 
-let cache = {
+local cache = {
   byParamName = {}
 }
 
-let defaultGetValue = @(requestType, parametersByRequestType, params = null)
+local defaultGetValue = @(requestType, parametersByRequestType, params = null)
   parametersByRequestType?[requestType][params?.parameterName ?? -1][params?.idx ?? -1].value ?? 0
 
 ::g_skill_parameters_type.template <- {
@@ -19,12 +19,12 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   parseColumns = function(paramData, columnTypes,
     parametersByRequestType, selectedParametersByRequestType, resArray)
   {
-    let parameterName = paramData.name
+    local parameterName = paramData.name
     local measureType = getMeasureTypeBySkillParameterName(parameterName)
-    let isNotFoundMeasureType = measureType == ::g_measure_type.UNKNOWN
-    let sign = getDiffSign(parametersByRequestType, parameterName)
-    let needMemberName = paramData.valuesArr.len() > 1
-    let parsedMembers = []
+    local isNotFoundMeasureType = measureType == ::g_measure_type.UNKNOWN
+    local sign = getDiffSign(parametersByRequestType, parameterName)
+    local needMemberName = paramData.valuesArr.len() > 1
+    local parsedMembers = []
     foreach(idx, value in paramData.valuesArr)
     {
       if(::isInArray(value.memberName, parsedMembers))
@@ -33,7 +33,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
       if(isNotFoundMeasureType)
         measureType = getMeasureTypeBySkillParameterName(value.skillName)
 
-      let parameterView = {
+      local parameterView = {
         descriptionLabel = parameterName.indexof("weapons/") == 0 ? ::loc(parameterName)
           : ::loc(::format("crewSkillParameter/%s", parameterName))
         valueItems = []
@@ -42,7 +42,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
       if (needMemberName)
         parameterView.descriptionLabel += ::format(" (%s)", ::loc("crew/" + value.memberName))
 
-      let params = {
+      local params = {
         idx = idx
         parameterName = parameterName
       }
@@ -61,19 +61,19 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   {
     foreach (columnType in columnTypes)
     {
-      let prevValue = getValue(
+      local prevValue = getValue(
         columnType.previousParametersRequestType, parametersByRequestType, params)
 
-      let curValue = getValue(
+      local curValue = getValue(
         columnType.currentParametersRequestType, parametersByRequestType, params)
 
-      let prevSelectedValue = getValue(
+      local prevSelectedValue = getValue(
         columnType.previousParametersRequestType, selectedParametersByRequestType, params)
 
-      let curSelectedValue = getValue(
+      local curSelectedValue = getValue(
         columnType.currentParametersRequestType, selectedParametersByRequestType, params)
 
-      let valueItem = columnType.createValueItem(
+      local valueItem = columnType.createValueItem(
         prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
 
       parameterView.valueItems.append(valueItem)
@@ -82,24 +82,24 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
 
   getDiffSign = function(parametersByRequestType, parameterName)
   {
-    let params = { parameterName = parameterName, idx = 0, columnIndex = 0 }
-    let baseValue = getValue(
+    local params = { parameterName = parameterName, idx = 0, columnIndex = 0 }
+    local baseValue = getValue(
       ::g_skill_parameters_column_type.BASE.currentParametersRequestType, parametersByRequestType, params)
-    let maxValue = getValue(
+    local maxValue = getValue(
       ::g_skill_parameters_column_type.MAX.currentParametersRequestType, parametersByRequestType, params)
     return maxValue >= baseValue
   }
 
   getProgressBarValue = function(parametersByRequestType, params = null)
   {
-    let currentParameterValue = getValue(
+    local currentParameterValue = getValue(
       ::g_skill_parameters_request_type.CURRENT_VALUES, parametersByRequestType, params)
-    let maxParameterValue = getValue(
+    local maxParameterValue = getValue(
       ::g_skill_parameters_request_type.MAX_VALUES, parametersByRequestType, params)
-    let baseParameterValue = getValue(
+    local baseParameterValue = getValue(
       ::g_skill_parameters_request_type.BASE_VALUES, parametersByRequestType, params)
-    let curDiff = ::fabs(currentParameterValue - baseParameterValue)
-    let maxDiff = ::fabs(maxParameterValue - baseParameterValue)
+    local curDiff = ::fabs(currentParameterValue - baseParameterValue)
+    local maxDiff = ::fabs(maxParameterValue - baseParameterValue)
     if (maxDiff > 0.0)
       return (1000 * (curDiff / maxDiff)).tointeger()
     return 0
@@ -118,22 +118,22 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
     parseColumns = function(paramData, columnTypes,
                             parametersByRequestType, selectedParametersByRequestType, resArray)
     {
-      let currentDistanceErrorData = paramData.valuesArr
+      local currentDistanceErrorData = paramData.valuesArr
       if (!currentDistanceErrorData.len())
         return
 
-      let sign = getDiffSign(parametersByRequestType, paramData.name)
+      local sign = getDiffSign(parametersByRequestType, paramData.name)
 
       foreach (i, parameterTable in currentDistanceErrorData[0].value)
       {
-        let descriptionLocParams = {
+        local descriptionLocParams = {
           errorText = ::g_measure_type.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
-        let parameterView = {
+        local parameterView = {
           descriptionLabel = ::loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
           valueItems = []
         }
-        let params = {
+        local params = {
           columnIndex = i
           parameterName = paramData.name
         }

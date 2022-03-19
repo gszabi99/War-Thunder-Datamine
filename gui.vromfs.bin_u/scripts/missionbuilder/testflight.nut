@@ -1,9 +1,9 @@
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { bombNbr, hasCountermeasures } = require("%scripts/unit/unitStatus.nut")
-let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
-let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty } = ::require_native("guiOptions")
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { getCdBaseDifficulty } = ::require_native("guiOptions")
 local { getActionBarUnitName } = ::require_native("hudActionBar")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
@@ -21,11 +21,11 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     blk[idx] = val
 }
 
-::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal
+class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/options/genericOptionsModal.blk"
-  sceneNavBlkName = "%gui/navTestflight.blk"
+  sceneBlkName = "gui/options/genericOptionsModal.blk"
+  sceneNavBlkName = "gui/navTestflight.blk"
   multipleInstances = false
   wndGameMode = ::GM_TEST_FLIGHT
   wndOptionsMode = ::OPTIONS_MODE_TRAINING
@@ -48,7 +48,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
-    let btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
+    local btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
     if (hasMissionBuilder)
       btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
     showSceneBtn("btn_select", true)
@@ -56,7 +56,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
     {
-      let frameObj = scene.findObject("wnd_frame")
+      local frameObj = scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
       frameObj.pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
       frameObj.withSlotbar = "yes"
@@ -79,10 +79,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     }
     else
     {
-      let unitNestObj = scene.findObject("unit_nest")
+      local unitNestObj = scene.findObject("unit_nest")
       if (::checkObj(unitNestObj))
       {
-        let airData = ::build_aircraft_item(unit.name, unit)
+        local airData = ::build_aircraft_item(unit.name, unit)
         guiScene.appendWithBlk(unitNestObj, airData, this)
         ::fill_unit_item_timers(unitNestObj.findObject(unit.name), unit)
       }
@@ -116,11 +116,11 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   {
     if (typeof(::aircraft_for_weapons) != "string")
       return
-    let air = ::getAircraftByName(::aircraft_for_weapons)
+    local air = ::getAircraftByName(::aircraft_for_weapons)
     if (!air)
       return
 
-    let bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
+    local bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
     foreach(idx, bulGroup in bulletGroups)
       showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
@@ -133,9 +133,9 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return
     }
 
-    let weaponryObj = scene.findObject("unit_weapons_selector")
+    local weaponryObj = scene.findObject("unit_weapons_selector")
 
-    let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
+    local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = unit
       canChangeBulletsAmount = true
@@ -163,7 +163,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       options.append([::USEROPT_LIMITED_AMMO, "spinner"])
     }
 
-    let skin_options = [
+    local skin_options = [
       [::USEROPT_SKIN, "spinner"]
     ]
     if (::has_feature("UserSkins"))
@@ -214,18 +214,18 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     updateButtons()
     updateWeaponsSelector()
 
-    let showOptions = isTestFlightAvailable()
+    local showOptions = isTestFlightAvailable()
 
-    let optListObj = scene.findObject("optionslist")
-    let textObj = scene.findObject("no_options_textarea")
+    local optListObj = scene.findObject("optionslist")
+    local textObj = scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions? "" : getCantFlyText(unit))
 
-    let hObj = scene.findObject("header_name")
+    local hObj = scene.findObject("header_name")
     if (!::checkObj(hObj))
       return
 
-    let headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
+    local headerText = unit.unitType.getTestFlightText() + " " + ::loc("ui/mdash") + " " + ::getUnitName(unit.name)
     hObj.setValue(headerText)
 
     if (!showOptions)
@@ -238,7 +238,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::aircraft_for_weapons = unit.name
     ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    let container = create_options_container("testflight_options", options, true, 0.5)
+    local container = create_options_container("testflight_options", options, true, 0.5)
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers = [container.descr]
@@ -296,7 +296,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function onApply(obj)
   {
-    let bulletsManager = weaponsSelectorWeak?.bulletsManager
+    local bulletsManager = weaponsSelectorWeak?.bulletsManager
     if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
       return
 
@@ -345,8 +345,8 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function startTestFlight()
   {
-    let misName = getTestFlightMisName(unit.testFlight)
-    let misBlk = ::get_mission_meta_info(misName)
+    local misName = getTestFlightMisName(unit.testFlight)
+    local misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
       return ::dagor.assertf(false, "Error: wrong testflight mission " + misName)
 
@@ -374,7 +374,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function getTestFlightMisName(misName)
   {
-    let lang = ::g_language.getLanguageName()
+    local lang = ::g_language.getLanguageName()
     return ::get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
   }
 
@@ -383,14 +383,14 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!unit)
       return
 
-    let dif = ::get_option(::USEROPT_DIFFICULTY)
-    let difValue = dif.values[dif.value]
+    local dif = ::get_option(::USEROPT_DIFFICULTY)
+    local difValue = dif.values[dif.value]
 
-    let skin = ::get_option(::USEROPT_SKIN)
-    let skinValue = skin.values[skin.value]
-    let fuelValue = getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
-    let limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
-    let limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
+    local skin = ::get_option(::USEROPT_SKIN)
+    local skinValue = skin.values[skin.value]
+    local fuelValue = getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
+    local limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
+    local limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
 
     ::aircraft_for_weapons = unit.name
 
@@ -410,7 +410,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateBulletCountOptions(updUnit) {
     local bulIdx = 0
-    let bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
+    local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
     foreach(idx, bulGroup in bulletGroups) {
       bulIdx = idx
       local name = ""
@@ -438,7 +438,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     updateVerticalTargetingOption()
     updateSceneDifficulty()
 
-    let diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
+    local diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
     ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
     ::set_option(::USEROPT_BOMB_ACTIVATION_TIME, ::get_option(
@@ -451,10 +451,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (getSlotbar())
       getSlotbar().updateDifficulty()
 
-    let unitNestObj = unit ? scene.findObject("unit_nest") : null
+    local unitNestObj = unit ? scene.findObject("unit_nest") : null
     if (::checkObj(unitNestObj))
     {
-      let obj = unitNestObj.findObject("rank_text")
+      local obj = unitNestObj.findObject("rank_text")
       if (::checkObj(obj))
         obj.setValue(::get_unit_rank_text(unit, null, true, getCurrentEdiff()))
     }
@@ -462,13 +462,13 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function getCurrentEdiff()
   {
-    let diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
-    let difficulty = (diffValue == "custom") ?
+    local diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
+    local difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1)
     {
-      let battleType = ::get_battle_type_by_unit(unit)
+      local battleType = ::get_battle_type_by_unit(unit)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()
@@ -495,7 +495,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!needSlotbar)
       return
 
-    let crewUnit = ::get_cur_slotbar_unit()
+    local crewUnit = ::get_cur_slotbar_unit()
     if (crewUnit == unit || crewUnit == null)
     {
       updateButtons()
@@ -514,7 +514,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
   }
 
   function onUserModificationsUpdate(obj) {
-    let option = get_option_by_id(obj?.id)
+    local option = get_option_by_id(obj?.id)
     if (!option)
       return
 
@@ -531,7 +531,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function onMyWeaponOptionUpdate(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    local option = get_option_by_id(obj?.id)
     if (!option) return
 
     ::set_option(option.type, obj.getValue(), option)
@@ -545,7 +545,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function onTripleAerobaticsSmokeSelected(obj)
   {
-    let option = get_option_by_id(obj?.id)
+    local option = get_option_by_id(obj?.id)
     if (!option)
       return
 
@@ -555,7 +555,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function checkRocketDisctanceFuseRow()
   {
-    let option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
+    local option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
     if (!option)
       return
 
@@ -564,7 +564,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function checkBombActivationTimeRow()
   {
-    let option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
+    local option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -573,7 +573,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function checkBombSeriesRow()
   {
-    let option = findOptionInContainers(::USEROPT_BOMB_SERIES)
+    local option = findOptionInContainers(::USEROPT_BOMB_SERIES)
     if (!option)
       return
 
@@ -584,28 +584,28 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function checkCountermeasurePeriodsRow()
   {
-    let option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesRow()
   {
-    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesPeriodsRow()
   {
-    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkDepthChargeActivationTimeRow()
   {
-    let option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    local option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -615,7 +615,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateTripleAerobaticsSmokeOptions()
   {
-    let aerobaticsSmokeOptions = find_options_in_containers([
+    local aerobaticsSmokeOptions = find_options_in_containers([
       ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
@@ -624,13 +624,13 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     if (!aerobaticsSmokeOptions.len())
       return
 
-    let show = isTripleColorSmokeAvailable()
+    local show = isTripleColorSmokeAvailable()
     foreach(option in aerobaticsSmokeOptions)
       showOptionRow(option, show)
   }
 
   function updateTorpedoDiveDepth() {
-    let option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
+    local option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
     if (!option)
       return
 
@@ -641,10 +641,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateVerticalTargetingOption()
   {
-    let optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
+    local optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
     if (!optList.len())
       return
-    let diffName = getOptValue(::USEROPT_DIFFICULTY, false)
+    local diffName = getOptValue(::USEROPT_DIFFICULTY, false)
     if (diffName == null) //no such option in current options list
       return
 

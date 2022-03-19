@@ -1,7 +1,7 @@
-let statsd = require("statsd")
-let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+local statsd = require("statsd")
+local { getPollIdByFullUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame)
@@ -30,7 +30,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 ::close_browser_modal <- function close_browser_modal()
 {
-  let handler = ::handlersManager.findHandlerClassInScene(
+  local handler = ::handlersManager.findHandlerClassInScene(
     ::gui_handlers.BrowserModalHandler);
 
   if (handler == null)
@@ -44,16 +44,16 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 ::browser_set_external_url <- function browser_set_external_url(url)
 {
-  let handler = ::handlersManager.findHandlerClassInScene(
+  local handler = ::handlersManager.findHandlerClassInScene(
     ::gui_handlers.BrowserModalHandler);
   if (handler)
     handler.externalUrl = url;
 }
 
-::gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler
+class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/browser.blk"
+  sceneBlkName = "gui/browser.blk"
   sceneNavBlkName = null
   url = ""
   externalUrl = ""
@@ -65,7 +65,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
   function initScreen()
   {
-    let browserObj = scene.findObject("browser_area")
+    local browserObj = scene.findObject("browser_area")
     browserObj.url=url
     lastLoadedUrl = baseUrl
     browser_go(url)
@@ -99,12 +99,12 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       : ::browser_get_current_url()
     if (!u.isEmpty(urlTags) && taggedUrl != "")
     {
-      let tagsStr = " ".join(urlTags)
+      local tagsStr = " ".join(urlTags)
       if (!::g_string.startsWith(taggedUrl, tagsStr))
         taggedUrl = " ".concat(tagsStr, taggedUrl)
     }
 
-    let newUrl = u.isEmpty(externalUrl) ? taggedUrl : externalUrl
+    local newUrl = u.isEmpty(externalUrl) ? taggedUrl : externalUrl
     openUrl(u.isEmpty(newUrl) ? baseUrl : newUrl, true, false, "internal_browser")
   }
 
@@ -113,7 +113,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     if (u.isEmpty(title))
       return;
 
-    let titleObj = scene.findObject("wnd_title")
+    local titleObj = scene.findObject("wnd_title")
     if (::checkObj(titleObj))
       titleObj.setValue(title)
   }
@@ -130,9 +130,9 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
         if (params.isMainFrame)
         {
           toggleWaitAnimation(false)
-          let message = "".concat(::loc("browser/error_load_url"), ::loc("ui/dot"),
+          local message = "".concat(::loc("browser/error_load_url"), ::loc("ui/dot"),
             "\n", ::loc("browser/error_code"), ::loc("ui/colon"), params.errorCode, ::loc("ui/comma"), params.errorDesc)
-          let urlCommentMarkup = getUrlCommentMarkupForMsgbox(params.url)
+          local urlCommentMarkup = getUrlCommentMarkupForMsgbox(params.url)
           msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
         }
         break;
@@ -178,12 +178,12 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   function onEventWebPollAuthResult(param)
   {
     // WebPollAuthResult event may come before browser opens the page
-    let currentUrl = ::u.isEmpty(::browser_get_current_url()) ? url : ::browser_get_current_url()
+    local currentUrl = ::u.isEmpty(::browser_get_current_url()) ? url : ::browser_get_current_url()
     if(::u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId
     // so we don't care about pollId from param
-    let pollId = getPollIdByFullUrl(currentUrl)
+    local pollId = getPollIdByFullUrl(currentUrl)
     if( ! pollId)
       return
     externalUrl = generatePollUrl(pollId, false)
@@ -193,7 +193,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   {
     isLoadingPage = show
 
-    let waitSpinner = scene.findObject("browserWaitAnimation");
+    local waitSpinner = scene.findObject("browserWaitAnimation");
     if (::checkObj(waitSpinner))
       waitSpinner.show(show);
   }
@@ -207,12 +207,12 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   {
     if (::type(str) != "string" || str == "" || width <= 0)
       return str
-    let wrapped = []
-    let lines = str.split("\n")
+    local wrapped = []
+    local lines = str.split("\n")
     foreach (line in lines)
     {
-      let unicodeLine = ::utf8(line)
-      let strLen = unicodeLine.charCount()
+      local unicodeLine = ::utf8(line)
+      local strLen = unicodeLine.charCount()
       for (local pos = 0; pos < strLen; pos += width)
         wrapped.append(unicodeLine.slice(pos, pos + width))
     }
@@ -225,13 +225,13 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       return ""
 
     // Splitting too long URL because daGUI textarea don't break words on word-wrap.
-    let fontSizePropName = "smallFont"
-    let fontSizeCssId = "fontSmall"
-    let maxWidthPx = ::to_pixels("0.8@rw")
-    let textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, guiScene)
+    local fontSizePropName = "smallFont"
+    local fontSizeCssId = "fontSmall"
+    local maxWidthPx = ::to_pixels("0.8@rw")
+    local textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, guiScene)
     if (textWidthPx != 0 && textWidthPx > maxWidthPx)
     {
-      let splitByChars = (1.0 * maxWidthPx / textWidthPx * ::utf8(urlStr).charCount()).tointeger()
+      local splitByChars = (1.0 * maxWidthPx / textWidthPx * ::utf8(urlStr).charCount()).tointeger()
       urlStr = wordWrapText(urlStr, splitByChars)
     }
     return ::format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",

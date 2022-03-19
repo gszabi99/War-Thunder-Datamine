@@ -262,8 +262,7 @@
         "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
         "ex_decor_l_04_dm": [],
-        "ex_decor_l_05_dm": [],
-        "turret_02_side_dm": []
+        "ex_decor_l_05_dm": []
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -443,7 +442,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 150.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -474,7 +473,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 50.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2450,7 +2449,6 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -2527,8 +2525,8 @@
       "mechanics": {
         "maxBrakeForce": 136000.0,
         "driveGearRadius": 0.29,
-        "mainGearRatio": 7.6,
-        "sideGearRatio": 1.0,
+        "mainGearRatio": 1.49,
+        "sideGearRatio": 5.102,
         "gearRatios": [
           {
             "ratio": -3.76
@@ -2552,10 +2550,16 @@
             "ratio": 2.12
           },
           {
-            "ratio": 1.43
+            "ratio": 2.09
+          },
+          {
+            "ratio": 1.44
           },
           {
             "ratio": 0.99
+          },
+          {
+            "ratio": 0.97
           },
           {
             "ratio": 0.67
@@ -3545,7 +3549,6 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",

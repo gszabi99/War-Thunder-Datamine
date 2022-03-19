@@ -1,26 +1,26 @@
-let dagor_sys = require("dagor.system")
-let {gui_scene} = require("daRg")
-let {Watched} = require("frp")
-let console = require("console")
-let log = require("log.nut")()
-let conprint = log.console_print
+local dagor_sys = require("dagor.system")
+local {gui_scene} = require("daRg")
+local {Watched} = require("frp")
+local console = require("console")
+local log = require("log.nut")()
+local conprint = log.console_print
 
-let clearTimer = @(v) gui_scene.clearTimer(v)
-let setInterval = @(time, v) gui_scene.setInterval(time, v)
+local clearTimer = @(v) gui_scene.clearTimer(v)
+local setInterval = @(time, v) gui_scene.setInterval(time, v)
 
-let mkWatched = @(id, val) persist(id, @() Watched(val))
+local mkWatched = @(id, val) persist(id, @() Watched(val))
 
-let function registerScriptProfiler(prefix) {
+local function registerScriptProfiler(prefix) {
   if (dagor_sys.DBGLEVEL > 0) {
-    let profiler = require("dagor.profiler")
-    let profiler_reset = profiler.reset_values
-    let profiler_dump = profiler.dump
-    let profiler_get_total_time = profiler.get_total_time
-    let isProfileOn = mkWatched("isProfileOn", false)
-    let isSpikesProfileOn = mkWatched("isSpikesProfileOn", false)
-    let spikesThresholdMs = mkWatched("spikesThresholdMs", 10)
+    local profiler = require("dagor.profiler")
+    local profiler_reset = profiler.reset_values
+    local profiler_dump = profiler.dump
+    local profiler_get_total_time = profiler.get_total_time
+    local isProfileOn = mkWatched("isProfileOn", false)
+    local isSpikesProfileOn = mkWatched("isSpikesProfileOn", false)
+    local spikesThresholdMs = mkWatched("spikesThresholdMs", 10)
 
-    let function toggleProfiler(newVal = null, fileName = null) {
+    local function toggleProfiler(newVal = null, fileName = null) {
       local ret
       if (newVal == isProfileOn.value)
         ret = "already"
@@ -44,12 +44,12 @@ let function registerScriptProfiler(prefix) {
       conprint(ret)
       return ret
     }
-    let function profileSpikes(){
+    local function profileSpikes(){
       if (profiler_get_total_time() > spikesThresholdMs.value*1000)
         profiler_dump()
       profiler_reset()
     }
-    let function toggleSpikesProfiler(){
+    local function toggleSpikesProfiler(){
       isSpikesProfileOn(!isSpikesProfileOn.value)
       if (isSpikesProfileOn.value){
         conprint("starting spikes profiler with threshold {0}ms".subst(spikesThresholdMs.value))
@@ -63,12 +63,12 @@ let function registerScriptProfiler(prefix) {
         clearTimer(profileSpikes)
       }
     }
-    let function setSpikesThreshold(val){
+    local function setSpikesThreshold(val){
       spikesThresholdMs(val.tofloat())
       conprint("set spikes threshold to {0} ms".subst(spikesThresholdMs.value))
     }
 
-    let fileName = $"profile_{prefix}.csv"
+    local fileName = $"profile_{prefix}.csv"
     console.register_command(@() toggleProfiler(true), $"{prefix}.profiler.start")
     console.register_command(@() toggleProfiler(false), $"{prefix}.profiler.stop")
     console.register_command(@() toggleProfiler(false, fileName), $"{prefix}.profiler.stopWithFile")

@@ -1,36 +1,35 @@
-let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let globalEnv = require("globalEnv")
-let controllerState = require("controllerState")
-let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { TRIGGER_TYPE,
+local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+local globalEnv = require("globalEnv")
+local controllerState = require("controllerState")
+local shortcutsListModule = require("scripts/controls/shortcutsList/shortcutsList.nut")
+local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
+local { TRIGGER_TYPE,
         getLastWeapon,
-        getCommonWeapons,
-        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
-let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { unitClassType } = require("%scripts/unit/unitClassType.nut")
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
-let { blkOptFromPath, blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let vehicleModel = require("vehicleModel")
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
-let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
-let { getUnitPresets, getWeaponsByPresetName } = require("%scripts/weaponry/weaponryPresets.nut")
+        getCommonWeaponsBlk,
+        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { isBulletGroupActive } = require("scripts/weaponry/bulletsInfo.nut")
+local { resetFastVoiceMessages } = require("scripts/wheelmenu/voiceMessages.nut")
+local { unitClassType } = require("scripts/unit/unitClassType.nut")
+local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC } = require("scripts/clientState/platform.nut")
+local { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
+local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local vehicleModel = require("vehicleModel")
+local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+local { getShortcutById } = require("scripts/controls/shortcutsUtils.nut")
 
-let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
+local PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
 ::preset_changed <- false
 
 ::shortcutsList <- shortcutsListModule.types
 
-let function resetDefaultControlSettings() {
+local function resetDefaultControlSettings() {
   ::set_option_multiplier(::OPTION_AILERONS_MULTIPLIER,         0.79); //::USEROPT_AILERONS_MULTIPLIER
   ::set_option_multiplier(::OPTION_ELEVATOR_MULTIPLIER,         0.64); //::USEROPT_ELEVATOR_MULTIPLIER
   ::set_option_multiplier(::OPTION_RUDDER_MULTIPLIER,           0.43); //::USEROPT_RUDDER_MULTIPLIER
@@ -75,7 +74,7 @@ let function resetDefaultControlSettings() {
   if (!::is_in_flight())
     return true
 
-  let missionBlk = ::DataBlock()
+  local missionBlk = ::DataBlock()
   ::get_current_mission_info(missionBlk)
 
   foreach(part, block in checkTutorialsList)
@@ -86,7 +85,7 @@ let function resetDefaultControlSettings() {
 
 ::switch_helpers_mode_and_option <- function switch_helpers_mode_and_option(preset = "")
 {
-  let joyCurSettings = ::joystick_get_cur_settings()
+  local joyCurSettings = ::joystick_get_cur_settings()
   if (joyCurSettings.useMouseAim)
     ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   else if (isPlatformPS4 && preset == ::g_controls_presets.getControlsPresetFilename("thrustmaster_hotas4"))
@@ -116,13 +115,13 @@ local shortcutsNotChangeByPreset = [
   if (!preset || preset == "")
     return
 
-  let scToRestore = ::get_shortcuts(shortcutsNotChangeByPreset)
+  local scToRestore = ::get_shortcuts(shortcutsNotChangeByPreset)
 
   ::restore_default_controls(preset)
   ::set_controls_preset(preset)
 
-  let joyCurSettings = ::joystick_get_cur_settings()
-  let curJoyParams = ::JoystickParams()
+  local joyCurSettings = ::joystick_get_cur_settings()
+  local curJoyParams = ::JoystickParams()
   curJoyParams.setFrom(joyCurSettings)
   ::joystick_set_cur_values(curJoyParams)
 
@@ -175,7 +174,7 @@ local axisMappedOnMouse = {
 
 ::get_mouse_axis <- function get_mouse_axis(shortcutId, helpersMode = null, joyParams = null)
 {
-  let axis = axisMappedOnMouse?[shortcutId]
+  local axis = axisMappedOnMouse?[shortcutId]
   if (axis)
     return axis((helpersMode ?? ::getCurrentHelpersMode()) == globalEnv.EM_MOUSE_AIM)
 
@@ -214,10 +213,10 @@ local axisMappedOnMouse = {
   ::gui_start_modal_wnd(::gui_handlers.Hotkeys)
 }
 
-::gui_handlers.Hotkeys <- class extends ::gui_handlers.GenericOptions
+class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 {
   wndType = handlerType.BASE
-  sceneBlkName = "%gui/controls.blk"
+  sceneBlkName = "gui/controls.blk"
   sceneNavBlkName = null
 
   filterValues = null
@@ -272,7 +271,7 @@ local axisMappedOnMouse = {
 
     if (::is_low_width_screen())
     {
-      let helpersModeObj = scene.findObject("helpers_mode")
+      local helpersModeObj = scene.findObject("helpers_mode")
       if (::check_obj(helpersModeObj))
         helpersModeObj.smallFont = "yes"
     }
@@ -322,7 +321,7 @@ local axisMappedOnMouse = {
 
   function initNavigation()
   {
-    let handler = ::handlersManager.loadHandler(
+    local handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene = scene.findObject("control_navigation")
         onSelectCb = ::Callback(doNavigateToSection, this)
@@ -340,7 +339,7 @@ local axisMappedOnMouse = {
   {
     if (filterObjId)
     {
-      let filterObj = scene.findObject(filterObjId)
+      local filterObj = scene.findObject(filterObjId)
       if (::checkObj(filterObj) && filterValues && filterObj.childrenCount()==filterValues.len() && !::preset_changed)
         return //no need to refill filters
     }
@@ -356,12 +355,12 @@ local axisMappedOnMouse = {
     if (modsBlock == null)
       return
 
-    let options = ::get_option(modsBlock.optionType)
+    local options = ::get_option(modsBlock.optionType)
 
     filterObjId = modsBlock.id
     filterValues = options.values
 
-    let view = { items = [] }
+    local view = { items = [] }
     foreach (idx, item in options.items)
       view.items.append({
         id = "option_" + options.values[idx]
@@ -370,8 +369,8 @@ local axisMappedOnMouse = {
         tooltip = item.tooltip
       })
 
-    let listBoxObj = scene.findObject(modsBlock.id)
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
+    local listBoxObj = scene.findObject(modsBlock.id)
+    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
     guiScene.replaceContentFromText(listBoxObj, data, data.len(), this)
     onOptionsFilter()
   }
@@ -387,15 +386,15 @@ local axisMappedOnMouse = {
     if (::u.isEmpty(filledControlGroupTab))
       return
 
-    let filterEditBox = scene.findObject("filter_edit_box")
+    local filterEditBox = scene.findObject("filter_edit_box")
     if (!::checkObj(filterEditBox))
       return
 
-    let filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
+    local filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
 
     foreach (idx, data in filledControlGroupTab)
     {
-      let show = filterText == "" || data.text.indexof(filterText) != null
+      local show = filterText == "" || data.text.indexof(filterText) != null
       showSceneBtn(data.id, show)
     }
   }
@@ -413,7 +412,7 @@ local axisMappedOnMouse = {
 
   function resetSearch()
   {
-    let filterEditBox = scene.findObject("filter_edit_box")
+    local filterEditBox = scene.findObject("filter_edit_box")
     if ( ! ::checkObj(filterEditBox))
       return
 
@@ -429,8 +428,8 @@ local axisMappedOnMouse = {
 
   function updateButtons()
   {
-    let isTutorial = ::get_game_mode() == ::GM_TRAINING
-    let isImportExportAllowed = !isTutorial
+    local isTutorial = ::get_game_mode() == ::GM_TRAINING
+    local isImportExportAllowed = !isTutorial
       && (isScriptOpenFileDialogAllowed() || ::is_platform_windows)
 
     showSceneBtn("btn_exportToFile", isImportExportAllowed)
@@ -444,13 +443,13 @@ local axisMappedOnMouse = {
 
   function fillControlGroupsList()
   {
-    let groupsList = scene.findObject("controls_groups_list")
+    local groupsList = scene.findObject("controls_groups_list")
     if (!::checkObj(groupsList))
       return
 
     local curValue = 0
     controlsGroupsIdList = []
-    let currentUnit = getPlayerCurUnit()
+    local currentUnit = getPlayerCurUnit()
     local unitType = unitTypes.INVALID
     local classType = unitClassType.UNKNOWN
     local unitTags = []
@@ -464,7 +463,7 @@ local axisMappedOnMouse = {
     for(local i=0; i < ::shortcutsList.len(); i++)
       if (::shortcutsList[i].type == CONTROL_TYPE.HEADER)
       {
-        let header = ::shortcutsList[i]
+        local header = ::shortcutsList[i]
         if ("filterShow" in header)
           if (!isInArray(filter, header.filterShow))
             continue
@@ -485,7 +484,7 @@ local axisMappedOnMouse = {
           curValue = controlsGroupsIdList.len()-1
       }
 
-    let view = { tabs = [] }
+    local view = { tabs = [] }
     foreach(idx, group in controlsGroupsIdList)
       view.tabs.append({
         id = group
@@ -493,10 +492,10 @@ local axisMappedOnMouse = {
         navImagesText = ::get_navigation_images_text(idx, controlsGroupsIdList.len())
       })
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(groupsList, data, data.len(), this)
 
-    let listValue = groupsList.getValue()
+    local listValue = groupsList.getValue()
     if (groupsList.getValue() != curValue)
       groupsList.setValue(curValue)
     if (listValue <= 0 && curValue == 0) //when list value == -1 it doesnt send on_select event when we switch value to 0
@@ -520,8 +519,8 @@ local axisMappedOnMouse = {
     if (!(groupId in controlsGroupsIdList))
       return
 
-    let newGroupId = controlsGroupsIdList[groupId]
-    let isGroupChanged = curGroupId != newGroupId
+    local newGroupId = controlsGroupsIdList[groupId]
+    local isGroupChanged = curGroupId != newGroupId
     if (!isGroupChanged && filter==lastFilter && !::preset_changed && !forceUpdate)
       return
 
@@ -535,12 +534,12 @@ local axisMappedOnMouse = {
   function fillControlGroupTab(groupId)
   {
     local data = "";
-    let joyParams = ::joystick_get_cur_settings();
+    local joyParams = ::joystick_get_cur_settings();
     local gRow = 0  //for even and odd color by groups
     local isSectionShowed = true
     local isHelpersVisible = false
 
-    let navigationItems = []
+    local navigationItems = []
     filledControlGroupTab = []
 
     for(local n=0; n < ::shortcutsList.len(); n++)
@@ -551,7 +550,7 @@ local axisMappedOnMouse = {
       isHelpersVisible = ::getTblValue("isHelpersVisible", ::shortcutsList[n])
       for(local i=n+1; i < ::shortcutsList.len(); i++)
       {
-        let entry = ::shortcutsList[i]
+        local entry = ::shortcutsList[i]
         if (entry.type == CONTROL_TYPE.HEADER)
           break
         if (entry.type == CONTROL_TYPE.SECTION)
@@ -569,7 +568,7 @@ local axisMappedOnMouse = {
         if (!isSectionShowed)
           continue
 
-        let hotkeyData = ::buildHotkeyItem(i, shortcuts, entry, joyParams, gRow%2 == 0)
+        local hotkeyData = ::buildHotkeyItem(i, shortcuts, entry, joyParams, gRow%2 == 0)
         filledControlGroupTab.append(hotkeyData)
         if (hotkeyData.markup == "")
           continue
@@ -581,7 +580,7 @@ local axisMappedOnMouse = {
       break
     }
 
-    let controlTblObj = scene.findObject(optionTableId);
+    local controlTblObj = scene.findObject(optionTableId);
     if (::checkObj(controlTblObj))
       guiScene.replaceContentFromText(controlTblObj, data, data.len(), this);
     showSceneBtn("helpers_mode", isHelpersVisible)
@@ -594,11 +593,11 @@ local axisMappedOnMouse = {
 
   function doNavigateToSection(navItem)
   {
-    let sectionId = navItem.id
+    local sectionId = navItem.id
     shouldUpdateNavigationSection = false
-    let rowIdx = getRowIdxBYId(sectionId)
-    let rowId = "table_row_" + rowIdx
-    let rowObj = scene.findObject(rowId)
+    local rowIdx = getRowIdxBYId(sectionId)
+    local rowId = "table_row_" + rowIdx
+    local rowObj = scene.findObject(rowId)
 
     rowObj.scrollToView(true)
     selectRowByRowIdx(rowIdx)
@@ -607,23 +606,23 @@ local axisMappedOnMouse = {
 
   function checkCurrentNavagationSection()
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (!navigationHandlerWeak || !shouldUpdateNavigationSection || !item)
       return
 
-    let navItems = navigationHandlerWeak.getNavItems()
+    local navItems = navigationHandlerWeak.getNavItems()
     if (navItems.len() > 1)
     {
       local navId = null
       for (local i = 0; i < ::shortcutsList.len(); i++)
       {
-        let entry = ::shortcutsList[i]
+        local entry = ::shortcutsList[i]
         if (entry.type == CONTROL_TYPE.SECTION)
           navId = entry.id
         if (entry.id != item.id)
           continue
 
-        let curItem = ::u.search(navItems, @(it) it.id == navId)
+        local curItem = ::u.search(navItems, @(it) it.id == navId)
         if (curItem != null)
           navigationHandlerWeak.setCurrentItem(curItem)
 
@@ -649,7 +648,7 @@ local axisMappedOnMouse = {
 
   function initShortcutsNames()
   {
-    let axisScNames = []
+    local axisScNames = []
     modifierSymbols = {}
 
     foreach (item in shortcutsAxisListModule.types)
@@ -665,7 +664,7 @@ local axisMappedOnMouse = {
     shortcutNames = []
     shortcutItems = []
 
-    let addShortcutNames = function(arr)
+    local addShortcutNames = function(arr)
     {
       for(local i=0; i < arr.len(); i++)
         if (arr[i].type == CONTROL_TYPE.SHORTCUT)
@@ -680,7 +679,7 @@ local axisMappedOnMouse = {
 
     for(local i=0; i < ::shortcutsList.len(); i++)
     {
-      let item = ::shortcutsList[i]
+      local item = ::shortcutsList[i]
 
       if (item.type != CONTROL_TYPE.AXIS)
         continue
@@ -704,7 +703,7 @@ local axisMappedOnMouse = {
 
   function updateAxisText(device, item)
   {
-    let itemTextObj = scene.findObject("txt_sc_" + item.id)
+    local itemTextObj = scene.findObject("txt_sc_" + item.id)
     if (!::checkObj(itemTextObj))
       return
 
@@ -714,12 +713,12 @@ local axisMappedOnMouse = {
       return
     }
 
-    let axis = item.axisIndex >= 0
+    local axis = item.axisIndex >= 0
       ? curJoyParams.getAxis(item.axisIndex)
       : ::ControlsPreset.getDefaultAxis()
     local axisText = ""
     local data = ""
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
     if (axis.axisId >= 0)
       axisText = ::remapAxisName(curPreset, axis.axisId)
 
@@ -727,7 +726,7 @@ local axisMappedOnMouse = {
     {
       if ("" in item.modifiersId)
       {
-        let activationShortcut = ::get_shortcut_text({shortcuts = shortcuts, shortcutId = item.modifiersId[""], cantBeEmpty = false})
+        local activationShortcut = ::get_shortcut_text({shortcuts = shortcuts, shortcutId = item.modifiersId[""], cantBeEmpty = false})
         if (activationShortcut != "")
           data += activationShortcut + " + "
       }
@@ -738,7 +737,7 @@ local axisMappedOnMouse = {
       foreach(modifier, id in item.modifiersId)
         if (modifier != "")
         {
-          let scText = ::get_shortcut_text({shortcuts = shortcuts, shortcutId = id, cantBeEmpty = false})
+          local scText = ::get_shortcut_text({shortcuts = shortcuts, shortcutId = id, cantBeEmpty = false})
           if (scText!="")
           {
             data += (data=="" ? "" : ";  ") +
@@ -749,7 +748,7 @@ local axisMappedOnMouse = {
     } else
       data = ::addHotkeyTxt(axisText)
 
-    let notAssignedId = ::find_in_array(notAssignedAxis, item)
+    local notAssignedId = ::find_in_array(notAssignedAxis, item)
     if (data == "")
     {
       data = ::loc("joystick/axis_not_assigned")
@@ -764,7 +763,7 @@ local axisMappedOnMouse = {
 
   function updateSceneOptions()
   {
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
 
     for(local i=0; i < ::shortcutsList.len(); i++)
     {
@@ -778,7 +777,7 @@ local axisMappedOnMouse = {
 
   function getRowIdx(rowObj)
   {
-    let id = rowObj?.id
+    local id = rowObj?.id
     if (!id || id.len() <= 10 || id.slice(0, 10) != "table_row_")
       return -1
     return id.slice(10).tointeger()
@@ -807,7 +806,7 @@ local axisMappedOnMouse = {
   }
 
   function onScClick(obj) {
-    let sc = getScById(obj?.scId)
+    local sc = getScById(obj?.scId)
     if (sc == null)
       return
     if (sc == curShortcut) {
@@ -827,7 +826,7 @@ local axisMappedOnMouse = {
 
   function onScDblClick(obj)
   {
-    let sc = getScById(obj?.scId)
+    local sc = getScById(obj?.scId)
     if (sc == null)
       return
     if (sc != curShortcut)
@@ -843,7 +842,7 @@ local axisMappedOnMouse = {
 
     if (::checkObj(obj))
     {
-      let valueIdx = obj.getValue()
+      local valueIdx = obj.getValue()
       local item = null
       for(local i = 0; i < ::shortcutsList.len(); i++)
         if (obj?.id == ::shortcutsList[i].id)
@@ -855,16 +854,16 @@ local axisMappedOnMouse = {
         ::set_option(item.optionType, valueIdx)
     }
 
-    let options = ::u.values(::g_aircraft_helpers.controlHelpersOptions)
+    local options = ::u.values(::g_aircraft_helpers.controlHelpersOptions)
     foreach (optionId in options)
     {
       if (optionId == ::USEROPT_HELPERS_MODE)
         continue
-      let option = ::get_option(optionId)
+      local option = ::get_option(optionId)
       for (local i = 0; i < ::shortcutsList.len(); i++)
         if (::shortcutsList[i]?.optionType == optionId)
         {
-          let object = scene.findObject(::shortcutsList[i].id)
+          local object = scene.findObject(::shortcutsList[i].id)
           if (::checkObj(object) && object.getValue() != option.value)
             object.setValue(option.value)
         }
@@ -892,11 +891,11 @@ local axisMappedOnMouse = {
     if (!filterObjId)
       return
 
-    let filterObj = scene.findObject(filterObjId)
+    local filterObj = scene.findObject(filterObjId)
     if (!::checkObj(filterObj))
       return
 
-    let filterId = filterObj.getValue()
+    local filterId = filterObj.getValue()
     if (!(filterId in filterValues))
       return
 
@@ -924,13 +923,13 @@ local axisMappedOnMouse = {
 
   function selectRowByRowIdx(idx)
   {
-    let controlTblObj = scene.findObject(optionTableId)
+    local controlTblObj = scene.findObject(optionTableId)
     if (!::checkObj(controlTblObj) || idx < 0)
       return
 
-    let id = "table_row_" + idx
+    local id = "table_row_" + idx
     for(local i = 0; i < controlTblObj.childrenCount(); i++) {
-      let child = controlTblObj.getChild(i)
+      local child = controlTblObj.getChild(i)
       if (child.id == id)
         child.scrollToView()
     }
@@ -950,8 +949,8 @@ local axisMappedOnMouse = {
     guiScene.performDelayed(this, function()
     {
       delayedControlsGroupStrated = false
-      let filterOption = ::get_option(::USEROPT_HELPERS_MODE)
-      let filterObj = getFilterObj()
+      local filterOption = ::get_option(::USEROPT_HELPERS_MODE)
+      local filterObj = getFilterObj()
       if (::checkObj(filterObj) && filterObj.getValue() != filterOption.value)
         filterObj.setValue(filterOption.value)
       doControlsGroupChange(true)
@@ -962,7 +961,7 @@ local axisMappedOnMouse = {
   {
     for(local i = 0; i < ::shortcutsList.len(); i++)
     {
-      let item = ::shortcutsList[i]
+      local item = ::shortcutsList[i]
       local show = true
       local canBeHidden = true
 
@@ -991,21 +990,21 @@ local axisMappedOnMouse = {
   function optionsFilterApply()
   {
     updateHidden()
-    let mainTbl = scene.findObject(optionTableId)
+    local mainTbl = scene.findObject(optionTableId)
     if (!::checkObj(mainTbl))
       return
 
-    let totalRows = mainTbl.childrenCount()
+    local totalRows = mainTbl.childrenCount()
 
     for(local i=0; i<totalRows; i++)
     {
-      let obj = mainTbl.getChild(i)
-      let itemIdx = getRowIdx(obj)
+      local obj = mainTbl.getChild(i)
+      local itemIdx = getRowIdx(obj)
       if (itemIdx < 0)
         continue
 
-      let item = ::shortcutsList[itemIdx]
-      let show = !item.isHidden
+      local item = ::shortcutsList[itemIdx]
+      local show = !item.isHidden
 
       if (obj)
       {
@@ -1029,8 +1028,8 @@ local axisMappedOnMouse = {
         ["yes", function() {
           if (askKeyboardDefault)
           {
-            let presetNames = ::recomended_control_presets
-            let presets = presetNames.map(@(name) [
+            local presetNames = ::recomended_control_presets
+            local presets = presetNames.map(@(name) [
               name,
               function() {
                 applySelectedPreset(::get_controls_preset_by_selected_type(name).fileName)
@@ -1041,7 +1040,7 @@ local axisMappedOnMouse = {
           }
 
           local preset = "empty_ver1"
-          let opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
+          local opdata = ::get_option(::USEROPT_CONTROLS_PRESET)
           if (presetSelected in opdata.values)
             preset = opdata.values[presetSelected]
           else
@@ -1080,7 +1079,7 @@ local axisMappedOnMouse = {
 
   function onButtonReset()
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (!item) return
     if (item.type == CONTROL_TYPE.AXIS)
       return onAxisReset()
@@ -1090,7 +1089,7 @@ local axisMappedOnMouse = {
     guiScene.performDelayed(this, function() {
       if (scene && scene.isValid())
       {
-        let obj = scene.findObject("controls_input_root")
+        local obj = scene.findObject("controls_input_root")
         if (obj) guiScene.destroyElement(obj)
       }
 
@@ -1109,13 +1108,13 @@ local axisMappedOnMouse = {
 
   function updateButtonsChangeValue()
   {
-    let item = getCurItem()
-    let isShortcut = item != null && (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
-    let isAxis = item != null && item.type == CONTROL_TYPE.AXIS
+    local item = getCurItem()
+    local isShortcut = item != null && (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
+    local isAxis = item != null && item.type == CONTROL_TYPE.AXIS
 
     showSceneBtn("btn_reset_shortcut", isShortcut)
     showSceneBtn("btn_reset_axis", isAxis)
-    let btnA = showSceneBtn("btn_assign", isShortcut || isAxis)
+    local btnA = showSceneBtn("btn_assign", isShortcut || isAxis)
     btnA.setValue(isAxis ? ::loc("mainmenu/btnEditAxis") : ::loc("mainmenu/btnAssign"))
 
     checkCurrentNavagationSection()
@@ -1123,7 +1122,7 @@ local axisMappedOnMouse = {
 
   function onTblDblClick()
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (!item) return
 
     if (item.type == CONTROL_TYPE.AXIS)
@@ -1143,7 +1142,7 @@ local axisMappedOnMouse = {
   {
     if (dev.len() > 0 && dev.len() == btn.len())
     {
-      let item = getCurItem()
+      local item = getCurItem()
       if (item)
         bindShortcut(dev, btn, item.shortcutId)
     }
@@ -1151,7 +1150,7 @@ local axisMappedOnMouse = {
 
   function doBind(devs, btns, shortcutId)
   {
-    let event = shortcuts[shortcutId]
+    local event = shortcuts[shortcutId]
     event.append({dev = devs, btn = btns})
     if (event.len() > max_shortcuts)
       event.remove(0)
@@ -1165,15 +1164,15 @@ local axisMappedOnMouse = {
     if (!(shortcutId in shortcuts))
       return
 
-    let item = shortcutItems[shortcutId]
-    let obj = scene.findObject("txt_sc_"+shortcutNames[shortcutId])
+    local item = shortcutItems[shortcutId]
+    local obj = scene.findObject("txt_sc_"+shortcutNames[shortcutId])
 
     if (obj)
       obj.setValue(::get_shortcut_text({shortcuts = shortcuts, shortcutId = shortcutId}))
 
     if (item.type == CONTROL_TYPE.AXIS)
     {
-      let device = ::joystick_get_default()
+      local device = ::joystick_get_default()
       if (device != null)
         updateAxisText(device, item)
     }
@@ -1184,7 +1183,7 @@ local axisMappedOnMouse = {
     if (!(shortcutId in shortcuts))
       return false
 
-    let curBinding = findButtons(devs, btns, shortcutId)
+    local curBinding = findButtons(devs, btns, shortcutId)
     if (!curBinding || curBinding.len() == 0)
     {
       doBind(devs, btns, shortcutId)
@@ -1195,7 +1194,7 @@ local axisMappedOnMouse = {
       if (curBinding[i][0]==shortcutId)
         return false
 
-    let msg = ::loc("hotkeys/msg/unbind_question", {
+    local msg = ::loc("hotkeys/msg/unbind_question", {
       action = ::g_string.implode(
         curBinding.map((@(b) ::loc("hotkeys/"+shortcutNames[b[0]])).bindenv(this)),
         ::loc("ui/comma")
@@ -1208,7 +1207,7 @@ local axisMappedOnMouse = {
       ["replace", (@(curBinding, devs, btns, shortcutId) function() {
         for(local i = curBinding.len() - 1; i >= 0; i--)
         {
-          let binding = curBinding[i]
+          local binding = curBinding[i]
           if (!(binding[1] in shortcuts[binding[0]]))
             continue
 
@@ -1224,12 +1223,12 @@ local axisMappedOnMouse = {
 
   function findButtons(devs, btns, shortcutId)
   {
-    let visibilityMap = getShortcutsVisibilityMap()
+    local visibilityMap = getShortcutsVisibilityMap()
 
     if (::find_in_array(dontCheckControlsDupes, shortcutNames[shortcutId]) >= 0)
       return null
 
-    let res = []
+    local res = []
 
     foreach (index, event in shortcuts)
       if ((shortcutItems[index].checkGroup & shortcutItems[shortcutId].checkGroup) &&
@@ -1264,7 +1263,7 @@ local axisMappedOnMouse = {
     if (!curJoyParams || !axisItem || axisItem.axisIndex < 0 )
       return
 
-    let handler = ::handlersManager.loadHandler(::gui_handlers.AxisControls,
+    local handler = ::handlersManager.loadHandler(::gui_handlers.AxisControls,
       getAxisHandlerParams().__update({ axisItem = axisItem }))
     axisControlsHandlerWeak = handler.weakref()
   }
@@ -1277,7 +1276,7 @@ local axisMappedOnMouse = {
   function onAxisReset()
   {
     local axisMode = -1
-    let item = getCurItem()
+    local item = getCurItem()
     if (item && item.type == CONTROL_TYPE.AXIS)
       axisMode = item.axisIndex
 
@@ -1292,7 +1291,7 @@ local axisMappedOnMouse = {
         shortcuts[idx] = []
 
     curJoyParams.bindAxis(axisMode, -1)
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     updateSceneOptions()
 
@@ -1303,11 +1302,11 @@ local axisMappedOnMouse = {
   {
     ::set_controls_preset("");
     curJoyParams.bindAxis(axisIdx, axisNum)
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     updateSceneOptions()
 
-    let axisItem = getShortcutById(axisName)
+    local axisItem = getShortcutById(axisName)
     ::broadcastEvent("ControlsChangedAxes", {changedAxes = [axisItem]})
   }
 
@@ -1316,7 +1315,7 @@ local axisMappedOnMouse = {
     if (!obj)
       return
 
-    let isRelative = obj.getValue() == 1
+    local isRelative = obj.getValue() == 1
     local txtObj = scene.findObject("txt_rangeMax")
     if (txtObj) txtObj.setValue(::loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
     txtObj = scene.findObject("txt_rangeMin")
@@ -1326,20 +1325,20 @@ local axisMappedOnMouse = {
   function getUnmappedByGroups()
   {
     local currentHeader = null
-    let unmapped = []
-    let mapped = {}
+    local unmapped = []
+    local mapped = {}
 
     foreach(item in ::shortcutsList)
     {
       if (item.type == CONTROL_TYPE.HEADER)
       {
-        let isHeaderVisible = !("showFunc" in item) || item.showFunc.call(this)
+        local isHeaderVisible = !("showFunc" in item) || item.showFunc.call(this)
         if (isHeaderVisible)
           currentHeader = "hotkeys/" + item.id
         else
           currentHeader = null
       }
-      let isRequired = typeof(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
+      local isRequired = typeof(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
       if (!currentHeader || item.isHidden || !isRequired)
         continue
       if (filter == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim)
@@ -1365,7 +1364,7 @@ local axisMappedOnMouse = {
 
         if (!isMapped)
         {
-          let axisId = item.axisIndex >= 0
+          local axisId = item.axisIndex >= 0
             ? curJoyParams.getAxis(item.axisIndex).axisId : -1
           if (axisId >= 0 || !("modifiersId" in item))
             isMapped = true
@@ -1375,7 +1374,7 @@ local axisMappedOnMouse = {
           foreach(name in ["rangeMin", "rangeMax"])
             if (name in item.modifiersId)
             {
-              let id = item.modifiersId[name]
+              local id = item.modifiersId[name]
               if (!(id in shortcuts) || ::g_controls_utils.isShortcutMapped(shortcuts[id]))
               {
                 isMapped = true
@@ -1394,15 +1393,15 @@ local axisMappedOnMouse = {
       }
     }
 
-    let unmappedByGroups = {}
-    let unmappedList = []
+    local unmappedByGroups = {}
+    local unmappedList = []
     foreach(unmappedItem in unmapped)
     {
-      let item = unmappedItem.item
+      local item = unmappedItem.item
       if ("alternativeIds" in item || mapped?[item.id])
         continue
 
-      let header = unmappedItem.header
+      local header = unmappedItem.header
       local unmappedGroup = unmappedByGroups?[header]
       if (!unmappedGroup)
       {
@@ -1421,12 +1420,12 @@ local axisMappedOnMouse = {
 
   function updateSliderValue(item)
   {
-    let valueObj = scene.findObject(item.id+"_value")
+    local valueObj = scene.findObject(item.id+"_value")
     if (!valueObj) return
-    let vlObj = scene.findObject(item.id)
+    local vlObj = scene.findObject(item.id)
     if (!vlObj) return
 
-    let value = vlObj.getValue()
+    local value = vlObj.getValue()
     local valueText = ""
     if ("showValueMul" in item)
       valueText = (item.showValueMul * value).tostring()
@@ -1445,7 +1444,7 @@ local axisMappedOnMouse = {
     if (!obj?.id)
       return
 
-    let item = shortcutsListModule?[obj.id]
+    local item = shortcutsListModule?[obj.id]
     doItemAction(item)
   }
 
@@ -1467,19 +1466,19 @@ local axisMappedOnMouse = {
           || item.type == CONTROL_TYPE.SHORTCUT)
         continue
 
-      let obj = scene.findObject(item.id)
+      local obj = scene.findObject(item.id)
       if (!::checkObj(obj)) continue
 
       if ("optionType" in item)
       {
-        let value = obj.getValue()
+        local value = obj.getValue()
         ::set_option(item.optionType, value)
         continue
       }
 
       if (item.type== CONTROL_TYPE.MOUSE_AXIS && ("axis_num" in item))
       {
-        let value = obj.getValue()
+        local value = obj.getValue()
         if (value in item.values)
           if (item.values[value] == "none")
             curJoyParams.setMouseAxis(item.axis_num, "")
@@ -1490,7 +1489,7 @@ local axisMappedOnMouse = {
       if (!("setValue" in item))
         continue
 
-      let value = obj.getValue()
+      local value = obj.getValue()
       if ((item.type == CONTROL_TYPE.SPINNER || item.type== CONTROL_TYPE.DROPRIGHT || item.type== CONTROL_TYPE.LISTBOX)
           && (item.options.len() > 0))
         if (value in item.options)
@@ -1518,7 +1517,7 @@ local axisMappedOnMouse = {
 
   function onEventControlsChangedAxes(p)
   {
-    let device = ::joystick_get_default()
+    local device = ::joystick_get_default()
     foreach (axis in p.changedAxes)
       updateAxisText(device, axis)
   }
@@ -1537,7 +1536,7 @@ local axisMappedOnMouse = {
   function buildMsgFromGroupsList(list)
   {
     local text = ""
-    let colonLocalized = ::loc("ui/colon")
+    local colonLocalized = ::loc("ui/colon")
     foreach(groupIdx, group in list)
     {
       if (groupIdx > 0)
@@ -1585,11 +1584,11 @@ local axisMappedOnMouse = {
     if (!backAfterSave)
       return
 
-    let reqList = getUnmappedByGroups()
+    local reqList = getUnmappedByGroups()
     if (!reqList.len())
       return closeWnd()
 
-    let msg = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" +
+    local msg = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" +
       buildMsgFromGroupsList(reqList)
     msgBox("not_all_mapped", msg,
     [
@@ -1610,19 +1609,19 @@ local axisMappedOnMouse = {
 
   function onMouseWheel(obj)
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (!item || !("values" in item) || !obj)
       return
 
-    let value = obj.getValue()
-    let axisName = ::getTblValue(value, item.values)
-    let zoomPostfix = "zoom"
+    local value = obj.getValue()
+    local axisName = ::getTblValue(value, item.values)
+    local zoomPostfix = "zoom"
     if (axisName && axisName.len() >= zoomPostfix.len() && axisName.slice(-4) == zoomPostfix)
     {
-      let zoomAxisIndex = ::get_axis_index(axisName)
+      local zoomAxisIndex = ::get_axis_index(axisName)
       if (zoomAxisIndex<0) return
 
-      let axis = curJoyParams.getAxis(zoomAxisIndex)
+      local axis = curJoyParams.getAxis(zoomAxisIndex)
       if (axis.axisId<0) return
 
       if (filter==globalEnv.EM_MOUSE_AIM)
@@ -1631,8 +1630,8 @@ local axisMappedOnMouse = {
         return
       }
 
-      let curPreset = ::g_controls_manager.getCurPreset()
-      let msg = format(::loc("msg/zoomAssignmentsConflict"),
+      local curPreset = ::g_controls_manager.getCurPreset()
+      local msg = format(::loc("msg/zoomAssignmentsConflict"),
         ::remapAxisName(curPreset, axis.axisId))
       guiScene.performDelayed(this, @()
         msgBox("zoom_axis_assigned", msg,
@@ -1649,14 +1648,14 @@ local axisMappedOnMouse = {
     else if (axisName && (axisName == "camx" || axisName == "camy")
       && item.axis_num == MouseAxis.MOUSE_SCROLL)
     {
-      let isMouseView = AIR_MOUSE_USAGE.VIEW ==
+      local isMouseView = AIR_MOUSE_USAGE.VIEW ==
         ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE)
-      let isMouseViewWhenNoAim = AIR_MOUSE_USAGE.VIEW ==
+      local isMouseViewWhenNoAim = AIR_MOUSE_USAGE.VIEW ==
         ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE_NO_AIM)
 
       if (isMouseView || isMouseViewWhenNoAim)
       {
-        let msg = isMouseView
+        local msg = isMouseView
           ? ::loc("msg/replaceMouseViewToScroll")
           : ::loc("msg/replaceMouseViewToScrollNoAim")
         guiScene.performDelayed(this, @()
@@ -1703,14 +1702,14 @@ local axisMappedOnMouse = {
   {
     saveShortcutsAndAxes()
     ::g_controls_manager.clearGuiOptions()
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let mainOptionsMode = getGuiOptionsMode()
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
     foreach (item in ::shortcutsList)
       if ("optionType" in item && item.optionType in ::user_option_name_by_idx)
       {
-        let optionName = ::user_option_name_by_idx[item.optionType]
-        let value = ::get_option(item.optionType).value
+        local optionName = ::user_option_name_by_idx[item.optionType]
+        local value = ::get_option(item.optionType).value
         if (value != null)
           curPreset.params[optionName] <- value
       }
@@ -1739,7 +1738,7 @@ local axisMappedOnMouse = {
         dirPath = ::get_save_load_path()
         pathTag = "controls"
         onSelectCallback = function(path) {
-          let isSaved = ::export_current_layout_by_path(path)
+          local isSaved = ::export_current_layout_by_path(path)
           if (!isSaved)
             ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
           return isSaved
@@ -1762,7 +1761,7 @@ local axisMappedOnMouse = {
         dirPath = ::get_save_load_path()
         pathTag = "controls"
         onSelectCallback = function(path) {
-          let isOpened = ::import_current_layout_by_path(path)
+          local isOpened = ::import_current_layout_by_path(path)
           if (isOpened)
             ::broadcastEvent("ControlsPresetChanged")
           else
@@ -1787,15 +1786,15 @@ local axisMappedOnMouse = {
 
   function getShortcutsVisibilityMap()
   {
-    let helpersMode = ::getCurrentHelpersMode()
+    local helpersMode = ::getCurrentHelpersMode()
     local isHeaderShowed = true
     local isSectionShowed = true
 
-    let visibilityMap = {}
+    local visibilityMap = {}
 
     foreach (entry in ::shortcutsList)
     {
-      let isShowed =
+      local isShowed =
         (!("filterHide" in entry) || !::isInArray(helpersMode, entry.filterHide)) &&
         (!("filterShow" in entry) || ::isInArray(helpersMode, entry.filterShow)) &&
         (!("showFunc" in entry) || entry.showFunc.call(this))
@@ -1815,10 +1814,10 @@ local axisMappedOnMouse = {
 
 ::refillControlsDupes <- function refillControlsDupes()
 {
-  let arr = []
+  local arr = []
   for(local i = 0; i < ::shortcutsList.len(); i++)
   {
-    let item = ::shortcutsList[i]
+    local item = ::shortcutsList[i]
     if ((item.type == CONTROL_TYPE.SHORTCUT)
         && (item.isHidden || (("dontCheckDupes" in item) && item.dontCheckDupes)))
       arr.append(item.id)
@@ -1826,7 +1825,7 @@ local axisMappedOnMouse = {
   return arr
 }
 
-let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
+local mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   "\n".concat("tr { {0} ".subst(trAdd),
     "td { width:t='@controlsLeftRow'; overflow:t='hidden'; optiontext{id:t='{0}'; text:t='{1}'; }}"
       .subst($"txt_{id}", trName),
@@ -1840,7 +1839,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::buildHotkeyItem <- function buildHotkeyItem(rowIdx, shortcuts, item, params, even, rowParams = "")
 {
-  let hotkeyData = {
+  local hotkeyData = {
     id = "table_row_" + rowIdx
     markup = ""
     text = ""
@@ -1849,14 +1848,14 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   if (("condition" in item) && !item.condition())
     return hotkeyData
 
-  let trAdd = ::format("id:t='%s'; even:t='%s'; %s", hotkeyData.id, even? "yes" : "no", rowParams)
+  local trAdd = ::format("id:t='%s'; even:t='%s'; %s", hotkeyData.id, even? "yes" : "no", rowParams)
   local res = ""
   local elemTxt = ""
   local elemIdTxt = "controls/" + item.id
 
   if (item.type == CONTROL_TYPE.SECTION)
   {
-    let hotkeyId = "hotkeys/" + item.id
+    local hotkeyId = "hotkeys/" + item.id
     res = ::format("tr { %s inactive:t='yes';" +
                    "td { width:t='@controlsLeftRow'; overflow:t='visible';" +
                      "optionBlockHeader { text:t='#%s'; }}\n" +
@@ -1868,7 +1867,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   }
   else if (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
   {
-    let trName = "hotkeys/" + ((item.id=="")? "enable" : item.id)
+    local trName = "hotkeys/" + ((item.id=="")? "enable" : item.id)
     res = mkTextShortcutRow({
       scId = rowIdx
       id = item.id
@@ -1896,17 +1895,17 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
     if (item.type== CONTROL_TYPE.DROPRIGHT)
       createOptFunc = ::create_option_dropright
 
-    let callBack = ("onChangeValue" in item)? item.onChangeValue : null
+    local callBack = ("onChangeValue" in item)? item.onChangeValue : null
 
     if ("optionType" in item)
     {
-      let config = ::get_option(item.optionType)
+      local config = ::get_option(item.optionType)
       elemIdTxt = "options/" + config.id
       elemTxt = createOptFunc(item.id, config.items, config.value, callBack, true)
     }
     else if ("options" in item && (item.options.len() > 0))
     {
-      let value = ("value" in item)? item.value(params) : 0
+      local value = ("value" in item)? item.value(params) : 0
       elemTxt = createOptFunc(item.id, item.options, value, callBack, true)
     }
     else
@@ -1916,13 +1915,13 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   {
     if ("optionType" in item)
     {
-      let config = ::get_option(item.optionType)
+      local config = ::get_option(item.optionType)
       elemIdTxt = "options/" + config.id
       elemTxt = ::create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
     }
     else
     {
-      let value = ("value" in item)? item.value(params) : 50
+      local value = ("value" in item)? item.value(params) : 50
       elemTxt = ::create_option_slider(item.id, value.tointeger(), "onSliderChange", true, "slider", item)
     }
 
@@ -1939,7 +1938,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
     }
     else
     {
-      let value = ("value" in item)? item.value(params) : false
+      local value = ("value" in item)? item.value(params) : false
       config = {
         id = item.id
         value = value
@@ -1950,9 +1949,9 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   }
   else if (item.type== CONTROL_TYPE.MOUSE_AXIS && (item.values.len() > 0) && ("axis_num" in item))
   {
-    let value = params.getMouseAxis(item.axis_num)
-    let callBack = ("onChangeValue" in item)? item.onChangeValue : null
-    let options = []
+    local value = params.getMouseAxis(item.axis_num)
+    local callBack = ("onChangeValue" in item)? item.onChangeValue : null
+    local options = []
     for (local i = 0; i < item.values.len(); i++)
       options.append("#controls/" + item.values[i])
     local sel = ::find_in_array(item.values, value)
@@ -1963,7 +1962,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   else if (item.type == CONTROL_TYPE.BUTTON)
   {
     elemIdTxt = "";
-    elemTxt = ::handyman.renderCached("%gui/commonParts/button", {
+    elemTxt = ::handyman.renderCached("gui/commonParts/button", {
       id = item.id
       text = "#controls/" + item.id
       funcName = "onActionButtonClick"
@@ -1999,7 +1998,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   for (local i = 0; i < shortcuts[shortcutId].len(); i++)
   {
     local text = ""
-    let sc = shortcuts[shortcutId][i]
+    local sc = shortcuts[shortcutId][i]
 
     for (local j = 0; j < sc.dev.len(); j++)
       text += ((j != 0)? " + ":"") + ::getLocalizedControlName(preset, sc.dev[j], sc.btn[j])
@@ -2029,9 +2028,9 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   local text = ""
   if (shortcutData.len() > 0)
   {
-    let sc = shortcutData[0]
+    local sc = shortcutData[0]
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    local curPreset = ::g_controls_manager.getCurPreset()
     for (local j = 0; j < sc.btn.len(); j++)
       text += ((j != 0)? " + " : "") + ::getLocalizedControlName(curPreset, sc.dev[j], sc.btn[j])
   }
@@ -2041,7 +2040,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::get_shortcut_gamepad_textures <- function get_shortcut_gamepad_textures(shortcutData)
 {
-  let res = []
+  local res = []
   foreach(sc in shortcutData)
   {
     if (sc.dev.len() <= 0 || sc.dev[0] != ::JOYSTICK_DEVICE_0_ID)
@@ -2086,14 +2085,14 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::getLocalizedControlName <- function getLocalizedControlName(preset, deviceId, buttonId)
 {
-  let text = preset.getButtonName(deviceId, buttonId)
+  local text = preset.getButtonName(deviceId, buttonId)
   if (deviceId != ::STD_KEYBOARD_DEVICE_ID) {
-    let locText = getLocaliazedPS4controlName(text)
+    local locText = getLocaliazedPS4controlName(text)
     if (locText != "")
       return locText
   }
 
-  let locText = ::loc("key/" + text, "")
+  local locText = ::loc("key/" + text, "")
   if (locText != "")
     return locText
 
@@ -2102,7 +2101,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::remapAxisName <- function remapAxisName(preset, axisId)
 {
-  let text = preset.getAxisName(axisId)
+  local text = preset.getAxisName(axisId)
   if (text == null)
     return "?"
 
@@ -2134,10 +2133,10 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 {
   if (isPlatformSony)
   {
-    let hack = ::getLocaliazedPS4controlName("R2") + " + " + ::getLocaliazedPS4controlName("MouseLB")
+    local hack = ::getLocaliazedPS4controlName("R2") + " + " + ::getLocaliazedPS4controlName("MouseLB")
     if (mainText.len() >= hack.len())
     {
-      let replaceButtonText = ::getLocaliazedPS4controlName("R2")
+      local replaceButtonText = ::getLocaliazedPS4controlName("R2")
       if (mainText.slice(0, hack.len()) == hack)
         mainText = replaceButtonText + mainText.slice(hack.len())
       else if (mainText.slice(mainText.len() - hack.len()) == hack)
@@ -2154,18 +2153,18 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission()
 {
-  let gm = ::get_game_mode()
+  local gm = ::get_game_mode()
   if (gm == ::GM_BENCHMARK)
     return []
 
-  let unit = getPlayerCurUnit()
-  let helpersMode = ::getCurrentHelpersMode()
-  let required = ::getRequiredControlsForUnit(unit, helpersMode)
+  local unit = getPlayerCurUnit()
+  local helpersMode = ::getCurrentHelpersMode()
+  local required = ::getRequiredControlsForUnit(unit, helpersMode)
 
-  let unmapped = ::getUnmappedControls(required, helpersMode, true, false)
+  local unmapped = ::getUnmappedControls(required, helpersMode, true, false)
   if (::is_in_flight() && gm == ::GM_TRAINING)
   {
-    let tutorialUnmapped = ::getUnmappedControlsForTutorial(::current_campaign_mission, helpersMode)
+    local tutorialUnmapped = ::getUnmappedControlsForTutorial(::current_campaign_mission, helpersMode)
     foreach (id in tutorialUnmapped)
       ::u.appendOnce(id, unmapped)
   }
@@ -2174,10 +2173,10 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
 ::getCurrentHelpersMode <- function getCurrentHelpersMode()
 {
-  let difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+  local difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
   if (difficulty == 2)
     return (::is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
-  let option = ::get_option_in_mode(::USEROPT_HELPERS_MODE, ::OPTIONS_MODE_GAMEPLAY)
+  local option = ::get_option_in_mode(::USEROPT_HELPERS_MODE, ::OPTIONS_MODE_GAMEPLAY)
   return option.values[option.value]
 }
 
@@ -2186,7 +2185,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   local res = []
 
   local mis_file = null
-  let chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
+  local chapters = ::get_meta_missions_info_by_chapters(::GM_TRAINING)
   foreach(chapter in chapters)
     foreach(m in chapter)
       if (m.name == missionId)
@@ -2196,11 +2195,11 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
       }
   if (mis_file==null)
     return res
-  let missionBlk = blkFromPath(mis_file)
+  local missionBlk = blkFromPath(mis_file)
   if (!missionBlk?.triggers)
     return res
 
-  let tutorialControlAliases = {
+  local tutorialControlAliases = {
     ["ANY"]                = null,
     ["ID_CONTINUE"]        = null,
     ["ID_SKIP_CUTSCENE"]   = null,
@@ -2209,25 +2208,25 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
     ["ID_TRANS_GEAR_DOWN"] = "gm_throttle",
   }
 
-  let isXinput = ::is_xinput_device()
-  let isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
+  local isXinput = ::is_xinput_device()
+  local isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
 
-  let conditionsList = []
+  local conditionsList = []
   foreach (trigger in missionBlk.triggers)
   {
     if (typeof(trigger) != "instance")
       continue
 
-    let condition = (trigger?.props.conditionsType != "ANY") ? "ALL" : "ANY"
+    local condition = (trigger?.props.conditionsType != "ANY") ? "ALL" : "ANY"
 
-    let shortcuts = []
+    local shortcuts = []
     if (trigger?.conditions)
     {
       foreach (playerShortcutPressed in trigger.conditions % "playerShortcutPressed")
         if (playerShortcutPressed?.control && isAllowedCondition(playerShortcutPressed))
         {
-          let id = playerShortcutPressed.control
-          let alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
+          local id = playerShortcutPressed.control
+          local alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
           if (alias && !::isInArray(alias, shortcuts))
             shortcuts.append(alias)
         }
@@ -2270,12 +2269,12 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
       conditionsList.remove(i)
   }
 
-  let controlsList = []
+  local controlsList = []
   foreach (cond in conditionsList)
     foreach (id in cond.shortcuts)
       if (!::isInArray(id, controlsList))
         controlsList.append(id)
-  let unmapped = ::getUnmappedControls(controlsList, helpersMode, false, false)
+  local unmapped = ::getUnmappedControls(controlsList, helpersMode, false, false)
 
   foreach (cond in conditionsList)
   {
@@ -2311,9 +2310,9 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   return res
 }
 
-let function getWeaponFeatures(weaponsList)
+local function getWeaponFeatures(weaponsBlkList)
 {
-  let res = {
+  local res = {
     gotMachineGuns = false
     gotCannons = false
     gotAdditionalGuns = false
@@ -2328,8 +2327,13 @@ let function getWeaponFeatures(weaponsList)
     gotSchraegeMusik = false
   }
 
-  foreach (weaponSet in weaponsList)
-    foreach (w in weaponSet) {
+  foreach (weaponSet in weaponsBlkList)
+  {
+    if (!weaponSet)
+      continue
+
+    foreach (w in (weaponSet % "Weapon"))
+    {
       if (!w?.blk || w?.dummy)
         continue
 
@@ -2358,6 +2362,7 @@ let function getWeaponFeatures(weaponsList)
       if (::is_platform_pc && w?.schraegeMusikAngle != null)
         res.gotSchraegeMusik = true
     }
+  }
 
   return res
 }
@@ -2368,37 +2373,41 @@ let function getWeaponFeatures(weaponsList)
   if (!unit || useTouchscreen)
     return controls
 
-  let unitId = unit.name
-  let unitType = unit.unitType
+  local unitId = unit.name
+  local unitType = unit.unitType
 
-  let preset = ::g_controls_manager.getCurPreset()
+  local preset = ::g_controls_manager.getCurPreset()
   local actionBarShortcutFormat = null
 
-  let unitBlk = ::get_full_unit_blk(unitId)
-  let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
-  local weaponPreset = []
+  local unitBlk = ::get_full_unit_blk(unitId)
+  local blkCommonWeapons = getCommonWeaponsBlk(unitBlk, getLastPrimaryWeapon(unit)) || ::DataBlock()
+  local blkWeaponPreset = ::DataBlock()
 
-  let curWeaponPresetId = ::is_in_flight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
+  local curWeaponPresetId = ::is_in_flight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
 
-  let presets = getUnitPresets(unitBlk)
-  weaponPreset = getWeaponsByPresetName(
-    unitBlk, (curWeaponPresetId == "" ? presets?[0].name : curWeaponPresetId))
+  if (unitBlk?.weapon_presets)
+    foreach (idx, presetBlk in (unitBlk.weapon_presets % "preset"))
+      if (presetBlk?.name == curWeaponPresetId || (curWeaponPresetId == "" && idx == 0))
+      {
+        blkWeaponPreset = blkOptFromPath(presetBlk?.blk)
+        break
+      }
 
   local hasControllableRadar = false
   if (unitBlk?.sensors)
     foreach (sensor in (unitBlk.sensors % "sensor"))
       hasControllableRadar = hasControllableRadar || blkOptFromPath(sensor?.blk)?.type == "radar"
 
-  let isMouseAimMode = helpersMode == globalEnv.EM_MOUSE_AIM
+  local isMouseAimMode = helpersMode == globalEnv.EM_MOUSE_AIM
 
   if (unitType == unitTypes.AIRCRAFT)
   {
-    let fmBlk = ::get_fm_file(unitId, unitBlk)
-    let unitControls = fmBlk?.AvailableControls || ::DataBlock()
+    local fmBlk = ::get_fm_file(unitId, unitBlk)
+    local unitControls = fmBlk?.AvailableControls || ::DataBlock()
 
-    let gotInstructor = isMouseAimMode || helpersMode == globalEnv.EM_INSTRUCTOR
-    let option = ::get_option_in_mode(::USEROPT_INSTRUCTOR_GEAR_CONTROL, ::OPTIONS_MODE_GAMEPLAY)
-    let instructorGearControl = gotInstructor && option.value
+    local gotInstructor = isMouseAimMode || helpersMode == globalEnv.EM_INSTRUCTOR
+    local option = ::get_option_in_mode(::USEROPT_INSTRUCTOR_GEAR_CONTROL, ::OPTIONS_MODE_GAMEPLAY)
+    local instructorGearControl = gotInstructor && option.value
 
     controls = [ "throttle" ]
 
@@ -2423,10 +2432,10 @@ let function getWeaponFeatures(weaponsList)
       controls.append("ID_AIR_BRAKE")
     if (unitControls?.hasFlapsControl)
     {
-      let shortcuts = ::get_shortcuts([ "ID_FLAPS", "ID_FLAPS_UP", "ID_FLAPS_DOWN" ])
-      let flaps   = ::g_controls_utils.isShortcutMapped(shortcuts[0])
-      let flapsUp = ::g_controls_utils.isShortcutMapped(shortcuts[1])
-      let flapsDn = ::g_controls_utils.isShortcutMapped(shortcuts[2])
+      local shortcuts = ::get_shortcuts([ "ID_FLAPS", "ID_FLAPS_UP", "ID_FLAPS_DOWN" ])
+      local flaps   = ::g_controls_utils.isShortcutMapped(shortcuts[0])
+      local flapsUp = ::g_controls_utils.isShortcutMapped(shortcuts[1])
+      local flapsDn = ::g_controls_utils.isShortcutMapped(shortcuts[2])
 
       if (!flaps && !flapsUp && !flapsDn)
         controls.append("ID_FLAPS")
@@ -2442,7 +2451,7 @@ let function getWeaponFeatures(weaponsList)
     if (unitBlk?.parachutes)
       controls.append("ID_CHUTE")
 
-    let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
+    local w = getWeaponFeatures([ blkCommonWeapons, blkWeaponPreset ])
 
     if (preset.getAxis("fire").axisId == -1)
     {
@@ -2475,12 +2484,12 @@ let function getWeaponFeatures(weaponsList)
   }
   else if (unitType == unitTypes.HELICOPTER)
   {
-    controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll", "helicopter_sensor_cue_x", "helicopter_sensor_cue_y" ]
+    controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll" ]
 
     if (::is_xinput_device())
       controls.append("helicopter_mouse_aim_x", "helicopter_mouse_aim_y")
 
-    let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
+    local w = getWeaponFeatures([ blkCommonWeapons, blkWeaponPreset ])
 
     if (preset.getAxis("fire").axisId == -1)
     {
@@ -2530,13 +2539,13 @@ let function getWeaponFeatures(weaponsList)
       controls.append("ID_SENSOR_TARGET_LOCK_TANK")
     }
 
-    let gameParams = ::dgs_get_game_params()
-    let missionDifficulty = ::get_mission_difficulty()
-    let difficultyName = ::g_difficulty.getDifficultyByName(missionDifficulty).settingsName
-    let difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]
+    local gameParams = ::dgs_get_game_params()
+    local missionDifficulty = ::get_mission_difficulty()
+    local difficultyName = ::g_difficulty.getDifficultyByName(missionDifficulty).settingsName
+    local difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]
 
-    let tags = unit?.tags || []
-    let scoutPresetId = difficultySettings?.scoutPreset ?? ""
+    local tags = unit?.tags || []
+    local scoutPresetId = difficultySettings?.scoutPreset ?? ""
     if (::has_feature("ActiveScouting") && tags.indexof("scout") != null
       && gameParams?.scoutPresets?[scoutPresetId]?.enabled)
       controls.append("ID_SCOUT")
@@ -2547,14 +2556,14 @@ let function getWeaponFeatures(weaponsList)
   {
     controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP"]
 
-    let isSeperatedEngineControl =
+    local isSeperatedEngineControl =
       ::get_gui_option_in_mode(::USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, ::OPTIONS_MODE_GAMEPLAY)
     if (isSeperatedEngineControl)
       controls.append("ship_port_engine", "ship_star_engine")
     else
       controls.append("ship_main_engine")
 
-    let weaponGroups = [
+    local weaponGroups = [
       {
         triggerGroup = "primary"
         shortcuts = ["ID_SHIP_WEAPON_ALL", "ID_SHIP_WEAPON_PRIMARY"]
@@ -2585,12 +2594,18 @@ let function getWeaponFeatures(weaponsList)
       }
     ]
 
-    foreach (weaponSet in [ commonWeapons, weaponPreset ]) {
-      foreach (weapon in weaponSet) {
+    foreach (weaponSet in [ blkCommonWeapons, blkWeaponPreset ])
+    {
+      if (!weaponSet)
+        continue
+
+      foreach (weapon in (weaponSet % "Weapon"))
+      {
         if (!weapon?.blk || weapon?.dummy)
           continue
 
-        foreach (group in weaponGroups) {
+        foreach (group in weaponGroups)
+        {
           if (group?.isRequired || group.triggerGroup != weapon?.triggerGroup)
             continue
 
@@ -2628,7 +2643,7 @@ let function getWeaponFeatures(weaponsList)
       {
         if (isBulletGroupActive(unit, groupIndex))
         {
-          let bullets = ::get_unit_option(unitId, ::USEROPT_BULLET_COUNT0 + groupIndex)
+          local bullets = ::get_unit_option(unitId, ::USEROPT_BULLET_COUNT0 + groupIndex)
           if (bullets != null && bullets > 0)
             bulletsChoice++
         }
@@ -2651,9 +2666,9 @@ let function getWeaponFeatures(weaponsList)
 
 ::getUnmappedControls <- function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false)
 {
-  let unmapped = []
+  local unmapped = []
 
-  let joyParams = ::JoystickParams()
+  local joyParams = ::JoystickParams()
   joyParams.setFrom(::joystick_get_cur_settings())
 
   foreach (item in ::shortcutsList)
@@ -2667,11 +2682,11 @@ let function getWeaponFeatures(weaponsList)
 
       if (item.type == CONTROL_TYPE.SHORTCUT)
       {
-        let shortcuts = ::get_shortcuts([ item.id ])
+        local shortcuts = ::get_shortcuts([ item.id ])
         if (!shortcuts.len() || ::g_controls_utils.isShortcutMapped(shortcuts[0]))
           continue
 
-        let altIds = item?.alternativeIds ?? []
+        local altIds = item?.alternativeIds ?? []
         foreach (otherItem in ::shortcutsList)
           if ((otherItem?.alternativeIds ?? []).indexof(item.id) != null)
             ::u.appendOnce(otherItem.id, altIds)
@@ -2692,18 +2707,18 @@ let function getWeaponFeatures(weaponsList)
         if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
           continue
 
-        let axisIndex = ::get_axis_index(item.id)
-        let axisId = axisIndex >= 0
+        local axisIndex = ::get_axis_index(item.id)
+        local axisId = axisIndex >= 0
           ? joyParams.getAxis(axisIndex).axisId : -1
         if (axisId == -1)
         {
-          let modifiers = ["rangeMin", "rangeMax"]
+          local modifiers = ["rangeMin", "rangeMax"]
           local shortcutsCount = 0
           foreach (modifier in modifiers)
           {
             if (!("hideAxisOptions" in item) || !::isInArray(modifier, item.hideAxisOptions))
             {
-              let shortcuts = ::get_shortcuts([ item.id + "_" + modifier ])
+              local shortcuts = ::get_shortcuts([ item.id + "_" + modifier ])
               if (shortcuts.len() && ::g_controls_utils.isShortcutMapped(shortcuts[0]))
                 shortcutsCount++
             }
@@ -2735,7 +2750,7 @@ let function getWeaponFeatures(weaponsList)
       local same = true
       foreach(ib, btn in bind.btn)
       {
-        let i = ::find_in_array(sc.btn, btn)
+        local i = ::find_in_array(sc.btn, btn)
         if (i < 0 || sc.dev[i] != bind.dev[ib])
         {
           same = false
@@ -2753,12 +2768,12 @@ let function getWeaponFeatures(weaponsList)
   if (!devId)
     return false
 
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   ::fill_joysticks_desc(blk)
 
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    let device = blk.getBlock(i)
+    local device = blk.getBlock(i)
     if (device?.disconnected)
       continue
 

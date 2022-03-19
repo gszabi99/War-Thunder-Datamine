@@ -2,13 +2,11 @@
   "model": "f_105d",
   "fmFile": "fm/f_105d.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
-  "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
-  "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.355,
   "gearSinkRangeC": 0.2,
   "JetNozzlesAnim1": [0.3,0.5],
@@ -1955,12 +1953,6 @@
       "preset": {
         "name": "f_105d_default",
         "blk": "gameData/FlightModels/weaponPresets/f_105d_default.blk"
-      }
-    },
-    {
-      "preset": {
-        "name": "f_105d_rockets_aim9x2",
-        "blk": "gameData/FlightModels/weaponPresets/f_105d_rockets_aim9x2.blk"
       }
     },
     {
@@ -5788,6 +5780,18 @@
       "replace_tex": {
         "from": "f_105d_c_dmg*",
         "to": "f_105d_c_tomoe_dmg*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "f_105d_n*",
+        "to": "f_105d_n_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "f_105d_n_dmg*",
+        "to": "f_105d_n_tomoe_dmg*"
       }
     }
   ],

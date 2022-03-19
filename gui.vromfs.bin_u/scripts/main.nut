@@ -1,9 +1,6 @@
-#default:no-func-decl-sugar
-#default:no-class-decl-sugar
+require("globalScripts/ui_globals.nut")
 
-require("%globalScripts/ui_globals.nut")
-
-let __string = require("string")
+local __string = require("string")
 foreach (name, func in require("dagor.localize"))
   ::dagor[name] <- func
 
@@ -11,23 +8,23 @@ foreach (name, func in require("dagor.localize"))
 ::split <-__string.split
 ::format <-__string.format
 ::strip<-__string.strip
-let __math = require("math")
+local __math = require("math")
 ::fabs<-__math.fabs
-::kwarg <- require("%sqstd/functools.nut").kwarg
-::memoize <- require("%sqstd/functools.nut").memoize
+::kwarg <- require("std/functools.nut").kwarg
+::memoize <- require("std/functools.nut").memoize
 
-let frp = require("frp")
+local frp = require("frp")
 ::Watched <- frp.Watched
 ::Computed <-frp.Computed
 
 ::script_protocol_version <- null
-require("%globalScripts/version.nut")
-require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-require("%globalScripts/sqModuleHelpers.nut")
-require("%sqStdLibs/helpers/backCompatibility.nut")
-require("%scripts/compatibility.nut")
-require("%scripts/clientState/errorHandling.nut")
-let { get_local_unixtime } = require("dagor.time")
+require("globalScripts/version.nut")
+require("sqStdLibs/scriptReloader/scriptReloader.nut")
+require("globalScripts/sqModuleHelpers.nut")
+require("sqStdLibs/helpers/backCompatibility.nut")
+require("scripts/compatibility.nut")
+require("scripts/clientState/errorHandling.nut")
+local { get_local_unixtime } = require("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
@@ -172,7 +169,6 @@ global enum itemType { //bit values for easy multitype search
   BATTLE_PASS     = 0x0008000000
   RENTED_UNIT     = 0x0010000000
   UNIT_COUPON_MOD = 0x0020000000
-  PROFILE_ICON    = 0x0040000000
 
   //workshop
   CRAFT_PART      = 0x1000000000
@@ -262,7 +258,7 @@ global enum COLOR_TAG {
   TEAM_BLUE = "tb"
   TEAM_RED = "tr"
 }
-let colorTagToColors = {
+local colorTagToColors = {
   [COLOR_TAG.ACTIVE] = "activeTextColor",
   [COLOR_TAG.USERLOG] = "userlogColoredText",
   [COLOR_TAG.TEAM_BLUE] = "teamBlueColor",
@@ -343,11 +339,11 @@ randomize()
 
 //------- vvv files before login vvv ----------
 
-::g_string <- require("%sqstd/string.nut") //put g_string to root_table
-::u <- require("%sqStdLibs/helpers/u.nut") //put u to roottable
-::Callback <- require("%sqStdLibs/helpers/callback.nut").Callback
+::g_string <- require("std/string.nut") //put g_string to root_table
+::u <- require("sqStdLibs/helpers/u.nut") //put u to roottable
+::Callback <- require("sqStdLibs/helpers/callback.nut").Callback
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- {
   DEFAULT = 0
   DEFAULT_HANDLER = 1
@@ -362,117 +358,108 @@ subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 ::add_event_listener <- subscriptions.addEventListener
 ::subscribe_handler <- subscriptions.subscribeHandler
 
-::has_feature <- require("%scripts/user/features.nut").hasFeature
-
-let guiOptions = require("guiOptions")
-foreach(name in [
-  "get_gui_option", "set_gui_option", "get_unit_option", "set_unit_option",
-  "get_cd_preset", "set_cd_preset"
-])
-  if (name not in ::getroottable())
-    ::getroottable()[name] <- guiOptions[name]
+::has_feature <- require("scripts/user/features.nut").hasFeature
 
 foreach(fn in [
-  "%scripts/debugTools/dbgToString.nut"
-  "%sqDagui/framework/framework.nut"
+  "scripts/debugTools/dbgToString.nut"
+  "sqDagui/framework/framework.nut"
 ])
   require(fn)
 
-let { getShortAppName } = ::require_native("app")
-let game = getShortAppName()
-let gameMnt = { mecha = "%mechaScripts", vrThunder = "%vrtScripts", wt = "%wtScripts" }?[game]
-::dagor.debug($"Load UI scripts by game: {game} (mnt = {gameMnt})")
-require_optional($"{gameMnt}/onScriptLoad.nut")
+local { getShortAppName } = ::require_native("app")
+local game = getShortAppName()
+::dagor.debug($"LOAD GAME SCRIPTS: {game}")
+require_optional($"{game}/scripts/onScriptLoad.nut")
 
 
 foreach (fn in [
-  "%globalScripts/sharedEnums.nut"
+  "globalScripts/sharedEnums.nut"
 
-  "%sqstd/math.nut"
+  "std/math.nut"
 
-  "%sqDagui/guiBhv/allBhv.nut"
-  "%scripts/bhvCreditsScroll.nut"
-  "%scripts/cubicBezierSolver.nut"
-  "%scripts/onlineShop/urlType.nut"
-  "%scripts/onlineShop/url.nut"
+  "sqDagui/guiBhv/allBhv.nut"
+  "scripts/bhvCreditsScroll.nut"
+  "scripts/cubicBezierSolver.nut"
+  "scripts/onlineShop/urlType.nut"
+  "scripts/onlineShop/url.nut"
 
-  "%sqStdLibs/helpers/handyman.nut"
+  "sqStdLibs/helpers/handyman.nut"
 
-  "%sqDagui/daguiUtil.nut"
-  "%scripts/viewUtils/layeredIcon.nut"
-  "%scripts/viewUtils/projectAwards.nut"
+  "sqDagui/daguiUtil.nut"
+  "scripts/viewUtils/layeredIcon.nut"
+  "scripts/viewUtils/projectAwards.nut"
 
-  "%scripts/util.nut"
-  "%sqStdLibs/helpers/datablockUtils.nut"
-  "%sqDagui/timer/timer.nut"
+  "scripts/util.nut"
+  "sqStdLibs/helpers/datablockUtils.nut"
+  "sqDagui/timer/timer.nut"
 
-  "%scripts/clientState/localProfile.nut"
-  "%scripts/options/optionsExtNames.nut"
-  "%scripts/options/fonts.nut"
-  "%scripts/options/consoleMode.nut"
-  "%scripts/options/optionsBeforeLogin.nut"
+  "scripts/clientState/localProfile.nut"
+  "scripts/options/optionsExtNames.nut"
+  "scripts/options/fonts.nut"
+  "scripts/options/consoleMode.nut"
+  "scripts/options/optionsBeforeLogin.nut"
 
   //probably used before login on ps4
-  "%scripts/controls/controlsConsts.nut"
-  "%scripts/controls/rawShortcuts.nut"
-  "%scripts/controls/controlsManager.nut"
+  "scripts/controls/controlsConsts.nut"
+  "scripts/controls/rawShortcuts.nut"
+  "scripts/controls/controlsManager.nut"
 
-  "%scripts/baseGuiHandlerManagerWT.nut"
+  "scripts/baseGuiHandlerManagerWT.nut"
 
-  "%scripts/langUtils/localization.nut"
-  "%scripts/langUtils/language.nut"
+  "scripts/langUtils/localization.nut"
+  "scripts/langUtils/language.nut"
 
-  "%scripts/clientState/keyboardState.nut"
-  "%scripts/clientState/contentPacks.nut"
-  "%scripts/utils/errorMsgBox.nut"
-  "%scripts/tasker.nut"
-  "%scripts/utils/delayedActions.nut"
+  "scripts/clientState/keyboardState.nut"
+  "scripts/clientState/contentPacks.nut"
+  "scripts/utils/errorMsgBox.nut"
+  "scripts/tasker.nut"
+  "scripts/utils/delayedActions.nut"
 
-  "%scripts/clientState/fpsDrawer.nut"
+  "scripts/clientState/fpsDrawer.nut"
 
-  "%scripts/clientState/applyRendererSettingsChange.nut"
+  "scripts/clientState/applyRendererSettingsChange.nut"
 
   //used in loading screen
-  "%scripts/controls/input/inputBase.nut"
-  "%scripts/controls/input/nullInput.nut"
-  "%scripts/controls/shortcutType.nut"
-  "%scripts/viewUtils/hintTags.nut"
-  "%scripts/viewUtils/hints.nut"
-  "%scripts/viewUtils/bhvHint.nut"
+  "scripts/controls/input/inputBase.nut"
+  "scripts/controls/input/nullInput.nut"
+  "scripts/controls/shortcutType.nut"
+  "scripts/viewUtils/hintTags.nut"
+  "scripts/viewUtils/hints.nut"
+  "scripts/viewUtils/bhvHint.nut"
 
-  "%scripts/loading/loading.nut"
+  "scripts/loading/loading.nut"
 
-  "%scripts/options/gamepadCursorControls.nut"
-  "%scripts/unit/unitType.nut"
-  "%scripts/loading/loadingTips.nut"
-  "%scripts/options/countryFlagsPreset.nut"
+  "scripts/options/gamepadCursorControls.nut"
+  "scripts/unit/unitType.nut"
+  "scripts/loading/loadingTips.nut"
+  "scripts/options/countryFlagsPreset.nut"
 
-  "%scripts/hangarLights.nut"
+  "scripts/hangarLights.nut"
 
-  "%scripts/webRPC.nut"
-  "%scripts/matching/api.nut"
-  "%scripts/matching/client.nut"
-  "%scripts/matching/matchingConnect.nut"
+  "scripts/webRPC.nut"
+  "scripts/matching/api.nut"
+  "scripts/matching/client.nut"
+  "scripts/matching/matchingConnect.nut"
 
-  "%scripts/wndLib/editBoxHandler.nut"
-  "%scripts/wndLib/rightClickMenu.nut"
-  "%scripts/actionsList.nut"
+  "scripts/wndLib/editBoxHandler.nut"
+  "scripts/wndLib/rightClickMenu.nut"
+  "scripts/actionsList.nut"
 
-  "%scripts/debugTools/dbgEnum.nut"
-  "%scripts/debugTools/debugWnd.nut"
-  "%scripts/debugTools/dbgTimer.nut"
-  "%scripts/debugTools/dbgDumpTools.nut"
-  "%scripts/debugTools/dbgUtils.nut"
-  "%scripts/debugTools/dbgImage.nut"
-  "%scripts/debugTools/dbgFonts.nut"
-  "%scripts/debugTools/dbgAvatarsList.nut"
-  "%scripts/debugTools/dbgMarketplace.nut"
+  "scripts/debugTools/dbgEnum.nut"
+  "scripts/debugTools/debugWnd.nut"
+  "scripts/debugTools/dbgTimer.nut"
+  "scripts/debugTools/dbgDumpTools.nut"
+  "scripts/debugTools/dbgUtils.nut"
+  "scripts/debugTools/dbgImage.nut"
+  "scripts/debugTools/dbgFonts.nut"
+  "scripts/debugTools/dbgAvatarsList.nut"
+  "scripts/debugTools/dbgMarketplace.nut"
 
   //used before xbox login
-  "%scripts/social/xboxSquadManager.nut"
+  "scripts/social/xboxSquadManager.nut"
 
   //used for SSO login
-  "%scripts/onlineShop/browserWnd.nut"
+  "scripts/onlineShop/browserWnd.nut"
 ])
 {
   ::g_script_reloader.loadOnce(fn)
@@ -493,19 +480,19 @@ foreach(bhvName, bhvClass in ::gui_bhv_deprecated)
 )
 
   // Independent Modules (before login)
-require("%sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
-require("%scripts/clientState/elems/dlDataStatElem.nut")
-require("%scripts/clientState/elems/copyrightText.nut")
-require("%sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
+require("sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
+require("scripts/clientState/elems/dlDataStatElem.nut")
+require("scripts/clientState/elems/copyrightText.nut")
+require("sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
   // end of Independent Modules
 
-let platform = require("%scripts/clientState/platform.nut")
+local platform = require("scripts/clientState/platform.nut")
 ::cross_call_api.platform <- {
   getPlayerName = platform.getPlayerName
   is_pc = @() platform.isPlatformPC
 }
 
-let { is_stereo_mode } = ::require_native("vr")
+local { is_stereo_mode } = ::require_native("vr")
 ::cross_call_api.isInVr <- @() is_stereo_mode()
 
 //------- ^^^ files before login ^^^ ----------
@@ -521,45 +508,45 @@ local isFullScriptsLoaded = false
   isFullScriptsLoaded = true
 
   // Independent Modules with mainHandler. Need load this befor rest handlers
-  require("%scripts/baseGuiHandlerWT.nut")
+  require("scripts/baseGuiHandlerWT.nut")
   // end of Independent Modules with mainHandler
 
-  ::dagor.debug($"Load UI scripts by game after login: {game} (mnt = {gameMnt})")
-  require_optional($"{gameMnt}/onScriptLoadAfterLogin.nut")
+  ::dagor.debug($"LOAD GAME SCRIPTS AFTER LOGIN: {game}")
+  require_optional($"{game}/scripts/onScriptLoadAfterLogin.nut")
 
   // Independent Modules (after login)
-  require("%scripts/social/playerInfoUpdater.nut")
-  require("%scripts/squads/elems/voiceChatElem.nut")
-  require("%scripts/matching/serviceNotifications/showInfo.nut")
-  require("%scripts/unit/unitContextMenu.nut")
-  require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
-  require("%scripts/social/activityFeed/activityFeedModule.nut")
-  require("%scripts/controls/controlsPseudoAxes.nut")
-  require("%scripts/controls/guiSceneCursorVisibility.nut")
-  require("%scripts/utils/delayedTooltip.nut")
+  require("scripts/social/playerInfoUpdater.nut")
+  require("scripts/squads/elems/voiceChatElem.nut")
+  require("scripts/matching/serviceNotifications/showInfo.nut")
+  require("scripts/unit/unitContextMenu.nut")
+  require("sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
+  require("scripts/social/activityFeed/activityFeedModule.nut")
+  require("scripts/controls/controlsPseudoAxes.nut")
+  require("scripts/controls/guiSceneCursorVisibility.nut")
+  require("scripts/utils/delayedTooltip.nut")
 
   if (platform.isPlatformXboxOne)
-    require("%scripts/global/xboxCallbacks.nut")
+    require("scripts/global/xboxCallbacks.nut")
 
   if (platform.isPlatformSony) {
-    require("%scripts/global/psnCallbacks.nut")
-    require("%scripts/social/psnSessionManager/loadPsnSessionManager.nut")
+    require("scripts/global/psnCallbacks.nut")
+    require("scripts/social/psnSessionManager/loadPsnSessionManager.nut")
     if (require("sony.webapi").getPreferredVersion() == 2)
-      require("%scripts/social/psnMatches.nut").enableMatchesReporting()
+      require("scripts/social/psnMatches.nut").enableMatchesReporting()
   }
 
   if (platform.isPlatformPS5) {
-    require("%scripts/user/psnFeatures.nut").enablePremiumFeatureReporting()
-    require("%scripts/gameModes/psnActivities.nut").enableGameIntents()
+    require("scripts/user/psnFeatures.nut").enablePremiumFeatureReporting()
+    require("scripts/gameModes/psnActivities.nut").enableGameIntents()
   }
   // end of Independent Modules
 
-  require("%scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
+  require("scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
 }
 
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu
 {
-  let shouldDisableMenu = (::disable_network() && ::getFromSettingsBlk("debug/disableMenu", false))
+  local shouldDisableMenu = (::disable_network() && ::getFromSettingsBlk("debug/disableMenu", false))
     || ::getFromSettingsBlk("benchmarkMode", false)
     || ::getFromSettingsBlk("viewReplay", false)
 

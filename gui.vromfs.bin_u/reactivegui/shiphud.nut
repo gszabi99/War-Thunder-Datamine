@@ -1,14 +1,14 @@
-let activeOrder = require("activeOrder.nut")
-let shipStateModule = require("shipStateModule.nut")
-let hudLogs = require("hudLogs.nut")
-let voiceChat = require("chat/voiceChat.nut")
-let { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
-let { mkRadar} = require("radarComponent.nut")
-let fireControl = require("shipFireControl.nut")
-let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+local activeOrder = require("activeOrder.nut")
+local shipStateModule = require("shipStateModule.nut")
+local hudLogs = require("hudLogs.nut")
+local voiceChat = require("chat/voiceChat.nut")
+local { safeAreaSizeHud, bw, bh, rw, rh } = require("style/screenState.nut")
+local { mkRadar} = require("radarComponent.nut")
+local fireControl = require("shipFireControl.nut")
+local { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
 
 
-let shipHud = @(){
+local shipHud = @(){
   watch = [safeAreaSizeHud, dmgIndicatorStates]
   size = [SIZE_TO_CONTENT, flex()]
   padding = dmgIndicatorStates.value.padding
@@ -25,7 +25,7 @@ let shipHud = @(){
   ]
 }
 
-let radarPosComputed = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.25 * rh.value])
+local radarPosComputed = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.25 * rh.value])
 
 return {
   size = flex()

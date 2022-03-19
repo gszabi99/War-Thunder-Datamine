@@ -48,12 +48,6 @@
     "radarAntenaSpeed": 720.0
   },
   {
-    "waterBreakerAnimVar": "m163_vulcan_break_water_action"
-  },
-  {
-    "waterBreakerToggleTime": 4.0
-  },
-  {
     "subclass": "heavyVehicle"
   },
   {
@@ -590,10 +584,6 @@
         "composite_armor_hull_01_dm": {
           "armorThickness": 6.0,
           "hidableInXrayViewer": true
-        },
-        "turret_03_side_dm": {
-          "armorThickness": 29.0,
-          "hidableInViewer": false
         }
       },
       "sensor": {
@@ -804,7 +794,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 150.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -835,7 +825,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 50.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2775,7 +2765,7 @@
         "fireConeAngle": 5.0,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 1.0,
-        "accuracyAir": 1.5,
+        "accuracyAir": 0.01,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
@@ -2784,7 +2774,6 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "forestallTime": 0.1,
         "turret": [
           {
             "head": "bone_turret"
@@ -2840,9 +2829,6 @@
         },
         {
           "node": "antenna_target_tagging_mount"
-        },
-        {
-          "node": "bone_gun_roller_02"
         }
       ]
     }
@@ -2919,7 +2905,53 @@
         "defaultDampeningForce": [48768.0,48768.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      }
+      },
+      "floats": [
+        {
+          "volume": [2.1,1.5,1.0,0.72]
+        },
+        {
+          "volume": [2.1,1.5,-1.0,0.72]
+        },
+        {
+          "volume": [1.3,1.5,0.0,0.72]
+        },
+        {
+          "volume": [0.7,1.5,1.0,0.72]
+        },
+        {
+          "volume": [0.7,1.5,-1.0,0.72]
+        },
+        {
+          "volume": [0.0,1.5,1.0,0.72]
+        },
+        {
+          "volume": [0.0,1.5,-1.0,0.72]
+        },
+        {
+          "volume": [-1.0,1.5,0.0,0.72]
+        },
+        {
+          "volume": [-2.1,1.5,1.0,0.72]
+        },
+        {
+          "volume": [-2.1,1.5,-1.0,0.72]
+        },
+        {
+          "waterJet": {
+            "exhaustNode": "emtr_track_l_back_top",
+            "intake": [-1.25,0.4,0.85],
+            "thrust": 11000.0
+          }
+        },
+        {
+          "waterJet": {
+            "exhaustNode": "emtr_track_r_back_top",
+            "intake": [-1.25,0.4,-0.85],
+            "thrust": 11000.0
+          }
+        }
+      ]
     }
   },
   {

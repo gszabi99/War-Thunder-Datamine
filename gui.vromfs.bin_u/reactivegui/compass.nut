@@ -1,7 +1,7 @@
-let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
-let compassState = require("compassState.nut")
+local {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+local compassState = require("compassState.nut")
 
-let styleLineForeground = {
+local styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH)
   font = Fonts.hud
@@ -11,7 +11,7 @@ let styleLineForeground = {
   fontSize = hudFontHgt
 }
 
-let function generateCompassNumber(line_style, num, width, height, color) {
+local function generateCompassNumber(line_style, num, width, height, color) {
   return {
     size = [width, height]
     flow = FLOW_VERTICAL
@@ -36,7 +36,7 @@ let function generateCompassNumber(line_style, num, width, height, color) {
 }
 
 
-let generateCompassDash = @(line_style,width, height, color)
+local generateCompassDash = @(line_style,width, height, color)
   line_style.__merge({
     size = [width, height]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -47,9 +47,9 @@ let generateCompassDash = @(line_style,width, height, color)
   })
 
 
-let function compassLine(line_style, total_width, width, height, color){
+local function compassLine(line_style, total_width, width, height, color){
   const step = 5.0
-  let children = []
+  local children = []
 
   for (local i = 0; i <= 2.0 * 360.0 / step; ++i) {
 
@@ -70,7 +70,7 @@ let function compassLine(line_style, total_width, width, height, color){
     children.append(generateCompassDash(line_style, width, height, color))
   }
 
-  let getOffset = @() 0.5 * (total_width - width) + compassState.CompassValue.value * width * 2.0 / step - 2.0 * 360.0 * width / step
+  local getOffset = @() 0.5 * (total_width - width) + compassState.CompassValue.value * width * 2.0 / step - 2.0 * 360.0 * width / step
 
   return {
     behavior = Behaviors.RtPropUpdate
@@ -86,7 +86,7 @@ let function compassLine(line_style, total_width, width, height, color){
 }
 
 
-let function compassArrow(line_style, height, color) {
+local function compassArrow(line_style, height, color) {
   return line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [height, height]
@@ -99,8 +99,8 @@ let function compassArrow(line_style, height, color) {
 }
 
 
-let function compass(elemStyle, size, color) {
-  let oneElementWidth = size[1]
+local function compass(elemStyle, size, color) {
+  local oneElementWidth = size[1]
   return {
     size
     clipChildren = true
@@ -111,7 +111,7 @@ let function compass(elemStyle, size, color) {
 }
 
 
-let function compassComponent(size, color, elemStyle = styleLineForeground) {
+local function compassComponent(size, color, elemStyle = styleLineForeground) {
   return {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER

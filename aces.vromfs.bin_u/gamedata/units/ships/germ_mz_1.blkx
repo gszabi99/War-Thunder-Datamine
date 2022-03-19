@@ -2709,8 +2709,6 @@
           "bullets": 220,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.015,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2783,8 +2781,6 @@
           "bullets": 220,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.015,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4293,18 +4289,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -20000.0,
-      "waterMassMult": 300.0,
+      "waterMassVel": -50000.0,
+      "waterMassMult": 120.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
       "additionalWaterDeathThreshold": 1200000.0,
-      "additionalWaterShouldDiePercent": 0.35,
+      "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.25
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -4312,7 +4308,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.8,
+          "weight": 0.82,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4332,7 +4328,7 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.8,
+          "weight": 0.78,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4345,7 +4341,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.7,
+          "weight": 0.6,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4367,50 +4363,30 @@
   },
   {
     "ammoStowages": {
-      "ammo1": [
-        {
-          "weaponTrigger": "gunner0"
-        },
-        {
-          "weaponTrigger": "gunner2"
-        },
-        {
-          "weaponTrigger": "gunner3"
-        },
-        {
-          "weaponTrigger": "gunner4"
-        },
-        {
-          "shells": {
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "fireEvent": "ammo_fire_1",
-            "explosionEvent": "ammo_explosion_1",
-            "ammunition_storage_01_dm": {
-              "count": 10220
-            }
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "shells": {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_1",
+          "explosionEvent": "ammo_explosion_1",
+          "ammunition_storage_01_dm": {
+            "count": 220
           }
         }
-      ],
-      "ammo2": [
-        {
-          "weaponTrigger": "gunner1"
-        },
-        {
-          "weaponTrigger": "gunner5"
-        },
-        {
-          "shells": {
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "fireEvent": "ammo_fire_2",
-            "explosionEvent": "ammo_explosion_2",
-            "ammunition_storage_02_dm": {
-              "count": 8220
-            }
+      },
+      "ammo2": {
+        "weaponTrigger": "gunner1",
+        "shells": {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_2",
+          "explosionEvent": "ammo_explosion_2",
+          "ammunition_storage_02_dm": {
+            "count": 220
           }
         }
-      ]
+      }
     }
   },
   {

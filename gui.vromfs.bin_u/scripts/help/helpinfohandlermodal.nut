@@ -10,10 +10,10 @@
 //  ]
 //}
 
-::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/tutorials/tutorWnd.blk"
+  sceneBlkName = "gui/tutorials/tutorWnd.blk"
 
   config = null
   ownerScene = null
@@ -25,7 +25,7 @@
     if (!wndInfoConfig)
       return
 
-    let params = {
+    local params = {
       config = wndInfoConfig
       ownerScene = wndScene
     }
@@ -41,24 +41,24 @@
     if (!checkObj(objContainer))
       return goBack()
 
-    let links = ::getTblValue("links", config)
+    local links = ::getTblValue("links", config)
     if (!links)
       return goBack()
 
-    let textsBlk = config?.textsBlk
+    local textsBlk = config?.textsBlk
     if (textsBlk)
       guiScene.replaceContent(scene.findObject("texts_screen"), textsBlk, null)
 
     //update messages visibility to correct update other messages positions
-    let highlightList = []
+    local highlightList = []
     foreach(idx, link in links)
     {
-      let objBlock = ::guiTutor.getBlockFromObjData(link.obj, objContainer)
+      local objBlock = ::guiTutor.getBlockFromObjData(link.obj, objContainer)
 
       if (!link?.msgId)
         link.msgId <- null
 
-      let msgObj = link.msgId ? scene.findObject(link.msgId) : null
+      local msgObj = link.msgId ? scene.findObject(link.msgId) : null
       if (::check_obj(msgObj))
       {
         msgObj.show(!!objBlock)
@@ -74,7 +74,7 @@
 
     ::guiTutor.createHighlight(scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
 
-    let linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
+    local linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
     guiScene.replaceContentFromText(scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 

@@ -1,22 +1,22 @@
-let avatars = require("%scripts/user/avatars.nut")
-let { isPs4XboxOneInteractionAvailable,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
-let editContactsList = require("%scripts/contacts/editContacts.nut")
+local avatars = require("scripts/user/avatars.nut")
+local { isPs4XboxOneInteractionAvailable,
+        isPlatformSony } = require("scripts/clientState/platform.nut")
+local editContactsList = require("scripts/contacts/editContacts.nut")
 
 ::on_presences_update <- function on_presences_update(params)
 {
-  let contactsDataList = []
+  local contactsDataList = []
   if ("presences" in params)
   {
     foreach(p in params.presences)
     {
-      let player = {
+      local player = {
         uid = ::getTblValue("userId", p)
         name = ::getTblValue("nick", p)
       }
       if (!::u.isString(player.uid) || !::u.isString(player.name))
       {
-        let errText = "on_presences_update cant update presence of player:\n" + ::toString(p)
+        local errText = "on_presences_update cant update presence of player:\n" + ::toString(p)
         ::script_net_assert_once(::toString(player), errText)
         continue
       }
@@ -37,7 +37,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
           foreach(s in ["in_game", "in_queue"])
             if (s in p.presences.status)
             {
-              let gameInfo = p.presences.status[s]
+              local gameInfo = p.presences.status[s]
 
               // This is a workaround for a bug when something
               // is setting player presence with no event info.
@@ -89,7 +89,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
   {
     ::clear_contacts()
 
-    let friendsToRemove = []
+    local friendsToRemove = []
     foreach(listName, list in params.groups)
     {
       if (list == null
@@ -105,11 +105,11 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
 
       foreach (p in list)
       {
-        let playerUid = p?.userId
-        let playerName = p?.nick
-        let playerClanTag = p?.clanTag
+        local playerUid = p?.userId
+        local playerName = p?.nick
+        local playerClanTag = p?.clanTag
 
-        let player = ::g_contacts.addContact(null, listName, {
+        local player = ::g_contacts.addContact(null, listName, {
           uid = playerUid
           playerName = playerName
           clanTag = playerClanTag
@@ -117,8 +117,8 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
 
         if (!player)
         {
-          let myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
-          let errText = playerUid ? "player not found" : "not valid data"
+          local myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
+          local errText = playerUid ? "player not found" : "not valid data"
           ::script_net_assert_once("not found contact for group", errText)
           continue
         }
@@ -156,7 +156,7 @@ foreach (notificationName, callback in
 
             ["mpresence.on_added_to_contact_list"] = function (params)
               {
-                let userData = ::getTblValue("user", params)
+                local userData = ::getTblValue("user", params)
                 if (userData)
                   ::g_invites.addFriendInvite(::getTblValue("name", userData, ""), ::getTblValue("userId", userData, ""))
               }

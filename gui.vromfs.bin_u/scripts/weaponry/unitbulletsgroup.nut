@@ -1,10 +1,10 @@
-let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setUnitLastBullets,
-        getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO,
+local { getBulletsListHeader } = require("scripts/weaponry/weaponryDescription.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { setUnitLastBullets,
+        getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
+local { AMMO,
         getAmmoAmount,
-        isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
+        isAmmoFree } = require("scripts/weaponry/ammoInfo.nut")
 local { clearUnitOption } = ::require_native("guiOptions")
 
 ::BulletGroup <- class
@@ -38,13 +38,13 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
     bullets = getOptionsBulletsList(unit, groupIndex, false, isForcedAvailable)
     selectedName = ::getTblValue(bullets.value, bullets.values, "")
-    let saveValue = getBulletNameForCode(selectedName)
+    local saveValue = getBulletNameForCode(selectedName)
 
     if (::get_last_bullets(unit.name, groupIndex) != saveValue)
       setUnitLastBullets(unit, groupIndex, selectedName)
 
-    let bulletOptionId = ::USEROPT_BULLET_COUNT0 + groupIndex
-    let count = ::get_unit_option(unit.name, bulletOptionId)
+    local bulletOptionId = ::USEROPT_BULLET_COUNT0 + groupIndex
+    local count = ::get_unit_option(unit.name, bulletOptionId)
     if (::type(count) == "string") //validate bullets option type
       clearUnitOption(unit.name, bulletOptionId)
     else if (count != null)
@@ -67,7 +67,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
     if (selectedName == bulletName)
       return false
 
-    let bulletIdx = bullets.values.indexof(bulletName)
+    local bulletIdx = bullets.values.indexof(bulletName)
     if (bulletIdx == null)
       return false
 
@@ -123,7 +123,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
     maxBulletsCount = gunInfo.total
     if (!isAmmoFree(unit, selectedName, AMMO.PRIMARY))
     {
-      let boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
+      local boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
       maxBulletsCount = isForcedAvailable? gunInfo.total : ::min(boughtCount, gunInfo.total)
     }
 
@@ -166,7 +166,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
   }
 
   function getBulletNameForCode(bulName) {
-    let mod = getModByBulletName(bulName)
+    local mod = getModByBulletName(bulName)
     return "isDefaultForGroup" in mod? "" : mod.name
   }
 

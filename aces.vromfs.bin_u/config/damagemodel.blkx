@@ -105,9 +105,6 @@
     "groundArmorCaliberThreshold": 0.075
   },
   {
-    "shatterProbeDist": 0.1
-  },
-  {
     "defaultCaliberToArmorForGuiPenetrationTable": 1.25
   },
   {
@@ -366,7 +363,7 @@
     "enableWheelBreakage": true
   },
   {
-    "dependentDamagePartsAutoLinkage": false
+    "dependentDamagePartsAutoLinkage": true
   },
   {
     "weaponReloadWhileRepairBreachesMult": 0.25
@@ -385,9 +382,6 @@
   },
   {
     "criticalBuoyancy": 0.5
-  },
-  {
-    "enableUnderwaterBombExplosionScale": false
   },
   {
     "groundDamagePart": {
@@ -1702,19 +1696,6 @@
     }
   },
   {
-    "visualShattersCount": [
-      {
-        "pt": [100.0,50.0]
-      },
-      {
-        "pt": [1000.0,200.0]
-      },
-      {
-        "pt": [10000.0,500.0]
-      }
-    ]
-  },
-  {
     "explosiveTypeToShattersParamsForAmmoStowage": {
       "ships_tanks_ammo": {
         "explosiveMassToRadius": {
@@ -2046,42 +2027,6 @@
         "hpForRepair": 0.7
       },
       "commander_panoramic_sight_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_sensor_01_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_sensor_02_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_launcher_01_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_launcher_02_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_launcher_03_dm": {
-        "speed": 1.0,
-        "completely": true,
-        "partRepairHp": 1.0,
-        "hpForRepair": 0.7
-      },
-      "aps_launcher_04_dm": {
         "speed": 1.0,
         "completely": true,
         "partRepairHp": 1.0,
@@ -3037,8 +2982,8 @@
       "germ_destroyer_class1936a_mob_z32": 120,
       "germ_destroyer_class1936a_z25": 120,
       "germ_destroyer_class1936b": 120,
-      "germ_destroyer_class1939_t22": 117,
-      "germ_destroyer_class1939_t31": 117,
+      "germ_destroyer_class1939_t22": 116,
+      "germ_destroyer_class1939_t31": 116,
       "germ_escort_typem1935": 80,
       "germ_escort_typem1943": 80,
       "germ_frigate_koln": 120,
@@ -3059,7 +3004,6 @@
       "germ_s_100_s_174_class": 35,
       "germ_sf40_leichte_flakkampffaehre": 29,
       "germ_sf40_schwere_flakkampffaehre": 29,
-      "germ_skr_pr50_karl_marx": 82,
       "germ_type140_jaguar": 42,
       "germ_type143_albatros": 42,
       "germ_type143_bussard": 93,
@@ -3067,7 +3011,6 @@
       "germ_vs8_hydrofoil": 34,
       "ijn_lcvp": 0,
       "it_a1_vosper": 31,
-      "it_albatros_class_f543": 66,
       "it_battleship_dante_alighieri": 210,
       "it_cruiser_bartolomeocolleoni_1940": 126,
       "it_cruiser_capitani_romani_class_attilio_regolo": 150,
@@ -3104,7 +3047,6 @@
       "jp_abtei_pr1": 23,
       "jp_abtei_pr4": 23,
       "jp_armoredcruiser_ikoma": 189,
-      "jp_battlecruiser_kongo": 333,
       "jp_battleship_hyuga": 307,
       "jp_battleship_settsu": 279,
       "jp_cruiser_agano": 148,
@@ -3192,7 +3134,6 @@
       "uk_destroyer_n_class": 120,
       "uk_destroyer_tribal": 120,
       "uk_destroyer_tribal_mohawk": 120,
-      "uk_destroyer_v_class_valhalla": 120,
       "uk_destroyer_v_class_vega": 120,
       "uk_destroyer_v_class_verdun": 120,
       "uk_fairmile_a_ml100": 35,
@@ -3208,18 +3149,16 @@
       "uk_frigate_leopard": 96,
       "uk_frigate_river": 46,
       "uk_frigate_whitby_blackpool": 120,
-      "uk_higgins_78ft_mtb422": 31,
       "uk_isles_class_trawler": 35,
       "uk_mtb_1series": 35,
       "uk_mtb_2series": 35,
       "uk_mtb_vosper_1series": 31,
       "uk_mtb_vosper_2series": 35,
-      "uk_sgb_304": 37,
-      "uk_sgb_309": 37,
+      "uk_sgb_304": 34,
+      "uk_sgb_309": 34,
       "us_admirable_class": 42,
       "us_aircraftcarrier_forrestal": 250,
       "us_ashville_class": 47,
-      "us_battleship_arizona_1931": 290,
       "us_battleship_north_dakota": 296,
       "us_battleship_wyoming_class": 277,
       "us_cruiser_atlanta_class_atlanta": 140,
@@ -3265,7 +3204,6 @@
       "us_nasty_ptf": 32,
       "us_pc_451": 42,
       "us_pc_466_carmi": 47,
-      "us_pgm_59_class": 58,
       "us_pt3": 35,
       "us_pt6": 35,
       "us_pt810": 35,
@@ -7170,47 +7108,6 @@
             "speed2probability": [300.0,0.0]
           }
         ]
-      }
-    ]
-  },
-  {
-    "riExplosionSplashDamageMod": [
-      {
-        "pt": [0.0,0.0]
-      },
-      {
-        "pt": [100.0,100.0]
-      },
-      {
-        "pt": [300.0,300.0]
-      },
-      {
-        "pt": [750.0,500.0]
-      },
-      {
-        "pt": [1000.0,250.0]
-      },
-      {
-        "pt": [10000.0,260.0]
-      },
-      {
-        "pt": [100000.0,270.0]
-      }
-    ]
-  },
-  {
-    "riExplosionShatterDamageMod": [
-      {
-        "pt": [0.0,0.0]
-      },
-      {
-        "pt": [1000.0,400.0]
-      },
-      {
-        "pt": [10000.0,500.0]
-      },
-      {
-        "pt": [100000.0,600.0]
       }
     ]
   }

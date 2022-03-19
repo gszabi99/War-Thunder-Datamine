@@ -1,18 +1,18 @@
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { isWeaponAux, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
 
-let canBuyNotResearched = @(unit) unit.isVisibleInShop()
+local canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && ::canResearchUnit(unit)
   && unit.isSquadronVehicle()
   && !unit.getOpenCost().isZero()
 
 
-let function isUnitHaveSecondaryWeapons(unit)
+local function isUnitHaveSecondaryWeapons(unit)
 {
   local foundWeapon = false
-  foreach(weapon in unit.getWeapons())
-    if (!isWeaponAux(weapon))
+  for (local i = 0; i < unit.weapons.len(); i++)
+    if (!isWeaponAux(unit.weapons[i]))
       if (foundWeapon)
         return true
       else
@@ -20,14 +20,14 @@ let function isUnitHaveSecondaryWeapons(unit)
   return "" != getWeaponInfoText(unit, { isPrimary = false, weaponPreset = 0, needTextWhenNoWeapons = false })
 }
 
-let function isShipWithoutPurshasedTorpedoes(unit)
+local function isShipWithoutPurshasedTorpedoes(unit)
 {
   if (!unit?.isShipOrBoat())
     return false
 
   local torpedoes = null
   if (isUnitHaveSecondaryWeapons(unit))
-    torpedoes = unit.getWeapons().findvalue(@(weapon) weapon.name == "torpedoes")    //!!! FIX ME: Need determine weapons by weapon mask. WeaponMask now available only for air
+    torpedoes = ::u.search(unit.weapons, @(weapon) weapon.name == "torpedoes")    //!!! FIX ME: Need determine weapons by weapon mask. WeaponMask now available only for air
 
   if (!torpedoes)
     return false
@@ -38,26 +38,26 @@ let function isShipWithoutPurshasedTorpedoes(unit)
   return true
 }
 
-let function getBitStatus(unit, params = {})
+local function getBitStatus(unit, params = {})
 {
-  let isLocalState = params?.isLocalState ?? true
-  let forceNotInResearch  = params?.forceNotInResearch ?? false
-  let shopResearchMode    = params?.shopResearchMode ?? false
-  let isSquadronResearchMode  = params?.isSquadronResearchMode ?? false
+  local isLocalState = params?.isLocalState ?? true
+  local forceNotInResearch  = params?.forceNotInResearch ?? false
+  local shopResearchMode    = params?.shopResearchMode ?? false
+  local isSquadronResearchMode  = params?.isSquadronResearchMode ?? false
 
-  let isMounted      = ::isUnitInSlotbar(unit)
-  let isOwn          = unit.isBought()
-  let isSquadVehicle = unit.isSquadronVehicle()
-  let researched     = unit.isResearched()
+  local isMounted      = ::isUnitInSlotbar(unit)
+  local isOwn          = unit.isBought()
+  local isSquadVehicle = unit.isSquadronVehicle()
+  local researched     = unit.isResearched()
 
-  let isVehicleInResearch = unit.isInResearch() && !forceNotInResearch
-  let canResearch         = ::canResearchUnit(unit)
+  local isVehicleInResearch = unit.isInResearch() && !forceNotInResearch
+  local canResearch         = ::canResearchUnit(unit)
 
-  let unitExpGranted      = unit.getExp()
-  let diffExp = isSquadVehicle
+  local unitExpGranted      = unit.getExp()
+  local diffExp = isSquadVehicle
     ? ::min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
-  let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
+  local isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 
   local bitStatus = 0
   if (!isLocalState || ::is_in_flight())
@@ -97,36 +97,36 @@ let function getBitStatus(unit, params = {})
   return bitStatus
 }
 
-let availablePrimaryWeaponsMod = {}
-let defaultPrimaryWeaponsMod = {
+local availablePrimaryWeaponsMod = {}
+local defaultPrimaryWeaponsMod = {
   flares = null,
   chaffs = null
 }
 
-let function isAvailablePrimaryWeapon(unit, weaponName) {
+local function isAvailablePrimaryWeapon(unit, weaponName) {
   local availableWeapons = availablePrimaryWeaponsMod?[unit.name]
   if (availableWeapons != null)
     return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  local unitBlk = ::get_full_unit_blk(unit.name)
   if (!unitBlk)
     return false
 
   availableWeapons = clone defaultPrimaryWeaponsMod
   if (unitBlk?.modifications != null) {
-    let modificationsCount = unitBlk.modifications.blockCount()
+    local modificationsCount = unitBlk.modifications.blockCount()
     for (local i = 0; i < modificationsCount; i++)
     {
-      let modification = unitBlk.modifications.getBlock(i)
-      let modName = modification.getBlockName()
-      let commonWeapons = modification?.effects?.commonWeapons
+      local modification = unitBlk.modifications.getBlock(i)
+      local modName = modification.getBlockName()
+      local commonWeapons = modification?.effects?.commonWeapons
       if (commonWeapons == null)
         continue
       foreach (weap in (commonWeapons % "Weapon")) {
         if (!weap?.blk || weap?.dummy)
           continue
 
-        let weapBlk = blkFromPath(weap.blk)
+        local weapBlk = blkFromPath(weap.blk)
         if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
           availableWeapons.flares = modName
         if (availableWeapons!=null && (weapBlk?.rocket.isChaff ?? false))
@@ -142,7 +142,7 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }
 
-let function hasCountermeasures(unit) {
+local function hasCountermeasures(unit) {
   if (unit == null)
     return false
 
@@ -150,14 +150,14 @@ let function hasCountermeasures(unit) {
     || isAvailablePrimaryWeapon(unit, "flares") || isAvailablePrimaryWeapon(unit, "chaffs")
 }
 
-let function bombNbr(unit) {
+local function bombNbr(unit) {
   if (unit == null)
     return -1
 
   return unit.getAvailableSecondaryWeapons().bombsNbr
 }
 
-let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !::is_unlocked_scripted(-1, unit.reqUnlock)
+local isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !::is_unlocked_scripted(-1, unit.reqUnlock)
 
 return {
   canBuyNotResearched

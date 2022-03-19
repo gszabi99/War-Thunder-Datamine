@@ -1,13 +1,13 @@
-let statsd = require("statsd")
-let psn = require("webApi.nut")
-let datablock = require("DataBlock")
-let stdLog = require("%sqstd/log.nut")()
-let log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
-let logerr = stdLog.logerr
+local statsd = require("statsd")
+local psn = require("webApi.nut")
+local datablock = require("DataBlock")
+local stdLog = require("%sqstd/log.nut")()
+local log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
+local logerr = stdLog.logerr
 
-let { fillBlock } = require("%sqstd/datablock.nut")
+local { fillBlock } = require("%sqstd/datablock.nut")
 
-let STORE_REQUEST_ADDITIONAL_FLAGS = {
+local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useCurrencySymbol = "false"
   useFree = "true"
   sort = "release_date"
@@ -15,22 +15,22 @@ let STORE_REQUEST_ADDITIONAL_FLAGS = {
   limit = 100 //TODO: rework on lazy load through, e.g. watched
 }
 
-let categoriesData = datablock()
+local categoriesData = datablock()
 
 local onFinishCollectData = @(...) null
 local onFilterCollectData = @(...) null
 
-let finalizeCollectData = function() {
+local finalizeCollectData = function() {
   onFinishCollectData(categoriesData)
   onFinishCollectData = @(...) null
   onFilterCollectData = @(...) null
 }
 
-let getNextCategoryName = function(lastCategory = "") {
+local getNextCategoryName = function(lastCategory = "") {
   local needRequestCategory = lastCategory == ""
 
   for (local i = 0; i < categoriesData.blockCount(); i++) {
-    let newCat = categoriesData.getBlock(i).getBlockName()
+    local newCat = categoriesData.getBlock(i).getBlockName()
     if (needRequestCategory)
       return newCat
 
@@ -40,8 +40,8 @@ let getNextCategoryName = function(lastCategory = "") {
   return null
 }
 
-let gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastCategory = "") {
-  let newCategoryRequest = getNextCategoryName(lastCategory)
+local gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastCategory = "") {
+  local newCategoryRequest = getNextCategoryName(lastCategory)
   if (newCategoryRequest)
     onFoundCb(newCategoryRequest)
   else
@@ -50,20 +50,20 @@ let gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastC
 
 // Send requests on skus extended info, per category separatly.
 local requestLinksFullInfo = @(category) null
-let fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
+local fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
   requestLinksFullInfo,
   finalizeCollectData,
   category
 )
 
 requestLinksFullInfo = function(category) {
-  let categoryBlock = categoriesData.getBlockByName(category)
+  local categoryBlock = categoriesData.getBlockByName(category)
   if (!categoryBlock)
     log($"requestLinksFullInfo: no block found for category ", category)
 
-  let linksList = []
+  local linksList = []
   for (local i = categoryBlock.links.blockCount() - 1; i >= 0; i--) {
-    let linkId = categoryBlock.links.getBlock(i).getBlockName()
+    local linkId = categoryBlock.links.getBlock(i).getBlockName()
     if (onFilterCollectData(linkId)) {
       categoriesData[category].links.removeBlock(linkId)
       continue
@@ -130,10 +130,10 @@ collectCategories = function(response, err = null) {
   statsd.send_counter("sq.ingame_store.v2.request", 1,
     {status = "success", request = "dig_category"})
 
-  let categories = []
+  local categories = []
   if (response != null)//!!!FIX ME after the case with null response will be caught
     foreach (data in response) {
-      let products = []
+      local products = []
 
       foreach (block in data.children) {
         if (block.type == "category")
@@ -156,7 +156,7 @@ collectCategories = function(response, err = null) {
   }
 }
 
-let collectCategoriesAndItems = @(catalog = []) psn.send(
+local collectCategoriesAndItems = @(catalog = []) psn.send(
   psn.inGameCatalog.get(catalog, psn.serviceLabel),
   function(response, err) {
     categoriesData.reset()
@@ -180,7 +180,7 @@ let collectCategoriesAndItems = @(catalog = []) psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
+local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
   psn.send(psn.inGameCatalog.get(idsArray, psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {
@@ -194,14 +194,14 @@ let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, er
       statsd.send_counter("sq.ingame_store.v2.request", 1,
         {status = "success", request = "update_specific_item_info"})
 
-      let res = []
+      local res = []
       foreach (idx, itemData in response) {
-        let itemId = idsArray[idx]
+        local itemId = idsArray[idx]
         local category = ""
         local linksBlock = null
 
         for (local i = 0; i < categoriesData.blockCount(); i++) {
-          let catInfo = categoriesData.getBlock(i)
+          local catInfo = categoriesData.getBlock(i)
           if (itemId in catInfo.links) {
             linksBlock = catInfo.links
             category = catInfo.getBlockName()

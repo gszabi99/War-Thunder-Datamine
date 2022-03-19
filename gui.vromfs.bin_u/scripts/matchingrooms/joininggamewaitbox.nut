@@ -1,9 +1,9 @@
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
 
-::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/msgBox.blk"
+  sceneBlkName = "gui/msgBox.blk"
   timeToShowCancel = 30
   timer = -1
 
@@ -32,7 +32,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     resetTimer() //statusChanged
     checkGameMode()
 
-    let misData = ::SessionLobby.getMissionParams()
+    local misData = ::SessionLobby.getMissionParams()
     local msg = ::loc("wait/sessionJoin")
     if (::SessionLobby.status == lobbyStates.UPLOAD_CONTENT)
       msg = ::loc("wait/sessionUpload")
@@ -48,7 +48,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     local gameModeName = ::get_cur_game_mode_name()
     if (gameModeName == "domination")
     {
-      let event = ::SessionLobby.getRoomEvent()
+      local event = ::SessionLobby.getRoomEvent()
       if (event == null)
         return ""
 
@@ -62,13 +62,13 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   {
     if (::get_game_mode() == ::GM_DOMINATION)
     {
-      let event = ::SessionLobby.getRoomEvent()
+      local event = ::SessionLobby.getRoomEvent()
       if (event)
         return ::events.getEventNameText(event)
     }
     else
     {
-      let misName = ::SessionLobby.getMissionNameLoc()
+      local misName = ::SessionLobby.getMissionNameLoc()
       if (misName != "")
         return misName
     }
@@ -77,8 +77,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function checkGameMode()
   {
-    let gm = ::SessionLobby.getGameMode()
-    let curGm = ::get_game_mode()
+    local gm = ::SessionLobby.getGameMode()
+    local curGm = ::get_game_mode()
     if (gm < 0 || curGm==gm)
       return
 
@@ -89,7 +89,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function showCancelButton(show)
   {
-    let btnId = "btn_cancel"
+    local btnId = "btn_cancel"
     local obj = scene.findObject(btnId)
     if (obj)
     {
@@ -102,10 +102,10 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     if (!show)
       return
 
-    let data = format(
+    local data = format(
       "Button_text{id:t='%s'; btnName:t='AB'; text:t='#msgbox/btn_cancel'; on_click:t='onCancel'}",
       btnId)
-    let holderObj = scene.findObject("buttons_holder")
+    local holderObj = scene.findObject("buttons_holder")
     if (!holderObj)
       return
 

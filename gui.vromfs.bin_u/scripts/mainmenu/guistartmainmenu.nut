@@ -1,5 +1,5 @@
-let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
+local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 
 local dbgStartCheck = 0
 
@@ -7,7 +7,7 @@ local dbgStartCheck = 0
 {
   if (dbgStartCheck++)
   {
-    let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
+    local msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     ::dagor.debug(msg)
     ::callstack()
     ::script_net_assert_once("mainmenu recursion", msg)
@@ -21,7 +21,7 @@ local dbgStartCheck = 0
 
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
 
-  let handler = ::handlersManager.loadHandler(::gui_handlers.MainMenu)
+  local handler = ::handlersManager.loadHandler(::gui_handlers.MainMenu)
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
   ::showBtn("gamercard_center", !topMenuShopActive.value)
 
@@ -37,7 +37,7 @@ local dbgStartCheck = 0
   ::dagor.debug("Forced reload mainmenu")
   if (dbgStartCheck)
   {
-    let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
+    local msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     ::dagor.debug(msg)
     ::callstack()
     ::script_net_assert_once("mainmenu recursion", msg)

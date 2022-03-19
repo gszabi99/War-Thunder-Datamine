@@ -1,6 +1,6 @@
-let time = require("%scripts/time.nut")
-let controllerState = require("controllerState")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+local time = require("scripts/time.nut")
+local controllerState = require("controllerState")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
 ::shooter_control_preset <- "shooter"
@@ -22,7 +22,7 @@ if (isPlatformXboxOne)
   {
     local isHeaderPassed = true
     local isSectionPassed = true
-    let controlsList = ::shortcutsList.filter(function(sc)
+    local controlsList = ::shortcutsList.filter(function(sc)
     {
       if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION)
       {
@@ -62,16 +62,16 @@ if (isPlatformXboxOne)
 
   function getMouseUsageMask()
   {
-    let usage = ::g_aircraft_helpers.getOptionValue(
+    local usage = ::g_aircraft_helpers.getOptionValue(
       ::USEROPT_MOUSE_USAGE)
-    let usageNoAim = ::g_aircraft_helpers.getOptionValue(
+    local usageNoAim = ::g_aircraft_helpers.getOptionValue(
       ::USEROPT_MOUSE_USAGE_NO_AIM)
     return (usage ? usage : 0) | (usageNoAim ? usageNoAim : 0)
   }
 
   function checkOptionValue(optName, checkValue)
   {
-    let val = ::get_gui_option(optName)
+    local val = ::get_gui_option(optName)
     if (val != null)
       return val == checkValue
     return ::get_option(optName).value == checkValue
@@ -88,12 +88,12 @@ if (isPlatformXboxOne)
   }
 
   function restoreShortcuts(scList, scNames) {
-    let changeList = []
-    let changeNames = []
-    let curScList = ::get_shortcuts(scNames)
+    local changeList = []
+    local changeNames = []
+    local curScList = ::get_shortcuts(scNames)
     foreach(idx, sc in curScList)
     {
-      let prevSc = scList[idx]
+      local prevSc = scList[idx]
       if (!isShortcutMapped(prevSc))
         continue
 
@@ -129,8 +129,8 @@ if (isPlatformXboxOne)
   ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
   if (!::isInMenu() || !::has_feature("ControlsDeviceChoice"))
     return
-  let action = function() { ::gui_start_controls_type_choice() }
-  let buttons = [{
+  local action = function() { ::gui_start_controls_type_choice() }
+  local buttons = [{
       id = "change_preset",
       text = ::loc("msgbox/btn_yes"),
       func = action
@@ -153,19 +153,19 @@ if (isPlatformXboxOne)
 
 local is_keyboard_or_mouse_connected_before = false
 
-let on_controller_event = function()
+local on_controller_event = function()
 {
   if (!::has_feature("ControlsDeviceChoice") || !::has_feature("ControlsPresets"))
     return
-  let is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
+  local is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
     || controllerState.is_mouse_connected()
   if (is_keyboard_or_mouse_connected_before == is_keyboard_or_mouse_connected)
     return
   is_keyboard_or_mouse_connected_before = is_keyboard_or_mouse_connected;
   if (!is_keyboard_or_mouse_connected || !::isInMenu())
     return
-  let action = function() { ::gui_modal_controlsWizard() }
-  let buttons = [{
+  local action = function() { ::gui_modal_controlsWizard() }
+  local buttons = [{
       id = "change_preset",
       text = ::loc("msgbox/btn_yes"),
       func = action
@@ -195,16 +195,13 @@ if (controllerState?.add_event_handler)
 
 ::get_controls_preset_by_selected_type <- function get_controls_preset_by_selected_type(cType = "")
 {
-  let presets = isPlatformSony ? {
+  local presets = isPlatformSony ? {
     [::classic_control_preset] = "default",
     [::shooter_control_preset] = "dualshock4"
   } : ::is_platform_xbox ? {
     [::classic_control_preset] = "xboxone_simulator",
     [::shooter_control_preset] = "xboxone_ma",
     [::thrustmaster_hotas_one_preset_type] = "xboxone_thrustmaster_hotas_one"
-  } : isPlatformSteamDeck ? {
-    [::classic_control_preset] = "steamdeck_simulator",
-    [::shooter_control_preset] = "steamdeck_ma"
   } : {
     [::classic_control_preset] = "keyboard",
     [::shooter_control_preset] = "keyboard_shooter"

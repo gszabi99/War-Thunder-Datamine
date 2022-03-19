@@ -1,13 +1,13 @@
 from "%darg/ui_imports.nut" import *
 
-let baseStyle = require("multiselect.style.nut")
+local baseStyle = require("multiselect.style.nut")
 
-let mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key, text }, ...]*/, minOptions = 0, maxOptions = 0, rootOverride = {}, style = baseStyle)
+local mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key, text }, ...]*/, minOptions = 0, maxOptions = 0, rootOverride = {}, style = baseStyle)
   function() {
-    let numSelected = Computed(@() selected.value.filter(@(v,k) v).len())
-    let mkOnClick = @(option) function() {
-      let curVal = selected.value?[option.key] ?? false
-      let resultNum = numSelected.value + (curVal ? -1 : 1)
+    local numSelected = Computed(@() selected.value.filter(@(v,k) v).len())
+    local mkOnClick = @(option) function() {
+      local curVal = selected.value?[option.key] ?? false
+      local resultNum = numSelected.value + (curVal ? -1 : 1)
       if ((minOptions == 0 || resultNum >= minOptions) //result num would
           && (maxOptions==0 || resultNum <= maxOptions))
         selected.mutate(function(s) { s[option.key] <- !curVal })

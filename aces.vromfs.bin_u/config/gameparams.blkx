@@ -1,8 +1,6 @@
 {
-  "grassAlphaSuffix": "_a",
   "enableRiExplosionDamage": true,
-  "simpleSinking": false,
-  "volsmokeDafxInjector": true,
+  "volsmokeDafxInjector": false,
   "infantry_render_distance": 750.0,
   "gather_sparse_freq": 0,
   "treeAOdefault": 0.8,
@@ -91,11 +89,6 @@
   "timeBeforeEngineNoticeFire": 0.5,
   "enableImpostorTextureManager": false,
   "useCollisionResourceForProximityFuse": true,
-  "lowLodForShooters": true,
-  "turretRotationResync": true,
-  "turretRotationResyncFilterAlpha": 0.8,
-  "turretRotationResyncFilterBetta": 0.005,
-  "turretRotationResyncTimeStep": 0.01,
   "teleScale": 0.03,
   "minSkyAmbientLighting": [0.00954,0.012756,0.026677],
   "propeller_side_angle": 0.1,
@@ -197,8 +190,6 @@
   "autostartTime": 60.0,
   "autostartShowTime": 30.0,
   "autostartShowInColorTime": 10.0,
-  "canEveryoneExtinguishAnyAlly": true,
-  "canEveryoneRepairAnyAlly": true,
   "rendinstExtraMaxCnt": 131072,
   "rendinstExtraSubstFaceThres": 65536,
   "aircraftRelSpeedToWingWaveAmplitude": 0.0,
@@ -207,7 +198,6 @@
   "cockpit_adaptation_max_mul": 0.9,
   "helicopter_target_brightness_mul": 0.8,
   "helicopter_adaptation_max_mul": 0.6,
-  "preloadWeaponMeshes": true,
   "thresholdTimeForActivateDelayTimerInBombByDrop": 4.5,
   "supportUnitClassForTutorial": "structures/ussr_122mm_m30",
   "supportUnitTagForTutorial": "artillery",
@@ -218,7 +208,6 @@
   "enableNetShipPhysOnClient": true,
   "depthChargeMaxDepth": 1.0,
   "torpedoDestroyParent": false,
-  "shipTorpedoAutoDepthTraceDist": 100.0,
   "timeBlinkingOfDeadIcon": 2.5,
   "opacityOfDeadIcon": 70,
   "timeIconForDeadOnMap": 12.0,
@@ -236,7 +225,7 @@
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
   "allAircraftNodesAnimationHierarchy": true,
-  "aircraftAnimchar": true,
+  "aircraftAnimchar": false,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -4300,9 +4289,6 @@
     }
   },
   "shadows": {
-    "fom_tex_size": 256,
-    "fom_distance": [256.0,128.0],
-    "fom_height": 128.0,
     "suitShadowDist": 1500.0,
     "suitPowWeight": 0.97,
     "hangarShadowDist": 200.0,
@@ -4343,8 +4329,7 @@
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.01,
-      "staticCascadeDepthSlopeBias": 0.02,
+      "staticCascadeDepthSlopeBias": 0.01,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4
@@ -4374,8 +4359,7 @@
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.007,
-      "staticCascadeDepthSlopeBias": 0.02,
+      "staticCascadeDepthSlopeBias": 0.01,
       "useOcclusion": true,
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4
@@ -4406,7 +4390,6 @@
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDualPass": true,
       "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
       "useOcclusion": true
     },
     "ps4shadows": {
@@ -4435,8 +4418,7 @@
       "staticCascadeDualPass": true,
       "renderHeightmap": true,
       "useOcclusion": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001
+      "staticCascadeDepthSlopeBias": 0.01
     },
     "high": {
       "cascadeWidth": 1024,
@@ -4464,10 +4446,8 @@
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDualPass": true,
       "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
       "renderHeightmap": true,
-      "useOcclusion": false,
-      "fom_enabled": true
+      "useOcclusion": false
     },
     "ultrahigh": {
       "cascadeWidth": 1200,
@@ -4478,8 +4458,8 @@
       "tpsPowWeight": 0.99,
       "cockpitShadowDist": 1500.0,
       "cockpitPowWeight": 0.9991,
-      "tanksShadowDist": 450.0,
-      "tanksPowWeight": 0.96,
+      "tanksShadowDist": 500.0,
+      "tanksPowWeight": 0.97,
       "shipsShadowDist": 380.0,
       "shipsPowWeight": 0.94,
       "bigShipsShadowDist": 400.0,
@@ -4491,15 +4471,13 @@
       "staticCascadeRegMul": 7.0,
       "staticCascadeTexWidth": 4096,
       "staticCascadeRegWidth": 150.0,
-      "staticCascadeStarting": 4,
+      "staticCascadeStarting": 2,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDualPass": true,
       "staticCascadeForceLod0": true,
       "renderHeightmap": true,
       "useOcclusion": false,
-      "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001,
-      "fom_enabled": true
+      "staticCascadeDepthSlopeBias": 0.01
     }
   },
   "ambShadows": {
@@ -4701,6 +4679,20 @@
     "angleDeg": 2.0,
     "sourceMinSpeed": 10.0
   },
+  "dust": {
+    "tex": "dust",
+    "totalNumTextures": 4,
+    "ground": {
+      "onProbability": 0.0,
+      "offProbability": 0.2,
+      "maxHeight": 300.0,
+      "numParticles": 80,
+      "boxSize": 50.0,
+      "particleSize": 2.0,
+      "startTexture": 2,
+      "numTextures": 2
+    }
+  },
   "dustRain": {
     "enabled": false,
     "minHeight": 0.0,
@@ -4809,8 +4801,7 @@
     "groundZoomSwitchValuePerSecond": 5.0,
     "controlsThresholdToCenterMouseAim": 0.1,
     "mouseAimInCockpitMaxAngles": [55.0,35.0],
-    "tpsGroundVertClampAngle": 18.0,
-    "defaultAspectRatioMin": 1.0
+    "tpsGroundVertClampAngle": 18.0
   },
   "mp_respawn_time": {
     "arcade": 15,
@@ -10321,24 +10312,6 @@
       "speed": 0.7,
       "completely": true
     },
-    "aps_sensor_01_dm": {
-      "completely": true
-    },
-    "aps_sensor_02_dm": {
-      "completely": true
-    },
-    "aps_launcher_01_dm": {
-      "completely": true
-    },
-    "aps_launcher_02_dm": {
-      "completely": true
-    },
-    "aps_launcher_03_dm": {
-      "completely": true
-    },
-    "aps_launcher_04_dm": {
-      "completely": true
-    },
     "commander_panoramic_sight": {
       "my": "0.9",
       "completely": true
@@ -10383,12 +10356,6 @@
       },
       {
         "p": "armor_cit"
-      },
-      {
-        "p": "aps_sensor_"
-      },
-      {
-        "p": "aps_launcher_"
       },
       {
         "p": "ex_era_hull_"
@@ -10526,12 +10493,6 @@
       }
     ],
     "viewer_xray": [
-      {
-        "p": "aps_sensor_"
-      },
-      {
-        "p": "aps_launcher_"
-      },
       {
         "p": "driver_"
       },
@@ -13449,54 +13410,6 @@
           "name": "wheel_l_01_",
           "modelNames": "ystervark_spaa"
         }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "ss_11_halftrack"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "ss_11_halftrack"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "lav_ad"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "lav_ad"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "lav_ad"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "lav_ad"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "lav_ad"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "lav_ad"
-        }
       }
     ],
     "crew": [
@@ -13573,12 +13486,6 @@
       },
       {
         "p": "countermeasure_"
-      },
-      {
-        "p": "aps_sensor_"
-      },
-      {
-        "p": "aps_launcher_"
       },
       {
         "p": {
@@ -13916,34 +13823,6 @@
       {
         "p": {
           "name": "coal_bunker",
-          "unit": "ship",
-          "hideIfDead": true
-        }
-      },
-      {
-        "p": {
-          "name": "armor_belt_l",
-          "unit": "ship",
-          "hideIfDead": true
-        }
-      },
-      {
-        "p": {
-          "name": "armor_belt_r",
-          "unit": "ship",
-          "hideIfDead": true
-        }
-      },
-      {
-        "p": {
-          "name": "armor_cit_l",
-          "unit": "ship",
-          "hideIfDead": true
-        }
-      },
-      {
-        "p": {
-          "name": "armor_cit_r",
           "unit": "ship",
           "hideIfDead": true
         }
@@ -16847,29 +16726,25 @@
       "effect": "track_dirt_back",
       "effectFront": "track_dirt_front",
       "effectTop": "track_dirt_top",
-      "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "effectDust": "track_move_dirt"
     },
     "sand": {
       "effect": "track_sand_back",
       "effectFront": "track_sand_front",
       "effectTop": "track_sand_top",
-      "effectDust": "track_move_sand",
-      "effectBack": "track_sand_dust"
+      "effectDust": "track_move_sand"
     },
     "snow": {
       "effect": "track_snow_back",
       "effectFront": "track_snow_front",
       "effectTop": "track_snow_top",
-      "effectDust": "track_move_snow",
-      "effectBack": "track_snow_dust"
+      "effectDust": "track_move_snow"
     },
     "soil": {
       "effect": "track_dirt_back",
       "effectFront": "track_dirt_front",
       "effectTop": "track_dirt_top",
-      "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "effectDust": "track_move_dirt"
     }
   },
   "treeDestractible": {
@@ -16927,8 +16802,8 @@
     "minRadiusExplosionStrength": [400.0,1200.0],
     "maxRadiusExplosionStrength": [80.0,400.0],
     "fractureTimeCurvePower": 0.7,
-    "fractureEffectProbability": 0.2,
-    "groundEffectProbability": 0.2,
+    "fractureEffectProbability": 1.0,
+    "groundEffectProbability": 1.0,
     "groundFxScaleAccordingToSize": [1.0,0.1,2.0],
     "chunkVelocityForFxScale": [2.0,10.0],
     "fxScaleAccordingToVelocity": [0.7,1.5],
@@ -17653,62 +17528,26 @@
     "checkVisibility": false
   },
   "windEffects": {
-    "isBlastEffectActivated": true,
-    "isStaticWindActivated": true,
-    "limBlastPowerExplosivMassForShell": [25.0,3000.0],
-    "limBlastPowerForShell": [0.1,1.0],
-    "limBlastPowerExplosivMassForBullet": [3.0,30.0],
-    "limBlastPowerForBullet": [0.1,0.6],
-    "rendinstRadiusMultForBlast": 1.5,
-    "rendinstMinRadiusForBlast": 1.5,
-    "particlesForceMul": 100.0,
-    "lengthCamRendinstEffectActivation": 30.0,
-    "clusterWindCascades": {
+    "clusterWindGrids": {
       "tank": {
         "cascade0": {
-          "numBox": 64,
-          "size": 400.0,
+          "numBox": 256,
+          "size": 200.0,
           "maxSpherePerBox": 4
         },
         "cascade1": {
-          "numBox": 64,
-          "size": 1500.0,
-          "maxSpherePerBox": 4
+          "numBox": 256,
+          "size": 800.0,
+          "maxSpherePerBox": 2
         }
       },
       "other": {
         "cascade0": {
-          "numBox": 36,
-          "size": 2500.0,
+          "numBox": 256,
+          "size": 200.0,
           "maxSpherePerBox": 4
         }
       }
-    },
-    "clusterWindRendering": {
-      "grassBendingMult": 10.0,
-      "treeBendingMult": 2.0,
-      "impostorBendingMult": 8.0,
-      "treeStaticBendingMult": 0.33,
-      "impostorStaticBendingMult": 0.33,
-      "grassStaticBendingMult": 10.0,
-      "treeAnimationMult": 1.6,
-      "grassAnimationMult": 1.6
-    },
-    "dynamicWind": {
-      "windSpawnTimeMult": 2.0,
-      "windRadiusLim": [20.0,40.0],
-      "windSpeedLim": [12.0,20.0],
-      "angleSpread": [1.0,5.0],
-      "spawnerAmountLim": [3.0,9.0]
-    },
-    "shotImpulse": {
-      "windBlastOverFluidWind": true,
-      "minShotCaliberForCluster": 0.056,
-      "maxShotCaliberForCluster": 0.155,
-      "minShotRadiusForCluster": 4.0,
-      "maxshotRadiusForCluster": 30.0,
-      "minShotPowerForCluster": 0.6,
-      "maxShotPowerForCluster": 1.25
     }
   }
 }

@@ -1,9 +1,9 @@
-let function shouldUseEac(event)
+local function shouldUseEac(event)
 {
   return event?.enableEAC ?? false
 }
 
-let function showMsgboxIfEacInactive(event)
+local function showMsgboxIfEacInactive(event)
 {
   if (::is_eac_inited() || !shouldUseEac(event))
     return true

@@ -738,27 +738,17 @@
           },
           {
             "comment": {
-              "value": "modern aaa name for t1"
+              "value": "aaa name for t1"
             }
           },
           {
             "comment": {
-              "value": "modern aaa name for t2"
+              "value": "aaa name for t2"
             }
           },
           {
             "comment": {
               "value": ""
-            }
-          },
-          {
-            "comment": {
-              "value": "outdated aaa name for t1"
-            }
-          },
-          {
-            "comment": {
-              "value": "outdated aaa name for t2"
             }
           },
           {
@@ -823,26 +813,14 @@
           },
           {
             "varSetString": {
-              "value": "lbt_battle_t1_modern_aaa_",
-              "var": "lbt_battle_t1_modern_aaa_name"
+              "value": "lbt_battle_t1_aaa_",
+              "var": "lbt_battle_t1_aaa_name"
             }
           },
           {
             "varSetString": {
-              "value": "lbt_battle_t2_modern_aaa_",
-              "var": "lbt_battle_t2_modern_aaa_name"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t1_outdated_aaa_",
-              "var": "lbt_battle_t1_outdated_aaa_name"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t2_outdated_aaa_",
-              "var": "lbt_battle_t2_outdated_aaa_name"
+              "value": "lbt_battle_t2_aaa_",
+              "var": "lbt_battle_t2_aaa_name"
             }
           },
           {
@@ -919,28 +897,14 @@
             "varAddString": {
               "value": "@lbt_battle_start_idx",
               "digits": 2,
-              "var": "lbt_battle_t1_modern_aaa_name"
+              "var": "lbt_battle_t1_aaa_name"
             }
           },
           {
             "varAddString": {
               "value": "@lbt_battle_start_idx",
               "digits": 2,
-              "var": "lbt_battle_t2_modern_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t1_outdated_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t2_outdated_aaa_name"
+              "var": "lbt_battle_t2_aaa_name"
             }
           },
           {
@@ -1361,7 +1325,7 @@
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_t1_modern_aaa_spawn"
+              "target": "lbt_battle_t1_aaa_spawn"
             }
           },
           "else_actions": {
@@ -1369,11 +1333,11 @@
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_t1_modern_aaa_spawn"
+              "target": "lbt_battle_t1_aaa_spawn"
             }
           }
         },
-        "lbt_battle_t1_modern_aaa_spawn": {
+        "lbt_battle_t1_aaa_spawn": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -1395,7 +1359,7 @@
             },
             {
               "objectExists": {
-                "target": "@lbt_battle_t1_modern_aaa_name",
+                "target": "@lbt_battle_t1_aaa_name",
                 "type": "unit"
               }
             },
@@ -1407,7 +1371,7 @@
                 "object_var_comp_op": "equal",
                 "func": "more",
                 "value": 0,
-                "object": "@lbt_battle_t1_modern_aaa_name"
+                "object": "@lbt_battle_t1_aaa_name"
               }
             }
           ],
@@ -1415,72 +1379,7 @@
             "unitRespawn": {
               "delay": 0.0,
               "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t1_modern_aaa_name",
-              "object_type": "isInactive",
-              "target": "@lbt_battle_t1_spawn_name",
-              "isStealth": true,
-              "randomSpawn": true,
-              "resetFormation": true
-            },
-            "comment": {
-              "value": ""
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t1_outdated_aaa_spawn"
-            }
-          },
-          "else_actions": {
-            "comment": {
-              "value": ""
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t1_outdated_aaa_spawn"
-            }
-          }
-        },
-        "lbt_battle_t1_outdated_aaa_spawn": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 0.1
-            }
-          },
-          "conditions": [
-            {
-              "objectExists": {
-                "target": "@lbt_battle_t1_spawn_name",
-                "type": "area"
-              }
-            },
-            {
-              "objectExists": {
-                "target": "@lbt_battle_t1_outdated_aaa_name",
-                "type": "unit"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isDelayed",
-                "object_marking": 0,
-                "object_var_name": "",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lbt_battle_t1_outdated_aaa_name"
-              }
-            }
-          ],
-          "actions": {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t1_outdated_aaa_name",
+              "object": "@lbt_battle_t1_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t1_spawn_name",
               "isStealth": true,
@@ -1789,7 +1688,7 @@
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_t2_modern_aaa_spawn"
+              "target": "lbt_battle_t2_aaa_spawn"
             }
           },
           "else_actions": {
@@ -1797,11 +1696,11 @@
               "value": ""
             },
             "triggerEnable": {
-              "target": "lbt_battle_t2_modern_aaa_spawn"
+              "target": "lbt_battle_t2_aaa_spawn"
             }
           }
         },
-        "lbt_battle_t2_modern_aaa_spawn": {
+        "lbt_battle_t2_aaa_spawn": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -1823,7 +1722,7 @@
             },
             {
               "objectExists": {
-                "target": "@lbt_battle_t2_modern_aaa_name",
+                "target": "@lbt_battle_t2_aaa_name",
                 "type": "unit"
               }
             },
@@ -1835,7 +1734,7 @@
                 "object_var_comp_op": "equal",
                 "func": "more",
                 "value": 0,
-                "object": "@lbt_battle_t2_modern_aaa_name"
+                "object": "@lbt_battle_t2_aaa_name"
               }
             }
           ],
@@ -1843,72 +1742,7 @@
             "unitRespawn": {
               "delay": 0.0,
               "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t2_modern_aaa_name",
-              "object_type": "isInactive",
-              "target": "@lbt_battle_t2_spawn_name",
-              "isStealth": true,
-              "randomSpawn": true,
-              "resetFormation": true
-            },
-            "comment": {
-              "value": ""
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t2_outdated_aaa_spawn"
-            }
-          },
-          "else_actions": {
-            "comment": {
-              "value": ""
-            },
-            "triggerEnable": {
-              "target": "lbt_battle_t2_outdated_aaa_spawn"
-            }
-          }
-        },
-        "lbt_battle_t2_outdated_aaa_spawn": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 0.1
-            }
-          },
-          "conditions": [
-            {
-              "objectExists": {
-                "target": "@lbt_battle_t2_spawn_name",
-                "type": "area"
-              }
-            },
-            {
-              "objectExists": {
-                "target": "@lbt_battle_t2_outdated_aaa_name",
-                "type": "unit"
-              }
-            },
-            {
-              "unitWhenCountMatches": {
-                "object_type": "isDelayed",
-                "object_marking": 0,
-                "object_var_name": "",
-                "object_var_comp_op": "equal",
-                "func": "more",
-                "value": 0,
-                "object": "@lbt_battle_t2_outdated_aaa_name"
-              }
-            }
-          ],
-          "actions": {
-            "unitRespawn": {
-              "delay": 0.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@lbt_battle_t2_outdated_aaa_name",
+              "object": "@lbt_battle_t2_aaa_name",
               "object_type": "isInactive",
               "target": "@lbt_battle_t2_spawn_name",
               "isStealth": true,
@@ -2472,19 +2306,13 @@
                   "airAccuracy": 0.1
                 },
                 {
-                  "maxDeviationAngle": 30.0
-                },
-                {
                   "checkVisibilityTarget": false
                 },
                 {
-                  "effShootingRate": 0.2
+                  "effShootingRate": 0.1
                 },
                 {
-                  "airEffShootingRate": 0.2
-                },
-                {
-                  "adaptiveAccuracyTime": 10.0
+                  "useSearchRadar": true
                 },
                 {
                   "fireRandom": true
@@ -7556,10 +7384,8 @@
     "lbt_end_t2_active_units_count": 0,
     "lbt_battle_t1_acar_name": "",
     "lbt_battle_t2_acar_name": "",
-    "lbt_battle_t1_modern_aaa_name": "",
-    "lbt_battle_t2_modern_aaa_name": "",
-    "lbt_battle_t1_outdated_aaa_name": "",
-    "lbt_battle_t2_outdated_aaa_name": "",
+    "lbt_battle_t1_aaa_name": "",
+    "lbt_battle_t2_aaa_name": "",
     "lbt_battle_t1_spawn_in_progress": false,
     "lbt_battle_t2_spawn_in_progress": false
   },

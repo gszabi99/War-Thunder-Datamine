@@ -40,7 +40,7 @@ root {
           padding:t='-1@framePadding +1@mapPreferenceIconMargin, 0'
           padding-bottom:t='1@framePadding'
 
-          include '%gui/chapter_include_filter.blk'
+          include 'gui/chapter_include_filter.blk'
         }
 
         tdiv {
@@ -273,7 +273,7 @@ root {
             position:t='relative'
             css-hier-invalidate:t='yes'
 
-            include "%gui/missions/mapStateBox"
+            include "gui/missions/mapStateBox"
           }
         }
 

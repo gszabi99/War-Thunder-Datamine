@@ -4,7 +4,7 @@
 /**
  * Interface class for all Input classes.
  */
-::Input.InputBase <- class
+class ::Input.InputBase
 {
 
   /**

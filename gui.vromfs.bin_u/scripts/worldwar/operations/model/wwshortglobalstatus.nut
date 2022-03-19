@@ -1,28 +1,28 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { secondsToMilliseconds } = require("%scripts/time.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { secondsToMilliseconds } = require("scripts/time.nut")
 
 local refreshMinTimeSec = 600
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-let curData = persist("curData", @() ::Watched(null))
-let validListsMask = persist("validListsMask", @() ::Watched(0))
-let lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
-let lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
-let lastRequestUid = persist("lastRequestUid", @() ::Watched(-1))
+local curData = persist("curData", @() ::Watched(null))
+local validListsMask = persist("validListsMask", @() ::Watched(0))
+local lastUpdatetTime = persist("lastUpdatetTime", @() ::Watched(-1))
+local lastRequestTime = persist("lastRequestTime", @() ::Watched(-1))
+local lastRequestUid = persist("lastRequestUid", @() ::Watched(-1))
 
-let function pushStatusChangedEvent(changedListsMask) {
+local function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("ShortGlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
-let function canRefreshData() {
+local function canRefreshData() {
   if (!::has_feature("WorldWar"))
     return false
   if (lastRequestUid.value != ::my_user_id_int64) //force request if user changed. Instead force request after relogin
     return true
 
   refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshShortGlobalStatusTimeSec", refreshMinTimeSec)
-  let refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
-  let requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
+  local refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
+  local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
       && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
     return false
@@ -31,7 +31,7 @@ let function canRefreshData() {
   return true
 }
 
-let function onGlobalStatusReceived(newData) {
+local function onGlobalStatusReceived(newData) {
   lastUpdatetTime(::dagor.getCurTime())
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
@@ -48,17 +48,17 @@ let function onGlobalStatusReceived(newData) {
 }
 
 //special actions with short global status in successCb
-let function actionWithGlobalStatusRequest(actionName, requestBlk) {
+local function actionWithGlobalStatusRequest(actionName, requestBlk) {
   lastRequestTime(::dagor.getCurTime())
   lastRequestUid(::my_user_id_int64)
-  let cb = ::Callback(function(data) {
+  local cb = ::Callback(function(data) {
     onGlobalStatusReceived(data)
   }, this)
 
   ::g_tasker.charRequestJson(actionName, requestBlk, null, cb)
 }
 
-let function onEventMyClanIdChanged(p) {
+local function onEventMyClanIdChanged(p) {
   foreach(op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getShortStatusList())
     op.resetCache()
   pushStatusChangedEvent(WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
@@ -71,11 +71,11 @@ subscriptions.addListenersWithoutEnv({
   MyClanIdChanged = onEventMyClanIdChanged
 })
 
-let function refreshShortGlobalStatusData() {
+local function refreshShortGlobalStatusData() {
   if (!canRefreshData())
     return
 
-  let requestBlk = ::DataBlock()
+  local requestBlk = ::DataBlock()
   if (::is_in_clan())
     requestBlk.clanId = ::clan_get_my_clan_id()
   if (::g_world_war.lastPlayedOperationId != null)

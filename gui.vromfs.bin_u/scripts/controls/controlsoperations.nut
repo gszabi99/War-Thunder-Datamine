@@ -1,25 +1,25 @@
-let Flags = {
+local Flags = {
   NONE = 0,
   WITHOUT_MODIFIERS = 1
 }
 
-let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
+local replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
   local isUpdated = false
-  let groupAxes = []
+  local groupAxes = []
   foreach (item in ::shortcutsList)
     if ((item.checkGroup & ctrlGroup) && item.type == CONTROL_TYPE.AXIS)
       groupAxes.append(item.id)
 
-  let controls = ::g_controls_manager.getCurPreset()
+  local controls = ::g_controls_manager.getCurPreset()
   foreach (axisName, axis in controls.axes) {
     if (groupAxes.indexof(axisName) == null || axis?.axisId == null)
       continue
     if (flags & Flags.WITHOUT_MODIFIERS) {
-      let modifiers = controls.hotkeys?[axisName] ?? []
+      local modifiers = controls.hotkeys?[axisName] ?? []
       if (modifiers.len() != 0)
         continue
     }
-    let replacement = replacements?[axis.axisId]
+    local replacement = replacements?[axis.axisId]
     if (replacement != null) {
       axis.axisId = replacement
       isUpdated = true
@@ -29,8 +29,8 @@ let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
   return isUpdated
 }
 
-let swapGamepadSticks = function(ctrlGroup, flags = Flags.NONE) {
-  let replacements = {
+local swapGamepadSticks = function(ctrlGroup, flags = Flags.NONE) {
+  local replacements = {
     [::AXIS.LEFTSTICK_X] = ::AXIS.RIGHTSTICK_X,
     [::AXIS.LEFTSTICK_Y] = ::AXIS.RIGHTSTICK_Y,
     [::AXIS.RIGHTSTICK_X] = ::AXIS.LEFTSTICK_X,

@@ -1,18 +1,18 @@
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
 
-let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
-let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
+local PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
+local PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
-let crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
+local crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
 crossNetworkPlayStatus.subscribe(@(v) v == null ? null : ::broadcastEvent("CrossPlayOptionChanged"))
 
-let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
+local crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
 
-let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
-let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
+local resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
+local resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
-let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
+local updateCrossNetworkPlayStatus = function(needOverrideValue = false)
 {
   if (!needOverrideValue && crossNetworkPlayStatus.value != null)
     return
@@ -25,13 +25,13 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
     crossNetworkPlayStatus(true)
 }
 
-let isCrossNetworkPlayEnabled = function()
+local isCrossNetworkPlayEnabled = function()
 {
   updateCrossNetworkPlayStatus()
   return crossNetworkPlayStatus.value
 }
 
-let setCrossNetworkPlayStatus = function(val)
+local setCrossNetworkPlayStatus = function(val)
 {
   if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
     return
@@ -41,7 +41,7 @@ let setCrossNetworkPlayStatus = function(val)
   updateCrossNetworkPlayStatus()
 }
 
-let updateCrossNetworkChatStatus = function(needOverrideValue = false)
+local updateCrossNetworkChatStatus = function(needOverrideValue = false)
 {
   if (!needOverrideValue && crossNetworkChatStatus.value != null)
     return
@@ -54,28 +54,28 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false)
     crossNetworkChatStatus(XBOX_COMMUNICATIONS_ALLOWED)
 }
 
-let getCrossNetworkChatStatus = function()
+local getCrossNetworkChatStatus = function()
 {
   updateCrossNetworkChatStatus()
   return crossNetworkChatStatus.value
 }
 
-let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNICATIONS_ALLOWED
+local isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNICATIONS_ALLOWED
 
-let setCrossNetworkChatStatus = function(boolVal)
+local setCrossNetworkChatStatus = function(boolVal)
 {
   if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
     return
 
-  let val = boolVal? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
+  local val = boolVal? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
   resetCrossNetworkChatStatus()
   ::save_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, val)
   updateCrossNetworkChatStatus()
 }
 
-let getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (::loc("icon/cross_play") + " " ) : "") + text
+local getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (::loc("icon/cross_play") + " " ) : "") + text
 
-let getSeparateLeaderboardPlatformValue = function() {
+local getSeparateLeaderboardPlatformValue = function() {
   if (::has_feature("ConsoleSeparateLeaderboards"))
   {
     if (isPlatformSony)
@@ -88,7 +88,7 @@ let getSeparateLeaderboardPlatformValue = function() {
   return false
 }
 
-let getSeparateLeaderboardPlatformName = function() {
+local getSeparateLeaderboardPlatformName = function() {
   // These names are set in config on leaderboard server.
   if (getSeparateLeaderboardPlatformValue())
   {
@@ -100,13 +100,13 @@ let getSeparateLeaderboardPlatformName = function() {
   return ""
 }
 
-let invalidateCache = function()
+local invalidateCache = function()
 {
   resetCrossPlayStatus()
   resetCrossNetworkChatStatus()
 }
 
-let function reinitCrossNetworkStatus() {
+local function reinitCrossNetworkStatus() {
   updateCrossNetworkPlayStatus(true)
   updateCrossNetworkChatStatus(true)
 }

@@ -65,7 +65,7 @@
         "caliber": 0.03
       },
       {
-        "speed": 795.0
+        "speed": 790.0
       },
       {
         "maxDistance": 2000.0
@@ -154,14 +154,16 @@
         }
       },
       {
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.9,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
+        "armorpower": {
+          "ArmorPower0m": [47.0,10.0],
+          "ArmorPower100m": [39.0,100.0],
+          "ArmorPower500m": [30.0,500.0],
+          "ArmorPower1000m": [27.0,1000.0],
+          "ArmorPower1500m": [23.0,1500.0],
+          "ArmorPower2000m": [19.0,2000.0],
+          "ArmorPower2500m": [15.0,2500.0],
+          "ArmorPower2550m": [7.0,2550.0],
+          "ArmorPower2600m": [0.0,2600.0]
         }
       },
       {
@@ -258,13 +260,13 @@
   {
     "bullet": [
       {
-        "mass": 0.237
+        "mass": 0.247
       },
       {
         "caliber": 0.03
       },
       {
-        "speed": 795.0
+        "speed": 810.0
       },
       {
         "explosiveType": "torpex"
@@ -288,19 +290,19 @@
         "secondaryShattersPreset": "ap"
       },
       {
-        "stabilityThreshold": 0.05
+        "stabilityThreshold": 0.5
       },
       {
         "stabilityCaliberToArmorThreshold": 5.0
       },
       {
-        "stabilityReductionAfterRicochet": 0.5
+        "stabilityReductionAfterRicochet": 0.3
       },
       {
         "stabilityReductionAfterPenetration": 0.15
       },
       {
-        "bulletType": "he_i"
+        "bulletType": "he_i_t"
       },
       {
         "slopeEffectPreset": "ap"
@@ -354,20 +356,11 @@
         "explosionPatchRadius": 1.0
       },
       {
-        "stabilityRicochetModifier": [
-          {
-            "mod1": [0.0,0.05]
-          },
-          {
-            "mod2": [20.0,0.1]
-          },
-          {
-            "mod3": [30.0,0.2]
-          },
-          {
-            "mod3": [45.0,0.3]
-          }
-        ]
+        "stabilityRicochetModifier": {
+          "mod1": [0.0,0.5],
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
+        }
       },
       {
         "pressureDamage": {
@@ -447,7 +440,8 @@
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
           "traceFreq": 1,
-          "tracer": "noColor"
+          "tracer": "30mmGreen",
+          "trail": "smallTrail"
         }
       },
       {
@@ -545,7 +539,7 @@
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 790.0
           },
           {
             "maxDistance": 2000.0
@@ -634,14 +628,16 @@
             }
           },
           {
-            "damage": {
-              "kinetic": {
-                "damageType": "generic",
-                "demarrePenetrationK": 0.9,
-                "demarreSpeedPow": 1.43,
-                "demarreMassPow": 0.71,
-                "demarreCaliberPow": 1.07
-              }
+            "armorpower": {
+              "ArmorPower0m": [47.0,10.0],
+              "ArmorPower100m": [39.0,100.0],
+              "ArmorPower500m": [30.0,500.0],
+              "ArmorPower1000m": [27.0,1000.0],
+              "ArmorPower1500m": [23.0,1500.0],
+              "ArmorPower2000m": [19.0,2000.0],
+              "ArmorPower2500m": [15.0,2500.0],
+              "ArmorPower2550m": [7.0,2550.0],
+              "ArmorPower2600m": [0.0,2600.0]
             }
           },
           {
@@ -738,13 +734,13 @@
       {
         "bullet": [
           {
-            "mass": 0.237
+            "mass": 0.247
           },
           {
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 810.0
           },
           {
             "explosiveType": "torpex"
@@ -768,19 +764,19 @@
             "secondaryShattersPreset": "ap"
           },
           {
-            "stabilityThreshold": 0.05
+            "stabilityThreshold": 0.5
           },
           {
             "stabilityCaliberToArmorThreshold": 5.0
           },
           {
-            "stabilityReductionAfterRicochet": 0.5
+            "stabilityReductionAfterRicochet": 0.3
           },
           {
             "stabilityReductionAfterPenetration": 0.15
           },
           {
-            "bulletType": "he_i"
+            "bulletType": "he_i_t"
           },
           {
             "slopeEffectPreset": "ap"
@@ -834,20 +830,11 @@
             "explosionPatchRadius": 1.0
           },
           {
-            "stabilityRicochetModifier": [
-              {
-                "mod1": [0.0,0.05]
-              },
-              {
-                "mod2": [20.0,0.1]
-              },
-              {
-                "mod3": [30.0,0.2]
-              },
-              {
-                "mod3": [45.0,0.3]
-              }
-            ]
+            "stabilityRicochetModifier": {
+              "mod1": [0.0,0.5],
+              "mod2": [15.0,0.7],
+              "mod3": [30.0,0.99]
+            }
           },
           {
             "pressureDamage": {
@@ -927,7 +914,8 @@
             "visual": {
               "range_percent_of_ammo": [100.0,0.0],
               "traceFreq": 1,
-              "tracer": "noColor"
+              "tracer": "30mmGreen",
+              "trail": "smallTrail"
             }
           },
           {
@@ -1023,7 +1011,7 @@
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 790.0
           },
           {
             "maxDistance": 2000.0
@@ -1112,14 +1100,16 @@
             }
           },
           {
-            "damage": {
-              "kinetic": {
-                "damageType": "generic",
-                "demarrePenetrationK": 0.9,
-                "demarreSpeedPow": 1.43,
-                "demarreMassPow": 0.71,
-                "demarreCaliberPow": 1.07
-              }
+            "armorpower": {
+              "ArmorPower0m": [47.0,10.0],
+              "ArmorPower100m": [39.0,100.0],
+              "ArmorPower500m": [30.0,500.0],
+              "ArmorPower1000m": [27.0,1000.0],
+              "ArmorPower1500m": [23.0,1500.0],
+              "ArmorPower2000m": [19.0,2000.0],
+              "ArmorPower2500m": [15.0,2500.0],
+              "ArmorPower2550m": [7.0,2550.0],
+              "ArmorPower2600m": [0.0,2600.0]
             }
           },
           {
@@ -1226,7 +1216,7 @@
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 810.0
           },
           {
             "explosiveType": "torpex"
@@ -1262,7 +1252,7 @@
             "stabilityReductionAfterPenetration": 0.15
           },
           {
-            "bulletType": "he_i"
+            "bulletType": "he_frag_i"
           },
           {
             "slopeEffectPreset": "ap"
@@ -1330,11 +1320,6 @@
                 "mod3": [45.0,0.3]
               }
             ]
-          },
-          {
-            "pressureDamage": {
-              "damageType": "pressure"
-            }
           },
           {
             "hitpower": {
@@ -1499,13 +1484,13 @@
       {
         "bullet": [
           {
-            "mass": 0.237
+            "mass": 0.247
           },
           {
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 810.0
           },
           {
             "explosiveType": "torpex"
@@ -1529,19 +1514,19 @@
             "secondaryShattersPreset": "ap"
           },
           {
-            "stabilityThreshold": 0.05
+            "stabilityThreshold": 0.5
           },
           {
             "stabilityCaliberToArmorThreshold": 5.0
           },
           {
-            "stabilityReductionAfterRicochet": 0.5
+            "stabilityReductionAfterRicochet": 0.3
           },
           {
             "stabilityReductionAfterPenetration": 0.15
           },
           {
-            "bulletType": "he_i"
+            "bulletType": "he_i_t"
           },
           {
             "slopeEffectPreset": "ap"
@@ -1595,20 +1580,11 @@
             "explosionPatchRadius": 1.0
           },
           {
-            "stabilityRicochetModifier": [
-              {
-                "mod1": [0.0,0.05]
-              },
-              {
-                "mod2": [20.0,0.1]
-              },
-              {
-                "mod3": [30.0,0.2]
-              },
-              {
-                "mod3": [45.0,0.3]
-              }
-            ]
+            "stabilityRicochetModifier": {
+              "mod1": [0.0,0.5],
+              "mod2": [15.0,0.7],
+              "mod3": [30.0,0.99]
+            }
           },
           {
             "pressureDamage": {
@@ -1688,7 +1664,8 @@
             "visual": {
               "range_percent_of_ammo": [100.0,0.0],
               "traceFreq": 1,
-              "tracer": "noColor"
+              "tracer": "30mmGreen",
+              "trail": "smallTrail"
             }
           },
           {
@@ -1788,7 +1765,7 @@
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 790.0
           },
           {
             "maxDistance": 2000.0
@@ -1877,14 +1854,16 @@
             }
           },
           {
-            "damage": {
-              "kinetic": {
-                "damageType": "generic",
-                "demarrePenetrationK": 0.9,
-                "demarreSpeedPow": 1.43,
-                "demarreMassPow": 0.71,
-                "demarreCaliberPow": 1.07
-              }
+            "armorpower": {
+              "ArmorPower0m": [47.0,10.0],
+              "ArmorPower100m": [39.0,100.0],
+              "ArmorPower500m": [30.0,500.0],
+              "ArmorPower1000m": [27.0,1000.0],
+              "ArmorPower1500m": [23.0,1500.0],
+              "ArmorPower2000m": [19.0,2000.0],
+              "ArmorPower2500m": [15.0,2500.0],
+              "ArmorPower2550m": [7.0,2550.0],
+              "ArmorPower2600m": [0.0,2600.0]
             }
           },
           {
@@ -1987,7 +1966,7 @@
             "caliber": 0.03
           },
           {
-            "speed": 795.0
+            "speed": 810.0
           },
           {
             "explosiveType": "torpex"
@@ -2023,7 +2002,7 @@
             "stabilityReductionAfterPenetration": 0.15
           },
           {
-            "bulletType": "he_i"
+            "bulletType": "he_frag_i"
           },
           {
             "slopeEffectPreset": "ap"
@@ -2091,11 +2070,6 @@
                 "mod3": [45.0,0.3]
               }
             ]
-          },
-          {
-            "pressureDamage": {
-              "damageType": "pressure"
-            }
           },
           {
             "hitpower": {

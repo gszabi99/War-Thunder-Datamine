@@ -152,6 +152,6 @@
   tdiv{
     position:t='relative'
     left:t='-1@headerIndent'
-    include "%gui/worldWar/wwArmyManagersStat"
+    include "gui/worldWar/wwArmyManagersStat"
   }
 <</army>>

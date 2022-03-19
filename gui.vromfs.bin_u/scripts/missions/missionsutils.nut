@@ -1,7 +1,7 @@
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -19,7 +19,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   LOCKED              = 4
 }
 
-let needCheckForVictory = ::Watched(false)
+local needCheckForVictory = ::Watched(false)
 
 ::g_script_reloader.registerPersistentData("MissionsUtilsGlobals", ::getroottable(),
   [
@@ -28,7 +28,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::is_mission_complete <- function is_mission_complete(chapterName, missionName) //different by mp_modes
 {
-  let progress = ::get_mission_progress(chapterName + "/" + missionName)
+  local progress = ::get_mission_progress(chapterName + "/" + missionName)
   return progress >= 0 && progress < 3
 }
 
@@ -37,9 +37,9 @@ let needCheckForVictory = ::Watched(false)
   if (!(::get_game_type() & ::GT_COOPERATIVE))
     return true
 
-  let name = info.getStr("name","")
-  let chapterName = info.getStr("chapter",::get_cur_game_mode_name())
-  let progress = ::get_mission_progress(chapterName + "/" + name)
+  local name = info.getStr("name","")
+  local chapterName = info.getStr("chapter",::get_cur_game_mode_name())
+  local progress = ::get_mission_progress(chapterName + "/" + name)
   return progress < 4 || ::is_debug_mode_enabled
 }
 
@@ -85,7 +85,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::upgrade_url_mission <- function upgrade_url_mission(fullMissionBlk)
 {
-  let misBlk = fullMissionBlk?.mission_settings?.mission
+  local misBlk = fullMissionBlk?.mission_settings?.mission
   if (!fullMissionBlk || !misBlk)
     return
 
@@ -108,7 +108,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::is_mission_for_unittype <- function is_mission_for_unittype(misBlk, esUnitType, useKillStreaks = null)
 {
-  let unitType = unitTypes.getByEsUnitType(esUnitType)
+  local unitType = unitTypes.getByEsUnitType(esUnitType)
 
   // Works for missions in Skirmish.
   if (unitType.missionSettingsAvailabilityFlag in misBlk)
@@ -116,7 +116,7 @@ let needCheckForVictory = ::Watched(false)
 
   // Works for all missions, including single missions, user missions, etc.
   local fullMissionBlk = null
-  let url = ::getTblValue("url", misBlk)
+  local url = ::getTblValue("url", misBlk)
   if (url != null)
     fullMissionBlk = ::getTblValue("fullMissionBlk", ::g_url_missions.findMissionByUrl(url))
   else
@@ -127,14 +127,14 @@ let needCheckForVictory = ::Watched(false)
 ::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
 {
   // Searching by units of Single missions
-  let unitsBlk = fullMissionBlk?.units
-  let playerBlk = fullMissionBlk && get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
-  let wings = playerBlk ? (playerBlk % "wing") : []
-  let unitsCache = {}
+  local unitsBlk = fullMissionBlk?.units
+  local playerBlk = fullMissionBlk && get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
+  local wings = playerBlk ? (playerBlk % "wing") : []
+  local unitsCache = {}
   if (unitsBlk && wings.len())
     for (local i = 0; i < unitsBlk.blockCount(); i++)
     {
-      let block = unitsBlk.getBlock(i)
+      local block = unitsBlk.getBlock(i)
       if (block && ::isInArray(block?.name, wings))
         if (block?.unit_class)
         {
@@ -146,13 +146,13 @@ let needCheckForVictory = ::Watched(false)
     }
 
   // Searching by respawn points of Multiplayer missions
-  let tag = unitTypes.getByEsUnitType(esUnitType).tag
-  let triggersBlk = fullMissionBlk?.triggers
+  local tag = unitTypes.getByEsUnitType(esUnitType).tag
+  local triggersBlk = fullMissionBlk?.triggers
   if (triggersBlk)
     for (local i = 0; i < triggersBlk.blockCount(); i++)
     {
-      let actionsBlk = triggersBlk.getBlock(i)?.getBlockByName("actions")
-      let respawnPointsList = actionsBlk ? (actionsBlk % "missionMarkAsRespawnPoint") : []
+      local actionsBlk = triggersBlk.getBlock(i)?.getBlockByName("actions")
+      local respawnPointsList = actionsBlk ? (actionsBlk % "missionMarkAsRespawnPoint") : []
       foreach (pointBlk in respawnPointsList)
         if (pointBlk?.tags?[tag])
           return true
@@ -166,7 +166,7 @@ let needCheckForVictory = ::Watched(false)
   if (::get_game_mode() != ::GM_CAMPAIGN)
     return
 
-  let callback = function(misList) {
+  local callback = function(misList) {
     local isCurFound = false
     foreach(mission in misList)
     {
@@ -208,7 +208,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_mission_meta_info <- function get_mission_meta_info(missionName)
 {
-  let urlMission = ::g_url_missions.findMissionByName(missionName)
+  local urlMission = ::g_url_missions.findMissionByName(missionName)
   if (urlMission != null)
     return urlMission.getMetaInfo()
 
@@ -269,7 +269,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::is_any_campaign_available <- function is_any_campaign_available()
 {
-  let mbc = ::get_meta_missions_info_by_campaigns(::GM_CAMPAIGN)
+  local mbc = ::get_meta_missions_info_by_campaigns(::GM_CAMPAIGN)
   foreach(item in mbc)
     if (::has_entitlement(item.name) || ::has_feature(item.name))
       return true
@@ -278,8 +278,8 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_not_purchased_campaigns <- function get_not_purchased_campaigns()
 {
-  let res = []
-  let mbc = ::get_meta_missions_info_by_campaigns(::GM_CAMPAIGN)
+  local res = []
+  local mbc = ::get_meta_missions_info_by_campaigns(::GM_CAMPAIGN)
   foreach(item in mbc)
     if (!::has_entitlement(item.name) && !::has_feature(item.name))
       res.append(item.name)
@@ -299,8 +299,8 @@ let needCheckForVictory = ::Watched(false)
 
 ::gui_start_mislist <- function gui_start_mislist(isModal=false, setGameMode=null, addParams = {})
 {
-  let hClass = isModal? ::gui_handlers.SingleMissionsModal : ::gui_handlers.SingleMissions
-  let params = {
+  local hClass = isModal? ::gui_handlers.SingleMissionsModal : ::gui_handlers.SingleMissions
+  local params = {
     return_func = isModal? gui_start_mislist : ::handlersManager.getLastBaseHandlerStartFunc()
   }
   foreach(key, value in addParams)
@@ -315,7 +315,7 @@ let needCheckForVictory = ::Watched(false)
 
   params.canSwitchMisListType <- gm == ::GM_SKIRMISH
 
-  let showAllCampaigns = gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION
+  local showAllCampaigns = gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION
   ::current_campaign_id = showAllCampaigns? null : ::get_game_mode_name(gm)
   params.showAllCampaigns <- showAllCampaigns
 
@@ -359,7 +359,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName")
 {
-  let locNameValue = getTblValue(locNameKey, config, null)
+  local locNameValue = getTblValue(locNameKey, config, null)
   if (locNameValue && locNameValue.len())
     return getMissionLocName(config, locNameKey)
 
@@ -368,17 +368,17 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_current_mission_name <- function get_current_mission_name()
 {
-  let misBlk = ::DataBlock()
+  local misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
   return misBlk.name
 }
 
 ::loc_current_mission_name <- function loc_current_mission_name(needComment = true)
 {
-  let misBlk = ::DataBlock()
+  local misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
-  let locNameByTeamParamName = $"locNameTeam{teamId}"
+  local teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  local locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
 
   if ((misBlk?[locNameByTeamParamName].len() ?? 0) > 0)
@@ -402,7 +402,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_combine_loc_name_mission <- function get_combine_loc_name_mission(missionInfo)
 {
-  let misInfoName = missionInfo?.name ?? ""
+  local misInfoName = missionInfo?.name ?? ""
   local locName = ""
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
     locName = getMissionLocName(missionInfo, "locNameTeamA")
@@ -413,10 +413,10 @@ let needCheckForVictory = ::Watched(false)
 
   if (locName == "")
   {
-    let misInfoPostfix = missionInfo?.postfix ?? ""
+    local misInfoPostfix = missionInfo?.postfix ?? ""
     if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix))
     {
-      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
+      local name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
       locName = "[" + ::loc("missions/" + misInfoPostfix) + "] " + ::loc("missions/" + name)
     }
   }
@@ -429,10 +429,10 @@ let needCheckForVictory = ::Watched(false)
 
 ::loc_current_mission_desc <- function loc_current_mission_desc()
 {
-  let misBlk = ::DataBlock()
+  local misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
-  let locDecsByTeamParamName = $"locDescTeam{teamId}"
+  local teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  local locDecsByTeamParamName = $"locDescTeam{teamId}"
 
   local locDesc = ""
   if ((misBlk?[locDecsByTeamParamName].len() ?? 0) > 0)

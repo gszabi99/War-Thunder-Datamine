@@ -1,12 +1,12 @@
-let statsd = require("statsd")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+local statsd = require("statsd")
+local { clearBorderSymbols } = require("std/string.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
-::gui_handlers.LoginWndHandlerTencent <- class extends ::BaseGuiHandler
+class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/loginBoxSimple.blk"
+  sceneBlkName = "gui/loginBoxSimple.blk"
 
   function initScreen()
   {
@@ -26,13 +26,13 @@ let exitGame = require("%scripts/utils/exitGame.nut")
   {
     ::dagor.debug("Login: yuplay2_tencent_login")
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "tencent"})
-    let res = ::yuplay2_tencent_login()
+    local res = ::yuplay2_tencent_login()
     if (res == ::YU2_OK)
       return afterLogin()
 
     dagor.debug("yuplay2_tencent_login returned " + res)
 
-    let buttons = [["exit", exitGame]]
+    local buttons = [["exit", exitGame]]
     local defBtn = "exit"
     local cancelFnFunc = exitGame
 
@@ -75,8 +75,8 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::do_change_nickname <- function do_change_nickname(nick, onSuccess, onCancel = null)
 {
-  let taskId = ::char_change_nick(nick)
-  let onError = (@(onSuccess, onCancel) function(res) {
+  local taskId = ::char_change_nick(nick)
+  local onError = (@(onSuccess, onCancel) function(res) {
     dagor.debug("Change nickname error: " + res)
     ::change_nickname(onSuccess, onCancel)
   })(onSuccess, onCancel)

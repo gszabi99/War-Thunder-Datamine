@@ -56,19 +56,30 @@ root {
           navLeft {
             Button_text {
               id:t='cluster_select_button'
-              width:t='1@bigButtonWidth'
               on_click:t='onOpenClusterSelect'
               btnName:t='X'
               refuseOpenHoverMenu:t='no'
+              class:t='image'
+              standardTextBtnWidth:t='yes'
+              isColoredImg:t='yes'
 
+              img {
+                id:t='cluster_select_button_icon'
+                margin-right:t='3@sf/@pf'
+                background-image:t='#ui/gameuiskin#new_icon_not_colored'
+                isUrgentWarningIcon:t='yes'
+                wink:t='no'
+                display:t='hide'
+              }
               textarea {
                 id:t='cluster_select_button_text'
                 height:t='ph'
-                width:t='pw'
+                width:t='fw'
                 text:t='#options/cluster'
                 pare-text:t='yes'
                 input-transparent:t='yes'
                 class:t='buttonText'
+                leftAligned:t='no'
               }
               ButtonImg {}
             }

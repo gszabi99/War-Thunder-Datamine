@@ -1,4 +1,4 @@
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 /*
   config = [
     {
@@ -32,10 +32,10 @@ global enum RCLICK_MENU_ORIENT
   })
 }
 
-::gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler
+class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "%gui/rightClickMenu"
+  sceneTplName = "gui/rightClickMenu"
   needVoiceChat = false
 
   owner        = null
@@ -53,7 +53,7 @@ global enum RCLICK_MENU_ORIENT
 
   function getSceneTplView()
   {
-    let view = {
+    local view = {
       actions = []
     }
 
@@ -73,7 +73,7 @@ global enum RCLICK_MENU_ORIENT
                   ? item.enabled.call(owner)
                   : item.enabled
 
-      let text = item?.text
+      local text = item?.text
       actionData = {
         id = idPrefix + idx.tostring()
         text = text
@@ -98,16 +98,16 @@ global enum RCLICK_MENU_ORIENT
       return goBack()
 
     timeOpen = ::dagor.getCurTime()
-    let listObj = scene.findObject("rclick_menu_div")
+    local listObj = scene.findObject("rclick_menu_div")
 
     guiScene.setUpdatesEnabled(false, false)
     initTimers(listObj, config.actions)
     guiScene.setUpdatesEnabled(true, true)
 
-    let rootSize = guiScene.getRoot().getSize()
-    let cursorPos = position ? position : ::get_dagui_mouse_cursor_pos_RC()
-    let menuSize = listObj.getSize()
-    let menuPos =  [cursorPos[0], cursorPos[1]]
+    local rootSize = guiScene.getRoot().getSize()
+    local cursorPos = position ? position : ::get_dagui_mouse_cursor_pos_RC()
+    local menuSize = listObj.getSize()
+    local menuPos =  [cursorPos[0], cursorPos[1]]
     for(local i = 0; i < 2; i++)
       if (menuPos[i] + menuSize[i] > rootSize[i])
         if (menuPos[i] > menuSize[i])
@@ -115,7 +115,7 @@ global enum RCLICK_MENU_ORIENT
         else
           menuPos[i] = ((rootSize[i] - menuSize[i]) / 2).tointeger()
 
-    let shift = orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
+    local shift = orientation == RCLICK_MENU_ORIENT.RIGHT? menuSize[0] : 0
     listObj.pos = menuPos[0] - shift + ", " + menuPos[1]
     listObj.width = listObj.getSize()[0]
     guiScene.applyPendingChanges(false)
@@ -126,17 +126,17 @@ global enum RCLICK_MENU_ORIENT
   {
     foreach(idx, item in actions)
     {
-      let onUpdateButton = ::getTblValue("onUpdateButton", item)
+      local onUpdateButton = ::getTblValue("onUpdateButton", item)
       if (!::u.isFunction(onUpdateButton))
         continue
 
-      let btnObj = listObj.findObject(idPrefix + idx.tostring())
+      local btnObj = listObj.findObject(idPrefix + idx.tostring())
       if (!::check_obj(btnObj))
         continue
 
       SecondsUpdater(btnObj, function(obj, params)
       {
-        let data = onUpdateButton(params)
+        local data = onUpdateButton(params)
         updateBtnByTable(obj, data)
         return data?.stopUpdate ?? false
       }.bindenv(this))
@@ -145,14 +145,14 @@ global enum RCLICK_MENU_ORIENT
 
   function updateBtnByTable(btnObj, data)
   {
-    let text = ::getTblValue("text", data)
+    local text = ::getTblValue("text", data)
     if (!::u.isEmpty(text))
     {
       btnObj.setValue(::g_dagui_utils.removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 
-    let enable = ::getTblValue("enable", data)
+    local enable = ::getTblValue("enable", data)
     if (::u.isBool(enable))
       btnObj.enable(enable)
   }
@@ -177,7 +177,7 @@ global enum RCLICK_MENU_ORIENT
   function afterModalDestroy()
   {
     if (choosenValue in config.actions) {
-      let applyFunc = ::getTblValue("action", config.actions[choosenValue])
+      local applyFunc = ::getTblValue("action", config.actions[choosenValue])
       ::call_for_handler(owner, applyFunc)
     }
     onClose?()

@@ -1,8 +1,8 @@
-let stdMath = require("%sqstd/math.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+local stdMath = require("std/math.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 ::EventJoinProcess <- class
 {
@@ -112,7 +112,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
   function joinStep3_internal()
   {
-    let mGameMode = ::events.getMGameMode(event, room)
+    local mGameMode = ::events.getMGameMode(event, room)
     if (::events.isEventTanksCompatible(event.name) && !::check_tanks_available())
       return remove()
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
@@ -122,9 +122,9 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
       return remove()
     if (!checkEventTeamSize(mGameMode))
       return remove()
-    let diffCode = ::events.getEventDiffCode(event)
-    let unitTypeMask = ::events.getEventUnitTypesMask(event)
-    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
+    local diffCode = ::events.getEventDiffCode(event)
+    local unitTypeMask = ::events.getEventUnitTypesMask(event)
+    local checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if(checkDiffTutorial(diffCode, checkTutorUnitType))
       return remove()
 
@@ -133,7 +133,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
   function joinStep4_cantJoinReason()
   {
-    let reasonData = ::events.getCantJoinReasonData(event, room,
+    local reasonData = ::events.getCantJoinReasonData(event, room,
                           { continueFunc = function() { if (this) joinStep5_repairInfo() }.bindenv(this)
                             isFullText = true
                           })
@@ -146,7 +146,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
   function joinStep5_repairInfo()
   {
-    let repairInfo = ::events.getCountryRepairInfo(event, room, ::get_profile_country_sq())
+    local repairInfo = ::events.getCountryRepairInfo(event, room, ::get_profile_country_sq())
     ::checkBrokenAirsAndDo(repairInfo, this, joinStep6_membersForQueue, false, remove)
   }
 
@@ -165,7 +165,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
       ::SessionLobby.joinRoom(room.roomId)
     else
     {
-      let joinEventParams = {
+      local joinEventParams = {
         mode    = event.name
         //team    = team //!!can choose team correct only with multiEvents support
         country = ::get_profile_country_sq()
@@ -184,11 +184,11 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 
   function checkEventTeamSize(ev)
   {
-    let squadSize = ::g_squad_manager.getSquadSize()
-    let maxTeamSize = ::events.getMaxTeamSize(ev)
+    local squadSize = ::g_squad_manager.getSquadSize()
+    local maxTeamSize = ::events.getMaxTeamSize(ev)
     if (squadSize > maxTeamSize)
     {
-      let locParams = {
+      local locParams = {
         squadSize = squadSize.tostring()
         maxTeamSize = maxTeamSize.tostring()
       }

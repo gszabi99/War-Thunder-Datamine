@@ -1,6 +1,6 @@
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
-::WwAirfieldFormation <- class extends ::WwFormation
+class ::WwAirfieldFormation extends ::WwFormation
 {
   constructor(blk, airfield)
   {

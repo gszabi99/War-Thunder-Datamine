@@ -1,7 +1,7 @@
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { fillItemDescr } = require("scripts/items/itemVisual.nut")
 
-::WarbondAward <- class
+class ::WarbondAward
 {
   id = ""
   idx = 0
@@ -94,7 +94,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!warbondWeak)
       return ""
 
-    let level = warbondWeak.getShopLevel(ordinaryTasks)
+    local level = warbondWeak.getShopLevel(ordinaryTasks)
     if (level == 0)
       return ""
 
@@ -103,7 +103,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function getWarbondMedalImage()
   {
-    let medals = getMedalsCountNum()
+    local medals = getMedalsCountNum()
     if (!warbondWeak || medals == 0)
       return ""
 
@@ -112,12 +112,12 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function getBuyText(isShort = true)
   {
-    let res = ::loc("mainmenu/btnBuy")
+    local res = ::loc("mainmenu/btnBuy")
     if (isShort)
       return res
 
-    let cost = getCost()
-    let costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
+    local cost = getCost()
+    local costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
     return res + ((costText == "")? "" : ::loc("ui/parentheses/space", { text = costText }))
   }
 
@@ -141,14 +141,14 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
       return ::showInfoMsgBox(reason)
     }
 
-    let costWb = getCost()
-    let balanceWb = warbondWeak.getBalance()
+    local costWb = getCost()
+    local balanceWb = warbondWeak.getBalance()
     if (costWb > balanceWb)
       return ::showInfoMsgBox(::loc("not_enough_currency",
                                     { currency = warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
 
 
-    let msgText = ::loc("onlineShop/needMoneyQuestion",
+    local msgText = ::loc("onlineShop/needMoneyQuestion",
                           { purchase = ::colorize("userlogColoredText", getNameText()),
                             cost = ::colorize("activeTextColor", getCostText())
                           })
@@ -168,8 +168,8 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!isValid())
       return
 
-    let taskId = awardType.requestBuy(warbondWeak, blk)
-    let cb = ::Callback(onBought, this)
+    local taskId = awardType.requestBuy(warbondWeak, blk)
+    local cb = ::Callback(onBought, this)
     ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
   }
 
@@ -184,7 +184,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!isValid())
       return false
 
-    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
     return !awardType.hasIncreasingLimit() && maxBoughtCount > 0
       && getLeftBoughtCount() == 0
   }
@@ -194,11 +194,11 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!isValid())
       return ""
 
-    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
-    let hasIncreasingLimit = awardType.hasIncreasingLimit()
+    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    local hasIncreasingLimit = awardType.hasIncreasingLimit()
     if (!hasIncreasingLimit && maxBoughtCount <= 0)
       return ""
-    let leftAmount = getLeftBoughtCount()
+    local leftAmount = getLeftBoughtCount()
     if (!hasIncreasingLimit && leftAmount == 0)
       return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
@@ -230,7 +230,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
   function fillItemDesc(descObj, handler)
   {
-    let item = awardType.getDescItem(blk)
+    local item = awardType.getDescItem(blk)
     if (!item)
       return false
 
@@ -263,7 +263,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!warbondWeak)
       return ""
 
-    let level = warbondWeak.getShopLevel(tasksNum)
+    local level = warbondWeak.getShopLevel(tasksNum)
     return warbondWeak.getShopLevelText(level)
   }
 
@@ -272,8 +272,8 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveOrdinaryRequirement())
       return true
 
-    let shopLevel = warbondWeak? warbondWeak.getShopLevel(ordinaryTasks) : 0
-    let execTasks = warbondWeak? warbondWeak.getCurrentShopLevel() : 0
+    local shopLevel = warbondWeak? warbondWeak.getShopLevel(ordinaryTasks) : 0
+    local execTasks = warbondWeak? warbondWeak.getCurrentShopLevel() : 0
     return shopLevel <= execTasks
   }
 
@@ -282,8 +282,8 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveSpecialRequirement())
       return true
 
-    let curMedalsCount = warbondWeak? warbondWeak.getCurrentMedalsCount() : 0
-    let reqMedalsCount = getMedalsCountNum()
+    local curMedalsCount = warbondWeak? warbondWeak.getCurrentMedalsCount() : 0
+    local reqMedalsCount = getMedalsCountNum()
     return reqMedalsCount <= curMedalsCount
   }
 
@@ -305,7 +305,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!isValid() || !isRequiredSpecialTasksComplete())
       return ""
 
-    let text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
+    local text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
     return colored? ::colorize("warningTextColor", text) : text
   }
 
@@ -320,7 +320,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (isAvailableForCurrentWarbondShop())
       return ""
 
-    let text = ::loc("warbonds/shop/notAvailableForCurrentShop")
+    local text = ::loc("warbonds/shop/notAvailableForCurrentShop")
     return colored? ::colorize("badTextColor", text) : text
   }
 
@@ -329,7 +329,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveOrdinaryRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredLevel", {
+    local text = ::loc("warbonds/shop/requiredLevel", {
       level = getShopLevelText(ordinaryTasks)
     })
     return isAvailableByShopLevel() || !colored? text : ::colorize("badTextColor", text)
@@ -340,7 +340,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (!haveSpecialRequirement())
       return ""
 
-    let text = ::loc("warbonds/shop/requiredMedals", {
+    local text = ::loc("warbonds/shop/requiredMedals", {
       count = getMedalsCountNum()
     })
     return isAvailableByMedalsCount() || !colored? text : ::colorize("badTextColor", text)
@@ -351,7 +351,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
     if (reqMaxUnitRank < 2)
       return ""
 
-    let text = ::loc("warbonds/shop/requiredUnitRank", {
+    local text = ::loc("warbonds/shop/requiredUnitRank", {
       unitRank = reqMaxUnitRank
     })
     return isAvailableByUnitsRank() || !colored? text : ::colorize("badTextColor", text)

@@ -1,6 +1,6 @@
-let interopGen = require("interopGen.nut")
+local interopGen = require("interopGen.nut")
 
-let agmAimState = {
+local agmAimState = {
   TrackerX = Watched(0.0)
   TrackerY = Watched(0.0)
   TrackerSize = Watched(0.0)

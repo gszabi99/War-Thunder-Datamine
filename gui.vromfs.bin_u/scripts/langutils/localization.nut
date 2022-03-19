@@ -1,8 +1,8 @@
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let {
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local {
   getPreferredVersion = @() -1
 } = isPlatformSony
-  ? require("%sonyLib/webApi.nut")
+  ? require("sonyLib/webApi.nut")
   : null
 
 ::g_localization <- {
@@ -17,12 +17,12 @@ let {
   }
 
   function getLocIdsArray(config, key = "locId") {
-    let keyValue = config?[key] ?? ""
-    let parsedString = ::split(keyValue, "; ")
+    local keyValue = config?[key] ?? ""
+    local parsedString = ::split(keyValue, "; ")
     if (parsedString.len() <= 1)
       return [keyValue]
 
-    let result = []
+    local result = []
     foreach(idx, namePart in parsedString) {
       if (namePart.len() == 1 && ::unlocks_punctuation_without_space.indexof(namePart) != null)
         result.remove(result.len() - 1) //remove previouse space
@@ -41,23 +41,23 @@ let {
     if (!locId || (!("getLocTextForLang" in ::dagor)))
       return {}
 
-    let locBlk = ::DataBlock()
+    local locBlk = ::DataBlock()
     ::get_localization_blk_copy(locBlk)
 
     if (!locBlk || (!("abbreviation_languages_table" in locBlk)))
       return {}
 
-    let abbreviationsList = locBlk.abbreviation_languages_table?[getPreferredVersion().tostring()] ?? ::DataBlock()
+    local abbreviationsList = locBlk.abbreviation_languages_table?[getPreferredVersion().tostring()] ?? ::DataBlock()
 
-    let output = {}
+    local output = {}
     for (local i = 0; i < abbreviationsList.paramCount(); i++)
     {
-      let param = abbreviationsList.getParamValue(i)
+      local param = abbreviationsList.getParamValue(i)
       if (typeof(param) != "string")
         continue
 
-      let abbrevName = abbreviationsList.getParamName(i)
-      let text = locId.len() > 1 ? ::dagor.getLocTextForLang(locId, param) : locId
+      local abbrevName = abbreviationsList.getParamName(i)
+      local text = locId.len() > 1 ? ::dagor.getLocTextForLang(locId, param) : locId
       if (text == null)
       {
         ::dagor.debug("Error: not found localized text for locId = '" + locId + "', lang = '" + param + "'")
@@ -73,19 +73,19 @@ let {
 
 g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locIdsArray, customFeedParams = {})
 {
-  let localizedKeyWords = {}
+  local localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach(name in customFeedParams.requireLocalization)
       localizedKeyWords[name] <- getLocalizedTextWithAbbreviation(customFeedParams[name])
 
-  let activityFeed_config = customFeedParams.__merge(activityFeedRequestLocParams)
+  local activityFeed_config = customFeedParams.__merge(activityFeedRequestLocParams)
 
-  let captions = []
+  local captions = []
 
-  let localizedTables = {}
+  local localizedTables = {}
   foreach (locId in locIdsArray)
   {
-    let table = getLocalizedTextWithAbbreviation(locId)
+    local table = getLocalizedTextWithAbbreviation(locId)
     foreach (abbrev, string in table)
     {
       if (!(abbrev in localizedTables))
@@ -96,7 +96,7 @@ g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locId
 
   foreach(lang, string in localizedTables)
   {
-    let localizationTable = {}
+    local localizationTable = {}
     foreach(name, value in activityFeed_config)
       localizationTable[name] <- localizedKeyWords?[name][lang] ?? value
 
@@ -111,6 +111,6 @@ g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locId
 
 g_localization.formatLangTextsInStringStyle <- function formatLangTextsInStringStyle(langTextsArray)
 {
-  let formatedArray = ::u.map(langTextsArray, @(table) ::format("\"%s\":\"%s\"", table.abbreviation, table.text))
+  local formatedArray = ::u.map(langTextsArray, @(table) ::format("\"%s\":\"%s\"", table.abbreviation, table.text))
   return ::g_string.implode(formatedArray, ",")
 }

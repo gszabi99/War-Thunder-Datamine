@@ -1,20 +1,20 @@
-let scrollbar = require("%rGui/components/scrollbar.nut")
-let {formatText} = require("%rGui/components/formatText.nut")
-let {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
+local scrollbar = require("reactiveGui/components/scrollbar.nut")
+local {formatText} = require("reactiveGui/components/formatText.nut")
+local {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
   chosenPatchnoteLoaded} = require("changeLogState.nut")
-let colors = require("%rGui/style/colors.nut")
-let { commonTextButton } = require("%rGui/components/textButton.nut")
-let modalWindow = require("%rGui/components/modalWindow.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
-let JB = require("%rGui/control/gui_buttons.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let focusBorder = require("%rGui/components/focusBorder.nut")
-let blurPanel = require("%rGui/components/blurPanel.nut")
-let spinner = require("%rGui/components/spinner.nut")
+local colors = require("reactiveGui/style/colors.nut")
+local { commonTextButton } = require("reactiveGui/components/textButton.nut")
+local modalWindow = require("reactiveGui/components/modalWindow.nut")
+local fontsState = require("reactiveGui/style/fontsState.nut")
+local JB = require("reactiveGui/control/gui_buttons.nut")
+local { mkImageCompByDargKey } = require("reactiveGui/components/gamepadImgByKey.nut")
+local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
+local focusBorder = require("reactiveGui/components/focusBorder.nut")
+local blurPanel = require("reactiveGui/components/blurPanel.nut")
+local spinner = require("reactiveGui/components/spinner.nut")
 
-let tabStyle = {
+local tabStyle = {
   fillColor = {
     normal   = colors.transparent
     hover    = colors.menu.menuButtonColorHover
@@ -29,25 +29,25 @@ let tabStyle = {
   }
 }
 
-let blockInterval = ::fpx(6)
-let borderWidth = ::dp(1)
+local blockInterval = ::fpx(6)
+local borderWidth = ::dp(1)
 
-let scrollHandler = ::ScrollHandler()
-let scrollStep = ::fpx(75)
-let maxPatchnoteWidth = ::fpx(300)
+local scrollHandler = ::ScrollHandler()
+local scrollStep = ::fpx(75)
+local maxPatchnoteWidth = ::fpx(300)
 
-let function getTabColorCtor(sf, style, isCurrent) {
+local function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)        return style.current
   if (sf & S_ACTIVE)    return style.active
   if (sf & S_HOVER)     return style.hover
   return style.normal
 }
 
-let function patchnote(v) {
-  let stateFlags = Watched(0)
-  let isCurrent = @() curPatchnote.value.id == v.id
+local function patchnote(v) {
+  local stateFlags = Watched(0)
+  local isCurrent = @() curPatchnote.value.id == v.id
   return function() {
-    let children = [{
+    local children = [{
       size = [flex(), ::ph(100)]
       maxWidth = maxPatchnoteWidth - 2 * ::scrn_tgt(0.01)
       behavior = Behaviors.TextArea
@@ -80,12 +80,12 @@ let function patchnote(v) {
   }
 }
 
-let topBorder = @(params = {}) {
+local topBorder = @(params = {}) {
   size = [::dp(1), flex()]
   valign = ALIGN_CENTER
 }.__merge(params)
 
-let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
+local patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   size = [SIZE_TO_CONTENT, flex()]
   behavior = Behaviors.Button
   children = mkImageCompByDargKey(hotkey)
@@ -93,12 +93,12 @@ let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
   skipDirPadNav = true
 })
 
-let isVersionsExists = ::Computed(@() (versions.value?.len() ?? 0) > 0)
-let function getPatchoteSelectorChildren() {
+local isVersionsExists = ::Computed(@() (versions.value?.len() ?? 0) > 0)
+local function getPatchoteSelectorChildren() {
   if (!isVersionsExists.value)
     return null
 
-  let children = patchnotesReceived.value && isVersionsExists.value
+  local children = patchnotesReceived.value && isVersionsExists.value
     ? versions.value.map(patchnote) : []
   if (!showConsoleButtons.value)
     return children
@@ -108,7 +108,7 @@ let function getPatchoteSelectorChildren() {
     .append(patchnoteSelectorGamepadButton("J:RB", prevPatchNote))
 }
 
-let patchnoteSelector = @() {
+local patchnoteSelector = @() {
   size = [flex(), ::ph(100)]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
@@ -117,19 +117,19 @@ let patchnoteSelector = @() {
   watch = [versions, curPatchnote, patchnotesReceived, isVersionsExists]
 }
 
-let missedPatchnoteText = formatText([::loc("NoUpdateInfo", "Oops... No information yet :(")])
+local missedPatchnoteText = formatText([::loc("NoUpdateInfo", "Oops... No information yet :(")])
 
-let seeMoreUrl = {
+local seeMoreUrl = {
   t="url"
   url=::loc("url/news")
   v=::loc("visitGameSite", "See game website for more details")
   margin = [::fpx(50), 0, 0, 0]
 }
 
-let scrollPatchnoteWatch = Watched(0)
+local scrollPatchnoteWatch = Watched(0)
 
-let function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
-  let element = scrollHandler.elem
+local function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+  local element = scrollHandler.elem
   if (element != null)
     scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.value * scrollStep)
 }
@@ -143,7 +143,7 @@ scrollPatchnoteWatch.subscribe(function(value) {
   ::gui_scene.setInterval(0.1, scrollPatchnote)
 })
 
-let scrollPatchnoteBtn = @(hotkey, watchValue) {
+local scrollPatchnoteBtn = @(hotkey, watchValue) {
   behavior = Behaviors.Button
   onElemState = @(sf) scrollPatchnoteWatch((sf & S_ACTIVE) ? watchValue : 0)
   hotkeys = [[hotkey]]
@@ -152,7 +152,7 @@ let scrollPatchnoteBtn = @(hotkey, watchValue) {
 
 chosenPatchnoteContent.subscribe(@(value) scrollHandler.scrollToY(0))
 
-let patchnoteLoading = freeze({
+local patchnoteLoading = freeze({
   children = [formatText([{v = ::loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -161,7 +161,7 @@ let patchnoteLoading = freeze({
   padding = sh(2)
 })
 
-let function selPatchnote() {
+local function selPatchnote() {
   local text = (chosenPatchnoteContent.value.text ?? "") != ""
     ? chosenPatchnoteContent.value.text : missedPatchnoteText
   if (::cross_call.hasFeature("AllowExternalLink")) {
@@ -188,16 +188,16 @@ let function selPatchnote() {
   }
 }
 
-let function onCloseAction() {
+local function onCloseAction() {
   ::cross_call.startMainmenu()
 }
 
-let btnNext  = commonTextButton(::loc("mainmenu/btnNextItem"), nextPatchNote,
+local btnNext  = commonTextButton(::loc("mainmenu/btnNextItem"), nextPatchNote,
   {hotkeys=[["{0} | Tab".subst(JB.B)]], margin=0})
-let btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction,
+local btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction,
   {hotkeys=[["{0}".subst(JB.B)]], margin=0})
 
-let nextButton = @() {
+local nextButton = @() {
   watch = [curPatchnoteIdx]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_RIGHT
@@ -206,7 +206,7 @@ let nextButton = @() {
   children = curPatchnoteIdx.value != 0 ? btnNext : btnClose
 }
 
-let clicksHandler = {
+local clicksHandler = {
   size = flex(),
   eventPassThrough = true,
   skipDirPadNav = true
@@ -217,7 +217,7 @@ let clicksHandler = {
   ]
 }
 
-let changelogRoot = {
+local changelogRoot = {
   size = flex()
   children = [
     blurPanel

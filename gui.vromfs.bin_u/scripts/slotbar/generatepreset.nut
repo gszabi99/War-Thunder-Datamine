@@ -1,21 +1,21 @@
-let { setUnits, getSlotItem, getCurPreset} = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local { setUnits, getSlotItem, getCurPreset} = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-let stepsSpecForFindBestCrew = [
+local stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
   ::g_crew_spec_type.EXPERT.code,
   null
 ]
 
-let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
-  let unitsArray = []
-  let eDiff = ::DIFFICULTY_REALISTIC
+local function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
+  local unitsArray = []
+  local eDiff = ::DIFFICULTY_REALISTIC
   foreach (unitName, unitAmount in availableUnits) {
     if (!unitAmount)
       continue
 
-    let unit = ::getAircraftByName(unitName)
+    local unit = ::getAircraftByName(unitName)
     if (unit.canAssignToCrew(country) || hasSlotbarByUnitsGroups)
       unitsArray.append({ unit = unit, rank = unit.getBattleRating(eDiff) })
   }
@@ -24,31 +24,31 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
     return null
 
   unitsArray.sort(@(a, b) b.rank <=> a.rank || a.unit.name <=> b.unit.name)
-  let countryCrews = ::get_crews_list_by_country(country)
-  let trainCrewsData = {}
-  let trainCrewsDataForGroups = []
-  let usedUnits = []
-  let unusedUnits = []
-  let curCountryCrews = hasSlotbarByUnitsGroups
+  local countryCrews = ::get_crews_list_by_country(country)
+  local trainCrewsData = {}
+  local trainCrewsDataForGroups = []
+  local usedUnits = []
+  local unusedUnits = []
+  local curCountryCrews = hasSlotbarByUnitsGroups
     ? getCurPreset().countryPresets?[country].units.map(@(u) u?.name)
     : ::get_crews_list_by_country(country).map(@(c) c?.aircraft)
   local hasChangeInPreset = false
   foreach (specValue in stepsSpecForFindBestCrew) {
     foreach (unitData in unitsArray) {
-      let unit = unitData.unit
+      local unit = unitData.unit
       if (usedUnits.indexof(unit) != null)
         continue
 
-      let unitName = unit.name
-      let unitType = unit.getCrewUnitType()
-      let maxCrewLevel = ::g_crew.getMaxCrewLevel(unitType) || 1
-      let availableCrews = []
+      local unitName = unit.name
+      local unitType = unit.getCrewUnitType()
+      local maxCrewLevel = ::g_crew.getMaxCrewLevel(unitType) || 1
+      local availableCrews = []
       foreach (crew in countryCrews) {
-        let crewId = crew.id
+        local crewId = crew.id
         if (crewId in trainCrewsData)
           continue
 
-        let crewSpec = crew.trainedSpec?[unitName] ?? -1
+        local crewSpec = crew.trainedSpec?[unitName] ?? -1
         if ((specValue != null && crewSpec != specValue)
           || (crewSpec < 0 && !hasSlotbarByUnitsGroups))
           continue
@@ -71,7 +71,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
       usedUnits.append(unit)
       availableCrews.sort(@(a, b) b.level <=> a.level || b.spec <=> a.spec)
 
-      let bestCrew = availableCrews[0]
+      local bestCrew = availableCrews[0]
       trainCrewsData[bestCrew.id] <- unit
       trainCrewsDataForGroups.append({crew = bestCrew, unit = unit})
       if (bestCrew?.idInCountry == null || curCountryCrews?[bestCrew.idInCountry] != unit.name)
@@ -79,7 +79,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
     }
   }
 
-  let idCountry = shopCountriesList.findindex(@(cName) cName == country)
+  local idCountry = shopCountriesList.findindex(@(cName) cName == country)
   if (hasSlotbarByUnitsGroups && unusedUnits.len() > 0 && idCountry != null) {
     local emptyCrewId = countryCrews.len()
     foreach (unit in unusedUnits) {
@@ -100,8 +100,8 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   }
 }
 
-let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
-  let bestPresetData = getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
+local function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
+  local bestPresetData = getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   if (bestPresetData == null) {
     ::showInfoMsgBox(::loc("worldwar/noPresetUnits"))
     return
@@ -112,14 +112,14 @@ let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
     return
   }
 
-  let unusedUnits = bestPresetData.unusedUnits
+  local unusedUnits = bestPresetData.unusedUnits
   if (bestPresetData.trainCrewsData.len() == 0) {
     ::showInfoMsgBox("\n".join([::loc("worldwar/noPresetUnitsCrews"),
       ::colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
     return
   }
 
-  let msgArray = ["\n".join([::loc("worldwar/addInPresetMsgText"),
+  local msgArray = ["\n".join([::loc("worldwar/addInPresetMsgText"),
     ::colorize("userlogColoredText", ", ".join(bestPresetData.usedUnits.map(@(u) ::getUnitName(u)), true))])]
   if (unusedUnits.len() > 0 && !hasSlotbarByUnitsGroups)
     msgArray.append("\n".join([::loc("worldwar/notAddInPresetMsgText"),

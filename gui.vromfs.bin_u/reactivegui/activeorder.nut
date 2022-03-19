@@ -1,13 +1,13 @@
-let { showOrder, scoresTable, statusText, statusTextBottom } = require("orderState.nut")
-let colors = require("style/colors.nut")
-let teamColors = require("style/teamColors.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
-let { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
+local { showOrder, scoresTable, statusText, statusTextBottom } = require("orderState.nut")
+local colors = require("style/colors.nut")
+local teamColors = require("style/teamColors.nut")
+local fontsState = require("reactiveGui/style/fontsState.nut")
+local { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
 
 
-let pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
+local pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
 
-let scoresTableComp = @() {
+local scoresTableComp = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   watch = scoresTable
@@ -44,11 +44,11 @@ let scoresTableComp = @() {
 }
 
 
-let updateFunction = function () {
+local updateFunction = function () {
   ::cross_call.active_order_request_update()
 }
 
-let isOrderVisible = ::Computed(@() isOrderStatusVisible.value && showOrder.value)
+local isOrderVisible = ::Computed(@() isOrderStatusVisible.value && showOrder.value)
 
 return @() {
   flow = FLOW_VERTICAL

@@ -1,6 +1,6 @@
-let time = require("%scripts/time.nut")
-let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+local time = require("scripts/time.nut")
+local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::uploadLimit <- 3
 ::on_screenshot_saved <- null
@@ -50,13 +50,13 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
     return
   dagor.debug("FACEBOOK UPLOAD: " + path)
 
-  let uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
+  local uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
   if (uploadsBlk?.postDate == time.getUtcDays())
   {
-    let uploads = uploadsBlk % "path"
+    local uploads = uploadsBlk % "path"
     if (uploads.len() >= uploadLimit)
     {
-      let msgText = format(::loc("facebook/error_upload_limit"), uploadLimit);
+      local msgText = format(::loc("facebook/error_upload_limit"), uploadLimit);
       ::showInfoMsgBox(msgText, "facebook_upload_limit")
       return;
     }
@@ -82,7 +82,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   if (path == "")
     return
 
-  let uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
+  local uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
   uploadsBlk.path <- path // adding new slot
   if (type(uploadsBlk?.postDate) != "integer")
     uploadsBlk.postDate = time.getUtcDays()
@@ -94,10 +94,10 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::on_facebook_destroy_waitbox <- function on_facebook_destroy_waitbox(unusedEventParams=null)
 {
-  let guiScene = ::get_gui_scene()
+  local guiScene = ::get_gui_scene()
   if (!guiScene)
     return
-  let facebook_obj = guiScene["facebook_login"]
+  local facebook_obj = guiScene["facebook_login"]
   if (::checkObj(facebook_obj))
     guiScene.destroyElement(facebook_obj)
 
@@ -133,10 +133,10 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
     || ::disable_network())
     return;
 
-  let gmBlk = ::get_game_settings_blk()
-  let daysCounter = gmBlk?.reminderFacebookLikeDays ?? 0
-  let lastDays = ::loadLocalByAccount("facebook/lastDayFacebookLikeReminder", 0)
-  let days = time.getUtcDays()
+  local gmBlk = ::get_game_settings_blk()
+  local daysCounter = gmBlk?.reminderFacebookLikeDays ?? 0
+  local lastDays = ::loadLocalByAccount("facebook/lastDayFacebookLikeReminder", 0)
+  local days = time.getUtcDays()
   if ( !lastDays || (daysCounter > 0 && days - lastDays > daysCounter) )
   {
     ::gui_start_modal_wnd(::gui_handlers.facebookReminderModal);
@@ -147,14 +147,14 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 ::show_facebook_screenshot_button <- function show_facebook_screenshot_button(scene, show = true, id = "btn_upload_facebook_scrn")
 {
   show = show && !isPlatformSony && ::has_feature("FacebookScreenshots")
-  let fbObj = ::showBtn(id, show, scene)
+  local fbObj = ::showBtn(id, show, scene)
   if (!::checkObj(fbObj))
     return
 
   fbObj.tooltip = ::format(::loc("mainmenu/facebookShareLimit"), ::uploadLimit)
 }
 
-::gui_handlers.facebookReminderModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.facebookReminderModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   function initScreen()
   {
@@ -176,7 +176,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   function onUnitActivate() {}
 
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/showUnlock.blk"
+  sceneBlkName = "gui/showUnlock.blk"
 }
 
 ::add_event_listener("DestroyEmbeddedBrowser", on_facebook_destroy_waitbox)

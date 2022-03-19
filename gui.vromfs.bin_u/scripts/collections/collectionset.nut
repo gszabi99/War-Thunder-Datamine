@@ -1,4 +1,4 @@
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 
 local CollectionsSet = class {
   id = "" //name of config blk. not unique
@@ -14,15 +14,15 @@ local CollectionsSet = class {
     reqFeature = blk?.reqFeature
     locId = blk?.locId || id
 
-    let prizeBlk = blk?.prize
+    local prizeBlk = blk?.prize
     if ((prizeBlk?.paramCount() ?? 0) > 0)
       prize = ::g_decorator.getDecoratorByResource(prizeBlk.getParamValue(0), prizeBlk.getParamName(0))
 
     collectionItems = []
 
-    let collectionItemsBlk = blk?.collectionItems
+    local collectionItemsBlk = blk?.collectionItems
     for(local i = 0; i < (collectionItemsBlk?.paramCount() ?? 0); i++) {
-      let resource = ::g_decorator.getDecoratorByResource(
+      local resource = ::g_decorator.getDecoratorByResource(
         collectionItemsBlk.getParamValue(i), collectionItemsBlk.getParamName(i))
       if (resource != null)
         collectionItems.append(resource)
@@ -36,17 +36,17 @@ local CollectionsSet = class {
   _tostring         = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
 
   function getView(countItemsInRow, collectionTopPos, collectionHeight, collectionNum) {
-    let collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
-    let rowCount = ::ceil(collectionItems.len() / (countItemsInRow*1.0))
-    let deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
+    local collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
+    local rowCount = ::ceil(collectionItems.len() / (countItemsInRow*1.0))
+    local deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
       rowCount, "@collectionItemSizeWithIndent)")
     local unlockedItemsCount = 0
-    let itemsView = collectionItems.map((function(decorator, idx) {
-      let decoratorType = decorator.decoratorType
+    local itemsView = collectionItems.map((function(decorator, idx) {
+      local decoratorType = decorator.decoratorType
       decoratorType.updateDownloadableDecoratorsInfo(decorator)
-      let column = idx - countItemsInRow * (idx / countItemsInRow)
-      let row = idx / countItemsInRow
-      let isUnlocked = decorator.isUnlocked()
+      local column = idx - countItemsInRow * (idx / countItemsInRow)
+      local row = idx / countItemsInRow
+      local isUnlocked = decorator.isUnlocked()
       if (isUnlocked)
         unlockedItemsCount++
       return {
@@ -63,8 +63,8 @@ local CollectionsSet = class {
       }
     }).bindenv(this))
 
-    let decoratorType = prize.decoratorType
-    let isUnlocked = prize.isUnlocked()
+    local decoratorType = prize.decoratorType
+    local isUnlocked = prize.isUnlocked()
     itemsView.append({
       id = $"{collectionNum};{prize.id}"
       pos = "{0}, {1}".subst("1@collectionWidth-1@collectionPrizeWidth",

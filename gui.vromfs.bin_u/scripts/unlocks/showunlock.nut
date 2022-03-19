@@ -1,13 +1,13 @@
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
-let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
-let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local unitActions = require("scripts/unit/unitActions.nut")
+local { setPollBaseUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
+local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
+local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+local { openLinkWithSource } = require("scripts/web/webActionsForPromo.nut")
+local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -22,7 +22,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::gui_start_unlock_wnd <- function gui_start_unlock_wnd(config)
 {
-  let unlockType = ::getTblValue("type", config, -1)
+  local unlockType = ::getTblValue("type", config, -1)
   if (unlockType == ::UNLOCKABLE_COUNTRY)
   {
     if (::isInArray(config.id, shopCountriesList))
@@ -48,16 +48,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   if (!::delayed_unlock_wnd.len())
     return
 
-  let unlockData = ::delayed_unlock_wnd.remove(0)
+  local unlockData = ::delayed_unlock_wnd.remove(0)
   if (!::gui_start_unlock_wnd(unlockData))
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-::gui_handlers.ShowUnlockHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/showUnlock.blk"
-  sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
+  sceneBlkName = "gui/showUnlock.blk"
+  sceneNavBlkName = "gui/showUnlockTakeAirNavBar.blk"
 
   needShowUnitTutorial = false
 
@@ -75,8 +75,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     if (::getTblValue("type", config, -1) == ::UNLOCKABLE_AIRCRAFT || "unitName" in config)
     {
-      let id = ::getTblValue("id", config)
-      let unitName = ::getTblValue("unitName", config, id)
+      local id = ::getTblValue("id", config)
+      local unitName = ::getTblValue("unitName", config, id)
       unit = ::getAircraftByName(unitName)
       updateUnitItem()
     }
@@ -93,9 +93,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!unit)
       return
 
-    let params = {hasActions = true}
-    let data = ::build_aircraft_item(unit.name, unit, params)
-    let airObj = scene.findObject("reward_aircrafts")
+    local params = {hasActions = true}
+    local data = ::build_aircraft_item(unit.name, unit, params)
+    local airObj = scene.findObject("reward_aircrafts")
     guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     airObj.setValue(0)
@@ -104,10 +104,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function updateTexts()
   {
-    let desc = ::getTblValue("desc", config)
+    local desc = ::getTblValue("desc", config)
     if (desc)
     {
-      let descObj = scene.findObject("award_desc")
+      local descObj = scene.findObject("award_desc")
       if (::checkObj(descObj))
       {
         descObj.setValue(desc)
@@ -117,26 +117,26 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       }
     }
 
-    let rewardText = ::getTblValue("rewardText", config, "")
+    local rewardText = ::getTblValue("rewardText", config, "")
     if (rewardText != "")
     {
-      let rewObj = scene.findObject("award_reward")
+      local rewObj = scene.findObject("award_reward")
       if (::checkObj(rewObj))
         rewObj.setValue(::loc("challenge/reward") + " " + config.rewardText)
     }
 
-    let nObj = scene.findObject("next_award")
+    local nObj = scene.findObject("next_award")
     if (::checkObj(nObj) && ("id" in config))
       nObj.setValue(::get_next_award_text(config.id))
   }
 
   function updateImage()
   {
-    let image = ::g_language.getLocTextFromConfig(config, "popupImage", "")
+    local image = ::g_language.getLocTextFromConfig(config, "popupImage", "")
     if (image == "")
       return
 
-    let imgObj = scene.findObject("award_image")
+    local imgObj = scene.findObject("award_image")
     if (!::checkObj(imgObj))
       return
 
@@ -146,7 +146,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       imgObj["height"] = config.ratioHeight + "w"
     else if ("id" in config)
     {
-      let unlockBlk = ::g_unlocks.getUnlockById(config.id)
+      local unlockBlk = ::g_unlocks.getUnlockById(config.id)
       if (unlockBlk?.aspect_ratio)
         imgObj["height"] = unlockBlk.aspect_ratio + "w"
     }
@@ -177,47 +177,47 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       linkText = generatePollUrl(config.pollId)
     }
 
-    let show = linkText != "" && ::g_promo.isLinkVisible(config)
-    let linkObj = showSceneBtn("btn_link_to_site", show)
+    local show = linkText != "" && ::g_promo.isLinkVisible(config)
+    local linkObj = showSceneBtn("btn_link_to_site", show)
     if (show)
     {
       if (::checkObj(linkObj))
       {
         linkObj.link = linkText
-        let linkBtnText = ::g_promo.getLinkBtnText(config)
+        local linkBtnText = ::g_promo.getLinkBtnText(config)
         if (linkBtnText != "")
           setColoredDoubleTextToButton(scene, "btn_link_to_site", linkBtnText)
       }
 
-      let imageObj = scene.findObject("award_image_button")
+      local imageObj = scene.findObject("award_image_button")
       if (::checkObj(imageObj))
         imageObj.link = linkText
     }
-    let showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
+    local showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
     showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 
-    let showSetAir = unit != null && unit.isUsable() && !::isUnitInSlotbar(unit)
-    let canBuyOnline = unit != null && ::canBuyUnitOnline(unit)
-    let canBuy = unit != null && !unit.isRented() && !unit.isBought() && (::canBuyUnit(unit) || canBuyOnline)
+    local showSetAir = unit != null && unit.isUsable() && !::isUnitInSlotbar(unit)
+    local canBuyOnline = unit != null && ::canBuyUnitOnline(unit)
+    local canBuy = unit != null && !unit.isRented() && !unit.isBought() && (::canBuyUnit(unit) || canBuyOnline)
     showSceneBtn("btn_set_air", showSetAir)
-    let okObj = showSceneBtn("btn_ok", !showSetAir)
+    local okObj = showSceneBtn("btn_ok", !showSetAir)
     if ("okBtnText" in config)
       okObj.setValue(::loc(config.okBtnText))
 
     showSceneBtn("btn_close", !showSetAir || !needShowUnitTutorial)
 
-    let buyObj = showSceneBtn("btn_buy_unit", canBuy)
+    local buyObj = showSceneBtn("btn_buy_unit", canBuy)
     if (canBuy && ::checkObj(buyObj))
     {
-      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
-      let unitCost = canBuyOnline? ::Cost() : ::getUnitCost(unit)
+      local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      local unitCost = canBuyOnline? ::Cost() : ::getUnitCost(unit)
       placePriceTextToButton(scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(unit))
     }
 
-    let actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
-    let showActionBtn = actionText != "" && config?.action
-    let actionObj = showSceneBtn("btn_action", showActionBtn)
+    local actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
+    local showActionBtn = actionText != "" && config?.action
+    local actionObj = showSceneBtn("btn_action", showActionBtn)
     if (showActionBtn)
       actionObj.setValue(actionText)
 
@@ -289,16 +289,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function sendInvitationEmail()
   {
-    let linkString = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let msg_head = ::format(::loc("mainmenu/invitationHead"), ::my_user_name)
-    let msg_body = ::format(::loc("mainmenu/invitationBody"), linkString)
+    local linkString = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    local msg_head = ::format(::loc("mainmenu/invitationHead"), ::my_user_name)
+    local msg_body = ::format(::loc("mainmenu/invitationBody"), linkString)
     ::shell_launch("mailto:yourfriend@email.com?subject=" + msg_head + "&body=" + msg_body)
   }
 
   function onFacebookPostLink()
   {
-    let link = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let message = ::loc("facebook/wallMessage")
+    local link = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    local message = ::loc("facebook/wallMessage")
     ::make_facebook_login_and_do((@(link, message) function() {
                  ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)
                  ::facebook_post_link(link, message)
@@ -307,7 +307,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function onOk()
   {
-    let onOkFunc = ::getTblValue("onOkFunc", config)
+    local onOkFunc = ::getTblValue("onOkFunc", config)
     if (onOkFunc)
       onOkFunc()
     goBack()
@@ -331,7 +331,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function onAction()
   {
-    let actionData = ::g_promo.gatherActionParamsData(config)
+    local actionData = ::g_promo.gatherActionParamsData(config)
     if (!actionData)
       return
 

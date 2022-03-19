@@ -1,5 +1,5 @@
 // warning disable: -egyptian-braces
-let callback = require("callback.nut")
+local callback = require("callback.nut")
 
 const SUBSCRIPTIONS_AMOUNT_TO_CLEAR = 50
 

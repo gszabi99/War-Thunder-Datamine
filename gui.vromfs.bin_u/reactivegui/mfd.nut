@@ -1,22 +1,22 @@
-let {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
+local {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
   IsMfdEnabled, RwrPosSize, SecondaryMask} = require("airState.nut")
-let {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize} = require("airHudElems.nut")
-let tws = require("tws.nut")
-let {mkRadarForMfd} = require("radarComponent.nut")
+local {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize} = require("airHudElems.nut")
+local tws = require("tws.nut")
+local {mkRadarForMfd} = require("radarComponent.nut")
 
-let {ceil} = require("%sqstd/math.nut")
+local {ceil} = require("std/math.nut")
 
 const mfdFontScale = 1.5
 
-let sightSh = @(h) ceil(h * MfdSightPosSize[3] / 100)
-let sightSw = @(w) ceil(w * MfdSightPosSize[2] / 100)
-let sightHdpx = @(px) ceil(px * MfdSightPosSize[3] / 1024)
+local sightSh = @(h) ceil(h * MfdSightPosSize[3] / 100)
+local sightSw = @(w) ceil(w * MfdSightPosSize[2] / 100)
+local sightHdpx = @(px) ceil(px * MfdSightPosSize[3] / 1024)
 
-let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
+local twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
-let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
+local twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
 
-let mkTws = @() {
+local mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
   children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
     : tws({
@@ -27,14 +27,14 @@ let mkTws = @() {
     })
 }
 
-let mfdSightParamTablePos = Watched([hdpx(30), hdpx(175)])
+local mfdSightParamTablePos = Watched([hdpx(30), hdpx(175)])
 
-let mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask,
+local mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask,
   hdpx(250), hdpx(28),
   mfdSightParamTablePos,
   hdpx(3))
 
-let function mfdSightHud(isBackground) {
+local function mfdSightHud(isBackground) {
   return @(){
     watch = IsMfdSightHudVisible
     pos = [MfdSightPosSize[0], MfdSightPosSize[1]]
@@ -54,7 +54,7 @@ let function mfdSightHud(isBackground) {
 
 
 
-let function mfdHUD(isBackground) {
+local function mfdHUD(isBackground) {
 
   return [
     mfdSightHud(isBackground)
@@ -63,8 +63,8 @@ let function mfdHUD(isBackground) {
   ]
 }
 
-let Root = function() {
-  let children = mfdHUD(true)
+local Root = function() {
+  local children = mfdHUD(true)
   children.extend(mfdHUD(false))
 
   return {

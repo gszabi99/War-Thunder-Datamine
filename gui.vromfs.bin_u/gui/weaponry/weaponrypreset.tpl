@@ -53,8 +53,7 @@ weaponryPreset {
         warning_icon{
           position:t='relative'
           size:t='@cIco, @cIco'
-          background-image:t='#ui/gameuiskin#new_icon.svg'
-          background-svg-size:t='@cIco, @cIco'
+          background-image:t='#ui/gameuiskin#new_icon'
           bgcolor:t='#FFFFFF'
         }
         <</hideWarningIcon>>

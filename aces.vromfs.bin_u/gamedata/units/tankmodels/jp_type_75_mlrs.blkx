@@ -183,8 +183,7 @@
         "ex_decor_l_01_dm": [],
         "ex_decor_l_04_dm": [],
         "ex_armor_01_dm": [],
-        "ex_armor_03_dm": [],
-        "turret_01_bottom_dm": []
+        "ex_armor_03_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -356,7 +355,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 150.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -387,7 +386,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 50.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -1683,15 +1682,12 @@
         ]
       },
       "suspension": {
-        "trackHeightAboveWheel": 0.1,
-        "maxDisplacementOffsets": [-0.1,0.0],
-        "suspensionOffsets": [-0.25,-0.2,0.2],
-        "defaultGearRadius": 0.38,
-        "topGearRadius": 0.11,
-        "frontBackGearRadius": 0.315,
-        "defaultDampeningForce": [100000.0,100000.0],
-        "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "maxDisplacementOffsets": [-0.01,0.01],
+        "suspensionOffsets": [-0.1,-0.01,0.01],
+        "defaultGearRadius": 0.35,
+        "frontBackGearRadius": 0.2,
+        "topGearRadius": 0.1,
+        "defaultDampeningForce": [100000.0,100000.0]
       }
     }
   },

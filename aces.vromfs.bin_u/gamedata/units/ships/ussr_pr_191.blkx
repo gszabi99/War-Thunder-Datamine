@@ -2613,8 +2613,6 @@
           "bullets": 180,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "turretLongSalvo": true,
-          "salvoRndK": 0.06,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2790,6 +2788,9 @@
           "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
+          "speedYaw": 35.0,
+          "speedPitch": 50.0,
+          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2806,9 +2807,6 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "speedYaw": 60.0,
-          "speedPitch": 55.0,
-          "bullets": 2000,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "auxiliary_caliber_turret_02",
@@ -2961,11 +2959,11 @@
   },
   {
     "breaches": {
-      "repairSpeed": 15.0,
-      "waterMassVel": -5500.0,
-      "waterMassMult": 200.0,
+      "repairSpeed": 20.0,
+      "waterMassVel": -14000.0,
+      "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 150000.0,
+      "additionalWaterDeathThreshold": 200000.0,
       "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
@@ -2973,7 +2971,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.35
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -3006,7 +3004,7 @@
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.5
               }
             }
           ]

@@ -2517,11 +2517,11 @@
   },
   {
     "breaches": {
-      "repairSpeed": 15.0,
-      "waterMassVel": -2500.0,
+      "repairSpeed": 20.0,
+      "waterMassVel": -14000.0,
       "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 60000.0,
+      "additionalWaterDeathThreshold": 70000.0,
       "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 43.0,
@@ -2529,7 +2529,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.35
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -2537,7 +2537,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.7,
+          "weight": 0.3,
           "maxWaterAlive": 1.0
         }
       },
@@ -2663,6 +2663,9 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 170.0,
         "defaultPitch": 0.0,
+        "speedYaw": 60.0,
+        "speedPitch": 75.0,
+        "bullets": 754,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2679,9 +2682,6 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 75.0,
-        "bullets": 754,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "main_caliber_turret_01",

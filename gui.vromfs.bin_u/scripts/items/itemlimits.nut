@@ -27,14 +27,14 @@ g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
   if (isRequestLocked)
     return false
 
-  let curTime = ::dagor.getCurTime()
+  local curTime = ::dagor.getCurTime()
 
-  let requestBlk = ::DataBlock()
+  local requestBlk = ::DataBlock()
   local requestSize = 0
   while (itemNamesQueue.len() > 0 && checkRequestSize(requestSize))
   {
-    let itemName = itemNamesQueue.pop()
-    let limitData = getLimitDataByItemName(itemName)
+    local itemName = itemNamesQueue.pop()
+    local limitData = getLimitDataByItemName(itemName)
     if (limitData.lastUpdateTime < ::max(curTime - ITEM_REFRESH_TIME * 1000, 0))
     {
       requestBlk["name"] <- itemName
@@ -49,16 +49,16 @@ g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
   isRequestLocked = true
   requestLockTime = curTime
 
-  let taskId = ::get_items_count_for_limits(requestBlk)
-  let taskOptions = {
+  local taskId = ::get_items_count_for_limits(requestBlk)
+  local taskOptions = {
     showProgressBox = isBlocking
   }
-  let taskCallback = function (result = ::YU2_OK)
+  local taskCallback = function (result = ::YU2_OK)
     {
       ::g_item_limits.isRequestLocked = false
       if (result == ::YU2_OK)
       {
-        let resultBlk = ::get_items_count_for_limits_result()
+        local resultBlk = ::get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
       }
       ::broadcastEvent("ItemLimitsUpdated")
@@ -92,9 +92,9 @@ g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
 {
   for (local i = resultBlk.blockCount() - 1; i >= 0; --i)
   {
-    let itemBlk = resultBlk.getBlock(i)
-    let itemName = itemBlk.getBlockName()
-    let limitData = getLimitDataByItemName(itemName)
+    local itemBlk = resultBlk.getBlock(i)
+    local itemName = itemBlk.getBlockName()
+    local limitData = getLimitDataByItemName(itemName)
     limitData.countGlobal = itemBlk?.countGlobal ?? 0
     limitData.countPersonalTotal = itemBlk?.countPersonalTotal ?? 0
     limitData.countPersonalAtTime = itemBlk?.countPersonalAtTime ?? 0
@@ -110,7 +110,7 @@ g_item_limits.createLimitData <- function createLimitData(itemName)
     ::format("Limit data with name %s already exists.", itemName)
   )
 
-  let limitData = {
+  local limitData = {
     itemName = itemName
     countGlobal = -1
     countPersonalTotal = -1

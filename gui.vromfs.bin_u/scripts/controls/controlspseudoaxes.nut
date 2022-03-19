@@ -1,7 +1,7 @@
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-let pseudoAxesList = {
+local pseudoAxesList = {
   template = {
     id = ""
     translate = function () { return [] }
@@ -15,7 +15,7 @@ enums.addTypes(pseudoAxesList, {
     id = "pseudo_toggle_view"
     translate = function ()
     {
-      let curUnitType = ::get_es_unit_type(getPlayerCurUnit())
+      local curUnitType = ::get_es_unit_type(getPlayerCurUnit())
       if (curUnitType == ::ES_UNIT_TYPE_TANK)
         return ["ID_TOGGLE_VIEW_GM"]
       else if (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
@@ -32,18 +32,18 @@ enums.addTypes(pseudoAxesList, {
     id = "pseudo_fire"
     translate = function()
     {
-      let requiredControls = ::getRequiredControlsForUnit(
+      local requiredControls = ::getRequiredControlsForUnit(
         getPlayerCurUnit(), ::getCurrentHelpersMode())
 
-      let isMGunsAvailable = ::isInArray("ID_FIRE_MGUNS", requiredControls)
-      let isCannonsAvailable = ::isInArray("ID_FIRE_CANNONS", requiredControls)
+      local isMGunsAvailable = ::isInArray("ID_FIRE_MGUNS", requiredControls)
+      local isCannonsAvailable = ::isInArray("ID_FIRE_CANNONS", requiredControls)
 
       if (isMGunsAvailable && !isCannonsAvailable)
         return ["ID_FIRE_MGUNS"]
       else if (!isMGunsAvailable && isCannonsAvailable)
         return ["ID_FIRE_CANNONS"]
 
-      let shortcuts = ::get_shortcuts(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"])
+      local shortcuts = ::get_shortcuts(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"])
       if (::is_shortcut_display_equal(shortcuts[0], shortcuts[1]))
         return ["ID_FIRE_MGUNS"]
       else
@@ -59,14 +59,14 @@ enums.addTypes(pseudoAxesList, {
   }
 })
 
-let function isPseudoAxis(shortcutId) {
+local function isPseudoAxis(shortcutId) {
   foreach (pseudoAxis in pseudoAxesList.types)
     if (shortcutId == pseudoAxis.id)
       return true
   return false
 }
 
-let function getPseudoAxisById(shortcutId) {
+local function getPseudoAxisById(shortcutId) {
   return ::u.search(pseudoAxesList.types, (@(item) item.id == shortcutId))
 }
 
@@ -76,13 +76,13 @@ let function getPseudoAxisById(shortcutId) {
 
     isAssigned = function (shortcutId, preset = null)
     {
-      let pseudoAxis = getPseudoAxisById(shortcutId)
+      local pseudoAxis = getPseudoAxisById(shortcutId)
       return pseudoAxis.isAssigned()
     }
 
     expand = function (shortcutId, showKeyBoardShortcutsForMouseAim)
     {
-      let pseudoAxis = getPseudoAxisById(shortcutId)
+      local pseudoAxis = getPseudoAxisById(shortcutId)
       return pseudoAxis.translate()
     }
   }

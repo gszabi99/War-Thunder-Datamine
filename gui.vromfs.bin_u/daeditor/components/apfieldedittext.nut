@@ -1,48 +1,41 @@
 from "%darg/ui_imports.nut" import *
 from "ecs" import *
 
-let {colors, gridHeight, gridMargin} = require("style.nut")
-let {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")
-let entity_editor = require("entity_editor")
+local {colors, gridHeight, gridMargin} = require("style.nut")
+local {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj} = require("attrUtil.nut")
+local entity_editor = require("entity_editor")
 
-let getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : _dbg_get_comp_val_inspect(eid, comp_name)
+local getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : obsolete_dbg_get_comp_val(eid, comp_name)
 
-let function fieldEditText_(params={}) {
-  let {eid, comp_name, compVal, setVal, path, rawComponentName=null} = params
-  local curRO = isCompReadOnly(eid, rawComponentName)
+local function fieldEditText_(params={}) {
+  local {eid, comp_name, compVal, setVal, path, rawComponentName=null} = params
 
-  let curText = Watched(compValToString(compVal))
-  let group = ElemGroup()
-  let compType = typeof compVal
-  let stateFlags = Watched(0)
-  let function onChange(text){
+  local curText = Watched(compValToString(compVal))
+  local group = ElemGroup()
+  local compType = typeof compVal
+  local stateFlags = Watched(0)
+  local function onChange(text){
     params?.onChange?()
     curText.update(text)
   }
 
-  let function frame() {
-    let frameColor = (stateFlags.value & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
+  local function frame() {
+    local frameColor = (stateFlags.value & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
     return {
       rendObj = ROBJ_FRAME group=group size = [flex(), gridHeight] color = frameColor watch = stateFlags
       onElemState = @(sf) stateFlags.update(sf)
     }
   }
 
-  let function textInput() {
-    let isValid = isValueTextValid(compType, curText.value)
+  local function textInput() {
+    local isValid = isValueTextValid(compType, curText.value)
 
-    let function updateTextFromEcs() {
-      let val = getCompVal(eid, rawComponentName, path)
-      let compTextVal = compValToString(val)
+    local function updateTextFromEcs() {
+      local val = getCompVal(eid, rawComponentName, path)
+      local compTextVal = compValToString(val)
       curText.update(compTextVal)
     }
-    let function doApply() {
-      if (curRO)
-        return
-      let checkVal = getCompVal(eid, rawComponentName, path)
-      let checkValText = compValToString(checkVal)
-      if (checkValText == curText.value)
-        return
+    local function doApply() {
       if (isValid) {
         local val = null
         try {
@@ -65,10 +58,10 @@ let function fieldEditText_(params={}) {
       size = [flex(), SIZE_TO_CONTENT]
       margin = gridMargin
 
-      color = isValid ? (curRO ? colors.TextReadOnly : colors.TextDefault) : colors.TextError
+      color = isValid ? colors.TextDefault : colors.TextError
 
       text = curText.value
-      behavior = curRO ? null : Behaviors.TextInput
+      behavior = Behaviors.TextInput
       group = group
       watch = curText
 
@@ -114,25 +107,24 @@ let function fieldEditText_(params={}) {
 }
 
 local function fieldEditText(params={}){
-  let {eid, comp_name, rawComponentName, path=null, onChange=null} = params
-  let function setVal(val) {
+  local {eid, comp_name, rawComponentName, path=null, onChange=null} = params
+  local function setVal(val) {
     if (path != null) {
       setValToObj(eid, rawComponentName, path, val)
-      entity_editor.save_component(eid, rawComponentName)
       onChange?()
       return true
     }
     else {
       local ok = false
       try {
-        let onChangeLocal = onChange ?? (@() obsolete_dbg_set_comp_val(eid, comp_name, val) ?? true)
+        local onChangeLocal = onChange ?? (@() obsolete_dbg_set_comp_val(eid, comp_name, val) ?? true)
         ok = onChangeLocal()
       }
       catch (e) {
         ok = false
       }
       if (ok)
-        entity_editor.save_component(eid, rawComponentName)
+        entity_editor.save_component(eid, comp_name)
       return ok
     }
   }

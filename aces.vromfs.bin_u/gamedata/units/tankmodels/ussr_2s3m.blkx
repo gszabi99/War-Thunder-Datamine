@@ -433,7 +433,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 150.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -464,7 +464,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 50.0,
+        "armorThickness": 5.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -704,22 +704,6 @@
         "machine_gunner_03_dm": [],
         "machine_gunner_04_dm": []
       }
-    }
-  },
-  {
-    "chainIK": {
-      "points": [
-        {
-          "point": {
-            "nameTemplate": "bone_roll_05"
-          }
-        },
-        {
-          "point": {
-            "nameTemplate": "bone_roll_03"
-          }
-        }
-      ]
     }
   },
   {
@@ -2380,42 +2364,12 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "forestallTime": 0.1,
-          "turret": [
-            {
-              "head": "bone_mg_aa_h_01"
-            },
-            {
-              "gun": "bone_mg_aa_v_01"
-            },
-            {
-              "gunnerDm": "commander_dm"
-            },
-            {
-              "rotatedTurret": "bone_mg_aa_h_01"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_roll_02",
-                "verLimits": [-6.0,15.0],
-                "verOriginLimits": [-6.0,15.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_roll_01",
-                "verLimits": [15.0,-15.0],
-                "verOriginLimits": [15.0,-15.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_roll_04",
-                "verLimits": [-6.0,15.0],
-                "verOriginLimits": [-6.0,15.0]
-              }
-            }
-          ],
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm",
+            "rotatedTurret": "bone_mg_aa_h_01"
+          },
           "limits": {
             "yaw": [-161.5,156.5],
             "pitch": [-6.0,15.0]

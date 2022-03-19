@@ -6,7 +6,7 @@
  matching_api_notify - call remote function without callback
 */
 
-let _matching = {
+local _matching = {
   function translate_matching_params(params)
   {
     if (params == null)

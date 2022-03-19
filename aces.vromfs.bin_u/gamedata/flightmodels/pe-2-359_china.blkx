@@ -62,12 +62,6 @@
   {
     "DamageParts": {
       "armor10": {
-        "armor5_dm": {
-          "hp": 40.0
-        },
-        "armor6_dm": {
-          "hp": 40.0
-        },
         "gun1_dm": {
           "hp": 15.0
         },
@@ -87,21 +81,23 @@
           "hp": 15.0
         }
       },
-      "armor13": {
-        "armor3_dm": {
-          "hp": 40.0
-        }
-      },
-      "armor15": {
+      "armor8": {
         "armor1_dm": {
-          "hp": 45.0
+          "hp": 40.0
         },
         "armor2_dm": {
-          "hp": 45.0
-        }
-      },
-      "armor8": {
+          "hp": 40.0
+        },
+        "armor3_dm": {
+          "hp": 40.0
+        },
         "armor4_dm": {
+          "hp": 40.0
+        },
+        "armor5_dm": {
+          "hp": 40.0
+        },
+        "armor6_dm": {
           "hp": 40.0
         }
       },
@@ -710,12 +706,26 @@
       },
       {
         "part": {
-          "name": "fin1_dm"
+          "name": "fin1_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {
         "part": {
-          "name": "fin2_dm"
+          "name": "fin2_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {

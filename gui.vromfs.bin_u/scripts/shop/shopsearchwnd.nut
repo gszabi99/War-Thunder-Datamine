@@ -1,12 +1,12 @@
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
+local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
-::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/shop/shopSearchWnd"
+  sceneTplName = "gui/shop/shopSearchWnd"
 
   searchString = ""
   units = []
@@ -19,8 +19,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getSceneTplView()
   {
-    let unitsData = prepareUnitsData()
-    let countriesView = getCountriesView(unitsData)
+    local unitsData = prepareUnitsData()
+    local countriesView = getCountriesView(unitsData)
 
     return {
       windowTitle = wndTitle ?? (::loc("shop/search/results") + ::loc("ui/colon") + searchString)
@@ -34,7 +34,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   {
     if (isUseUnitPlates)
     {
-      let contentObj = scene.findObject("contentBlock")
+      local contentObj = scene.findObject("contentBlock")
       foreach (u in units)
         ::fill_unit_item_timers(contentObj.findObject(u.name), u)
     }
@@ -42,18 +42,18 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function prepareUnitsData()
   {
-    let data = {}
-    let ediff = getEdiffFunc()
+    local data = {}
+    local ediff = getEdiffFunc()
     foreach (countryId in shopCountriesList)
     {
-      let countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
+      local countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
         continue
 
       data[countryId] <- {}
       foreach (unitType in unitTypes.types)
       {
-        let armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
+        local armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
         if (!armyUnits.len())
           continue
 
@@ -66,8 +66,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCountriesView(unitsData)
   {
-    let view = []
-    let ediff = getEdiffFunc()
+    local view = []
+    local ediff = getEdiffFunc()
     isUseUnitPlates = getIsUseUnitPlates(unitsData)
 
     foreach (countryId in shopCountriesList)
@@ -75,18 +75,18 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       if (!unitsData?[countryId])
         continue
 
-      let countryView = {
+      local countryView = {
         countryIcon = ::get_country_icon(countryId)
         armyTypes = []
       }
 
       foreach (unitType in unitTypes.types)
       {
-        let unitsList = unitsData[countryId]?[unitType.armyId]
+        local unitsList = unitsData[countryId]?[unitType.armyId]
         if (!unitsList)
           continue
 
-        let armyView = {
+        local armyView = {
           armyName = ::colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = isUseUnitPlates ? [] : null
           units      = isUseUnitPlates ? null : []
@@ -144,9 +144,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getIsUseUnitPlates(unitsData)
   {
-    let visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
+    local visibleHeight = ::to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
       "-@cIco -6@blockInterval -0.02@sf)")
-    let slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
+    local slotHeight  = ::to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
     foreach (countryUnits in unitsData)
     {
@@ -162,7 +162,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 return {
   open = function(searchString, cbOwnerShowUnit, getEdiffFunc, params = null)
   {
-    let units = params?.units ?? shopSearchCore.findUnitsByLocName(searchString)
+    local units = params?.units ?? shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false
     ::handlersManager.loadHandler(::gui_handlers.ShopSearchWnd, {

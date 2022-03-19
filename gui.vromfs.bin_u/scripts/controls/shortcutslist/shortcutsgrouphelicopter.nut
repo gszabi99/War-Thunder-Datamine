@@ -1,7 +1,7 @@
-let globalEnv = require("globalEnv")
-let controlsOperations = require("%scripts/controls/controlsOperations.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+local globalEnv = require("globalEnv")
+local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -104,7 +104,7 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     value = @(joyParams) joyParams.holdThrottleForWEP
     setValue = function(joyParams, objValue) {
-      let old = joyParams.holdThrottleForWEP
+      local old = joyParams.holdThrottleForWEP
       joyParams.holdThrottleForWEP = objValue
       if (objValue != old)
         ::set_controls_preset("")
@@ -196,11 +196,13 @@ return [
   }
   {
     id = "ID_FIRE_PRIMARY_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
   {
     id = "ID_FIRE_SECONDARY_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
@@ -241,18 +243,22 @@ return [
   }
   {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
     id = "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
@@ -302,20 +308,6 @@ return [
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
     needShowInHelp = true
-  }
-  {
-    id = "helicopter_sensor_cue_x"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
-  }
-  {
-    id = "helicopter_sensor_cue_y"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ID_IRCM_SWITCH_HELICOPTER"
@@ -390,14 +382,17 @@ return [
   {
     id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
     checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
     checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
     checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
 //-------------------------------------------------------
   {

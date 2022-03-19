@@ -1,26 +1,26 @@
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let unitStatus = require("%scripts/unit/unitStatus.nut")
-let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
-} = require("%scripts/unit/unitInfoTexts.nut")
-let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitShopPriceText } = require("unitCardPkg.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local unitStatus = require("scripts/unit/unitStatus.nut")
+local { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
+} = require("scripts/unit/unitInfoTexts.nut")
+local { checkUnitWeapons, getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
+local { getUnitShopPriceText } = require("unitCardPkg.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local { hasMarkerByUnitName } = require("scripts/unlocks/unlockMarkers.nut")
 
-let sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
+local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
-let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
+local setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 
-let function showInObj(obj, id, val) {
-  let tgtObj = obj.findObject(id)
+local function showInObj(obj, id, val) {
+  local tgtObj = obj.findObject(id)
   tgtObj.show(val)
   tgtObj.enable(val)
   return tgtObj
 }
 
-let function updateProgressInObj(cell, id, progress, isPaused) {
-  let obj = cell.findObject(id)
-  let isVisible = progress >= 0
+local function updateProgressInObj(cell, id, progress, isPaused) {
+  local obj = cell.findObject(id)
+  local isVisible = progress >= 0
   obj.show(isVisible)
   if (!isVisible)
     return
@@ -29,8 +29,8 @@ let function updateProgressInObj(cell, id, progress, isPaused) {
   obj.setValue(progress)
 }
 
-let function updateSector1InObj(cell, id, angle) {
-  let obj = cell.findObject(id)
+local function updateSector1InObj(cell, id, angle) {
+  local obj = cell.findObject(id)
   if (angle != (obj.getFinalProp(sectorAngle1PID) ?? -1).tointeger()) {
     obj.set_prop_latent(sectorAngle1PID, angle)
     obj.updateRendElem()
@@ -38,24 +38,24 @@ let function updateSector1InObj(cell, id, angle) {
   return obj
 }
 
-let function initCell(cell, initData) {
-  let { id, posX = 0, posY = 0, position = "relative" } = initData
+local function initCell(cell, initData) {
+  local { id, posX = 0, posY = 0, position = "relative" } = initData
   cell.pos = $"{posX}w, {posY}h"
   cell.position = position
 
-  let prevId = cell.holderId
+  local prevId = cell.holderId
   if (prevId == id)
     return
   cell.holderId = id
   cell.id = $"unitCell_{id}"
-  let cardObj = cell.findObject(prevId)
+  local cardObj = cell.findObject(prevId)
   cardObj.id = id
   cardObj.title = ::show_console_buttons ? "" : "$tooltipObj"
   cardObj.findObject("mainActionButton").holderId = id
 }
 
-let function updateCardStatus(obj, id, statusTbl) {
-  let {
+local function updateCardStatus(obj, id, statusTbl) {
+  local {
     isGroup             = false,
     unitName            = "",
     unitImage           = "",
@@ -96,7 +96,7 @@ let function updateCardStatus(obj, id, statusTbl) {
     hasObjective        = false,
     markerHolderId      = ""
   } = statusTbl
-  let isLongPriceText = ::is_unit_price_text_long(priceText)
+  local isLongPriceText = ::is_unit_price_text_long(priceText)
 
   setBool(obj, "group", isGroup)
   obj.primaryUnitId = primaryUnitId
@@ -118,47 +118,47 @@ let function updateCardStatus(obj, id, statusTbl) {
   showInObj(obj, "weaponStatusIcon", weaponsStatus != "").weaponsStatus = weaponsStatus
   showInObj(obj, "repairIcon", isBroken)
 
-  let markerObj = showInObj(obj, "unlockMarker", hasObjective)
+  local markerObj = showInObj(obj, "unlockMarker", hasObjective)
   if (hasObjective)
     markerObj.holderId = unitName != "" ? unitName : markerHolderId
 
-  let nameObj = obj.findObject("nameText")
+  local nameObj = obj.findObject("nameText")
   nameObj.setValue(nameText)
   setBool(nameObj, "disabled", isViewDisabled)
 
-  let progressObj = obj.findObject("progressText")
+  local progressObj = obj.findObject("progressText")
   progressObj.setValue(progressText)
   progressObj.progressStatus = progressStatus
 
   updateProgressInObj(obj, "progressOld", researchProgressOld, isResearchPaused)
   updateProgressInObj(obj, "progressNew", researchProgressNew, isResearchPaused)
 
-  let priceObj = obj.findObject("priceText")
+  local priceObj = obj.findObject("priceText")
   priceObj.setValue(priceText)
   setBool(priceObj, "tinyFont", isLongPriceText)
 
-  let rankObj = obj.findObject("rankText")
+  local rankObj = obj.findObject("rankText")
   rankObj.setValue(unitRankText)
   setBool(rankObj, "tinyFont", isLongPriceText)
   setBool(rankObj, "locked", isLocked)
 
-  let classPlace = showInObj(obj, "classIconPlace", unitClassIcon != "")
+  local classPlace = showInObj(obj, "classIconPlace", unitClassIcon != "")
   if (unitClassIcon != "") {
-    let classObj = classPlace.findObject("classIcon")
+    local classObj = classPlace.findObject("classIcon")
     classObj.setValue(unitClassIcon)
     classObj.shopItemType = unitClass
   }
 
-  let hasMainButton = !isInactive && (mainButtonText != "" || mainButtonIcon != "")
-  let mainBtnObj = obj.findObject("mainActionButton")
+  local hasMainButton = !isInactive && (mainButtonText != "" || mainButtonIcon != "")
+  local mainBtnObj = obj.findObject("mainActionButton")
   setBool(mainBtnObj, "forceHide", !hasMainButton)
   if (hasMainButton) {
     mainBtnObj.text = mainButtonText
     showInObj(mainBtnObj, "mainActionIcon", mainButtonIcon != "")["background-image"] = mainButtonIcon
   }
 
-  let needDiscount = discount > 0
-  let discountObj = obj.findObject("unitDiscount")
+  local needDiscount = discount > 0
+  local discountObj = obj.findObject("unitDiscount")
   if (!needDiscount)
     discountObj.setValue("")
   else {
@@ -166,15 +166,15 @@ let function updateCardStatus(obj, id, statusTbl) {
     discountObj.tooltip = ::format(::loc("discount/buy/tooltip"), discount.tostring())
   }
 
-  let hasBonus = expMul > 1 || wpMul > 1
-  let bonusObj = showInObj(obj, "unitBonusMark", hasBonus)
+  local hasBonus = expMul > 1 || wpMul > 1
+  local bonusObj = showInObj(obj, "unitBonusMark", hasBonus)
   if (hasBonus) {
     bonusObj.bonusType = expMul > 1 && wpMul > 1 ? "wp_exp"
       : expMul > 1 ? "exp"
       : "wp"
     bonusObj["background-image"] = ::getBonusImage("item", ::max(expMul, wpMul), "air")
-    let locEnd = isGroup ? "/group/tooltip" : "/tooltip"
-    let tooltipArr = []
+    local locEnd = isGroup ? "/group/tooltip" : "/tooltip"
+    local tooltipArr = []
     if (expMul > 1)
       tooltipArr.append(::format(::loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
     if (wpMul > 1)
@@ -183,8 +183,8 @@ let function updateCardStatus(obj, id, statusTbl) {
   }
 }
 
-let function updateCellStatus(cell, statusTbl) {
-  let { isInactive = false, isVisible = true, tooltipId = "" } = statusTbl
+local function updateCellStatus(cell, statusTbl) {
+  local { isInactive = false, isVisible = true, tooltipId = "" } = statusTbl
   setBool(cell, "inactive", isInactive)
   cell.enable(isVisible && !isInactive)
   cell.show(isVisible)
@@ -193,21 +193,21 @@ let function updateCellStatus(cell, statusTbl) {
 
   if (::show_console_buttons)
     cell.tooltipId = tooltipId
-  let id = cell.holderId
-  let cardObj = cell.findObject(id)
+  local id = cell.holderId
+  local cardObj = cell.findObject(id)
   updateCardStatus(cardObj, id, statusTbl)
 }
 
-let function updateCellTimedStatusImpl(cell, timedTbl) {
-  let { rentProgress = -1 } = timedTbl
+local function updateCellTimedStatusImpl(cell, timedTbl) {
+  local { rentProgress = -1 } = timedTbl
 
-  let rentIcon = showInObj(cell, "rentIcon", rentProgress >= 0)
+  local rentIcon = showInObj(cell, "rentIcon", rentProgress >= 0)
   if (rentProgress >= 0)
     updateSector1InObj(rentIcon, "rentProgress", 360 - ::round(360.0 * rentProgress).tointeger())
 }
 
-let getUnitFixedParams = function(unit, params) {
-  let { tooltipParams = {} } = params
+local getUnitFixedParams = function(unit, params) {
+  local { tooltipParams = {} } = params
   return {
     unitName            = unit.name
     unitImage           = ::image_for_air(unit)
@@ -222,17 +222,17 @@ let getUnitFixedParams = function(unit, params) {
   }
 }
 
-let getUnitStatusTbl = function(unit, params) {
-  let { shopResearchMode = false, forceNotInResearch = false, mainActionText = "",
+local getUnitStatusTbl = function(unit, params) {
+  local { shopResearchMode = false, forceNotInResearch = false, mainActionText = "",
     showBR = false, getEdiffFunc = ::get_current_ediff
   } = params
 
-  let isOwn           = unit.isBought()
-  let isUsable        = ::isUnitUsable(unit)
-  let isSpecial       = ::isUnitSpecial(unit)
-  let bitStatus       = unitStatus.getBitStatus(unit, params)
+  local isOwn           = unit.isBought()
+  local isUsable        = ::isUnitUsable(unit)
+  local isSpecial       = ::isUnitSpecial(unit)
+  local bitStatus       = unitStatus.getBitStatus(unit, params)
 
-  let res = {
+  local res = {
     shopStatus          = getUnitItemStatusText(bitStatus, false)
     unitRankText        = ::get_unit_rank_text(unit, null, showBR, getEdiffFunc())
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
@@ -261,25 +261,25 @@ let getUnitStatusTbl = function(unit, params) {
   return res
 }
 
-let function getUnitResearchStatusTbl(unit, params) {
+local function getUnitResearchStatusTbl(unit, params) {
   if (unit.isBought() || !::canResearchUnit(unit))
     return {}
-  let unitReqExp = ::getUnitReqExp(unit)
+  local unitReqExp = ::getUnitReqExp(unit)
   if (unitReqExp <= 0)
     return {}
 
-  let { forceNotInResearch = false, flushExp = 0 } = params
+  local { forceNotInResearch = false, flushExp = 0 } = params
 
-  let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
-  let isSquadronVehicle = unit.isSquadronVehicle()
-  let unitCurExp = ::getUnitExp(unit)
-  let diffExp = isSquadronVehicle ? ::min(::clan_get_exp(), unitReqExp - unitCurExp) : 0
-  let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
+  local isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
+  local isSquadronVehicle = unit.isSquadronVehicle()
+  local unitCurExp = ::getUnitExp(unit)
+  local diffExp = isSquadronVehicle ? ::min(::clan_get_exp(), unitReqExp - unitCurExp) : 0
+  local isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
   if (isLockedSquadronVehicle && unitCurExp <= 0)
     return {}
 
-  let unitNewExp = unitCurExp + (isVehicleInResearch ? diffExp : 0)
-  let isFull = isSquadronVehicle ? diffExp > 0 && unitNewExp >= unitReqExp
+  local unitNewExp = unitCurExp + (isVehicleInResearch ? diffExp : 0)
+  local isFull = isSquadronVehicle ? diffExp > 0 && unitNewExp >= unitReqExp
     : unitCurExp + flushExp >= unitReqExp
 
   return {
@@ -295,8 +295,8 @@ let function getUnitResearchStatusTbl(unit, params) {
   }
 }
 
-let function getUnitTimedStatusTbl(unit) {
-  let isRented = unit.isRented()
+local function getUnitTimedStatusTbl(unit) {
+  local isRented = unit.isRented()
   return {
     rentProgress = isRented
       ? unit.getRentTimeleft().tofloat() / (::rented_units_get_last_max_full_rent_time(unit.name) || -1)
@@ -305,13 +305,13 @@ let function getUnitTimedStatusTbl(unit) {
   }
 }
 
-let function getFakeUnitStatusTbl(unit, params) {
-  let { showBR = false, getEdiffFunc = ::get_current_ediff } = params
+local function getFakeUnitStatusTbl(unit, params) {
+  local { showBR = false, getEdiffFunc = ::get_current_ediff } = params
 
-  let nameForLoc = unit?.isReqForFakeUnit ? ::split(unit.name, "_")?[0] : unit.name
-  let { esUnitType } = unitTypes.getByName(unit.name, false)
-  let isFakeAirRankOpen = ::get_units_count_at_rank(unit?.rank, esUnitType, unit?.country, true)
-  let bitStatus = unit?.isReqForFakeUnit ? bit_unit_status.disabled
+  local nameForLoc = unit?.isReqForFakeUnit ? ::split(unit.name, "_")?[0] : unit.name
+  local { esUnitType } = unitTypes.getByName(unit.name, false)
+  local isFakeAirRankOpen = ::get_units_count_at_rank(unit?.rank, esUnitType, unit?.country, true)
+  local bitStatus = unit?.isReqForFakeUnit ? bit_unit_status.disabled
     : isFakeAirRankOpen ? bit_unit_status.owned
     : bit_unit_status.locked
   return {
@@ -325,11 +325,11 @@ let function getFakeUnitStatusTbl(unit, params) {
   }
 }
 
-let function getGroupStatusTbl(group, params) {
-  let { forceNotInResearch = false, shopResearchMode = false, tooltipParams = {},
+local function getGroupStatusTbl(group, params) {
+  local { forceNotInResearch = false, shopResearchMode = false, tooltipParams = {},
     showBR = false, getEdiffFunc = ::get_current_ediff
   } = params
-  let unitsList = group.airsGroup
+  local unitsList = group.airsGroup
 
   local isInactive         = false
   local isGroupUsable      = false
@@ -353,8 +353,8 @@ let function getGroupStatusTbl(group, params) {
 
   foreach(unit in unitsList)
   {
-    let isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
-    let isUsable = ::isUnitUsable(unit)
+    local isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
+    local isUsable = ::isUnitUsable(unit)
 
     if (isInResearch || (::canResearchUnit(unit) && !researchingUnit))
     {
@@ -379,12 +379,12 @@ let function getGroupStatusTbl(group, params) {
         rentedUnit = unit
     }
 
-    let curBitStatus = unitStatus.getBitStatus(unit)
+    local curBitStatus = unitStatus.getBitStatus(unit)
     bitStatus = bitStatus | curBitStatus
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()
     isElite = isElite && ::isUnitElite(unit)
-    let hasTalisman = ::isUnitSpecial(unit) || ::shop_is_modification_enabled(unit.name, "premExpMul")
+    local hasTalisman = ::isUnitSpecial(unit) || ::shop_is_modification_enabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman
     expMul = ::max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
@@ -405,14 +405,14 @@ let function getGroupStatusTbl(group, params) {
     isInactive = true
   }
 
-  let primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
+  local primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
     || firstUnboughtUnit || lastBoughtUnit || unitsList[0]
-  let needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
+  local needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
     || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
-  let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
+  local unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
 
-  let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
-  let unitImage = ::get_unit_preset_img(group.name)
+  local researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
+  local unitImage = ::get_unit_preset_img(group.name)
     ?? (::is_tencent_unit_image_reqired(primaryUnit)
         ? "".concat(::get_tomoe_unit_icon(group.name), (group.name.indexof("_group", 0) != null ? "" : "_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group"))
@@ -455,7 +455,7 @@ let function getGroupStatusTbl(group, params) {
   }.__update(researchStatusTbl)
 }
 
-let function getGroupTimedStatusTbl(group) {
+local function getGroupTimedStatusTbl(group) {
   local unit = null
   local rentLeft = 0
   foreach(u in group.airsGroup)
@@ -471,26 +471,26 @@ let function getGroupTimedStatusTbl(group) {
   }
 }
 
-let getStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? { isVisible = false }
+local getStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? { isVisible = false }
   : ::isUnitGroup(unitOrGroup) ? getGroupStatusTbl(unitOrGroup, params)
   : unitOrGroup?.isFakeUnit ? getFakeUnitStatusTbl(unitOrGroup, params)
   : getUnitStatusTbl(unitOrGroup, params)
       .__update(getUnitResearchStatusTbl(unitOrGroup, params))
       .__update(getUnitFixedParams(unitOrGroup, params))
 
-let getTimedStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? {}
+local getTimedStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? {}
   : ::isUnitGroup(unitOrGroup) ? getGroupTimedStatusTbl(unitOrGroup)
   : unitOrGroup?.isFakeUnit ? {}
   : getUnitTimedStatusTbl(unitOrGroup)
 
-let function updateCellTimedStatus(cell, getTimedStatus) {
+local function updateCellTimedStatus(cell, getTimedStatus) {
   local timedStatus = getTimedStatus()
   updateCellTimedStatusImpl(cell, timedStatus)
   if (!timedStatus?.needUpdateByTime)
     return
 
-  let holderId = cell.holderId
-  let cardObj = cell.findObject(holderId)
+  local holderId = cell.holderId
+  local cardObj = cell.findObject(holderId)
   SecondsUpdater(cardObj, function(obj, _) {
     if (holderId != cell.holderId) //remove timer if cell show other vehicle
       return true

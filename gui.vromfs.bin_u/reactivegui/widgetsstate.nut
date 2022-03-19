@@ -1,4 +1,4 @@
-let state = persist("widgetsState", @() {
+local state = persist("widgetsState", @() {
   widgets = Watched([])
 })
 

@@ -21,6 +21,9 @@ MultiSelect {
     enable:t='no'
     display:t='hide'
     <</show>>
+    <<#tooltip>>
+    tooltip:t='<<tooltip>>'
+    <</tooltip>>
 
     CheckBoxImg {}
     cardImg {
@@ -32,6 +35,7 @@ MultiSelect {
       <<#size>>
       type:t='<<size>>'
       <</size>>
+      <<@addImageProps>>
     }
     multiOptionText { text:t='<<text>>' }
   }

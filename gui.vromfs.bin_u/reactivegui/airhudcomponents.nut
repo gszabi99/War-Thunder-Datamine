@@ -1,15 +1,15 @@
 //script used for common script between Helicopter and aircraft
-let { bw, bh, rw, rh } = require("style/screenState.nut")
-let {IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible} = require("twsState.nut")
-let {mkRadar} = require("radarComponent.nut")
-let {IsRadarVisible, IsRadar2Visible, IsRadarHudVisible} = require("radarState.nut")
-let tws = require("tws.nut")
+local { bw, bh, rw, rh } = require("style/screenState.nut")
+local {IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible} = require("twsState.nut")
+local {mkRadar} = require("radarComponent.nut")
+local {IsRadarVisible, IsRadar2Visible, IsRadarHudVisible} = require("radarState.nut")
+local tws = require("tws.nut")
 
 
-let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
+local rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 
-let twsElement = @(colorWatch, posWatched, size) function() {
-  let res = { watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon, colorWatch, rw, bw, rh, bh] }
+local twsElement = @(colorWatch, posWatched, size) function() {
+  local res = { watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon, colorWatch, rw, bw, rh, bh] }
   if (IsTwsActivated.value || !CollapsedIcon.value) {
     return res.__update({
       children = (!IsMlwsLwsHudVisible.value && !IsRwrHudVisible.value) ? null :
@@ -33,12 +33,12 @@ let twsElement = @(colorWatch, posWatched, size) function() {
   return res
 }
 
-let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
+local radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 
 //radar posX is watched because it use safeAreaSize on aircraftHud
-let radarElement = @(colorWatch, posWatched, size) function() {
-  let radarVisible = IsRadarVisible.value || IsRadar2Visible.value
-  let res = { watch = [IsRadarVisible, IsRadar2Visible, colorWatch, rw, bw, rh, bh, CollapsedIcon, IsRadarHudVisible] }
+local radarElement = @(colorWatch, posWatched, size) function() {
+  local radarVisible = IsRadarVisible.value || IsRadar2Visible.value
+  local res = { watch = [IsRadarVisible, IsRadar2Visible, colorWatch, rw, bw, rh, bh, CollapsedIcon, IsRadarHudVisible] }
   if (radarVisible || !CollapsedIcon.value){
     return res.__update({
       children = mkRadar(posWatched, size, true, colorWatch)

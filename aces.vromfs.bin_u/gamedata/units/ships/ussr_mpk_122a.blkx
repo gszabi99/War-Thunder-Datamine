@@ -2371,12 +2371,6 @@
             "fireConeAngle": 1.0
           },
           {
-            "turretLongSalvo": true
-          },
-          {
-            "salvoRndK": 0.015
-          },
-          {
             "turret": {
               "head": "main_caliber_turret_01",
               "gun": "main_caliber_gun_01",
@@ -3465,18 +3459,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 90.0,
+      "waterMassVel": -50000.0,
+      "waterMassMult": 120.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 600000.0,
-      "additionalWaterShouldDiePercent": 0.35,
+      "additionalWaterDeathThreshold": 800000.0,
+      "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 36.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.25
+      "sideCenterOfMassOffsetPercent": 0.5
     }
   },
   {
@@ -3484,7 +3478,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.6,
+          "weight": 0.5,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3510,13 +3504,13 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.7,
+          "weight": 0.6,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.3
+                "critWaterLevel": 0.7
               }
             },
             {
@@ -3531,7 +3525,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.8,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {

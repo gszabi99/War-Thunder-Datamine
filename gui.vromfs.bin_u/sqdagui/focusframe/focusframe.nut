@@ -1,7 +1,7 @@
-let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
-let focusAnim = require("%sqDagui/focusFrame/bhvFocusFrameAnim.nut")
+local focusTarget = require("sqDagui/focusFrame/bhvFocusFrameTarget.nut")
+local focusAnim = require("sqDagui/focusFrame/bhvFocusFrameAnim.nut")
 
-let animObjList = []
+local animObjList = []
 
 local focusFrame = {
   isEnabled = false
@@ -40,7 +40,7 @@ local focusFrame = {
       if (!::check_obj(obj) || !obj.isVisible() || !obj.isEnabled())
         continue
 
-      let modalCounter = obj.getModalCounter()
+      local modalCounter = obj.getModalCounter()
       if (curObj && modalCounter > curModalCounter) //use last obj if same counter
         continue
 

@@ -1,11 +1,11 @@
-let { userstatUnlocks, userstatDescList, userstatStats, receiveUnlockRewards
-} = require("%scripts/userstat/userstat.nut")
-let { showRewardWnd, canGetRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
-let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+local { userstatUnlocks, userstatDescList, userstatStats, receiveUnlockRewards
+} = require("scripts/userstat/userstat.nut")
+local { showRewardWnd, canGetRewards } = require("scripts/userstat/userstatItemsRewards.nut")
+local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 
-let rewardsInProgress = Watched({})
+local rewardsInProgress = Watched({})
 
-let emptyProgress = {
+local emptyProgress = {
   stage = 0
   lastRewardedStage = 0
   current = 0
@@ -15,9 +15,9 @@ let emptyProgress = {
   isFinished = false //isCompleted && !hasReward
 }
 
-let unlockTables = ::Computed(function() {
-  let stats = userstatStats.value
-  let res = {}
+local unlockTables = ::Computed(function() {
+  local stats = userstatStats.value
+  local res = {}
   foreach(name, value in stats?.stats ?? {})
     res[name] <- true
   foreach(name, value in stats?.inactiveTables ?? {})
@@ -25,9 +25,9 @@ let unlockTables = ::Computed(function() {
   return res
 })
 
-let function calcUnlockProgress(progressData, unlockDesc) {
-  let res = clone emptyProgress
-  let stage = progressData?.stage ?? 0
+local function calcUnlockProgress(progressData, unlockDesc) {
+  local res = clone emptyProgress
+  local stage = progressData?.stage ?? 0
   res.stage = stage
   res.lastRewardedStage = progressData?.lastRewardedStage ?? 0
   res.hasReward = stage > res.lastRewardedStage
@@ -38,10 +38,10 @@ let function calcUnlockProgress(progressData, unlockDesc) {
     return res
   }
 
-  let stageToShow = min(stage, unlockDesc?.stages.len() ?? 0)
+  local stageToShow = min(stage, unlockDesc?.stages.len() ?? 0)
   res.required = (unlockDesc?.stages[stageToShow].progress || 1).tointeger()
   if (stage > 0) {
-    let isLastStageCompleted = (unlockDesc?.periodic != true) && (stage >= stageToShow)
+    local isLastStageCompleted = (unlockDesc?.periodic != true) && (stage >= stageToShow)
     res.isCompleted = isLastStageCompleted || res.hasReward
     res.isFinished = isLastStageCompleted && !res.hasReward
     res.current = res.required
@@ -49,12 +49,12 @@ let function calcUnlockProgress(progressData, unlockDesc) {
   return res
 }
 
-let personalUnlocksData = ::Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
+local personalUnlocksData = ::Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
 
-let allUnlocks = ::Computed(@() (userstatDescList.value?.unlocks ?? {})
+local allUnlocks = ::Computed(@() (userstatDescList.value?.unlocks ?? {})
   .map(function(u,name) {
-    let upd = {}
-    let progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
+    local upd = {}
+    local progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
     if ((u?.personal ?? "") != "")
       upd.personalData <- personalUnlocksData.value?[u.name] ?? {}
     if ("stages" in u)
@@ -62,7 +62,7 @@ let allUnlocks = ::Computed(@() (userstatDescList.value?.unlocks ?? {})
     return u.__merge(upd, progress)
   }))
 
-let activeUnlocks = ::Computed(@() allUnlocks.value.filter(function(ud) {
+local activeUnlocks = ::Computed(@() allUnlocks.value.filter(function(ud) {
   if (!(unlockTables.value?[ud?.table] ?? false))
     return false
   if ("personalData" in ud)
@@ -70,17 +70,17 @@ let activeUnlocks = ::Computed(@() allUnlocks.value.filter(function(ud) {
   return true
 }))
 
-let unlockProgress = ::Computed(function() {
-  let progressList = userstatUnlocks.value?.unlocks ?? {}
-  let unlockDataList = allUnlocks.value
-  let allKeys = progressList.__merge(unlockDataList) //use only keys from it
+local unlockProgress = ::Computed(function() {
+  local progressList = userstatUnlocks.value?.unlocks ?? {}
+  local unlockDataList = allUnlocks.value
+  local allKeys = progressList.__merge(unlockDataList) //use only keys from it
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
-let servUnlockProgress = ::Computed(@() userstatUnlocks.value?.unlocks ?? {})
+local servUnlockProgress = ::Computed(@() userstatUnlocks.value?.unlocks ?? {})
 
-let function clampStage(unlockDesc, stage) {
-  let lastStage = unlockDesc?.stages.len() ?? 0
+local function clampStage(unlockDesc, stage) {
+  local lastStage = unlockDesc?.stages.len() ?? 0
   if (lastStage <= 0 || !(unlockDesc?.periodic ?? false) || stage < lastStage)
     return stage
 
@@ -90,20 +90,20 @@ let function clampStage(unlockDesc, stage) {
   return loopStage + (stage - loopStage) % (lastStage - loopStage)
 }
 
-let getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unlockDesc, stage)]
+local getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unlockDesc, stage)]
 
-let RECEIVE_REWARD_DEFAULT_OPTIONS = {
+local RECEIVE_REWARD_DEFAULT_OPTIONS = {
   showProgressBox = true
 }
 
-let function sendReceiveRewardRequest(params)
+local function sendReceiveRewardRequest(params)
 {
-  let { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
-  let receiveRewardsCallback = function(res) {
+  local { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
+  local receiveRewardsCallback = function(res) {
     ::dagor.debug($"receiveRewards {unlockName} results: {res}")
-    rewardsInProgress.mutate(@(val) delete val[unlockName])
+    delete rewardsInProgress[unlockName]
   }
-  rewardsInProgress.mutate(@(val) val[unlockName] <- stage)
+  rewardsInProgress[unlockName] <- stage
   receiveUnlockRewards(unlockName, stage, function(res) {
     receiveRewardsCallback("success")
     if (needShowRewardWnd)
@@ -115,10 +115,10 @@ local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_O
   if (!unlockName || unlockName in rewardsInProgress.value)
     return
   taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(taskOptions)
-  let progressData = servUnlockProgress.value?[unlockName]
-  let stage = progressData?.stage ?? 0
-  let lastReward = progressData?.lastRewardedStage ?? 0
-  let params = {
+  local progressData = servUnlockProgress.value?[unlockName]
+  local stage = progressData?.stage ?? 0
+  local lastReward = progressData?.lastRewardedStage ?? 0
+  local params = {
     stage = stage
     rewards = getStageByIndex(activeUnlocks.value?[unlockName], stage - 1)?.rewards
     unlockName = unlockName
@@ -130,19 +130,19 @@ local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_O
     sendReceiveRewardRequest(params)
 }
 
-let function getRewards(unlockDesc) {
-  let res = {}
+local function getRewards(unlockDesc) {
+  local res = {}
   foreach(stageData in unlockDesc?.stages ?? [])
     foreach(idStr, amount in stageData?.rewards ?? {})
       res[idStr.tointeger()] <- true
   return res
 }
 
-let unlocksByReward = keepref(::Computed(
+local unlocksByReward = keepref(::Computed(
   function() {
-    let res = {}
+    local res = {}
     foreach(unlockDesc in activeUnlocks.value) {
-      let rewards = getRewards(unlockDesc)
+      local rewards = getRewards(unlockDesc)
       foreach(itemdefid, _ in rewards) {
         if (!(itemdefid in res))
           res[itemdefid] <- []
@@ -152,8 +152,8 @@ let unlocksByReward = keepref(::Computed(
     return res
   }))
 
-let function requestRewardItems(unlocksByRewardValue) {
-  let itemsToRequest = unlocksByRewardValue.keys()
+local function requestRewardItems(unlocksByRewardValue) {
+  local itemsToRequest = unlocksByRewardValue.keys()
   if (itemsToRequest.len() > 0)   //request items for rewards
     inventoryClient.requestItemdefsByIds(itemsToRequest)
 }
@@ -161,16 +161,16 @@ let function requestRewardItems(unlocksByRewardValue) {
 unlocksByReward.subscribe(requestRewardItems)
 requestRewardItems(unlocksByReward.value)
 
-let function getUnlockReward(userstatUnlock) {
-  let rewardMarkUp = { rewardText = "", itemMarkUp = ""}
-  let { lastRewardedStage = 0 } = userstatUnlock
-  let stage = getStageByIndex(userstatUnlock, lastRewardedStage)
+local function getUnlockReward(userstatUnlock) {
+  local rewardMarkUp = { rewardText = "", itemMarkUp = ""}
+  local { lastRewardedStage = 0 } = userstatUnlock
+  local stage = getStageByIndex(userstatUnlock, lastRewardedStage)
   if (stage == null)
     return rewardMarkUp
 
-  let itemId = stage?.rewards.keys()[0]
+  local itemId = stage?.rewards.keys()[0]
   if (itemId != null) {
-    let item = ::ItemsManager.findItemById(::to_integer_safe(itemId, itemId, false))
+    local item = ::ItemsManager.findItemById(::to_integer_safe(itemId, itemId, false))
     rewardMarkUp.itemMarkUp = item?.getNameMarkup(stage.rewards[itemId]) ?? ""
   }
 
@@ -181,12 +181,12 @@ let function getUnlockReward(userstatUnlock) {
   return rewardMarkUp
 }
 
-let function getUnlockRewardMarkUp(userstatUnlock) {
-  let rewardMarkUp = getUnlockReward(userstatUnlock)
+local function getUnlockRewardMarkUp(userstatUnlock) {
+  local rewardMarkUp = getUnlockReward(userstatUnlock)
   if (rewardMarkUp.rewardText == "" && rewardMarkUp.itemMarkUp == "")
     return {}
 
-  let rewardLoc = (userstatUnlock?.isCompleted ?? false) ? ::loc("rewardReceived") : ::loc("reward")
+  local rewardLoc = (userstatUnlock?.isCompleted ?? false) ? ::loc("rewardReceived") : ::loc("reward")
   rewardMarkUp.rewardText <- $"{rewardLoc}{::loc("ui/colon")}{rewardMarkUp.rewardText}"
   return rewardMarkUp
 }

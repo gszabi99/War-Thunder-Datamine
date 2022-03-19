@@ -1,4 +1,4 @@
-let LoginProcess = require("loginProcess.nut")
+local LoginProcess = require("loginProcess.nut")
 
 global enum LOGIN_STATE //bit mask
 {
@@ -87,8 +87,8 @@ g_login.setState <- function setState(newState)
   if (curState == newState)
     return
 
-  let wasAuthorized = isAuthorized()
-  let wasLoggedIn = isLoggedIn()
+  local wasAuthorized = isAuthorized()
+  local wasLoggedIn = isLoggedIn()
 
   curState = newState
 
@@ -138,7 +138,7 @@ g_login.getStateDebugStr <- function getStateDebugStr(state = null)
 
 g_login.debugState <- function debugState(shouldShowNotSetBits = false)
 {
-  let debugLog = ::dlog // warning disable: -forbidden-function
+  local debugLog = ::dlog // warning disable: -forbidden-function
   if (shouldShowNotSetBits)
     return debugLog($"not set loginState = {getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~curState)}")
   return debugLog($"loginState = {getStateDebugStr()}")

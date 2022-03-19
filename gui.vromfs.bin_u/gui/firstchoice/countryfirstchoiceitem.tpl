@@ -23,10 +23,9 @@ div {
     <<#lockText>>
     enable:t='no';
     img {
-      background-image:t='#ui/gameuiskin#locked.svg';
+      background-image:t='#ui/gameuiskin#locked';
       position:t='absolute';
       size:t='@mIco, @mIco';
-      background-svg-size:t='@mIco, @mIco';
     }
     textAreaCentered {
       width:t='pw - 2@countryChoiceInterval'

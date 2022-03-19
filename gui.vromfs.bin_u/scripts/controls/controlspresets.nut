@@ -1,5 +1,5 @@
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 /**
  * Functions to work with controls presets
  */
@@ -31,16 +31,16 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
    */
   function isNewerControlsPresetVersionAvailable()
   {
-    let currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return false
 
-    let controlsPresetsList = getControlsPresetsList()
-    let highestDisplayedVersion = getHighestDisplayedPresetVersion(currentPreset.name)
+    local controlsPresetsList = getControlsPresetsList()
+    local highestDisplayedVersion = getHighestDisplayedPresetVersion(currentPreset.name)
 
     foreach (value in controlsPresetsList)
     {
-      let preset = parsePresetName(value)
+      local preset = parsePresetName(value)
       if (preset.name != currentPreset.name)
         continue
 
@@ -63,11 +63,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function getHighestVersionPreset(preset)
   {
-    let controlsPresetsList = getControlsPresetsList()
+    local controlsPresetsList = getControlsPresetsList()
     local highestVersionPreset = preset
     foreach (value in controlsPresetsList)
     {
-      let presetInList = parsePresetName(value)
+      local presetInList = parsePresetName(value)
 
       if (presetInList.name != preset.name)
         continue
@@ -81,7 +81,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function setHighestVersionOfCurrentPreset()
   {
-    let currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
 
@@ -91,11 +91,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function rejectHighestVersionOfCurrentPreset()
   {
-    let currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
 
-    let preset = getHighestVersionPreset(currentPreset)
+    local preset = getHighestVersionPreset(currentPreset)
     setHighestDisplayedPresetVersion(preset.name, preset.version)
   }
 
@@ -104,12 +104,12 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
    */
   function getNewerVersions(inPreset)
   {
-    let result = []
-    let controlsPresetsList = getControlsPresetsList()
+    local result = []
+    local controlsPresetsList = getControlsPresetsList()
 
     foreach (value in controlsPresetsList)
     {
-      let preset = parsePresetName(value)
+      local preset = parsePresetName(value)
       if (preset.name != inPreset.name)
         continue
 
@@ -125,12 +125,12 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function getPatchNoteTextForCurrentPreset()
   {
     local result = ""
-    let currentPreset = getCurrentPresetInfo()
-    let versions = getNewerVersions(currentPreset)
+    local currentPreset = getCurrentPresetInfo()
+    local versions = getNewerVersions(currentPreset)
 
     foreach (version in versions)
     {
-      let patchNote = ::loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
+      local patchNote = ::loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
       if (patchNote.len())
         result += (result.len() ? "\n" : "") + patchNote
     }
@@ -151,7 +151,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
    */
   function parsePresetFileName(presetFileName)
   {
-    let preset = clone nullPreset
+    local preset = clone nullPreset
 
     if (presetFileName.len() < stdPresetPathPrefix.len())
       return preset
@@ -170,7 +170,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
    */
   function parsePresetName(presetName)
   {
-    let preset = clone nullPreset
+    local preset = clone nullPreset
 
     if (presetName == "")
       return preset
@@ -193,15 +193,15 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     if (presetsListCached == null)
     {
-      let blk = ::DataBlock()
+      local blk = ::DataBlock()
       blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
       presetsListCached = (blk?[::target_platform] != null)
         ? blk[::target_platform] % "preset"
         : blk % "preset"
     }
-    let result = (!isPlatformSony && !isPlatformXboxOne) ? ["custom"] : []
+    local result = (!isPlatformSony && !isPlatformXboxOne) ? ["custom"] : []
     result.extend(presetsListCached)
-    let curPresetInfo = getCurrentPresetInfo()
+    local curPresetInfo = getCurrentPresetInfo()
     if (curPresetInfo.id == "" || curPresetInfo.name == "empty"
       || presetsListCached.indexof(curPresetInfo.id) != null)
         return result
@@ -225,10 +225,10 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     preset.name = preset.id
     preset.version = 0
 
-    let versionMatch = versionRegExp.search(preset.name)
+    local versionMatch = versionRegExp.search(preset.name)
     if (versionMatch)
     {
-      let versionSubstring = preset.name.slice(versionMatch.begin)
+      local versionSubstring = preset.name.slice(versionMatch.begin)
       preset.version = versionSubstring.slice(versionDigits.search(versionSubstring).begin).tointeger()
       preset.name = preset.name.slice(0, versionMatch.begin)
     }

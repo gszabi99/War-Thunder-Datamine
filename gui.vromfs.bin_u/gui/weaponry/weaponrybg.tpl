@@ -68,8 +68,7 @@ modBlockHeaderRow {
         size:t='@cIco, @cIco'
         pos:t='1@modCellWidth-w, 0.5ph-0.5h'
         position:t='absolute'
-        background-image:t='#ui/gameuiskin#new_icon.svg'
-        background-svg-size:t='@cIco, @cIco'
+        background-image:t='#ui/gameuiskin#new_icon'
         bgcolor:t='#FFFFFF'
       }
       <</haveWarning>>

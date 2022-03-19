@@ -1,12 +1,12 @@
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
-let getClanActions = function(clanId)
+local getClanActions = function(clanId)
 {
   if (!::has_feature("Clans"))
     return []
 
-  let myClanId = ::clan_get_my_clan_id()
+  local myClanId = ::clan_get_my_clan_id()
 
   return [
     {
@@ -27,19 +27,19 @@ let getClanActions = function(clanId)
   ]
 }
 
-let getRequestActions = function(clanId, playerUid, playerName = "", handler = null)
+local getRequestActions = function(clanId, playerUid, playerName = "", handler = null)
 {
   if (!playerUid)
     return []
 
-  let myClanRights = ::g_clans.getMyClanRights()
-  let isClanAdmin = ::clan_get_admin_editor_mode()
+  local myClanRights = ::g_clans.getMyClanRights()
+  local isClanAdmin = ::clan_get_admin_editor_mode()
 
-  let isBlock = ::isPlayerInContacts(playerUid, ::EPL_BLOCKLIST)
-  let contact = ::getContact(playerUid, playerName)
-  let name = contact?.name ?? playerName
-  let canChat = contact?.canChat() ?? isChatEnableWithPlayer(name)
-  let isProfileMuted = contact?.isMuted() ?? false
+  local isBlock = ::isPlayerInContacts(playerUid, ::EPL_BLOCKLIST)
+  local contact = ::getContact(playerUid, playerName)
+  local name = contact?.name ?? playerName
+  local canChat = contact?.canChat() ?? isChatEnableWithPlayer(name)
+  local isProfileMuted = contact?.isMuted() ?? false
 
   return [
     {

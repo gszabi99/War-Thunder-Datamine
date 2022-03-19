@@ -1,11 +1,11 @@
 const CHOSEN_RESEARCH_SAVE_ID = "has_chosen_research_of_squadron"
 
-let isAllVehiclesResearched = @() u.search(::all_units,
+local isAllVehiclesResearched = @() u.search(::all_units,
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && !::isUnitResearched(unit)
 ) == null
 
 local _hasChosenResearch = null
-let saveResearchChosen = function(value) {
+local saveResearchChosen = function(value) {
   if (_hasChosenResearch == value)
     return
 
@@ -13,7 +13,7 @@ let saveResearchChosen = function(value) {
   ::save_local_account_settings(CHOSEN_RESEARCH_SAVE_ID, _hasChosenResearch)
 }
 
-let hasChosenResearch = function() {
+local hasChosenResearch = function() {
   if (_hasChosenResearch != null)
     return _hasChosenResearch
 

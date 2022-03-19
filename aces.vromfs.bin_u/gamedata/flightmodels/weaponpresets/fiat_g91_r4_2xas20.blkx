@@ -77,25 +77,35 @@
         "node": "bomb_pylon_l"
       },
       {
-        "node": "bomb_pylon_r"
-      },
-      {
-        "node": "mgun1"
-      },
-      {
-        "node": "mgun2"
+        "node": "bomb_pylon_l"
       }
     ]
   },
   {
-    "hideDmParts": [
-      {
-        "node": "mgun1_dm"
-      },
-      {
-        "node": "mgun2_dm"
-      }
-    ]
+    "Weapon": {
+      "trigger": "machine gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare1",
+      "flash": "flare1",
+      "dm": "mgun1_dm",
+      "bullets": 300,
+      "light": true,
+      "spread": 1.35,
+      "traceOffset": 1
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "machine gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare2",
+      "flash": "flare2",
+      "dm": "mgun2_dm",
+      "bullets": 300,
+      "light": true,
+      "spread": 1.35,
+      "traceOffset": 1
+    }
   },
   {
     "Weapon": {

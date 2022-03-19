@@ -1,5 +1,3 @@
-let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
-
 ::trophyReward <- {
   maxRewardsShow = 5
 
@@ -39,12 +37,12 @@ trophyReward.processUserlogData <- function processUserlogData(configsArray = []
   if (configsArray.len() == 0)
     return []
 
-  let tempBuffer = {}
+  local tempBuffer = {}
   foreach(idx, config in configsArray)
   {
-    let rType = ::trophyReward.getType(config)
-    let typeVal = config?[rType]
-    let count = config?.count ?? 1
+    local rType = ::trophyReward.getType(config)
+    local typeVal = config?[rType]
+    local count = config?.count ?? 1
 
     local checkBuffer = typeVal
     if (typeof typeVal != "string")
@@ -73,10 +71,10 @@ trophyReward.processUserlogData <- function processUserlogData(configsArray = []
       ::broadcastEvent("AttachableReceived", { id = config?.resource })
   }
 
-  let res = []
+  local res = []
   foreach(block in tempBuffer)
   {
-    let result = clone configsArray[block.arrayIdx]
+    local result = clone configsArray[block.arrayIdx]
     result.count <- block.count
 
     res.append(result)
@@ -91,15 +89,15 @@ trophyReward.rewardsSortComparator <- function rewardsSortComparator(a, b)
   if (!a || !b)
     return b <=> a
 
-  let typeA = ::trophyReward.getType(a)
-  let typeB = ::trophyReward.getType(b)
+  local typeA = ::trophyReward.getType(a)
+  local typeB = ::trophyReward.getType(b)
   if (typeA != typeB)
     return typeA <=> typeB
 
   if (typeA == "item")
   {
-    let itemA = ::ItemsManager.findItemById(a.item)
-    let itemB = ::ItemsManager.findItemById(b.item)
+    local itemA = ::ItemsManager.findItemById(a.item)
+    local itemB = ::ItemsManager.findItemById(b.item)
     if (itemA && itemB)
       return ::ItemsManager.getItemsSortComparator()(itemA, itemB)
   }
@@ -110,25 +108,25 @@ trophyReward.rewardsSortComparator <- function rewardsSortComparator(a, b)
 trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyImage = true, layerCfgName = "item_place_single", imageAsItem = false)
 {
   local image = ""
-  let rewardType = ::trophyReward.getType(config)
+  local rewardType = ::trophyReward.getType(config)
   if (rewardType == "")
     return ""
 
-  let rewardValue = config[rewardType] // warning disable: -access-potentially-nulled
+  local rewardValue = config[rewardType] // warning disable: -access-potentially-nulled
   local style = "reward_" + rewardType
 
   if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit")
-    image = TrophyMultiAward(::DataBlockAdapter(config)).getRewardImage()
+    image = ::TrophyMultiAward(::DataBlockAdapter(config)).getRewardImage()
   else if (::trophyReward.isRewardItem(rewardType))
   {
-    let item = ::ItemsManager.findItemById(rewardValue)
+    local item = ::ItemsManager.findItemById(rewardValue)
     if (!item)
       return ""
 
     if (onlyImage)
       return item.getIcon()
 
-    image = ::handyman.renderCached(("%gui/items/item"), {
+    image = ::handyman.renderCached(("gui/items/item"), {
       items = item.getViewData({
             enableBackground = config?.enableBackground ?? false,
             showAction = false,
@@ -147,7 +145,7 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   {
     if (config.resourceType)
     {
-      let visCfg = getDecoratorVisualConfig(config)
+      local visCfg = getDecoratorVisualConfig(config)
       style = visCfg.style
       image = visCfg.image
     }
@@ -169,25 +167,25 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   if (!isRewardMultiAward(config) && !onlyImage)
     image += getMoneyLayer(config)
 
-  let resultImage = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg(layerCfgName), image)
+  local resultImage = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg(layerCfgName), image)
   if (!imageAsItem)
     return resultImage
 
-  return ::handyman.renderCached(("%gui/items/item"), {items = [{layered_image = resultImage}]})
+  return ::handyman.renderCached(("gui/items/item"), {items = [{layered_image = resultImage}]})
 }
 
 trophyReward.getDecoratorVisualConfig <- function getDecoratorVisualConfig(config)
 {
-  let res = {
+  local res = {
     style = ""
     image = ""
   }
 
-  let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
+  local decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
   if (decoratorType)
   {
-    let decorator = ::g_decorator.getDecorator(config?.resource, decoratorType)
-    let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
+    local decorator = ::g_decorator.getDecorator(config?.resource, decoratorType)
+    local cfg = clone ::LayersIcon.findLayerCfg("item_decal")
     cfg.img <- decoratorType.getImage(decorator)
     if (cfg.img != "")
       res.image = ::LayersIcon.genDataFromLayer(cfg)
@@ -205,11 +203,11 @@ trophyReward.getDecoratorVisualConfig <- function getDecoratorVisualConfig(confi
 
 trophyReward.getMoneyLayer <- function getMoneyLayer(config)
 {
-  let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+  local currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
   if (!currencyCfg)
     return  ""
 
-  let layerCfg = ::LayersIcon.findLayerCfg("roulette_money_text")
+  local layerCfg = ::LayersIcon.findLayerCfg("roulette_money_text")
   if (!layerCfg)
     return ""
 
@@ -238,11 +236,11 @@ trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon()
 
 trophyReward.getRestRewardsNumLayer <- function getRestRewardsNumLayer(configsArray, maxNum)
 {
-  let restRewards = configsArray.len() - maxNum
+  local restRewards = configsArray.len() - maxNum
   if (restRewards <= 0)
     return ""
 
-  let layer = ::LayersIcon.findLayerCfg("item_rest_rewards_text")
+  local layer = ::LayersIcon.findLayerCfg("item_rest_rewards_text")
   if (!layer)
     return ""
 
@@ -280,11 +278,11 @@ trophyReward.getType <- function getType(config)
 
 trophyReward.getName <- function getName(config)
 {
-  let rewardType = ::trophyReward.getType(config)
+  local rewardType = ::trophyReward.getType(config)
   if (!::trophyReward.isRewardItem(rewardType))
     return ""
 
-  let item = ::ItemsManager.findItemById(config[rewardType])
+  local item = ::ItemsManager.findItemById(config[rewardType])
   if (item)
     return item.getName()
 
@@ -293,11 +291,11 @@ trophyReward.getName <- function getName(config)
 
 trophyReward.getDecription <- function getDecription(config, isFull = false)
 {
-  let rewardType = ::trophyReward.getType(config)
+  local rewardType = ::trophyReward.getType(config)
   if (!::trophyReward.isRewardItem(rewardType))
     return ::trophyReward.getRewardText(config, isFull)
 
-  let item = ::ItemsManager.findItemById(config[rewardType])
+  local item = ::ItemsManager.findItemById(config[rewardType])
   if (item)
     return item.getDescription()
 
@@ -311,12 +309,12 @@ trophyReward.getRewardText <- function getRewardText(config, isFull = false, col
 
 trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray)
 {
-  let result = {}
+  local result = {}
   local currencies = {}
 
   foreach(config in configsArray)
   {
-    let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+    local currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
     if (currencyCfg)
     {
       if (!(currencyCfg.type in currencies))
@@ -327,14 +325,14 @@ trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray)
     }
 
     local rewType = ::trophyReward.getType(config)
-    let rewData = {
+    local rewData = {
       type = rewType
       subType = null
       num = 0
     }
     if (rewType == "item")
     {
-      let item = ::ItemsManager.findItemById(config[rewType])
+      local item = ::ItemsManager.findItemById(config[rewType])
       if (item)
       {
         rewData.subType <- item.iType
@@ -362,7 +360,7 @@ trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray)
   {
     if (data.type == "item")
     {
-      let item = ::getTblValue("item", data)
+      local item = ::getTblValue("item", data)
       if (item)
         returnData.append(item.getTypeName() + ::loc("ui/colon") + data.num)
     }
@@ -392,13 +390,13 @@ trophyReward.showInResults <- function showInResults(rewardType)
 trophyReward.getRewardList <- function getRewardList(config)
 {
   if (isRewardMultiAward(config))
-    return TrophyMultiAward(::DataBlockAdapter(config)).getResultPrizesList()
+    return ::TrophyMultiAward(::DataBlockAdapter(config)).getResultPrizesList()
 
-  let prizes = []
+  local prizes = []
   foreach (rewardType in rewardTypes)
     if (rewardType in config && showInResults(rewardType))
     {
-      let prize = {
+      local prize = {
         [rewardType] = config[rewardType]
         count = ::getTblValue("count", config)
       }
@@ -427,7 +425,7 @@ trophyReward.getRewardsListViewData <- function getRewardsListViewData(config, p
 
   if (singleReward != null && ::getTblValue("multiAwardHeader", params)
       && isRewardMultiAward(singleReward))
-    params.header <- TrophyMultiAward(::DataBlockAdapter(singleReward)).getName()
+    params.header <- ::TrophyMultiAward(::DataBlockAdapter(singleReward)).getName()
 
   params.receivedPrizes <- true
 

@@ -1,11 +1,11 @@
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 
-::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler
+class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/loginBoxSimple.blk"
+  sceneBlkName = "gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
 
@@ -17,7 +17,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
     showTitleLogo(scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    let buttonsView = [
+    local buttonsView = [
       {
         id = "authorization_button"
         text = "#HUD_PRESS_A_CNT"
@@ -40,7 +40,7 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
     local data = ""
     foreach (view in buttonsView)
-      data += ::handyman.renderCached("%gui/commonParts/button", view)
+      data += ::handyman.renderCached("gui/commonParts/button", view)
 
     guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
     scene.findObject("user_notify_text").setValue(::loc("xbox/reqInstantConnection"))

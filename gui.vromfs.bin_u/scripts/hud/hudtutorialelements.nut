@@ -1,6 +1,6 @@
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
+local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local hudElementsAabb = require("scripts/hud/hudElementsAabb.nut")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
@@ -22,7 +22,7 @@ let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
 
 g_hud_tutorial_elements.init <- function init(_nest)
 {
-  let blkPath = getCurBlkName()
+  local blkPath = getCurBlkName()
   active = !!blkPath
 
   if (!::checkObj(_nest))
@@ -39,7 +39,7 @@ g_hud_tutorial_elements.init <- function init(_nest)
 
   if (::u.isEmpty(blkOptFromPath(blkPath)))
   {
-    let msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
+    local msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
     dagor.debug(msg)
     ::dagor.assertf(false, msg)
     return
@@ -47,12 +47,12 @@ g_hud_tutorial_elements.init <- function init(_nest)
 
   dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
 
-  let guiScene = scene.getScene()
+  local guiScene = scene.getScene()
   guiScene.replaceContent(scene, blkPath, this)
 
   for (local i = 0; i < scene.childrenCount(); i++)
   {
-    let childObj = scene.getChild(i)
+    local childObj = scene.getChild(i)
     if (isDebugMode && childObj?.id)
       updateVisibleObject(childObj.id, childObj.isVisible(), -1)
     else
@@ -85,11 +85,11 @@ g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
 
 g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
 {
-  let misBlk = ::DataBlock()
+  local misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
 
-  let fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
-  let res = fullMisBlk  && get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
+  local fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
+  local res = fullMisBlk  && get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
   return ::u.isString(res) ? res : null
 }
 
@@ -131,7 +131,7 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
 
 g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
 {
-  let curTimer = ::getTblValue(objId, timers)
+  local curTimer = ::getTblValue(objId, timers)
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime())
   {
     if (curTimer)
@@ -142,7 +142,7 @@ g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
     return
   }
 
-  let timeLeft = htObj.getTimeLeft()
+  local timeLeft = htObj.getTimeLeft()
   if (curTimer && curTimer.isValid())
   {
     curTimer.setDelay(timeLeft)
@@ -164,11 +164,11 @@ g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
   if (!active || !::checkObj(scene))
     return
 
-  let objId   = ::getTblValue("element", data, null)
-  let show  = ::getTblValue("show", data, false)
-  let timeSec = ::getTblValue("time", data, 0)
+  local objId   = ::getTblValue("element", data, null)
+  local show  = ::getTblValue("show", data, false)
+  local timeSec = ::getTblValue("time", data, 0)
 
-  let htObj = updateVisibleObject(objId, show, timeSec)
+  local htObj = updateVisibleObject(objId, show, timeSec)
   updateObjTimer(objId, htObj)
 }
 
@@ -179,10 +179,10 @@ g_hud_tutorial_elements.getAABB <- function getAABB(name)
 
 g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 {
-  let invalidObjects = []
+  local invalidObjects = []
   foreach(id, htObj in visibleHTObjects)
   {
-    let isVisible = htObj.isVisibleByTime()
+    local isVisible = htObj.isVisibleByTime()
     if (isVisible)
       if (!htObj.isValid())
         htObj.refreshObj(id, scene)
@@ -195,7 +195,7 @@ g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 
   foreach(id in invalidObjects)
   {
-    let htObj = visibleHTObjects[id]
+    local htObj = visibleHTObjects[id]
     delete visibleHTObjects[id]
     updateObjTimer(id, htObj)
   }
@@ -233,7 +233,7 @@ g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
 {
   if (!isDebugMode)
     return true
-  let modified = ::get_file_modify_time_sec(debugBlkName)
+  local modified = ::get_file_modify_time_sec(debugBlkName)
   if (modified < 0)
     return
 

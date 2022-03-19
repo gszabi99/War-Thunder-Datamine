@@ -1,4 +1,4 @@
-let function getReqAirPosInArray(reqName, arr)
+local function getReqAirPosInArray(reqName, arr)
 {
   foreach(r, row in arr)
     foreach(c, item in row)
@@ -7,7 +7,7 @@ let function getReqAirPosInArray(reqName, arr)
   return null
 }
 
-let function checkBranchPos(tree, branch, row, col)
+local function checkBranchPos(tree, branch, row, col)
 {
   for(local i = 0; i < branch.len(); i++)
   {
@@ -21,7 +21,7 @@ let function checkBranchPos(tree, branch, row, col)
   return true
 }
 
-let function getGoodBranchPos(tree, branch, offset, headerPos)
+local function getGoodBranchPos(tree, branch, offset, headerPos)
 {
   //branch.
   if (headerPos)
@@ -46,12 +46,12 @@ let function getGoodBranchPos(tree, branch, offset, headerPos)
   return tree[0].len()
 }
 
-let function makeTblByBranch(branch, ranksHeight, headRow = null)
+local function makeTblByBranch(branch, ranksHeight, headRow = null)
 {
   if (branch.len() < 1)
     return null
 
-  let res = {
+  local res = {
     offset = (headRow != null) ? headRow : 0/*branch[0].air.rank //for rowIdx==rank*/
     tbl = []
   }
@@ -85,7 +85,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
     if (::isUnitGroup(item))
     {
       prevAir = null
-      let unit = item.airsGroup?[0] //!!FIX ME: duplicate logic of generateUnitShopInfo
+      local unit = item.airsGroup?[0] //!!FIX ME: duplicate logic of generateUnitShopInfo
       if (unit && !::isUnitSpecial(unit) && !::isUnitGift(unit) && !unit.isSquadronVehicle())
       {
         prevAir = unit
@@ -106,15 +106,15 @@ appendBranches = function(rangeData, headIdx, branches, brIdxTbl, prevItem=null)
   if (prevItem!=null)
     rangeData[headIdx].reqAir <- prevItem.name
 
-  let headers = []
-  let curBranch = []
+  local headers = []
+  local curBranch = []
   local idx = headIdx
   do {
-    let item = rangeData[idx]
+    local item = rangeData[idx]
     item.used = true
     curBranch.append(item)
 
-    let next = (item.name in brIdxTbl)? brIdxTbl[item.name] : []
+    local next = (item.name in brIdxTbl)? brIdxTbl[item.name] : []
     if (idx < rangeData.len()-1 && !rangeData[idx+1]?.reqAir)
       next.append(idx+1)
     if (next.len()==0)
@@ -136,7 +136,7 @@ appendBranches = function(rangeData, headIdx, branches, brIdxTbl, prevItem=null)
     }
   } while (idx >= 0)
 
-  let lastItemCurBranch = curBranch.top()
+  local lastItemCurBranch = curBranch.top()
   if (branches.len()>0 && curBranch[0].rank == lastItemCurBranch.rank
       && (!lastItemCurBranch?.reqAir || lastItemCurBranch.reqAir==""))
   {  //for line branch generation. If NoReq aircrafts or all aircrafts curBranch have one rank then last extends previous branch.
@@ -157,21 +157,21 @@ appendBranches = function(rangeData, headIdx, branches, brIdxTbl, prevItem=null)
     appendBranches(rangeData, headers[h].id, branches, brIdxTbl, headers[h].prevItem)
 }
 
-let function getBranchesTbl(rangeData)
+local function getBranchesTbl(rangeData)
 {
-  let branches = []
+  local branches = []
 
   if (rangeData.len() < 2)
     return [rangeData]
 
-  let addCount = {}
-  let brIdxTbl = {}
-  let rankK = 0.0 //the longer the tree is more important than a branched
+  local addCount = {}
+  local brIdxTbl = {}
+  local rankK = 0.0 //the longer the tree is more important than a branched
 
   local maxCountId = rangeData.len() - 1
   for(local i = rangeData.len() - 1; i >= 0; i--)
   {
-    let item = rangeData[i]
+    local item = rangeData[i]
     item.childs <- 0
     item.used <- false
     item.header <- i == 0
@@ -212,20 +212,20 @@ let function getBranchesTbl(rangeData)
 }
 
 //returns an array of positions of each rank in page and each vertical section in page
-let function calculateRanksAndSectionsPos(page)
+local function calculateRanksAndSectionsPos(page)
 {
-  let hasRankPosXY = page?.hasRankPosXY ?? false
-  let res = array(::max_country_rank + 1, 0)
-  let fakeRes = array(::max_country_rank + 1, 0)
+  local hasRankPosXY = page?.hasRankPosXY ?? false
+  local res = array(::max_country_rank + 1, 0)
+  local fakeRes = array(::max_country_rank + 1, 0)
 
-  let sectionsPos = page.airList.len() ? [0, page.airList.len()] : [ 0 ]
+  local sectionsPos = page.airList.len() ? [0, page.airList.len()] : [ 0 ]
   local foundPremium = false
   local maxColumns = 0
 
   for (local range = 0; range < page.airList.len(); range++)
   {
-    let rangeRanks = array(::max_country_rank + 1, 0)
-    let branches = getBranchesTbl(page.airList[range])
+    local rangeRanks = array(::max_country_rank + 1, 0)
+    local branches = getBranchesTbl(page.airList[range])
 
     foreach(branch in branches)
     {
@@ -285,7 +285,7 @@ let function calculateRanksAndSectionsPos(page)
     res[i] = rankStartPos
   }
 
-  let sectionsResearchable = array(sectionsPos.len() - 1, true)
+  local sectionsResearchable = array(sectionsPos.len() - 1, true)
   if (foundPremium && sectionsResearchable.len())
     sectionsResearchable[sectionsResearchable.len() - 1] = false
 
@@ -297,9 +297,9 @@ let function calculateRanksAndSectionsPos(page)
   }
 }
 
-let function getReqAirs(page)
+local function getReqAirs(page)
 {
-  let reqAirs = {}
+  local reqAirs = {}
   for(local i = page.tree.len() - 1; i >= 0; i--)
     for(local j = page.tree[i].len() - 1; j >= 0; j--)
     {
@@ -309,8 +309,8 @@ let function getReqAirs(page)
         page.tree[i][j] = null
       else
       {
-        let air = page.tree[i][j]
-        let reqUnit = []
+        local air = page.tree[i][j]
+        local reqUnit = []
         if (air?.fakeReqUnits)
           reqUnit.extend(air.fakeReqUnits)
         if (air?.reqAir)
@@ -325,9 +325,9 @@ let function getReqAirs(page)
   return reqAirs
 }
 
-let function fillLinesInPage(page)
+local function fillLinesInPage(page)
 {
-  let reqAirs = getReqAirs(page)
+  local reqAirs = getReqAirs(page)
 
   for(local i = page.tree.len() - 1; i >= 0; i--)
     for(local j = page.tree[i].len() - 1; j >= 0; j--)
@@ -338,11 +338,11 @@ let function fillLinesInPage(page)
         page.tree[i][j] = null
       else
       {
-        let air = page.tree[i][j]
-        let searchName = ::isUnitGroup(air) ? air?.searchReqName : air.name
+        local air = page.tree[i][j]
+        local searchName = ::isUnitGroup(air) ? air?.searchReqName : air.name
         if (searchName in reqAirs)
         {
-          let arrowCount = reqAirs[searchName].len()
+          local arrowCount = reqAirs[searchName].len()
           foreach(req in reqAirs[searchName])
             page.lines.append({
               air = req.air,
@@ -357,14 +357,14 @@ let function fillLinesInPage(page)
     }
 }
 
-let function generatePageTreeByRank(page)
+local function generatePageTreeByRank(page)
 {
-  let treeSize = page.ranksHeight[page.ranksHeight.len() - 1]
+  local treeSize = page.ranksHeight[page.ranksHeight.len() - 1]
   for (local range = 0; range < page.airList.len(); range++)
   {
-    let rangeData = page.airList[range]
-    let branches = getBranchesTbl(rangeData)
-    let rangeTree = array(treeSize, null)
+    local rangeData = page.airList[range]
+    local branches = getBranchesTbl(rangeData)
+    local rangeTree = array(treeSize, null)
     foreach(idx, ar in rangeTree)
       rangeTree[idx] = []
 
@@ -373,9 +373,9 @@ let function generatePageTreeByRank(page)
       local headPos = null
       if (bIdx != 0 && branch[0]?.reqAir)
         headPos = getReqAirPosInArray(branch[0].reqAir, rangeTree)
-      let config = makeTblByBranch(branch, page.ranksHeight, headPos ? headPos[0] : null)
+      local config = makeTblByBranch(branch, page.ranksHeight, headPos ? headPos[0] : null)
         //config.offset, config.tbl
-      let firstCol = getGoodBranchPos(rangeTree, config.tbl, config.offset, headPos)
+      local firstCol = getGoodBranchPos(rangeTree, config.tbl, config.offset, headPos)
 
       //merge branch to tree
       local treeWidth = 0
@@ -390,10 +390,10 @@ let function generatePageTreeByRank(page)
         if (rangeTree[i].len() < treeWidth)
           rangeTree[i].resize(treeWidth, null)
 
-        let addRowIdx = i - config.offset
+        local addRowIdx = i - config.offset
         if (addRowIdx in config.tbl)
         {
-          let addRow = config.tbl[addRowIdx]
+          local addRow = config.tbl[addRowIdx]
           foreach(j, item in addRow)
             if (item != null)
             {
@@ -412,33 +412,33 @@ let function generatePageTreeByRank(page)
   }
 }
 
-let function generatePageTreeByRankPosXY(page)
+local function generatePageTreeByRankPosXY(page)
 {
-  let unitsWithWrongPositions = []
+  local unitsWithWrongPositions = []
   for (local range = 0; range < page.airList.len(); range++)
   {
-    let rangeData = page.airList[range]
-    let branches = getBranchesTbl(rangeData)
+    local rangeData = page.airList[range]
+    local branches = getBranchesTbl(rangeData)
 
     foreach(bIdx, branch in branches)
     {
       foreach (unit in branch)
       {
-        let rankPosXY = unit?.rankPosXY
+        local rankPosXY = unit?.rankPosXY
         if (!rankPosXY)
         {
           if (!::isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
           continue
         }
-        let absolutePosX= rankPosXY.x
-        let absolutePosY= rankPosXY.y + page.ranksHeight[unit.rank-1]
+        local absolutePosX= rankPosXY.x
+        local absolutePosY= rankPosXY.y + page.ranksHeight[unit.rank-1]
           + (!unit?.isFakeUnit ? page.fakeRanksRowsCount[unit.rank] : 0)
         if (page.tree[absolutePosY-1].len() < absolutePosX)
           page.tree[absolutePosY-1].resize(absolutePosX, null)
         if (page.tree[absolutePosY-1][absolutePosX-1] != null)
         {
-          let curUnit = page.tree[absolutePosY-1][absolutePosX-1]
+          local curUnit = page.tree[absolutePosY-1][absolutePosX-1]
           if (!::isInArray(unit.name, unitsWithWrongPositions))
             unitsWithWrongPositions.append(unit.name)
           if (!::isInArray(curUnit, unitsWithWrongPositions))
@@ -450,7 +450,7 @@ let function generatePageTreeByRankPosXY(page)
   }
   if (unitsWithWrongPositions.len() > 0)
   {
-    let message = ::format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
+    local message = ::format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
                              page.name,
                              ::g_string.implode(unitsWithWrongPositions, "\n")
                             )
@@ -458,7 +458,7 @@ let function generatePageTreeByRankPosXY(page)
   }
 }
 
-let function generateTreeData(page)
+local function generateTreeData(page)
 {
   if (page.tree != null) //already generated
     return page
@@ -469,12 +469,12 @@ let function generateTreeData(page)
   if (!("airList" in page) || !page.airList)
     return page
 
-  let ranksAndSections = calculateRanksAndSectionsPos(page)
+  local ranksAndSections = calculateRanksAndSectionsPos(page)
   page.ranksHeight <- ranksAndSections.ranksHeight
   page.sectionsPos <- ranksAndSections.sectionsPos
   page.sectionsResearchable <- ranksAndSections.sectionsResearchable
   page.fakeRanksRowsCount <- ranksAndSections.fakeRanksRowsCount
-  let treeSize = page.ranksHeight[page.ranksHeight.len() - 1]
+  local treeSize = page.ranksHeight[page.ranksHeight.len() - 1]
   page.tree.resize(treeSize, null)
   foreach(idx, ar in page.tree)
     page.tree[idx] = []

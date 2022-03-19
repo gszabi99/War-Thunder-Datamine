@@ -1,4 +1,4 @@
-::WwPathTracker <- class
+class ::WwPathTracker
 {
   status = ""
   currentPosition = null

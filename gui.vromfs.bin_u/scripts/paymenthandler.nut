@@ -3,10 +3,10 @@
   ::gui_start_modal_wnd(::gui_handlers.PaymentHandler, params)
 }
 
-::gui_handlers.PaymentHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.PaymentHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType         = handlerType.MODAL
-  sceneBlkName    = "%gui/payment.blk"
+  sceneBlkName    = "gui/payment.blk"
   owner           = null
 
   items = []
@@ -20,10 +20,10 @@
 
   function initPaymentsList()
   {
-    let paymentsObj = scene.findObject("content")
+    local paymentsObj = scene.findObject("content")
     foreach (idx, item in items)
     {
-      let payItem = guiScene.createElementByObject(paymentsObj, "%gui/paymentItem.blk", "paymentItem", this)
+      local payItem = guiScene.createElementByObject(paymentsObj, "gui/paymentItem.blk", "paymentItem", this)
       payItem.id = "payment_"+idx
       payItem.tooltip = ::loc(getTblValue("name", item, ""))
       payItem.findObject("payIcon")["background-image"] = getTblValue("icon", item, "")
@@ -38,7 +38,7 @@
       return
     if (!items)
       return
-    let item = items[(obj.id.slice(8)).tointeger()]
+    local item = items[(obj.id.slice(8)).tointeger()]
     if ("callback" in item && item.callback)
       if (owner)
         item.callback.call(owner)

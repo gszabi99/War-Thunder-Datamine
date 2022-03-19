@@ -1,7 +1,7 @@
-let skinLocations = require("%scripts/customization/skinLocations.nut")
-let guidParser = require("%scripts/guidParser.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
+local guidParser = require("scripts/guidParser.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
 
 const DEFAULT_SKIN_NAME = "default"
 
@@ -14,7 +14,7 @@ const DEFAULT_SKIN_NAME = "default"
 //code callback
 ::update_unit_skins_list <- function update_unit_skins_list(unitName)
 {
-  let unit = ::getAircraftByName(unitName)
+  local unit = ::getAircraftByName(unitName)
   if (unit)
     unit.resetSkins()
 }
@@ -29,7 +29,7 @@ const DEFAULT_SKIN_NAME = "default"
 
   addDownloadableLiveSkins = function(skins, unit)
   {
-    let downloadableSkins = getDownloadableSkins(unit)
+    local downloadableSkins = getDownloadableSkins(unit)
     if (downloadableSkins.len() == 0)
       return skins
 
@@ -37,14 +37,14 @@ const DEFAULT_SKIN_NAME = "default"
 
     foreach (itemdefId in downloadableSkins)
     {
-      let resource = ::ItemsManager.findItemById(itemdefId)?.getMetaResource()
+      local resource = ::ItemsManager.findItemById(itemdefId)?.getMetaResource()
       if (resource == null)
         continue
 
       if (guidParser.isGuid(resource)) // Live skin
       {
-        let foundIdx = skins.findindex(@(s) s?.name == resource)
-        let skin = (foundIdx != null)
+        local foundIdx = skins.findindex(@(s) s?.name == resource)
+        local skin = (foundIdx != null)
           ? skins.remove(foundIdx) // Removing to preserve order, because cached skins are already listed.
           : {
               name = resource
@@ -58,8 +58,8 @@ const DEFAULT_SKIN_NAME = "default"
       }
       else // Internal skin
       {
-        let skinName = ::g_unlocks.getSkinNameBySkinId(resource)
-        let skin = skins.findvalue(@(s) s?.name == skinName)
+        local skinName = ::g_unlocks.getSkinNameBySkinId(resource)
+        local skin = skins.findvalue(@(s) s?.name == skinName)
         if (skin == null)
           continue
         skin.forceVisible <- true
@@ -84,30 +84,30 @@ g_decorator.clearLivePreviewParams <- function clearLivePreviewParams()
 
 g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitType = null)
 {
-  let id = unitType ? $"proceedData_{decType.name}_{unitType}" : $"proceedData_{decType.name}"
+  local id = unitType ? $"proceedData_{decType.name}_{unitType}" : $"proceedData_{decType.name}"
   if (id in ::g_decorator.cache)
     return ::g_decorator.cache[id]
 
-  let data = ::g_decorator.splitDecoratorData(decType, unitType)
+  local data = ::g_decorator.splitDecoratorData(decType, unitType)
   ::g_decorator.cache[id] <- data
   return data
 }
 
 g_decorator.getCachedDecoratorsDataByType <- function getCachedDecoratorsDataByType(decType, unitType = null)
 {
-  let data = ::g_decorator.getCachedDataByType(decType, unitType)
+  local data = ::g_decorator.getCachedDataByType(decType, unitType)
   return data.decorators
 }
 
 g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType, unitType = null)
 {
-  let data = ::g_decorator.getCachedDataByType(decType, unitType)
+  local data = ::g_decorator.getCachedDataByType(decType, unitType)
   return data.categories
 }
 
 g_decorator.getCachedDecoratorsListByType <- function getCachedDecoratorsListByType(decType)
 {
-  let data = ::g_decorator.getCachedDataByType(decType)
+  local data = ::g_decorator.getCachedDataByType(decType)
   return data.decoratorsList
 }
 
@@ -132,7 +132,7 @@ g_decorator.getDecoratorById <- function getDecoratorById(searchId)
 
   foreach (t in ::g_decorator_type.types)
   {
-    let res = getDecorator(searchId, t)
+    local res = getDecorator(searchId, t)
     if (res)
       return res
   }
@@ -150,14 +150,14 @@ g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockI
   if (::u.isEmpty(unlockId))
     return null
 
-  let path = "decoratorByUnlockId"
+  local path = "decoratorByUnlockId"
   if (!(path in ::g_decorator.cache))
     ::g_decorator.cache[path] <- {}
 
   if (unlockId in ::g_decorator.cache[path])
     return getDecorator(::g_decorator.cache[path][unlockId], decType)
 
-  let foundDecorator = ::u.search(::g_decorator.getCachedDecoratorsListByType(decType),
+  local foundDecorator = ::u.search(::g_decorator.getCachedDecoratorsListByType(decType),
       (@(unlockId) function(d) {
         return d.unlockId == unlockId
       })(unlockId))
@@ -171,29 +171,29 @@ g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockI
 
 g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
 {
-  let result = {
+  local result = {
     decorators = {}
     categories = []
     decoratorsList = {}
     fullBlk = null
   }
 
-  let blk = decType.getBlk()
+  local blk = decType.getBlk()
   if (::u.isEmpty(blk))
     return result
 
   result.fullBlk = blk
 
-  let prevCategory = ""
+  local prevCategory = ""
   for (local c = 0; c < blk.blockCount(); c++)
   {
-    let dblk = blk.getBlock(c)
+    local dblk = blk.getBlock(c)
 
-    let decorator = ::Decorator(dblk, decType)
+    local decorator = ::Decorator(dblk, decType)
     if (unitType != null && !decorator.isAllowedByUnitTypes(unitType))
       continue
 
-    let category = dblk?.category ?? prevCategory
+    local category = dblk?.category ?? prevCategory
 
     if (!(category in result.decorators))
     {
@@ -214,8 +214,8 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
 
   for (local i = result.categories.len() - 1; i > -1; i--)
   {
-    let category = result.categories[i]
-    let decoratorsList = result.decorators[category]
+    local category = result.categories[i]
+    local decoratorsList = result.decorators[category]
     if (decoratorsList.len() == 0)
     {
       result.categories.remove(i)
@@ -238,7 +238,7 @@ g_decorator.isAutoSkinAvailable <- function isAutoSkinAvailable(unitName)
 
 g_decorator.getLastSkin <- function getLastSkin(unitName)
 {
-  let unit = getAircraftByName(unitName)
+  local unit = getAircraftByName(unitName)
   if (!unit.isUsable() && unit.getPreviewSkinId() != "")
     return unit.getPreviewSkinId()
   if (!isAutoSkinAvailable(unitName))
@@ -250,7 +250,7 @@ g_decorator.getLastSkin <- function getLastSkin(unitName)
 
 g_decorator.getRealSkin <- function getRealSkin(unitName)
 {
-  let res = getLastSkin(unitName)
+  local res = getLastSkin(unitName)
   return res || getAutoSkin(unitName)
 }
 
@@ -280,7 +280,7 @@ g_decorator.setAutoSkin <- function setAutoSkin(unitName, needSwitchOn)
 //default skin will return when no one skin match location
 g_decorator.getAutoSkin <- function getAutoSkin(unitName, isLockedAllowed = false)
 {
-  let list = getBestSkinsList(unitName, isLockedAllowed)
+  local list = getBestSkinsList(unitName, isLockedAllowed)
   if (!list.len())
     return DEFAULT_SKIN_NAME
   return list[list.len() - 1 - (::SessionLobby.roomId % list.len())] //use last skin when no in session
@@ -288,17 +288,17 @@ g_decorator.getAutoSkin <- function getAutoSkin(unitName, isLockedAllowed = fals
 
 g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllowed)
 {
-  let unit = ::getAircraftByName(unitName)
+  local unit = ::getAircraftByName(unitName)
   if (!unit)
     return [DEFAULT_SKIN_NAME]
 
-  let misBlk = ::is_in_flight() ? ::get_current_mission_info_cached()
+  local misBlk = ::is_in_flight() ? ::get_current_mission_info_cached()
     : ::get_mission_meta_info(unit.testFlight)
-  let level = misBlk?.level
+  local level = misBlk?.level
   if (!level)
     return [DEFAULT_SKIN_NAME]
 
-  let skinsList = [DEFAULT_SKIN_NAME]
+  local skinsList = [DEFAULT_SKIN_NAME]
   foreach(skin in unit.getSkins())
   {
     if (skin.name == "")
@@ -308,7 +308,7 @@ g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllo
       skinsList.append(skin.name)
       continue
     }
-    let decorator = ::g_decorator.getDecorator(unitName + "/"+ skin.name, ::g_decorator_type.SKINS)
+    local decorator = ::g_decorator.getDecorator(unitName + "/"+ skin.name, ::g_decorator_type.SKINS)
     if (decorator && decorator.isUnlocked())
       skinsList.append(skin.name)
   }
@@ -317,7 +317,7 @@ g_decorator.getBestSkinsList <- function getBestSkinsList(unitName, isLockedAllo
 
 g_decorator.addSkinItemToOption <- function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false)
 {
-  let idx = shouldSetFirst ? 0 : option.items.len()
+  local idx = shouldSetFirst ? 0 : option.items.len()
   option.items.insert(idx, {
     text = locName
     textStyle = ::COLORED_DROPRIGHT_TEXT_STYLE
@@ -338,7 +338,7 @@ g_decorator.addSkinItemToOption <- function addSkinItemToOption(option, locName,
 
 g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false, needAutoSkin = true, showDownloadable = false)
 {
-  let descr = {
+  local descr = {
     items = []
     values = []
     access = []
@@ -346,11 +346,11 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
     value = 0
   }
 
-  let unit = ::getAircraftByName(unitName)
+  local unit = ::getAircraftByName(unitName)
   if (!unit)
     return descr
 
-  let needIcon = unit.esUnitType == ::ES_UNIT_TYPE_TANK
+  local needIcon = unit.esUnitType == ::ES_UNIT_TYPE_TANK
 
   local skins = unit.getSkins()
   if (showDownloadable)
@@ -358,13 +358,13 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
 
   for (local skinNo = 0; skinNo < skins.len(); skinNo++)
   {
-    let skin = skins[skinNo]
-    let isDefault = skin.name.len() == 0
-    let skinName = isDefault ? DEFAULT_SKIN_NAME : skin.name // skin ID (default skin stored in profile with name 'default')
+    local skin = skins[skinNo]
+    local isDefault = skin.name.len() == 0
+    local skinName = isDefault ? DEFAULT_SKIN_NAME : skin.name // skin ID (default skin stored in profile with name 'default')
 
-    let skinBlockName = unitName + "/"+ skinName
+    local skinBlockName = unitName + "/"+ skinName
 
-    let isPreviewedLiveSkin = ::has_feature("EnableLiveSkins") && ::isInArray(skinBlockName, previewedLiveSkinIds)
+    local isPreviewedLiveSkin = ::has_feature("EnableLiveSkins") && ::isInArray(skinBlockName, previewedLiveSkinIds)
     local decorator = ::g_decorator.getDecorator(skinBlockName, ::g_decorator_type.SKINS)
     if (!decorator)
     {
@@ -374,26 +374,26 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
         continue
     }
 
-    let isUnlocked = decorator.isUnlocked()
-    let isOwn = isDefault || isUnlocked
+    local isUnlocked = decorator.isUnlocked()
+    local isOwn = isDefault || isUnlocked
 
     if (!isOwn && !showLocked)
       continue
 
-    let forceVisible = skin?.forceVisible || isPreviewedLiveSkin
+    local forceVisible = skin?.forceVisible || isPreviewedLiveSkin
 
     if (!decorator.isVisible() && !forceVisible)
       continue
 
-    let cost = decorator.getCost()
-    let hasPrice = !cost.isZero()
-    let isVisible = isDefault || isOwn || hasPrice || forceVisible
+    local cost = decorator.getCost()
+    local hasPrice = !cost.isZero()
+    local isVisible = isDefault || isOwn || hasPrice || forceVisible
       || decorator.canBuyCouponOnMarketplace(unit)
       || ::is_unlock_visible(decorator.unlockBlk)
     if (!isVisible && !::is_dev_version)
       continue
 
-    let access = addSkinItemToOption(descr, decorator.getName(), skinName, decorator, false, needIcon)
+    local access = addSkinItemToOption(descr, decorator.getName(), skinName, decorator, false, needIcon)
     access.isOwn = isOwn
     access.unlockId  = !isOwn && decorator.unlockBlk ? decorator.unlockId : ""
     access.canBuy    = decorator.canBuyUnlock(unit)
@@ -402,16 +402,16 @@ g_decorator.getSkinsOption <- function getSkinsOption(unitName, showLocked=false
     access.isDownloadable = skin?.isDownloadable ?? false
   }
 
-  let hasAutoSkin = needAutoSkin && isAutoSkinAvailable(unitName)
+  local hasAutoSkin = needAutoSkin && isAutoSkinAvailable(unitName)
   if (hasAutoSkin)
   {
-    let autoSkin = getAutoSkin(unitName)
-    let decorator = ::g_decorator.getDecorator(unitName + "/"+ autoSkin, ::g_decorator_type.SKINS)
-    let locName = ::loc("skins/auto", { skin = decorator ? decorator.getName() : "" })
+    local autoSkin = getAutoSkin(unitName)
+    local decorator = ::g_decorator.getDecorator(unitName + "/"+ autoSkin, ::g_decorator_type.SKINS)
+    local locName = ::loc("skins/auto", { skin = decorator ? decorator.getName() : "" })
     addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
   }
 
-  let curSkin = getLastSkin(unit.name)
+  local curSkin = getLastSkin(unit.name)
   descr.value = ::find_in_array(descr.values, curSkin, -1)
   if (descr.value != -1 || !descr.values.len())
     return descr
@@ -445,8 +445,8 @@ g_decorator.onEventAttachableReceived <- function onEventAttachableReceived(p)
     updateDecalVisible(p, ::g_decorator_type.ATTACHABLES)
 }
 
-let function addDecoratorToCachedData(decorator, data) {
-  let category = decorator.category
+local function addDecoratorToCachedData(decorator, data) {
+  local category = decorator.category
   if (!(category in data.decorators)) {
     data.decorators[category] <- []
     data.categories.append(category)
@@ -456,9 +456,9 @@ let function addDecoratorToCachedData(decorator, data) {
 
 g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
 {
-  let decorId = params.id
-  let data = getCachedDataByType(decType)
-  let decorator = data.decoratorsList?[decorId]
+  local decorId = params.id
+  local data = getCachedDataByType(decType)
+  local decorator = data.decoratorsList?[decorId]
 
   if (!decorator || (!decorator.isVisible() && !decorator.isForceVisible()))
     return
@@ -467,7 +467,7 @@ g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
 
   foreach (unitType in unitTypes.types) {
     if (decorator.isAllowedByUnitTypes(unitType.tag)) {
-      let dataByUnitType = getCachedDataByType(decType, unitType.tag)
+      local dataByUnitType = getCachedDataByType(decType, unitType.tag)
       addDecoratorToCachedData(decorator, dataByUnitType)
     }
   }
@@ -485,11 +485,11 @@ g_decorator.onEventUnitRented <- function onEventUnitRented(p)
 
 g_decorator.applyPreviewSkin <- function applyPreviewSkin(params)
 {
-  let unit = ::getAircraftByName(params?.unitName)
+  local unit = ::getAircraftByName(params?.unitName)
   if (!unit)
     return
 
-  let previewSkinId = unit.getPreviewSkinId()
+  local previewSkinId = unit.getPreviewSkinId()
   if (previewSkinId == "")
     return
 
@@ -508,13 +508,13 @@ g_decorator.buildLiveDecoratorFromResource <- function buildLiveDecoratorFromRes
 {
   if (!resource || !resourceType)
     return
-  let decoratorId = (params?.unitId != null && resourceType == "skin")
+  local decoratorId = (params?.unitId != null && resourceType == "skin")
     ? ::g_unlocks.getSkinId(params.unitId, resource)
     : resource
   if (decoratorId in ::g_decorator.liveDecoratorsCache)
     return
 
-  let decorator = ::Decorator(decoratorId, ::g_decorator_type.getTypeByResourceType(resourceType))
+  local decorator = ::Decorator(decoratorId, ::g_decorator_type.getTypeByResourceType(resourceType))
   decorator.updateFromItemdef(itemDef)
   ::add_rta_localization($"{decoratorId}", itemDef.name)
   ::add_rta_localization($"{decoratorId}/desc", itemDef.description)
@@ -530,7 +530,7 @@ g_decorator.onEventItemsShopUpdate <- function onEventItemsShopUpdate(p)
 {
   foreach (itemDefId, decorator in waitingItemdefs)
   {
-    let couponItem = ::ItemsManager.findItemById(itemDefId)
+    local couponItem = ::ItemsManager.findItemById(itemDefId)
     if (couponItem)
     {
       decorator.updateFromItemdef(couponItem.itemDef)

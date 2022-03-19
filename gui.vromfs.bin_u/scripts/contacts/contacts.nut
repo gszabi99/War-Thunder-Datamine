@@ -1,7 +1,7 @@
-let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { isEqual } = require("sqStdLibs/helpers/u.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -40,7 +40,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   verifyContact = function(params)
   {
-    let name = params?.playerName
+    local name = params?.playerName
     local newContact = ::getContact(params?.uid, name, params?.clanTag)
     if (!newContact && name)
       newContact = ::Contact.getByName(name)
@@ -49,13 +49,13 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   addContact = function(_contact, groupName, params = {}) {
-    let contact = _contact || verifyContact(params)
+    local contact = _contact || verifyContact(params)
     if (!contact)
       return null
 
     ::addContactGroup(groupName) //Group can be not exist in list
 
-    let existContactIdx = ::contacts[groupName].findindex(@(c) c.isSameContact(contact.uid))
+    local existContactIdx = ::contacts[groupName].findindex(@(c) c.isSameContact(contact.uid))
     if (existContactIdx == null)
       ::contacts[groupName].append(contact)
 
@@ -64,7 +64,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 }
 
-let editContactsList = require("%scripts/contacts/editContacts.nut")
+local editContactsList = require("scripts/contacts/editContacts.nut")
 
 foreach (fn in [
     "contactPresence.nut"
@@ -73,11 +73,11 @@ foreach (fn in [
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-::g_script_reloader.loadOnce("%scripts/contacts/" + fn)
+::g_script_reloader.loadOnce("scripts/contacts/" + fn)
 
 g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params)
 {
-  let usersInfo = ::getTblValue("usersInfo", params, null)
+  local usersInfo = ::getTblValue("usersInfo", params, null)
   if (usersInfo == null)
     return
 
@@ -89,7 +89,7 @@ g_contacts.onEventUpdateExternalsIDs <- function onEventUpdateExternalsIDs(param
   if (!(params?.request?.uid) || !(params?.externalIds))
     return
 
-  let config = params.externalIds
+  local config = params.externalIds
   config.uid <- params.request.uid
   if (params?.request?.afterSuccessUpdateFunc)
     config.afterSuccessUpdateFunc <- params.request.afterSuccessUpdateFunc
@@ -105,7 +105,7 @@ g_contacts.removeContactGroup <- function removeContactGroup(group)
 
 g_contacts.removeContact <- function removeContact(player, group)
 {
-  let uidIdx = ::contacts[group].findindex( @(p) p.uid == player.uid)
+  local uidIdx = ::contacts[group].findindex( @(p) p.uid == player.uid)
   if (uidIdx != null)
     ::contacts[group].remove(uidIdx)
 
@@ -136,7 +136,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::getContactsGroupUidList <- function getContactsGroupUidList(groupName)
 {
-  let res = []
+  local res = []
   if (!(groupName in ::contacts))
     return res
   foreach(p in ::contacts[groupName])
@@ -180,14 +180,14 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::find_contact_by_name_and_do <- function find_contact_by_name_and_do(playerName, func) //return taskId if delayed.
 {
-  let contact = ::Contact.getByName(playerName)
+  local contact = ::Contact.getByName(playerName)
   if (contact && contact?.uid != "")
   {
     func(contact)
     return null
   }
 
-  let taskCallback = function(result = ::YU2_OK) {
+  local taskCallback = function(result = ::YU2_OK) {
     if (!func)
       return
 
@@ -207,7 +207,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     ::showInfoMsgBox(::loc("chat/error/item-not-found", { nick = getPlayerName(playerName) }), "incorrect_user")
   }
 
-  let taskId = ::find_nicks_by_prefix(playerName, 1, false)
+  local taskId = ::find_nicks_by_prefix(playerName, 1, false)
   ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
   return taskId
 }
@@ -237,7 +237,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     )
   }
 
-  let contact = ::getContact(player.uid, player.name)
+  local contact = ::getContact(player.uid, player.name)
   if (contact.canOpenXBoxFriendsWindow(groupName))
   {
     contact.openXBoxFriendsEdit()
@@ -266,8 +266,8 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::request_edit_player_lists <- function request_edit_player_lists(editBlk, checkFeature = true)
 {
-  let taskId = ::edit_player_lists(editBlk)
-  let taskCallback = function (result = null) {
+  local taskId = ::edit_player_lists(editBlk)
+  local taskCallback = function (result = null) {
     if (checkFeature && !::has_feature("Friends"))
       return
 
@@ -282,7 +282,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   if (!::checkObj(obj))
     return
 
-  let guiScene = obj.getScene()
+  local guiScene = obj.getScene()
   if (!::contacts_handler)
     ::contacts_handler = ::ContactsHandler(guiScene)
   ::contacts_handler.owner = owner
@@ -291,7 +291,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::switchContactsObj <- function switchContactsObj(scene, owner=null)
 {
-  let objName = "contacts_scene"
+  local objName = "contacts_scene"
   local obj = null
   if (::checkObj(scene))
   {
@@ -303,7 +303,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     }
   } else
   {
-    let guiScene = ::get_gui_scene()
+    local guiScene = ::get_gui_scene()
     obj = guiScene[objName]
     if (!::checkObj(obj))
     {
@@ -327,7 +327,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   {
     if (::u.isString(nick))
     {
-      let contact = Contact({ name = nick, uid = uid , clanTag = clanTag})
+      local contact = Contact({ name = nick, uid = uid , clanTag = clanTag})
       ::contacts_players[uid] <- contact
       if(uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.rawdelete(uid))
@@ -336,7 +336,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
       return null
   }
 
-  let contact = ::contacts_players[uid]
+  local contact = ::contacts_players[uid]
   if (::u.isString(nick) && (forceUpdate || contact.name == ""))
     contact.name = nick
 
@@ -348,7 +348,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::clearContactPresence <- function clearContactPresence(uid)
 {
-  let contact = ::getContact(uid)
+  local contact = ::getContact(uid)
   if (!contact)
     return
 
@@ -374,15 +374,15 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::updateContact <- function updateContact(config)
 {
-  let configIsContact = ::u.isInstance(config) && config instanceof ::Contact
+  local configIsContact = ::u.isInstance(config) && config instanceof ::Contact
   if (::u.isInstance(config) && !configIsContact) //Contact no need update by instances because foreach use function as so constructor
   {
     ::script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null
   }
 
-  let uid = config.uid
-  let contact = ::getContact(uid, config?.name)
+  local uid = config.uid
+  local contact = ::getContact(uid, config?.name)
   if (!contact)
     return null
 
@@ -402,7 +402,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   else if (!contact.unknown)
     presence = ::g_contact_presence.OFFLINE
 
-  let squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(uid)
+  local squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(uid)
   if (squadStatus == squadMemberState.NOT_IN_SQUAD)
   {
     if (contact.forceOffline)
@@ -468,7 +468,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
 ::fillContactTooltip <- function fillContactTooltip(obj, contact, handler)
 {
-  let view = {
+  local view = {
     name = contact.getName()
     presenceText = contact.getPresenceText()
     presenceIcon = contact.presence.getIcon()
@@ -478,10 +478,10 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     rank = contact.getRankText()
   }
 
-  let squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(contact.uid)
+  local squadStatus = ::g_squad_manager.getPlayerStatusInMySquad(contact.uid)
   if (squadStatus != squadMemberState.NOT_IN_SQUAD && squadStatus != squadMemberState.SQUAD_MEMBER_OFFLINE)
   {
-    let memberData = ::g_squad_manager.getMemberData(contact.uid)
+    local memberData = ::g_squad_manager.getMemberData(contact.uid)
     if (memberData)
     {
       view.unitList <- []
@@ -492,7 +492,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
         view.unitList.append({ header = ::loc("mainmenu/arcadeInstantAction") })
         foreach(unitName in memberData.crewAirs[memberData.country])
         {
-          let unit = ::getAircraftByName(unitName)
+          local unit = ::getAircraftByName(unitName)
           view.unitList.append({
             countryIcon = ::get_country_icon(memberData.country)
             rank = ::is_default_aircraft(unitName) ? ::loc("shop/reserve/short") : unit.rank
@@ -506,10 +506,10 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
         view.unitList.append({ header = ::loc("mainmenu/instantAction") })
         foreach(country in shopCountriesList)
         {
-          let countryIcon = ::get_country_icon(country)
+          local countryIcon = ::get_country_icon(country)
           debugTableData(memberData.selAirs)
-          let unitName = memberData.selAirs?[country] ?? ""
-          let unit = ::getAircraftByName(unitName)
+          local unitName = memberData.selAirs?[country] ?? ""
+          local unit = ::getAircraftByName(unitName)
           if (unit != null)
           {
             view.unitList.append({
@@ -530,7 +530,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     }
   }
 
-  let blk = ::handyman.renderCached("%gui/contacts/contactTooltip", view)
+  local blk = ::handyman.renderCached("gui/contacts/contactTooltip", view)
   obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
 }
 

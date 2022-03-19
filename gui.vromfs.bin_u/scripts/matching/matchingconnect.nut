@@ -1,5 +1,5 @@
-let { canLogout, startLogout } = require("%scripts/login/logout.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+local { canLogout, startLogout } = require("scripts/login/logout.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 
@@ -53,7 +53,7 @@ g_matching_connect.connect <- function connect(successCb = null, errorCb = null,
 
   if (needProgressBox)
   {
-    let cancelFunc = function()
+    local cancelFunc = function()
     {
       ::scene_msg_box("no_online_warning", null, ::loc("mainmenu/noOnlineWarning"),
         [["ok", function() { ::g_matching_connect.onDisconnect() }]],
@@ -125,14 +125,14 @@ g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message
   local needExit = forceExit
   if (!needExit) //logout
   {
-    let handler = ::handlersManager.getActiveBaseHandler()
+    local handler = ::handlersManager.getActiveBaseHandler()
     if (!("isDelayedLogoutOnDisconnect" in handler)
         || !handler.isDelayedLogoutOnDisconnect())
       needExit = !doLogout()
   }
 
-  let btnName = needExit ? "exit" : "ok"
-  let msgCb = needExit ? exitGame : function() {}
+  local btnName = needExit ? "exit" : "ok"
+  local msgCb = needExit ? exitGame : function() {}
 
   ::error_message_box("yn1/connect_error", reason,
     [[ btnName, msgCb]], btnName,

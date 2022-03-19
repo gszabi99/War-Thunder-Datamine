@@ -1,4 +1,4 @@
-let keys = [
+local keys = [
 @"
 -----BEGIN PUBLIC KEY-----
 MIIBKDANBgkqhkiG9w0BAQEFAAOCARUAMIIBEAKCAQcAy9WagPn8/uLbbPHebobA
@@ -12,7 +12,7 @@ j+eTYc35NQIDAQAB
 "
 ]
 
-let function initPublicKeys()
+local function initPublicKeys()
 {
   if (::is_platform_xbox)
   {

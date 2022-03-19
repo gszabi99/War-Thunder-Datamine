@@ -1,4 +1,4 @@
-let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
+local DaguiSceneTimers = require("sqDagui/timer/daguiSceneTimers.nut")
 
 ::g_hud_message_stack <- {
   scene = null

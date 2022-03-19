@@ -1,19 +1,18 @@
-let sheets = require("%scripts/items/itemsShopSheets.nut")
-let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
-let workshop = require("%scripts/items/workshop/workshop.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let workshopCraftTreeWnd = require("%scripts/items/workshop/workshopCraftTreeWnd.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
-let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { fillDescTextAboutDiv, updateExpireAlarmIcon,
-  fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+local sheets = require("scripts/items/itemsShopSheets.nut")
+local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
+local seenList = require("scripts/seen/seenList.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
+local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
+local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { fillDescTextAboutDiv, updateExpireAlarmIcon } = require("scripts/items/itemVisual.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -37,10 +36,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     @() ::handlersManager.loadHandler(::gui_handlers.ItemsList, handlerParams))
 }
 
-::gui_handlers.ItemsList <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.BASE
-  sceneBlkName = "%gui/items/itemsShop.blk"
+  sceneBlkName = "gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   curTab = 0 //first itemsTab
@@ -86,7 +85,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     sheets.updateWorkshopSheets()
     initSheetsOnce()
 
-    let sheetData = curTab < 0 && curItem ? sheets.getSheetDataByItem(curItem) : null
+    local sheetData = curTab < 0 && curItem ? sheets.getSheetDataByItem(curItem) : null
     if (sheetData)
     {
       curTab = sheetData.tab
@@ -106,8 +105,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     // If items shop was opened not in menu - player should not
     // be able to navigate through sheets and tabs.
-    let checkIsInMenu = ::isInMenu() || ::has_feature("devItemShop")
-    let checkEnableShop = checkIsInMenu && ::has_feature("ItemsShop")
+    local checkIsInMenu = ::isInMenu() || ::has_feature("devItemShop")
+    local checkEnableShop = checkIsInMenu && ::has_feature("ItemsShop")
     if (!checkEnableShop)
       scene.findObject("wnd_title").setValue(::loc(getTabName(itemsTab.INVENTORY)))
 
@@ -132,7 +131,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (navigationHandlerWeak)
       return
 
-    let handler = ::handlersManager.loadHandler(
+    local handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene                  = scene.findObject("control_navigation")
         onSelectCb             = ::Callback(doNavigateToSection, this)
@@ -152,7 +151,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     markCurrentPageSeen()
 
-    let newSheet = sheetsArray?[obj.shIdx]
+    local newSheet = sheetsArray?[obj.shIdx]
     if (!newSheet)
       return
 
@@ -178,8 +177,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!obj?.isCollapsable || !navigationHandlerWeak)
       return
 
-    let collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
-    let subsetId = curSubsetId
+    local collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
+    local subsetId = curSubsetId
     navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
       getSheetsListObj().setValue(//set selection on chapter item if not found item with subsetId just in case to avoid crash
@@ -218,7 +217,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       if (isTabVisible(i))
         visibleTabs.append(i)
 
-    let view = {
+    local view = {
       tabs = []
     }
     local selIdx = -1
@@ -238,8 +237,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       curTab = visibleTabs[selIdx]
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let tabsObj = getTabsListObj()
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    local tabsObj = getTabsListObj()
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(selIdx)
   }
@@ -248,7 +247,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   {
     markCurrentPageSeen()
 
-    let value = getTabsListObj().getValue()
+    local value = getTabsListObj().getValue()
     curTab = visibleTabs?[value] ?? curTab
 
     itemsListValid = false
@@ -270,8 +269,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     navItems = []
     foreach(idx, sh in sheetsArray)
     {
-      let isCollapsable = sh.hasSubLists()
-      let item = {
+      local isCollapsable = sh.hasSubLists()
+      local item = {
         shIdx = idx
         unseenIcon = SEEN.ITEMS_SHOP
         unseenIconId = "unseen_icon"
@@ -295,19 +294,19 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       navigationHandlerWeak.setNavItems(navItems)
   }
 
-  function updateSheets(resetPage = true)
+  function updateSheets()
   {
     isSheetsInUpdate = true //there can be multiple sheets changed on switch tab, so no need to update items several times.
     guiScene.setUpdatesEnabled(false, false)
     initSheetsOnce()
 
-    let typesObj = getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
-    let seenListId = getTabSeenId(curTab)
+    local typesObj = getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
+    local seenListId = getTabSeenId(curTab)
     local curValue = -1
-    let childsTotal = typesObj.childrenCount()
+    local childsTotal = typesObj.childrenCount()
 
     if (childsTotal < navItems.len()) {
-      let navItemsTotal = navItems.len() // warning disable: -declared-never-used
+      local navItemsTotal = navItems.len() // warning disable: -declared-never-used
       ::script_net_assert_once("Bad count on update unseen tabs",
         "ItemsShop: Not all sheets exist on update sheets list unseen icon")
     }
@@ -316,9 +315,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       if (idx >= childsTotal)
         break
 
-      let sh = sheetsArray[item.shIdx]
-      let isEnabled = sh.isEnabled(curTab)
-      let child = typesObj.getChild(idx)
+      local sh = sheetsArray[item.shIdx]
+      local isEnabled = sh.isEnabled(curTab)
+      local child = typesObj.getChild(idx)
       child.show(isEnabled)
       child.enable(isEnabled)
 
@@ -338,7 +337,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     guiScene.setUpdatesEnabled(true, true)
     isSheetsInUpdate = false
 
-    applyFilters(resetPage)
+    applyFilters()
   }
 
   function onEventWorkshopAvailableChanged(p)
@@ -355,20 +354,20 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initItemsListSizeOnce()
   {
-    let listObj = getItemsListObj()
-    let emptyListObj = scene.findObject("empty_items_list")
-    let infoObj = scene.findObject("item_info_nest")
-    let collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
-    let leftPos = isNavCollapsed ? collapseBtnWidth : "0"
-    let nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
-    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
-    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
-    let itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+    local listObj = getItemsListObj()
+    local emptyListObj = scene.findObject("empty_items_list")
+    local infoObj = scene.findObject("item_info_nest")
+    local collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
+    local leftPos = isNavCollapsed ? collapseBtnWidth : "0"
+    local nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
+    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    local mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
+    local itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = ::max(::to_pixels(mainBlockHeight)
+    local itemsCountY = ::max(::to_pixels(mainBlockHeight)
       / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
-    let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
     listObj.width = contentWidth
@@ -397,7 +396,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     else
     {
       shouldSetPageByItem = false
-      let lastIdx = getLastSelItemIdx()
+      local lastIdx = getLastSelItemIdx()
       if (lastIdx >= 0)
         curPage = (lastIdx / itemsPerPage).tointeger()
       else if (curPage * itemsPerPage > itemsList.len())
@@ -409,14 +408,14 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function fillPage()
   {
-    let view = { items = [] }
-    let pageStartIndex = curPage * itemsPerPage
-    let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
-    let seenListId = getTabSeenId(curTab)
-    let craftTree = curSheet?.getSet().getCraftTree()
+    local view = { items = [] }
+    local pageStartIndex = curPage * itemsPerPage
+    local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+    local seenListId = getTabSeenId(curTab)
+    local craftTree = curSheet?.getSet().getCraftTree()
     for(local i=pageStartIndex; i < pageEndIndex; i++)
     {
-      let item = itemsList[i]
+      local item = itemsList[i]
       if (item.hasLimits())
         ::g_item_limits.enqueueItem(item.id)
 
@@ -424,7 +423,6 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
         itemIndex = i.tostring(),
         showSellAmount = curTab == itemsTab.SHOP,
         unseenIcon = bhvUnseen.makeConfigStr(seenListId, item.getSeenId())
-        isUnseenAlarmIcon = item?.needUnseenAlarmIcon()
         isItemLocked = isItemLocked(item)
         showButtonInactiveIfNeed = true
         overrideMainActionData = craftTree != null && item.canCraftOnlyInCraftTree()
@@ -440,9 +438,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     }
     ::g_item_limits.requestLimits()
 
-    let listObj = getItemsListObj()
-    let prevValue = listObj.getValue()
-    let data = ::handyman.renderCached(("%gui/items/item"), view)
+    local listObj = getItemsListObj()
+    local prevValue = listObj.getValue()
+    local data = ::handyman.renderCached(("gui/items/item"), view)
     if (::checkObj(listObj))
     {
       listObj.show(data != "")
@@ -450,18 +448,18 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
     }
 
-    let emptyListObj = scene.findObject("empty_items_list")
+    local emptyListObj = scene.findObject("empty_items_list")
     if (::checkObj(emptyListObj))
     {
-      let adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && isMarketplaceEnabled()
-      let itemsInShop = curTab == itemsTab.SHOP? itemsList : curSheet.getItemsList(itemsTab.SHOP, curSubsetId)
-      let adviseShop = ::has_feature("ItemsShop") && curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
+      local adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && isMarketplaceEnabled()
+      local itemsInShop = curTab == itemsTab.SHOP? itemsList : curSheet.getItemsList(itemsTab.SHOP, curSubsetId)
+      local adviseShop = ::has_feature("ItemsShop") && curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
 
       emptyListObj.show(data.len() == 0)
       emptyListObj.enable(data.len() == 0)
       showSceneBtn("items_shop_to_marketplace_button", adviseMarketplace)
       showSceneBtn("items_shop_to_shop_button", adviseShop)
-      let emptyListTextObj = scene.findObject("empty_items_list_text")
+      local emptyListTextObj = scene.findObject("empty_items_list_text")
       if (::checkObj(emptyListTextObj))
       {
         local caption = ::loc(curSheet.emptyTabLocId, "")
@@ -469,7 +467,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
           caption = ::loc("items/shop/emptyTab/default")
         if (caption.len() > 0)
         {
-          let noItemsAdviceLocId =
+          local noItemsAdviceLocId =
               adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
             : adviseShop        ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
             :                     "items/shop/emptyTab/noItemsAdvice/shopDisabled"
@@ -479,7 +477,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       }
     }
 
-    let value = findLastValue(prevValue)
+    local value = findLastValue(prevValue)
     if (value >= 0)
       listObj.setValue(value)
 
@@ -511,8 +509,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function findLastValue(prevValue)
   {
-    let offset = curPage * itemsPerPage
-    let total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
+    local offset = curPage * itemsPerPage
+    local total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
     if (!total)
       return -1
 
@@ -520,7 +518,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (curItem)
       for(local i = 0; i < total; i++)
       {
-        let item = itemsList[offset + i]
+        local item = itemsList[offset + i]
         if (curItem.id != item.id)
           continue
         res = i
@@ -565,7 +563,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getCurItem()
   {
-    let obj = getItemsListObj()
+    local obj = getItemsListObj()
     if (!::check_obj(obj))
       return null
 
@@ -574,8 +572,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getCurItemObj()
   {
-    let itemListObj = getItemsListObj()
-    let value = ::get_obj_valid_index(itemListObj)
+    local itemListObj = getItemsListObj()
+    local value = ::get_obj_valid_index(itemListObj)
     if (value < 0)
       return null
 
@@ -597,7 +595,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateItemInfo()
   {
-    let item = getCurItem()
+    local item = getCurItem()
     markItemSeen(item)
     infoHandler?.updateHandlerData(item, true, true)
     showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
@@ -615,38 +613,38 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!itemsList)
       return
 
-    let pageStartIndex = curPage * itemsPerPage
-    let pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
-    let list = []
+    local pageStartIndex = curPage * itemsPerPage
+    local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
+    local list = []
     for(local i = pageStartIndex; i < pageEndIndex; ++i)
       list.append(itemsList[i].getSeenId())
     getTabSeenList(curTab).markSeen(list)
   }
 
   function updateButtonsBar() {
-    let obj = getItemsListObj()
-    let isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
+    local obj = getItemsListObj()
+    local isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
     showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
 
   function updateButtons()
   {
-    let item = getCurItem()
-    let mainActionData = item?.getMainActionData()
-    let limitsCheckData = item?.getLimitsCheckData()
-    let limitsCheckResult = limitsCheckData?.result ?? true
-    let showMainAction = mainActionData && limitsCheckResult
-    let curSet = curSheet?.getSet()
-    let craftTree = curSet?.getCraftTree()
-    let needShowCraftTree = craftTree != null
-    let openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
+    local item = getCurItem()
+    local mainActionData = item?.getMainActionData()
+    local limitsCheckData = item?.getLimitsCheckData()
+    local limitsCheckResult = limitsCheckData?.result ?? true
+    local showMainAction = mainActionData && limitsCheckResult
+    local curSet = curSheet?.getSet()
+    local craftTree = curSet?.getCraftTree()
+    local needShowCraftTree = craftTree != null
+    local openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
 
-    let craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
+    local craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
     if (curSet != null && needShowCraftTree)
     {
       craftTreeBtnObj.setValue(openCraftTreeBtnText)
-      let tutorialItem = curSet.findTutorialItem()
+      local tutorialItem = curSet.findTutorialItem()
       if (tutorialItem)
         startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj)
     }
@@ -654,24 +652,24 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
 
-    let buttonObj = showSceneBtn("btn_main_action", showMainAction)
-    let canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
+    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
+    local canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction)
     {
       buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
       buttonObj.inactiveColor = mainActionData?.isInactive && !canCraftOnlyInCraftTree ? "yes" : "no"
-      let btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
-      let btnColoredText = canCraftOnlyInCraftTree
+      local btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
+      local btnColoredText = canCraftOnlyInCraftTree
         ? openCraftTreeBtnText
         : mainActionData?.btnColoredName ?? mainActionData.btnName
       setDoubleTextToButton(scene, "btn_main_action", btnText, btnColoredText)
     }
 
-    let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
+    local activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
     scene.findObject("activate_info_text").setValue(activateText)
     showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
 
-    let altActionText = item ? item.getAltActionName() : ""
+    local altActionText = item ? item.getAltActionName() : ""
     showSceneBtn("btn_alt_action", altActionText != "")
     setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
@@ -680,11 +678,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       warningText = limitsCheckData.reason
     setWarningText(warningText)
 
-    let showLinkAction = item && item.hasLink()
-    let linkObj = showSceneBtn("btn_link_action", showLinkAction)
+    local showLinkAction = item && item.hasLink()
+    local linkObj = showSceneBtn("btn_link_action", showLinkAction)
     if (showLinkAction)
     {
-      let linkActionText = ::loc(item.linkActionLocId)
+      local linkActionText = ::loc(item.linkActionLocId)
       setDoubleTextToButton(scene, "btn_link_action", linkActionText, linkActionText)
       if (item.linkActionIcon != "")
       {
@@ -696,7 +694,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onLinkAction(obj)
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (item)
       item.openLink()
   }
@@ -706,21 +704,21 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!isValid())
       return
 
-    let item = getCurItem()
+    local item = getCurItem()
     if (item && canStartPreviewScene(true, true))
       item.doPreview()
   }
 
   function onItemAction(buttonObj)
   {
-    let id = ::to_integer_safe(buttonObj?.holderId, -1)
-    let item = itemsList?[id]
-    let obj = scene.findObject("shop_item_" + id)
+    local id = ::to_integer_safe(buttonObj?.holderId, -1)
+    local item = itemsList?[id]
+    local obj = scene.findObject("shop_item_" + id)
 
     // Need to change list object current index because of
     // we can click on action button in non selected item
     // and wrong item will be updated after main action
-    let listObj = getItemsListObj()
+    local listObj = getItemsListObj()
     if (listObj.getValue() != id && id >= 0 && id < listObj.childrenCount())
       listObj.setValue(id)
 
@@ -743,7 +741,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       openCraftTree(item)
     else
     {
-      let updateFn = item?.needUpdateListAfterAction ? updateItemsList : updateItemInfo
+      local updateFn = item?.needUpdateListAfterAction ? updateItemsList : updateItemInfo
       item.doMainAction(
         ::Callback(@(result) updateFn(), this),
         this,
@@ -755,7 +753,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onAltAction(obj)
   {
-    let item = getCurItem()
+    local item = getCurItem()
     if (item)
       item.doAltAction({ obj = obj, align = "top" })
   }
@@ -764,7 +762,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   {
     if (!::show_console_buttons)
       return
-    let containerObj = scene.findObject("item_info")
+    local containerObj = scene.findObject("item_info")
     if (::check_obj(containerObj) && containerObj.isHovered())
       ::move_mouse_on_obj(getCurItemObj())
     else
@@ -776,40 +774,32 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!itemsListValid)
       return
 
-    let listObj = getItemsListObj()
-    let startIdx = curPage * itemsPerPage
-    let lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
+    local listObj = getItemsListObj()
+    local startIdx = curPage * itemsPerPage
+    local lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
-      let item = itemsList[i]
-      if (!item.hasTimer() && !item?.hasLifetimeTimer())
+      if (!itemsList[i].hasTimer())
         continue
 
-      let itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
-      if (!::check_obj(itemObj))
-        continue
+      local itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
+      if (::check_obj(itemObj))
+      {
+        local timeTxtObj = itemObj.findObject("expire_time")
+        if (::check_obj(timeTxtObj))
+          timeTxtObj.setValue(itemsList[i].getTimeLeftText())
+        timeTxtObj = itemObj.findObject("craft_time")
+        if (::check_obj(timeTxtObj))
+          timeTxtObj.setValue(itemsList[i].getCraftTimeTextShort())
 
-      local timeTxtObj = itemObj.findObject("expire_time")
-      if (::check_obj(timeTxtObj))
-        timeTxtObj.setValue(item.getTimeLeftText())
-
-      timeTxtObj = itemObj.findObject("craft_time")
-      if (::check_obj(timeTxtObj))
-        timeTxtObj.setValue(item.getCraftTimeTextShort())
-
-      timeTxtObj = itemObj.findObject("remaining_lifetime")
-      if (timeTxtObj?.isValid())
-        timeTxtObj.setValue(item.getRemainingLifetimeText())
-
-      updateExpireAlarmIcon(item, itemObj)
+        updateExpireAlarmIcon(itemsList[i], itemObj)
+      }
     }
 
-    let selItem = getCurItem()
+    local selItem = getCurItem()
     if (selItem?.hasTimer())
       fillDescTextAboutDiv(selItem, infoHandler.scene)
 
-    if (selItem?.hasLifetimeTimer())
-      fillItemDescUnderTable(selItem, infoHandler.scene)
   }
 
   function onToShopButton(obj)
@@ -850,7 +840,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
    */
   function getHandlerRestoreData()
   {
-    let data = {
+    local data = {
       openData = {
         curTab = curTab
         curSheet = curSheet
@@ -877,7 +867,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function restoreHandler(stateData)
   {
-    let itemIndex = getItemIndexById(stateData.currentItemId)
+    local itemIndex = getItemIndexById(stateData.currentItemId)
     if (itemIndex == -1)
       return
     curPage = ::ceil(itemIndex / itemsPerPage).tointeger()
@@ -900,24 +890,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     updateItemInfo()
   }
 
-  function onEventUpdateTrophiesVisibility(_) {
-    if (curTab != itemsTab.SHOP)
-      return
-
-    itemsListValid = false
-    updateSheets(false)
-  }
-
-  function onEventUpdateTrophyUnseenIcons(_) {
-    if (curTab != itemsTab.SHOP)
-     return
-
-    applyFilters(false)
-  }
-
   function setWarningText(text)
   {
-    let warningTextObj = scene.findObject("warning_text")
+    local warningTextObj = scene.findObject("warning_text")
     if (::checkObj(warningTextObj))
       warningTextObj.setValue(::colorize("redMenuButtonColor", text))
   }
@@ -932,7 +907,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!::has_feature("Warbonds"))
       return
 
-    let warbondsObj = scene.findObject("balance_text")
+    local warbondsObj = scene.findObject("balance_text")
     warbondsObj.setValue(::g_warbonds.getBalanceText())
     warbondsObj.tooltip = ::loc("warbonds/maxAmount", {warbonds = ::g_warbonds.getLimit()})
   }
@@ -972,7 +947,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function openCraftTree(showItem = null, tutorialItem = null)
   {
-    let curSet = curSheet?.getSet()
+    local curSet = curSheet?.getSet()
     if (curSet?.getCraftTree() == null)
       return
 
@@ -987,7 +962,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj) {
     curSet.saveTutorialWasShown()
-    let steps = [{
+    local steps = [{
       obj = [craftTreeBtnObj]
       text = ::loc("workshop/accentCraftTreeButton", {
         buttonName = ::loc(curSet.getCraftTree()?.openButtonLocId ?? "")
@@ -1002,7 +977,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function onItemHover(obj) {
     if (!::show_console_buttons)
       return
-    let wasMouseMode = isMouseMode
+    local wasMouseMode = isMouseMode
     updateMouseMode()
     if (wasMouseMode != isMouseMode)
       updateShowItemButton()
@@ -1011,9 +986,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (obj.holderId == getCurItemObj()?.holderId)
       return
     hoverHoldAction(obj, function(focusObj) {
-      let idx = focusObj.holderId.tointeger()
-      let value = idx - curPage * itemsPerPage
-      let listObj = getItemsListObj()
+      local idx = focusObj.holderId.tointeger()
+      local value = idx - curPage * itemsPerPage
+      local listObj = getItemsListObj()
       if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
         listObj.setValue(value)
     }.bindenv(this))
@@ -1021,18 +996,18 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   updateMouseMode = @() isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
-    let listObj = getItemsListObj()
+    local listObj = getItemsListObj()
     if (listObj?.isValid())
       listObj.showItemButton = isMouseMode ? "yes" : "no"
   }
 }
 
-let function openItemsWndFromPromo(owner, params = []) {
+local function openItemsWndFromPromo(owner, params = []) {
   local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
 
   local curSheet = null
-  let sheetSearchId = params?[0]
-  let initSubsetId = params?[2]
+  local sheetSearchId = params?[0]
+  local initSubsetId = params?[2]
   if (sheetSearchId)
     curSheet = {searchId = sheetSearchId}
 

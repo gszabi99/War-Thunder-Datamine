@@ -1,4 +1,4 @@
-let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
+local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
 
 ::g_hud_tank_debuffs <- {
   scene    = null
@@ -29,7 +29,7 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
       return
 
     guiScene = scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/HudTankDebuffs",
+    local blk = ::handyman.renderCached("gui/hud/HudTankDebuffs",
         {
           stabilizerValue = getConfigValueById("stabilizer"),
           lwsValue = getConfigValueById("lws"),

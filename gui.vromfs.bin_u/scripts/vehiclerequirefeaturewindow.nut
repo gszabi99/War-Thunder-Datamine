@@ -1,7 +1,7 @@
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::gui_handlers.VehicleRequireFeatureWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.VehicleRequireFeatureWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   featureLockAction = CheckFeatureLockAction.BUY
@@ -13,7 +13,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function initScreen()
   {
     purchases = ::OnlineShopModel.getAllFeaturePurchases(unit.reqFeature)
-    let view = {
+    local view = {
       headerText = getWndHeaderText()
       windowImage = getWndImage()
       mainText = createMainText()
@@ -21,17 +21,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       showOkButton = !getPurchaseAvailable()
       showEntitlementsTable = getPurchaseAvailable()
     }
-    let data = ::handyman.renderCached("%gui/vehicleRequireFeatureWindow", view)
+    local data = ::handyman.renderCached("gui/vehicleRequireFeatureWindow", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
 
-    let timerObj = getObj("vehicle_require_feature_timer")
+    local timerObj = getObj("vehicle_require_feature_timer")
     if (::checkObj(timerObj)) timerObj.setUserData(this)
 
-    let tblObj = getObj("items_list")
-    if (tblObj?.isValid() ?? false) {
-      tblObj.setValue(purchases.len() > 0 ? 0 : -1)
-      ::move_mouse_on_child_by_value(tblObj)
-    }
+    local tblObj = getObj("items_list")
+    tblObj.setValue(purchases.len() > 0 ? 0 : -1)
+    ::move_mouse_on_child_by_value(tblObj)
   }
 
   function getPurchaseAvailable()
@@ -53,7 +51,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       text += ::loc(locPrefix + "warning/buy")
     else // CheckFeatureLockAction.RESEARCH
       text += ::loc(locPrefix + "warning/research")
-    let mainLocParams = {
+    local mainLocParams = {
       specialPackPart = getPurchaseAvailable()
         ? ::loc(locPrefix + "warning/specialPackPart")
         : ""
@@ -67,7 +65,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function getWndImage()
   {
     local res = "#ui/images/usa_tanks_locked.jpg?P1"
-    let clearedCountry = ::g_string.cutPrefix(::getUnitCountry(unit), "country_")
+    local clearedCountry = ::g_string.cutPrefix(::getUnitCountry(unit), "country_")
     if (clearedCountry)
       res = "#ui/images/" + clearedCountry + "_" + unit.unitType.tag + "_locked.jpg?P1"
     return res
@@ -78,8 +76,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if (!unit)
       return ""
 
-    let country = ::getUnitCountry(unit)
-    let locTag = ::g_string.toUpper(::g_string.cutPrefix(country, "country_", ""), 1)
+    local country = ::getUnitCountry(unit)
+    local locTag = ::g_string.toUpper(::g_string.cutPrefix(country, "country_", ""), 1)
                    + unit.unitType.name
     return format("#shop/featureLock/%s/header", locTag)
   }
@@ -92,11 +90,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function createEntitlementsView(purchasesList)
   {
-    let view = []
+    local view = []
     foreach (i, purchase in purchasesList)
     {
-      let entitlementItem = getEntitlementConfig(purchase.sourceEntitlement)
-      let entitlementPrice = getEntitlementPrice(entitlementItem)
+      local entitlementItem = getEntitlementConfig(purchase.sourceEntitlement)
+      local entitlementPrice = getEntitlementPrice(entitlementItem)
       view.append({
         rowEven = i % 2 == 1
         externalLink = true
@@ -133,7 +131,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getEntitlementPrice(entitlementItem)
   {
-    let priceText = ::loc("price/" + entitlementItem.name, "")
+    local priceText = ::loc("price/" + entitlementItem.name, "")
     // Empty string is valid and means we won't show price at all.
     if (priceText == "")
       return ""
@@ -146,8 +144,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     {
       return formatPrice("0")
     }
-    let realPrice = (100 - getDiscountValue(entitlementItem)) * basePrice / 100
-    let roundedPrice = ::floor(100 * realPrice) / 100
+    local realPrice = (100 - getDiscountValue(entitlementItem)) * basePrice / 100
+    local roundedPrice = ::floor(100 * realPrice) / 100
     return formatPrice(roundedPrice.tostring())
   }
 
@@ -158,7 +156,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getDiscountText(entitlementItem)
   {
-    let value = getDiscountValue(entitlementItem)
+    local value = getDiscountValue(entitlementItem)
     if (value == 0)
       return ""
     return value.tostring() + "%"

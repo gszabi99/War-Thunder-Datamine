@@ -1,11 +1,11 @@
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
-::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler
+class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/shop/shopCheckResearch"
-  sceneNavBlkName = "%gui/shop/shopNav.blk"
+  sceneTplName = "gui/shop/shopCheckResearch"
+  sceneNavBlkName = "gui/shop/shopNav.blk"
 
   needHighlight = false
 
@@ -51,20 +51,20 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 }
 
-let function openShopViewWndFromPromo(params) {
-  let unitName = params?[0] ?? ""
-  let unit = ::getAircraftByName(unitName)
+local function openShopViewWndFromPromo(params) {
+  local unitName = params?[0] ?? ""
+  local unit = ::getAircraftByName(unitName)
   if (!unit)
     return
 
-  let country = unit.shopCountry
-  let showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
+  local country = unit.shopCountry
+  local showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
     curAirName = unitName
     forceUnitType = unit?.unitType
     needHighlight = unitName != ""
   })
 
-  let acceptCallback = ::Callback( function() {
+  local acceptCallback = ::Callback( function() {
     ::switch_profile_country(country)
     showUnitInShop() }, this)
   if (country != ::get_profile_country_sq())

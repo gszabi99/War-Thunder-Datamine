@@ -1,14 +1,14 @@
-let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
-let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName
-} = require("%scripts/hud/hudActionBarInfo.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarItems, getWheelBarItems, activateActionBarAction,
+local { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
+local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
+local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
+local { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificationName
+} = require("scripts/hud/hudActionBarInfo.nut")
+local { toggleShortcut } = require("globalScripts/controls/shortcutActions.nut")
+local { getActionBarItems, getWheelBarItems, activateActionBarAction,
   getActionBarUnitName } = ::require_native("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
+local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
 } = ::require_native("hudActionBarConst")
-let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
+local { arrangeStreakWheelActions } = require("scripts/hud/hudActionBarStreakWheel.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -97,16 +97,16 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     curActionBarUnit = getActionBarUnit()
     actionItems = getActionBar()
 
-    let view = {
+    local view = {
       items = ::u.map(actionItems, (@(a) buildItemView(a, true)).bindenv(this))
     }
 
-    let partails = {
-      items           = ::load_template_text("%gui/hud/actionBarItem")
-      textShortcut    = canControl ? ::load_template_text("%gui/hud/actionBarItemTextShortcut")    : ""
-      gamepadShortcut = canControl ? ::load_template_text("%gui/hud/actionBarItemGamepadShortcut") : ""
+    local partails = {
+      items           = ::load_template_text("gui/hud/actionBarItem")
+      textShortcut    = canControl ? ::load_template_text("gui/hud/actionBarItemTextShortcut")    : ""
+      gamepadShortcut = canControl ? ::load_template_text("gui/hud/actionBarItemGamepadShortcut") : ""
     }
-    let blk = ::handyman.renderCached(("%gui/hud/actionBar"), view, partails)
+    local blk = ::handyman.renderCached(("gui/hud/actionBar"), view, partails)
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
     scene.findObject("action_bar").setUserData(this)
 
@@ -116,9 +116,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   //creates view for handyman by one actionBar item
   function buildItemView(item, needShortcuts = false)
   {
-    let unit = getActionBarUnit()
-    let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
-    let isReady = isActionReady(item)
+    local unit = getActionBarUnit()
+    local actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+    local isReady = isActionReady(item)
 
     local shortcutText = ""
     local isXinput = false
@@ -133,14 +133,14 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
           : item?.modificationName == "152mm_football_jump" ? "ID_FIRE_GM_MACHINE_GUN"
           : shortcutId
 
-      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
-      let scInput = shType.getFirstInput(shortcutId)
+      local shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+      local scInput = shType.getFirstInput(shortcutId)
       shortcutText = scInput.getText()
       isXinput = scInput.hasImage() && scInput.getDeviceId() != ::STD_KEYBOARD_DEVICE_ID
       showShortcut = isXinput || shortcutText !=""
     }
 
-    let viewItem = {
+    local viewItem = {
       id               = __action_id_prefix + item.id
       selected         = item.selected ? "yes" : "no"
       active           = item.active ? "yes" : "no"
@@ -156,15 +156,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       cooldown         = getWaitGaugeDegree(item.cooldown)
     }
 
-    let modifName = getActionItemModificationName(item, unit)
+    local modifName = getActionItemModificationName(item, unit)
     if (modifName)
     {
-      viewItem.bullets <- ::handyman.renderNested(::load_template_text("%gui/weaponry/bullets"),
+      viewItem.bullets <- ::handyman.renderNested(::load_template_text("gui/weaponry/bullets"),
         function (text) {
           // if fake bullets are not generated yet, generate them
           if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
             getBulletsSetData(unit, ::fakeBullets_prefix, {})
-          let data = getBulletsSetData(unit, modifName)
+          local data = getBulletsSetData(unit, modifName)
           return getBulletsIconView(data)
         }
       )
@@ -178,8 +178,8 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     if (!modifName && item.type != EII_BULLET && item.type != EII_FORCED_GUN)
     {
-      let killStreakTag = ::getTblValue("killStreakTag", item)
-      let killStreakUnitTag = ::getTblValue("killStreakUnitTag", item)
+      local killStreakTag = ::getTblValue("killStreakTag", item)
+      local killStreakUnitTag = ::getTblValue("killStreakUnitTag", item)
       viewItem.icon <- actionBarType.getIcon(killStreakUnitTag)
       viewItem.name <- actionBarType.getTitle(killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
@@ -199,7 +199,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   }
 
   function updateWaitGaugeDegree(obj, val) {
-    let degree = getWaitGaugeDegree(val)
+    local degree = getWaitGaugeDegree(val)
     if (degree == (obj.getFinalProp(sectorAngle1PID) ?? -1).tointeger())
       return
     obj.set_prop_latent(sectorAngle1PID, degree)
@@ -208,10 +208,10 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function onUpdate(obj = null, dt = 0.0)
   {
-    let prevCount = typeof actionItems == "array" ? actionItems.len() : 0
-    let prevKillStreaksActions = killStreaksActions
+    local prevCount = typeof actionItems == "array" ? actionItems.len() : 0
+    local prevKillStreaksActions = killStreaksActions
 
-    let prevActionItems = actionItems
+    local prevActionItems = actionItems
     actionItems = getActionBar()
 
     if (useWheelmenu)
@@ -240,18 +240,18 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return
     }
 
-    let ship = getActionBarUnit()?.isShipOrBoat()
+    local ship = getActionBarUnit()?.isShipOrBoat()
     foreach(item in actionItems)
     {
-      let itemObj = scene.findObject(__action_id_prefix + item.id)
+      local itemObj = scene.findObject(__action_id_prefix + item.id)
       if (!::checkObj(itemObj))
         continue
 
-      let amountObj = itemObj.findObject("amount_text")
+      local amountObj = itemObj.findObject("amount_text")
       if (::check_obj(amountObj))
         amountObj.setValue(getActionItemAmountText(item))
 
-      let automaticObj = itemObj.findObject("automatic_text")
+      local automaticObj = itemObj.findObject("automatic_text")
       if (::check_obj(automaticObj))
         automaticObj.show(ship && item?.automatic)
 
@@ -264,9 +264,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       itemObj.active = item.active ? "yes" : "no"
       itemObj.enable(isActionReady(item))
 
-      let mainActionButtonObj = itemObj.findObject("mainActionButton")
-      let activatedActionButtonObj = itemObj.findObject("activatedActionButton")
-      let cancelButtonObj = itemObj.findObject("cancelButton")
+      local mainActionButtonObj = itemObj.findObject("mainActionButton")
+      local activatedActionButtonObj = itemObj.findObject("activatedActionButton")
+      local cancelButtonObj = itemObj.findObject("cancelButton")
       if (::checkObj(mainActionButtonObj) &&
           ::checkObj(activatedActionButtonObj) &&
           ::checkObj(cancelButtonObj))
@@ -276,9 +276,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
           cancelButtonObj.show(item.active)
       }
 
-      let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
-      let backgroundImage = actionBarType.getIcon()
-      let iconObj = itemObj.findObject("action_icon")
+      local actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+      local backgroundImage = actionBarType.getIcon()
+      local iconObj = itemObj.findObject("action_icon")
       if (::checkObj(iconObj))
       {
         if (backgroundImage.len() > 0)
@@ -303,33 +303,33 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
    */
   function handleIncrementCount(currentItem, prewItemsArray, itemObj)
   {
-    let actionBarType = ::g_hud_action_bar_type.getByActionItem(currentItem)
+    local actionBarType = ::g_hud_action_bar_type.getByActionItem(currentItem)
      if (!actionBarType.needAnimOnIncrementCount)
        return
 
-    let prewItem = ::u.search(prewItemsArray, (@(currentItem) function (searchItem) {
+    local prewItem = ::u.search(prewItemsArray, (@(currentItem) function (searchItem) {
       return currentItem.id == searchItem.id
     })(currentItem))
 
     if (prewItem == null)
       return
 
-    let hasAmmoLost = "ammoLost" in prewItem && "ammoLost" in currentItem // compatibility 1.71
+    local hasAmmoLost = "ammoLost" in prewItem && "ammoLost" in currentItem // compatibility 1.71
     if ((prewItem.countEx == currentItem.countEx && prewItem.count < currentItem.count)
       || (prewItem.countEx < currentItem.countEx)
       || (hasAmmoLost && prewItem.ammoLost < currentItem.ammoLost))
     {
-      let delta = currentItem.countEx - prewItem.countEx || currentItem.count - prewItem.count
+      local delta = currentItem.countEx - prewItem.countEx || currentItem.count - prewItem.count
       if (hasAmmoLost && prewItem.ammoLost < currentItem.ammoLost)
         ::g_hud_event_manager.onHudEvent("hint:ammoDestroyed:show")
-      let blk = ::handyman.renderCached("%gui/hud/actionBarIncrement", {is_increment = delta > 0, delta_amount = delta})
+      local blk = ::handyman.renderCached("gui/hud/actionBarIncrement", {is_increment = delta > 0, delta_amount = delta})
       guiScene.appendWithBlk(itemObj, blk, this)
     }
   }
 
   function blink(obj)
   {
-    let blinkObj = obj.findObject("availability")
+    local blinkObj = obj.findObject("availability")
     if (::checkObj(blinkObj))
       blinkObj["_blink"] = "yes"
   }
@@ -348,23 +348,23 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
    * */
   function getActionBar()
   {
-    let isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ::ES_UNIT_TYPE_INVALID
-    let rawActionBarItem = isUnitValid ? getActionBarItems() : []
+    local isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ::ES_UNIT_TYPE_INVALID
+    local rawActionBarItem = isUnitValid ? getActionBarItems() : []
     if (!useWheelmenu)
       return rawActionBarItem
 
-    let rawWheelItem = isUnitValid ? (getWheelBarItems() ?? []) : []
+    local rawWheelItem = isUnitValid ? (getWheelBarItems() ?? []) : []
     killStreaksActions = []
     weaponActions = []
     for (local i = rawActionBarItem.len() - 1; i >= 0; i--)
     {
-      let actionBarType = ::g_hud_action_bar_type.getByActionItem(rawActionBarItem[i])
+      local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawActionBarItem[i])
       if (actionBarType.isForWheelMenu())
         killStreaksActions.append(rawActionBarItem[i])
     }
     for (local i = rawWheelItem.len() - 1; i >= 0; i--)
     {
-      let actionBarType = ::g_hud_action_bar_type.getByActionItem(rawWheelItem[i])
+      local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawWheelItem[i])
       if (actionBarType.isForSelectWeaponMenu())
         weaponActions.insert(0, rawWheelItem[i])
     }
@@ -374,10 +374,10 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function activateAction(obj)
   {
-    let action = getActionByObj(obj)
+    local action = getActionByObj(obj)
     if (action)
     {
-      let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
+      local shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
       if (shortcut)
         toggleShortcut(shortcut)
     }
@@ -386,7 +386,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   //Only for streak wheel menu
   function activateStreak(streakId)
   {
-    let action = killStreaksActionsOrdered?[streakId]
+    local action = killStreaksActionsOrdered?[streakId]
     if (action)
       return activateActionBarAction(action.shortcutIdx)
 
@@ -400,10 +400,10 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function activateWeapon(streakId)
   {
-    let action = ::getTblValue(streakId, weaponActions)
+    local action = ::getTblValue(streakId, weaponActions)
     if (action)
     {
-      let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
+      local shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getActionBarUnit())
       toggleShortcut(shortcut)
     }
   }
@@ -411,7 +411,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function getActionByObj(obj)
   {
-    let actionItemNum = obj.id.slice(-(obj.id.len() - __action_id_prefix.len())).tointeger()
+    local actionItemNum = obj.id.slice(-(obj.id.len() - __action_id_prefix.len())).tointeger()
     foreach (item in actionItems)
       if (item.id == actionItemNum)
         return item
@@ -451,14 +451,14 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   {
     killStreaksActionsOrdered = arrangeStreakWheelActions(getActionBarUnit(), killStreaksActions)
 
-    let menu = []
+    local menu = []
     foreach(action in killStreaksActionsOrdered)
       menu.append(action != null ? buildItemView(action) : null)
 
-    let params = {
+    local params = {
       menu            = menu
       callbackFunc    = activateStreak
-      contentTemplate = "%gui/hud/actionBarItemStreakWheel"
+      contentTemplate = "gui/hud/actionBarItemStreakWheel"
       owner           = this
     }
 
@@ -467,7 +467,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function updateKillStreakWheel(prevActions)
   {
-    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
+    local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
     if (!handler || !handler.isActive)
       return
 
@@ -504,13 +504,13 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function fillSelectWaponWheel()
   {
-    let menu = []
+    local menu = []
     foreach(action in weaponActions)
       menu.append(buildItemView(action))
-    let params = {
+    local params = {
       menu            = menu
       callbackFunc    = activateWeapon
-      contentTemplate = "%gui/hud/actionBarItemStreakWheel"
+      contentTemplate = "gui/hud/actionBarItemStreakWheel"
       owner           = this
     }
     ::gui_start_wheelmenu(params)

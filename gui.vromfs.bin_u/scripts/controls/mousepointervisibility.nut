@@ -5,7 +5,7 @@
  * ID_SHOW_MOUSE_CURSOR shortcut button.
  */
 
-let isMouseCursorVisible = ::Watched(::is_cursor_visible_in_gui())
+local isMouseCursorVisible = ::Watched(::is_cursor_visible_in_gui())
 
 // Called from client
 ::on_changed_cursor_visibility <- @(oldValue) isMouseCursorVisible(::is_cursor_visible_in_gui())

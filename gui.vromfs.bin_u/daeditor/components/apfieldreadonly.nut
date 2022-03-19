@@ -1,12 +1,12 @@
 from "%darg/ui_imports.nut" import *
 from "ecs" import *
 
-let {getValFromObj, compValToString} = require("attrUtil.nut")
+local {getValFromObj, compValToString} = require("attrUtil.nut")
 
-let function fieldReadOnly(params = {}) {
-  let {path, eid, comp_name} = params
-  let val = path==null ? _dbg_get_comp_val_inspect(eid, comp_name) : getValFromObj(eid, comp_name, path)
-  let valText = compValToString(val)
+local function fieldReadOnly(params = {}) {
+  local {path, eid, comp_name} = params
+  local val = path==null ? obsolete_dbg_get_comp_val(eid, comp_name) : getValFromObj(eid, comp_name, path)
+  local valText = compValToString(val)
 
   return {
     rendObj = ROBJ_DTEXT

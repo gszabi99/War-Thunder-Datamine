@@ -1,6 +1,6 @@
-let g_string =  require("%sqstd/string.nut")
-let regexp2 = require("regexp2")
-let { wrapIdxInArrayLen } = require("%sqStdLibs/helpers/u.nut")
+local g_string =  require("std/string.nut")
+local regexp2 = require("regexp2")
+local { wrapIdxInArrayLen } = require("sqStdLibs/helpers/u.nut")
 
 global enum ALIGN {
   LEFT   = "left"
@@ -9,7 +9,7 @@ global enum ALIGN {
   BOTTOM = "bottom"
 }
 
-let DEFAULT_OVERRIDE_PARAMS = {
+local DEFAULT_OVERRIDE_PARAMS = {
   windowSizeX = -1
   windowSizeY = -1
 }
@@ -39,7 +39,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
     * reserveX, reserveY - space items in pixels (int) or dagui constant (string) reserved for non-item listObj's elements
   */
   function countSizeInItems(listObj, sizeX, sizeY, spaceX, spaceY, reserveX = 0, reserveY = 0) {
-    let res = {
+    local res = {
       itemsCountX = 1
       itemsCountY = 1
       sizeX = 0
@@ -52,8 +52,8 @@ let DEFAULT_OVERRIDE_PARAMS = {
     if (!::check_obj(listObj))
       return res
 
-    let listSize = listObj.getSize()
-    let guiScene = listObj.getScene()
+    local listSize = listObj.getSize()
+    local guiScene = listObj.getScene()
     res.sizeX = toPixels(guiScene, sizeX)
     res.sizeY = toPixels(guiScene, sizeY)
     res.spaceX = toPixels(guiScene, spaceX)
@@ -81,7 +81,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
      * spaceX, spaceY - space between items in pixels (int) or dagui constant (string)
    */
   function adjustWindowSize(wndObj, listObj, sizeX, sizeY, spaceX, spaceY, overrideParams = DEFAULT_OVERRIDE_PARAMS) {
-    let res = countSizeInItems(listObj, sizeX, sizeY, spaceX, spaceY)
+    local res = countSizeInItems(listObj, sizeX, sizeY, spaceX, spaceY)
     local windowSize = adjustWindowSizeByConfig(wndObj, listObj, res, overrideParams)
     return res.__update({windowSize = windowSize})
   }
@@ -92,14 +92,14 @@ let DEFAULT_OVERRIDE_PARAMS = {
       return [0, 0]
 
     overrideParams = DEFAULT_OVERRIDE_PARAMS.__merge(overrideParams)
-    let wndSize = wndObj.getSize()
-    let listSize = listObj.getSize()
-    let windowSizeX = overrideParams.windowSizeX
-    let windowSizeY = overrideParams.windowSizeY
+    local wndSize = wndObj.getSize()
+    local listSize = listObj.getSize()
+    local windowSizeX = overrideParams.windowSizeX
+    local windowSizeY = overrideParams.windowSizeY
 
-    let wndSizeX = windowSizeX != -1 ? windowSizeX
+    local wndSizeX = windowSizeX != -1 ? windowSizeX
       : min(wndSize[0], wndSize[0] - listSize[0] + (config.spaceX + config.itemsCountX * (config.sizeX + config.spaceX)))
-    let wndSizeY = windowSizeY != -1 ? windowSizeY
+    local wndSizeY = windowSizeY != -1 ? windowSizeY
       : min(wndSize[1], wndSize[1] - listSize[1] + (config.spaceY + config.itemsCountY * (config.sizeY + config.spaceY)))
     wndObj.size = ::format("%d, %d", wndSizeX, wndSizeY)
     return [wndSizeX, wndSizeY]
@@ -136,7 +136,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
   }
 
   function daguiStringToColor4(colorStr) {
-    let res = Color4()
+    local res = Color4()
     if (!colorStr.len())
       return res
     if (colorStr.slice(0, 1) == "#")
@@ -145,7 +145,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
     if (colorStr.len() != 8 && colorStr.len() != 6)
       return res
 
-    let colorInt = g_string.hexStringToInt(colorStr)
+    local colorInt = g_string.hexStringToInt(colorStr)
     if (colorStr.len() == 8)
       res.a = ((colorInt & 0xFF000000) >> 24).tofloat() / 255
     res.r = ((colorInt & 0xFF0000) >> 16).tofloat() / 255
@@ -162,17 +162,17 @@ let DEFAULT_OVERRIDE_PARAMS = {
     if (!::check_obj(obj))
       return
 
-    let guiScene = obj.getScene()
+    local guiScene = obj.getScene()
 
     guiScene.applyPendingChanges(true)
 
-    let objSize = obj.getSize()
-    let screenSize = [ ::screen_width(), ::screen_height() ]
-    let reqPos = [toPixels(guiScene, _reqPos[0], obj), toPixels(guiScene, _reqPos[1], obj)]
-    let border = [toPixels(guiScene, _border[0], obj), toPixels(guiScene, _border[1], obj)]
+    local objSize = obj.getSize()
+    local screenSize = [ ::screen_width(), ::screen_height() ]
+    local reqPos = [toPixels(guiScene, _reqPos[0], obj), toPixels(guiScene, _reqPos[1], obj)]
+    local border = [toPixels(guiScene, _border[0], obj), toPixels(guiScene, _border[1], obj)]
 
-    let posX = clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
-    let posY = clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
+    local posX = clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
+    local posY = clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
 
     if (obj?.pos != null)
       obj.pos = ::format("%d, %d", posX, posY)
@@ -200,8 +200,8 @@ let DEFAULT_OVERRIDE_PARAMS = {
     if (!::check_obj(menuObj))
       return _align
 
-    let guiScene = menuObj.getScene()
-    let menuSize = menuObj.getSize()
+    local guiScene = menuObj.getScene()
+    local menuSize = menuObj.getSize()
 
     local parentPos  = [0, 0]
     local parentSize = [0, 0]
@@ -220,7 +220,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
       parentPos  = ::get_dagui_mouse_cursor_pos_RC()
     }
 
-    let margin = params?.margin
+    local margin = params?.margin
     if (margin && margin.len() >= 2)
       for(local i = 0; i < 2; i++)
       {
@@ -228,11 +228,11 @@ let DEFAULT_OVERRIDE_PARAMS = {
         parentSize[i] += 2 * margin[i]
       }
 
-    let screenBorders = params?.screenBorders ?? ["@bw", "@bh"]
-    let bw = toPixels(guiScene, screenBorders[0])
-    let bh = toPixels(guiScene, screenBorders[1])
-    let screenStart = [ bw, bh ]
-    let screenEnd   = [ ::screen_width().tointeger() - bw, ::screen_height().tointeger() - bh ]
+    local screenBorders = params?.screenBorders ?? ["@bw", "@bh"]
+    local bw = toPixels(guiScene, screenBorders[0])
+    local bh = toPixels(guiScene, screenBorders[1])
+    local screenStart = [ bw, bh ]
+    local screenEnd   = [ ::screen_width().tointeger() - bw, ::screen_height().tointeger() - bh ]
 
     local checkAligns = []
     switch (_align)
@@ -246,7 +246,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
 
     foreach (checkIdx, align in checkAligns)
     {
-      let isAlignForced = checkIdx == checkAligns.len() - 1
+      local isAlignForced = checkIdx == checkAligns.len() - 1
 
       local isVertical = true
       local isPositive = true
@@ -264,10 +264,10 @@ let DEFAULT_OVERRIDE_PARAMS = {
           break
       }
 
-      let axis = isVertical ? 1 : 0
-      let parentTargetPoint = [0.5, 0.5] //part of parent to target point
-      let frameOffset = [ 0 - menuSize[0] / 2, 0 - menuSize[1] / 2 ]
-      let frameOffsetText = [ "-w/2", "-h/2" ] //need this for animation
+      local axis = isVertical ? 1 : 0
+      local parentTargetPoint = [0.5, 0.5] //part of parent to target point
+      local frameOffset = [ 0 - menuSize[0] / 2, 0 - menuSize[1] / 2 ]
+      local frameOffsetText = [ "-w/2", "-h/2" ] //need this for animation
 
       if (isPositive)
       {
@@ -281,13 +281,13 @@ let DEFAULT_OVERRIDE_PARAMS = {
         frameOffsetText[axis] = isVertical ? "-h" : "-w"
       }
 
-      let targetPoint = [
+      local targetPoint = [
         parentPos[0] + (parentSize[0] * (params?.customPosX ?? parentTargetPoint[0])).tointeger()
         parentPos[1] + (parentSize[1] * (params?.customPosY ?? parentTargetPoint[1])).tointeger()
       ]
 
-      let isFits = [ true, true ]
-      let sideSpace = [ 0, 0 ]
+      local isFits = [ true, true ]
+      local sideSpace = [ 0, 0 ]
       foreach (i, v in sideSpace)
       {
         if (i == axis)
@@ -301,8 +301,8 @@ let DEFAULT_OVERRIDE_PARAMS = {
       if ((!isFits[0] || !isFits[1]) && !isAlignForced)
         continue
 
-      let arrowOffset = [ 0, 0 ]
-      let menuPos = [ targetPoint[0] + frameOffset[0], targetPoint[1] + frameOffset[1] ]
+      local arrowOffset = [ 0, 0 ]
+      local menuPos = [ targetPoint[0] + frameOffset[0], targetPoint[1] + frameOffset[1] ]
 
       foreach (i, v in menuPos)
       {
@@ -321,7 +321,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
         }
       }
 
-      let menuPosText = [ "", "" ]
+      local menuPosText = [ "", "" ]
       foreach (i, v in menuPos)
         menuPosText[i] = (menuPos[i] - frameOffset[i]) + frameOffsetText[i]
 
@@ -330,11 +330,11 @@ let DEFAULT_OVERRIDE_PARAMS = {
 
       if (arrowOffset[0] || arrowOffset[1])
       {
-        let arrowObj = menuObj.findObject("popup_menu_arrow")
+        local arrowObj = menuObj.findObject("popup_menu_arrow")
         if (::check_obj(arrowObj))
         {
           guiScene.setUpdatesEnabled(true, true)
-          let arrowPos = arrowObj.getPosRC()
+          local arrowPos = arrowObj.getPosRC()
           foreach (i, v in arrowPos)
             arrowPos[i] += arrowOffset[i]
           arrowObj["style"] = "position:root; pos:" + g_string.implode(arrowPos, ", ") + ";"
@@ -351,13 +351,13 @@ let DEFAULT_OVERRIDE_PARAMS = {
     if (!::check_obj(sceneObj))
       return null
 
-    let chCount = sceneObj.childrenCount()
+    local chCount = sceneObj.childrenCount()
     if (chCount <= 0)
       return null
 
     for (local i = 0; i < chCount; i++)
     {
-      let nextChObj = sceneObj.getChild(i)
+      local nextChObj = sceneObj.getChild(i)
       if (nextChObj.isVisible() && nextChObj.isEnabled())
         return nextChObj
     }
@@ -379,7 +379,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
   if (!::check_obj(obj))
     return -1
 
-  let value = obj.getValue()
+  local value = obj.getValue()
   if (value < 0 || value >= obj.childrenCount())
     return -1
 
@@ -391,7 +391,7 @@ let DEFAULT_OVERRIDE_PARAMS = {
   if (!::check_obj(parentObj))
     return defValue
 
-  let obj = parentObj.findObject(id)
+  local obj = parentObj.findObject(id)
   if (::check_obj(obj))
     return obj.getValue()
 
@@ -411,44 +411,44 @@ let DEFAULT_OVERRIDE_PARAMS = {
 // Please add all new funcs into this module.
 // ============================================================================
 
-let function setFocusToNextObj(scene, objIdsList, increment) {
-  let objectsList = objIdsList.map(@(id) id != null ? scene.findObject(id) : null)
+local function setFocusToNextObj(scene, objIdsList, increment) {
+  local objectsList = objIdsList.map(@(id) id != null ? scene.findObject(id) : null)
     .filter(@(obj) ::check_obj(obj) && obj.isVisible() && obj.isEnabled())
-  let listLen = objectsList.len()
+  local listLen = objectsList.len()
   if (listLen == 0)
     return
-  let curIdx = objectsList.findindex(@(obj) obj.isFocused()) ?? (increment >= 0 ? -1 : listLen)
-  let newIdx = wrapIdxInArrayLen(curIdx + increment, listLen)
+  local curIdx = objectsList.findindex(@(obj) obj.isFocused()) ?? (increment >= 0 ? -1 : listLen)
+  local newIdx = wrapIdxInArrayLen(curIdx + increment, listLen)
   objectsList[newIdx].select()
 }
 
-let function getSelectedChild(obj) {
+local function getSelectedChild(obj) {
   if (!obj?.isValid())
     return null
 
-  let total = obj.childrenCount()
+  local total = obj.childrenCount()
   if (total == 0)
     return null
 
-  let value = clamp(obj.getValue(), 0, total - 1)
+  local value = clamp(obj.getValue(), 0, total - 1)
   return obj.getChild(value)
 }
 
-let function findChild(obj, func) {
-  let res = {childIdx = -1, childObj = null}
+local function findChild(obj, func) {
+  local res = {childIdx = -1, childObj = null}
   if (!obj?.isValid())
     return res
 
-  let total = obj.childrenCount()
+  local total = obj.childrenCount()
   for (local i = 0; i < total; ++i) {
-    let childObj = obj.getChild(i)
+    local childObj = obj.getChild(i)
     if (childObj?.isValid() && func(childObj))
       return {childIdx = i, childObj}
   }
   return res
 }
 
-let findChildIndex = @(obj, func) findChild(obj, func).childIdx
+local findChildIndex = @(obj, func) findChild(obj, func).childIdx
 
 return {
   setFocusToNextObj

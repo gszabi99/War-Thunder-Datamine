@@ -1,8 +1,8 @@
-let { is_sound_mods_enabled, restart_game_without_mods } = require("soundModCheck")
+local { is_sound_mods_enabled, restart_game_without_mods } = require("soundModCheck")
 
-let isAllowSoundMods = @(event) event?.allowSoundMods ?? true
+local isAllowSoundMods = @(event) event?.allowSoundMods ?? true
 
-let function showMsgboxIfSoundModsNotAllowed(event)
+local function showMsgboxIfSoundModsNotAllowed(event)
 {
   if (!is_sound_mods_enabled() || isAllowSoundMods(event))
     return true

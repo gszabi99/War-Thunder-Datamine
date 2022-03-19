@@ -1,14 +1,14 @@
-let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
+local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
+local { getPromoHandlerUpdateConfigs } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
   if (!::handlersManager.isHandlerValid(handler))
     return null
 
-  let owner = handler.weakref()
-  let guiScene = handler.guiScene
+  local owner = handler.weakref()
+  local guiScene = handler.guiScene
   local scene = handler.scene.findObject("promo_mainmenu_place")
 
   return ::Promo(owner, guiScene, scene)
@@ -37,7 +37,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
     updateFunctions = {}
     foreach (key, config in getPromoHandlerUpdateConfigs()) {
-      let { updateFunctionInHandler, updateByEvents } = config
+      local { updateFunctionInHandler, updateByEvents } = config
       if (updateFunctionInHandler == null)
         continue
 
@@ -48,10 +48,10 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
     initScreen(true)
 
-    let pollsTable = {}
+    local pollsTable = {}
     for (local j = 0; sourceDataBlock != null && j < sourceDataBlock.blockCount(); j++)
     {
-      let block = sourceDataBlock.getBlock(j)
+      local block = sourceDataBlock.getBlock(j)
       if (block?.pollId != null)
         pollsTable[block.pollId] <- true
     }
@@ -77,12 +77,12 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
   function updateAllBlocks()
   {
     needUpdateByTimerArr = []
-    let data = generateData()
-    let topPositionPromoPlace = scene.findObject("promo_mainmenu_place_top")
+    local data = generateData()
+    local topPositionPromoPlace = scene.findObject("promo_mainmenu_place_top")
     if (::checkObj(topPositionPromoPlace))
       guiScene.replaceContentFromText(topPositionPromoPlace, data.upper, data.upper.len(), this)
 
-    let bottomPositionPromoPlace = scene.findObject("promo_mainmenu_place_bottom")
+    local bottomPositionPromoPlace = scene.findObject("promo_mainmenu_place_bottom")
     if (::checkObj(bottomPositionPromoPlace))
       guiScene.replaceContentFromText(bottomPositionPromoPlace, data.bottom, data.bottom.len(), this)
 
@@ -106,23 +106,23 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
   function generateData()
   {
     widgetsTable = {}
-    let upperPromoView = {
+    local upperPromoView = {
       showAllCheckBoxEnabled = ::g_promo.canSwitchShowAllPromoBlocksFlag()
       showAllCheckBoxValue = ::g_promo.getShowAllPromoBlocks()
       promoButtons = []
     }
 
-    let bottomPromoView = {
+    local bottomPromoView = {
       showAllCheckBoxEnabled = false
       promoButtons = []
     }
 
     for (local i = 0; sourceDataBlock != null && i < sourceDataBlock.blockCount(); i++)
     {
-      let block = sourceDataBlock.getBlock(i)
+      local block = sourceDataBlock.getBlock(i)
 
-      let blockView = ::g_promo.generateBlockView(block)
-      let blockId = blockView.id
+      local blockView = ::g_promo.generateBlockView(block)
+      local blockId = blockView.id
       if (block?.pollId != null)
       {
         if (::g_promo.getVisibilityById(blockId)) //add pollId to request only for visible promo
@@ -138,10 +138,10 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
       if (blockView?.notifyNew && !::g_promo.isWidgetSeenById(blockId))
         widgetsTable[blockId] <- {}
 
-      let playlistArray = getPlaylistArray(block)
+      local playlistArray = getPlaylistArray(block)
       if (playlistArray.len() > 0)
       {
-        let requestStopPlayTimeSec = block?.requestStopPlayTimeSec || ::g_promo.DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
+        local requestStopPlayTimeSec = block?.requestStopPlayTimeSec || ::g_promo.DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
         ::g_promo.enablePlayMenuMusic(playlistArray, requestStopPlayTimeSec)
       }
 
@@ -149,8 +149,8 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
         needUpdateByTimerArr.append(blockId)
     }
     return {
-      upper = ::handyman.renderCached("%gui/promo/promoBlocks", upperPromoView)
-      bottom = ::handyman.renderCached("%gui/promo/promoBlocks", bottomPromoView)
+      upper = ::handyman.renderCached("gui/promo/promoBlocks", upperPromoView)
+      bottom = ::handyman.renderCached("gui/promo/promoBlocks", bottomPromoView)
     }
   }
 
@@ -159,7 +159,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     if (!::checkObj(object))
       return
 
-    let data = ::handyman.renderCached(tplPath, view)
+    local data = ::handyman.renderCached(tplPath, view)
     guiScene.replaceContentFromText(object, data, data.len(), this)
   }
 
@@ -170,8 +170,8 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
     for (local i = 0; i < sourceDataBlock.blockCount(); i++)
     {
-      let block = sourceDataBlock.getBlock(i)
-      let id = block.getBlockName()
+      local block = sourceDataBlock.getBlock(i)
+      local id = block.getBlockName()
       if (id in updateFunctions)
         updateFunctions[id].call(this)
 
@@ -181,7 +181,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
       if (!(block?.multiple ?? false))
         continue
 
-      let btnObj = scene.findObject(id)
+      local btnObj = scene.findObject(id)
       if (::check_obj(btnObj))
         btnObj.setUserData(this)
     }
@@ -189,9 +189,9 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function getPlaylistArray(block)
   {
-    let defaultName = "playlist"
-    let langKey = defaultName + "_" + ::g_language.getShortName()
-    let list = block?[langKey] ?? block?[defaultName]
+    local defaultName = "playlist"
+    local langKey = defaultName + "_" + ::g_language.getShortName()
+    local list = block?[langKey] ?? block?[defaultName]
     if (!list)
       return []
     return list % "name"
@@ -206,7 +206,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
   {
     ::add_big_query_record("promo_click",
       ::save_to_json({id = ::g_promo.cutActionParamsKey(obj.id), collapsed = isFromCollapsed}))
-    let objScene = obj.getScene()
+    local objScene = obj.getScene()
     objScene.performDelayed(
       this,
       (@(owner, obj, widgetsTable) function() {
@@ -222,7 +222,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function performActionCollapsed(obj)
   {
-    let buttonObj = obj.getParent()
+    local buttonObj = obj.getParent()
     performActionWithStatistics(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)), true)
   }
 
@@ -236,7 +236,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     if (!isValid())
       return false
 
-    let chBoxObj = scene.findObject("checkbox_show_all_promo_blocks")
+    local chBoxObj = scene.findObject("checkbox_show_all_promo_blocks")
     if (!::checkObj(chBoxObj))
       return false
 
@@ -274,7 +274,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
     for (local i = 0; i < scene.childrenCount(); i++)
     {
-      let child = scene.getChild(i)
+      local child = scene.getChild(i)
       if (child.isVisible() && child.isEnabled())
         return scene
     }
@@ -294,19 +294,19 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   function updateWebPollButton(param)
   {
-    let pollId = param?.pollId
-    let objectId = ::getTblValue(pollId, pollIdToObjectId)
+    local pollId = param?.pollId
+    local objectId = ::getTblValue(pollId, pollIdToObjectId)
     if (objectId == null)
       return
 
-    let showByLocalConditions = !isPollVoted(pollId) && ::g_promo.getVisibilityById(objectId)
+    local showByLocalConditions = !isPollVoted(pollId) && ::g_promo.getVisibilityById(objectId)
     if(!showByLocalConditions)
     {
       ::showBtn(objectId, false, scene)
       return
     }
 
-    let link = generatePollUrl(pollId)
+    local link = generatePollUrl(pollId)
     if (link.len() == 0)
       return
     set_blk_value_by_path(sourceDataBlock, objectId + "/link", link)
@@ -342,7 +342,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
-    let isNeedFrequentUpdate = needUpdateByTimerArr.len() > 0
+    local isNeedFrequentUpdate = needUpdateByTimerArr.len() > 0
     timerObj = owner.scene.findObject("promo_blocks_timer_fast")
     if (::check_obj(timerObj))
       timerObj.setUserData(isNeedFrequentUpdate ? this : null)

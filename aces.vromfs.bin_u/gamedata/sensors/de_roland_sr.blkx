@@ -81,8 +81,7 @@
             "value": 7.5
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-10.0,10.0],
-            "azimuthWidth": 6.0,
+            "azimuthRange": [-15.0,15.0],
             "distanceRange": [0.0,15000.0]
           }
         },
@@ -111,14 +110,11 @@
             "fsm": "search",
             "active": true
           },
-          "setCueEnabled": {
-            "value": true
-          },
           "setScanPattern": {
             "scanPattern": "search"
           },
           "setScanDirectionPhase": {
-            "azimuth": 0.0,
+            "azimuth": -180.0,
             "elevation": 0.0
           }
         },
@@ -126,9 +122,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         }
       },
@@ -198,7 +191,7 @@
               "scanPattern": "search"
             },
             "setScanDirectionPhase": {
-              "azimuth": 0.0,
+              "azimuth": -180.0,
               "elevation": 0.0
             },
             "setStandbyMode": []
@@ -242,18 +235,6 @@
             "setNextDetectedTargetActive": []
           }
         },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": []
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": []
-          }
-        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -264,10 +245,6 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
               "type": 0,
               "sensorIndex": 1
             }
@@ -282,7 +259,7 @@
           "event": "update",
           "actions": {
             "checkInScanDirectionPhase": {
-              "azimuth": 0.0,
+              "azimuth": -180.0,
               "elevation": 0.0
             }
           }

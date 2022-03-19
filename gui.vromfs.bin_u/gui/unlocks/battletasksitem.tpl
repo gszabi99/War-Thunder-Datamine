@@ -115,7 +115,7 @@ expandable {
             btnName:t='LB'
             ButtonImg{}
             descImg {
-              background-image:t='#ui/gameuiskin#sound_on.svg'
+              background-image:t='#ui/gameuiskin#sound_on'
             }
             animated_wait_icon {
               background-rotation:t = '0'

@@ -114,6 +114,7 @@
         "armorThickness": 16.0,
         "hidableInViewer": true,
         "genericDamageMult": 0.1,
+        "explosionDamageMult": 2.0,
         "shatterDamageMult": 0.1
       },
       "superstructures": {
@@ -197,6 +198,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 8.0,
         "genericDamageMult": 1.5,
+        "explosionDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
           "hp": 3000.0
@@ -1407,9 +1409,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1418,7 +1420,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1429,9 +1431,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1440,9 +1442,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1451,9 +1453,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1462,7 +1464,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1473,9 +1475,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1484,9 +1486,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3502,10 +3504,19 @@
             "defaultPitch": 0.0
           },
           {
+            "speedYaw": 60.0
+          },
+          {
+            "speedPitch": 20.0
+          },
+          {
             "ChainfireTime": 1.0
           },
           {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "fireConeAngle": 15.0
@@ -3541,18 +3552,6 @@
             "errExplTime": 0.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 50.0
-          },
-          {
-            "bullets": 1800
-          },
-          {
-            "useGunnerTargetingQuality": false
-          },
-          {
             "turret": {
               "head": "main_caliber_turret_01",
               "gun": "main_caliber_gun_01",
@@ -3575,25 +3574,6 @@
             "limitsTable": {
               "lim1": [-180.0,155.0,-5.0,85.0],
               "lim2": [155.0,180.0,5.0,85.0]
-            }
-          },
-          {
-            "gunStabilizer": {
-              "hasVerticalGunFreeMode": true,
-              "hasHorizontal": true,
-              "horizontalOmegaMult": 1.0,
-              "horizontalSpeedLimitKPH": 80.0,
-              "hasVertical": true,
-              "verticalOmegaMult": 1.0,
-              "verticalSpeedLimitKPH": 80.0,
-              "errorKPHToDegrees": [
-                {
-                  "row": [5.0,0.01]
-                },
-                {
-                  "row": [70.0,0.05]
-                }
-              ]
             }
           }
         ]
@@ -3631,10 +3611,19 @@
             "defaultPitch": 0.0
           },
           {
+            "speedYaw": 60.0
+          },
+          {
+            "speedPitch": 20.0
+          },
+          {
             "ChainfireTime": 1.0
           },
           {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "fireConeAngle": 15.0
@@ -3670,18 +3659,6 @@
             "errExplTime": 0.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 50.0
-          },
-          {
-            "bullets": 1800
-          },
-          {
-            "useGunnerTargetingQuality": false
-          },
-          {
             "turret": {
               "head": "main_caliber_turret_08",
               "gun": "main_caliber_gun_08",
@@ -3705,25 +3682,6 @@
               "lim1": [-180.0,-20.0,-5.0,85.0],
               "lim2": [-20.0,10.0,8.0,85.0],
               "lim3": [10.0,180.0,-5.0,85.0]
-            }
-          },
-          {
-            "gunStabilizer": {
-              "hasVerticalGunFreeMode": true,
-              "hasHorizontal": true,
-              "horizontalOmegaMult": 1.0,
-              "horizontalSpeedLimitKPH": 80.0,
-              "hasVertical": true,
-              "verticalOmegaMult": 1.0,
-              "verticalSpeedLimitKPH": 80.0,
-              "errorKPHToDegrees": [
-                {
-                  "row": [5.0,0.01]
-                },
-                {
-                  "row": [70.0,0.05]
-                }
-              ]
             }
           }
         ]

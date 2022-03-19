@@ -22,9 +22,8 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
-      "centerElevation": 17.5,
       "period": 0.25,
-      "width": 17.5,
+      "width": 2.5,
       "barHeight": 1.0,
       "barsCount": 5,
       "rowMajor": false,
@@ -130,7 +129,7 @@
           {
             "setCenterElevation": {
               "source": "constant",
-              "value": 0.0
+              "value": 22.5
             }
           }
         ],
@@ -156,6 +155,9 @@
           "setFsmActive": {
             "fsm": "lock",
             "active": true
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
           },
           "setDistGatePos": {
             "source": "targetDesignation",

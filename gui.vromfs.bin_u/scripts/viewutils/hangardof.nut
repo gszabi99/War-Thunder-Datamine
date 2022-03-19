@@ -1,6 +1,6 @@
-let { is_stereo_mode } = ::require_native("vr")
+local { is_stereo_mode } = ::require_native("vr")
 
-let needUseHangarDof = @() is_stereo_mode()
+local needUseHangarDof = @() is_stereo_mode()
 
 return {
   needUseHangarDof

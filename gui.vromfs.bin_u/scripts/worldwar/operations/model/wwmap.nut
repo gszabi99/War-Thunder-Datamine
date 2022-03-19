@@ -1,11 +1,11 @@
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getQueueByMapName, getOperationGroupByMapId
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local time = require("scripts/time.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getQueueByMapName, getOperationGroupByMapId
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::WwMap <- class
 {
@@ -45,7 +45,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getChapterText()
   {
-    let chapterId = getChapterId()
+    local chapterId = getChapterId()
     return ::loc(chapterId != "" ? ("ww_operation_chapter/" + chapterId) : "chapters/test")
   }
 
@@ -71,7 +71,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getImage()
   {
-    let mapImageName = data?.info.image
+    local mapImageName = data?.info.image
     if (::u.isEmpty(mapImageName))
       return ""
 
@@ -80,11 +80,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getDescription(needShowGroupInfo = true)
   {
-    let baseDesc = ::loc("worldWar/map/" + name + "/desc", "")
+    local baseDesc = ::loc("worldWar/map/" + name + "/desc", "")
     if (!needShowGroupInfo)
       return baseDesc
 
-    let txtList = []
+    local txtList = []
     if (getOpGroup().isMyClanParticipate())
       txtList.append(::colorize("userlogColoredText", ::loc("worldwar/yourClanInOperationHere")))
     txtList.append(baseDesc)
@@ -93,25 +93,25 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getGeoCoordsText()
   {
-    let latitude  = ::getTblValue("worldMapLatitude", data, 0.0)
-    let longitude = ::getTblValue("worldMapLongitude", data, 0.0)
+    local latitude  = ::getTblValue("worldMapLatitude", data, 0.0)
+    local longitude = ::getTblValue("worldMapLongitude", data, 0.0)
 
-    let ud = ::loc("measureUnits/deg")
-    let um = ::loc("measureUnits/degMinutes")
-    let us = ::loc("measureUnits/degSeconds")
+    local ud = ::loc("measureUnits/deg")
+    local um = ::loc("measureUnits/degMinutes")
+    local us = ::loc("measureUnits/degSeconds")
 
-    let cfg = [
+    local cfg = [
       { deg = ::fabs(latitude),  hem = latitude  >= 0 ? "N" : "S" }
       { deg = ::fabs(longitude), hem = longitude >= 0 ? "E" : "W" }
     ]
 
-    let coords = []
+    local coords = []
     foreach (c in cfg)
     {
-      let d  = c.deg.tointeger()
-      let t = (c.deg - d) * 60
-      let m  = t.tointeger()
-      let s = (t - m) * 60
+      local d  = c.deg.tointeger()
+      local t = (c.deg - d) * 60
+      local m  = t.tointeger()
+      local s = (t - m) * 60
       coords.append(::format("%d%s%02d%s%02d%s%s", d, ud, m, um, s, us, c.hem))
     }
     return ::g_string.implode(coords, ::loc("ui/comma"))
@@ -119,9 +119,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function isActive()
   {
-    let active = data?.active ?? false
-    let changeStateTime = getChangeStateTime()
-    let timeLeft = changeStateTime - ::get_charserver_time_sec()
+    local active = data?.active ?? false
+    local changeStateTime = getChangeStateTime()
+    local timeLeft = changeStateTime - ::get_charserver_time_sec()
     if (active && (changeStateTime == -1 || timeLeft > 0))
       return true
 
@@ -130,7 +130,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getChangeStateTimeText()
   {
-    let changeStateTime = getChangeStateTime() - ::get_charserver_time_sec()
+    local changeStateTime = getChangeStateTime() - ::get_charserver_time_sec()
     return changeStateTime > 0
       ? time.hoursToString(time.secondsToHours(changeStateTime), false, true)
       : ""
@@ -143,16 +143,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getMapChangeStateTimeText()
   {
-    let changeStateTimeStamp = getChangeStateTime()
+    local changeStateTimeStamp = getChangeStateTime()
     local text = ""
     if (changeStateTimeStamp >= 0)
     {
-      let secToChangeState = changeStateTimeStamp - ::get_charserver_time_sec()
+      local secToChangeState = changeStateTimeStamp - ::get_charserver_time_sec()
       if (secToChangeState > 0)
       {
-        let changeStateLocId = "worldwar/operation/" +
+        local changeStateLocId = "worldwar/operation/" +
           (isActive() ? "beUnavailableIn" : "beAvailableIn")
-        let changeStateTime = time.hoursToString(
+        local changeStateTime = time.hoursToString(
           time.secondsToHours(secToChangeState), false, true)
         text = ::loc(changeStateLocId, {time = changeStateTime})
       }
@@ -166,15 +166,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   function hasValidStatus() {
-    let changeStateTimeStamp = getChangeStateTime()
+    local changeStateTimeStamp = getChangeStateTime()
     return changeStateTimeStamp == -1
       || (changeStateTimeStamp - ::get_charserver_time_sec()) > 0
   }
 
   function isWillAvailable(isNearFuture = true)
   {
-    let changeStateTime = getChangeStateTime() - ::get_charserver_time_sec()
-    let operationAnnounceTimeSec = ::g_world_war.getSetting("operationAnnounceTimeSec",
+    local changeStateTime = getChangeStateTime() - ::get_charserver_time_sec()
+    local operationAnnounceTimeSec = ::g_world_war.getSetting("operationAnnounceTimeSec",
       time.TIME_DAY_IN_SECONDS)
     return !isActive()
       && changeStateTime > 0
@@ -198,7 +198,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getUnitsViewBySide(side)
   {
-    let unitsGroupsByCountry = getUnitsGroupsByCountry()
+    local unitsGroupsByCountry = getUnitsGroupsByCountry()
     local unitsList = getUnitInfoBySide(side)
     local wwUnitsList = []
     if (::u.isEmpty(unitsList))
@@ -211,12 +211,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     {
       foreach (wwUnit in unitsList)
       {
-        let country = wwUnit?.unit.shopCountry
-        let group = unitsGroupsByCountry?[country].groups[wwUnit.name]
+        local country = wwUnit?.unit.shopCountry
+        local group = unitsGroupsByCountry?[country].groups[wwUnit.name]
         if (group == null)
           continue
 
-        let defaultUnit = group.defaultUnit
+        local defaultUnit = group.defaultUnit
         wwUnitsList.append({
           name         = ::loc(group.name)
           icon         = ::getUnitClassIco(defaultUnit)
@@ -243,10 +243,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       return _cachedCountriesByTeams
 
     _cachedCountriesByTeams = {}
-    let countries = getCountryToSideTbl()
+    local countries = getCountryToSideTbl()
     foreach(c in shopCountriesList)
     {
-      let side = ::getTblValue(c, countries, ::SIDE_NONE)
+      local side = ::getTblValue(c, countries, ::SIDE_NONE)
       if (side == ::SIDE_NONE)
         continue
 
@@ -260,7 +260,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCountries()
   {
-    let res = []
+    local res = []
     foreach (cList in getCountriesByTeams())
       res.extend(cList)
     return res
@@ -268,7 +268,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function canJoinByCountry(country)
   {
-    let countriesByTeams = getCountriesByTeams()
+    local countriesByTeams = getCountriesByTeams()
     foreach(cList in countriesByTeams)
       if (::isInArray(country, cList))
         return true
@@ -287,10 +287,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCountriesViewBySide(side, hasBigCountryIcon = true)
   {
-    let countries = getCountryToSideTbl()
-    let countryNames = ::u.keys(countries)
-    let mapName = name
-    let iconType = hasBigCountryIcon ? "small_country" : "country_battle"
+    local countries = getCountryToSideTbl()
+    local countryNames = ::u.keys(countries)
+    local mapName = name
+    local iconType = hasBigCountryIcon ? "small_country" : "country_battle"
     return "".join(countryNames
       .filter(@(country) countries[country] == side)
       .map(@(country, idx) "img { iconType:t='{type}'; background-image:t='{countryIcon}'; {margin} }".subst({
@@ -308,8 +308,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getClansConditionText(isSideInfo = false)
   {
-    let minNumb = getMinClansCondition()
-    let maxNumb = ::getTblValue("maxClanCount", data, 0)
+    local minNumb = getMinClansCondition()
+    local maxNumb = ::getTblValue("maxClanCount", data, 0)
     local prefix = isSideInfo ? "side_" : ""
     return minNumb == maxNumb ?
       ::loc("worldwar/operation/" + prefix + "clans_number", {numb = maxNumb}) :
@@ -332,29 +332,29 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (_cachedUnitsGroupsByCountry != null)
       return _cachedUnitsGroupsByCountry
 
-    let countriesBlk = ::g_world_war.getSetting("unitGroups", null)?[name]
+    local countriesBlk = ::g_world_war.getSetting("unitGroups", null)?[name]
     if (countriesBlk == null)
       return null
 
-    let groupsList = {}
+    local groupsList = {}
     for(local i = 0; i < countriesBlk.blockCount(); i++)
     {
-      let countryBlk = countriesBlk.getBlock(i)
-      let countryId = countryBlk.getBlockName()
-      let countryGroups = {}
-      let groupIdByUnitName = {}
-      let defaultUnitsList = {}
+      local countryBlk = countriesBlk.getBlock(i)
+      local countryId = countryBlk.getBlockName()
+      local countryGroups = {}
+      local groupIdByUnitName = {}
+      local defaultUnitsList = {}
       for(local j = 0; j < countryBlk.blockCount(); j++)
       {
-        let groupBlk = countryBlk.getBlock(j)
-        let groupId = groupBlk.getBlockName()
-        let units = {}
+        local groupBlk = countryBlk.getBlock(j)
+        local groupId = groupBlk.getBlockName()
+        local units = {}
         foreach (unitName in groupBlk.unitList % "unit")
         {
           units[unitName] <- ::getAircraftByName(unitName)
           groupIdByUnitName[unitName] <- groupId
         }
-        let defaultUnit = ::getAircraftByName(groupBlk.defaultUnit)
+        local defaultUnit = ::getAircraftByName(groupBlk.defaultUnit)
         defaultUnitsList[groupId] <- defaultUnit
         countryGroups[groupId] <- {
           id = groupId
@@ -376,7 +376,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function isClanQueueAvaliable()
   {
-    let reasonData = ::WwQueue.getCantJoinAnyQueuesReasonData()
+    local reasonData = ::WwQueue.getCantJoinAnyQueuesReasonData()
     return ::has_feature("WorldWarClansQueue") &&
            ::has_feature("Clans") &&
            ::is_in_clan() && isActive() &&

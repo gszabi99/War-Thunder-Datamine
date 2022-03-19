@@ -1,6 +1,6 @@
-let time = require("%scripts/time.nut")
-let penalty = require("penalty")
-let { startLogout } = require("%scripts/login/logout.nut")
+local time = require("scripts/time.nut")
+local penalty = require("penalty")
+local { startLogout } = require("scripts/login/logout.nut")
 
 //  local penalist = penalty.getPenaltyList()
 //  [
@@ -19,8 +19,8 @@ let { startLogout } = require("%scripts/login/logout.nut")
 //  (but only certain types, i.e. "SILENT_DEVOICE" shouldn't be shown to user')
 
 
-let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
-  let st = penalty.getPenaltyStatus()
+local getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
+  local st = penalty.getPenaltyStatus()
   //st = { status = penalty.DEVOICE, duration = 360091, category="FOUL", comment="test ban", seconds_left=2012}
   if (st.status != penalty.DEVOICE) {
     return null
@@ -30,12 +30,12 @@ let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
   if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
     txt += ::loc("charServer/mute/permanent") + "\n"
   } else {
-    let durationHours = time.secondsToHours(st.duration)
+    local durationHours = time.secondsToHours(st.duration)
     local timeText = ::colorize(activeColor, time.hoursToString(durationHours, false))
     txt += ::format(::loc("charServer/mute/timed"), timeText)
 
     if (("seconds_left" in st) && st.seconds_left > 0) {
-      let leftHours = time.secondsToHours(st.seconds_left)
+      local leftHours = time.secondsToHours(st.seconds_left)
       timeText = ::colorize(activeColor, time.hoursToString(leftHours, false, true))
       if (timeText != "") {
         txt += " " + ::format(::loc("charServer/ban/timeLeft"), timeText)
@@ -56,8 +56,8 @@ let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
 }
 
 
-let showBannedStatusMsgBox = function(showBanOnly = false) {
-  let st = penalty.getPenaltyStatus()
+local showBannedStatusMsgBox = function(showBanOnly = false) {
+  local st = penalty.getPenaltyStatus()
   if (showBanOnly && st.status != penalty.BAN) {
     return
   }
@@ -90,8 +90,8 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
   if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY || onlyDecalsDisabled) {
     txt += ::loc("charServer/" + banType + "/permanent")
   } else {
-    let timeLeft = time.secondsToHours(::get_time_till_decals_disabled() || st.seconds_left)
-    let durationHours = time.secondsToHours(st.duration)
+    local timeLeft = time.secondsToHours(::get_time_till_decals_disabled() || st.seconds_left)
+    local durationHours = time.secondsToHours(st.duration)
     txt += ::format(::loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
     txt += " " + ::format(::loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
   }
@@ -107,12 +107,12 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
   }
 }
 
-let isMeBanned = function() {
+local isMeBanned = function() {
   return penalty.getPenaltyStatus().status == penalty.BAN
 }
 
 
-let export = {
+local export = {
   getDevoiceMessage = getDevoiceMessage
   showBannedStatusMsgBox = showBannedStatusMsgBox
   isMeBanned = isMeBanned

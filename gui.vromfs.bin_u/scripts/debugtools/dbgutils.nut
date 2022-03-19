@@ -1,29 +1,27 @@
 // warning disable: -file:forbidden-function
 
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getVideoModes } = require("%scripts/options/systemOptions.nut")
-let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
-} = require("%scripts/userstat/userstat.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
-let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
+local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
+local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
+local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
+local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local { getVideoModes } = require("scripts/options/systemOptions.nut")
+local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
+local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
+} = require("scripts/userstat/userstat.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local { getDebriefingResult, setDebriefingResult } = require("scripts/debriefing/debriefingFull.nut")
+local applyRendererSettingsChange = require("scripts/clientState/applyRendererSettingsChange.nut")
+local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
-require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
+require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::callstack <- dagor.debug_dump_stack
 
 ::reload <- function reload()
 {
   ::get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = ::g_script_reloader.reload(::reload_main_script_module)
+  local res = ::g_script_reloader.reload(::reload_main_script_module)
   ::update_objects_under_windows_state(::get_cur_gui_scene())
   return res
 }
@@ -40,7 +38,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::charAddAllItems <- function charAddAllItems(count = 1)
 {
-  let params = {
+  local params = {
     items = ::ItemsManager.getItemsList()
     currentIndex = 0
     count = count
@@ -52,12 +50,12 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 {
   if (params.currentIndex >= params.items.len())
     return
-  let item = params.items[params.currentIndex]
-  let blk = ::DataBlock()
+  local item = params.items[params.currentIndex]
+  local blk = ::DataBlock()
   blk.setStr("what", "addItem")
   blk.setStr("item", item.id)
   blk.addInt("howmuch", params.count);
-  let taskId = ::char_send_blk("dev_hack", blk)
+  local taskId = ::char_send_blk("dev_hack", blk)
   if (taskId == -1)
     return
   ::add_bg_task_cb(taskId, (@(params) function () {
@@ -88,10 +86,10 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_reload_and_restart_debriefing <- function debug_reload_and_restart_debriefing()
 {
-  let result = getDebriefingResult()
+  local result = getDebriefingResult()
   ::reload()
 
-  let canRecount = "_stat_get_exp" in ::getroottable()
+  local canRecount = "_stat_get_exp" in ::getroottable()
   if (!canRecount)
     setDebriefingResult(result)
 
@@ -103,21 +101,12 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
   ::gui_start_debriefingFull({ debugUnlocks = unlocksAmount })
 }
 
-::debug_trophy_rewards_list <- function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
-  let trophy = ::ItemsManager.findItemById(id)
-  local content = trophy.getContent()
-    .map(@(i) blk2SquirrelObjNoArrays(i))
-    .sort(::trophyReward.rewardsSortComparator)
-
-  ::gui_start_open_trophy_rewards_list({ rewardsArray = content })
-}
-
 ::debug_get_every_day_login_award_userlog <- function debug_get_every_day_login_award_userlog(skip = 0, launchWindow = true)
 {
-  let total = ::get_user_logs_count()
+  local total = ::get_user_logs_count()
   for (local i = total-1; i > 0; i--)
   {
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if (blk.type == ::EULT_CHARD_AWARD && ::getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward")
@@ -130,7 +119,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
       if (launchWindow)
       {
-        let shownIdx = ::shown_userlog_notifications.indexof(blk?.id)
+        local shownIdx = ::shown_userlog_notifications.indexof(blk?.id)
         if (shownIdx != null)
           ::shown_userlog_notifications.remove(shownIdx)
         ::gui_start_show_login_award(blk)
@@ -157,18 +146,18 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
     resultFilePath = "export/unitsWeaponry.blk"
     itemsPerFrame = 10
     list = function() {
-      let res = []
-      let wpCost = ::get_wpcost_blk()
+      local res = []
+      local wpCost = ::get_wpcost_blk()
       for (local i = 0; i < wpCost.blockCount(); i++) {
-        let unit = ::getAircraftByName(wpCost.getBlock(i).getBlockName())
+        local unit = ::getAircraftByName(wpCost.getBlock(i).getBlockName())
         if (unit?.isInShop)
           res.append(unit)
       }
       return res
     }()
     itemProcessFunc = function(unit) {
-      let blk = ::DataBlock()
-      foreach(weapon in unit.getWeapons())
+      local blk = ::DataBlock()
+      foreach(weapon in unit.weapons)
         if (!isWeaponAux(weapon))
         {
           blk[weapon.name + "_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
@@ -198,25 +187,25 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
     resultFilePath = "export/unitsXray.blk"
     itemsPerFrame = 10
     list = function() {
-      let res = []
-      let wpCost = ::get_wpcost_blk()
+      local res = []
+      local wpCost = ::get_wpcost_blk()
       for (local i = 0; i < wpCost.blockCount(); i++) {
-        let unit = ::getAircraftByName(wpCost.getBlock(i).getBlockName())
+        local unit = ::getAircraftByName(wpCost.getBlock(i).getBlockName())
         if (unit?.isInShop)
           res.append(unit)
       }
       return res
     }()
     itemProcessFunc = function(unit) {
-      let blk = ::DataBlock()
+      local blk = ::DataBlock()
 
       ::dmViewer.updateUnitInfo(unit.name)
-      let partNames = []
-      let damagePartsBlk = ::dmViewer.unitBlk?.DamageParts
+      local partNames = []
+      local damagePartsBlk = ::dmViewer.unitBlk?.DamageParts
       if (damagePartsBlk)
         for (local b = 0; b < damagePartsBlk.blockCount(); b++)
         {
-          let partsBlk = damagePartsBlk.getBlock(b)
+          local partsBlk = damagePartsBlk.getBlock(b)
           for (local p = 0; p < partsBlk.blockCount(); p++)
             ::u.appendOnce(partsBlk.getBlock(p).getBlockName(), partNames)
         }
@@ -226,8 +215,8 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
       {
         if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) ::g_string.startsWith(partName, v)) == null)
           continue
-        let params = { name = partName }
-        let info = ::dmViewer.getPartTooltipInfo(::dmViewer.getPartNameId(params), params)
+        local params = { name = partName }
+        local info = ::dmViewer.getPartTooltipInfo(::dmViewer.getPartNameId(params), params)
         if (info.desc != "")
           blk[partName] <- ::g_string.stripTags(info.title + "\n" + info.desc)
       }
@@ -251,32 +240,32 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::dbg_loading_brief <- function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount = 0)
 {
-  let missionBlk = ::get_meta_mission_info_by_name(missionName)
+  local missionBlk = ::get_meta_mission_info_by_name(missionName)
   if (!::u.isDataBlock(missionBlk))
     return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
 
-  let filePath = missionBlk?.mis_file
+  local filePath = missionBlk?.mis_file
   if (filePath==null)
     return dlog("No mission blk filepath") //warning disable: -dlog-warn
-  let fullBlk = blkFromPath(filePath)
+  local fullBlk = blkFromPath(filePath)
 
-  let briefing = fullBlk?.mission_settings.briefing
+  local briefing = fullBlk?.mission_settings.briefing
   if (!::u.isDataBlock(briefing) || !briefing.blockCount())
     return dlog("Mission does not have briefing") //warning disable: -dlog-warn
 
-  let briefingClone = ::DataBlock()
+  local briefingClone = ::DataBlock()
   if (slidesAmount <= 0)
     briefingClone.setFrom(briefing)
   else
   {
     local slidesLeft = slidesAmount
-    let parts = briefing % "part"
-    let partsClone = []
+    local parts = briefing % "part"
+    local partsClone = []
     for(local i = parts.len()-1; i >= 0; i--)
     {
-      let part = parts[i]
-      let partClone = ::DataBlock()
-      let slides = part % "slide"
+      local part = parts[i]
+      local partClone = ::DataBlock()
+      local slides = part % "slide"
       if (slides.len() <= slidesLeft)
       {
         partClone.setFrom(part)
@@ -285,8 +274,8 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
       else
         for(local j = slides.len()-slidesLeft; j < slides.len(); j++)
         {
-          let slide = slides[j]
-          let slideClone = ::DataBlock()
+          local slide = slides[j]
+          local slideClone = ::DataBlock()
           slideClone.setFrom(slide)
           partClone["slide"] <- slideClone
           slidesLeft--
@@ -306,7 +295,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::dbg_content_patch_open <- function dbg_content_patch_open(isProd = false)
 {
-  let restoreData = {
+  local restoreData = {
     start_content_patch_download = start_content_patch_download
     stop_content_patch_download = stop_content_patch_download
   }
@@ -336,9 +325,9 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
     updaterData.handler = handler
     updaterData.callback = updaterCallback
 
-    let fooTimerObj = "timer { id:t = 'debug_loading_timer'; timer_handler_func:t = 'onUpdate' }"
+    local fooTimerObj = "timer { id:t = 'debug_loading_timer'; timer_handler_func:t = 'onUpdate' }"
     handler.guiScene.appendWithBlk(handler.scene, fooTimerObj, null)
-    let curTimerObj = handler.scene.findObject("debug_loading_timer")
+    local curTimerObj = handler.scene.findObject("debug_loading_timer")
     curTimerObj.setUserData(updaterData)
   }
 
@@ -356,16 +345,16 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_show_units_by_loc_name <- function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = false)
 {
-  let units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
+  local units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
   units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
 
-  let res = ::u.map(units, function(unit) {
-    let locName = ::getUnitName(unit)
-    let army = unit.unitType.getArmyLocName()
-    let country = ::loc(::getUnitCountry(unit))
-    let rank = ::get_roman_numeral(unit?.rank ?? -1)
-    let prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? ::loc("shop/premiumVehicle/short") : ""
-    let hidden = !unit.isInShop ? ::loc("controls/NA") : unit.isVisibleInShop() ? "" : ::loc("worldWar/hided_logs")
+  local res = ::u.map(units, function(unit) {
+    local locName = ::getUnitName(unit)
+    local army = unit.unitType.getArmyLocName()
+    local country = ::loc(::getUnitCountry(unit))
+    local rank = ::get_roman_numeral(unit?.rank ?? -1)
+    local prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? ::loc("shop/premiumVehicle/short") : ""
+    local hidden = !unit.isInShop ? ::loc("controls/NA") : unit.isVisibleInShop() ? "" : ::loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ::g_string.implode([ army, country, rank, prem, hidden ], ", ") + ")"
   })
 
@@ -376,7 +365,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_show_unit <- function debug_show_unit(unitId)
 {
-  let unit = ::getAircraftByName(unitId)
+  local unit = ::getAircraftByName(unitId)
   if (!unit)
     return "Not found"
   showedUnit(unit)
@@ -391,37 +380,45 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
   {
     if (!u.isInShop)
       continue
-    let unitBlk = ::get_full_unit_blk(u.name)
-    let weapons = getUnitWeapons(unitBlk)
-    foreach (weap in weapons)
-      if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? ""))
-      {
-        ::open_weapons_for_unit(u)
-        return $"{u.name} / {weap.blk}"
-      }
+    local unitBlk = ::get_full_unit_blk(u.name)
+    if (!unitBlk?.weapon_presets)
+      continue
+
+    foreach (presetMetaBlk in (unitBlk.weapon_presets % "preset"))
+    {
+      local presetBlk = blkOptFromPath(presetMetaBlk?.blk)
+      if (::u.isEmpty(presetBlk))
+        continue
+      foreach (weaponMetaBlk in (presetBlk % "Weapon"))
+        if (weaponName == getWeaponNameByBlkPath(weaponMetaBlk?.blk ?? ""))
+        {
+          ::open_weapons_for_unit(u)
+          return $"{u.name} / {weaponMetaBlk.blk}"
+        }
+    }
   }
   return null
 }
 
 ::debug_change_language <- function debug_change_language(isNext = true)
 {
-  let list = ::g_language.getGameLocalizationInfo()
-  let curLang = ::get_current_language()
-  let curIdx = list.findindex( @(l) l.id == curLang ) ?? 0
-  let newIdx = curIdx + (isNext ? 1 : -1 + list.len())
-  let newLang = list[newIdx % list.len()]
+  local list = ::g_language.getGameLocalizationInfo()
+  local curLang = ::get_current_language()
+  local curIdx = list.findindex( @(l) l.id == curLang ) ?? 0
+  local newIdx = curIdx + (isNext ? 1 : -1 + list.len())
+  local newLang = list[newIdx % list.len()]
   ::g_language.setGameLocalization(newLang.id, true, false)
   dlog("Set language: " + newLang.id)
 }
 
 ::debug_change_resolution <- function debug_change_resolution(shouldIncrease = true)
 {
-  let curResolution = ::getSystemConfigOption("video/resolution")
-  let list = getVideoModes(curResolution, false)
-  let curIdx = list.indexof(curResolution) || 0
-  let newIdx = ::clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
-  let newResolution = list[newIdx]
-  let done = @() dlog("Set resolution: " + newResolution +
+  local curResolution = ::getSystemConfigOption("video/resolution")
+  local list = getVideoModes(curResolution, false)
+  local curIdx = list.indexof(curResolution) || 0
+  local newIdx = ::clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
+  local newResolution = list[newIdx]
+  local done = @() dlog("Set resolution: " + newResolution +
     " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()
@@ -434,15 +431,15 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_multiply_color <- function debug_multiply_color(colorStr, multiplier)
 {
-  let res = ::g_dagui_utils.multiplyDaguiColorStr(colorStr, multiplier)
+  local res = ::g_dagui_utils.multiplyDaguiColorStr(colorStr, multiplier)
   ::copy_to_clipboard(res)
   return res
 }
 
 ::debug_get_last_userlogs <- function debug_get_last_userlogs(num = 1)
 {
-  let total = ::get_user_logs_count()
-  let res = []
+  local total = ::get_user_logs_count()
+  local res = []
   for (local i = total - 1; i > (total - num - 1); i--)
   {
     local blk = ::DataBlock()
@@ -472,19 +469,19 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::debug_reset_unseen <- function debug_reset_unseen()
 {
-  require("%scripts/seen/seenList.nut").clearAllSeenData()
+  require("scripts/seen/seenList.nut").clearAllSeenData()
 }
 
 ::debug_check_dirty_words <- function debug_check_dirty_words(path = null)
 {
-  let blk = ::DataBlock()
+  local blk = ::DataBlock()
   blk.load(path || "debugDirtyWords.blk")
   dirtyWordsFilter.setDebugLogFunc(::dagor.debug)
   local failed = 0
   for (local i = 0; i < blk.paramCount(); i++)
   {
-    let text = blk.getParamValue(i)
-    let filteredText = dirtyWordsFilter.checkPhrase(text)
+    local text = blk.getParamValue(i)
+    local filteredText = dirtyWordsFilter.checkPhrase(text)
     if (text == filteredText)
     {
       ::dagor.debug("DIRTYWORDS: PASSED " + text)
@@ -509,7 +506,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
     ::rented_units_get_expired_time_sec = function(id) {
       if (!::_debug_unit_rent?[id])
         return ::_rented_units_get_expired_time_sec(id)
-      let remain = ::_debug_unit_rent[id].expire - ::get_charserver_time_sec()
+      local remain = ::_debug_unit_rent[id].expire - ::get_charserver_time_sec()
       if (remain <= 0)
         delete ::_debug_unit_rent[id]
       return remain
@@ -526,13 +523,13 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 }
 
 ::debug_tips_list <- function debug_tips_list() {
-  debug_wnd("%gui/debugTools/dbgTipsList.tpl",
+  debug_wnd("gui/debugTools/dbgTipsList.tpl",
     {tipsList = ::g_tips.getAllTips().map(@(value) { value = value })})
 }
 
 ::debug_get_skyquake_path <- function debug_get_skyquake_path() {
-  let dir = ::get_exe_dir()
-  let idx = dir.indexof("/skyquake/")
+  local dir = ::get_exe_dir()
+  local idx = dir.indexof("/skyquake/")
   return idx != null ? dir.slice(0, idx + 9) : ""
 }
 
@@ -560,7 +557,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 
 
-let function consoleAndDebugTableData(text, data) {
+local function consoleAndDebugTableData(text, data) {
   console_print(text)
   debugTableData(data)
   return "Look in debug"
@@ -569,9 +566,9 @@ let function consoleAndDebugTableData(text, data) {
 ::userstat_debug_unlocks <- @() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value)
 ::userstat_debug_stats <- @() consoleAndDebugTableData("userstatStats: ", userstatStats.value)
 
-::debug_load_anim_bg <- require("%scripts/loading/animBg.nut").debugLoad
+::debug_load_anim_bg <- require("scripts/loading/animBg.nut").debugLoad
 
-let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
+local dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
 ::debug_focus <- function debug_focus(needShow = true) {
   if (!needShow) {
     if (dbgFocusData.debugFocusTask != -1)
@@ -583,13 +580,13 @@ let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj
   if (dbgFocusData.debugFocusTask == -1)
     dbgFocusData.debugFocusTask = ::periodic_task_register({},
       function(_) {
-        let newObj = ::get_cur_gui_scene().getSelectedObject()
-        let { prevSelObj } = dbgFocusData
-        let isSame = newObj == prevSelObj
+        local newObj = ::get_cur_gui_scene().getSelectedObject()
+        local { prevSelObj } = dbgFocusData
+        local isSame = newObj == prevSelObj
           || (newObj != null && (prevSelObj?.isValid() ?? true) && newObj.isEqual(prevSelObj))
         if (isSame)
           return
-        let text = $"Cur focused object = {newObj?.tag} / {newObj?.id}"
+        local text = $"Cur focused object = {newObj?.tag} / {newObj?.id}"
         dlog(text)
         ::dagor.console_print(text)
         dbgFocusData.prevSelObj = newObj
@@ -597,8 +594,8 @@ let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj
       1)
 
   dbgFocusData.prevSelObj = ::get_cur_gui_scene().getSelectedObject()
-  let { prevSelObj } = dbgFocusData
-  let text = $"Cur focused object = {prevSelObj?.tag} / {prevSelObj?.id}"
+  local { prevSelObj } = dbgFocusData
+  local text = $"Cur focused object = {prevSelObj?.tag} / {prevSelObj?.id}"
   dlog(text)
   return text
 }
@@ -615,4 +612,4 @@ if (dbgFocusData.debugFocusTask != -1) {
   okFunc = openUrl
 })
 
-::debug_show_steam_rate_wnd <- @() require("%scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)
+::debug_show_steam_rate_wnd <- @() require("scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)

@@ -1,4 +1,4 @@
-let Root = function() {
+local Root = function() {
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP

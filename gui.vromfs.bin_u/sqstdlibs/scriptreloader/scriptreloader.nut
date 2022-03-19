@@ -2,7 +2,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
 if (!("g_script_reloader" in getroottable()))
   ::g_script_reloader <- {
-    USED_SCRIPTS = ["%sqStdLibs/scriptReloader/scriptReloaderStorage.nut"]
+    USED_SCRIPTS = ["sqStdLibs/scriptReloader/scriptReloaderStorage.nut"]
     isInReloading = false
 
     storagesList = {}

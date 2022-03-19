@@ -1,7 +1,7 @@
-let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
-let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
+local wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
+local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
-::WwAirfield <- class
+class ::WwAirfield
 {
   index  = -1
   size   = 0
@@ -46,7 +46,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
   {
     createArmyMorale = ::g_world_war.getWWConfigurableValue("airfieldCreateArmyMorale", 0)
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::ww_get_airfield_info(index, blk)
 
     if ("specs" in blk)
@@ -60,8 +60,8 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
     if ("groups" in blk)
       for (local i = 0; i < blk.groups.blockCount(); i++)
       {
-        let itemBlk = blk.groups.getBlock(i)
-        let formation = ::WwAirfieldFormation(itemBlk, this)
+        local itemBlk = blk.groups.getBlock(i)
+        local formation = ::WwAirfieldFormation(itemBlk, this)
         formations.append(formation)
 
         if (formation.isBelongsToMyClan())
@@ -83,10 +83,10 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
           allyFormation.addUnits(itemBlk)
         }
 
-        let cooldownsBlk = itemBlk.getBlockByName("cooldownUnits")
+        local cooldownsBlk = itemBlk.getBlockByName("cooldownUnits")
         for (local j = 0; j < cooldownsBlk.blockCount(); j++)
         {
-          let cdFormation = ::WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
+          local cdFormation = ::WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
           cdFormation.owner = ::WwArmyOwner(itemBlk.getBlockByName("owner"))
           cdFormation.setFormationID(j)
           cdFormation.setName("cooldown_" + j)
@@ -146,7 +146,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
     local unitsNumber = 0
     foreach (armyName in armies)
     {
-      let army = ::g_world_war.getArmyByName(armyName)
+      local army = ::g_world_war.getArmyByName(armyName)
       if (army.isValid())
       {
         army.updateUnits()
@@ -192,7 +192,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
     if (!formation || !formation.isValid() || !formation.hasManageAccess())
       return false
 
-    let airClassesAmount = {
+    local airClassesAmount = {
       [WW_UNIT_CLASS.FIGHTER] = 0,
       [WW_UNIT_CLASS.BOMBER] = 0,
       [WW_UNIT_CLASS.HELICOPTER] = 0
@@ -200,7 +200,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
     local customClassAmount = 0
     foreach (unit in formation.units)
     {
-      let flyOutUnitClass = wwUnitClassParams.getUnitClassData(unit).flyOutUnitClass
+      local flyOutUnitClass = wwUnitClassParams.getUnitClassData(unit).flyOutUnitClass
       if (!(flyOutUnitClass in airClassesAmount))
         continue
 
@@ -213,15 +213,15 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
         customClassAmount += unit.count
     }
 
-    let operation = ::g_operations.getCurrentOperation()
-    let flyoutRange = operation.getUnitsFlyoutRange()
+    local operation = ::g_operations.getCurrentOperation()
+    local flyoutRange = operation.getUnitsFlyoutRange()
     foreach (mask in [WW_UNIT_CLASS.FIGHTER, WW_UNIT_CLASS.COMBINED, WW_UNIT_CLASS.HELICOPTER])
     {
       local additionalAirs = 0
       local hasEnough = false
       foreach (unitClass, amount in airClassesAmount)
       {
-        let unitRange = operation.getQuantityToFlyOut(unitClass, mask, flyoutRange)
+        local unitRange = operation.getQuantityToFlyOut(unitClass, mask, flyoutRange)
 
         hasEnough = amount + additionalAirs >= unitRange.x
         if (!hasEnough)

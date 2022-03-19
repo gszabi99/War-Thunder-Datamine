@@ -1,4 +1,4 @@
-::WwArmyGroupHandler <- class
+class ::WwArmyGroupHandler
 {
   group = null
   scene = null
@@ -23,7 +23,7 @@
     if (!::checkObj(scene))
       return
 
-    let viewObj = scene.findObject(group.getView().getId())
+    local viewObj = scene.findObject(group.getView().getId())
     if (!::checkObj(viewObj))
       return
 
@@ -48,7 +48,7 @@
     if (!::checkObj(scene))
       return
 
-    let viewObj = scene.findObject(group.getView().getId())
+    local viewObj = scene.findObject(group.getView().getId())
     if (!::checkObj(viewObj))
       return
 

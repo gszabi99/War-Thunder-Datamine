@@ -1,11 +1,11 @@
-let statsd = require("statsd")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+local statsd = require("statsd")
+local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
-::gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler
+class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
 {
-  sceneBlkName = "%gui/loginBoxSimple.blk"
+  sceneBlkName = "gui/loginBoxSimple.blk"
 
   function initScreen()
   {
@@ -13,13 +13,13 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     setVersionText()
     ::setProjectAwards(this)
 
-    let isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
+    local isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
     if (isAutologin) {
       guiScene.performDelayed(this, function() { doLogin() })
       return
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/button", {
+    local data = ::handyman.renderCached("gui/commonParts/button", {
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "A"
@@ -37,7 +37,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     ::dagor.debug("DMM Login: dmm_user_id " + ::dgs_get_argv("dmm_user_id"))
     ::dagor.debug("DMM Login: dmm_token " + ::dgs_get_argv("dmm_token"))
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "dmm"})
-    let ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
+    local ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
       ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     proceedAuthorizationResult(ret)
   }

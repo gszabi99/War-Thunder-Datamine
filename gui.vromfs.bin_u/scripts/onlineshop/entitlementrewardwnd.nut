@@ -1,7 +1,7 @@
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
+local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local { getEntitlementView, getEntitlementLayerIcons } = require("scripts/onlineShop/entitlementView.nut")
 
-::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
+class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
 {
   wndType = handlerType.MODAL
 
@@ -25,13 +25,13 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
   }
 
   function checkConfigsArray() {
-    let unitNames = entitlementConfig?.aircraftGift ?? []
+    local unitNames = entitlementConfig?.aircraftGift ?? []
     if (unitNames.len())
       unit = ::getAircraftByName(unitNames[0])
 
-    let decalsNames = entitlementConfig?.decalGift ?? []
-    let attachablesNames = entitlementConfig?.attachableGift ?? []
-    let skinsNames = entitlementConfig?.skinGift ?? []
+    local decalsNames = entitlementConfig?.decalGift ?? []
+    local attachablesNames = entitlementConfig?.attachableGift ?? []
+    local skinsNames = entitlementConfig?.skinGift ?? []
     local resourceType = ""
     local resource = ""
     if (decalsNames.len())
@@ -68,11 +68,11 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
     if (!opened)
       return
 
-    let obj = scene.findObject("prize_desc_div")
+    local obj = scene.findObject("prize_desc_div")
     if (!::checkObj(obj))
       return
 
-    let data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
+    local data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
@@ -89,7 +89,7 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
 
 return {
   showEntitlement = function(entitlementId, params = {}) {
-    let config = getEntitlementConfig(entitlementId)
+    local config = getEntitlementConfig(entitlementId)
     if (!config)
     {
       ::dagor.logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")

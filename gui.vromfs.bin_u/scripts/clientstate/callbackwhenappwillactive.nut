@@ -1,11 +1,11 @@
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1
 local refreshActiveAppTask = -1
-let callbacksArray = []
+local callbacksArray = []
 local isAppActive = true
 
-let function callIsAppActiveOrRegisterTask( dt = 0 )
+local function callIsAppActiveOrRegisterTask( dt = 0 ) { return null }
+callIsAppActiveOrRegisterTask = function( dt = 0 )
 {
-  let self = callee()
   if ( refreshActiveAppTask >= 0 )
   {
     ::periodic_task_unregister( refreshActiveAppTask )
@@ -13,7 +13,7 @@ let function callIsAppActiveOrRegisterTask( dt = 0 )
   }
 
   local needUpdateTimer = false
-  let isActive = ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()
+  local isActive = ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()
   if (isAppActive == isActive)
     needUpdateTimer = true
 
@@ -24,18 +24,18 @@ let function callIsAppActiveOrRegisterTask( dt = 0 )
   if (needUpdateTimer)
   {
     refreshActiveAppTask = ::periodic_task_register(this,
-      self, FREQUENCY_APP_STATE_UPDATE_SEC)
+      callIsAppActiveOrRegisterTask, FREQUENCY_APP_STATE_UPDATE_SEC)
 
     return
   }
 
-  let list = clone callbacksArray
+  local list = clone callbacksArray
   callbacksArray.clear()
   foreach(cb in list)
     cb()
 }
 
-let function callbackWhenAppWillActive(cb)
+local function callbackWhenAppWillActive(cb)
 {
   callbacksArray.append(cb)
   callIsAppActiveOrRegisterTask()

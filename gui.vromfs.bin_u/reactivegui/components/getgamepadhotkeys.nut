@@ -1,4 +1,4 @@
-let parseDargHotkeys = require("parseDargHotkeys.nut")
+local parseDargHotkeys = require("parseDargHotkeys.nut")
 
 local function gamepadHotkeys(hotkeys, skipDescription = null) {
   if (hotkeys == null || typeof(hotkeys) != "array" || hotkeys.len()==0)

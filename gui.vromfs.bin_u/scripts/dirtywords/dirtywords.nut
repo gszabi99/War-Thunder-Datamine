@@ -32,23 +32,20 @@ local function init(langSources) {
     dict[varName] = []
     foreach (source in langSources)
     {
-      foreach (i, vSrc in (source?[varName] ?? []))
+      foreach (i, v in (source?[varName] ?? []))
       {
-        local v
-        switch (typeof vSrc)
+        switch (typeof v)
         {
           case "string":
-            v = ::regexp2(vSrc)
+            v = ::regexp2(v)
             break
           case "table":
-            v = clone vSrc
+            v = clone v
             if ("value" in v)
               v.value = ::regexp2(v.value)
             if ("arr" in v)
               v.arr = v.arr.map(@(av) ::regexp2(av))
             break
-          default:
-            ::dagor.assertf(false, "Wrong var type in DirtyWordsFilter config")
         }
         dict[varName].append(v)
       }

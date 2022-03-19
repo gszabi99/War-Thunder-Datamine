@@ -1,7 +1,7 @@
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local time = require("scripts/time.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
-::WwAirfieldCooldownFormation <- class extends ::WwAirfieldFormation
+class ::WwAirfieldCooldownFormation extends ::WwAirfieldFormation
 {
   cooldownFinishedMillis = 0
 
@@ -32,7 +32,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getCooldownText()
   {
-    let cooldownTime = getCooldownTime()
+    local cooldownTime = getCooldownTime()
     if (cooldownTime == 0)
       return ::loc("worldwar/state/ready")
 

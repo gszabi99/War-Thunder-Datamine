@@ -1,8 +1,8 @@
-let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+local { getSlotItem, getCurPreset, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
+local class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
 
@@ -17,19 +17,19 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
   function updateAirList()
   {
     airList = []
-    let curPreset = getCurPreset()
-    let curCountryGroups =  curPreset?.groupsList[getCurCountryName()]
+    local curPreset = getCurPreset()
+    local curCountryGroups =  curPreset?.groupsList[getCurCountryName()]
     if (curCountryGroups == null)
       return
 
-    let curUnit = getCrewUnit(crew)
-    let curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
+    local curUnit = getCrewUnit(crew)
+    local curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
 
-    let sortData = [] // { unit, locname }
+    local sortData = [] // { unit, locname }
     foreach(unit in (curCountryGroups.groups?[curGroupName].units ?? []))
       if (unit.getCrewUnitType() == curCrewUnitType)
       {
-        let isCurrent = curUnit?.name == unit.name
+        local isCurrent = curUnit?.name == unit.name
         if (isCurrent)
           airList.append(unit)
         else
@@ -50,7 +50,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 
   function getCrewUnit(slotCrew)
   {
-    let curPreset = getCurPreset()
+    local curPreset = getCurPreset()
     return curPreset?.countryPresets[slotCrew.country].units[slotCrew.idInCountry]
   }
 
@@ -58,14 +58,14 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 
   function updateButtons()
   {
-    let isRecrutedCrew = crew.id != -1
+    local isRecrutedCrew = crew.id != -1
     scene.findObject("btn_apply").show(isRecrutedCrew)
     showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
     showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
-      let rawCost = ::get_crew_slot_cost(getCurCountryName())
-      let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
-      let text = "".concat(::loc("shop/recruitCrew"),
+      local rawCost = ::get_crew_slot_cost(getCurCountryName())
+      local cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+      local text = "".concat(::loc("shop/recruitCrew"),
         ::loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
       setColoredDoubleTextToButton(scene, "btn_recruit", text)
     }
@@ -73,19 +73,19 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 
   function onRecruitCrew()
   {
-    let country = getCurCountryName()
-    let rawCost = ::get_crew_slot_cost(country)
-    let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+    local country = getCurCountryName()
+    local rawCost = ::get_crew_slot_cost(country)
+    local cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
     if (!::check_balance_msgBox(cost))
       return
 
-    let unit = getCrewUnit(crew)
-    let onTaskSuccess = ::Callback(function() {
-      let crews = ::get_crews_list_by_country(country)
+    local unit = getCrewUnit(crew)
+    local onTaskSuccess = ::Callback(function() {
+      local crews = ::get_crews_list_by_country(country)
       if (!crews.len())
         return
 
-      let newCrew = crews.top()
+      local newCrew = crews.top()
       setUnit({
         crew = newCrew
         unit = unit
@@ -95,7 +95,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
       updatePage()
     }, this)
     if (cost > ::zero_money) {
-      let msgText = ::warningIfGold(
+      local msgText = ::warningIfGold(
         format(::loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),
         cost)

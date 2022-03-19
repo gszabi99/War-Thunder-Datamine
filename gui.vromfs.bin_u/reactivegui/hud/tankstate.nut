@@ -1,15 +1,15 @@
-let interopGen = require("%rGui/interopGen.nut")
-let { floor } = require("%sqstd/math.nut")
+local interopGen = require("reactiveGui/interopGen.nut")
+local { floor } = require("std/math.nut")
 
-let IndicatorsVisible = Watched(false)
-let CurrentTime = Watched(false)
+local IndicatorsVisible = Watched(false)
+local CurrentTime = Watched(false)
 
-let IsCommanderViewAimModeActive = Watched(false)
+local IsCommanderViewAimModeActive = Watched(false)
 
-let activeProtectionSystemModules = []
-let ActiveProtectionSystemModulesCount = Watched(0)
+local activeProtectionSystemModules = []
+local ActiveProtectionSystemModulesCount = Watched(0)
 
-let getModuleDefaultParams = @() {
+local getModuleDefaultParams = @() {
   shotCountRemain = Watched(0)
   emitterPosX = Watched(0.0)
   emitterPosY = Watched(0.0)
@@ -17,8 +17,8 @@ let getModuleDefaultParams = @() {
   horAnglesY = Watched(0.0)
   timeToReady = Watched(0.0)
 }
-let function resizeActiveProtectionSystemModules(count) {
-  let size = activeProtectionSystemModules.len()
+local function resizeActiveProtectionSystemModules(count) {
+  local size = activeProtectionSystemModules.len()
   if (count < size) {
     activeProtectionSystemModules.resize(count)
     return
@@ -30,7 +30,7 @@ let function resizeActiveProtectionSystemModules(count) {
 
 ActiveProtectionSystemModulesCount.subscribe(resizeActiveProtectionSystemModules)
 
-let tankState = {
+local tankState = {
   IndicatorsVisible,
   CurrentTime,
 
@@ -47,7 +47,7 @@ interopGen({
 })
 
 ::interop.updateActiveProtectionSystem <- function (shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
-  let module = activeProtectionSystemModules[index]
+  local module = activeProtectionSystemModules[index]
   module.shotCountRemain(shotCountRemain)
   module.emitterPosX(floor(emitterPosX*100)/100)
   module.emitterPosY(floor(emitterPosY*100)/100)

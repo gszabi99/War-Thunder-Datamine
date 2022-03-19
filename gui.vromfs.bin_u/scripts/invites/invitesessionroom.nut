@@ -1,8 +1,10 @@
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
-::g_invites_classes.SessionRoom <- class extends ::BaseInvite
+class ::g_invites_classes.SessionRoom extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   roomId = ""
@@ -72,10 +74,10 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     if (!activeColor)
       activeColor = inviteActiveColor
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
-    let event = room ? ::SessionLobby.getRoomEvent(room) : null
+    local room = ::g_mroom_info.get(roomId).getFullRoomData()
+    local event = room ? ::SessionLobby.getRoomEvent(room) : null
     local modeId = "skirmish"
-    let params = { player = ::colorize(activeColor, getInviterName()) }
+    local params = { player = ::colorize(activeColor, getInviterName()) }
     if (event)
     {
       modeId = "event"
@@ -107,11 +109,12 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     return !::isInMenu()
       || !isMissionAvailable()
       || !isAvailableByCrossPlay()
+      || !isMultiplayerPrivilegeAvailable()
   }
 
   function isMissionAvailable()
   {
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    local room = ::g_mroom_info.get(roomId).getFullRoomData()
     return !::SessionLobby.isUrlMission(room) || ::ps4_is_ugc_enabled()
   }
 
@@ -119,6 +122,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
   {
     if (haveRestrictions())
     {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
       if (!isAvailableByCrossPlay())
         return ::loc("xbox/crossPlayRequired")
       if (!isMissionAvailable())
@@ -142,7 +147,10 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
+
+    local room = ::g_mroom_info.get(roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))
       return
 
@@ -154,13 +162,13 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     if (!::check_gamemode_pkg(::GM_SKIRMISH))
       return
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
-    let event = room ? ::SessionLobby.getRoomEvent(room) : null
+    local room = ::g_mroom_info.get(roomId).getFullRoomData()
+    local event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event != null && (!antiCheat.showMsgboxIfEacInactive(event)||
                           !showMsgboxIfSoundModsNotAllowed(event)))
       return
 
-    let canJoin = ignoreCheckSquad
+    local canJoin = ignoreCheckSquad
                     ||  ::g_squad_utils.canJoinFlightMsgBox(
                           { isLeaderCanJoin = true }, ::Callback(_implAccept, this))
     if (canJoin)
@@ -172,8 +180,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     if (isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    let room = ::g_mroom_info.get(roomId).getFullRoomData()
-    let event = room ? ::SessionLobby.getRoomEvent(room) : null
+    local room = ::g_mroom_info.get(roomId).getFullRoomData()
+    local event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event)
       ::gui_handlers.EventRoomsHandler.open(event, false, roomId)
     else

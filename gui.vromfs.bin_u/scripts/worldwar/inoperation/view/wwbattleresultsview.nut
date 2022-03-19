@@ -1,8 +1,8 @@
-let time = require("%scripts/time.nut")
-let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+local time = require("scripts/time.nut")
+local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -12,7 +12,7 @@ enum UNIT_STATS {
   TOTAL // enum size
 }
 
-::WwBattleResultsView <- class
+class ::WwBattleResultsView
 {
   battleRes = null
 
@@ -47,7 +47,7 @@ enum UNIT_STATS {
       {
         if (wwUnit.getWwUnitType() == ::g_ww_unit_type.UNKNOWN)
         {
-          let unitName = wwUnit.name // warning disable: -declared-never-used
+          local unitName = wwUnit.name // warning disable: -declared-never-used
           ::script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
         }
@@ -69,25 +69,25 @@ enum UNIT_STATS {
 
   function getBattleTitle()
   {
-    let localizedName = getLocName()
-    let missionTitle = (localizedName != "") ? localizedName : ::loc("worldwar/autoModeBattle")
-    let battleName = ::loc("worldWar/battleName", { number = battleRes.ordinalNumber })
+    local localizedName = getLocName()
+    local missionTitle = (localizedName != "") ? localizedName : ::loc("worldwar/autoModeBattle")
+    local battleName = ::loc("worldWar/battleName", { number = battleRes.ordinalNumber })
     return battleName + " " + missionTitle
   }
 
   function getBattleDescText()
   {
-    let operationName = getOperation()?.getNameText() ?? ""
-    let zoneName = battleRes.zoneName != "" ? (::loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
-    let dateTime = time.buildDateStr(battleRes.time) + " " + time.buildTimeStr(battleRes.time)
+    local operationName = getOperation()?.getNameText() ?? ""
+    local zoneName = battleRes.zoneName != "" ? (::loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
+    local dateTime = time.buildDateStr(battleRes.time) + " " + time.buildTimeStr(battleRes.time)
     return ::g_string.implode([ operationName, zoneName, dateTime ], ::loc("ui/semicolon"))
   }
 
   function getBattleResultText()
   {
-    let isWinner = battleRes.isWinner()
-    let color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
-    let result = ::loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
+    local isWinner = battleRes.isWinner()
+    local color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
+    local result = ::loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
     return ::colorize(color, result)
   }
 
@@ -113,12 +113,12 @@ enum UNIT_STATS {
 
   function getTeamStats(teamInfo, unitTypesBattle, unitTypesInactive)
   {
-    let res = {
+    local res = {
       unitTypes = []
       units     = []
     }
 
-    let unitTypeStats = {}
+    local unitTypeStats = {}
     foreach (wwUnitTypeCode in unitTypesBattle)
       unitTypeStats[wwUnitTypeCode] <- array(UNIT_STATS.TOTAL, 0)
 
@@ -130,17 +130,17 @@ enum UNIT_STATS {
     // Vehicle units have unitsInitial, unitsCasualties, and unitsRemain which is unreliable (must be calculated as initial-casualties).
     // But anyway, vehicle units must extract remainInactive from that unreliable unitsRemain (it can be non-zero for Aircrafts).
 
-    let unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
-    let needShowUnitsByGroups = unitsGroups != null
+    local unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
+    local needShowUnitsByGroups = unitsGroups != null
     teamInfo.unitsInitial.sort(::g_world_war.sortUnitsByTypeAndCount)
     foreach (wwUnit in teamInfo.unitsInitial)
     {
-      let unitName = wwUnit.name
-      let wwUnitType = wwUnit.getWwUnitType()
-      let wwUnitTypeCode = wwUnitType.code
+      local unitName = wwUnit.name
+      local wwUnitType = wwUnit.getWwUnitType()
+      local wwUnitTypeCode = wwUnitType.code
 
-      let initialActive = wwUnit.count
-      let initialInactive = wwUnit.inactiveCount
+      local initialActive = wwUnit.count
+      local initialInactive = wwUnit.inactiveCount
 
       local remainInactive = 0
       foreach (u in teamInfo.unitsRemain)
@@ -158,12 +158,12 @@ enum UNIT_STATS {
           break
         }
 
-      let remainActive = (initialActive + initialInactive) - casualties - remainInactive // Fixes vehicle units remain counts
-      let inactiveAdded = remainInactive - initialInactive
+      local remainActive = (initialActive + initialInactive) - casualties - remainInactive // Fixes vehicle units remain counts
+      local inactiveAdded = remainInactive - initialInactive
 
       if (wwUnitTypeCode in unitTypeStats)
       {
-        let stats = unitTypeStats[wwUnitTypeCode]
+        local stats = unitTypeStats[wwUnitTypeCode]
         stats[UNIT_STATS.INITIAL]   += initialActive
         stats[UNIT_STATS.KILLED]    += casualties
         stats[UNIT_STATS.INACTIVE]  += inactiveAdded
@@ -173,9 +173,9 @@ enum UNIT_STATS {
       if (wwUnitType.esUnitCode == ::ES_UNIT_TYPE_INVALID) // fake unit
         continue
 
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      local isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
 
-      let stats = array(UNIT_STATS.TOTAL, 0)
+      local stats = array(UNIT_STATS.TOTAL, 0)
       stats[UNIT_STATS.INITIAL]   = initialActive
       stats[UNIT_STATS.KILLED]    = casualties
       stats[UNIT_STATS.INACTIVE]  = inactiveAdded
@@ -197,8 +197,8 @@ enum UNIT_STATS {
       if (!stats)
         continue
 
-      let wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
-      let isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
+      local wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
+      local isShowInactiveCount = ::isInArray(wwUnitTypeCode, unitTypesInactive)
 
       res.unitTypes.append({
         name = "#debriefing/ww_total_" + wwUnitType.name
@@ -211,19 +211,19 @@ enum UNIT_STATS {
 
   function getStatsRowView(stats, isShowInactiveCount = false)
   {
-    let columnsMap = [
+    local columnsMap = [
       [UNIT_STATS.INITIAL],
       isShowInactiveCount ? [UNIT_STATS.KILLED, UNIT_STATS.INACTIVE] : [UNIT_STATS.KILLED],
       isShowInactiveCount ? [UNIT_STATS.REMAIN] : [UNIT_STATS.REMAIN, UNIT_STATS.INACTIVE],
     ]
 
-    let row = []
+    local row = []
     foreach (valueIds in columnsMap)
     {
-      let values = ::u.map(valueIds, (@(stats) function(id) { return stats[id] })(stats))
-      let valuesSum = values.reduce(@(sum, v) sum + v, 0)
+      local values = ::u.map(valueIds, (@(stats) function(id) { return stats[id] })(stats))
+      local valuesSum = values.reduce(@(sum, v) sum + v, 0)
 
-      let val = isShowInactiveCount ? ::g_string.implode(values, " + ") : valuesSum.tostring()
+      local val = isShowInactiveCount ? ::g_string.implode(values, " + ") : valuesSum.tostring()
 
       local tooltip = null
       if (isShowInactiveCount && values.len() == 2 && valuesSum > 0)
@@ -240,15 +240,15 @@ enum UNIT_STATS {
 
   function getTeamBlock()
   {
-    let mapName = getOperation()?.getMapId() ?? ""
-    let teams = []
+    local mapName = getOperation()?.getMapId() ?? ""
+    local teams = []
     foreach(sideIdx, side in ::g_world_war.getSidesOrder())
     {
-      let team = getTeamBySide(side)
+      local team = getTeamBySide(side)
       if (!team)
         continue
 
-      let armies = []
+      local armies = []
       foreach (army in team.armies)
         armies.append({
           armyView = army.getView()

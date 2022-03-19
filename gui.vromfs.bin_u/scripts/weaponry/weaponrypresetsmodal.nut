@@ -1,26 +1,25 @@
-let { CHAPTER_ORDER, CHAPTER_FAVORITE_IDX,
+local { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX,
   sortPresetLists, setFavoritePresets, getWeaponryByPresetInfo
-} = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { getLastWeapon, setLastWeapon,
-  getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
-let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
-} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
-let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { TIERS_NUMBER } = require("%scripts/weaponry/weaponryPresets.nut")
+} = require("scripts/weaponry/weaponryPresetsParams.nut")
+local { getLastWeapon, setLastWeapon,
+  getWeaponDisabledMods } = require("scripts/weaponry/weaponryInfo.nut")
+local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
+local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
+local { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
+} = require("scripts/weaponry/weaponryTooltipPkg.nut")
+local { weaponsPurchase, canBuyItem } = require("scripts/weaponry/weaponsPurchase.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
+local { appendOnce } = require("sqStdLibs/helpers/u.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
-::gui_handlers.weaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType              = handlerType.MODAL
-  sceneTplName         = "%gui/weaponry/weaponryPresetsModal"
+  sceneTplName         = "gui/weaponry/weaponryPresetsModal"
   unit                 = null
   chosenPresetIdx      = null
   curPresetIdx         = null
@@ -53,9 +52,9 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function getSceneTplView()
   {
-    let tiersWidth = ::to_pixels("".concat(TIERS_NUMBER, "@tierIconSize"))
-    let iconWidth = ::show_console_buttons ? ::to_pixels("1@cIco") : 0
-    let tiersAndDescWidth = ::to_pixels("".concat(
+    local tiersWidth = ::to_pixels("".concat(TIERS_NUMBER, "@tierIconSize"))
+    local iconWidth = ::show_console_buttons ? ::to_pixels("1@cIco") : 0
+    local tiersAndDescWidth = ::to_pixels("".concat(
       "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
         + tiersWidth + iconWidth
     presetTextWidth = ::min(::to_pixels("1@srw") - tiersAndDescWidth,
@@ -81,7 +80,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function initScreen()
   {
-    let chpn = chosenPresetName
+    local chpn = chosenPresetName
     chosenPresetIdx = presetsList.findindex(@(w) w.name == chpn) ?? 0
     selectPreset(chosenPresetIdx)
     updatePresetsByRanks()
@@ -111,7 +110,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function getPresetsMarkup(pList) {
     presetIdxToChildIdx = {}
-    let res = []
+    local res = []
     if (pList == null)
       return res
     local curChapterOrd = 0
@@ -124,14 +123,14 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         })
       }
 
-      let params = weaponItemParams ?
+      local params = weaponItemParams ?
         weaponItemParams.__merge({visualDisabled = !preset.isEnabled}) : {}
       params.__update({
           collapsable = true
           showButtons = true
           actionBtnText = onChangeValueCb != null ? ::loc("mainmenu/btnSelect") : null
         })
-      let idx = presets.findindex(@(p) p.id == preset.id)
+      local idx = presets.findindex(@(p) p.id == preset.id)
       presetIdxToChildIdx[idx] <- res.len()
       res.append({
         presetId = idx
@@ -155,14 +154,17 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function selectPreset(presetIdx, isForced = false) {
     if (curPresetIdx == presetIdx && !isForced)
+    {
+      updateDesc()
       return
+    }
 
-    let nestObj = scene.findObject("presetNest")
+    local nestObj = scene.findObject("presetNest")
     local childIdx = presetIdxToChildIdx?[curPresetIdx]
     if (childIdx != null)
       nestObj.getChild(childIdx).selected = "no"
 
-    let row = scene.findObject($"tiersNest_{curPresetIdx}")
+    local row = scene.findObject($"tiersNest_{curPresetIdx}")
     if (row?.isValid())
       row.setValue(-1)
 
@@ -186,8 +188,8 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function onCellSelect(obj)
   {
-    let presetId = obj.presetId.tointeger()
-    let value = obj.getValue()
+    local presetId = obj.presetId.tointeger()
+    local value = obj.getValue()
     if (value < 0) {
       if (presetId == curPresetIdx) {
         selectPreset(null)
@@ -208,12 +210,12 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function updateTierDesc()
   {
     local data = ""
-    let descObj = scene.findObject("tierDesc")
+    local descObj = scene.findObject("tierDesc")
     if (curTierIdx >= 0 && curPresetIdx != null)
     {
-      let item = presetsList[curPresetIdx]
-      let weaponry = item.tiers?[curTierIdx].weaponry
-      data = weaponry ? ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
+      local item = presetsList[curPresetIdx]
+      local weaponry = item.tiers?[curTierIdx].weaponry
+      data = weaponry ? ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
         getTierDescTbl(unit, getTierTooltipParams(weaponry, item.name, curTierIdx))) : ""
     }
     guiScene.replaceContentFromText(descObj, data, data.len())
@@ -221,8 +223,8 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function onModItemDblClick(obj)
   {
-    let idx = curPresetIdx
-    let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
+    local idx = curPresetIdx
+    local params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     if (params?.weaponryItem.actionBtnCanShow != "no")
       onModActionBtn()
   }
@@ -249,7 +251,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       onChangeValueCb(item)
     else
     {
-      let amount = getItemAmount(unit, item)
+      local amount = getItemAmount(unit, item)
       if(getLastWeapon(unit.name) == item.name || !amount)
       {
         if (item.cost <= 0)
@@ -257,7 +259,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         return onBuy(item)
       }
 
-      let disabledMods = getWeaponDisabledMods(unit, item)
+      local disabledMods = getWeaponDisabledMods(unit, item)
       if (disabledMods.len() > 0)
       {
         showReqModsMsg(disabledMods)
@@ -273,25 +275,25 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function showReqModsMsg(disabledMods)
   {
-    let aUnit = unit
-    let modNames = disabledMods.map(@(n) ::colorize("userlogColoredText", getModificationName(aUnit, n)))
-    let text = ::loc("weaponry/require_mod_install", {
+    local aUnit = unit
+    local modNames = disabledMods.map(@(n) ::colorize("userlogColoredText", getModificationName(aUnit, n)))
+    local text = ::loc("weaponry/require_mod_install", {
       modNames = ::loc("ui/colon").join(modNames)
       numMods = disabledMods.len()
     })
-    let onOk = ::Callback(@() installMods(disabledMods), this)
+    local onOk = ::Callback(@() installMods(disabledMods), this)
     ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
   }
 
   function installMods(disabledMods)
   {
-    let aUnit = unit
-    let onSuccess = ::Callback(function() {
+    local aUnit = unit
+    local onSuccess = ::Callback(function() {
       disabledMods.each(@(n) ::updateAirAfterSwitchMod(aUnit, n))
       ::broadcastEvent("ModificationChanged")
     }, this)
 
-    let taskId = enable_modifications(unit.name, disabledMods, true)
+    local taskId = enable_modifications(unit.name, disabledMods, true)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
   }
 
@@ -319,7 +321,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (taskId >= 0 && func)
       {
-        let cb = ::u.isFunction(func) ? ::Callback(func, this) : func
+        local cb = ::u.isFunction(func) ? ::Callback(func, this) : func
         ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
       }
     }
@@ -330,7 +332,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function updateDesc()
   {
-    let descObj = scene.findObject("desc")
+    local descObj = scene.findObject("desc")
     if (curPresetIdx == null)
     {
       guiScene.replaceContentFromText(descObj, "", 0, this)
@@ -343,22 +345,22 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       curEdiff = curEdiff
       detail = INFO_DETAIL.FULL
     })
-    let idx = curPresetIdx
-    let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
-    let btnText = params?.weaponryItem.actionBtnText ?? ""
-    let canBuy = presetsList[idx].cost > 0
-    let actionBtnObj = showSceneBtn("actionBtn", btnText != ""
+    local idx = curPresetIdx
+    local params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
+    local btnText = params?.weaponryItem.actionBtnText ?? ""
+    local canBuy = presetsList[idx].cost > 0
+    local actionBtnObj = showSceneBtn("actionBtn", btnText != ""
       && (idx != chosenPresetIdx || canBuy))
     if (btnText != "" && actionBtnObj?.isValid())
       actionBtnObj.setValue(btnText)
-    let altBtnText = params?.weaponryItem.altBtnBuyText ?? ""
-    let altActionBtnObj = showSceneBtn("altActionBtn", altBtnText != "")
+    local altBtnText = params?.weaponryItem.altBtnBuyText ?? ""
+    local altActionBtnObj = showSceneBtn("altActionBtn", altBtnText != "")
     if (altBtnText != "" && altActionBtnObj?.isValid())
     {
       altActionBtnObj.setValue(altBtnText)
       altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
-    let favoriteBtnObj = showSceneBtn("favoriteBtn", true)
+    local favoriteBtnObj = showSceneBtn("favoriteBtn", true)
     favoriteBtnObj.setValue(::loc(presetsList[curPresetIdx].chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
@@ -368,12 +370,12 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (isAllBuyProcess)
       return
 
-    let presetObj = scene.findObject("presetNest")
+    local presetObj = scene.findObject("presetNest")
     if (!presetObj?.isValid())
       return
 
     presetsMarkup = getPresetsMarkup(pList ?? presets)
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryPreset", {
+    local data = ::handyman.renderCached("gui/weaponry/weaponryPreset", {
       chapterPos = chapterPos
       presets = presetsMarkup
       isShowConsoleBtn = ::show_console_buttons
@@ -388,12 +390,12 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     selectPreset(chosenPresetIdx in presetIdxToChildIdx ? chosenPresetIdx : firstIdx, true)
 
     // Enable/disable filter options depends on whether filtering result exist.
-    let popupObj = filterObj.findObject("filter_popup")
+    local popupObj = filterObj.findObject("filter_popup")
     if (!popupObj?.isValid())
       return
 
-    let fObj = popupObj.findObject("f_Favorite")
-    let aObj = popupObj.findObject("f_Available")
+    local fObj = popupObj.findObject("f_Favorite")
+    local aObj = popupObj.findObject("f_Available")
     if (fObj?.isValid()) {
       fObj.setValue(isFavoritesExist() && filterStates.findindex(@(p) p == "f_Favorite") != null)
       fObj.enable(isFavoritesExist())
@@ -408,14 +410,14 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function onCollapse(obj)
   {
-    let itemObj = obj?.collapse_header ? obj : obj.getParent()
-    let listObj = itemObj?.isValid() ? itemObj.getParent() : null
+    local itemObj = obj?.collapse_header ? obj : obj.getParent()
+    local listObj = itemObj?.isValid() ? itemObj.getParent() : null
     if (!listObj?.isValid() || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
-    let isShow = itemObj?.collapsed == "yes"
-    let listLen = listObj.childrenCount()
+    local isShow = itemObj?.collapsed == "yes"
+    local listLen = listObj.childrenCount()
     local selIdx = listObj.getValue()
     local headerIdx = -1
     local needReselect = false
@@ -423,7 +425,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     local found = false
     for (local i = 0; i < listLen; i++)
     {
-      let child = listObj.getChild(i)
+      local child = listObj.getChild(i)
       if (!found)
       {
         if (child?.collapsing == "yes")
@@ -447,7 +449,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     if (needReselect)
     {
-      let indexes = []
+      local indexes = []
       for (local i = selIdx + 1; i < listLen; i++)
         indexes.append(i)
       for (local i = selIdx - 1; i >= 0; i--)
@@ -456,7 +458,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       local newIdx = -1
       foreach (idx in indexes)
       {
-        let child = listObj.getChild(idx)
+        local child = listObj.getChild(idx)
         if (!child?.collapse_header && child.isEnabled())
         {
           newIdx = idx
@@ -469,7 +471,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     if (collapsedPresets && !::u.isEmpty(itemObj?.id))
     {
-      let idx = ::find_in_array(collapsedPresets, itemObj.id)
+      local idx = ::find_in_array(collapsedPresets, itemObj.id)
       if (isShow && idx != -1)
         collapsedPresets.remove(idx)
       else if (!isShow && idx == -1)
@@ -479,13 +481,13 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function onChangeFavorite(obj)
   {
-    let preset = presets[curPresetIdx]
-    let isFavorite = preset.chapterOrd == CHAPTER_FAVORITE_IDX
-    let chapterOrd = isFavorite
+    local preset = presets[curPresetIdx]
+    local isFavorite = preset.chapterOrd == CHAPTER_FAVORITE_IDX
+    local chapterOrd = isFavorite
       ? CHAPTER_ORDER.findindex(@(p) p == preset.purposeType) : CHAPTER_FAVORITE_IDX
     if (isFavorite)
     {
-      let idx = favoriteArr.findindex(@(id) id == preset.id)
+      local idx = favoriteArr.findindex(@(id) id == preset.id)
       if (idx != null)
         favoriteArr.remove(idx)
     }
@@ -499,7 +501,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   }
 
   function getFiltersView() {
-    let view = { checkbox = []}
+    local view = { checkbox = []}
     foreach(key, inst in filterTypes)
       view.checkbox.append({
         id = inst.id
@@ -519,11 +521,11 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     filterStates = myFilters ? myFilters % "array" : []
     filterTypes = {}
     foreach(idx, key in FILTER_OPTIONS) {
-      let isRank = typeof(key) != "string"
+      local isRank = typeof(key) != "string"
       if ((isRank && !presetsByRanks?[key]))
         continue
 
-      let id = $"f_{key}"
+      local id = $"f_{key}"
       filterTypes[id] <- {
         id    = id
         idx   = idx
@@ -543,7 +545,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     // to avoid excess job by each checkbox choice.
     foreach (inst in filterStates) {
       if (inst != "f_Favorite" && inst != "f_Available") {
-        let p = presetsByRanks?[inst.split("f_")[1].tointeger()]
+        local p = presetsByRanks?[inst.split("f_")[1].tointeger()]
         if (p != null)
          pList.extend(p)
       } else {
@@ -560,9 +562,9 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
     if (isFavorite || isAvailable) {
       // Ignore filtering if stored filter has no result for current unit presets.
-      let isExistFavorites = isFavoritesExist()
-      let isExistAvailables = isAvailablesExist()
-      let filterFunc = @(p)
+      local isExistFavorites = isFavoritesExist()
+      local isExistAvailables = isAvailablesExist()
+      local filterFunc = @(p)
         (!isFavorite || !isExistFavorites || p.chapterOrd == CHAPTER_FAVORITE_IDX)
           && (!isAvailable || !isExistAvailables || p.isEnabled)
       pList = pList.filter(filterFunc)
@@ -571,25 +573,18 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
 
     sortPresetLists([pList])
-    let chpn = chosenPresetName
+    local chpn = chosenPresetName
     chosenPresetIdx = presetsList.findindex(@(w) w.name == chpn)
     updateAll(pList)
   }
 
   function onFilterCbChange(objId, tName, value) {
-    let isReset = objId == RESET_ID
-    foreach (key, inst in filterTypes)
-    {
-      if (!isReset && inst.id != objId)
-        continue
-
-      if (value)
-        appendOnce(key, filterStates)
-      else {
-        let idx = filterStates.findindex(@(v) v == key)
-        if (idx != null)
-          filterStates.remove(idx)
-      }
+    if (value)
+      appendOnce(objId, filterStates)
+    else {
+      local idx = filterStates.findindex(@(v) v == objId)
+      if (idx != null)
+        filterStates.remove(idx)
     }
 
     updateAllByFilters()
@@ -600,7 +595,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   // DEVELOPERS OPTION ONLY
   function updateBuyAllBtn()
   {
-    let isShow = multiPurchaseList.len() > 0
+    local isShow = multiPurchaseList.len() > 0
     if (isShow)
       placePriceTextToButton(scene, "btn_buyAll", ::loc("mainmenu/btnBuyAll"), totalCost)
 
@@ -619,7 +614,7 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     totalCost = ::Cost()
     foreach (item in presetsList)
     {
-      let statusTbl = getItemStatusTbl(unit, item)
+      local statusTbl = getItemStatusTbl(unit, item)
       if (!::shop_is_weapon_available(unit.name, item.name, false, true) || !statusTbl.canBuyMore)
         continue
 
@@ -644,8 +639,8 @@ local FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (!canBuyItem(totalCost, unit))
       return
 
-    let item = multiPurchaseList.pop()
-    let statusTbl = getItemStatusTbl(unit, item)
+    local item = multiPurchaseList.pop()
+    local statusTbl = getItemStatusTbl(unit, item)
     totalCost -= getItemCost(unit, item).multiply(statusTbl.maxAmount - statusTbl.amount)
     isAllBuyProcess = true
     weaponsPurchase(unit, {modItem = item, open = false, silent = true, isAllPresetPurchase = true,

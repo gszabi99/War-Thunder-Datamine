@@ -6,11 +6,11 @@ local startMissionInsteadOfQueue = null
   }
 */
 
-let updateStartMissionInsteadOfQueue = function()
+local updateStartMissionInsteadOfQueue = function()
 {
-  let rBlk = ::get_ranks_blk()
+  local rBlk = ::get_ranks_blk()
 
-  let mInfo = rBlk?.custom_single_mission
+  local mInfo = rBlk?.custom_single_mission
   if (mInfo?.name == null)
     startMissionInsteadOfQueue = null
   else

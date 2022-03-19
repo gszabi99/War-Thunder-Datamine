@@ -1,2 +1,2 @@
 ::dagor.debug($"onScriptLoad: wt")
-require("%scripts/login/initLoginWT.nut")
+require("scripts/login/initLoginWT.nut")

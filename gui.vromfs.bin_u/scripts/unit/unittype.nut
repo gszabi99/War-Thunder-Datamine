@@ -1,4 +1,4 @@
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 //************************************************************************//
 //*********************functions to work with esUnitType******************//
@@ -17,15 +17,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::get_unit_class_icon_by_unit <- function get_unit_class_icon_by_unit(unit, iconName)
 {
-  let esUnitType = ::get_es_unit_type(unit)
-  let t = unitTypes.getByEsUnitType(esUnitType)
+  local esUnitType = ::get_es_unit_type(unit)
+  local t = unitTypes.getByEsUnitType(esUnitType)
   return $"{t.uiClassSkin}{iconName}.svg"
 }
 
 ::get_unit_icon_by_unit <- function get_unit_icon_by_unit(unit, iconName)
 {
-  let esUnitType = ::get_es_unit_type(unit)
-  let t = unitTypes.getByEsUnitType(esUnitType)
+  local esUnitType = ::get_es_unit_type(unit)
+  local t = unitTypes.getByEsUnitType(esUnitType)
   return t.uiSkin + iconName
 }
 

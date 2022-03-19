@@ -1,8 +1,8 @@
-let time = require("%scripts/time.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
+local time = require("scripts/time.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
+local { hasAllFeatures } = require("scripts/user/features.nut")
+local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -189,7 +189,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
     canRequestLb = false
 
-    let db = ::DataBlock()
+    local db = ::DataBlock()
     db.setStr("category", requestData.lbField)
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", requestData.rowsInPage)
@@ -198,7 +198,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
     db.setInt("start", requestData.pos)
 
-    let taskId = ::request_leaderboard_blk(db)
+    local taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
@@ -209,7 +209,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       return
     canRequestLb = false
 
-    let db = ::DataBlock()
+    local db = ::DataBlock()
     db.setStr("category", requestData.lbField)
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", 0)
@@ -217,13 +217,13 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     db.setStr("platformFilter", requestData.platformFilter)
     db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
 
-    let taskId = ::request_leaderboard_blk(db)
+    local taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
   function handleLbRequest(requestData)
   {
-    let LbBlk = ::get_leaderboard_blk()
+    local LbBlk = ::get_leaderboard_blk()
     leaderboardData = {}
     leaderboardData["rows"] <- lbBlkToArray(LbBlk, requestData)
     canRequestLb = true
@@ -243,7 +243,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function handleSelfRowLbRequest(requestData)
   {
-    let sefRowblk = ::get_leaderboard_blk()
+    local sefRowblk = ::get_leaderboard_blk()
     selfRowData = lbBlkToArray(sefRowblk, requestData)
     canRequestLb = true
     if (!compareRequests(lastRequestSRData, requestData))
@@ -260,17 +260,17 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function lbBlkToArray(blk, requestData)
   {
-    let res = []
-    let valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
+    local res = []
+    local valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
     for (local i = 0; i < blk.blockCount(); i++)
     {
-      let table = {}
-      let row = blk.getBlock(i)
+      local table = {}
+      local row = blk.getBlock(i)
       table.name <- row.getBlockName()
       table.pos <- row.idx != null ? row.idx : -1
       for(local j = 0; j < row.blockCount(); j++)
       {
-        let param = row.getBlock(j)
+        local param = row.getBlock(j)
         if(param.paramCount() <= 0 || param[valueKey] == null)
           continue
         table[param.getBlockName()] <- param[valueKey]
@@ -313,7 +313,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       return false
 
     // check modesMask
-    let lbMode = ::getTblValue("lbMode", params)
+    local lbMode = ::getTblValue("lbMode", params)
     if (!row.isVisibleByLbModeName(lbMode))
       return false
 
@@ -336,14 +336,14 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
    */
   function getLbDiff(a, b)
   {
-    let res = {}
+    local res = {}
     foreach (fieldId, fieldValue in a)
     {
       if (fieldId == "_id")
         continue
       if (typeof fieldValue == "string")
         continue
-      let compareToValue = ::getTblValue(fieldId, b, 0)
+      local compareToValue = ::getTblValue(fieldId, b, 0)
       if (fieldValue != compareToValue)
         res[fieldId] <- fieldValue - compareToValue
     }
@@ -364,7 +364,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
  */
 ::getLeaderboardItemView <- function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, params = null)
 {
-  let view = lbCategory.getItemCell(lb_value)
+  local view = lbCategory.getItemCell(lb_value)
   view.name <- lbCategory.headerTooltip
   view.icon <- lbCategory.headerImage
 
@@ -390,13 +390,13 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
  */
 ::getLeaderboardItemWidgets <- function getLeaderboardItemWidgets(view)
 {
-  return ::handyman.renderCached("%gui/leaderboard/leaderboardItemWidget", view)
+  return ::handyman.renderCached("gui/leaderboard/leaderboardItemWidget", view)
 }
 
-::gui_handlers.LeaderboardWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/leaderboard/leaderboard.blk"
+  sceneBlkName = "gui/leaderboard/leaderboard.blk"
 
   lbType        = ::ETTI_VALUE_INHISORY
   curLbCategory = null
@@ -482,7 +482,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (rowsInPage == 0)
       return  // do not divide by zero
 
-    let selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
+    local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
     pos = selfPagePos / rowsInPage < maxRows ? selfPagePos : 0
   }
 
@@ -504,7 +504,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!::checkObj(scene) || !pageData)
       return null
 
-    let row = getLbRows()?[curDataRowIdx]
+    local row = getLbRows()?[curDataRowIdx]
     if (row)
       return row
 
@@ -522,10 +522,10 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function updateButtons()
   {
-    let rowData = getSelectedRowData()
-    let isCountriesLb = isCountriesLeaderboard()
-    let showPlayer = rowData != null && !forClans && !isCountriesLb
-    let showClan = rowData != null && forClans
+    local rowData = getSelectedRowData()
+    local isCountriesLb = isCountriesLeaderboard()
+    local showPlayer = rowData != null && !forClans && !isCountriesLb
+    local showClan = rowData != null && forClans
 
     ::showBtnTable(scene, {
       btn_usercard = showPlayer && ::has_feature("UserCards")
@@ -551,13 +551,13 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function onUserCard()
   {
-    let rowData = getSelectedRowData()
+    local rowData = getSelectedRowData()
     if (!rowData)
       return
 
     //not event leaderboards dont have player uids, so if no uid, we will search player by name
-    let params = { name = getLbPlayerName(rowData) }
-    let uid = getLbPlayerUid(rowData)
+    local params = { name = getLbPlayerName(rowData) }
+    local uid = getLbPlayerUid(rowData)
     if (uid)
       params.uid <- uid
     ::gui_modal_userCard(params)
@@ -576,13 +576,13 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (isCountriesLeaderboard())
       return
 
-    let rowData = getSelectedRowData()
+    local rowData = getSelectedRowData()
     if (!rowData)
       return
 
     if (forClans)
     {
-      let clanUid = getLbClanUid(rowData)
+      local clanUid = getLbClanUid(rowData)
       if (clanUid)
         ::gui_right_click_menu(clanContextMenu.getClanActions(clanUid), this)
       return
@@ -601,14 +601,14 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function onClanInfo()
   {
-    let rowData = getSelectedRowData()
+    local rowData = getSelectedRowData()
     if (rowData)
       ::showClanPage(getLbClanUid(rowData), "", "")
   }
 
   function onMembershipReq()
   {
-    let rowData = getSelectedRowData()
+    local rowData = getSelectedRowData()
     if (rowData)
       ::g_clans.requestMembership(getLbClanUid(rowData))
   }
@@ -623,7 +623,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!::checkObj(obj) || lbModesList == null)
       return
 
-    let val = obj.getValue()
+    local val = obj.getValue()
 
     if (val >= 0 && val < lbModesList.len() && lbMode != lbModesList[val])
     {
@@ -645,7 +645,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function prepareRequest()
   {
-    let newRequest = {}
+    local newRequest = {}
     foreach(fieldName, field in request)
       newRequest[fieldName] <- (fieldName in this) ? this[fieldName] : field
     foreach (tableConfigRow in lb_presets)
@@ -670,8 +670,8 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     {
       if (rowsInPage != 0)  // do not divide by zero
       {
-        let selfPos = getSelfPos()
-        let selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
+        local selfPos = getSelfPos()
+        local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
         if (pos != selfPagePos)
           requestSelfPage(selfPos)
         else
@@ -720,10 +720,10 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
     foreach(idx, mode in ::leaderboard_modes)
     {
-      let diffCode = ::getTblValue("diffCode", mode)
+      local diffCode = ::getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
         continue
-      let reqFeature = ::getTblValue("reqFeature", mode)
+      local reqFeature = ::getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -731,7 +731,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    let modesObj = showSceneBtn("modes_list", true)
+    local modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -750,12 +750,12 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function initTopItems()
   {
-    let holder = scene.findObject("top_holder")
+    local holder = scene.findObject("top_holder")
     if (!::checkObj(holder))
       return
 
-    let tplView = getTopItemsTplView()
-    let data = ::handyman.renderCached("%gui/leaderboard/leaderboardTopItem", tplView)
+    local tplView = getTopItemsTplView()
+    local data = ::handyman.renderCached("gui/leaderboard/leaderboardTopItem", tplView)
 
     guiScene.replaceContentFromText(holder, data, data.len(), this)
   }
@@ -798,9 +798,9 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (!::checkObj(scene))
       return
 
-    let lbRows = getLbRows()
-    let showHeader = pgData != null
-    let showTable = (pos > 0 || lbRows.len() > 0) && selfRowData != null
+    local lbRows = getLbRows()
+    local showHeader = pgData != null
+    local showTable = (pos > 0 || lbRows.len() > 0) && selfRowData != null
 
     if (tableWeak)
     {
@@ -828,14 +828,14 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (rowsInPage == 0)
       return  // do not divide by zero
 
-    let nestObj = scene.findObject("paginator_place")
-    let curPage = (pos / rowsInPage).tointeger()
+    local nestObj = scene.findObject("paginator_place")
+    local curPage = (pos / rowsInPage).tointeger()
     if (tableWeak.isLastPage && (curPage == 0))
       ::hidePaginator(nestObj)
     else
     {
-      let lastPageNumber = curPage + (tableWeak.isLastPage ? 0 : 1)
-      let myPlace = getSelfPos()
+      local lastPageNumber = curPage + (tableWeak.isLastPage ? 0 : 1)
+      local myPlace = getSelfPos()
       local myPage = myPlace >= 0 ? ::floor(myPlace / rowsInPage) : null
       ::generatePaginator(nestObj, this, curPage, lastPageNumber, myPage)
     }
@@ -843,7 +843,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   //----END_VIEW----//
 }
 
-::gui_handlers.EventsLeaderboardWindow <- class extends ::gui_handlers.LeaderboardWindow
+class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardWindow
 {
   eventId  = null
   inverse  = false
@@ -852,7 +852,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function initScreen()
   {
-    let eventData = ::events.getEvent(eventId)
+    local eventData = ::events.getEvent(eventId)
     if (!eventData)
       return goBack()
 
@@ -864,7 +864,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     if (lb_presets == null)
       lb_presets = ::events.eventsTableConfig
 
-    let sortLeaderboard = ::getTblValue("sort_leaderboard", eventData, null)
+    local sortLeaderboard = ::getTblValue("sort_leaderboard", eventData, null)
     curLbCategory = (sortLeaderboard != null)
       ? ::g_lb_category.getTypeByField(sortLeaderboard)
       : ::events.getTableConfigShortRowByEvent(eventData)
@@ -874,7 +874,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
     initTopItems()
     fetchLbData()
 
-    let headerName = scene.findObject("lb_name")
+    local headerName = scene.findObject("lb_name")
     headerName.setValue(::events.getEventNameText(eventData))
 
     updateButtons()
@@ -882,7 +882,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function getTopItemsTplView()
   {
-    let res = {
+    local res = {
       updateTime = [{}]
     }
     return res
@@ -891,14 +891,14 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
   function fillAdditionalLeaderboardInfo(pageData)
   {
-    let updateTime = ::getTblValue("updateTime", pageData, 0)
-    let timeStr = updateTime > 0
+    local updateTime = ::getTblValue("updateTime", pageData, 0)
+    local timeStr = updateTime > 0
                     ? ::format("%s %s %s",
                                ::loc("mainmenu/lbUpdateTime"),
                                time.buildDateStr(updateTime),
                                time.buildTimeStr(updateTime, false, false))
                     : ""
-    let lbUpdateTime = scene.findObject("lb_update_time")
+    local lbUpdateTime = scene.findObject("lb_update_time")
     if (!::checkObj(lbUpdateTime))
       return
     lbUpdateTime.setValue(timeStr)
@@ -907,12 +907,12 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 
 ::getLbItemCell <- function getLbItemCell(id, value, dataType, allowNegative = false)
 {
-  let res = {
+  local res = {
     id   = id
     text = dataType.getShortTextByValue(value, allowNegative)
   }
 
-  let tooltipText =  dataType.getPrimaryTooltipText(value, allowNegative)
+  local tooltipText =  dataType.getPrimaryTooltipText(value, allowNegative)
   if (tooltipText != "")
     res.tooltip <- tooltipText
 

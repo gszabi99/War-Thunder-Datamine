@@ -1,23 +1,23 @@
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let sony = require("sony")
-let { is_stereo_mode } = ::require_native("vr")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local sony = require("sony")
+local { is_stereo_mode } = ::require_native("vr")
+local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
 
-let defValue  = 1.0
-let values    = [ 1.0, 0.95, 0.9 ]
-let items     = ["100%", "95%", "90%"]
+local defValue  = 1.0
+local values    = [ 1.0, 0.95, 0.9 ]
+local items     = ["100%", "95%", "90%"]
 
-let getFixedValue = @() //return -1 when not fixed
+local getFixedValue = @() //return -1 when not fixed
   is_stereo_mode() ? 0.8
   : isPlatformSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9
   : ::is_low_width_screen() ? 1.0
   : -1
 
-let compatibleGetValue = function()
+local compatibleGetValue = function()
 {
-  let value = !::g_login.isAuthorized() ?
+  local value = !::g_login.isAuthorized() ?
     ::to_float_safe(::getSystemConfigOption("video/safearea", defValue), defValue) :
     ::get_gui_option_in_mode(::USEROPT_MENU_SCREEN_SAFE_AREA, ::OPTIONS_MODE_GAMEPLAY, defValue)
 
@@ -26,7 +26,7 @@ let compatibleGetValue = function()
   return value
 }
 
-let getValue = function()
+local getValue = function()
 {
   local value = getFixedValue()
   if (value != -1)
@@ -46,15 +46,15 @@ local setValue = function(value)
   ::set_gui_option_in_mode(::USEROPT_MENU_SCREEN_SAFE_AREA, value, ::OPTIONS_MODE_GAMEPLAY)
 }
 
-let getValueOptionIndex = @() values.indexof(getValue())
+local getValueOptionIndex = @() values.indexof(getValue())
 
-let canChangeValue = @() getFixedValue() == -1
+local canChangeValue = @() getFixedValue() == -1
 
-let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
+local getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
 
 ::cross_call_api.getMenuSafearea <- getSafearea
 
-let export = {
+local export = {
   getValue = getValue
   setValue = setValue
   canChangeValue = canChangeValue

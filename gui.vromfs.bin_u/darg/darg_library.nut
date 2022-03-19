@@ -3,16 +3,16 @@
 from "frp" import *
 from "daRg" import *
 
-let {tostring_r} = require("%sqstd/string.nut")
+local {tostring_r} = require("%sqstd/string.nut")
 
 /*
 //===== DARG specific methods=====
   this function create element that has internal basic stateFlags (S_HOVER S_ACTIVE S_DRAG)
 */
-let function watchElemState(builder) {
-  let stateFlags = Watched(0)
+local function watchElemState(builder) {
+  local stateFlags = Watched(0)
   return function() {
-    let desc = builder(stateFlags.value)
+    local desc = builder(stateFlags.value)
     local watch = desc?.watch ?? []
     if (type(watch) != "array")
       watch = [watch]
@@ -23,7 +23,7 @@ let function watchElemState(builder) {
   }
 }
 
-let NamedColor = {
+local NamedColor = {
   red = Color(255,0,0)
   blue = Color(0,0,255)
   green = Color(0,255,0)
@@ -40,21 +40,21 @@ let NamedColor = {
 /*
 //===== DARG specific methods=====
 */
-let function isDargComponent(comp) {
+local function isDargComponent(comp) {
 //better to have natived daRg function to check if it is valid component!
   local c = comp
   if (type(c) == "function") {
-    let info = c.getfuncinfos()
+    local info = c.getfuncinfos()
     if (info?.parameters && info.parameters.len() > 1)
       return false
     c = c()
   }
-  let c_type = type(c)
+  local c_type = type(c)
   if (c_type == "null")
     return true
   if (c_type != "table" && c_type != "class")
     return false
-  let knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
+  local knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
   foreach(k,val in c) {
     if (knownProps.indexof(k) != null)
       return true
@@ -64,48 +64,48 @@ let function isDargComponent(comp) {
 
 //this function returns sh() for pixels for fullhd resolution (1080p)
 //but result is not bigger than 0.75sw (for resolutions narrower than 4x3)
-let hdpx = sh(100) <= sw(75)
+local hdpx = sh(100) <= sw(75)
   ? @(pixels) sh(100.0 * pixels / 1080)
   : @(pixels) sw(75.0 * pixels / 1080)
 
-let fsh = sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v)
+local fsh = sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v)
 
-let wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
-let function wrap(elems, params=wrapParams) {
+local wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
+local function wrap(elems, params=wrapParams) {
   //TODO: move this to native code
-  let paddingLeft=params?.paddingLeft
-  let paddingRight=params?.paddingRight
-  let paddingTop=params?.paddingTop
-  let paddingBottom=params?.paddingBottom
-  let flow = params?.flow ?? FLOW_HORIZONTAL
+  local paddingLeft=params?.paddingLeft
+  local paddingRight=params?.paddingRight
+  local paddingTop=params?.paddingTop
+  local paddingBottom=params?.paddingBottom
+  local flow = params?.flow ?? FLOW_HORIZONTAL
   assert([FLOW_HORIZONTAL, FLOW_VERTICAL].indexof(flow)!=null, "flow should be FLOW_VERTICAL or FLOW_HORIZONTAL")
-  let isFlowHor = flow==FLOW_HORIZONTAL
-  let height = params?.height ?? SIZE_TO_CONTENT
-  let width = params?.width ?? SIZE_TO_CONTENT
-  let dimensionLim = isFlowHor ? width : height
+  local isFlowHor = flow==FLOW_HORIZONTAL
+  local height = params?.height ?? SIZE_TO_CONTENT
+  local width = params?.width ?? SIZE_TO_CONTENT
+  local dimensionLim = isFlowHor ? width : height
   assert(["array"].indexof(type(elems))!=null, "elems should be array")
   assert(["float","integer"].indexof(type(dimensionLim))!=null, @() "can't flow over {0} non numeric type".subst(isFlowHor ? "width" :"height"))
-  let hgap = params?.hGap ?? wrapParams?.hGap
-  let vgap = params?.vGap ?? wrapParams?.vGap
+  local hgap = params?.hGap ?? wrapParams?.hGap
+  local vgap = params?.vGap ?? wrapParams?.vGap
   local gap = isFlowHor ? hgap : vgap
-  let secondaryGap = isFlowHor ? vgap : hgap
+  local secondaryGap = isFlowHor ? vgap : hgap
   if (["float","integer"].contains(type(gap)))
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
-  let flowElemProto = params?.flowElemProto ?? {}
-  let flowElems = []
+  local flowElemProto = params?.flowElemProto ?? {}
+  local flowElems = []
   if (paddingTop && isFlowHor)
     flowElems.append(paddingTop)
   if (paddingLeft && !isFlowHor)
     flowElems.append(paddingLeft)
   local tail = elems
-  let function buildFlowElem(elems, gap, flowElemProto, dimensionLim) {  //warning disable: -ident-hides-ident
-    let children = []
+  local function buildFlowElem(elems, gap, flowElemProto, dimensionLim) {  //warning disable: -ident-hides-ident
+    local children = []
     local curwidth=0.0
     local tailidx = 0
-    let flowSizeIdx = isFlowHor ? 0 : 1
+    local flowSizeIdx = isFlowHor ? 0 : 1
     foreach (i, elem in elems) {
-      let esize = calc_comp_size(elem)[flowSizeIdx]
-      let gapsize = isDargComponent(gap) ? calc_comp_size(gap)[flowSizeIdx] : gap
+      local esize = calc_comp_size(elem)[flowSizeIdx]
+      local gapsize = isDargComponent(gap) ? calc_comp_size(gap)[flowSizeIdx] : gap
       if (i==0 && ((curwidth + esize) <= dimensionLim)) {
         children.append(elem)
         curwidth = curwidth + esize
@@ -139,34 +139,34 @@ let function wrap(elems, params=wrapParams) {
 }
 
 
-let function dump_observables() {
-  let list = gui_scene.getAllObservables()
+local function dump_observables() {
+  local list = gui_scene.getAllObservables()
   print("{0} observables:".subst(list.len()))
   foreach (obs in list)
     print(tostring_r(obs))
 }
 
-let colorPart = @(value) min(255, (value + 0.5).tointeger())
-let function mul_color(color, mult) {
+local colorPart = @(value) min(255, (value + 0.5).tointeger())
+local function mul_color(color, mult) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
                  colorPart(((color >> 24) & 0xff) * mult))
 }
 
-let function XmbNode(params={}) {
+local function XmbNode(params={}) {
   return clone params
 }
 
-let function XmbContainer(params={}) {
+local function XmbContainer(params={}) {
   return XmbNode({
     canFocus = @() false
   }.__merge(params))
 }
 
-let function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null){
-  let container = persistFunc(persistKey, @() {v=defVal})
-  let watch = observableInitArg==null ? Watched(container.v) : Watched(container.v, observableInitArg)
+local function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null){
+  local container = persistFunc(persistKey, @() {v=defVal})
+  local watch = observableInitArg==null ? Watched(container.v) : Watched(container.v, observableInitArg)
   watch.subscribe(@(v) container.v=v)
   return watch
 }

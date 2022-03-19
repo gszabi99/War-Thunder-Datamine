@@ -4,7 +4,7 @@ warbondShopLevel {
   left:t='<<posX>>'
   tooltip:t='<<tooltip>>'
   status = <<status>>
-  background-image:t='<<levelIcon>>.svg'
+  background-image:t='<<levelIcon>>'
   hasOverlayIcon:t='<<#hasOverlayIcon>>yes<</hasOverlayIcon>><<^hasOverlayIcon>>no<</hasOverlayIcon>>'
   foreground-image:t='<<levelIcon>>_overlay'
   total-input-transparent:t='yes'

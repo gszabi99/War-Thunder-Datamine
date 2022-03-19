@@ -1,13 +1,13 @@
-let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
+local { getLocalizedShortcutName } = require("scripts/controls/controlsVisual.nut")
 
-::Input.NullInput <- class extends ::Input.InputBase
+class ::Input.NullInput extends ::Input.InputBase
 {
   showPlaceholder = false
 
   function getMarkup()
   {
     return showPlaceholder
-      ? ::handyman.renderCached("%gui/controls/input/nullInput", { text = getText() })
+      ? ::handyman.renderCached("gui/controls/input/nullInput", { text = getText() })
       : null
   }
 

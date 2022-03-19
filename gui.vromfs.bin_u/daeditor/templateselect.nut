@@ -1,45 +1,42 @@
 from "%darg/ui_imports.nut" import *
-
-let {showTemplateSelect, editorIsActive, showDebugButtons} = require("state.nut")
-let {colors} = require("components/style.nut")
-let txt = require("%darg/components/text.nut").dtext
-let textButton = require("components/textButton.nut")
-let nameFilter = require("components/nameFilter.nut")
-let combobox = require("%darg/components/combobox.nut")
-let scrollbar = require("%darg/components/scrollbar.nut")
-let entity_editor = require("entity_editor")
-let daEditor4 = require("daEditor4")
-let {DE4_MODE_SELECT} = daEditor4
-
-let selectedGroup = Watched("")
-let selectedItem = Watched(null)
-let filterText = Watched("")
-let templatePostfixText = Watched("")
-
-let scrollHandler = ScrollHandler()
+local {showTemplateSelect} = require("state.nut")
+local {colors} = require("components/style.nut")
+local textButton = require("components/textButton.nut")
+local nameFilter = require("components/nameFilter.nut")
+local scrollbar = require("%darg/components/scrollbar.nut")
+local entity_editor = require("entity_editor")
+local daEditor4 = require("daEditor4")
+local {DE4_MODE_SELECT} = daEditor4
 
 
-let function scrollByName(text) {
+local selectedItem = Watched(null)
+local filterText = Watched("")
+local templatePostfixText = Watched("")
+
+local scrollHandler = ScrollHandler()
+
+
+local function scrollByName(text) {
   scrollHandler.scrollToChildren(function(desc) {
     return ("tpl_name" in desc) && desc.tpl_name.indexof(text)!=null
   }, 2, false, true)
 }
 
-let function scrollBySelection() {
+local function scrollBySelection() {
   scrollHandler.scrollToChildren(function(desc) {
     return ("tpl_name" in desc) && desc.tpl_name==selectedItem.value
   }, 2, false, true)
 }
 
-let function doSelectTemplate(tpl_name) {
+local function doSelectTemplate(tpl_name) {
   selectedItem(tpl_name)
   if (selectedItem.value) {
-    let finalTemplateName = selectedItem.value + templatePostfixText.value
+    local finalTemplateName = selectedItem.value + templatePostfixText.value
     entity_editor.get_instance().selectEcsTemplate(finalTemplateName)
   }
 }
 
-let filter = nameFilter(filterText, {
+local filter = nameFilter(filterText, {
   placeholder = "Filter by name"
 
   function onChange(text) {
@@ -54,14 +51,11 @@ let filter = nameFilter(filterText, {
   }
 
   function onEscape() {
-    if (filterText.value != "")
-      filterText("")
-    else
-      set_kb_focus(null)
+    filterText("")
   }
 })
 
-let templPostfix = nameFilter(templatePostfixText, {
+local templPostfix = nameFilter(templatePostfixText, {
   placeholder = "Template postfix"
 
   function onChange(text) {
@@ -69,18 +63,15 @@ let templPostfix = nameFilter(templatePostfixText, {
   }
 
   function onEscape() {
-    if (templatePostfixText.value != "")
-      templatePostfixText("")
-    else
-      set_kb_focus(null)
+    templatePostfixText("")
   }
 })
 
-let function listRow(tpl_name, idx) {
-  let stateFlags = Watched(0)
+local function listRow(tpl_name, idx) {
+  local stateFlags = Watched(0)
 
   return function() {
-    let isSelected = selectedItem.value == tpl_name
+    local isSelected = selectedItem.value == tpl_name
 
     local color
     if (isSelected) {
@@ -109,66 +100,22 @@ let function listRow(tpl_name, idx) {
   }
 }
 
-let selectedGroupTemplates = Computed(@() editorIsActive.value ? entity_editor.get_instance()?.getEcsTemplates(selectedGroup.value) ?? [] : [])
-
-let filteredTemplates = Computed(function() {
-  let result = []
-  foreach (tplName in selectedGroupTemplates.value) {
-    if (filterText.value.len()==0 || tplName.tolower().contains(filterText.value.tolower())) {
-      result.append(tplName)
-    }
-  }
-  return result
-})
-
-let filteredTemplatesCount = Computed(@() filteredTemplates.value.len())
-let selectedGroupTemplatesCount = Computed(@() selectedGroupTemplates.value.len())
 
 
-local doRepeatValidateTemplates = @(idx) null
-let function doValidateTemplates(idx) {
-  const validateAfterName = ""
-  local skipped = 0
-  while (idx < selectedGroupTemplates.value.len()) {
-    let tplName = selectedGroupTemplates.value[idx]
-    if (tplName > validateAfterName) {
-      vlog($"Validating template {tplName}...")
-      selectedItem(tplName)
-      scrollBySelection()
-      gui_scene.resetTimeout(0.01, function() {
-        doSelectTemplate(tplName)
-        doRepeatValidateTemplates(idx+1)
-      })
-      return
-    }
-    vlog($"Skipping template {tplName}...")
-    if (++skipped > 50) {
-      selectedItem(tplName)
-      scrollBySelection()
-      gui_scene.resetTimeout(0.01, @() doRepeatValidateTemplates(idx+1))
-      return
-    }
-    idx += 1
-  }
-  vlog("Validation complete")
-}
-doRepeatValidateTemplates = doValidateTemplates
+local function dialogRoot() {
+  local templates = entity_editor.get_instance().getEcsTemplates()
 
-
-let function dialogRoot() {
-  let templatesGroups = entity_editor.get_instance().getEcsTemplatesGroups()
-
-  let function listContent() {
-    let rows = []
-    let idx = 0
-    foreach (tplName in filteredTemplates.value) {
+  local function listContent() {
+    local rows = []
+    local idx = 0
+    foreach (tplName in templates) {
       if (filterText.value.len()==0 || tplName.tolower().contains(filterText.value.tolower())) {
         rows.append(listRow(tplName, idx))
       }
     }
 
     return {
-      watch = [filteredTemplates, selectedItem, filterText]
+      watch = [selectedItem, filterText]
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       children = rows
@@ -176,21 +123,11 @@ let function dialogRoot() {
     }
   }
 
-  let scrollList = scrollbar.makeVertScroll(listContent, {
-    scrollHandler
-    rootBase = class {
-      size = flex()
-      behavior = Behaviors.RecalcHandler
-      function onRecalcLayout(initial) {
-        if (initial) {
-          scrollBySelection()
-        }
-      }
-    }
-  })
+
+  local scrollList = scrollbar.makeVertScroll(listContent)
 
 
-  let function doCancel() {
+  local function doCancel() {
     showTemplateSelect(false)
     filterText("")
     daEditor4.setEditMode(DE4_MODE_SELECT)
@@ -198,7 +135,7 @@ let function dialogRoot() {
 
 
   return {
-    size = [sw(17), sh(75)]
+    size = [sw(15), sh(75)]
     hplace = ALIGN_LEFT
     vplace = ALIGN_CENTER
     rendObj = ROBJ_SOLID
@@ -210,14 +147,7 @@ let function dialogRoot() {
     padding = fsh(0.5)
     gap = fsh(0.5)
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons]
-
     children = [
-      txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {fontSize = hdpx(15) hplace = ALIGN_CENTER})
-      {
-        size = [flex(),fontH(100)]
-        children = combobox(selectedGroup, templatesGroups)
-      }
       filter
       {
         size = flex()
@@ -228,10 +158,8 @@ let function dialogRoot() {
         flow = FLOW_HORIZONTAL
         size = [flex(), SIZE_TO_CONTENT]
         halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
         children = [
           textButton("Close", doCancel, {hotkeys=["^Esc"]})
-          showDebugButtons.value ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
         ]
       }
     ]

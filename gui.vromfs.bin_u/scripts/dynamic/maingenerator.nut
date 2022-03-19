@@ -2,8 +2,8 @@
 
 ::getEnemyPlaneByWpCost <- function getEnemyPlaneByWpCost(playerPlaneCost, enemySide)
 {
-  let planeWpDiv = ::getPlaneWpDiv();
-  let planeWpAdd = ::getPlaneWpAdd();
+  local planeWpDiv = ::getPlaneWpDiv();
+  local planeWpAdd = ::getPlaneWpAdd();
 
   local enemyFighterPlaneWpCostMin = playerPlaneCost*(planeWpDiv-1)*1.0/planeWpDiv-planeWpAdd;
   local enemyFighterPlaneWpCostMax = playerPlaneCost*(1+1.0/planeWpDiv)+planeWpAdd;
@@ -34,8 +34,8 @@
 
 ::planeCostCalculate <- function planeCostCalculate(playerPlaneCost, enemyPlaneCost)
 {
-  let planeWpDiv = ::getPlaneWpDiv();
-  let planeWpAdd = ::getPlaneWpAdd();
+  local planeWpDiv = ::getPlaneWpDiv();
+  local planeWpAdd = ::getPlaneWpAdd();
 
   local planeCost = (enemyPlaneCost+planeWpAdd*planeWpDiv)*(enemyPlaneCost+planeWpAdd*planeWpDiv)*1.0/
                     ((playerPlaneCost+planeWpAdd*planeWpDiv)*(playerPlaneCost+planeWpAdd*planeWpDiv));
@@ -50,7 +50,7 @@
   if (enemyCount == 0 || planeCost == 0)
     return 0;
 
-  let missionWpBasicCost = ::getMissionCost(mission_preset_name);
+  local missionWpBasicCost = ::getMissionCost(mission_preset_name);
   local enemyAllyCoef = (enemyCount*1.0/(allyCount+4))*planeCost;
   if (enemyAllyCoef < 0.5)
     enemyAllyCoef = 0.5;
@@ -63,10 +63,10 @@
   if (missionWpFighterCoef > 1.5)
     missionWpFighterCoef = 1.5;
 
-  let zeroWpAddCoef = ::getZeroWpAddCoef();
-  let repairCostMult = ::getRepairCostMult();
+  local zeroWpAddCoef = ::getZeroWpAddCoef();
+  local repairCostMult = ::getRepairCostMult();
   local missionWpCost = 0;
-  let playerPlaneCost = ::getAircraftCost(playerPlane);
+  local playerPlaneCost = ::getAircraftCost(playerPlane);
 
   missionWpCost = (zeroWpAddCoef*missionWpFighterCoef+playerPlaneCost*repairCostMult)*missionWpBasicCost;
 
@@ -105,17 +105,17 @@
   return
 }
 
-::dagor.includeOnce("%scripts/dynamic/headtohead.nut");
-::dagor.includeOnce("%scripts/dynamic/combat_patrol.nut");
-::dagor.includeOnce("%scripts/dynamic/bombing.nut");
-::dagor.includeOnce("%scripts/dynamic/freeflight.nut");
-::dagor.includeOnce("%scripts/dynamic/waypointflight.nut");
-::dagor.includeOnce("%scripts/dynamic/bombing_intercept.nut");
-::dagor.includeOnce("%scripts/dynamic/cover_bombers.nut");
-::dagor.includeOnce("%scripts/dynamic/bombing_defense.nut");
-::dagor.includeOnce("%scripts/dynamic/assault_defense.nut");
-::dagor.includeOnce("%scripts/dynamic/assault.nut");
-::dagor.includeOnce("%scripts/dynamic/cover_assault.nut");
+::dagor.includeOnce("scripts/dynamic/headtohead.nut");
+::dagor.includeOnce("scripts/dynamic/combat_patrol.nut");
+::dagor.includeOnce("scripts/dynamic/bombing.nut");
+::dagor.includeOnce("scripts/dynamic/freeflight.nut");
+::dagor.includeOnce("scripts/dynamic/waypointflight.nut");
+::dagor.includeOnce("scripts/dynamic/bombing_intercept.nut");
+::dagor.includeOnce("scripts/dynamic/cover_bombers.nut");
+::dagor.includeOnce("scripts/dynamic/bombing_defense.nut");
+::dagor.includeOnce("scripts/dynamic/assault_defense.nut");
+::dagor.includeOnce("scripts/dynamic/assault.nut");
+::dagor.includeOnce("scripts/dynamic/cover_assault.nut");
 
 ::currentMissionNo <- 0;
 

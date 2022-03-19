@@ -1,6 +1,6 @@
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
-::WwBattleResults <- class
+class ::WwBattleResults
 {
   id = ""
   winner = ::SIDE_NONE
@@ -35,9 +35,9 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     if (!blk)
       return
 
-    let battleBlk = blk?.battle
-    let armiesBlk = blk?.armies
-    let armyStatesBlk = blk?.armyStates
+    local battleBlk = blk?.battle
+    local armiesBlk = blk?.armies
+    local armyStatesBlk = blk?.armyStates
     if (!battleBlk || !armiesBlk || !armyStatesBlk)
       return
 
@@ -49,7 +49,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     zoneName = blk?.zoneInfo?.zoneName ?? ""
     sessionId = battleBlk?.desc?.sessionId ?? ""
 
-    let wwArmies = getArmies(armiesBlk)
+    local wwArmies = getArmies(armiesBlk)
     updateTeamsInfo(battleBlk, armyStatesBlk, wwArmies)
 
     applyBattleUpdates(battleBlk)
@@ -69,7 +69,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getArmies(armiesBlk)
   {
-    let wwArmies = {}
+    local wwArmies = {}
     foreach (armyBlk in armiesBlk)
       wwArmies[armyBlk.name] <- ::WwArmy(armyBlk.name, armyBlk)
     return wwArmies
@@ -84,41 +84,41 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   {
     teams = {}
 
-    let teamsBlk = battleBlk.getBlockByName("teams")
-    let descBlk = battleBlk.getBlockByName("desc")
-    let teamsInfoBlk = descBlk ? descBlk.getBlockByName("teamsInfo") : null
+    local teamsBlk = battleBlk.getBlockByName("teams")
+    local descBlk = battleBlk.getBlockByName("desc")
+    local teamsInfoBlk = descBlk ? descBlk.getBlockByName("teamsInfo") : null
     if (!teamsBlk || !teamsInfoBlk)
       return
 
     for (local i = 0; i < teamsBlk.blockCount(); ++i)
     {
-      let teamBlk = teamsBlk.getBlock(i)
-      let teamName = teamBlk.getBlockName() ?? ""
+      local teamBlk = teamsBlk.getBlock(i)
+      local teamName = teamBlk.getBlockName() ?? ""
       if (teamName.len() == 0)
         continue
 
-      let sideName = teamBlk?.side ?? ""
+      local sideName = teamBlk?.side ?? ""
       if (sideName.len() == 0)
         continue
-      let side = ::ww_side_name_to_val(sideName)
+      local side = ::ww_side_name_to_val(sideName)
 
       if (teamBlk?.isWinner)
         winner = side
 
-      let armyNamesBlk = teamBlk.getBlockByName("armyNames")
+      local armyNamesBlk = teamBlk.getBlockByName("armyNames")
       local teamCountry = ""
-      let teamArmiesList = []
-      let teamArmyStates = {}
+      local teamArmiesList = []
+      local teamArmyStates = {}
       if (armyNamesBlk)
       {
         for (local j = 0; j < armyNamesBlk.paramCount(); ++j)
         {
-          let armyName = armyNamesBlk.getParamValue(j) || ""
+          local armyName = armyNamesBlk.getParamValue(j) || ""
           if (armyName.len() == 0)
             continue
 
-          let army =::getTblValue(armyName, wwArmies)
-          let armyState = armyStatesBlk?[armyName].state ?? "EASAB_UNKNOWN"
+          local army =::getTblValue(armyName, wwArmies)
+          local armyState = armyStatesBlk?[armyName].state ?? "EASAB_UNKNOWN"
 
           if (teamCountry == "")
             teamCountry = army.owner.country
@@ -129,16 +129,16 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
       teamArmiesList.sort(::WwArmy.sortArmiesByUnitType)
 
-      let teamInfoBlk = teamsInfoBlk?[teamName]
-      let unitsInitialBlk = teamInfoBlk?.units
+      local teamInfoBlk = teamsInfoBlk?[teamName]
+      local unitsInitialBlk = teamInfoBlk?.units
 
-      let unitsInitial = wwActionsWithUnitsList.loadUnitsFromBlk(unitsInitialBlk)
+      local unitsInitial = wwActionsWithUnitsList.loadUnitsFromBlk(unitsInitialBlk)
       unitsInitial.extend(wwActionsWithUnitsList.getFakeUnitsArray(teamInfoBlk))
 
-      let unitsRemain = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.unitsRemain)
+      local unitsRemain = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.unitsRemain)
       unitsRemain.extend(wwActionsWithUnitsList.getFakeUnitsArray(teamBlk))
 
-      let unitsCasualties = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.casualties)
+      local unitsCasualties = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.casualties)
 
       teams[teamName] <- ::u.extend({}, teamDefaults, {
         name            = teamName
@@ -155,28 +155,28 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function applyBattleUpdates(battleBlk)
   {
-    let updatesBlk = battleBlk.getBlockByName("battleUpdates")
+    local updatesBlk = battleBlk.getBlockByName("battleUpdates")
     if (!updatesBlk)
       return
 
     for (local i = 0; i < updatesBlk.blockCount(); i++)
     {
-      let updateBlk = updatesBlk.getBlock(i)
-      let isNeedUpdateUnitsRemain = (updateBlk?.updateId ?? -1) > updateAppliedOnHost
+      local updateBlk = updatesBlk.getBlock(i)
+      local isNeedUpdateUnitsRemain = (updateBlk?.updateId ?? -1) > updateAppliedOnHost
 
-      let teamsBlk = updateBlk?.teams
+      local teamsBlk = updateBlk?.teams
       if (!teamsBlk)
         continue
       for (local j = 0; j < teamsBlk.blockCount(); j++)
       {
-        let teamBlk = teamsBlk.getBlock(j)
-        let team = ::getTblValue(teamBlk.getBlockName() || "", teams)
+        local teamBlk = teamsBlk.getBlock(j)
+        local team = ::getTblValue(teamBlk.getBlockName() || "", teams)
         if (!team)
           continue
 
-        let wwUnitsAdded = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.unitsAdded)
+        local wwUnitsAdded = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.unitsAdded)
 
-        let teamUnitsLists = isNeedUpdateUnitsRemain ?
+        local teamUnitsLists = isNeedUpdateUnitsRemain ?
           [ team.unitsInitial, team.unitsRemain ] :
           [ team.unitsInitial ]
 
@@ -184,7 +184,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         {
           foreach (wwUnitNew in wwUnitsAdded)
           {
-            let unitName = wwUnitNew.name
+            local unitName = wwUnitNew.name
             local hasUnit = false
             foreach (wwUnit in unitsList)
               if (wwUnit.name == unitName)
@@ -226,27 +226,27 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   */
   function updateFromUserlog(userlog)
   {
-    let wwSharedPool = ::getTblValue("wwSharedPool", userlog)
-    let wwBattleResult = ::getTblValue("wwBattleResult", userlog, {})
+    local wwSharedPool = ::getTblValue("wwSharedPool", userlog)
+    local wwBattleResult = ::getTblValue("wwBattleResult", userlog, {})
     if (!wwSharedPool)
       return this
 
-    let initialArmies = ::getTblValue("initialArmies", wwSharedPool, [])
-    let teamsCasualties = ::getTblValue("casualties", wwSharedPool, [])
+    local initialArmies = ::getTblValue("initialArmies", wwSharedPool, [])
+    local teamsCasualties = ::getTblValue("casualties", wwSharedPool, [])
 
     // Restoring team sides
 
-    let localTeam  = ::getTblValue("localTeam", wwSharedPool, "")
-    let sidesOrder = ::g_world_war.getSidesOrder() // [ player, enemy ]
-    let winnerSide = ::getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
+    local localTeam  = ::getTblValue("localTeam", wwSharedPool, "")
+    local sidesOrder = ::g_world_war.getSidesOrder() // [ player, enemy ]
+    local winnerSide = ::getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
 
     local sideInBattle = ::SIDE_NONE
     local countryInBattle = ""
-    let teamBySide = {}
+    local teamBySide = {}
     foreach (armyName, initialArmy in initialArmies)
     {
-      let teamName = ::getTblValue("team", initialArmy, "")
-      let side = teamName == localTeam ? sidesOrder[0] : sidesOrder[1]
+      local teamName = ::getTblValue("team", initialArmy, "")
+      local side = teamName == localTeam ? sidesOrder[0] : sidesOrder[1]
       teamBySide[side] <- teamName
       initialArmy.side <- ::ww_side_val_to_name(side)
       if (teamName == localTeam)
@@ -258,18 +258,18 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     // Collecting armies
 
-    let wwArmies = initialArmies.map(function(initialArmy, armyName) {
-      let armyState = wwBattleResult?.armyStates[armyName] ?? {}
+    local wwArmies = initialArmies.map(function(initialArmy, armyName) {
+      local armyState = wwBattleResult?.armyStates[armyName] ?? {}
 
-      let side  = ::ww_side_name_to_val(::getTblValue("side", initialArmy, ""))
-      let country = ::getTblValue("country", initialArmy, "")
-      let clanTag = ::getTblValue("armyGroupName", armyState, "")
-      let unitTypeTextCode = ::getTblValue("unitType", initialArmy, "")
-      let wwUnitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
-      let wwArmy = ::g_world_war.getArmyByName(armyName)
-      let hasFoundArmy = wwArmy.getUnitType() != ::g_ww_unit_type.UNKNOWN.code
+      local side  = ::ww_side_name_to_val(::getTblValue("side", initialArmy, ""))
+      local country = ::getTblValue("country", initialArmy, "")
+      local clanTag = ::getTblValue("armyGroupName", armyState, "")
+      local unitTypeTextCode = ::getTblValue("unitType", initialArmy, "")
+      local wwUnitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
+      local wwArmy = ::g_world_war.getArmyByName(armyName)
+      local hasFoundArmy = wwArmy.getUnitType() != ::g_ww_unit_type.UNKNOWN.code
 
-      let armyView = {
+      local armyView = {
         getTeamColor      = side == sideInBattle ? "blue" : "red"
         isBelongsToMyClan = clanTag == ::clan_get_my_clan_tag()
         getTextAfterIcon  = clanTag
@@ -289,7 +289,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     // Updating
 
-    let wwOperationId = wwSharedPool?.operationId
+    local wwOperationId = wwSharedPool?.operationId
     id = ::getTblValue("battleId", wwSharedPool, "")
     if (wwOperationId)
       operationId = wwOperationId.tointeger()
@@ -302,12 +302,12 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     teams = {}
     foreach (side in sidesOrder)
     {
-      let teamName = teamBySide[side]
-      let teamArmiesList = ::u.filter(wwArmies, (@(side) function(army) { return army.side == side })(side))
+      local teamName = teamBySide[side]
+      local teamArmiesList = ::u.filter(wwArmies, (@(side) function(army) { return army.side == side })(side))
       teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
 
       local teamCountry = ""
-      let teamArmyStates = {}
+      local teamArmyStates = {}
       local teamUnits = {}
       foreach (army in teamArmiesList)
       {
@@ -316,13 +316,13 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
         teamArmyStates[army.name] <- wwBattleResult?.armyStates[army.name].state ?? "EASAB_UNKNOWN"
 
-        let armyUnits = initialArmies?[army.name].units ?? {}
+        local armyUnits = initialArmies?[army.name].units ?? {}
         teamUnits = ::u.tablesCombine(teamUnits, armyUnits, function(a, b) { return a + b }, 0)
       }
 
-      let teamCasualties = ::getTblValue(teamName, teamsCasualties, {})
-      let teamUnitStats  = ::u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
-        let casualties = ::getTblValue(unitName, teamCasualties, 0)
+      local teamCasualties = ::getTblValue(teamName, teamsCasualties, {})
+      local teamUnitStats  = ::u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
+        local casualties = ::getTblValue(unitName, teamCasualties, 0)
         return {
           initial    = initial
           remain     = initial - casualties

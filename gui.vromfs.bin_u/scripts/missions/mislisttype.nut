@@ -1,6 +1,6 @@
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -31,13 +31,13 @@ g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = fa
 
 g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray)
 {
-  let res = []
-  let gm = ::get_game_mode()
-  let checkFunc = ::getTblValue("misBlkCheckFunc", this, function(misBlk) { return true })
+  local res = []
+  local gm = ::get_game_mode()
+  local checkFunc = ::getTblValue("misBlkCheckFunc", this, function(misBlk) { return true })
 
   foreach(misBlk in missionBlkArray)
   {
-    let missionId = misBlk?.name ?? ""
+    local missionId = misBlk?.name ?? ""
     if (!checkFunc(misBlk))
       continue
     if (!::has_feature("Tanks") && ::is_mission_for_unittype(misBlk, ::ES_UNIT_TYPE_TANK))
@@ -45,13 +45,13 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
     if ((gm == ::GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
       if (!misBlk.getBool("gt_cooperative", false) || ::is_user_mission(misBlk))
         continue
-    let unlock = misBlk?.chapter? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
+    local unlock = misBlk?.chapter? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
     if (unlock && !::is_unlock_visible(unlock))
       continue
     if (misBlk?.reqFeature && !::has_feature(misBlk.reqFeature))
       continue
 
-    let misDescr = getMissionConfig(missionId)
+    local misDescr = getMissionConfig(missionId)
     misDescr.blk <- misBlk
     misDescr.chapter <- campaignName
     misDescr.campaign <- misBlk.getStr("campaign","")
@@ -63,13 +63,13 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
       // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
       if (!misBlk?.player_class)
       {
-        let missionBlk = blkOptFromPath(misBlk?.mis_file)
-        let wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
-        let unitsBlk = missionBlk?.units
+        local missionBlk = blkOptFromPath(misBlk?.mis_file)
+        local wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
+        local unitsBlk = missionBlk?.units
         if (unitsBlk && wing)
           for (local i = 0; i < unitsBlk.blockCount(); i++)
           {
-            let block = unitsBlk.getBlock(i)
+            local block = unitsBlk.getBlock(i)
             if (block?.name == wing && block?.unit_class)
             {
               misBlk.player_class   = block.unit_class
@@ -79,10 +79,10 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
           }
       }
 
-      let reqUnit = misBlk.getStr("player_class", "")
+      local reqUnit = misBlk.getStr("player_class", "")
       if (reqUnit != "")
       {
-        let unit = ::findUnitNoCase(reqUnit)
+        local unit = ::findUnitNoCase(reqUnit)
         if (unit && !::isUnitUsable(unit))
         {
           misDescr.isUnlocked = false
@@ -93,11 +93,11 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
 
     if (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION || gm == ::GM_TRAINING)
     {
-      let missionFullName = campaignName + "/" + (misDescr?.id ?? "")
+      local missionFullName = campaignName + "/" + (misDescr?.id ?? "")
       misDescr.progress <- ::get_mission_progress(missionFullName)
       if (!::is_user_mission(misBlk))
         misDescr.isUnlocked = misDescr?.progress != 4
-      let misLOProgress = get_mission_local_online_progress(missionFullName)
+      local misLOProgress = get_mission_local_online_progress(missionFullName)
       misDescr.singleProgress <- misLOProgress?.singleDiff
       misDescr.onlineProgress <- misLOProgress?.onlineDiff
 
@@ -114,16 +114,16 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
 
 g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null)
 {
-  let gm = ::get_game_mode()
+  local gm = ::get_game_mode()
   if (customChapterId)
   {
-    let missionBlkArray = ::get_meta_missions_info_chapter(gm, customChapterId)
-    let misList = getMissionsByBlkArray(customChapterId, missionBlkArray)
+    local missionBlkArray = ::get_meta_missions_info_chapter(gm, customChapterId)
+    local misList = getMissionsByBlkArray(customChapterId, missionBlkArray)
     callback(misList)
     return
   }
 
-  let res = []
+  local res = []
 
   //collect campaigns chapters list
   local campaigns = []
@@ -133,7 +133,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     campaigns = [{ chapters = ::get_meta_missions_info_by_chapters(gm) }]
   else
   {
-    let mbc = ::get_meta_missions_info_by_campaigns(gm)
+    local mbc = ::get_meta_missions_info_by_campaigns(gm)
     foreach(c in mbc)
       if (gm!=::GM_CAMPAIGN || ::has_entitlement(c.name) || ::has_feature(c.name))
         campaigns.append({ name = c.name, chapters = c.chapters})
@@ -141,27 +141,27 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
 
   foreach(camp in campaigns)
   {
-    let campName = ::getTblValue("name", camp)
-    let campMissions = []
+    local campName = ::getTblValue("name", camp)
+    local campMissions = []
     local lastMission = null
 
     foreach(chapterMissions in camp.chapters)
     {
       if (chapterMissions.len() == 0)
         continue;
-      let chapterName = chapterMissions[0].getStr("chapter",::get_cur_game_mode_name())
+      local chapterName = chapterMissions[0].getStr("chapter",::get_cur_game_mode_name())
 
-      let isChapterSpecial = ::isInArray(chapterName, [ "hidden", "test" ])
+      local isChapterSpecial = ::isInArray(chapterName, [ "hidden", "test" ])
       local canShowChapter = true
       if (!::is_debug_mode_enabled && isChapterSpecial)
       {
-        let featureName = "MissionsChapter" + ::g_string.toUpper(chapterName, 1)
+        local featureName = "MissionsChapter" + ::g_string.toUpper(chapterName, 1)
         canShowChapter = ::is_dev_version || ::has_feature(featureName)
       }
       if (!canShowChapter)
         continue
 
-      let missions = getMissionsByBlkArray(chapterName, chapterMissions)
+      local missions = getMissionsByBlkArray(chapterName, chapterMissions)
       if (!missions.len())
         continue
 
@@ -170,7 +170,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
         local isChapterUnlocked = true
         if (lastMission && gm == ::GM_CAMPAIGN)
           isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
-        let chapterHeader = getMissionConfig(chapterName, true, false, isChapterUnlocked)
+        local chapterHeader = getMissionConfig(chapterName, true, false, isChapterUnlocked)
         campMissions.append(chapterHeader)
       }
       campMissions.extend(missions)
@@ -183,7 +183,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
 
     if (campName && showCampaignHeaders)
     {
-      let campHeader = getMissionConfig(campName, true, true)
+      local campHeader = getMissionConfig(campName, true, true)
       res.append(campHeader)
     }
     res.extend(campMissions)
@@ -192,7 +192,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     if (lastMission && gm == ::GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43"))
     {
-      let isVideoUnlocked = ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
+      local isVideoUnlocked = ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
       res.append(getMissionConfig("victory", true, false, isVideoUnlocked))
     }
   }
@@ -201,10 +201,10 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
 
 g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList)
 {
-  let blkList = []
+  local blkList = []
   foreach(name in namesList)
   {
-    let misBlk = ::get_meta_mission_info_by_name(name)
+    local misBlk = ::get_meta_mission_info_by_name(name)
     if (misBlk)
       blkList.append(misBlk)
   }
@@ -215,15 +215,15 @@ g_mislist_type._getCurMission <- function _getCurMission()
 {
   if (::SessionLobby.isInRoom())
   {
-    let misName = ::SessionLobby.getMissionName(true)
+    local misName = ::SessionLobby.getMissionName(true)
     if (misName)
       return getMissionConfig(misName)
   }
-  let lastPlayed = ::get_last_played("", ::get_game_mode())
+  local lastPlayed = ::get_last_played("", ::get_game_mode())
   if (!lastPlayed)
     return null
 
-  let res = getMissionConfig(lastPlayed[1])
+  local res = getMissionConfig(lastPlayed[1])
   res.chapter = lastPlayed[0]
   return res
 }
@@ -264,7 +264,7 @@ g_mislist_type._getMissionNameText <- function _getMissionNameText(mission)
 
   canMarkFavorites = function()
   {
-    let gm = ::get_game_mode()
+    local gm = ::get_game_mode()
     return gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH
   }
 
@@ -291,7 +291,7 @@ g_mislist_type._getMissionNameText <- function _getMissionNameText(mission)
 
   sortMissionsByName = function(missions)
   {
-    let sortData = ::u.map(missions, (@(m) { locName = getMissionNameText(m), mission = m }).bindenv(this))
+    local sortData = ::u.map(missions, (@(m) { locName = getMissionNameText(m), mission = m }).bindenv(this))
     sortData.sort(@(a, b) a.locName <=> b.locName)
     return ::u.map(sortData, @(d) d.mission)
   }
@@ -332,7 +332,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
     requestMissionsList = function(isShowCampaigns, callback, customChapterId = null, customChapters = null)
     {
-      let fn = function(){ getMissionsListImpl(isShowCampaigns, callback, customChapterId, customChapters); }
+      local fn = function(){ getMissionsListImpl(isShowCampaigns, callback, customChapterId, customChapters); }
       ::scan_user_missions(this, fn.bindenv(this))
     }
     getMissionsListImpl = ::g_mislist_type._getMissionsList
@@ -361,11 +361,11 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
     requestMissionsList = function(isShowCampaigns, callback, ...) //standard parameters doesn't work for urlMissions
     {
-      let list = ::g_url_missions.getList()
-      let res = []
+      local list = ::g_url_missions.getList()
+      local res = []
       foreach(urlMission in list)
       {
-        let mission = getMissionConfig(urlMission.name)
+        local mission = getMissionConfig(urlMission.name)
         mission.urlMission <- urlMission
         mission.blk <- urlMission.getMetaInfo()
         res.append(mission)
@@ -382,7 +382,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
     modifyMission = function(mission)
     {
-      let urlMission = ::getTblValue("urlMission", mission)
+      local urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         ::g_url_missions.openModifyUrlMissionWnd(urlMission)
     }
@@ -391,7 +391,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
     deleteMission = function(mission)
     {
-      let urlMission = ::getTblValue("urlMission", mission)
+      local urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         ::g_url_missions.openDeleteUrlMissionConfirmationWnd(urlMission)
     }
@@ -399,7 +399,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     canMarkFavorites = function() { return true }
     isMissionFavorite = function(mission)
     {
-      let urlMission = ::getTblValue("urlMission", mission)
+      local urlMission = ::getTblValue("urlMission", mission)
       if (urlMission)
         return urlMission.isFavorite
       return false
@@ -413,17 +413,17 @@ enums.addTypesByGlobalName("g_mislist_type", {
     {
       if (::SessionLobby.isInRoom())
       {
-        let url = ::SessionLobby.getMissionUrl()
-        let urlMission = ::g_url_missions.findMissionByUrl(url)
+        local url = ::SessionLobby.getMissionUrl()
+        local urlMission = ::g_url_missions.findMissionByUrl(url)
         if (urlMission)
           return getMissionConfig(urlMission.name)
       }
 
-      let lastPlayed = ::get_last_played("url", ::get_game_mode())
+      local lastPlayed = ::get_last_played("url", ::get_game_mode())
       if (!lastPlayed)
         return null
 
-      let urlMission = ::g_url_missions.findMissionByUrl(lastPlayed[1])
+      local urlMission = ::g_url_missions.findMissionByUrl(lastPlayed[1])
       if (urlMission)
         return getMissionConfig(urlMission.name)
       return null
@@ -441,7 +441,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
 g_mislist_type.getTypeByName <- function getTypeByName(typeName)
 {
-  let res = ::getTblValue(typeName, ::g_mislist_type)
+  local res = ::getTblValue(typeName, ::g_mislist_type)
   return ::u.isTable(res) ? res : BASE
 }
 

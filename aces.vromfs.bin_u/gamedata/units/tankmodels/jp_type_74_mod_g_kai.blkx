@@ -1783,6 +1783,42 @@
         "maxRPM": 2200.0,
         "minRPM": 800.0
       },
+      "mechanics": {
+        "maxBrakeForce": 154000.0,
+        "driveGearRadius": 0.33,
+        "mainGearRatio": 1.0,
+        "sideGearRatio": 3.795,
+        "neutralGearRatio": 10.0,
+        "gearRatios": [
+          {
+            "ratio": -4.28
+          },
+          {
+            "ratio": -9.64
+          },
+          {
+            "ratio": 0.0
+          },
+          {
+            "ratio": 12.88
+          },
+          {
+            "ratio": 6.94
+          },
+          {
+            "ratio": 4.55
+          },
+          {
+            "ratio": 3.03
+          },
+          {
+            "ratio": 2.02
+          },
+          {
+            "ratio": 1.35
+          }
+        ]
+      },
       "suspension": {
         "trackHeightAboveWheel": 0.1,
         "maxDisplacementOffsets": [-0.1,0.0],
@@ -1827,42 +1863,6 @@
           "wheel_l_05": [],
           "wheel_r_05": []
         }
-      },
-      "mechanics": {
-        "maxBrakeForce": 160000.0,
-        "driveGearRadius": 0.33,
-        "mainGearRatio": 3.82,
-        "sideGearRatio": 1.0,
-        "neutralGearRatio": 10.0,
-        "gearRatios": [
-          {
-            "ratio": -4.28
-          },
-          {
-            "ratio": -9.64
-          },
-          {
-            "ratio": 0.0
-          },
-          {
-            "ratio": 12.88
-          },
-          {
-            "ratio": 6.94
-          },
-          {
-            "ratio": 4.55
-          },
-          {
-            "ratio": 3.03
-          },
-          {
-            "ratio": 2.02
-          },
-          {
-            "ratio": 1.35
-          }
-        ]
       }
     }
   },
@@ -2666,6 +2666,18 @@
         {
           "shells": {
             "reloadTimeMult": 1.2,
+            "ammo_turret_10_dm": {
+              "count": 1
+            },
+            "ammo_turret_11_dm": {
+              "count": 1
+            },
+            "ammo_turret_12_dm": {
+              "count": 1
+            },
+            "ammo_turret_13_dm": {
+              "count": 1
+            },
             "ammo_body_17_dm": {
               "count": 1
             },
@@ -2763,18 +2775,6 @@
               "count": 1
             },
             "ammo_turret_09_dm": {
-              "count": 1
-            },
-            "ammo_turret_10_dm": {
-              "count": 1
-            },
-            "ammo_turret_11_dm": {
-              "count": 1
-            },
-            "ammo_turret_12_dm": {
-              "count": 1
-            },
-            "ammo_turret_13_dm": {
               "count": 1
             }
           }
@@ -3488,7 +3488,7 @@
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "speedYaw": 24.0,
-          "speedPitch": 4.0,
+          "speedPitch": 4.5,
           "fireConeAngle": 1.0,
           "bullets": 50,
           "salvoAmount": 100.0,
@@ -3680,7 +3680,6 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -3794,7 +3793,7 @@
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "speedYaw": 24.0,
-                "speedPitch": 4.0,
+                "speedPitch": 4.5,
                 "fireConeAngle": 1.0,
                 "bullets": 50,
                 "salvoAmount": 100.0,
@@ -3986,7 +3985,6 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",
@@ -4139,9 +4137,6 @@
                 },
                 {
                   "errExplTime": 0.0
-                },
-                {
-                  "forestallTime": 0.1
                 },
                 {
                   "turret": {

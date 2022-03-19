@@ -1682,7 +1682,4 @@ def private wait_debugger(): bool
 
 def private loads_itself(): bool
     let args <- get_command_line_arguments()
-    for i in range(1, length(args))
-        if args[i] |> ends_with("daslib\\debug.das") || args[i] |> ends_with("daslib/debug.das")
-            return true
-    return false
+    return length(args) >= 2 && (args[1] |> ends_with("daslib\\debug.das") || args[1] |> ends_with("daslib/debug.das"))

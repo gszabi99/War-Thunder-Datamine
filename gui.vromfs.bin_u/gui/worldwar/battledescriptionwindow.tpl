@@ -195,7 +195,7 @@ root {
             id:t='btn_slotbar_help_unseen_icon'
             display:t='hide'
             newIconWidgetImg {
-              background-image:t='#ui/gameuiskin#new_icon.svg'
+              background-image:t='#ui/gameuiskin#new_icon'
             }
           }
         }

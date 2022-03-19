@@ -1,18 +1,18 @@
-let { isXBoxPlayerName,
+local { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
         isPlatformXboxOne,
-        isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let externalIDsService = require("%scripts/user/externalIdsService.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let psnSocial = require("sony.social")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
-let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
-let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+        isPlayerFromPS4 } = require("scripts/clientState/platform.nut")
+local { hasAllFeatures } = require("scripts/user/features.nut")
+local externalIDsService = require("scripts/user/externalIdsService.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+local psnSocial = require("sony.social")
+local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
+local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
+local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
+local { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
@@ -21,10 +21,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, {info = playerInfo})
 }
 
-::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/profile/userCard.blk"
+  sceneBlkName = "gui/profile/userCard.blk"
 
   isOwnStats = false
 
@@ -44,7 +44,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   statsType = ::ETTI_VALUE_INHISORY
   statsMode = ""
   countryStats = null
-  unitStats = null
+  unitStats = []
   availableUTypes = null
   availableCountries = null
   statsSortBy = ""
@@ -96,7 +96,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     else if ("id" in player)
     {
       taskId = ::req_player_public_statinfo_by_player_id(player.id)
-      let selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
+      local selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == player.id)
         isMyPage = true
       else
@@ -125,7 +125,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function initTabs()
   {
-    let view = { tabs = [] }
+    local view = { tabs = [] }
     foreach(idx, sheet in sheetsList)
     {
       view.tabs.append({
@@ -136,8 +136,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
-    let sheetsListObj = scene.findObject("profile_sheet_list")
+    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    local sheetsListObj = scene.findObject("profile_sheet_list")
     guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(0)
     sheetsListObj.show(false)
@@ -189,7 +189,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(scene))
       return;
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     ::get_player_public_stats(blk)
 
     if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
@@ -216,8 +216,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   {
     foreach(div in ["profile", "stats"])
     {
-      let show = div == name
-      let divObj = scene.findObject(div + "-container")
+      local show = div == name
+      local divObj = scene.findObject(div + "-container")
       if (::checkObj(divObj))
       {
         divObj.show(show)
@@ -277,7 +277,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   {
     if (!::checkObj(scene))
       return
-    let value = obj.getValue()
+    local value = obj.getValue()
 
     curMode = value
     ::set_current_wnd_difficulty(curMode)
@@ -298,7 +298,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (player?.uid != params?.request?.uid && player?.id != params?.request?.playerId)
       return
 
-    let isMe = ::my_user_id_str == player?.uid
+    local isMe = ::my_user_id_str == player?.uid
     updateExternalIdsData(params.externalIds, isMe)
   }
 
@@ -318,7 +318,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(scene))
       return
 
-    let nameObj = scene.findObject("profile-currentUser-" + link)
+    local nameObj = scene.findObject("profile-currentUser-" + link)
     if (!::check_obj(nameObj))
       return
 
@@ -330,11 +330,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::has_feature("Clans"))
       return
 
-    let clanTagObj = scene.findObject("profile-clanTag");
+    local clanTagObj = scene.findObject("profile-clanTag");
     if (clanTagObj)
     {
-      let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
-      let text = ::checkClanTagForDirtyWords(playerData.clanTag);
+      local clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
+      local text = ::checkClanTagForDirtyWords(playerData.clanTag);
       clanTagObj.setValue(::colorize(clanType.color, text));
       clanTagObj.tooltip = ::ps4CheckAndReplaceContentDisabledText(playerData.clanName);
     }
@@ -342,17 +342,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function fillShortCountryStats(profile)
   {
-    let countryStatsNest = scene.findObject("country_stats_nest")
+    local countryStatsNest = scene.findObject("country_stats_nest")
     if (!::checkObj(countryStatsNest))
       return
 
-    let columns = shopCountriesList.map(@(c) {
+    local columns = shopCountriesList.map(@(c) {
       icon            = ::get_country_icon(c)
       unitsCount      = profile.countryStats[c].unitsCount
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
 
-    let blk = ::handyman.renderCached(("%gui/profile/country_stats_table"), {
+    local blk = ::handyman.renderCached(("gui/profile/country_stats_table"), {
       columns = columns,
       tableName = ::loc("lobby/vehicles")
     })
@@ -369,11 +369,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(parentObj))
       return
 
-    let switchObj = parentObj.findObject("modes_list")
+    local switchObj = parentObj.findObject("modes_list")
     if (!::checkObj(switchObj))
       return
 
-    let childrenCount = switchObj.childrenCount()
+    local childrenCount = switchObj.childrenCount()
     if (childrenCount <= 0)
       return
 
@@ -385,7 +385,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(obj))
       return
 
-    let value = obj.getValue()
+    local value = obj.getValue()
     if (curMode == value)
       return
 
@@ -412,7 +412,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       maxMedals = pl.countryStats[curCountryId].medalsCount
       foreach(idx, countryId in shopCountriesList)
       {
-        let medalsCount = pl.countryStats[countryId].medalsCount
+        local medalsCount = pl.countryStats[countryId].medalsCount
         if (maxMedals < medalsCount)
         {
           curCountryId = countryId
@@ -423,8 +423,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     // Filling country tabs
     local curValue = 0
-    let view = { items = [] }
-    let countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
+    local view = { items = [] }
+    local countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
     foreach(idx, countryId in shopCountriesList)
     {
       view.items.append({
@@ -438,31 +438,31 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         curValue = idx
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
-    let countriesObj = scene.findObject("medals_country_tabs")
+    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+    local countriesObj = scene.findObject("medals_country_tabs")
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
   }
 
   function onMedalsCountrySelect(obj)
   {
-    let nestObj = scene.findObject("medals_nest")
+    local nestObj = scene.findObject("medals_nest")
     if (!::check_obj(obj) || !::check_obj(nestObj))
       return
 
-    let countryId = shopCountriesList?[obj.getValue()]
+    local countryId = shopCountriesList?[obj.getValue()]
     if (!countryId)
       return
 
-    let medalsList = getCountryMedals(countryId, player)
+    local medalsList = getCountryMedals(countryId, player)
     showSceneBtn("medals_empty", !medalsList.len())
 
-    let view = {
+    local view = {
       ribbons = getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
       medals = getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
     }
 
-    let markup = ::handyman.renderCached("%gui/profile/profileRibbons", view)
+    local markup = ::handyman.renderCached("gui/profile/profileRibbons", view)
     guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
   }
 
@@ -501,14 +501,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     showSceneBtn("medals_block", false)
     showSceneBtn("titles_block", true)
 
-    let titles = []
+    local titles = []
     foreach (id in pl.titles)
     {
-      let titleUnlock = ::g_unlocks.getUnlockById(id)
+      local titleUnlock = ::g_unlocks.getUnlockById(id)
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      let locText = ::loc("title/" + id)
+      local locText = ::loc("title/" + id)
       titles.append({
         name = id
         text = locText
@@ -518,17 +518,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
     titles.sort(@(a, b) a.lowerText <=> b.lowerText)
 
-    let titlesTotal = titles.len()
+    local titlesTotal = titles.len()
     showSceneBtn("titles_empty", !titlesTotal)
     if (!titlesTotal)
       return
 
     local markup = ""
-    let cols = 2
-    let rows = ::ceil(titlesTotal * 1.0 / cols)
+    local cols = 2
+    local rows = ::ceil(titlesTotal * 1.0 / cols)
     for (local r = 0; r < rows; r++)
     {
-      let rowData = []
+      local rowData = []
       for (local c = 0; c < cols; c++)
         rowData.append(titles?[rows * c + r] ?? {})
       markup += ::buildTableRow("", rowData)
@@ -555,7 +555,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(obj) || lbModesList == null)
       return
 
-    let newLbMode = lbModesList?[obj.getValue()]
+    local newLbMode = lbModesList?[obj.getValue()]
     if (newLbMode == null || lbMode == newLbMode)
       return
 
@@ -597,14 +597,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function initAirStatsScene(airStats)
   {
-    let sObj = scene.findObject("stats-container")
+    local sObj = scene.findObject("stats-container")
 
     sObj.findObject("stats_loading").show(false)
 
-    let modesObj = sObj.findObject("modes_list")
+    local modesObj = sObj.findObject("modes_list")
     local selDiff = null
     local selIdx = -1
-    let view = { items = [] }
+    local view = { items = [] }
     foreach(diff in ::g_difficulty.types)
     {
       if (!diff.isAvailable())
@@ -618,46 +618,48 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
     statsMode = selDiff.egdLowercaseName
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
+    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(selIdx)
 
-    fillUnitListCheckBoxes()
-    fillCountriesCheckBoxes()
+    fillUnitListCheckBoxes(sObj)
+    fillCountriesCheckBoxes(sObj)
 
-    let nestObj = scene.findObject("filter_nest")
+    local nestObj = scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
-      isRight = true
     })
 
     airStatsInited = true
     fillAirStats()
   }
 
-  function fillUnitListCheckBoxes()
+  function fillUnitListCheckBoxes(sObj)
   {
     availableUTypes = {}
-    unitStats = []
+    local fillStatsUnits = unitStats.len() == 0
 
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
-      let typeIdx = unitType.esUnitType
+      local armyId = unitType.armyId
+      local typeIdx = unitType.esUnitType
       availableUTypes[unitType.armyId] <- {
         id    = $"unit_{typeIdx}"
         idx   = typeIdx
         image = unitType.testFlightIcon
         text  = unitType.getArmyLocName()
       }
+      if (fillStatsUnits)
+        unitStats.append(armyId)
     }
   }
 
-  function fillCountriesCheckBoxes()
+  function fillCountriesCheckBoxes(sObj)
   {
     availableCountries = {}
     foreach (idx, inst in shopCountriesList)
@@ -674,21 +676,36 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getFiltersView()
   {
-    let res = []
+    local res = []
     foreach (tName in ["country", "unit"])
     {
-      let isUnitType = tName == "unit"
-      let selectedArr = this[$"{tName}Stats"]
-      let referenceArr = isUnitType ? availableUTypes : availableCountries
-      let view = {checkbox = []}
+      local isUnitType = tName == "unit"
+      local selectedArr = this[$"{tName}Stats"]
+      local referenceArr = isUnitType ? availableUTypes : availableCountries
+      local isAllSelected = true
+      foreach (idx, inst in referenceArr)
+        if (!::isInArray(idx, selectedArr))
+        {
+          isAllSelected = false
+          break
+        }
+
+      local cbView = {
+        id = "all_items"
+        idx = -1
+        image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
+        text = ::loc($"all_{isUnitType ? "units" : "countries"}")
+        value = isAllSelected
+      }
+      local view = { checkbox = [cbView]}
       foreach(idx, inst in referenceArr)
-        view.checkbox.append({
+        view.checkbox.append(cbView.__merge({
           id = inst.id
           idx = inst.idx
           image = inst.image
           text = inst.text
-          value = !isUnitType && ::isInArray(idx, selectedArr)
-        })
+          value = ::isInArray(idx, selectedArr)
+        }))
 
       view.checkbox.sort(@(a,b) a.idx <=> b.idx)
       res.append(view)
@@ -699,14 +716,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function onFilterCbChange(objId, tName, value)
   {
-    let selectedArr = this[$"{tName}Stats"]
-    let isUnitType = tName == "unit"
-    let referenceArr = isUnitType ? availableUTypes : availableCountries
-    let isReset = objId == RESET_ID
+    local selectedArr = this[$"{tName}Stats"]
+    local isUnitType = tName == "unit"
+    local referenceArr = isUnitType ? availableUTypes : availableCountries
+    local isAllObj = objId == "all_items"
 
     foreach (idx, inst in referenceArr)
     {
-      if (!isReset && inst.id != objId)
+      if (!isAllObj && inst.id != objId)
         continue
 
       if (value)
@@ -724,21 +741,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       return
 
     airStatsList = []
-    // Show all items if filters list is empty
-    let filterUnits = unitStats.len() > 0 ? unitStats
-      : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
-    let filterCountry = countryStats.len() > 0 ? countryStats : shopCountriesList
-
     local checkList = []
-    let typeName = "total"
-    let modeName = statsMode
+    local typeName = "total"
+    local modeName = statsMode
     if ((modeName in airStats) && (typeName in airStats[modeName]))
       checkList = airStats[modeName][typeName]
     foreach(item in checkList)
     {
-      let air = ::getAircraftByName(item.name)
-      let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, filterUnits))
+      local air = ::getAircraftByName(item.name)
+      local unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
+      if (!::isInArray(unitTypeShopId, unitStats))
           continue
       if (!("country" in item))
       {
@@ -747,17 +759,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, filterCountry))
+      if (::isInArray(item.country, countryStats))
         airStatsList.append(item)
     }
 
     if (statsSortBy=="")
       statsSortBy = "victories"
 
-    let sortBy = statsSortBy
-    let sortReverse = statsSortReverse == (sortBy != "locName")
+    local sortBy = statsSortBy
+    local sortReverse = statsSortReverse == (sortBy != "locName")
     airStatsList.sort(function(a,b) {
-      let res = b[sortBy] <=> a[sortBy]
+      local res = b[sortBy] <=> a[sortBy]
       if (res != 0)
         return sortReverse ? -res : res
       return a.locName <=> b.locName || a.name <=> b.name
@@ -772,9 +784,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (statsPerPage > 0)
       return
 
-    let listObj = scene.findObject("airs_stats_table")
-    let size = listObj.getSize()
-    let rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
+    local listObj = scene.findObject("airs_stats_table")
+    local size = listObj.getSize()
+    local rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
     statsPerPage =   ::max(1, (rowsHeigt / guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
   }
 
@@ -786,10 +798,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     initStatsPerPage()
 
     local data = ""
-    let posWidth = "0.05@scrn_tgt"
-    let rcWidth = "0.04@scrn_tgt"
-    let nameWidth = "0.2@scrn_tgt"
-    let headerRow = [
+    local posWidth = "0.05@scrn_tgt"
+    local rcWidth = "0.04@scrn_tgt"
+    local nameWidth = "0.2@scrn_tgt"
+    local headerRow = [
       { width=posWidth }
       { id="rank", width=rcWidth, text="#sm_rank", tdalign="split", cellType="splitRight", callback = "onStatsCategory", active = statsSortBy=="rank" }
       { id="rank", width=rcWidth, cellType="splitLeft", callback = "onStatsCategory" }
@@ -813,18 +825,18 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
     data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
-    let tooltips = {}
-    let fromIdx = curStatsPage*statsPerPage
+    local tooltips = {}
+    local fromIdx = curStatsPage*statsPerPage
     local toIdx = (curStatsPage+1)*statsPerPage-1
     if (toIdx >= airStatsList.len()) toIdx = airStatsList.len()-1
 
     for(local idx = fromIdx; idx <= toIdx; idx++)
     {
-      let airData = airStatsList[idx]
-      let unitTooltipId = UNIT.getTooltipId(airData.name)
+      local airData = airStatsList[idx]
+      local unitTooltipId = UNIT.getTooltipId(airData.name)
 
-      let rowName = "row_"+idx
-      let rowData = [
+      local rowName = "row_"+idx
+      local rowData = [
         { text = (idx+1).tostring(), width=posWidth }
         { id="rank", width=rcWidth, text = airData.rank.tostring(), tdalign="right", cellType="splitRight", active = statsSortBy=="rank" }
         { id="country", width=rcWidth, image=::get_country_icon(airData.country), cellType="splitLeft", needText = false }
@@ -845,7 +857,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
         if (isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         {
-          let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
+          local cell = ::getLbItemCell(item.id, airData[item.id], item.type)
           cell.active <- statsSortBy == item.id
           if ("tooltip" in cell)
           {
@@ -859,16 +871,16 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       data += buildTableRow(rowName, rowData, idx%2==0)
     }
 
-    let tblObj = scene.findObject("airs_stats_table")
+    local tblObj = scene.findObject("airs_stats_table")
     guiScene.replaceContentFromText(tblObj, data, data.len(), this)
     foreach(rowName, row in tooltips)
     {
-      let rowObj = tblObj.findObject(rowName)
+      local rowObj = tblObj.findObject(rowName)
       if (rowObj)
         foreach(name, value in row)
           rowObj.findObject(name).tooltip = value
     }
-    let nestObj = scene.findObject("paginator_place")
+    local nestObj = scene.findObject("paginator_place")
     ::generatePaginator(nestObj, this, curStatsPage, ::floor((airStatsList.len() - 1)/statsPerPage))
     updateButtons()
   }
@@ -886,24 +898,24 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function fillLeaderboard()
   {
-    let stats = getPlayerStats()
+    local stats = getPlayerStats()
     if (!stats || !("leaderboard" in stats) || !stats.leaderboard.len())
       return
 
-    let typeProfileObj = scene.findObject("stats_type_profile")
+    local typeProfileObj = scene.findObject("stats_type_profile")
     if (::checkObj(typeProfileObj))
     {
       typeProfileObj.show(true)
       typeProfileObj.setValue(statsType == ::ETTI_VALUE_INHISORY)
     }
 
-    let tblObj = scene.findObject("profile_leaderboard")
+    local tblObj = scene.findObject("profile_leaderboard")
     local rowIdx = 0
     local data = ""
-    let tooltips = {}
+    local tooltips = {}
 
     //add header row
-    let headerRow = [""]
+    local headerRow = [""]
     foreach(lbCategory in ::leaderboards_list)
       if (checkLbRowVisibility(lbCategory))
         headerRow.append({
@@ -916,7 +928,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     data = buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
-    let rows = [
+    local rows = [
       {
         text = "#mainmenu/btnLeaderboards"
         showLbPlaces = false
@@ -927,11 +939,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       }
     ]
 
-    let valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
+    local valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
                            ? LEADERBOARD_VALUE_TOTAL
                            : LEADERBOARD_VALUE_INHISTORY
-    let lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
-    let standartRow = {}
+    local lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
+    local standartRow = {}
 
     foreach (idx, fieldTbl in lb)
     {
@@ -940,8 +952,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     foreach (row in rows)
     {
-      let rowName = "row_" + rowIdx
-      let rowData = [{ text = row.text, tdalign="left" }]
+      local rowName = "row_" + rowIdx
+      local rowData = [{ text = row.text, tdalign="left" }]
       local res = {}
 
       foreach(lbCategory in ::leaderboards_list)
@@ -953,7 +965,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
               res = lbCategory.getItemCell(standartRow[lbCategory.field], standartRow)
             else
             {
-              let value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
+              local value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
               res = lbCategory.getItemCell(value, null, false, ::g_lb_data_type.PLACE)
             }
           }
@@ -990,8 +1002,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCurSheet()
   {
-    let obj = scene.findObject("profile_sheet_list")
-    let sheetIdx = obj.getValue()
+    local obj = scene.findObject("profile_sheet_list")
+    local sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
       return ""
 
@@ -1007,10 +1019,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     foreach(idx, mode in ::leaderboard_modes)
     {
-      let diffCode = ::getTblValue("diffCode", mode)
+      local diffCode = ::getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
         continue
-      let reqFeature = ::getTblValue("reqFeature", mode)
+      local reqFeature = ::getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -1018,7 +1030,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    let modesObj = showSceneBtn("leaderboard_modes_list", true)
+    local modesObj = showSceneBtn("leaderboard_modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -1028,22 +1040,22 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (!::checkObj(scene))
       return
 
-    let hasFeatureFriends = ::has_feature("Friends")
+    local hasFeatureFriends = ::has_feature("Friends")
 
-    let contact = ::getContact(player?.uid, player.name)
-    let isMe = contact?.isMe() ?? false
-    let canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
-    let isFriend = contact?.isInFriendGroup() ?? false
-    let isBlock = contact?.isInBlockGroup() ?? false
+    local contact = ::getContact(player?.uid, player.name)
+    local isMe = contact?.isMe() ?? false
+    local canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
+    local isFriend = contact?.isInFriendGroup() ?? false
+    local isBlock = contact?.isInBlockGroup() ?? false
 
-    let isPS4Player = isPlayerFromPS4(player.name)
-    let isXBoxOnePlayer = isXBoxPlayerName(player.name)
-    let canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
-    let canInteractCC = canInteractCrossConsole(player.name)
+    local isPS4Player = isPlayerFromPS4(player.name)
+    local isXBoxOnePlayer = isXBoxPlayerName(player.name)
+    local canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
+    local canInteractCC = canInteractCrossConsole(player.name)
 
-    let sheet = getCurSheet()
-    let showStatBar = infoReady && sheet=="Statistics"
-    let showProfBar = infoReady && !showStatBar
+    local sheet = getCurSheet()
+    local showStatBar = infoReady && sheet=="Statistics"
+    local showProfBar = infoReady && !showStatBar
 
     ::showBtnTable(scene, {
       paginator_place = showStatBar && (airStatsList != null) && (airStatsList.len() > statsPerPage)
@@ -1060,9 +1072,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function onBlacklistBan()
   {
-    let clanTag = ::getTblValue("clanTag", player, "")
-    let playerName = ::getTblValue("name", player, "")
-    let userId = ::getTblValue("uid", player, "")
+    local clanTag = ::getTblValue("clanTag", player, "")
+    local playerName = ::getTblValue("name", player, "")
+    local userId = ::getTblValue("uid", player, "")
 
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
@@ -1099,7 +1111,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   function onOpenPSNProfile() {
-    let psnId = curPlayerExternalIds?.psnId ?? ""
+    local psnId = curPlayerExternalIds?.psnId ?? ""
     if (psnId == "")
       return
 
@@ -1113,7 +1125,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function removeItemFromList(value, list)
   {
-    let idx = list.findindex(@(v) v == value)
+    local idx = list.findindex(@(v) v == value)
     if (idx != null)
       list.remove(idx)
   }
@@ -1121,7 +1133,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function onStatsCategory(obj)
   {
     if (!obj) return
-    let value = obj.id
+    local value = obj.id
     if (statsSortBy==value)
       statsSortReverse = !statsSortReverse
     else

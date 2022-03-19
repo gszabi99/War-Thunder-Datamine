@@ -1,7 +1,7 @@
 require("scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Independed Module. Need for init buttons configs
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
+local enums = require("sqStdLibs/helpers/enums.nut")
+local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 
 ::g_ww_top_menu_left_side_sections <- {
   types = []

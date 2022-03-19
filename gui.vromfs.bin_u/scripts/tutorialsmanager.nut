@@ -1,6 +1,6 @@
-let { WEAPON_TAG,
-        isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
-let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
+local { WEAPON_TAG,
+        isUnitHaveAnyWeaponsTags } = require("scripts/weaponry/weaponryInfo.nut")
+local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
 
 ::g_tutorials_manager <- {
   actions = []
@@ -36,7 +36,7 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 
   function onEventCrewTakeUnit(params)
   {
-    let unit = ::getTblValue("unit", params)
+    local unit = ::getTblValue("unit", params)
     actions.append((@(unit) function() { return checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
     processActions()
   }

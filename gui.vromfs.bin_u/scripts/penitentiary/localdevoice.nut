@@ -1,6 +1,6 @@
-let devoiceList = {}
+local devoiceList = {}
 
-let localDevoice = {
+local localDevoice = {
   //Devoice type bit mask
   DEVOICE_RADIO      = 0x0001
   DEVOICE_MESSAGES   = 0x0002

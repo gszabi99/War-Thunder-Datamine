@@ -6,11 +6,11 @@
   ::gui_start_modal_wnd(::gui_handlers.BattleTasksSelectNewTaskWnd, {battleTasksArray = battleTasksArray})
 }
 
-::gui_handlers.BattleTasksSelectNewTaskWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.BattleTasksSelectNewTaskWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
-  sceneTplName = "%gui/unlocks/battleTasksSelectNewTask"
+  sceneBlkName = "gui/modalSceneWithGamercard.blk"
+  sceneTplName = "gui/unlocks/battleTasksSelectNewTask"
 
   battleTasksArray = null
   battleTasksConfigsArray = null
@@ -35,11 +35,11 @@
 
   function initScreen()
   {
-    let listObj = getConfigsListObj()
+    local listObj = getConfigsListObj()
     if (listObj)
     {
-      let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
-      let filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(battleTasksArray, currentGameModeId)
+      local currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
+      local filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(battleTasksArray, currentGameModeId)
 
       local index = 0
       if (filteredTasksArray.len())
@@ -51,7 +51,7 @@
 
   function getCurrentConfig()
   {
-    let listObj = getConfigsListObj()
+    local listObj = getConfigsListObj()
     if (listObj)
       return battleTasksConfigsArray[listObj.getValue()]
 
@@ -60,8 +60,8 @@
 
   function onSelectTask(obj)
   {
-    let config = getCurrentConfig()
-    let taskObj = getCurrentTaskObj()
+    local config = getCurrentConfig()
+    local taskObj = getCurrentTaskObj()
 
     ::showBtn("btn_reroll", false, taskObj)
     showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
@@ -69,15 +69,15 @@
 
   function onSelect(obj)
   {
-    let config = getCurrentConfig()
+    local config = getCurrentConfig()
     if (!config)
       return
 
-    let blk = ::DataBlock()
+    local blk = ::DataBlock()
     blk.addStr("mode", "accept")
     blk.addStr("unlockName", config.id)
 
-    let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
+    local taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
     ::g_tasker.addTask(taskId,
       {showProgressBox = true},
       ::Callback(function() {
@@ -94,11 +94,11 @@
 
   function onViewBattleTaskRequirements()
   {
-    let config = getCurrentConfig()
+    local config = getCurrentConfig()
     if (!isConfigHaveConditions(config))
       return
 
-    let awardsList = ::u.map(config.names,
+    local awardsList = ::u.map(config.names,
       @(id) ::build_log_unlock_data(
         ::build_conditions_config(
           ::g_unlocks.getUnlockById(id)
@@ -121,11 +121,11 @@
 
   function getCurrentTaskObj()
   {
-    let listObj = getConfigsListObj()
+    local listObj = getConfigsListObj()
     if (!::checkObj(listObj))
       return null
 
-    let value = listObj.getValue()
+    local value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return null
 

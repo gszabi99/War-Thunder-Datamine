@@ -1,15 +1,15 @@
-let time = require("%scripts/time.nut")
-let stdpath = require("%sqstd/path.nut")
+local time = require("scripts/time.nut")
+local stdpath = require("std/path.nut")
 
-::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 {
   static wndType = handlerType.MODAL
-  static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
+  static sceneBlkName = "gui/fileDialog/fileDialog.blk"
 
-  static dirPathPartTemplate    = "%gui/fileDialog/dirPath"
-  static fileTableTemplate      = "%gui/fileDialog/fileTable"
-  static navItemListTemplate    = "%gui/fileDialog/navItemList"
-  static filterSelectTemplate   = "%gui/fileDialog/filterSelect"
+  static dirPathPartTemplate    = "gui/fileDialog/dirPath"
+  static fileTableTemplate      = "gui/fileDialog/fileTable"
+  static navItemListTemplate    = "gui/fileDialog/navItemList"
+  static filterSelectTemplate   = "gui/fileDialog/filterSelect"
 
   static FILEDIALOG_PATH_SETTING_ID = "fileDialog"
 
@@ -133,7 +133,7 @@ let stdpath = require("%sqstd/path.nut")
       }
       width = "fw"
       getView = function(value) {
-        let text = value != null ? value : ""
+        local text = value != null ? value : ""
         return {
           text = text
           tooltip = text
@@ -178,8 +178,8 @@ let stdpath = require("%sqstd/path.nut")
       }
       width = "h"
       getView = function(value) {
-        let fileImage = "#ui/gameuiskin#btn_clear_all.svg"
-        let dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
+        local fileImage = "#ui/gameuiskin#btn_clear_all.svg"
+        local dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
         return {
           text = ""
           tooltip = ""
@@ -196,8 +196,8 @@ let stdpath = require("%sqstd/path.nut")
         if (::getTblValue("isDirectory", file, false))
           return "."
 
-        let filename = file?.name ?? ""
-        let fileExtIdx = ::g_string.lastIndexOf(filename, ".")
+        local filename = file?.name ?? ""
+        local fileExtIdx = ::g_string.lastIndexOf(filename, ".")
         if (fileExtIdx == ::g_string.INVALID_INDEX)
           return null
 
@@ -284,7 +284,7 @@ let stdpath = require("%sqstd/path.nut")
     {
       if (!validatePath(path))
         return []
-      let files = ::find_files_ex(stdpath.join(path, allFilesFilter), maxFiles)
+      local files = ::find_files_ex(stdpath.join(path, allFilesFilter), maxFiles)
       foreach(file in files)
         if ("name" in file)
           file.fullPath <- stdpath.join(path, file.name)
@@ -295,7 +295,7 @@ let stdpath = require("%sqstd/path.nut")
     {
       if (!validatePath(path))
         return null
-      let basename = stdpath.fileName(path)
+      local basename = stdpath.fileName(path)
       local files = ::find_files_ex(path, 1)
       if (files.len() > 0 && ::getTblValue("name", files[0]) == basename)
         return files[0]
@@ -326,7 +326,7 @@ let stdpath = require("%sqstd/path.nut")
     getNavElements = function()
     {
       // Filtering non-existent elements is performed when filling navigation bar
-      let favorites = []
+      local favorites = []
       favorites.append({
         name = "#filesystem/gamePaths"
         childs = [
@@ -339,10 +339,10 @@ let stdpath = require("%sqstd/path.nut")
 
       if (::is_platform_windows)
       {
-        let disks = {name = "#filesystem/winDiskDrives", childs = []}
+        local disks = {name = "#filesystem/winDiskDrives", childs = []}
         for (local diskChar = 'C' ; diskChar <= 'Z'; diskChar++)
         {
-          let path = diskChar.tochar() + ":"
+          local path = diskChar.tochar() + ":"
           disks.childs.append({path = path})
         }
         favorites.append(disks)
@@ -501,7 +501,7 @@ let stdpath = require("%sqstd/path.nut")
 
   function onUp()
   {
-    let parentPath = stdpath.parentPath(dirPath)
+    local parentPath = stdpath.parentPath(dirPath)
     if (parentPath != null)
       openDirectory(parentPath)
   }
@@ -515,8 +515,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onOpen()
   {
-    let dirPathObj = getObj("dir_path")
-    let fileNameObj = getObj("file_name")
+    local dirPathObj = getObj("dir_path")
+    local fileNameObj = getObj("file_name")
 
     if (dirPathObj.isFocused())
       onDirPathEditBoxActivate()
@@ -526,7 +526,7 @@ let stdpath = require("%sqstd/path.nut")
     {
       updateSelectedFileName()
 
-      let fullPath = ::getTblValue(fileName, cachedFileFullPathByFileName) ||
+      local fullPath = ::getTblValue(fileName, cachedFileFullPathByFileName) ||
         stdpath.join(dirPath, fileName)
       if (fullPath != "")
         openFileOrDir(fullPath)
@@ -542,8 +542,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onRefresh()
   {
-    let dirPathObj = getObj("dir_path")
-    let path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
+    local dirPathObj = getObj("dir_path")
+    local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openDirectory(path)
     ::move_mouse_on_child_by_value(getObj("file_table"))
   }
@@ -551,8 +551,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onDirPathEditBoxActivate()
   {
-    let dirPathObj = getObj("dir_path")
-    let path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
+    local dirPathObj = getObj("dir_path")
+    local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openFileOrDir(path)
     ::move_mouse_on_child_by_value(getObj("file_table"))
   }
@@ -580,8 +580,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onToggleFocusFileName()
   {
-    let fileTableObj = getObj("file_table")
-    let fileNameObj = getObj("file_name")
+    local fileTableObj = getObj("file_table")
+    local fileNameObj = getObj("file_name")
     if (fileNameObj.isHovered())
       ::move_mouse_on_child_by_value(fileTableObj)
     else
@@ -590,8 +590,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onToggleFocusDirPath()
   {
-    let fileTableObj = getObj("file_table")
-    let dirPathObj = getObj("dir_path")
+    local fileTableObj = getObj("file_table")
+    local dirPathObj = getObj("dir_path")
     if (dirPathObj.isHovered())
       ::move_mouse_on_child_by_value(fileTableObj)
     else
@@ -607,15 +607,15 @@ let stdpath = require("%sqstd/path.nut")
 
   function onNavListSelect(obj)
   {
-    let idx = obj.getValue()
+    local idx = obj.getValue()
     if (idx < 0 || idx >= obj.childrenCount())
       return
 
-    let item = obj.getChild(idx)
+    local item = obj.getChild(idx)
     if (!(item.id in cachedPathByNavItemId))
       return
 
-   let path = cachedPathByNavItemId[item.id]
+   local path = cachedPathByNavItemId[item.id]
    if (path != dirPath)
       openDirectory(path)
   }
@@ -636,8 +636,8 @@ let stdpath = require("%sqstd/path.nut")
 
   function onFileTableColumnClick(obj)
   {
-    let objId = obj.id
-    let columnName = cachedColumnNameByTableColumnId[objId]
+    local objId = obj.id
+    local columnName = cachedColumnNameByTableColumnId[objId]
     foreach (column in columns)
     {
       if (column.name != columnName)
@@ -661,7 +661,7 @@ let stdpath = require("%sqstd/path.nut")
 
   function onFilterChange(obj)
   {
-    let idx = obj.getValue()
+    local idx = obj.getValue()
     if (idx < 0 || idx >= obj.childrenCount() || idx >= filters.len())
       return
 
@@ -682,21 +682,18 @@ let stdpath = require("%sqstd/path.nut")
     // Add columns used for show and sort
     foreach (columnSourceInfo in columnSources)
     {
-      let source = this[columnSourceInfo.sourceName]
-      foreach (idx, columnInfoSrc in source)
+      local source = this[columnSourceInfo.sourceName]
+      foreach (idx, columnInfo in source)
       {
-        local columnInfo
-        if (::u.isString(columnInfoSrc))
+        if (::u.isString(columnInfo))
         {
-          columnInfo = {column = columnInfoSrc}
+          columnInfo = {column = columnInfo}
           source[idx] = columnInfo
         }
-        else
-          columnInfo = columnInfoSrc
 
         if (::u.isString(columnInfo.column))
         {
-          let columnName = columnInfo.column
+          local columnName = columnInfo.column
           columns[columnName] <- ::getTblValue(columnName, columns, {})
           columnInfo.column = columns[columnName]
         }
@@ -710,7 +707,7 @@ let stdpath = require("%sqstd/path.nut")
       if (!(columnName in defaultColumns))
         continue
 
-      let defaultColumn = defaultColumns[columnName]
+      local defaultColumn = defaultColumns[columnName]
       if (column == defaultColumn)
         continue
 
@@ -727,11 +724,11 @@ let stdpath = require("%sqstd/path.nut")
     // Check required attributes
     foreach (columnSourceInfo in columnSources)
     {
-      let source = this[columnSourceInfo.sourceName]
-      let requiredAttributes = columnSourceInfo.requiredAttributes
+      local source = this[columnSourceInfo.sourceName]
+      local requiredAttributes = columnSourceInfo.requiredAttributes
       foreach (idx, columnInfo in source)
       {
-        let column = columnInfo.column
+        local column = columnInfo.column
         foreach (attr in requiredAttributes)
           if (!(attr in column))
           {
@@ -752,22 +749,22 @@ let stdpath = require("%sqstd/path.nut")
 
   function updateSelectedFileName()
   {
-    let fileTableObj = getObj("file_table")
+    local fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
-    let selectedRowIdx = fileTableObj.getValue()
+    local selectedRowIdx = fileTableObj.getValue()
     if (selectedRowIdx < 0 || selectedRowIdx >= fileTableObj.childrenCount())
       return
 
-    let childObj = fileTableObj.getChild(selectedRowIdx)
+    local childObj = fileTableObj.getChild(selectedRowIdx)
     if (!::check_obj(childObj) ||
       !(childObj?.id in cachedFileNameByTableRowId))
       return
 
     fileName = cachedFileNameByTableRowId[childObj.id]
     guiScene.performDelayed(this, updateButtons)
-    let file = readFileInfo(stdpath.join(dirPath, fileName))
+    local file = readFileInfo(stdpath.join(dirPath, fileName))
     if (file && !isDirectory(file))
       fillFileNameObj()
   }
@@ -778,14 +775,14 @@ let stdpath = require("%sqstd/path.nut")
     if (!pathTag)
       return
 
-    let settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
-    let loadBlk = ::load_local_account_settings(settingName)
+    local settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
+    local loadBlk = ::load_local_account_settings(settingName)
     dirPath  = ::getTblValue("dirPath",  loadBlk, dirPath)
     fileName = ::getTblValue("fileName", loadBlk, fileName)
 
     while (!isDirectory(readFileInfo(dirPath)))
     {
-      let parentPath = stdpath.parentPath(dirPath)
+      local parentPath = stdpath.parentPath(dirPath)
       if (!parentPath)
         return
       dirPath = parentPath
@@ -798,8 +795,8 @@ let stdpath = require("%sqstd/path.nut")
     if (!pathTag || dirPath == "")
       return
 
-    let settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
-    let saveBlk = ::DataBlock()
+    local settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
+    local saveBlk = ::DataBlock()
     saveBlk.dirPath = stdpath.parentPath(path)
     saveBlk.fileName = stdpath.fileName(path)
     ::save_local_account_settings(settingName, saveBlk)
@@ -814,7 +811,7 @@ let stdpath = require("%sqstd/path.nut")
     local shouldUseSaveButton = isSaveFile
     if (shouldUseSaveButton && fileName in cachedFileFullPathByFileName)
     {
-      let file = readFileInfo(cachedFileFullPathByFileName[fileName])
+      local file = readFileInfo(cachedFileFullPathByFileName[fileName])
       shouldUseSaveButton = !isDirectory(file)
     }
     getObj("btn_open").setValue(
@@ -829,11 +826,11 @@ let stdpath = require("%sqstd/path.nut")
     if (shift == 0)
       return
 
-    let isForward = shift > 0
-    let numSteps = ::abs(shift)
+    local isForward = shift > 0
+    local numSteps = ::abs(shift)
 
-    let sourceList = isForward ? dirHistoryAfter : dirHistoryBefore
-    let targetList = isForward ? dirHistoryBefore : dirHistoryAfter
+    local sourceList = isForward ? dirHistoryAfter : dirHistoryBefore
+    local targetList = isForward ? dirHistoryBefore : dirHistoryAfter
 
     rememberSelectedFile()
     for (local stepIdx = 0; stepIdx < numSteps; stepIdx++)
@@ -860,7 +857,7 @@ let stdpath = require("%sqstd/path.nut")
   function openDirectory(path)
   {
     path = stdpath.normalize(path)
-    let file = readFileInfo(path)
+    local file = readFileInfo(path)
     if (isDirectory(file))
     {
       rememberSelectedFile()
@@ -884,7 +881,7 @@ let stdpath = require("%sqstd/path.nut")
   function openFileOrDir(path)
   {
     path = stdpath.normalize(path)
-    let file = readFileInfo(path)
+    local file = readFileInfo(path)
     if (isDirectory(file))
       openDirectory(path)
     else
@@ -892,7 +889,7 @@ let stdpath = require("%sqstd/path.nut")
       finallySelectedPath = path
       if (isSaveFile)
       {
-        let folderPath = stdpath.parentPath(path)
+        local folderPath = stdpath.parentPath(path)
         if (shouldAskOnRewrite && isExists(file))
           ::scene_msg_box("filesystem_rewrite_msg_box", null,
             ::loc("filesystem/askRewriteFile", {path = path}),
@@ -921,7 +918,7 @@ let stdpath = require("%sqstd/path.nut")
   function rememberSelectedFile()
   {
     local path = ""
-    let pathSegments = stdpath.splitToArray(stdpath.join(dirPath, fileName))
+    local pathSegments = stdpath.splitToArray(stdpath.join(dirPath, fileName))
     for (local j = 0; j < pathSegments.len() - 1; j++)
     {
       path = stdpath.join(path, pathSegments[j])
@@ -932,14 +929,14 @@ let stdpath = require("%sqstd/path.nut")
 
   function restoreLastSelectedFile()
   {
-    let fileTableObj = getObj("file_table")
+    local fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
-    let selectedFile = ::getTblValue(dirPath, lastSelectedFileByPath, fileName)
+    local selectedFile = ::getTblValue(dirPath, lastSelectedFileByPath, fileName)
     if (selectedFile in cachedTableRowIdxByFileName)
     {
-      let rowIdx = cachedTableRowIdxByFileName[selectedFile]
+      local rowIdx = cachedTableRowIdxByFileName[selectedFile]
       if (rowIdx >= 0 && rowIdx < fileTableObj.childrenCount())
         fileTableObj.setValue(rowIdx)
       return
@@ -949,7 +946,7 @@ let stdpath = require("%sqstd/path.nut")
 
   function restoreFileName()
   {
-    let fileNameObj = getObj("file_name")
+    local fileNameObj = getObj("file_name")
     if (fileNameObj && fileName == "")
       fileName = fileNameObj.getValue()
   }
@@ -977,11 +974,11 @@ let stdpath = require("%sqstd/path.nut")
   isDirPathObjFocused = null
   function fillDirPathObj(forceUpdate = false)
   {
-    let dirPathObj = getObj("dir_path")
+    local dirPathObj = getObj("dir_path")
     if (!dirPathObj)
       return
 
-    let isFocused = dirPathObj.isFocused()
+    local isFocused = dirPathObj.isFocused()
     if (isDirPathObjFilled != null && isDirPathObjFilled == dirPath &&
       isDirPathObjFocused == isFocused && !forceUpdate)
       return
@@ -1004,10 +1001,10 @@ let stdpath = require("%sqstd/path.nut")
     else
     {
       dirPathObj.setValue("")
-      let pathParts = stdpath.splitToArray(dirPath)
+      local pathParts = stdpath.splitToArray(dirPath)
 
       cachedPathByPathPartId.clear()
-      let view = {items = []}
+      local view = {items = []}
       local combinedPath = ""
       foreach (idx, pathPart in pathParts)
       {
@@ -1015,7 +1012,7 @@ let stdpath = require("%sqstd/path.nut")
         if (pathPart == "")
           continue
 
-        let id = "dir_path_part_" + idx
+        local id = "dir_path_part_" + idx
         cachedPathByPathPartId[id] <- combinedPath
         view.items.append({
           id = id
@@ -1025,7 +1022,7 @@ let stdpath = require("%sqstd/path.nut")
         })
       }
 
-      let data = ::handyman.renderCached(dirPathPartTemplate, view)
+      local data = ::handyman.renderCached(dirPathPartTemplate, view)
       guiScene.replaceContentFromText(dirPathObj, data, data.len(), this)
     }
   }
@@ -1033,7 +1030,7 @@ let stdpath = require("%sqstd/path.nut")
 
   function fillFileNameObj()
   {
-    let fileNameObj = getObj("file_name")
+    local fileNameObj = getObj("file_name")
     if (fileNameObj)
       fileNameObj.setValue(fileName)
   }
@@ -1043,7 +1040,7 @@ let stdpath = require("%sqstd/path.nut")
   fileTableObjFilledFilter = null
   function fillFileTableObj(forceUpdate = false)
   {
-    let fileTableObj = getObj("file_table")
+    local fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
@@ -1057,16 +1054,16 @@ let stdpath = require("%sqstd/path.nut")
     local filesList = readDirFiles(dirPath, maximumFilesToLoad)
     if (filesList.len() > maximumFilesToLoad)
       filesList = filesList.slice(0, maximumFilesToLoad)
-    let filesTableData = []
+    local filesTableData = []
 
     cachedFileFullPathByFileName.clear()
-    let fileNameMetaAttr = {}
+    local fileNameMetaAttr = {}
     foreach (file in filesList)
     {
-      let fileData = {}
+      local fileData = {}
       foreach (columnName, column in columns)
         fileData[columnName] <- column.getValue(file, this)
-      let filename = getFileName(file)
+      local filename = getFileName(file)
       if (!isDirectory(file) && currentFilter != allFilesFilter &&
         !::g_string.endsWith(filename, currentFilter))
         continue
@@ -1079,9 +1076,9 @@ let stdpath = require("%sqstd/path.nut")
     // when read directories with large files number
     filesTableData.sort(fileDataComporator.bindenv(this))
 
-    let view = {rows = []}
+    local view = {rows = []}
 
-    let headerRowView = {
+    local headerRowView = {
       row_id = "file_header_row"
       isHeaderRow = true
       cells = []
@@ -1089,7 +1086,7 @@ let stdpath = require("%sqstd/path.nut")
     cachedColumnNameByTableColumnId.clear()
     foreach (visibleColumn in visibleColumns)
     {
-      let id = "file_col_" + visibleColumn.column.name
+      local id = "file_col_" + visibleColumn.column.name
       cachedColumnNameByTableColumnId[id] <- visibleColumn.column.name
       headerRowView.cells.append({
         id = id
@@ -1105,27 +1102,27 @@ let stdpath = require("%sqstd/path.nut")
     cachedTableRowIdxByFileName.clear()
     foreach (idx, fileData in filesTableData)
     {
-      let rowId = "file_row_" + idx
-      let filename = fileData[fileNameMetaAttr]
+      local rowId = "file_row_" + idx
+      local filename = fileData[fileNameMetaAttr]
       cachedFileNameByTableRowId[rowId] <- filename
       cachedTableRowIdxByFileName[filename] <- idx + 1
-      let rowView = {
+      local rowView = {
         row_id = rowId
         even = isEven
         cells = []
       }
       foreach (visibleColumn in visibleColumns)
       {
-        let column = visibleColumn.column
-        let value = fileData[column.name]
-        let cellView = column.getView(value)
+        local column = visibleColumn.column
+        local value = fileData[column.name]
+        local cellView = column.getView(value)
         rowView.cells.append(cellView)
       }
       view.rows.append(rowView)
       isEven = !isEven
     }
 
-    let data = ::handyman.renderCached(fileTableTemplate, view)
+    local data = ::handyman.renderCached(fileTableTemplate, view)
     guiScene.replaceContentFromText(fileTableObj, data, data.len(), this)
     guiScene.performDelayed(this, restoreLastSelectedFile)
   }
@@ -1135,7 +1132,7 @@ let stdpath = require("%sqstd/path.nut")
   {
     for (local k = navList.len() - 1; k >= 0; k--)
     {
-      let element = navList[k]
+      local element = navList[k]
       if ("childs" in element && "name" in element)
       {
         filterNavElements(element.childs)
@@ -1184,14 +1181,14 @@ let stdpath = require("%sqstd/path.nut")
     showSceneBtn("nav_list", isNavigationVisible)
     showSceneBtn("nav_seperator", isNavigationVisible)
 
-    let navListObj = getObj("nav_list")
+    local navListObj = getObj("nav_list")
     if (!navListObj || (isNavListObjFilled && !forceUpdate))
       return
 
     isNavListObjFilled = true
 
-    let navList = getNavElements()
-    let navListData = []
+    local navList = getNavElements()
+    local navListData = []
     filterNavElements(navList)
     fillNavListData(navListData, navList)
 
@@ -1204,11 +1201,11 @@ let stdpath = require("%sqstd/path.nut")
     }
     showSceneBtn("btn_navigation", isNavigationToggleAllowed)
 
-    let view = {items = []}
+    local view = {items = []}
     cachedPathByNavItemId.clear()
     foreach (idx, navData in navListData)
     {
-      let id = "nav_item_" + idx
+      local id = "nav_item_" + idx
       if ("path" in navData)
         cachedPathByNavItemId[id] <- navData.path
       view.items.append({
@@ -1220,7 +1217,7 @@ let stdpath = require("%sqstd/path.nut")
       })
     }
 
-    let data = ::handyman.renderCached(navItemListTemplate, view)
+    local data = ::handyman.renderCached(navItemListTemplate, view)
     guiScene.replaceContentFromText(navListObj, data, data.len(), this)
   }
 
@@ -1228,14 +1225,14 @@ let stdpath = require("%sqstd/path.nut")
   isFiltersObjFilled = false
   function fillFiltersObj(forceUpdate = false)
   {
-    let shouldUseFilters = filters.len() > 1
-    let fileFilterObj = showSceneBtn("file_filter", shouldUseFilters)
+    local shouldUseFilters = filters.len() > 1
+    local fileFilterObj = showSceneBtn("file_filter", shouldUseFilters)
     if (!fileFilterObj || !shouldUseFilters || (isFiltersObjFilled && !forceUpdate))
       return
 
     isNavListObjFilled = true
 
-    let view = {items = []}
+    local view = {items = []}
     local selectedIdx = 0
     foreach (idx, filter in filters)
     {
@@ -1249,7 +1246,7 @@ let stdpath = require("%sqstd/path.nut")
         selectedIdx = idx
     }
 
-    let data = ::handyman.renderCached(filterSelectTemplate, view)
+    local data = ::handyman.renderCached(filterSelectTemplate, view)
     guiScene.replaceContentFromText(fileFilterObj, data, data.len(), this)
     fileFilterObj.setValue(selectedIdx)
   }
@@ -1264,10 +1261,10 @@ let stdpath = require("%sqstd/path.nut")
     foreach (columnSource in [columnSortOrder, visibleColumns])
       foreach (sortInfo in columnSource)
       {
-        let column = sortInfo.column
-        let lhsValue = ::getTblValue(column.name, lhs, null)
-        let rhsValue = ::getTblValue(column.name, rhs, null)
-        let result = column.comparator(lhsValue, rhsValue)
+        local column = sortInfo.column
+        local lhsValue = ::getTblValue(column.name, lhs, null)
+        local rhsValue = ::getTblValue(column.name, rhs, null)
+        local result = column.comparator(lhsValue, rhsValue)
         if (result != 0)
           return result * (::getTblValue("reverse", sortInfo, false) ? -1 : 1)
       }

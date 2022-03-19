@@ -1,50 +1,42 @@
 from "%darg/ui_imports.nut" import *
-let {colors} = require("style.nut")
-let scrollbar = require("%darg/components/scrollbar.nut")
-let textButton = require("textButton.nut")
+local {colors} = require("style.nut")
+local scrollbar = require("%darg/components/scrollbar.nut")
+local textButton = require("textButton.nut")
 
 
-let helpText = @"
-Tab - Find entity (by name, by group, select/deselect)
-P - Property panel
+local helpText = @"
+Q - Selection mode
+W - Movement mode
+E - Rotation mode
+R - Scaling mode
+P - Toggle property pane;
+Z - Zoom-and-center for selection
+X - Toggle local/world gizmo behaviour
+Del - Delete selected object(s)
 
-Q - Select mode
-W - Move mode (Shift+move to clone)
-E - Rotate mode
-R - Scale mode
-T - Create entity mode
+Ctrl-A - Select all
+Ctrl-D - Deselect all
+Ctrl-Z - Undo
+Ctrl-Y - Redo
 
-Z - Zoom to selected
-X - Local/global gizmo
+Ctrl-Alt-D - Drop objects
+Ctrl-Alt-E - Drop objects on normal
+Ctrl-Alt-W - Surf mode
 
-Click - Select object
-Ctrl+Click - Select multiple
-Ctrl+A - Select all
-Ctrl+D - Deselect all
+Camera:
+Space - Toggle free camera
 
-Del - Delete selected
+Middle mouse button + Move - Camera pan
+Alt + Middle mouse button + Move - Camera rotation
+Mouse wheel - Move forward/backward (Ctrl=turbo, Alt=finer)
 
-Ctrl+Z - Undo
-Ctrl+Y - Redo
-
-Ctrl+Alt+D - Drop objects
-Ctrl+Alt+E - Drop objects on normal
-Ctrl+Alt+W - Surf over ground mode
-Ctrl+Alt+R - Reset scale
-
-Space - Free camera mode (WASD + mouse, E up, C down, LShift faster, Q/Z focus)
-
-Canned camera pan - Middle mouse button
-Canned camera rotate (around selected) - Alt + Middle mouse button
-Canned camera move forward/back - Mouse wheel (Ctrl faster, Alt slower)
-
-Alt+H - Find entity
-F1 - Help
+F1 - this help
+Alt+H - Select by name
 "
 
 
-let help = @(showHelp) function help(){
-  let btnClose = {
+local help = @(showHelp) function help(){
+  local btnClose = {
     hplace = ALIGN_RIGHT
     size = SIZE_TO_CONTENT
     children = textButton("X", function() {
@@ -52,7 +44,7 @@ let help = @(showHelp) function help(){
     }, {hotkeys = [["Esc"]]})
   }
 
-  let caption = {
+  local caption = {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_SOLID
     color = Color(50, 50, 50, 50)
@@ -67,7 +59,7 @@ let help = @(showHelp) function help(){
     ]
   }
 
-  let textContent = {
+  local textContent = {
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     text = helpText

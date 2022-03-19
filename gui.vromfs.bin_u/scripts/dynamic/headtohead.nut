@@ -1,13 +1,13 @@
 missionGenFunctions.append( function (isFreeFlight)
 {
-  let mission_preset_name = "head_to_head_preset01";
+  local mission_preset_name = "head_to_head_preset01";
   ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/"+mission_preset_name+".blk");
-  let playerSide = ::mgGetPlayerSide();
-  let enemySide = ::mgGetEnemySide();
+  local playerSide = ::mgGetPlayerSide();
+  local enemySide = ::mgGetEnemySide();
   local startPos = "";
-  let ws = ::get_warpoints_blk()
+  local ws = ::get_warpoints_blk()
 
-  let groundUnitFake = 3//::rndRangeInt(3,6);
+  local groundUnitFake = 3//::rndRangeInt(3,6);
   if (groundUnitFake == 1)
   {
    startPos = ::mgCreateGroundUnits(playerSide,
@@ -49,36 +49,36 @@ missionGenFunctions.append( function (isFreeFlight)
   }
 
 
-  let allyStartAngle = ::rndRange(-30,30)
+  local allyStartAngle = ::rndRange(-30,30)
 
   local ally_enable = ::rndRangeInt(0, 40);
-  let rndHeight = ::rndRange(0, 2000);
-  let timeToFight = ::rndRange(30, 60)/60.0;
+  local rndHeight = ::rndRange(0, 2000);
+  local timeToFight = ::rndRange(30, 60)/60.0;
 
 //planes cost calculate
-  let wpMax = ws.dynPlanesMaxCost;
-  let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
+  local wpMax = ws.dynPlanesMaxCost;
+  local playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   local playerPlaneCost = ::getAircraftCost(playerFighterPlane);
   if (playerPlaneCost == 0)
     playerPlaneCost = 250;
 
-  let enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
+  local enemyFighterPlane = ::getEnemyPlaneByWpCost(playerPlaneCost, enemySide);
   local enemyPlaneCost = ::getAircraftCost(enemyFighterPlane);
   if (enemyPlaneCost == 0)
     enemyPlaneCost = 250;
 
-  let planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
+  local planeCost = ::planeCostCalculate(playerPlaneCost, enemyPlaneCost);
 
   if (playerFighterPlane == "" || enemyFighterPlane == "")
     return;
 
 
-  let playerSpeed = ::getDistancePerMinute(playerFighterPlane);
-  let enemySpeed = ::getDistancePerMinute(enemyFighterPlane);
+  local playerSpeed = ::getDistancePerMinute(playerFighterPlane);
+  local enemySpeed = ::getDistancePerMinute(enemyFighterPlane);
 
   ::mgSetDistToAction(playerSpeed*timeToFight+2000);
   ::mgSetupAirfield(startPos, playerSpeed*timeToFight+3000);
-  let startLookAt = ::mgCreateStartLookAt();
+  local startLookAt = ::mgCreateStartLookAt();
 
 
   ::mgSetupArea("waypoint01", startPos, startLookAt, 180, 0, rndHeight);
@@ -110,8 +110,8 @@ missionGenFunctions.append( function (isFreeFlight)
     ally_enable = 0;
 
 
-  let enemy_count_min = (2+allyCount*ally_enable*0.5)/planeCost;
-  let enemy_count_max = (6+allyCount*ally_enable*1.5)/planeCost;
+  local enemy_count_min = (2+allyCount*ally_enable*0.5)/planeCost;
+  local enemy_count_max = (6+allyCount*ally_enable*1.5)/planeCost;
   local enemyCount = ::rndRangeInt(enemy_count_min, enemy_count_max);
   if (enemyCount < 4){enemyCount = 4}
   if (enemyCount > 44){enemyCount = 44}
@@ -129,9 +129,9 @@ missionGenFunctions.append( function (isFreeFlight)
   local winCount = enemyCount/5.0;
   if (winCount < 2){winCount = 2}
 
-  let mission_mult = ::sqrt(winCount/4.0+0.05);
+  local mission_mult = ::sqrt(winCount/4.0+0.05);
 
-  let missionWpCost = warpointCalculate(mission_preset_name, allyCount, enemyCount, planeCost, playerFighterPlane, mission_mult);
+  local missionWpCost = warpointCalculate(mission_preset_name, allyCount, enemyCount, planeCost, playerFighterPlane, mission_mult);
   ::mgSetInt("mission_settings/mission/wpAward", missionWpCost);
 //  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_temp.blk");
   ::mgSetEffShootingRate(0.1);

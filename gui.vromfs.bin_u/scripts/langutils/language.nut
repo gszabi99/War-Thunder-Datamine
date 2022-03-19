@@ -1,7 +1,7 @@
-let stdMath = require("%sqstd/math.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { get_default_lang } = require("platform")
-let { GUI } = require("%scripts/utils/configs.nut")
+local stdMath = require("std/math.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { get_default_lang } = require("platform")
+local { GUI } = require("scripts/utils/configs.nut")
 
 ::g_language <- {
   currentLanguage = null
@@ -40,8 +40,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
 g_language.standartStyleNumberCut <- function standartStyleNumberCut(num)
 {
-  let needSymbol = num >= 9999.5
-  let roundNum = stdMath.roundToDigits(num, needSymbol ? 3 : 4)
+  local needSymbol = num >= 9999.5
+  local roundNum = stdMath.roundToDigits(num, needSymbol ? 3 : 4)
   if (!needSymbol)
     return roundNum.tostring()
 
@@ -54,8 +54,8 @@ g_language.standartStyleNumberCut <- function standartStyleNumberCut(num)
 
 g_language.chineseStyleNumberCut <- function chineseStyleNumberCut(num)
 {
-  let needSymbol = num >= 99999.5
-  let roundNum = stdMath.roundToDigits(num, needSymbol ? 4 : 5)
+  local needSymbol = num >= 99999.5
+  local roundNum = stdMath.roundToDigits(num, needSymbol ? 4 : 5)
   if (!needSymbol)
     return roundNum.tostring()
 
@@ -67,10 +67,10 @@ g_language.chineseStyleNumberCut <- function chineseStyleNumberCut(num)
 g_language.tencentAddLineBreaks <- function tencentAddLineBreaks(text)
 {
   local res = ""
-  let total = ::utf8(text).charCount()
+  local total = ::utf8(text).charCount()
   for(local i = 0; i < total; i++)
   {
-    let nextChar = ::utf8(text).slice(i, i + 1)
+    local nextChar = ::utf8(text).slice(i, i + 1)
     if (nextChar == "\t")
       continue
     res += nextChar + (i < total - 1 ? "\t" : "")
@@ -80,7 +80,7 @@ g_language.tencentAddLineBreaks <- function tencentAddLineBreaks(text)
 
 g_language.initFunctionsTable <- function initFunctionsTable()
 {
-  let table = {
+  local table = {
     getShortTextFromNum = {
       defaultAction = ::g_language.standartStyleNumberCut
       replaceFunctions = [{
@@ -123,7 +123,7 @@ g_language.updateFunctions <- function updateFunctions()
     local replaced = false
     foreach(table in block.replaceFunctions)
     {
-      let langsArray = ::getTblValue("language", table, [])
+      local langsArray = ::getTblValue("language", table, [])
       if (!::isInArray(getLanguageName(), langsArray))
         continue
 
@@ -168,7 +168,7 @@ g_language.saveLanguage <- function saveLanguage(langName)
 }
 
 ::g_language.saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
-let currentLanguageW = Watched(::g_language.currentLanguage)
+local currentLanguageW = Watched(::g_language.currentLanguage)
 
 g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false)
 {
@@ -183,7 +183,7 @@ g_language.setGameLocalization <- function setGameLocalization(langId, reloadSce
   if (suggestPkgDownload)
     needCheckLangPack = true
 
-  let handler = ::handlersManager.getActiveBaseHandler()
+  local handler = ::handlersManager.getActiveBaseHandler()
   if (reloadScene && handler)
     handler.fullReloadScene()
   else
@@ -214,7 +214,7 @@ g_language.onEventNewSceneLoaded <- function onEventNewSceneLoaded(p)
 
 g_language.getEmptyLangInfo <- function getEmptyLangInfo()
 {
-  let langInfo = {
+  local langInfo = {
     id = "empty"
     title = "empty"
     icon = ""
@@ -225,14 +225,14 @@ g_language.getEmptyLangInfo <- function getEmptyLangInfo()
   return langInfo
 }
 
-g_language._addLangOnce <- function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false)
+g_language._addLangOnce <- function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null)
 {
   if (id in langsById)
     return
 
-  let langInfo = getEmptyLangInfo()
+  local langInfo = getEmptyLangInfo()
   langInfo.id = id
-  langInfo.title = "".concat(isDev ? "[DEV] " : "", ::loc($"language/{id}"))
+  langInfo.title = ::loc("language/" + id)
   langInfo.icon = icon || ""
   langInfo.chatId = chatId || "en"
   langInfo.isMainChatId = true
@@ -258,31 +258,31 @@ g_language.checkInitList <- function checkInitList()
   langsByChatId.clear()
   langsListForInventory.clear()
 
-  let locBlk = ::DataBlock()
+  local locBlk = ::DataBlock()
   ::get_localization_blk_copy(locBlk)
-  let ttBlk = locBlk?.text_translation ?? ::DataBlock()
-  let existingLangs = ttBlk % "lang"
+  local ttBlk = locBlk?.text_translation ?? ::DataBlock()
+  local existingLangs = ttBlk % "lang"
 
-  let guiBlk = GUI.get()
-  let blockName = ::is_vendor_tencent() ? "tencent" : ::is_vietnamese_version() ? "vietnam" : "default"
-  let preset = guiBlk?.game_localization[blockName] ?? ::DataBlock()
+  local guiBlk = GUI.get()
+  local blockName = ::is_vendor_tencent() ? "tencent" : ::is_vietnamese_version() ? "vietnam" : "default"
+  local preset = guiBlk?.game_localization[blockName] ?? ::DataBlock()
   for (local l = 0; l < preset.blockCount(); l++)
   {
-    let lang = preset.getBlock(l)
+    local lang = preset.getBlock(l)
     if (::isInArray(lang.id, existingLangs))
       _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech)
   }
 
   if (::is_dev_version)
   {
-    let blk = guiBlk?.game_localization ?? ::DataBlock()
+    local blk = guiBlk?.game_localization ?? ::DataBlock()
     for (local p = 0; p < blk.blockCount(); p++)
     {
-      let devPreset = blk.getBlock(p)
+      local devPreset = blk.getBlock(p)
       for (local l = 0; l < devPreset.blockCount(); l++)
       {
-        let lang = devPreset.getBlock(l)
-        _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech, true)
+        local lang = devPreset.getBlock(l)
+        _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech)
       }
     }
 
@@ -290,17 +290,17 @@ g_language.checkInitList <- function checkInitList()
       _addLangOnce(langId)
   }
 
-  let curLangId = ::g_language.getLanguageName()
+  local curLangId = ::g_language.getLanguageName()
   _addLangOnce(curLangId)
 
-  let inventoryBlk = locBlk?.inventory_abbreviated_languages_table ?? ::DataBlock()
+  local inventoryBlk = locBlk?.inventory_abbreviated_languages_table ?? ::DataBlock()
   for (local l = 0; l < inventoryBlk.paramCount(); ++l)
   {
-    let param = inventoryBlk.getParamValue(l)
+    local param = inventoryBlk.getParamValue(l)
     if (typeof(param) != "string")
       continue
 
-    let abbrevName = inventoryBlk.getParamName(l)
+    local abbrevName = inventoryBlk.getParamName(l)
     langsListForInventory[param] <- abbrevName
   }
 }
@@ -340,7 +340,7 @@ g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId)
 g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "text", defaultValue = null)
 {
   local res = null
-  let key = id + "_" + shortLangName
+  local key = id + "_" + shortLangName
   if (key in config)
     res = config[key]
   else
@@ -359,7 +359,7 @@ g_language.isAvailableForCurLang <- function isAvailableForCurLang(block)
   if (!::getTblValue("showForLangs", block))
     return true
 
-  let availableForLangs = ::split(block.showForLangs, ";")
+  local availableForLangs = ::split(block.showForLangs, ";")
   return ::isInArray(getLanguageName(), availableForLangs)
 }
 

@@ -13,7 +13,7 @@ foreach (fn in [
                  "updaterModal.nut"
                  "loginWT.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/login/" + fn)
+  ::g_script_reloader.loadOnce("scripts/login/" + fn)
 
 ::use_tencent_login <- function use_tencent_login()
 {

@@ -2943,13 +2943,6 @@
       },
       {
         "preset": {
-          "name": "he-111_sc2500",
-          "blk": "gameData/FlightModels/weaponPresets/he-111_sc2500.blk",
-          "reqModification": "etc2500"
-        }
-      },
-      {
-        "preset": {
           "name": "He_111H16_2x1000kg_250kg",
           "blk": "gameData/FlightModels/weaponPresets/he-111_2xsc1000_sc250.blk",
           "reqModification": "he-111_2x1000kg_250kg_pylon"
@@ -3084,21 +3077,26 @@
       "mg_turret_ap": [],
       "mg_turret_api_apt": [],
       "mg131_turret_apt": [],
-      "he-111_2x1000kg_pylon": {
-        "reqModLevel": 1.0,
-        "modClass": "weapon",
-        "tier": 2
-      },
       "he-111_2x1000kg_250kg_pylon": {
         "modClass": "weapon",
-        "tier": 3,
+        "tier": 4,
+        "reqModLevel": 6.0,
         "reqModification": "he-111_2x1000kg_pylon"
       },
-      "etc2500": {
-        "modClass": "weapon",
-        "tier": 4,
-        "reqModification": "he-111_2x1000kg_250kg_pylon"
-      }
+      "he-111_2x1000kg_pylon": [
+        {
+          "reqModLevel": 1.0
+        },
+        {
+          "reqModLevel": 6.0
+        },
+        {
+          "modClass": "weapon"
+        },
+        {
+          "tier": 3
+        }
+      ]
     }
   },
   {

@@ -1,4 +1,4 @@
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 /**
 * Sorts description items with following rules:
@@ -14,14 +14,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   items.sort((@(sortData) function (item1, item2) {
     if (item1.category != item2.category)
     {
-      let catSortData1 = sortData[item1.category]
-      let catSortData2 = sortData[item2.category]
+      local catSortData1 = sortData[item1.category]
+      local catSortData2 = sortData[item2.category]
       if (catSortData1.categoryIndex != catSortData2.categoryIndex)
         return catSortData1.categoryIndex < catSortData2.categoryIndex ? 1 : -1
       return 0
     }
-    let isTypeAircraft1 = item1.type == "aircraft"
-    let isTypeAircraft2 = item2.type == "aircraft"
+    local isTypeAircraft1 = item1.type == "aircraft"
+    local isTypeAircraft2 = item2.type == "aircraft"
     if (isTypeAircraft1 != isTypeAircraft2)
       return isTypeAircraft1 ? -1 : 1
     if (isTypeAircraft1)
@@ -30,9 +30,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         return item1.aircraftSortIndex > item2.aircraftSortIndex ? 1 : -1
       return 0
     }
-    let paramsOrder = sortData[item1.category].paramsOrder
-    let index1 = ::find_in_array(paramsOrder, item1.paramName)
-    let index2 = ::find_in_array(paramsOrder, item2.paramName)
+    local paramsOrder = sortData[item1.category].paramsOrder
+    local index1 = ::find_in_array(paramsOrder, item1.paramName)
+    local index2 = ::find_in_array(paramsOrder, item2.paramName)
     if (index1 != index2)
       return index1 > index2 ? 1 : -1
     return 0
@@ -47,11 +47,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return null
-  let sortData = {}
+  local sortData = {}
   for (local i = 0; i < blk.blockCount(); ++i)
   {
-    let discountCategoryBlk = blk.getBlock(i)
-    let paramsOrder = []
+    local discountCategoryBlk = blk.getBlock(i)
+    local paramsOrder = []
     for (local j = 0; j < discountCategoryBlk.paramCount(); ++j)
       paramsOrder.append(discountCategoryBlk.getParamName(j))
     sortData[discountCategoryBlk.getBlockName()] <- {
@@ -69,7 +69,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let items = []
+  local items = []
   for (local i = 0; i < blk.blockCount(); ++i)
     items.extend(::parse_discount_description_category(blk.getBlock(i)))
   return items
@@ -79,9 +79,9 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let category = blk.getBlockName()
+  local category = blk.getBlockName()
   // Order corresponds to discount priorities.
-  let items = []
+  local items = []
   items.extend(::parse_discount_description_aircrafts(blk?.aircrafts, category))
   items.extend(::parse_discount_description_country_rank(blk, category, true))
   items.extend(::parse_discount_description_country_rank(blk, category, false))
@@ -99,12 +99,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let items = []
+  local items = []
   for (local i = 0; i < blk.paramCount(); ++i)
   {
     if (blk.getParamValue(i) == 0)
       continue
-    let aircraftName = blk.getParamName(i)
+    local aircraftName = blk.getParamName(i)
     items.append({
       category = category
       type = "aircraft"
@@ -120,12 +120,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let items = []
+  local items = []
   foreach (countryName in shopCountriesList)
   {
     for (local i = 1; i <= ::max_country_rank; ++i)
     {
-      let name = countryName + "_rank" + i.tostring() + (usePremium ? "_premium" : "")
+      local name = countryName + "_rank" + i.tostring() + (usePremium ? "_premium" : "")
       if (!(name in blk) || blk[name] == 0)
         continue
       items.append({
@@ -147,10 +147,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let items = []
+  local items = []
   foreach (countryName in shopCountriesList)
   {
-    let name = countryName + (usePremium ? "_premium" : "")
+    local name = countryName + (usePremium ? "_premium" : "")
     if (!(name in blk) || blk[name] == 0)
       continue
     items.append({
@@ -170,10 +170,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let items = []
+  local items = []
   for (local i = 1; i <= ::max_country_rank; ++i)
   {
-    let name = "rank" + i.tostring() + (usePremium ? "_premium" : "")
+    local name = "rank" + i.tostring() + (usePremium ? "_premium" : "")
     if (!(name in blk) || blk[name] == 0)
       continue
     items.append({
@@ -191,7 +191,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null)
     return []
-  let name = "all" + (usePremium ? "_premium" : "")
+  local name = "all" + (usePremium ? "_premium" : "")
   if (!(name in blk) || blk[name] == 0)
     return []
   return [{
@@ -206,7 +206,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 {
   if (blk == null || category != "entitlements")
     return []
-  let items = []
+  local items = []
   for (local i = 0; i < blk.paramCount(); ++i)
   {
     items.append({

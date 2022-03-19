@@ -1,14 +1,14 @@
-let VOICE_CHAT_MEMBER_PARAMS = {
+local VOICE_CHAT_MEMBER_PARAMS = {
   id = ""
   name = ""
   animTime = 0.4
   visibleIdx = -1
 }
 
-let voiceChatMembers = Watched([])
+local voiceChatMembers = Watched([])
 local counter = 0 //for voice chat key
 
-let function removeVoiceChatMember(id) { //name (string) or id (int)
+local function removeVoiceChatMember(id) { //name (string) or id (int)
   foreach(idx, member in voiceChatMembers.value)
     if ((member.name == id || member.id == id)
         && !member.needShow.value) {
@@ -18,7 +18,7 @@ let function removeVoiceChatMember(id) { //name (string) or id (int)
     }
 }
 
-let function showVoiceChatMember(config) {
+local function showVoiceChatMember(config) {
   local voiceChatMember = null
   foreach (member in voiceChatMembers.value)
     if (member.name == config.name) {
@@ -49,7 +49,7 @@ let function showVoiceChatMember(config) {
   voiceChatMembers.trigger()
 }
 
-let function hideVoiceChatMember(config) {
+local function hideVoiceChatMember(config) {
   foreach (member in voiceChatMembers.value)
     if (member.name == config.name) {
       member.needShow(false)

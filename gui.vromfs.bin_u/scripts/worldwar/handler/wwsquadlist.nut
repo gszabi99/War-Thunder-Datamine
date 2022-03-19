@@ -1,10 +1,10 @@
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
-::gui_handlers.WwSquadList <- class extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "%gui/worldWar/wwBattleSquadList"
+  sceneTplName = "gui/worldWar/wwBattleSquadList"
 
   country = null
   remainUnits = null
@@ -26,14 +26,14 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
   function updateSquadInfoPanel()
   {
-    let squadMembers = ::g_squad_manager.getMembers()
+    local squadMembers = ::g_squad_manager.getMembers()
     local memberIdx = 0
     foreach (memberData in squadMembers)
     {
       if (!memberData.online)
         continue
 
-      let memberObj = squadListObj.getChild(memberIdx)
+      local memberObj = squadListObj.getChild(memberIdx)
       if (!::check_obj(memberObj))
         break
 
@@ -43,7 +43,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
     for (local i = memberIdx; i < squadListObj.childrenCount(); i++)
     {
-      let memberObj = squadListObj.getChild(i)
+      local memberObj = squadListObj.getChild(i)
       if (::check_obj(memberObj))
         updateSquadMember(null, memberObj)
     }
@@ -58,7 +58,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
     memberObj.uid = memberData.uid
     memberObj.findObject("is_ready_icon").isReady =
       memberData.isReady ? "yes" : "no"
-    let memberUnitsData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
+    local memberUnitsData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
       memberData, remainUnits, country)
     memberObj.findObject("has_vehicles_icon").isReady =
       memberUnitsData.joinStatus == memberStatus.READY ? "yes" : "no"
@@ -84,7 +84,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
     memberObj.findObject("cant_join_text").setValue(alertText)
     memberObj.findObject("member_name").setValue(memberData.name)
 
-    let alertIconObj =  memberObj.findObject("alert_icon")
+    local alertIconObj =  memberObj.findObject("alert_icon")
     if (!::check_obj(alertIconObj))
       return
 
@@ -106,15 +106,15 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
   function onMemberRClick()
   {
-    let curMemberIdx = squadListObj.getValue()
+    local curMemberIdx = squadListObj.getValue()
     if (curMemberIdx < 0 || curMemberIdx >= squadListObj.childrenCount())
       return
 
-    let curMemberObj = squadListObj.getChild(curMemberIdx)
+    local curMemberObj = squadListObj.getChild(curMemberIdx)
     if (!::check_obj(curMemberObj) || !curMemberObj?.uid)
       return
 
-    let position = curMemberObj.getPosRC()
+    local position = curMemberObj.getPosRC()
     position[1] += curMemberObj.getSize()[1]
 
     playerContextMenu.showMenu(null, this, {

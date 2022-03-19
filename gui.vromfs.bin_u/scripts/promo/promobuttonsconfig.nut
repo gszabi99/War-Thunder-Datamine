@@ -1,6 +1,6 @@
-let promoButtonsConfig = {}
+local promoButtonsConfig = {}
 
-let addPromoButtonConfig = ::kwarg(function addPromoButtonConfig(promoButtonId, buttonType = null, getText = null,
+local addPromoButtonConfig = ::kwarg(function addPromoButtonConfig(promoButtonId, buttonType = null, getText = null,
   collapsedIcon = null, collapsedText = null, needUpdateByTimer = false, getCustomSeenId = null,
   updateFunctionInHandler = null, updateByEvents = null)
 {
@@ -16,9 +16,9 @@ let addPromoButtonConfig = ::kwarg(function addPromoButtonConfig(promoButtonId, 
   }
 })
 
-let getPromoButtonConfig = @(buttonId) promoButtonsConfig?[buttonId]
+local getPromoButtonConfig = @(buttonId) promoButtonsConfig?[buttonId]
 
-let getPromoHandlerUpdateConfigs = @() promoButtonsConfig.map(
+local getPromoHandlerUpdateConfigs = @() promoButtonsConfig.map(
   @(c) {
     updateFunctionInHandler = c?.updateFunctionInHandler
     updateByEvents = c?.updateByEvents

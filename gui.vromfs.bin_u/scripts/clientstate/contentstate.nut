@@ -1,10 +1,9 @@
-let platformModule = require("%scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 
-let PS4_CHUNK_FULL_CLIENT_DOWNLOADED = 19
-let PS4_CHUNK_HISTORICAL_CAMPAIGN = 11
-let PS4_CHUNK_COCKPITS = 10
+local PS4_CHUNK_FULL_CLIENT_DOWNLOADED = 19
+local PS4_CHUNK_HISTORICAL_CAMPAIGN = 11
 
-let persistentData = {
+local persistentData = {
   isConsoleClientFullOnStart = !platformModule.isPlatformXboxOne && !platformModule.isPlatformPS4
 }
 ::g_script_reloader.registerPersistentData("contentState", persistentData,
@@ -15,9 +14,9 @@ local getClientDownloadProgressText = @() ""
 local isHistoricalCampaignDownloading = @() false
 if (platformModule.isPlatformPS4)
 {
-  isConsoleClientFullyDownloaded = @() ::ps4_is_chunk_available(PS4_CHUNK_COCKPITS) && ::ps4_is_chunk_available(PS4_CHUNK_FULL_CLIENT_DOWNLOADED)
+  isConsoleClientFullyDownloaded = @() ::ps4_is_chunk_available(PS4_CHUNK_FULL_CLIENT_DOWNLOADED) && ::ps4_is_chunk_available(PS4_CHUNK_HISTORICAL_CAMPAIGN)
   getClientDownloadProgressText = function() {
-    let percent = ::ps4_get_chunk_progress_percent(PS4_CHUNK_FULL_CLIENT_DOWNLOADED)
+    local percent = ::ps4_get_chunk_progress_percent(PS4_CHUNK_FULL_CLIENT_DOWNLOADED)
     local text = ::loc("msgbox/downloadPercent", {percent = percent})
     if (percent == 100)
       text += "\n" + ::loc("msgbox/relogin_required")
@@ -34,7 +33,7 @@ else if (platformModule.isPlatformXboxOne)
       : ::loc("download/inProgress")
 }
 
-let updateConsoleClientDownloadStatus = @() persistentData.isConsoleClientFullOnStart = isConsoleClientFullyDownloaded()
+local updateConsoleClientDownloadStatus = @() persistentData.isConsoleClientFullOnStart = isConsoleClientFullyDownloaded()
 
 return {
   isConsoleClientFullyDownloaded = isConsoleClientFullyDownloaded

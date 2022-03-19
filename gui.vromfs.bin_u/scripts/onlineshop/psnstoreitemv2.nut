@@ -1,14 +1,14 @@
-let { calcPercent } = require("%sqstd/math.nut")
+local { calcPercent } = require("std/math.nut")
 
-let psnStore = require("sony.store")
-let psnUser = require("sony.user")
-let statsd = require("statsd")
-let { serviceLabel } = require("%sonyLib/webApi.nut")
-let { subscribe } = require("eventbus")
-let { GUI } = require("%scripts/utils/configs.nut")
+local psnStore = require("sony.store")
+local psnUser = require("sony.user")
+local statsd = require("statsd")
+local { serviceLabel } = require("sonyLib/webApi.nut")
+local { subscribe } = require("eventbus")
+local { GUI } = require("scripts/utils/configs.nut")
 
-let IMAGE_TYPE = "TAM_JACKET"
-let BQ_DEFAULT_ACTION_ERROR = -1
+local IMAGE_TYPE = "TAM_JACKET"
+local BQ_DEFAULT_ACTION_ERROR = -1
 
 enum PURCHASE_STATUS {
   PURCHASED = "RED_BAG" // - Already purchased and cannot be purchased again
@@ -16,20 +16,20 @@ enum PURCHASE_STATUS {
   NOT_PURCHASED = "NONE" // - Not yet purchased
 }
 
-let function handleNewPurchase(itemId) {
+local function handleNewPurchase(itemId) {
   ::ps4_update_purchases_on_auth()
-  let taskParams = { showProgressBox = true, progressBoxText = ::loc("charServer/checking") }
+  local taskParams = { showProgressBox = true, progressBoxText = ::loc("charServer/checking") }
   ::g_tasker.addTask(::update_entitlements_limited(true), taskParams)
   ::broadcastEvent("PS4ItemUpdate", {id = itemId})
 }
 
-let getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
+local getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
   : action == psnStore.Action.CANCELED ? "canceled"
   : action == BQ_DEFAULT_ACTION_ERROR ? "unknown"
   : "none"
 
-let function sendBqRecord(metric, itemId, result = null) {
-  let sendStat = {}
+local function sendBqRecord(metric, itemId, result = null) {
+  local sendStat = {}
 
   if (result != null) {
     sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized
@@ -41,7 +41,7 @@ let function sendBqRecord(metric, itemId, result = null) {
     metric.append(sendStat.action)
   }
 
-  let path = ".".join(metric)
+  local path = ".".join(metric)
   statsd.send_counter($"sq.{path}", 1)
   ::add_big_query_record(path,
     ::save_to_json(sendStat.__merge({
@@ -51,7 +51,7 @@ let function sendBqRecord(metric, itemId, result = null) {
 }
 
 
-let function reportRecord(data, record_name) {
+local function reportRecord(data, record_name) {
   sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
   if (data.result.action == psnStore.Action.PURCHASED)
     handleNewPurchase(data.ctx.itemId)
@@ -97,13 +97,13 @@ local psnV2ShopPurchasableItem = class {
     description = blk?.description ?? ""
     releaseDate = _releaseDate //PSN not give releaseDate param. but it return data in sorted order by release date
 
-    let imagesArray = blk?.media.images != null ? (blk.media.images % "array") : []
-    let imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE)
+    local imagesArray = blk?.media.images != null ? (blk.media.images % "array") : []
+    local imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE)
     if (imageIndex != null && imagesArray[imageIndex]?.url)
       imagePath = $"{imagesArray[imageIndex].url}?P1"
     else {
-      let psnShopBlk = GUI.get()?.ps4_ingame_shop
-      let ingameShopImages = psnShopBlk?.items
+      local psnShopBlk = GUI.get()?.ps4_ingame_shop
+      local ingameShopImages = psnShopBlk?.items
       if (ingameShopImages?[id] != null && psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
         imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
     }
@@ -113,10 +113,10 @@ local psnV2ShopPurchasableItem = class {
 
   function updateSkuInfo(blk) {
     skuInfo = (blk?.skus.blockCount() ?? 0) > 0? blk.skus.getBlock(0) : ::DataBlock()
-    let userHasPlus = psnUser.hasPremium()
-    let isPlusPrice = skuInfo?.isPlusPrice ?? false
-    let displayPrice = skuInfo?.displayPrice ?? ""
-    let skuPrice = skuInfo?.price
+    local userHasPlus = psnUser.hasPremium()
+    local isPlusPrice = skuInfo?.isPlusPrice ?? false
+    local displayPrice = skuInfo?.displayPrice ?? ""
+    local skuPrice = skuInfo?.price
 
     priceText = (!userHasPlus && isPlusPrice) ? (skuInfo?.displayOriginalPrice ?? "")
       : (userHasPlus && !isPlusPrice) ? (skuInfo?.displayPlusUpsellPrice ?? displayPrice)
@@ -131,7 +131,7 @@ local psnV2ShopPurchasableItem = class {
     needHeader = price != null && listPrice != null
 
     productId = skuInfo?.id
-    let purchStatus = skuInfo?.annotationName ?? PURCHASE_STATUS.NOT_PURCHASED
+    local purchStatus = skuInfo?.annotationName ?? PURCHASE_STATUS.NOT_PURCHASED
     isBought = purchStatus == PURCHASE_STATUS.PURCHASED
     isPurchasable = purchStatus != PURCHASE_STATUS.PURCHASED
     isMultiConsumable = (skuInfo?.useLimit ?? 0) > 0
@@ -147,7 +147,7 @@ local psnV2ShopPurchasableItem = class {
     if (priceText == "")
       return ""
 
-    let color = !haveDiscount() ? ""
+    local color = !haveDiscount() ? ""
       : havePsPlusDiscount() ? "psplusTextColor"
       : "goodTextColor"
 
@@ -156,11 +156,11 @@ local psnV2ShopPurchasableItem = class {
 
   getDescription = function() {
     //TEMP HACK!!! for PS4 TRC R4052A, to show all symbols of a single 2000-letter word
-    let maxSymbolsInLine = 50 // Empirically fits with the biggest font we have
+    local maxSymbolsInLine = 50 // Empirically fits with the biggest font we have
     if (description.len() > maxSymbolsInLine && description.indexof(" ") == null) {
-      let splitDesc = [description.slice(0, maxSymbolsInLine)]
-      let len = description.len()
-      let totalLines = (len / maxSymbolsInLine).tointeger() + 1
+      local splitDesc = [description.slice(0, maxSymbolsInLine)]
+      local len = description.len()
+      local totalLines = (len / maxSymbolsInLine).tointeger() + 1
       for (local i = 1; i < totalLines; i++) {
         splitDesc.append("\n")
         splitDesc.append(description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine))
@@ -194,8 +194,8 @@ local psnV2ShopPurchasableItem = class {
   getSeenId = @() id.tostring()
   canBeUnseen = @() isBought
   showDetails = function(metricPlaceCall = "ingame_store.v2") {
-    let itemId = id
-    let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
+    local itemId = id
+    local eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
@@ -205,8 +205,8 @@ local psnV2ShopPurchasableItem = class {
     )
   }
   showDescription = function(metricPlaceCall = "ingame_store.v2") {
-    let itemId = id
-    let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
+    local itemId = id
+    local eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
